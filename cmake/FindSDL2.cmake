@@ -32,17 +32,18 @@
 
 # Cache variable that allows you to point CMake at a directory containing
 # an extracted development library.
-set(SDL2_DIR "${SDL2_DIR}" CACHE PATH "Location of SDL2 library directory")
+set(SDL2_DIR "${SDL2_DIR}" CACHE PATH "G:/dev/api/SDL2-2.0.12")
 
 # Use pkg-config to find library locations in *NIX environments.
-find_package(PkgConfig QUIET)
-if(PKG_CONFIG_FOUND)
-    pkg_search_module(PC_SDL2 QUIET sdl2)
-endif()
+#find_package(PkgConfig QUIET)
+#if(PKG_CONFIG_FOUND)
+#    pkg_search_module(PC_SDL2 QUIET sdl2)
+#endif()
 
 # Find the include directory.
-find_path(SDL2_INCLUDE_DIR "SDL_version.h"
-    HINTS "${SDL2_DIR}/include" ${PC_SDL2_INCLUDE_DIRS})
+#find_path(SDL2_INCLUDE_DIR "SDL_version.h"
+#    HINTS "${SDL2_DIR}/include")# ${PC_SDL2_INCLUDE_DIRS})
+set(SDL2_INCLUDE_DIR "G:/dev/api/SDL2-2.0.12/include")
 
 # Find the version.  Taken and modified from CMake's FindSDL.cmake.
 if(SDL2_INCLUDE_DIR AND EXISTS "${SDL2_INCLUDE_DIR}/SDL_version.h")
@@ -62,17 +63,19 @@ if(SDL2_INCLUDE_DIR AND EXISTS "${SDL2_INCLUDE_DIR}/SDL_version.h")
 endif()
 
 # Find the SDL2 and SDL2main libraries
-if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
-    find_library(SDL2_LIBRARY "SDL2"
-        HINTS "${SDL2_DIR}/lib/x64" ${PC_SDL2_LIBRARY_DIRS})
-    find_library(SDL2_MAIN_LIBRARY "SDL2main"
-        HINTS "${SDL2_DIR}/lib/x64" ${PC_SDL2_LIBRARY_DIRS})
-else()
-    find_library(SDL2_LIBRARY "SDL2"
-        HINTS "${SDL2_DIR}/lib/x86" ${PC_SDL2_LIBRARY_DIRS})
-    find_library(SDL2_MAIN_LIBRARY "SDL2main"
-        HINTS "${SDL2_DIR}/lib/x86" ${PC_SDL2_LIBRARY_DIRS})
-endif()
+#if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
+#    find_library(SDL2_LIBRARY "SDL2"
+#        HINTS "${SDL2_DIR}/lib/x86" ${PC_SDL2_LIBRARY_DIRS})
+#    find_library(SDL2_MAIN_LIBRARY "SDL2main"
+#        HINTS "${SDL2_DIR}/lib/x64" ${PC_SDL2_LIBRARY_DIRS})
+#else()
+#    find_library(SDL2_LIBRARY "SDL2"
+#        HINTS "${SDL2_DIR}/lib/x86" ${PC_SDL2_LIBRARY_DIRS})
+##    find_library(SDL2_MAIN_LIBRARY "SDL2main"
+#        HINTS "${SDL2_DIR}/lib/x64" ${PC_SDL2_LIBRARY_DIRS})
+#endif()
+set(SDL2_LIBRARY "G:/dev/api/SDL2-2.0.12/lib/x64/SDL2.lib")
+set(SDL2_MAIN_LIBRARY "G:/dev/api/SDL2-2.0.12/lib/x64/SDL2main.lib")
 set(SDL2_LIBRARIES "${SDL2_MAIN_LIBRARY}" "${SDL2_LIBRARY}")
 
 include(FindPackageHandleStandardArgs)

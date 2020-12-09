@@ -1,9 +1,9 @@
 add_library(pcsound STATIC
-            pcsound.c       pcsound.h
-            pcsound_bsd.c
-            pcsound_sdl.c
-            pcsound_linux.c
-            pcsound_win32.c
+            pcsound.cpp       pcsound.h
+            pcsound_bsd.cpp
+            pcsound_sdl.cpp
+            pcsound_linux.cpp
+            pcsound_win32.cpp
                             pcsound_internal.h)
 target_include_directories(pcsound
                            INTERFACE "."

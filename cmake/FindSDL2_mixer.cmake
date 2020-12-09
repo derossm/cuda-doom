@@ -32,7 +32,7 @@
 
 # Cache variable that allows you to point CMake at a directory containing
 # an extracted development library.
-set(SDL2_MIXER_DIR "${SDL2_MIXER_DIR}" CACHE PATH "Location of SDL2_mixer library directory")
+set(SDL2_MIXER_DIR "${SDL2_MIXER_DIR}" CACHE PATH "G:/dev/api/SDL2_mixer-2.0.4")
 
 # Use pkg-config to find library locations in *NIX environments.
 find_package(PkgConfig QUIET)
@@ -41,8 +41,9 @@ if(PKG_CONFIG_FOUND)
 endif()
 
 # Find the include directory.
-find_path(SDL2_MIXER_INCLUDE_DIR "SDL_mixer.h"
-    HINTS "${SDL2_MIXER_DIR}/include" ${PC_SDL2_MIXER_INCLUDE_DIRS})
+#find_path(SDL2_MIXER_INCLUDE_DIR "SDL_mixer.h"
+#    HINTS "${SDL2_MIXER_DIR}/include" ${PC_SDL2_MIXER_INCLUDE_DIRS})
+set(SDL2_MIXER_INCLUDE_DIR "G:/dev/api/SDL2_mixer-2.0.4/include")
 
 # Find the version.  Taken and modified from CMake's FindSDL.cmake.
 if(SDL2_MIXER_INCLUDE_DIR AND EXISTS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h")
@@ -62,13 +63,14 @@ if(SDL2_MIXER_INCLUDE_DIR AND EXISTS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h")
 endif()
 
 # Find the library.
-if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
-    find_library(SDL2_MIXER_LIBRARY "SDL2_mixer"
-        HINTS "${SDL2_MIXER_DIR}/lib/x64" ${PC_SDL2_MIXER_LIBRARY_DIRS})
-else()
-    find_library(SDL2_MIXER_LIBRARY "SDL2_mixer"
-        HINTS "${SDL2_MIXER_DIR}/lib/x86" ${PC_SDL2_MIXER_LIBRARY_DIRS})
-endif()
+#if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
+#    find_library(SDL2_MIXER_LIBRARY "SDL2_mixer"
+#        HINTS "${SDL2_MIXER_DIR}/lib/x86" ${PC_SDL2_MIXER_LIBRARY_DIRS})
+#else()
+#    find_library(SDL2_MIXER_LIBRARY "SDL2_mixer"
+#        HINTS "${SDL2_MIXER_DIR}/lib/x64" ${PC_SDL2_MIXER_LIBRARY_DIRS})
+#endif()
+set(SDL2_MIXER_LIBRARY "G:/dev/api/SDL2_mixer-2.0.4/lib/x64/SDL2_mixer.lib")
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(SDL2_mixer
