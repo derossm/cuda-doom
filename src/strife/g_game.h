@@ -9,11 +9,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//   Duh.
+//	Duh.
 // 
 
 
@@ -82,7 +82,7 @@ void G_DrawMouseSpeedBox(void);
 
 // [STRIFE]
 boolean G_WriteSaveName(int slot, const char *charname);
-void    G_ReadCurrent(const char *path);
+void	G_ReadCurrent(const char *path);
 
 extern int vanilla_savegame_limit;
 extern int vanilla_demo_limit;

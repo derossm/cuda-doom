@@ -10,7 +10,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -45,16 +45,16 @@ void D_LoadSigilWad (void)
 		const char *name;
 		const char new_name[8];
 	} sigil_lumps [] = {
-		{"CREDIT",   "SIGCREDI"},
-		{"HELP1",    "SIGHELP1"},
+		{"CREDIT",	"SIGCREDI"},
+		{"HELP1",	"SIGHELP1"},
 		{"TITLEPIC", "SIGTITLE"},
 		{"DEHACKED", "SIG_DEH"},
-		{"DEMO1",    "SIGDEMO1"},
-		{"DEMO2",    "SIGDEMO2"},
-		{"DEMO3",    "SIGDEMO3"},
-		{"DEMO4",    "SIGDEMO4"},
-		{"D_INTER",  "D_SIGINT"},
-		{"D_INTRO",  "D_SIGTIT"},
+		{"DEMO1",	"SIGDEMO1"},
+		{"DEMO2",	"SIGDEMO2"},
+		{"DEMO3",	"SIGDEMO3"},
+		{"DEMO4",	"SIGDEMO4"},
+		{"D_INTER", "D_SIGINT"},
+		{"D_INTRO", "D_SIGTIT"},
 	};
 
 	const char *const texture_files[] = {
@@ -173,9 +173,9 @@ static boolean CheckNerveLoaded (void)
 	int i, j;
 
 	if ((i = W_GetNumForName("MAP01")) != -1 &&
-	    (j = W_GetNumForName("MAP09")) != -1 &&
-	    !strcasecmp(W_WadNameForLump(lumpinfo[i]), "NERVE.WAD") &&
-	    !strcasecmp(W_WadNameForLump(lumpinfo[j]), "NERVE.WAD"))
+		(j = W_GetNumForName("MAP09")) != -1 &&
+		!strcasecmp(W_WadNameForLump(lumpinfo[i]), "NERVE.WAD") &&
+		!strcasecmp(W_WadNameForLump(lumpinfo[j]), "NERVE.WAD"))
 	{
 		gamemission = pack_nerve;
 
@@ -278,9 +278,9 @@ static boolean CheckMasterlevelsLoaded (void)
 	int i, j;
 
 	if ((i = W_GetNumForName("MAP01")) != -1 &&
-	    (j = W_GetNumForName("MAP21")) != -1 &&
-	    !strcasecmp(W_WadNameForLump(lumpinfo[i]), "MASTERLEVELS.WAD") &&
-	    !strcasecmp(W_WadNameForLump(lumpinfo[j]), "MASTERLEVELS.WAD"))
+		(j = W_GetNumForName("MAP21")) != -1 &&
+		!strcasecmp(W_WadNameForLump(lumpinfo[i]), "MASTERLEVELS.WAD") &&
+		!strcasecmp(W_WadNameForLump(lumpinfo[j]), "MASTERLEVELS.WAD"))
 	{
 		gamemission = pack_master;
 
@@ -359,27 +359,27 @@ static struct {
 	boolean custom_sky;
 	char *file_path;
 } masterlevels_wads [] = {
-	{"ATTACK.WAD",    1,  1},
-	{"CANYON.WAD",    1,  2},
-	{"CATWALK.WAD",   1,  3},
-	{"COMBINE.WAD",   1,  4, true},
-	{"FISTULA.WAD",   1,  5},
-	{"GARRISON.WAD",  1,  6},
-	{"MANOR.WAD",     1,  7, true},
-	{"PARADOX.WAD",   1,  8},
-	{"SUBSPACE.WAD",  1,  9},
-	{"SUBTERRA.WAD",  1, 10},
-	{"TTRAP.WAD",     1, 11, true},
-	{"VIRGIL.WAD",    3, 12, true},
-	{"MINOS.WAD",     5, 13, true},
-	{"BLOODSEA.WAD",  7, 14},
-	{"MEPHISTO.WAD",  7, 15},
-	{"NESSUS.WAD",    7, 16, true},
-	{"GERYON.WAD",    8, 17, true},
-	{"VESPERAS.WAD",  9, 18, true},
+	{"ATTACK.WAD",	1, 1},
+	{"CANYON.WAD",	1, 2},
+	{"CATWALK.WAD",	1, 3},
+	{"COMBINE.WAD",	1, 4, true},
+	{"FISTULA.WAD",	1, 5},
+	{"GARRISON.WAD", 1, 6},
+	{"MANOR.WAD",		1, 7, true},
+	{"PARADOX.WAD",	1, 8},
+	{"SUBSPACE.WAD", 1, 9},
+	{"SUBTERRA.WAD", 1, 10},
+	{"TTRAP.WAD",		1, 11, true},
+	{"VIRGIL.WAD",	3, 12, true},
+	{"MINOS.WAD",		5, 13, true},
+	{"BLOODSEA.WAD", 7, 14},
+	{"MEPHISTO.WAD", 7, 15},
+	{"NESSUS.WAD",	7, 16, true},
+	{"GERYON.WAD",	8, 17, true},
+	{"VESPERAS.WAD", 9, 18, true},
 	{"BLACKTWR.WAD", 25, 19},
-	{"TEETH.WAD",    31, 20},
-	{NULL,           32, 21}, // [crispy] TEETH.WAD
+	{"TEETH.WAD",	31, 20},
+	{NULL,			32, 21}, // [crispy] TEETH.WAD
 };
 
 static boolean CheckMasterlevelsAvailable (void)

@@ -10,12 +10,12 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
 //	[crispy] support maps with NODES in compressed or uncompressed ZDBSP
-// 	format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
+//	format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
 //
 
 
@@ -24,11 +24,11 @@
 
 typedef enum
 {
-    MFMT_DOOMBSP = 0x000,
-    MFMT_DEEPBSP = 0x001,
-    MFMT_ZDBSPX  = 0x002,
-    MFMT_ZDBSPZ  = 0x004,
-    MFMT_HEXEN   = 0x100,
+	MFMT_DOOMBSP = 0x000,
+	MFMT_DEEPBSP = 0x001,
+	MFMT_ZDBSPX = 0x002,
+	MFMT_ZDBSPZ = 0x004,
+	MFMT_HEXEN	= 0x100,
 } mapformat_t;
 
 extern mapformat_t P_CheckMapFormat (int lumpnum);

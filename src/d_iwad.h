@@ -8,11 +8,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//     Find IWAD and initialize according to IWAD type.
+//		Find IWAD and initialize according to IWAD type.
 //
 
 
@@ -21,22 +21,22 @@
 
 #include "d_mode.h"
 
-#define IWAD_MASK_DOOM    ((1 << doom)           \
-                         | (1 << doom2)          \
-                         | (1 << pack_tnt)       \
-                         | (1 << pack_plut)      \
-                         | (1 << pack_chex)      \
-                         | (1 << pack_hacx))
+#define IWAD_MASK_DOOM	((1 << doom)			\
+							| (1 << doom2)			\
+							| (1 << pack_tnt)		\
+							| (1 << pack_plut)		\
+							| (1 << pack_chex)		\
+							| (1 << pack_hacx))
 #define IWAD_MASK_HERETIC (1 << heretic)
-#define IWAD_MASK_HEXEN   (1 << hexen)
-#define IWAD_MASK_STRIFE  (1 << strife)
+#define IWAD_MASK_HEXEN	(1 << hexen)
+#define IWAD_MASK_STRIFE (1 << strife)
 
 typedef struct
 {
-    const char *name;
-    GameMission_t mission;
-    GameMode_t mode;
-    const char *description;
+	const char *name;
+	GameMission_t mission;
+	GameMode_t mode;
+	const char *description;
 } iwad_t;
 
 boolean D_IsIWADName(const char *name);

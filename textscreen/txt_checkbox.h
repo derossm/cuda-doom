@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -25,10 +25,10 @@
  * Checkbox widget.
  *
  * A checkbox is used to control boolean values that may be either on
- * or off.  The widget has a label that is displayed to the right of
- * the checkbox indicator.  The widget tracks an integer variable;
+ * or off. The widget has a label that is displayed to the right of
+ * the checkbox indicator. The widget tracks an integer variable;
  * if the variable is non-zero, the checkbox is checked, while if it
- * is zero, the checkbox is unchecked.  It is also possible to
+ * is zero, the checkbox is unchecked. It is also possible to
  * create "inverted" checkboxes where this logic is reversed.
  *
  * When a checkbox is changed, it emits the "changed" signal.
@@ -40,19 +40,19 @@ typedef struct txt_checkbox_s txt_checkbox_t;
 
 struct txt_checkbox_s
 {
-    txt_widget_t widget;
-    char *label;
-    int *variable;
-    int inverted;
+	txt_widget_t widget;
+	char *label;
+	int *variable;
+	int inverted;
 };
 
 /**
  * Create a new checkbox.
  *
- * @param label         The label for the new checkbox (UTF-8 format).
- * @param variable      Pointer to the variable containing this checkbox's
- *                      value.
- * @return              Pointer to the new checkbox.
+ * @param label			The label for the new checkbox (UTF-8 format).
+ * @param variable		Pointer to the variable containing this checkbox's
+ *						value.
+ * @return				Pointer to the new checkbox.
  */
 
 txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable);
@@ -63,10 +63,10 @@ txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable);
  * An inverted checkbox displays the opposite of a normal checkbox;
  * where it would be checked, it appears unchecked, and vice-versa.
  *
- * @param label         The label for the new checkbox (UTF-8 format).
- * @param variable      Pointer to the variable containing this checkbox's
- *                      value.
- * @return              Pointer to the new checkbox.
+ * @param label			The label for the new checkbox (UTF-8 format).
+ * @param variable		Pointer to the variable containing this checkbox's
+ *						value.
+ * @return				Pointer to the new checkbox.
  */
 
 txt_checkbox_t *TXT_NewInvertedCheckBox(const char *label, int *variable);

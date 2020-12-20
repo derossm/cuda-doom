@@ -8,11 +8,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//     Pseudo-random number generator for secure demos.
+//		Pseudo-random number generator for secure demos.
 //
 
 #ifndef __AES_PRNG_H__

@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -24,8 +24,8 @@
 #include "r_local.h"
 #endif
 
-#define TOCENTER                -8
-#define AFLAG_JUMP              0x80
+#define TOCENTER				-8
+#define AFLAG_JUMP				0x80
 #define FLOATSPEED		(FRACUNIT*4)
 
 
@@ -57,7 +57,7 @@
 #define MISSILERANGE	(32*64*FRACUNIT)
 
 // follow a player exlusively for 3 seconds
-#define	BASETHRESHOLD	 	100
+#define	BASETHRESHOLD			100
 
 
 
@@ -110,18 +110,18 @@ void P_RespawnSpecials (void);
 mobj_t*
 P_SpawnMobj
 ( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z,
-  mobjtype_t	type );
+ fixed_t	y,
+ fixed_t	z,
+ mobjtype_t	type );
 
-void 	P_RemoveMobj (mobj_t* th);
+void	P_RemoveMobj (mobj_t* th);
 mobj_t* P_SubstNullMobj (mobj_t* th);
 boolean	P_SetMobjState (mobj_t* mobj, statenum_t state);
-void 	P_MobjThinker (mobj_t* mobj);
+void	P_MobjThinker (mobj_t* mobj);
 mobj_t *Crispy_PlayerSO (int p); // [crispy] weapon sound sources
 
 void	P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);
-void 	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage, mobj_t* target);
+void	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage, mobj_t* target);
 mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);
 void	P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);
 
@@ -138,27 +138,27 @@ void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);
 //
 typedef struct
 {
-    fixed_t	x;
-    fixed_t	y;
-    fixed_t	dx;
-    fixed_t	dy;
-    
+	fixed_t	x;
+	fixed_t	y;
+	fixed_t	dx;
+	fixed_t	dy;
+	
 } divline_t;
 
 typedef struct
 {
-    fixed_t	frac;		// along trace line
-    boolean	isaline;
-    union {
+	fixed_t	frac;		// along trace line
+	boolean	isaline;
+	union {
 	mobj_t*	thing;
 	line_t*	line;
-    }			d;
+	}			d;
 } intercept_t;
 
 // Extended MAXINTERCEPTS, to allow for intercepts overrun emulation.
 
 #define MAXINTERCEPTS_ORIGINAL 128
-#define MAXINTERCEPTS          (MAXINTERCEPTS_ORIGINAL + 61)
+#define MAXINTERCEPTS			(MAXINTERCEPTS_ORIGINAL + 61)
 
 //extern intercept_t	intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
 extern intercept_t*	intercept_p;
@@ -166,18 +166,18 @@ extern intercept_t*	intercept_p;
 typedef boolean (*traverser_t) (intercept_t *in);
 
 fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);
-int 	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
-int 	P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);
-void 	P_MakeDivline (line_t* li, divline_t* dl);
+int	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
+int	P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);
+void	P_MakeDivline (line_t* li, divline_t* dl);
 fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);
-int 	P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);
+int	P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);
 
 extern fixed_t		opentop;
 extern fixed_t 		openbottom;
 extern fixed_t		openrange;
 extern fixed_t		lowfloor;
 
-void 	P_LineOpening (line_t* linedef);
+void	P_LineOpening (line_t* linedef);
 
 boolean P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*) );
 boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );
@@ -191,11 +191,11 @@ extern divline_t	trace;
 boolean
 P_PathTraverse
 ( fixed_t	x1,
-  fixed_t	y1,
-  fixed_t	x2,
-  fixed_t	y2,
-  int		flags,
-  boolean	(*trav) (intercept_t *));
+ fixed_t	y1,
+ fixed_t	x2,
+ fixed_t	y2,
+ int		flags,
+ boolean	(*trav) (intercept_t *));
 
 void P_UnsetThingPosition (mobj_t* thing);
 void P_SetThingPosition (mobj_t* thing);
@@ -214,10 +214,10 @@ extern fixed_t		tmceilingz;
 
 extern	line_t*		ceilingline;
 
-// fraggle: I have increased the size of this buffer.  In the original Doom,
+// fraggle: I have increased the size of this buffer. In the original Doom,
 // overrunning past this limit caused other bits of memory to be overwritten,
-// affecting demo playback.  However, in doing so, the limit was still
-// exceeded.  So we have to support more than 8 specials.
+// affecting demo playback. However, in doing so, the limit was still
+// exceeded. So we have to support more than 8 specials.
 //
 // We keep the original limit, to detect what variables in memory were
 // overwritten (see SpechitOverrun())
@@ -233,7 +233,7 @@ boolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
 boolean P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
 void	P_SlideMove (mobj_t* mo);
 boolean P_CheckSight (mobj_t* t1, mobj_t* t2);
-void 	P_UseLines (player_t* player);
+void	P_UseLines (player_t* player);
 
 boolean P_ChangeSector (sector_t* sector, boolean crunch);
 
@@ -242,22 +242,22 @@ extern mobj_t*	linetarget;	// who got hit (or NULL)
 fixed_t
 P_AimLineAttack
 ( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance );
+ angle_t	angle,
+ fixed_t	distance );
 
 void
 P_LineAttack
 ( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance,
-  fixed_t	slope,
-  int		damage );
+ angle_t	angle,
+ fixed_t	distance,
+ fixed_t	slope,
+ int		damage );
 
 void
 P_RadiusAttack
 ( mobj_t*	spot,
-  mobj_t*	source,
-  int		damage );
+ mobj_t*	source,
+ int		damage );
 
 
 
@@ -290,14 +290,14 @@ extern int		clipammo[NUMAMMO];
 void
 P_TouchSpecialThing
 ( mobj_t*	special,
-  mobj_t*	toucher );
+ mobj_t*	toucher );
 
 void
 P_DamageMobj
 ( mobj_t*	target,
-  mobj_t*	inflictor,
-  mobj_t*	source,
-  int		damage );
+ mobj_t*	inflictor,
+ mobj_t*	source,
+ int		damage );
 
 
 //

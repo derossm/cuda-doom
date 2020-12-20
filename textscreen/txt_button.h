@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -34,15 +34,15 @@ typedef struct txt_button_s txt_button_t;
 
 struct txt_button_s
 {
-    txt_widget_t widget;
-    char *label;
+	txt_widget_t widget;
+	char *label;
 };
 
 /**
  * Create a new button widget.
  *
- * @param label        The label to use on the new button (UTF-8 format).
- * @return             Pointer to the new button widget.
+ * @param label		The label to use on the new button (UTF-8 format).
+ * @return				Pointer to the new button widget.
  */
 
 txt_button_t *TXT_NewButton(const char *label);
@@ -51,20 +51,20 @@ txt_button_t *TXT_NewButton(const char *label);
  * Create a new button widget, binding the "pressed" signal to a
  * specified callback function.
  *
- * @param label        The label to use on the new button (UTF-8 format).
- * @param func         The callback function to invoke.
- * @param user_data    User-specified pointer to pass to the callback.
- * @return             Pointer to the new button widget.
+ * @param label		The label to use on the new button (UTF-8 format).
+ * @param func			The callback function to invoke.
+ * @param user_data	User-specified pointer to pass to the callback.
+ * @return				Pointer to the new button widget.
  */
 
 txt_button_t *TXT_NewButton2(const char *label, TxtWidgetSignalFunc func,
-                             void *user_data);
+								void *user_data);
 
 /**
  * Change the label used on a button.
  *
- * @param button       The button.
- * @param label        The new label (UTF-8 format).
+ * @param button		The button.
+ * @param label		The new label (UTF-8 format).
  */
 
 void TXT_SetButtonLabel(txt_button_t *button, const char *label);

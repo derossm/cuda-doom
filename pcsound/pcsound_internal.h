@@ -8,11 +8,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//    PC speaker interface.
+//	PC speaker interface.
 //
 
 #ifndef PCSOUND_INTERNAL_H
@@ -28,9 +28,9 @@ typedef void (*pcsound_shutdown_func)(void);
 
 struct pcsound_driver_s
 {
-    const char *name;
-    pcsound_init_func init_func;
-    pcsound_shutdown_func shutdown_func;
+	const char *name;
+	pcsound_init_func init_func;
+	pcsound_shutdown_func shutdown_func;
 };
 
 extern int pcsound_sample_rate;

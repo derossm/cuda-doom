@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 //
@@ -43,11 +43,11 @@ int TXT_CanSelectFiles(void);
 /**
  * Open a native file selector to select a file.
  *
- * @param prompt      Pointer to a string containing a prompt to display
- *                    in the window.
- * @param extensions  NULL-terminated list of filename extensions for
- *                    files that can be selected, or @ref TXT_DIRECTORY
- *                    to select directories.
+ * @param prompt		Pointer to a string containing a prompt to display
+ *					in the window.
+ * @param extensions NULL-terminated list of filename extensions for
+ *					files that can be selected, or @ref TXT_DIRECTORY
+ *					to select directories.
  */
 
 char *TXT_SelectFile(const char *prompt, const char **extensions);
@@ -55,18 +55,18 @@ char *TXT_SelectFile(const char *prompt, const char **extensions);
 /**
  * Create a new txt_fileselect_t widget.
  *
- * @param variable    Pointer to a char * variable in which the selected
- *                    file should be stored (UTF-8 format).
- * @param size        Width of the file selector widget in characters.
- * @param prompt      Pointer to a string containing a prompt to display
- *                    in the file selection window.
- * @param extensions  NULL-terminated list of filename extensions that
- *                    can be used for this widget, or @ref TXT_DIRECTORY
- *                    to select directories.
+ * @param variable	Pointer to a char * variable in which the selected
+ *					file should be stored (UTF-8 format).
+ * @param size		Width of the file selector widget in characters.
+ * @param prompt		Pointer to a string containing a prompt to display
+ *					in the file selection window.
+ * @param extensions NULL-terminated list of filename extensions that
+ *					can be used for this widget, or @ref TXT_DIRECTORY
+ *					to select directories.
  */
 
 txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
-                                      const char *prompt, const char **extensions);
+										const char *prompt, const char **extensions);
 
 /**
  * Special value to use for 'extensions' that selects a directory

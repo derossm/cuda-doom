@@ -9,15 +9,15 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//  Sky rendering. The DOOM sky is a texture map like any
-//  wall, wrapping around. A 1024 columns equal 360 degrees.
-//  The default sky map is 256 columns and repeats 4 times
-//  on a 320 screen?
-//  
+// Sky rendering. The DOOM sky is a texture map like any
+// wall, wrapping around. A 1024 columns equal 360 degrees.
+// The default sky map is 256 columns and repeats 4 times
+// on a 320 screen?
+// 
 //
 
 
@@ -46,9 +46,9 @@ int			skytexturemid;
 //
 void R_InitSkyMap (void)
 {
-    // haleyjd 10/03/10: [STRIFE] Sky is set here, not in G_DoLoadLevel.
-    // Also skytexturemid changed from 100 to 199.
-    skyflatnum = R_FlatNumForName ( SKYFLATNAME );
-    skytexturemid = 199*FRACUNIT;
+	// haleyjd 10/03/10: [STRIFE] Sky is set here, not in G_DoLoadLevel.
+	// Also skytexturemid changed from 100 to 199.
+	skyflatnum = R_FlatNumForName ( SKYFLATNAME );
+	skytexturemid = 199*FRACUNIT;
 }
 

@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -23,7 +23,7 @@
 
 
 // SKY, store the number for name.
-#define			SKYFLATNAME  "F_SKY1"
+#define			SKYFLATNAME "F_SKY1"
 
 // The sky map is 256*128*4 maps.
 #define ANGLETOSKYSHIFT		22
@@ -31,7 +31,7 @@
 // [crispy] stretch sky
 #define SKYSTRETCH_HEIGHT 228
 
-extern  int		skytexture;
+extern int		skytexture;
 extern int		skytexturemid;
 
 // Called whenever the view size changes.

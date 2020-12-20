@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -25,10 +25,10 @@
 
 // Screen width and height.
 
-#define ORIGWIDTH  320 // [crispy]
+#define ORIGWIDTH 320 // [crispy]
 #define ORIGHEIGHT 200 // [crispy]
 
-#define MAXWIDTH  (ORIGWIDTH << 2) // [crispy]
+#define MAXWIDTH (ORIGWIDTH << 2) // [crispy]
 #define MAXHEIGHT (ORIGHEIGHT << 1) // [crispy]
 
 extern int SCREENWIDTH;

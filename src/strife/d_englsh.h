@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -118,9 +118,9 @@
 #define GOTSHELLBOX	"Picked up a box of shotgun shells."
 #define GOTBACKPACK	"Picked up a backpack full of ammo!"
 
-#define GOTBFG9000	"You got the BFG9000!  Oh, yes."
+#define GOTBFG9000	"You got the BFG9000! Oh, yes."
 #define GOTCHAINGUN	"You got the chaingun!"
-#define GOTCHAINSAW	"A chainsaw!  Find some meat!"
+#define GOTCHAINSAW	"A chainsaw! Find some meat!"
 #define GOTLAUNCHER	"You got the rocket launcher!"
 #define GOTPLASMA	"You got the plasma gun!"
 #define GOTSHOTGUN	"You got the shotgun!"
@@ -148,56 +148,56 @@
 
 // haleyjd 08/31/10: [STRIFE] Strife map names
 
-#define HUSTR_1         "AREA  1: sanctuary"
-#define HUSTR_2         "AREA  2: town"
-#define HUSTR_3         "AREA  3: front base"
-#define HUSTR_4         "AREA  4: power station"
-#define HUSTR_5         "AREA  5: prison"
-#define HUSTR_6         "AREA  6: sewers"
-#define HUSTR_7         "AREA  7: castle"
-#define HUSTR_8         "AREA  8: Audience Chamber"
-#define HUSTR_9         "AREA  9: Castle: Programmer's Keep"
+#define HUSTR_1			"AREA 1: sanctuary"
+#define HUSTR_2			"AREA 2: town"
+#define HUSTR_3			"AREA 3: front base"
+#define HUSTR_4			"AREA 4: power station"
+#define HUSTR_5			"AREA 5: prison"
+#define HUSTR_6			"AREA 6: sewers"
+#define HUSTR_7			"AREA 7: castle"
+#define HUSTR_8			"AREA 8: Audience Chamber"
+#define HUSTR_9			"AREA 9: Castle: Programmer's Keep"
 
-#define HUSTR_10        "AREA 10: New Front Base"
-#define HUSTR_11        "AREA 11: Borderlands"
-#define HUSTR_12        "AREA 12: the temple of the oracle"
-#define HUSTR_13        "AREA 13: Catacombs"
-#define HUSTR_14        "AREA 14: mines"
-#define HUSTR_15        "AREA 15: Fortress: Administration"
-#define HUSTR_16        "AREA 16: Fortress: Bishop's Tower"
-#define HUSTR_17        "AREA 17: Fortress: The Bailey"
-#define HUSTR_18        "AREA 18: Fortress: Stores"
-#define HUSTR_19        "AREA 19: Fortress: Security Complex"
+#define HUSTR_10		"AREA 10: New Front Base"
+#define HUSTR_11		"AREA 11: Borderlands"
+#define HUSTR_12		"AREA 12: the temple of the oracle"
+#define HUSTR_13		"AREA 13: Catacombs"
+#define HUSTR_14		"AREA 14: mines"
+#define HUSTR_15		"AREA 15: Fortress: Administration"
+#define HUSTR_16		"AREA 16: Fortress: Bishop's Tower"
+#define HUSTR_17		"AREA 17: Fortress: The Bailey"
+#define HUSTR_18		"AREA 18: Fortress: Stores"
+#define HUSTR_19		"AREA 19: Fortress: Security Complex"
 
-#define HUSTR_20        "AREA 20: Factory: Receiving"
-#define HUSTR_21        "AREA 21: Factory: Manufacturing"
-#define HUSTR_22        "AREA 22: Factory: Forge"
-#define HUSTR_23        "AREA 23: Order Commons"
-#define HUSTR_24        "AREA 24: Factory: Conversion Chapel"
-#define HUSTR_25        "AREA 25: Catacombs: Ruined Temple"
-#define HUSTR_26        "AREA 26: proving grounds"
-#define HUSTR_27        "AREA 27: The Lab"
-#define HUSTR_28        "AREA 28: Alien Ship"
-#define HUSTR_29        "AREA 29: Entity's Lair"
+#define HUSTR_20		"AREA 20: Factory: Receiving"
+#define HUSTR_21		"AREA 21: Factory: Manufacturing"
+#define HUSTR_22		"AREA 22: Factory: Forge"
+#define HUSTR_23		"AREA 23: Order Commons"
+#define HUSTR_24		"AREA 24: Factory: Conversion Chapel"
+#define HUSTR_25		"AREA 25: Catacombs: Ruined Temple"
+#define HUSTR_26		"AREA 26: proving grounds"
+#define HUSTR_27		"AREA 27: The Lab"
+#define HUSTR_28		"AREA 28: Alien Ship"
+#define HUSTR_29		"AREA 29: Entity's Lair"
 
-#define HUSTR_30        "AREA 30: Abandoned Front Base"
-#define HUSTR_31        "AREA 31: Training Facility"
+#define HUSTR_30		"AREA 30: Abandoned Front Base"
+#define HUSTR_31		"AREA 31: Training Facility"
 
-#define HUSTR_32        "AREA  1: Sanctuary"
-#define HUSTR_33        "AREA  2: Town"
-#define HUSTR_34        "AREA  3: Movement Base"
+#define HUSTR_32		"AREA 1: Sanctuary"
+#define HUSTR_33		"AREA 2: Town"
+#define HUSTR_34		"AREA 3: Movement Base"
 
 // haleyjd 20110219: [STRIFE] replaced all with Strife chat macros:
-#define HUSTR_CHATMACRO1        "Fucker!"
-#define HUSTR_CHATMACRO2        "--SPLAT-- Instant wall art."
-#define HUSTR_CHATMACRO3        "That had to hurt!"
-#define HUSTR_CHATMACRO4        "Smackings!"
-#define HUSTR_CHATMACRO5        "Gib-O-Matic baby."
-#define HUSTR_CHATMACRO6        "Burn!  Yah! Yah!"
-#define HUSTR_CHATMACRO7        "Buh-Bye!"
-#define HUSTR_CHATMACRO8        "Sizzle chest!"
-#define HUSTR_CHATMACRO9        "That sucked!"
-#define HUSTR_CHATMACRO0        "Mommy?"
+#define HUSTR_CHATMACRO1		"Fucker!"
+#define HUSTR_CHATMACRO2		"--SPLAT-- Instant wall art."
+#define HUSTR_CHATMACRO3		"That had to hurt!"
+#define HUSTR_CHATMACRO4		"Smackings!"
+#define HUSTR_CHATMACRO5		"Gib-O-Matic baby."
+#define HUSTR_CHATMACRO6		"Burn! Yah! Yah!"
+#define HUSTR_CHATMACRO7		"Buh-Bye!"
+#define HUSTR_CHATMACRO8		"Sizzle chest!"
+#define HUSTR_CHATMACRO9		"That sucked!"
+#define HUSTR_CHATMACRO0		"Mommy?"
 
 #define HUSTR_TALKTOSELF1	"You mumble to yourself"
 #define HUSTR_TALKTOSELF2	"Who's there?"
@@ -231,29 +231,29 @@
 #define AMSTR_GRIDON	"Grid ON"
 #define AMSTR_GRIDOFF	"Grid OFF"
 
-#define AMSTR_MARKEDSPOT        "Marked Spot"
-#define AMSTR_MARKSCLEARED      "Last Mark Cleared" // [STRIFE]
+#define AMSTR_MARKEDSPOT		"Marked Spot"
+#define AMSTR_MARKSCLEARED		"Last Mark Cleared" // [STRIFE]
 
 //
 //	ST_stuff.C
 //
 
-#define STSTR_MUS               "Music Change"
-#define STSTR_NOMUS             "IMPOSSIBLE SELECTION"
-#define STSTR_DQDON             "You're Invincible!"   // [STRIFE]
-#define STSTR_DQDOFF            "You're a looney!"     // [STRIFE]
+#define STSTR_MUS				"Music Change"
+#define STSTR_NOMUS				"IMPOSSIBLE SELECTION"
+#define STSTR_DQDON				"You're Invincible!"	// [STRIFE]
+#define STSTR_DQDOFF			"You're a looney!"		// [STRIFE]
 
-#define STSTR_KFAADDED          "Very Happy Ammo Added"
-#define STSTR_FAADDED           "Ammo Added"           // [STRIFE]
+#define STSTR_KFAADDED			"Very Happy Ammo Added"
+#define STSTR_FAADDED			"Ammo Added"			// [STRIFE]
 
-#define STSTR_NCON              "No Clipping Mode ON"
-#define STSTR_NCOFF             "No Clipping Mode OFF"
+#define STSTR_NCON				"No Clipping Mode ON"
+#define STSTR_NCOFF				"No Clipping Mode OFF"
 
-#define STSTR_BEHOLD            "Bzrk, Inviso, Mask, Health, Pack, Stats"  // [STRIFE]
-#define STSTR_BEHOLDX           "Power-up Toggled"
+#define STSTR_BEHOLD			"Bzrk, Inviso, Mask, Health, Pack, Stats" // [STRIFE]
+#define STSTR_BEHOLDX			"Power-up Toggled"
 
-#define STSTR_CHOPPERS          "... doesn't suck - GM"
-#define STSTR_CLEV              "Changing Level..."
+#define STSTR_CHOPPERS			"... doesn't suck - GM"
+#define STSTR_CLEV				"Changing Level..."
 
 //
 //	F_Finale.C
@@ -267,7 +267,7 @@
 "end this way!\n"\
 "\n" \
 "It stinks like rotten meat, but looks\n"\
-"like the lost Deimos base.  Looks like\n"\
+"like the lost Deimos base. Looks like\n"\
 "you're stuck on The Shores of Hell.\n"\
 "The only way out is through.\n"\
 "\n"\
@@ -289,7 +289,7 @@
 "You've never heard of anyone escaping\n"\
 "from Hell, but you'll make the bastards\n"\
 "sorry they ever heard of you! Quickly,\n"\
-"you rappel down to  the surface of\n"\
+"you rappel down to the surface of\n"\
 "Hell.\n"\
 "\n" \
 "Now, it's on to the final chapter of\n"\
@@ -320,7 +320,7 @@
 "the spider mastermind must have sent forth\n"\
 "its legions of hellspawn before your\n"\
 "final confrontation with that terrible\n"\
-"beast from hell.  but you stepped forward\n"\
+"beast from hell. but you stepped forward\n"\
 "and brought forth eternal damnation and\n"\
 "suffering upon the horde as a true hero\n"\
 "would in the face of something so evil.\n"\
@@ -356,7 +356,7 @@
 #define C2TEXT \
 "YOU HAVE WON! YOUR VICTORY HAS ENABLED\n" \
 "HUMANKIND TO EVACUATE EARTH AND ESCAPE\n"\
-"THE NIGHTMARE.  NOW YOU ARE THE ONLY\n"\
+"THE NIGHTMARE. NOW YOU ARE THE ONLY\n"\
 "HUMAN LEFT ON THE FACE OF THE PLANET.\n"\
 "CANNIBAL MUTATIONS, CARNIVOROUS ALIENS,\n"\
 "AND EVIL SPIRITS ARE YOUR ONLY NEIGHBORS.\n"\
@@ -367,7 +367,7 @@
 "MESSAGE FROM SPACE: \"SENSORS HAVE LOCATED\n"\
 "THE SOURCE OF THE ALIEN INVASION. IF YOU\n"\
 "GO THERE, YOU MAY BE ABLE TO BLOCK THEIR\n"\
-"ENTRY.  THE ALIEN BASE IS IN THE HEART OF\n"\
+"ENTRY. THE ALIEN BASE IS IN THE HEART OF\n"\
 "YOUR OWN HOME CITY, NOT FAR FROM THE\n"\
 "STARPORT.\" SLOWLY AND PAINFULLY YOU GET\n"\
 "UP AND RETURN TO THE FRAY."
@@ -422,18 +422,18 @@
 
 #define C6TEXT \
 "CONGRATULATIONS, YOU'VE FOUND THE\n"\
-"SUPER SECRET LEVEL!  YOU'D BETTER\n"\
+"SUPER SECRET LEVEL! YOU'D BETTER\n"\
 "BLAZE THROUGH THIS ONE!\n"
 
 
 // after map 06	
 
-#define P1TEXT  \
+#define P1TEXT \
 "You gloat over the steaming carcass of the\n"\
-"Guardian.  With its death, you've wrested\n"\
+"Guardian. With its death, you've wrested\n"\
 "the Accelerator from the stinking claws\n"\
-"of Hell.  You relax and glance around the\n"\
-"room.  Damn!  There was supposed to be at\n"\
+"of Hell. You relax and glance around the\n"\
+"room. Damn! There was supposed to be at\n"\
 "least one working prototype, but you can't\n"\
 "see it. The demons must have taken it.\n"\
 "\n"\
@@ -458,10 +458,10 @@
 
 #define P3TEXT \
 "You've bashed and battered your way into\n"\
-"the heart of the devil-hive.  Time for a\n"\
+"the heart of the devil-hive. Time for a\n"\
 "Search-and-Destroy mission, aimed at the\n"\
 "Gatekeeper, whose foul offspring is\n"\
-"cascading to Earth.  Yeah, he's bad. But\n"\
+"cascading to Earth. Yeah, he's bad. But\n"\
 "you know who's worse!\n"\
 "\n"\
 "Grinning evilly, you check your gear, and\n"\
@@ -472,13 +472,13 @@
 
 #define P4TEXT \
 "The Gatekeeper's evil face is splattered\n"\
-"all over the place.  As its tattered corpse\n"\
+"all over the place. As its tattered corpse\n"\
 "collapses, an inverted Gate forms and\n"\
 "sucks down the shards of the last\n"\
 "prototype Accelerator, not to mention the\n"\
-"few remaining demons.  You're done. Hell\n"\
+"few remaining demons. You're done. Hell\n"\
 "has gone back to pounding bad dead folks \n"\
-"instead of good live ones.  Remember to\n"\
+"instead of good live ones. Remember to\n"\
 "tell your grandkids to put a rocket\n"\
 "launcher in your coffin. If you go to Hell\n"\
 "when you die, you'll need it for some\n"\
@@ -489,21 +489,21 @@
 #define P5TEXT \
 "You've found the second-hardest level we\n"\
 "got. Hope you have a saved game a level or\n"\
-"two previous.  If not, be prepared to die\n"\
+"two previous. If not, be prepared to die\n"\
 "aplenty. For master marines only."
 
 // before map 32
 
 #define P6TEXT \
 "Betcha wondered just what WAS the hardest\n"\
-"level we had ready for ya?  Now you know.\n"\
+"level we had ready for ya? Now you know.\n"\
 "No one gets out alive."
 
 
 #define T1TEXT \
 "You've fought your way out of the infested\n"\
-"experimental labs.   It seems that UAC has\n"\
-"once again gulped it down.  With their\n"\
+"experimental labs.	It seems that UAC has\n"\
+"once again gulped it down. With their\n"\
 "high turnover, it must be hard for poor\n"\
 "old UAC to buy corporate health insurance\n"\
 "nowadays..\n"\
@@ -517,7 +517,7 @@
 
 #define T2TEXT \
 "You hear the grinding of heavy machinery\n"\
-"ahead.  You sure hope they're not stamping\n"\
+"ahead. You sure hope they're not stamping\n"\
 "out new hellspawn, but you're ready to\n"\
 "ream out a whole herd if you have to.\n"\
 "They might be planning a blood feast, but\n"\
@@ -555,7 +555,7 @@
 "What now? Looks totally different. Kind\n"\
 "of like King Tut's condo. Well,\n"\
 "whatever's here can't be any worse\n"\
-"than usual. Can it?  Or maybe it's best\n"\
+"than usual. Can it? Or maybe it's best\n"\
 "to let sleeping gods lie.."
 
 

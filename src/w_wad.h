@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -39,14 +39,14 @@ typedef int lumpindex_t;
 
 struct lumpinfo_s
 {
-    char	name[8];
-    wad_file_t *wad_file;
-    int		position;
-    int		size;
-    void       *cache;
+	char	name[8];
+	wad_file_t *wad_file;
+	int		position;
+	int		size;
+	void		*cache;
 
-    // Used for hash table lookups
-    lumpindex_t next;
+	// Used for hash table lookups
+	lumpindex_t next;
 };
 
 

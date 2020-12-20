@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -53,17 +53,17 @@ extern int		loopcount;
 //
 // Lighting LUT.
 // Used for z-depth cuing per column/row,
-//  and other lighting effects (sector ambient, flash).
+// and other lighting effects (sector ambient, flash).
 //
 
 // Lighting constants.
 // Now why not 32 levels here?
-#define LIGHTLEVELS	        16
-#define LIGHTSEGSHIFT	         4
+#define LIGHTLEVELS			16
+#define LIGHTSEGSHIFT				4
 
 #define MAXLIGHTSCALE		48
 #define LIGHTSCALESHIFT		12
-#define MAXLIGHTZ	       128
+#define MAXLIGHTZ			128
 #define LIGHTZSHIFT		20
 
 extern lighttable_t*	scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
@@ -81,7 +81,7 @@ extern lighttable_t*	fixedcolormap;
 
 // Blocky/low detail mode.
 //B remove this?
-//  0 = high, 1 = low
+// 0 = high, 1 = low
 extern	int		detailshift;	
 
 
@@ -102,31 +102,31 @@ extern void		(*spanfunc) (void);
 int
 R_PointOnSide
 ( fixed_t	x,
-  fixed_t	y,
-  node_t*	node );
+ fixed_t	y,
+ node_t*	node );
 
 int
 R_PointOnSegSide
 ( fixed_t	x,
-  fixed_t	y,
-  seg_t*	line );
+ fixed_t	y,
+ seg_t*	line );
 
 angle_t
 R_PointToAngle
 ( fixed_t	x,
-  fixed_t	y );
+ fixed_t	y );
 
 angle_t
 R_PointToAngle2
 ( fixed_t	x1,
-  fixed_t	y1,
-  fixed_t	x2,
-  fixed_t	y2 );
+ fixed_t	y1,
+ fixed_t	x2,
+ fixed_t	y2 );
 
 fixed_t
 R_PointToDist
 ( fixed_t	x,
-  fixed_t	y );
+ fixed_t	y );
 
 
 fixed_t R_ScaleFromGlobalAngle (angle_t visangle);
@@ -134,13 +134,13 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle);
 subsector_t*
 R_PointInSubsector
 ( fixed_t	x,
-  fixed_t	y );
+ fixed_t	y );
 
 void
 R_AddPointToBox
 ( int		x,
-  int		y,
-  fixed_t*	box );
+ int		y,
+ fixed_t*	box );
 
 
 

@@ -9,12 +9,12 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//   Menu widget stuff, episode selection and such.
-//    
+//	Menu widget stuff, episode selection and such.
+//	
 
 
 #ifndef __M_MENU__
@@ -58,4 +58,4 @@ extern int screenblocks;
 
 
 
-#endif    
+#endif	

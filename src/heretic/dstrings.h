@@ -10,7 +10,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -105,7 +105,7 @@
 #define TXT_SHOWFPSON			"SHOW FPS ON"	// [crispy]
 #define TXT_SHOWFPSOFF			"SHOW FPS OFF"	// [crispy]
 #define TXT_CHEATMASSACRE		"MASSACRE"
-#define TXT_CHEATIDDQD			"TRYING TO CHEAT, EH?  NOW YOU DIE!"
+#define TXT_CHEATIDDQD			"TRYING TO CHEAT, EH? NOW YOU DIE!"
 #define TXT_CHEATIDKFA			"CHEATER - YOU DON'T DESERVE WEAPONS"
 
 //---------------------------------------------------------------------------

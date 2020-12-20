@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -33,30 +33,30 @@ typedef struct txt_spincontrol_s txt_spincontrol_t;
 
 typedef enum
 {
-    TXT_SPINCONTROL_INT,
-    TXT_SPINCONTROL_FLOAT,
+	TXT_SPINCONTROL_INT,
+	TXT_SPINCONTROL_FLOAT,
 } txt_spincontrol_type_t;
 
 #include "txt_widget.h"
 
 struct txt_spincontrol_s
 {
-    txt_widget_t widget;
-    txt_spincontrol_type_t type;
-    union { float f; int i; } min, max, *value, step; 
-    int editing;
-    char *buffer;
-    size_t buffer_len;
+	txt_widget_t widget;
+	txt_spincontrol_type_t type;
+	union { float f; int i; } min, max, *value, step; 
+	int editing;
+	char *buffer;
+	size_t buffer_len;
 };
 
 /**
  * Create a new spin control widget tracking an integer value.
  *
- * @param value        Pointer to the variable containing the value
- *                     displayed in the widget.
- * @param min          Minimum value that may be set.
- * @param max          Maximum value that may be set.
- * @return             Pointer to the new spin control widget.
+ * @param value		Pointer to the variable containing the value
+ *						displayed in the widget.
+ * @param min			Minimum value that may be set.
+ * @param max			Maximum value that may be set.
+ * @return				Pointer to the new spin control widget.
  */
 
 txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
@@ -64,11 +64,11 @@ txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
 /**
  * Create a new spin control widget tracking a float value.
  *
- * @param value        Pointer to the variable containing the value
- *                     displayed in the widget.
- * @param min          Minimum value that may be set.
- * @param max          Maximum value that may be set.
- * @return             Pointer to the new spin control widget.
+ * @param value		Pointer to the variable containing the value
+ *						displayed in the widget.
+ * @param min			Minimum value that may be set.
+ * @param max			Maximum value that may be set.
+ * @return				Pointer to the new spin control widget.
  */
 
 txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max);

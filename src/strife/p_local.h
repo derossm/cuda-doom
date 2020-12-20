@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -24,7 +24,7 @@
 #include "r_local.h"
 #endif
 
-#define FLOATSPEED		(FRACUNIT*5)    // villsa [STRIFE] change to 5 (was 4)
+#define FLOATSPEED		(FRACUNIT*5)	// villsa [STRIFE] change to 5 (was 4)
 
 
 #define MAXHEALTH		100
@@ -56,7 +56,7 @@
 #define MISSILERANGE	(32*64*FRACUNIT)
 
 // follow a player exlusively for 3 seconds
-#define	BASETHRESHOLD	 	100
+#define	BASETHRESHOLD			100
 
 
 
@@ -86,11 +86,11 @@ void P_DropWeapon (player_t* player);
 //
 
 // haleyjd 09/15/10: externalized
-#define INVERSECOLORMAP         32
+#define INVERSECOLORMAP			32
 
-void    P_PlayerThink (player_t* player);
+void	P_PlayerThink (player_t* player);
 // haleyjd 08/30/10: [STRIFE] Needed externally
-void    P_Thrust (player_t* player, angle_t angle, fixed_t move);
+void	P_Thrust (player_t* player, angle_t angle, fixed_t move);
 // villsa [STRIFE]
 const char *P_RemoveInventoryItem(player_t *player, int slot, int amount);
 
@@ -115,31 +115,31 @@ void P_RespawnSpecials (void);
 mobj_t*
 P_SpawnMobj
 ( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z,
-  mobjtype_t	type );
+ fixed_t	y,
+ fixed_t	z,
+ mobjtype_t	type );
 
-void 	P_RemoveMobj (mobj_t* th);
+void	P_RemoveMobj (mobj_t* th);
 mobj_t* P_SubstNullMobj (mobj_t* th);
 boolean	P_SetMobjState (mobj_t* mobj, statenum_t state);
-void 	P_MobjThinker (mobj_t* mobj);
+void	P_MobjThinker (mobj_t* mobj);
 
 void	P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);
-mobj_t* P_SpawnSparkPuff(fixed_t x, fixed_t y, fixed_t z);  // villsa [STRIFE]
-void 	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage);
+mobj_t* P_SpawnSparkPuff(fixed_t x, fixed_t y, fixed_t z); // villsa [STRIFE]
+void	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage);
 mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);
-mobj_t* P_SpawnFacingMissile(mobj_t* source, mobj_t* target, mobjtype_t type);  // villsa [STRIFE]
+mobj_t* P_SpawnFacingMissile(mobj_t* source, mobj_t* target, mobjtype_t type); // villsa [STRIFE]
 mobj_t* P_SpawnPlayerMissile(mobj_t* source, mobjtype_t type);
 mobj_t* P_SpawnMortar(mobj_t *source, mobjtype_t type); // villsa [STRIFE]
-void    P_ExplodeMissile (mobj_t* mo); // villsa [STRIFE]
+void	P_ExplodeMissile (mobj_t* mo); // villsa [STRIFE]
 
 
 //
 // P_ENEMY
 //
 void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);
-void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee);  // villsa [STRIFE]
-void A_BodyParts(mobj_t *actor);                        // haleyjd: [STRIFE]
+void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee); // villsa [STRIFE]
+void A_BodyParts(mobj_t *actor);						// haleyjd: [STRIFE]
 void A_AlertSpectreC(mobj_t* actor);
 void A_FaceTarget (mobj_t* actor);
 void P_FreePrisoners(void);
@@ -150,27 +150,27 @@ void P_DestroyConverter(void);
 //
 typedef struct
 {
-    fixed_t	x;
-    fixed_t	y;
-    fixed_t	dx;
-    fixed_t	dy;
-    
+	fixed_t	x;
+	fixed_t	y;
+	fixed_t	dx;
+	fixed_t	dy;
+	
 } divline_t;
 
 typedef struct
 {
-    fixed_t	frac;		// along trace line
-    boolean	isaline;
-    union {
+	fixed_t	frac;		// along trace line
+	boolean	isaline;
+	union {
 	mobj_t*	thing;
 	line_t*	line;
-    }			d;
+	}			d;
 } intercept_t;
 
 // Extended MAXINTERCEPTS, to allow for intercepts overrun emulation.
 
 #define MAXINTERCEPTS_ORIGINAL 128
-#define MAXINTERCEPTS          (MAXINTERCEPTS_ORIGINAL + 61)
+#define MAXINTERCEPTS			(MAXINTERCEPTS_ORIGINAL + 61)
 
 extern intercept_t	intercepts[MAXINTERCEPTS];
 extern intercept_t*	intercept_p;
@@ -178,18 +178,18 @@ extern intercept_t*	intercept_p;
 typedef boolean (*traverser_t) (intercept_t *in);
 
 fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);
-int 	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
-int 	P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);
-void 	P_MakeDivline (line_t* li, divline_t* dl);
+int	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
+int	P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);
+void	P_MakeDivline (line_t* li, divline_t* dl);
 fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);
-int 	P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);
+int	P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);
 
 extern fixed_t		opentop;
 extern fixed_t 		openbottom;
 extern fixed_t		openrange;
 extern fixed_t		lowfloor;
 
-void 	P_LineOpening (line_t* linedef);
+void	P_LineOpening (line_t* linedef);
 
 boolean P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*) );
 boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );
@@ -203,11 +203,11 @@ extern divline_t	trace;
 boolean
 P_PathTraverse
 ( fixed_t	x1,
-  fixed_t	y1,
-  fixed_t	x2,
-  fixed_t	y2,
-  int		flags,
-  boolean	(*trav) (intercept_t *));
+ fixed_t	y1,
+ fixed_t	x2,
+ fixed_t	y2,
+ int		flags,
+ boolean	(*trav) (intercept_t *));
 
 void P_UnsetThingPosition (mobj_t* thing);
 void P_SetThingPosition (mobj_t* thing);
@@ -219,20 +219,20 @@ void P_SetThingPosition (mobj_t* thing);
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
-extern boolean      floatok;
-extern fixed_t      tmfloorz;
-extern fixed_t      tmceilingz;
+extern boolean		floatok;
+extern fixed_t		tmfloorz;
+extern fixed_t		tmceilingz;
 
-extern line_t      *ceilingline;
-extern line_t      *blockingline; // [STRIFE] New global
+extern line_t		*ceilingline;
+extern line_t		*blockingline; // [STRIFE] New global
 
 boolean P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
 boolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
-boolean P_CheckPositionZ(mobj_t* thing, fixed_t z);   // villsa [STRIFE]
+boolean P_CheckPositionZ(mobj_t* thing, fixed_t z);	// villsa [STRIFE]
 boolean P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
 void	P_SlideMove (mobj_t* mo);
 boolean P_CheckSight (mobj_t* t1, mobj_t* t2);
-void 	P_UseLines (player_t* player);
+void	P_UseLines (player_t* player);
 
 boolean P_ChangeSector (sector_t* sector, boolean crunch);
 
@@ -241,22 +241,22 @@ extern mobj_t*	linetarget;	// who got hit (or NULL)
 fixed_t
 P_AimLineAttack
 ( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance );
+ angle_t	angle,
+ fixed_t	distance );
 
 void
 P_LineAttack
 ( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance,
-  fixed_t	slope,
-  int		damage );
+ angle_t	angle,
+ fixed_t	distance,
+ fixed_t	slope,
+ int		damage );
 
 void
 P_RadiusAttack
 ( mobj_t*	spot,
-  mobj_t*	source,
-  int		damage );
+ mobj_t*	source,
+ int		damage );
 
 
 
@@ -282,14 +282,14 @@ extern int		clipammo[NUMAMMO];
 void
 P_TouchSpecialThing
 ( mobj_t*	special,
-  mobj_t*	toucher );
+ mobj_t*	toucher );
 
 void
 P_DamageMobj
 ( mobj_t*	target,
-  mobj_t*	inflictor,
-  mobj_t*	source,
-  int		damage );
+ mobj_t*	inflictor,
+ mobj_t*	source,
+ int		damage );
 
 
 //

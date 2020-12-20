@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -20,15 +20,15 @@ typedef struct txt_key_input_s txt_key_input_t;
 #include "txt_widget.h"
 
 //
-// A key input is like an input box.  When selected, a box pops up
+// A key input is like an input box. When selected, a box pops up
 // allowing a key to be selected.
 //
 
 struct txt_key_input_s
 {
-    txt_widget_t widget;
-    int *variable;
-    int check_conflicts;
+	txt_widget_t widget;
+	int *variable;
+	int check_conflicts;
 };
 
 txt_key_input_t *TXT_NewKeyInput(int *variable);

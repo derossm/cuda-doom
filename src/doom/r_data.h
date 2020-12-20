@@ -9,12 +9,12 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//  Refresh module, data I/O, caching, retrieval of graphics
-//  by name.
+// Refresh module, data I/O, caching, retrieval of graphics
+// by name.
 //
 
 
@@ -32,13 +32,13 @@
 byte*
 R_GetColumn
 ( int		tex,
-  int		col );
+ int		col );
 
 // [crispy] wrapping column getter function for composited translucent mid-textures on 1S walls
 byte*
 R_GetColumnMod
 ( int		tex,
-  int		col );
+ int		col );
 
 
 // I/O, setting up the stuff.

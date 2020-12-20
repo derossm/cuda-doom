@@ -8,11 +8,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//     A simple buffer and reader implementation.
+//		A simple buffer and reader implementation.
 //
 
 #ifndef __BUFFER__
@@ -23,16 +23,16 @@
 #define BUFFER_SIZE 1024
 
 typedef struct {
-    byte  buffer[BUFFER_SIZE]; // Buffer.
-    byte *buffer_end;          // End of Buffer.
-    byte *data;                // Start of actual data.
-    byte *data_end;            // End of actual data.
-    int   data_len;            // Length of actual data.
+	byte buffer[BUFFER_SIZE]; // Buffer.
+	byte *buffer_end;			// End of Buffer.
+	byte *data;				// Start of actual data.
+	byte *data_end;			// End of actual data.
+	int	data_len;			// Length of actual data.
 } buffer_t;
 
 typedef struct {
-    buffer_t *buffer;
-    byte     *pos;
+	buffer_t *buffer;
+	byte		*pos;
 } buffer_reader_t;
 
 buffer_t *NewBuffer();

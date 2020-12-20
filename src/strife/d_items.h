@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -27,16 +27,16 @@
 // Weapon info: sprite frames, ammunition use.
 typedef struct
 {
-    ammotype_t	ammo;
-    int		upstate;
-    int		downstate;
-    int		readystate;
-    int		atkstate;
-    int		flashstate;
-    boolean     availabledemo;    // villsa [STRIFE]
+	ammotype_t	ammo;
+	int		upstate;
+	int		downstate;
+	int		readystate;
+	int		atkstate;
+	int		flashstate;
+	boolean		availabledemo;	// villsa [STRIFE]
 
 } weaponinfo_t;
 
-extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
+extern weaponinfo_t	weaponinfo[NUMWEAPONS];
 
 #endif

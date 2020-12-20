@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -27,6 +27,6 @@ boolean P_GiveArmor(player_t* player, int armortype);
 boolean P_GivePower(player_t* player, powertype_t power);
 boolean P_GiveAmmo(player_t* player, ammotype_t ammo, int num);
 boolean P_GiveWeapon(player_t* player, weapontype_t weapon, boolean dropped);
-void    P_KillMobj(mobj_t* source, mobj_t* target);
+void	P_KillMobj(mobj_t* source, mobj_t* target);
 
 #endif

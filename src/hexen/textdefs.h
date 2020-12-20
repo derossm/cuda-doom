@@ -10,7 +10,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -149,7 +149,7 @@
 #define TXT_CHEATARTIFACTSFAIL	"BAD INPUT"
 #define TXT_CHEATWARP			"LEVEL WARP"
 #define TXT_CHEATSCREENSHOT		"SCREENSHOT"
-#define TXT_CHEATIDDQD			"TRYING TO CHEAT, EH?  NOW YOU DIE!"
+#define TXT_CHEATIDDQD			"TRYING TO CHEAT, EH? NOW YOU DIE!"
 #define TXT_CHEATIDKFA			"CHEATER - YOU DON'T DESERVE WEAPONS"
 #define TXT_CHEATBADINPUT		"BAD INPUT"
 #define TXT_CHEATNOMAP			"CAN'T FIND MAP"

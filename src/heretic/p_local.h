@@ -10,7 +10,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -61,24 +61,24 @@
 
 typedef enum
 {
-    DI_EAST,
-    DI_NORTHEAST,
-    DI_NORTH,
-    DI_NORTHWEST,
-    DI_WEST,
-    DI_SOUTHWEST,
-    DI_SOUTH,
-    DI_SOUTHEAST,
-    DI_NODIR,
-    NUMDIRS
+	DI_EAST,
+	DI_NORTHEAST,
+	DI_NORTH,
+	DI_NORTHWEST,
+	DI_WEST,
+	DI_SOUTHWEST,
+	DI_SOUTH,
+	DI_SOUTHEAST,
+	DI_NODIR,
+	NUMDIRS
 } dirtype_t;
 
-#define BASETHRESHOLD 100       // follow a player exlusively for 3 seconds
+#define BASETHRESHOLD 100		// follow a player exlusively for 3 seconds
 
 // ***** P_TICK *****
 
-extern thinker_t thinkercap;    // both the head and tail of the thinker list
-extern int TimerGame;           // tic countdown for deathmatch
+extern thinker_t thinkercap;	// both the head and tail of the thinker list
+extern int TimerGame;			// tic countdown for deathmatch
 
 void P_InitThinkers(void);
 void P_AddThinker(thinker_t * thinker);
@@ -152,7 +152,7 @@ int P_HitFloor(mobj_t * thing);
 boolean P_CheckMissileSpawn(mobj_t * missile);
 mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type);
 mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
-                            angle_t angle, fixed_t momz);
+							angle_t angle, fixed_t momz);
 mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type);
 mobj_t *P_SPMAngle(mobj_t * source, mobjtype_t type, angle_t angle);
 
@@ -168,18 +168,18 @@ void P_DSparilTeleport(mobj_t * actor);
 
 typedef struct
 {
-    fixed_t x, y, dx, dy;
+	fixed_t x, y, dx, dy;
 } divline_t;
 
 typedef struct
 {
-    fixed_t frac;               // along trace line
-    boolean isaline;
-    union
-    {
-        mobj_t *thing;
-        line_t *line;
-    } d;
+	fixed_t frac;				// along trace line
+	boolean isaline;
+	union
+	{
+		mobj_t *thing;
+		line_t *line;
+	} d;
 } intercept_t;
 
 #define	MAXINTERCEPTS	128
@@ -208,15 +208,15 @@ boolean P_BlockThingsIterator(int x, int y, boolean(*func) (mobj_t *));
 
 extern divline_t trace;
 boolean P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2,
-                       int flags, boolean(*trav) (intercept_t *));
+						int flags, boolean(*trav) (intercept_t *));
 
 void P_UnsetThingPosition(mobj_t * thing);
 void P_SetThingPosition(mobj_t * thing);
 
 // ***** P_MAP *****
 
-extern boolean floatok;         // if true, move would be ok if
-extern fixed_t tmfloorz, tmceilingz;    // within tmfloorz - tmceilingz
+extern boolean floatok;			// if true, move would be ok if
+extern fixed_t tmfloorz, tmceilingz;	// within tmfloorz - tmceilingz
 
 extern line_t *ceilingline;
 boolean P_TestMobjLocation(mobj_t * mobj);
@@ -231,22 +231,22 @@ void P_UseLines(player_t * player);
 
 boolean P_ChangeSector(sector_t * sector, boolean crunch);
 
-extern mobj_t *linetarget;      // who got hit (or NULL)
+extern mobj_t *linetarget;		// who got hit (or NULL)
 fixed_t P_AimLineAttack(mobj_t * t1, angle_t angle, fixed_t distance);
 
 void P_LineAttack(mobj_t * t1, angle_t angle, fixed_t distance, fixed_t slope,
-                  int damage);
+					int damage);
 
 void P_RadiusAttack(mobj_t * spot, mobj_t * source, int damage);
 
 // ***** P_SETUP *****
 
-extern byte *rejectmatrix;      // for fast sight rejection
-extern int32_t *blockmaplump;   // offsets in blockmap are from here // [crispy] BLOCKMAP limit
-extern int32_t *blockmap;       // [crispy] BLOCKMAP limit
-extern int bmapwidth, bmapheight;       // in mapblocks
-extern fixed_t bmaporgx, bmaporgy;      // origin of block map
-extern mobj_t **blocklinks;     // for thing chains
+extern byte *rejectmatrix;		// for fast sight rejection
+extern int32_t *blockmaplump;	// offsets in blockmap are from here // [crispy] BLOCKMAP limit
+extern int32_t *blockmap;		// [crispy] BLOCKMAP limit
+extern int bmapwidth, bmapheight;		// in mapblocks
+extern fixed_t bmaporgx, bmaporgy;		// origin of block map
+extern mobj_t **blocklinks;		// for thing chains
 
 // ***** P_INTER *****
 
@@ -257,7 +257,7 @@ void P_SetMessage(player_t * player, const char *message, boolean ultmsg);
 void P_SetCenterMessage(player_t * player, const char *message); // [crispy] Set centered message
 void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher);
 void P_DamageMobj(mobj_t * target, mobj_t * inflictor, mobj_t * source,
-                  int damage);
+					int damage);
 boolean P_GiveAmmo(player_t * player, ammotype_t ammo, int count);
 boolean P_GiveArtifact(player_t * player, artitype_t arti, mobj_t * mo);
 boolean P_GiveBody(player_t * player, int num);

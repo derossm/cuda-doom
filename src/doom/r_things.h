@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -22,14 +22,14 @@
 
 
 
-#define MAXVISSPRITES  	128
+#define MAXVISSPRITES	128
 
 extern vissprite_t*	vissprites;
 extern vissprite_t*	vissprite_p;
 extern vissprite_t	vsprsortedhead;
 
 // Constant arrays used for psprite clipping
-//  and initializing clipping.
+// and initializing clipping.
 extern int		negonearray[MAXWIDTH]; // [crispy] 32-bit integer math
 extern int		screenheightarray[MAXWIDTH]; // [crispy] 32-bit integer math
 
@@ -58,8 +58,8 @@ void R_DrawMasked (void);
 void
 R_ClipVisSprite
 ( vissprite_t*		vis,
-  int			xl,
-  int			xh );
+ int			xl,
+ int			xh );
 
 
 #endif

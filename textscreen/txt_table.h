@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -51,14 +51,14 @@
 /**
  * Table widget.
  *
- * A table is a widget that contains other widgets.  It may have
+ * A table is a widget that contains other widgets. It may have
  * multiple columns, in which case the child widgets are laid out
- * in a grid.  Columns automatically grow as necessary, although
+ * in a grid. Columns automatically grow as necessary, although
  * minimum column widths can be set using @ref TXT_SetColumnWidths.
  *
- * To create a new table, use @ref TXT_NewTable.  It is also
+ * To create a new table, use @ref TXT_NewTable. It is also
  * possible to use @ref TXT_NewHorizBox to create a table, specifying
- * widgets to place inside a horizontal list.  A vertical list is
+ * widgets to place inside a horizontal list. A vertical list is
  * possible simply by creating a table containing a single column.
  */
 
@@ -68,19 +68,19 @@ typedef struct txt_table_s txt_table_t;
 
 struct txt_table_s
 {
-    txt_widget_t widget;
+	txt_widget_t widget;
 
-    // Widgets in this table
-    // The widget at (x,y) in the table is widgets[columns * y + x]
-    txt_widget_t **widgets;
-    int num_widgets;
+	// Widgets in this table
+	// The widget at (x,y) in the table is widgets[columns * y + x]
+	txt_widget_t **widgets;
+	int num_widgets;
 
-    // Number of columns
-    int columns;
+	// Number of columns
+	int columns;
 
-    // Currently selected:
-    int selected_x;
-    int selected_y;
+	// Currently selected:
+	int selected_x;
+	int selected_y;
 };
 
 extern txt_widget_class_t txt_table_class;
@@ -94,8 +94,8 @@ void TXT_InitTable(txt_table_t *table, int columns);
 /**
  * Create a new table.
  *
- * @param columns       The number of columns in the new table.
- * @return              Pointer to the new table structure.
+ * @param columns		The number of columns in the new table.
+ * @return				Pointer to the new table structure.
  */
 
 txt_table_t *TXT_NewTable(int columns);
@@ -106,8 +106,8 @@ txt_table_t *TXT_NewTable(int columns);
  * The arguments to this function are variable. Each argument must be a
  * pointer to a widget, and the list is terminated with a NULL.
  *
- * @param columns       The number of columns in the new table.
- * @return              Pointer to the new table structure.
+ * @param columns		The number of columns in the new table.
+ * @return				Pointer to the new table structure.
  */
 
 txt_table_t *TXT_MakeTable(int columns, ...);
@@ -116,11 +116,11 @@ txt_table_t *TXT_MakeTable(int columns, ...);
  * Create a table containing the specified widgets packed horizontally,
  * from left to right.
  *
- * The arguments to this function are variable.  Each argument must
+ * The arguments to this function are variable. Each argument must
  * be a pointer to a widget, and the list is terminated with a
  * NULL.
  *
- * @return             Pointer to the new table structure.
+ * @return				Pointer to the new table structure.
  */
 
 txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
@@ -130,8 +130,8 @@ txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
  *
  * This function will recurse through subtables if necessary.
  *
- * @param table        The table.
- * @return             Pointer to the widget that is currently selected.
+ * @param table		The table.
+ * @return				Pointer to the widget that is currently selected.
  */
 
 txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
@@ -149,8 +149,8 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
  * For adding many widgets, it may be easier to use
  * @ref TXT_AddWidgets.
  *
- * @param table        The table.
- * @param widget       The widget to add.
+ * @param table		The table.
+ * @param widget		The widget to add.
  */
 
 void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
@@ -159,11 +159,11 @@ void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  * Add multiple widgets to a table.
  *
  * Widgets are added as described in the documentation for the
- * @ref TXT_AddWidget function.  This function adds multiple
- * widgets.  The number of arguments is variable, and the argument
+ * @ref TXT_AddWidget function. This function adds multiple
+ * widgets. The number of arguments is variable, and the argument
  * list must be terminated by a NULL pointer.
  *
- * @param table        The table.
+ * @param table		The table.
  */
 
 void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...);
@@ -175,11 +175,11 @@ void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...);
  * This function will recursively search through subtables if
  * necessary.
  *
- * @param table       The table.
- * @param widget      The widget to select.
- * @return            Non-zero (true) if it has been selected,
- *                    or zero (false) if it was not found within
- *                    this table.
+ * @param table		The table.
+ * @param widget		The widget to select.
+ * @return			Non-zero (true) if it has been selected,
+ *					or zero (false) if it was not found within
+ *					this table.
  */
 
 int TXT_SelectWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
@@ -194,8 +194,8 @@ int TXT_SelectWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  * This function can be useful for changing the number of columns in
  * a window, which by default are tables containing a single column.
  *
- * @param table         The table.
- * @param new_columns   The new number of columns.
+ * @param table			The table.
+ * @param new_columns	The new number of columns.
  */
 
 void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
@@ -204,7 +204,7 @@ void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
  * Set the widths of the columns of the table.
  *
  * The arguments to this function are variable, and correspond
- * to the number of columns in the table.  For example, if a table
+ * to the number of columns in the table. For example, if a table
  * has five columns, the width of each of the five columns must be
  * specified.
  *
@@ -214,7 +214,7 @@ void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
  * if the columns contain widgets that are wider than the widths
  * specified, they will be larger.
  *
- * @param table     The table.
+ * @param table		The table.
  */
 
 void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...);
@@ -222,7 +222,7 @@ void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...);
 /**
  * Remove all widgets from a table.
  *
- * @param table    The table.
+ * @param table	The table.
  */
 
 void TXT_ClearTable(TXT_UNCAST_ARG(table));
@@ -232,10 +232,10 @@ void TXT_ClearTable(TXT_UNCAST_ARG(table));
  * scrollpane. This acts as per the keyboard events for the arrows, but moves
  * the selection by at least the specified number of characters.
  *
- * @param table    The table.
- * @param pagex    Minimum distance to move the selection horizontally.
- * @param pagey    Minimum distance to move the selection vertically.
- * @return         Non-zero if the selection has been changed.
+ * @param table	The table.
+ * @param pagex	Minimum distance to move the selection horizontally.
+ * @param pagey	Minimum distance to move the selection vertically.
+ * @return			Non-zero if the selection has been changed.
  */
 
 int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey);

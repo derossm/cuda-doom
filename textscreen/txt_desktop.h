@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -36,7 +36,7 @@ int TXT_WindowKeyPress(txt_window_t *window, int c);
 /**
  * Set the title displayed at the top of the screen.
  *
- * @param title         The title to display (UTF-8 format).
+ * @param title			The title to display (UTF-8 format).
  */
 
 void TXT_SetDesktopTitle(const char *title);
@@ -49,8 +49,8 @@ void TXT_SetDesktopTitle(const char *title);
 void TXT_ExitMainLoop(void);
 
 /**
- * Start the main event loop.  At least one window must have been
- * opened prior to running this function.  When no windows are left
+ * Start the main event loop. At least one window must have been
+ * opened prior to running this function. When no windows are left
  * open, the event loop exits.
  *
  * It is possible to trigger an exit from this function using the
@@ -63,7 +63,7 @@ void TXT_GUIMainLoop(void);
  * Get the top window on the desktop that is currently receiving
  * inputs.
  *
- * @return    The active window, or NULL if no windows are present.
+ * @return	The active window, or NULL if no windows are present.
  */
 
 txt_window_t *TXT_GetActiveWindow(void);
@@ -72,24 +72,24 @@ txt_window_t *TXT_GetActiveWindow(void);
  * Set a callback function to be invoked periodically by the main
  * loop code.
  *
- * @param callback      The callback to invoke, or NULL to cancel
- *                      an existing callback.
- * @param user_data     Extra data to pass to the callback.
- * @param period        Maximum time between invoking each callback.
- *                      eg. a value of 200 will cause the callback
- *                      to be invoked at least once every 200ms.
+ * @param callback		The callback to invoke, or NULL to cancel
+ *						an existing callback.
+ * @param user_data		Extra data to pass to the callback.
+ * @param period		Maximum time between invoking each callback.
+ *						eg. a value of 200 will cause the callback
+ *						to be invoked at least once every 200ms.
  */
 
 void TXT_SetPeriodicCallback(TxtIdleCallback callback,
-                             void *user_data,
-                             unsigned int period);
+								void *user_data,
+								unsigned int period);
 
 /**
  * Raise the z-position of the given window relative to other windows.
  *
- * @param window        The window to raise.
- * @return              Non-zero if the window was raised successfully,
- *                      or zero if the window could not be raised further.
+ * @param window		The window to raise.
+ * @return				Non-zero if the window was raised successfully,
+ *						or zero if the window could not be raised further.
  */
 
 int TXT_RaiseWindow(txt_window_t *window);
@@ -97,9 +97,9 @@ int TXT_RaiseWindow(txt_window_t *window);
 /**
  * Lower the z-position of the given window relative to other windows.
  *
- * @param window        The window to make inactive.
- * @return              Non-zero if the window was lowered successfully,
- *                      or zero if the window could not be lowered further.
+ * @param window		The window to make inactive.
+ * @return				Non-zero if the window was lowered successfully,
+ *						or zero if the window could not be lowered further.
  */
 
 int TXT_LowerWindow(txt_window_t *window);

@@ -9,12 +9,12 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//  Refresh module, data I/O, caching, retrieval of graphics
-//  by name.
+// Refresh module, data I/O, caching, retrieval of graphics
+// by name.
 //
 
 
@@ -23,14 +23,14 @@
 
 #include "r_defs.h"
 #include "r_state.h"
-#include "p_spec.h"    // villsa [STRIFE]
+#include "p_spec.h"	// villsa [STRIFE]
 
 
 // Retrieve column data for span blitting.
 byte*
 R_GetColumn
 ( int		tex,
-  int		col );
+ int		col );
 
 
 // I/O, setting up the stuff.

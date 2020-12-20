@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -21,16 +21,16 @@ typedef struct txt_joystick_input_s txt_joystick_input_t;
 #include "txt_window.h"
 
 //
-// A joystick input is like an input box.  When selected, a box pops up
+// A joystick input is like an input box. When selected, a box pops up
 // allowing a joystick button to be pressed to select it.
 //
 
 struct txt_joystick_input_s
 {
-    txt_widget_t widget;
-    int *variable;
-    txt_window_t *prompt_window;
-    int check_conflicts;
+	txt_widget_t widget;
+	int *variable;
+	txt_window_t *prompt_window;
+	int check_conflicts;
 };
 
 txt_joystick_input_t *TXT_NewJoystickInput(int *variable);

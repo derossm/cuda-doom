@@ -8,11 +8,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//     Generate a randomized, private, memorable name for a Player
+//		Generate a randomized, private, memorable name for a Player
 //
 
 #include <stdlib.h>
@@ -21,79 +21,79 @@
 #include "m_misc.h"
 
 static const char * const adjectives [] = {
-    "Grumpy",
-    "Ecstatic",
-    "Surly",
-    "Prepared",
-    "Crafty",
-    "Alert",
-    "Sluggish",
-    "Testy",
-    "Reluctant",
-    "Languid",
-    "Passive",
-    "Pacifist",
-    "Aggressive",
-    "Hostile",
-    "Bubbly",
-    "Giggly",
-    "Laughing",
-    "Crying",
-    "Frowning",
-    "Torpid",
-    "Lethargic",
-    "Manic",
-    "Patient",
-    "Protective",
-    "Philosophical",
-    "Enquiring",
-    "Debating",
-    "Furious",
-    "Laid-Back",
-    "Easy-Going",
-    "Cromulent",
-    "Excitable",
-    "Tired",
-    "Exhausted",
-    "Ruminating",
-    "Redundant",
-    "Sporty",
-    "Ginger",
-    "Scary",
-    "Posh",
-    "Baby",
+	"Grumpy",
+	"Ecstatic",
+	"Surly",
+	"Prepared",
+	"Crafty",
+	"Alert",
+	"Sluggish",
+	"Testy",
+	"Reluctant",
+	"Languid",
+	"Passive",
+	"Pacifist",
+	"Aggressive",
+	"Hostile",
+	"Bubbly",
+	"Giggly",
+	"Laughing",
+	"Crying",
+	"Frowning",
+	"Torpid",
+	"Lethargic",
+	"Manic",
+	"Patient",
+	"Protective",
+	"Philosophical",
+	"Enquiring",
+	"Debating",
+	"Furious",
+	"Laid-Back",
+	"Easy-Going",
+	"Cromulent",
+	"Excitable",
+	"Tired",
+	"Exhausted",
+	"Ruminating",
+	"Redundant",
+	"Sporty",
+	"Ginger",
+	"Scary",
+	"Posh",
+	"Baby",
 };
 
 static const char * const nouns[] = {
-    "Frad",
-    // Doom
-    "Cacodemon",
-    "Arch-Vile",
-    "Cyberdemon",
-    "Imp",
-    "Demon",
-    "Mancubus",
-    "Arachnotron",
-    "Baron",
-    "Knight",
-    "Revenant",
-    // Hexen
-    "Ettin",
-    "Maulotaur",
-    "Centaur",
-    "Afrit",
-    "Serpent",
-    // Heretic
-    "Disciple",
-    "Gargoyle",
-    "Golem",
-    "Lich",
-    // Strife
-    "Sentinel",
-    "Acolyte",
-    "Templar",
-    "Reaver",
-    "Spectre",
+	"Frad",
+	// Doom
+	"Cacodemon",
+	"Arch-Vile",
+	"Cyberdemon",
+	"Imp",
+	"Demon",
+	"Mancubus",
+	"Arachnotron",
+	"Baron",
+	"Knight",
+	"Revenant",
+	// Hexen
+	"Ettin",
+	"Maulotaur",
+	"Centaur",
+	"Afrit",
+	"Serpent",
+	// Heretic
+	"Disciple",
+	"Gargoyle",
+	"Golem",
+	"Lich",
+	// Strife
+	"Sentinel",
+	"Acolyte",
+	"Templar",
+	"Reaver",
+	"Spectre",
 };
 
 /*
@@ -103,16 +103,16 @@ static const char * const nouns[] = {
  */
 static void InitPetName()
 {
-    srand((unsigned int)time(NULL));
+	srand((unsigned int)time(NULL));
 }
 
 char *NET_GetRandomPetName()
 {
-    const char *a, *n;
+	const char *a, *n;
 
-    InitPetName();
-    a = adjectives[rand() % arrlen(adjectives)];
-    n = nouns[rand() % arrlen(nouns)];
+	InitPetName();
+	a = adjectives[rand() % arrlen(adjectives)];
+	n = nouns[rand() % arrlen(nouns)];
 
-    return M_StringJoin(a, " ", n, NULL);
+	return M_StringJoin(a, " ", n, NULL);
 }

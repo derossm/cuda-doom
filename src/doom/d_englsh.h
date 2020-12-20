@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -113,9 +113,9 @@
 #define GOTSHELLBOX	"Picked up a box of shotgun shells."
 #define GOTBACKPACK	"Picked up a backpack full of ammo!"
 
-#define GOTBFG9000	"You got the BFG9000!  Oh, yes."
+#define GOTBFG9000	"You got the BFG9000! Oh, yes."
 #define GOTCHAINGUN	"You got the chaingun!"
-#define GOTCHAINSAW	"A chainsaw!  Find some meat!"
+#define GOTCHAINSAW	"A chainsaw! Find some meat!"
 #define GOTLAUNCHER	"You got the rocket launcher!"
 #define GOTPLASMA	"You got the plasma gun!"
 #define GOTSHOTGUN	"You got the shotgun!"
@@ -418,7 +418,7 @@
 "end this way!\n"\
 "\n" \
 "It stinks like rotten meat, but looks\n"\
-"like the lost Deimos base.  Looks like\n"\
+"like the lost Deimos base. Looks like\n"\
 "you're stuck on The Shores of Hell.\n"\
 "The only way out is through.\n"\
 "\n"\
@@ -440,7 +440,7 @@
 "You've never heard of anyone escaping\n"\
 "from Hell, but you'll make the bastards\n"\
 "sorry they ever heard of you! Quickly,\n"\
-"you rappel down to  the surface of\n"\
+"you rappel down to the surface of\n"\
 "Hell.\n"\
 "\n" \
 "Now, it's on to the final chapter of\n"\
@@ -471,7 +471,7 @@
 "the spider mastermind must have sent forth\n"\
 "its legions of hellspawn before your\n"\
 "final confrontation with that terrible\n"\
-"beast from hell.  but you stepped forward\n"\
+"beast from hell. but you stepped forward\n"\
 "and brought forth eternal damnation and\n"\
 "suffering upon the horde as a true hero\n"\
 "would in the face of something so evil.\n"\
@@ -519,7 +519,7 @@
 #define C2TEXT \
 "YOU HAVE WON! YOUR VICTORY HAS ENABLED\n" \
 "HUMANKIND TO EVACUATE EARTH AND ESCAPE\n"\
-"THE NIGHTMARE.  NOW YOU ARE THE ONLY\n"\
+"THE NIGHTMARE. NOW YOU ARE THE ONLY\n"\
 "HUMAN LEFT ON THE FACE OF THE PLANET.\n"\
 "CANNIBAL MUTATIONS, CARNIVOROUS ALIENS,\n"\
 "AND EVIL SPIRITS ARE YOUR ONLY NEIGHBORS.\n"\
@@ -530,7 +530,7 @@
 "MESSAGE FROM SPACE: \"SENSORS HAVE LOCATED\n"\
 "THE SOURCE OF THE ALIEN INVASION. IF YOU\n"\
 "GO THERE, YOU MAY BE ABLE TO BLOCK THEIR\n"\
-"ENTRY.  THE ALIEN BASE IS IN THE HEART OF\n"\
+"ENTRY. THE ALIEN BASE IS IN THE HEART OF\n"\
 "YOUR OWN HOME CITY, NOT FAR FROM THE\n"\
 "STARPORT.\" SLOWLY AND PAINFULLY YOU GET\n"\
 "UP AND RETURN TO THE FRAY."
@@ -585,18 +585,18 @@
 
 #define C6TEXT \
 "CONGRATULATIONS, YOU'VE FOUND THE\n"\
-"SUPER SECRET LEVEL!  YOU'D BETTER\n"\
+"SUPER SECRET LEVEL! YOU'D BETTER\n"\
 "BLAZE THROUGH THIS ONE!\n"
 
 
 // after map 06	
 
-#define P1TEXT  \
+#define P1TEXT \
 "You gloat over the steaming carcass of the\n"\
-"Guardian.  With its death, you've wrested\n"\
+"Guardian. With its death, you've wrested\n"\
 "the Accelerator from the stinking claws\n"\
-"of Hell.  You relax and glance around the\n"\
-"room.  Damn!  There was supposed to be at\n"\
+"of Hell. You relax and glance around the\n"\
+"room. Damn! There was supposed to be at\n"\
 "least one working prototype, but you can't\n"\
 "see it. The demons must have taken it.\n"\
 "\n"\
@@ -621,10 +621,10 @@
 
 #define P3TEXT \
 "You've bashed and battered your way into\n"\
-"the heart of the devil-hive.  Time for a\n"\
+"the heart of the devil-hive. Time for a\n"\
 "Search-and-Destroy mission, aimed at the\n"\
 "Gatekeeper, whose foul offspring is\n"\
-"cascading to Earth.  Yeah, he's bad. But\n"\
+"cascading to Earth. Yeah, he's bad. But\n"\
 "you know who's worse!\n"\
 "\n"\
 "Grinning evilly, you check your gear, and\n"\
@@ -635,13 +635,13 @@
 
 #define P4TEXT \
 "The Gatekeeper's evil face is splattered\n"\
-"all over the place.  As its tattered corpse\n"\
+"all over the place. As its tattered corpse\n"\
 "collapses, an inverted Gate forms and\n"\
 "sucks down the shards of the last\n"\
 "prototype Accelerator, not to mention the\n"\
-"few remaining demons.  You're done. Hell\n"\
+"few remaining demons. You're done. Hell\n"\
 "has gone back to pounding bad dead folks \n"\
-"instead of good live ones.  Remember to\n"\
+"instead of good live ones. Remember to\n"\
 "tell your grandkids to put a rocket\n"\
 "launcher in your coffin. If you go to Hell\n"\
 "when you die, you'll need it for some\n"\
@@ -652,21 +652,21 @@
 #define P5TEXT \
 "You've found the second-hardest level we\n"\
 "got. Hope you have a saved game a level or\n"\
-"two previous.  If not, be prepared to die\n"\
+"two previous. If not, be prepared to die\n"\
 "aplenty. For master marines only."
 
 // before map 32
 
 #define P6TEXT \
 "Betcha wondered just what WAS the hardest\n"\
-"level we had ready for ya?  Now you know.\n"\
+"level we had ready for ya? Now you know.\n"\
 "No one gets out alive."
 
 
 #define T1TEXT \
 "You've fought your way out of the infested\n"\
-"experimental labs.   It seems that UAC has\n"\
-"once again gulped it down.  With their\n"\
+"experimental labs.	It seems that UAC has\n"\
+"once again gulped it down. With their\n"\
 "high turnover, it must be hard for poor\n"\
 "old UAC to buy corporate health insurance\n"\
 "nowadays..\n"\
@@ -680,7 +680,7 @@
 
 #define T2TEXT \
 "You hear the grinding of heavy machinery\n"\
-"ahead.  You sure hope they're not stamping\n"\
+"ahead. You sure hope they're not stamping\n"\
 "out new hellspawn, but you're ready to\n"\
 "ream out a whole herd if you have to.\n"\
 "They might be planning a blood feast, but\n"\
@@ -718,7 +718,7 @@
 "What now? Looks totally different. Kind\n"\
 "of like King Tut's condo. Well,\n"\
 "whatever's here can't be any worse\n"\
-"than usual. Can it?  Or maybe it's best\n"\
+"than usual. Can it? Or maybe it's best\n"\
 "to let sleeping gods lie.."
 
 

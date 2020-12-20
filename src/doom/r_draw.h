@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -38,21 +38,21 @@ extern byte*		dc_source;
 
 // The span blitting interface.
 // Hook in assembler or system specific BLT
-//  here.
-void 	R_DrawColumn (void);
-void 	R_DrawColumnLow (void);
+// here.
+void	R_DrawColumn (void);
+void	R_DrawColumnLow (void);
 
 // The Spectre/Invisibility effect.
-void 	R_DrawFuzzColumn (void);
-void 	R_DrawFuzzColumnLow (void);
+void	R_DrawFuzzColumn (void);
+void	R_DrawFuzzColumnLow (void);
 
 // [crispy] draw fuzz effect independent of rendering frame rate
 void R_SetFuzzPosTic (void);
 void R_SetFuzzPosDraw (void);
 
 // Draw with color translation tables,
-//  for player sprite rendering,
-//  Green/Red/Blue/Indigo shirts.
+// for player sprite rendering,
+// Green/Red/Blue/Indigo shirts.
 void	R_DrawTranslatedColumn (void);
 void	R_DrawTranslatedColumnLow (void);
 
@@ -62,7 +62,7 @@ void	R_DrawTLColumnLow (void);
 void
 R_VideoErase
 ( unsigned	ofs,
-  int		count );
+ int		count );
 
 extern int		ds_y;
 extern int		ds_x1;
@@ -85,20 +85,20 @@ extern byte*		dc_translation;
 
 // Span blitting for rows, floor/ceiling.
 // No Sepctre effect needed.
-void 	R_DrawSpan (void);
+void	R_DrawSpan (void);
 
 // Low resolution mode, 160x200?
-void 	R_DrawSpanLow (void);
+void	R_DrawSpanLow (void);
 
 
 void
 R_InitBuffer
 ( int		width,
-  int		height );
+ int		height );
 
 
 // Initialize color translation tables,
-//  for player rendering etc.
+// for player rendering etc.
 void	R_InitTranslationTables (void);
 
 

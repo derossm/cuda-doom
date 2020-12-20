@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 //
@@ -29,81 +29,81 @@ static boolean bex_nested = false;
 
 static void *DEH_BEXInclStart(deh_context_t *context, char *line)
 {
-    char *deh_file, *inc_file, *try_path;
-    extern boolean bex_notext;
+	char *deh_file, *inc_file, *try_path;
+	extern boolean bex_notext;
 
-    if (!DEH_FileName(context))
-    {
+	if (!DEH_FileName(context))
+	{
 	DEH_Warning(context, "DEHACKED lumps may not include files");
 	return NULL;
-    }
+	}
 
-    deh_file = DEH_FileName(context);
+	deh_file = DEH_FileName(context);
 
-    if (bex_nested)
-    {
+	if (bex_nested)
+	{
 	DEH_Warning(context, "Included files may not include other files");
 	return NULL;
-    }
+	}
 
-    inc_file = malloc(strlen(line) + 1);
+	inc_file = malloc(strlen(line) + 1);
 
-    if (sscanf(line, "INCLUDE NOTEXT %32s", inc_file) == 1)
-    {
+	if (sscanf(line, "INCLUDE NOTEXT %32s", inc_file) == 1)
+	{
 	bex_notext = true;
-    }
-    else
-    if (sscanf(line, "INCLUDE %32s", inc_file) == 1)
-    {
+	}
+	else
+	if (sscanf(line, "INCLUDE %32s", inc_file) == 1)
+	{
 	// well, fine
-    }
-    else
-    {
+	}
+	else
+	{
 	DEH_Warning(context, "Parse error on section start");
 	free(inc_file);
 	return NULL;
-    }
+	}
 
-    // first, try loading the file right away
-    try_path = inc_file;
+	// first, try loading the file right away
+	try_path = inc_file;
 
-    if (!M_FileExists(try_path))
-    {
+	if (!M_FileExists(try_path))
+	{
 	// second, try loading the file in the directory of the current file
 	char *dir;
 	dir = M_DirName(deh_file);
 	try_path = M_StringJoin(dir, DIR_SEPARATOR_S, inc_file, NULL);
 	free(dir);
-    }
+	}
 
-    bex_nested = true;
+	bex_nested = true;
 
-    if (!M_FileExists(try_path) || !DEH_LoadFile(try_path))
-    {
+	if (!M_FileExists(try_path) || !DEH_LoadFile(try_path))
+	{
 	DEH_Warning(context, "Could not include \"%s\"", inc_file);
-    }
+	}
 
-    bex_nested = false;
-    bex_notext = false;
+	bex_nested = false;
+	bex_notext = false;
 
-    if (try_path != inc_file)
+	if (try_path != inc_file)
 	free(try_path);
-    free(inc_file);
+	free(inc_file);
 
-    return NULL;
+	return NULL;
 }
 
 static void DEH_BEXInclParseLine(deh_context_t *context, char *line, void *tag)
 {
-    // not used
+	// not used
 }
 
 deh_section_t deh_section_bexincl =
 {
-    "INCLUDE",
-    NULL,
-    DEH_BEXInclStart,
-    DEH_BEXInclParseLine,
-    NULL,
-    NULL,
+	"INCLUDE",
+	NULL,
+	DEH_BEXInclStart,
+	DEH_BEXInclParseLine,
+	NULL,
+	NULL,
 };

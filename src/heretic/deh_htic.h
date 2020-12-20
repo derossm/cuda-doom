@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 //
@@ -20,15 +20,15 @@
 
 #include "info.h"
 
-// HHE executable version.  Loading HHE patches is (unfortunately)
+// HHE executable version. Loading HHE patches is (unfortunately)
 // dependent on the version of the Heretic executable used to make them.
 
 typedef enum
 {
-    deh_hhe_1_0,
-    deh_hhe_1_2,
-    deh_hhe_1_3,
-    deh_hhe_num_versions
+	deh_hhe_1_0,
+	deh_hhe_1_2,
+	deh_hhe_1_3,
+	deh_hhe_num_versions
 } deh_hhe_version_t;
 
 // HHE doesn't know about the last two states in the state table, so

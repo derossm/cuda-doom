@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 //
@@ -32,7 +32,7 @@
 
 // QuitDOOM messages
 // 8 per each game type
-#define NUM_QUITMESSAGES   8
+#define NUM_QUITMESSAGES	8
 
 extern char *doom1_endmsg[];
 extern char *doom2_endmsg[];

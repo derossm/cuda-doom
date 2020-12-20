@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -25,7 +25,7 @@
  * Horizontal separator.
  *
  * A horizontal separator appears as a horizontal line divider across
- * the length of the window in which it is added.  An optional label
+ * the length of the window in which it is added. An optional label
  * allows the separator to be used as a section divider for grouping
  * related controls.
  */
@@ -36,8 +36,8 @@ typedef struct txt_separator_s txt_separator_t;
 
 struct txt_separator_s
 {
-    txt_widget_t widget;
-    char *label;
+	txt_widget_t widget;
+	char *label;
 };
 
 extern txt_widget_class_t txt_separator_class;
@@ -45,9 +45,9 @@ extern txt_widget_class_t txt_separator_class;
 /**
  * Create a new horizontal separator widget.
  *
- * @param label         Label to display on the separator (UTF-8 format).
- *                      If this is set to NULL, no label is displayed.
- * @return              The new separator widget.
+ * @param label			Label to display on the separator (UTF-8 format).
+ *						If this is set to NULL, no label is displayed.
+ * @return				The new separator widget.
  */
 
 txt_separator_t *TXT_NewSeparator(const char *label);
@@ -55,8 +55,8 @@ txt_separator_t *TXT_NewSeparator(const char *label);
 /**
  * Change the label on a separator.
  *
- * @param separator     The separator.
- * @param label         The new label (UTF-8 format).
+ * @param separator		The separator.
+ * @param label			The new label (UTF-8 format).
  */
 
 void TXT_SetSeparatorLabel(txt_separator_t *separator, const char *label);

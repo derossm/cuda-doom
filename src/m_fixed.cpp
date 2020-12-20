@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -33,9 +33,9 @@
 fixed_t
 FixedMul
 ( fixed_t	a,
-  fixed_t	b )
+ fixed_t	b )
 {
-    return ((int64_t) a * (int64_t) b) >> FRACBITS;
+	return ((int64_t) a * (int64_t) b) >> FRACBITS;
 }
 
 
@@ -46,17 +46,17 @@ FixedMul
 
 fixed_t FixedDiv(fixed_t a, fixed_t b)
 {
-    if ((abs(a) >> 14) >= abs(b))
-    {
+	if ((abs(a) >> 14) >= abs(b))
+	{
 	return (a^b) < 0 ? INT_MIN : INT_MAX;
-    }
-    else
-    {
+	}
+	else
+	{
 	int64_t result;
 
 	result = ((int64_t) a << FRACBITS) / b;
 
 	return (fixed_t) result;
-    }
+	}
 }
 

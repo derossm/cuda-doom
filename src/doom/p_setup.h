@@ -9,11 +9,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//   Setup a game, startup stuff.
+//	Setup a game, startup stuff.
 //
 
 
@@ -31,9 +31,9 @@ extern lumpinfo_t *savemaplumpinfo;
 void
 P_SetupLevel
 ( int		episode,
-  int		map,
-  int		playermask,
-  skill_t	skill);
+ int		map,
+ int		playermask,
+ skill_t	skill);
 
 // Called by startup code.
 void P_Init (void);

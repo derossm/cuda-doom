@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -39,44 +39,44 @@ void D_DoomMain (void);
 
 int main(int argc, char **argv)
 {
-    // save arguments
+	// save arguments
 
-    myargc = argc;
-    myargv = argv;
+	myargc = argc;
+	myargv = argv;
 
-    //!
-    // Print the program version and exit.
-    //
-    if (M_ParmExists("-version") || M_ParmExists("--version")) {
-        puts(PACKAGE_STRING);
-        exit(0);
-    }
+	//!
+	// Print the program version and exit.
+	//
+	if (M_ParmExists("-version") || M_ParmExists("--version")) {
+		puts(PACKAGE_STRING);
+		exit(0);
+	}
 
-    {
-        char buf[16];
-        SDL_version version;
-        SDL_GetVersion(&version);
-        M_snprintf(buf, sizeof(buf), "%d.%d.%d", version.major, version.minor, version.patch);
-        crispy->sdlversion = M_StringDuplicate(buf);
-        crispy->platform = SDL_GetPlatform();
-    }
+	{
+		char buf[16];
+		SDL_version version;
+		SDL_GetVersion(&version);
+		M_snprintf(buf, sizeof(buf), "%d.%d.%d", version.major, version.minor, version.patch);
+		crispy->sdlversion = M_StringDuplicate(buf);
+		crispy->platform = SDL_GetPlatform();
+	}
 
 #if defined(_WIN32)
-    // compose a proper command line from loose file paths passed as arguments
-    // to allow for loading WADs and DEHACKED patches by drag-and-drop
-    M_AddLooseFiles();
+	// compose a proper command line from loose file paths passed as arguments
+	// to allow for loading WADs and DEHACKED patches by drag-and-drop
+	M_AddLooseFiles();
 #endif
 
-    M_FindResponseFile();
+	M_FindResponseFile();
 
-    #ifdef SDL_HINT_NO_SIGNAL_HANDLERS
-    SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
-    #endif
+	#ifdef SDL_HINT_NO_SIGNAL_HANDLERS
+	SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
+	#endif
 
-    // start doom
+	// start doom
 
-    D_DoomMain ();
+	D_DoomMain ();
 
-    return 0;
+	return 0;
 }
 

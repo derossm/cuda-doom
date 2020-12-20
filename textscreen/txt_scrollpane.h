@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -25,7 +25,7 @@
  * Scrollable pane widget.
  *
  * A scrollable pane widget is a widget that contains another widget
- * that is larger than it.  Scroll bars appear on the side to allow
+ * that is larger than it. Scroll bars appear on the side to allow
  * different areas of the contained widget to be seen.
  */
 
@@ -35,21 +35,21 @@ typedef struct txt_scrollpane_s txt_scrollpane_t;
 
 struct txt_scrollpane_s
 {
-    txt_widget_t widget;
-    int w, h;
-    int x, y;
-    int expand_w, expand_h;
-    txt_widget_t *child;
+	txt_widget_t widget;
+	int w, h;
+	int x, y;
+	int expand_w, expand_h;
+	txt_widget_t *child;
 };
 
 /**
  * Create a new scroll pane widget.
  *
- * @param w               Width of the scroll pane, in characters.
- * @param h               Height of the scroll pane, in lines.
- * @param target          The target widget that the scroll pane will
- *                        contain.
- * @return                Pointer to the new scroll pane widget.
+ * @param w				Width of the scroll pane, in characters.
+ * @param h				Height of the scroll pane, in lines.
+ * @param target			The target widget that the scroll pane will
+ *						contain.
+ * @return				Pointer to the new scroll pane widget.
  */
 
 txt_scrollpane_t *TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target));

@@ -8,11 +8,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//    PC speaker interface.
+//	PC speaker interface.
 //
 
 #ifndef PCSOUND_H
@@ -20,7 +20,7 @@
 
 typedef void (*pcsound_callback_func)(int *duration, int *frequency);
 
-// Initialise the PC speaker subsystem.  The given function is called
+// Initialise the PC speaker subsystem. The given function is called
 // periodically to request more sound data to play.
 
 int PCSound_Init(pcsound_callback_func callback_func);

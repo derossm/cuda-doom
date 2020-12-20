@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -61,38 +61,38 @@ void ST_Init (void);
 // States for status bar code.
 typedef enum
 {
-    AutomapState,
-    FirstPersonState
-    
+	AutomapState,
+	FirstPersonState
+	
 } st_stateenum_t;
 
 
 // States for the chat code.
 typedef enum
 {
-    StartChatState,
-    WaitDestState,
-    GetChatState
-    
+	StartChatState,
+	WaitDestState,
+	GetChatState
+	
 } st_chatstateenum_t;
 
 
 
 extern byte *st_backing_screen;
 
-extern cheatseq_t cheat_mus;     // [STRIFE]: idmus -> spin
-extern cheatseq_t cheat_god;     // [STRIFE]: iddqd -> omnipotent
-extern cheatseq_t cheat_ammo;    // [STRIFE]: idfa -> boomstix
-extern cheatseq_t cheat_noclip;  // [STRIFE]: idclip -> elvis
-extern cheatseq_t cheat_clev;    // [STRIFE]: idclev -> rift
-extern cheatseq_t cheat_mypos;   // [STRIFE]: idmypos -> gps
-extern cheatseq_t cheat_scoot;   // [STRIFE]: new cheat scoot
-extern cheatseq_t cheat_nuke;    // [STRIFE]: new cheat stonecold
-extern cheatseq_t cheat_keys;    // [STRIFE]: new cheat jimmy (all keys)
+extern cheatseq_t cheat_mus;		// [STRIFE]: idmus -> spin
+extern cheatseq_t cheat_god;		// [STRIFE]: iddqd -> omnipotent
+extern cheatseq_t cheat_ammo;	// [STRIFE]: idfa -> boomstix
+extern cheatseq_t cheat_noclip; // [STRIFE]: idclip -> elvis
+extern cheatseq_t cheat_clev;	// [STRIFE]: idclev -> rift
+extern cheatseq_t cheat_mypos;	// [STRIFE]: idmypos -> gps
+extern cheatseq_t cheat_scoot;	// [STRIFE]: new cheat scoot
+extern cheatseq_t cheat_nuke;	// [STRIFE]: new cheat stonecold
+extern cheatseq_t cheat_keys;	// [STRIFE]: new cheat jimmy (all keys)
 extern cheatseq_t cheat_stealth; // [STRIFE]: new cheat gripper
-extern cheatseq_t cheat_midas;   // [STRIFE]: new cheat
-extern cheatseq_t cheat_lego;    // [STRIFE]: new cheat
-extern cheatseq_t cheat_dev;     // [STRIFE]: new cheat
+extern cheatseq_t cheat_midas;	// [STRIFE]: new cheat
+extern cheatseq_t cheat_lego;	// [STRIFE]: new cheat
+extern cheatseq_t cheat_dev;		// [STRIFE]: new cheat
 
 extern cheatseq_t cheat_powerup[];
 

@@ -9,10 +9,10 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
-// DESCRIPTION:  Ceiling aninmation (lowering, crushing, raising)
+// DESCRIPTION: Ceiling aninmation (lowering, crushing, raising)
 //
 
 
@@ -44,112 +44,112 @@ ceiling_t*	activeceilings[MAXCEILINGS];
 
 void T_MoveCeiling (ceiling_t* ceiling)
 {
-    result_e	res;
+	result_e	res;
 	
-    switch(ceiling->direction)
-    {
-      case 0:
+	switch(ceiling->direction)
+	{
+		case 0:
 	// IN STASIS
 	break;
-      case 1:
+		case 1:
 	// UP
 	res = T_MovePlane(ceiling->sector,
-			  ceiling->speed,
-			  ceiling->topheight,
-			  false,1,ceiling->direction);
+				ceiling->speed,
+				ceiling->topheight,
+				false,1,ceiling->direction);
 	
 	if (!(leveltime&7))
 	{
-	    switch(ceiling->type)
-	    {
-	      case silentCrushAndRaise:
+		switch(ceiling->type)
+		{
+			case silentCrushAndRaise:
 		break;
-	      default:
+			default:
 		S_StartSound(&ceiling->sector->soundorg, sfx_stnmov);
 		// ?
 		break;
-	    }
+		}
 	}
 	
 	if (res == pastdest)
 	{
-	    switch(ceiling->type)
-	    {
-	      case raiseToHighest:
+		switch(ceiling->type)
+		{
+			case raiseToHighest:
 		P_RemoveActiveCeiling(ceiling);
 		break;
 		
-	      case silentCrushAndRaise:
+			case silentCrushAndRaise:
 		S_StartSound(&ceiling->sector->soundorg, sfx_pstop);
-	      case fastCrushAndRaise:
-	      case crushAndRaise:
+			case fastCrushAndRaise:
+			case crushAndRaise:
 		ceiling->direction = -1;
 		break;
 		
-	      default:
+			default:
 		break;
-	    }
-	    
+		}
+		
 	}
 	break;
 	
-      case -1:
+		case -1:
 	// DOWN
 	res = T_MovePlane(ceiling->sector,
-			  ceiling->speed,
-			  ceiling->bottomheight,
-			  ceiling->crush,1,ceiling->direction);
+				ceiling->speed,
+				ceiling->bottomheight,
+				ceiling->crush,1,ceiling->direction);
 	
 	if (!(leveltime&7))
 	{
-	    switch(ceiling->type)
-	    {
-	      case silentCrushAndRaise: break;
-	      default:
+		switch(ceiling->type)
+		{
+			case silentCrushAndRaise: break;
+			default:
 		S_StartSound(&ceiling->sector->soundorg, sfx_stnmov);
-	    }
+		}
 	}
 	
 	if (res == pastdest)
 	{
-	    switch(ceiling->type)
-	    {
-	      case silentCrushAndRaise:
+		switch(ceiling->type)
+		{
+			case silentCrushAndRaise:
 		S_StartSound(&ceiling->sector->soundorg, sfx_pstop);
-	      case crushAndRaise:
+			case crushAndRaise:
 		ceiling->speed = CEILSPEED;
-	      case fastCrushAndRaise:
+			case fastCrushAndRaise:
 		ceiling->direction = 1;
 		break;
 
-	      case lowerAndCrush:
-	      case lowerToFloor:
+			case lowerAndCrush:
+			case lowerToFloor:
 		P_RemoveActiveCeiling(ceiling);
 		break;
 
-	      default:
+			default:
 		break;
-	    }
+		}
 	}
 	else // ( res != pastdest )
 	{
-	    if (res == crushed)
-	    {
+		if (res == crushed)
+		{
 		switch(ceiling->type)
 		{
-		  case silentCrushAndRaise:
-		  case crushAndRaise:
-		  case lowerAndCrush:
-		    ceiling->speed = CEILSPEED / 8;
-		    break;
+			case silentCrushAndRaise:
+			case crushAndRaise:
+			case lowerAndCrush:
+			ceiling->speed = CEILSPEED / 8;
+			break;
 
-		  default:
-		    break;
+			default:
+			break;
 		}
-	    }
+		}
 	}
 	break;
-    }
+	}
 }
 
 
@@ -160,96 +160,96 @@ void T_MoveCeiling (ceiling_t* ceiling)
 // haleyjd 10/04/10: [STRIFE] Changes:
 // * Fast crushers were made 2x as fast.
 // * lowerAndCrush was apparently "fixed" to actually crush, and was also
-//   altered to lower all the way to the floor rather than remain 8 above.
+//	altered to lower all the way to the floor rather than remain 8 above.
 // * silentCrushAndRaise and crushAndRaise no longer crush.
 int
 EV_DoCeiling
-( line_t*       line,
-  ceiling_e     type )
+( line_t*		line,
+ ceiling_e		type )
 {
-    int         secnum;
-    int         rtn;
-    sector_t*   sec;
-    ceiling_t*  ceiling;
+	int			secnum;
+	int			rtn;
+	sector_t*	sec;
+	ceiling_t* ceiling;
 
-    secnum = -1;
-    rtn = 0;
+	secnum = -1;
+	rtn = 0;
 
-    //	Reactivate in-stasis ceilings...for certain types.
-    switch(type)
-    {
-    case fastCrushAndRaise:
-    case silentCrushAndRaise:
-    case crushAndRaise:
-        P_ActivateInStasisCeiling(line);
-    default:
-        break;
-    }
+	//	Reactivate in-stasis ceilings...for certain types.
+	switch(type)
+	{
+	case fastCrushAndRaise:
+	case silentCrushAndRaise:
+	case crushAndRaise:
+		P_ActivateInStasisCeiling(line);
+	default:
+		break;
+	}
 
-    while ((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
-    {
-        sec = &sectors[secnum];
-        if (sec->specialdata)
-            continue;
+	while ((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
+	{
+		sec = &sectors[secnum];
+		if (sec->specialdata)
+			continue;
 
-        // new door thinker
-        rtn = 1;
-        ceiling = Z_Malloc (sizeof(*ceiling), PU_LEVSPEC, 0);
-        P_AddThinker (&ceiling->thinker);
-        sec->specialdata = ceiling;
-        ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;
-        ceiling->sector = sec;
-        ceiling->crush = false;
+		// new door thinker
+		rtn = 1;
+		ceiling = Z_Malloc (sizeof(*ceiling), PU_LEVSPEC, 0);
+		P_AddThinker (&ceiling->thinker);
+		sec->specialdata = ceiling;
+		ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;
+		ceiling->sector = sec;
+		ceiling->crush = false;
 
-        switch(type)
-        {
-        case fastCrushAndRaise:
-            // [STRIFE]: Speed of fast crushers increased by 2x!
-            ceiling->crush = true;
-            ceiling->topheight = sec->ceilingheight;
-            ceiling->bottomheight = sec->floorheight + (8*FRACUNIT);
-            ceiling->direction = -1;
-            ceiling->speed = CEILSPEED * 4; // [STRIFE] Was CEILSPEED * 2
-            break;
-        
-        case lowerAndCrush:
-            // [STRIFE] lowerAndCrush doesn't seem to have crushed in DOOM,
-            // but it was certainly made to do so in Strife! It is also
-            // changed to lower all the way to the floor.
-            ceiling->crush = 1;
-            ceiling->direction = -1;
-            ceiling->speed = CEILSPEED;
-            ceiling->bottomheight = sec->floorheight;
-            break;
+		switch(type)
+		{
+		case fastCrushAndRaise:
+			// [STRIFE]: Speed of fast crushers increased by 2x!
+			ceiling->crush = true;
+			ceiling->topheight = sec->ceilingheight;
+			ceiling->bottomheight = sec->floorheight + (8*FRACUNIT);
+			ceiling->direction = -1;
+			ceiling->speed = CEILSPEED * 4; // [STRIFE] Was CEILSPEED * 2
+			break;
+		
+		case lowerAndCrush:
+			// [STRIFE] lowerAndCrush doesn't seem to have crushed in DOOM,
+			// but it was certainly made to do so in Strife! It is also
+			// changed to lower all the way to the floor.
+			ceiling->crush = 1;
+			ceiling->direction = -1;
+			ceiling->speed = CEILSPEED;
+			ceiling->bottomheight = sec->floorheight;
+			break;
 
-        case silentCrushAndRaise:
-        case crushAndRaise:
-            // [STRIFE] haleyjd 20130209: Turns out these types do NOT crush
-            // in Strife... yeah, that makes a lot of sense. Thanks to Gez for
-            // having detected this difference.
-            //ceiling->crush = true;
-            ceiling->topheight = sec->ceilingheight;
+		case silentCrushAndRaise:
+		case crushAndRaise:
+			// [STRIFE] haleyjd 20130209: Turns out these types do NOT crush
+			// in Strife... yeah, that makes a lot of sense. Thanks to Gez for
+			// having detected this difference.
+			//ceiling->crush = true;
+			ceiling->topheight = sec->ceilingheight;
 
-        case lowerToFloor:
-            ceiling->bottomheight = sec->floorheight;
-            if (type != lowerToFloor)
-                ceiling->bottomheight += 8*FRACUNIT;
-            ceiling->direction = -1;
-            ceiling->speed = CEILSPEED;
-            break;
+		case lowerToFloor:
+			ceiling->bottomheight = sec->floorheight;
+			if (type != lowerToFloor)
+				ceiling->bottomheight += 8*FRACUNIT;
+			ceiling->direction = -1;
+			ceiling->speed = CEILSPEED;
+			break;
 
-        case raiseToHighest:
-            ceiling->topheight = P_FindHighestCeilingSurrounding(sec);
-            ceiling->direction = 1;
-            ceiling->speed = CEILSPEED;
-            break;
-        }
+		case raiseToHighest:
+			ceiling->topheight = P_FindHighestCeilingSurrounding(sec);
+			ceiling->direction = 1;
+			ceiling->speed = CEILSPEED;
+			break;
+		}
 
-        ceiling->tag = sec->tag;
-        ceiling->type = type;
-        P_AddActiveCeiling(ceiling);
-    }
-    return rtn;
+		ceiling->tag = sec->tag;
+		ceiling->type = type;
+		P_AddActiveCeiling(ceiling);
+	}
+	return rtn;
 }
 
 
@@ -258,16 +258,16 @@ EV_DoCeiling
 //
 void P_AddActiveCeiling(ceiling_t* c)
 {
-    int		i;
-    
-    for (i = 0; i < MAXCEILINGS;i++)
-    {
+	int		i;
+	
+	for (i = 0; i < MAXCEILINGS;i++)
+	{
 	if (activeceilings[i] == NULL)
 	{
-	    activeceilings[i] = c;
-	    return;
+		activeceilings[i] = c;
+		return;
 	}
-    }
+	}
 }
 
 
@@ -277,18 +277,18 @@ void P_AddActiveCeiling(ceiling_t* c)
 //
 void P_RemoveActiveCeiling(ceiling_t* c)
 {
-    int		i;
+	int		i;
 	
-    for (i = 0;i < MAXCEILINGS;i++)
-    {
+	for (i = 0;i < MAXCEILINGS;i++)
+	{
 	if (activeceilings[i] == c)
 	{
-	    activeceilings[i]->sector->specialdata = NULL;
-	    P_RemoveThinker (&activeceilings[i]->thinker);
-	    activeceilings[i] = NULL;
-	    break;
+		activeceilings[i]->sector->specialdata = NULL;
+		P_RemoveThinker (&activeceilings[i]->thinker);
+		activeceilings[i] = NULL;
+		break;
 	}
-    }
+	}
 }
 
 
@@ -298,19 +298,19 @@ void P_RemoveActiveCeiling(ceiling_t* c)
 //
 void P_ActivateInStasisCeiling(line_t* line)
 {
-    int		i;
+	int		i;
 	
-    for (i = 0;i < MAXCEILINGS;i++)
-    {
-	if (activeceilings[i]
-	    && (activeceilings[i]->tag == line->tag)
-	    && (activeceilings[i]->direction == 0))
+	for (i = 0;i < MAXCEILINGS;i++)
 	{
-	    activeceilings[i]->direction = activeceilings[i]->olddirection;
-	    activeceilings[i]->thinker.function.acp1
-	      = (actionf_p1)T_MoveCeiling;
+	if (activeceilings[i]
+		&& (activeceilings[i]->tag == line->tag)
+		&& (activeceilings[i]->direction == 0))
+	{
+		activeceilings[i]->direction = activeceilings[i]->olddirection;
+		activeceilings[i]->thinker.function.acp1
+			= (actionf_p1)T_MoveCeiling;
 	}
-    }
+	}
 }
 
 
@@ -321,23 +321,23 @@ void P_ActivateInStasisCeiling(line_t* line)
 //
 int	EV_CeilingCrushStop(line_t	*line)
 {
-    int		i;
-    int		rtn;
+	int		i;
+	int		rtn;
 	
-    rtn = 0;
-    for (i = 0;i < MAXCEILINGS;i++)
-    {
-	if (activeceilings[i]
-	    && (activeceilings[i]->tag == line->tag)
-	    && (activeceilings[i]->direction != 0))
+	rtn = 0;
+	for (i = 0;i < MAXCEILINGS;i++)
 	{
-	    activeceilings[i]->olddirection = activeceilings[i]->direction;
-	    activeceilings[i]->thinker.function.acv = (actionf_v)NULL;
-	    activeceilings[i]->direction = 0;		// in-stasis
-	    rtn = 1;
+	if (activeceilings[i]
+		&& (activeceilings[i]->tag == line->tag)
+		&& (activeceilings[i]->direction != 0))
+	{
+		activeceilings[i]->olddirection = activeceilings[i]->direction;
+		activeceilings[i]->thinker.function.acv = (actionf_v)NULL;
+		activeceilings[i]->direction = 0;		// in-stasis
+		rtn = 1;
 	}
-    }
-    
+	}
+	
 
-    return rtn;
+	return rtn;
 }

@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -21,43 +21,43 @@
 #define __F_WIPE_H__
 
 //
-//                       SCREEN WIPE PACKAGE
+//						SCREEN WIPE PACKAGE
 //
 
 enum
 {
-    // [STRIFE]: ColorXForm reimplemented as a proper crossfade
-    wipe_ColorXForm,
-    
-    // weird screen melt
-    wipe_Melt,	
+	// [STRIFE]: ColorXForm reimplemented as a proper crossfade
+	wipe_ColorXForm,
+	
+	// weird screen melt
+	wipe_Melt,	
 
-    wipe_NUMWIPES
+	wipe_NUMWIPES
 };
 
 int
 wipe_StartScreen
 ( int		x,
-  int		y,
-  int		width,
-  int		height );
+ int		y,
+ int		width,
+ int		height );
 
 
 int
 wipe_EndScreen
 ( int		x,
-  int		y,
-  int		width,
-  int		height );
+ int		y,
+ int		width,
+ int		height );
 
 
 int
 wipe_ScreenWipe
 ( int		wipeno,
-  int		x,
-  int		y,
-  int		width,
-  int		height,
-  int		ticks );
+ int		x,
+ int		y,
+ int		width,
+ int		height,
+ int		ticks );
 
 #endif

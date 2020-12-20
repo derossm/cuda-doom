@@ -10,7 +10,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -31,26 +31,26 @@
 
 typedef struct
 {
-    signed char	forwardmove;	// *2048 for move
-    signed char	sidemove;	// *2048 for move
-    short angleturn;            // <<16 for angle delta
-    byte chatchar;
-    byte buttons;
-    // villsa [STRIFE] according to the asm,
-    // consistancy is a short, not a byte
-    byte consistancy;           // checks for net game
+	signed char	forwardmove;	// *2048 for move
+	signed char	sidemove;	// *2048 for move
+	short angleturn;			// <<16 for angle delta
+	byte chatchar;
+	byte buttons;
+	// villsa [STRIFE] according to the asm,
+	// consistancy is a short, not a byte
+	byte consistancy;			// checks for net game
 
-    // villsa - Strife specific:
+	// villsa - Strife specific:
 
-    byte buttons2;
-    int inventory;
-   
-    // Heretic/Hexen specific:
+	byte buttons2;
+	int inventory;
+	
+	// Heretic/Hexen specific:
 
-    byte lookfly;               // look/fly up/down/centering
-    byte arti;                  // artitype_t to use
+	byte lookfly;				// look/fly up/down/centering
+	byte arti;					// artitype_t to use
 
-    int lookdir;
+	int lookdir;
 } ticcmd_t;
 
 

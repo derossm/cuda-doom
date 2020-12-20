@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -21,12 +21,12 @@
 
 @interface LauncherManager : NSObject
 {
-    IWADController *iwadController;
+	IWADController *iwadController;
 
-    id launcherWindow;
-    id launchButton;
+	id launcherWindow;
+	id launchButton;
 
-    id commandLineArguments;
+	id commandLineArguments;
 }
 
 - (void) launch: (id)sender;
@@ -35,7 +35,7 @@
 - (void) clearCommandLine;
 - (BOOL) addIWADPath: (NSString *) path;
 - (void) addFileToCommandLine: (NSString *) fileName
-         forArgument: (NSString *) args;
+			forArgument: (NSString *) args;
 - (BOOL) selectGameByName: (const char *) name;
 - (void) openTerminal: (id) sender;
 

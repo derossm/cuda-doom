@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 //
@@ -23,7 +23,7 @@
 #include "sha1.h"
 
 // These are the limits that dehacked uses (from dheinit.h in the dehacked
-// source).  If these limits are exceeded, it does not generate an error, but
+// source). If these limits are exceeded, it does not generate an error, but
 // a warning is displayed.
 
 #define DEH_VANILLA_NUMSTATES 966

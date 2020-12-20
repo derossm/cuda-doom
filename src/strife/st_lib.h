@@ -9,11 +9,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-// 	The status bar widget code.
+//	The status bar widget code.
 //
 
 #ifndef __STLIB__
@@ -31,43 +31,43 @@
 
 typedef struct
 {
-    // upper right-hand corner
-    //  of the number (right-justified)
-    int         x;
-    int         y;
+	// upper right-hand corner
+	// of the number (right-justified)
+	int			x;
+	int			y;
 
-    // max # of digits in number
-    int width;
+	// max # of digits in number
+	int width;
 
-    // haleyjd 09/01/10: [STRIFE] Removed "oldnum" member
-    //int         oldnum;
-    
-    // pointer to current value
-    int*        num;
+	// haleyjd 09/01/10: [STRIFE] Removed "oldnum" member
+	//int			oldnum;
+	
+	// pointer to current value
+	int*		num;
 
-    // haleyjd 09/01/10: [STRIFE] Removed "on" member
-    // boolean*    on;
+	// haleyjd 09/01/10: [STRIFE] Removed "on" member
+	// boolean*	on;
 
-    // list of patches for 0-9
-    patch_t**   p;
+	// list of patches for 0-9
+	patch_t**	p;
 
-    // user data
-    int data;
-    
+	// user data
+	int data;
+	
 } st_number_t;
 
 
 
 // Percent widget ("child" of number widget,
-//  or, more precisely, contains a number widget.)
+// or, more precisely, contains a number widget.)
 typedef struct
 {
-    // number information
-    st_number_t		n;
+	// number information
+	st_number_t		n;
 
-    // percent sign graphic
-    patch_t*		p;
-    
+	// percent sign graphic
+	patch_t*		p;
+	
 } st_percent_t;
 
 
@@ -75,26 +75,26 @@ typedef struct
 // Multiple Icon widget
 typedef struct
 {
-     // center-justified location of icons
-    int			x;
-    int			y;
+		// center-justified location of icons
+	int			x;
+	int			y;
 
-    // last icon number
-    int			oldinum;
+	// last icon number
+	int			oldinum;
 
-    // pointer to current icon
-    int*		inum;
+	// pointer to current icon
+	int*		inum;
 
-    // pointer to boolean stating
-    //  whether to update icon
-    boolean*		on;
+	// pointer to boolean stating
+	// whether to update icon
+	boolean*		on;
 
-    // list of icons
-    patch_t**		p;
-    
-    // user data
-    int			data;
-    
+	// list of icons
+	patch_t**		p;
+	
+	// user data
+	int			data;
+	
 } st_multicon_t;
 
 
@@ -104,24 +104,24 @@ typedef struct
 
 typedef struct
 {
-    // center-justified location of icon
-    int			x;
-    int			y;
+	// center-justified location of icon
+	int			x;
+	int			y;
 
-    // last icon value
-    boolean		oldval;
+	// last icon value
+	boolean		oldval;
 
-    // pointer to current icon status
-    boolean*		val;
+	// pointer to current icon status
+	boolean*		val;
 
-    // pointer to boolean
-    //  stating whether to update icon
-    boolean*		on;  
+	// pointer to boolean
+	// stating whether to update icon
+	boolean*		on; 
 
 
-    patch_t*		p;	// icon
-    int			data;   // user data
-    
+	patch_t*		p;	// icon
+	int			data;	// user data
+	
 } st_binicon_t;
 
 
@@ -132,7 +132,7 @@ typedef struct
 
 // Initializes widget library.
 // More precisely, initialize STMINUS,
-//  everything else is done somewhere else.
+// everything else is done somewhere else.
 //
 void STlib_init(void);
 
@@ -143,79 +143,79 @@ void STlib_init(void);
 // haleyjd 09/01/10: [STRIFE] Removed "on" parameter.
 void
 STlib_initNum
-( st_number_t*          n,
-  int                   x,
-  int                   y,
-  patch_t**             pl,
-  int*                  num,
-  int                   width );
+( st_number_t*			n,
+ int					x,
+ int					y,
+ patch_t**				pl,
+ int*					num,
+ int					width );
 
 // haleyjd 09/01/10: [STRIFE] Made globally visible.
 void
 STlib_drawNum
-( st_number_t*  n);
+( st_number_t* n);
 
 // haleyjd 09/01/10: [STRIFE] New function
 void
 STlib_drawNumPositive
-( st_number_t*  n);
+( st_number_t* n);
 
 /* haleyjd 09/01/10: [STRIFE] All the below were removed
 void
 STlib_updateNum
 ( st_number_t*		n,
-  boolean		refresh );
+ boolean		refresh );
 
 
 // Percent widget routines
 void
 STlib_initPercent
 ( st_percent_t*		p,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  boolean*		on,
-  patch_t*		percent );
+ int			x,
+ int			y,
+ patch_t**		pl,
+ int*			num,
+ boolean*		on,
+ patch_t*		percent );
 
 
 void
 STlib_updatePercent
 ( st_percent_t*		per,
-  int			refresh );
+ int			refresh );
 
 
 // Multiple Icon widget routines
 void
 STlib_initMultIcon
 ( st_multicon_t*	mi,
-  int			x,
-  int			y,
-  patch_t**		il,
-  int*			inum,
-  boolean*		on );
+ int			x,
+ int			y,
+ patch_t**		il,
+ int*			inum,
+ boolean*		on );
 
 
 void
 STlib_updateMultIcon
 ( st_multicon_t*	mi,
-  boolean		refresh );
+ boolean		refresh );
 
 // Binary Icon widget routines
 
 void
 STlib_initBinIcon
 ( st_binicon_t*		b,
-  int			x,
-  int			y,
-  patch_t*		i,
-  boolean*		val,
-  boolean*		on );
+ int			x,
+ int			y,
+ patch_t*		i,
+ boolean*		val,
+ boolean*		on );
 
 void
 STlib_updateBinIcon
 ( st_binicon_t*		bi,
-  boolean		refresh );
+ boolean		refresh );
 */
 
 #endif

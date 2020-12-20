@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -63,19 +63,19 @@ extern void ST_refreshBackground(boolean force);
 // States for status bar code.
 typedef enum
 {
-    AutomapState,
-    FirstPersonState
-    
+	AutomapState,
+	FirstPersonState
+	
 } st_stateenum_t;
 
 
 // States for the chat code.
 typedef enum
 {
-    StartChatState,
-    WaitDestState,
-    GetChatState
-    
+	StartChatState,
+	WaitDestState,
+	GetChatState
+	
 } st_chatstateenum_t;
 
 

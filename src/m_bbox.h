@@ -9,12 +9,12 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//    Nil.
-//    
+//	Nil.
+//	
 
 
 #ifndef __M_BBOX__
@@ -28,10 +28,10 @@
 // Bounding box coordinate storage.
 enum
 {
-    BOXTOP,
-    BOXBOTTOM,
-    BOXLEFT,
-    BOXRIGHT
+	BOXTOP,
+	BOXBOTTOM,
+	BOXLEFT,
+	BOXRIGHT
 };	// bbox coordinates
 
 // Bounding box functions.
@@ -40,8 +40,8 @@ void M_ClearBox (fixed_t*	box);
 void
 M_AddToBox
 ( fixed_t*	box,
-  fixed_t	x,
-  fixed_t	y );
+ fixed_t	x,
+ fixed_t	y );
 
 
 #endif

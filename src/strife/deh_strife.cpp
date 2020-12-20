@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 //
@@ -21,9 +21,9 @@
 
 const char *deh_signatures[] =
 {
-    "Patch File for SeHackEd v0.4",
-    "Patch File for SeHackEd v0.3",
-    NULL
+	"Patch File for SeHackEd v0.4",
+	"Patch File for SeHackEd v0.3",
+	NULL
 };
 
 // deh_ammo.c:
@@ -51,15 +51,15 @@ extern deh_section_t deh_section_weapon;
 
 deh_section_t *deh_section_types[] =
 {
-    &deh_section_ammo,
-    &deh_section_cheat,
-    &deh_section_frame,
-    &deh_section_misc,
-    &deh_section_pointer,
-    &deh_section_sound,
-    &deh_section_text,
-    &deh_section_thing,
-    &deh_section_weapon,
-    NULL
+	&deh_section_ammo,
+	&deh_section_cheat,
+	&deh_section_frame,
+	&deh_section_misc,
+	&deh_section_pointer,
+	&deh_section_sound,
+	&deh_section_text,
+	&deh_section_thing,
+	&deh_section_weapon,
+	NULL
 };
 

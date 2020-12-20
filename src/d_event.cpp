@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 //
@@ -34,30 +34,30 @@ static int eventtail;
 //
 void D_PostEvent (event_t* ev)
 {
-    events[eventhead] = *ev;
-    eventhead = (eventhead + 1) % MAXEVENTS;
+	events[eventhead] = *ev;
+	eventhead = (eventhead + 1) % MAXEVENTS;
 }
 
 // Read an event from the queue.
 
 event_t *D_PopEvent(void)
 {
-    event_t *result;
+	event_t *result;
 
-    // No more events waiting.
+	// No more events waiting.
 
-    if (eventtail == eventhead)
-    {
-        return NULL;
-    }
-    
-    result = &events[eventtail];
+	if (eventtail == eventhead)
+	{
+		return NULL;
+	}
+	
+	result = &events[eventtail];
 
-    // Advance to the next event in the queue.
+	// Advance to the next event in the queue.
 
-    eventtail = (eventtail + 1) % MAXEVENTS;
+	eventtail = (eventtail + 1) % MAXEVENTS;
 
-    return result;
+	return result;
 }
 
 

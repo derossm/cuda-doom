@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -26,7 +26,7 @@
 //
 // Initializes sound stuff, including volume
 // Sets channels, SFX and music volume,
-//  allocates channel buffer, sets S_sfx lookup.
+// allocates channel buffer, sets S_sfx lookup.
 //
 
 void S_Init(int sfxVolume, int musicVolume, int voiceVolume);
@@ -41,14 +41,14 @@ void S_Shutdown(void);
 //
 // Per level startup code.
 // Kills playing sounds at start of level,
-//  determines music if any, changes music.
+// determines music if any, changes music.
 //
 
 void S_Start(void);
 
 //
 // Start sound for thing at <origin>
-//  using <sound_id> from sounds.h
+// using <sound_id> from sounds.h
 //
 
 void S_StartSound(void *origin, int sound_id);
@@ -64,7 +64,7 @@ void S_StopSound(mobj_t *origin);
 void S_StartMusic(int music_id);
 
 // Start music using <music_id> from sounds.h,
-//  and set whether looping
+// and set whether looping
 void S_ChangeMusic(int music_id, int looping);
 
 // query if music is playing

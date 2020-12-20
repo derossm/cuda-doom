@@ -9,11 +9,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//      Timer functions.
+//		Timer functions.
 //
 
 #include "SDL.h"
@@ -28,18 +28,18 @@
 
 static Uint32 basetime = 0;
 
-int  I_GetTime (void)
+int I_GetTime (void)
 {
-    Uint32 ticks;
+	Uint32 ticks;
 
-    ticks = SDL_GetTicks();
+	ticks = SDL_GetTicks();
 
-    if (basetime == 0)
-        basetime = ticks;
+	if (basetime == 0)
+		basetime = ticks;
 
-    ticks -= basetime;
+	ticks -= basetime;
 
-    return (ticks * TICRATE) / 1000;    
+	return (ticks * TICRATE) / 1000;	
 }
 
 //
@@ -48,35 +48,35 @@ int  I_GetTime (void)
 
 int I_GetTimeMS(void)
 {
-    Uint32 ticks;
+	Uint32 ticks;
 
-    ticks = SDL_GetTicks();
+	ticks = SDL_GetTicks();
 
-    if (basetime == 0)
-        basetime = ticks;
+	if (basetime == 0)
+		basetime = ticks;
 
-    return ticks - basetime;
+	return ticks - basetime;
 }
 
 // Sleep for a specified number of ms
 
 void I_Sleep(int ms)
 {
-    SDL_Delay(ms);
+	SDL_Delay(ms);
 }
 
 void I_WaitVBL(int count)
 {
-    I_Sleep((count * 1000) / 70);
+	I_Sleep((count * 1000) / 70);
 }
 
 
 void I_InitTimer(void)
 {
-    // initialize timer
+	// initialize timer
 
-    SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
+	SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
 
-    SDL_Init(SDL_INIT_TIMER);
+	SDL_Init(SDL_INIT_TIMER);
 }
 

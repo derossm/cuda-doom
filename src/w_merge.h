@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -21,8 +21,8 @@
 #ifndef W_MERGE_H
 #define W_MERGE_H
 
-#define W_NWT_MERGE_SPRITES   0x1
-#define W_NWT_MERGE_FLATS     0x2
+#define W_NWT_MERGE_SPRITES	0x1
+#define W_NWT_MERGE_FLATS		0x2
 
 // Add a new WAD and merge it into the main directory
 

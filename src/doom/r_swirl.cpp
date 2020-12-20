@@ -10,7 +10,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -68,14 +68,14 @@ void R_InitDistortedFlats()
 					sinvalue = (y * swirlfactor + i * SPEED * 5 + 900) & 8191;
 					sinvalue2 = (x * swirlfactor2 + i * SPEED * 4 + 300) & 8191;
 					x1 = x + 128
-					   + ((finesine[sinvalue] * AMP) >> FRACBITS)
-					   + ((finesine[sinvalue2] * AMP2) >> FRACBITS);
+						+ ((finesine[sinvalue] * AMP) >> FRACBITS)
+						+ ((finesine[sinvalue2] * AMP2) >> FRACBITS);
 
 					sinvalue = (x * swirlfactor + i * SPEED * 3 + 700) & 8191;
 					sinvalue2 = (y * swirlfactor2 + i * SPEED * 4 + 1200) & 8191;
 					y1 = y + 128
-					   + ((finesine[sinvalue] * AMP) >> FRACBITS)
-					   + ((finesine[sinvalue2] * AMP2) >> FRACBITS);
+						+ ((finesine[sinvalue] * AMP) >> FRACBITS)
+						+ ((finesine[sinvalue2] * AMP2) >> FRACBITS);
 
 					x1 &= 63;
 					y1 &= 63;

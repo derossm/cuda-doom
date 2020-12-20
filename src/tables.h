@@ -10,7 +10,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
@@ -19,16 +19,16 @@
 //	In the order of appearance: 
 //
 //	int finetangent[4096]	- Tangens LUT.
-//	 Should work with BAM fairly well (12 of 16bit,
-//      effectively, by shifting).
+//		Should work with BAM fairly well (12 of 16bit,
+//		effectively, by shifting).
 //
 //	int finesine[10240]		- Sine lookup.
-//	 Guess what, serves as cosine, too.
-//	 Remarkable thing is, how to use BAMs with this? 
+//		Guess what, serves as cosine, too.
+//		Remarkable thing is, how to use BAMs with this? 
 //
 //	int tantoangle[2049]	- ArcTan LUT,
-//	  maps tan(angle) to angle fast. Gotta search.	
-//    
+//		maps tan(angle) to angle fast. Gotta search.	
+//	
 
 
 #ifndef __TABLES__
@@ -60,19 +60,19 @@ extern const byte gammatable[5][256];
 
 // Binary Angle Measument, BAM.
 
-#define ANG45           0x20000000
-#define ANG90           0x40000000
-#define ANG180          0x80000000
-#define ANG270          0xc0000000
-#define ANG_MAX         0xffffffff
+#define ANG45			0x20000000
+#define ANG90			0x40000000
+#define ANG180			0x80000000
+#define ANG270			0xc0000000
+#define ANG_MAX			0xffffffff
 
-#define ANG1            (ANG45 / 45)
-#define ANG60           (ANG180 / 3)
+#define ANG1			(ANG45 / 45)
+#define ANG60			(ANG180 / 3)
 
 // Heretic code uses this definition as though it represents one 
-// degree, but it is not!  This is actually ~1.40 degrees.
+// degree, but it is not! This is actually ~1.40 degrees.
 
-#define ANG1_X          0x01000000
+#define ANG1_X			0x01000000
 
 #define SLOPERANGE		2048
 #define SLOPEBITS		11
@@ -83,12 +83,12 @@ typedef unsigned int angle_t;
 
 // Effective size is 2049;
 // The +1 size is to handle the case when x==y
-//  without additional checking.
+// without additional checking.
 extern const angle_t tantoangle[SLOPERANGE+1];
 
 
 // Utility function,
-//  called by R_PointToAngle.
+// called by R_PointToAngle.
 int SlopeDiv(unsigned int num, unsigned int den);
 int SlopeDivCrispy(unsigned int num, unsigned int den);
 

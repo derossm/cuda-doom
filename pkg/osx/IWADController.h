@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -20,21 +20,21 @@
 
 @interface IWADController : NSObject
 {
-    id iwadSelector;
-    id configWindow;
+	id iwadSelector;
+	id configWindow;
 
-    id chex;
-    id doom1;
-    id doom2;
-    id plutonia;
-    id tnt;
-    id freedoom1;
-    id freedoom2;
-    id freedm;
+	id chex;
+	id doom1;
+	id doom2;
+	id plutonia;
+	id tnt;
+	id freedoom1;
+	id freedoom2;
+	id freedm;
 
-    id heretic;
-    id hexen;
-    id strife;
+	id heretic;
+	id hexen;
+	id strife;
 }
 
 - (void) closeConfigWindow: (id)sender;

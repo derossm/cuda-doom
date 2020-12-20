@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 
@@ -41,28 +41,28 @@ typedef struct txt_dropdown_list_s txt_dropdown_list_t;
 
 struct txt_dropdown_list_s
 {
-    txt_widget_t widget;
-    int *variable;
-    const char **values;
-    int num_values;
+	txt_widget_t widget;
+	int *variable;
+	const char **values;
+	int num_values;
 };
 
 /**
  * Create a new dropdown list widget.
  *
  * The parameters specify a list of string labels, and a pointer to an
- * integer variable.  The variable contains the current "value" of the
+ * integer variable. The variable contains the current "value" of the
  * list, as an index within the list of labels.
  *
- * @param variable        Pointer to the variable containing the
- *                        list's value.
- * @param values          Pointer to an array of strings containing
- *                        the labels to use for the list (UTF-8 format).
- * @param num_values      The number of variables in the list.
+ * @param variable		Pointer to the variable containing the
+ *						list's value.
+ * @param values			Pointer to an array of strings containing
+ *						the labels to use for the list (UTF-8 format).
+ * @param num_values		The number of variables in the list.
  */
 
 txt_dropdown_list_t *TXT_NewDropdownList(int *variable, 
-                                         const char **values, int num_values);
+											const char **values, int num_values);
 
 #endif /* #ifndef TXT_DROPDOWN_H */
 

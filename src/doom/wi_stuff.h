@@ -9,11 +9,11 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//  Intermission.
+// Intermission.
 //
 
 #ifndef __WI_STUFF__
@@ -27,9 +27,9 @@
 
 typedef enum
 {
-    NoState = -1,
-    StatCount,
-    ShowNextLoc,
+	NoState = -1,
+	StatCount,
+	ShowNextLoc,
 } stateenum_t;
 
 // Called by main loop, animate the intermission.
@@ -40,7 +40,7 @@ void WI_Ticker (void);
 void WI_Drawer (void);
 
 // Setup for an intermission screen.
-void WI_Start(wbstartstruct_t*	 wbstartstruct);
+void WI_Start(wbstartstruct_t*		wbstartstruct);
 
 // Shut down the intermission screen
 void WI_End(void);

@@ -9,18 +9,18 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//    Exit text-mode ENDOOM screen.
+//	Exit text-mode ENDOOM screen.
 //
 
 
 #ifndef __I_ENDOOM__
 #define __I_ENDOOM__
 
-// Display the Endoom screen on shutdown.  Pass a pointer to the
+// Display the Endoom screen on shutdown. Pass a pointer to the
 // ENDOOM lump.
 
 void I_Endoom(byte *data);
