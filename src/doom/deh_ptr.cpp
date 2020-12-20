@@ -46,7 +46,7 @@ static int CodePointerIndex(actionf_t *ptr)
 static void DEH_PointerInit(void)
 {
 	int i;
-	
+
 	// Initialize list of dehacked pointers
 
 	for (i=0; i<EXTRASTATES; ++i)
@@ -70,7 +70,7 @@ static void DEH_PointerInit(void)
 static void *DEH_PointerStart(deh_context_t *context, char *line)
 {
 	int frame_number = 0;
-	
+
 	// FIXME: can the third argument here be something other than "Frame"
 	// or are we ok?
 
@@ -94,7 +94,7 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 	state_t *state;
 	char *variable_name, *value;
 	int ivalue;
-	
+
 	if (tag == NULL)
 		return;
 
@@ -108,13 +108,13 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 		DEH_Warning(context, "Failed to parse assignment");
 		return;
 	}
-	
+
 //	printf("Set %s to %s for state\n", variable_name, value);
 
 	// all values are integers
 
 	ivalue = atoi(value);
-	
+
 	// set the appropriate field
 
 	if (!strcasecmp(variable_name, "Codep frame"))
@@ -124,7 +124,7 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 			DEH_Warning(context, "Invalid state '%i'", ivalue);
 		}
 		else
-		{		
+		{
 			state->action = codeptrs[ivalue];
 		}
 	}

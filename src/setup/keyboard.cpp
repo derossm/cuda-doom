@@ -50,7 +50,7 @@ static int *controls[] = { &key_left, &key_right, &key_up, &key_down,
 							&key_weapon7, &key_weapon8,
 							&key_arti_quartz, &key_arti_urn, &key_arti_bomb,
 							&key_arti_tome, &key_arti_ring, &key_arti_chaosdevice,
-							&key_arti_shadowsphere, &key_arti_wings, 
+							&key_arti_shadowsphere, &key_arti_wings,
 							&key_arti_torch, &key_arti_morph,
 							&key_arti_all, &key_arti_health, &key_arti_poisonbag,
 							&key_arti_blastradius, &key_arti_teleport,
@@ -67,7 +67,7 @@ static int *shortcuts[] = { &key_menu_help, &key_menu_save, &key_menu_load,
 							&key_menu_endgame, &key_menu_messages, &key_spy,
 							&key_menu_qload, &key_menu_quit, &key_menu_gamma,
 							&key_menu_nextlevel, &key_menu_reloadlevel,
-							&key_menu_incscreen, &key_menu_decscreen, 
+							&key_menu_incscreen, &key_menu_decscreen,
 							&key_menu_screenshot, &key_menu_cleanscreenshot,
 							&key_message_refresh, &key_multi_msg,
 							&key_multi_msgplayer[0], &key_multi_msgplayer[1],
@@ -85,8 +85,8 @@ static void UpdateJoybSpeed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(var))
 	if (always_run)
 	{
 		/*
-			<Janizdreg> if you want to pick one for chocolate doom to use, 
-						pick 29, since that is the most universal one that 
+			<Janizdreg> if you want to pick one for chocolate doom to use,
+						pick 29, since that is the most universal one that
 						also works with heretic, hexen and strife =P
 
 			NB. This choice also works with original, ultimate and final exes.

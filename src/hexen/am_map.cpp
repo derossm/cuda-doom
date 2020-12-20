@@ -623,7 +623,7 @@ void AM_doFollowPlayer(void)
 		mapxstart += dmapx;
 		mapystart += dmapy;
 
- 		while(mapxstart >= finit_width)
+		while(mapxstart >= finit_width)
 			mapxstart -= finit_width;
 	while(mapxstart < 0)
 			mapxstart += finit_width;
@@ -1356,7 +1356,7 @@ void AM_drawMarks(void)
 		fx = CXMTOF(markpoints[i].x);
 		fy = CYMTOF(markpoints[i].y);
 		if (fx >= f_x && fx <= f_w - w && fy >= f_y && fy <= f_h - h)
- 			V_DrawPatch(fx, fy, marknums[i]);
+			V_DrawPatch(fx, fy, marknums[i]);
 	}
  }
 }

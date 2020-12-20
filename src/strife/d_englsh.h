@@ -33,17 +33,17 @@
 //
 //	M_Menu.C
 //
-#define PRESSKEY 	"press a key."
-#define PRESSYN 	"press y or n."
+#define PRESSKEY	"press a key."
+#define PRESSYN	"press y or n."
 #define QUITMSG	"are you sure you want to\nquit this great game?"
 // [STRIFE] modified:
-#define LOADNET 	"you can't load while in a net game!\n\n"PRESSKEY
+#define LOADNET	"you can't load while in a net game!\n\n"PRESSKEY
 #define QLOADNET	"you can't quickload during a netgame!\n\n"PRESSKEY
 // [STRIFE] modified:
 #define QSAVESPOT	"you haven't picked a\nquicksave slot yet!\n\n"PRESSKEY
 // [STRIFE] modified:
-#define SAVEDEAD 	"you're not playing a game\n\n"PRESSKEY
-#define QSPROMPT 	"quicksave over your game named\n\n'%s'?\n\n"PRESSYN
+#define SAVEDEAD	"you're not playing a game\n\n"PRESSKEY
+#define QSPROMPT	"quicksave over your game named\n\n'%s'?\n\n"PRESSYN
 // [STRIFE] modified:
 #define QLPROMPT	"do you want to quickload\n\n'%s'?\n\n"PRESSYN
 
@@ -65,7 +65,7 @@
 #define ENDGAME	"are you sure you want\nto end the game?\n\n"PRESSYN
 
 // haleyjd 09/11/10: [STRIFE] No "to dos." on this
-#define DOSY		"(press y to quit)" 
+#define DOSY		"(press y to quit)"
 
 #define DETAILHI	"High detail"
 #define DETAILLO	"Low detail"
@@ -426,7 +426,7 @@
 "BLAZE THROUGH THIS ONE!\n"
 
 
-// after map 06	
+// after map 06
 
 #define P1TEXT \
 "You gloat over the steaming carcass of the\n"\

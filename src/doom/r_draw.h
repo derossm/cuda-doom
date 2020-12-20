@@ -33,7 +33,7 @@ extern int		dc_texheight;
 extern byte*		dc_brightmap;
 
 // first pixel in a column
-extern byte*		dc_source;		
+extern byte*		dc_source;
 
 
 // The span blitting interface.
@@ -77,7 +77,7 @@ extern fixed_t		ds_xstep;
 extern fixed_t		ds_ystep;
 
 // start of a 64*64 tile image
-extern byte*		ds_source;		
+extern byte*		ds_source;
 
 extern byte*		translationtables;
 extern byte*		dc_translation;

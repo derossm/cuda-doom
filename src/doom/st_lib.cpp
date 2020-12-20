@@ -38,7 +38,7 @@
 #include "v_trans.h" // [crispy] colored status bar widgets
 
 // in AM_map.c
-extern boolean		automapactive; 
+extern boolean		automapactive;
 extern int screenblocks;
 
 
@@ -80,7 +80,7 @@ STlib_initNum
 }
 
 
-// 
+//
 // A fairly efficient way to draw a number
 // based on differences from the old number.
 // Note: worth the trouble?
@@ -93,11 +93,11 @@ STlib_drawNum
 
 	int		numdigits = n->width;
 	int		num = *n->num;
-	
+
 	int		w = SHORT(n->p[0]->width);
 	int		h = SHORT(n->p[0]->height);
 	int		x = n->x;
-	
+
 	int		neg;
 
 	// [crispy] redraw only if necessary
@@ -116,7 +116,7 @@ STlib_drawNum
 		num = -9;
 	else if (numdigits == 3 && num < -99)
 		num = -99;
-	
+
 	num = -num;
 	}
 
@@ -220,7 +220,7 @@ STlib_initMultIcon
 {
 	i->x	= x;
 	i->y	= y;
-	i->oldinum 	= -1;
+	i->oldinum	= -1;
 	i->inum	= inum;
 	i->on	= on;
 	i->p	= il;

@@ -263,7 +263,7 @@ const char *mapnames_commercial[] =
 	HUSTR_9,
 	HUSTR_10,
 	HUSTR_11,
-	
+
 	HUSTR_12,
 	HUSTR_13,
 	HUSTR_14,
@@ -273,7 +273,7 @@ const char *mapnames_commercial[] =
 	HUSTR_18,
 	HUSTR_19,
 	HUSTR_20,
-	
+
 	HUSTR_21,
 	HUSTR_22,
 	HUSTR_23,
@@ -300,7 +300,7 @@ const char *mapnames_commercial[] =
 	PHUSTR_9,
 	PHUSTR_10,
 	PHUSTR_11,
-	
+
 	PHUSTR_12,
 	PHUSTR_13,
 	PHUSTR_14,
@@ -310,7 +310,7 @@ const char *mapnames_commercial[] =
 	PHUSTR_18,
 	PHUSTR_19,
 	PHUSTR_20,
-	
+
 	PHUSTR_21,
 	PHUSTR_22,
 	PHUSTR_23,
@@ -323,7 +323,7 @@ const char *mapnames_commercial[] =
 	PHUSTR_30,
 	PHUSTR_31,
 	PHUSTR_32,
-	
+
 	// TNT WAD map names.
 
 	THUSTR_1,
@@ -337,7 +337,7 @@ const char *mapnames_commercial[] =
 	THUSTR_9,
 	THUSTR_10,
 	THUSTR_11,
-	
+
 	THUSTR_12,
 	THUSTR_13,
 	THUSTR_14,
@@ -347,7 +347,7 @@ const char *mapnames_commercial[] =
 	THUSTR_18,
 	THUSTR_19,
 	THUSTR_20,
-	
+
 	THUSTR_21,
 	THUSTR_22,
 	THUSTR_23,
@@ -669,7 +669,7 @@ void HU_Start(void)
 				hu_font,
 				HU_FONTSTART);
 
-	
+
 	switch ( logical_gamemission )
 	{
 		case doom:
@@ -735,7 +735,7 @@ void HU_Start(void)
 	// dehacked substitution to get modified level name
 
 	s = DEH_String(s);
-	
+
 	// [crispy] print the map title in white from the first colon onward
 	M_snprintf(buf, sizeof(buf), "%s%s", ":", crstr[CR_GRAY]);
 	ptr = M_StringReplace(s, ":", buf);
@@ -1000,7 +1000,7 @@ void HU_Ticker(void)
 				HUlib_addMessageToSText(&w_message,
 							DEH_String(player_names[i]),
 							w_inputbuffer[i].l.l);
-				
+
 				message_nottobefuckedwith = true;
 				message_on = true;
 				message_counter = HU_MSGTIMEOUT;
@@ -1182,7 +1182,7 @@ boolean HU_Responder(event_t *ev)
 	unsigned char	c;
 	int			i;
 	int			numplayers;
-	
+
 	static int		num_nobrainers = 0;
 
 	numplayers = 0;

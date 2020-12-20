@@ -45,7 +45,7 @@
 // fixed_t
 #include "m_fixed.h"
 
-// angle_t 
+// angle_t
 #include "tables.h"
 
 // events
@@ -636,7 +636,7 @@ byte *I_AllocLow(int length);
 extern boolean useexterndriver;
 
 #define EBT_FIRE			1
-#define EBT_OPENDOOR 		2
+#define EBT_OPENDOOR		2
 #define EBT_SPEED			4
 #define EBT_STRAFE			8
 #define EBT_MAP				0x10

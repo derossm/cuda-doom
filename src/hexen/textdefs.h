@@ -24,8 +24,8 @@
 #define LOADNET		"you can't do load while in a net game!\n\n"PRESSKEY
 #define QLOADNET	"you can't quickload during a netgame!\n\n"PRESSKEY
 #define QSAVESPOT	"you haven't picked a quicksave slot yet!\n\n"PRESSKEY
-#define SAVEDEAD 	"you can't save if you aren't playing!\n\n"PRESSKEY
-#define QSPROMPT 	"quicksave over your game named\n\n'%s'?\n\n"PRESSYN
+#define SAVEDEAD	"you can't save if you aren't playing!\n\n"PRESSKEY
+#define QSPROMPT	"quicksave over your game named\n\n'%s'?\n\n"PRESSYN
 #define QLPROMPT	"do you want to quickload the game named"\
 					"\n\n'%s'?\n\n"PRESSYN
 #define NEWGAME		"you can't start a new game\n"\

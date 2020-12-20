@@ -111,7 +111,7 @@ static void ConfigExtraButtons(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 	AddMouseControl(buttons_table, "Previous weapon", &mousebprevweapon);
 	AddMouseControl(buttons_table, "Strafe on", &mousebstrafe);
 	AddMouseControl(buttons_table, "Next weapon", &mousebnextweapon);
-	
+
 	if (gamemission == heretic)
 	{
 		AddMouseControl(buttons_table, "Inventory left", &mousebinvleft);
@@ -181,10 +181,10 @@ void ConfigMouse(TXT_UNCAST_ARG(widget), void *user_data)
 	TXT_AddWidgets(window,
 					TXT_NewCheckBox("Enable mouse", &usemouse),
 					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewInvertedCheckBox("Allow vertical mouse movement", 
+					TXT_NewInvertedCheckBox("Allow vertical mouse movement",
 											&novert),
 					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewCheckBox("Grab mouse in windowed mode", 
+					TXT_NewCheckBox("Grab mouse in windowed mode",
 									&grabmouse),
 					TXT_TABLE_OVERFLOW_RIGHT,
 					TXT_NewCheckBox("Double click acts as \"use\"",

@@ -95,7 +95,7 @@ static unsigned int subst_music_len = 0;
 
 static boolean music_initialized = false;
 
-// If this is true, this module initialized SDL sound and has the 
+// If this is true, this module initialized SDL sound and has the
 // responsibility to shut it down
 
 static boolean sdl_was_initialized = false;

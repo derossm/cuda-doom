@@ -23,20 +23,13 @@ You'll need a GitHub account, but it's pretty easy to sign up.
 
 Please try to give as much information as possible:
 
-* What version of Chocolate Doom are you using? Check the title bar of
-  the window for the version number.
+* What version of Chocolate Doom are you using? Check the title bar of the window for the version number.
 
-* Chocolate Doom runs on many different operating systems (not just
-  Windows!). Please say which operating system and what version of it
-  you're using.
+* Chocolate Doom runs on many different operating systems (not just Windows!). Please say which operating system and what version of it you're using.
 
-* Please say which game you're playing (Doom 1, Doom 2, Heretic,
-  Hexen, Strife, etc.) and if you're using any fan-made WADs or mods,
-  please say which mods (and where they can be downloaded!). It helps
-  to give the full command line you're using to start the game.
+* Please say which game you're playing (Doom 1, Doom 2, Heretic, Hexen, Strife, etc.) and if you're using any fan-made WADs or mods, please say which mods (and where they can be downloaded!). It helps to give the full command line you're using to start the game.
 
-* Please mention if you have any special configuration you think may be
-  relevant, too.
+* Please mention if you have any special configuration you think may be relevant, too.
 
 ### Feature requests
 
@@ -48,11 +41,9 @@ often rejected:
 
 * "High resolution" rendering (greater than 320x200 display).
 
-* An option to disable Vanilla limits, such as the visplane rendering
-  limit.
+* An option to disable Vanilla limits, such as the visplane rendering limit.
 
-* Ability to play "No Rest For The Living", the expansion pack which
-  comes with the XBLA / BFG Edition of Doom.
+* Ability to play "No Rest For The Living", the expansion pack which comes with the XBLA / BFG Edition of Doom.
 
 If you're not sure whether your feature is in line with the project
 philosophy, don't worry - just ask anyway!
@@ -64,38 +55,15 @@ GitHub](https://github.com/chocolate-doom/chocolate-doom/issues/new).
 Thank you for contributing code to Chocolate Doom! Please check the
 following guidelines before opening a pull request:
 
-* All code must be licensed under [the GNU General Public License,
-  version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
-  Please don't reuse code that isn't GPL, or that is GPLv3 licensed.
-  Be aware that by submitting your code to the project, you're agreeing
-  to license it under the GPL.
+* All code must be licensed under [the GNU General Public License, version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html). Please don't reuse code that isn't GPL, or that is GPLv3 licensed. Be aware that by submitting your code to the project, you're agreeing to license it under the GPL.
 
-* Please follow the coding style guidelines described in the
-  [HACKING](../HACKING.md) file.
+* Please follow the coding style guidelines described in the [HACKING](../HACKING.md) file.
 
-* Please don't make unnecessary changes which just change formatting
-  without any actual change to program logic. While being consistent
-  is nice, such changes destroy the ability to use the `git blame`
-  command to see when code was last changed.
+* Please don't make unnecessary changes which just change formatting without any actual change to program logic. While being consistent is nice, such changes destroy the ability to use the `git blame` command to see when code was last changed.
 
-* The guidelines given above in the "feature requests" section also
-  apply here. New features which aren't in line with the project
-  philosophy are likely to be rejected. If you're not sure, open a
-  feature request first and ask before you start implementing your
-  feature.
+* The guidelines given above in the "feature requests" section also apply here. New features which aren't in line with the project philosophy are likely to be rejected. If you're not sure, open a feature request first and ask before you start implementing your feature.
 
-* Follow the guidelines for [how to write a Git commit
-  message](http://chris.beams.io/posts/git-commit/). In short: the
-  first line should be a short summary; keep to an 80 column limit;
-  use the imperative mood ("fix bug X", rather than "fixed bug X" or
-  "fixing bug X"). If your change fixes a particular subsystem,
-  prefix the summary with that subsystem: eg. "doom: Fix bug X" or
-  "textscreen: Change size of X".
+* Follow the guidelines for [how to write a Git commit message](http://chris.beams.io/posts/git-commit/). In short: the first line should be a short summary; keep to an 80 column limit; use the imperative mood ("fix bug X", rather than "fixed bug X" or "fixing bug X"). If your change fixes a particular subsystem, prefix the summary with that subsystem: eg. "doom: Fix bug X" or "textscreen: Change size of X".
 
-* If you're making a change related to a bug, reference the GitHub
-  issue number in the commit message, eg. "This is a partial fix
-  for #646". This will link your commit into the issue comments. If
-  your change is a fix for the bug, put the word "fixes" before the
-  issue number to automatically close the issue once your change
-  is merged.
+* If you're making a change related to a bug, reference the GitHub issue number in the commit message, eg. "This is a partial fix for #646". This will link your commit into the issue comments. If your change is a fix for the bug, put the word "fixes" before the issue number to automatically close the issue once your change is merged.
 

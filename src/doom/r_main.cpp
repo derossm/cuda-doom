@@ -44,14 +44,14 @@
 
 
 // Fineangles in the SCREENWIDTH wide window.
-#define FIELDOFVIEW		2048	
+#define FIELDOFVIEW		2048
 
 
 
 int			viewangleoffset;
 
 // increment every time a check is made
-int			validcount = 1;		
+int			validcount = 1;
 
 
 lighttable_t*		fixedcolormap;
@@ -65,7 +65,7 @@ fixed_t			centeryfrac;
 fixed_t			projection;
 
 // just for profiling purposes
-int			framecount;	
+int			framecount;
 
 int			sscount;
 int			linecount;
@@ -83,7 +83,7 @@ fixed_t			viewsin;
 player_t*		viewplayer;
 
 // 0 = high, 1 = low
-int			detailshift;	
+int			detailshift;
 
 //
 // precalculated math tables
@@ -93,7 +93,7 @@ angle_t			clipangle;
 // The viewangletox[viewangle + FINEANGLES/4] lookup
 // maps the visible view angles to screen X coordinates,
 // flattening the arc to a flat projection plane.
-// There will be many angles mapped to the same X. 
+// There will be many angles mapped to the same X.
 int			viewangletox[FINEANGLES/2];
 
 // The xtoviewangleangle[] table maps a screen pixel
@@ -107,7 +107,7 @@ lighttable_t**		scalelightfixed = NULL;
 lighttable_t***		zlight = NULL;
 
 // bumped light from gun blasts
-int			extralight;			
+int			extralight;
 
 // [crispy] parameterized for smooth diminishing lighting
 int LIGHTLEVELS;
@@ -166,25 +166,25 @@ R_PointOnSide
 	fixed_t	dy;
 	fixed_t	left;
 	fixed_t	right;
-	
+
 	if (!node->dx)
 	{
 	if (x <= node->x)
 		return node->dy > 0;
-	
+
 	return node->dy < 0;
 	}
 	if (!node->dy)
 	{
 	if (y <= node->y)
 		return node->dx < 0;
-	
+
 	return node->dx > 0;
 	}
-	
+
 	dx = (x - node->x);
 	dy = (y - node->y);
-	
+
 	// Try to quickly decide by looking at sign bits.
 	if ( (node->dy ^ node->dx ^ dx ^ dy)&0x80000000 )
 	{
@@ -198,14 +198,14 @@ R_PointOnSide
 
 	left = FixedMul ( node->dy>>FRACBITS , dx );
 	right = FixedMul ( dy , node->dx>>FRACBITS );
-	
+
 	if (right < left)
 	{
 	// front side
 	return 0;
 	}
 	// back side
-	return 1;			
+	return 1;
 }
 
 
@@ -223,31 +223,31 @@ R_PointOnSegSide
 	fixed_t	dy;
 	fixed_t	left;
 	fixed_t	right;
-	
+
 	lx = line->v1->x;
 	ly = line->v1->y;
-	
+
 	ldx = line->v2->x - lx;
 	ldy = line->v2->y - ly;
-	
+
 	if (!ldx)
 	{
 	if (x <= lx)
 		return ldy > 0;
-	
+
 	return ldy < 0;
 	}
 	if (!ldy)
 	{
 	if (y <= ly)
 		return ldx < 0;
-	
+
 	return ldx > 0;
 	}
-	
+
 	dx = (x - lx);
 	dy = (y - ly);
-	
+
 	// Try to quickly decide by looking at sign bits.
 	if ( (ldy ^ ldx ^ dx ^ dy)&0x80000000 )
 	{
@@ -261,14 +261,14 @@ R_PointOnSegSide
 
 	left = FixedMul ( ldy>>FRACBITS , dx );
 	right = FixedMul ( dy , ldx>>FRACBITS );
-	
+
 	if (right < left)
 	{
 	// front side
 	return 0;
 	}
 	// back side
-	return 1;			
+	return 1;
 }
 
 
@@ -294,10 +294,10 @@ R_PointToAngleSlope
 ( fixed_t	x,
  fixed_t	y,
  int (*slope_div) (unsigned int num, unsigned int den))
-{	
+{
 	x -= viewx;
 	y -= viewy;
-	
+
 	if ( (!x) && (!y) )
 	return 0;
 
@@ -412,10 +412,10 @@ R_PointToAngle2
  fixed_t	y1,
  fixed_t	x2,
  fixed_t	y2 )
-{	
+{
 	viewx = x1;
 	viewy = y1;
-	
+
 	// [crispy] R_PointToAngle2() is never called during rendering
 	return R_PointToAngleSlope (x2, y2, SlopeDiv);
 }
@@ -432,10 +432,10 @@ R_PointToDist
 	fixed_t	temp;
 	fixed_t	dist;
 	fixed_t		frac;
-	
+
 	dx = abs(x - viewx);
 	dy = abs(y - viewy);
-	
+
 	if (dy>dx)
 	{
 	temp = dx;
@@ -453,12 +453,12 @@ R_PointToDist
 	{
 	frac = 0;
 	}
-	
+
 	angle = (tantoangle[frac>>DBITS]+ANG90) >> ANGLETOFINESHIFT;
 
 	// use as cosine
-	dist = FixedDiv (dx, finesine[angle] );	
-	
+	dist = FixedDiv (dx, finesine[angle] );
+
 	return dist;
 }
 
@@ -515,8 +515,8 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 	fixed_t		z;
 	fixed_t		sinv;
 	fixed_t		cosv;
-	
-	sinv = finesine[(visangle-rw_normalangle)>>ANGLETOFINESHIFT];	
+
+	sinv = finesine[(visangle-rw_normalangle)>>ANGLETOFINESHIFT];
 	dist = FixedDiv (rw_distance, sinv);
 	cosv = finecosine[(viewangle-visangle)>>ANGLETOFINESHIFT];
 	z = abs(FixedMul (dist, cosv));
@@ -529,7 +529,7 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 	angleb = ANG90 + (visangle-rw_normalangle);
 
 	// both sines are allways positive
-	sinea = finesine[anglea>>ANGLETOFINESHIFT];	
+	sinea = finesine[anglea>>ANGLETOFINESHIFT];
 	sineb = finesine[angleb>>ANGLETOFINESHIFT];
 	num = FixedMul(projection,sineb)<<detailshift;
 	den = FixedMul(rw_distance,sinea);
@@ -545,7 +545,7 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 	}
 	else
 	scale = 64*FRACUNIT;
-	
+
 	return scale;
 }
 #endif
@@ -583,7 +583,7 @@ void R_InitTables (void)
 	float	a;
 	float	fv;
 	int		t;
-	
+
 	// viewangle tangent table
 	for (i=0 ; i<FINEANGLES/2 ; i++)
 	{
@@ -592,7 +592,7 @@ void R_InitTables (void)
 	t = fv;
 	finetangent[i] = t;
 	}
-	
+
 	// finesine table
 	for (i=0 ; i<5*FINEANGLES/4 ; i++)
 	{
@@ -621,7 +621,7 @@ void R_InitTextureMapping (void)
 	int			x;
 	int			t;
 	fixed_t		focallength;
-	
+
 	// Use tangent table to generate viewangletox:
 	// viewangletox will give the next greatest x
 	// after the view angle.
@@ -630,7 +630,7 @@ void R_InitTextureMapping (void)
 	// so FIELDOFVIEW angles covers SCREENWIDTH.
 	focallength = FixedDiv (centerxfrac_nonwide,
 				finetangent[FINEANGLES/4+FIELDOFVIEW/2] );
-	
+
 	for (i=0 ; i<FINEANGLES/2 ; i++)
 	{
 	if (finetangent[i] > FRACUNIT*2)
@@ -649,10 +649,10 @@ void R_InitTextureMapping (void)
 	}
 	viewangletox[i] = t;
 	}
-	
+
 	// Scan viewangletox[] to generate xtoviewangle[]:
 	// xtoviewangle will give the smallest view angle
-	// that maps to x.	
+	// that maps to x.
 	for (x=0;x<=viewwidth;x++)
 	{
 	i = 0;
@@ -660,19 +660,19 @@ void R_InitTextureMapping (void)
 		i++;
 	xtoviewangle[x] = (i<<ANGLETOFINESHIFT)-ANG90;
 	}
-	
+
 	// Take out the fencepost cases from viewangletox.
 	for (i=0 ; i<FINEANGLES/2 ; i++)
 	{
 	t = FixedMul (finetangent[i], focallength);
 	t = centerx - t;
-	
+
 	if (viewangletox[i] == -1)
 		viewangletox[i] = 0;
 	else if (viewangletox[i] == viewwidth+1)
 		viewangletox[i] = viewwidth;
 	}
-	
+
 	clipangle = xtoviewangle[0];
 }
 
@@ -690,9 +690,9 @@ void R_InitLightTables (void)
 	int		i;
 	int		j;
 	int		level;
-	int		startmap; 	
+	int		startmap;
 	int		scale;
-	
+
 	if (scalelight)
 	{
 	for (i = 0; i < LIGHTLEVELS; i++)
@@ -754,7 +754,7 @@ void R_InitLightTables (void)
 		scale = FixedDiv ((ORIGWIDTH/2*FRACUNIT), (j+1)<<LIGHTZSHIFT);
 		scale >>= LIGHTSCALESHIFT;
 		level = startmap - scale/DISTMAP;
-		
+
 		if (level < 0)
 		level = 0;
 
@@ -803,7 +803,7 @@ void R_ExecuteSetViewSize (void)
 	int		i;
 	int		j;
 	int		level;
-	int		startmap; 	
+	int		startmap;
 
 	setsizeneeded = false;
 
@@ -840,11 +840,11 @@ void R_ExecuteSetViewSize (void)
 		scaledviewwidth = scaledviewwidth_nonwide;
 	}
 	}
-	
+
 	detailshift = setdetail;
 	viewwidth = scaledviewwidth>>detailshift;
 	viewwidth_nonwide = scaledviewwidth_nonwide>>detailshift;
-	
+
 	centery = viewheight/2;
 	centerx = viewwidth/2;
 	centerxfrac = centerx<<FRACBITS;
@@ -870,17 +870,17 @@ void R_ExecuteSetViewSize (void)
 	}
 
 	R_InitBuffer (scaledviewwidth, viewheight);
-	
+
 	R_InitTextureMapping ();
-	
+
 	// psprite scales
 	pspritescale = FRACUNIT*viewwidth_nonwide/ORIGWIDTH;
 	pspriteiscale = FRACUNIT*ORIGWIDTH/viewwidth_nonwide;
-	
+
 	// thing clipping
 	for (i=0 ; i<viewwidth ; i++)
 	screenheightarray[i] = viewheight;
-	
+
 	// planes
 	for (i=0 ; i<viewheight ; i++)
 	{
@@ -895,13 +895,13 @@ void R_ExecuteSetViewSize (void)
 	}
 	}
 	yslope = yslopes[LOOKDIRMIN];
-	
+
 	for (i=0 ; i<viewwidth ; i++)
 	{
 	cosadj = abs(finecosine[xtoviewangle[i]>>ANGLETOFINESHIFT]);
 	distscale[i] = FixedDiv (FRACUNIT,cosadj);
 	}
-	
+
 	// Calculate the light levels to use
 	// for each level / scale combination.
 	for (i=0 ; i< LIGHTLEVELS ; i++)
@@ -912,7 +912,7 @@ void R_ExecuteSetViewSize (void)
 	for (j=0 ; j<MAXLIGHTSCALE ; j++)
 	{
 		level = startmap - j*NONWIDEWIDTH/(viewwidth_nonwide<<detailshift)/DISTMAP;
-		
+
 		if (level < 0)
 		level = 0;
 
@@ -961,7 +961,7 @@ void R_Init (void)
 	R_InitSkyMap ();
 	R_InitTranslationTables ();
 	printf (".");
-	
+
 	framecount = 0;
 }
 
@@ -979,9 +979,9 @@ R_PointInSubsector
 	int		nodenum;
 
 	// single subsector is a special case
-	if (!numnodes)				
+	if (!numnodes)
 	return subsectors;
-		
+
 	nodenum = numnodes-1;
 
 	while (! (nodenum & NF_SUBSECTOR) )
@@ -990,7 +990,7 @@ R_PointInSubsector
 	side = R_PointOnSide (x, y, node);
 	nodenum = node->children[side];
 	}
-	
+
 	return &subsectors[nodenum & ~NF_SUBSECTOR];
 }
 
@@ -1000,11 +1000,11 @@ R_PointInSubsector
 // R_SetupFrame
 //
 void R_SetupFrame (player_t* player)
-{		
+{
 	int		i;
 	int		tempCentery;
 	int		pitch;
-	
+
 	viewplayer = player;
 
 	// [AM] Interpolate the player camera if the feature is enabled.
@@ -1054,18 +1054,18 @@ void R_SetupFrame (player_t* player)
 		centeryfrac = centery << FRACBITS;
 		yslope = yslopes[LOOKDIRMIN + pitch];
 	}
-	
+
 	viewsin = finesine[viewangle>>ANGLETOFINESHIFT];
 	viewcos = finecosine[viewangle>>ANGLETOFINESHIFT];
-	
+
 	sscount = 0;
-	
+
 	if (player->fixedcolormap)
 	{
 	fixedcolormap =
 		colormaps
 		+ player->fixedcolormap*256;
-	
+
 	walllights = scalelightfixed;
 
 	for (i=0 ; i<MAXLIGHTSCALE ; i++)
@@ -1073,7 +1073,7 @@ void R_SetupFrame (player_t* player)
 	}
 	else
 	fixedcolormap = 0;
-		
+
 	framecount++;
 	validcount++;
 }
@@ -1084,7 +1084,7 @@ void R_SetupFrame (player_t* player)
 // R_RenderView
 //
 void R_RenderPlayerView (player_t* player)
-{	
+{
 	extern void V_DrawFilledBox (int x, int y, int w, int h, int c);
 	extern void R_InterpolateTextureOffsets (void);
 
@@ -1100,7 +1100,7 @@ void R_RenderPlayerView (player_t* player)
 		R_RenderBSPNode (numnodes-1);
 		return;
 	}
-	
+
 	// [crispy] flashing HOM indicator
 	V_DrawFilledBox(viewwindowx, viewwindowy,
 		scaledviewwidth, viewheight,
@@ -1117,19 +1117,19 @@ void R_RenderPlayerView (player_t* player)
 	R_InterpolateTextureOffsets();
 	// The head node is the last node output.
 	R_RenderBSPNode (numnodes-1);
-	
+
 	// Check for new console commands.
 	NetUpdate ();
-	
+
 	R_DrawPlanes ();
-	
+
 	// Check for new console commands.
 	NetUpdate ();
-	
+
 	// [crispy] draw fuzz effect independent of rendering frame rate
 	R_SetFuzzPosDraw();
 	R_DrawMasked ();
 
 	// Check for new console commands.
-	NetUpdate ();				
+	NetUpdate ();
 }

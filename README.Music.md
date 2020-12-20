@@ -15,9 +15,7 @@ Timidity is a software-based MIDI synthesizer, and a version of it is
 included in the SDL2_mixer library used by Chocolate Doom. To use
 Timidity for MIDI playback, first download a sound font. An example of
 a good quality sound font is the eawpats font, which can be downloaded
-from the idgames archive as sounds/eawpats.zip:
-
-  https://www.doomworld.com/idgames/sounds/eawpats
+from the idgames archive as sounds/eawpats.zip: https://www.doomworld.com/idgames/sounds/eawpats
 
 Having installed a sound font, select “Native MIDI” in the sound
 configuration dialog in the setup tool, and use the “Timidity
@@ -36,9 +34,7 @@ To use this feature you need a copy of the GUS patch files that were
 distributed with the original GUS patches. If you have Doom 3: BFG
 Edition, these patches are included with its version of classic Doom,
 and are automatically detected. Otherwise, they can be downloaded
-from the idgames archive as music/dgguspat.zip:
-
-  https://www.doomworld.com/idgames/music/dgguspat
+from the idgames archive as music/dgguspat.zip: https://www.doomworld.com/idgames/music/dgguspat
 
 Having downloaded the patches, select “GUS (emulated)” in the sound
 configuration dialog in the setup tool, and use the “GUS patch path”
@@ -47,9 +43,7 @@ widget to enter the path to the directory containing the patch files.
 For the music not to sound weird, you will almost certainly want to
 load gusgonna.wad (sounds/gusgonna.zip in the idgames archive) when
 you run the game, to work around a bug in vanilla Doom's instrument
-mappings parser:
-
-  https://www.doomworld.com/idgames/sounds/gusgonna
+mappings parser: https://www.doomworld.com/idgames/sounds/gusgonna
 
 By default a GUS card with 1024KB is simulated; to simulate a 256KB,
 512KB or 768KB card instead, change the gus_ram_kb option in
@@ -79,19 +73,19 @@ If you have a PCI sound card, you probably don’t have an OPL chip.
 However, there are some exceptions to this. The following cards are
 known to include “legacy” OPL support:
 
-  * C-Media CMI8738 (*)
-  * Forte Media FM801
-  * Cards based on the Yamaha YMF724 (*)
+	* C-Media CMI8738 (*)
+	* Forte Media FM801
+	* Cards based on the Yamaha YMF724 (*)
 
 Other cards that apparently have OPL support but have not been tested:
 
-  * S3 SonicVibes
-  * AZTech PCI 168 (AZT 3328 chipset)
-  * ESS Solo-1 sound cards (ES1938, ES1946, ES1969 chipset)
-  * Conexant Riptide Audio/Modem combo cards
-  * Cards based on the Crystal Semiconductors CS4281
-  * Cards based on the Avance Logic ALS300
-  * Cards based on the Avance Logic ALS4000
+	* S3 SonicVibes
+	* AZTech PCI 168 (AZT 3328 chipset)
+	* ESS Solo-1 sound cards (ES1938, ES1946, ES1969 chipset)
+	* Conexant Riptide Audio/Modem combo cards
+	* Cards based on the Crystal Semiconductors CS4281
+	* Cards based on the Avance Logic ALS300
+	* Cards based on the Avance Logic ALS4000
 
 If you desperately want hardware OPL music, you may be able to find
 one of these cards for sale cheap on eBay.
@@ -117,9 +111,7 @@ systems unless you are running as the superuser (root/Administrator).
 On modern Windows systems it is not possible to directly access the
 OPL chip, even when running as Administrator. Fortunately, it is
 possible to use the “ioperm.sys” driver developed for Cygwin (look for
-iopermsys-0.2.1.tar.bz2):
-
-  http://openwince.sourceforge.net/ioperm/
+iopermsys-0.2.1.tar.bz2): http://openwince.sourceforge.net/ioperm/
 
 It is not necessary to have Cygwin installed to use this. Copy the
 ioperm.sys file into the same directory as the Chocolate Doom
@@ -127,8 +119,7 @@ executable and it should be automatically loaded.
 
 You can confirm that hardware OPL is working by checking for this
 message in stdout.txt:
-
-    OPL_Init: Using driver 'Win32'.
+ OPL_Init: Using driver 'Win32'.
 
 If you have a C-Media CMI8738, you may need to enable the `FM_EN`
 flag in Windows Device Manager to access hardware OPL output. See
@@ -141,23 +132,19 @@ If you are using a system based on the Linux kernel, you can access
 the OPL chip directly, but you must be running as root. You can
 confirm that hardware OPL is working, by checking for this message on
 startup:
-
-    OPL_Init: Using driver 'Linux'.
+ OPL_Init: Using driver 'Linux'.
 
 If you are using one of the PCI cards in the list above with a (*)
 next to it, you may need to manually enable FM legacy support. Add
 the following to your /etc/modprobe.conf file to do this:
-
-    options snd-ymfpci fm_port=0x388
-    options snd-cmipci fm_port=0x388
+ options snd-ymfpci fm_port=0x388 options snd-cmipci fm_port=0x388
 
 ### OpenBSD/NetBSD
 
 You must be running as root to access the hardware OPL directly. You
 can confirm that hardware OPL is working by checking for this message
 on startup:
-
-    OPL_Init: Using driver 'OpenBSD'.
+ OPL_Init: Using driver 'OpenBSD'.
 
 There is no native OPL backend for FreeBSD yet. Sorry!
 
@@ -167,7 +154,6 @@ If you have some other favorite MIDI playback option that isn’t
 listed above, you can set a hook to invoke an external command for
 MIDI playback using the ‘snd_musiccmd’ configuration file option. For
 example, set:
-
-    snd_musiccmd    "aplaymidi -p 128:0"
+ snd_musiccmd	"aplaymidi -p 128:0"
 
 in your chocolate-doom.cfg file.

@@ -30,7 +30,7 @@
 
 #define QUEUESIZE		128
 #define MESSAGESIZE		128
-#define MESSAGELEN 		265
+#define MESSAGELEN		265
 
 // 8-player note: Change this stuff (CT_PLR_*, and the key mappings)
 enum

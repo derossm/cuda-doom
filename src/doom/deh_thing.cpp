@@ -167,7 +167,7 @@ static void *DEH_ThingStart(deh_context_t *context, char *line)
 {
 	int thing_number = 0;
 	mobjinfo_t *mobj;
-	
+
 	if (sscanf(line, "Thing %i", &thing_number) != 1)
 	{
 		DEH_Warning(context, "Parse error on section start");
@@ -182,9 +182,9 @@ static void *DEH_ThingStart(deh_context_t *context, char *line)
 		DEH_Warning(context, "Invalid thing number: %i", thing_number);
 		return NULL;
 	}
-	
+
 	mobj = &mobjinfo[thing_number];
-	
+
 	return mobj;
 }
 
@@ -193,7 +193,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 	mobjinfo_t *mobj;
 	char *variable_name, *value;
 	int ivalue;
-	
+
 	if (tag == NULL)
 		return;
 
@@ -208,13 +208,13 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 		DEH_Warning(context, "Failed to parse assignment");
 		return;
 	}
-	
+
 //	printf("Set %s to %s for mobj\n", variable_name, value);
 
 	// all values are integers
 
 	ivalue = atoi(value);
-	
+
 	// [crispy] support BEX bits mnemonics in Things fields
 	if (!ivalue && !strcasecmp(variable_name, "bits"))
 	{

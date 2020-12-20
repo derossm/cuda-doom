@@ -40,11 +40,11 @@ typedef PACKED_STRUCT (
 typedef PACKED_STRUCT (
 {
 	byte		topdelta;	// -1 is the last post in a column
-	byte		length; 	// length data bytes follows
+	byte		length;	// length data bytes follows
 }) post_t;
 
 // column_t is a list of 0 or more post_t, (byte)-1 terminated
 typedef post_t	column_t;
 
-#endif 
+#endif
 

@@ -235,14 +235,14 @@ static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t *cmd, unsigned int seq,
 	int i;
 
 	// Expand tic diffs for all players
-	
+
 	for (i=0; i<NET_MAXPLAYERS; ++i)
 	{
 		if (i == settings.consoleplayer && !drone)
 		{
 			continue;
 		}
-		
+
 		if (cmd->playeringame[i])
 		{
 			net_ticdiff_t *diff;
@@ -313,10 +313,10 @@ void NET_CL_StartGame(net_gamesettings_t *settings)
 	// Start from a ticcmd of all zeros
 
 	memset(&last_ticcmd, 0, sizeof(ticcmd_t));
-	
+
 	// Send packet
 
-	packet = NET_Conn_NewReliable(&client_connection, 
+	packet = NET_Conn_NewReliable(&client_connection,
 									NET_PACKET_TYPE_GAMESTART);
 
 	NET_WriteSettings(packet, settings);
@@ -352,7 +352,7 @@ static void NET_CL_SendTics(int start, int end)
 
 	if (start < 0)
 		start = 0;
-	
+
 	// Build a new packet to send to the server
 
 	packet = NET_NewPacket(512);
@@ -377,11 +377,11 @@ static void NET_CL_SendTics(int start, int end)
 
 		NET_WriteTiccmdDiff(packet, &sendobj->cmd, settings.lowres_turn);
 	}
-	
+
 	// Send the packet
 
 	NET_Conn_SendPacket(&client_connection, packet);
-	
+
 	// All done!
 
 	NET_FreePacket(packet);
@@ -398,11 +398,11 @@ void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic)
 	net_ticdiff_t diff;
 	net_server_send_t *sendobj;
 	int starttic, endtic;
-	
+
 	// Calculate the difference to the last ticcmd
 
 	NET_TiccmdDiff(&last_ticcmd, ticcmd, &diff);
-	
+
 	// Store in the send queue
 
 	sendobj = &send_queue[maketic % BACKUPTICS];
@@ -616,7 +616,7 @@ static void NET_CL_SendResendRequest(int start, int end)
 	int i;
 
 	//printf("CL: Send resend %i-%i\n", start, end);
-	
+
 	packet = NET_NewPacket(64);
 	NET_WriteInt16(packet, NET_PACKET_TYPE_GAMEDATA_RESEND);
 	NET_WriteInt32(packet, start);
@@ -804,7 +804,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
 	}
 
 	// Has this been received out of sequence, ie. have we not received
-	// all tics before the first tic in this packet? If so, send a 
+	// all tics before the first tic in this packet? If so, send a
 	// resend request.
 
 	//printf("CL: %p: %i\n", client, seq);
@@ -819,7 +819,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
 
 	index = resend_end - 1;
 	resend_start = resend_end;
-	
+
 	while (index >= 0)
 	{
 		recvobj = &recvwindow[index];
@@ -848,7 +848,7 @@ static void NET_CL_ParseGameData(net_packet_t *packet)
 		NET_Log("client: request resend for %d-%d before %d",
 				recvwindow_start + resend_start,
 				recvwindow_start + resend_end - 1, seq);
-		NET_CL_SendResendRequest(recvwindow_start + resend_start, 
+		NET_CL_SendResendRequest(recvwindow_start + resend_start,
 									recvwindow_start + resend_end - 1);
 	}
 }
@@ -882,7 +882,7 @@ static void NET_CL_ParseResendRequest(net_packet_t *packet)
 	//printf("requested resend %i-%i .. ", start, end);
 	NET_Log("client: resend request: start=%d, num_tics=%d", start, num_tics);
 
-	// Check we have the tics being requested. If not, reduce the 
+	// Check we have the tics being requested. If not, reduce the
 	// window of tics to only what we have.
 
 	while (start <= end
@@ -891,7 +891,7 @@ static void NET_CL_ParseResendRequest(net_packet_t *packet)
 	{
 		++start;
 	}
-		
+
 	while (start <= end
 		&& (!send_queue[end % BACKUPTICS].active
 			|| send_queue[end % BACKUPTICS].seq != end))
@@ -995,12 +995,12 @@ void NET_CL_Run(void)
 {
 	net_addr_t *addr;
 	net_packet_t *packet;
-	
+
 	if (!net_client_connected)
 	{
 		return;
 	}
-	
+
 	while (NET_RecvPacket(client_context, &addr, &packet))
 	{
 		// only accept packets from the server

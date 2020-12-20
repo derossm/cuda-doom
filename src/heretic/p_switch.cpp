@@ -240,7 +240,7 @@ boolean P_UseSpecialLine(mobj_t * thing, line_t * line)
 
 	//
 	// do something
-	//		
+	//
 	switch (line->special)
 	{
 			//===============================================

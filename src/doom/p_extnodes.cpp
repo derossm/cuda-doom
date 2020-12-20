@@ -478,7 +478,7 @@ void P_LoadNodes_ZDBSP (int lump, boolean compressed)
 	for (j = 0; j < 2; j++)
 	{
 		no->children[j] = LONG(mn->children[j]);
-	
+
 		for (k = 0; k < 4; k++)
 		no->bbox[j][k] = SHORT(mn->bbox[j][k])<<FRACBITS;
 	}

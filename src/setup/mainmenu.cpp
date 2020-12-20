@@ -140,7 +140,7 @@ static void QuitConfirm(void *unused1, void *unused2)
 
 	window = TXT_NewWindow(NULL);
 
-	TXT_AddWidgets(window, 
+	TXT_AddWidgets(window,
 					label = TXT_NewLabel("Exiting setup.\nSave settings?"),
 					TXT_NewStrut(24, 0),
 					yes_button = TXT_NewButton2(" Yes ", DoQuit, DoQuit),
@@ -153,7 +153,7 @@ static void QuitConfirm(void *unused1, void *unused2)
 
 	// Only an "abort" button in the middle.
 	TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
-	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, 
+	TXT_SetWindowAction(window, TXT_HORIZ_CENTER,
 						TXT_NewWindowAbortAction(window));
 	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, NULL);
 }
@@ -161,7 +161,7 @@ static void QuitConfirm(void *unused1, void *unused2)
 static void LaunchDoom(void *unused1, void *unused2)
 {
 	execute_context_t *exec;
-	
+
 	// Save configuration first
 
 	M_SaveDefaults();
@@ -334,7 +334,7 @@ void RestartTextscreen(void)
 	InitTextscreen();
 }
 
-// 
+//
 // Initialize and run the textscreen GUI.
 //
 

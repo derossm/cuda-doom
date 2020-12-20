@@ -23,7 +23,7 @@ can also be used to start and join network games.
 Load configuration from the specified file, instead of @CFGFILE@.
 .TP
 \fB-extraconfig <file>\fR
-Load extra configuration from the specified file, instead of @PROGRAM_SPREFIX@\-@GAME@.cfg. 
+Load extra configuration from the specified file, instead of @PROGRAM_SPREFIX@\-@GAME@.cfg.
 .SH SEE ALSO
 \fB@PROGRAM_SPREFIX@\-@GAME@\fR(6),
 \fBdefault.cfg\fR(5),

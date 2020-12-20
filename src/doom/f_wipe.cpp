@@ -85,7 +85,7 @@ wipe_doColorXForm
 	changed = false;
 	w = wipe_scr;
 	e = wipe_scr_end;
-	
+
 	while (w!=wipe_scr+width*height)
 	{
 	if (*w != *e)
@@ -136,15 +136,15 @@ wipe_initMelt
  int	ticks )
 {
 	int i, r;
-	
+
 	// copy start screen to main screen
 	memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
-	
+
 	// makes this wipe faster (in theory)
 	// to have stuff in column-major format
 	wipe_shittyColMajorXform((dpixel_t*)wipe_scr_start, width/2, height);
 	wipe_shittyColMajorXform((dpixel_t*)wipe_scr_end, width/2, height);
-	
+
 	// setup initial column positions
 	// (y<0 => not ready to scroll yet)
 	y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
@@ -170,7 +170,7 @@ wipe_doMelt
 	int		j;
 	int		dy;
 	int		idx;
-	
+
 	dpixel_t*	s;
 	dpixel_t*	d;
 	boolean	done = true;

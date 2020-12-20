@@ -76,7 +76,7 @@ boolean M_FileExists(const char *filename)
 	}
 	else
 	{
-		// If we can't open because the file is a directory, the 
+		// If we can't open because the file is a directory, the
 		// "file" exists at least!
 
 		return errno == EISDIR;
@@ -157,13 +157,13 @@ char *M_FileCaseExists(const char *path)
 //
 
 long M_FileLength(FILE *handle)
-{ 
+{
 	long savedpos;
 	long length;
 
 	// save the current position in the file
 	savedpos = ftell(handle);
-	
+
 	// jump to the end and find the length
 	fseek(handle, 0, SEEK_END);
 	length = ftell(handle);
@@ -182,7 +182,7 @@ boolean M_WriteFile(const char *name, const void *source, int length)
 {
 	FILE *handle;
 	int	count;
-	
+
 	handle = fopen(name, "wb");
 
 	if (handle == NULL)
@@ -190,10 +190,10 @@ boolean M_WriteFile(const char *name, const void *source, int length)
 
 	count = fwrite(source, 1, length, handle);
 	fclose(handle);
-	
+
 	if (count < length)
 	return false;
-		
+
 	return true;
 }
 
@@ -207,7 +207,7 @@ int M_ReadFile(const char *name, byte **buffer)
 	FILE *handle;
 	int	count, length;
 	byte *buf;
-	
+
 	handle = fopen(name, "rb");
 	if (handle == NULL)
 	I_Error ("Couldn't read file %s", name);
@@ -216,14 +216,14 @@ int M_ReadFile(const char *name, byte **buffer)
 	// reading the current position
 
 	length = M_FileLength(handle);
-	
+
 	buf = Z_Malloc (length + 1, PU_STATIC, NULL);
 	count = fread(buf, 1, length, handle);
 	fclose (handle);
-	
+
 	if (count < length)
 	I_Error ("Couldn't read file %s", name);
-		
+
 	buf[length] = '\0';
 	*buffer = buf;
 	return length;

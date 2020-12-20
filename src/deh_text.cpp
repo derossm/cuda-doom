@@ -30,7 +30,7 @@
 // [crispy] support INCLUDE NOTEXT directive in BEX files
 boolean bex_notext = false;
 
-// Given a string length, find the maximum length of a 
+// Given a string length, find the maximum length of a
 // string that can replace it.
 
 static int TXT_MaxStringLength(int len)
@@ -44,7 +44,7 @@ static int TXT_MaxStringLength(int len)
 	// Extend up to the next 4-byte boundary
 
 	len += (4 - (len % 4)) % 4;
-			
+
 	// Less one for the NUL terminator.
 
 	return len - 1;
@@ -62,7 +62,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 		return NULL;
 	}
 
-	// Only allow string replacements that are possible in Vanilla Doom. 
+	// Only allow string replacements that are possible in Vanilla Doom.
 	// Chocolate Doom is unforgiving!
 
 	if (!deh_allow_long_strings && tolen > TXT_MaxStringLength(fromlen))

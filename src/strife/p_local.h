@@ -65,7 +65,7 @@
 //
 
 // both the head and tail of the thinker list
-extern	thinker_t	thinkercap;	
+extern	thinker_t	thinkercap;
 
 
 void P_InitThinkers (void);
@@ -154,7 +154,7 @@ typedef struct
 	fixed_t	y;
 	fixed_t	dx;
 	fixed_t	dy;
-	
+
 } divline_t;
 
 typedef struct
@@ -185,7 +185,7 @@ fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);
 int	P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);
 
 extern fixed_t		opentop;
-extern fixed_t 		openbottom;
+extern fixed_t		openbottom;
 extern fixed_t		openrange;
 extern fixed_t		lowfloor;
 

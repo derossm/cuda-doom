@@ -1,7 +1,7 @@
 //
 // 03/10/2006 James Haley
 //
-// For this module only: 
+// For this module only:
 // This code is public domain. No change sufficient enough to constitute a
 // significant or original work has been made, and thus it remains as such.
 //

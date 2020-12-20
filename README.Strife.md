@@ -15,7 +15,7 @@
 ## What is it?
 
 Chocolate Strife is the most accurate and complete recreation of Rogue
-Entertainment’s “Strife: Quest for the Sigil.”  It was created through more
+Entertainment’s “Strife: Quest for the Sigil.” It was created through more
 than four years of reverse engineering effort with the blessings of the
 original programmers of the game.
 
@@ -67,9 +67,9 @@ support it in the future, due to the vast number of differences (the demo
 version of Strife is based on an earlier version of Rogue’s
 codebase).
 
-The commercial Strife IWAD version 1.1 may run, but also exhibit issues.  Like
-the demo version, there are no current plans to fully support it.  Make sure
-your copy is updated to at least 1.2.  Strife: Veteran Edition already
+The commercial Strife IWAD version 1.1 may run, but also exhibit issues. Like
+the demo version, there are no current plans to fully support it. Make sure
+your copy is updated to at least 1.2. Strife: Veteran Edition already
 includes the required version.
 
 
@@ -93,17 +93,13 @@ Some new command-line parameters in Chocolate Strife include the following:
     - Disables voices even if voices.wad can be found.
 
   - -work
-    - Enables Rogue’s playtesting mode. Automatic godmode, and pressing the
-      inventory drop key will toggle noclipping.
+	- Enables Rogue’s playtesting mode. Automatic godmode, and pressing the inventory drop key will toggle noclipping.
 
   - -flip
-    - Flips player gun graphics. This is buggy, however, because it does not
-      reverse the graphics’ x offsets (this is an accurate emulation of the
-      vanilla engine’s behavior).
+	- Flips player gun graphics. This is buggy, however, because it does not reverse the graphics’ x offsets (this is an accurate emulation of the vanilla engine’s behavior).
 
   - -random
-    - Randomizes the timing and location of item respawns in deathmatch, when
-      item respawning is enabled.
+	- Randomizes the timing and location of item respawns in deathmatch, when item respawning is enabled.
 
 
 ## Copyright
@@ -115,7 +111,7 @@ version.
 
 This program is distributed in the hope that it will be useful,but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 See the “COPYING” file for the full license text. The source code for this
 program is available from the same location where you downloaded this package.

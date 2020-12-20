@@ -319,7 +319,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 			|| (joybspeed < MAX_JOY_BUTTONS && joybuttons[joybspeed]));
 
 	// haleyjd: removed externdriver crap
-	
+
 	forward = side = look = arti = flyheight = 0;
 
 //
@@ -447,7 +447,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 	}
 
 	// haleyjd: removed externdriver crap
-	
+
 	// Fly up/down/drop keys
 	if (gamekeydown[key_flyup])
 	{
@@ -580,9 +580,9 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
 			if (gamekeydown[key])
 			{
-				cmd->buttons |= BT_CHANGE; 
-				cmd->buttons |= i<<BT_WEAPONSHIFT; 
-				break; 
+				cmd->buttons |= BT_CHANGE;
+				cmd->buttons |= i<<BT_WEAPONSHIFT;
+				break;
 			}
 		}
 	}
@@ -602,8 +602,8 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 	forward -= forwardmove[speed];
 	}
 
-	// Double click to use can be disabled 
-	
+	// Double click to use can be disabled
+
 	if (dclick_use)
 	{
 	//
@@ -1607,7 +1607,7 @@ static void G_WriteLevelStat(void)
 
 	fprintf(fstream, "E%dM%d%s - %s (%s) K: %d/%d I: %d/%d S: %d/%d\n",
 			gameepisode, gamemap, (secretexit ? "s" : ""),
-			levelTimeString, totalTimeString, playerKills, totalkills, 
+			levelTimeString, totalTimeString, playerKills, totalkills,
 			playerItems, totalitems, playerSecrets, totalsecret);
 }
 

@@ -17,7 +17,7 @@
 // Win32/SDL_mixer MIDI Server
 //
 // Uses pipes to communicate with Doom. This allows this separate process to
-// have its own independent volume control even under Windows Vista and up's 
+// have its own independent volume control even under Windows Vista and up's
 // broken, stupid, completely useless mixer model that can't assign separate
 // volumes to different devices for the same process.
 //

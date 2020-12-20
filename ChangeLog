@@ -12,7 +12,7 @@ Crispy Doom 5.2 has been released on June 20, 2018. This release introduces many
  * The number of sound channels may now be 16 or 32 as an alternative to the default 8, adjustable in the "Audible" section of the Crispness menu.
  * The "Rendering" Crispness menu section has been introduced, comprising the high-resolution rendering, uncapped framerate and smooth pixel scaling options.
  * Support for DeePsea tall patches has been added to the main patch drawing functions. Furthermore, tall textures and sprites composed of DeePsea tall patches are now supported, as suggested by JNechaevsky.
- * Resolution-agnostic and fullscreen-stretching patch drawing functions have been implemented, mostly taken from Doom Retro. 
+ * Resolution-agnostic and fullscreen-stretching patch drawing functions have been implemented, mostly taken from Doom Retro.
  * The "Demos" section of the Crispness menu has been introduced, including options for enabling the recording timer, choosing forward or backward counting playback timer and the demo progress bar (which is now 2 px high).
  * Support for MUSINFO lumps (dynamic music changing) has been added, mostly taken from PrBoom+.
 
@@ -36,7 +36,7 @@ Crispy Doom 5.2 has been released on June 20, 2018. This release introduces many
  * Fonts in the finale text screens are now rendered with shadows.
  * The Player's view height is now immediately updated when his sector moves.
  * Warnings about mapthings without any skill tag set are now issued.
- * The "Always Run" and "Use native keyboard mapping" are now disabled by default, like in Chocolate Doom. This is in order not to confuse players installing Crispy for the first time. Zodomaniac requested this upon discovering the impossibility to type in savegame names in Cyrillic keyboard layout when using native keyboard mapping, which was also confirmed by JNechaevsky under different OSes. 
+ * The "Always Run" and "Use native keyboard mapping" are now disabled by default, like in Chocolate Doom. This is in order not to confuse players installing Crispy for the first time. Zodomaniac requested this upon discovering the impossibility to type in savegame names in Cyrillic keyboard layout when using native keyboard mapping, which was also confirmed by JNechaevsky under different OSes.
  * Palette changes now don't occur when the help screen or the Crispness menu is active, thanks to mfrancis95 for the contribution.
 
 **Bug Fixes**
@@ -44,7 +44,7 @@ Crispy Doom 5.2 has been released on June 20, 2018. This release introduces many
  * Fuzz effect going out of bounds noticed by JNechaevsky has been fixed.
  * A crash that occured when loading a map without any things has been fixed, thanks to mfrancis95 for noticing.
  * The status bar is now immediately getting redrawn after the help screens have been shown, spotted by JNechaevsky.
- * The blood fix for Lost Souls not getting toggled in-game immediately like the colored blood for other monsters has been fixed, pointed out by Zodomaniac. 
+ * The blood fix for Lost Souls not getting toggled in-game immediately like the colored blood for other monsters has been fixed, pointed out by Zodomaniac.
  * Demos are now played back with interpolation in case of uncapped rendering even if the menu is open, on mfrancis95's report.
  * Romero's head is not randomly flipped after death anymore, thanks to JNechaevsky for inspiring the flipped corpse feature overhaul.
  * Color translation dependence on gamma level spotted by JNechaevsky has been fixed.
@@ -54,7 +54,7 @@ Crispy Doom 5.2 has been released on June 20, 2018. This release introduces many
  * The bug when music was starting to play while paused and changed volume spotted by JNechaevsky has been fixed.
  * The in-engine "fixes" replacing WolfSS by Zombiemen for the BFG edition IWAD and removing the TNT MAP31 yellow key erroneous "multiplayer only" flag have been removed because they make demo playback fail as Zodomaniac's investigation has shown. Instead, the PWAD fixes (https://forum.zdoom.org/viewtopic.php?f=19&t=53776 and http://www.teamtnt.com/other/tnt31fix.zip respectively) are recommended.
  * Crashes when completing IWAD bonus maps (E1M10: Sewers, MAP33: Betray) while recording a demo have been fixed on Zodomaniac's report.
- * The possibility of falling down into a wall after a savegame is loaded has been fixed. 
+ * The possibility of falling down into a wall after a savegame is loaded has been fixed.
  * Zero music volume not muting OPL (and not only OPL) music fully has been fixed. Thanks to JNechaevsky, Zodomaniac and mfrancis95 for bringing this up again and nukeykt for clarifying OPL chip limitations and suggesting to pause music when it is muted.
  * The MAXBUTTONS limit has been removed (mostly because of the SPECHITS cheat and because of the more-then-one-switch-texture-per-line fix mentioned below).
  * The glitch of switch textures not changing in some segments has been fixed by means of registering up to three buttons at once for lines with more than one switch texture. Thanks to JNechaevsky for spotting this bug in the Vanilla code and Brad Harding and Jeff Doggett for presenting alternative approaches.
@@ -756,7 +756,7 @@ Crispy Doom 1.5 "Supernova" has been released on August 18, 2014.
 
 '''Technical'''
 * Compatibility improvements:
-** The default amount of RAM that is allocated for the game has been doubled to <tt>32 MB</tt>, the minimal amount has been quadrupled to <tt>16 MB</tt>. 
+** The default amount of RAM that is allocated for the game has been doubled to <tt>32 MB</tt>, the minimal amount has been quadrupled to <tt>16 MB</tt>.
 ** The "Medusa" effect from multi-patch textures has been fixed by lazily replacing (and slightly adapting) <tt>R_DrawColumnInCache()</tt>, <tt>R_GenerateComposite()</tt> and <tt>R_GenerateLookup()</tt> in <tt>src/doom/r_data.c</tt> with Lee Killough's implementations from MBF.
 ** The "Tutti Frutti" effect from short textures has been fixed by (again lazily) replacing <tt>R_DrawColumn()</tt> in <tt>src/doom/r_draw.c</tt> with Lee Killough's implementation from MBF. ''However, this fix has not yet been applied to the other column drawing functions, namely <tt>R_Draw{Fuzz,Translated,TL}Column[Low]()</tt>.''
 ** The <tt>MAXVISSPRITES</tt>, <tt>MAXVISPLANES</tt> and <tt>MAXDRAWSEGS</tt> limits have been entirely removed (''i.e. the formerly static arrays now get resized dynamically''), using no Boom-derived code at all. ''However, for performance reasons (mostly sprite ordering in <tt>R_SortVisSprites()</tt>), the <tt>MAXVISSPRITES</tt> limit is currently capped at 4096 (i.e. <tt>32 x</tt> Vanilla <tt>MAXVISSPRITES</tt> limit).''
@@ -804,7 +804,7 @@ Crispy Doom 1.4 has been released on June 12, 2014.
 :# Only the player can walk over or underneath other objects, monsters can not. This prevents multiple monsters from piling up and avoids the need for more complicated measures in the code that would potentially break compatibility.
 :# It is only allowed to walk over or underneath shootable objects. Most other objects in Doom have arbitrary heights hard-coded into the engine which do not necessarily match the actual appereance in the game.
 :# Melee attacks across differences heights are entirely unaffected by this feature.
-* Automap improvements: 
+* Automap improvements:
 ** Keyed doors are now drawn in their respective colors.
 ** Thus, in order to distinguish red-keyed doors from regular walls (which were formerly drawn in red) and yellow-keyed doors from walls with ceiling level changes (which were formerly drawn in yellow), these are now drawn in darker red and yellow colors, respectively.
 ** Furthermore, teleporters (which were formerly drawn in just that darker red color) are now drawn in green. Additionally, WR teleporters (''linedef type #97'') are now also drawn in green if they are not secret.
@@ -844,7 +844,7 @@ Crispy Doom 1.3 has been released on May 19, 2014.
 * It is now possible to toggle between Fist and Chainsaw even without the Berserk pack applied, not available in demo recording/playback and netgame mode.
 * Boom's <tt>TNTEM</tt> and <tt>TNTWEAPx</tt> cheats as well as PrBoom+'s/ZDoom's <tt>NOTARGET</tt> cheat have been implemented.
 * The Automap is now updated while playing.
-* The Automap markers are now centerd on the map. 
+* The Automap markers are now centerd on the map.
 * Vertical aiming (introduced in Crispy Doom 1.2) is now optional, since it may have some severe undesired effects on gameplay. It can be enabled in ''crispy-doom-setup'', but is disabled by default and in demo recording/playback and netgame mode.
 * The corpse flipping randomization (introduced in Crispy Doom 1.2) has been improved by improving corpse health randomization. ''The flipping decision is based on the monster health after death. However, since some weapons do only apply damage in multiples of (multiples of) 2, the distribution was uneven. In Crispy Doom 1.3, moster health is now reduced by <tt>target->tics & 1</tt>, which itself is randomized by <tt>target->tics -= P_Random()&3</tt> before. Thus, a more even distribution is achived across all weapons and monster types.'' Furthermore, the Barrel has been added as an exception that should not have its death animation flipped (thanks Doom Retro).
 * The lethal pellet of a point-blank SSG blast may now get an additional damage boost to achieve an occasional gib chance, disabled in demo recording/playback and netgame mode. ''This only happens if the target is within melee range (i.e. if <tt>P_CheckMeleeRange(target)</tt> returns <tt>true</tt>) and if <tt>damage >= 10</tt> for the lethal pellet, which roughly corresponds to a 2/3 chance.''

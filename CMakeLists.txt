@@ -19,18 +19,17 @@ set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2020")
 set(PACKAGE_LICENSE "GNU General Public License, version 2")
 
 # Any settings that should apply to all targets in this directory and all
-# subdirectories should go here.  Use judiciously.
+# subdirectories should go here. Use judiciously.
 if(MSVC)
-    #add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE"
-    #                "/D_CRT_NONSTDC_NO_DEPRECATE")
-    add_compile_options(
+	#add_definitions(
+	#	"/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE"
+	#	"/D_CRT_NONSTDC_NO_DEPRECATE")
+	add_compile_options(
 		"/Zc:__cplusplus" "/experimental:module" "/permissive-" "/Zc:preprocessor"
 		"/Zc:wchar_t" "/W4" "/Zc:inline" "/Od" "/MDd" "/Zc:forScope" "/fp:precise"
-		"/arch:AVX2" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-"
-	)
+		"/arch:AVX2" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-")
 else()
-    add_compile_options("-Wall" "-Wdeclaration-after-statement"
-                        "-Wredundant-decls")
+	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 endif()
 
 find_package(SDL2 REQUIRED)
@@ -40,13 +39,13 @@ find_package(SDL2_net REQUIRED)
 # Check for libsamplerate.
 find_package(samplerate)
 if(SAMPLERATE_FOUND)
-    set(HAVE_LIBSAMPLERATE TRUE)
+	set(HAVE_LIBSAMPLERATE TRUE)
 endif()
 
 # Check for libpng.
 find_package(PNG)
 if(PNG_FOUND)
-    set(HAVE_LIBPNG TRUE)
+	set(HAVE_LIBPNG TRUE)
 endif()
 
 include(CheckSymbolExists)
@@ -55,8 +54,7 @@ include(CheckIncludeFile)
 #check_symbol_exists(strncasecmp "strings.h" HAVE_DECL_STRNCASECMP)
 #check_include_file("dirent.h" HAVE_DIRENT_H)
 
-string(CONCAT WINDOWS_RC_VERSION "${PROJECT_VERSION_MAJOR}, "
-    "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")
+string(CONCAT WINDOWS_RC_VERSION "${PROJECT_VERSION_MAJOR}, " "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")
 
 # Without a hyphen. This is used for the bash-completion scripts.
 string(TOLOWER "${PACKAGE_SHORTNAME}" PROGRAM_SPREFIX)
@@ -71,5 +69,5 @@ configure_file(src/setup-res.rc.in src/setup-res.rc)
 configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)
 
 foreach(SUBDIR textscreen midiproc opl pcsound src)
-    add_subdirectory("${SUBDIR}")
+	add_subdirectory("${SUBDIR}")
 endforeach()

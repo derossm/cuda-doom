@@ -320,7 +320,7 @@ boolean P_GiveWeapon(player_t *player, pclass_t class, weapontype_t weapon)
 		else
 		{
 			return P_GiveMana(player, MANA_2, 25);
-		}		
+		}
 	}
 	if(netgame && !deathmatch)
 	{ // Cooperative net-game
@@ -334,7 +334,7 @@ boolean P_GiveWeapon(player_t *player, pclass_t class, weapontype_t weapon)
 		{
 			P_GiveMana(player, MANA_1, 25);
 		}
-		else 
+		else
 		{
 			P_GiveMana(player, MANA_2, 25);
 		}
@@ -349,7 +349,7 @@ boolean P_GiveWeapon(player_t *player, pclass_t class, weapontype_t weapon)
 	{
 		gaveMana = P_GiveMana(player, MANA_1, 25);
 	}
-	else 
+	else
 	{
 		gaveMana = P_GiveMana(player, MANA_2, 25);
 	}
@@ -1726,7 +1726,7 @@ void P_AutoUseHealth(player_t * player, int saveHealth)
 =
 = Damages both enemies and players
 = inflictor is the thing that caused the damage
-= 		creature or missile, can be NULL (slime, etc)
+=		creature or missile, can be NULL (slime, etc)
 = source is the thing to target after taking damage
 =		creature or NULL
 = Source and inflictor are the same for melee attacks

@@ -45,7 +45,7 @@ static void FloatFormatString(float step, char *buf, size_t buf_len)
 	}
 }
 
-// Number of characters needed to represent a character 
+// Number of characters needed to represent a character
 
 static unsigned int IntWidth(int val)
 {
@@ -72,7 +72,7 @@ static unsigned int FloatWidth(float val, float step)
 	if (precision > 0)
 	{
 		result += precision + 1;
-	}	
+	}
 
 	return result;
 }
@@ -97,7 +97,7 @@ static unsigned int SpinControlWidth(txt_spincontrol_t *spincontrol)
 			break;
 
 	}
-	
+
 	// Choose the wider of the two values. Add one so that there is always
 	// space for the cursor when editing.
 
@@ -319,7 +319,7 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
 
 			return 1;
 		}
-		
+
 		if (key == KEY_RIGHTARROW)
 		{
 			switch (spincontrol->type)

@@ -56,8 +56,8 @@ extern int		*flipviewwidth;
 extern int		firstflat;
 
 // for global animation
-extern int*		flattranslation;	
-extern int*		texturetranslation;	
+extern int*		flattranslation;
+extern int*		texturetranslation;
 
 
 // Sprite....

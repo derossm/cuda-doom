@@ -29,7 +29,7 @@
 // eg. "BUTTON #10"
 #define MOUSE_INPUT_WIDTH 10
 
-static int MousePressCallback(txt_window_t *window, 
+static int MousePressCallback(txt_window_t *window,
 								int x, int y, int b,
 								TXT_UNCAST_ARG(mouse_input))
 {
@@ -107,9 +107,9 @@ static void TXT_MouseInputDrawer(TXT_UNCAST_ARG(mouse_input))
 
 	TXT_SetWidgetBG(mouse_input);
 	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
-	
+
 	TXT_DrawString(buf);
-	
+
 	for (i = TXT_UTF8_Strlen(buf); i < MOUSE_INPUT_WIDTH; ++i)
 	{
 		TXT_DrawString(" ");

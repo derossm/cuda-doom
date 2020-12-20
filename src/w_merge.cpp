@@ -31,10 +31,10 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-typedef enum 
-{ 
-	SECTION_NORMAL, 
-	SECTION_FLATS, 
+typedef enum
+{
+	SECTION_NORMAL,
+	SECTION_FLATS,
 	SECTION_SPRITES,
 } section_t;
 
@@ -132,7 +132,7 @@ static void SetupLists(void)
 	{
 		I_Error("Sprites section not found in IWAD");
 	}
-	
+
 	// PWAD
 
 	SetupList(&pwad_flats, &pwad, "F_START", "F_END", "FF_START", "FF_END");
@@ -215,7 +215,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
 	}
 
 	// Add to end of list
-	
+
 	result = &sprite_frames[num_sprite_frames];
 	memcpy(result->sprname, name, 4);
 	result->frame = frame;
@@ -256,16 +256,16 @@ static boolean SpriteLumpNeeded(lumpinfo_t *lump)
 				return true;
 		}
 	}
-	else 
+	else
 	{
 		// check if this lump is being used for this frame
 
 		if (sprite->angle_lumps[angle_num - 1] == lump)
 			return true;
 	}
-			
+
 	// second frame if any
-	
+
 	// no second frame?
 	if (lump->name[6] == '\0')
 		return false;
@@ -283,7 +283,7 @@ static boolean SpriteLumpNeeded(lumpinfo_t *lump)
 				return true;
 		}
 	}
-	else 
+	else
 	{
 		// check if this lump is being used for this frame
 
@@ -304,13 +304,13 @@ static void AddSpriteLump(lumpinfo_t *lump)
 	{
 		return;
 	}
-	
+
 	// first angle
 
 	sprite = FindSpriteFrame(lump->name, lump->name[4]);
 	angle_num = lump->name[5] - '0';
-	
-	if (angle_num == 0) 
+
+	if (angle_num == 0)
 	{
 		for (i=0; i<8; ++i)
 			sprite->angle_lumps[i] = lump;
@@ -319,18 +319,18 @@ static void AddSpriteLump(lumpinfo_t *lump)
 	{
 		sprite->angle_lumps[angle_num - 1] = lump;
 	}
-	
+
 	// second angle
 
 	// no second angle?
- 
+
 	if (lump->name[6] == '\0')
 		return;
-	
+
 	sprite = FindSpriteFrame(lump->name, lump->name[6]);
 	angle_num = lump->name[7] - '0';
-	
-	if (angle_num == 0) 
+
+	if (angle_num == 0)
 	{
 		for (i=0; i<8; ++i)
 			sprite->angle_lumps[i] = lump;
@@ -348,14 +348,14 @@ static void GenerateSpriteList(void)
 	int i;
 
 	InitSpriteList();
-	
+
 	// Add all sprites from the IWAD
-	
+
 	for (i=0; i<iwad_sprites.numlumps; ++i)
 	{
 		AddSpriteLump(iwad_sprites.lumps[i]);
 	}
-	
+
 	// Add all sprites from the PWAD
 	// (replaces IWAD sprites)
 
@@ -371,17 +371,17 @@ static void GenerateSpriteList(void)
 // IWAD first followed by the PWAD.
 //
 // For the IWAD:
-// * Flats are added. If a flat with the same name is in the PWAD, 
-//	it is ignored(deleted). At the end of the section, all flats in the 
-//	PWAD are inserted. This is consistent with the behavior of 
+// * Flats are added. If a flat with the same name is in the PWAD,
+//	it is ignored(deleted). At the end of the section, all flats in the
+//	PWAD are inserted. This is consistent with the behavior of
 //	deutex/deusf.
 // * Sprites are added. The "replace list" is generated before the merge
 //	from the list of sprites in the PWAD. Any sprites in the IWAD found
 //	to match the replace list are removed. At the end of the section,
 //	the sprites from the PWAD are inserted.
-// 
+//
 // For the PWAD:
-// * All Sprites and Flats are ignored, with the assumption they have 
+// * All Sprites and Flats are ignored, with the assumption they have
 //	already been merged into the IWAD's sections.
 
 static void DoMerge(void)
@@ -491,7 +491,7 @@ static void DoMerge(void)
 				break;
 		}
 	}
-	
+
 	// Add PWAD lumps
 	current_section = SECTION_NORMAL;
 
@@ -515,7 +515,7 @@ static void DoMerge(void)
 				else
 				{
 					// Don't include the headers of sections
-		
+
 					newlumps[num_newlumps++] = lump;
 				}
 				break;
@@ -523,7 +523,7 @@ static void DoMerge(void)
 			case SECTION_FLATS:
 
 				// PWAD flats are ignored (already merged)
- 
+
 				if (!strncasecmp(lump->name, "FF_END", 8)
 					|| !strncasecmp(lump->name, "F_END", 8))
 				{
@@ -586,7 +586,7 @@ void W_MergeFile(const char *filename)
 
 	pwad.lumps = lumpinfo + old_numlumps;
 	pwad.numlumps = numlumps - old_numlumps;
-	
+
 	// Setup sprite/flat lists
 
 	SetupLists();
@@ -661,7 +661,7 @@ void W_NWTMergeFile(const char *filename, int flags)
 	{
 		W_NWTAddLumps(&iwad_sprites);
 	}
-	
+
 	// Discard the PWAD
 
 	numlumps = old_numlumps;

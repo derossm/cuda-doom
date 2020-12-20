@@ -339,7 +339,7 @@ int M_StringAlloc(char **str, int numstrs, size_t extra, const char *str1, ...)
 	--numstrs;
 
 	if(numstrs != 0)
-	{	
+	{
 		va_start(args, str1);
 
 		while(numstrs != 0)
@@ -429,7 +429,7 @@ char *M_MakeStrifeSaveDir(int slotnum, const char *extra)
 	return tmpbuffer;
 }
 
-// 
+//
 // M_GetFilePath
 //
 // haleyjd: STRIFE-FIXME: Temporary?
@@ -469,9 +469,9 @@ char M_GetFilePath(const char *fn, char *dest, size_t len)
 	if(!found_slash && *dest == '\0')
 		*dest = '.';
 
-	// if a separator is not found, default to forward, because Windows 
+	// if a separator is not found, default to forward, because Windows
 	// supports that too.
-	if(sepchar == '\0') 
+	if(sepchar == '\0')
 		sepchar = '/';
 
 	return sepchar;

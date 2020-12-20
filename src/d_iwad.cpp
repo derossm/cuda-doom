@@ -94,7 +94,7 @@ static void AddIWADDir(char *dir)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-typedef struct 
+typedef struct
 {
 	HKEY root;
 	char *path;
@@ -103,7 +103,7 @@ typedef struct
 
 #define UNINSTALLER_STRING "\\uninstl.exe /S "
 
-// Keys installed by the various CD editions. These are actually the 
+// Keys installed by the various CD editions. These are actually the
 // commands to invoke the uninstaller and look like this:
 //
 // C:\Program Files\Path\uninstl.exe /S C:\Program Files\Path
@@ -472,7 +472,7 @@ static boolean DirIsFile(const char *path, const char *filename)
 
 static char *CheckDirectoryHasIWAD(const char *dir, const char *iwadname)
 {
-	char *filename; 
+	char *filename;
 	char *probe;
 
 	// As a special case, the "directory" may refer directly to an
@@ -515,7 +515,7 @@ static char *SearchDirectoryForIWAD(const char *dir, int mask, GameMission_t *mi
 	char *filename;
 	size_t i;
 
-	for (i=0; i<arrlen(iwads); ++i) 
+	for (i=0; i<arrlen(iwads); ++i)
 	{
 		if (((1 << iwads[i].mission) & mask) == 0)
 		{
@@ -757,14 +757,14 @@ static void BuildIWADDirList(void)
 
 //
 // Searches WAD search paths for an WAD with a specific filename.
-// 
+//
 
 char *D_FindWADByName(const char *name)
 {
 	char *path;
 	char *probe;
 	int i;
-	
+
 	// Absolute path?
 
 	probe = M_FileCaseExists(name);
@@ -867,7 +867,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
 		{
 			I_Error("IWAD file '%s' not found!", iwadfile);
 		}
-		
+
 		*mission = IdentifyIWADByName(result, mask);
 	}
 	else
@@ -877,7 +877,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
 		result = NULL;
 
 		BuildIWADDirList();
-	
+
 		for (i=0; result == NULL && i<num_iwad_dirs; ++i)
 		{
 			result = SearchDirectoryForIWAD(iwad_dirs[i], mask, mission);

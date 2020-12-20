@@ -770,7 +770,7 @@ static void NET_QueryPrintCallback(net_addr_t *addr,
 
 	if (data->gamemode != indetermined)
 	{
-		printf("(%s) ", GameDescription(data->gamemode, 
+		printf("(%s) ", GameDescription(data->gamemode,
 										data->gamemission));
 	}
 

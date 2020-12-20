@@ -48,7 +48,7 @@ enum
  ML_SSECTORS,		// SubSectors, list of LineSegs
  ML_NODES,		// BSP nodes
  ML_SECTORS,		// Sectors, from editing
- ML_REJECT,		// LUT, sector-sector visibility	
+ ML_REJECT,		// LUT, sector-sector visibility
  ML_BLOCKMAP		// LUT, motion clipping, walls/grid element
 };
 
@@ -132,7 +132,7 @@ typedef PACKED_STRUCT (
 #define ML_DONTPEGTOP		8
 
 // lower texture unpegged
-#define ML_DONTPEGBOTTOM	16	
+#define ML_DONTPEGBOTTOM	16
 
 // In AutoMap: don't map as two sided: IT'S A SECRET!
 #define ML_SECRET		32
@@ -190,7 +190,7 @@ typedef PACKED_STRUCT (
 {
  unsigned short		v1; // [crispy] extended nodes
  unsigned short		v2; // [crispy] extended nodes
- short		angle;		
+ short		angle;
  unsigned short		linedef; // [crispy] extended nodes
  short		side;
  short		offset;

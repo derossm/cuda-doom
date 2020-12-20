@@ -573,7 +573,7 @@ void P_PlayerThink(player_t * player)
 		ultimatemsg = false;	// clear out any chat messages.
 		BorderTopRefresh = true;
 	}
-	
+
 	// [crispy] Decrement centered message tics if greater than 0
 	if (player->centerMessageTics > 0)
 	{
