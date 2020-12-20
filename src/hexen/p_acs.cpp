@@ -57,116 +57,116 @@ typedef PACKED_STRUCT (
 
 static void StartOpenACS(int number, int infoIndex, int offset);
 static void ScriptFinished(int number);
-static boolean TagBusy(int tag);
-static boolean AddToACSStore(int map, int number, byte * args);
+static bool TagBusy(int tag);
+static bool AddToACSStore(int map, int number, byte * args);
 static int GetACSIndex(int number);
 static void Push(int value);
-static int Pop(void);
-static int Top(void);
-static void Drop(void);
+static int Pop();
+static int Top();
+static void Drop();
 
-static int CmdNOP(void);
-static int CmdTerminate(void);
-static int CmdSuspend(void);
-static int CmdPushNumber(void);
-static int CmdLSpec1(void);
-static int CmdLSpec2(void);
-static int CmdLSpec3(void);
-static int CmdLSpec4(void);
-static int CmdLSpec5(void);
-static int CmdLSpec1Direct(void);
-static int CmdLSpec2Direct(void);
-static int CmdLSpec3Direct(void);
-static int CmdLSpec4Direct(void);
-static int CmdLSpec5Direct(void);
-static int CmdAdd(void);
-static int CmdSubtract(void);
-static int CmdMultiply(void);
-static int CmdDivide(void);
-static int CmdModulus(void);
-static int CmdEQ(void);
-static int CmdNE(void);
-static int CmdLT(void);
-static int CmdGT(void);
-static int CmdLE(void);
-static int CmdGE(void);
-static int CmdAssignScriptVar(void);
-static int CmdAssignMapVar(void);
-static int CmdAssignWorldVar(void);
-static int CmdPushScriptVar(void);
-static int CmdPushMapVar(void);
-static int CmdPushWorldVar(void);
-static int CmdAddScriptVar(void);
-static int CmdAddMapVar(void);
-static int CmdAddWorldVar(void);
-static int CmdSubScriptVar(void);
-static int CmdSubMapVar(void);
-static int CmdSubWorldVar(void);
-static int CmdMulScriptVar(void);
-static int CmdMulMapVar(void);
-static int CmdMulWorldVar(void);
-static int CmdDivScriptVar(void);
-static int CmdDivMapVar(void);
-static int CmdDivWorldVar(void);
-static int CmdModScriptVar(void);
-static int CmdModMapVar(void);
-static int CmdModWorldVar(void);
-static int CmdIncScriptVar(void);
-static int CmdIncMapVar(void);
-static int CmdIncWorldVar(void);
-static int CmdDecScriptVar(void);
-static int CmdDecMapVar(void);
-static int CmdDecWorldVar(void);
-static int CmdGoto(void);
-static int CmdIfGoto(void);
-static int CmdDrop(void);
-static int CmdDelay(void);
-static int CmdDelayDirect(void);
-static int CmdRandom(void);
-static int CmdRandomDirect(void);
-static int CmdThingCount(void);
-static int CmdThingCountDirect(void);
-static int CmdTagWait(void);
-static int CmdTagWaitDirect(void);
-static int CmdPolyWait(void);
-static int CmdPolyWaitDirect(void);
-static int CmdChangeFloor(void);
-static int CmdChangeFloorDirect(void);
-static int CmdChangeCeiling(void);
-static int CmdChangeCeilingDirect(void);
-static int CmdRestart(void);
-static int CmdAndLogical(void);
-static int CmdOrLogical(void);
-static int CmdAndBitwise(void);
-static int CmdOrBitwise(void);
-static int CmdEorBitwise(void);
-static int CmdNegateLogical(void);
-static int CmdLShift(void);
-static int CmdRShift(void);
-static int CmdUnaryMinus(void);
-static int CmdIfNotGoto(void);
-static int CmdLineSide(void);
-static int CmdScriptWait(void);
-static int CmdScriptWaitDirect(void);
-static int CmdClearLineSpecial(void);
-static int CmdCaseGoto(void);
-static int CmdBeginPrint(void);
-static int CmdEndPrint(void);
-static int CmdPrintString(void);
-static int CmdPrintNumber(void);
-static int CmdPrintCharacter(void);
-static int CmdPlayerCount(void);
-static int CmdGameType(void);
-static int CmdGameSkill(void);
-static int CmdTimer(void);
-static int CmdSectorSound(void);
-static int CmdAmbientSound(void);
-static int CmdSoundSequence(void);
-static int CmdSetLineTexture(void);
-static int CmdSetLineBlocking(void);
-static int CmdSetLineSpecial(void);
-static int CmdThingSound(void);
-static int CmdEndPrintBold(void);
+static int CmdNOP();
+static int CmdTerminate();
+static int CmdSuspend();
+static int CmdPushNumber();
+static int CmdLSpec1();
+static int CmdLSpec2();
+static int CmdLSpec3();
+static int CmdLSpec4();
+static int CmdLSpec5();
+static int CmdLSpec1Direct();
+static int CmdLSpec2Direct();
+static int CmdLSpec3Direct();
+static int CmdLSpec4Direct();
+static int CmdLSpec5Direct();
+static int CmdAdd();
+static int CmdSubtract();
+static int CmdMultiply();
+static int CmdDivide();
+static int CmdModulus();
+static int CmdEQ();
+static int CmdNE();
+static int CmdLT();
+static int CmdGT();
+static int CmdLE();
+static int CmdGE();
+static int CmdAssignScriptVar();
+static int CmdAssignMapVar();
+static int CmdAssignWorldVar();
+static int CmdPushScriptVar();
+static int CmdPushMapVar();
+static int CmdPushWorldVar();
+static int CmdAddScriptVar();
+static int CmdAddMapVar();
+static int CmdAddWorldVar();
+static int CmdSubScriptVar();
+static int CmdSubMapVar();
+static int CmdSubWorldVar();
+static int CmdMulScriptVar();
+static int CmdMulMapVar();
+static int CmdMulWorldVar();
+static int CmdDivScriptVar();
+static int CmdDivMapVar();
+static int CmdDivWorldVar();
+static int CmdModScriptVar();
+static int CmdModMapVar();
+static int CmdModWorldVar();
+static int CmdIncScriptVar();
+static int CmdIncMapVar();
+static int CmdIncWorldVar();
+static int CmdDecScriptVar();
+static int CmdDecMapVar();
+static int CmdDecWorldVar();
+static int CmdGoto();
+static int CmdIfGoto();
+static int CmdDrop();
+static int CmdDelay();
+static int CmdDelayDirect();
+static int CmdRandom();
+static int CmdRandomDirect();
+static int CmdThingCount();
+static int CmdThingCountDirect();
+static int CmdTagWait();
+static int CmdTagWaitDirect();
+static int CmdPolyWait();
+static int CmdPolyWaitDirect();
+static int CmdChangeFloor();
+static int CmdChangeFloorDirect();
+static int CmdChangeCeiling();
+static int CmdChangeCeilingDirect();
+static int CmdRestart();
+static int CmdAndLogical();
+static int CmdOrLogical();
+static int CmdAndBitwise();
+static int CmdOrBitwise();
+static int CmdEorBitwise();
+static int CmdNegateLogical();
+static int CmdLShift();
+static int CmdRShift();
+static int CmdUnaryMinus();
+static int CmdIfNotGoto();
+static int CmdLineSide();
+static int CmdScriptWait();
+static int CmdScriptWaitDirect();
+static int CmdClearLineSpecial();
+static int CmdCaseGoto();
+static int CmdBeginPrint();
+static int CmdEndPrint();
+static int CmdPrintString();
+static int CmdPrintNumber();
+static int CmdPrintCharacter();
+static int CmdPlayerCount();
+static int CmdGameType();
+static int CmdGameSkill();
+static int CmdTimer();
+static int CmdSectorSound();
+static int CmdAmbientSound();
+static int CmdSoundSequence();
+static int CmdSetLineTexture();
+static int CmdSetLineBlocking();
+static int CmdSetLineSpecial();
+static int CmdThingSound();
+static int CmdEndPrintBold();
 
 static void ThingCount(int type, int tid);
 
@@ -193,7 +193,7 @@ static char **ACStrings;
 static char PrintBuffer[PRINT_BUFFER_SIZE];
 static acs_t *NewScript;
 
-static int (*PCodeCmds[]) (void) =
+static int (*PCodeCmds[]) () =
 {
 		CmdNOP,
 		CmdTerminate,
@@ -335,7 +335,7 @@ static void ACSAssert(int condition, const char *fmt, ...)
 //
 //==========================================================================
 
-static int ReadCodeInt(void)
+static int ReadCodeInt()
 {
 	int result;
 	int *ptr;
@@ -359,7 +359,7 @@ static int ReadCodeInt(void)
 //
 //==========================================================================
 
-static int ReadScriptVar(void)
+static int ReadScriptVar()
 {
 	int var = ReadCodeInt();
 	ACSAssert(var >= 0, "negative script variable: %d < 0", var);
@@ -377,7 +377,7 @@ static int ReadScriptVar(void)
 //
 //==========================================================================
 
-static int ReadMapVar(void)
+static int ReadMapVar()
 {
 	int var = ReadCodeInt();
 	ACSAssert(var >= 0, "negative map variable: %d < 0", var);
@@ -395,7 +395,7 @@ static int ReadMapVar(void)
 //
 //==========================================================================
 
-static int ReadWorldVar(void)
+static int ReadWorldVar()
 {
 	int var = ReadCodeInt();
 	ACSAssert(var >= 0, "negative world variable: %d < 0", var);
@@ -431,7 +431,7 @@ static char *StringLookup(int string_index)
 //
 //==========================================================================
 
-static int ReadOffset(void)
+static int ReadOffset()
 {
 	int offset = ReadCodeInt();
 	ACSAssert(offset >= 0, "negative lump offset %d", offset);
@@ -545,7 +545,7 @@ static void StartOpenACS(int number, int infoIndex, int offset)
 //
 //==========================================================================
 
-void P_CheckACSStore(void)
+void P_CheckACSStore()
 {
 	acsstore_t *store;
 
@@ -574,7 +574,7 @@ void P_CheckACSStore(void)
 
 static char ErrorMsg[128];
 
-boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,
+bool P_StartACS(int number, int map, byte * args, mobj_t * activator,
 					line_t * line, int side)
 {
 	int i;
@@ -630,7 +630,7 @@ boolean P_StartACS(int number, int map, byte * args, mobj_t * activator,
 //
 //==========================================================================
 
-static boolean AddToACSStore(int map, int number, byte * args)
+static bool AddToACSStore(int map, int number, byte * args)
 {
 	int i;
 	int index;
@@ -670,7 +670,7 @@ static boolean AddToACSStore(int map, int number, byte * args)
 //==========================================================================
 
 
-boolean P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
+bool P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
 {
 	int i;
 	int lock;
@@ -709,7 +709,7 @@ boolean P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
 //
 //==========================================================================
 
-boolean P_TerminateACS(int number, int map)
+bool P_TerminateACS(int number, int map)
 {
 	int infoIndex;
 
@@ -733,7 +733,7 @@ boolean P_TerminateACS(int number, int map)
 //
 //==========================================================================
 
-boolean P_SuspendACS(int number, int map)
+bool P_SuspendACS(int number, int map)
 {
 	int infoIndex;
 
@@ -758,7 +758,7 @@ boolean P_SuspendACS(int number, int map)
 //
 //==========================================================================
 
-void P_ACSInitNewGame(void)
+void P_ACSInitNewGame()
 {
 	memset(WorldVars, 0, sizeof(WorldVars));
 	memset(ACSStore, 0, sizeof(ACSStore));
@@ -893,7 +893,7 @@ static void ScriptFinished(int number)
 //
 //==========================================================================
 
-static boolean TagBusy(int tag)
+static bool TagBusy(int tag)
 {
 	int sectorIndex;
 
@@ -968,7 +968,7 @@ static void Push(int value)
 //
 //==========================================================================
 
-static int Pop(void)
+static int Pop()
 {
 	ACSAssert(ACScript->stackPtr > 0, "pop of empty stack");
 	return ACScript->stack[--ACScript->stackPtr];
@@ -980,7 +980,7 @@ static int Pop(void)
 //
 //==========================================================================
 
-static int Top(void)
+static int Top()
 {
 	ACSAssert(ACScript->stackPtr > 0, "read from top of empty stack");
 	return ACScript->stack[ACScript->stackPtr - 1];
@@ -992,7 +992,7 @@ static int Top(void)
 //
 //==========================================================================
 
-static void Drop(void)
+static void Drop()
 {
 	ACSAssert(ACScript->stackPtr > 0, "drop on empty stack");
 	ACScript->stackPtr--;
@@ -1004,29 +1004,29 @@ static void Drop(void)
 //
 //==========================================================================
 
-static int CmdNOP(void)
+static int CmdNOP()
 {
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdTerminate(void)
+static int CmdTerminate()
 {
 	return SCRIPT_TERMINATE;
 }
 
-static int CmdSuspend(void)
+static int CmdSuspend()
 {
 	ACSInfo[ACScript->infoIndex].state = ASTE_SUSPENDED;
 	return SCRIPT_STOP;
 }
 
-static int CmdPushNumber(void)
+static int CmdPushNumber()
 {
 	Push(ReadCodeInt());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec1(void)
+static int CmdLSpec1()
 {
 	int special;
 
@@ -1037,7 +1037,7 @@ static int CmdLSpec1(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec2(void)
+static int CmdLSpec2()
 {
 	int special;
 
@@ -1049,7 +1049,7 @@ static int CmdLSpec2(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec3(void)
+static int CmdLSpec3()
 {
 	int special;
 
@@ -1062,7 +1062,7 @@ static int CmdLSpec3(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec4(void)
+static int CmdLSpec4()
 {
 	int special;
 
@@ -1076,7 +1076,7 @@ static int CmdLSpec4(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec5(void)
+static int CmdLSpec5()
 {
 	int special;
 
@@ -1091,7 +1091,7 @@ static int CmdLSpec5(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec1Direct(void)
+static int CmdLSpec1Direct()
 {
 	int special;
 
@@ -1102,7 +1102,7 @@ static int CmdLSpec1Direct(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec2Direct(void)
+static int CmdLSpec2Direct()
 {
 	int special;
 
@@ -1114,7 +1114,7 @@ static int CmdLSpec2Direct(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec3Direct(void)
+static int CmdLSpec3Direct()
 {
 	int special;
 
@@ -1127,7 +1127,7 @@ static int CmdLSpec3Direct(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec4Direct(void)
+static int CmdLSpec4Direct()
 {
 	int special;
 
@@ -1141,7 +1141,7 @@ static int CmdLSpec4Direct(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLSpec5Direct(void)
+static int CmdLSpec5Direct()
 {
 	int special;
 
@@ -1156,13 +1156,13 @@ static int CmdLSpec5Direct(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAdd(void)
+static int CmdAdd()
 {
 	Push(Pop() + Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSubtract(void)
+static int CmdSubtract()
 {
 	int operand2;
 
@@ -1171,13 +1171,13 @@ static int CmdSubtract(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdMultiply(void)
+static int CmdMultiply()
 {
 	Push(Pop() * Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDivide(void)
+static int CmdDivide()
 {
 	int operand2;
 
@@ -1186,7 +1186,7 @@ static int CmdDivide(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdModulus(void)
+static int CmdModulus()
 {
 	int operand2;
 
@@ -1195,19 +1195,19 @@ static int CmdModulus(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdEQ(void)
+static int CmdEQ()
 {
 	Push(Pop() == Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdNE(void)
+static int CmdNE()
 {
 	Push(Pop() != Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLT(void)
+static int CmdLT()
 {
 	int operand2;
 
@@ -1216,7 +1216,7 @@ static int CmdLT(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdGT(void)
+static int CmdGT()
 {
 	int operand2;
 
@@ -1225,7 +1225,7 @@ static int CmdGT(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLE(void)
+static int CmdLE()
 {
 	int operand2;
 
@@ -1234,7 +1234,7 @@ static int CmdLE(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdGE(void)
+static int CmdGE()
 {
 	int operand2;
 
@@ -1243,175 +1243,175 @@ static int CmdGE(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAssignScriptVar(void)
+static int CmdAssignScriptVar()
 {
 	ACScript->vars[ReadScriptVar()] = Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAssignMapVar(void)
+static int CmdAssignMapVar()
 {
 	MapVars[ReadMapVar()] = Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAssignWorldVar(void)
+static int CmdAssignWorldVar()
 {
 	WorldVars[ReadWorldVar()] = Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdPushScriptVar(void)
+static int CmdPushScriptVar()
 {
 	Push(ACScript->vars[ReadScriptVar()]);
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdPushMapVar(void)
+static int CmdPushMapVar()
 {
 	Push(MapVars[ReadMapVar()]);
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdPushWorldVar(void)
+static int CmdPushWorldVar()
 {
 	Push(WorldVars[ReadWorldVar()]);
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAddScriptVar(void)
+static int CmdAddScriptVar()
 {
 	ACScript->vars[ReadScriptVar()] += Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAddMapVar(void)
+static int CmdAddMapVar()
 {
 	MapVars[ReadMapVar()] += Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAddWorldVar(void)
+static int CmdAddWorldVar()
 {
 	WorldVars[ReadWorldVar()] += Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSubScriptVar(void)
+static int CmdSubScriptVar()
 {
 	ACScript->vars[ReadScriptVar()] -= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSubMapVar(void)
+static int CmdSubMapVar()
 {
 	MapVars[ReadMapVar()] -= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSubWorldVar(void)
+static int CmdSubWorldVar()
 {
 	WorldVars[ReadWorldVar()] -= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdMulScriptVar(void)
+static int CmdMulScriptVar()
 {
 	ACScript->vars[ReadScriptVar()] *= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdMulMapVar(void)
+static int CmdMulMapVar()
 {
 	MapVars[ReadMapVar()] *= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdMulWorldVar(void)
+static int CmdMulWorldVar()
 {
 	WorldVars[ReadWorldVar()] *= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDivScriptVar(void)
+static int CmdDivScriptVar()
 {
 	ACScript->vars[ReadScriptVar()] /= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDivMapVar(void)
+static int CmdDivMapVar()
 {
 	MapVars[ReadMapVar()] /= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDivWorldVar(void)
+static int CmdDivWorldVar()
 {
 	WorldVars[ReadWorldVar()] /= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdModScriptVar(void)
+static int CmdModScriptVar()
 {
 	ACScript->vars[ReadScriptVar()] %= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdModMapVar(void)
+static int CmdModMapVar()
 {
 	MapVars[ReadMapVar()] %= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdModWorldVar(void)
+static int CmdModWorldVar()
 {
 	WorldVars[ReadWorldVar()] %= Pop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdIncScriptVar(void)
+static int CmdIncScriptVar()
 {
 	++ACScript->vars[ReadScriptVar()];
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdIncMapVar(void)
+static int CmdIncMapVar()
 {
 	++MapVars[ReadMapVar()];
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdIncWorldVar(void)
+static int CmdIncWorldVar()
 {
 	++WorldVars[ReadWorldVar()];
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDecScriptVar(void)
+static int CmdDecScriptVar()
 {
 	--ACScript->vars[ReadScriptVar()];
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDecMapVar(void)
+static int CmdDecMapVar()
 {
 	--MapVars[ReadMapVar()];
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDecWorldVar(void)
+static int CmdDecWorldVar()
 {
 	--WorldVars[ReadWorldVar()];
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdGoto(void)
+static int CmdGoto()
 {
 	PCodeOffset = ReadOffset();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdIfGoto(void)
+static int CmdIfGoto()
 {
 	int offset;
 
@@ -1424,25 +1424,25 @@ static int CmdIfGoto(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDrop(void)
+static int CmdDrop()
 {
 	Drop();
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdDelay(void)
+static int CmdDelay()
 {
 	ACScript->delayCount = Pop();
 	return SCRIPT_STOP;
 }
 
-static int CmdDelayDirect(void)
+static int CmdDelayDirect()
 {
 	ACScript->delayCount = ReadCodeInt();
 	return SCRIPT_STOP;
 }
 
-static int CmdRandom(void)
+static int CmdRandom()
 {
 	int low;
 	int high;
@@ -1453,7 +1453,7 @@ static int CmdRandom(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdRandomDirect(void)
+static int CmdRandomDirect()
 {
 	int low;
 	int high;
@@ -1464,7 +1464,7 @@ static int CmdRandomDirect(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdThingCount(void)
+static int CmdThingCount()
 {
 	int tid;
 
@@ -1473,7 +1473,7 @@ static int CmdThingCount(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdThingCountDirect(void)
+static int CmdThingCountDirect()
 {
 	int type;
 
@@ -1539,35 +1539,35 @@ static void ThingCount(int type, int tid)
 	Push(count);
 }
 
-static int CmdTagWait(void)
+static int CmdTagWait()
 {
 	ACSInfo[ACScript->infoIndex].waitValue = Pop();
 	ACSInfo[ACScript->infoIndex].state = ASTE_WAITINGFORTAG;
 	return SCRIPT_STOP;
 }
 
-static int CmdTagWaitDirect(void)
+static int CmdTagWaitDirect()
 {
 	ACSInfo[ACScript->infoIndex].waitValue = ReadCodeInt();
 	ACSInfo[ACScript->infoIndex].state = ASTE_WAITINGFORTAG;
 	return SCRIPT_STOP;
 }
 
-static int CmdPolyWait(void)
+static int CmdPolyWait()
 {
 	ACSInfo[ACScript->infoIndex].waitValue = Pop();
 	ACSInfo[ACScript->infoIndex].state = ASTE_WAITINGFORPOLY;
 	return SCRIPT_STOP;
 }
 
-static int CmdPolyWaitDirect(void)
+static int CmdPolyWaitDirect()
 {
 	ACSInfo[ACScript->infoIndex].waitValue = ReadCodeInt();
 	ACSInfo[ACScript->infoIndex].state = ASTE_WAITINGFORPOLY;
 	return SCRIPT_STOP;
 }
 
-static int CmdChangeFloor(void)
+static int CmdChangeFloor()
 {
 	int tag;
 	int flat;
@@ -1583,7 +1583,7 @@ static int CmdChangeFloor(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdChangeFloorDirect(void)
+static int CmdChangeFloorDirect()
 {
 	int tag;
 	int flat;
@@ -1599,7 +1599,7 @@ static int CmdChangeFloorDirect(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdChangeCeiling(void)
+static int CmdChangeCeiling()
 {
 	int tag;
 	int flat;
@@ -1615,7 +1615,7 @@ static int CmdChangeCeiling(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdChangeCeilingDirect(void)
+static int CmdChangeCeilingDirect()
 {
 	int tag;
 	int flat;
@@ -1631,49 +1631,49 @@ static int CmdChangeCeilingDirect(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdRestart(void)
+static int CmdRestart()
 {
 	PCodeOffset = ACSInfo[ACScript->infoIndex].offset;
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAndLogical(void)
+static int CmdAndLogical()
 {
 	Push(Pop() && Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdOrLogical(void)
+static int CmdOrLogical()
 {
 	Push(Pop() || Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAndBitwise(void)
+static int CmdAndBitwise()
 {
 	Push(Pop() & Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdOrBitwise(void)
+static int CmdOrBitwise()
 {
 	Push(Pop() | Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdEorBitwise(void)
+static int CmdEorBitwise()
 {
 	Push(Pop() ^ Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdNegateLogical(void)
+static int CmdNegateLogical()
 {
 	Push(!Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLShift(void)
+static int CmdLShift()
 {
 	int operand2;
 
@@ -1682,7 +1682,7 @@ static int CmdLShift(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdRShift(void)
+static int CmdRShift()
 {
 	int operand2;
 
@@ -1691,13 +1691,13 @@ static int CmdRShift(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdUnaryMinus(void)
+static int CmdUnaryMinus()
 {
 	Push(-Pop());
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdIfNotGoto(void)
+static int CmdIfNotGoto()
 {
 	int offset;
 
@@ -1710,27 +1710,27 @@ static int CmdIfNotGoto(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdLineSide(void)
+static int CmdLineSide()
 {
 	Push(ACScript->side);
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdScriptWait(void)
+static int CmdScriptWait()
 {
 	ACSInfo[ACScript->infoIndex].waitValue = Pop();
 	ACSInfo[ACScript->infoIndex].state = ASTE_WAITINGFORSCRIPT;
 	return SCRIPT_STOP;
 }
 
-static int CmdScriptWaitDirect(void)
+static int CmdScriptWaitDirect()
 {
 	ACSInfo[ACScript->infoIndex].waitValue = ReadCodeInt();
 	ACSInfo[ACScript->infoIndex].state = ASTE_WAITINGFORSCRIPT;
 	return SCRIPT_STOP;
 }
 
-static int CmdClearLineSpecial(void)
+static int CmdClearLineSpecial()
 {
 	if (ACScript->line)
 	{
@@ -1739,7 +1739,7 @@ static int CmdClearLineSpecial(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdCaseGoto(void)
+static int CmdCaseGoto()
 {
 	int value;
 	int offset;
@@ -1756,13 +1756,13 @@ static int CmdCaseGoto(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdBeginPrint(void)
+static int CmdBeginPrint()
 {
 	*PrintBuffer = 0;
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdEndPrint(void)
+static int CmdEndPrint()
 {
 	player_t *player;
 
@@ -1778,7 +1778,7 @@ static int CmdEndPrint(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdEndPrintBold(void)
+static int CmdEndPrintBold()
 {
 	int i;
 
@@ -1792,13 +1792,13 @@ static int CmdEndPrintBold(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdPrintString(void)
+static int CmdPrintString()
 {
 	M_StringConcat(PrintBuffer, StringLookup(Pop()), sizeof(PrintBuffer));
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdPrintNumber(void)
+static int CmdPrintNumber()
 {
 	char tempStr[16];
 
@@ -1807,7 +1807,7 @@ static int CmdPrintNumber(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdPrintCharacter(void)
+static int CmdPrintCharacter()
 {
 	char tempStr[2];
 
@@ -1818,7 +1818,7 @@ static int CmdPrintCharacter(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdPlayerCount(void)
+static int CmdPlayerCount()
 {
 	int i;
 	int count;
@@ -1832,7 +1832,7 @@ static int CmdPlayerCount(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdGameType(void)
+static int CmdGameType()
 {
 	int gametype;
 
@@ -1852,19 +1852,19 @@ static int CmdGameType(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdGameSkill(void)
+static int CmdGameSkill()
 {
 	Push(gameskill);
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdTimer(void)
+static int CmdTimer()
 {
 	Push(leveltime);
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSectorSound(void)
+static int CmdSectorSound()
 {
 	int volume;
 	mobj_t *mobj;
@@ -1879,7 +1879,7 @@ static int CmdSectorSound(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdThingSound(void)
+static int CmdThingSound()
 {
 	int tid;
 	int sound;
@@ -1898,7 +1898,7 @@ static int CmdThingSound(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdAmbientSound(void)
+static int CmdAmbientSound()
 {
 	int volume;
 
@@ -1907,7 +1907,7 @@ static int CmdAmbientSound(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSoundSequence(void)
+static int CmdSoundSequence()
 {
 	mobj_t *mobj;
 
@@ -1920,7 +1920,7 @@ static int CmdSoundSequence(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSetLineTexture(void)
+static int CmdSetLineTexture()
 {
 	line_t *line;
 	int lineTag;
@@ -1952,11 +1952,11 @@ static int CmdSetLineTexture(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSetLineBlocking(void)
+static int CmdSetLineBlocking()
 {
 	line_t *line;
 	int lineTag;
-	boolean blocking;
+	bool blocking;
 	int searcher;
 
 	blocking = Pop()? ML_BLOCKING : 0;
@@ -1969,7 +1969,7 @@ static int CmdSetLineBlocking(void)
 	return SCRIPT_CONTINUE;
 }
 
-static int CmdSetLineSpecial(void)
+static int CmdSetLineSpecial()
 {
 	line_t *line;
 	int lineTag;

@@ -33,12 +33,12 @@ typedef struct musinfo_s
 	int tics;
 	int current_item;
 	int items[MAX_MUS_ENTRIES];
-	boolean from_savegame;
+	bool from_savegame;
 } musinfo_t;
 
 extern musinfo_t musinfo;
 
 extern void S_ParseMusInfo (const char *mapid);
-extern void T_MusInfo (void);
+extern void T_MusInfo ();
 
 #endif

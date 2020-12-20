@@ -53,7 +53,7 @@ int test;
 
 #define MOBJ_CYCLE_LIMIT 1000000
 
-boolean
+bool
 P_SetMobjState
 ( mobj_t*	mobj,
  statenum_t	state )
@@ -129,7 +129,7 @@ static statenum_t P_LatestSafeState(statenum_t state)
 //
 // P_ExplodeMissile
 //
-static void P_ExplodeMissileSafe (mobj_t* mo, boolean safe)
+static void P_ExplodeMissileSafe (mobj_t* mo, bool safe)
 {
 	mo->momx = mo->momy = mo->momz = 0;
 
@@ -220,7 +220,7 @@ void P_XYMovement (mobj_t* mo)
 		}
 		else if (mo->flags & MF_MISSILE)
 		{
-		boolean safe = false;
+		bool safe = false;
 		// explode a missile
 		if (ceilingline &&
 			ceilingline->backsector &&
@@ -624,7 +624,7 @@ P_SpawnMobjSafe
  fixed_t	y,
  fixed_t	z,
  mobjtype_t	type,
- boolean safe )
+ bool safe )
 {
 	mobj_t*	mobj;
 	state_t*	st;
@@ -774,7 +774,7 @@ void P_RemoveMobj (mobj_t* mobj)
 //
 // P_RespawnSpecials
 //
-void P_RespawnSpecials (void)
+void P_RespawnSpecials ()
 {
 	fixed_t		x;
 	fixed_t		y;
@@ -1100,7 +1100,7 @@ P_SpawnPuffSafe
 ( fixed_t	x,
  fixed_t	y,
  fixed_t	z,
- boolean	safe )
+ bool	safe )
 {
 	mobj_t*	th;
 

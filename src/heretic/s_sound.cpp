@@ -38,8 +38,8 @@
 ===============================================================================
 */
 
-void S_ShutDown(void);
-boolean S_StopSoundID(int sound_id, int priority);
+void S_ShutDown();
+bool S_StopSoundID(int sound_id, int priority);
 
 static channel_t channel[MAX_CHANNELS];
 
@@ -55,7 +55,7 @@ int snd_Channels = 16;
 
 int AmbChan;
 
-void S_Start(void)
+void S_Start()
 {
 	int i;
 
@@ -72,7 +72,7 @@ void S_Start(void)
 	memset(channel, 0, 8 * sizeof(channel_t));
 }
 
-void S_StartSong(int song, boolean loop)
+void S_StartSong(int song, bool loop)
 {
 	int mus_len;
 
@@ -107,7 +107,7 @@ void S_StartSong(int song, boolean loop)
 	mus_song = song;
 }
 
-static mobj_t *GetSoundListener(void)
+static mobj_t *GetSoundListener()
 {
 	static degenmobj_t dummy_listener;
 
@@ -348,7 +348,7 @@ void S_StartSoundAtVolume(void *_origin, int sound_id, int volume)
 	}
 }
 
-boolean S_StopSoundID(int sound_id, int priority)
+bool S_StopSoundID(int sound_id, int priority)
 {
 	int i;
 	int lp;						//least priority
@@ -430,12 +430,12 @@ void S_SoundLink(mobj_t * oldactor, mobj_t * newactor)
 	}
 }
 
-void S_PauseSound(void)
+void S_PauseSound()
 {
 	I_PauseSong();
 }
 
-void S_ResumeSound(void)
+void S_ResumeSound()
 {
 	I_ResumeSong();
 }
@@ -519,7 +519,7 @@ void S_UpdateSounds(mobj_t * listener)
 	}
 }
 
-void S_Init(void)
+void S_Init()
 {
 	I_SetOPLDriverVer(opl_doom2_1_666);
 	soundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL);
@@ -569,7 +569,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
 	}
 }
 
-void S_SetMaxVolume(boolean fullprocess)
+void S_SetMaxVolume(bool fullprocess)
 {
 	int i;
 
@@ -590,8 +590,8 @@ void S_SetMaxVolume(boolean fullprocess)
 	}
 }
 
-static boolean musicPaused;
-void S_SetMusicVolume(void)
+static bool musicPaused;
+void S_SetMusicVolume()
 {
 	I_SetMusicVolume(snd_MusicVolume * 8);
 	if (snd_MusicVolume == 0)
@@ -606,7 +606,7 @@ void S_SetMusicVolume(void)
 	}
 }
 
-void S_ShutDown(void)
+void S_ShutDown()
 {
 	I_StopSong();
 	I_UnRegisterSong(rs);

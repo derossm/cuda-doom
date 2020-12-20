@@ -35,14 +35,14 @@
 
 FILE *save_stream;
 int savegamelength;
-boolean savegame_error;
+bool savegame_error;
 static int restoretargets_fail;
 
 // Get the filename of a temporary file to write the savegame to. After
 // the file has been successfully saved, it will be renamed to the
 // real file.
 
-char *P_TempSaveGameFile(void)
+char *P_TempSaveGameFile()
 {
 	static char *filename = NULL;
 
@@ -76,7 +76,7 @@ char *P_SaveGameFile(int slot)
 
 // Endian-safe integer read/write functions
 
-static byte saveg_read8(void)
+static byte saveg_read8()
 {
 	byte result = -1;
 
@@ -107,7 +107,7 @@ static void saveg_write8(byte value)
 	}
 }
 
-static short saveg_read16(void)
+static short saveg_read16()
 {
 	int result;
 
@@ -123,7 +123,7 @@ static void saveg_write16(short value)
 	saveg_write8((value >> 8) & 0xff);
 }
 
-static int saveg_read32(void)
+static int saveg_read32()
 {
 	int result;
 
@@ -145,7 +145,7 @@ static void saveg_write32(int value)
 
 // Pad to 4-byte boundaries
 
-static void saveg_read_pad(void)
+static void saveg_read_pad()
 {
 	unsigned long pos;
 	int padding;
@@ -161,7 +161,7 @@ static void saveg_read_pad(void)
 	}
 }
 
-static void saveg_write_pad(void)
+static void saveg_write_pad()
 {
 	unsigned long pos;
 	int padding;
@@ -180,7 +180,7 @@ static void saveg_write_pad(void)
 
 // Pointers
 
-static void *saveg_readp(void)
+static void *saveg_readp()
 {
 	return (void *) (intptr_t) saveg_read32();
 }
@@ -736,13 +736,13 @@ static void saveg_read_player_t(player_t *str)
 		str->powers[i] = saveg_read32();
 	}
 
-	// boolean cards[NUMCARDS];
+	// bool cards[NUMCARDS];
 	for (i=0; i<NUMCARDS; ++i)
 	{
 		str->cards[i] = saveg_read32();
 	}
 
-	// boolean backpack;
+	// bool backpack;
 	str->backpack = saveg_read32();
 
 	// int frags[MAXPLAYERS];
@@ -757,7 +757,7 @@ static void saveg_read_player_t(player_t *str)
 	// weapontype_t pendingweapon;
 	str->pendingweapon = saveg_read_enum();
 
-	// boolean weaponowned[NUMWEAPONS];
+	// bool weaponowned[NUMWEAPONS];
 	for (i=0; i<NUMWEAPONS; ++i)
 	{
 		str->weaponowned[i] = saveg_read32();
@@ -823,7 +823,7 @@ static void saveg_read_player_t(player_t *str)
 		saveg_read_pspdef_t(&str->psprites[i]);
 	}
 
-	// boolean didsecret;
+	// bool didsecret;
 	str->didsecret = saveg_read32();
 }
 
@@ -867,13 +867,13 @@ static void saveg_write_player_t(player_t *str)
 		saveg_write32(str->powers[i]);
 	}
 
-	// boolean cards[NUMCARDS];
+	// bool cards[NUMCARDS];
 	for (i=0; i<NUMCARDS; ++i)
 	{
 		saveg_write32(str->cards[i]);
 	}
 
-	// boolean backpack;
+	// bool backpack;
 	saveg_write32(str->backpack);
 
 	// int frags[MAXPLAYERS];
@@ -888,7 +888,7 @@ static void saveg_write_player_t(player_t *str)
 	// weapontype_t pendingweapon;
 	saveg_write_enum(str->pendingweapon);
 
-	// boolean weaponowned[NUMWEAPONS];
+	// bool weaponowned[NUMWEAPONS];
 	for (i=0; i<NUMWEAPONS; ++i)
 	{
 		saveg_write32(str->weaponowned[i]);
@@ -954,7 +954,7 @@ static void saveg_write_player_t(player_t *str)
 		saveg_write_pspdef_t(&str->psprites[i]);
 	}
 
-	// boolean didsecret;
+	// bool didsecret;
 	saveg_write32(str->didsecret);
 }
 
@@ -986,7 +986,7 @@ static void saveg_read_ceiling_t(ceiling_t *str)
 	// fixed_t speed;
 	str->speed = saveg_read32();
 
-	// boolean crush;
+	// bool crush;
 	str->crush = saveg_read32();
 
 	// int direction;
@@ -1019,7 +1019,7 @@ static void saveg_write_ceiling_t(ceiling_t *str)
 	// fixed_t speed;
 	saveg_write32(str->speed);
 
-	// boolean crush;
+	// bool crush;
 	saveg_write32(str->crush);
 
 	// int direction;
@@ -1107,7 +1107,7 @@ static void saveg_read_floormove_t(floormove_t *str)
 	// floor_e type;
 	str->type = saveg_read_enum();
 
-	// boolean crush;
+	// bool crush;
 	str->crush = saveg_read32();
 
 	// sector_t* sector;
@@ -1138,7 +1138,7 @@ static void saveg_write_floormove_t(floormove_t *str)
 	// floor_e type;
 	saveg_write_enum(str->type);
 
-	// boolean crush;
+	// bool crush;
 	saveg_write32(str->crush);
 
 	// sector_t* sector;
@@ -1196,7 +1196,7 @@ static void saveg_read_plat_t(plat_t *str)
 	// plat_e oldstatus;
 	str->oldstatus = saveg_read_enum();
 
-	// boolean crush;
+	// bool crush;
 	str->crush = saveg_read32();
 
 	// int tag;
@@ -1235,7 +1235,7 @@ static void saveg_write_plat_t(plat_t *str)
 	// plat_e oldstatus;
 	saveg_write_enum(str->oldstatus);
 
-	// boolean crush;
+	// bool crush;
 	saveg_write32(str->crush);
 
 	// int tag;
@@ -1434,7 +1434,7 @@ void P_WriteSaveGameHeader(char *description)
 // Read the header for a savegame
 //
 
-boolean P_ReadSaveGameHeader(void)
+bool P_ReadSaveGameHeader()
 {
 	int		i;
 	byte a, b, c;
@@ -1474,7 +1474,7 @@ boolean P_ReadSaveGameHeader(void)
 // Read the end of file marker. Returns true if read successfully.
 //
 
-boolean P_ReadSaveGameEOF(void)
+bool P_ReadSaveGameEOF()
 {
 	int value;
 
@@ -1487,7 +1487,7 @@ boolean P_ReadSaveGameEOF(void)
 // Write the end of file marker
 //
 
-void P_WriteSaveGameEOF(void)
+void P_WriteSaveGameEOF()
 {
 	saveg_write8(SAVEGAME_EOF);
 }
@@ -1495,7 +1495,7 @@ void P_WriteSaveGameEOF(void)
 //
 // P_ArchivePlayers
 //
-void P_ArchivePlayers (void)
+void P_ArchivePlayers ()
 {
 	int		i;
 
@@ -1515,7 +1515,7 @@ void P_ArchivePlayers (void)
 //
 // P_UnArchivePlayers
 //
-void P_UnArchivePlayers (void)
+void P_UnArchivePlayers ()
 {
 	int		i;
 
@@ -1539,7 +1539,7 @@ void P_UnArchivePlayers (void)
 //
 // P_ArchiveWorld
 //
-void P_ArchiveWorld (void)
+void P_ArchiveWorld ()
 {
 	int			i;
 	int			j;
@@ -1587,7 +1587,7 @@ void P_ArchiveWorld (void)
 //
 // P_UnArchiveWorld
 //
-void P_UnArchiveWorld (void)
+void P_UnArchiveWorld ()
 {
 	int			i;
 	int			j;
@@ -1659,7 +1659,7 @@ typedef enum
 //
 // P_ArchiveThinkers
 //
-void P_ArchiveThinkers (void)
+void P_ArchiveThinkers ()
 {
 	thinker_t*		th;
 
@@ -1687,7 +1687,7 @@ void P_ArchiveThinkers (void)
 //
 // P_UnArchiveThinkers
 //
-void P_UnArchiveThinkers (void)
+void P_UnArchiveThinkers ()
 {
 	byte		tclass;
 	thinker_t*		currentthinker;
@@ -1745,7 +1745,7 @@ void P_UnArchiveThinkers (void)
 
 // [crispy] after all the thinkers have been restored, replace all indices in
 // the mobj->target and mobj->tracers fields by the corresponding current pointers again
-void P_RestoreTargets (void)
+void P_RestoreTargets ()
 {
 	mobj_t*	mo;
 	thinker_t*	th;
@@ -1796,7 +1796,7 @@ enum
 // T_Glow, (glow_t: sector_t *),
 // T_PlatRaise, (plat_t: sector_t *), - active list
 //
-void P_ArchiveSpecials (void)
+void P_ArchiveSpecials ()
 {
 	thinker_t*		th;
 	int			i;
@@ -1896,7 +1896,7 @@ void P_ArchiveSpecials (void)
 //
 // P_UnArchiveSpecials
 //
-void P_UnArchiveSpecials (void)
+void P_UnArchiveSpecials ()
 {
 	byte		tclass;
 	ceiling_t*		ceiling;

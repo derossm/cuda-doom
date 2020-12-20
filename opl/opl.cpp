@@ -169,7 +169,7 @@ opl_init_result_t OPL_Init(unsigned int port_base)
 
 // Shut down the OPL library.
 
-void OPL_Shutdown(void)
+void OPL_Shutdown()
 {
 	if (driver != NULL)
 	{
@@ -228,7 +228,7 @@ unsigned int OPL_ReadPort(opl_port_t port)
 // (register write, etc).
 //
 
-unsigned int OPL_ReadStatus(void)
+unsigned int OPL_ReadStatus()
 {
 	return OPL_ReadPort(OPL_REGISTER_PORT);
 }
@@ -280,7 +280,7 @@ void OPL_WriteRegister(int reg, int value)
 
 // Detect the presence of an OPL chip
 
-opl_init_result_t OPL_Detect(void)
+opl_init_result_t OPL_Detect()
 {
 	int result1, result2;
 	int i;
@@ -427,7 +427,7 @@ void OPL_SetCallback(uint64_t us, opl_callback_t callback, void *data)
 	}
 }
 
-void OPL_ClearCallbacks(void)
+void OPL_ClearCallbacks()
 {
 	if (driver != NULL)
 	{
@@ -435,7 +435,7 @@ void OPL_ClearCallbacks(void)
 	}
 }
 
-void OPL_Lock(void)
+void OPL_Lock()
 {
 	if (driver != NULL)
 	{
@@ -443,7 +443,7 @@ void OPL_Lock(void)
 	}
 }
 
-void OPL_Unlock(void)
+void OPL_Unlock()
 {
 	if (driver != NULL)
 	{

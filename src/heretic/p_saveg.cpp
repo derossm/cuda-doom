@@ -144,21 +144,21 @@ void SV_Read(void *buffer, int size)
 	}
 }
 
-byte SV_ReadByte(void)
+byte SV_ReadByte()
 {
 	byte result;
 	SV_Read(&result, sizeof(byte));
 	return result;
 }
 
-uint16_t SV_ReadWord(void)
+uint16_t SV_ReadWord()
 {
 	uint16_t result;
 	SV_Read(&result, sizeof(unsigned short));
 	return SHORT(result);
 }
 
-uint32_t SV_ReadLong(void)
+uint32_t SV_ReadLong()
 {
 	uint32_t result;
 	SV_Read(&result, sizeof(int));
@@ -378,7 +378,7 @@ static void saveg_read_player_t(player_t *str)
 	// int lookdir;
 	str->lookdir = SV_ReadLong();
 
-	// boolean centering;
+	// bool centering;
 	str->centering = SV_ReadLong();
 
 	// int health;
@@ -409,13 +409,13 @@ static void saveg_read_player_t(player_t *str)
 		str->powers[i] = SV_ReadLong();
 	}
 
-	// boolean keys[NUMKEYS];
+	// bool keys[NUMKEYS];
 	for (i=0; i<NUMKEYS; ++i)
 	{
 		str->keys[i] = SV_ReadLong();
 	}
 
-	// boolean backpack;
+	// bool backpack;
 	str->backpack = SV_ReadLong();
 
 	// signed int frags[MAXPLAYERS];
@@ -430,7 +430,7 @@ static void saveg_read_player_t(player_t *str)
 	// weapontype_t pendingweapon;
 	str->pendingweapon = SV_ReadLong();
 
-	// boolean weaponowned[NUMWEAPONS];
+	// bool weaponowned[NUMWEAPONS];
 	for (i=0; i<NUMWEAPONS; ++i)
 	{
 		str->weaponowned[i] = SV_ReadLong();
@@ -496,7 +496,7 @@ static void saveg_read_player_t(player_t *str)
 		saveg_read_pspdef_t(&str->psprites[i]);
 	}
 
-	// boolean didsecret;
+	// bool didsecret;
 	str->didsecret = SV_ReadLong();
 
 	// int chickenTics;
@@ -547,7 +547,7 @@ static void saveg_write_player_t(player_t *str)
 	// int lookdir;
 	SV_WriteLong(str->lookdir);
 
-	// boolean centering;
+	// bool centering;
 	SV_WriteLong(str->centering);
 
 	// int health;
@@ -578,13 +578,13 @@ static void saveg_write_player_t(player_t *str)
 		SV_WriteLong(str->powers[i]);
 	}
 
-	// boolean keys[NUMKEYS];
+	// bool keys[NUMKEYS];
 	for (i=0; i<NUMKEYS; ++i)
 	{
 		SV_WriteLong(str->keys[i]);
 	}
 
-	// boolean backpack;
+	// bool backpack;
 	SV_WriteLong(str->backpack);
 
 	// signed int frags[MAXPLAYERS];
@@ -599,7 +599,7 @@ static void saveg_write_player_t(player_t *str)
 	// weapontype_t pendingweapon;
 	SV_WriteLong(str->pendingweapon);
 
-	// boolean weaponowned[NUMWEAPONS];
+	// bool weaponowned[NUMWEAPONS];
 	for (i=0; i<NUMWEAPONS; ++i)
 	{
 		SV_WriteLong(str->weaponowned[i]);
@@ -663,7 +663,7 @@ static void saveg_write_player_t(player_t *str)
 		saveg_write_pspdef_t(&str->psprites[i]);
 	}
 
-	// boolean didsecret;
+	// bool didsecret;
 	SV_WriteLong(str->didsecret);
 
 	// int chickenTics;
@@ -1073,7 +1073,7 @@ static void saveg_read_ceiling_t(ceiling_t *str)
 	// fixed_t speed;
 	str->speed = SV_ReadLong();
 
-	// boolean crush;
+	// bool crush;
 	str->crush = SV_ReadLong();
 
 	// int direction;
@@ -1104,7 +1104,7 @@ static void saveg_write_ceiling_t(ceiling_t *str)
 	// fixed_t speed;
 	SV_WriteLong(str->speed);
 
-	// boolean crush;
+	// bool crush;
 	SV_WriteLong(str->crush);
 
 	// int direction;
@@ -1194,7 +1194,7 @@ static void saveg_read_floormove_t(floormove_t *str)
 	// floor_e type;
 	str->type = SV_ReadLong();
 
-	// boolean crush;
+	// bool crush;
 	str->crush = SV_ReadLong();
 
 	// sector_t *sector;
@@ -1225,7 +1225,7 @@ static void saveg_write_floormove_t(floormove_t *str)
 	// floor_e type;
 	SV_WriteLong(str->type);
 
-	// boolean crush;
+	// bool crush;
 	SV_WriteLong(str->crush);
 
 	// sector_t *sector;
@@ -1284,7 +1284,7 @@ static void saveg_read_plat_t(plat_t *str)
 	// plat_e oldstatus;
 	str->oldstatus = SV_ReadLong();
 
-	// boolean crush;
+	// bool crush;
 	str->crush = SV_ReadLong();
 
 	// int tag;
@@ -1323,7 +1323,7 @@ static void saveg_write_plat_t(plat_t *str)
 	// plat_e oldstatus;
 	SV_WriteLong(str->oldstatus);
 
-	// boolean crush;
+	// bool crush;
 	SV_WriteLong(str->crush);
 
 	// int tag;
@@ -1498,7 +1498,7 @@ static void saveg_write_glow_t(glow_t *str)
 ====================
 */
 
-void P_ArchivePlayers(void)
+void P_ArchivePlayers()
 {
 	int i;
 
@@ -1520,7 +1520,7 @@ void P_ArchivePlayers(void)
 ====================
 */
 
-void P_UnArchivePlayers(void)
+void P_UnArchivePlayers()
 {
 	int i;
 
@@ -1546,7 +1546,7 @@ void P_UnArchivePlayers(void)
 ====================
 */
 
-void P_ArchiveWorld(void)
+void P_ArchiveWorld()
 {
 	int i, j;
 	sector_t *sec;
@@ -1595,7 +1595,7 @@ void P_ArchiveWorld(void)
 ====================
 */
 
-void P_UnArchiveWorld(void)
+void P_UnArchiveWorld()
 {
 	int i, j;
 	sector_t *sec;
@@ -1656,7 +1656,7 @@ typedef enum
 ====================
 */
 
-void P_ArchiveThinkers(void)
+void P_ArchiveThinkers()
 {
 	thinker_t *th;
 
@@ -1682,7 +1682,7 @@ void P_ArchiveThinkers(void)
 ====================
 */
 
-void P_UnArchiveThinkers(void)
+void P_UnArchiveThinkers()
 {
 	byte tclass;
 	thinker_t *currentthinker, *next;
@@ -1754,7 +1754,7 @@ enum
 	tc_endspecials
 } specials_e;
 
-void P_ArchiveSpecials(void)
+void P_ArchiveSpecials()
 {
 	/*
 	T_MoveCeiling, (ceiling_t: sector_t * swizzle), - active list
@@ -1818,7 +1818,7 @@ void P_ArchiveSpecials(void)
 ====================
 */
 
-void P_UnArchiveSpecials(void)
+void P_UnArchiveSpecials()
 {
 	byte tclass;
 	ceiling_t *ceiling;

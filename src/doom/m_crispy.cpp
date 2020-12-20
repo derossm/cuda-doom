@@ -144,11 +144,11 @@ multiitem_t multiitem_widescreen[NUM_RATIOS] =
 	{RATIO_21_9, "21:9"},
 };
 
-extern void AM_LevelInit (boolean reinit);
-extern void EnableLoadingDisk (void);
-extern void P_SegLengths (boolean contrast_only);
-extern void R_ExecuteSetViewSize (void);
-extern void R_InitLightTables (void);
+extern void AM_LevelInit (bool reinit);
+extern void EnableLoadingDisk ();
+extern void P_SegLengths (bool contrast_only);
+extern void R_ExecuteSetViewSize ();
+extern void R_InitLightTables ();
 extern void I_ReInitGraphics (int reinit);
 
 void M_CrispyToggleAutomapstats(int choice)
@@ -315,7 +315,7 @@ void M_CrispyToggleFreeaim(int choice)
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 }
 
-static void M_CrispyToggleSkyHook (void)
+static void M_CrispyToggleSkyHook ()
 {
 	players[consoleplayer].lookdir = 0;
 	R_InitSkyMap();
@@ -346,7 +346,7 @@ void M_CrispyToggleFullsounds(int choice)
 	}
 }
 
-static void M_CrispyToggleHiresHook (void)
+static void M_CrispyToggleHiresHook ()
 {
 	crispy->hires = !crispy->hires;
 
@@ -457,7 +457,7 @@ void M_CrispyToggleSmoothScaling(int choice)
 	crispy->smoothscaling = !crispy->smoothscaling;
 }
 
-static void M_CrispyToggleSmoothLightingHook (void)
+static void M_CrispyToggleSmoothLightingHook ()
 {
 	crispy->smoothlight = !crispy->smoothlight;
 
@@ -519,7 +519,7 @@ void M_CrispyToggleUncapped(int choice)
 	crispy->uncapped = !crispy->uncapped;
 }
 
-void M_CrispyToggleVsyncHook (void)
+void M_CrispyToggleVsyncHook ()
 {
 	crispy->vsync = !crispy->vsync;
 
@@ -544,7 +544,7 @@ void M_CrispyToggleWeaponSquat(int choice)
 	crispy->weaponsquat = !crispy->weaponsquat;
 }
 
-static void M_CrispyToggleWidescreenHook (void)
+static void M_CrispyToggleWidescreenHook ()
 {
 	crispy->widescreen = (crispy->widescreen + 1) % NUM_RATIOS;
 

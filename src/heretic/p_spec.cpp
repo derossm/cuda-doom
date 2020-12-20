@@ -220,7 +220,7 @@ extern fixed_t			fractionaltic;
 //
 //----------------------------------------------------------------------------
 
-void P_InitLava(void)
+void P_InitLava()
 {
 	memset(&LavaInflictor, 0, sizeof(mobj_t));
 	LavaInflictor.type = MT_PHOENIXFX2;
@@ -233,7 +233,7 @@ void P_InitLava(void)
 //
 //----------------------------------------------------------------------------
 
-void P_InitTerrainTypes(void)
+void P_InitTerrainTypes()
 {
 	int i;
 	int lump;
@@ -258,7 +258,7 @@ void P_InitTerrainTypes(void)
 //
 //----------------------------------------------------------------------------
 
-void P_InitPicAnims(void)
+void P_InitPicAnims()
 {
 	const char *startname;
 	const char *endname;
@@ -849,7 +849,7 @@ void P_ShootSpecialLine(mobj_t * thing, line_t * line)
 
 void P_PlayerInSpecialSector(player_t * player)
 {
-	extern boolean messageson;
+	extern bool messageson;
 	sector_t *sector;
 	static int pushTab[5] = {
 		2048 * 5,
@@ -986,7 +986,7 @@ void P_PlayerInSpecialSector(player_t * player)
 //
 //----------------------------------------------------------------------------
 
-void P_UpdateSpecials(void)
+void P_UpdateSpecials()
 {
 	int i;
 	int pic;
@@ -1062,7 +1062,7 @@ void P_UpdateSpecials(void)
 }
 
 // [crispy] smooth texture scrolling
-void R_InterpolateTextureOffsets(void)
+void R_InterpolateTextureOffsets()
 {
 	if (crispy->uncapped && leveltime > oldleveltime)
 	{
@@ -1179,7 +1179,7 @@ int EV_DoDonut(line_t * line)
 short numlinespecials;
 line_t *linespeciallist[MAXLINEANIMS];
 
-void P_SpawnSpecials(void)
+void P_SpawnSpecials()
 {
 	sector_t *sector;
 	int i;
@@ -1260,7 +1260,7 @@ void P_SpawnSpecials(void)
 //
 //----------------------------------------------------------------------------
 
-void P_InitAmbientSound(void)
+void P_InitAmbientSound()
 {
 	AmbSfxCount = 0;
 	AmbSfxVolume = 0;
@@ -1293,11 +1293,11 @@ void P_AddAmbientSfx(int sequence)
 //
 //----------------------------------------------------------------------------
 
-void P_AmbientSound(void)
+void P_AmbientSound()
 {
 	afxcmd_t cmd;
 	int sound;
-	boolean done;
+	bool done;
 
 	if (!AmbSfxCount)
 	{							// No ambient sound sequences on current level

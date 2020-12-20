@@ -32,11 +32,11 @@
 
 #define DEFAULT_ARCHIVEPATH		"o:\\sound\\archive\\"
 
-void S_ShutDown(void);
+void S_ShutDown();
 
 // If true, CD music playback is enabled (snd_musicdevice == SNDDEVICE_CD
 // and CD initialization succeeded).
-boolean cdmusic;
+bool cdmusic;
 
 // Track number of a track to play explicitly chosen by the
 // player using cheats. A value of zero means no track chosen:
@@ -70,7 +70,7 @@ extern musicinfo_t S_music[];
 
 static channel_t Channel[MAX_CHANNELS];
 static void *RegisteredSong;		//the current registered song.
-static boolean MusicPaused;
+static bool MusicPaused;
 static int Mus_Song = -1;
 static byte *Mus_SndPtr;
 static byte *SoundCurve;
@@ -87,7 +87,7 @@ int snd_Channels = 16;
 //
 //==========================================================================
 
-void S_Start(void)
+void S_Start()
 {
 	S_StopAllSound();
 	S_StartSong(gamemap, true);
@@ -100,7 +100,7 @@ void S_Start(void)
 //
 //==========================================================================
 
-static boolean ShouldRestartCDTrack(void)
+static bool ShouldRestartCDTrack()
 {
 	return cd_track_end_time != 0 && I_GetTimeMS() > cd_track_end_time;
 }
@@ -111,7 +111,7 @@ static boolean ShouldRestartCDTrack(void)
 //
 //==========================================================================
 
-static boolean StartCDTrack(int track, boolean loop)
+static bool StartCDTrack(int track, bool loop)
 {
 	// Already playing? If so, don't bother.
 
@@ -145,7 +145,7 @@ static boolean StartCDTrack(int track, boolean loop)
 //
 //==========================================================================
 
-void S_StartSong(int song, boolean loop)
+void S_StartSong(int song, bool loop)
 {
 	char *songLump;
 	int lumpnum;
@@ -205,9 +205,9 @@ void S_StartSong(int song, boolean loop)
 //
 //==========================================================================
 
-boolean S_StartCustomCDTrack(int tracknum)
+bool S_StartCustomCDTrack(int tracknum)
 {
-	boolean result;
+	bool result;
 
 	result = StartCDTrack(tracknum, true);
 
@@ -225,7 +225,7 @@ boolean S_StartCustomCDTrack(int tracknum)
 //
 //==========================================================================
 
-int S_GetCurrentCDTrack(void)
+int S_GetCurrentCDTrack()
 {
 	if (!cdmusic || cd_current_track == 0)
 	{
@@ -241,7 +241,7 @@ int S_GetCurrentCDTrack(void)
 //
 //==========================================================================
 
-void S_StartSongName(const char *songLump, boolean loop)
+void S_StartSongName(const char *songLump, bool loop)
 {
 	int lumpnum;
 	int cdTrack;
@@ -338,7 +338,7 @@ void S_StartSound(mobj_t * origin, int sound_id)
 	S_StartSoundAtVolume(origin, sound_id, 127);
 }
 
-static mobj_t *GetSoundListener(void)
+static mobj_t *GetSoundListener()
 {
 	static degenmobj_t dummy_listener;
 
@@ -537,7 +537,7 @@ void S_StartSoundAtVolume(mobj_t * origin, int sound_id, int volume)
 //
 //==========================================================================
 
-boolean S_StopSoundID(int sound_id, int priority)
+bool S_StopSoundID(int sound_id, int priority)
 {
 	int i;
 	int lp;						//least priority
@@ -615,7 +615,7 @@ void S_StopSound(mobj_t * origin)
 //
 //==========================================================================
 
-void S_StopAllSound(void)
+void S_StopAllSound()
 {
 	int i;
 
@@ -653,7 +653,7 @@ void S_SoundLink(mobj_t * oldactor, mobj_t * newactor)
 //
 //==========================================================================
 
-void S_PauseSound(void)
+void S_PauseSound()
 {
 	if (cdmusic)
 	{
@@ -671,7 +671,7 @@ void S_PauseSound(void)
 //
 //==========================================================================
 
-void S_ResumeSound(void)
+void S_ResumeSound()
 {
 	if (cdmusic)
 	{
@@ -785,7 +785,7 @@ void S_UpdateSounds(mobj_t * listener)
 //
 //==========================================================================
 
-void S_Init(void)
+void S_Init()
 {
 	I_SetOPLDriverVer(opl_doom2_1_666);
 	SoundCurve = W_CacheLumpName("SNDCURVE", PU_STATIC);
@@ -874,7 +874,7 @@ void S_GetChannelInfo(SoundInfo_t * s)
 //
 //==========================================================================
 
-boolean S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id)
+bool S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id)
 {
 	int i;
 
@@ -897,7 +897,7 @@ boolean S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id)
 //
 //==========================================================================
 
-void S_SetMusicVolume(void)
+void S_SetMusicVolume()
 {
 	if (cdmusic)
 	{
@@ -931,7 +931,7 @@ void S_SetMusicVolume(void)
 //
 //==========================================================================
 
-void S_ShutDown(void)
+void S_ShutDown()
 {
 	I_StopSong();
 	I_UnRegisterSong(RegisteredSong);
@@ -948,7 +948,7 @@ void S_ShutDown(void)
 //
 //==========================================================================
 
-void S_InitScript(void)
+void S_InitScript()
 {
 	int i;
 

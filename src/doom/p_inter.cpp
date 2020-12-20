@@ -62,12 +62,12 @@ int	clipammo[NUMAMMO] = {10, 4, 20, 1};
 // Returns false if the ammo can't be picked up at all
 //
 
-boolean
+bool
 P_GiveAmmo
 ( player_t*	player,
  ammotype_t	ammo,
  int		num,
- boolean	dropped ) // [NS] Dropped ammo/weapons give half as much.
+ bool	dropped ) // [NS] Dropped ammo/weapons give half as much.
 {
 	int		oldammo;
 
@@ -179,14 +179,14 @@ const char *const WeaponPickupMessages[NUMWEAPONS] =
 // P_GiveWeapon
 // The weapon name may have a MF_DROPPED flag ored in.
 //
-boolean
+bool
 P_GiveWeapon
 ( player_t*	player,
  weapontype_t	weapon,
- boolean	dropped )
+ bool	dropped )
 {
-	boolean	gaveammo;
-	boolean	gaveweapon;
+	bool	gaveammo;
+	bool	gaveweapon;
 
 	if (netgame
 	&& (deathmatch!=2)
@@ -246,7 +246,7 @@ P_GiveWeapon
 // P_GiveBody
 // Returns false if the body isn't needed at all
 //
-boolean
+bool
 P_GiveBody
 ( player_t*	player,
  int		num )
@@ -269,7 +269,7 @@ P_GiveBody
 // Returns false if the armor is worse
 // than the current armor.
 //
-boolean
+bool
 P_GiveArmor
 ( player_t*	player,
  int		armortype )
@@ -307,7 +307,7 @@ P_GiveCard
 //
 // P_GivePower
 //
-boolean
+bool
 P_GivePower
 ( player_t*	player,
  int /*powertype_t*/	power )
@@ -365,7 +365,7 @@ P_TouchSpecialThing
 	int		i;
 	fixed_t	delta;
 	int		sound;
-	const boolean dropped = ((special->flags & MF_DROPPED) != 0);
+	const bool dropped = ((special->flags & MF_DROPPED) != 0);
 
 	delta = special->z - toucher->z;
 

@@ -39,7 +39,7 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void CheckOpen(void);
+static void CheckOpen();
 static void OpenScript(const char *name, int type);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
@@ -49,9 +49,9 @@ static void OpenScript(const char *name, int type);
 char *sc_String;
 int sc_Number;
 int sc_Line;
-boolean sc_End;
-boolean sc_Crossed;
-boolean sc_FileScripts = false;
+bool sc_End;
+bool sc_Crossed;
+bool sc_FileScripts = false;
 const char *sc_ScriptsDir = "";
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
@@ -62,9 +62,9 @@ static char *ScriptPtr;
 static char *ScriptEndPtr;
 static char StringBuffer[MAX_STRING_SIZE];
 static int ScriptLumpNum;
-static boolean ScriptOpen = false;
+static bool ScriptOpen = false;
 static int ScriptSize;
-static boolean AlreadyGot = false;
+static bool AlreadyGot = false;
 
 // CODE --------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ static void OpenScript(const char *name, int type)
 //
 //==========================================================================
 
-void SC_Close(void)
+void SC_Close()
 {
 	if (ScriptOpen)
 	{
@@ -175,10 +175,10 @@ void SC_Close(void)
 //
 //==========================================================================
 
-boolean SC_GetString(void)
+bool SC_GetString()
 {
 	char *text;
-	boolean foundToken;
+	bool foundToken;
 
 	CheckOpen();
 	if (AlreadyGot)
@@ -263,7 +263,7 @@ boolean SC_GetString(void)
 //
 //==========================================================================
 
-void SC_MustGetString(void)
+void SC_MustGetString()
 {
 	if (SC_GetString() == false)
 	{
@@ -292,7 +292,7 @@ void SC_MustGetStringName(char *name)
 //
 //==========================================================================
 
-boolean SC_GetNumber(void)
+bool SC_GetNumber()
 {
 	char *stopper;
 
@@ -319,7 +319,7 @@ boolean SC_GetNumber(void)
 //
 //==========================================================================
 
-void SC_MustGetNumber(void)
+void SC_MustGetNumber()
 {
 	if (SC_GetNumber() == false)
 	{
@@ -335,7 +335,7 @@ void SC_MustGetNumber(void)
 //
 //==========================================================================
 
-void SC_UnGet(void)
+void SC_UnGet()
 {
 	AlreadyGot = true;
 }
@@ -349,7 +349,7 @@ void SC_UnGet(void)
 //==========================================================================
 
 /*
-boolean SC_Check(void)
+bool SC_Check()
 {
 	char *text;
 
@@ -426,7 +426,7 @@ int SC_MustMatchString(const char **strings)
 //
 //==========================================================================
 
-boolean SC_Compare(const char *text)
+bool SC_Compare(const char *text)
 {
 	if (strcasecmp(text, sc_String) == 0)
 	{
@@ -456,7 +456,7 @@ void SC_ScriptError(const char *message)
 //
 //==========================================================================
 
-static void CheckOpen(void)
+static void CheckOpen()
 {
 	if (ScriptOpen == false)
 	{

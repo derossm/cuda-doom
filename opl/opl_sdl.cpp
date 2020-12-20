@@ -93,7 +93,7 @@ static int sdl_was_initialized = 0;
 static int mixing_freq, mixing_channels;
 static Uint16 mixing_format;
 
-static int SDLIsInitialized(void)
+static int SDLIsInitialized()
 {
 	int freq, channels;
 	Uint16 format;
@@ -222,7 +222,7 @@ static void OPL_Mix_Callback(void *udata, Uint8 *buffer, int len)
 	}
 }
 
-static void OPL_SDL_Shutdown(void)
+static void OPL_SDL_Shutdown()
 {
 	Mix_HookMusic(NULL, NULL);
 
@@ -256,7 +256,7 @@ static void OPL_SDL_Shutdown(void)
 	}
 }
 
-static unsigned int GetSliceSize(void)
+static unsigned int GetSliceSize()
 {
 	int limit;
 	int n;
@@ -466,19 +466,19 @@ static void OPL_SDL_SetCallback(uint64_t us, opl_callback_t callback,
 	SDL_UnlockMutex(callback_queue_mutex);
 }
 
-static void OPL_SDL_ClearCallbacks(void)
+static void OPL_SDL_ClearCallbacks()
 {
 	SDL_LockMutex(callback_queue_mutex);
 	OPL_Queue_Clear(callback_queue);
 	SDL_UnlockMutex(callback_queue_mutex);
 }
 
-static void OPL_SDL_Lock(void)
+static void OPL_SDL_Lock()
 {
 	SDL_LockMutex(callback_mutex);
 }
 
-static void OPL_SDL_Unlock(void)
+static void OPL_SDL_Unlock()
 {
 	SDL_UnlockMutex(callback_mutex);
 }

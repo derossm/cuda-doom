@@ -35,10 +35,10 @@ static const char *finaleflat;
 
 static int FontABaseLump;
 
-extern boolean automapactive;
-extern boolean viewactive;
+extern bool automapactive;
+extern bool viewactive;
 
-extern void D_StartTitle(void);
+extern void D_StartTitle();
 
 /*
 =======================
@@ -48,7 +48,7 @@ extern void D_StartTitle(void);
 =======================
 */
 
-void F_StartFinale(void)
+void F_StartFinale()
 {
 	gameaction = ga_nothing;
 	gamestate = GS_FINALE;
@@ -92,7 +92,7 @@ void F_StartFinale(void)
 
 
 
-boolean F_Responder(event_t * event)
+bool F_Responder(event_t * event)
 {
 	if (event->type != ev_keydown)
 	{
@@ -120,7 +120,7 @@ boolean F_Responder(event_t * event)
 =======================
 */
 
-void F_Ticker(void)
+void F_Ticker()
 {
 	finalecount++;
 	if (!finalestage
@@ -152,7 +152,7 @@ void F_Ticker(void)
 //#include "hu_stuff.h"
 //extern		patch_t *hu_font[HU_FONTSIZE];
 
-void F_TextWrite(void)
+void F_TextWrite()
 {
 	byte *src, *dest;
 	int x, y;
@@ -256,7 +256,7 @@ void F_DrawPatchCol(int x, patch_t * patch, int col)
 ==================
 */
 
-void F_DemonScroll(void)
+void F_DemonScroll()
 {
 	byte *p1, *p2;
 	static int yval = 0;
@@ -295,10 +295,10 @@ void F_DemonScroll(void)
 ==================
 */
 
-void F_DrawUnderwater(void)
+void F_DrawUnderwater()
 {
-	static boolean underwawa = false;
-	extern boolean askforquit;
+	static bool underwawa = false;
+	extern bool askforquit;
 	const char *lumpname;
 	byte *palette;
 
@@ -349,7 +349,7 @@ void F_DrawUnderwater(void)
 ==================
 */
 
-void F_BunnyScroll(void)
+void F_BunnyScroll()
 {
 	int scrolled, x;
 	patch_t *p1, *p2;
@@ -409,7 +409,7 @@ void F_BunnyScroll(void)
 =======================
 */
 
-void F_Drawer(void)
+void F_Drawer()
 {
 	UpdateState |= I_FULLSCRN;
 	if (!finalestage)

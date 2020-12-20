@@ -54,7 +54,7 @@ extern lumpinfo_t **lumpinfo;
 extern unsigned int numlumps;
 
 wad_file_t *W_AddFile(const char *filename);
-void W_Reload(void);
+void W_Reload();
 
 lumpindex_t W_CheckNumForName(const char *name);
 lumpindex_t W_GetNumForName(const char *name);
@@ -66,7 +66,7 @@ void W_ReadLump(lumpindex_t lump, void *dest);
 void *W_CacheLumpNum(lumpindex_t lump, int tag);
 void *W_CacheLumpName(const char *name, int tag);
 
-void W_GenerateHashTable(void);
+void W_GenerateHashTable();
 
 extern unsigned int W_LumpNameHash(const char *s);
 
@@ -74,6 +74,6 @@ void W_ReleaseLumpNum(lumpindex_t lump);
 void W_ReleaseLumpName(const char *name);
 
 const char *W_WadNameForLump(const lumpinfo_t *lump);
-boolean W_IsIWADLump(const lumpinfo_t *lump);
+bool W_IsIWADLump(const lumpinfo_t *lump);
 
 #endif

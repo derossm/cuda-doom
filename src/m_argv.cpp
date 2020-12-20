@@ -63,7 +63,7 @@ int M_CheckParmWithArgs(const char *check, int num_args)
 // line arguments, false if not.
 //
 
-boolean M_ParmExists(const char *check)
+bool M_ParmExists(const char *check)
 {
 	return M_CheckParm(check) != 0;
 }
@@ -228,7 +228,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 // Find a Response File
 //
 
-void M_FindResponseFile(void)
+void M_FindResponseFile()
 {
 	int i;
 
@@ -278,7 +278,7 @@ static int GuessFileType(const char *name)
 	int ret = FILETYPE_UNKNOWN;
 	const char *base;
 	char *lower;
-	static boolean iwad_found = false;
+	static bool iwad_found = false;
 
 	base = M_BaseName(name);
 	lower = M_StringDuplicate(base);
@@ -325,7 +325,7 @@ static int CompareByFileType(const void *a, const void *b)
 	return ret ? ret : (arg_a->stable - arg_b->stable);
 }
 
-void M_AddLooseFiles(void)
+void M_AddLooseFiles()
 {
 	int i, types = 0;
 	char **newargv;
@@ -412,7 +412,7 @@ void M_AddLooseFiles(void)
 
 // Return the name of the executable used to start the program:
 
-const char *M_GetExecutableName(void)
+const char *M_GetExecutableName()
 {
 	return M_BaseName(myargv[0]);
 }

@@ -78,28 +78,28 @@ static player_t*		plr;
 patch_t*				hu_font[HU_FONTSIZE];
 patch_t*				yfont[HU_FONTSIZE];	// haleyjd 09/18/10: [STRIFE]
 static hu_textline_t	w_title;
-boolean					chat_on;
+bool					chat_on;
 static hu_itext_t		w_chat;
-static boolean			always_off = false;
+static bool			always_off = false;
 static char				chat_dest[MAXPLAYERS];
 static hu_itext_t		w_inputbuffer[MAXPLAYERS];
 
-static boolean			message_on;
-boolean					message_dontfuckwithme;
-static boolean			message_nottobefuckedwith;
+static bool			message_on;
+bool					message_dontfuckwithme;
+static bool			message_nottobefuckedwith;
 
 static hu_stext_t		w_message;
 static int				message_counter;
 
 //extern int				showMessages; [STRIFE] no such variable
 
-static boolean			headsupactive = false;
+static bool			headsupactive = false;
 
 // haleyjd 20130915 [STRIFE]: need nickname
 extern char *nickname;
 
 // haleyjd 20130915 [STRIFE]: true if setting nickname
-static boolean hu_setting_name = false;
+static bool hu_setting_name = false;
 
 //
 // Builtin map names.
@@ -164,7 +164,7 @@ const char *mapnames[] =
 // haleyjd 09/18/10: [STRIFE]
 // * Modified to load yfont along with hu_font.
 //
-void HU_Init(void)
+void HU_Init()
 {
 	int		i;
 	int		j;
@@ -189,7 +189,7 @@ void HU_Init(void)
 //
 // [STRIFE] Verified unmodified.
 //
-void HU_Stop(void)
+void HU_Stop()
 {
 	headsupactive = false;
 }
@@ -199,7 +199,7 @@ void HU_Stop(void)
 //
 // haleyjd 09/18/10: [STRIFE] Added a hack for nickname at the end.
 //
-void HU_Start(void)
+void HU_Start()
 {
 	int			i;
 	const char *s;
@@ -270,7 +270,7 @@ void HU_Start(void)
 //
 // [STRIFE] Verified unmodified.
 //
-void HU_Drawer(void)
+void HU_Drawer()
 {
 	HUlib_drawSText(&w_message);
 	HUlib_drawIText(&w_chat);
@@ -283,7 +283,7 @@ void HU_Drawer(void)
 //
 // [STRIFE] Verified unmodified.
 //
-void HU_Erase(void)
+void HU_Erase()
 {
 	HUlib_eraseSText(&w_message);
 	HUlib_eraseIText(&w_chat);
@@ -386,7 +386,7 @@ static void HU_addMessage(const char *prefix, const char *message)
 // haleyjd 09/18/10: [STRIFE] Changes to split up message into two lines,
 // and support for player names (STRIFE-TODO: unfinished!)
 //
-void HU_Ticker(void)
+void HU_Ticker()
 {
 	int i, rc;
 	char c;
@@ -486,7 +486,7 @@ void HU_queueChatChar(char c)
 //
 // [STRIFE] Verified unmodified.
 //
-char HU_dequeueChatChar(void)
+char HU_dequeueChatChar()
 {
 	char c;
 
@@ -504,13 +504,13 @@ char HU_dequeueChatChar(void)
 }
 
 // fraggle 01/05/15: New functions to support the Chocolate input interface.
-static void StartChatInput(void)
+static void StartChatInput()
 {
 	chat_on = true;
 	I_StartTextInput(HU_INPUTX, HU_INPUTY, SCREENWIDTH, HU_INPUTY + 8);
 }
 
-static void StopChatInput(void)
+static void StopChatInput()
 {
 	chat_on = false;
 	I_StopTextInput();
@@ -526,12 +526,12 @@ static void StopChatInput(void)
 //	- There is support for setting the player name through the chat
 //		mechanism.
 //
-boolean HU_Responder(event_t *ev)
+bool HU_Responder(event_t *ev)
 {
 	static char			lastmessage[HU_MAXLINELENGTH+1];
 	char*				macromessage;
-	boolean				eatkey = false;
-	static boolean		altdown = false;
+	bool				eatkey = false;
+	static bool		altdown = false;
 	unsigned char		c;
 	int					i;
 	int					numplayers;

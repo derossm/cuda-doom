@@ -44,7 +44,7 @@ static const char *not_dedicated_options[] =
 	"-loadgame", "-longtics", "-extratics", "-dup", "-shorttics", NULL,
 };
 
-static void CheckForClientOptions(void)
+static void CheckForClientOptions()
 {
 	int i;
 
@@ -61,7 +61,7 @@ static void CheckForClientOptions(void)
 	}
 }
 
-void NET_DedicatedServer(void)
+void NET_DedicatedServer()
 {
 	CheckForClientOptions();
 

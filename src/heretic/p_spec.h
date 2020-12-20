@@ -29,7 +29,7 @@
 //
 typedef struct
 {
-	boolean istexture;
+	bool istexture;
 	int picnum;
 	int basepic;
 	int numpics;
@@ -63,21 +63,21 @@ extern line_t *linespeciallist[MAXLINEANIMS];
 #define	MO_TELEPORTMAN		14
 
 // at game start
-void P_InitPicAnims(void);
-void P_InitTerrainTypes(void);
-void P_InitLava(void);
+void P_InitPicAnims();
+void P_InitTerrainTypes();
+void P_InitLava();
 
 // at map load
-void P_SpawnSpecials(void);
-void P_InitAmbientSound(void);
+void P_SpawnSpecials();
+void P_InitAmbientSound();
 void P_AddAmbientSfx(int sequence);
 
 // every tic
-void P_UpdateSpecials(void);
-void P_AmbientSound(void);
+void P_UpdateSpecials();
+void P_AmbientSound();
 
 // when needed
-boolean P_UseSpecialLine(mobj_t * thing, line_t * line);
+bool P_UseSpecialLine(mobj_t * thing, line_t * line);
 void P_ShootSpecialLine(mobj_t * thing, line_t * line);
 void P_CrossSpecialLine(int linenum, int side, mobj_t * thing);
 
@@ -190,7 +190,7 @@ typedef struct
 extern button_t buttonlist[MAXBUTTONS];
 
 void P_ChangeSwitchTexture(line_t * line, int useAgain);
-void P_InitSwitchList(void);
+void P_InitSwitchList();
 
 /*
 ===============================================================================
@@ -226,7 +226,7 @@ typedef struct
 	int count;
 	plat_e status;
 	plat_e oldstatus;
-	boolean crush;
+	bool crush;
 	int tag;
 	plattype_e type;
 } plat_t;
@@ -305,7 +305,7 @@ typedef struct
 	sector_t *sector;
 	fixed_t bottomheight, topheight;
 	fixed_t speed;
-	boolean crush;
+	bool crush;
 	int direction;				// 1 = up, 0 = waiting, -1 = down
 	int tag;					// ID
 	int olddirection;
@@ -352,7 +352,7 @@ typedef struct
 {
 	thinker_t thinker;
 	floor_e type;
-	boolean crush;
+	bool crush;
 	sector_t *sector;
 	int direction;
 	int newspecial;
@@ -371,7 +371,7 @@ typedef enum
 } result_e;
 
 result_e T_MovePlane(sector_t * sector, fixed_t speed,
-						fixed_t dest, boolean crush, int floorOrCeiling,
+						fixed_t dest, bool crush, int floorOrCeiling,
 						int direction);
 
 int EV_BuildStairs(line_t * line, fixed_t stepDelta);
@@ -386,5 +386,5 @@ void T_MoveFloor(floormove_t * floor);
 ===============================================================================
 */
 
-boolean P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle);
-boolean EV_Teleport(line_t * line, int side, mobj_t * thing);
+bool P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle);
+bool EV_Teleport(line_t * line, int side, mobj_t * thing);

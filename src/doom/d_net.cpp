@@ -68,9 +68,9 @@ static void PlayerQuitGame(player_t *player)
 	}
 }
 
-static void RunTic(ticcmd_t *cmds, boolean *ingame)
+static void RunTic(ticcmd_t *cmds, bool *ingame)
 {
-	extern boolean advancedemo;
+	extern bool advancedemo;
 	unsigned int i;
 
 	// Check for player quits.
@@ -159,7 +159,7 @@ static void SaveGameSettings(net_gamesettings_t *settings)
 
 static void InitConnectData(net_connect_data_t *connect_data)
 {
-	boolean shorttics;
+	bool shorttics;
 
 	connect_data->max_players = MAXPLAYERS;
 	connect_data->drone = false;
@@ -221,7 +221,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
 	connect_data->is_freedoom = W_CheckNumForName("FREEDOOM") >= 0;
 }
 
-void D_ConnectNetGame(void)
+void D_ConnectNetGame()
 {
 	net_connect_data_t connect_data;
 
@@ -246,7 +246,7 @@ void D_ConnectNetGame(void)
 // D_CheckNetGame
 // Works out player numbers among the net participants
 //
-void D_CheckNetGame (void)
+void D_CheckNetGame ()
 {
 	net_gamesettings_t settings;
 

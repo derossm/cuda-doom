@@ -182,7 +182,7 @@ DEH_BEGIN_MAPPING(state_mapping, state_t)
  DEH_MAPPING("Unknown 2",		misc2)
 DEH_END_MAPPING
 
-static void DEH_FrameInit(void)
+static void DEH_FrameInit()
 {
 	// Bit of a hack here:
 	DEH_HereticInit();
@@ -216,7 +216,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
 	return state;
 }
 
-static boolean GetActionPointerForOffset(int offset, void **result)
+static bool GetActionPointerForOffset(int offset, void **result)
 {
 	int i;
 

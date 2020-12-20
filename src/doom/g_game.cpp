@@ -86,13 +86,13 @@ void	G_PlayerReborn (int player);
 
 void	G_DoReborn (int playernum);
 
-void	G_DoLoadLevel (void);
-void	G_DoNewGame (void);
-void	G_DoPlayDemo (void);
-void	G_DoCompleted (void);
-void	G_DoVictory (void);
-void	G_DoWorldDone (void);
-void	G_DoSaveGame (void);
+void	G_DoLoadLevel ();
+void	G_DoNewGame ();
+void	G_DoPlayDemo ();
+void	G_DoCompleted ();
+void	G_DoVictory ();
+void	G_DoWorldDone ();
+void	G_DoSaveGame ();
 
 // Gamestate the last time G_Ticker was called.
 
@@ -101,7 +101,7 @@ gamestate_t		oldgamestate;
 gameaction_t	gameaction;
 gamestate_t		gamestate;
 skill_t			gameskill;
-boolean		respawnmonsters;
+bool		respawnmonsters;
 int				gameepisode;
 int				gamemap;
 
@@ -109,23 +109,23 @@ int				gamemap;
 
 int				timelimit;
 
-boolean			paused;
-boolean			sendpause;					// send a pause event next tic
-boolean			sendsave;					// send a save event next tic
-boolean			usergame;				// ok to save / end game
+bool			paused;
+bool			sendpause;					// send a pause event next tic
+bool			sendsave;					// send a save event next tic
+bool			usergame;				// ok to save / end game
 
-boolean			timingdemo;				// if true, exit with report on completion
-boolean			nodrawers;				// for comparative timing purposes
+bool			timingdemo;				// if true, exit with report on completion
+bool			nodrawers;				// for comparative timing purposes
 int				starttime;				// for comparative timing purposes
 
-boolean			viewactive;
+bool			viewactive;
 
 int				deathmatch;				// only if started as net death
-boolean			netgame;				// only true if packets are broadcast
-boolean			playeringame[MAXPLAYERS];
+bool			netgame;				// only true if packets are broadcast
+bool			playeringame[MAXPLAYERS];
 player_t		players[MAXPLAYERS];
 
-boolean			turbodetected[MAXPLAYERS];
+bool			turbodetected[MAXPLAYERS];
 
 int				consoleplayer;			// player taking events and displaying
 int				displayplayer;			// view being displayed
@@ -137,19 +137,19 @@ int				demostarttic;			// [crispy] fix revenant internal demo bug
 
 char			*demoname;
 const char		*orig_demoname; // [crispy] the name originally chosen for the demo, i.e. without "-00000"
-boolean			demorecording;
-boolean			longtics;				// cph's doom 1.91 longtics hack
-boolean			lowres_turn;			// low resolution turning for longtics
-boolean			demoplayback;
-boolean		netdemo;
+bool			demorecording;
+bool			longtics;				// cph's doom 1.91 longtics hack
+bool			lowres_turn;			// low resolution turning for longtics
+bool			demoplayback;
+bool		netdemo;
 byte*		demobuffer;
 byte*		demo_p;
 byte*		demoend;
-boolean			singledemo;				// quit after playing a demo from cmdline
+bool			singledemo;				// quit after playing a demo from cmdline
 
-boolean			precache = true;		// if true, load all graphics at start
+bool			precache = true;		// if true, load all graphics at start
 
-boolean			testcontrols = false;	// Invoked by setup to test controls
+bool			testcontrols = false;	// Invoked by setup to test controls
 int				testcontrols_mousespeed;
 
 
@@ -204,12 +204,12 @@ static const struct
 #define NUMKEYS		256
 #define MAX_JOY_BUTTONS 20
 
-static boolean gamekeydown[NUMKEYS];
+static bool gamekeydown[NUMKEYS];
 static int		turnheld;		// for accelerative turning
 static int		lookheld;		// [crispy] for accelerative looking
 
-static boolean mousearray[MAX_MOUSE_BUTTONS + 1];
-static boolean *mousebuttons = &mousearray[1]; // allow [-1]
+static bool mousearray[MAX_MOUSE_BUTTONS + 1];
+static bool *mousebuttons = &mousearray[1]; // allow [-1]
 
 // mouse values are used once
 int				mousex;
@@ -217,10 +217,10 @@ int				mousex2;
 int				mousey;
 
 static int		dclicktime;
-static boolean dclickstate;
+static bool dclickstate;
 static int		dclicks;
 static int		dclicktime2;
-static boolean dclickstate2;
+static bool dclickstate2;
 static int		dclicks2;
 
 // joystick values are repeated
@@ -228,8 +228,8 @@ static int		joyxmove;
 static int		joyymove;
 static int		joystrafemove;
 static int		joylook; // [crispy]
-static boolean joyarray[MAX_JOY_BUTTONS + 1];
-static boolean *joybuttons = &joyarray[1];		// allow [-1]
+static bool joyarray[MAX_JOY_BUTTONS + 1];
+static bool *joybuttons = &joyarray[1];		// allow [-1]
 
 static char		savename[256]; // [crispy] moved here, made static
 static int		savegameslot;
@@ -257,7 +257,7 @@ int G_CmdChecksum (ticcmd_t* cmd)
 	return sum;
 }
 
-static boolean WeaponSelectable(weapontype_t weapon)
+static bool WeaponSelectable(weapontype_t weapon)
 {
 	// Can't select the super shotgun in Doom 1.
 
@@ -331,7 +331,7 @@ static int G_NextWeapon(int direction)
 
 // [crispy] holding down the "Run" key may trigger special behavior,
 // e.g. quick exit, clean screenshots, resurrection from savegames
-boolean speedkeydown (void)
+bool speedkeydown ()
 {
 	return (key_speed < NUMKEYS && gamekeydown[key_speed]) ||
 			(joybspeed < MAX_JOY_BUTTONS && joybuttons[joybspeed]);
@@ -346,8 +346,8 @@ boolean speedkeydown (void)
 void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 {
 	int		i;
-	boolean	strafe;
-	boolean	bstrafe;
+	bool	strafe;
+	bool	bstrafe;
 	int		speed;
 	int		tspeed;
 	int		lspeed;
@@ -800,7 +800,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 //
 // G_DoLoadLevel
 //
-void G_DoLoadLevel (void)
+void G_DoLoadLevel ()
 {
 	int				i;
 
@@ -969,7 +969,7 @@ static void SetMouseButtons(unsigned int buttons_mask)
 // G_Responder
 // Get info needed to make ticcmd_ts for the players.
 //
-boolean G_Responder (event_t* ev)
+bool G_Responder (event_t* ev)
 {
 	// allow spy mode changes even during the demo
 	if (gamestate == GS_LEVEL && ev->type == ev_keydown
@@ -1100,7 +1100,7 @@ boolean G_Responder (event_t* ev)
 
 
 // [crispy] re-read game parameters from command line
-static void G_ReadGameParms (void)
+static void G_ReadGameParms ()
 {
 	respawnparm = M_CheckParm ("-respawn");
 	fastparm = M_CheckParm ("-fast");
@@ -1121,7 +1121,7 @@ static void G_CrispyScreenShot()
 // G_Ticker
 // Make ticcmd_ts for the players.
 //
-void G_Ticker (void)
+void G_Ticker ()
 {
 	int		i;
 	int		buf;
@@ -1415,7 +1415,7 @@ void G_PlayerReborn (int player)
 //
 void P_SpawnPlayer (mapthing_t* mthing);
 
-boolean
+bool
 G_CheckSpot
 ( int		playernum,
  mapthing_t*	mthing )
@@ -1612,7 +1612,7 @@ void G_DoReborn (int playernum)
 }
 
 
-void G_ScreenShot (void)
+void G_ScreenShot ()
 {
 	gameaction = ga_screenshot;
 }
@@ -1650,10 +1650,10 @@ static int npars[9] =
 //
 // G_DoCompleted
 //
-boolean		secretexit;
+bool		secretexit;
 extern char*	pagename;
 
-void G_ExitLevel (void)
+void G_ExitLevel ()
 {
 	secretexit = false;
 	G_ClearSavename();
@@ -1661,7 +1661,7 @@ void G_ExitLevel (void)
 }
 
 // Here's for the german edition.
-void G_SecretExitLevel (void)
+void G_SecretExitLevel ()
 {
 	// IF NO WOLF3D LEVELS, NO SECRET EXIT!
 	if ( (gamemode == commercial)
@@ -1699,7 +1699,7 @@ static void G_FormatLevelStatTime(char *str, int tics)
 }
 
 // [crispy] Write level statistics upon exit
-static void G_WriteLevelStat(void)
+static void G_WriteLevelStat()
 {
 	static FILE *fstream = NULL;
 
@@ -1757,7 +1757,7 @@ static void G_WriteLevelStat(void)
 			playerItems, totalitems, playerSecrets, totalsecret);
 }
 
-void G_DoCompleted (void)
+void G_DoCompleted ()
 {
 	int				i;
 
@@ -2006,7 +2006,7 @@ void G_DoCompleted (void)
 //
 // G_WorldDone
 //
-void G_WorldDone (void)
+void G_WorldDone ()
 {
 	gameaction = ga_worlddone;
 
@@ -2063,7 +2063,7 @@ void G_WorldDone (void)
 	}
 }
 
-void G_DoWorldDone (void)
+void G_DoWorldDone ()
 {
 	gamestate = GS_LEVEL;
 	gamemap = wminfo.next+1;
@@ -2078,8 +2078,8 @@ void G_DoWorldDone (void)
 // G_InitFromSavegame
 // Can be called by the startup code or the menu task.
 //
-extern boolean setsizeneeded;
-void R_ExecuteSetViewSize (void);
+extern bool setsizeneeded;
+void R_ExecuteSetViewSize ();
 
 
 void G_LoadGame (char* name)
@@ -2089,7 +2089,7 @@ void G_LoadGame (char* name)
 }
 
 int savedleveltime = 0; // [crispy] moved here for level time logging
-void G_DoLoadGame (void)
+void G_DoLoadGame ()
 {
 
 	// [crispy] loaded game must always be single player.
@@ -2206,7 +2206,7 @@ G_SaveGame
 	sendsave = true;
 }
 
-void G_DoSaveGame (void)
+void G_DoSaveGame ()
 {
 	char *savegame_file;
 	char *temp_savegame_file;
@@ -2330,7 +2330,7 @@ G_DeferedInitNew
 	if (demorecording)
 	{
 	// [crispy] reset IDDT cheat when re-starting map during demo recording
-	void AM_ResetIDDTcheat (void);
+	void AM_ResetIDDTcheat ();
 	AM_ResetIDDTcheat();
 
 	G_CheckDemoStatus();
@@ -2342,7 +2342,7 @@ G_DeferedInitNew
 }
 
 
-void G_DoNewGame (void)
+void G_DoNewGame ()
 {
 	demoplayback = false;
 	netdemo = false;
@@ -2370,7 +2370,7 @@ G_InitNew
 	const char *skytexturename;
 	int				i;
 	// [crispy] make sure "fast" parameters are really only applied once
-	static boolean fast_applied;
+	static bool fast_applied;
 
 	if (paused)
 	{
@@ -2635,7 +2635,7 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 
 // Increase the size of the demo buffer to allow unlimited demos
 
-static void IncreaseDemoBuffer(void)
+static void IncreaseDemoBuffer()
 {
 	int current_length;
 	byte *new_demobuffer;
@@ -2770,7 +2770,7 @@ void G_RecordDemo (const char *name)
 }
 
 // Get the demo version code appropriate for the version set in gameversion.
-int G_VanillaVersionCode(void)
+int G_VanillaVersionCode()
 {
 	switch (gameversion)
 	{
@@ -2786,7 +2786,7 @@ int G_VanillaVersionCode(void)
 	}
 }
 
-void G_BeginRecording (void)
+void G_BeginRecording ()
 {
 	int				i;
 
@@ -2890,12 +2890,12 @@ static const char *DemoVersionDescription(int version)
 	}
 }
 
-void G_DoPlayDemo (void)
+void G_DoPlayDemo ()
 {
 	skill_t skill;
 	int i, lumpnum, episode, map;
 	int demoversion;
-	boolean olddemo = false;
+	bool olddemo = false;
 	int lumplength; // [crispy]
 
 	// [crispy] in demo continue mode free the obsolete demo buffer
@@ -3072,7 +3072,7 @@ void G_TimeDemo (char* name)
 ===================
 */
 
-boolean G_CheckDemoStatus (void)
+bool G_CheckDemoStatus ()
 {
 	int				endtime;
 

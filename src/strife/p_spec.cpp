@@ -58,7 +58,7 @@
 //
 typedef struct
 {
-	boolean	istexture;
+	bool	istexture;
 	int		picnum;
 	int		basepic;
 	int		numpics;
@@ -148,7 +148,7 @@ extern line_t* linespeciallist[MAXLINEANIMS];
 
 
 
-void P_InitPicAnims (void)
+void P_InitPicAnims ()
 {
 	int		i;
 
@@ -251,7 +251,7 @@ terraintype_e P_GetTerrainType(mobj_t* mobj)
 // Initialize terrain types
 //
 
-void P_InitTerrainTypes(void)
+void P_InitTerrainTypes()
 {
 	int i = 0;
 
@@ -1566,10 +1566,10 @@ void P_PlayerInSpecialSector (player_t* player)
 //
 // [STRIFE] Modifications to support multiple scrolling line types.
 //
-boolean			levelTimer;
+bool			levelTimer;
 int				levelTimeCount;
 
-void P_UpdateSpecials (void)
+void P_UpdateSpecials ()
 {
 	anim_t*		anim;
 	int			pic;
@@ -1874,7 +1874,7 @@ line_t*		linespeciallist[MAXLINEANIMS];
 // haleyjd 09/25/10: [STRIFE] Modifications for more scrolling line types and
 // for initialization of sliding door resources.
 //
-void P_SpawnSpecials (void)
+void P_SpawnSpecials ()
 {
 	sector_t*	sector;
 	int			i;

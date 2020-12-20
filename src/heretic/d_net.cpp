@@ -33,10 +33,10 @@
 
 ticcmd_t *netcmds;
 
-extern void D_DoAdvanceDemo(void);
-extern void D_ProcessEvents(void);
+extern void D_DoAdvanceDemo();
+extern void D_ProcessEvents();
 extern void G_BuildTiccmd(ticcmd_t *cmd, int maketic);
-extern boolean G_CheckDemoStatus(void);
+extern bool G_CheckDemoStatus();
 
 // Called when a player leaves the game
 
@@ -69,9 +69,9 @@ static void PlayerQuitGame(player_t *player)
 	}
 }
 
-static void RunTic(ticcmd_t *cmds, boolean *ingame)
+static void RunTic(ticcmd_t *cmds, bool *ingame)
 {
-	extern boolean advancedemo;
+	extern bool advancedemo;
 	unsigned int i;
 
 	// Check for player quits.
@@ -182,7 +182,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
 	connect_data->is_freedoom = 0;
 }
 
-void D_ConnectNetGame(void)
+void D_ConnectNetGame()
 {
 	net_connect_data_t connect_data;
 
@@ -208,7 +208,7 @@ void D_ConnectNetGame(void)
 // Works out player numbers among the net participants
 //
 
-void D_CheckNetGame (void)
+void D_CheckNetGame ()
 {
 	net_gamesettings_t settings;
 

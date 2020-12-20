@@ -69,7 +69,7 @@
 extern	thinker_t	thinkercap;
 
 
-void P_InitThinkers (void);
+void P_InitThinkers ();
 void P_AddThinker (thinker_t* thinker);
 void P_RemoveThinker (thinker_t* thinker);
 
@@ -105,7 +105,7 @@ extern int		iquehead;
 extern int		iquetail;
 
 
-void P_RespawnSpecials (void);
+void P_RespawnSpecials ();
 
 mobj_t*
 P_SpawnMobj
@@ -116,7 +116,7 @@ P_SpawnMobj
 
 void	P_RemoveMobj (mobj_t* th);
 mobj_t* P_SubstNullMobj (mobj_t* th);
-boolean	P_SetMobjState (mobj_t* mobj, statenum_t state);
+bool	P_SetMobjState (mobj_t* mobj, statenum_t state);
 void	P_MobjThinker (mobj_t* mobj);
 mobj_t *Crispy_PlayerSO (int p); // [crispy] weapon sound sources
 
@@ -125,7 +125,7 @@ void	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage, mobj_t* target);
 mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);
 void	P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);
 
-void	P_SpawnPuffSafe (fixed_t x, fixed_t y, fixed_t z, boolean safe);
+void	P_SpawnPuffSafe (fixed_t x, fixed_t y, fixed_t z, bool safe);
 
 //
 // P_ENEMY
@@ -148,7 +148,7 @@ typedef struct
 typedef struct
 {
 	fixed_t	frac;		// along trace line
-	boolean	isaline;
+	bool	isaline;
 	union {
 	mobj_t*	thing;
 	line_t*	line;
@@ -163,7 +163,7 @@ typedef struct
 //extern intercept_t	intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
 extern intercept_t*	intercept_p;
 
-typedef boolean (*traverser_t) (intercept_t *in);
+typedef bool (*traverser_t) (intercept_t *in);
 
 fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);
 int	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
@@ -179,8 +179,8 @@ extern fixed_t		lowfloor;
 
 void	P_LineOpening (line_t* linedef);
 
-boolean P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*) );
-boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );
+bool P_BlockLinesIterator (int x, int y, bool(*func)(line_t*) );
+bool P_BlockThingsIterator (int x, int y, bool(*func)(mobj_t*) );
 
 #define PT_ADDLINES		1
 #define PT_ADDTHINGS	2
@@ -188,14 +188,14 @@ boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );
 
 extern divline_t	trace;
 
-boolean
+bool
 P_PathTraverse
 ( fixed_t	x1,
  fixed_t	y1,
  fixed_t	x2,
  fixed_t	y2,
  int		flags,
- boolean	(*trav) (intercept_t *));
+ bool	(*trav) (intercept_t *));
 
 void P_UnsetThingPosition (mobj_t* thing);
 void P_SetThingPosition (mobj_t* thing);
@@ -207,7 +207,7 @@ void P_SetThingPosition (mobj_t* thing);
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
-extern boolean		floatok;
+extern bool		floatok;
 extern fixed_t		tmfloorz;
 extern fixed_t		tmceilingz;
 
@@ -228,14 +228,14 @@ extern	line_t*		ceilingline;
 extern	line_t**	spechit; // [crispy] remove SPECHIT limit
 extern	int	numspechit;
 
-boolean P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
-boolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
-boolean P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
+bool P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
+bool P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
+bool P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
 void	P_SlideMove (mobj_t* mo);
-boolean P_CheckSight (mobj_t* t1, mobj_t* t2);
+bool P_CheckSight (mobj_t* t1, mobj_t* t2);
 void	P_UseLines (player_t* player);
 
-boolean P_ChangeSector (sector_t* sector, boolean crunch);
+bool P_ChangeSector (sector_t* sector, bool crunch);
 
 extern mobj_t*	linetarget;	// who got hit (or NULL)
 
@@ -274,7 +274,7 @@ extern fixed_t		bmaporgy;	// origin of block map
 extern mobj_t**		blocklinks;	// for thing chains
 
 // [crispy] factor out map lump name and number finding into a separate function
-extern int P_GetNumForMap (int episode, int map, boolean critical);
+extern int P_GetNumForMap (int episode, int map, bool critical);
 
 // [crispy] blinking key or skull in the status bar
 #define KEYBLINKMASK 0x8

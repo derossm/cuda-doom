@@ -82,7 +82,7 @@ static int FindInList(searchlist_t *list, const char *name)
 	return -1;
 }
 
-static boolean SetupList(searchlist_t *list, searchlist_t *src_list,
+static bool SetupList(searchlist_t *list, searchlist_t *src_list,
 							const char *startname, const char *endname,
 							const char *startname2, const char *endname2)
 {
@@ -118,7 +118,7 @@ static boolean SetupList(searchlist_t *list, searchlist_t *src_list,
 
 // Sets up the sprite/flat search lists
 
-static void SetupLists(void)
+static void SetupLists()
 {
 	// IWAD
 
@@ -141,7 +141,7 @@ static void SetupLists(void)
 
 // Initialize the replace list
 
-static void InitSpriteList(void)
+static void InitSpriteList()
 {
 	if (sprite_frames == NULL)
 	{
@@ -153,7 +153,7 @@ static void InitSpriteList(void)
 	num_sprite_frames = 0;
 }
 
-static boolean ValidSpriteLumpName(char *name)
+static bool ValidSpriteLumpName(char *name)
 {
 	if (name[0] == '\0' || name[1] == '\0'
 		|| name[2] == '\0' || name[3] == '\0')
@@ -230,7 +230,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
 
 // Check if sprite lump is needed in the new wad
 
-static boolean SpriteLumpNeeded(lumpinfo_t *lump)
+static bool SpriteLumpNeeded(lumpinfo_t *lump)
 {
 	sprite_frame_t *sprite;
 	int angle_num;
@@ -343,7 +343,7 @@ static void AddSpriteLump(lumpinfo_t *lump)
 
 // Generate the list. Run at the start, before merging
 
-static void GenerateSpriteList(void)
+static void GenerateSpriteList()
 {
 	int i;
 
@@ -384,7 +384,7 @@ static void GenerateSpriteList(void)
 // * All Sprites and Flats are ignored, with the assumption they have
 //	already been merged into the IWAD's sections.
 
-static void DoMerge(void)
+static void DoMerge()
 {
 	section_t current_section;
 	lumpinfo_t **newlumps;
@@ -553,7 +553,7 @@ static void DoMerge(void)
 	numlumps = num_newlumps;
 }
 
-void W_PrintDirectory(void)
+void W_PrintDirectory()
 {
 	unsigned int i, n;
 

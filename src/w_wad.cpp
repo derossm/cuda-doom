@@ -247,7 +247,7 @@ wad_file_t *W_AddFile (const char *filename)
 //
 // W_NumLumps
 //
-int W_NumLumps (void)
+int W_NumLumps ()
 {
 	return numlumps;
 }
@@ -492,7 +492,7 @@ void W_ReleaseLumpName(const char *name)
 int		info[2500][10];
 int		profilecount;
 
-void W_Profile (void)
+void W_Profile ()
 {
 	int		i;
 	memblock_t*	block;
@@ -552,7 +552,7 @@ void W_Profile (void)
 
 // Generate a hash table for fast lookups
 
-void W_GenerateHashTable(void)
+void W_GenerateHashTable()
 {
 	lumpindex_t i;
 
@@ -594,7 +594,7 @@ void W_GenerateHashTable(void)
 // incremental changes to the level you're working on without having to restart
 // the game after every change.
 // But: the reload feature is a fragile hack...
-void W_Reload(void)
+void W_Reload()
 {
 	char *filename;
 	lumpindex_t i;
@@ -638,7 +638,7 @@ const char *W_WadNameForLump(const lumpinfo_t *lump)
 	return M_BaseName(lump->wad_file->path);
 }
 
-boolean W_IsIWADLump(const lumpinfo_t *lump)
+bool W_IsIWADLump(const lumpinfo_t *lump)
 {
 	return lump->wad_file == lumpinfo[0]->wad_file;
 }

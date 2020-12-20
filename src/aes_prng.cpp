@@ -880,7 +880,7 @@ static void AES_Encrypt(aes_context_t *ctx, uint8_t *out,
 	dst[3] = cpu_to_le32(b0[3]);
 }
 
-static boolean prng_enabled = false;
+static bool prng_enabled = false;
 static aes_context_t prng_context;
 static uint32_t prng_input_counter;
 static uint32_t prng_values[4];
@@ -896,14 +896,14 @@ void PRNG_Start(prng_seed_t key)
 	prng_enabled = true;
 }
 
-void PRNG_Stop(void)
+void PRNG_Stop()
 {
 	prng_enabled = false;
 }
 
 // Generate a set of new PRNG values by encrypting a new block.
 
-static void PRNG_Generate(void)
+static void PRNG_Generate()
 {
 	byte input[16], output[16];
 	unsigned int i;
@@ -934,7 +934,7 @@ static void PRNG_Generate(void)
 
 // Read a random 32-bit integer from the PRNG.
 
-unsigned int PRNG_Random(void)
+unsigned int PRNG_Random()
 {
 	unsigned int result;
 

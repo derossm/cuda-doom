@@ -175,7 +175,7 @@ static int GetSoundOffset(char *name)
 //
 //==========================================================================
 
-void SN_InitSequenceScript(void)
+void SN_InitSequenceScript()
 {
 	int i, j;
 	int inSequence;
@@ -405,10 +405,10 @@ void SN_StopSequence(mobj_t * mobj)
 //
 //==========================================================================
 
-void SN_UpdateActiveSequences(void)
+void SN_UpdateActiveSequences()
 {
 	seqnode_t *node;
-	boolean sndPlaying;
+	bool sndPlaying;
 
 	if (!ActiveSequences || paused)
 	{							// No sequences currently playing/game is paused
@@ -482,7 +482,7 @@ void SN_UpdateActiveSequences(void)
 //
 //==========================================================================
 
-void SN_StopAllSequences(void)
+void SN_StopAllSequences()
 {
 	seqnode_t *node;
 

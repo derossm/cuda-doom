@@ -37,7 +37,7 @@ void R_StoreWallRange(int start, int stop);
 ====================
 */
 
-void R_ClearDrawSegs(void)
+void R_ClearDrawSegs()
 {
 	ds_p = drawsegs;
 }
@@ -190,7 +190,7 @@ void R_ClipPassWallSegment(int first, int last)
 ====================
 */
 
-void R_ClearClipSegs(void)
+void R_ClearClipSegs()
 {
 	solidsegs[0].first = -0x7fffffff;
 	solidsegs[0].last = -1;
@@ -319,7 +319,7 @@ int checkcoord[12][4] = {
 };
 
 
-boolean R_CheckBBox(fixed_t * bspcoord)
+bool R_CheckBBox(fixed_t * bspcoord)
 {
 	int boxx, boxy, boxpos;
 	fixed_t x1, y1, x2, y2;

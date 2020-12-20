@@ -119,12 +119,12 @@ int MAXLIGHTZ;
 int LIGHTZSHIFT;
 
 
-void (*colfunc) (void);
-void (*basecolfunc) (void);
-void (*fuzzcolfunc) (void);
-void (*transcolfunc) (void);
-void (*tlcolfunc) (void);
-void (*spanfunc) (void);
+void (*colfunc) ();
+void (*basecolfunc) ();
+void (*fuzzcolfunc) ();
+void (*transcolfunc) ();
+void (*tlcolfunc) ();
+void (*spanfunc) ();
 
 
 
@@ -468,7 +468,7 @@ R_PointToDist
 //
 // R_InitPointToAngle
 //
-void R_InitPointToAngle (void)
+void R_InitPointToAngle ()
 {
 	// UNUSED - now getting from tables.c
 #if 0
@@ -575,7 +575,7 @@ angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale)
 //
 // R_InitTables
 //
-void R_InitTables (void)
+void R_InitTables ()
 {
 	// UNUSED: now getting from tables.c
 #if 0
@@ -615,7 +615,7 @@ static fixed_t centerxfrac_nonwide;
 //
 // R_InitTextureMapping
 //
-void R_InitTextureMapping (void)
+void R_InitTextureMapping ()
 {
 	int			i;
 	int			x;
@@ -685,7 +685,7 @@ void R_InitTextureMapping (void)
 //
 #define DISTMAP		2
 
-void R_InitLightTables (void)
+void R_InitLightTables ()
 {
 	int		i;
 	int		j;
@@ -774,7 +774,7 @@ void R_InitLightTables (void)
 // because it might be in the middle of a refresh.
 // The change will take effect next refresh.
 //
-boolean		setsizeneeded;
+bool		setsizeneeded;
 int		setblocks;
 int		setdetail;
 
@@ -796,7 +796,7 @@ R_SetViewSize
 //
 // R_ExecuteSetViewSize
 //
-void R_ExecuteSetViewSize (void)
+void R_ExecuteSetViewSize ()
 {
 	fixed_t	cosadj;
 	fixed_t	dy;
@@ -943,7 +943,7 @@ void R_ExecuteSetViewSize (void)
 
 
 
-void R_Init (void)
+void R_Init ()
 {
 	R_InitData ();
 	printf (".");
@@ -1086,7 +1086,7 @@ void R_SetupFrame (player_t* player)
 void R_RenderPlayerView (player_t* player)
 {
 	extern void V_DrawFilledBox (int x, int y, int w, int h, int c);
-	extern void R_InterpolateTextureOffsets (void);
+	extern void R_InterpolateTextureOffsets ();
 
 	R_SetupFrame (player);
 

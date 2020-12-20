@@ -65,9 +65,9 @@
 #include "v_trans.h" // [crispy] colored "invert mouse" message
 
 extern patch_t*		hu_font[HU_FONTSIZE];
-extern boolean		message_dontfuckwithme;
+extern bool		message_dontfuckwithme;
 
-extern boolean		chat_on;		// in heads-up code
+extern bool		chat_on;		// in heads-up code
 
 //
 // defaulted values
@@ -101,7 +101,7 @@ int			messy;
 int			messageLastMenuActive;
 
 // timed message = no input from user
-boolean			messageNeedsInput;
+bool			messageNeedsInput;
 
 void	(*messageRoutine)(int response);
 
@@ -123,25 +123,25 @@ char gammamsg[5+4][26+2] =
 int			saveStringEnter;
 int					saveSlot;	// which slot to save in
 int			saveCharIndex;	// which char we're editing
-static boolean			joypadSave = false; // was the save action initiated by joypad?
+static bool			joypadSave = false; // was the save action initiated by joypad?
 // old save description before edit
 char			saveOldString[SAVESTRINGSIZE];
 
-boolean			inhelpscreens;
-boolean			menuactive;
+bool			inhelpscreens;
+bool			menuactive;
 
 #define SKULLXOFF		-32
 #define LINEHEIGHT		16
 #define CRISPY_LINEHEIGHT	10 // [crispy] Crispness menu
 
-extern boolean		sendpause;
+extern bool		sendpause;
 char			savegamestrings[10][SAVESTRINGSIZE];
 
 char	endstring[160];
 
-static boolean opldev;
+static bool opldev;
 
-extern boolean speedkeydown (void);
+extern bool speedkeydown ();
 
 //
 // MENU TYPEDEFS
@@ -217,20 +217,20 @@ static void M_Sound(int choice);
 static void M_FinishReadThis(int choice);
 static void M_LoadSelect(int choice);
 static void M_SaveSelect(int choice);
-static void M_ReadSaveStrings(void);
-static void M_QuickSave(void);
-static void M_QuickLoad(void);
+static void M_ReadSaveStrings();
+static void M_QuickSave();
+static void M_QuickLoad();
 
-static void M_DrawMainMenu(void);
-static void M_DrawReadThis1(void);
-static void M_DrawReadThis2(void);
-static void M_DrawNewGame(void);
-static void M_DrawEpisode(void);
-static void M_DrawOptions(void);
-static void M_DrawMouse(void); // [crispy] mouse sensitivity menu
-static void M_DrawSound(void);
-static void M_DrawLoad(void);
-static void M_DrawSave(void);
+static void M_DrawMainMenu();
+static void M_DrawReadThis1();
+static void M_DrawReadThis2();
+static void M_DrawNewGame();
+static void M_DrawEpisode();
+static void M_DrawOptions();
+static void M_DrawMouse(); // [crispy] mouse sensitivity menu
+static void M_DrawSound();
+static void M_DrawLoad();
+static void M_DrawSave();
 
 static void M_DrawSaveLoadBorder(int x,int y);
 static void M_SetupNextMenu(menu_t *menudef);
@@ -238,17 +238,17 @@ static void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
 static void M_WriteText(int x, int y, const char *string);
 int M_StringWidth(const char *string); // [crispy] un-static
 static int M_StringHeight(const char *string);
-static void M_StartMessage(const char *string, void *routine, boolean input);
-static void M_ClearMenus (void);
+static void M_StartMessage(const char *string, void *routine, bool input);
+static void M_ClearMenus ();
 
 // [crispy] Crispness menu
 static void M_CrispnessCur(int choice);
 static void M_CrispnessNext(int choice);
 static void M_CrispnessPrev(int choice);
-static void M_DrawCrispness1(void);
-static void M_DrawCrispness2(void);
-static void M_DrawCrispness3(void);
-static void M_DrawCrispness4(void);
+static void M_DrawCrispness1();
+static void M_DrawCrispness2();
+static void M_DrawCrispness3();
+static void M_DrawCrispness4();
 
 
 
@@ -793,7 +793,7 @@ menu_t SaveDef =
 // M_ReadSaveStrings
 // read the strings from the savegame files
 //
-void M_ReadSaveStrings(void)
+void M_ReadSaveStrings()
 {
 	FILE	*handle;
 	int		i;
@@ -822,7 +822,7 @@ void M_ReadSaveStrings(void)
 // M_LoadGame & Cie.
 //
 static int LoadDef_x = 72, LoadDef_y = 28;
-void M_DrawLoad(void)
+void M_DrawLoad()
 {
 	int				i;
 
@@ -908,7 +908,7 @@ void M_LoadGame (int choice)
 // M_SaveGame & Cie.
 //
 static int SaveDef_x = 72, SaveDef_y = 28;
-void M_DrawSave(void)
+void M_DrawSave()
 {
 	int				i;
 
@@ -971,7 +971,7 @@ static void SetDefaultSaveName(int slot)
 }
 
 // [crispy] override savegame name if it already starts with a map identifier
-static boolean StartsWithMapIdentifier (char *str)
+static bool StartsWithMapIdentifier (char *str)
 {
 	M_ForceUppercase(str);
 
@@ -1060,7 +1060,7 @@ void M_QuickSaveResponse(int key)
 	}
 }
 
-void M_QuickSave(void)
+void M_QuickSave()
 {
 	char *savegamestring;
 
@@ -1107,7 +1107,7 @@ void M_QuickLoadResponse(int key)
 }
 
 
-void M_QuickLoad(void)
+void M_QuickLoad()
 {
 	char *savegamestring;
 
@@ -1145,7 +1145,7 @@ void M_QuickLoad(void)
 // Read This Menus
 // Had a "quick hack to fix romero bug"
 //
-void M_DrawReadThis1(void)
+void M_DrawReadThis1()
 {
 	inhelpscreens = true;
 
@@ -1157,7 +1157,7 @@ void M_DrawReadThis1(void)
 //
 // Read This Menus - optional second page.
 //
-void M_DrawReadThis2(void)
+void M_DrawReadThis2()
 {
 	inhelpscreens = true;
 
@@ -1167,7 +1167,7 @@ void M_DrawReadThis2(void)
 	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP1"), PU_CACHE), false);
 }
 
-void M_DrawReadThisCommercial(void)
+void M_DrawReadThisCommercial()
 {
 	inhelpscreens = true;
 
@@ -1178,7 +1178,7 @@ void M_DrawReadThisCommercial(void)
 //
 // Change Sfx & Music volumes
 //
-void M_DrawSound(void)
+void M_DrawSound()
 {
 	V_DrawPatchDirect (60, 38, W_CacheLumpName(DEH_String("M_SVOL"), PU_CACHE));
 
@@ -1234,7 +1234,7 @@ void M_MusicVol(int choice)
 //
 // M_DrawMainMenu
 //
-void M_DrawMainMenu(void)
+void M_DrawMainMenu()
 {
 	V_DrawPatchDirect(94, 2,
 						W_CacheLumpName(DEH_String("M_DOOM"), PU_CACHE));
@@ -1246,7 +1246,7 @@ void M_DrawMainMenu(void)
 //
 // M_NewGame
 //
-void M_DrawNewGame(void)
+void M_DrawNewGame()
 {
 	V_DrawPatchDirect(96, 14, W_CacheLumpName(DEH_String("M_NEWG"), PU_CACHE));
 	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_SKILL"), PU_CACHE));
@@ -1280,7 +1280,7 @@ void M_NewGame(int choice)
 //
 int		epi;
 
-void M_DrawEpisode(void)
+void M_DrawEpisode()
 {
 	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_EPISOD"), PU_CACHE));
 }
@@ -1328,7 +1328,7 @@ void M_Episode(int choice)
 static const char *detailNames[2] = {"M_GDHIGH","M_GDLOW"};
 static const char *msgNames[2] = {"M_MSGOFF","M_MSGON"};
 
-void M_DrawOptions(void)
+void M_DrawOptions()
 {
 	V_DrawPatchDirect(108, 15, W_CacheLumpName(DEH_String("M_OPTTTL"),
 												PU_CACHE));
@@ -1372,7 +1372,7 @@ void M_DrawOptions(void)
 }
 
 // [crispy] mouse sensitivity menu
-static void M_DrawMouse(void)
+static void M_DrawMouse()
 {
 	char mouse_menu_text[48];
 
@@ -1408,7 +1408,7 @@ static void M_DrawMouse(void)
 
 // [crispy] Crispness menu
 #include "m_background.h"
-static void M_DrawCrispnessBackground(void)
+static void M_DrawCrispnessBackground()
 {
 	const byte *const src = crispness_background;
 	pixel_t *dest;
@@ -1447,7 +1447,7 @@ static void M_DrawCrispnessSeparator(int y, const char *item)
 	M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessItem(int y, const char *item, int feat, boolean cond)
+static void M_DrawCrispnessItem(int y, const char *item, int feat, bool cond)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
 				"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
@@ -1456,7 +1456,7 @@ static void M_DrawCrispnessItem(int y, const char *item, int feat, boolean cond)
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessMultiItem(int y, const char *item, multiitem_t *multiitem, int feat, boolean cond)
+static void M_DrawCrispnessMultiItem(int y, const char *item, multiitem_t *multiitem, int feat, bool cond)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
 				"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
@@ -1472,7 +1472,7 @@ static void M_DrawCrispnessGoto(int y, const char *item)
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispness1(void)
+static void M_DrawCrispness1()
 {
 	M_DrawCrispnessBackground();
 
@@ -1499,7 +1499,7 @@ static void M_DrawCrispness1(void)
 	dp_translation = NULL;
 }
 
-static void M_DrawCrispness2(void)
+static void M_DrawCrispness2()
 {
 	M_DrawCrispnessBackground();
 
@@ -1525,7 +1525,7 @@ static void M_DrawCrispness2(void)
 	dp_translation = NULL;
 }
 
-static void M_DrawCrispness3(void)
+static void M_DrawCrispness3()
 {
 	M_DrawCrispnessBackground();
 
@@ -1555,7 +1555,7 @@ static void M_DrawCrispness3(void)
 	dp_translation = NULL;
 }
 
-static void M_DrawCrispness4(void)
+static void M_DrawCrispness4()
 {
 	M_DrawCrispnessBackground();
 
@@ -1760,7 +1760,7 @@ void M_QuitResponse(int key)
 }
 
 
-static const char *M_SelectEndMessage(void)
+static const char *M_SelectEndMessage()
 {
 	const char **endmsg;
 
@@ -1947,7 +1947,7 @@ void
 M_StartMessage
 ( const char	*string,
  void*		routine,
- boolean	input )
+ bool	input )
 {
 	messageLastMenuActive = menuactive;
 	messageToPrint = 1;
@@ -2075,7 +2075,7 @@ M_WriteText
 // These keys evaluate to a "null" key in Vanilla Doom that allows weird
 // jumping in the menus. Preserve this behavior for accuracy.
 
-static boolean IsNullKey(int key)
+static bool IsNullKey(int key)
 {
 	return key == KEY_PAUSE || key == KEY_CAPSLOCK
 		|| key == KEY_SCRLCK || key == KEY_NUMLOCK;
@@ -2083,7 +2083,7 @@ static boolean IsNullKey(int key)
 
 // [crispy] reload current level / go to next level
 // adapted from prboom-plus/src/e6y.c:369-449
-static int G_ReloadLevel(void)
+static int G_ReloadLevel()
 {
  int result = false;
 
@@ -2101,7 +2101,7 @@ static int G_ReloadLevel(void)
  return result;
 }
 
-static int G_GotoNextLevel(void)
+static int G_GotoNextLevel()
 {
  byte doom_next[5][9] = {
 	{12, 13, 19, 15, 16, 17, 18, 21, 14},
@@ -2208,7 +2208,7 @@ static int G_GotoNextLevel(void)
 //
 // M_Responder
 //
-boolean M_Responder (event_t* ev)
+bool M_Responder (event_t* ev)
 {
 	int				ch;
 	int				key;
@@ -2620,7 +2620,7 @@ boolean M_Responder (event_t* ev)
 			I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
 #else
 			{
-		extern void R_InitColormaps (void);
+		extern void R_InitColormaps ();
 		I_SetPalette (0);
 		R_InitColormaps();
 		inhelpscreens = true;
@@ -2828,7 +2828,7 @@ boolean M_Responder (event_t* ev)
 //
 // M_StartControlPanel
 //
-void M_StartControlPanel (void)
+void M_StartControlPanel ()
 {
 	// intro might call this repeatedly
 	if (menuactive)
@@ -2845,7 +2845,7 @@ void M_StartControlPanel (void)
 
 // Display OPL debug messages - hack for GENMIDI development.
 
-static void M_DrawOPLDev(void)
+static void M_DrawOPLDev()
 {
 	extern void I_OPL_DevMessages(char *, size_t);
 	char debug[1024];
@@ -2882,7 +2882,7 @@ static void M_DrawOPLDev(void)
 // Called after the view has been rendered,
 // but before it has been blitted.
 //
-void M_Drawer (void)
+void M_Drawer ()
 {
 	static short	x;
 	static short	y;
@@ -2907,7 +2907,7 @@ void M_Drawer (void)
 	y = ORIGHEIGHT/2 - M_StringHeight(messageString) / 2;
 	while (messageString[start] != '\0')
 	{
-		boolean foundnewline = false;
+		bool foundnewline = false;
 
 			for (i = 0; messageString[start + i] != '\0'; i++)
 			{
@@ -3012,7 +3012,7 @@ void M_Drawer (void)
 //
 // M_ClearMenus
 //
-void M_ClearMenus (void)
+void M_ClearMenus ()
 {
 	menuactive = 0;
 
@@ -3040,7 +3040,7 @@ void M_SetupNextMenu(menu_t *menudef)
 //
 // M_Ticker
 //
-void M_Ticker (void)
+void M_Ticker ()
 {
 	if (--skullAnimCounter <= 0)
 	{
@@ -3053,7 +3053,7 @@ void M_Ticker (void)
 //
 // M_Init
 //
-void M_Init (void)
+void M_Init ()
 {
 	currentMenu = &MainDef;
 	menuactive = 0;

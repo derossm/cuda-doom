@@ -25,7 +25,7 @@
 extern void A_Explode();
 extern void A_FaceTarget();
 
-extern boolean P_CheckMeleeRange (mobj_t *actor);
+extern bool P_CheckMeleeRange (mobj_t *actor);
 extern void P_Thrust (player_t* player, angle_t angle, fixed_t move);
 
 // killough 11/98: kill an object
@@ -128,8 +128,8 @@ void A_Face(mobj_t *mo)
 void A_Scratch(mobj_t *mo)
 {
  mo->target && (A_FaceTarget(mo), P_CheckMeleeRange(mo)) ?
-	mo->state->misc2 ? S_StartSound(mo, mo->state->misc2) : (void) 0,
-	P_DamageMobj(mo->target, mo, mo, mo->state->misc1) : (void) 0;
+	mo->state->misc2 ? S_StartSound(mo, mo->state->misc2) : () 0,
+	P_DamageMobj(mo->target, mo, mo, mo->state->misc1) : () 0;
 }
 
 void A_PlaySound(mobj_t *mo)

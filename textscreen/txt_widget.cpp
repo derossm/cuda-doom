@@ -34,7 +34,7 @@ struct txt_callback_table_s
 	int num_callbacks;
 };
 
-txt_callback_table_t *TXT_NewCallbackTable(void)
+txt_callback_table_t *TXT_NewCallbackTable()
 {
 	txt_callback_table_t *table;
 

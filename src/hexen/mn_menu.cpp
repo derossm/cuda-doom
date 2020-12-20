@@ -78,7 +78,7 @@ typedef struct
 {
 	int x;
 	int y;
-	void (*drawFunc) (void);
+	void (*drawFunc) ();
 	int itemCount;
 	MenuItem_t *items;
 	int oldItPos;
@@ -91,7 +91,7 @@ typedef struct
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void InitFonts(void);
+static void InitFonts();
 static void SetMenu(MenuType_t menu);
 static void SCQuitGame(int option);
 static void SCClass(int option);
@@ -100,37 +100,37 @@ static void SCMouseSensi(int option);
 static void SCSfxVolume(int option);
 static void SCMusicVolume(int option);
 static void SCScreenSize(int option);
-static boolean SCNetCheck(int option);
+static bool SCNetCheck(int option);
 static void SCNetCheck2(int option);
 static void SCLoadGame(int option);
 static void SCSaveGame(int option);
 static void SCMessages(int option);
 static void SCEndGame(int option);
 static void SCInfo(int option);
-static void DrawMainMenu(void);
-static void DrawClassMenu(void);
-static void DrawSkillMenu(void);
-static void DrawOptionsMenu(void);
-static void DrawOptions2Menu(void);
+static void DrawMainMenu();
+static void DrawClassMenu();
+static void DrawSkillMenu();
+static void DrawOptionsMenu();
+static void DrawOptions2Menu();
 static void DrawFileSlots(Menu_t * menu);
-static void DrawFilesMenu(void);
-static void MN_DrawInfo(void);
-static void DrawLoadMenu(void);
-static void DrawSaveMenu(void);
+static void DrawFilesMenu();
+static void MN_DrawInfo();
+static void DrawLoadMenu();
+static void DrawSaveMenu();
 static void DrawSlider(Menu_t * menu, int item, int width, int slot);
-void MN_LoadSlotText(void);
+void MN_LoadSlotText();
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
 extern int detailLevel;
-extern boolean gamekeydown[256];		// The NUMKEYS macro is local to g_game
+extern bool gamekeydown[256];		// The NUMKEYS macro is local to g_game
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-boolean MenuActive;
+bool MenuActive;
 int InfoType;
 int messageson = true;
-boolean mn_SuicideConsole;
+bool mn_SuicideConsole;
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
@@ -142,12 +142,12 @@ static Menu_t *CurrentMenu;
 static int CurrentItPos;
 static int MenuPClass;
 static int MenuTime;
-static boolean soundchanged;
+static bool soundchanged;
 
-boolean askforquit;
+bool askforquit;
 static int typeofask;
-static boolean FileMenuKeySteal;
-static boolean slottextloaded;
+static bool FileMenuKeySteal;
+static bool slottextloaded;
 static char SlotText[6][SLOTTEXTLEN + 2];
 static char oldSlotText[SLOTTEXTLEN + 2];
 static int SlotStatus[6];
@@ -314,7 +314,7 @@ static const char *GammaText[] = {
 //
 //---------------------------------------------------------------------------
 
-void MN_Init(void)
+void MN_Init()
 {
 	InitFonts();
 	MenuActive = false;
@@ -328,7 +328,7 @@ void MN_Init(void)
 //
 //---------------------------------------------------------------------------
 
-static void InitFonts(void)
+static void InitFonts()
 {
 	FontABaseLump = W_GetNumForName("FONTA_S") + 1;
 	FontAYellowBaseLump = W_GetNumForName("FONTAY_S") + 1;
@@ -483,7 +483,7 @@ int MN_TextBWidth(const char *text)
 //
 //---------------------------------------------------------------------------
 
-void MN_Ticker(void)
+void MN_Ticker()
 {
 	if (MenuActive == false)
 	{
@@ -506,7 +506,7 @@ const char *QuitEndMsg[] = {
 	"ARE YOU SURE YOU WANT TO SUICIDE?"
 };
 
-void MN_Drawer(void)
+void MN_Drawer()
 {
 	int i;
 	int x;
@@ -579,7 +579,7 @@ void MN_Drawer(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawMainMenu(void)
+static void DrawMainMenu()
 {
 	int frame;
 
@@ -597,9 +597,9 @@ static void DrawMainMenu(void)
 //
 //==========================================================================
 
-static void DrawClassMenu(void)
+static void DrawClassMenu()
 {
-	pclass_t class;
+	pclass_t playerClass;
 	static const char *boxLumpName[3] = {
 		"m_fbox",
 		"m_cbox",
@@ -612,10 +612,10 @@ static void DrawClassMenu(void)
 	};
 
 	MN_DrTextB("CHOOSE CLASS:", 34, 24);
-	class = (pclass_t) CurrentMenu->items[CurrentItPos].option;
-	V_DrawPatch(174, 8, W_CacheLumpName(boxLumpName[class], PU_CACHE));
+	playerClass = (pclass_t) CurrentMenu->items[CurrentItPos].option;
+	V_DrawPatch(174, 8, W_CacheLumpName(boxLumpName[playerClass], PU_CACHE));
 	V_DrawPatch(174 + 24, 8 + 12,
-				W_CacheLumpNum(W_GetNumForName(walkLumpName[class])
+				W_CacheLumpNum(W_GetNumForName(walkLumpName[playerClass])
 								+ ((MenuTime >> 3) & 3), PU_CACHE));
 }
 
@@ -625,7 +625,7 @@ static void DrawClassMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawSkillMenu(void)
+static void DrawSkillMenu()
 {
 	MN_DrTextB("CHOOSE SKILL LEVEL:", 74, 16);
 }
@@ -636,7 +636,7 @@ static void DrawSkillMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawFilesMenu(void)
+static void DrawFilesMenu()
 {
 // clear out the quicksave/quickload stuff
 	quicksave = 0;
@@ -650,7 +650,7 @@ static void DrawFilesMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawLoadMenu(void)
+static void DrawLoadMenu()
 {
 	MN_DrTextB("LOAD GAME", 160 - MN_TextBWidth("LOAD GAME") / 2, 10);
 	if (!slottextloaded)
@@ -666,7 +666,7 @@ static void DrawLoadMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawSaveMenu(void)
+static void DrawSaveMenu()
 {
 	MN_DrTextB("SAVE GAME", 160 - MN_TextBWidth("SAVE GAME") / 2, 10);
 	if (!slottextloaded)
@@ -676,10 +676,10 @@ static void DrawSaveMenu(void)
 	DrawFileSlots(&SaveMenu);
 }
 
-static boolean ReadDescriptionForSlot(int slot, char *description)
+static bool ReadDescriptionForSlot(int slot, char *description)
 {
 	FILE *fp;
-	boolean found;
+	bool found;
 	char name[100];
 	char versionText[HXS_VERSION_TEXT_LENGTH];
 
@@ -710,7 +710,7 @@ static boolean ReadDescriptionForSlot(int slot, char *description)
 //
 //===========================================================================
 
-void MN_LoadSlotText(void)
+void MN_LoadSlotText()
 {
 	char description[HXS_DESCRIPTION_LENGTH];
 	int slot;
@@ -762,7 +762,7 @@ static void DrawFileSlots(Menu_t * menu)
 //
 //---------------------------------------------------------------------------
 
-static void DrawOptionsMenu(void)
+static void DrawOptionsMenu()
 {
 	if (messageson)
 	{
@@ -781,7 +781,7 @@ static void DrawOptionsMenu(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawOptions2Menu(void)
+static void DrawOptions2Menu()
 {
 	DrawSlider(&Options2Menu, 1, 9, screenblocks - 3);
 	DrawSlider(&Options2Menu, 3, 16, snd_MaxVolume);
@@ -855,7 +855,7 @@ static void SCMessages(int option)
 //
 //===========================================================================
 
-static boolean SCNetCheck(int option)
+static bool SCNetCheck(int option)
 {
 	if (!netgame)
 	{
@@ -1145,15 +1145,15 @@ static void SCInfo(int option)
 //
 //---------------------------------------------------------------------------
 
-boolean MN_Responder(event_t * event)
+bool MN_Responder(event_t * event)
 {
 	int key;
 	int charTyped;
 	int i;
 	MenuItem_t *item;
-	extern boolean automapactive;
-	extern void H2_StartTitle(void);
-	extern void G_CheckDemoStatus(void);
+	extern bool automapactive;
+	extern void H2_StartTitle();
+	extern void G_CheckDemoStatus();
 	char *textBuffer;
 
 	// In testcontrols mode, none of the function keys should do anything
@@ -1723,7 +1723,7 @@ boolean MN_Responder(event_t * event)
 //
 //---------------------------------------------------------------------------
 
-void MN_ActivateMenu(void)
+void MN_ActivateMenu()
 {
 	if (MenuActive)
 	{
@@ -1752,7 +1752,7 @@ void MN_ActivateMenu(void)
 //
 //---------------------------------------------------------------------------
 
-void MN_DeactivateMenu(void)
+void MN_DeactivateMenu()
 {
 	if (CurrentMenu != NULL)
 	{
@@ -1777,7 +1777,7 @@ void MN_DeactivateMenu(void)
 //
 //---------------------------------------------------------------------------
 
-void MN_DrawInfo(void)
+void MN_DrawInfo()
 {
 	I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
 	V_CopyScaledBuffer(I_VideoBuffer,

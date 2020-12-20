@@ -21,10 +21,10 @@
 
 // OPTIMIZE: closed two sided lines as single sided
 
-boolean segtextured;			// true if any of the segs textures might be vis
-boolean markfloor;				// false if the back side is the same plane
-boolean markceiling;
-boolean maskedtexture;
+bool segtextured;			// true if any of the segs textures might be vis
+bool markfloor;				// false if the back side is the same plane
+bool markceiling;
+bool maskedtexture;
 int toptexture, bottomtexture, midtexture;
 
 
@@ -168,7 +168,7 @@ void R_RenderMaskedSegRange(drawseg_t * ds, int x1, int x2)
 #define HEIGHTBITS		12
 #define HEIGHTUNIT		(1<<HEIGHTBITS)
 
-void R_RenderSegLoop(void)
+void R_RenderSegLoop()
 {
 	angle_t angle;
 	unsigned index;

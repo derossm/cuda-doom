@@ -27,30 +27,30 @@
 
 // Read events from all input devices
 
-void D_ProcessEvents (void);
+void D_ProcessEvents ();
 
 
 //
 // BASE LEVEL
 //
-void D_PageTicker (void);
-void D_PageDrawer (void);
-void D_AdvanceDemo (void);
-void D_DoAdvanceDemo (void);
-void D_StartTitle (void);
-void D_QuitGame (void); // [STRIFE]
+void D_PageTicker ();
+void D_PageDrawer ();
+void D_AdvanceDemo ();
+void D_DoAdvanceDemo ();
+void D_StartTitle ();
+void D_QuitGame (); // [STRIFE]
 
-void D_IntroTick(void); // [STRIFE]
+void D_IntroTick(); // [STRIFE]
 
 //
 // GLOBAL VARIABLES
 //
 
 extern gameaction_t	gameaction;
-extern boolean			isregistered;	// villsa [STRIFE]
-extern boolean		isdemoversion; // haleyjd [STRIFE]
-extern boolean			stonecold;		// villsa [STRIFE]
-extern boolean			workparm;		// villsa [STRIFE]
+extern bool			isregistered;	// villsa [STRIFE]
+extern bool		isdemoversion; // haleyjd [STRIFE]
+extern bool			stonecold;		// villsa [STRIFE]
+extern bool			workparm;		// villsa [STRIFE]
 
 #endif
 

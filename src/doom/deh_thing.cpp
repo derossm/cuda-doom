@@ -108,7 +108,7 @@ DEH_BEGIN_MAPPING(thing_mapping, mobjinfo_t)
 DEH_END_MAPPING
 
 // [crispy] initialize Thing extra properties (keeping vanilla props in info.c)
-static void DEH_InitThingProperties (void)
+static void DEH_InitThingProperties ()
 {
 	int i;
 

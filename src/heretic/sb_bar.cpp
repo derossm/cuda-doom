@@ -37,16 +37,16 @@ typedef struct Cheat_s
 
 // Private Functions
 
-static void DrawSoundInfo(void);
+static void DrawSoundInfo();
 static void ShadeLine(int x, int y, int height, int shade);
-static void ShadeChain(void);
+static void ShadeChain();
 static void DrINumber(signed int val, int x, int y);
 static void DrBNumber(signed int val, int x, int y);
-static void DrawCommonBar(void);
-static void DrawMainBar(void);
-static void DrawInventoryBar(void);
-static void DrawFullScreenStuff(void);
-static boolean HandleCheats(byte key);
+static void DrawCommonBar();
+static void DrawMainBar();
+static void DrawInventoryBar();
+static void DrawFullScreenStuff();
+static bool HandleCheats(byte key);
 static void CheatGodFunc(player_t * player, Cheat_t * cheat);
 static void CheatNoClipFunc(player_t * player, Cheat_t * cheat);
 static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat);
@@ -67,9 +67,9 @@ static void CheatIDDQDFunc(player_t * player, Cheat_t * cheat);
 
 // Public Data
 
-boolean DebugSound;				// debug flag for displaying sound info
+bool DebugSound;				// debug flag for displaying sound info
 
-boolean inventory;
+bool inventory;
 int curpos;
 int inv_ptr;
 int ArtifactFlash;
@@ -190,7 +190,7 @@ static Cheat_t Cheats[] = {
 //
 //---------------------------------------------------------------------------
 
-void SB_Init(void)
+void SB_Init()
 {
 	int i;
 	int startLump;
@@ -250,7 +250,7 @@ void SB_Init(void)
 //
 //---------------------------------------------------------------------------
 
-void SB_Ticker(void)
+void SB_Ticker()
 {
 	int delta;
 	int curHealth;
@@ -432,7 +432,7 @@ static void ShadeLine(int x, int y, int height, int shade)
 //
 //---------------------------------------------------------------------------
 
-static void ShadeChain(void)
+static void ShadeChain()
 {
 	int i;
 
@@ -451,7 +451,7 @@ static void ShadeChain(void)
 //
 //---------------------------------------------------------------------------
 
-static void DrawSoundInfo(void)
+static void DrawSoundInfo()
 {
 	int i;
 	SoundInfo_t s;
@@ -550,12 +550,12 @@ static int oldkeys = -1;
 
 int playerkeys = 0;
 
-extern boolean automapactive;
+extern bool automapactive;
 
-void SB_Drawer(void)
+void SB_Drawer()
 {
 	int frame;
-	static boolean hitCenterFrame;
+	static bool hitCenterFrame;
 
 	// Sound info debug stuff
 	if (DebugSound == true)
@@ -691,7 +691,7 @@ void SB_Drawer(void)
 
 // sets the new palette based upon current values of player->damagecount
 // and player->bonuscount
-void SB_PaletteFlash(void)
+void SB_PaletteFlash()
 {
 	static int sb_palette = 0;
 	int palette;
@@ -735,7 +735,7 @@ void SB_PaletteFlash(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawCommonBar(void)
+void DrawCommonBar()
 {
 	int chainY;
 	int healthPos;
@@ -774,7 +774,7 @@ void DrawCommonBar(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawMainBar(void)
+void DrawMainBar()
 {
 	int i;
 	int temp;
@@ -894,7 +894,7 @@ void DrawMainBar(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawInventoryBar(void)
+void DrawInventoryBar()
 {
 	const char *patch;
 	int i;
@@ -928,7 +928,7 @@ void DrawInventoryBar(void)
 	}
 }
 
-void DrawFullScreenStuff(void)
+void DrawFullScreenStuff()
 {
 	const char *patch;
 	int i;
@@ -1003,7 +1003,7 @@ void DrawFullScreenStuff(void)
 //
 //--------------------------------------------------------------------------
 
-boolean SB_Responder(event_t * event)
+bool SB_Responder(event_t * event)
 {
 	if (event->type == ev_keydown)
 	{
@@ -1023,10 +1023,10 @@ boolean SB_Responder(event_t * event)
 //
 //--------------------------------------------------------------------------
 
-static boolean HandleCheats(byte key)
+static bool HandleCheats(byte key)
 {
 	int i;
-	boolean eat;
+	bool eat;
 
 	/* [crispy] check for nightmare/netgame per cheat, to allow "harmless" cheats
 	if (netgame || gameskill == sk_nightmare)
@@ -1091,7 +1091,7 @@ static void CheatNoClipFunc(player_t * player, Cheat_t * cheat)
 static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
 {
 	int i;
-	//extern boolean *WeaponInShareware;
+	//extern bool *WeaponInShareware;
 
 	NIGHTMARE_NETGAME_CHECK;
 	player->armorpoints = 200;
@@ -1270,7 +1270,7 @@ static void CheatWarpFunc(player_t * player, Cheat_t * cheat)
 
 static void CheatChickenFunc(player_t * player, Cheat_t * cheat)
 {
-	extern boolean P_UndoPlayerChicken(player_t * player);
+	extern bool P_UndoPlayerChicken(player_t * player);
 
 	NIGHTMARE_NETGAME_CHECK;
 	if (player->chickenTics)

@@ -64,13 +64,13 @@ typedef struct
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void P_LightningFlash(void);
+static void P_LightningFlash();
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
 extern fixed_t Sky1ColumnOffset;
 extern fixed_t Sky2ColumnOffset;
-extern boolean DoubleSky;
+extern bool DoubleSky;
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
@@ -82,7 +82,7 @@ fixed_t Sky2ScrollDelta;
 static animDef_t AnimDefs[MAX_ANIM_DEFS];
 static frameDef_t FrameDefs[MAX_FRAME_DEFS];
 static int AnimDefCount;
-static boolean LevelHasLightning;
+static bool LevelHasLightning;
 static int NextLightningFlash;
 static int LightningFlash;
 static int *LightningLightLevels;
@@ -95,7 +95,7 @@ static int *LightningLightLevels;
 //
 //==========================================================================
 
-void P_AnimateSurfaces(void)
+void P_AnimateSurfaces()
 {
 	int i;
 	animDef_t *ad;
@@ -179,12 +179,12 @@ void P_AnimateSurfaces(void)
 //
 //==========================================================================
 
-static void P_LightningFlash(void)
+static void P_LightningFlash()
 {
 	int i;
 	sector_t *tempSec;
 	int *tempLight;
-	boolean foundSec;
+	bool foundSec;
 	int flashLight;
 
 	if (LightningFlash)
@@ -298,7 +298,7 @@ static void P_LightningFlash(void)
 //
 //==========================================================================
 
-void P_ForceLightning(void)
+void P_ForceLightning()
 {
 	NextLightningFlash = 0;
 }
@@ -309,7 +309,7 @@ void P_ForceLightning(void)
 //
 //==========================================================================
 
-void P_InitLightning(void)
+void P_InitLightning()
 {
 	int i;
 	int secCount;
@@ -353,14 +353,14 @@ void P_InitLightning(void)
 //
 //==========================================================================
 
-void P_InitFTAnims(void)
+void P_InitFTAnims()
 {
 	int base;
 	int mod;
 	int fd;
 	animDef_t *ad;
-	boolean ignore;
-	boolean done;
+	bool ignore;
+	bool done;
 
 	fd = 0;
 	ad = AnimDefs;

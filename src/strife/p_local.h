@@ -68,7 +68,7 @@
 extern	thinker_t	thinkercap;
 
 
-void P_InitThinkers (void);
+void P_InitThinkers ();
 void P_AddThinker (thinker_t* thinker);
 void P_RemoveThinker (thinker_t* thinker);
 
@@ -110,7 +110,7 @@ extern int		iquehead;
 extern int		iquetail;
 
 
-void P_RespawnSpecials (void);
+void P_RespawnSpecials ();
 
 mobj_t*
 P_SpawnMobj
@@ -121,7 +121,7 @@ P_SpawnMobj
 
 void	P_RemoveMobj (mobj_t* th);
 mobj_t* P_SubstNullMobj (mobj_t* th);
-boolean	P_SetMobjState (mobj_t* mobj, statenum_t state);
+bool	P_SetMobjState (mobj_t* mobj, statenum_t state);
 void	P_MobjThinker (mobj_t* mobj);
 
 void	P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);
@@ -142,8 +142,8 @@ void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee); // villsa [STRIFE]
 void A_BodyParts(mobj_t *actor);						// haleyjd: [STRIFE]
 void A_AlertSpectreC(mobj_t* actor);
 void A_FaceTarget (mobj_t* actor);
-void P_FreePrisoners(void);
-void P_DestroyConverter(void);
+void P_FreePrisoners();
+void P_DestroyConverter();
 
 //
 // P_MAPUTL
@@ -160,7 +160,7 @@ typedef struct
 typedef struct
 {
 	fixed_t	frac;		// along trace line
-	boolean	isaline;
+	bool	isaline;
 	union {
 	mobj_t*	thing;
 	line_t*	line;
@@ -175,7 +175,7 @@ typedef struct
 extern intercept_t	intercepts[MAXINTERCEPTS];
 extern intercept_t*	intercept_p;
 
-typedef boolean (*traverser_t) (intercept_t *in);
+typedef bool (*traverser_t) (intercept_t *in);
 
 fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);
 int	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
@@ -191,8 +191,8 @@ extern fixed_t		lowfloor;
 
 void	P_LineOpening (line_t* linedef);
 
-boolean P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*) );
-boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );
+bool P_BlockLinesIterator (int x, int y, bool(*func)(line_t*) );
+bool P_BlockThingsIterator (int x, int y, bool(*func)(mobj_t*) );
 
 #define PT_ADDLINES		1
 #define PT_ADDTHINGS	2
@@ -200,14 +200,14 @@ boolean P_BlockThingsIterator (int x, int y, boolean(*func)(mobj_t*) );
 
 extern divline_t	trace;
 
-boolean
+bool
 P_PathTraverse
 ( fixed_t	x1,
  fixed_t	y1,
  fixed_t	x2,
  fixed_t	y2,
  int		flags,
- boolean	(*trav) (intercept_t *));
+ bool	(*trav) (intercept_t *));
 
 void P_UnsetThingPosition (mobj_t* thing);
 void P_SetThingPosition (mobj_t* thing);
@@ -219,22 +219,22 @@ void P_SetThingPosition (mobj_t* thing);
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
-extern boolean		floatok;
+extern bool		floatok;
 extern fixed_t		tmfloorz;
 extern fixed_t		tmceilingz;
 
 extern line_t		*ceilingline;
 extern line_t		*blockingline; // [STRIFE] New global
 
-boolean P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
-boolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
-boolean P_CheckPositionZ(mobj_t* thing, fixed_t z);	// villsa [STRIFE]
-boolean P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
+bool P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
+bool P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
+bool P_CheckPositionZ(mobj_t* thing, fixed_t z);	// villsa [STRIFE]
+bool P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
 void	P_SlideMove (mobj_t* mo);
-boolean P_CheckSight (mobj_t* t1, mobj_t* t2);
+bool P_CheckSight (mobj_t* t1, mobj_t* t2);
 void	P_UseLines (player_t* player);
 
-boolean P_ChangeSector (sector_t* sector, boolean crunch);
+bool P_ChangeSector (sector_t* sector, bool crunch);
 
 extern mobj_t*	linetarget;	// who got hit (or NULL)
 

@@ -81,7 +81,7 @@ void TXT_RemoveDesktopWindow(txt_window_t *win)
 	}
 }
 
-txt_window_t *TXT_GetActiveWindow(void)
+txt_window_t *TXT_GetActiveWindow()
 {
 	if (num_windows == 0)
 	{
@@ -189,7 +189,7 @@ static void DrawDesktopBackground(const char *title)
 	TXT_Puts(title);
 }
 
-static void DrawHelpIndicator(void)
+static void DrawHelpIndicator()
 {
 	char keybuf[10];
 	int fgcolor;
@@ -227,7 +227,7 @@ void TXT_SetDesktopTitle(const char *title)
 	TXT_SetWindowTitle(title);
 }
 
-void TXT_DrawDesktop(void)
+void TXT_DrawDesktop()
 {
 	txt_window_t *active_window;
 	const char *title;
@@ -291,7 +291,7 @@ static void DesktopInputEvent(int c)
 
 }
 
-void TXT_DispatchEvents(void)
+void TXT_DispatchEvents()
 {
 	txt_window_t *active_window;
 	int c;
@@ -307,12 +307,12 @@ void TXT_DispatchEvents(void)
 	}
 }
 
-void TXT_ExitMainLoop(void)
+void TXT_ExitMainLoop()
 {
 	main_loop_running = 0;
 }
 
-void TXT_DrawASCIITable(void)
+void TXT_DrawASCIITable()
 {
 	unsigned char *screendata;
 	char buf[10];
@@ -352,7 +352,7 @@ void TXT_SetPeriodicCallback(TxtIdleCallback callback,
 	periodic_callback_period = period;
 }
 
-void TXT_GUIMainLoop(void)
+void TXT_GUIMainLoop()
 {
 	main_loop_running = 1;
 

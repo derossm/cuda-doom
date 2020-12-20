@@ -324,7 +324,7 @@ void P_LoadThings (int lump)
 	mapthing_t			*mt;
 	mapthing_t			spawnthing;
 	int			numthings;
-//	boolean		spawn;
+//	bool		spawn;
 
 	data = W_CacheLumpNum (lump,PU_STATIC);
 	numthings = W_LumpLength (lump) / sizeof(mapthing_t);
@@ -543,7 +543,7 @@ void P_LoadBlockMap (int lump)
 // Builds sector line lists and subsector sector numbers.
 // Finds block bounding boxes for sectors.
 //
-void P_GroupLines (void)
+void P_GroupLines ()
 {
 	line_t**		linebuffer;
 	int			i;
@@ -851,7 +851,7 @@ P_SetupLevel
 //
 // P_Init
 //
-void P_Init (void)
+void P_Init ()
 {
 	P_InitSwitchList();
 	P_InitPicAnims();

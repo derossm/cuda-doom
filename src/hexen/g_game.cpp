@@ -39,49 +39,49 @@ extern void P_PlayerNextArtifact(player_t * player);
 
 // Functions
 
-boolean G_CheckDemoStatus(void);
+bool G_CheckDemoStatus();
 void G_ReadDemoTiccmd(ticcmd_t * cmd);
 void G_WriteDemoTiccmd(ticcmd_t * cmd);
 
 void G_DoReborn(int playernum);
 
-void G_DoLoadLevel(void);
-void G_DoInitNew(void);
-void G_DoNewGame(void);
-void G_DoPlayDemo(void);
-void G_DoTeleportNewMap(void);
-void G_DoCompleted(void);
-void G_DoVictory(void);
-void G_DoWorldDone(void);
-void G_DoSaveGame(void);
-void G_DoSingleReborn(void);
+void G_DoLoadLevel();
+void G_DoInitNew();
+void G_DoNewGame();
+void G_DoPlayDemo();
+void G_DoTeleportNewMap();
+void G_DoCompleted();
+void G_DoVictory();
+void G_DoWorldDone();
+void G_DoSaveGame();
+void G_DoSingleReborn();
 
-void H2_PageTicker(void);
-void H2_AdvanceDemo(void);
+void H2_PageTicker();
+void H2_AdvanceDemo();
 
-extern boolean mn_SuicideConsole;
+extern bool mn_SuicideConsole;
 
 gameaction_t gameaction;
 gamestate_t gamestate;
 skill_t gameskill;
-//boolean			respawnmonsters;
+//bool			respawnmonsters;
 int gameepisode;
 int gamemap;
 int prevmap;
 
-boolean paused;
-boolean sendpause;				// send a pause event next tic
-boolean sendsave;				// send a save event next tic
-boolean usergame;				// ok to save / end game
+bool paused;
+bool sendpause;				// send a pause event next tic
+bool sendsave;				// send a save event next tic
+bool usergame;				// ok to save / end game
 
-boolean timingdemo;				// if true, exit with report on completion
+bool timingdemo;				// if true, exit with report on completion
 int starttime;					// for comparative timing purposes
 
-boolean viewactive;
+bool viewactive;
 
-boolean deathmatch;				// only if started as net death
-boolean netgame;				// only true if packets are broadcast
-boolean playeringame[MAXPLAYERS];
+bool deathmatch;				// only if started as net death
+bool netgame;				// only true if packets are broadcast
+bool playeringame[MAXPLAYERS];
 player_t players[MAXPLAYERS];
 pclass_t PlayerClass[MAXPLAYERS];
 
@@ -93,16 +93,16 @@ int displayplayer;				// view being displayed
 int levelstarttic;				// gametic at level start
 
 char *demoname;
-boolean demorecording;
-boolean longtics;				// specify high resolution turning in demos
-boolean lowres_turn;
-boolean shortticfix;			// calculate lowres turning like doom
-boolean demoplayback;
-boolean demoextend;
+bool demorecording;
+bool longtics;				// specify high resolution turning in demos
+bool lowres_turn;
+bool shortticfix;			// calculate lowres turning like doom
+bool demoplayback;
+bool demoextend;
 byte *demobuffer, *demo_p, *demoend;
-boolean singledemo;				// quit after playing a demo from cmdline
+bool singledemo;				// quit after playing a demo from cmdline
 
-boolean precache = true;		// if true, load all graphics at start
+bool precache = true;		// if true, load all graphics at start
 
 // TODO: Hexen uses 16-bit shorts for consistancy?
 byte consistancy[MAXPLAYERS][BACKUPTICS];
@@ -144,13 +144,13 @@ static int next_weapon = 0;
 #define SLOWTURNTICS	6
 
 #define NUMKEYS 256
-boolean gamekeydown[NUMKEYS];
+bool gamekeydown[NUMKEYS];
 int turnheld;					// for accelerative turning
 int lookheld;
 
 
-boolean mousearray[MAX_MOUSE_BUTTONS + 1];
-boolean *mousebuttons = &mousearray[1];
+bool mousearray[MAX_MOUSE_BUTTONS + 1];
+bool *mousebuttons = &mousearray[1];
 		// allow [-1]
 int mousex, mousey;				// mouse values are used once
 int dclicktime, dclickstate, dclicks;
@@ -161,8 +161,8 @@ int dclicktime2, dclickstate2, dclicks2;
 int joyxmove, joyymove;			// joystick values are repeated
 int joystrafemove;
 int joylook;
-boolean joyarray[MAX_JOY_BUTTONS + 1];
-boolean *joybuttons = &joyarray[1];		// allow [-1]
+bool joyarray[MAX_JOY_BUTTONS + 1];
+bool *joybuttons = &joyarray[1];		// allow [-1]
 
 int savegameslot;
 char savedescription[32];
@@ -177,7 +177,7 @@ static skill_t TempSkill;
 static int TempEpisode;
 static int TempMap;
 
-boolean testcontrols = false;
+bool testcontrols = false;
 int testcontrols_mousespeed;
 
 //=============================================================================
@@ -192,24 +192,24 @@ int testcontrols_mousespeed;
 ====================
 */
 
-extern boolean inventory;
-boolean usearti = true;
+extern bool inventory;
+bool usearti = true;
 
 void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 {
 	int i;
-	boolean strafe, bstrafe;
+	bool strafe, bstrafe;
 	int speed, tspeed, lspeed;
 	int forward, side;
 	int look, arti;
 	int flyheight;
 	int pClass;
 
-	extern boolean artiskip;
+	extern bool artiskip;
 
 	// haleyjd: removed externdriver crap
 
-	pClass = players[consoleplayer].class;
+	pClass = players[consoleplayer].playerClass;
 	memset(cmd, 0, sizeof(*cmd));
 
 //		cmd->consistancy =
@@ -678,7 +678,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 ==============
 */
 
-void G_DoLoadLevel(void)
+void G_DoLoadLevel()
 {
 	int i;
 
@@ -778,10 +778,10 @@ static void SetMouseButtons(unsigned int buttons_mask)
 ===============================================================================
 */
 
-boolean G_Responder(event_t * ev)
+bool G_Responder(event_t * ev)
 {
 	player_t *plr;
-	extern boolean MenuActive;
+	extern bool MenuActive;
 
 	plr = &players[consoleplayer];
 	if (ev->type == ev_keyup && ev->data1 == key_useartifact)
@@ -936,7 +936,7 @@ boolean G_Responder(event_t * ev)
 //
 //==========================================================================
 
-void G_Ticker(void)
+void G_Ticker()
 {
 	int i, buf;
 	ticcmd_t *cmd = NULL;
@@ -1226,7 +1226,7 @@ void G_PlayerReborn(int player)
 	players[player].itemcount = itemcount;
 	players[player].secretcount = secretcount;
 	players[player].worldTimer = worldTimer;
-	players[player].class = PlayerClass[player];
+	players[player].playerClass = PlayerClass[player];
 
 	p->usedown = p->attackdown = true; // don't do anything immediately
 	p->playerstate = PST_LIVE;
@@ -1257,7 +1257,7 @@ void G_PlayerReborn(int player)
 
 void P_SpawnPlayer(mapthing_t * mthing);
 
-boolean G_CheckSpot(int playernum, mapthing_t * mthing)
+bool G_CheckSpot(int playernum, mapthing_t * mthing)
 {
 	fixed_t x, y;
 	subsector_t *ss;
@@ -1332,10 +1332,10 @@ void G_DeathMatchSpawnPlayer(int playernum)
 void G_DoReborn(int playernum)
 {
 	int i;
-	boolean oldWeaponowned[NUMWEAPONS];
+	bool oldWeaponowned[NUMWEAPONS];
 	int oldKeys;
 	int oldPieces;
-	boolean foundSpot;
+	bool foundSpot;
 	int bestWeapon;
 
 	// quit demo unless -demoextend
@@ -1424,7 +1424,7 @@ void G_DoReborn(int playernum)
 	}
 }
 
-void G_ScreenShot(void)
+void G_ScreenShot()
 {
 	gameaction = ga_screenshot;
 }
@@ -1435,7 +1435,7 @@ void G_ScreenShot(void)
 //
 //==========================================================================
 
-void G_StartNewInit(void)
+void G_StartNewInit()
 {
 	SV_InitBaseSlot();
 	SV_ClearRebornSlot();
@@ -1485,7 +1485,7 @@ void G_TeleportNewMap(int map, int position)
 //
 //==========================================================================
 
-void G_DoTeleportNewMap(void)
+void G_DoTeleportNewMap()
 {
 	SV_MapTeleport(LeaveMap, LeavePosition);
 	gamestate = GS_LEVEL;
@@ -1494,13 +1494,13 @@ void G_DoTeleportNewMap(void)
 }
 
 /*
-boolean secretexit;
-void G_ExitLevel (void)
+bool secretexit;
+void G_ExitLevel ()
 {
 	secretexit = false;
 	gameaction = ga_completed;
 }
-void G_SecretExitLevel (void)
+void G_SecretExitLevel ()
 {
 	secretexit = true;
 	gameaction = ga_completed;
@@ -1529,7 +1529,7 @@ void G_Completed(int map, int position)
 	LeavePosition = position;
 }
 
-void G_DoCompleted(void)
+void G_DoCompleted()
 {
 	int i;
 
@@ -1603,7 +1603,7 @@ void G_DoCompleted(void)
 //
 //============================================================================
 
-void G_WorldDone(void)
+void G_WorldDone()
 {
 	gameaction = ga_worlddone;
 }
@@ -1614,7 +1614,7 @@ void G_WorldDone(void)
 //
 //============================================================================
 
-void G_DoWorldDone(void)
+void G_DoWorldDone()
 {
 	gamestate = GS_LEVEL;
 	G_DoLoadLevel();
@@ -1631,7 +1631,7 @@ void G_DoWorldDone(void)
 //
 //==========================================================================
 
-void G_DoSingleReborn(void)
+void G_DoSingleReborn()
 {
 	gameaction = ga_nothing;
 	SV_LoadGame(SV_GetRebornSlot());
@@ -1662,7 +1662,7 @@ void G_LoadGame(int slot)
 //
 //==========================================================================
 
-void G_DoLoadGame(void)
+void G_DoLoadGame()
 {
 	gameaction = ga_nothing;
 	SV_LoadGame(GameLoadSlot);
@@ -1696,7 +1696,7 @@ void G_SaveGame(int slot, char *description)
 //
 //==========================================================================
 
-void G_DoSaveGame(void)
+void G_DoSaveGame()
 {
 	SV_SaveGame(savegameslot, savedescription);
 	gameaction = ga_nothing;
@@ -1722,7 +1722,7 @@ void G_DeferredNewGame(skill_t skill)
 //
 //==========================================================================
 
-void G_DoNewGame(void)
+void G_DoNewGame()
 {
 	G_StartNewGame(TempSkill);
 	gameaction = ga_nothing;
@@ -1746,7 +1746,7 @@ void G_DeferedInitNew(skill_t skill, int episode, int map)
 	gameaction = ga_initnew;
 }
 
-void G_DoInitNew(void)
+void G_DoInitNew()
 {
 	SV_InitBaseSlot();
 	G_InitNew(TempSkill, TempEpisode, TempMap);
@@ -1859,7 +1859,7 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
 
 // Increase the size of the demo buffer to allow unlimited demos
 
-static void IncreaseDemoBuffer(void)
+static void IncreaseDemoBuffer()
 {
 	int current_length;
 	byte *new_demobuffer;
@@ -2057,7 +2057,7 @@ void G_DeferedPlayDemo(const char *name)
 	gameaction = ga_playdemo;
 }
 
-void G_DoPlayDemo(void)
+void G_DoPlayDemo()
 {
 	skill_t skill;
 	int i, lumpnum, episode, map;
@@ -2159,7 +2159,7 @@ void G_TimeDemo(char *name)
 ===================
 */
 
-boolean G_CheckDemoStatus(void)
+bool G_CheckDemoStatus()
 {
 	int endtime, realtics;
 

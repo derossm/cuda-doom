@@ -60,7 +60,7 @@ byte *rejectmatrix;				// for fast sight rejection
 
 mapthing_t deathmatchstarts[10], *deathmatch_p;
 mapthing_t playerstarts[MAXPLAYERS];
-boolean playerstartsingame[MAXPLAYERS];
+bool playerstartsingame[MAXPLAYERS];
 
 /*
 =================
@@ -496,7 +496,7 @@ void P_LoadBlockMap(int lump)
 =================
 */
 
-void P_GroupLines(void)
+void P_GroupLines()
 {
 	line_t **linebuffer;
 	int i, j, total;
@@ -581,7 +581,7 @@ void P_GroupLines(void)
 // but separate coordinates that are *only* used in rendering,
 // i.e. r_bsp.c:R_AddLine()
 
-static void P_RemoveSlimeTrails(void)
+static void P_RemoveSlimeTrails()
 {
 	int i;
 
@@ -752,7 +752,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 =================
 */
 
-void P_Init(void)
+void P_Init()
 {
 	P_InitSwitchList();
 	P_InitPicAnims();

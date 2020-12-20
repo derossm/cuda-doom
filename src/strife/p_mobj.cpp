@@ -46,7 +46,7 @@ void P_SpawnMapThing (mapthing_t*	mthing);
 //
 int test;
 
-boolean
+bool
 P_SetMobjState
 ( mobj_t*	mobj,
  statenum_t	state )
@@ -741,7 +741,7 @@ void P_RemoveMobj (mobj_t* mobj)
 //
 // [STRIFE] modification to item respawn time handling
 //
-void P_RespawnSpecials (void)
+void P_RespawnSpecials ()
 {
 	fixed_t		x;
 	fixed_t		y;

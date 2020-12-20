@@ -54,7 +54,7 @@ byte *dc_source;				// first pixel in a column (possibly virtual)
 
 int dccount;					// just for profiling
 
-void R_DrawColumn(void)
+void R_DrawColumn()
 {
 	int count;
 	byte *dest;
@@ -83,7 +83,7 @@ void R_DrawColumn(void)
 	while (count--);
 }
 
-void R_DrawColumnLow(void)
+void R_DrawColumnLow()
 {
 	int count;
 	byte *dest;
@@ -113,7 +113,7 @@ void R_DrawColumnLow(void)
 	while (count--);
 }
 
-void R_DrawTLColumn(void)
+void R_DrawTLColumn()
 {
 	int count;
 	byte *dest;
@@ -155,7 +155,7 @@ void R_DrawTLColumn(void)
 //
 //============================================================================
 
-void R_DrawAltTLColumn(void)
+void R_DrawAltTLColumn()
 {
 	int count;
 	byte *dest;
@@ -201,7 +201,7 @@ void R_DrawAltTLColumn(void)
 byte *dc_translation;
 byte *translationtables;
 
-void R_DrawTranslatedColumn(void)
+void R_DrawTranslatedColumn()
 {
 	int count;
 	byte *dest;
@@ -236,7 +236,7 @@ void R_DrawTranslatedColumn(void)
 //
 //============================================================================
 
-void R_DrawTranslatedTLColumn(void)
+void R_DrawTranslatedTLColumn()
 {
 	int count;
 	byte *dest;
@@ -275,7 +275,7 @@ void R_DrawTranslatedTLColumn(void)
 //============================================================================
 
 /*
-void R_DrawTranslatedAltTLColumn (void)
+void R_DrawTranslatedAltTLColumn ()
 {
 	int			count;
 	byte		*dest;
@@ -311,7 +311,7 @@ void R_DrawTranslatedAltTLColumn (void)
 //
 //--------------------------------------------------------------------------
 
-void R_InitTranslationTables(void)
+void R_InitTranslationTables()
 {
 	int i;
 	byte *transLump;
@@ -351,7 +351,7 @@ byte *ds_source;				// start of a 64*64 tile image
 
 int dscount;					// just for profiling
 
-void R_DrawSpan(void)
+void R_DrawSpan()
 {
 	fixed_t xfrac, yfrac;
 	byte *dest;
@@ -379,7 +379,7 @@ void R_DrawSpan(void)
 	while (count--);
 }
 
-void R_DrawSpanLow(void)
+void R_DrawSpanLow()
 {
 	fixed_t xfrac, yfrac;
 	byte *dest;
@@ -442,9 +442,9 @@ void R_InitBuffer(int width, int height)
 ==================
 */
 
-boolean BorderNeedRefresh;
+bool BorderNeedRefresh;
 
-void R_DrawViewBorder(void)
+void R_DrawViewBorder()
 {
 	byte *src, *dest;
 	int x, y;
@@ -499,9 +499,9 @@ void R_DrawViewBorder(void)
 ==================
 */
 
-boolean BorderTopRefresh;
+bool BorderTopRefresh;
 
-void R_DrawTopBorder(void)
+void R_DrawTopBorder()
 {
 	byte *src, *dest;
 	int x, y;

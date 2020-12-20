@@ -45,7 +45,7 @@ fixed_t Sky2ColumnOffset;
 int skyflatnum;
 int skytexturemid;
 fixed_t skyiscale;
-boolean DoubleSky;
+bool DoubleSky;
 planefunction_t floorfunc, ceilingfunc;
 
 // Opening
@@ -105,7 +105,7 @@ void R_InitSky(int map)
 //
 //==========================================================================
 
-void R_InitSkyMap(void)
+void R_InitSkyMap()
 {
 	skyflatnum = R_FlatNumForName("F_SKY");
 	skytexturemid = 200 * FRACUNIT;
@@ -120,7 +120,7 @@ void R_InitSkyMap(void)
 //
 //==========================================================================
 
-void R_InitPlanes(void)
+void R_InitPlanes()
 {
 }
 
@@ -194,7 +194,7 @@ void R_MapPlane(int y, int x1, int x2)
 //
 //==========================================================================
 
-void R_ClearPlanes(void)
+void R_ClearPlanes()
 {
 	int i;
 	angle_t angle;
@@ -367,7 +367,7 @@ void R_MakeSpans(int x, int t1, int b1, int t2, int b2)
 
 #define SKYTEXTUREMIDSHIFTED 200
 
-void R_DrawPlanes(void)
+void R_DrawPlanes()
 {
 	visplane_t *pl;
 	int light;

@@ -80,7 +80,7 @@ const char *spritename;
 */
 
 void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
-							boolean flipped)
+							bool flipped)
 {
 	int r;
 
@@ -282,7 +282,7 @@ void R_InitSprites(const char **namelist)
 ===================
 */
 
-void R_ClearSprites(void)
+void R_ClearSprites()
 {
 	vissprite_p = vissprites;
 }
@@ -298,7 +298,7 @@ void R_ClearSprites(void)
 
 vissprite_t overflowsprite;
 
-vissprite_t *R_NewVisSprite(void)
+vissprite_t *R_NewVisSprite()
 {
 	// [crispy] remove MAXVISSPRITE limit
 	if (vissprite_p == &vissprites[numvissprites])
@@ -494,7 +494,7 @@ void R_ProjectSprite(mobj_t * thing)
 	spriteframe_t *sprframe;
 	int lump;
 	unsigned rot;
-	boolean flip;
+	bool flip;
 	int index;
 	vissprite_t *vis;
 	angle_t ang;
@@ -574,12 +574,12 @@ void R_ProjectSprite(mobj_t * thing)
 		ang = R_PointToAngle(interpx, interpy);
 		rot = (ang - interpangle + (unsigned) (ANG45 / 2) * 9) >> 29;
 		lump = sprframe->lump[rot];
-		flip = (boolean) sprframe->flip[rot];
+		flip = (bool) sprframe->flip[rot];
 	}
 	else
 	{							// use single rotation for all views
 		lump = sprframe->lump[0];
-		flip = (boolean) sprframe->flip[0];
+		flip = (bool) sprframe->flip[0];
 	}
 
 //
@@ -716,7 +716,7 @@ void R_DrawPSprite(pspdef_t * psp)
 	spritedef_t *sprdef;
 	spriteframe_t *sprframe;
 	int lump;
-	boolean flip;
+	bool flip;
 	vissprite_t *vis, avis;
 
 	int tempangle;
@@ -738,7 +738,7 @@ void R_DrawPSprite(pspdef_t * psp)
 	sprframe = &sprdef->spriteframes[psp->state->frame & FF_FRAMEMASK];
 
 	lump = sprframe->lump[0];
-	flip = (boolean) sprframe->flip[0];
+	flip = (bool) sprframe->flip[0];
 
 //
 // calculate edges of the shape
@@ -828,7 +828,7 @@ void R_DrawPSprite(pspdef_t * psp)
 ========================
 */
 
-void R_DrawPlayerSprites(void)
+void R_DrawPlayerSprites()
 {
 	int i, lightnum;
 	pspdef_t *psp;
@@ -871,7 +871,7 @@ void R_DrawPlayerSprites(void)
 
 vissprite_t vsprsortedhead;
 
-void R_SortVisSprites(void)
+void R_SortVisSprites()
 {
 	int i, count;
 	vissprite_t *ds, *best;
@@ -1036,7 +1036,7 @@ void R_DrawSprite(vissprite_t * spr)
 ========================
 */
 
-void R_DrawMasked(void)
+void R_DrawMasked()
 {
 	vissprite_t *spr;
 	drawseg_t *ds;

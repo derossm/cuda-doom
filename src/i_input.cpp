@@ -73,7 +73,7 @@ static const char shiftxform[] =
 
 // If true, I_StartTextInput() has been called, and we are populating
 // the data3 field of ev_keydown events.
-static boolean text_input_enabled = true;
+static bool text_input_enabled = true;
 
 // Bit mask of mouse button state.
 static unsigned int mouse_button_state = 0;
@@ -299,7 +299,7 @@ void I_StartTextInput(int x1, int y1, int x2, int y2)
 	}
 }
 
-void I_StopTextInput(void)
+void I_StopTextInput()
 {
 	text_input_enabled = false;
 
@@ -309,7 +309,7 @@ void I_StopTextInput(void)
 	}
 }
 
-static void UpdateMouseButtonState(unsigned int button, boolean on)
+static void UpdateMouseButtonState(unsigned int button, bool on)
 {
 	static event_t event;
 
@@ -450,7 +450,7 @@ static int AccelerateMouseY(int val)
 //
 // This is to combine all mouse movement for a tic into one mouse
 // motion event.
-void I_ReadMouse(void)
+void I_ReadMouse()
 {
 	int x, y;
 	event_t ev;
@@ -479,7 +479,7 @@ void I_ReadMouse(void)
 }
 
 // Bind all variables controlling input options.
-void I_BindInputVariables(void)
+void I_BindInputVariables()
 {
 	M_BindFloatVariable("mouse_acceleration",		&mouse_acceleration);
 	M_BindIntVariable("mouse_threshold",			&mouse_threshold);

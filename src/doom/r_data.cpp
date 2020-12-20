@@ -346,7 +346,7 @@ void R_GenerateComposite (int texnum)
 		int j = 0;
 		// [crispy] absolut topdelta for first 254 pixels, then relative
 		int abstop, reltop = 0;
-		boolean relative = false;
+		bool relative = false;
 
 		// save column in temporary so we can shuffle it around
 		memcpy(source, (byte *) col + 3, texture->height);
@@ -620,7 +620,7 @@ R_GetColumnMod
 }
 
 
-static void GenerateTextureHashTable(void)
+static void GenerateTextureHashTable()
 {
 	texture_t **rover;
 	int i;
@@ -668,7 +668,7 @@ static void GenerateTextureHashTable(void)
 // with the textures from the world map.
 //
 // [crispy] partly rewritten to merge PNAMES and TEXTURE1/2 lumps
-void R_InitTextures (void)
+void R_InitTextures ()
 {
 	maptexture_t*	mtexture;
 	texture_t*		texture;
@@ -994,7 +994,7 @@ void R_InitTextures (void)
 //
 // R_InitFlats
 //
-void R_InitFlats (void)
+void R_InitFlats ()
 {
 	int		i;
 
@@ -1016,7 +1016,7 @@ void R_InitFlats (void)
 // so the sprite does not need to be cached completely
 // just for having the header info ready during rendering.
 //
-void R_InitSpriteLumps (void)
+void R_InitSpriteLumps ()
 {
 	int		i;
 	patch_t	*patch;
@@ -1166,7 +1166,7 @@ static void R_InitTranMap()
 //
 // R_InitColormaps
 //
-void R_InitColormaps (void)
+void R_InitColormaps ()
 {
 #ifndef CRISPY_TRUECOLOR
 	int	lump;
@@ -1184,7 +1184,7 @@ void R_InitColormaps (void)
 	// [crispy] intermediate gamma levels
 	if (!gamma2table)
 	{
-		extern void I_SetGammaTable (void);
+		extern void I_SetGammaTable ();
 		I_SetGammaTable();
 	}
 
@@ -1248,8 +1248,8 @@ void R_InitColormaps (void)
 	byte *playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
 	char c[3];
 	int i, j;
-	boolean keepgray = false;
-	extern byte V_Colorize (byte *playpal, int cr, byte source, boolean keepgray109);
+	bool keepgray = false;
+	extern byte V_Colorize (byte *playpal, int cr, byte source, bool keepgray109);
 
 	if (!crstr)
 		crstr = I_Realloc(NULL, CRMAX * sizeof(*crstr));
@@ -1282,7 +1282,7 @@ void R_InitColormaps (void)
 // that will be used by all views
 // Must be called after W_Init.
 //
-void R_InitData (void)
+void R_InitData ()
 {
 	// [crispy] Moved R_InitFlats() to the top, because it sets firstflat/lastflat
 	// which are required by R_InitTextures() to prevent flat lumps from being
@@ -1399,7 +1399,7 @@ int		flatmemory;
 int		texturememory;
 int		spritememory;
 
-void R_PrecacheLevel (void)
+void R_PrecacheLevel ()
 {
 	char*		flatpresent;
 	char*		texturepresent;

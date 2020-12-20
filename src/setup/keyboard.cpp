@@ -168,7 +168,7 @@ static void AddKeyControl(TXT_UNCAST_ARG(table), const char *name, int *var)
 }
 
 static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
-							boolean add_space)
+							bool add_space)
 {
 	TXT_CAST_ARG(txt_table_t, table);
 	char buf[64];
@@ -193,7 +193,7 @@ static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 	txt_window_t *window;
 	txt_scrollpane_t *scrollpane;
 	txt_table_t *table;
-	boolean extra_keys = gamemission == heretic
+	bool extra_keys = gamemission == heretic
 						|| gamemission == hexen
 						|| gamemission == strife;
 
@@ -499,7 +499,7 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
 	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
 }
 
-void BindKeyboardVariables(void)
+void BindKeyboardVariables()
 {
 	M_BindIntVariable("vanilla_keyboard_mapping", &vanilla_keyboard_mapping);
 }

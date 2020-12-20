@@ -111,7 +111,7 @@ byte*		rejectmatrix;
 mapthing_t	deathmatchstarts[MAX_DEATHMATCH_STARTS];
 mapthing_t*	deathmatch_p;
 mapthing_t	playerstarts[MAXPLAYERS];
-boolean		playerstartsingame[MAXPLAYERS];
+bool		playerstartsingame[MAXPLAYERS];
 
 // [crispy] recalculate seg offsets
 // adapted from prboom-plus/src/p_setup.c:474-482
@@ -173,9 +173,9 @@ void P_LoadVertexes (int lump)
 //
 // GetSectorAtNullAddress
 //
-sector_t* GetSectorAtNullAddress(void)
+sector_t* GetSectorAtNullAddress()
 {
-	static boolean null_sector_is_initialized = false;
+	static bool null_sector_is_initialized = false;
 	static sector_t null_sector;
 
 	if (!null_sector_is_initialized)
@@ -277,7 +277,7 @@ void P_LoadSegs (int lump)
 }
 
 // [crispy] fix long wall wobble
-void P_SegLengths (boolean contrast_only)
+void P_SegLengths (bool contrast_only)
 {
 	int i;
 	const int rightangle = abs(finesine[(ANG60/2) >> ANGLETOFINESHIFT]);
@@ -474,7 +474,7 @@ void P_LoadThings (int lump)
 	mapthing_t			*mt;
 	mapthing_t			spawnthing;
 	int			numthings;
-	boolean		spawn;
+	bool		spawn;
 
 	data = W_CacheLumpNum (lump,PU_STATIC);
 	numthings = W_LumpLength (lump) / sizeof(mapthing_t);
@@ -714,7 +714,7 @@ void P_LoadSideDefs (int lump)
 //
 // P_LoadBlockMap
 //
-boolean P_LoadBlockMap (int lump)
+bool P_LoadBlockMap (int lump)
 {
 	int i;
 	int count;
@@ -777,7 +777,7 @@ boolean P_LoadBlockMap (int lump)
 // Builds sector line lists and subsector sector numbers.
 // Finds block bounding boxes for sectors.
 //
-void P_GroupLines (void)
+void P_GroupLines ()
 {
 	line_t**		linebuffer;
 	int			i;
@@ -896,7 +896,7 @@ void P_GroupLines (void)
 // but separate coordinates that are *only* used in rendering,
 // i.e. r_bsp.c:R_AddLine()
 
-static void P_RemoveSlimeTrails(void)
+static void P_RemoveSlimeTrails()
 {
 	int i;
 
@@ -1039,7 +1039,7 @@ const char *skilltable[] =
 };
 
 // [crispy] factor out map lump name and number finding into a separate function
-int P_GetNumForMap (int episode, int map, boolean critical)
+int P_GetNumForMap (int episode, int map, bool critical)
 {
 	char lumpname[9];
 
@@ -1095,7 +1095,7 @@ P_SetupLevel
 	int		i;
 	char	lumpname[9];
 	int		lumpnum;
-	boolean	crispy_validblockmap;
+	bool	crispy_validblockmap;
 	mapformat_t	crispy_mapformat;
 
 	totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
@@ -1232,7 +1232,7 @@ P_SetupLevel
 	// [crispy] (re-)create BLOCKMAP if necessary
 	if (!crispy_validblockmap)
 	{
-	extern void P_CreateBlockMap (void);
+	extern void P_CreateBlockMap ();
 	P_CreateBlockMap();
 	}
 	if (crispy_mapformat & (MFMT_ZDBSPX | MFMT_ZDBSPZ))
@@ -1307,7 +1307,7 @@ P_SetupLevel
 //
 // P_Init
 //
-void P_Init (void)
+void P_Init ()
 {
 	P_InitSwitchList ();
 	P_InitPicAnims ();

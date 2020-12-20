@@ -65,8 +65,8 @@ typedef struct
 
 
 static memzone_t *mainzone;
-static boolean zero_on_free;
-static boolean scan_on_free;
+static bool zero_on_free;
+static bool scan_on_free;
 
 
 //
@@ -98,7 +98,7 @@ void Z_ClearZone (memzone_t* zone)
 //
 // Z_Init
 //
-void Z_Init (void)
+void Z_Init ()
 {
 	memblock_t*	block;
 	int		size;
@@ -468,7 +468,7 @@ void Z_FileDumpHeap (FILE* f)
 //
 // Z_CheckHeap
 //
-void Z_CheckHeap (void)
+void Z_CheckHeap ()
 {
 	memblock_t*	block;
 
@@ -534,7 +534,7 @@ void Z_ChangeUser(void *ptr, void **user)
 //
 // Z_FreeMemory
 //
-int Z_FreeMemory (void)
+int Z_FreeMemory ()
 {
 	memblock_t*		block;
 	int			free;
@@ -552,7 +552,7 @@ int Z_FreeMemory (void)
 	return free;
 }
 
-unsigned int Z_ZoneSize(void)
+unsigned int Z_ZoneSize()
 {
 	return mainzone->size;
 }

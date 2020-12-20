@@ -23,7 +23,7 @@
 extern net_addr_t net_broadcast_addr;
 
 // Create a new network context.
-net_context_t *NET_NewContext(void);
+net_context_t *NET_NewContext();
 
 // Add a network module to a context.
 void NET_AddModule(net_context_t *context, net_module_t *module);
@@ -38,7 +38,7 @@ void NET_SendBroadcast(net_context_t *context, net_packet_t *packet);
 // if a packet was received. The result is stored in *packet and the source is
 // stored in *addr, with an implicit reference added. The packet must be freed
 // by the caller and the reference releasd.
-boolean NET_RecvPacket(net_context_t *context, net_addr_t **addr,
+bool NET_RecvPacket(net_context_t *context, net_addr_t **addr,
 						net_packet_t **packet);
 
 // Return a string representation of the given address. The result points to a

@@ -104,15 +104,15 @@ extern pixel_t* colormaps; // [crispy] evil hack to get FPS dots working as in V
 #else
 static SDL_Color palette[256];
 #endif
-static boolean palette_to_set;
+static bool palette_to_set;
 
 // display has been set up?
 
-static boolean initialized = false;
+static bool initialized = false;
 
 // disable mouse?
 
-static boolean nomouse = false;
+static bool nomouse = false;
 int usemouse = 1;
 
 // Save screenshots in PNG format.
@@ -175,7 +175,7 @@ static int startup_delay = 1000;
 // this to be temporarily disabled via the command line.
 
 static int grabmouse = true;
-static boolean nograbmouse_override = false;
+static bool nograbmouse_override = false;
 
 // The screen buffer; this is modified to draw things to the screen
 
@@ -183,22 +183,22 @@ pixel_t *I_VideoBuffer = NULL;
 
 // If true, game is running as a screensaver
 
-boolean screensaver_mode = false;
+bool screensaver_mode = false;
 
 // Flag indicating whether the screen is currently visible:
 // when the screen isnt visible, don't render the screen
 
-boolean screenvisible = true;
+bool screenvisible = true;
 
 // If true, we display dots at the bottom of the screen to
 // indicate FPS.
 
-static boolean display_fps_dots;
+static bool display_fps_dots;
 
 // If this is true, the screen is rendered but not blitted to the
 // video buffer.
 
-static boolean noblit;
+static bool noblit;
 
 // Callback function to invoke to determine whether to grab the
 // mouse pointer.
@@ -207,11 +207,11 @@ static grabmouse_callback_t grabmouse_callback = NULL;
 
 // Does the window currently have focus?
 
-static boolean window_focused = true;
+static bool window_focused = true;
 
 // Window resize state.
 
-static boolean need_resize = false;
+static bool need_resize = false;
 static unsigned int last_resize_time;
 #define RESIZE_DELAY 500
 
@@ -222,7 +222,7 @@ int usegamma = 0;
 // Joystick/gamepad hysteresis
 unsigned int joywait = 0;
 
-static boolean MouseShouldBeGrabbed()
+static bool MouseShouldBeGrabbed()
 {
 	// never grab the mouse when in screensaver mode
 
@@ -270,12 +270,12 @@ void I_SetGrabMouseCallback(grabmouse_callback_t func)
 
 // Set the variable controlling FPS dots.
 
-void I_DisplayFPSDots(boolean dots_on)
+void I_DisplayFPSDots(bool dots_on)
 {
 	display_fps_dots = dots_on;
 }
 
-static void SetShowCursor(boolean show)
+static void SetShowCursor(bool show)
 {
 	if (!screensaver_mode)
 	{
@@ -286,7 +286,7 @@ static void SetShowCursor(boolean show)
 	}
 }
 
-void I_ShutdownGraphics(void)
+void I_ShutdownGraphics()
 {
 	if (initialized)
 	{
@@ -303,7 +303,7 @@ void I_ShutdownGraphics(void)
 //
 // I_StartFrame
 //
-void I_StartFrame (void)
+void I_StartFrame ()
 {
 	// er?
 
@@ -311,7 +311,7 @@ void I_StartFrame (void)
 
 // Adjust window_width / window_height variables to be an an aspect
 // ratio consistent with the aspect_ratio_correct variable.
-static void AdjustWindowSize(void)
+static void AdjustWindowSize()
 {
 	if (aspect_ratio_correct || integer_scaling)
 	{
@@ -392,7 +392,7 @@ static void HandleWindowEvent(SDL_WindowEvent *event)
 	}
 }
 
-static boolean ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
+static bool ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
 {
 	Uint16 flags = (KMOD_LALT | KMOD_RALT);
 #if defined(__MACOSX__)
@@ -402,7 +402,7 @@ static boolean ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
 			sym->scancode == SDL_SCANCODE_KP_ENTER) && (sym->mod & flags) != 0;
 }
 
-static void I_ToggleFullScreen(void)
+static void I_ToggleFullScreen()
 {
 	unsigned int flags = 0;
 
@@ -430,7 +430,7 @@ static void I_ToggleFullScreen(void)
 	}
 }
 
-void I_GetEvent(void)
+void I_GetEvent()
 {
 	extern void I_HandleKeyboardEvent(SDL_Event *sdlevent);
 	extern void I_HandleMouseEvent(SDL_Event *sdlevent);
@@ -492,7 +492,7 @@ void I_GetEvent(void)
 //
 // I_StartTic
 //
-void I_StartTic (void)
+void I_StartTic ()
 {
 	if (!initialized)
 	{
@@ -516,15 +516,15 @@ void I_StartTic (void)
 //
 // I_UpdateNoBlit
 //
-void I_UpdateNoBlit (void)
+void I_UpdateNoBlit ()
 {
 	// what is this?
 }
 
-static void UpdateGrab(void)
+static void UpdateGrab()
 {
-	static boolean currently_grabbed = false;
-	boolean grab;
+	static bool currently_grabbed = false;
+	bool grab;
 
 	grab = MouseShouldBeGrabbed();
 
@@ -626,7 +626,7 @@ static void LimitTextureSize(int *w_upscale, int *h_upscale)
 	}
 }
 
-static void CreateUpscaledTexture(boolean force)
+static void CreateUpscaledTexture(bool force)
 {
 	int w, h;
 	int h_upscale, w_upscale;
@@ -717,7 +717,7 @@ fixed_t fractionaltic;
 //
 // I_FinishUpdate
 //
-void I_FinishUpdate (void)
+void I_FinishUpdate ()
 {
 	static int lasttic;
 	int tics;
@@ -898,7 +898,7 @@ void I_ReadScreen (pixel_t* scr)
 //
 // [crispy] intermediate gamma levels
 byte **gamma2table = NULL;
-void I_SetGammaTable (void)
+void I_SetGammaTable ()
 {
 	int i;
 
@@ -1029,7 +1029,7 @@ void I_SetWindowTitle(const char *title)
 // the title set with I_SetWindowTitle.
 //
 
-void I_InitWindowTitle(void)
+void I_InitWindowTitle()
 {
 	char *buf;
 
@@ -1040,7 +1040,7 @@ void I_InitWindowTitle(void)
 
 // Set the application icon
 
-void I_InitWindowIcon(void)
+void I_InitWindowIcon()
 {
 	SDL_Surface *surface;
 
@@ -1064,7 +1064,7 @@ static void SetScaleFactor(int factor)
 	fullscreen = false;
 }
 
-void I_GraphicsCheckCommandLine(void)
+void I_GraphicsCheckCommandLine()
 {
 	int i;
 
@@ -1206,7 +1206,7 @@ void I_GraphicsCheckCommandLine(void)
 
 // Check if we have been invoked as a screensaver by xscreensaver.
 
-void I_CheckIsScreensaver(void)
+void I_CheckIsScreensaver()
 {
 	char *env;
 
@@ -1218,7 +1218,7 @@ void I_CheckIsScreensaver(void)
 	}
 }
 
-static void SetSDLVideoDriver(void)
+static void SetSDLVideoDriver()
 {
 	// Allow a default value for the SDL video driver to be specified
 	// in the configuration file.
@@ -1295,7 +1295,7 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
 	}
 }
 
-static void SetVideoMode(void)
+static void SetVideoMode()
 {
 	int w, h;
 	int x, y;
@@ -1525,7 +1525,7 @@ static void SetVideoMode(void)
 }
 
 // [crispy] re-calculate SCREENWIDTH, SCREENHEIGHT, NONWIDEWIDTH and WIDESCREENDELTA
-void I_GetScreenDimensions (void)
+void I_GetScreenDimensions ()
 {
 	SDL_DisplayMode mode;
 	int w = 16, h = 10;
@@ -1579,7 +1579,7 @@ void I_GetScreenDimensions (void)
 	WIDESCREENDELTA = ((SCREENWIDTH - NONWIDEWIDTH) >> crispy->hires) / 2;
 }
 
-void I_InitGraphics(void)
+void I_InitGraphics()
 {
 	SDL_Event dummy;
 #ifndef CRISPY_TRUECOLOR
@@ -1898,7 +1898,7 @@ void I_RenderReadPixels(byte **data, int *w, int *h, int *p)
 
 // Bind all variables controlling video options into the configuration
 // file system.
-void I_BindVideoVariables(void)
+void I_BindVideoVariables()
 {
 	M_BindIntVariable("use_mouse",					&usemouse);
 	M_BindIntVariable("fullscreen",				&fullscreen);

@@ -104,7 +104,7 @@ int			dccount;
 // [crispy] replace R_DrawColumn() with Lee Killough's implementation
 // found in MBF to fix Tutti-Frutti, taken from mbfsrc/R_DRAW.C:99-1979
 
-void R_DrawColumn (void)
+void R_DrawColumn ()
 {
 	int			count;
 	pixel_t*		dest;
@@ -184,7 +184,7 @@ void R_DrawColumn (void)
 // UNUSED.
 // Loop unrolled.
 #if 0
-void R_DrawColumn (void)
+void R_DrawColumn ()
 {
 	int			count;
 	byte*		source;
@@ -240,7 +240,7 @@ void R_DrawColumn (void)
 #endif
 
 
-void R_DrawColumnLow (void)
+void R_DrawColumnLow ()
 {
 	int			count;
 	pixel_t*		dest;
@@ -340,7 +340,7 @@ int	fuzzpos = 0;
 
 // [crispy] draw fuzz effect independent of rendering frame rate
 static int fuzzpos_tic;
-void R_SetFuzzPosTic (void)
+void R_SetFuzzPosTic ()
 {
 	// [crispy] prevent the animation from remaining static
 	if (fuzzpos == fuzzpos_tic)
@@ -349,7 +349,7 @@ void R_SetFuzzPosTic (void)
 	}
 	fuzzpos_tic = fuzzpos;
 }
-void R_SetFuzzPosDraw (void)
+void R_SetFuzzPosDraw ()
 {
 	fuzzpos = fuzzpos_tic;
 }
@@ -362,13 +362,13 @@ void R_SetFuzzPosDraw (void)
 // could create the SHADOW effect,
 // i.e. spectres and invisible players.
 //
-void R_DrawFuzzColumn (void)
+void R_DrawFuzzColumn ()
 {
 	int			count;
 	pixel_t*		dest;
 	fixed_t		frac;
 	fixed_t		fracstep;
-	boolean		cutoff = false;
+	bool		cutoff = false;
 
 	// Adjust borders. Low...
 	if (!dc_yl)
@@ -440,7 +440,7 @@ void R_DrawFuzzColumn (void)
 
 // low detail mode version
 
-void R_DrawFuzzColumnLow (void)
+void R_DrawFuzzColumnLow ()
 {
 	int			count;
 	pixel_t*		dest;
@@ -448,7 +448,7 @@ void R_DrawFuzzColumnLow (void)
 	fixed_t		frac;
 	fixed_t		fracstep;
 	int x;
-	boolean		cutoff = false;
+	bool		cutoff = false;
 
 	// Adjust borders. Low...
 	if (!dc_yl)
@@ -544,7 +544,7 @@ void R_DrawFuzzColumnLow (void)
 byte*	dc_translation;
 byte*	translationtables;
 
-void R_DrawTranslatedColumn (void)
+void R_DrawTranslatedColumn ()
 {
 	int			count;
 	pixel_t*		dest;
@@ -588,7 +588,7 @@ void R_DrawTranslatedColumn (void)
 	} while (count--);
 }
 
-void R_DrawTranslatedColumnLow (void)
+void R_DrawTranslatedColumnLow ()
 {
 	int			count;
 	pixel_t*		dest;
@@ -640,7 +640,7 @@ void R_DrawTranslatedColumnLow (void)
 	} while (count--);
 }
 
-void R_DrawTLColumn (void)
+void R_DrawTLColumn ()
 {
 	int			count;
 	pixel_t*		dest;
@@ -682,7 +682,7 @@ void R_DrawTLColumn (void)
 }
 
 // [crispy] draw translucent column, low-resolution version
-void R_DrawTLColumnLow (void)
+void R_DrawTLColumnLow ()
 {
 	int			count;
 	pixel_t*		dest;
@@ -737,7 +737,7 @@ void R_DrawTLColumnLow (void)
 // Assumes a given structure of the PLAYPAL.
 // Could be read from a lump instead.
 //
-void R_InitTranslationTables (void)
+void R_InitTranslationTables ()
 {
 	int		i;
 
@@ -798,7 +798,7 @@ int			dscount;
 
 //
 // Draws the actual span.
-void R_DrawSpan (void)
+void R_DrawSpan ()
 {
 // unsigned int position, step;
 	pixel_t *dest;
@@ -862,7 +862,7 @@ void R_DrawSpan (void)
 // UNUSED.
 // Loop unrolled by 4.
 #if 0
-void R_DrawSpan (void)
+void R_DrawSpan ()
 {
 	unsigned	position, step;
 
@@ -935,7 +935,7 @@ void R_DrawSpan (void)
 //
 // Again..
 //
-void R_DrawSpanLow (void)
+void R_DrawSpanLow ()
 {
 // unsigned int position, step;
 	unsigned int xtemp, ytemp;
@@ -1038,7 +1038,7 @@ R_InitBuffer
 // for variable screen sizes
 // Also draws a beveled edge.
 //
-void R_FillBackScreen (void)
+void R_FillBackScreen ()
 {
 	byte*	src;
 	pixel_t*	dest;
@@ -1174,7 +1174,7 @@ R_VideoErase
 // Draws the border around the view
 // for different size windows?
 //
-void R_DrawViewBorder (void)
+void R_DrawViewBorder ()
 {
 	int		top;
 	int		side;

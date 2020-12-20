@@ -85,7 +85,7 @@ typedef struct
 // Structure containing parsed metadata read from a digital music track:
 typedef struct
 {
-	boolean valid;
+	bool valid;
 	unsigned int samplerate_hz;
 	int start_time, end_time;
 } file_metadata_t;
@@ -93,12 +93,12 @@ typedef struct
 static subst_music_t *subst_music = NULL;
 static unsigned int subst_music_len = 0;
 
-static boolean music_initialized = false;
+static bool music_initialized = false;
 
 // If this is true, this module initialized SDL sound and has the
 // responsibility to shut it down
 
-static boolean sdl_was_initialized = false;
+static bool sdl_was_initialized = false;
 
 char *music_pack_path = "";
 
@@ -114,7 +114,7 @@ static unsigned int current_track_pos;
 static Mix_Music *current_track_music = NULL;
 
 // If true, the currently playing track is being played on loop.
-static boolean current_track_loop;
+static bool current_track_loop;
 
 // Table of known hashes and filenames to look up for them. This allows
 // users to drop in a set of files without having to also provide a
@@ -476,7 +476,7 @@ static void ParseFlacFile(file_metadata_t *metadata, FILE *fs)
 	byte header[4];
 	unsigned int block_type;
 	size_t block_len;
-	boolean last_block;
+	bool last_block;
 
 	for (;;)
 	{
@@ -865,7 +865,7 @@ static const char *ParseSubstituteLine(char *musicdir, char *line)
 
 // Read a substitute music configuration file.
 
-static boolean ReadSubstituteConfig(char *musicdir, const char *filename)
+static bool ReadSubstituteConfig(char *musicdir, const char *filename)
 {
 	char *buffer;
 	char *line;
@@ -918,7 +918,7 @@ static boolean ReadSubstituteConfig(char *musicdir, const char *filename)
 
 // Find substitute configs and try to load them.
 
-static void LoadSubstituteConfigs(void)
+static void LoadSubstituteConfigs()
 {
 	glob_t *glob;
 	char *musicdir;
@@ -985,10 +985,10 @@ static void LoadSubstituteConfigs(void)
 // Identifying music lumps by name is not feasible; some games (eg.
 // Heretic, Hexen) don't have a common naming pattern for music lumps.
 
-static boolean IsMusicLump(int lumpnum)
+static bool IsMusicLump(int lumpnum)
 {
 	byte *data;
-	boolean result;
+	bool result;
 
 	if (W_LumpLength(lumpnum) < 4)
 	{
@@ -1064,7 +1064,7 @@ static void DumpSubstituteConfig(const char *filename)
 
 // Shutdown music
 
-static void I_MP_ShutdownMusic(void)
+static void I_MP_ShutdownMusic()
 {
 	if (music_initialized)
 	{
@@ -1080,7 +1080,7 @@ static void I_MP_ShutdownMusic(void)
 	}
 }
 
-static boolean SDLIsInitialized(void)
+static bool SDLIsInitialized()
 {
 	int freq, channels;
 	Uint16 format;
@@ -1096,7 +1096,7 @@ void TrackPositionCallback(int chan, void *stream, int len, void *udata)
 }
 
 // Initialize music subsystem
-static boolean I_MP_InitMusic(void)
+static bool I_MP_InitMusic()
 {
 	int i;
 
@@ -1166,7 +1166,7 @@ static void I_MP_SetMusicVolume(int volume)
 
 // Start playing a mid
 
-static void I_MP_PlaySong(void *handle, boolean looping)
+static void I_MP_PlaySong(void *handle, bool looping)
 {
 	int loops;
 
@@ -1209,7 +1209,7 @@ static void I_MP_PlaySong(void *handle, boolean looping)
 	}
 }
 
-static void I_MP_PauseSong(void)
+static void I_MP_PauseSong()
 {
 	if (!music_initialized)
 	{
@@ -1219,7 +1219,7 @@ static void I_MP_PauseSong(void)
 	Mix_PauseMusic();
 }
 
-static void I_MP_ResumeSong(void)
+static void I_MP_ResumeSong()
 {
 	if (!music_initialized)
 	{
@@ -1229,7 +1229,7 @@ static void I_MP_ResumeSong(void)
 	Mix_ResumeMusic();
 }
 
-static void I_MP_StopSong(void)
+static void I_MP_StopSong()
 {
 	if (!music_initialized)
 	{
@@ -1291,7 +1291,7 @@ static void *I_MP_RegisterSong(void *data, int len)
 }
 
 // Is the song playing?
-static boolean I_MP_MusicIsPlaying(void)
+static bool I_MP_MusicIsPlaying()
 {
 	if (!music_initialized)
 	{
@@ -1302,7 +1302,7 @@ static boolean I_MP_MusicIsPlaying(void)
 }
 
 // Get position in substitute music track, in seconds since start of track.
-static double GetMusicPosition(void)
+static double GetMusicPosition()
 {
 	unsigned int music_pos;
 	int freq;
@@ -1316,7 +1316,7 @@ static double GetMusicPosition(void)
 	return (double) music_pos / freq;
 }
 
-static void RestartCurrentTrack(void)
+static void RestartCurrentTrack()
 {
 	double start = (double) file_metadata.start_time
 					/ file_metadata.samplerate_hz;
@@ -1335,7 +1335,7 @@ static void RestartCurrentTrack(void)
 
 // Poll music position; if we have passed the loop point end position
 // then we need to go back.
-static void I_MP_PollMusic(void)
+static void I_MP_PollMusic()
 {
 	// When playing substitute tracks, loop tags only apply if we're playing
 	// a looping track. Tracks like the title screen music have the loop

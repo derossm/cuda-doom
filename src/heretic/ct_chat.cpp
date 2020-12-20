@@ -46,7 +46,7 @@
 // Public data
 
 
-boolean chatmodeon;
+bool chatmodeon;
 
 // Private data
 
@@ -64,7 +64,7 @@ char plr_lastmsg[MAXPLAYERS][MESSAGESIZE + 9]; // add in the length of the pre-s
 int msgptr[MAXPLAYERS];
 int msglen[MAXPLAYERS];
 
-boolean cheated;
+bool cheated;
 
 static int FontABaseLump;
 
@@ -77,8 +77,8 @@ const char *CT_FromPlrText[MAXPLAYERS] = {
 
 char *chat_macros[10];
 
-boolean altdown;
-boolean shiftdown;
+bool altdown;
+bool shiftdown;
 
 
 //===========================================================================
@@ -88,7 +88,7 @@ boolean shiftdown;
 //		Initialize chat mode data
 //===========================================================================
 
-void CT_Init(void)
+void CT_Init()
 {
 	int i;
 
@@ -113,7 +113,7 @@ void CT_Init(void)
 //
 //===========================================================================
 
-void CT_Stop(void)
+void CT_Stop()
 {
 	chatmodeon = false;
 	I_StopTextInput();
@@ -122,7 +122,7 @@ void CT_Stop(void)
 
 // These keys are allowed by Vanilla Heretic:
 
-static boolean ValidChatChar(char c)
+static bool ValidChatChar(char c)
 {
 	return (c >= 'a' && c <= 'z')
 		|| (c >= 'A' && c <= 'Z')
@@ -139,7 +139,7 @@ static boolean ValidChatChar(char c)
 //
 //===========================================================================
 
-boolean CT_Responder(event_t * ev)
+bool CT_Responder(event_t * ev)
 {
 	char *macro;
 
@@ -250,7 +250,7 @@ boolean CT_Responder(event_t * ev)
 //
 //===========================================================================
 
-void CT_Ticker(void)
+void CT_Ticker()
 {
 	int i;
 	int j;
@@ -339,7 +339,7 @@ void CT_Ticker(void)
 //
 //===========================================================================
 
-void CT_Drawer(void)
+void CT_Drawer()
 {
 	int i;
 	int x;
@@ -391,7 +391,7 @@ void CT_queueChatChar(char ch)
 //
 //===========================================================================
 
-char CT_dequeueChatChar(void)
+char CT_dequeueChatChar()
 {
 	byte temp;
 

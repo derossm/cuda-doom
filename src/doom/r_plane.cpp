@@ -95,7 +95,7 @@ fixed_t			cachedystep[MAXHEIGHT];
 // R_InitPlanes
 // Only at game startup.
 //
-void R_InitPlanes (void)
+void R_InitPlanes ()
 {
  // Doh!
 }
@@ -190,7 +190,7 @@ R_MapPlane
 // R_ClearPlanes
 // At begining of frame.
 //
-void R_ClearPlanes (void)
+void R_ClearPlanes ()
 {
 	int		i;
 	angle_t	angle;
@@ -407,7 +407,7 @@ R_MakeSpans
 // R_DrawPlanes
 // At the end of each frame.
 //
-void R_DrawPlanes (void)
+void R_DrawPlanes ()
 {
 	visplane_t*		pl;
 	int			light;
@@ -432,7 +432,7 @@ void R_DrawPlanes (void)
 
 	for (pl = visplanes ; pl < lastvisplane ; pl++)
 	{
-	boolean swirling;
+	bool swirling;
 
 	if (pl->minx > pl->maxx)
 		continue;

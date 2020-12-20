@@ -25,12 +25,12 @@
 #include "deh_io.h"
 #include "deh_main.h"
 
-static boolean bex_nested = false;
+static bool bex_nested = false;
 
 static void *DEH_BEXInclStart(deh_context_t *context, char *line)
 {
 	char *deh_file, *inc_file, *try_path;
-	extern boolean bex_notext;
+	extern bool bex_notext;
 
 	if (!DEH_FileName(context))
 	{

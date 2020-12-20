@@ -18,15 +18,18 @@ string(REGEX REPLACE " Doom$" "" PACKAGE_SHORTNAME "${PACKAGE_NAME}")
 set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2020")
 set(PACKAGE_LICENSE "GNU General Public License, version 2")
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Any settings that should apply to all targets in this directory and all
 # subdirectories should go here. Use judiciously.
 if(MSVC)
-	#add_definitions(
-	#	"/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE"
-	#	"/D_CRT_NONSTDC_NO_DEPRECATE")
+	add_definitions(
+		"/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE"
+		"/D_CRT_NONSTDC_NO_DEPRECATE")
 	add_compile_options(
 		"/Zc:__cplusplus" "/experimental:module" "/permissive-" "/Zc:preprocessor"
-		"/Zc:wchar_t" "/W4" "/Zc:inline" "/Od" "/MDd" "/Zc:forScope" "/fp:precise"
+		"/Zc:wchar_t" "/W0" "/Zc:inline" "/Od" "/MDd" "/Zc:forScope" "/fp:precise"
 		"/arch:AVX2" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-")
 else()
 	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")

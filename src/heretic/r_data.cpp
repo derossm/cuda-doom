@@ -26,7 +26,7 @@
 #include "p_local.h"
 #include "v_trans.h" // [crispy] color translation and color string tables
 
-extern void CheckAbortStartup(void);
+extern void CheckAbortStartup();
 
 typedef struct
 {
@@ -292,7 +292,7 @@ byte *R_GetColumn(int tex, int col)
 ==================
 */
 
-void R_InitTextures(void)
+void R_InitTextures()
 {
 	maptexture_t *mtexture;
 	texture_t *texture;
@@ -457,7 +457,7 @@ void R_InitTextures(void)
 =================
 */
 
-void R_InitFlats(void)
+void R_InitFlats()
 {
 	int i;
 
@@ -482,7 +482,7 @@ void R_InitFlats(void)
 =================
 */
 
-void R_InitSpriteLumps(void)
+void R_InitSpriteLumps()
 {
 	int i;
 	patch_t *patch;
@@ -518,7 +518,7 @@ void R_InitSpriteLumps(void)
 =================
 */
 
-void R_InitColormaps(void)
+void R_InitColormaps()
 {
 	int lump, length;
 //
@@ -535,7 +535,7 @@ void R_InitColormaps(void)
 	byte *playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
 	char c[3];
 	int i, j;
-	extern byte V_Colorize (byte *playpal, int cr, byte source, boolean keepgray109);
+	extern byte V_Colorize (byte *playpal, int cr, byte source, bool keepgray109);
 
 	if (!crstr)
 		crstr = I_Realloc(NULL, CRMAX * sizeof(*crstr));
@@ -567,7 +567,7 @@ void R_InitColormaps(void)
 =================
 */
 
-void R_InitData(void)
+void R_InitData()
 {
 	//tprintf("\nR_InitTextures ", 0);
 	R_InitTextures();
@@ -665,7 +665,7 @@ int R_TextureNumForName(const char *name)
 
 int flatmemory, texturememory, spritememory;
 
-void R_PrecacheLevel(void)
+void R_PrecacheLevel()
 {
 	char *flatpresent;
 	char *texturepresent;

@@ -64,7 +64,7 @@
 #include "v_trans.h" // [crispy] colored cheat messages
 
 extern int screenblocks; // [crispy] for the Crispy HUD
-extern boolean inhelpscreens; // [crispy] prevent palette changes
+extern bool inhelpscreens; // [crispy] prevent palette changes
 
 //
 // STATUS BAR DATA
@@ -277,7 +277,7 @@ pixel_t			*st_backing_screen;
 static player_t*	plyr;
 
 // ST_Start() has just been called
-static boolean		st_firsttime;
+static bool		st_firsttime;
 
 // lump number for PLAYPAL
 static int		lu_palette;
@@ -295,30 +295,30 @@ static st_chatstateenum_t	st_chatstate;
 static st_stateenum_t	st_gamestate;
 
 // whether left-side main status bar is active
-static boolean		st_statusbaron;
+static bool		st_statusbaron;
 
 // [crispy] distinguish classic status bar with background and player face from Crispy HUD
-static boolean		st_crispyhud;
-static boolean		st_classicstatusbar;
-static boolean		st_statusbarface;
+static bool		st_crispyhud;
+static bool		st_classicstatusbar;
+static bool		st_statusbarface;
 
 // whether status bar chat is active
-static boolean		st_chat;
+static bool		st_chat;
 
 // value of st_chat before message popped up
-static boolean		st_oldchat;
+static bool		st_oldchat;
 
 // whether chat window has the cursor on
-static boolean		st_cursoron;
+static bool		st_cursoron;
 
 // !deathmatch
-static boolean		st_notdeathmatch;
+static bool		st_notdeathmatch;
 
 // !deathmatch && st_statusbaron
-static boolean		st_armson;
+static bool		st_armson;
 
 // !deathmatch
-static boolean		st_fragson;
+static bool		st_fragson;
 
 // main bar left
 static patch_t*		sbar;
@@ -392,7 +392,7 @@ static int	st_fragscount;
 static int	st_oldhealth = -1;
 
 // used for evil grin
-static boolean	oldweaponsowned[NUMWEAPONS];
+static bool	oldweaponsowned[NUMWEAPONS];
 
  // count until face changes
 static int	st_facecount = 0;
@@ -471,9 +471,9 @@ static inline int cht_CheckCheatSP (cheatseq_t *cht, char key)
 //
 // STATUS BAR CODE
 //
-void ST_Stop(void);
+void ST_Stop();
 
-void ST_refreshBackground(boolean force)
+void ST_refreshBackground(bool force)
 {
 
 	if (st_classicstatusbar || force)
@@ -596,7 +596,7 @@ static int ST_cheat_massacre()
 static int ST_cheat_spechits()
 {
 	int i, speciallines = 0;
-	boolean origcards[NUMCARDS];
+	bool origcards[NUMCARDS];
 	line_t dummy;
 
 	// [crispy] temporarily give all keys
@@ -683,7 +683,7 @@ static int ST_cheat_spechits()
 }
 
 // [crispy] only give available weapons
-static boolean WeaponAvailable (int w)
+static bool WeaponAvailable (int w)
 {
 	if (w < 0 || w >= NUMWEAPONS)
 		return false;
@@ -698,7 +698,7 @@ static boolean WeaponAvailable (int w)
 }
 
 // [crispy] give or take backpack
-static void GiveBackpack (boolean give)
+static void GiveBackpack (bool give)
 {
 	int i;
 
@@ -723,7 +723,7 @@ static void GiveBackpack (boolean give)
 
 // Respond to keyboard input events,
 // intercept cheats.
-boolean
+bool
 ST_Responder (event_t* ev)
 {
  int		i;
@@ -1055,7 +1055,7 @@ ST_Responder (event_t* ev)
 		// [crispy] implement Crispy Doom's "goobers" cheat, ne easter egg
 		else if (cht_CheckCheatSP(&cheat_goobers, ev->data2))
 		{
-	extern void EV_DoGoobers (void);
+	extern void EV_DoGoobers ();
 
 	EV_DoGoobers();
 
@@ -1123,7 +1123,7 @@ ST_Responder (event_t* ev)
 	{
 		if (!plyr->weaponowned[w])
 		{
-		extern boolean P_GiveWeapon (player_t* player, weapontype_t weapon, boolean dropped);
+		extern bool P_GiveWeapon (player_t* player, weapontype_t weapon, bool dropped);
 		extern const char *const WeaponPickupMessages[NUMWEAPONS];
 
 		P_GiveWeapon(plyr, w, false);
@@ -1145,7 +1145,7 @@ ST_Responder (event_t* ev)
 		// [crispy] removed current weapon, select another one
 		if (w == plyr->readyweapon)
 		{
-			extern boolean P_CheckAmmo (player_t* player);
+			extern bool P_CheckAmmo (player_t* player);
 
 			P_CheckAmmo(plyr);
 		}
@@ -1358,7 +1358,7 @@ ST_Responder (event_t* ev)
 
 
 
-int ST_calcPainOffset(void)
+int ST_calcPainOffset()
 {
 	int		health;
 	static int	lastcalc;
@@ -1383,19 +1383,19 @@ int ST_calcPainOffset(void)
 //
 // [crispy] fix status bar face hysteresis
 static int faceindex;
-void ST_updateFaceWidget(void)
+void ST_updateFaceWidget()
 {
 	int		i;
 	angle_t	badguyangle;
 	angle_t	diffang;
 	static int	lastattackdown = -1;
 	static int	priority = 0;
-	boolean	doevilgrin;
+	bool	doevilgrin;
 
 	// [crispy] fix status bar face hysteresis
 	int		painoffset;
 	// [crispy] no evil grin or rampage face in god mode
-	const boolean invul = (plyr->cheats & CF_GODMODE) || plyr->powers[pw_invulnerability];
+	const bool invul = (plyr->cheats & CF_GODMODE) || plyr->powers[pw_invulnerability];
 
 	painoffset = ST_calcPainOffset();
 
@@ -1570,7 +1570,7 @@ void ST_updateFaceWidget(void)
 	st_faceindex = painoffset + faceindex;
 }
 
-void ST_updateWidgets(void)
+void ST_updateWidgets()
 {
 	static int	largeammo = 1994; // means "n/a"
 	int		i;
@@ -1665,7 +1665,7 @@ void ST_updateWidgets(void)
 
 static int st_widescreendelta;
 
-void ST_Ticker (void)
+void ST_Ticker ()
 {
 
 	st_clock++;
@@ -1677,7 +1677,7 @@ void ST_Ticker (void)
 
 static int st_palette = 0;
 
-void ST_doPaletteStuff(void)
+void ST_doPaletteStuff()
 {
 
 	int		palette;
@@ -1863,7 +1863,7 @@ static byte* ST_WidgetColor(int i)
 
 // [crispy] draw the gibbed death state frames in the Health widget
 // in sync with the actual player sprite
-static inline void ST_DrawGibbedPlayerSprites (void)
+static inline void ST_DrawGibbedPlayerSprites ()
 {
 	state_t const *state = plyr->mo->state;
 	spritedef_t *sprdef;
@@ -1891,10 +1891,10 @@ static inline void ST_DrawGibbedPlayerSprites (void)
 	dp_translation = NULL;
 }
 
-void ST_drawWidgets(boolean refresh)
+void ST_drawWidgets(bool refresh)
 {
 	int		i;
-	boolean gibbed = false;
+	bool gibbed = false;
 
 	// used by w_arms[] widgets
 	st_armson = st_statusbaron && !deathmatch;
@@ -1985,7 +1985,7 @@ void ST_drawWidgets(boolean refresh)
 	dp_translation = NULL;
 }
 
-void ST_doRefresh(void)
+void ST_doRefresh()
 {
 
 	st_firsttime = false;
@@ -1998,13 +1998,13 @@ void ST_doRefresh(void)
 
 }
 
-void ST_diffDraw(void)
+void ST_diffDraw()
 {
 	// update all widgets
 	ST_drawWidgets(false);
 }
 
-void ST_Drawer (boolean fullscreen, boolean refresh)
+void ST_Drawer (bool fullscreen, bool refresh)
 {
 
 	st_statusbaron = (!fullscreen) || (automapactive && !crispy->automapoverlay);
@@ -2019,7 +2019,7 @@ void ST_Drawer (boolean fullscreen, boolean refresh)
 	// [crispy] re-calculate widget coordinates on demand
 	if (st_widescreendelta != ST_WIDESCREENDELTA)
 	{
-		void ST_createWidgets (void);
+		void ST_createWidgets ();
 		ST_createWidgets();
 	}
 
@@ -2146,12 +2146,12 @@ static void ST_loadCallback(const char *lumpname, patch_t **variable)
 	*variable = W_CacheLumpName(lumpname, PU_STATIC);
 }
 
-void ST_loadGraphics(void)
+void ST_loadGraphics()
 {
 	ST_loadUnloadGraphics(ST_loadCallback);
 }
 
-void ST_loadData(void)
+void ST_loadData()
 {
 	int i;
 
@@ -2178,17 +2178,17 @@ static void ST_unloadCallback(const char *lumpname, patch_t **variable)
 	*variable = NULL;
 }
 
-void ST_unloadGraphics(void)
+void ST_unloadGraphics()
 {
 	ST_loadUnloadGraphics(ST_unloadCallback);
 }
 
-void ST_unloadData(void)
+void ST_unloadData()
 {
 	ST_unloadGraphics();
 }
 
-void ST_initData(void)
+void ST_initData()
 {
 
 	int		i;
@@ -2222,7 +2222,7 @@ void ST_initData(void)
 
 
 
-void ST_createWidgets(void)
+void ST_createWidgets()
 {
 
 	int i;
@@ -2388,10 +2388,10 @@ void ST_createWidgets(void)
 
 }
 
-static boolean	st_stopped = true;
+static bool	st_stopped = true;
 
 
-void ST_Start (void)
+void ST_Start ()
 {
 
 	if (!st_stopped)
@@ -2412,7 +2412,7 @@ void ST_Start (void)
 	}
 }
 
-void ST_Stop (void)
+void ST_Stop ()
 {
 	if (st_stopped)
 	return;
@@ -2426,7 +2426,7 @@ void ST_Stop (void)
 	st_stopped = true;
 }
 
-void ST_Init (void)
+void ST_Init ()
 {
 	// [crispy] colorize the confusing 'behold' power-up menu
 	if (!DEH_HasStringReplacement(STSTR_BEHOLD) &&

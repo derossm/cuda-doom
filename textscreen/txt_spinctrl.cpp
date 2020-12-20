@@ -379,7 +379,7 @@ txt_widget_class_t txt_spincontrol_class =
 	TXT_SpinControlFocused,
 };
 
-static txt_spincontrol_t *TXT_BaseSpinControl(void)
+static txt_spincontrol_t *TXT_BaseSpinControl()
 {
 	txt_spincontrol_t *spincontrol;
 

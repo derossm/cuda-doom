@@ -39,23 +39,23 @@
 
 // Functions
 
-boolean G_CheckDemoStatus(void);
+bool G_CheckDemoStatus();
 void G_ReadDemoTiccmd(ticcmd_t * cmd);
 void G_WriteDemoTiccmd(ticcmd_t * cmd);
 void G_PlayerReborn(int player);
 
 void G_DoReborn(int playernum);
 
-void G_DoLoadLevel(void);
-void G_DoNewGame(void);
-void G_DoPlayDemo(void);
-void G_DoCompleted(void);
-void G_DoVictory(void);
-void G_DoWorldDone(void);
-void G_DoSaveGame(void);
+void G_DoLoadLevel();
+void G_DoNewGame();
+void G_DoPlayDemo();
+void G_DoCompleted();
+void G_DoVictory();
+void G_DoWorldDone();
+void G_DoSaveGame();
 
-void D_PageTicker(void);
-void D_AdvanceDemo(void);
+void D_PageTicker();
+void D_AdvanceDemo();
 
 struct
 {
@@ -82,24 +82,24 @@ struct
 gameaction_t gameaction;
 gamestate_t gamestate;
 skill_t gameskill;
-boolean respawnmonsters;
+bool respawnmonsters;
 int gameepisode;
 int gamemap;
 int prevmap;
 
-boolean paused;
-boolean sendpause;				// send a pause event next tic
-boolean sendsave;				// send a save event next tic
-boolean usergame;				// ok to save / end game
+bool paused;
+bool sendpause;				// send a pause event next tic
+bool sendsave;				// send a save event next tic
+bool usergame;				// ok to save / end game
 
-boolean timingdemo;				// if true, exit with report on completion
+bool timingdemo;				// if true, exit with report on completion
 int starttime;					// for comparative timing purposes
 
-boolean viewactive;
+bool viewactive;
 
-boolean deathmatch;				// only if started as net death
-boolean netgame;				// only true if packets are broadcast
-boolean playeringame[MAXPLAYERS];
+bool deathmatch;				// only if started as net death
+bool netgame;				// only true if packets are broadcast
+bool playeringame[MAXPLAYERS];
 player_t players[MAXPLAYERS];
 
 int consoleplayer;				// player taking events and displaying
@@ -108,28 +108,28 @@ int levelstarttic;				// gametic at level start
 int totalkills, totalitems, totalsecret;		// for intermission
 int totalleveltimes; // [crispy] total time for all completed levels
 
-boolean finalintermission; // [crispy] track intermission at end of episode
+bool finalintermission; // [crispy] track intermission at end of episode
 
 int mouseSensitivity;
 
 char *demoname;
 static const char *orig_demoname = NULL; // [crispy] the name originally chosen for the demo, i.e. without "-00000"
-boolean demorecording;
-boolean longtics;				// specify high resolution turning in demos
-boolean lowres_turn;
-boolean shortticfix;			// calculate lowres turning like doom
-boolean demoplayback;
-boolean demoextend;
+bool demorecording;
+bool longtics;				// specify high resolution turning in demos
+bool lowres_turn;
+bool shortticfix;			// calculate lowres turning like doom
+bool demoplayback;
+bool demoextend;
 byte *demobuffer, *demo_p, *demoend;
-boolean singledemo;				// quit after playing a demo from cmdline
+bool singledemo;				// quit after playing a demo from cmdline
 
-boolean precache = true;		// if true, load all graphics at start
+bool precache = true;		// if true, load all graphics at start
 
 // TODO: Heretic uses 16-bit shorts for consistency?
 byte consistancy[MAXPLAYERS][BACKUPTICS];
 char *savegamedir;
 
-boolean testcontrols = false;
+bool testcontrols = false;
 int testcontrols_mousespeed;
 
 
@@ -181,13 +181,13 @@ static const struct
 #define SLOWTURNTICS	6
 
 #define NUMKEYS 256
-boolean gamekeydown[NUMKEYS];
+bool gamekeydown[NUMKEYS];
 int turnheld;					// for accelerative turning
 int lookheld;
 
 
-boolean mousearray[MAX_MOUSE_BUTTONS + 1];
-boolean *mousebuttons = &mousearray[1];
+bool mousearray[MAX_MOUSE_BUTTONS + 1];
+bool *mousebuttons = &mousearray[1];
 		// allow [-1]
 int mousex, mousey;				// mouse values are used once
 int dclicktime, dclickstate, dclicks;
@@ -198,8 +198,8 @@ int dclicktime2, dclickstate2, dclicks2;
 int joyxmove, joyymove;			// joystick values are repeated
 int joystrafemove;
 int joylook;
-boolean joyarray[MAX_JOY_BUTTONS + 1];
-boolean *joybuttons = &joyarray[1];		// allow [-1]
+bool joyarray[MAX_JOY_BUTTONS + 1];
+bool *joybuttons = &joyarray[1];		// allow [-1]
 
 int savegameslot;
 char savedescription[32];
@@ -227,7 +227,7 @@ int G_CmdChecksum(ticcmd_t *cmd)
 }
 */
 
-static boolean WeaponSelectable(weapontype_t weapon)
+static bool WeaponSelectable(weapontype_t weapon)
 {
 	if (weapon == wp_beak)
 	{
@@ -283,22 +283,22 @@ static int G_NextWeapon(int direction)
 ====================
 */
 
-extern boolean inventory;
+extern bool inventory;
 extern int curpos;
 extern int inv_ptr;
 
-boolean usearti = true;
+bool usearti = true;
 
 void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 {
 	int i;
-	boolean strafe, bstrafe;
+	bool strafe, bstrafe;
 	int speed, tspeed, lspeed;
 	int forward, side;
 	int look, arti;
 	int flyheight;
 
-	extern boolean noartiskip;
+	extern bool noartiskip;
 
 	// haleyjd: removed externdriver crap
 
@@ -759,7 +759,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 ==============
 */
 
-void G_DoLoadLevel(void)
+void G_DoLoadLevel()
 {
 	int i;
 
@@ -846,7 +846,7 @@ static void SetJoyButtons(unsigned int buttons_mask)
 	}
 }
 
-static boolean InventoryMoveLeft()
+static bool InventoryMoveLeft()
 {
 	inventoryTics = 5 * 35;
 	if (!inventory)
@@ -870,7 +870,7 @@ static boolean InventoryMoveLeft()
 	return true;
 }
 
-static boolean InventoryMoveRight()
+static bool InventoryMoveRight()
 {
 	player_t *plr;
 
@@ -943,7 +943,7 @@ static void SetMouseButtons(unsigned int buttons_mask)
 ===============================================================================
 */
 
-boolean G_Responder(event_t * ev)
+bool G_Responder(event_t * ev)
 {
 	player_t *plr;
 
@@ -1069,7 +1069,7 @@ boolean G_Responder(event_t * ev)
 ===============================================================================
 */
 
-void G_Ticker(void)
+void G_Ticker()
 {
 	int i, buf;
 	ticcmd_t *cmd = NULL;
@@ -1340,7 +1340,7 @@ void G_PlayerReborn(int player)
 	int i;
 	int frags[MAXPLAYERS];
 	int killcount, itemcount, secretcount;
-	boolean secret;
+	bool secret;
 
 	secret = false;
 	memcpy(frags, players[player].frags, sizeof(frags));
@@ -1397,7 +1397,7 @@ void G_PlayerReborn(int player)
 
 void P_SpawnPlayer(mapthing_t * mthing);
 
-boolean G_CheckSpot(int playernum, mapthing_t * mthing)
+bool G_CheckSpot(int playernum, mapthing_t * mthing)
 {
 	fixed_t x, y;
 	subsector_t *ss;
@@ -1510,7 +1510,7 @@ void G_DoReborn(int playernum)
 }
 
 
-void G_ScreenShot(void)
+void G_ScreenShot()
 {
 	gameaction = ga_screenshot;
 }
@@ -1524,15 +1524,15 @@ void G_ScreenShot(void)
 ====================
 */
 
-boolean secretexit;
+bool secretexit;
 
-void G_ExitLevel(void)
+void G_ExitLevel()
 {
 	secretexit = false;
 	gameaction = ga_completed;
 }
 
-void G_SecretExitLevel(void)
+void G_SecretExitLevel()
 {
 	secretexit = true;
 	gameaction = ga_completed;
@@ -1564,7 +1564,7 @@ static void G_FormatLevelStatTime(char *str, int tics)
 }
 
 // [crispy] Write level statistics upon exit
-static void G_WriteLevelStat(void)
+static void G_WriteLevelStat()
 {
 	static FILE *fstream = NULL;
 
@@ -1611,7 +1611,7 @@ static void G_WriteLevelStat(void)
 			playerItems, totalitems, playerSecrets, totalsecret);
 }
 
-void G_DoCompleted(void)
+void G_DoCompleted()
 {
 	int i;
 	static int afterSecret[5] = { 7, 5, 5, 5, 4 };
@@ -1668,7 +1668,7 @@ void G_DoCompleted(void)
 //
 //============================================================================
 
-void G_WorldDone(void)
+void G_WorldDone()
 {
 	gameaction = ga_worlddone;
 
@@ -1685,7 +1685,7 @@ void G_WorldDone(void)
 //
 //============================================================================
 
-void G_DoWorldDone(void)
+void G_DoWorldDone()
 {
 	gamestate = GS_LEVEL;
 	G_DoLoadLevel();
@@ -1719,7 +1719,7 @@ void G_LoadGame(char *name)
 
 #define VERSIONSIZE 16
 
-void G_DoLoadGame(void)
+void G_DoLoadGame()
 {
 	int i;
 	int a, b, c;
@@ -1803,7 +1803,7 @@ void G_DeferedInitNew(skill_t skill, int episode, int map)
 	}
 }
 
-void G_DoNewGame(void)
+void G_DoNewGame()
 {
 	G_InitNew(d_skill, d_episode, d_map);
 	gameaction = ga_nothing;
@@ -1941,7 +1941,7 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
 
 // Increase the size of the demo buffer to allow unlimited demos
 
-static void IncreaseDemoBuffer(void)
+static void IncreaseDemoBuffer()
 {
 	int current_length;
 	byte *new_demobuffer;
@@ -2151,7 +2151,7 @@ void G_DeferedPlayDemo(const char *name)
 	gameaction = ga_playdemo;
 }
 
-void G_DoPlayDemo(void)
+void G_DoPlayDemo()
 {
 	skill_t skill;
 	int i, lumpnum, episode, map;
@@ -2243,7 +2243,7 @@ void G_TimeDemo(char *name)
 ===================
 */
 
-boolean G_CheckDemoStatus(void)
+bool G_CheckDemoStatus()
 {
 	int endtime, realtics;
 
@@ -2314,7 +2314,7 @@ void G_SaveGame(int slot, char *description)
 //
 //==========================================================================
 
-void G_DoSaveGame(void)
+void G_DoSaveGame()
 {
 	int i;
 	char *filename;

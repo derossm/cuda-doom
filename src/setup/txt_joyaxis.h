@@ -31,7 +31,7 @@ typedef enum
 } txt_joystick_axis_stage_t;
 
 // Callback invoked when calibration is completed.
-typedef void (*txt_joystick_axis_callback_t)(void);
+typedef void (*txt_joystick_axis_callback_t)();
 
 #include "txt_widget.h"
 #include "txt_window.h"
@@ -63,7 +63,7 @@ struct txt_joystick_axis_s
 	// the maximum values. These have to be ignored, so when we ask the
 	// user to center the joystick, we look for bad axes that are not
 	// close to zero.
-	boolean *bad_axis;
+	bool *bad_axis;
 
 	// Stage we have reached in configuring joystick axis.
 	txt_joystick_axis_stage_t config_stage;

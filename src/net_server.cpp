@@ -64,7 +64,7 @@ typedef enum
 
 typedef struct
 {
-	boolean active;
+	bool active;
 	int player_number;
 	net_addr_t *addr;
 	net_connection_t connection;
@@ -74,7 +74,7 @@ typedef struct
 	// If true, the client has sent the NET_PACKET_TYPE_GAMESTART
 	// message indicating that it is ready for the game to start.
 
-	boolean ready;
+	bool ready;
 
 	// Time that this client connected to the server.
 	// This is used to determine the controller (oldest client).
@@ -87,7 +87,7 @@ typedef struct
 
 	// recording a demo without -longtics
 
-	boolean recording_lowres;
+	bool recording_lowres;
 
 	// send queue: items to send to the client
 	// this is a circular buffer
@@ -105,7 +105,7 @@ typedef struct
 
 	// Observer: receives data but does not participate in the game.
 
-	boolean drone;
+	bool drone;
 
 	// SHA1 hash sums of the client's WAD directory and dehacked data
 
@@ -128,7 +128,7 @@ typedef struct
 {
 	// Whether this tic has been received yet
 
-	boolean active;
+	bool active;
 
 	// Latency value received from the client
 
@@ -144,7 +144,7 @@ typedef struct
 } net_client_recv_t;
 
 static net_server_state_t server_state;
-static boolean server_initialized = false;
+static bool server_initialized = false;
 static net_client_t clients[MAXNETNODES];
 static net_client_t *sv_players[NET_MAXPLAYERS];
 static net_context_t *server_context;
@@ -173,7 +173,7 @@ static void NET_SV_DisconnectClient(net_client_t *client)
 	}
 }
 
-static boolean ClientConnected(net_client_t *client)
+static bool ClientConnected(net_client_t *client)
 {
 	// Check that the client is properly connected: ie. not in the
 	// process of connecting or disconnecting
@@ -228,7 +228,7 @@ static void NET_SV_BroadcastMessage(const char *s, ...)
 
 // Assign player numbers to connected clients
 
-static void NET_SV_AssignPlayers(void)
+static void NET_SV_AssignPlayers()
 {
 	int i;
 	int pl;
@@ -260,7 +260,7 @@ static void NET_SV_AssignPlayers(void)
 
 // Returns the number of players currently connected.
 
-static int NET_SV_NumPlayers(void)
+static int NET_SV_NumPlayers()
 {
 	int i;
 	int result;
@@ -280,7 +280,7 @@ static int NET_SV_NumPlayers(void)
 
 // Returns the number of players ready to start the game.
 
-static int NET_SV_NumReadyPlayers(void)
+static int NET_SV_NumReadyPlayers()
 {
 	int result = 0;
 	int i;
@@ -299,7 +299,7 @@ static int NET_SV_NumReadyPlayers(void)
 
 // Returns the maximum number of players that can play.
 
-static int NET_SV_MaxPlayers(void)
+static int NET_SV_MaxPlayers()
 {
 	int i;
 
@@ -316,7 +316,7 @@ static int NET_SV_MaxPlayers(void)
 
 // Returns the number of drones currently connected.
 
-static int NET_SV_NumDrones(void)
+static int NET_SV_NumDrones()
 {
 	int i;
 	int result;
@@ -336,7 +336,7 @@ static int NET_SV_NumDrones(void)
 
 // returns the number of clients connected
 
-static int NET_SV_NumClients(void)
+static int NET_SV_NumClients()
 {
 	int count;
 	int i;
@@ -356,7 +356,7 @@ static int NET_SV_NumClients(void)
 
 // returns a pointer to the client which controls the server
 
-static net_client_t *NET_SV_Controller(void)
+static net_client_t *NET_SV_Controller()
 {
 	net_client_t *best;
 	int i;
@@ -443,7 +443,7 @@ static void NET_SV_SendWaitingData(net_client_t *client)
 // Find the latest tic which has been acknowledged as received by
 // all clients.
 
-static unsigned int NET_SV_LatestAcknowledged(void)
+static unsigned int NET_SV_LatestAcknowledged()
 {
 	unsigned int lowtic = UINT_MAX;
 	int i;
@@ -466,7 +466,7 @@ static unsigned int NET_SV_LatestAcknowledged(void)
 // Possibly advance the recv window if all connected clients have
 // used the data in the window
 
-static void NET_SV_AdvanceWindow(void)
+static void NET_SV_AdvanceWindow()
 {
 	unsigned int lowtic;
 	int i;
@@ -482,7 +482,7 @@ static void NET_SV_AdvanceWindow(void)
 
 	while (recvwindow_start < lowtic)
 	{
-		boolean should_advance;
+		bool should_advance;
 
 		// Check we have tics from all players for first tic in
 		// the recv window
@@ -838,7 +838,7 @@ static void NET_SV_ParseLaunch(net_packet_t *packet, net_client_t *client)
 // message. Invoked once all players have indicated they are ready to
 // start the game.
 
-static void StartGame(void)
+static void StartGame()
 {
 	net_packet_t *startpacket;
 	unsigned int i;
@@ -905,7 +905,7 @@ static void StartGame(void)
 
 // Returns true when all nodes have indicated readiness to start the game.
 
-static boolean AllNodesReady(void)
+static bool AllNodesReady()
 {
 	unsigned int i;
 
@@ -922,7 +922,7 @@ static boolean AllNodesReady(void)
 
 // Check if the game should start, and if so, start it.
 
-static void CheckStartGame(void)
+static void CheckStartGame()
 {
 	if (!AllNodesReady())
 	{
@@ -937,7 +937,7 @@ static void CheckStartGame(void)
 // Send waiting data with current status to all nodes that are ready to
 // start the game.
 
-static void SendAllWaitingData(void)
+static void SendAllWaitingData()
 {
 	unsigned int i;
 
@@ -1059,7 +1059,7 @@ static void NET_SV_CheckResends(net_client_t *client)
 	for (i=0; i<BACKUPTICS; ++i)
 	{
 		net_client_recv_t *recvobj;
-		boolean need_resend;
+		bool need_resend;
 
 		recvobj = &recvwindow[i][player];
 
@@ -1745,7 +1745,7 @@ void NET_SV_CheckDeadlock(net_client_t *client)
 // Called when all players have disconnected. Return to listening for
 // players to start a new game, and disconnect any drones still connected.
 
-static void NET_SV_GameEnded(void)
+static void NET_SV_GameEnded()
 {
 	int i;
 
@@ -1848,7 +1848,7 @@ void NET_SV_AddModule(net_module_t *module)
 
 // Initialize server and wait for connections
 
-void NET_SV_Init(void)
+void NET_SV_Init()
 {
 	int i;
 
@@ -1870,7 +1870,7 @@ void NET_SV_Init(void)
 	server_initialized = true;
 }
 
-static void UpdateMasterServer(void)
+static void UpdateMasterServer()
 {
 	unsigned int now;
 
@@ -1899,7 +1899,7 @@ static void UpdateMasterServer(void)
 	}
 }
 
-void NET_SV_RegisterWithMaster(void)
+void NET_SV_RegisterWithMaster()
 {
 	//!
 	// @category net
@@ -1930,7 +1930,7 @@ void NET_SV_RegisterWithMaster(void)
 // Run server code to check for new packets/send packets as the server
 // requires
 
-void NET_SV_Run(void)
+void NET_SV_Run()
 {
 	net_addr_t *addr;
 	net_packet_t *packet;
@@ -1987,10 +1987,10 @@ void NET_SV_Run(void)
 	}
 }
 
-void NET_SV_Shutdown(void)
+void NET_SV_Shutdown()
 {
 	int i;
-	boolean running;
+	bool running;
 	int start_time;
 
 	if (!server_initialized)

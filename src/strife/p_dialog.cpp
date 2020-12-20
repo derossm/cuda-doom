@@ -75,7 +75,7 @@ char mission_objective[OBJECTIVE_LEN];
 //
 
 // True if SCRIPT00 is loaded.
-static boolean script0loaded;
+static bool script0loaded;
 
 // Number of dialogs defined in the current level's script.
 static int numleveldialogs;
@@ -348,7 +348,7 @@ static int numrndmessages = arrlen(rndMessages);
 
 #define NUMDIALOGMENUITEMS 6
 
-static void P_DialogDrawer(void);
+static void P_DialogDrawer();
 
 static menuitem_t dialogmenuitems[] =
 {
@@ -443,7 +443,7 @@ static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs,
 // haleyjd 09/02/10: Loads the dialog script for the current map. Also loads
 // SCRIPT00 if it has not yet been loaded.
 //
-void P_DialogLoad(void)
+void P_DialogLoad()
 {
 	char lumpname[9];
 	int lumpnum;
@@ -608,11 +608,11 @@ static const char *P_DialogGetMsg(const char *message)
 // haleyjd 09/03/10: Give an inventory item to the player, if possible.
 // villsa 09/09/10: Fleshed out routine
 //
-boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
+bool P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
 {
 	int curinv = 0;
 	int i;
-	boolean ok = false;
+	bool ok = false;
 	mobjtype_t item = 0;
 	inventory_t* invtail;
 
@@ -690,7 +690,7 @@ boolean P_GiveInventoryItem(player_t *player, int sprnum, mobjtype_t type)
 // Not strictly just for inventory items.
 // villsa 09/09/10: Fleshed out function
 //
-boolean P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
+bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 {
 	int i = 0;
 	line_t junk;
@@ -1043,7 +1043,7 @@ static void P_TakeDialogItem(player_t *player, int type, int amount)
 //
 // This function is set as the drawer callback for the dialog menu.
 //
-static void P_DialogDrawer(void)
+static void P_DialogDrawer()
 {
 	angle_t angle;
 	int y;
@@ -1151,7 +1151,7 @@ static void P_DialogDrawer(void)
 void P_DialogDoChoice(int choice)
 {
 	int i = 0, nextdialog = 0;
-	boolean candochoice = true;
+	bool candochoice = true;
 	const char *message = NULL;
 	mapdlgchoice_t *currentchoice;
 
@@ -1246,7 +1246,7 @@ void P_DialogDoChoice(int choice)
 // [STRIFE] New function
 // haleyjd 09/13/10: This is a hack used by the finale system.
 //
-void P_DialogStartP1(void)
+void P_DialogStartP1()
 {
 	P_DialogStart(&players[0]);
 }

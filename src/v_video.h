@@ -38,17 +38,17 @@ extern int dirtybox[4];
 
 extern byte *tinttable;
 extern byte *dp_translation;
-extern boolean dp_translucent;
+extern bool dp_translucent;
 
 // haleyjd 08/28/10: implemented for Strife support
 // haleyjd 08/28/10: Patch clipping callback, implemented to support Choco
 // Strife.
-typedef boolean (*vpatchclipfunc_t)(patch_t *, int, int);
+typedef bool (*vpatchclipfunc_t)(patch_t *, int, int);
 void V_SetPatchClipCallback(vpatchclipfunc_t func);
 
 
 // Allocates buffer screens, call before R_Init.
-void V_Init (void);
+void V_Init ();
 
 // Draw a block from the specified source screen to the screen.
 
@@ -63,7 +63,7 @@ void V_DrawAltTLPatch(int x, int y, patch_t * patch);
 void V_DrawShadowedPatch(int x, int y, patch_t *patch);
 void V_DrawXlaPatch(int x, int y, patch_t * patch);		// villsa [STRIFE]
 void V_DrawPatchDirect(int x, int y, patch_t *patch);
-void V_DrawPatchFullScreen(patch_t *patch, boolean flipped);
+void V_DrawPatchFullScreen(patch_t *patch, bool flipped);
 
 // Draw a linear block of pixels into the view buffer.
 
@@ -88,7 +88,7 @@ void V_UseBuffer(pixel_t *buffer);
 
 // Return to using the normal screen buffer to draw graphics.
 
-void V_RestoreBuffer(void);
+void V_RestoreBuffer();
 
 // Save a screenshot of the current screen to a file, named in the
 // format described in the string passed to the function, eg.
@@ -99,13 +99,13 @@ void V_ScreenShot(const char *format);
 // Load the lookup table for translucency calculations from the TINTTAB
 // lump.
 
-void V_LoadTintTable(void);
+void V_LoadTintTable();
 
 // villsa [STRIFE]
 // Load the lookup table for translucency calculations from the XLATAB
 // lump.
 
-void V_LoadXlaTable(void);
+void V_LoadXlaTable();
 
 void V_DrawMouseSpeedBox(int speed);
 

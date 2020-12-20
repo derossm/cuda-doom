@@ -59,7 +59,7 @@
 byte *tinttable = NULL;
 byte *tranmap = NULL;
 byte *dp_translation = NULL;
-boolean dp_translucent = false;
+bool dp_translucent = false;
 #ifdef CRISPY_TRUECOLOR
 extern pixel_t *colormaps;
 #endif
@@ -306,7 +306,7 @@ void V_DrawPatch(int x, int y, patch_t *patch)
 	}
 }
 
-void V_DrawPatchFullScreen(patch_t *patch, boolean flipped)
+void V_DrawPatchFullScreen(patch_t *patch, bool flipped)
 {
 	int x = ((SCREENWIDTH >> crispy->hires) - patch->width) / 2 - WIDESCREENDELTA;
 
@@ -681,7 +681,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 // Load tint table from TINTTAB lump.
 //
 
-void V_LoadTintTable(void)
+void V_LoadTintTable()
 {
 	tinttable = W_CacheLumpName("TINTTAB", PU_STATIC);
 }
@@ -692,7 +692,7 @@ void V_LoadTintTable(void)
 // villsa [STRIFE] Load xla table from XLATAB lump.
 //
 
-void V_LoadXlaTable(void)
+void V_LoadXlaTable()
 {
 	xlatab = W_CacheLumpName("XLATAB", PU_STATIC);
 }
@@ -851,7 +851,7 @@ void V_DrawRawScreen(pixel_t *raw)
 //
 // V_Init
 //
-void V_Init (void)
+void V_Init ()
 {
 	// [crispy] initialize resolution-agnostic patch drawing
 	if (NONWIDEWIDTH && SCREENHEIGHT)
@@ -875,7 +875,7 @@ void V_UseBuffer(pixel_t *buffer)
 
 // Restore screen buffer to the i_video screen buffer.
 
-void V_RestoreBuffer(void)
+void V_RestoreBuffer()
 {
 	dest_screen = I_VideoBuffer;
 }

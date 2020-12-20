@@ -45,11 +45,11 @@ T_MovePlane
 ( sector_t*	sector,
  fixed_t	speed,
  fixed_t	dest,
- boolean	crush,
+ bool	crush,
  int		floorOrCeiling,
  int		direction )
 {
-	boolean	flag;
+	bool	flag;
 	fixed_t	lastpos;
 
 	// [AM] Store old sector heights for interpolation.
@@ -283,7 +283,7 @@ void T_MoveGoobers (floormove_t *floor)
 }
 
 // [crispy] easter egg: homage to an old friend
-void EV_DoGoobers (void)
+void EV_DoGoobers ()
 {
 	int i;
 

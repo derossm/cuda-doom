@@ -302,9 +302,9 @@ static const unsigned int volume_mapping_table[] = {
 };
 
 static opl_driver_ver_t opl_drv_ver = opl_doom_1_9;
-static boolean music_initialized = false;
+static bool music_initialized = false;
 
-//static boolean musicpaused = false;
+//static bool musicpaused = false;
 static int start_music_volume;
 static int current_music_volume;
 
@@ -334,7 +334,7 @@ static opl_channel_data_t channels[MIDI_CHANNELS_PER_TRACK];
 static opl_track_data_t *tracks;
 static unsigned int num_tracks = 0;
 static unsigned int running_tracks = 0;
-static boolean song_looping;
+static bool song_looping;
 
 // Tempo control variables
 
@@ -356,11 +356,11 @@ int opl_io_port = 0x388;
 // (as intended by the MIDI standard) rather than the backwards one
 // used by DMX due to a bug.
 
-static boolean opl_stereo_correct = false;
+static bool opl_stereo_correct = false;
 
 // Load instrument table from GENMIDI lump:
 
-static boolean LoadInstrumentTable(void)
+static bool LoadInstrumentTable()
 {
 	byte *lump;
 
@@ -379,7 +379,7 @@ static boolean LoadInstrumentTable(void)
 
 // Get the next available voice from the freelist.
 
-static opl_voice_t *GetFreeVoice(void)
+static opl_voice_t *GetFreeVoice()
 {
 	opl_voice_t *result;
 	int i;
@@ -416,7 +416,7 @@ static void VoiceKeyOff(opl_voice_t *voice);
 static void ReleaseVoice(int index)
 {
 	opl_voice_t *voice;
-	boolean double_voice;
+	bool double_voice;
 	int i;
 
 	// Doom 2 1.666 OPL crash emulation.
@@ -458,8 +458,7 @@ static void ReleaseVoice(int index)
 
 // Load data to the specified operator
 
-static void LoadOperatorData(int operator, genmidi_op_t *data,
-								boolean max_level, unsigned int *volume)
+static void LoadOperatorData(int op, genmidi_op_t *data, bool max_level, unsigned int *volume)
 {
 	int level;
 
@@ -479,18 +478,16 @@ static void LoadOperatorData(int operator, genmidi_op_t *data,
 
 	*volume = level;
 
-	OPL_WriteRegister(OPL_REGS_LEVEL + operator, level);
-	OPL_WriteRegister(OPL_REGS_TREMOLO + operator, data->tremolo);
-	OPL_WriteRegister(OPL_REGS_ATTACK + operator, data->attack);
-	OPL_WriteRegister(OPL_REGS_SUSTAIN + operator, data->sustain);
-	OPL_WriteRegister(OPL_REGS_WAVEFORM + operator, data->waveform);
+	OPL_WriteRegister(OPL_REGS_LEVEL + op, level);
+	OPL_WriteRegister(OPL_REGS_TREMOLO + op, data->tremolo);
+	OPL_WriteRegister(OPL_REGS_ATTACK + op, data->attack);
+	OPL_WriteRegister(OPL_REGS_SUSTAIN + op, data->sustain);
+	OPL_WriteRegister(OPL_REGS_WAVEFORM + op, data->waveform);
 }
 
 // Set the instrument for a particular voice.
 
-static void SetVoiceInstrument(opl_voice_t *voice,
-								genmidi_instr_t *instr,
-								unsigned int instr_voice)
+static void SetVoiceInstrument(opl_voice_t *voice, genmidi_instr_t *instr, unsigned int instr_voice)
 {
 	genmidi_voice_t *data;
 	unsigned int modulating;
@@ -604,7 +601,7 @@ static void SetVoicePan(opl_voice_t *voice, unsigned int pan)
 
 // Initialize the voice table and freelist
 
-static void InitVoices(void)
+static void InitVoices()
 {
 	int i;
 
@@ -630,7 +627,7 @@ static void InitVoices(void)
 }
 
 static void SetChannelVolume(opl_channel_data_t *channel, unsigned int volume,
-								boolean clip_start);
+								bool clip_start);
 
 // Set music volume (0 - 127)
 
@@ -728,7 +725,7 @@ static void KeyOffEvent(opl_track_data_t *track, midi_event_t *event)
 // passed to the function is the channel for the new note to be
 // played.
 
-static void ReplaceExistingVoice(void)
+static void ReplaceExistingVoice()
 {
 	int i;
 	int result;
@@ -759,7 +756,7 @@ static void ReplaceExistingVoice(void)
 // Alternate versions of ReplaceExistingVoice() used when emulating old
 // versions of the DMX library used in Doom 1.666, Heretic and Hexen.
 
-static void ReplaceExistingVoiceDoom1(void)
+static void ReplaceExistingVoiceDoom1()
 {
 	int i;
 	int result;
@@ -963,7 +960,7 @@ static void KeyOnEvent(opl_track_data_t *track, midi_event_t *event)
 	genmidi_instr_t *instrument;
 	opl_channel_data_t *channel;
 	unsigned int note, key, volume, voicenum;
-	boolean double_voice;
+	bool double_voice;
 
 /*
 	printf("note on: channel %i, %i, %i\n",
@@ -1088,7 +1085,7 @@ static void ProgramChangeEvent(opl_track_data_t *track, midi_event_t *event)
 }
 
 static void SetChannelVolume(opl_channel_data_t *channel, unsigned int volume,
-								boolean clip_start)
+								bool clip_start)
 {
 	unsigned int i;
 
@@ -1473,7 +1470,7 @@ static void StartTrack(midi_file_t *file, unsigned int track_num)
 
 // Start playing a mid
 
-static void I_OPL_PlaySong(void *handle, boolean looping)
+static void I_OPL_PlaySong(void *handle, bool looping)
 {
 	midi_file_t *file;
 	unsigned int i;
@@ -1519,7 +1516,7 @@ static void I_OPL_PlaySong(void *handle, boolean looping)
 	OPL_SetPaused(0);
 }
 
-static void I_OPL_PauseSong(void)
+static void I_OPL_PauseSong()
 {
 	unsigned int i;
 
@@ -1545,7 +1542,7 @@ static void I_OPL_PauseSong(void)
 	}
 }
 
-static void I_OPL_ResumeSong(void)
+static void I_OPL_ResumeSong()
 {
 	if (!music_initialized)
 	{
@@ -1555,7 +1552,7 @@ static void I_OPL_ResumeSong(void)
 	OPL_SetPaused(0);
 }
 
-static void I_OPL_StopSong(void)
+static void I_OPL_StopSong()
 {
 	unsigned int i;
 
@@ -1607,12 +1604,12 @@ static void I_OPL_UnRegisterSong(void *handle)
 
 // Determine whether memory block is a .mid file
 
-static boolean IsMid(byte *mem, int len)
+static bool IsMid(byte *mem, int len)
 {
 	return len > 4 && !memcmp(mem, "MThd", 4);
 }
 
-static boolean ConvertMus(byte *musdata, int len, char *filename)
+static bool ConvertMus(byte *musdata, int len, char *filename)
 {
 	MEMFILE *instream;
 	MEMFILE *outstream;
@@ -1682,7 +1679,7 @@ static void *I_OPL_RegisterSong(void *data, int len)
 
 // Is the song playing?
 
-static boolean I_OPL_MusicIsPlaying(void)
+static bool I_OPL_MusicIsPlaying()
 {
 	if (!music_initialized)
 	{
@@ -1694,7 +1691,7 @@ static boolean I_OPL_MusicIsPlaying(void)
 
 // Shutdown music
 
-static void I_OPL_ShutdownMusic(void)
+static void I_OPL_ShutdownMusic()
 {
 	if (music_initialized)
 	{
@@ -1714,7 +1711,7 @@ static void I_OPL_ShutdownMusic(void)
 
 // Initialize music subsystem
 
-static boolean I_OPL_InitMusic(void)
+static bool I_OPL_InitMusic()
 {
 	char *dmxoption;
 	opl_init_result_t chip_type;
@@ -1807,7 +1804,7 @@ void I_SetOPLDriverVer(opl_driver_ver_t ver)
 //
 //----------------------------------------------------------------------
 
-static int NumActiveChannels(void)
+static int NumActiveChannels()
 {
 	int i;
 

@@ -43,7 +43,7 @@ static int loading_disk_yoffs = 0;
 
 // Number of bytes read since the last call to V_DrawDiskIcon().
 static size_t recent_bytes_read = 0;
-static boolean disk_drawn;
+static bool disk_drawn;
 
 static void CopyRegion(pixel_t *dest, int dest_pitch,
 						pixel_t *src, int src_pitch,
@@ -117,14 +117,14 @@ void V_BeginRead(size_t nbytes)
 	recent_bytes_read += nbytes;
 }
 
-static pixel_t *DiskRegionPointer(void)
+static pixel_t *DiskRegionPointer()
 {
 	return I_VideoBuffer
 			+ loading_disk_yoffs * SCREENWIDTH
 			+ loading_disk_xoffs;
 }
 
-void V_DrawDiskIcon(void)
+void V_DrawDiskIcon()
 {
 	if (disk_data != NULL && recent_bytes_read > diskicon_threshold)
 	{
@@ -143,7 +143,7 @@ void V_DrawDiskIcon(void)
 	recent_bytes_read = 0;
 }
 
-void V_RestoreDiskBackground(void)
+void V_RestoreDiskBackground()
 {
 	if (disk_drawn)
 	{

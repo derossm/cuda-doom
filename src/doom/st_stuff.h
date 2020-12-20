@@ -42,22 +42,22 @@ extern int defdemotics, deftotaldemotics;
 //
 
 // Called by main loop.
-boolean ST_Responder (event_t* ev);
+bool ST_Responder (event_t* ev);
 
 // Called by main loop.
-void ST_Ticker (void);
+void ST_Ticker ();
 
 // Called by main loop.
-void ST_Drawer (boolean fullscreen, boolean refresh);
+void ST_Drawer (bool fullscreen, bool refresh);
 
 // Called when the console player is spawned on each level.
-void ST_Start (void);
+void ST_Start ();
 
 // Called by startup code.
-void ST_Init (void);
+void ST_Init ();
 
 // [crispy] forcefully initialize the status bar backing screen
-extern void ST_refreshBackground(boolean force);
+extern void ST_refreshBackground(bool force);
 
 
 // States for status bar code.

@@ -51,11 +51,11 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void CheckOpen(void);
+static void CheckOpen();
 static void OpenScript(const char *name, int type);
 static void SC_OpenLump(const char *name);
-static void SC_Close(void);
-static boolean SC_Compare(const char *text);
+static void SC_Close();
+static bool SC_Compare(const char *text);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
@@ -63,8 +63,8 @@ static boolean SC_Compare(const char *text);
 
 static char *sc_String;
 static int sc_Line;
-static boolean sc_End;
-static boolean sc_Crossed;
+static bool sc_End;
+static bool sc_Crossed;
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
@@ -74,9 +74,9 @@ static char *ScriptPtr;
 static char *ScriptEndPtr;
 static char StringBuffer[MAX_STRING_SIZE];
 static int ScriptLumpNum;
-static boolean ScriptOpen = false;
+static bool ScriptOpen = false;
 static int ScriptSize;
-static boolean AlreadyGot = false;
+static bool AlreadyGot = false;
 
 // CODE --------------------------------------------------------------------
 
@@ -130,7 +130,7 @@ static void OpenScript(const char *name, int type)
 //
 //==========================================================================
 
-static void SC_Close(void)
+static void SC_Close()
 {
 	if (ScriptOpen)
 	{
@@ -152,10 +152,10 @@ static void SC_Close(void)
 //
 //==========================================================================
 
-static boolean SC_GetString(void)
+static bool SC_GetString()
 {
 	char *text;
-	boolean foundToken;
+	bool foundToken;
 
 	CheckOpen();
 	if (AlreadyGot)
@@ -240,7 +240,7 @@ static boolean SC_GetString(void)
 //
 //==========================================================================
 
-static boolean SC_Compare(const char *text)
+static bool SC_Compare(const char *text)
 {
 	if (strcasecmp(text, sc_String) == 0)
 	{
@@ -255,7 +255,7 @@ static boolean SC_Compare(const char *text)
 //
 //==========================================================================
 
-static void CheckOpen(void)
+static void CheckOpen()
 {
 	if (ScriptOpen == false)
 	{
@@ -326,7 +326,7 @@ void S_ParseMusInfo (const char *mapid)
  }
 }
 
-void T_MusInfo (void)
+void T_MusInfo ()
 {
  if (musinfo.tics < 0 || !musinfo.mapthing)
  {

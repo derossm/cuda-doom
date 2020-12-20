@@ -44,7 +44,7 @@ thinker_t	thinkercap;
 //
 // P_InitThinkers
 //
-void P_InitThinkers (void)
+void P_InitThinkers ()
 {
 	thinkercap.prev = thinkercap.next = &thinkercap;
 }
@@ -92,7 +92,7 @@ void P_AllocateThinker (thinker_t*	thinker)
 //
 // P_RunThinkers
 //
-void P_RunThinkers (void)
+void P_RunThinkers ()
 {
 	thinker_t *currentthinker, *nextthinker;
 
@@ -126,7 +126,7 @@ void P_RunThinkers (void)
 // P_Ticker
 //
 
-void P_Ticker (void)
+void P_Ticker ()
 {
 	int		i;
 

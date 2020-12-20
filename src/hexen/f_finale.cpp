@@ -39,17 +39,17 @@
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void TextWrite(void);
-static void DrawPic(void);
-static void InitializeFade(boolean fadeIn);
-static void DeInitializeFade(void);
-static void FadePic(void);
+static void TextWrite();
+static void DrawPic();
+static void InitializeFade(bool fadeIn);
+static void DeInitializeFade();
+static void FadePic();
 static char *GetFinaleText(int sequence);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
-extern boolean automapactive;
-extern boolean viewactive;
+extern bool automapactive;
+extern bool viewactive;
 
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
 
@@ -74,7 +74,7 @@ static byte *RealPalette;
 //
 //===========================================================================
 
-void F_StartFinale(void)
+void F_StartFinale()
 {
 	gameaction = ga_nothing;
 	gamestate = GS_FINALE;
@@ -100,7 +100,7 @@ void F_StartFinale(void)
 //
 //===========================================================================
 
-boolean F_Responder(event_t * event)
+bool F_Responder(event_t * event)
 {
 	return false;
 }
@@ -111,7 +111,7 @@ boolean F_Responder(event_t * event)
 //
 //===========================================================================
 
-void F_Ticker(void)
+void F_Ticker()
 {
 	FinaleCount++;
 	if (FinaleStage < 5 && FinaleCount >= FinaleEndCount)
@@ -162,7 +162,7 @@ void F_Ticker(void)
 //
 //===========================================================================
 
-static void TextWrite(void)
+static void TextWrite()
 {
 	int count;
 	char *ch;
@@ -240,7 +240,7 @@ static void TextWrite(void)
 //
 //===========================================================================
 
-static void InitializeFade(boolean fadeIn)
+static void InitializeFade(bool fadeIn)
 {
 	unsigned i;
 
@@ -278,7 +278,7 @@ static void InitializeFade(boolean fadeIn)
 //
 //===========================================================================
 
-static void DeInitializeFade(void)
+static void DeInitializeFade()
 {
 	Z_Free(Palette);
 	Z_Free(PaletteDelta);
@@ -291,7 +291,7 @@ static void DeInitializeFade(void)
 //
 //===========================================================================
 
-static void FadePic(void)
+static void FadePic()
 {
 	unsigned i;
 
@@ -309,7 +309,7 @@ static void FadePic(void)
 //
 //===========================================================================
 
-static void DrawPic(void)
+static void DrawPic()
 {
 	V_CopyScaledBuffer(I_VideoBuffer, W_CacheLumpNum(FinaleLumpNum, PU_CACHE),
 			ORIGWIDTH * ORIGHEIGHT);
@@ -334,7 +334,7 @@ static void DrawPic(void)
 //
 //===========================================================================
 
-void F_Drawer(void)
+void F_Drawer()
 {
 	switch (FinaleStage)
 	{

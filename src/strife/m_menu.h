@@ -66,30 +66,30 @@ extern short itemOn;
 // Even when the menu is not displayed,
 // this can resize the view and change game parameters.
 // Does all the real work of the menu interaction.
-boolean M_Responder (event_t *ev);
+bool M_Responder (event_t *ev);
 
 
 // Called by main loop,
 // only used for menu (skull cursor) animation.
-void M_Ticker (void);
+void M_Ticker ();
 
 // Called by main loop,
 // draws the menus directly into the screen buffer.
-void M_Drawer (void);
+void M_Drawer ();
 
 // Called by D_DoomMain,
 // loads the config file.
-void M_Init (void);
+void M_Init ();
 
 // Called by intro code to force menu up upon a keypress,
 // does nothing if menu is already up.
-void M_StartControlPanel (void);
+void M_StartControlPanel ();
 
 // haleyjd 09/04/10: Externalized. Draws menu text.
 int M_WriteText(int x, int y, const char *string);
 
 // haleyjd 09/04/10: [STRIFE] New function.
-void M_DialogDimMsg(int x, int y, char *str, boolean useyfont);
+void M_DialogDimMsg(int x, int y, char *str, bool useyfont);
 
 // haleyjd [STRIFE] Externalized
 void M_ClearMenus (int choice);

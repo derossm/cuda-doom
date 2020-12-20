@@ -87,7 +87,7 @@
 // calls all ?_Responder, ?_Ticker, and ?_Drawer,
 // calls I_GetTime, I_StartFrame, and I_StartTic
 //
-void D_DoomLoop (void);
+void D_DoomLoop ();
 
 static char *gamedescription;
 
@@ -100,30 +100,30 @@ char *			savegamedir;
 char *			iwadfile;
 
 
-boolean		devparm;	// started game with -devparm
-boolean			nomonsters;	// checkparm of -nomonsters
-boolean			respawnparm;	// checkparm of -respawn
-boolean			fastparm;	// checkparm of -fast
+bool		devparm;	// started game with -devparm
+bool			nomonsters;	// checkparm of -nomonsters
+bool			respawnparm;	// checkparm of -respawn
+bool			fastparm;	// checkparm of -fast
 
 //extern int soundVolume;
 //extern int	sfxVolume;
 //extern int	musicVolume;
 
-extern boolean	inhelpscreens;
+extern bool	inhelpscreens;
 
 skill_t		startskill;
 int				startepisode;
 int		startmap;
-boolean		autostart;
+bool		autostart;
 int				startloadgame;
 
-boolean		advancedemo;
+bool		advancedemo;
 
 // Store demo, do not accept any inputs
-boolean			storedemo;
+bool			storedemo;
 
 // If true, the main game loop has started.
-boolean			main_loop_started = false;
+bool			main_loop_started = false;
 
 char		wadfile[1024];		// primary wad file
 char		mapdir[1024];			// directory of development maps
@@ -132,15 +132,15 @@ int				show_endoom = 0; // [crispy] disable
 int				show_diskicon = 1;
 
 
-void D_ConnectNetGame(void);
-void D_CheckNetGame(void);
+void D_ConnectNetGame();
+void D_CheckNetGame();
 
 
 //
 // D_ProcessEvents
 // Send all the events of the given timestamp down the responder chain
 //
-void D_ProcessEvents (void)
+void D_ProcessEvents ()
 {
 	event_t*	ev;
 
@@ -166,21 +166,21 @@ void D_ProcessEvents (void)
 
 // wipegamestate can be set to -1 to force a wipe on the next draw
 gamestate_t		wipegamestate = GS_DEMOSCREEN;
-extern boolean setsizeneeded;
+extern bool setsizeneeded;
 extern int				showMessages;
-void R_ExecuteSetViewSize (void);
+void R_ExecuteSetViewSize ();
 
-boolean D_Display (void)
+bool D_Display ()
 {
-	static boolean		viewactivestate = false;
-	static boolean		menuactivestate = false;
-	static boolean		inhelpscreensstate = false;
-	static boolean		fullscreen = false;
+	static bool		viewactivestate = false;
+	static bool		menuactivestate = false;
+	static bool		inhelpscreensstate = false;
+	static bool		fullscreen = false;
 	static gamestate_t		oldgamestate = -1;
 	static int			borderdrawcount;
 	int				y;
-	boolean			wipe;
-	boolean			redrawsbar;
+	bool			wipe;
+	bool			redrawsbar;
 
 	redrawsbar = false;
 
@@ -332,7 +332,7 @@ boolean D_Display (void)
 	return wipe;
 }
 
-void EnableLoadingDisk(void) // [crispy] un-static
+void EnableLoadingDisk() // [crispy] un-static
 {
 	const char *disk_lump_name;
 
@@ -373,7 +373,7 @@ static const char * const chat_macro_defaults[10] =
 };
 
 
-void D_BindVariables(void)
+void D_BindVariables()
 {
 	int i;
 
@@ -477,7 +477,7 @@ void D_BindVariables(void)
 // Called to determine whether to grab the mouse pointer
 //
 
-boolean D_GrabMouseCallback(void)
+bool D_GrabMouseCallback()
 {
 	// Drone players don't need mouse focus
 
@@ -502,7 +502,7 @@ void D_RunFrame()
 	int nowtime;
 	int tics;
 	static int wipestart;
-	static boolean wipe;
+	static bool wipe;
 
 	if (wipe)
 	{
@@ -557,7 +557,7 @@ void D_RunFrame()
 //
 // D_DoomLoop
 //
-void D_DoomLoop (void)
+void D_DoomLoop ()
 {
 	if (gamevariant == bfgedition &&
 		(demorecording || (gameaction == ga_playdemo) || netgame))
@@ -612,7 +612,7 @@ const char					*pagename;
 // D_PageTicker
 // Handles timing for warped projection
 //
-void D_PageTicker (void)
+void D_PageTicker ()
 {
 	if (--pagetic < 0)
 	D_AdvanceDemo ();
@@ -623,7 +623,7 @@ void D_PageTicker (void)
 //
 // D_PageDrawer
 //
-void D_PageDrawer (void)
+void D_PageDrawer ()
 {
 	V_DrawPatchFullScreen (W_CacheLumpName(pagename, PU_CACHE), crispy->fliplevels);
 }
@@ -633,7 +633,7 @@ void D_PageDrawer (void)
 // D_AdvanceDemo
 // Called after each demo or intro demosequence finishes
 //
-void D_AdvanceDemo (void)
+void D_AdvanceDemo ()
 {
 	advancedemo = true;
 }
@@ -643,7 +643,7 @@ void D_AdvanceDemo (void)
 // This cycles through the demo sequences.
 // FIXME - version dependend demo numbers?
 //
-void D_DoAdvanceDemo (void)
+void D_DoAdvanceDemo ()
 {
 	players[consoleplayer].playerstate = PST_LIVE; // not reborn
 	advancedemo = false;
@@ -739,7 +739,7 @@ void D_DoAdvanceDemo (void)
 //
 // D_StartTitle
 //
-void D_StartTitle (void)
+void D_StartTitle ()
 {
 	gameaction = ga_nothing;
 	demosequence = -1;
@@ -880,7 +880,7 @@ static void SetMissionForPackName(const char *pack_name)
 // Find out what version of Doom is playing.
 //
 
-void D_IdentifyVersion(void)
+void D_IdentifyVersion()
 {
 	// gamemission is set up by the D_FindIWAD function. But if
 	// we specify '-iwad', we have to identify using
@@ -964,7 +964,7 @@ void D_IdentifyVersion(void)
 
 // Set the gamedescription string
 
-static void D_SetGameDescription(void)
+static void D_SetGameDescription()
 {
 	if (logical_gamemission == doom)
 	{
@@ -1032,7 +1032,7 @@ static void D_SetGameDescription(void)
 //		print title for every printed line
 char			title[128];
 
-static boolean D_AddFile(char *filename)
+static bool D_AddFile(char *filename)
 {
 	wad_file_t *handle;
 
@@ -1067,7 +1067,7 @@ static const char *copyright_banners[] =
 
 // Prints a message only if it has been modified by dehacked.
 
-void PrintDehackedBanners(void)
+void PrintDehackedBanners()
 {
 	size_t i;
 
@@ -1113,14 +1113,14 @@ static struct
 
 // Initialize the game version
 
-static void InitGameVersion(void)
+static void InitGameVersion()
 {
 	byte *demolump;
 	char demolumpname[6];
 	int demoversion;
 	int p;
 	int i;
-	boolean status;
+	bool status;
 
 	//!
 	// @arg <version>
@@ -1259,7 +1259,7 @@ static void InitGameVersion(void)
 	}
 }
 
-void PrintGameVersion(void)
+void PrintGameVersion()
 {
 	int i;
 
@@ -1276,7 +1276,7 @@ void PrintGameVersion(void)
 
 // Function called at exit to display the ENDOOM screen
 
-static void D_Endoom(void)
+static void D_Endoom()
 {
 	byte *endoom;
 
@@ -1296,7 +1296,7 @@ static void D_Endoom(void)
 }
 
 // Load dehacked patches needed for certain IWADs.
-static void LoadIwadDeh(void)
+static void LoadIwadDeh()
 {
 	// The Freedoom IWADs have DEHACKED lumps that must be loaded.
 	if (gamevariant == freedoom || gamevariant == freedm)
@@ -1354,7 +1354,7 @@ static void LoadIwadDeh(void)
 	}
 }
 
-static void G_CheckDemoStatusAtExit (void)
+static void G_CheckDemoStatusAtExit ()
 {
 	G_CheckDemoStatus();
 }
@@ -1362,7 +1362,7 @@ static void G_CheckDemoStatusAtExit (void)
 //
 // D_DoomMain
 //
-void D_DoomMain (void)
+void D_DoomMain ()
 {
 	int p;
 	char file[256];

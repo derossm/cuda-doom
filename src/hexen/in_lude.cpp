@@ -45,27 +45,27 @@ typedef enum
 
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
-static void WaitStop(void);
-static void Stop(void);
-static void LoadPics(void);
-static void UnloadPics(void);
-static void CheckForSkip(void);
-static void InitStats(void);
-static void DrDeathTally(void);
+static void WaitStop();
+static void Stop();
+static void LoadPics();
+static void UnloadPics();
+static void CheckForSkip();
+static void InitStats();
+static void DrDeathTally();
 static void DrNumber(int val, int x, int y, int wrapThresh);
 static void DrNumberBold(int val, int x, int y, int wrapThresh);
-static void DrawHubText(void);
+static void DrawHubText();
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
 
-boolean intermission;
+bool intermission;
 char ClusterMessage[MAX_INTRMSN_MESSAGE_SIZE];
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static boolean skipintermission;
+static bool skipintermission;
 static int interstate = 0;
 static int intertime = -1;
 static gametype_t gametype;
@@ -93,9 +93,9 @@ static char *HubText;
 //
 //========================================================================
 
-extern void AM_Stop(void);
+extern void AM_Stop();
 
-void IN_Start(void)
+void IN_Start()
 {
 	int i;
 	I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
@@ -120,7 +120,7 @@ void IN_Start(void)
 //
 //========================================================================
 
-void WaitStop(void)
+void WaitStop()
 {
 	if (!--cnt)
 	{
@@ -138,7 +138,7 @@ void WaitStop(void)
 //
 //========================================================================
 
-static void Stop(void)
+static void Stop()
 {
 	intermission = false;
 	UnloadPics();
@@ -161,7 +161,7 @@ static const char *ClusMsgLumpNames[] = {
 	"clus5msg"
 };
 
-static void InitStats(void)
+static void InitStats()
 {
 	int i;
 	int j;
@@ -249,7 +249,7 @@ static void InitStats(void)
 //
 //========================================================================
 
-static void LoadPics(void)
+static void LoadPics()
 {
 	int i;
 
@@ -276,7 +276,7 @@ static void LoadPics(void)
 //
 //========================================================================
 
-static void UnloadPics(void)
+static void UnloadPics()
 {
 	int i;
 
@@ -302,7 +302,7 @@ static void UnloadPics(void)
 //
 //========================================================================
 
-void IN_Ticker(void)
+void IN_Ticker()
 {
 	if (!intermission)
 	{
@@ -332,11 +332,11 @@ void IN_Ticker(void)
 //		Check to see if any player hit a key
 //========================================================================
 
-static void CheckForSkip(void)
+static void CheckForSkip()
 {
 	int i;
 	player_t *player;
-	static boolean triedToSkip;
+	static bool triedToSkip;
 
 	for (i = 0, player = players; i < maxplayers; i++, player++)
 	{
@@ -392,7 +392,7 @@ static void CheckForSkip(void)
 //
 //========================================================================
 
-void IN_Drawer(void)
+void IN_Drawer()
 {
 	if (!intermission)
 	{
@@ -437,15 +437,15 @@ void IN_Drawer(void)
 #define TALLY_LEFT_Y 71
 #define TALLY_TOTALS_X 291
 
-static void DrDeathTally(void)
+static void DrDeathTally()
 {
 	int i, j;
 	fixed_t xPos, yPos;
 	fixed_t xDelta, yDelta;
 	fixed_t xStart, scale;
 	int x, y;
-	boolean bold;
-	static boolean showTotals;
+	bool bold;
+	static bool showTotals;
 	int temp;
 
 	V_DrawPatch(TALLY_TOP_X, TALLY_TOP_Y,
@@ -561,7 +561,7 @@ static void DrNumberBold(int val, int x, int y, int wrapThresh)
 //
 //===========================================================================
 
-static void DrawHubText(void)
+static void DrawHubText()
 {
 	int count;
 	char *ch;

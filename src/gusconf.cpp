@@ -43,7 +43,7 @@ typedef struct
 char *gus_patch_path = "";
 int gus_ram_kb = 1024;
 
-static unsigned int MappingIndex(void)
+static unsigned int MappingIndex()
 {
 	unsigned int result = gus_ram_kb / 256;
 
@@ -201,7 +201,7 @@ static void FreeDMXConfig(gus_config_t *config)
 	}
 }
 
-static char *ReadDMXConfig(void)
+static char *ReadDMXConfig()
 {
 	int lumpnum;
 	unsigned int len;
@@ -224,7 +224,7 @@ static char *ReadDMXConfig(void)
 	return data;
 }
 
-static boolean WriteTimidityConfig(char *path, gus_config_t *config)
+static bool WriteTimidityConfig(char *path, gus_config_t *config)
 {
 	FILE *fstream;
 	unsigned int i;
@@ -271,9 +271,9 @@ static boolean WriteTimidityConfig(char *path, gus_config_t *config)
 	return true;
 }
 
-boolean GUS_WriteConfig(char *path)
+bool GUS_WriteConfig(char *path)
 {
-	boolean result;
+	bool result;
 	char *dmxconf;
 	gus_config_t config;
 

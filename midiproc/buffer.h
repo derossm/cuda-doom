@@ -22,33 +22,35 @@
 
 #define BUFFER_SIZE 1024
 
-typedef struct {
-	byte buffer[BUFFER_SIZE]; // Buffer.
-	byte *buffer_end;			// End of Buffer.
-	byte *data;				// Start of actual data.
-	byte *data_end;			// End of actual data.
-	int	data_len;			// Length of actual data.
-} buffer_t;
+struct buffer_t
+{
+	byte buffer[BUFFER_SIZE];	// Buffer.
+	byte* buffer_end;			// End of Buffer.
+	byte* data;					// Start of actual data.
+	byte* data_end;				// End of actual data.
+	size_t data_len;			// Length of actual data.
+};
 
-typedef struct {
-	buffer_t *buffer;
-	byte		*pos;
-} buffer_reader_t;
+struct buffer_reader_t
+{
+	buffer_t* buffer;
+	byte* pos;
+};
 
-buffer_t *NewBuffer();
+auto NewBuffer();
 void DeleteBuffer(buffer_t* buf);
-int Buffer_Data(buffer_t *buf, byte **data);
-boolean Buffer_Push(buffer_t *buf, const void *data, int len);
-void Buffer_Shift(buffer_t *buf, int len);
-void Buffer_Clear(buffer_t *buf);
+auto Buffer_Data(buffer_t* buf, byte** data);
+auto Buffer_Push(buffer_t* buf, const void* data, size_t len);
+void Buffer_Shift(buffer_t* buf, size_t len);
+void Buffer_Clear(buffer_t* buf);
 
-buffer_reader_t *NewReader(buffer_t* buffer);
-void DeleteReader(buffer_reader_t *reader);
-int Reader_BytesRead(buffer_reader_t *reader);
-boolean Reader_ReadInt8(buffer_reader_t *reader, uint8_t *out);
-boolean Reader_ReadInt16(buffer_reader_t *reader, uint16_t *out);
-boolean Reader_ReadInt32(buffer_reader_t *reader, uint32_t *out);
-char *Reader_ReadString(buffer_reader_t *reader);
+auto NewReader(buffer_t* buffer);
+void DeleteReader(buffer_reader_t* reader);
+auto Reader_BytesRead(buffer_reader_t* reader);
+auto Reader_ReadInt8(buffer_reader_t* reader, uint8_t* out);
+auto Reader_ReadInt16(buffer_reader_t* reader, uint16_t* out);
+auto Reader_ReadInt32(buffer_reader_t* reader, uint32_t* out);
+auto Reader_ReadString(buffer_reader_t* reader);
 
 #endif
 

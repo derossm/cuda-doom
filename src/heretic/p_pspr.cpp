@@ -241,7 +241,7 @@ weaponinfo_t wpnlev2info[NUMWEAPONS] = {
 //
 //---------------------------------------------------------------------------
 
-void P_OpenWeapons(void)
+void P_OpenWeapons()
 {
 	MaceSpotCount = 0;
 }
@@ -294,7 +294,7 @@ void P_RepositionMace(mobj_t * mo)
 //
 //---------------------------------------------------------------------------
 
-void P_CloseWeapons(void)
+void P_CloseWeapons()
 {
 	int spot;
 
@@ -451,7 +451,7 @@ void P_BringUpWeapon(player_t * player)
 //
 //---------------------------------------------------------------------------
 
-boolean P_CheckAmmo(player_t * player)
+bool P_CheckAmmo(player_t * player)
 {
 	ammotype_t ammo;
 	int *ammoUse;
@@ -1263,7 +1263,7 @@ void A_DeathBallImpact(mobj_t * ball)
 	int i;
 	mobj_t *target;
 	angle_t angle;
-	boolean newAngle;
+	bool newAngle;
 
 	if ((ball->z <= ball->floorz) && (P_HitFloor(ball) != FLOOR_SOLID))
 	{							// Landed in some sort of liquid

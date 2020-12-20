@@ -46,7 +46,7 @@
 #include "dstrings.h"
 
 #include "am_map.h"
-extern boolean inhelpscreens; // [crispy]
+extern bool inhelpscreens; // [crispy]
 
 
 // For use if I do walls with outsides/insides
@@ -224,7 +224,7 @@ static int	grid = 0;
 
 static int	leveljuststarted = 1;	// kluge until AM_LevelInit() is called
 
-boolean		automapactive = false;
+bool		automapactive = false;
 //static int	finit_width = SCREENWIDTH;
 //static int	finit_height = SCREENHEIGHT - (ST_HEIGHT << crispy->hires);
 
@@ -293,7 +293,7 @@ static int followplayer = 1; // specifies whether to follow the player around
 
 cheatseq_t cheat_amap = CHEAT("iddt", 0);
 
-static boolean stopped = true;
+static bool stopped = true;
 
 // [crispy] Antialiased lines from Heretic with more colors
 #define NUMSHADES 8
@@ -335,7 +335,7 @@ AM_getIslope
 //
 //
 //
-void AM_activateNewScale(void)
+void AM_activateNewScale()
 {
 	m_x += m_w/2;
 	m_y += m_h/2;
@@ -350,7 +350,7 @@ void AM_activateNewScale(void)
 //
 //
 //
-void AM_saveScaleAndLoc(void)
+void AM_saveScaleAndLoc()
 {
 	old_m_x = m_x;
 	old_m_y = m_y;
@@ -361,7 +361,7 @@ void AM_saveScaleAndLoc(void)
 //
 //
 //
-void AM_restoreScaleAndLoc(void)
+void AM_restoreScaleAndLoc()
 {
 
 	m_w = old_m_w;
@@ -385,7 +385,7 @@ void AM_restoreScaleAndLoc(void)
 //
 // adds a marker at the current location
 //
-void AM_addMark(void)
+void AM_addMark()
 {
 	// [crispy] keep the map static in overlay mode
 	// if not following the player
@@ -407,7 +407,7 @@ void AM_addMark(void)
 // Determines bounding box of all vertices,
 // sets global variables controlling zoom range.
 //
-void AM_findMinMaxBoundaries(void)
+void AM_findMinMaxBoundaries()
 {
 	int i;
 	fixed_t a;
@@ -448,7 +448,7 @@ void AM_findMinMaxBoundaries(void)
 //
 //
 //
-void AM_changeWindowLoc(void)
+void AM_changeWindowLoc()
 {
 	int64_t incx, incy;
 
@@ -489,7 +489,7 @@ void AM_changeWindowLoc(void)
 //
 //
 //
-void AM_initVariables(void)
+void AM_initVariables()
 {
 	int pnum;
 	static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
@@ -545,7 +545,7 @@ void AM_initVariables(void)
 //
 //
 //
-void AM_loadPics(void)
+void AM_loadPics()
 {
 	int i;
 	char namebuf[9];
@@ -558,7 +558,7 @@ void AM_loadPics(void)
 
 }
 
-void AM_unloadPics(void)
+void AM_unloadPics()
 {
 	int i;
 	char namebuf[9];
@@ -570,7 +570,7 @@ void AM_unloadPics(void)
 	}
 }
 
-void AM_clearMarks(void)
+void AM_clearMarks()
 {
 	int i;
 
@@ -583,7 +583,7 @@ void AM_clearMarks(void)
 // should be called at the start of every level
 // right now, i figure it out myself
 //
-void AM_LevelInit(boolean reinit)
+void AM_LevelInit(bool reinit)
 {
 	fixed_t a, b;
 	static int f_h_old;
@@ -648,7 +648,7 @@ void AM_LevelInit(boolean reinit)
 //
 //
 //
-void AM_Stop (void)
+void AM_Stop ()
 {
 	static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED, 0 };
 
@@ -663,7 +663,7 @@ void AM_Stop (void)
 //
 // [crispy] moved here for extended savegames
 static int lastlevel = -1, lastepisode = -1;
-void AM_Start (void)
+void AM_Start ()
 {
 	if (!stopped) AM_Stop();
 	stopped = false;
@@ -678,7 +678,7 @@ void AM_Start (void)
 }
 
 // [crispy] reset IDDT cheat when re-starting map during demo recording
-void AM_ResetIDDTcheat (void)
+void AM_ResetIDDTcheat ()
 {
 	cheating = 0;
 }
@@ -686,7 +686,7 @@ void AM_ResetIDDTcheat (void)
 //
 // set the window scale to the maximum size
 //
-void AM_minOutWindowScale(void)
+void AM_minOutWindowScale()
 {
 	scale_mtof = min_scale_mtof;
 	scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -696,7 +696,7 @@ void AM_minOutWindowScale(void)
 //
 // set the window scale to the minimum size
 //
-void AM_maxOutWindowScale(void)
+void AM_maxOutWindowScale()
 {
 	scale_mtof = max_scale_mtof;
 	scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
@@ -707,7 +707,7 @@ void AM_maxOutWindowScale(void)
 //
 // Handle events (user inputs) in automap mode
 //
-boolean
+bool
 AM_Responder
 ( event_t*	ev )
 {
@@ -922,7 +922,7 @@ AM_Responder
 //
 // Zooming
 //
-void AM_changeWindowScale(void)
+void AM_changeWindowScale()
 {
 
 	// Change the scaling multipliers
@@ -948,7 +948,7 @@ void AM_changeWindowScale(void)
 //
 //
 //
-void AM_doFollowPlayer(void)
+void AM_doFollowPlayer()
 {
 
 	if (f_oldloc.x != plr->mo->x || f_oldloc.y != plr->mo->y)
@@ -972,7 +972,7 @@ void AM_doFollowPlayer(void)
 //
 //
 //
-void AM_updateLightLev(void)
+void AM_updateLightLev()
 {
 	static int nexttic = 0;
 	//static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
@@ -993,7 +993,7 @@ void AM_updateLightLev(void)
 //
 // Updates on Game Tick
 //
-void AM_Ticker (void)
+void AM_Ticker ()
 {
 
 	if (!automapactive)
@@ -1044,7 +1044,7 @@ void AM_clearFB(int color)
 // faster reject and precalculated slopes. If the speed is needed,
 // use a hash algorithm to handle the common cases.
 //
-boolean
+bool
 AM_clipMline
 ( mline_t*	ml,
  fline_t*	fl )
@@ -1519,7 +1519,7 @@ static keycolor_t AM_DoorColor(int type)
  return no_key;
 }
 
-void AM_drawWalls(void)
+void AM_drawWalls()
 {
 	int i;
 	static mline_t l;
@@ -1742,7 +1742,7 @@ AM_drawLineCharacter
 	}
 }
 
-void AM_drawPlayers(void)
+void AM_drawPlayers()
 {
 	int		i;
 	player_t*	p;
@@ -1905,7 +1905,7 @@ AM_drawThings
 	}
 }
 
-void AM_drawMarks(void)
+void AM_drawMarks()
 {
 	int i, fx, fy, w, h;
 	mpoint_t pt;
@@ -1964,7 +1964,7 @@ void AM_drawCrosshair(int color)
 
 }
 
-void AM_Drawer (void)
+void AM_Drawer ()
 {
 	if (!automapactive) return;
 

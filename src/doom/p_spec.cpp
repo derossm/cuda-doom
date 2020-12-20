@@ -57,7 +57,7 @@
 //
 typedef struct
 {
-	boolean	istexture;
+	bool	istexture;
 	int		picnum;
 	int		basepic;
 	int		numpics;
@@ -149,14 +149,14 @@ extern line_t*	linespeciallist[MAXLINEANIMS];
 
 
 
-void P_InitPicAnims (void)
+void P_InitPicAnims ()
 {
 	int		i;
-	boolean init_swirl = false;
+	bool init_swirl = false;
 
 	// [crispy] add support for ANIMATED lumps
 	animdef_t *animdefs;
-	const boolean from_lump = (W_CheckNumForName("ANIMATED") != -1);
+	const bool from_lump = (W_CheckNumForName("ANIMATED") != -1);
 
 	if (from_lump)
 	{
@@ -1221,10 +1221,10 @@ void P_PlayerInSpecialSector (player_t* player)
 // P_UpdateSpecials
 // Animate planes, scroll walls, etc.
 //
-boolean		levelTimer;
+bool		levelTimer;
 int		levelTimeCount;
 
-void P_UpdateSpecials (void)
+void P_UpdateSpecials ()
 {
 	anim_t*	anim;
 	int		pic;
@@ -1333,7 +1333,7 @@ void P_UpdateSpecials (void)
 }
 
 // [crispy] smooth texture scrolling
-void R_InterpolateTextureOffsets (void)
+void R_InterpolateTextureOffsets ()
 {
 	if (crispy->uncapped && leveltime > oldleveltime)
 	{
@@ -1576,7 +1576,7 @@ static unsigned int NumScrollers()
 }
 
 // Parses command line parameters.
-void P_SpawnSpecials (void)
+void P_SpawnSpecials ()
 {
 	sector_t*	sector;
 	int		i;

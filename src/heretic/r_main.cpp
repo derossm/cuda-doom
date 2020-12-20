@@ -70,11 +70,11 @@ extern fixed_t			fractionaltic;
 
 int extralight;					// bumped light from gun blasts
 
-void (*colfunc) (void);
-void (*basecolfunc) (void);
-void (*tlcolfunc) (void);
-void (*transcolfunc) (void);
-void (*spanfunc) (void);
+void (*colfunc) ();
+void (*basecolfunc) ();
+void (*tlcolfunc) ();
+void (*transcolfunc) ();
+void (*spanfunc) ();
 
 /*
 ===================
@@ -289,7 +289,7 @@ fixed_t R_PointToDist(fixed_t x, fixed_t y)
 =================
 */
 
-void R_InitPointToAngle(void)
+void R_InitPointToAngle()
 {
 // now getting from tables.c
 #if 0
@@ -392,7 +392,7 @@ angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale)
 =================
 */
 
-void R_InitTables(void)
+void R_InitTables()
 {
 // now getting from tables.c
 #if 0
@@ -434,7 +434,7 @@ void R_InitTables(void)
 =================
 */
 
-void R_InitTextureMapping(void)
+void R_InitTextureMapping()
 {
 	int i;
 	int x;
@@ -511,7 +511,7 @@ void R_InitTextureMapping(void)
 
 #define		DISTMAP	2
 
-void R_InitLightTables(void)
+void R_InitLightTables()
 {
 	int i, j, level, startmap;
 	int scale;
@@ -550,7 +550,7 @@ void R_InitLightTables(void)
 ==============
 */
 
-boolean setsizeneeded;
+bool setsizeneeded;
 int setblocks, setdetail;
 
 void R_SetViewSize(int blocks, int detail)
@@ -568,7 +568,7 @@ void R_SetViewSize(int blocks, int detail)
 ==============
 */
 
-void R_ExecuteSetViewSize(void)
+void R_ExecuteSetViewSize()
 {
 	fixed_t cosadj, dy;
 	int i, j, level, startmap;
@@ -679,7 +679,7 @@ void R_ExecuteSetViewSize(void)
 int detailLevel;
 int screenblocks = 10;
 
-void R_Init(void)
+void R_Init()
 {
 	//tprintf("R_InitData ", 1);
 	R_InitData();
@@ -849,7 +849,7 @@ void R_SetupFrame(player_t * player)
 void R_RenderPlayerView(player_t * player)
 {
 	// [crispy] Smooth texture scrolling
-	extern void R_InterpolateTextureOffsets(void);
+	extern void R_InterpolateTextureOffsets();
 
 	R_SetupFrame(player);
 	R_ClearClipSegs();

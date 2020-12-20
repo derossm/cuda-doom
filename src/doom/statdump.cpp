@@ -306,7 +306,7 @@ void StatCopy(const wbstartstruct_t *stats)
 	}
 }
 
-void StatDump(void)
+void StatDump()
 {
 	FILE *dumpfile;
 	int i;

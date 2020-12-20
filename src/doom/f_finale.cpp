@@ -107,17 +107,17 @@ const char *finaletext;
 const char *finaleflat;
 static char *finaletext_rw;
 
-void	F_StartCast (void);
-void	F_CastTicker (void);
-boolean F_CastResponder (event_t *ev);
-void	F_CastDrawer (void);
+void	F_StartCast ();
+void	F_CastTicker ();
+bool F_CastResponder (event_t *ev);
+void	F_CastDrawer ();
 
 extern void A_RandomJump();
 
 //
 // F_StartFinale
 //
-void F_StartFinale (void)
+void F_StartFinale ()
 {
 	size_t i;
 
@@ -176,7 +176,7 @@ void F_StartFinale (void)
 
 
 
-boolean F_Responder (event_t *event)
+bool F_Responder (event_t *event)
 {
 	if (finalestage == F_STAGE_CAST)
 	return F_CastResponder (event);
@@ -188,7 +188,7 @@ boolean F_Responder (event_t *event)
 //
 // F_Ticker
 //
-void F_Ticker (void)
+void F_Ticker ()
 {
 	size_t		i;
 
@@ -249,7 +249,7 @@ void F_Ticker (void)
 extern	patch_t *hu_font[HU_FONTSIZE];
 
 // [crispy] add line breaks for lines exceeding screenwidth
-static inline boolean F_AddLineBreak (char *c)
+static inline bool F_AddLineBreak (char *c)
 {
 	while (c-- > finaletext_rw)
 	{
@@ -268,7 +268,7 @@ static inline boolean F_AddLineBreak (char *c)
 	return false;
 }
 
-void F_TextWrite (void)
+void F_TextWrite ()
 {
 	byte*	src;
 	pixel_t*	dest;
@@ -392,13 +392,13 @@ castinfo_t	castorder[] = {
 int		castnum;
 int		casttics;
 state_t*	caststate;
-boolean		castdeath;
+bool		castdeath;
 int		castframes;
 int		castonmelee;
-boolean		castattacking;
+bool		castattacking;
 static signed char	castangle; // [crispy] turnable cast
 static signed char	castskip; // [crispy] skippable cast
-static boolean	castflip; // [crispy] flippable death sequence
+static bool	castflip; // [crispy] flippable death sequence
 
 // [crispy] randomize seestate and deathstate sounds in the cast
 static int F_RandomizeSound (int sound)
@@ -462,7 +462,7 @@ typedef struct
 {
 	void *const action;
 	const int sound;
-	const boolean early;
+	const bool early;
 } actionsound_t;
 
 static const actionsound_t actionsounds[] =
@@ -524,7 +524,7 @@ static int F_SoundForState (int st)
 //
 // F_StartCast
 //
-void F_StartCast (void)
+void F_StartCast ()
 {
 	wipegamestate = -1;		// force a screen wipe
 	castnum = 0;
@@ -542,7 +542,7 @@ void F_StartCast (void)
 //
 // F_CastTicker
 //
-void F_CastTicker (void)
+void F_CastTicker ()
 {
 	int		st;
 	int		sfx;
@@ -698,9 +698,9 @@ void F_CastTicker (void)
 // F_CastResponder
 //
 
-boolean F_CastResponder (event_t* ev)
+bool F_CastResponder (event_t* ev)
 {
-	boolean xdeath = false;
+	bool xdeath = false;
 
 	if (ev->type != ev_keydown)
 	return false;
@@ -832,12 +832,12 @@ void F_CastPrint (const char *text)
 // F_CastDrawer
 //
 
-void F_CastDrawer (void)
+void F_CastDrawer ()
 {
 	spritedef_t*	sprdef;
 	spriteframe_t*	sprframe;
 	int			lump;
-	boolean		flip;
+	bool		flip;
 	patch_t*		patch;
 
 	// erase the entire screen to a background
@@ -854,7 +854,7 @@ void F_CastDrawer (void)
 	}
 	sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
 	lump = sprframe->lump[castangle]; // [crispy] turnable cast
-	flip = (boolean)sprframe->flip[castangle] ^ castflip; // [crispy] turnable cast, flippable death sequence
+	flip = (bool)sprframe->flip[castangle] ^ castflip; // [crispy] turnable cast, flippable death sequence
 
 	patch = W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
 	if (flip)
@@ -906,7 +906,7 @@ F_DrawPatchCol
 //
 // F_BunnyScroll
 //
-void F_BunnyScroll (void)
+void F_BunnyScroll ()
 {
 	signed int scrolled;
 	int		x;
@@ -997,7 +997,7 @@ void F_BunnyScroll (void)
 				W_CacheLumpName (name,PU_CACHE));
 }
 
-static void F_ArtScreenDrawer(void)
+static void F_ArtScreenDrawer()
 {
 	const char *lumpname;
 
@@ -1046,7 +1046,7 @@ static void F_ArtScreenDrawer(void)
 //
 // F_Drawer
 //
-void F_Drawer (void)
+void F_Drawer ()
 {
 	switch (finalestage)
 	{

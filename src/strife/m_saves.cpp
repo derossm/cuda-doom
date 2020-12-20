@@ -49,7 +49,7 @@ char character_name[CHARACTER_NAME_LEN]; // Name of "character" for saveslot
 //
 // Clear the temporary save directory
 //
-void ClearTmp(void)
+void ClearTmp()
 {
 	glob_t *glob;
 
@@ -79,7 +79,7 @@ void ClearTmp(void)
 //
 // Clear a single save slot folder
 //
-void ClearSlot(void)
+void ClearSlot()
 {
 	glob_t *glob;
 
@@ -110,7 +110,7 @@ void ClearSlot(void)
 //
 // Copying files from savepathtemp to savepath
 //
-void FromCurr(void)
+void FromCurr()
 {
 	glob_t *glob;
 
@@ -149,7 +149,7 @@ void FromCurr(void)
 //
 // Copying files from savepath to savepathtemp
 //
-void ToCurr(void)
+void ToCurr()
 {
 	glob_t *glob;
 
@@ -191,7 +191,7 @@ void ToCurr(void)
 //
 // Moves a map to the "HERE" save.
 //
-void M_SaveMoveMapToHere(void)
+void M_SaveMoveMapToHere()
 {
 	char *mapsave = NULL;
 	char *heresave = NULL;
@@ -220,7 +220,7 @@ void M_SaveMoveMapToHere(void)
 //
 // Moves the "HERE" save to a map.
 //
-void M_SaveMoveHereToMap(void)
+void M_SaveMoveHereToMap()
 {
 	char *mapsave = NULL;
 	char *heresave = NULL;
@@ -247,9 +247,9 @@ void M_SaveMoveHereToMap(void)
 //
 // Writes the mission objective into the MIS_OBJ file.
 //
-boolean M_SaveMisObj(const char *path)
+bool M_SaveMisObj(const char *path)
 {
-	boolean result;
+	bool result;
 	char *destpath = NULL;
 
 	// haleyjd 20110210: use M_SafeFilePath, not sprintf
@@ -265,7 +265,7 @@ boolean M_SaveMisObj(const char *path)
 //
 // Reads the mission objective from the MIS_OBJ file.
 //
-void M_ReadMisObj(void)
+void M_ReadMisObj()
 {
 	FILE *f = NULL;
 	char *srcpath = NULL;
@@ -437,7 +437,7 @@ char *M_MakeStrifeSaveDir(int slotnum, const char *extra)
 //
 char M_GetFilePath(const char *fn, char *dest, size_t len)
 {
-	boolean found_slash = false;
+	bool found_slash = false;
 	char *p;
 	char sepchar = '\0';
 

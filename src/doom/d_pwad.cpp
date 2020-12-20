@@ -29,7 +29,7 @@
 extern char *iwadfile;
 
 // [crispy] auto-load SIGIL.WAD (and SIGIL_SHREDS.WAD) if available
-void D_LoadSigilWad (void)
+void D_LoadSigilWad ()
 {
 	int i, j;
 	char *sigil_wad = NULL, *sigil_shreds = NULL;
@@ -168,7 +168,7 @@ void D_LoadSigilWad (void)
 }
 
 // [crispy] check if NERVE.WAD is already loaded as a PWAD
-static boolean CheckNerveLoaded (void)
+static bool CheckNerveLoaded ()
 {
 	int i, j;
 
@@ -193,7 +193,7 @@ static boolean CheckNerveLoaded (void)
 }
 
 // [crispy] auto-load NERVE.WAD if available
-static void CheckLoadNerve (void)
+static void CheckLoadNerve ()
 {
 	int i, j;
 
@@ -262,7 +262,7 @@ static void CheckLoadNerve (void)
 	return;
 }
 
-void D_LoadNerveWad (void)
+void D_LoadNerveWad ()
 {
 	// [crispy] check if NERVE.WAD is already loaded as a PWAD
 	if (!CheckNerveLoaded())
@@ -273,7 +273,7 @@ void D_LoadNerveWad (void)
 }
 
 // [crispy] check if the single MASTERLEVELS.WAD is already loaded as a PWAD
-static boolean CheckMasterlevelsLoaded (void)
+static bool CheckMasterlevelsLoaded ()
 {
 	int i, j;
 
@@ -291,7 +291,7 @@ static boolean CheckMasterlevelsLoaded (void)
 }
 
 // [crispy] auto-load the single MASTERLEVELS.WAD if available
-static boolean CheckLoadMasterlevels (void)
+static bool CheckLoadMasterlevels ()
 {
 	int i, j;
 
@@ -356,7 +356,7 @@ static struct {
 	const char *wad_name;
 	int pc_slot;
 	int psn_slot;
-	boolean custom_sky;
+	bool custom_sky;
 	char *file_path;
 } masterlevels_wads [] = {
 	{"ATTACK.WAD",	1, 1},
@@ -382,7 +382,7 @@ static struct {
 	{NULL,			32, 21}, // [crispy] TEETH.WAD
 };
 
-static boolean CheckMasterlevelsAvailable (void)
+static bool CheckMasterlevelsAvailable ()
 {
 	int i;
 	char *dir;
@@ -429,7 +429,7 @@ static boolean CheckMasterlevelsAvailable (void)
 }
 
 // [crispy] auto-load the 20 individual separate Mater Levels PWADs as if the were the single MASTERLEVELS.WAD
-static void LoadMasterlevelsWads (void)
+static void LoadMasterlevelsWads ()
 {
 	int i, j;
 	char lumpname[9];
@@ -481,7 +481,7 @@ static void LoadMasterlevelsWads (void)
 	return;
 }
 
-void D_LoadMasterlevelsWad (void)
+void D_LoadMasterlevelsWad ()
 {
 	// [crispy] check if the single MASTERLEVELS.WAD is already loaded as a PWAD
 	if (!CheckMasterlevelsLoaded())

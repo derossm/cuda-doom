@@ -51,7 +51,7 @@ static unsigned int cheat_sequence_index = 0;
 
 // I think these are good "sensible" defaults:
 
-static void SensibleDefaults(void)
+static void SensibleDefaults()
 {
 	key_up = 'w';
 	key_down = 's';
@@ -179,7 +179,7 @@ static void LaunchDoom(void *unused1, void *unused2)
 	exit(0);
 }
 
-static txt_button_t *GetLaunchButton(void)
+static txt_button_t *GetLaunchButton()
 {
 	const char *label;
 
@@ -205,7 +205,7 @@ static txt_button_t *GetLaunchButton(void)
 	return TXT_NewButton2(label, LaunchDoom, NULL);
 }
 
-void MainMenu(void)
+void MainMenu()
 {
 	txt_window_t *window;
 	txt_window_action_t *quit_action;
@@ -253,7 +253,7 @@ void MainMenu(void)
 // Initialize all configuration variables, load config file, etc
 //
 
-static void InitConfig(void)
+static void InitConfig()
 {
 	M_SetConfigDir(NULL);
 	InitBindings();
@@ -272,7 +272,7 @@ static void InitConfig(void)
 // Application icon
 //
 
-static void SetIcon(void)
+static void SetIcon()
 {
 	extern SDL_Window *TXT_SDLWindow;
 	SDL_Surface *surface;
@@ -286,7 +286,7 @@ static void SetIcon(void)
 	SDL_FreeSurface(surface);
 }
 
-static void SetWindowTitle(void)
+static void SetWindowTitle()
 {
 	char *title;
 
@@ -302,7 +302,7 @@ static void SetWindowTitle(void)
 
 // Initialize the textscreen library.
 
-static void InitTextscreen(void)
+static void InitTextscreen()
 {
 	SetDisplayDriver();
 
@@ -328,7 +328,7 @@ static void InitTextscreen(void)
 // Restart the textscreen library. Used when the video_driver variable
 // is changed.
 
-void RestartTextscreen(void)
+void RestartTextscreen()
 {
 	TXT_Shutdown();
 	InitTextscreen();
@@ -338,21 +338,21 @@ void RestartTextscreen(void)
 // Initialize and run the textscreen GUI.
 //
 
-static void RunGUI(void)
+static void RunGUI()
 {
 	InitTextscreen();
 
 	TXT_GUIMainLoop();
 }
 
-static void MissionSet(void)
+static void MissionSet()
 {
 	SetWindowTitle();
 	InitConfig();
 	MainMenu();
 }
 
-void D_DoomMain(void)
+void D_DoomMain()
 {
 	SetupMission(MissionSet);
 

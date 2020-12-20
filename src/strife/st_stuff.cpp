@@ -143,7 +143,7 @@ static const int st_wforammo[NUMAMMO] = { 3, 3, 2, 3,	3,	2,	3	};
 static player_t*		plyr;
 
 // ST_Start() has just been called
-static boolean			st_firsttime;
+static bool			st_firsttime;
 
 // lump number for PLAYPAL
 static int				lu_palette;
@@ -152,27 +152,27 @@ static int				lu_palette;
 static st_stateenum_t	st_gamestate;
 
 // whether left-side main status bar is active
-static boolean			st_statusbaron;
+static bool			st_statusbaron;
 
 // villsa [STRIFE]
-static boolean			st_dosizedisplay = false;
+static bool			st_dosizedisplay = false;
 
 // haleyjd 09/01/10: [STRIFE]
 // Whether or not a popup is currently displayed
-static boolean			st_displaypopup = false;
+static bool			st_displaypopup = false;
 
 // villsa [STRIFE]
 static int				st_popupdisplaytics = 0;
 
 // villsa [STRIFE]
 // Whether or not show popup objective screen
-static boolean			st_showobjective = false;
+static bool			st_showobjective = false;
 
 // villsa [STRIFE]
-static boolean			st_showinvpop = false;
+static bool			st_showinvpop = false;
 
 // villsa [STRIFE]
-static boolean			st_showkeys = false;
+static bool			st_showkeys = false;
 
 // villsa [STRIFE] TODO - identify variables
 static int				st_keypage = -1;
@@ -286,17 +286,17 @@ void M_SizeDisplay(int choice); // villsa [STRIFE]
 //
 // STATUS BAR CODE
 //
-void ST_Stop(void);
+void ST_Stop();
 
 // [STRIFE]
 static char st_msgbuf[ST_MSGWIDTH];
 
 // Respond to keyboard input events,
 // intercept cheats.
-boolean ST_Responder(event_t* ev)
+bool ST_Responder(event_t* ev)
 {
 	// haleyjd 09/27/10: made static to ST_Responder
-	static boolean st_keystate = false;
+	static bool st_keystate = false;
 	int i;
 
 	// Filter automap on/off.
@@ -759,7 +759,7 @@ boolean ST_Responder(event_t* ev)
 
 
 /*
-int ST_calcPainOffset(void)
+int ST_calcPainOffset()
 {
 	// haleyjd 08/31/10: [STRIFE] Removed.
 }
@@ -772,14 +772,14 @@ int ST_calcPainOffset(void)
 // dead > evil grin > turned head > straight ahead
 //
 /*
-void ST_updateFaceWidget(void)
+void ST_updateFaceWidget()
 {
 	// haleyjd 08/31/10: [STRIFE] Removed.
 }
 */
 
 /*
-void ST_updateWidgets(void)
+void ST_updateWidgets()
 {
 	// haleyjd 09/01/10: [STRIFE] Rogue merged this into ST_Ticker below.
 }
@@ -793,7 +793,7 @@ void ST_updateWidgets(void)
 // * Merged ST_updateWidgets here. Wasn't inlined, as doesn't exist separately
 //	in the binary as inlined functions normally do.
 //
-void ST_Ticker (void)
+void ST_Ticker ()
 {
 	static int largeammo = 1994; // means "n/a"
 
@@ -848,7 +848,7 @@ static int st_palette = 0;
 // * Changed radsuit palette handling for Strife nukagecount.
 // * All other logic verified to be unmodified.
 //
-void ST_doPaletteStuff(void)
+void ST_doPaletteStuff()
 {
 
 	int		palette;
@@ -907,7 +907,7 @@ void ST_doPaletteStuff(void)
 }
 
 /*
-void ST_drawWidgets(boolean refresh)
+void ST_drawWidgets(bool refresh)
 {
 	haleyjd 09/01/10: [STRIFE] Removed
 }
@@ -981,7 +981,7 @@ void ST_drawLine(int x, int y, int len, int color)
 // haleyjd 20100920: Evidence more than suggests that Rogue moved all status bar
 // drawing down to this function.
 //
-void ST_doRefresh(void)
+void ST_doRefresh()
 {
 	// draw status bar background to off-screen buff
 	if (st_statusbaron)
@@ -1118,7 +1118,7 @@ void ST_doRefresh(void)
 
 // haleyjd [STRIFE]: Removed ST_diffDraw
 
-void ST_Drawer (boolean fullscreen, boolean refresh)
+void ST_Drawer (bool fullscreen, bool refresh)
 {
 	st_statusbaron = (!fullscreen) || automapactive;
 	st_firsttime = st_firsttime || refresh;
@@ -1191,7 +1191,7 @@ static void ST_drawTime(int x, int y, int time)
 // haleyjd 20110213: [STRIFE] New function
 // This has taken the longest out of almost everything to get working properly.
 //
-static boolean ST_drawKeysPopup(void)
+static bool ST_drawKeysPopup()
 {
 	int x, y, yt, key, keycount;
 	mobjinfo_t *info;
@@ -1257,7 +1257,7 @@ static boolean ST_drawKeysPopup(void)
 		// Are there any keys to display on this page?
 		if(st_keypage > 0)
 		{
-			boolean haskeyinrange = false;
+			bool haskeyinrange = false;
 
 			for(key = ST_KEYSPERPAGE * st_keypage, keycount = 0;
 				keycount < ST_KEYSPERPAGE && key < NUMCARDS;
@@ -1319,7 +1319,7 @@ static boolean ST_drawKeysPopup(void)
 // haleyjd 20100901: [STRIFE] New function.
 // * Draws external portions of the status bar such the top bar and popups.
 //
-boolean ST_DrawExternal(void)
+bool ST_DrawExternal()
 {
 	int i;
 
@@ -1490,12 +1490,12 @@ static void ST_loadCallback(const char *lumpname, patch_t **variable)
 	*variable = W_CacheLumpName(lumpname, PU_STATIC);
 }
 
-void ST_loadGraphics(void)
+void ST_loadGraphics()
 {
 	ST_loadUnloadGraphics(ST_loadCallback);
 }
 
-void ST_loadData(void)
+void ST_loadData()
 {
 //	static int dword_8848C = 1; // STRIFE-TODO: what is the purpose of this?
 //	dword_8848C = 0;
@@ -1510,12 +1510,12 @@ static void ST_unloadCallback(const char *lumpname, patch_t **variable)
 	*variable = NULL;
 }
 
-void ST_unloadGraphics(void)
+void ST_unloadGraphics()
 {
 	ST_loadUnloadGraphics(ST_unloadCallback);
 }
 
-void ST_unloadData(void)
+void ST_unloadData()
 {
 	ST_unloadGraphics();
 }
@@ -1526,7 +1526,7 @@ void ST_unloadData(void)
 // haleyjd 20100901: [STRIFE]
 // * Removed prebeta cruft, face stuff, keyboxes, and oldwe
 //
-void ST_initData(void)
+void ST_initData()
 {
 	st_firsttime = true;
 	plyr = &players[consoleplayer];
@@ -1542,7 +1542,7 @@ void ST_initData(void)
 
 
 
-void ST_createWidgets(void)
+void ST_createWidgets()
 {
 	int i;
 
@@ -1581,10 +1581,10 @@ void ST_createWidgets(void)
 	}
 }
 
-static boolean	st_stopped = true;
+static bool	st_stopped = true;
 
 
-void ST_Start (void)
+void ST_Start ()
 {
 	if (!st_stopped)
 		ST_Stop();
@@ -1594,7 +1594,7 @@ void ST_Start (void)
 	st_stopped = false;
 }
 
-void ST_Stop (void)
+void ST_Stop ()
 {
 	if (st_stopped)
 		return;
@@ -1604,7 +1604,7 @@ void ST_Stop (void)
 	st_stopped = true;
 }
 
-void ST_Init (void)
+void ST_Init ()
 {
 	ST_loadData();
 

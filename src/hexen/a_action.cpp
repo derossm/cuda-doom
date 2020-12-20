@@ -354,7 +354,7 @@ void A_LeafCheck(mobj_t * actor)
 
 /*
 #define ORBIT_RADIUS	(15*FRACUNIT)
-void GenerateOrbitTable(void)
+void GenerateOrbitTable()
 {
 	int angle;
 
@@ -850,7 +850,7 @@ void A_CheckThrowBomb(mobj_t * actor)
 //
 //===========================================================================
 
-boolean A_LocalQuake(byte * args, mobj_t * actor)
+bool A_LocalQuake(byte * args, mobj_t * actor)
 {
 	mobj_t *focus, *target;
 	int lastfound = 0;

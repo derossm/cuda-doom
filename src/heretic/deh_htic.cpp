@@ -96,7 +96,7 @@ static void SetHHEVersionByName(const char *name)
 
 // Initialize Heretic(HHE)-specific dehacked bits.
 
-void DEH_HereticInit(void)
+void DEH_HereticInit()
 {
 	int i;
 

@@ -58,34 +58,34 @@
 GameMode_t gamemode = indetermined;
 const char *gamedescription = "unknown";
 
-boolean nomonsters;				// checkparm of -nomonsters
-boolean respawnparm;			// checkparm of -respawn
-boolean debugmode;				// checkparm of -debug
-boolean ravpic;					// checkparm of -ravpic
-boolean cdrom;					// true if cd-rom mode active
-boolean noartiskip;				// whether shift-enter skips an artifact
+bool nomonsters;				// checkparm of -nomonsters
+bool respawnparm;			// checkparm of -respawn
+bool debugmode;				// checkparm of -debug
+bool ravpic;					// checkparm of -ravpic
+bool cdrom;					// true if cd-rom mode active
+bool noartiskip;				// whether shift-enter skips an artifact
 
 skill_t startskill;
 int startepisode;
 int startmap;
 int UpdateState;
 static int graphical_startup = 0;
-static boolean using_graphical_startup;
-static boolean main_loop_started = false;
-boolean autostart;
-extern boolean automapactive;
+static bool using_graphical_startup;
+static bool main_loop_started = false;
+bool autostart;
+extern bool automapactive;
 
-boolean advancedemo;
+bool advancedemo;
 
 FILE *debugfile;
 
 static int show_endoom = 0;
 
-void D_ConnectNetGame(void);
-void D_CheckNetGame(void);
-void D_PageDrawer(void);
-void D_AdvanceDemo(void);
-boolean F_Responder(event_t * ev);
+void D_ConnectNetGame();
+void D_CheckNetGame();
+void D_PageDrawer();
+void D_AdvanceDemo();
+bool F_Responder(event_t * ev);
 
 //---------------------------------------------------------------------------
 //
@@ -95,7 +95,7 @@ boolean F_Responder(event_t * ev);
 //
 //---------------------------------------------------------------------------
 
-void D_ProcessEvents(void)
+void D_ProcessEvents()
 {
 	event_t *ev;
 
@@ -119,7 +119,7 @@ void D_ProcessEvents(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawMessage(void)
+void DrawMessage()
 {
 	player_t *player;
 
@@ -139,7 +139,7 @@ void DrawMessage(void)
 //
 //---------------------------------------------------------------------------
 
-void DrawCenterMessage(void)
+void DrawCenterMessage()
 {
 	player_t* player;
 
@@ -162,7 +162,7 @@ void DrawCenterMessage(void)
 //
 //---------------------------------------------------------------------------
 
-static void CrispyDrawStats (void)
+static void CrispyDrawStats ()
 {
 	static short height, coord_x;
 	char str[32];
@@ -211,7 +211,7 @@ static void CrispyDrawStats (void)
 }
 
 // [crispy] Draw the current FPS if show fps cheat is active
-static void CrispyDrawFps(void)
+static void CrispyDrawFps()
 {
 	short coord_x, height;
 	char str[32];
@@ -231,13 +231,13 @@ static void CrispyDrawFps(void)
 	}
 }
 
-void R_ExecuteSetViewSize(void);
+void R_ExecuteSetViewSize();
 
-extern boolean finalestage;
+extern bool finalestage;
 
-void D_Display(void)
+void D_Display()
 {
-	extern boolean askforquit;
+	extern bool askforquit;
 
 	// Change the view size if needed
 	if (setsizeneeded)
@@ -313,7 +313,7 @@ void D_Display(void)
 // Called to determine whether to grab the mouse pointer
 //
 
-boolean D_GrabMouseCallback(void)
+bool D_GrabMouseCallback()
 {
 	// when menu is active or game is paused, release the mouse
 
@@ -331,7 +331,7 @@ boolean D_GrabMouseCallback(void)
 //
 //---------------------------------------------------------------------------
 
-void D_DoomLoop(void)
+void D_DoomLoop()
 {
 	if (M_CheckParm("-debugfile"))
 	{
@@ -392,7 +392,7 @@ static const char *pagename;
 ================
 */
 
-void D_PageTicker(void)
+void D_PageTicker()
 {
 	if (--pagetic < 0)
 		D_AdvanceDemo();
@@ -407,7 +407,7 @@ void D_PageTicker(void)
 ================
 */
 
-void D_PageDrawer(void)
+void D_PageDrawer()
 {
 	V_DrawRawScreen(W_CacheLumpName(pagename, PU_CACHE));
 	if (demosequence == 1)
@@ -426,12 +426,12 @@ void D_PageDrawer(void)
 =================
 */
 
-void D_AdvanceDemo(void)
+void D_AdvanceDemo()
 {
 	advancedemo = true;
 }
 
-void D_DoAdvanceDemo(void)
+void D_DoAdvanceDemo()
 {
 	players[consoleplayer].playerstate = PST_LIVE;		// don't reborn
 	advancedemo = false;
@@ -496,7 +496,7 @@ void D_DoAdvanceDemo(void)
 =================
 */
 
-void D_StartTitle(void)
+void D_StartTitle()
 {
 	gameaction = ga_nothing;
 	demosequence = -1;
@@ -513,7 +513,7 @@ void D_StartTitle(void)
 ==============
 */
 
-void D_CheckRecordFrom(void)
+void D_CheckRecordFrom()
 {
 	int p;
 	char *filename;
@@ -557,7 +557,7 @@ void D_CheckRecordFrom(void)
 char *iwadfile;
 
 
-void wadprintf(void)
+void wadprintf()
 {
 	if (debugmode)
 	{
@@ -565,7 +565,7 @@ void wadprintf(void)
 	}
 }
 
-boolean D_AddFile(char *file)
+bool D_AddFile(char *file)
 {
 	wad_file_t *handle;
 
@@ -614,7 +614,7 @@ void hprintf(const char *string)
 		puts(string);
 }
 
-void drawstatus(void)
+void drawstatus()
 {
 	int i;
 
@@ -637,7 +637,7 @@ static void status(const char *string)
 	}
 }
 
-void DrawThermo(void)
+void DrawThermo()
 {
 	static int last_progress = -1;
 	int progress;
@@ -672,7 +672,7 @@ void DrawThermo(void)
 	TXT_UpdateScreen();
 }
 
-void initStartup(void)
+void initStartup()
 {
 	byte *textScreen;
 	byte *loading;
@@ -709,7 +709,7 @@ void initStartup(void)
 	using_graphical_startup = true;
 }
 
-static void finishStartup(void)
+static void finishStartup()
 {
 	if (using_graphical_startup)
 	{
@@ -724,13 +724,13 @@ void tprintf(const char *msg, int initflag)
 }
 
 // haleyjd: moved up, removed WATCOMC code
-void CleanExit(void)
+void CleanExit()
 {
 	DEH_printf("Exited from HERETIC.\n");
 	exit(1);
 }
 
-void CheckAbortStartup(void)
+void CheckAbortStartup()
 {
 	// haleyjd: removed WATCOMC
 	// haleyjd FIXME: this should actually work in text mode too, but how to
@@ -742,7 +742,7 @@ void CheckAbortStartup(void)
 	}
 }
 
-void IncThermo(void)
+void IncThermo()
 {
 	thermCurrent++;
 	DrawThermo();
@@ -759,7 +759,7 @@ void InitThermo(int max)
 // Add configuration file variable bindings.
 //
 
-void D_BindVariables(void)
+void D_BindVariables()
 {
 	extern int screenblocks;
 	extern int snd_Channels;
@@ -820,7 +820,7 @@ void D_BindVariables(void)
 // Called at exit to display the ENDOOM screen (ENDTEXT in Heretic)
 //
 
-static void D_Endoom(void)
+static void D_Endoom()
 {
 	byte *endoom_data;
 
@@ -842,7 +842,7 @@ static void D_Endoom(void)
 //
 //---------------------------------------------------------------------------
 
-void D_DoomMain(void)
+void D_DoomMain()
 {
 	GameMission_t gamemission;
 	int p;

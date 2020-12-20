@@ -66,8 +66,8 @@ struct mapInfo_s
 	short sky2Texture;
 	fixed_t sky1ScrollDelta;
 	fixed_t sky2ScrollDelta;
-	boolean doubleSky;
-	boolean lightning;
+	bool doubleSky;
+	bool lightning;
 	int fadetable;
 	char songLump[10];
 };
@@ -576,7 +576,7 @@ void P_LoadBlockMap(int lump)
 =================
 */
 
-void P_GroupLines(void)
+void P_GroupLines()
 {
 	line_t **linebuffer;
 	int i, j, total;
@@ -789,7 +789,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 //
 //==========================================================================
 
-static void InitMapInfo(void)
+static void InitMapInfo()
 {
 	int map;
 	int mapMax;
@@ -1048,7 +1048,7 @@ fixed_t P_GetMapSky2ScrollDelta(int map)
 //
 //==========================================================================
 
-boolean P_GetMapDoubleSky(int map)
+bool P_GetMapDoubleSky(int map)
 {
 	return MapInfo[QualifyMap(map)].doubleSky;
 }
@@ -1059,7 +1059,7 @@ boolean P_GetMapDoubleSky(int map)
 //
 //==========================================================================
 
-boolean P_GetMapLightning(int map)
+bool P_GetMapLightning(int map)
 {
 	return MapInfo[QualifyMap(map)].lightning;
 }
@@ -1070,7 +1070,7 @@ boolean P_GetMapLightning(int map)
 //
 //==========================================================================
 
-boolean P_GetMapFadeTable(int map)
+bool P_GetMapFadeTable(int map)
 {
 	return MapInfo[QualifyMap(map)].fadetable;
 }
@@ -1115,7 +1115,7 @@ void P_PutMapSongLump(int map, char *lumpName)
 //
 //==========================================================================
 
-int P_GetCDStartTrack(void)
+int P_GetCDStartTrack()
 {
 	return cd_NonLevelTracks[MCMD_CD_STARTTRACK - MCMD_CD_STARTTRACK];
 }
@@ -1126,7 +1126,7 @@ int P_GetCDStartTrack(void)
 //
 //==========================================================================
 
-int P_GetCDEnd1Track(void)
+int P_GetCDEnd1Track()
 {
 	return cd_NonLevelTracks[MCMD_CD_END1TRACK - MCMD_CD_STARTTRACK];
 }
@@ -1137,7 +1137,7 @@ int P_GetCDEnd1Track(void)
 //
 //==========================================================================
 
-int P_GetCDEnd2Track(void)
+int P_GetCDEnd2Track()
 {
 	return cd_NonLevelTracks[MCMD_CD_END2TRACK - MCMD_CD_STARTTRACK];
 }
@@ -1148,7 +1148,7 @@ int P_GetCDEnd2Track(void)
 //
 //==========================================================================
 
-int P_GetCDEnd3Track(void)
+int P_GetCDEnd3Track()
 {
 	return cd_NonLevelTracks[MCMD_CD_END3TRACK - MCMD_CD_STARTTRACK];
 }
@@ -1159,7 +1159,7 @@ int P_GetCDEnd3Track(void)
 //
 //==========================================================================
 
-int P_GetCDIntermissionTrack(void)
+int P_GetCDIntermissionTrack()
 {
 	return cd_NonLevelTracks[MCMD_CD_INTERTRACK - MCMD_CD_STARTTRACK];
 }
@@ -1170,7 +1170,7 @@ int P_GetCDIntermissionTrack(void)
 //
 //==========================================================================
 
-int P_GetCDTitleTrack(void)
+int P_GetCDTitleTrack()
 {
 	return cd_NonLevelTracks[MCMD_CD_TITLETRACK - MCMD_CD_STARTTRACK];
 }
@@ -1192,7 +1192,7 @@ static int QualifyMap(int map)
 //
 //==========================================================================
 
-void P_Init(void)
+void P_Init()
 {
 	InitMapInfo();
 	P_InitSwitchList();
@@ -1204,7 +1204,7 @@ void P_Init(void)
 
 
 // Special early initializer needed to start sound before R_Init()
-void InitMapMusicInfo(void)
+void InitMapMusicInfo()
 {
 	int i;
 
@@ -1217,7 +1217,7 @@ void InitMapMusicInfo(void)
 }
 
 /*
-void My_Debug(void)
+void My_Debug()
 {
 	int i;
 

@@ -98,7 +98,7 @@ static int snd_SfxVolume;
 
 // Whether songs are mus_paused
 
-static boolean mus_paused;
+static bool mus_paused;
 
 // Music currently being played
 
@@ -310,7 +310,7 @@ void S_Init(int sfxVolume, int musicVolume)
 	S_UpdateStereoSeparation();
 }
 
-void S_Shutdown(void)
+void S_Shutdown()
 {
 	I_ShutdownSound();
 	I_ShutdownMusic();
@@ -357,7 +357,7 @@ static void S_StopChannel(int cnum)
 //
 static short prevmap = -1;
 
-void S_Start(void)
+void S_Start()
 {
 	int cnum;
 	int mnum;
@@ -569,7 +569,7 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
 	angle_t		angle;
 
 	// [crispy] proper sound clipping in Doom 2 MAP08 and The Ultimate Doom E4M8 / Sigil E5M8
-	const boolean doom1map8 = (gamemap == 8 && ((gamemode != commercial && gameepisode < 4) || !crispy->soundfix));
+	const bool doom1map8 = (gamemap == 8 && ((gamemode != commercial && gameepisode < 4) || !crispy->soundfix));
 
 	// calculate the distance to sound origin
 	// and clip it if necessary
@@ -777,7 +777,7 @@ void S_StartSoundOnce (void *origin_p, int sfx_id)
 // Stop and resume music, during game PAUSE.
 //
 
-void S_PauseSound(void)
+void S_PauseSound()
 {
 	if (mus_playing && !mus_paused)
 	{
@@ -786,7 +786,7 @@ void S_PauseSound(void)
 	}
 }
 
-void S_ResumeSound(void)
+void S_ResumeSound()
 {
 	if (mus_playing && mus_paused)
 	{
@@ -1060,12 +1060,12 @@ void S_ChangeMusInfoMusic (int lumpnum, int looping)
 	musinfo.current_item = lumpnum;
 }
 
-boolean S_MusicPlaying(void)
+bool S_MusicPlaying()
 {
 	return I_MusicIsPlaying();
 }
 
-void S_StopMusic(void)
+void S_StopMusic()
 {
 	if (mus_playing)
 	{
@@ -1083,7 +1083,7 @@ void S_StopMusic(void)
 }
 
 // [crispy] variable number of sound channels
-void S_UpdateSndChannels (void)
+void S_UpdateSndChannels ()
 {
 	int i;
 
@@ -1110,7 +1110,7 @@ void S_UpdateSndChannels (void)
 	}
 }
 
-void S_UpdateStereoSeparation (void)
+void S_UpdateStereoSeparation ()
 {
 	// [crispy] play all sound effects in mono
 	if (crispy->soundmono)

@@ -112,7 +112,7 @@ void PassThroughArguments(execute_context_t *context)
 	}
 }
 
-execute_context_t *NewExecuteContext(void)
+execute_context_t *NewExecuteContext()
 {
 	execute_context_t *result;
 
@@ -144,7 +144,7 @@ void AddCmdLineParameter(execute_context_t *context, const char *s, ...)
 
 #if defined(_WIN32)
 
-boolean OpenFolder(const char *path)
+bool OpenFolder(const char *path)
 {
 	// "If the function succeeds, it returns a value greater than 32."
 	return (int)ShellExecute(NULL, "open", path, NULL, NULL, SW_SHOWDEFAULT) > 32;
@@ -263,7 +263,7 @@ static int ExecuteCommand(const char *program, const char *arg)
 
 #else
 
-boolean OpenFolder(const char *path)
+bool OpenFolder(const char *path)
 {
 	char *cmd;
 	int result;
@@ -412,7 +412,7 @@ static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
 	free(extra_cfg);
 }
 
-txt_window_action_t *TestConfigAction(void)
+txt_window_action_t *TestConfigAction()
 {
 	txt_window_action_t *test_action;
 

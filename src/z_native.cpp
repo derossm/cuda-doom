@@ -124,7 +124,7 @@ static void Z_RemoveBlock(memblock_t *block)
 //
 // Z_Init
 //
-void Z_Init (void)
+void Z_Init ()
 {
 	memset(allocated_blocks, 0, sizeof(allocated_blocks));
 	printf("zone memory: Using native C allocator.\n");
@@ -164,7 +164,7 @@ void Z_Free (void* ptr)
 //
 // Returns true if any blocks were freed.
 
-static boolean ClearCache(int size)
+static bool ClearCache(int size)
 {
 	memblock_t *block;
 	memblock_t *next_block;
@@ -406,7 +406,7 @@ void Z_FileDumpHeap(FILE *f)
 //
 // Z_CheckHeap
 //
-void Z_CheckHeap (void)
+void Z_CheckHeap ()
 {
 	memblock_t *block;
 	memblock_t *prev;
@@ -484,14 +484,14 @@ void Z_ChangeUser(void *ptr, void **user)
 // Z_FreeMemory
 //
 
-int Z_FreeMemory(void)
+int Z_FreeMemory()
 {
 	// Limited by the system??
 
 	return -1;
 }
 
-unsigned int Z_ZoneSize(void)
+unsigned int Z_ZoneSize()
 {
 	return 0;
 }

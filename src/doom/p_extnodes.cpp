@@ -35,7 +35,7 @@
 
 void P_SpawnMapThing (mapthing_t*	mthing);
 fixed_t GetOffset(vertex_t *v1, vertex_t *v2);
-sector_t* GetSectorAtNullAddress(void);
+sector_t* GetSectorAtNullAddress();
 
 // [crispy] support maps with NODES in compressed or uncompressed ZDBSP
 // format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
@@ -241,7 +241,7 @@ void P_LoadNodes_DeePBSP (int lump)
 // - added support for compressed ZDBSP nodes
 // - added support for flipped levels
 // [MB] 2020-04-30: Fix endianess for ZDoom extended nodes
-void P_LoadNodes_ZDBSP (int lump, boolean compressed)
+void P_LoadNodes_ZDBSP (int lump, bool compressed)
 {
 	byte *data;
 	unsigned int i;

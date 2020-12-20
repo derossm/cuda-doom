@@ -106,13 +106,13 @@ int		maxbuttons; // [crispy] remove MAXBUTTONS limit
 // P_InitSwitchList
 // Only called at game initialization.
 //
-void P_InitSwitchList(void)
+void P_InitSwitchList()
 {
 	int i, slindex, episode;
 
 	// [crispy] add support for SWITCHES lumps
 	switchlist_t *alphSwitchList;
-	boolean from_lump;
+	bool from_lump;
 
 	if ((from_lump = (W_CheckNumForName("SWITCHES") != -1)))
 	{
@@ -266,7 +266,7 @@ P_ChangeSwitchTexture
 	int		texBot;
 	int		i;
 	int		sound;
-	boolean playsound = false;
+	bool playsound = false;
 
 	if (!useAgain)
 	line->special = 0;
@@ -343,7 +343,7 @@ P_ChangeSwitchTexture
 // Called when a thing uses a special line.
 // Only the front sides of lines are usable.
 //
-boolean
+bool
 P_UseSpecialLine
 ( mobj_t*	thing,
  line_t*	line,

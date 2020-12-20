@@ -416,7 +416,7 @@ void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 	TXT_RestoreColors(&colors);
 }
 
-void TXT_InitClipArea(void)
+void TXT_InitClipArea()
 {
 	if (cliparea == NULL)
 	{
@@ -462,7 +462,7 @@ void TXT_PushClipArea(int x1, int x2, int y1, int y2)
 	cliparea = newarea;
 }
 
-void TXT_PopClipArea(void)
+void TXT_PopClipArea()
 {
 	txt_cliparea_t *next_cliparea;
 
