@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -11,9 +10,8 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
-//
 // Text mode emulation in SDL
-//
+#pragma once
 
 #ifndef TXT_IO_H
 #define TXT_IO_H
@@ -28,14 +26,13 @@ typedef struct
 
 void TXT_PutSymbol(int c);
 void TXT_PutChar(int c);
-void TXT_Puts(const char *s);
+void TXT_Puts(const char* s);
 void TXT_GotoXY(int x, int y);
-void TXT_GetXY(int *x, int *y);
+void TXT_GetXY(int* x, int* y);
 void TXT_FGColor(txt_color_t color);
 void TXT_BGColor(int color, int blinking);
-void TXT_SaveColors(txt_saved_colors_t *save);
-void TXT_RestoreColors(txt_saved_colors_t *save);
+void TXT_SaveColors(txt_saved_colors_t* save);
+void TXT_RestoreColors(txt_saved_colors_t* save);
 void TXT_ClearScreen();
 
 #endif /* #ifndef TXT_IO_H */
-

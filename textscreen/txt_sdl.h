@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -11,9 +10,8 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
-//
 // Text mode emulation in SDL
-//
+#pragma once
 
 #ifndef TXT_SDL_H
 #define TXT_SDL_H
@@ -28,14 +26,13 @@
 // Returning 1 will cause the event to be eaten; the textscreen code
 // will not see it.
 
-typedef int (*TxtSDLEventCallbackFunc)(SDL_Event *event, void *user_data);
+typedef int (*TxtSDLEventCallbackFunc)(SDL_Event* event, void* user_data);
 
 // Set a callback function to call in the SDL event loop. Useful for
 // intercepting events. Pass callback=NULL to clear an existing
 // callback function.
 // user_data is a void pointer to be passed to the callback function.
 
-void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void *user_data);
+void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data);
 
 #endif /* #ifndef TXT_SDL_H */
-

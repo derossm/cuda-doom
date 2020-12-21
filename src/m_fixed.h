@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,27 +13,19 @@
 //
 // DESCRIPTION:
 //	Fixed point arithemtics, implementation.
-//
-
+#pragma once
 
 #ifndef __M_FIXED__
 #define __M_FIXED__
 
-
-
-
-//
 // Fixed point, 32bit as 16.16.
-//
-#define FRACBITS		16
-#define FRACUNIT		(1<<FRACBITS)
+#define FRACBITS			16
+#define FRACUNIT			(1<<FRACBITS)
 #define FIXED2DOUBLE(x)		(x / (double)FRACUNIT)
 
 typedef int fixed_t;
 
-fixed_t FixedMul	(fixed_t a, fixed_t b);
-fixed_t FixedDiv	(fixed_t a, fixed_t b);
-
-
+fixed_t FixedMul(fixed_t a, fixed_t b);
+fixed_t FixedDiv(fixed_t a, fixed_t b);
 
 #endif

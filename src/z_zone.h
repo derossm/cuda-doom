@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -17,19 +16,15 @@
 //	Remark: this was the only stuff that, according
 //		to John Carmack, might have been useful for
 //		Quake.
-//
-
-
+#pragma once
 
 #ifndef __Z_ZONE__
 #define __Z_ZONE__
 
 #include <stdio.h>
 
-//
 // ZONE MEMORY
 // PU - purge tags.
-
 enum
 {
 	PU_STATIC = 1,					// static entire execution time
@@ -40,34 +35,27 @@ enum
 	PU_LEVSPEC,						// a special thinker in a level
 
 	// Tags >= PU_PURGELEVEL are purgable whenever needed.
-
 	PU_PURGELEVEL,
 	PU_CACHE,
 
 	// Total number of different tag types
-
 	PU_NUM_TAGS
 };
 
-
-void	Z_Init ();
-void*	Z_Malloc (int size, int tag, void *ptr);
-void	Z_Free (void *ptr);
-void	Z_FreeTags (int lowtag, int hightag);
-void	Z_DumpHeap (int lowtag, int hightag);
-void	Z_FileDumpHeap (FILE *f);
-void	Z_CheckHeap ();
-void	Z_ChangeTag2 (void *ptr, int tag, const char *file, int line);
-void	Z_ChangeUser(void *ptr, void **user);
-int		Z_FreeMemory ();
+void Z_Init();
+void* Z_Malloc(int size, int tag, void* ptr);
+void Z_Free(void* ptr);
+void Z_FreeTags(int lowtag, int hightag);
+void Z_DumpHeap(int lowtag, int hightag);
+void Z_FileDumpHeap(FILE* f);
+void Z_CheckHeap();
+void Z_ChangeTag2(void* ptr, int tag, const char* file, int line);
+void Z_ChangeUser(void* ptr, void** user);
+int Z_FreeMemory();
 unsigned int Z_ZoneSize();
 
-//
-// This is used to get the local FILE:LINE info from CPP
-// prior to really call the function in question.
-//
-#define Z_ChangeTag(p,t)										\
-	Z_ChangeTag2((p), (t), __FILE__, __LINE__)
-
+// This is used to get the local FILE:LINE info from CPP prior to really call the function in question.
+#define Z_ChangeTag(p,t)	Z_ChangeTag2((p), (t), __FILE__, __LINE__)
+// NOTE: YOU SHOULD NEVER NEED THE LINE NUMBER TO CALL A FUNCTION! MAKE SURE THIS HACK IS NEVER USED -- TODO
 
 #endif

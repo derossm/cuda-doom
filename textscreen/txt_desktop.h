@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_DESKTOP_H
 #define TXT_DESKTOP_H
@@ -20,32 +19,29 @@
  *
  * Textscreen desktop.
  */
-
 #include "txt_window.h"
 
-typedef void (*TxtIdleCallback)(void *user_data);
+typedef void (*TxtIdleCallback)(void* user_data);
 
-void TXT_AddDesktopWindow(txt_window_t *win);
-void TXT_RemoveDesktopWindow(txt_window_t *win);
+void TXT_AddDesktopWindow(txt_window_t* win);
+void TXT_RemoveDesktopWindow(txt_window_t* win);
 void TXT_DrawDesktop();
 void TXT_DispatchEvents();
-void TXT_DrawWindow(txt_window_t *window);
-void TXT_SetWindowFocus(txt_window_t *window, int focused);
-int TXT_WindowKeyPress(txt_window_t *window, int c);
+void TXT_DrawWindow(txt_window_t* window);
+void TXT_SetWindowFocus(txt_window_t* window, int focused);
+int TXT_WindowKeyPress(txt_window_t* window, int c);
 
 /**
  * Set the title displayed at the top of the screen.
  *
  * @param title			The title to display (UTF-8 format).
  */
-
 void TXT_SetDesktopTitle(const char *title);
 
 /**
  * Exit the currently-running main loop and return from the
  * @ref TXT_GUIMainLoop function.
  */
-
 void TXT_ExitMainLoop();
 
 /**
@@ -56,7 +52,6 @@ void TXT_ExitMainLoop();
  * It is possible to trigger an exit from this function using the
  * @ref TXT_ExitMainLoop function.
  */
-
 void TXT_GUIMainLoop();
 
 /**
@@ -65,8 +60,7 @@ void TXT_GUIMainLoop();
  *
  * @return	The active window, or NULL if no windows are present.
  */
-
-txt_window_t *TXT_GetActiveWindow();
+txt_window_t* TXT_GetActiveWindow();
 
 /**
  * Set a callback function to be invoked periodically by the main
@@ -79,10 +73,7 @@ txt_window_t *TXT_GetActiveWindow();
  *						eg. a value of 200 will cause the callback
  *						to be invoked at least once every 200ms.
  */
-
-void TXT_SetPeriodicCallback(TxtIdleCallback callback,
-								void *user_data,
-								unsigned int period);
+void TXT_SetPeriodicCallback(TxtIdleCallback callback, void* user_data, unsigned int period);
 
 /**
  * Raise the z-position of the given window relative to other windows.
@@ -91,8 +82,7 @@ void TXT_SetPeriodicCallback(TxtIdleCallback callback,
  * @return				Non-zero if the window was raised successfully,
  *						or zero if the window could not be raised further.
  */
-
-int TXT_RaiseWindow(txt_window_t *window);
+int TXT_RaiseWindow(txt_window_t* window);
 
 /**
  * Lower the z-position of the given window relative to other windows.
@@ -101,8 +91,6 @@ int TXT_RaiseWindow(txt_window_t *window);
  * @return				Non-zero if the window was lowered successfully,
  *						or zero if the window could not be lowered further.
  */
-
-int TXT_LowerWindow(txt_window_t *window);
+int TXT_LowerWindow(txt_window_t* window);
 
 #endif /* #ifndef TXT_DESKTOP_H */
-

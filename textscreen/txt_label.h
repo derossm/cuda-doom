@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_LABEL_H
 #define TXT_LABEL_H
@@ -26,7 +25,6 @@
  *
  * A label widget does nothing except show a text label.
  */
-
 typedef struct txt_label_s txt_label_t;
 
 #include "txt_main.h"
@@ -35,8 +33,8 @@ typedef struct txt_label_s txt_label_t;
 struct txt_label_s
 {
 	txt_widget_t widget;
-	char *label;
-	char **lines;
+	char* label;
+	char** lines;
 	unsigned int w, h;
 	int fgcolor;
 	int bgcolor;
@@ -48,7 +46,6 @@ struct txt_label_s
  * @param label			String to display in the widget (UTF-8 format).
  * @return				Pointer to the new label widget.
  */
-
 txt_label_t *TXT_NewLabel(const char *label);
 
 /**
@@ -57,8 +54,7 @@ txt_label_t *TXT_NewLabel(const char *label);
  * @param label			The widget.
  * @param value			The string to display (UTF-8 format).
  */
-
-void TXT_SetLabel(txt_label_t *label, const char *value);
+void TXT_SetLabel(txt_label_t* label, const char* value);
 
 /**
  * Set the background color of a label widget.
@@ -67,7 +63,7 @@ void TXT_SetLabel(txt_label_t *label, const char *value);
  * @param color			The background color to use.
  */
 
-void TXT_SetBGColor(txt_label_t *label, txt_color_t color);
+void TXT_SetBGColor(txt_label_t* label, txt_color_t color);
 
 /**
  * Set the foreground color of a label widget.
@@ -76,8 +72,6 @@ void TXT_SetBGColor(txt_label_t *label, txt_color_t color);
  * @param color			The foreground color to use.
  */
 
-void TXT_SetFGColor(txt_label_t *label, txt_color_t color);
+void TXT_SetFGColor(txt_label_t* label, txt_color_t color);
 
 #endif /* #ifndef TXT_LABEL_H */
-
-

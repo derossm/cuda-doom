@@ -1,4 +1,3 @@
-
 SUBDIRS = doom heretic setup # hexen strife
 
 execgamesdir = ${bindir}
@@ -287,4 +286,3 @@ MUS2MID_SRC_FILES = mus2mid.c memio.c z_native.c i_system.c m_argv.c m_misc.c
 mus2mid : $(MUS2MID_SRC_FILES)
 	$(CC) -DSTANDALONE -I$(top_builddir) $(CFLAGS) @LDFLAGS@ \
               $(MUS2MID_SRC_FILES) -o $@
-

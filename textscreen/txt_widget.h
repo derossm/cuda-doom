@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_WIDGET_H
 #define TXT_WIDGET_H
@@ -20,7 +19,6 @@
  *
  * Base "widget" GUI component class.
  */
-
 #ifndef DOXYGEN
 
 #define TXT_UNCAST_ARG_NAME(name) uncast_ ## name
@@ -37,14 +35,14 @@ typedef enum
 {
 	TXT_VERT_TOP,
 	TXT_VERT_CENTER,
-	TXT_VERT_BOTTOM,
+	TXT_VERT_BOTTOM
 } txt_vert_align_t;
 
 typedef enum
 {
 	TXT_HORIZ_LEFT,
 	TXT_HORIZ_CENTER,
-	TXT_HORIZ_RIGHT,
+	TXT_HORIZ_RIGHT
 } txt_horiz_align_t;
 
 /**
@@ -57,7 +55,6 @@ typedef enum
  * depend on the type of the widget. It is possible to be notified
  * when a signal occurs using the @ref TXT_SignalConnect function.
  */
-
 typedef struct txt_widget_s txt_widget_t;
 
 typedef struct txt_widget_class_s txt_widget_class_t;
@@ -67,7 +64,7 @@ typedef void (*TxtWidgetSizeCalc)(TXT_UNCAST_ARG(widget));
 typedef void (*TxtWidgetDrawer)(TXT_UNCAST_ARG(widget));
 typedef void (*TxtWidgetDestroy)(TXT_UNCAST_ARG(widget));
 typedef int (*TxtWidgetKeyPress)(TXT_UNCAST_ARG(widget), int key);
-typedef void (*TxtWidgetSignalFunc)(TXT_UNCAST_ARG(widget), void *user_data);
+typedef void (*TxtWidgetSignalFunc)(TXT_UNCAST_ARG(widget), void* user_data);
 typedef void (*TxtMousePressFunc)(TXT_UNCAST_ARG(widget), int x, int y, int b);
 typedef void (*TxtWidgetLayoutFunc)(TXT_UNCAST_ARG(widget));
 typedef int (*TxtWidgetSelectableFunc)(TXT_UNCAST_ARG(widget));
@@ -87,27 +84,26 @@ struct txt_widget_class_s
 
 struct txt_widget_s
 {
-	txt_widget_class_t *widget_class;
-	txt_callback_table_t *callback_table;
+	txt_widget_class_t* widget_class;
+	txt_callback_table_t* callback_table;
 	int visible;
 	txt_horiz_align_t align;
 	int focused;
 
-	// These are set automatically when the window is drawn and should
-	// not be set manually.
-
-	int x, y;
-	unsigned int w, h;
+	// These are set automatically when the window is drawn and should not be set manually.
+	int x;
+	int y;
+	unsigned int w;
+	unsigned int h;
 
 	// Pointer up to parent widget that contains this widget.
-
-	txt_widget_t *parent;
+	txt_widget_t* parent;
 };
 
-void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class);
+void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t* widget_class);
 void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget));
 void TXT_DrawWidget(TXT_UNCAST_ARG(widget));
-void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char *signal_name);
+void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char* signal_name);
 int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key);
 void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b);
 void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
@@ -124,9 +120,7 @@ void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused);
  * @param func			The callback function to invoke.
  * @param user_data	User-specified pointer to pass to the callback function.
  */
-
-void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char *signal_name,
-						TxtWidgetSignalFunc func, void *user_data);
+void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, TxtWidgetSignalFunc func, void* user_data);
 
 /**
  * Set the policy for how a widget should be aligned within a table.
@@ -135,7 +129,6 @@ void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char *signal_name,
  * @param widget		The widget.
  * @param horiz_align The alignment to use.
  */
-
 void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align);
 
 /**
@@ -144,7 +137,6 @@ void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align);
  * @param widget		The widget.
  * @return				Non-zero if the widget is selectable.
  */
-
 int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
 
 /**
@@ -153,7 +145,6 @@ int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
  * @param widget		The widget.
  * @return				Non-zero if the mouse cursor is over the widget.
  */
-
 int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
 
 /**
@@ -162,7 +153,6 @@ int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
  *
  * @param widget		The widget.
  */
-
 void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
 
 /**
@@ -172,8 +162,6 @@ void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
  * @param haystack		The widget that might contain needle.
  * @param needle		The widget being queried.
  */
-
 int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
 
 #endif /* #ifndef TXT_WIDGET_H */
-

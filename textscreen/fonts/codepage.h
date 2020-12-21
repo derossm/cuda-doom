@@ -21,6 +21,7 @@
 // page, you should update the mapping in this file to match. The
 // Wikipedia pages for DOS code pages are a good place to look for
 // this information.
+#pragma once
 
 #define CODE_PAGE_TO_UNICODE {						\
 													\
@@ -110,4 +111,3 @@
 	0x00b0, 0x2219, 0x00b7, 0x221a,					\
 	0x207f, 0x00b2, 0x25a0, 0x00a0,					\
 }
-

@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -11,9 +10,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
-//
 // Example program: desktop calculator
-//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -177,4 +174,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-

@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,15 +13,13 @@
 //
 // DESCRIPTION:
 //	System specific interface stuff.
-//
-
+#pragma once
 
 #ifndef __I_SYSTEM__
 #define __I_SYSTEM__
 
 #include "d_ticcmd.h"
 #include "d_event.h"
-
 
 typedef void (*atexit_func_t)();
 
@@ -32,10 +29,9 @@ void I_Init ();
 // Called by startup code
 // to get the ammount of memory to malloc
 // for the zone management.
-byte*	I_ZoneBase (int *size);
+byte*	I_ZoneBase (int* size);
 
 bool I_ConsoleStdout();
-
 
 // Asynchronous interrupt functions should maintain private queues
 // that are read by the synchronous functions
@@ -47,40 +43,33 @@ bool I_ConsoleStdout();
 // for normal input.
 ticcmd_t* I_BaseTiccmd ();
 
-
 // Called by M_Responder when quit is selected.
 // Clean exit, displays sell blurb.
 void I_Quit () NORETURN;
 
-void I_Error (const char *error, ...) NORETURN PRINTF_ATTR(1, 2);
+void I_Error (const char* error, ...) NORETURN PRINTF_ATTR(1, 2);
 
 void I_Tactile (int on, int off, int total);
 
-void *I_Realloc(void *ptr, size_t size);
+void *I_Realloc(void* ptr, size_t size);
 
-bool I_GetMemoryValue(unsigned int offset, void *value, int size);
+bool I_GetMemoryValue(unsigned int offset, void* value, int size);
 
 // Schedule a function to be called when the program exits.
 // If run_if_error is true, the function is called if the exit
 // is due to an error (I_Error)
-
 void I_AtExit(atexit_func_t func, bool run_if_error);
 
 // Add all system-specific config file variable bindings.
-
 void I_BindVariables();
 
 // Print startup banner copyright message.
-
-void I_PrintStartupBanner(const char *gamedescription);
+void I_PrintStartupBanner(const char* gamedescription);
 
 // Print a centered text banner displaying the given string.
-
-void I_PrintBanner(const char *text);
+void I_PrintBanner(const char* text);
 
 // Print a dividing line for startup banners.
-
 void I_PrintDivider();
 
 #endif
-

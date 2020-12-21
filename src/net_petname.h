@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2019 Jonathan Dowland
 //
 // This program is free software; you can redistribute it and/or
@@ -13,6 +12,6 @@
 //
 // DESCRIPTION:
 //		Generate a randomized, private, memorable name for a Player
-//
+#pragma once
 
-char *NET_GetRandomPetName();
+char* NET_GetRandomPetName();

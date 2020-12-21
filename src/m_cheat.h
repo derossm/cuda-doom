@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,8 +13,7 @@
 //
 // DESCRIPTION:
 //	Cheat code checking.
-//
-
+#pragma once
 
 #ifndef __M_CHEAT__
 #define __M_CHEAT__
@@ -25,9 +23,7 @@
 //
 
 // declaring a cheat
-
-#define CHEAT(value, parameters) \
-	{ value, sizeof(value) - 1, parameters, 0, 0, "" }
+#define CHEAT(value, parameters)	{ value, sizeof(value) - 1, parameters, 0, 0, "" }
 
 #define MAX_CHEAT_LEN 25
 #define MAX_CHEAT_PARAMS 5
@@ -47,16 +43,7 @@ typedef struct
 	char parameter_buf[MAX_CHEAT_PARAMS];
 } cheatseq_t;
 
-int
-cht_CheckCheat
-( cheatseq_t*		cht,
- char			key );
-
-
-void
-cht_GetParam
-( cheatseq_t*		cht,
- char*			buffer );
-
+int cht_CheckCheat(cheatseq_t* cht, char key);
+void cht_GetParam(cheatseq_t* cht, char* buffer);
 
 #endif

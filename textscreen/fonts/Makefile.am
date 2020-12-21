@@ -15,4 +15,3 @@ large.h: large.png convert-font
 	./convert-font large large.png large.h
 
 endif
-

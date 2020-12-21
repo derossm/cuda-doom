@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,7 @@
 //
 //
 // Dedicated server code.
-//
+#pragma once
 
 #ifndef NET_DEDICATED_H
 #define NET_DEDICATED_H
@@ -21,5 +20,3 @@
 void NET_DedicatedServer();
 
 #endif /* #ifndef NET_DEDICATED_H */
-
-

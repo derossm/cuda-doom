@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,15 +9,12 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
 
 #include <AppKit/AppKit.h>
 #include "Execute.h"
 
 int main(int argc, const char *argv[])
 {
-    SetProgramLocation(argv[0]);
-
-    return NSApplicationMain (argc, argv);
+	SetProgramLocation(argv[0]);
+	return NSApplicationMain(argc, argv);
 }
-

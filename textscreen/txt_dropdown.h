@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_DROPDOWN_H
 #define TXT_DROPDOWN_H
@@ -30,20 +29,16 @@
  * When the value of a dropdown list is changed, the "changed" signal
  * is emitted.
  */
-
 typedef struct txt_dropdown_list_s txt_dropdown_list_t;
 
 #include "txt_widget.h"
 
-//
 // Drop-down list box.
-//
-
 struct txt_dropdown_list_s
 {
 	txt_widget_t widget;
-	int *variable;
-	const char **values;
+	int* variable;
+	const char** values;
 	int num_values;
 };
 
@@ -60,10 +55,6 @@ struct txt_dropdown_list_s
  *						the labels to use for the list (UTF-8 format).
  * @param num_values		The number of variables in the list.
  */
-
-txt_dropdown_list_t *TXT_NewDropdownList(int *variable,
-											const char **values, int num_values);
+txt_dropdown_list_t *TXT_NewDropdownList(int* variable, const char** values, int num_values);
 
 #endif /* #ifndef TXT_DROPDOWN_H */
-
-

@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -15,7 +14,6 @@
 // DESCRIPTION:
 //	Functions and definitions relating to the game type and operational
 //	mode.
-//
 #pragma once
 
 #ifndef __D_MODE__
@@ -24,7 +22,6 @@
 #include "doomtype.h"
 
 // The "mission" controls what game we are playing.
-
 enum class GameMission_t
 {
 	doom,			// Doom 1
@@ -33,25 +30,24 @@ enum class GameMission_t
 	pack_plut,		// Final Doom: The Plutonia Experiment
 	pack_chex,		// Chex Quest (modded doom)
 	pack_hacx,		// Hacx (modded doom2)
-	heretic,			// Heretic
+	heretic,		// Heretic
 	hexen,			// Hexen
 	strife,			// Strife
 	pack_nerve,		// Doom 2: No Rest For The Living
-	pack_master,		// Master Levels for Doom 2
+	pack_master,	// Master Levels for Doom 2
 	none
 };
 
 // The "mode" allows more accurate specification of the game mode we are
 // in: eg. shareware vs. registered. So doom1.wad and doom.wad are the
 // same mission, but a different mode.
-
 enum class GameMode_t
 {
 	shareware,		// Doom/Heretic shareware
 	registered,		// Doom/Heretic registered
 	commercial,		// Doom II/Hexen
 	retail,			// Ultimate Doom
-	indetermined		// Unknown.
+	indetermined	// Unknown.
 };
 
 // What version are we emulating?

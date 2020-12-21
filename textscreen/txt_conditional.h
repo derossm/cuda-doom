@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2016 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_CONDITIONAL_H
 #define TXT_CONDITIONAL_H
@@ -27,7 +26,6 @@
  * A conditional widget contains another widget, and conditionally
  * shows or hides it based on the value of a variable.
  */
-
 typedef struct txt_conditional_s txt_conditional_t;
 
 #include "txt_widget.h"
@@ -40,9 +38,7 @@ typedef struct txt_conditional_s txt_conditional_t;
  * @param child			The inner widget to show or hide.
  * @return				Pointer to the new conditional widget.
  */
-
-txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
-										TXT_UNCAST_ARG(child));
+txt_conditional_t* TXT_NewConditional(int* var, int expected_value, TXT_UNCAST_ARG(child));
 
 /**
  * Return the given child widget if the given bool condition is true.
@@ -55,9 +51,6 @@ txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
  * @return					Either child (if condition is true) or a null
  *							widget.
  */
-
-txt_widget_t *TXT_If(int condition, TXT_UNCAST_ARG(child));
+txt_widget_t* TXT_If(int condition, TXT_UNCAST_ARG(child));
 
 #endif /* #ifndef TXT_CONDITIONAL_H */
-
-

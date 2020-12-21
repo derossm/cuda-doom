@@ -1,4 +1,3 @@
-
 AM_CFLAGS=@SDLMIXER_CFLAGS@
 
 EXTRA_DIST=CMakeLists.txt
@@ -18,4 +17,3 @@ libopl_a_SOURCES =                                \
         opl_win32.c                               \
         ioperm_sys.c        ioperm_sys.h          \
         opl3.c              opl3.h
-

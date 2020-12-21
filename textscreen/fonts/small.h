@@ -1,6 +1,7 @@
 /* Font data generated from small.png; do not edit.
 	Please see textscreen/fonts/README for copyright
 	information. */
+#pragma once
 
 static const uint8_t small_font_data[] =
 {

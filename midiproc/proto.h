@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2017 Alex Mayfield
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,7 @@
 //
 // DESCRIPTION:
 //		Headers for all types of midipipe messages.
-//
+#pragma once
 
 #ifndef __PROTO__
 #define __PROTO__
@@ -26,8 +25,7 @@ typedef enum {
 	MIDIPIPE_PACKET_TYPE_STOP_SONG,
 	MIDIPIPE_PACKET_TYPE_SHUTDOWN,
 	MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG,
-	MIDIPIPE_PACKET_TYPE_ACK,
+	MIDIPIPE_PACKET_TYPE_ACK
 } net_midipipe_packet_type_t;
 
 #endif
-

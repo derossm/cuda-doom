@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2013 James Haley et al.
 // Copyright(C) 2017 Alex Mayfield
 //
@@ -14,7 +13,7 @@
 //
 // DESCRIPTION:
 //		Client Interface to Midi Server
-//
+#pragma once
 
 #ifndef __I_MIDIPIPE__
 #define __I_MIDIPIPE__
@@ -22,13 +21,12 @@
 #if _WIN32
 
 #include "SDL_mixer.h"
-
 #include "doomtype.h"
 
 extern bool midi_server_initialized;
 extern bool midi_server_registered;
 
-bool I_MidiPipe_RegisterSong(char *filename);
+bool I_MidiPipe_RegisterSong(char* filename);
 void I_MidiPipe_UnregisterSong();
 void I_MidiPipe_SetVolume(int vol);
 void I_MidiPipe_PlaySong(int loops);
@@ -46,4 +44,3 @@ static const bool midi_server_registered = false;
 #endif
 
 #endif
-

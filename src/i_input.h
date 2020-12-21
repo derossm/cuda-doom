@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,8 +13,7 @@
 //
 // DESCRIPTION:
 //	System-specific keyboard/mouse input.
-//
-
+#pragma once
 
 #ifndef __I_INPUT__
 #define __I_INPUT__

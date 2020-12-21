@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,8 +13,7 @@
 //
 // DESCRIPTION:
 //	Nil.
-//
-
+#pragma once
 
 #ifndef __M_BBOX__
 #define __M_BBOX__
@@ -23,7 +21,6 @@
 #include <limits.h>
 
 #include "m_fixed.h"
-
 
 // Bounding box coordinate storage.
 enum
@@ -35,13 +32,7 @@ enum
 };	// bbox coordinates
 
 // Bounding box functions.
-void M_ClearBox (fixed_t*	box);
-
-void
-M_AddToBox
-( fixed_t*	box,
- fixed_t	x,
- fixed_t	y );
-
+void M_ClearBox(fixed_t* box);
+void M_AddToBox(fixed_t* box, fixed_t x, fixed_t y);
 
 #endif

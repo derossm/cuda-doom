@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -11,9 +10,8 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
-//
 // Routines for selecting files, and the txt_fileselect_t widget.
-//
+#pragma once
 
 #ifndef TXT_FILESELECT_H
 #define TXT_FILESELECT_H
@@ -30,14 +28,12 @@
  * A file selection widget resembles an input box (@ref txt_inputbox_t)
  * but opens a file selector dialog box when clicked.
  */
-
 typedef struct txt_fileselect_s txt_fileselect_t;
 
 /**
  * Returns non-zero if a native file selector is available on this
  * platform.
  */
-
 int TXT_CanSelectFiles();
 
 /**
@@ -49,8 +45,7 @@ int TXT_CanSelectFiles();
  *					files that can be selected, or @ref TXT_DIRECTORY
  *					to select directories.
  */
-
-char *TXT_SelectFile(const char *prompt, const char **extensions);
+char* TXT_SelectFile(const char* prompt, const char** extensions);
 
 /**
  * Create a new txt_fileselect_t widget.
@@ -64,16 +59,12 @@ char *TXT_SelectFile(const char *prompt, const char **extensions);
  *					can be used for this widget, or @ref TXT_DIRECTORY
  *					to select directories.
  */
-
-txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
-										const char *prompt, const char **extensions);
+txt_fileselect_t* TXT_NewFileSelector(char** variable, int size, const char* prompt, const char** extensions);
 
 /**
  * Special value to use for 'extensions' that selects a directory
  * instead of a file.
  */
-
-extern const char *TXT_DIRECTORY[];
+extern const char* TXT_DIRECTORY[];
 
 #endif /* #ifndef TXT_FILESELECT_H */
-

@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,7 @@
 //
 // DESCRIPTION:
 //	PC speaker interface.
-//
+#pragma once
 
 #ifndef PCSOUND_INTERNAL_H
 #define PCSOUND_INTERNAL_H
@@ -28,7 +27,7 @@ typedef void (*pcsound_shutdown_func)();
 
 struct pcsound_driver_s
 {
-	const char *name;
+	const char* name;
 	pcsound_init_func init_func;
 	pcsound_shutdown_func shutdown_func;
 };
@@ -36,4 +35,3 @@ struct pcsound_driver_s
 extern int pcsound_sample_rate;
 
 #endif /* #ifndef PCSOUND_INTERNAL_H */
-

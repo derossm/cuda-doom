@@ -1,4 +1,3 @@
-//
 // Copyright (C) 2013-2018 Alexey Khokholov (Nuke.YKT)
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
 //
 // Nuked OPL3 emulator.
 // Thanks:
@@ -24,7 +22,7 @@
 //			YMF262 and VRC VII decaps and die shots.
 //
 // version: 1.8
-//
+#pragma once
 
 #ifndef OPL_OPL3_H
 #define OPL_OPL3_H
@@ -32,7 +30,7 @@
 #include <inttypes.h>
 
 #define OPL_WRITEBUF_SIZE	1024
-#define OPL_WRITEBUF_DELAY 2
+#define OPL_WRITEBUF_DELAY	2
 
 typedef uintptr_t		Bitu;
 typedef intptr_t		Bits;
@@ -49,12 +47,13 @@ typedef struct _opl3_slot opl3_slot;
 typedef struct _opl3_channel opl3_channel;
 typedef struct _opl3_chip opl3_chip;
 
-struct _opl3_slot {
-	opl3_channel *channel;
-	opl3_chip *chip;
+struct _opl3_slot
+{
+	opl3_channel* channel;
+	opl3_chip* chip;
 	Bit16s out;
 	Bit16s fbmod;
-	Bit16s *mod;
+	Bit16s* mod;
 	Bit16s prout;
 	Bit16s eg_rout;
 	Bit16s eg_out;
@@ -62,7 +61,7 @@ struct _opl3_slot {
 	Bit8u eg_gen;
 	Bit8u eg_rate;
 	Bit8u eg_ksl;
-	Bit8u *trem;
+	Bit8u* trem;
 	Bit8u reg_vib;
 	Bit8u reg_type;
 	Bit8u reg_ksr;
@@ -81,11 +80,12 @@ struct _opl3_slot {
 	Bit8u slot_num;
 };
 
-struct _opl3_channel {
-	opl3_slot *slots[2];
-	opl3_channel *pair;
-	opl3_chip *chip;
-	Bit16s *out[4];
+struct _opl3_channel
+{
+	opl3_slot* slots[2];
+	opl3_channel* pair;
+	opl3_chip* chip;
+	Bit16s* out[4];
 	Bit8u chtype;
 	Bit16u f_num;
 	Bit8u block;
@@ -93,17 +93,20 @@ struct _opl3_channel {
 	Bit8u con;
 	Bit8u alg;
 	Bit8u ksv;
-	Bit16u cha, chb;
+	Bit16u cha;
+	Bit16u chb;
 	Bit8u ch_num;
 };
 
-typedef struct _opl3_writebuf {
+typedef struct _opl3_writebuf
+{
 	Bit64u time;
 	Bit16u reg;
 	Bit8u data;
 } opl3_writebuf;
 
-struct _opl3_chip {
+struct _opl3_chip
+{
 	opl3_channel channel[18];
 	opl3_slot slot[36];
 	Bit16u timer;
@@ -141,10 +144,11 @@ struct _opl3_chip {
 	opl3_writebuf writebuf[OPL_WRITEBUF_SIZE];
 };
 
-void OPL3_Generate(opl3_chip *chip, Bit16s *buf);
-void OPL3_GenerateResampled(opl3_chip *chip, Bit16s *buf);
-void OPL3_Reset(opl3_chip *chip, Bit32u samplerate);
-void OPL3_WriteReg(opl3_chip *chip, Bit16u reg, Bit8u v);
-void OPL3_WriteRegBuffered(opl3_chip *chip, Bit16u reg, Bit8u v);
-void OPL3_GenerateStream(opl3_chip *chip, Bit16s *sndptr, Bit32u numsamples);
+void OPL3_Generate(opl3_chip* chip, Bit16s* buf);
+void OPL3_GenerateResampled(opl3_chip* chip, Bit16s* buf);
+void OPL3_Reset(opl3_chip* chip, Bit32u samplerate);
+void OPL3_WriteReg(opl3_chip* chip, Bit16u reg, Bit8u v);
+void OPL3_WriteRegBuffered(opl3_chip* chip, Bit16u reg, Bit8u v);
+void OPL3_GenerateStream(opl3_chip* chip, Bit16s* sndptr, Bit32u numsamples);
+
 #endif

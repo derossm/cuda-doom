@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -16,7 +15,6 @@
 //
 // Demonstrates all the main textscreen widgets in use and shows how
 // a simple textscreen program can be written.
-//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -304,5 +302,3 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
-
-

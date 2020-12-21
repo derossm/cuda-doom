@@ -109,4 +109,3 @@ launcher : $(LAUNCHER_OBJS)
 
 launcher_clean :
 	rm -f $(LAUNCHER_OBJS) launcher
-

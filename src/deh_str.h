@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,6 @@
 //
 //
 // Dehacked string replacements
-//
 #pragma once
 
 #ifndef DEH_STR_H
@@ -35,13 +33,10 @@ bool DEH_HasStringReplacement(const char *s);
 
 #if 0
 // Static macro versions of the functions above
-
-#define DEH_String(x) (x)
-#define DEH_printf printf
-#define DEH_fprintf fprintf
-#define DEH_snprintf snprintf
-
+	#define DEH_String(x) (x)
+	#define DEH_printf printf
+	#define DEH_fprintf fprintf
+	#define DEH_snprintf snprintf
 #endif
 
 #endif /* #ifndef DEH_STR_H */
-

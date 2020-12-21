@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_SPINCONTROL_H
 #define TXT_SPINCONTROL_H
@@ -28,13 +27,12 @@
  * set numeric values, but also has buttons that allow its value
  * to be increased or decreased.
  */
-
 typedef struct txt_spincontrol_s txt_spincontrol_t;
 
 typedef enum
 {
 	TXT_SPINCONTROL_INT,
-	TXT_SPINCONTROL_FLOAT,
+	TXT_SPINCONTROL_FLOAT
 } txt_spincontrol_type_t;
 
 #include "txt_widget.h"
@@ -43,9 +41,14 @@ struct txt_spincontrol_s
 {
 	txt_widget_t widget;
 	txt_spincontrol_type_t type;
-	union { float f; int i; } min, max, *value, step;
+	union
+	{
+		float f;
+		int i;
+	} min, max, *value, step;
+
 	int editing;
-	char *buffer;
+	char* buffer;
 	size_t buffer_len;
 };
 
@@ -58,8 +61,7 @@ struct txt_spincontrol_s
  * @param max			Maximum value that may be set.
  * @return				Pointer to the new spin control widget.
  */
-
-txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
+txt_spincontrol_t* TXT_NewSpinControl(int* value, int min, int max);
 
 /**
  * Create a new spin control widget tracking a float value.
@@ -71,8 +73,6 @@ txt_spincontrol_t *TXT_NewSpinControl(int *value, int min, int max);
  * @return				Pointer to the new spin control widget.
  */
 
-txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max);
+txt_spincontrol_t* TXT_NewFloatSpinControl(float* value, float min, float max);
 
 #endif /* #ifndef TXT_SPINCONTROL_H */
-
-

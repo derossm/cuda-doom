@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +30,6 @@ static char *executable_path;
 
 // Called on startup to save the location of the launcher program
 // (within a package, other executables should be in the same directory)
-
 void SetProgramLocation(const char *path)
 {
     char *p;
@@ -44,7 +41,6 @@ void SetProgramLocation(const char *path)
 }
 
 // Write out the response file containing command line arguments.
-
 static void WriteResponseFile(const char *iwad, const char *args)
 {
     FILE *fstream;
@@ -88,7 +84,6 @@ static void DoExec(const char *executable, const char *iwad, const char *args)
 
 // Execute the specified executable contained in the same directory
 // as the launcher, with the specified arguments.
-
 void ExecuteProgram(const char *executable, const char *iwad, const char *args)
 {
     pid_t childpid;
@@ -152,7 +147,6 @@ static void WriteMessage(FILE *script, char *msg)
 
 // Open a terminal window with the PATH set appropriately, and DOOMWADPATH
 // set to the specified value.
-
 void OpenTerminalWindow(const char *doomwadpath)
 {
     FILE *stream;
@@ -161,7 +155,6 @@ void OpenTerminalWindow(const char *doomwadpath)
     // where the Doom binaries are, and DOOMWADPATH to include the
     // IWAD files that have been configured in the launcher interface.
     // The script then deletes itself and starts a shell.
-
     stream = fopen(TEMP_SCRIPT, "w");
 
     fprintf(stream, "#!/bin/sh\n");
@@ -173,7 +166,6 @@ void OpenTerminalWindow(const char *doomwadpath)
     // it can contain a space, and OS X doesn't like this!  As a
     // workaround, create a symlink in /tmp to point to the real directory,
     // and put *this* in MANPATH.
-
     fprintf(stream, "rm -f \"/tmp/%s.man\"\n", PACKAGE_TARNAME);
     fprintf(stream, "ln -s \"%s/man\" \"/tmp/%s.man\"\n",
                     executable_path, PACKAGE_TARNAME);
@@ -188,7 +180,6 @@ void OpenTerminalWindow(const char *doomwadpath)
     fprintf(stream, "echo -en \"\\033]0;%s\\a\"\n", WINDOW_TITLE);
 
     // Display a useful message:
-
     fprintf(stream, "clear\n");
     WriteMessage(stream,
         "\n"
@@ -209,7 +200,6 @@ void OpenTerminalWindow(const char *doomwadpath)
     chmod(TEMP_SCRIPT, 0755);
 
     // Tell the terminal to open a window to run the script.
-
     [[NSWorkspace sharedWorkspace] openFile: @TEMP_SCRIPT
                                    withApplication: @"Terminal"];
 }
@@ -223,4 +213,3 @@ void OpenDocumentation(const char *filename)
 
     [[NSWorkspace sharedWorkspace] openFile: path];
 }
-

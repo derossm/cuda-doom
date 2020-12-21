@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,7 @@
 //
 // DESCRIPTION:
 //		OPL timer thread.
-//
+#pragma once
 
 #ifndef OPL_TIMER_H
 #define OPL_TIMER_H
@@ -22,7 +21,7 @@
 
 int OPL_Timer_StartThread();
 void OPL_Timer_StopThread();
-void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void *data);
+void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void* data);
 void OPL_Timer_ClearCallbacks();
 void OPL_Timer_Lock();
 void OPL_Timer_Unlock();
@@ -30,4 +29,3 @@ void OPL_Timer_SetPaused(int paused);
 void OPL_Timer_AdjustCallbacks(float factor);
 
 #endif /* #ifndef OPL_TIMER_H */
-

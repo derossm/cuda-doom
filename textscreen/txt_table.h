@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_TABLE_H
 #define TXT_TABLE_H
@@ -25,14 +24,12 @@
  * Magic value that if used in a table, will indicate that the cell is
  * empty and the widget in the cell to the left can overflow into it.
  */
-
 #define TXT_TABLE_OVERFLOW_RIGHT (&txt_table_overflow_right)
 
 /**
  * Magic value that if used in a table, will indicate that the cell is
  * empty and the widget in the cell above it can overflow down into it.
  */
-
 #define TXT_TABLE_OVERFLOW_DOWN (&txt_table_overflow_down)
 
 /**
@@ -61,7 +58,6 @@
  * widgets to place inside a horizontal list. A vertical list is
  * possible simply by creating a table containing a single column.
  */
-
 typedef struct txt_table_s txt_table_t;
 
 #include "txt_widget.h"
@@ -72,7 +68,7 @@ struct txt_table_s
 
 	// Widgets in this table
 	// The widget at (x,y) in the table is widgets[columns * y + x]
-	txt_widget_t **widgets;
+	txt_widget_t** widgets;
 	int num_widgets;
 
 	// Number of columns
@@ -89,7 +85,7 @@ extern txt_widget_t txt_table_overflow_down;
 extern txt_widget_t txt_table_eol;
 extern txt_widget_t txt_table_empty;
 
-void TXT_InitTable(txt_table_t *table, int columns);
+void TXT_InitTable(txt_table_t* table, int columns);
 
 /**
  * Create a new table.
@@ -97,8 +93,7 @@ void TXT_InitTable(txt_table_t *table, int columns);
  * @param columns		The number of columns in the new table.
  * @return				Pointer to the new table structure.
  */
-
-txt_table_t *TXT_NewTable(int columns);
+txt_table_t* TXT_NewTable(int columns);
 
 /**
  * Create a new table and populate it with provided widgets.
@@ -109,8 +104,7 @@ txt_table_t *TXT_NewTable(int columns);
  * @param columns		The number of columns in the new table.
  * @return				Pointer to the new table structure.
  */
-
-txt_table_t *TXT_MakeTable(int columns, ...);
+txt_table_t* TXT_MakeTable(int columns, ...);
 
 /**
  * Create a table containing the specified widgets packed horizontally,
@@ -122,8 +116,7 @@ txt_table_t *TXT_MakeTable(int columns, ...);
  *
  * @return				Pointer to the new table structure.
  */
-
-txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
+txt_table_t* TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
 
 /**
  * Get the currently selected widget within a table.
@@ -133,8 +126,7 @@ txt_table_t *TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
  * @param table		The table.
  * @return				Pointer to the widget that is currently selected.
  */
-
-txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
+txt_widget_t* TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
 
 /**
  * Add a widget to a table.
@@ -152,7 +144,6 @@ txt_widget_t *TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
  * @param table		The table.
  * @param widget		The widget to add.
  */
-
 void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
 
 /**
@@ -165,7 +156,6 @@ void TXT_AddWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  *
  * @param table		The table.
  */
-
 void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...);
 
 /**
@@ -181,7 +171,6 @@ void TXT_AddWidgets(TXT_UNCAST_ARG(table), ...);
  *					or zero (false) if it was not found within
  *					this table.
  */
-
 int TXT_SelectWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
 
 /**
@@ -197,7 +186,6 @@ int TXT_SelectWidget(TXT_UNCAST_ARG(table), TXT_UNCAST_ARG(widget));
  * @param table			The table.
  * @param new_columns	The new number of columns.
  */
-
 void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
 
 /**
@@ -216,7 +204,6 @@ void TXT_SetTableColumns(TXT_UNCAST_ARG(table), int new_columns);
  *
  * @param table		The table.
  */
-
 void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...);
 
 /**
@@ -224,7 +211,6 @@ void TXT_SetColumnWidths(TXT_UNCAST_ARG(table), ...);
  *
  * @param table	The table.
  */
-
 void TXT_ClearTable(TXT_UNCAST_ARG(table));
 
 /**
@@ -237,9 +223,6 @@ void TXT_ClearTable(TXT_UNCAST_ARG(table));
  * @param pagey	Minimum distance to move the selection vertically.
  * @return			Non-zero if the selection has been changed.
  */
-
 int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey);
 
 #endif /* #ifndef TXT_TABLE_T */
-
-

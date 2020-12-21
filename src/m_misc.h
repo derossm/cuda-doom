@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,8 +13,7 @@
 //
 // DESCRIPTION:
 //		Miscellaneous.
-//
-
+#pragma once
 
 #ifndef __M_MISC__
 #define __M_MISC__
@@ -55,4 +53,3 @@ void M_ForceLowercase(char* text);
 void M_NormalizeSlashes(char* str);
 
 #endif
-

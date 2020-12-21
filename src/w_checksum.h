@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,7 +13,7 @@
 //
 // DESCRIPTION:
 //		Generate a checksum of the WAD directory.
-//
+#pragma once
 
 #ifndef W_CHECKSUM_H
 #define W_CHECKSUM_H
@@ -24,4 +23,3 @@
 extern void W_Checksum(sha1_digest_t digest);
 
 #endif /* #ifndef W_CHECKSUM_H */
-

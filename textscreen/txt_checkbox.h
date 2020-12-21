@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_CHECKBOX_H
 #define TXT_CHECKBOX_H
@@ -33,7 +32,6 @@
  *
  * When a checkbox is changed, it emits the "changed" signal.
  */
-
 typedef struct txt_checkbox_s txt_checkbox_t;
 
 #include "txt_widget.h"
@@ -41,8 +39,8 @@ typedef struct txt_checkbox_s txt_checkbox_t;
 struct txt_checkbox_s
 {
 	txt_widget_t widget;
-	char *label;
-	int *variable;
+	char* label;
+	int* variable;
 	int inverted;
 };
 
@@ -54,8 +52,7 @@ struct txt_checkbox_s
  *						value.
  * @return				Pointer to the new checkbox.
  */
-
-txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable);
+txt_checkbox_t* TXT_NewCheckBox(const char* label, int* variable);
 
 /**
  * Create a new inverted checkbox.
@@ -68,9 +65,6 @@ txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable);
  *						value.
  * @return				Pointer to the new checkbox.
  */
-
-txt_checkbox_t *TXT_NewInvertedCheckBox(const char *label, int *variable);
+txt_checkbox_t* TXT_NewInvertedCheckBox(const char* label, int* variable);
 
 #endif /* #ifndef TXT_CHECKBOX_H */
-
-

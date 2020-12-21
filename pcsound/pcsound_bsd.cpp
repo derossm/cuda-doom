@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -14,7 +13,6 @@
 // DESCRIPTION:
 //	PC speaker driver for [Open]BSD
 //	(Should be NetBSD as well, but untested).
-//
 
 #include "config.h"
 
@@ -318,4 +316,3 @@ pcsound_driver_t pcsound_bsd_driver =
 };
 
 #endif /* #ifdef HAVE_BSD_SPEAKER */
-

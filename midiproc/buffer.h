@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2017 Alex Mayfield
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,6 @@
 //
 // DESCRIPTION:
 //		A simple buffer and reader implementation.
-//
 #pragma once
 
 #ifndef __BUFFER__
@@ -54,4 +52,3 @@ auto Reader_ReadInt32(buffer_reader_t* reader, uint32_t* out);
 char* Reader_ReadString(buffer_reader_t* reader);
 
 #endif
-

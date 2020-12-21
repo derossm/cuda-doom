@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -15,8 +14,7 @@
 //
 // * The client waiting screen when we are waiting for the server to
 //	start the game.
-//
-
+#pragma once
 
 #ifndef NET_GUI_H
 #define NET_GUI_H
@@ -26,4 +24,3 @@
 extern void NET_WaitForLaunch();
 
 #endif /* #ifndef NET_GUI_H */
-

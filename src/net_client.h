@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -12,7 +11,7 @@
 // GNU General Public License for more details.
 //
 // Network client code
-//
+#pragma once
 
 #ifndef NET_CLIENT_H
 #define NET_CLIENT_H
@@ -22,14 +21,14 @@
 #include "sha1.h"
 #include "net_defs.h"
 
-bool NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data);
+bool NET_CL_Connect(net_addr_t* addr, net_connect_data_t* data);
 void NET_CL_Disconnect();
 void NET_CL_Run();
 void NET_CL_Init();
 void NET_CL_LaunchGame();
-void NET_CL_StartGame(net_gamesettings_t *settings);
-void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic);
-bool NET_CL_GetSettings(net_gamesettings_t *_settings);
+void NET_CL_StartGame(net_gamesettings_t* settings);
+void NET_CL_SendTiccmd(ticcmd_t* ticcmd, int maketic);
+bool NET_CL_GetSettings(net_gamesettings_t* _settings);
 void NET_Init();
 
 void NET_BindVariables();
@@ -37,9 +36,9 @@ void NET_BindVariables();
 extern bool net_client_connected;
 extern bool net_client_received_wait_data;
 extern net_waitdata_t net_client_wait_data;
-extern char *net_client_reject_reason;
+extern char* net_client_reject_reason;
 extern bool net_waiting_for_launch;
-extern char *net_player_name;
+extern char* net_player_name;
 
 extern sha1_digest_t net_server_wad_sha1sum;
 extern sha1_digest_t net_server_deh_sha1sum;

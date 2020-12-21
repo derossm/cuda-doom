@@ -1,17 +1,14 @@
-//
 // 03/10/2006 James Haley
 //
 // For this module only:
 // This code is public domain. No change sufficient enough to constitute a
 // significant or original work has been made, and thus it remains as such.
 //
-//
 // DESCRIPTION:
 //
 // Implementation of POSIX opendir for Visual C++.
-// Derived from the MinGW C Library Extensions Source (released to the
-// public domain).
-//
+// Derived from the MinGW C Library Extensions Source (released to the public domain).
+#pragma once
 
 #ifndef I_OPNDIR_H__
 #define I_OPNDIR_H__
@@ -25,8 +22,8 @@
 struct dirent
 {
 	long			d_ino;	/* Always zero. */
-	unsigned short d_reclen; /* Always zero. */
-	unsigned short d_namlen; /* Length of name in d_name. */
+	unsigned short	d_reclen; /* Always zero. */
+	unsigned short	d_namlen; /* Length of name in d_name. */
 	char			d_name[FILENAME_MAX]; /* File name. */
 };
 
@@ -60,14 +57,11 @@ typedef struct
 	char dd_name[1];
 } DIR;
 
-DIR *opendir(const char *);
-struct dirent *readdir(DIR *);
-int closedir(DIR *);
-void rewinddir(DIR *);
-long telldir(DIR *);
-void seekdir(DIR *, long);
+DIR* opendir(const char*);
+struct dirent* readdir(DIR*);
+int closedir(DIR*);
+void rewinddir(DIR*);
+long telldir(DIR*);
+void seekdir(DIR*, long);
 
 #endif
-
-// EOF
-

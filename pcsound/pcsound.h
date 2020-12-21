@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,12 +12,12 @@
 //
 // DESCRIPTION:
 //	PC speaker interface.
-//
+#pragma once
 
 #ifndef PCSOUND_H
 #define PCSOUND_H
 
-typedef void (*pcsound_callback_func)(int *duration, int *frequency);
+typedef void (*pcsound_callback_func)(int* duration, int* frequency);
 
 // Initialise the PC speaker subsystem. The given function is called
 // periodically to request more sound data to play.
@@ -35,4 +34,3 @@ void PCSound_Shutdown();
 void PCSound_SetSampleRate(int rate);
 
 #endif /* #ifndef PCSOUND_H */
-

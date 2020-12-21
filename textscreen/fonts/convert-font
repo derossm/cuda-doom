@@ -12,9 +12,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-#
 # Converts images into libtextscreen fonts.
-#
 
 import sys
 import os
@@ -101,4 +99,3 @@ def convert_image(font_prefix, filename, output_filename):
         outfile.write("};\n")
 
 convert_image(sys.argv[1], sys.argv[2], sys.argv[3])
-

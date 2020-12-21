@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 1993-2008 Raven Software
 // Copyright(C) 2005-2014 Simon Howard
@@ -12,7 +11,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef __M_CONTROLS_H__
 #define __M_CONTROLS_H__
@@ -194,4 +193,3 @@ void M_BindChatControls(unsigned int num_players);
 void M_ApplyPlatformDefaults();
 
 #endif /* #ifndef __M_CONTROLS_H__ */
-

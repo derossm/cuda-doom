@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2012 James Haley
 // Copyright(C) 2017 Alex Mayfield
 //
@@ -22,7 +21,6 @@
 // volumes to different devices for the same process.
 //
 // Seriously, how did they screw up something so fundamental?
-//
 
 #ifdef _WIN32
 

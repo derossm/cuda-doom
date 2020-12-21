@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,6 @@
 //
 // DESCRIPTION:
 //		Find IWAD and initialize according to IWAD type.
-//
 #pragma once
 
 #ifndef __D_IWAD__
@@ -27,6 +25,7 @@
 						|	(1 << pack_plut)	\
 						|	(1 << pack_chex)	\
 						|	(1 << pack_hacx))
+
 #define IWAD_MASK_HERETIC	(1 << heretic)
 #define IWAD_MASK_HEXEN		(1 << hexen)
 #define IWAD_MASK_STRIFE 	(1 << strife)

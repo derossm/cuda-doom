@@ -1,4 +1,3 @@
-
 OSX_FILES=                                                              \
 osx/Resources/128x128.png                                               \
 osx/Resources/app.icns                                                  \
@@ -26,4 +25,3 @@ win32/cp-with-libs                                                      \
 win32/README
 
 EXTRA_DIST=$(OSX_FILES) $(WIN32_FILES)
-

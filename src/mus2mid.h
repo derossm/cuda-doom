@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 // Copyright(C) 2006 Ben Ryves 2006
@@ -16,6 +15,7 @@
 //
 // mus2mid.h - Ben Ryves 2006 - http://benryves.com - benryves@benryves.com
 // Use to convert a MUS file into a single track, type 0 MIDI file.
+#pragma once
 
 #ifndef MUS2MID_H
 #define MUS2MID_H
@@ -23,7 +23,6 @@
 #include "doomtype.h"
 #include "memio.h"
 
-bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput);
+bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput);
 
 #endif /* #ifndef MUS2MID_H */
-

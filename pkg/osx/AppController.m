@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,10 +9,8 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
 
 #include "AppController.h"
-
 #include "config.h"
 
 @implementation AppController
@@ -81,7 +78,6 @@
 
     // This may be an IWAD.  If so, add it to the IWAD configuration;
     // don't add it like a PWAD.
-
     if ([self->launcherManager addIWADPath: fileName])
     {
         return YES;
@@ -90,14 +86,12 @@
     // If this is the first file added, clear out the existing
     // command line.  This allows us to select multiple files
     // in the finder and open them all together (for TCs, etc).
-
     if (!self->filesAdded)
     {
         [self->launcherManager clearCommandLine];
     }
 
     // Add file with appropriate command line option based on extension:
-
     extension = [fileName pathExtension];
 
     if (![extension caseInsensitiveCompare: @"wad"])
@@ -143,4 +137,3 @@
 }
 
 @end
-

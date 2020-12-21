@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,8 +13,7 @@
 //
 // DESCRIPTION:
 //		System-specific timer interface
-//
-
+#pragma once
 
 #ifndef __I_TIMER__
 #define __I_TIMER__
@@ -39,4 +37,3 @@ void I_InitTimer();
 void I_WaitVBL(int count);
 
 #endif
-

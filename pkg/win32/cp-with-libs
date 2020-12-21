@@ -12,12 +12,9 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-
-#
 # This script copies a Windows .exe file from a source to a destination
 # (like cp); however, it also uses the binutils objdump command to
 # recursively determine all its DLL dependencies and copy those too.
-#
 
 import argparse
 import os
@@ -172,4 +169,3 @@ else:
 shutil.copy(args.source, args.destination)
 for filename in dll_files:
 	shutil.copy(filename, dest_dir)
-

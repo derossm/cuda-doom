@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_WINDOW_ACTION_H
 #define TXT_WINDOW_ACTION_H
@@ -39,7 +38,7 @@ typedef struct txt_window_action_s txt_window_action_t;
 struct txt_window_action_s
 {
 	txt_widget_t widget;
-	char *label;
+	char* label;
 	int key;
 };
 
@@ -51,8 +50,7 @@ struct txt_window_action_s
  *						at the bottom of the window (UTF-8 format).
  * @return				Pointer to the new window action widget.
  */
-
-txt_window_action_t *TXT_NewWindowAction(int key, const char *label);
+txt_window_action_t* TXT_NewWindowAction(int key, const char* label);
 
 /**
  * Create a new window action that closes the window when the
@@ -61,8 +59,7 @@ txt_window_action_t *TXT_NewWindowAction(int key, const char *label);
  * @param window		The window to close.
  * @return				Pointer to the new window action widget.
  */
-
-txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window);
+txt_window_action_t* TXT_NewWindowEscapeAction(txt_window_t* window);
 
 /**
  * Create a new window action that closes the window when the
@@ -71,8 +68,7 @@ txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window);
  * @param window		The window to close.
  * @return				Pointer to the new window action widget.
  */
-
-txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window);
+txt_window_action_t* TXT_NewWindowAbortAction(txt_window_t* window);
 
 /**
  * Create a new "select" window action. This does not really do
@@ -82,8 +78,6 @@ txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window);
  * @param window		The window.
  * @return				Pointer to the new window action widget.
  */
-
-txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window);
+txt_window_action_t* TXT_NewWindowSelectAction(txt_window_t* window);
 
 #endif /* #ifndef TXT_WINDOW_ACTION_H */
-

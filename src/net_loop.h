@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,7 @@
 //
 // DESCRIPTION:
 //		Loopback network module for server compiled into the client
-//
+#pragma once
 
 #ifndef NET_LOOP_H
 #define NET_LOOP_H
@@ -24,4 +23,3 @@ extern net_module_t net_loop_client_module;
 extern net_module_t net_loop_server_module;
 
 #endif /* #ifndef NET_LOOP_H */
-

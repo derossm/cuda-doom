@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_SCROLLPANE_H
 #define TXT_SCROLLPANE_H
@@ -28,7 +27,6 @@
  * that is larger than it. Scroll bars appear on the side to allow
  * different areas of the contained widget to be seen.
  */
-
 typedef struct txt_scrollpane_s txt_scrollpane_t;
 
 #include "txt_widget.h"
@@ -36,10 +34,13 @@ typedef struct txt_scrollpane_s txt_scrollpane_t;
 struct txt_scrollpane_s
 {
 	txt_widget_t widget;
-	int w, h;
-	int x, y;
-	int expand_w, expand_h;
-	txt_widget_t *child;
+	int w;
+	int h;
+	int x;
+	int y;
+	int expand_w;
+	int expand_h;
+	txt_widget_t* child;
 };
 
 /**
@@ -52,8 +53,6 @@ struct txt_scrollpane_s
  * @return				Pointer to the new scroll pane widget.
  */
 
-txt_scrollpane_t *TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target));
+txt_scrollpane_t* TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target));
 
 #endif /* #ifndef TXT_SCROLLPANE_H */
-
-

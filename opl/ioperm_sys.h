@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2002, 2003 Marcel Telka
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -15,7 +14,7 @@
 // DESCRIPTION:
 //		Interface to the ioperm.sys driver, based on code from the
 //		Cygwin ioperm library.
-//
+#pragma once
 
 #ifndef IOPERM_SYS_H
 #define IOPERM_SYS_H
@@ -25,4 +24,3 @@ int IOperm_InstallDriver();
 int IOperm_UninstallDriver();
 
 #endif /* #ifndef IOPERM_SYS_H */
-

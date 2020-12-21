@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,7 +13,6 @@
 //
 // DESCRIPTION:
 //	Main loop stuff.
-//
 #pragma once
 
 #ifndef __D_LOOP__
@@ -24,7 +22,6 @@
 
 // Callback function invoked while waiting for the netgame to start.
 // The callback is invoked when new players are ready. The callback should return true, or return false to abort startup.
-
 typedef bool (*netgame_startup_callback_t)(int ready_players, int num_players);
 
 struct loop_interface_t
@@ -59,12 +56,9 @@ void TryRunTics ();
 void D_StartGameLoop();
 
 // Initialize networking code and connect to server.
-
 bool D_InitNetGame(net_connect_data_t* connect_data);
 
-// Start game with specified settings. The structure will be updated
-// with the actual settings for the game.
-
+// Start game with specified settings. The structure will be updated with the actual settings for the game.
 void D_StartNetGame(net_gamesettings_t* settings, netgame_startup_callback_t callback);
 
 extern bool singletics;

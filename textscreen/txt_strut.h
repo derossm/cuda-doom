@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_STRUT_H
 #define TXT_STRUT_H
@@ -28,7 +27,6 @@
  * be visualised as a transparent box. Struts are used to provide
  * spacing between widgets.
  */
-
 typedef struct txt_strut_s txt_strut_t;
 
 #include "txt_widget.h"
@@ -46,9 +44,6 @@ struct txt_strut_s
  * @param width		Width of the strut, in characters.
  * @param height		Height of the strut, in characters.
  */
-
-txt_strut_t *TXT_NewStrut(int width, int height);
+txt_strut_t* TXT_NewStrut(int width, int height);
 
 #endif /* #ifndef TXT_STRUT_H */
-
-

@@ -15,7 +15,7 @@
 // DESCRIPTION:
 //	Exit text-mode ENDOOM screen.
 //
-
+#pragma once
 
 #ifndef __I_ENDOOM__
 #define __I_ENDOOM__
@@ -23,7 +23,6 @@
 // Display the Endoom screen on shutdown. Pass a pointer to the
 // ENDOOM lump.
 
-void I_Endoom(byte *data);
+void I_Endoom(byte* data);
 
 #endif
-

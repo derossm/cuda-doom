@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -14,8 +13,7 @@
 //
 // DESCRIPTION:
 //	System specific interface stuff.
-//
-
+#pragma once
 
 #ifndef __I_VIDEO__
 #define __I_VIDEO__
@@ -96,13 +94,13 @@ void I_StartTic ();
 
 void I_EnableLoadingDisk(int xoffs, int yoffs);
 
-extern char *video_driver;
+extern char* video_driver;
 extern bool screenvisible;
 
 extern int vanilla_keyboard_mapping;
 extern bool screensaver_mode;
 extern int usegamma;
-extern pixel_t *I_VideoBuffer;
+extern pixel_t* I_VideoBuffer;
 
 extern int screen_width;
 extern int screen_height;
@@ -112,8 +110,8 @@ extern int integer_scaling;
 extern int vga_porch_flash;
 extern int force_software_renderer;
 
-extern char *window_position;
-void I_GetWindowPosition(int *x, int *y, int w, int h);
+extern char* window_position;
+void I_GetWindowPosition(int* x, int* y, int w, int h);
 
 // Joystic/gamepad hysteresis
 extern unsigned int joywait;

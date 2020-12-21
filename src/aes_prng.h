@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,6 @@
 //
 // DESCRIPTION:
 //		Pseudo-random number generator for secure demos.
-//
 #pragma once
 
 #ifndef __AES_PRNG_H__

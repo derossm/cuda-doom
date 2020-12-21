@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_SEPARATOR_H
 #define TXT_SEPARATOR_H
@@ -29,7 +28,6 @@
  * allows the separator to be used as a section divider for grouping
  * related controls.
  */
-
 typedef struct txt_separator_s txt_separator_t;
 
 #include "txt_widget.h"
@@ -37,7 +35,7 @@ typedef struct txt_separator_s txt_separator_t;
 struct txt_separator_s
 {
 	txt_widget_t widget;
-	char *label;
+	char* label;
 };
 
 extern txt_widget_class_t txt_separator_class;
@@ -49,8 +47,7 @@ extern txt_widget_class_t txt_separator_class;
  *						If this is set to NULL, no label is displayed.
  * @return				The new separator widget.
  */
-
-txt_separator_t *TXT_NewSeparator(const char *label);
+txt_separator_t* TXT_NewSeparator(const char* label);
 
 /**
  * Change the label on a separator.
@@ -59,7 +56,6 @@ txt_separator_t *TXT_NewSeparator(const char *label);
  * @param label			The new label (UTF-8 format).
  */
 
-void TXT_SetSeparatorLabel(txt_separator_t *separator, const char *label);
+void TXT_SetSeparatorLabel(txt_separator_t* separator, const char* label);
 
 #endif /* #ifndef TXT_SEPARATOR_H */
-

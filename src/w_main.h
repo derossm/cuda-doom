@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,7 @@
 //
 // DESCRIPTION:
 //		Common code to parse command line, identifying WAD files to load.
-//
+#pragma once
 
 #ifndef W_MAIN_H
 #define W_MAIN_H
@@ -23,11 +22,10 @@
 bool W_ParseCommandLine();
 void W_CheckCorrectIWAD(GameMission_t mission);
 
-int W_MergeDump (const char *file);
-int W_LumpDump (const char *lumpname);
+int W_MergeDump(const char* file);
+int W_LumpDump(const char* lumpname);
 
 // Autoload all .wad files from the given directory:
-void W_AutoLoadWADs(const char *path);
+void W_AutoLoadWADs(const char* path);
 
 #endif /* #ifndef W_MAIN_H */
-

@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -11,7 +10,6 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
 // GNU General Public License for more details.
 //
-
 // NOTE: MAJOR WORK IN PROGRESS, REQUIRES RE-WORKING MANY OTHER SYSTEMS FIRST BEFORE DESIGNING A NEW CLASS HERE
 #pragma once
 
@@ -32,11 +30,12 @@
  *
  * Input box widgets can be of an integer or string type.
  */
-
 #include "txt_widget.h"
 
+#include <memory>
 #include <string>
 #include <variant>
+
 //template<typename T>
 struct txt_inputbox_t
 {
@@ -47,7 +46,6 @@ struct txt_inputbox_t
 
 	//using type = T;
 };
-#include <memory>
 
 #include <ctype.h>
 #include <stdio.h>
@@ -67,16 +65,15 @@ struct txt_inputbox_t
  * Create a new input box widget for controlling a string value.
  *
  * @param value		Pointer to a string variable that contains
- *						a pointer to the current value of the
- *						input box. The value should be allocated
- *						dynamically; when the string is changed it
- *						will be freed and the variable set to point
- *						to the new string value. String will be in
- *						UTF-8 format.
- * @param size			Width of the input box, in characters.
- * @return				Pointer to the new input box widget.
+ *					a pointer to the current value of the
+ *					input box. The value should be allocated
+ *					dynamically; when the string is changed it
+ *					will be freed and the variable set to point
+ *					to the new string value. String will be in
+ *					UTF-8 format.
+ * @param size		Width of the input box, in characters.
+ * @return			Pointer to the new input box widget.
  */
-
 auto TXT_NewInputBox(char** value, int size)
 {
 	return InputBox<char**>().NewInputBox(value, size);
@@ -85,12 +82,10 @@ auto TXT_NewInputBox(char** value, int size)
 /**
  * Create a new input box widget for controlling an integer value.
  *
- * @param value		Pointer to an integer variable containing
- *						the value of the input box.
- * @param size			Width of the input box, in characters.
- * @return				Pointer to the new input box widget.
+ * @param value		Pointer to an integer variable containing the value of the input box.
+ * @param size		Width of the input box, in characters.
+ * @return			Pointer to the new input box widget.
  */
-
 auto TXT_NewIntInputBox(int* value, int size)
 {
 	return InputBox<int*>().NewInputBox(value, size);
@@ -433,6 +428,5 @@ public:
 		//widget->align = TXT_HORIZ_LEFT;
 	}
 };
-
 
 #endif /* #ifndef TXT_INPUTBOX_H */

@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 1993-2008 Raven Software
 // Copyright(C) 2005-2014 Simon Howard
@@ -15,7 +14,6 @@
 //
 // DESCRIPTION:
 //	System specific interface stuff.
-//
 #pragma once
 
 #ifndef __D_TICCMD__

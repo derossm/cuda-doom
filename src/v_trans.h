@@ -1,6 +1,3 @@
-// Emacs style mode select	-*- C++ -*-
-//-----------------------------------------------------------------------------
-//
 // $Id: v_video.h,v 1.9 1998/05/06 11:12:54 jim Exp $
 //
 // BOOM, a modified and improved DOOM engine
@@ -27,8 +24,7 @@
 // Color range translation support
 // Functions to draw patches (by post) directly to screen.
 // Functions to blit a block to the screen.
-//
-//-----------------------------------------------------------------------------
+#pragma once
 
 #ifndef __V_TRANS__
 #define __V_TRANS__
@@ -51,13 +47,13 @@ enum
 
 #define CR_GREY CR_GRAY
 
-extern byte *cr[CRMAX];
-extern char **crstr;
+extern byte* cr[CRMAX];
+extern char** crstr;
 
 #define cr_esc '~'
 
 #ifndef CRISPY_TRUECOLOR
-extern byte *tranmap;
+extern byte* tranmap;
 #else
 extern const pixel_t (*blendfunc) (const pixel_t fg, const pixel_t bg);
 extern const pixel_t I_BlendAdd (const pixel_t bg, const pixel_t fg);

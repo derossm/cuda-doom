@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,7 +12,7 @@
 //
 // DESCRIPTION:
 //		Networking module which uses SDL_net
-//
+#pragma once
 
 #ifndef NET_SDL_H
 #define NET_SDL_H
@@ -23,4 +22,3 @@
 extern net_module_t net_sdl_module;
 
 #endif /* #ifndef NET_SDL_H */
-

@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 // Copyright(C) 2014-2017 Fabian Greffrath
@@ -15,7 +14,6 @@
 //
 // DESCRIPTION:
 //	Crispy Doom specific variables.
-//
 #pragma once
 
 #ifndef __CRISPY_H__

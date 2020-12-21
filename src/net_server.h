@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -12,31 +11,25 @@
 // GNU General Public License for more details.
 //
 // Network server code
-//
+#pragma once
 
 #ifndef NET_SERVER_H
 #define NET_SERVER_H
 
 // initialize server and wait for connections
-
 void NET_SV_Init();
 
 // run server: check for new packets received etc.
-
 void NET_SV_Run();
 
 // Shut down the server
 // Blocks until all clients disconnect, or until a 5 second timeout
-
 void NET_SV_Shutdown();
 
 // Add a network module to the context used by the server
-
-void NET_SV_AddModule(net_module_t *module);
+void NET_SV_AddModule(net_module_t* module);	// TODO URGENT REFACTOR THIS NAME
 
 // Register server with master server.
-
 void NET_SV_RegisterWithMaster();
 
 #endif /* #ifndef NET_SERVER_H */
-

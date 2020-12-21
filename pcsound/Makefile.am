@@ -1,4 +1,3 @@
-
 AM_CFLAGS=@SDLMIXER_CFLAGS@
 
 EXTRA_DIST=CMakeLists.txt
@@ -12,4 +11,3 @@ libpcsound_a_SOURCES =                            \
         pcsound_linux.c                           \
         pcsound_win32.c                           \
                             pcsound_internal.h
-

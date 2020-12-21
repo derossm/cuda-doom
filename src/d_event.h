@@ -1,4 +1,3 @@
-//
 // Copyright(C) 1993-1996 Id Software, Inc.
 // Copyright(C) 2005-2014 Simon Howard
 //
@@ -11,10 +10,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
-// DESCRIPTION:
-//
-//
 #pragma once
 
 #ifndef __D_EVENT__
@@ -78,10 +73,7 @@ struct event_t
 	int data5;
 };
 
-
-//
 // Button/action code definitions.
-//
 enum class buttoncode_t
 {
 	// Press "Fire".
@@ -93,8 +85,7 @@ enum class buttoncode_t
 	BT_SPECIAL		= 128,
 	BT_SPECIALMASK	= 3,
 
-	// Flag, weapon change pending.
-	// If true, the next 3 bits hold weapon num.
+	// Flag, weapon change pending. If true, the next 3 bits hold weapon num.
 	BT_CHANGE		= 4,
 	// The 3bit weapon mask and shift, convenience.
 	BT_WEAPONMASK	= (8+16+32),
@@ -105,8 +96,7 @@ enum class buttoncode_t
 	// Save the game at each console.
 	BTS_SAVEGAME	= 2,
 
-	// Savegame slot numbers
-	// occupy the second byte of buttons.
+	// Savegame slot numbers occupy the second byte of buttons.
 	BTS_SAVEMASK	= (4+8+16),
 	BTS_SAVESHIFT	= 2,
 
@@ -139,7 +129,6 @@ enum class buttoncode2_t
 void D_PostEvent(event_t* ev);
 
 // Read an event from the event queue
-
 event_t* D_PopEvent();
 
 #endif

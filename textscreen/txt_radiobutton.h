@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -10,7 +9,7 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
-//
+#pragma once
 
 #ifndef TXT_RADIOBUTTON_H
 #define TXT_RADIOBUTTON_H
@@ -38,7 +37,6 @@
  *
  * When a radio button is selected, the "selected" signal is emitted.
  */
-
 typedef struct txt_radiobutton_s txt_radiobutton_t;
 
 #include "txt_widget.h"
@@ -46,8 +44,8 @@ typedef struct txt_radiobutton_s txt_radiobutton_t;
 struct txt_radiobutton_s
 {
 	txt_widget_t widget;
-	char *label;
-	int *variable;
+	char* label;
+	int* variable;
 	int value;
 };
 
@@ -62,8 +60,7 @@ struct txt_radiobutton_s
  *						radio button appears selected.
  * @return				Pointer to the new radio button widget.
  */
-
-txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int value);
+txt_radiobutton_t* TXT_NewRadioButton(const char* label, int* variable, int value);
 
 /**
  * Set the label on a radio button.
@@ -71,9 +68,6 @@ txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int valu
  * @param radiobutton	The radio button.
  * @param value			The new label (UTF-8 format).
  */
-
-void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value);
+void TXT_SetRadioButtonLabel(txt_radiobutton_t* radiobutton, const char* value);
 
 #endif /* #ifndef TXT_RADIOBUTTON_H */
-
-

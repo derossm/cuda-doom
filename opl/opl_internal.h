@@ -1,4 +1,3 @@
-//
 // Copyright(C) 2005-2014 Simon Howard
 //
 // This program is free software; you can redistribute it and/or
@@ -13,8 +12,7 @@
 //
 // DESCRIPTION:
 //		OPL internal interface.
-//
-
+#pragma once
 
 #ifndef OPL_INTERNAL_H
 #define OPL_INTERNAL_H
@@ -25,9 +23,7 @@ typedef int (*opl_init_func)(unsigned int port_base);
 typedef void (*opl_shutdown_func)();
 typedef unsigned int (*opl_read_port_func)(opl_port_t port);
 typedef void (*opl_write_port_func)(opl_port_t port, unsigned int value);
-typedef void (*opl_set_callback_func)(uint64_t us,
-										opl_callback_t callback,
-										void *data);
+typedef void (*opl_set_callback_func)(uint64_t us, opl_callback_t callback, void* data);
 typedef void (*opl_clear_callbacks_func)();
 typedef void (*opl_lock_func)();
 typedef void (*opl_unlock_func)();
@@ -36,7 +32,7 @@ typedef void (*opl_adjust_callbacks_func)(float value);
 
 typedef struct
 {
-	const char *name;
+	const char* name;
 
 	opl_init_func init_func;
 	opl_shutdown_func shutdown_func;
@@ -55,4 +51,3 @@ typedef struct
 extern unsigned int opl_sample_rate;
 
 #endif /* #ifndef OPL_INTERNAL_H */
-
