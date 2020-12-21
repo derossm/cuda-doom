@@ -29,4 +29,3 @@ The file format is the same as that used for \fBdefault.cfg\fR(5).
 \fB@PROGRAM_SPREFIX@\-doom\fR(6),
 \fBdefault.cfg\fR(5),
 \fB@PROGRAM_SPREFIX@\-setup\fR(6)
-

@@ -129,7 +129,6 @@ INSTALL.heretic: INSTALL.template
             -DLONG_EXE_NAME="@PROGRAM_PREFIX@heretic" \
             -DPRECOMPILED < $(srcdir)/INSTALL.template > $@
 
-
 @PROGRAM_PREFIX@hexen.6: $(top_srcdir)/src $(MANPAGE_GEN_FILES)
 	$(DOCGEN) $(DOCGEN_COMMON_ARGS) \
                  -g hexen -m $(srcdir)/hexen.template \
@@ -203,7 +202,6 @@ INSTALL.strife: INSTALL.template
             -DLONG_GAME_NAME="@PACKAGE_SHORTNAME@ Strife" \
             -DPRECOMPILED < $(srcdir)/INSTALL.template > $@
 
-
 INSTALL: INSTALL.template
 	$(srcdir)//simplecpp -DDOOM -DHERETIC -DHEXEN -DSTRIFE \
             -DLONG_GAME_NAME="@PACKAGE_SHORTNAME@ Doom" \
@@ -218,4 +216,3 @@ EXTRA_DIST = $(man_MANS) $(MANPAGE_GEN_FILES)        \
              CMDLINE.template.md                     \
              INSTALL.template                        \
              simplecpp
-

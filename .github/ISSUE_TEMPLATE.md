@@ -16,4 +16,3 @@ Any loaded WADs and mods (please include full command line):
 Observed behavior:
 
 Expected behavior:
-

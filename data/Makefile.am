@@ -1,4 +1,3 @@
-
 EXTRA_DIST=              \
         README           \
         doom.ico         \

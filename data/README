@@ -13,4 +13,3 @@ alpha masks (as well as the 8-bit versions).  The 8-bit versions are
 used when setting the icon within SDL, as SDL under Windows displays
 full color icons in a very poor quality.  The full-color versions are
 used in the resource files.
-

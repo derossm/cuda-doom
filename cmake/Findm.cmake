@@ -32,5 +32,5 @@ find_library(M_LIBRARY m)
 
 add_library(m INTERFACE)
 if(M_LIBRARY)
-    target_link_libraries(m INTERFACE "${M_LIBRARY}")
+	target_link_libraries(m INTERFACE "${M_LIBRARY}")
 endif()

@@ -52,4 +52,3 @@ indicating "false" and a non-zero value indicating "true".
 \fB@PROGRAM_SPREFIX@\-@GAME@\fR(6),
 \fB@PROGRAM_SPREFIX@\-@GAME@.cfg\fR(5),
 \fB@PROGRAM_SPREFIX@\-@GAME@\-setup\fR(6)
-

@@ -37,7 +37,6 @@
 #    #ifdef
 #    #define
 #    #include
-#
 
 import collections
 import io
@@ -225,4 +224,3 @@ def read_block(stream, ignore):
 
 parse_cmdline()
 parse_stream(sys.stdin)
-

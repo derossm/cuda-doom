@@ -19,4 +19,3 @@ Generally speaking, a real hardware OPL chip sounds better than software
 emulation; however, modern machines do not often include one. If
 present, it may still require extra work to set up and elevated
 security privileges to access.
-

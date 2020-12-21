@@ -606,4 +606,3 @@ else:
 
     # Generate the output
     output_function(documentation_targets, substs, template)
-
