@@ -410,7 +410,7 @@ void R_DrawFuzzColumn ()
 #ifndef CRISPY_TRUECOLOR
 	*dest = colormaps[6*256+dest[SCREENWIDTH*fuzzoffset[fuzzpos]]];
 #else
-	*dest = I_BlendDark(dest[fuzzoffset[fuzzpos]], 0xc0);
+	*dest = I_BlendDark(dest[SCREENWIDTH*fuzzoffset[fuzzpos]], 0xD3);
 #endif
 
 	// Clamp table lookup index.
@@ -429,7 +429,7 @@ void R_DrawFuzzColumn ()
 #ifndef CRISPY_TRUECOLOR
 	*dest = colormaps[6*256+dest[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2]];
 #else
-	*dest = I_BlendDark(dest[(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xc0);
+	*dest = I_BlendDark(dest[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xD3);
 #endif
 	}
 }
@@ -496,8 +496,8 @@ void R_DrawFuzzColumnLow ()
 	*dest = colormaps[6*256+dest[SCREENWIDTH*fuzzoffset[fuzzpos]]];
 	*dest2 = colormaps[6*256+dest2[SCREENWIDTH*fuzzoffset[fuzzpos]]];
 #else
-	*dest = I_BlendDark(dest[fuzzoffset[fuzzpos]], 0xc0);
-	*dest2 = I_BlendDark(dest2[fuzzoffset[fuzzpos]], 0xc0);
+	*dest = I_BlendDark(dest[SCREENWIDTH*fuzzoffset[fuzzpos]], 0xD3);
+	*dest2 = I_BlendDark(dest2[SCREENWIDTH*fuzzoffset[fuzzpos]], 0xD3);
 #endif
 
 	// Clamp table lookup index.
@@ -518,17 +518,13 @@ void R_DrawFuzzColumnLow ()
 	*dest = colormaps[6*256+dest[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2]];
 	*dest2 = colormaps[6*256+dest2[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2]];
 #else
-	*dest = I_BlendDark(dest[(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xc0);
-	*dest2 = I_BlendDark(dest2[(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xc0);
+	*dest = I_BlendDark(dest[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xD3);
+	*dest2 = I_BlendDark(dest2[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xD3);
 #endif
 	}
 }
 
 
-
-
-
-//
 // R_DrawTranslatedColumn
 // Used to draw player sprites
 // with the green colorramp mapped to others.
@@ -536,7 +532,6 @@ void R_DrawFuzzColumnLow ()
 // tables, e.g. the lighter colored version
 // of the BaronOfHell, the HellKnight, uses
 // identical sprites, kinda brightened up.
-//
 byte*	dc_translation;
 byte*	translationtables;
 
