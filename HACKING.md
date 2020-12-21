@@ -1,5 +1,8 @@
 # Coding style guidelines
 
+Rule 1: Thou shalt never use signed values for lengths, sizes, or index positions.
+Rule 2: TBD
+
 The coding style guidelines for Chocolate Doom are designed to keep the style of the original source code. This maintains consistency throughout
 the program, and does not require the original code to be changed. Some of these guidelines are stricter than what was done in the original
 source; follow these when writing new code only: there is no need to change existing code to fit them.
@@ -34,7 +37,7 @@ Do not use Hungarian notation.
 
 Do not use the GOTO statement.
 {NOTE: unless you have a really good reason, such as DEMONSTRABLE profiled performance increase in extremely hot sections of code and
-known alternatives fail to approach performance parity}
+known alternatives fail to approach performance parity; don't use it for no reason like they do in midiproc hell code}
 
 Use C++-style comments, ie. `//` comments, not `/* ... */` comments. I don’t care that this isn’t standard ANSI C.
 {STRONGLY DISAGREE: use `/* ... */` for multi-line comments and `//` for single-line comments}

@@ -16,6 +16,7 @@
 // Allows the fields in structures to be mapped out and accessed by
 // name
 //
+#pragma once
 
 #ifndef DEH_MAPPING_H
 #define DEH_MAPPING_H

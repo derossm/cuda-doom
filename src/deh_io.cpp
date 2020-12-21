@@ -28,53 +28,19 @@
 #include "deh_defs.h"
 #include "deh_io.h"
 
-typedef enum
+#include<memory>
+
+auto DEH_NewContext()
 {
-	DEH_INPUT_FILE,
-	DEH_INPUT_LUMP
-} deh_input_type_t;
+	auto context{std::make_unique<deh_context_t>()};
 
-struct deh_context_s
-{
-	deh_input_type_t type;
-	char *filename;
-
-	// If the input comes from a memory buffer, pointer to the memory
-	// buffer.
-	unsigned char *input_buffer;
-	size_t input_buffer_len;
-	unsigned int input_buffer_pos;
-	int lumpnum;
-
-	// If the input comes from a file, the file stream for reading
-	// data.
-	FILE *stream;
-
-	// Current line number that we have reached:
-	int linenum;
-
-	// Used by DEH_ReadLine:
-	bool last_was_newline;
-	char *readbuffer;
-	int readbuffer_size;
-
-	// Error handling.
-	bool had_error;
-
-	// [crispy] pointer to start of current line
-	long linestart;
-};
-
-static deh_context_t *DEH_NewContext()
-{
-	deh_context_t *context;
-
-	context = Z_Malloc(sizeof(*context), PU_STATIC, NULL);
+	//context = Z_Malloc(sizeof(*context), PU_STATIC, NULL);
 
 	// Initial read buffer size of 128 bytes
 
 	context->readbuffer_size = 128;
-	context->readbuffer = Z_Malloc(context->readbuffer_size, PU_STATIC, NULL);
+	//context->readbuffer = Z_Malloc(context->readbuffer_size, PU_STATIC, NULL);
+	context->readbuffer = std::make_unique<char*>(context->readbuffer_size);
 	context->linenum = 0;
 	context->last_was_newline = true;
 
@@ -87,21 +53,20 @@ static deh_context_t *DEH_NewContext()
 // Open a dehacked file for reading
 // Returns NULL if open failed
 
-deh_context_t *DEH_OpenFile(const char *filename)
+auto DEH_OpenFile(const char* filename)
 {
-	FILE *fstream;
-	deh_context_t *context;
+	auto fstream{fopen(filename, "r")};
 
-	fstream = fopen(filename, "r");
+	if (fstream == nullptr)
+	{
+		return nullptr;
+	}
 
-	if (fstream == NULL)
-		return NULL;
+	auto context{DEH_NewContext()};
 
-	context = DEH_NewContext();
-
-	context->type = DEH_INPUT_FILE;
+	context->type = deh_input_type_t::DEH_INPUT_FILE;
 	context->stream = fstream;
-	context->filename = M_StringDuplicate(filename);
+	context->filename = std::make_unique<auto>(M_StringDuplicate(filename));
 
 	return context;
 }
@@ -131,7 +96,7 @@ deh_context_t *DEH_OpenLump(int lumpnum)
 
 // Close dehacked file
 
-void DEH_CloseFile(deh_context_t *context)
+void DEH_CloseFile(deh_context_t* context)
 {
 	if (context->type == DEH_INPUT_FILE)
 	{

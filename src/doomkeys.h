@@ -15,6 +15,7 @@
 // DESCRIPTION:
 //		Key definitions
 //
+#pragma once
 
 #ifndef __DOOMKEYS__
 #define __DOOMKEYS__

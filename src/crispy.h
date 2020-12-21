@@ -16,7 +16,7 @@
 // DESCRIPTION:
 //	Crispy Doom specific variables.
 //
-
+#pragma once
 
 #ifndef __CRISPY_H__
 #define __CRISPY_H__
@@ -33,7 +33,7 @@
 #define BETWEEN(l,u,x) (((l)>(x))?(l):((x)>(u))?(u):(x))
 #endif
 
-typedef struct
+struct crispy_t
 {
 	// [crispy] "crispness" config variables
 	int automapoverlay;
@@ -99,26 +99,26 @@ typedef struct
 	bool singleplayer;
 	bool stretchsky;
 
-	char *havenerve;
-	char *havemaster;
+	char* havenerve;
+	char* havemaster;
 
-	const char *sdlversion;
-	const char *platform;
+	const char* sdlversion;
+	const char* platform;
 
 	void (*post_rendering_hook) ();
-} crispy_t;
+};
 
-extern crispy_t *const crispy;
-extern const crispy_t *critical;
+extern crispy_t *const crispy;		// const ptr to crispy_t
+extern const crispy_t* critical;	// ptr to const crispy_t
 
-extern void CheckCrispySingleplayer (bool singleplayer);
+extern void CheckCrispySingleplayer(bool singleplayer);
 
 enum
 {
-	REINIT_FRAMEBUFFERS = 1,
-	REINIT_RENDERER = 2,
-	REINIT_TEXTURES = 4,
-	REINIT_ASPECTRATIO = 8,
+	REINIT_FRAMEBUFFERS		= 1,
+	REINIT_RENDERER			= 2,
+	REINIT_TEXTURES			= 4,
+	REINIT_ASPECTRATIO		= 8
 };
 
 enum
@@ -126,7 +126,7 @@ enum
 	BOBFACTOR_FULL,
 	BOBFACTOR_75,
 	BOBFACTOR_OFF,
-	NUM_BOBFACTORS,
+	NUM_BOBFACTORS
 };
 
 enum
@@ -135,7 +135,7 @@ enum
 	BRIGHTMAPS_TEXTURES,
 	BRIGHTMAPS_SPRITES,
 	BRIGHTMAPS_BOTH,
-	NUM_BRIGHTMAPS,
+	NUM_BRIGHTMAPS
 };
 
 enum
@@ -143,7 +143,7 @@ enum
 	CENTERWEAPON_OFF,
 	CENTERWEAPON_CENTER,
 	CENTERWEAPON_BOB,
-	NUM_CENTERWEAPON,
+	NUM_CENTERWEAPON
 };
 
 enum

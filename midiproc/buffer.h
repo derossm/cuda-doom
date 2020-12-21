@@ -14,6 +14,7 @@
 // DESCRIPTION:
 //		A simple buffer and reader implementation.
 //
+#pragma once
 
 #ifndef __BUFFER__
 #define __BUFFER__
@@ -50,7 +51,7 @@ auto Reader_BytesRead(buffer_reader_t* reader);
 auto Reader_ReadInt8(buffer_reader_t* reader, uint8_t* out);
 auto Reader_ReadInt16(buffer_reader_t* reader, uint16_t* out);
 auto Reader_ReadInt32(buffer_reader_t* reader, uint32_t* out);
-auto Reader_ReadString(buffer_reader_t* reader);
+char* Reader_ReadString(buffer_reader_t* reader);
 
 #endif
 

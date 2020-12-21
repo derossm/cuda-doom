@@ -33,7 +33,7 @@ auto NewBuffer()
 	//buffer_t* buf = malloc(sizeof(buffer_t));
 
 	buf->buffer_end = buf->buffer + BUFFER_SIZE;
-	Buffer_Clear(buf->get());
+	Buffer_Clear(*buf);
 
 	return buf;
 }
@@ -228,7 +228,7 @@ auto Reader_ReadInt32(buffer_reader_t* reader, uint32_t* out)
 //
 // Read a string from a buffer.
 //
-auto Reader_ReadString(buffer_reader_t* reader)
+char* Reader_ReadString(buffer_reader_t* reader)
 {
 	byte* data;
 	size_t len{Buffer_Data(reader->buffer, &data)};

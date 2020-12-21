@@ -14,6 +14,7 @@
 //
 // Dehacked entrypoint and common code
 //
+#pragma once
 
 #ifndef DEH_MAIN_H
 #define DEH_MAIN_H

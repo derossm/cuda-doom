@@ -15,21 +15,19 @@
 // DESCRIPTION:
 //
 //
-
+#pragma once
 
 #ifndef __D_EVENT__
 #define __D_EVENT__
 
-
 #include "doomtype.h"
-
 
 //
 // Event handling.
 //
 
 // Input event types.
-typedef enum
+enum class evtype_t
 {
 	// Key press/release events.
 	//	data1: Key code (from doomkeys.h) of the key that was
@@ -65,27 +63,31 @@ typedef enum
 	// Quit event. Triggered when the user clicks the "close" button
 	// to terminate the application.
 	ev_quit
-} evtype_t;
+};
 
 // Event structure.
-typedef struct
+struct event_t
 {
 	evtype_t type;
 
 	// Event-specific data; see the descriptions given above.
-	int data1, data2, data3, data4, data5;
-} event_t;
+	int data1;
+	int data2;
+	int data3;
+	int data4;
+	int data5;
+};
 
 
 //
 // Button/action code definitions.
 //
-typedef enum
+enum class buttoncode_t
 {
 	// Press "Fire".
 	BT_ATTACK		= 1,
 	// Use button, to open doors, activate switches.
-	BT_USE		= 2,
+	BT_USE			= 2,
 
 	// Flag: game events, not really buttons.
 	BT_SPECIAL		= 128,
@@ -109,12 +111,12 @@ typedef enum
 	BTS_SAVESHIFT	= 2,
 
 	// [crispy] demo joined.
-	BT_JOIN = 64
-} buttoncode_t;
+	BT_JOIN			= 64
+};
 
 // villsa [STRIFE] Strife specific buttons
 // TODO - not finished
-typedef enum
+enum class buttoncode2_t
 {
 	// Player view look up
 	BT2_LOOKUP			= 1,
@@ -131,18 +133,13 @@ typedef enum
 	// Use medkit
 	BT2_HEALTH			= 128,
 
-} buttoncode2_t;
-
-
-
+};
 
 // Called by IO functions when input is detected.
-void D_PostEvent (event_t *ev);
+void D_PostEvent(event_t* ev);
 
 // Read an event from the event queue
 
-event_t *D_PopEvent();
-
+event_t* D_PopEvent();
 
 #endif
-

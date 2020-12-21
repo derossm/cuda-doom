@@ -25,32 +25,34 @@
 
 #include "doomtype.h"
 
-bool M_WriteFile(const char *name, const void *source, int length);
-int M_ReadFile(const char *name, byte **buffer);
-void M_MakeDirectory(const char *dir);
-char *M_TempFile(const char *s);
-bool M_FileExists(const char *file);
-char *M_FileCaseExists(const char *file);
-long M_FileLength(FILE *handle);
-bool M_StrToInt(const char *str, int *result);
-char *M_DirName(const char *path);
-const char *M_BaseName(const char *path);
-void M_ExtractFileBase(const char *path, char *dest);
-void M_ForceUppercase(char *text);
-void M_ForceLowercase(char *text);
-const char *M_StrCaseStr(const char *haystack, const char *needle);
-char *M_StringDuplicate(const char *orig);
-bool M_StringCopy(char *dest, const char *src, size_t dest_size);
-bool M_StringConcat(char *dest, const char *src, size_t dest_size);
-char *M_StringReplace(const char *haystack, const char *needle,
-						const char *replacement);
-char *M_StringJoin(const char *s, ...);
-bool M_StringStartsWith(const char *s, const char *prefix);
-bool M_StringEndsWith(const char *s, const char *suffix);
-int M_vsnprintf(char *buf, size_t buf_len, const char *s, va_list args);
-int M_snprintf(char *buf, size_t buf_len, const char *s, ...) PRINTF_ATTR(3, 4);
-char *M_OEMToUTF8(const char *ansi);
-void M_NormalizeSlashes(char *str);
+#include <limits>
+#include <memory>
+
+auto M_WriteFile(const char* name, const void* source, size_t length);
+auto M_ReadFile(const char* name, byte** buffer);
+auto M_FileExists(const char* file);
+auto M_FileLength(FILE* handle);
+auto M_StrToInt(const char* str, int* result);
+auto M_StringCopy(char* dest, const char* src, size_t dest_size);
+auto M_StringConcat(char* dest, const char* src, size_t dest_size);
+auto M_StringStartsWith(const char* s, const char* prefix);
+auto M_StringEndsWith(const char* s, const char* suffix);
+auto M_vsnprintf(char* buf, size_t buf_len, const char* s, va_list args);
+auto M_snprintf(char* buf, size_t buf_len, const char* s, ...) PRINTF_ATTR(3, 4);
+const char* M_BaseName(const char* path);
+const char* M_StrCaseStr(const char* haystack, const char* needle);
+std::unique_ptr<char*> M_TempFile(const char* s);
+std::unique_ptr<char*> M_FileCaseExists(const char* file);
+std::unique_ptr<char*> M_DirName(const char* path);
+std::unique_ptr<char*> M_StringDuplicate(const char* orig);
+std::unique_ptr<char*> M_StringReplace(const char* haystack, const char* needle, const char* replacement);
+std::unique_ptr<char*> M_StringJoin(const char* s, ...);
+std::unique_ptr<char*> M_OEMToUTF8(const char* ansi);
+void M_MakeDirectory(const char* dir);
+void M_ExtractFileBase(const char* path, char* dest);
+void M_ForceUppercase(char* text);
+void M_ForceLowercase(char* text);
+void M_NormalizeSlashes(char* str);
 
 #endif
 

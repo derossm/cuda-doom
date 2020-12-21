@@ -16,7 +16,7 @@
 //	Simple basic typedefs, isolated here to make it easier
 //		separating modules.
 //
-
+#pragma once
 
 #ifndef __DOOMTYPE__
 #define __DOOMTYPE__
@@ -99,22 +99,6 @@
 // standard and defined to include stdint.h, so include this.
 
 #include <inttypes.h>
-
-#if defined(__cplusplus) || defined(__bool_true_false_are_defined)
-
-// Use builtin bool type with C++.
-
-typedef bool bool;
-
-#else
-
-typedef enum
-{
-	false,
-	true
-} bool;
-
-#endif
 
 typedef uint8_t byte;
 #ifndef CRISPY_TRUECOLOR

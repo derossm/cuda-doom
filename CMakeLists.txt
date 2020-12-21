@@ -31,6 +31,8 @@ if(MSVC)
 		"/Zc:__cplusplus" "/experimental:module" "/permissive-" "/Zc:preprocessor"
 		"/Zc:wchar_t" "/W0" "/Zc:inline" "/Od" "/MDd" "/Zc:forScope" "/fp:precise"
 		"/arch:AVX2" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-")
+	add_compile_definitions(
+		"WIN32_LEAN_AND_MEAN" "NOMINMAX")
 else()
 	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 endif()

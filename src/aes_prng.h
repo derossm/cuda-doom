@@ -14,6 +14,7 @@
 // DESCRIPTION:
 //		Pseudo-random number generator for secure demos.
 //
+#pragma once
 
 #ifndef __AES_PRNG_H__
 #define __AES_PRNG_H__
@@ -22,11 +23,11 @@
 
 // Nonce value used as random seed for secure demos.
 
-typedef byte prng_seed_t[16];
+//typedef byte prng_seed_t[16];
+using prng_seed_t = byte[16];
 
 void PRNG_Start(prng_seed_t seed);
 void PRNG_Stop();
 unsigned int PRNG_Random();
 
 #endif /* #ifndef __AES_PRNG_H__ */
-

@@ -14,6 +14,7 @@
 //
 // Dehacked string replacements
 //
+#pragma once
 
 #ifndef DEH_STR_H
 #define DEH_STR_H
