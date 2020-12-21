@@ -1,21 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Game completion, final screen animation.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
 
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Game completion, final screen animation.
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 #include <ctype.h>
@@ -37,21 +32,16 @@
 
 #include "doomstat.h"
 #include "r_state.h"
-#include "m_controls.h" // [crispy] key_*
-#include "m_misc.h" // [crispy] M_StringDuplicate()
-#include "m_random.h" // [crispy] Crispy_Random()
+#include "m_controls.h"		// [crispy] key_*
+#include "m_misc.h"			// [crispy] M_StringDuplicate()
+#include "m_random.h"		// [crispy] Crispy_Random()
 
 typedef enum
 {
 	F_STAGE_TEXT,
 	F_STAGE_ARTSCREEN,
-	F_STAGE_CAST,
+	F_STAGE_CAST
 } finalestage_t;
-
-// ?
-//#include "doomstat.h"
-//#include "r_local.h"
-//#include "f_finale.h"
 
 // Stage of animation:
 finalestage_t finalestage;
@@ -64,60 +54,58 @@ unsigned int finalecount;
 typedef struct
 {
 	GameMission_t mission;
-	int episode, level;
-	const char *background;
-	const char *text;
+	int episode;
+	int level;
+	const char* background;
+	const char* text;
 } textscreen_t;
 
 static textscreen_t textscreens[] =
 {
-	{ doom,		1, 8, "FLOOR4_8", E1TEXT},
-	{ doom,		2, 8, "SFLR6_1",	E2TEXT},
-	{ doom,		3, 8, "MFLR8_4",	E3TEXT},
-	{ doom,		4, 8, "MFLR8_3",	E4TEXT},
-	{ doom,		5, 8, "FLOOR7_2", E5TEXT}, // [crispy] Sigil
+	{ doom,			1, 8,	"FLOOR4_8",	E1TEXT},
+	{ doom,			2, 8,	"SFLR6_1",	E2TEXT},
+	{ doom,			3, 8,	"MFLR8_4",	E3TEXT},
+	{ doom,			4, 8,	"MFLR8_3",	E4TEXT},
+	{ doom,			5, 8,	"FLOOR7_2",	E5TEXT}, // [crispy] Sigil
 
-	{ doom2,		1, 6, "SLIME16",	C1TEXT},
-	{ doom2,		1, 11, "RROCK14",	C2TEXT},
-	{ doom2,		1, 20, "RROCK07",	C3TEXT},
-	{ doom2,		1, 30, "RROCK17",	C4TEXT},
-	{ doom2,		1, 15, "RROCK13",	C5TEXT},
-	{ doom2,		1, 31, "RROCK19",	C6TEXT},
+	{ doom2,		1, 6,	"SLIME16",	C1TEXT},
+	{ doom2,		1, 11,	"RROCK14",	C2TEXT},
+	{ doom2,		1, 20,	"RROCK07",	C3TEXT},
+	{ doom2,		1, 30,	"RROCK17",	C4TEXT},
+	{ doom2,		1, 15,	"RROCK13",	C5TEXT},
+	{ doom2,		1, 31,	"RROCK19",	C6TEXT},
 
-	{ pack_tnt, 1, 6, "SLIME16",	T1TEXT},
-	{ pack_tnt, 1, 11, "RROCK14",	T2TEXT},
-	{ pack_tnt, 1, 20, "RROCK07",	T3TEXT},
-	{ pack_tnt, 1, 30, "RROCK17",	T4TEXT},
-	{ pack_tnt, 1, 15, "RROCK13",	T5TEXT},
-	{ pack_tnt, 1, 31, "RROCK19",	T6TEXT},
+	{ pack_tnt,		1, 6,	"SLIME16",	T1TEXT},
+	{ pack_tnt,		1, 11,	"RROCK14",	T2TEXT},
+	{ pack_tnt,		1, 20,	"RROCK07",	T3TEXT},
+	{ pack_tnt,		1, 30,	"RROCK17",	T4TEXT},
+	{ pack_tnt,		1, 15,	"RROCK13",	T5TEXT},
+	{ pack_tnt,		1, 31,	"RROCK19",	T6TEXT},
 
-	{ pack_plut, 1, 6, "SLIME16",	P1TEXT},
-	{ pack_plut, 1, 11, "RROCK14",	P2TEXT},
-	{ pack_plut, 1, 20, "RROCK07",	P3TEXT},
-	{ pack_plut, 1, 30, "RROCK17",	P4TEXT},
-	{ pack_plut, 1, 15, "RROCK13",	P5TEXT},
-	{ pack_plut, 1, 31, "RROCK19",	P6TEXT},
+	{ pack_plut,	1, 6,	"SLIME16",	P1TEXT},
+	{ pack_plut,	1, 11,	"RROCK14",	P2TEXT},
+	{ pack_plut,	1, 20,	"RROCK07",	P3TEXT},
+	{ pack_plut,	1, 30,	"RROCK17",	P4TEXT},
+	{ pack_plut,	1, 15,	"RROCK13",	P5TEXT},
+	{ pack_plut,	1, 31,	"RROCK19",	P6TEXT},
 
-	{ pack_nerve, 1, 8, "SLIME16",	N1TEXT},
-	{ pack_master, 1, 20, "SLIME16",	M1TEXT},
-	{ pack_master, 1, 21, "SLIME16",	M2TEXT},
+	{ pack_nerve,	1, 8,	"SLIME16",	N1TEXT},
+	{ pack_master,	1, 20,	"SLIME16",	M1TEXT},
+	{ pack_master,	1, 21,	"SLIME16",	M2TEXT},
 };
 
-const char *finaletext;
-const char *finaleflat;
-static char *finaletext_rw;
+const char* finaletext;
+const char* finaleflat;
+static char* finaletext_rw;
 
-void	F_StartCast ();
-void	F_CastTicker ();
-bool F_CastResponder (event_t *ev);
-void	F_CastDrawer ();
+void F_StartCast();
+void F_CastTicker();
+bool F_CastResponder(event_t *ev);
+void F_CastDrawer();
 
 extern void A_RandomJump();
 
-//
-// F_StartFinale
-//
-void F_StartFinale ()
+void F_StartFinale()
 {
 	size_t i;
 
@@ -142,14 +130,12 @@ void F_StartFinale ()
 		textscreen_t *screen = &textscreens[i];
 
 		// Hack for Chex Quest
-
 		if (gameversion == exe_chex && screen->mission == doom)
 		{
 			screen->level = 5;
 		}
 
-		if (logical_gamemission == screen->mission
-			&& (logical_gamemission != doom || gameepisode == screen->episode)
+		if (logical_gamemission == screen->mission && (logical_gamemission != doom || gameepisode == screen->episode)
 			&& gamemap == screen->level)
 		{
 			finaletext = screen->text;
@@ -174,8 +160,6 @@ void F_StartFinale ()
 
 }
 
-
-
 bool F_Responder (event_t *event)
 {
 	if (finalestage == F_STAGE_CAST)
@@ -184,35 +168,34 @@ bool F_Responder (event_t *event)
 	return false;
 }
 
-
-//
-// F_Ticker
-//
 void F_Ticker ()
 {
-	size_t		i;
+	size_t i;
 
 	// check for skipping
-	if ( (gamemode == commercial)
-		&& ( finalecount > 50) )
+	if ((gamemode == GameMode_t::commercial) && ( finalecount > 50))
 	{
 		// go on to the next level
-		for (i=0 ; i<MAXPLAYERS ; i++)
-	if (players[i].cmd.buttons)
-		break;
+		for (i=0 ; i < MAX_PLAYERS ; ++i)
+		{
+			if (players[i].cmd.buttons)
+			{
+				break;
+			}
+		}
 
 		if (i < MAXPLAYERS)
 		{
-	if (gamemission == pack_nerve && gamemap == 8)
-		F_StartCast ();
-	else
-	if (gamemission == pack_master && (gamemap == 20 || gamemap == 21))
-		F_StartCast ();
-	else
-	if (gamemap == 30)
-		F_StartCast ();
-	else
-		gameaction = ga_worlddone;
+			if (gamemission == pack_nerve && gamemap == 8)
+				F_StartCast();
+			else
+			if (gamemission == pack_master && (gamemap == 20 || gamemap == 21))
+				F_StartCast();
+			else
+			if (gamemap == 30)
+				F_StartCast();
+			else
+				gameaction = ga_worlddone;
 		}
 	}
 
@@ -221,25 +204,23 @@ void F_Ticker ()
 
 	if (finalestage == F_STAGE_CAST)
 	{
-	F_CastTicker ();
+	F_CastTicker();
 	return;
 	}
 
-	if ( gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	return;
 
 	if (finalestage == F_STAGE_TEXT
-		&& finalecount>strlen (finaletext)*TEXTSPEED + TEXTWAIT)
+		&& finalecount>strlen(finaletext)*TEXTSPEED + TEXTWAIT)
 	{
 	finalecount = 0;
 	finalestage = F_STAGE_ARTSCREEN;
 	wipegamestate = -1;		// force a wipe
 	if (gameepisode == 3)
-		S_StartMusic (mus_bunny);
+		S_StartMusic(mus_bunny);
 	}
 }
-
-
 
 //
 // F_TextWrite
@@ -281,7 +262,7 @@ void F_TextWrite ()
 	int		cy;
 
 	// erase the entire screen to a tiled background
-	src = W_CacheLumpName ( finaleflat , PU_CACHE);
+	src = W_CacheLumpName( finaleflat, PU_CACHE);
 	dest = I_VideoBuffer;
 
 	for (y=0 ; y<SCREENHEIGHT ; y++)
@@ -289,12 +270,12 @@ void F_TextWrite ()
 #ifndef CRISPY_TRUECOLOR
 	for (x=0 ; x<SCREENWIDTH/64 ; x++)
 	{
-		memcpy (dest, src+((y&63)<<6), 64);
+		memcpy(dest, src+((y&63)<<6), 64);
 		dest += 64;
 	}
 	if (SCREENWIDTH&63)
 	{
-		memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
+		memcpy(dest, src+((y&63)<<6), SCREENWIDTH&63);
 		dest += (SCREENWIDTH&63);
 	}
 #else
@@ -305,7 +286,7 @@ void F_TextWrite ()
 #endif
 	}
 
-	V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
+	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
 	// draw some of the text onto the screen
 	cx = 10;
@@ -564,7 +545,7 @@ void F_CastTicker ()
 	if (castorder[castnum].name == NULL)
 		castnum = 0;
 	if (mobjinfo[castorder[castnum].type].seesound)
-		S_StartSound (NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].seesound));
+		S_StartSound(NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].seesound));
 	caststate = &states[mobjinfo[castorder[castnum].type].seestate];
 	castframes = 0;
 	castangle = 0; // [crispy] turnable cast
@@ -633,7 +614,7 @@ void F_CastTicker ()
 
 */
 	if (sfx)
-		S_StartSound (NULL, sfx);
+		S_StartSound(NULL, sfx);
 	}
 
 	if (!castdeath && castframes == 12)
@@ -762,10 +743,10 @@ bool F_CastResponder (event_t* ev)
 	castframes = 0;
 	castattacking = false;
 	if (xdeath && mobjinfo[castorder[castnum].type].xdeathstate)
-		S_StartSound (NULL, sfx_slop);
+		S_StartSound(NULL, sfx_slop);
 	else
 	if (mobjinfo[castorder[castnum].type].deathsound)
-	S_StartSound (NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].deathsound));
+	S_StartSound(NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].deathsound));
 
 	// [crispy] flippable death sequence
 	castflip = crispy->flipcorpses &&
@@ -841,7 +822,7 @@ void F_CastDrawer ()
 	patch_t*		patch;
 
 	// erase the entire screen to a background
-	V_DrawPatchFullScreen (W_CacheLumpName (DEH_String("BOSSBACK"), PU_CACHE), false);
+	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("BOSSBACK"), PU_CACHE), false);
 
 	F_CastPrint (DEH_String(castorder[castnum].name));
 
@@ -856,7 +837,7 @@ void F_CastDrawer ()
 	lump = sprframe->lump[castangle]; // [crispy] turnable cast
 	flip = (bool)sprframe->flip[castangle] ^ castflip; // [crispy] turnable cast, flippable death sequence
 
-	patch = W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum(lump+firstspritelump, PU_CACHE);
 	if (flip)
 	V_DrawPatchFlipped(ORIGWIDTH/2, 170, patch);
 	else
@@ -921,8 +902,8 @@ void F_BunnyScroll ()
 	dy = (SCREENHEIGHT << FRACBITS) / ORIGHEIGHT;
 	dyi = (ORIGHEIGHT << FRACBITS) / SCREENHEIGHT;
 
-	p1 = W_CacheLumpName (DEH_String("PFUB2"), PU_LEVEL);
-	p2 = W_CacheLumpName (DEH_String("PFUB1"), PU_LEVEL);
+	p1 = W_CacheLumpName(DEH_String("PFUB2"), PU_LEVEL);
+	p2 = W_CacheLumpName(DEH_String("PFUB1"), PU_LEVEL);
 
 	// [crispy] fill pillarboxes in widescreen mode
 	pillar_width = (SCREENWIDTH - (p1->width << FRACBITS) / dxi) / 2;
@@ -953,7 +934,7 @@ void F_BunnyScroll ()
 		p2offset = ORIGWIDTH + p1offset;
 	}
 
-	V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
+	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
 	scrolled = (ORIGWIDTH - ((signed int) finalecount-230)/2);
 	if (scrolled > ORIGWIDTH)
@@ -966,9 +947,9 @@ void F_BunnyScroll ()
 		int x2 = ((x * dxi) >> FRACBITS) - WIDESCREENDELTA + scrolled;
 
 		if (x2 < p2offset)
-			F_DrawPatchCol (x, p1, x2 - p1offset);
+			F_DrawPatchCol(x, p1, x2 - p1offset);
 		else
-			F_DrawPatchCol (x, p2, x2 - p2offset);
+			F_DrawPatchCol(x, p2, x2 - p2offset);
 	}
 
 	if (finalecount < 1130)
@@ -987,14 +968,14 @@ void F_BunnyScroll ()
 	stage = 6;
 	if (stage > laststage)
 	{
-	S_StartSound (NULL, sfx_pistol);
+	S_StartSound(NULL, sfx_pistol);
 	laststage = stage;
 	}
 
 	DEH_snprintf(name, 10, "END%i", stage);
 	V_DrawPatch((ORIGWIDTH - 13 * 8) / 2,
 				(ORIGHEIGHT - 8 * 8) / 2,
-				W_CacheLumpName (name,PU_CACHE));
+				W_CacheLumpName(name,PU_CACHE));
 }
 
 static void F_ArtScreenDrawer()
@@ -1039,7 +1020,7 @@ static void F_ArtScreenDrawer()
 
 		lumpname = DEH_String(lumpname);
 
-		V_DrawPatchFullScreen (W_CacheLumpName(lumpname, PU_CACHE), false);
+		V_DrawPatchFullScreen(W_CacheLumpName(lumpname, PU_CACHE), false);
 	}
 }
 

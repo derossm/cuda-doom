@@ -1,21 +1,17 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Configuration file interface.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Configuration file interface.
+\**********************************************************************************************************************************************/
 
 
 #include <stdio.h>
@@ -2272,7 +2268,7 @@ static default_t *SearchCollection(default_collection_t *collection, const char 
 //	a screenshot key.
 static const int scantokey[128] =
 {
-	0 ,	27,		'1',	'2',	'3',	'4',	'5',	'6',
+	0,	27,		'1',	'2',	'3',	'4',	'5',	'6',
 	'7',	'8',	'9',	'0',	'-',	'=',	KEY_BACKSPACE, 9,
 	'q',	'w',	'e',	'r',	't',	'y',	'u',	'i',
 	'o',	'p',	'[',	']',	13,		KEY_RCTRL, 'a',	's',

@@ -1,21 +1,17 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard, Andrey Budko
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Movement, collision handling.
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard, Andrey Budko
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Movement, collision handling.
 //	Shooting and aiming.
-//
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -743,16 +739,16 @@ void P_HitSlideLine (line_t* ld)
 
 	if (deltaangle > ANG180)
 	deltaangle += ANG180;
-	//	I_Error ("SlideLine: ang>ANG180");
+	//	I_Error("SlideLine: ang>ANG180");
 
 	lineangle >>= ANGLETOFINESHIFT;
 	deltaangle >>= ANGLETOFINESHIFT;
 
 	movelen = P_AproxDistance (tmxmove, tmymove);
-	newlen = FixedMul (movelen, finecosine[deltaangle]);
+	newlen = FixedMul(movelen, finecosine[deltaangle]);
 
-	tmxmove = FixedMul (newlen, finecosine[lineangle]);
-	tmymove = FixedMul (newlen, finesine[lineangle]);
+	tmxmove = FixedMul(newlen, finecosine[lineangle]);
+	tmymove = FixedMul(newlen, finesine[lineangle]);
 }
 
 
@@ -764,7 +760,7 @@ bool PTR_SlideTraverse (intercept_t* in)
 	line_t*	li;
 
 	if (!in->isaline)
-	I_Error ("PTR_SlideTraverse: not a line?");
+	I_Error("PTR_SlideTraverse: not a line?");
 
 	li = in->d.line;
 
@@ -882,8 +878,8 @@ void P_SlideMove (mobj_t* mo)
 	bestslidefrac -= 0x800;
 	if (bestslidefrac > 0)
 	{
-	newx = FixedMul (mo->momx, bestslidefrac);
-	newy = FixedMul (mo->momy, bestslidefrac);
+	newx = FixedMul(mo->momx, bestslidefrac);
+	newy = FixedMul(mo->momy, bestslidefrac);
 
 	if (!P_TryMove (mo, mo->x+newx, mo->y+newy))
 		goto stairstep;
@@ -899,8 +895,8 @@ void P_SlideMove (mobj_t* mo)
 	if (bestslidefrac <= 0)
 	return;
 
-	tmxmove = FixedMul (mo->momx, bestslidefrac);
-	tmymove = FixedMul (mo->momy, bestslidefrac);
+	tmxmove = FixedMul(mo->momx, bestslidefrac);
+	tmymove = FixedMul(mo->momy, bestslidefrac);
 
 	P_HitSlideLine (bestslideline);	// clip the moves
 
@@ -964,12 +960,12 @@ PTR_AimTraverse (intercept_t* in)
 	if (openbottom >= opentop)
 		return false;		// stop
 
-	dist = FixedMul (attackrange, in->frac);
+	dist = FixedMul(attackrange, in->frac);
 
 		if (li->backsector == NULL
 			|| li->frontsector->floorheight != li->backsector->floorheight)
 	{
-		slope = FixedDiv (openbottom - shootz , dist);
+		slope = FixedDiv(openbottom - shootz, dist);
 		if (slope > bottomslope)
 		bottomslope = slope;
 	}
@@ -977,7 +973,7 @@ PTR_AimTraverse (intercept_t* in)
 	if (li->backsector == NULL
 			|| li->frontsector->ceilingheight != li->backsector->ceilingheight)
 	{
-		slope = FixedDiv (opentop - shootz , dist);
+		slope = FixedDiv(opentop - shootz, dist);
 		if (slope < topslope)
 		topslope = slope;
 	}
@@ -997,13 +993,13 @@ PTR_AimTraverse (intercept_t* in)
 	return true;			// corpse or something
 
 	// check angles to see if the thing can be aimed at
-	dist = FixedMul (attackrange, in->frac);
-	thingtopslope = FixedDiv (th->z+th->height - shootz , dist);
+	dist = FixedMul(attackrange, in->frac);
+	thingtopslope = FixedDiv(th->z+th->height - shootz, dist);
 
 	if (thingtopslope < bottomslope)
 	return true;			// shot over the thing
 
-	thingbottomslope = FixedDiv (th->z - shootz, dist);
+	thingbottomslope = FixedDiv(th->z - shootz, dist);
 
 	if (thingbottomslope > topslope)
 	return true;			// shot under the thing
@@ -1057,18 +1053,18 @@ bool PTR_ShootTraverse (intercept_t* in)
 	// crosses a two sided line
 	P_LineOpening (li);
 
-	dist = FixedMul (attackrange, in->frac);
+	dist = FixedMul(attackrange, in->frac);
 
 		// e6y: emulation of missed back side on two-sided lines.
 		// backsector can be NULL when emulating missing back side.
 
 		if (li->backsector == NULL)
 		{
-			slope = FixedDiv (openbottom - shootz , dist);
+			slope = FixedDiv(openbottom - shootz, dist);
 			if (slope > aimslope)
 				goto hitline;
 
-			slope = FixedDiv (opentop - shootz , dist);
+			slope = FixedDiv(opentop - shootz, dist);
 			if (slope < aimslope)
 				goto hitline;
 		}
@@ -1076,14 +1072,14 @@ bool PTR_ShootTraverse (intercept_t* in)
 		{
 			if (li->frontsector->floorheight != li->backsector->floorheight)
 			{
-				slope = FixedDiv (openbottom - shootz , dist);
+				slope = FixedDiv(openbottom - shootz, dist);
 				if (slope > aimslope)
 					goto hitline;
 			}
 
 			if (li->frontsector->ceilingheight != li->backsector->ceilingheight)
 			{
-				slope = FixedDiv (opentop - shootz , dist);
+				slope = FixedDiv(opentop - shootz, dist);
 				if (slope < aimslope)
 					goto hitline;
 			}
@@ -1096,10 +1092,10 @@ bool PTR_ShootTraverse (intercept_t* in)
 	// hit line
 		hitline:
 	// position a bit closer
-	frac = in->frac - FixedDiv (4*FRACUNIT,attackrange);
-	x = trace.x + FixedMul (trace.dx, frac);
-	y = trace.y + FixedMul (trace.dy, frac);
-	z = shootz + FixedMul (aimslope, FixedMul(frac, attackrange));
+	frac = in->frac - FixedDiv(4*FRACUNIT,attackrange);
+	x = trace.x + FixedMul(trace.dx, frac);
+	y = trace.y + FixedMul(trace.dy, frac);
+	z = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
 
 	if (li->frontsector->ceilingpic == skyflatnum)
 	{
@@ -1135,8 +1131,8 @@ bool PTR_ShootTraverse (intercept_t* in)
 			{
 				z = BETWEEN(sector->floorheight, sector->ceilingheight, z);
 				frac = FixedDiv(z - shootz, FixedMul(aimslope, attackrange));
-				x = trace.x + FixedMul (trace.dx, frac);
-				y = trace.y + FixedMul (trace.dy, frac);
+				x = trace.x + FixedMul(trace.dx, frac);
+				y = trace.y + FixedMul(trace.dy, frac);
 			}
 		}
 	}
@@ -1167,16 +1163,16 @@ bool PTR_ShootTraverse (intercept_t* in)
 	return true;		// corpse or something
 
 	// check angles to see if the thing can be aimed at
-	dist = FixedMul (attackrange, in->frac);
+	dist = FixedMul(attackrange, in->frac);
 	// [crispy] mobj or actual sprite height
 	thingheight = (shootthing->player && critical->freeaim == FREEAIM_DIRECT) ?
 					th->info->actualheight : th->height;
-	thingtopslope = FixedDiv (th->z+thingheight - shootz , dist);
+	thingtopslope = FixedDiv(th->z+thingheight - shootz, dist);
 
 	if (thingtopslope < aimslope)
 	return true;		// shot over the thing
 
-	thingbottomslope = FixedDiv (th->z - shootz, dist);
+	thingbottomslope = FixedDiv(th->z - shootz, dist);
 
 	if (thingbottomslope > aimslope)
 	return true;		// shot under the thing
@@ -1184,11 +1180,11 @@ bool PTR_ShootTraverse (intercept_t* in)
 
 	// hit thing
 	// position a bit closer
-	frac = in->frac - FixedDiv (10*FRACUNIT,attackrange);
+	frac = in->frac - FixedDiv(10*FRACUNIT,attackrange);
 
-	x = trace.x + FixedMul (trace.dx, frac);
-	y = trace.y + FixedMul (trace.dy, frac);
-	z = shootz + FixedMul (aimslope, FixedMul(frac, attackrange));
+	x = trace.x + FixedMul(trace.dx, frac);
+	y = trace.y + FixedMul(trace.dy, frac);
+	z = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
 
 	// [crispy] update laser spot position and return
 	if (la_damage == INT_MIN)

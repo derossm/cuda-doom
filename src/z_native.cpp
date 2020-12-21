@@ -1,23 +1,19 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Zone Memory Allocation. Neat.
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Zone Memory Allocation. Neat.
 //
 //	This is an implementation of the zone memory API which
 //	uses native calls to malloc() and free().
-//
+\**********************************************************************************************************************************************/
 
 
 #include <stdlib.h>
@@ -134,7 +130,7 @@ void Z_Init ()
 //
 // Z_Free
 //
-void Z_Free (void* ptr)
+void Z_Free(void* ptr)
 {
 	memblock_t*		block;
 
@@ -142,7 +138,7 @@ void Z_Free (void* ptr)
 
 	if (block->id != ZONEID)
 	{
-		I_Error ("Z_Free: freed a pointer without ZONEID");
+		I_Error("Z_Free: freed a pointer without ZONEID");
 	}
 
 	if (block->tag != PU_FREE && block->user != NULL)
@@ -242,7 +238,7 @@ void *Z_Malloc(int size, int tag, void *user)
 
 	if (user == NULL && tag >= PU_PURGELEVEL)
 	{
-		I_Error ("Z_Malloc: an owner is required for purgable blocks");
+		I_Error("Z_Malloc: an owner is required for purgable blocks");
 	}
 
 	// Malloc a block of the required size

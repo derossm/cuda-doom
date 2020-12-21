@@ -1,18 +1,14 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+\**********************************************************************************************************************************************/
 
 
 #include "h2def.h"
@@ -214,7 +210,7 @@ fixed_t P_InterceptVector(divline_t * v2, divline_t * v1)
 	den = FixedMul(v1->dy >> 8, v2->dx) - FixedMul(v1->dx >> 8, v2->dy);
 	if (den == 0)
 		return 0;
-//				I_Error ("P_InterceptVector: parallel");
+//				I_Error("P_InterceptVector: parallel");
 	num = FixedMul((v1->x - v2->x) >> 8, v1->dy) +
 		FixedMul((v2->y - v1->y) >> 8, v1->dx);
 	frac = FixedDiv(num, den);

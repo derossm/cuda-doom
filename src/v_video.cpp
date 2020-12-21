@@ -1,23 +1,19 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Gamma correction LUT stuff.
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Gamma correction LUT stuff.
 //	Functions to draw patches (by post) directly to screen.
 //	Functions to blit a block to the screen.
-//
+\**********************************************************************************************************************************************/
 
 #include "SDL_version.h" // [crispy]
 
@@ -87,8 +83,8 @@ void V_MarkRect(int x, int y, int width, int height)
 
 	if (dest_screen == I_VideoBuffer)
 	{
-		M_AddToBox (dirtybox, x, y);
-		M_AddToBox (dirtybox, x + width-1, y + height-1);
+		M_AddToBox(dirtybox, x, y);
+		M_AddToBox(dirtybox, x + width-1, y + height-1);
 	}
 }
 
@@ -120,7 +116,7 @@ void V_CopyRect(int srcx, int srcy, pixel_t *source,
 		|| desty < 0
 		|| desty /* + height */ > SCREENHEIGHT)
 	{
-		I_Error ("Bad V_CopyRect");
+		I_Error("Bad V_CopyRect");
 	}
 #endif
 
@@ -366,7 +362,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t *patch)
 	}
 #endif
 
-	V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height));
+	V_MarkRect(x, y, SHORT(patch->width), SHORT(patch->height));
 
 	col = 0;
 	if (x < 0)
@@ -712,17 +708,17 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
 		|| y < 0
 		|| y + height > SCREENHEIGHT)
 	{
-	I_Error ("Bad V_DrawBlock");
+	I_Error("Bad V_DrawBlock");
 	}
 #endif
 
-	V_MarkRect (x, y, width, height);
+	V_MarkRect(x, y, width, height);
 
 	dest = dest_screen + (y << crispy->hires) * SCREENWIDTH + x;
 
 	while (height--)
 	{
-	memcpy (dest, src, width * sizeof(*dest));
+	memcpy(dest, src, width * sizeof(*dest));
 	src += width;
 	dest += SCREENWIDTH;
 	}
@@ -739,11 +735,11 @@ void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src)
 		|| y < 0
 		|| y + height > ORIGHEIGHT)
 	{
-	I_Error ("Bad V_DrawScaledBlock");
+	I_Error("Bad V_DrawScaledBlock");
 	}
 #endif
 
-	V_MarkRect (x, y, width, height);
+	V_MarkRect(x, y, width, height);
 
 	dest = dest_screen + (y << crispy->hires) * SCREENWIDTH + (x << crispy->hires);
 
@@ -924,7 +920,7 @@ void WritePCXfile(char *filename, pixel_t *data,
 	pcx_t*	pcx;
 	byte*	pack;
 
-	pcx = Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
+	pcx = Z_Malloc(width*height*2+1000, PU_STATIC, NULL);
 
 	pcx->manufacturer = 0x0a;		// PCX id
 	pcx->version = 5;			// 256 color
@@ -936,12 +932,12 @@ void WritePCXfile(char *filename, pixel_t *data,
 	pcx->ymax = SHORT(height-1);
 	pcx->hres = SHORT(1);
 	pcx->vres = SHORT(1);
-	memset (pcx->palette,0,sizeof(pcx->palette));
+	memset(pcx->palette,0,sizeof(pcx->palette));
 	pcx->reserved = 0;					// PCX spec: reserved byte must be zero
 	pcx->color_planes = 1;		// chunky image
 	pcx->bytes_per_line = SHORT(width);
 	pcx->palette_type = SHORT(2);	// not a grey scale
-	memset (pcx->filler,0,sizeof(pcx->filler));
+	memset(pcx->filler,0,sizeof(pcx->filler));
 
 	// pack the image
 	pack = &pcx->data;
@@ -964,9 +960,9 @@ void WritePCXfile(char *filename, pixel_t *data,
 
 	// write output file
 	length = pack - (byte *)pcx;
-	M_WriteFile (filename, pcx, length);
+	M_WriteFile(filename, pcx, length);
 
-	Z_Free (pcx);
+	Z_Free(pcx);
 }
 
 #ifdef HAVE_LIBPNG
@@ -1151,12 +1147,12 @@ void V_ScreenShot(const char *format)
 #ifdef HAVE_LIBPNG
 		if (png_screenshots)
 		{
-			I_Error ("V_ScreenShot: Couldn't create a PNG");
+			I_Error("V_ScreenShot: Couldn't create a PNG");
 		}
 		else
 #endif
 		{
-			I_Error ("V_ScreenShot: Couldn't create a PCX");
+			I_Error("V_ScreenShot: Couldn't create a PCX");
 		}
 	}
 
@@ -1165,7 +1161,7 @@ void V_ScreenShot(const char *format)
 	{
 	WritePNGfile(lbmname, I_VideoBuffer,
 					SCREENWIDTH, SCREENHEIGHT,
-					W_CacheLumpName (DEH_String("PLAYPAL"), PU_CACHE));
+					W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
 	}
 	else
 #endif
@@ -1173,7 +1169,7 @@ void V_ScreenShot(const char *format)
 	// save the pcx file
 	WritePCXfile(lbmname, I_VideoBuffer,
 					SCREENWIDTH, SCREENHEIGHT,
-					W_CacheLumpName (DEH_String("PLAYPAL"), PU_CACHE));
+					W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
 	}
 }
 

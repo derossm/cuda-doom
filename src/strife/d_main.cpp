@@ -1,24 +1,19 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	DOOM main program (D_DoomMain) and game loop (D_DoomLoop),
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	DOOM main program (D_DoomMain) and game loop (D_DoomLoop),
 //	plus functions to determine game mode (shareware, registered),
 //	parse command line parameters, configure game parameters (turbo),
 //	and call the startup functions.
-//
-
+\**********************************************************************************************************************************************/
 
 #include <ctype.h>
 #include <stdio.h>
@@ -384,8 +379,7 @@ void D_Display ()
 
 		// haleyjd 08/26/10: [STRIFE] Changed to use ColorXForm wipe.
 		wipestart = nowtime;
-		done = wipe_ScreenWipe(wipe_ColorXForm
-								, 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
+		done = wipe_ScreenWipe(wipe_ColorXForm, 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
 		I_UpdateNoBlit ();
 		M_Drawer ();							// menu is drawn even on top of wipes
 		I_FinishUpdate ();						// page flip or blit buffer
@@ -931,7 +925,6 @@ void DoTimeBomb()
 #endif
 
 // Set the gamedescription string
-
 void D_SetGameDescription()
 {
 	gamedescription = GetGameName("Strife: Quest for the Sigil");

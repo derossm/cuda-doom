@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Handles WAD file header, directory, lump I/O.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Handles WAD file header, directory, lump I/O.
+\**********************************************************************************************************************************************/
 
 
 
@@ -140,7 +136,7 @@ wad_file_t *W_AddFile (const char *filename)
 	return NULL;
 	}
 
-	if (strcasecmp(filename+strlen(filename)-3 , "wad" ) )
+	if (strcasecmp(filename+strlen(filename)-3, "wad" ) )
 	{
 	// single lump file
 
@@ -170,7 +166,7 @@ wad_file_t *W_AddFile (const char *filename)
 		if (strncmp(header.identification,"PWAD",4))
 		{
 		W_CloseFile(wad_file);
-		I_Error ("Wad file %s doesn't have IWAD "
+		I_Error("Wad file %s doesn't have IWAD "
 				"or PWAD id\n", filename);
 		}
 
@@ -185,7 +181,7 @@ wad_file_t *W_AddFile (const char *filename)
 			if (!strncmp(header.identification,"PWAD",4) && header.numlumps > 4046 && false)
 			{
 					W_CloseFile(wad_file);
-					I_Error ("Error: Vanilla limit for lumps in a WAD is 4046, "
+					I_Error("Error: Vanilla limit for lumps in a WAD is 4046, "
 							"PWAD %s has %d", filename, header.numlumps);
 			}
 
@@ -316,7 +312,7 @@ lumpindex_t W_GetNumForName(const char *name)
 
 	if (i < 0)
 	{
-		I_Error ("W_GetNumForName: %s not found!", name);
+		I_Error("W_GetNumForName: %s not found!", name);
 	}
 
 	return i;
@@ -345,7 +341,7 @@ int W_LumpLength(lumpindex_t lump)
 {
 	if (lump >= numlumps)
 	{
-	I_Error ("W_LumpLength: %i >= numlumps", lump);
+	I_Error("W_LumpLength: %i >= numlumps", lump);
 	}
 
 	return lumpinfo[lump]->size;
@@ -365,7 +361,7 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 
 	if (lump >= numlumps)
 	{
-		I_Error ("W_ReadLump: %i >= numlumps", lump);
+		I_Error("W_ReadLump: %i >= numlumps", lump);
 	}
 
 	l = lumpinfo[lump];
@@ -403,7 +399,7 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 
 	if ((unsigned)lumpnum >= numlumps)
 	{
-	I_Error ("W_CacheLumpNum: %i >= numlumps", lumpnum);
+	I_Error("W_CacheLumpNum: %i >= numlumps", lumpnum);
 	}
 
 	lump = lumpinfo[lumpnum];
@@ -464,7 +460,7 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum)
 
 	if ((unsigned)lumpnum >= numlumps)
 	{
-	I_Error ("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
+	I_Error("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
 	}
 
 	lump = lumpinfo[lumpnum];
@@ -528,7 +524,7 @@ void W_Profile ()
 
 	for (i=0 ; i<numlumps ; i++)
 	{
-	memcpy (name,lumpinfo[i].name,8);
+	memcpy(name,lumpinfo[i].name,8);
 
 	for (j=0 ; j<8 ; j++)
 		if (!name[j])

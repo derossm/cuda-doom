@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	All the clipping: columns, horizontal spans, sky columns.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	All the clipping: columns, horizontal spans, sky columns.
+\**********************************************************************************************************************************************/
 
 
 
@@ -554,7 +550,7 @@ R_StoreWallRange
 
 #ifdef RANGECHECK
 	if (start >=viewwidth || start > stop)
-	I_Error ("Bad R_RenderWallRange: %i to %i", start , stop);
+	I_Error("Bad R_RenderWallRange: %i to %i", start, stop);
 #endif
 
 	sidedef = curline->sidedef;
@@ -863,10 +859,10 @@ R_StoreWallRange
 	worldtop >>= invhgtbits;
 	worldbottom >>= invhgtbits;
 
-	topstep = -FixedMul (rw_scalestep, worldtop);
+	topstep = -FixedMul(rw_scalestep, worldtop);
 	topfrac = ((int64_t)centeryfrac>>invhgtbits) - (((int64_t)worldtop * rw_scale)>>FRACBITS); // [crispy] WiggleFix
 
-	bottomstep = -FixedMul (rw_scalestep,worldbottom);
+	bottomstep = -FixedMul(rw_scalestep,worldbottom);
 	bottomfrac = ((int64_t)centeryfrac>>invhgtbits) - (((int64_t)worldbottom * rw_scale)>>FRACBITS); // [crispy] WiggleFix
 
 	if (backsector)
@@ -877,13 +873,13 @@ R_StoreWallRange
 	if (worldhigh < worldtop)
 	{
 		pixhigh = ((int64_t)centeryfrac>>invhgtbits) - (((int64_t)worldhigh * rw_scale)>>FRACBITS); // [crispy] WiggleFix
-		pixhighstep = -FixedMul (rw_scalestep,worldhigh);
+		pixhighstep = -FixedMul(rw_scalestep,worldhigh);
 	}
 
 	if (worldlow > worldbottom)
 	{
 		pixlow = ((int64_t)centeryfrac>>invhgtbits) - (((int64_t)worldlow * rw_scale)>>FRACBITS); // [crispy] WiggleFix
-		pixlowstep = -FixedMul (rw_scalestep,worldlow);
+		pixlowstep = -FixedMul(rw_scalestep,worldlow);
 	}
 	}
 
@@ -901,7 +897,7 @@ R_StoreWallRange
 	if ( ((ds_p->silhouette & SIL_TOP) || maskedtexture)
 		&& !ds_p->sprtopclip)
 	{
-	memcpy (lastopening, ceilingclip+start, sizeof(*lastopening)*(rw_stopx-start));
+	memcpy(lastopening, ceilingclip+start, sizeof(*lastopening)*(rw_stopx-start));
 	ds_p->sprtopclip = lastopening - start;
 	lastopening += rw_stopx - start;
 	}
@@ -909,7 +905,7 @@ R_StoreWallRange
 	if ( ((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
 		&& !ds_p->sprbottomclip)
 	{
-	memcpy (lastopening, floorclip+start, sizeof(*lastopening)*(rw_stopx-start));
+	memcpy(lastopening, floorclip+start, sizeof(*lastopening)*(rw_stopx-start));
 	ds_p->sprbottomclip = lastopening - start;
 	lastopening += rw_stopx - start;
 	}

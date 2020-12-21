@@ -1,25 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	All the clipping: columns, horizontal spans, sky columns.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
 
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-
-
+	DESCRIPTION:
+	All the clipping: columns, horizontal spans, sky columns.
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -92,11 +83,7 @@ short*		maskedtexturecol;
 //
 // R_RenderMaskedSegRange
 //
-void
-R_RenderMaskedSegRange
-( drawseg_t*	ds,
- int		x1,
- int		x2 )
+void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 {
 	unsigned	index;
 	column_t*	col;
@@ -183,7 +170,7 @@ R_RenderMaskedSegRange
 		(byte *)R_GetColumn(texnum,maskedtexturecol[dc_x]) -3);
 
 			// villsa [STRIFE] added 0 argument
-		R_DrawMaskedColumn (col, 0);
+		R_DrawMaskedColumn(col, 0);
 		maskedtexturecol[dc_x] = SHRT_MAX;
 	}
 	spryscale += rw_scalestep;
@@ -207,7 +194,7 @@ R_RenderMaskedSegRange
 #define HEIGHTBITS		12
 #define HEIGHTUNIT		(1<<HEIGHTBITS)
 
-void R_RenderSegLoop ()
+void R_RenderSegLoop()
 {
 	angle_t		angle;
 	unsigned		index;
@@ -292,7 +279,7 @@ void R_RenderSegLoop ()
 		dc_yh = yh;
 		dc_texturemid = rw_midtexturemid;
 		dc_source = R_GetColumn(midtexture,texturecolumn);
-		colfunc ();
+		colfunc();
 		ceilingclip[rw_x] = viewheight;
 		floorclip[rw_x] = -1;
 	}
@@ -314,7 +301,7 @@ void R_RenderSegLoop ()
 			dc_yh = mid;
 			dc_texturemid = rw_toptexturemid;
 			dc_source = R_GetColumn(toptexture,texturecolumn);
-			colfunc ();
+			colfunc();
 			ceilingclip[rw_x] = mid;
 		}
 		else
@@ -344,7 +331,7 @@ void R_RenderSegLoop ()
 			dc_texturemid = rw_bottomtexturemid;
 			dc_source = R_GetColumn(bottomtexture,
 						texturecolumn);
-			colfunc ();
+			colfunc();
 			floorclip[rw_x] = mid;
 		}
 		else
@@ -379,10 +366,7 @@ void R_RenderSegLoop ()
 // A wall segment will be drawn
 // between start and stop pixels (inclusive).
 //
-void
-R_StoreWallRange
-( int	start,
- int	stop )
+void R_StoreWallRange(int start, int stop)
 {
 	fixed_t		hyp;
 	fixed_t		sineval;
@@ -396,7 +380,7 @@ R_StoreWallRange
 
 #ifdef RANGECHECK
 	if (start >=viewwidth || start > stop)
-	I_Error ("Bad R_RenderWallRange: %i to %i", start , stop);
+	I_Error("Bad R_RenderWallRange: %i to %i", start, stop);
 #endif
 
 	sidedef = curline->sidedef;
@@ -413,9 +397,9 @@ R_StoreWallRange
 	offsetangle = ANG90;
 
 	distangle = ANG90 - offsetangle;
-	hyp = R_PointToDist (curline->v1->x, curline->v1->y);
+	hyp = R_PointToDist(curline->v1->x, curline->v1->y);
 	sineval = finesine[distangle>>ANGLETOFINESHIFT];
-	rw_distance = FixedMul (hyp, sineval);
+	rw_distance = FixedMul(hyp, sineval);
 
 
 	ds_p->x1 = rw_x = start;
@@ -425,11 +409,11 @@ R_StoreWallRange
 
 	// calculate scale at both ends and step
 	ds_p->scale1 = rw_scale =
-	R_ScaleFromGlobalAngle (viewangle + xtoviewangle[start]);
+	R_ScaleFromGlobalAngle(viewangle + xtoviewangle[start]);
 
 	if (stop > start )
 	{
-	ds_p->scale2 = R_ScaleFromGlobalAngle (viewangle + xtoviewangle[stop]);
+	ds_p->scale2 = R_ScaleFromGlobalAngle(viewangle + xtoviewangle[stop]);
 	ds_p->scalestep = rw_scalestep =
 		(ds_p->scale2 - rw_scale) / (stop-start);
 	}
@@ -635,7 +619,7 @@ R_StoreWallRange
 		offsetangle = ANG90;
 
 	sineval = finesine[offsetangle >>ANGLETOFINESHIFT];
-	rw_offset = FixedMul (hyp, sineval);
+	rw_offset = FixedMul(hyp, sineval);
 
 	if (rw_normalangle-rw_angle1 < ANG180)
 		rw_offset = -rw_offset;
@@ -688,11 +672,11 @@ R_StoreWallRange
 	worldtop >>= 4;
 	worldbottom >>= 4;
 
-	topstep = -FixedMul (rw_scalestep, worldtop);
-	topfrac = (centeryfrac>>4) - FixedMul (worldtop, rw_scale);
+	topstep = -FixedMul(rw_scalestep, worldtop);
+	topfrac = (centeryfrac>>4) - FixedMul(worldtop, rw_scale);
 
-	bottomstep = -FixedMul (rw_scalestep,worldbottom);
-	bottomfrac = (centeryfrac>>4) - FixedMul (worldbottom, rw_scale);
+	bottomstep = -FixedMul(rw_scalestep,worldbottom);
+	bottomfrac = (centeryfrac>>4) - FixedMul(worldbottom, rw_scale);
 
 	if (backsector)
 	{
@@ -701,32 +685,32 @@ R_StoreWallRange
 
 	if (worldhigh < worldtop)
 	{
-		pixhigh = (centeryfrac>>4) - FixedMul (worldhigh, rw_scale);
-		pixhighstep = -FixedMul (rw_scalestep,worldhigh);
+		pixhigh = (centeryfrac>>4) - FixedMul(worldhigh, rw_scale);
+		pixhighstep = -FixedMul(rw_scalestep,worldhigh);
 	}
 
 	if (worldlow > worldbottom)
 	{
-		pixlow = (centeryfrac>>4) - FixedMul (worldlow, rw_scale);
-		pixlowstep = -FixedMul (rw_scalestep,worldlow);
+		pixlow = (centeryfrac>>4) - FixedMul(worldlow, rw_scale);
+		pixlowstep = -FixedMul(rw_scalestep,worldlow);
 	}
 	}
 
 	// render it
 	if (markceiling)
-	ceilingplane = R_CheckPlane (ceilingplane, rw_x, rw_stopx-1);
+	ceilingplane = R_CheckPlane(ceilingplane, rw_x, rw_stopx-1);
 
 	if (markfloor)
-	floorplane = R_CheckPlane (floorplane, rw_x, rw_stopx-1);
+	floorplane = R_CheckPlane(floorplane, rw_x, rw_stopx-1);
 
-	R_RenderSegLoop ();
+	R_RenderSegLoop();
 
 
 	// save sprite clipping info
 	if ( ((ds_p->silhouette & SIL_TOP) || maskedtexture)
 		&& !ds_p->sprtopclip)
 	{
-	memcpy (lastopening, ceilingclip+start, 2*(rw_stopx-start));
+	memcpy(lastopening, ceilingclip+start, 2*(rw_stopx-start));
 	ds_p->sprtopclip = lastopening - start;
 	lastopening += rw_stopx - start;
 	}
@@ -734,7 +718,7 @@ R_StoreWallRange
 	if ( ((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
 		&& !ds_p->sprbottomclip)
 	{
-	memcpy (lastopening, floorclip+start, 2*(rw_stopx-start));
+	memcpy(lastopening, floorclip+start, 2*(rw_stopx-start));
 	ds_p->sprbottomclip = lastopening - start;
 	lastopening += rw_stopx - start;
 	}

@@ -1,18 +1,14 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+\**********************************************************************************************************************************************/
 
 
 #include <string.h>
@@ -1306,7 +1302,7 @@ void G_DeathMatchSpawnPlayer(int playernum)
 
 	// This check has been moved to p_setup.c:P_LoadThings()
 	//if (selections < 8)
-	//		I_Error ("Only %i deathmatch spots, 8 required", selections);
+	//		I_Error("Only %i deathmatch spots, 8 required", selections);
 
 	for (j = 0; j < 20; j++)
 	{
@@ -1811,8 +1807,8 @@ void G_InitNew(skill_t skill, int episode, int map)
 	//maketic = 1;
 	//for (i=0 ; i<maxplayers ; i++)
 	//		nettics[i] = 1; // one null event for this gametic
-	//memset (localcmds,0,sizeof(localcmds));
-	//memset (netcmds,0,sizeof(netcmds));
+	//memset(localcmds,0,sizeof(localcmds));
+	//memset(netcmds,0,sizeof(netcmds));
 
 	G_DoLoadLevel();
 }

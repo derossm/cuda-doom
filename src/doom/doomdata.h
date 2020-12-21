@@ -1,22 +1,17 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-// all external data is defined here
-// most of the data is loaded into different structures at run time
-// some internal structures shared by many modules are here
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+		all external data is defined here most of the data is loaded into different structures at run time,
+		some internal structures shared by many modules are here
+\**********************************************************************************************************************************************/
 
 #ifndef __DOOMDATA__
 #define __DOOMDATA__
@@ -26,8 +21,6 @@
 
 // Some global defines, that configure the game.
 #include "doomdef.h"
-
-
 
 //
 // Map level types.
@@ -39,54 +32,50 @@
 // to provide a complete scene geometry description.
 enum
 {
- ML_LABEL,		// A separator, name, ExMx or MAPxx
- ML_THINGS,		// Monsters, items..
- ML_LINEDEFS,		// LineDefs, from editing
- ML_SIDEDEFS,		// SideDefs, from editing
- ML_VERTEXES,		// Vertices, edited and BSP splits generated
- ML_SEGS,		// LineSegs, from LineDefs split by BSP
- ML_SSECTORS,		// SubSectors, list of LineSegs
- ML_NODES,		// BSP nodes
- ML_SECTORS,		// Sectors, from editing
- ML_REJECT,		// LUT, sector-sector visibility
- ML_BLOCKMAP		// LUT, motion clipping, walls/grid element
+	ML_LABEL,		// A separator, name, ExMx or MAPxx
+	ML_THINGS,		// Monsters, items..
+	ML_LINEDEFS,	// LineDefs, from editing
+	ML_SIDEDEFS,	// SideDefs, from editing
+	ML_VERTEXES,	// Vertices, edited and BSP splits generated
+	ML_SEGS,		// LineSegs, from LineDefs split by BSP
+	ML_SSECTORS,	// SubSectors, list of LineSegs
+	ML_NODES,		// BSP nodes
+	ML_SECTORS,		// Sectors, from editing
+	ML_REJECT,		// LUT, sector-sector visibility
+	ML_BLOCKMAP		// LUT, motion clipping, walls/grid element
 };
-
 
 // A single Vertex.
 typedef PACKED_STRUCT (
 {
- short		x;
- short		y;
+	short x;
+	short y;
 }) mapvertex_t;
-
 
 // A SideDef, defining the visual appearance of a wall,
 // by setting textures and offsets.
 typedef PACKED_STRUCT (
 {
- short		textureoffset;
- short		rowoffset;
- char		toptexture[8];
- char		bottomtexture[8];
- char		midtexture[8];
- // Front sector, towards viewer.
- short		sector;
+	short textureoffset;
+	short rowoffset;
+	char toptexture[8];
+	char bottomtexture[8];
+	char midtexture[8];
+	// Front sector, towards viewer.
+	short sector;
 }) mapsidedef_t;
-
-
 
 // A LineDef, as used for editing, and as input
 // to the BSP builder.
 typedef PACKED_STRUCT (
 {
- unsigned short		v1; // [crispy] extended nodes
- unsigned short		v2; // [crispy] extended nodes
- unsigned short		flags; // [crispy] extended nodes
- short		special;
- short		tag;
- // sidenum[1] will be -1 (NO_INDEX) if one sided
- unsigned short		sidenum[2]; // [crispy] extended nodes
+	unsigned short v1;		// [crispy] extended nodes
+	unsigned short v2;		// [crispy] extended nodes
+	unsigned short flags;	// [crispy] extended nodes
+	short special;
+	short tag;
+	// sidenum[1] will be -1 (NO_INDEX) if one sided
+	unsigned short sidenum[2]; // [crispy] extended nodes
 }) maplinedef_t;
 
 // [crispy] allow loading of Hexen-format maps
@@ -110,14 +99,13 @@ typedef PACKED_STRUCT (
 //
 
 // Solid, is an obstacle.
-#define ML_BLOCKING		1
+#define ML_BLOCKING			1
 
 // Blocks monsters only.
 #define ML_BLOCKMONSTERS	2
 
-// Backside will not be present at all
-// if not two sided.
-#define ML_TWOSIDED		4
+// Backside will not be present at all if not two sided.
+#define ML_TWOSIDED			4
 
 // If a texture is pegged, the texture will have
 // the end exposed to air held constant at the
@@ -135,69 +123,62 @@ typedef PACKED_STRUCT (
 #define ML_DONTPEGBOTTOM	16
 
 // In AutoMap: don't map as two sided: IT'S A SECRET!
-#define ML_SECRET		32
+#define ML_SECRET			32
 
 // Sound rendering: don't let sound cross two of these.
 #define ML_SOUNDBLOCK		64
 
 // Don't draw on the automap at all.
-#define ML_DONTDRAW		128
+#define ML_DONTDRAW			128
 
 // Set if already seen, thus drawn in automap.
-#define ML_MAPPED		256
-
-
-
+#define ML_MAPPED			256
 
 // Sector definition, from editing.
 typedef	PACKED_STRUCT (
 {
- short		floorheight;
- short		ceilingheight;
- char		floorpic[8];
- char		ceilingpic[8];
- short		lightlevel;
- short		special;
- short		tag;
+	short floorheight;
+	short ceilingheight;
+	char floorpic[8];
+	char ceilingpic[8];
+	short lightlevel;
+	short special;
+	short tag;
 }) mapsector_t;
 
 // SubSector, as generated by BSP.
 typedef PACKED_STRUCT (
 {
- unsigned short		numsegs; // [crispy] extended nodes
- // Index of first one, segs are stored sequentially.
- unsigned short		firstseg; // [crispy] extended nodes
+	unsigned short numsegs;		// [crispy] extended nodes
+	// Index of first one, segs are stored sequentially.
+	unsigned short firstseg;	// [crispy] extended nodes
 }) mapsubsector_t;
 
-// [crispy] allow loading of maps with DeePBSP nodes
-// taken from prboom-plus/src/doomdata.h:163-166
+// [crispy] allow loading of maps with DeePBSP nodes taken from prboom-plus/src/doomdata.h:163-166
 typedef PACKED_STRUCT (
 {
 	unsigned short numsegs;
 	int firstseg;
 }) mapsubsector_deepbsp_t;
 
-// [crispy] allow loading of maps with ZDBSP nodes
-// taken from prboom-plus/src/doomdata.h:168-170
+// [crispy] allow loading of maps with ZDBSP nodes taken from prboom-plus/src/doomdata.h:168-170
 typedef PACKED_STRUCT (
 {
 	unsigned int numsegs;
 }) mapsubsector_zdbsp_t;
 
-// LineSeg, generated by splitting LineDefs
-// using partition lines selected by BSP builder.
+// LineSeg, generated by splitting LineDefs using partition lines selected by BSP builder.
 typedef PACKED_STRUCT (
 {
- unsigned short		v1; // [crispy] extended nodes
- unsigned short		v2; // [crispy] extended nodes
- short		angle;
- unsigned short		linedef; // [crispy] extended nodes
- short		side;
- short		offset;
+	unsigned short v1;			// [crispy] extended nodes
+	unsigned short v2;			// [crispy] extended nodes
+	short angle;
+	unsigned short linedef;		// [crispy] extended nodes
+	short side;
+	short offset;
 }) mapseg_t;
 
-// [crispy] allow loading of maps with DeePBSP nodes
-// taken from prboom-plus/src/doomdata.h:183-190
+// [crispy] allow loading of maps with DeePBSP nodes taken from prboom-plus/src/doomdata.h:183-190
 typedef PACKED_STRUCT (
 {
 	int v1;
@@ -208,8 +189,7 @@ typedef PACKED_STRUCT (
 	unsigned short offset;
 }) mapseg_deepbsp_t;
 
-// [crispy] allow loading of maps with ZDBSP nodes
-// taken from prboom-plus/src/doomdata.h:192-196
+// [crispy] allow loading of maps with ZDBSP nodes taken from prboom-plus/src/doomdata.h:192-196
 typedef PACKED_STRUCT (
 {
 	unsigned int v1, v2;
@@ -222,23 +202,21 @@ typedef PACKED_STRUCT (
 
 // Indicate a leaf.
 #define	NF_SUBSECTOR	0x80000000 // [crispy] extended nodes
-#define	NO_INDEX	((unsigned short)-1) // [crispy] extended nodes
+#define	NO_INDEX		((unsigned short)-1) // [crispy] extended nodes
 
 typedef PACKED_STRUCT (
 {
- // Partition line from (x,y) to x+dx,y+dy)
- short		x;
- short		y;
- short		dx;
- short		dy;
+	// Partition line from (x,y) to x+dx,y+dy)
+	short x;
+	short y;
+	short dx;
+	short dy;
 
- // Bounding box for each child,
- // clip against view frustum.
- short		bbox[2][4];
+	// Bounding box for each child, clip against view frustum.
+	short bbox[2][4];
 
- // If NF_SUBSECTOR its a subsector,
- // else it's a node of another subtree.
- unsigned short	children[2];
+	// If NF_SUBSECTOR its a subsector, else it's a node of another subtree.
+	unsigned short children[2];
 
 }) mapnode_t;
 
@@ -272,11 +250,11 @@ typedef PACKED_STRUCT (
 // plus skill/visibility flags and attributes.
 typedef PACKED_STRUCT (
 {
-	short		x;
-	short		y;
-	short		angle;
-	short		type;
-	short		options;
+	short x;
+	short y;
+	short angle;
+	short type;
+	short options;
 }) mapthing_t;
 
 // [crispy] allow loading of Hexen-format maps
@@ -298,7 +276,4 @@ typedef PACKED_STRUCT (
 	byte arg5;
 }) mapthing_hexen_t;
 
-
-
-
-#endif			// __DOOMDATA__
+#endif	// __DOOMDATA__

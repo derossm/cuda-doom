@@ -1,18 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+\**********************************************************************************************************************************************/
+#pragma once
+
 
 #ifndef __AMDATA_H__
 #define __AMDATA_H__
@@ -90,7 +88,7 @@ mline_t cheat_player_arrow[] = {
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
  { { -.867*R, -.5*R }, { .867*R, -.5*R } },
- { { .867*R, -.5*R } , { 0, R } },
+ { { .867*R, -.5*R }, { 0, R } },
  { { 0, R }, { -.867*R, -.5*R } }
  };
 #undef R

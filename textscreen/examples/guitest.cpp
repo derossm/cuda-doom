@@ -1,45 +1,39 @@
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-//
-// Example program: GUI test program
-//
-// Demonstrates all the main textscreen widgets in use and shows how
-// a simple textscreen program can be written.
+/**********************************************************************************************************************************************\
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	Example program: GUI test program
+		Demonstrates all the main textscreen widgets in use and shows how a simple textscreen program can be written.
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "textscreen.h"
+#include "..\textscreen.h"
 
 enum
 {
 	RADIO_VALUE_BADGER,
 	RADIO_VALUE_MUSHROOM,
-	RADIO_VALUE_SNAKE,
+	RADIO_VALUE_SNAKE
 };
 
 // also put some crazy extensions to test the escape function. a"b"c"""dd
-const char *extensions[] = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "",
-		"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", NULL };
-const char *radio_values[] = { "Badger", "Mushroom", "Snake" };
-char *textbox_value = NULL;
-int numbox_value = 0;
+const char* extensions[] = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", NULL };
+const char* radio_values[] = { "Badger", "Mushroom", "Snake" };
+char* textbox_value{nullptr};
+int numbox_value{0};
 int radiobutton_value;
-char *file_path = NULL;
-char *dir_path = NULL;
-txt_label_t *value_label;
-txt_window_t *firstwin;
+char* file_path{nullptr};
+char* dir_path{nullptr};
+txt_label_t* value_label;
+txt_window_t* firstwin;
 int cheesy;
 
 void ClosePwnBox(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
@@ -49,10 +43,10 @@ void ClosePwnBox(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
 	TXT_CloseWindow(window);
 }
 
-void PwnBox(TXT_UNCAST_ARG(widget), void *user_data)
+void PwnBox(TXT_UNCAST_ARG(widget), void* user_data)
 {
-	txt_window_t *window;
-	txt_window_action_t *close_button;
+	txt_window_t* window;
+	txt_window_action_t* close_button;
 
 	window = TXT_NewWindow("Pwned!");
 	TXT_AddWidget(window, TXT_NewLabel(" BOOM! HEADSHOT! "));
@@ -64,7 +58,7 @@ void PwnBox(TXT_UNCAST_ARG(widget), void *user_data)
 	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, close_button);
 }
 
-void UpdateLabel(TXT_UNCAST_ARG(widget), void *user_data)
+void UpdateLabel(TXT_UNCAST_ARG(widget), void* user_data)
 {
 	char buf[40];
 
@@ -79,47 +73,41 @@ void UpdateLabel(TXT_UNCAST_ARG(widget), void *user_data)
 	TXT_SetLabel(value_label, buf);
 }
 
-void CloseWindow(TXT_UNCAST_ARG(button), void *user_data)
+void CloseWindow(TXT_UNCAST_ARG(button), void* user_data)
 {
 	TXT_CloseWindow(firstwin);
 }
 
-void UnicodeWindow(TXT_UNCAST_ARG(widget), void *user_data)
+void UnicodeWindow(TXT_UNCAST_ARG(widget), void* user_data)
 {
-	static const char *strings[] = {
-		"lunedì", "martedì", "mercoledì", "giovedì",
-		"venerdì", "sabato", "domenica",
-	};
-	static int var1, var2;
-	txt_window_t *window;
+	static const char *strings[] = {"lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"};
 
-	window = TXT_NewWindow("Questo è in Italiano");
+	static int var1;
+	static int var2;
+	txt_window_t* window = TXT_NewWindow("Questo è in Italiano");
 
 	TXT_AddWidgets(window,
 					TXT_NewButton("Questo è un tasto"),
 					TXT_NewCheckBox("Questo è un checkbox", &var1),
 					TXT_NewDropdownList(&var2, strings, 7),
 					TXT_NewSeparator("Questo è un separatore"),
-					TXT_NewLabel("Leggi questo, è pieno di\n"
-								"informazioni interessanti"),
-					TXT_NewRadioButton("Ma questo non è un radio??",
-										&var1, 0),
+					TXT_NewLabel("Leggi questo, è pieno di\ninformazioni interessanti"),
+					TXT_NewRadioButton("Ma questo non è un radio??", &var1, 0),
 					NULL);
-	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT,
-						TXT_NewWindowAction(KEY_ENTER, "Nullità"));
+
+	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, TXT_NewWindowAction(KEY_ENTER, "Nullità"));
 
 }
 
 void SetupWindow(void)
 {
-	txt_window_t *window;
-	txt_table_t *table;
-	txt_table_t *rightpane;
+	txt_window_t* window;
+	txt_table_t* table;
+	txt_table_t* rightpane;
 	txt_checkbox_t *cheesy_checkbox;
-	txt_window_action_t *pwn;
-	txt_label_t *toplabel;
+	txt_window_action_t* pwn;
+	txt_label_t* toplabel;
 	char buf[100];
-	int i;
 
 	window = TXT_NewWindow("Window test");
 
@@ -128,16 +116,14 @@ void SetupWindow(void)
 	TXT_AddWidget(window, TXT_NewSeparator("Main section"));
 	table = TXT_NewTable(3);
 
-	toplabel = TXT_NewLabel("This is a multiline label.\n"
-							"A single label object contains \n"
-							"all three of these lines.");
+	toplabel = TXT_NewLabel("This is a multiline label.\nA single label object contains\nall three of these lines.");
 	TXT_AddWidget(window, toplabel);
 	TXT_SetWidgetAlign(toplabel, TXT_HORIZ_CENTER);
 
 	//TXT_AddWidget(window, TXT_NewScrollPane(15, 4, table));
 	TXT_AddWidget(window, table);
 
-	for (i=0; i<3; ++i)
+	for (size_t i{0ull}; i<3; ++i)
 	{
 		TXT_snprintf(buf, sizeof(buf), "Option %i in a table:", i + 1);
 		TXT_AddWidget(table, TXT_NewLabel(buf));
@@ -148,9 +134,7 @@ void SetupWindow(void)
 	}
 
 	TXT_AddWidgets(table,
-					TXT_NewLabel("Still the same table, but:\n"
-								"This label magically overflows\n"
-								"across multiple cells! Cool, huh? "),
+					TXT_NewLabel("Still the same table, but:\nThis label magically overflows\nacross multiple cells! Cool, huh?"),
 					TXT_TABLE_OVERFLOW_RIGHT,
 					TXT_NewButton("Do nothing"),
 					TXT_TABLE_OVERFLOW_DOWN,
@@ -173,9 +157,9 @@ void SetupWindow(void)
 	rightpane = TXT_NewTable(1);
 	TXT_AddWidget(table, rightpane);
 
-	for (i=0; i<3; ++i)
+	for (size_t i{0}; i<3; ++i)
 	{
-		txt_radiobutton_t *rbut;
+		txt_radiobutton_t* rbut;
 
 		rbut = TXT_NewRadioButton(radio_values[i], &radiobutton_value, i);
 		TXT_AddWidget(rightpane, rbut);
@@ -195,27 +179,19 @@ void SetupWindow(void)
 
 void Window2(void)
 {
-	txt_window_t *window;
-	txt_table_t *table;
-	txt_table_t *unselectable_table;
-	txt_scrollpane_t *scrollpane;
+	txt_window_t* window;
+	txt_table_t* table;
+	txt_table_t* unselectable_table;
+	txt_scrollpane_t* scrollpane;
 
 	window = TXT_NewWindow("Another test");
-	TXT_SetWindowPosition(window,
-							TXT_HORIZ_RIGHT,
-							TXT_VERT_TOP,
-							TXT_SCREEN_W - 1, 1);
+	TXT_SetWindowPosition(window, TXT_HORIZ_RIGHT, TXT_VERT_TOP, TXT_SCREEN_W - 1, 1);
 
-	TXT_AddWidgets(window,
-					TXT_NewScrollPane(40, 1,
-						TXT_NewLabel("* Unselectable scroll pane *")),
-					unselectable_table = TXT_NewTable(1),
-					NULL);
+	TXT_AddWidgets(window, TXT_NewScrollPane(40, 1, TXT_NewLabel("* Unselectable scroll pane *")), unselectable_table = TXT_NewTable(1), NULL);
 
 	TXT_AddWidget(unselectable_table, TXT_NewLabel("* Unselectable table *"));
 	TXT_AddWidget(unselectable_table, TXT_NewLabel(
-		"This is a UTF-8 string:\n"
-		"\xc3\x80 bient\xc3\xb4t na\xc3\xaet "
+		"This is a UTF-8 string:\n\xc3\x80 bient\xc3\xb4t na\xc3\xaet "
 		"\xc3\xa9v\xc3\xaaque \xc3\xa0 l'\xc5\x93uvre p\xc3\xa8re."));
 
 	TXT_AddWidget(window, TXT_NewSeparator("Input boxes"));
@@ -229,25 +205,16 @@ void Window2(void)
 					TXT_NewLabel("Spin control:"),
 					TXT_NewSpinControl(&numbox_value, 0, 15),
 					TXT_NewLabel("File:"),
-					TXT_NewFileSelector(&file_path, 28, "Select file:",
-										extensions),
+					TXT_NewFileSelector(&file_path, 28, "Select file:", extensions),
 					TXT_NewLabel("Directory:"),
-					TXT_NewFileSelector(&dir_path, 28, "Select directory:",
-										TXT_DIRECTORY),
+					TXT_NewFileSelector(&dir_path, 28, "Select directory:", TXT_DIRECTORY),
 					NULL);
 
 	TXT_AddWidget(window, TXT_NewSeparator("Scroll pane test"));
 	scrollpane = TXT_NewScrollPane(40, 5, TXT_NewLabel(
-		"This is a scrollable pane. The contents\n"
-		"of this box are larger than the box\n"
-		"itself, but it can be scrolled around\n"
-		"to explore the full contents.\n"
-		"\n"
-		"Scrollable panes can be scrolled both\n"
-		"vertically and horizontally. They\n"
-		"can contain any widget. The scroll bars\n"
-		"appear automatically as needed.\n"
-		"\n"
+		"This is a scrollable pane. The contents\nof this box are larger than the box\nitself, but it can be scrolled around\n"
+		"to explore the full contents.\n\nScrollable panes can be scrolled both\nvertically and horizontally. They\n"
+		"can contain any widget. The scroll bars\nappear automatically as needed.\n\n"
 		"This is a very long line of text that forces a horizontal scrollbar"
 	));
 	TXT_AddWidget(window, scrollpane);

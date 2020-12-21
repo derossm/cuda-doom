@@ -1,29 +1,18 @@
-//
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-//
-// This implements a cryptographically secure pseudorandom number
-// generator for implementing secure demos. The approach taken is to
-// use the AES (Rijndael) stream cipher in "counter" mode, encrypting
-// an incrementing counter. The cipher key acts as the random seed.
-// Cryptanalysis of AES used in this way has shown it to be an
-// effective PRNG (see: Empirical Evidence concerning AES, Hellekalek
-// & Wegenkittl, 2003).
-//
-// AES implementation is taken from the Linux kernel's AES
-// implementation, found in crypto/aes_generic.c. It has been hacked
-// up to work independently.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	This implements a cryptographically secure pseudorandom number generator for implementing secure demos. The approach taken is to use the
+	AES (Rijndael) stream cipher in "counter" mode, encrypting an incrementing counter. The cipher key acts as the random seed. Cryptanalysis
+	of AES used in this way has shown it to be an effective PRNG (see: Empirical Evidence concerning AES, Hellekalek & Wegenkittl, 2003).
+
+	AES implementation taken from Linux kernel's AES implementation, found in crypto/aes_generic.c. It has been hacked to work independently.
+\**********************************************************************************************************************************************/
 
 #include <stdint.h>
 
@@ -31,7 +20,7 @@
 #include "doomtype.h"
 #include "i_swap.h"
 
-/*
+/**********************************************************************************************************************************************\
  * Cryptographic API.
  *
  * AES Cipher Algorithm.
@@ -77,8 +66,7 @@
  * This software is provided 'as is' with no explicit or implied warranties
  * in respect of its properties, including, but not limited to, correctness
  * and/or fitness for purpose.
- * ---------------------------------------------------------------------------
- */
+\**********************************************************************************************************************************************/
 
 #define AES_MIN_KEY_SIZE		16
 #define AES_MAX_KEY_SIZE		32

@@ -1,24 +1,20 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Implements special effects:
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Implements special effects:
 //	Texture animation, height or lighting changes
 //		according to adjacent sectors, respective
 //		utility functions, etc.
 //	Line Tag handling. Line and Sector triggers.
-//
+\**********************************************************************************************************************************************/
 
 
 #include <stdlib.h>
@@ -1517,7 +1513,7 @@ int EV_DoDonut(line_t*	line)
 			}
 
 		//	Spawn rising slime
-		floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
 		P_AddThinker (&floor->thinker);
 		s2->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1531,7 +1527,7 @@ int EV_DoDonut(line_t*	line)
 		floor->floordestheight = s3_floorheight;
 
 		//	Spawn lowering donut-hole
-		floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
 		P_AddThinker (&floor->thinker);
 		s1->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;

@@ -1,26 +1,20 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	DOOM selection menu, options, episode etc.
-//	Sliders and icons. Kinda widget stuff.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
 
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	DOOM selection menu, options, episode etc.
+//	Sliders and icons. Kinda widget stuff.
+\**********************************************************************************************************************************************/
 
 #include <stdlib.h>
 #include <ctype.h>
-
 
 #include "doomdef.h"
 #include "doomkeys.h"
@@ -41,7 +35,6 @@
 
 #include "r_local.h"
 
-
 #include "hu_stuff.h"
 
 #include "g_game.h"
@@ -50,7 +43,7 @@
 #include "m_controls.h"
 #include "p_saveg.h"
 #include "p_setup.h"
-#include "p_extsaveg.h" // [crispy] savewadfilename
+#include "p_extsaveg.h"		// [crispy] savewadfilename
 
 #include "s_sound.h"
 
@@ -60,50 +53,46 @@
 #include "sounds.h"
 
 #include "m_menu.h"
-#include "m_crispy.h" // [crispy] Crispness menu
+#include "m_crispy.h"			// [crispy] Crispness menu
 
-#include "v_trans.h" // [crispy] colored "invert mouse" message
+#include "v_trans.h"			// [crispy] colored "invert mouse" message
 
-extern patch_t*		hu_font[HU_FONTSIZE];
-extern bool		message_dontfuckwithme;
+extern patch_t* hu_font[HU_FONTSIZE];
+extern bool message_dontfuckwithme;
 
-extern bool		chat_on;		// in heads-up code
+extern bool chat_on;			// in heads-up code
 
-//
-// defaulted values
-//
-int			mouseSensitivity = 5;
-int			mouseSensitivity_x2 = 5; // [crispy] mouse sensitivity menu
-int			mouseSensitivity_y = 5; // [crispy] mouse sensitivity menu
+int mouseSensitivity = 5;
+int mouseSensitivity_x2 = 5;	// [crispy] mouse sensitivity menu
+int mouseSensitivity_y = 5;		// [crispy] mouse sensitivity menu
 
 // Show messages has default, 0 = off, 1 = on
-int			showMessages = 1;
-
+int showMessages = 1;
 
 // Blocky mode, has default, 0 = high, 1 = normal
-int			detailLevel = 0;
-int			screenblocks = 10; // [crispy] increased
+int detailLevel = 0;
+int screenblocks = 10;			// [crispy] increased
 
 // temp for screenblocks (0-9)
-int			screenSize;
+int screenSize;
 
 // -1 = no quicksave slot picked!
-int			quickSaveSlot;
+int quickSaveSlot;
 
  // 1 = message to be printed
-int			messageToPrint;
+int messageToPrint;
 // ...and here is the message string!
-const char		*messageString;
+const char* messageString;
 
 // message x & y
-int			messx;
-int			messy;
-int			messageLastMenuActive;
+int messx;
+int messy;
+int messageLastMenuActive;
 
 // timed message = no input from user
-bool			messageNeedsInput;
+bool messageNeedsInput;
 
-void	(*messageRoutine)(int response);
+void (*messageRoutine)(int response);
 
 // [crispy] intermediate gamma levels
 char gammamsg[5+4][26+2] =
@@ -119,25 +108,23 @@ char gammamsg[5+4][26+2] =
 	GAMMALVL4
 };
 
-// we are going to be entering a savegame string
-int			saveStringEnter;
-int					saveSlot;	// which slot to save in
-int			saveCharIndex;	// which char we're editing
-static bool			joypadSave = false; // was the save action initiated by joypad?
-// old save description before edit
-char			saveOldString[SAVESTRINGSIZE];
+int saveStringEnter;					// we are going to be entering a savegame string
+int saveSlot;							// which slot to save in
+int saveCharIndex;						// which char we're editing
+static bool joypadSave = false;			// was the save action initiated by joypad?
+char saveOldString[SAVESTRINGSIZE];		// old save description before edit
 
-bool			inhelpscreens;
-bool			menuactive;
+bool inhelpscreens;
+bool menuactive;
 
-#define SKULLXOFF		-32
-#define LINEHEIGHT		16
+#define SKULLXOFF			-32
+#define LINEHEIGHT			16
 #define CRISPY_LINEHEIGHT	10 // [crispy] Crispness menu
 
-extern bool		sendpause;
-char			savegamestrings[10][SAVESTRINGSIZE];
+extern bool sendpause;
+char savegamestrings[10][SAVESTRINGSIZE];
 
-char	endstring[160];
+char endstring[160];
 
 static bool opldev;
 
@@ -149,48 +136,44 @@ extern bool speedkeydown ();
 typedef struct
 {
 	// 0 = no cursor here, 1 = ok, 2 = arrows ok
-	short	status;
+	short status;
 
-	char	name[10];
+	char name[10];
 
-	// choice = menu item #.
-	// if status = 2,
-	//	choice=0:leftarrow,1:rightarrow
-	void	(*routine)(int choice);
+	// choice = menu item #
+	// if status = 2, choice = 0:leftarrow, 1:rightarrow
+	void (*routine)(int choice);
 
 	// hotkey in menu
-	char	alphaKey;
-	const char	*alttext; // [crispy] alternative text for menu items
+	char alphaKey;
+	const char* alttext;		// [crispy] alternative text for menu items
 } menuitem_t;
 
 
 
 typedef struct menu_s
 {
-	short		numitems;	// # of menu items
-	struct menu_s*	prevMenu;	// previous menu
-	menuitem_t*		menuitems;	// menu items
-	void		(*routine)();	// draw routine
-	short		x;
-	short		y;		// x,y of menu
-	short		lastOn;		// last item user was on in menu
-	short		lumps_missing;	// [crispy] indicate missing menu graphics lumps
+	short numitems;				// # of menu items
+	struct menu_s* prevMenu;	// previous menu
+	menuitem_t* menuitems;		// menu items
+	void (*routine)();			// draw routine
+	short x;					// x,y of menu
+	short y;
+	short lastOn;				// last item user was on in menu
+	short lumps_missing;		// [crispy] indicate missing menu graphics lumps
 } menu_t;
 
-short		itemOn;			// menu item skull is on
-short		skullAnimCounter;	// skull animation counter
-short		whichSkull;		// which skull to draw
+short itemOn;					// menu item skull is on
+short skullAnimCounter;			// skull animation counter
+short whichSkull;				// which skull to draw
 
 // graphic name of skulls
 // warning: initializer-string for array of chars is too long
-const char *skullName[2] = {"M_SKULL1","M_SKULL2"};
+const char* skullName[2] = { "M_SKULL1", "M_SKULL2" };
 
 // current menudef
 menu_t*	currentMenu;
 
-//
-// PROTOTYPES
-//
 static void M_NewGame(int choice);
 static void M_Episode(int choice);
 static void M_ChooseSkill(int choice);
@@ -204,14 +187,14 @@ static void M_QuitDOOM(int choice);
 
 static void M_ChangeMessages(int choice);
 static void M_ChangeSensitivity(int choice);
-static void M_ChangeSensitivity_x2(int choice); // [crispy] mouse sensitivity menu
-static void M_ChangeSensitivity_y(int choice); // [crispy] mouse sensitivity menu
-static void M_MouseInvert(int choice); // [crispy] mouse sensitivity menu
+static void M_ChangeSensitivity_x2(int choice);								// [crispy] mouse sensitivity menu
+static void M_ChangeSensitivity_y(int choice);								// [crispy] mouse sensitivity menu
+static void M_MouseInvert(int choice);										// [crispy] mouse sensitivity menu
 static void M_SfxVol(int choice);
 static void M_MusicVol(int choice);
 static void M_ChangeDetail(int choice);
 static void M_SizeDisplay(int choice);
-static void M_Mouse(int choice); // [crispy] mouse sensitivity menu
+static void M_Mouse(int choice);											// [crispy] mouse sensitivity menu
 static void M_Sound(int choice);
 
 static void M_FinishReadThis(int choice);
@@ -227,18 +210,18 @@ static void M_DrawReadThis2();
 static void M_DrawNewGame();
 static void M_DrawEpisode();
 static void M_DrawOptions();
-static void M_DrawMouse(); // [crispy] mouse sensitivity menu
+static void M_DrawMouse();													// [crispy] mouse sensitivity menu
 static void M_DrawSound();
 static void M_DrawLoad();
 static void M_DrawSave();
 
 static void M_DrawSaveLoadBorder(int x,int y);
-static void M_SetupNextMenu(menu_t *menudef);
+static void M_SetupNextMenu(menu_t* menudef);
 static void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
-static void M_WriteText(int x, int y, const char *string);
-int M_StringWidth(const char *string); // [crispy] un-static
-static int M_StringHeight(const char *string);
-static void M_StartMessage(const char *string, void *routine, bool input);
+static void M_WriteText(int x, int y, const char* string);
+int M_StringWidth(const char* string);										// [crispy] un-static
+static int M_StringHeight(const char* string);
+static void M_StartMessage(const char* string, void* routine, bool input);
 static void M_ClearMenus ();
 
 // [crispy] Crispness menu
@@ -250,11 +233,6 @@ static void M_DrawCrispness2();
 static void M_DrawCrispness3();
 static void M_DrawCrispness4();
 
-
-
-//
-// DOOM MENU
-//
 enum
 {
 	newgame = 0,
@@ -283,14 +261,11 @@ menu_t MainDef =
 	NULL,
 	MainMenu,
 	M_DrawMainMenu,
-	97,64,
+	97,
+	64,
 	0
 };
 
-
-//
-// EPISODE SELECT
-//
 enum
 {
 	ep1,
@@ -306,23 +281,21 @@ menuitem_t EpisodeMenu[]=
 	{1,"M_EPI1", M_Episode,'k'},
 	{1,"M_EPI2", M_Episode,'t'},
 	{1,"M_EPI3", M_Episode,'i'},
-	{1,"M_EPI4", M_Episode,'t'}
-	,{1,"M_EPI5", M_Episode,'s'} // [crispy] Sigil
+	{1,"M_EPI4", M_Episode,'t'},
+	{1,"M_EPI5", M_Episode,'s'}		// [crispy] Sigil
 };
 
 menu_t EpiDef =
 {
-	ep_end,		// # of menu items
+	ep_end,			// # of menu items
 	&MainDef,		// previous menu
 	EpisodeMenu,	// menuitem_t ->
 	M_DrawEpisode,	// drawing routine ->
-	48,63,				// x,y
-	ep1			// lastOn
+	48,				// x,y
+	63,
+	ep1				// lastOn
 };
 
-//
-// NEW GAME
-//
 enum
 {
 	killthings,
@@ -348,15 +321,11 @@ menu_t NewDef =
 	&EpiDef,		// previous menu
 	NewGameMenu,	// menuitem_t ->
 	M_DrawNewGame,	// drawing routine ->
-	48,63,				// x,y
-	hurtme		// lastOn
+	48,				// x,y
+	63,
+	hurtme			// lastOn
 };
 
-
-
-//
-// OPTIONS MENU
-//
 enum
 {
 	endgame,
@@ -366,7 +335,7 @@ enum
 	option_empty1,
 	mousesens,
 	soundvol,
-	crispness, // [crispy] Crispness menu
+	crispness,												// [crispy] Crispness menu
 	opt_end
 } options_e;
 
@@ -377,9 +346,9 @@ menuitem_t OptionsMenu[]=
 	{1,"M_DETAIL",	M_ChangeDetail,'g', "Graphic Detail: "},
 	{2,"M_SCRNSZ",	M_SizeDisplay,'s', "Screen Size"},
 	{-1,"",0,'\0'},
-	{1,"M_MSENS",	M_Mouse,'m', "Mouse Sensitivity"}, // [crispy] mouse sensitivity menu
+	{1,"M_MSENS",	M_Mouse,'m', "Mouse Sensitivity"},		// [crispy] mouse sensitivity menu
 	{1,"M_SVOL",	M_Sound,'s', "Sound Volume"},
-	{1,"M_CRISPY",	M_CrispnessCur,'c', "Crispness"} // [crispy] Crispness menu
+	{1,"M_CRISPY",	M_CrispnessCur,'c', "Crispness"}		// [crispy] Crispness menu
 };
 
 menu_t OptionsDef =
@@ -388,7 +357,8 @@ menu_t OptionsDef =
 	&MainDef,
 	OptionsMenu,
 	M_DrawOptions,
-	60,37,
+	60,
+	37,
 	0
 };
 
@@ -422,7 +392,8 @@ static menu_t MouseDef =
 	&OptionsDef,
 	MouseMenu,
 	M_DrawMouse,
-	80,64,
+	80,
+	64,
 	0
 };
 
@@ -478,7 +449,8 @@ static menu_t Crispness1Def =
 	&OptionsDef,
 	Crispness1Menu,
 	M_DrawCrispness1,
-	48,28,
+	48,
+	28,
 	1
 };
 
@@ -531,7 +503,8 @@ static menu_t Crispness2Def =
 	&OptionsDef,
 	Crispness2Menu,
 	M_DrawCrispness2,
-	48,28,
+	48,
+	28,
 	1
 };
 
@@ -586,7 +559,8 @@ static menu_t Crispness3Def =
 	&OptionsDef,
 	Crispness3Menu,
 	M_DrawCrispness3,
-	48,28,
+	48,
+	28,
 	1
 };
 
@@ -610,7 +584,6 @@ enum
 	crispness4_prev,
 	crispness4_end
 } crispness4_e;
-
 
 static menuitem_t Crispness4Menu[]=
 {
@@ -636,7 +609,8 @@ static menu_t Crispness4Def =
 	&OptionsDef,
 	Crispness4Menu,
 	M_DrawCrispness4,
-	48,28,
+	48,
+	28,
 	1
 };
 
@@ -650,9 +624,7 @@ static menu_t *CrispnessMenus[] =
 
 static int crispness_cur;
 
-//
 // Read This! MENU 1 & 2
-//
 enum
 {
 	rdthsempty1,
@@ -670,7 +642,8 @@ menu_t ReadDef1 =
 	&MainDef,
 	ReadMenu1,
 	M_DrawReadThis1,
-	280,185,
+	280,
+	185,
 	0
 };
 
@@ -691,13 +664,11 @@ menu_t ReadDef2 =
 	&ReadDef1,
 	ReadMenu2,
 	M_DrawReadThis2,
-	330,175,
+	330,
+	175,
 	0
 };
 
-//
-// SOUND VOLUME MENU
-//
 enum
 {
 	sfx_vol,
@@ -721,13 +692,11 @@ menu_t SoundDef =
 	&OptionsDef,
 	SoundMenu,
 	M_DrawSound,
-	80,64,
+	80,
+	64,
 	0
 };
 
-//
-// LOAD GAME MENU
-//
 enum
 {
 	load1,
@@ -736,8 +705,8 @@ enum
 	load4,
 	load5,
 	load6,
-	load7, // [crispy] up to 8 savegames
-	load8, // [crispy] up to 8 savegames
+	load7,						// [crispy] up to 8 savegames
+	load8,						// [crispy] up to 8 savegames
 	load_end
 } load_e;
 
@@ -749,8 +718,8 @@ menuitem_t LoadMenu[]=
 	{1,"", M_LoadSelect,'4'},
 	{1,"", M_LoadSelect,'5'},
 	{1,"", M_LoadSelect,'6'},
-	{1,"", M_LoadSelect,'7'}, // [crispy] up to 8 savegames
-	{1,"", M_LoadSelect,'8'} // [crispy] up to 8 savegames
+	{1,"", M_LoadSelect,'7'},	// [crispy] up to 8 savegames
+	{1,"", M_LoadSelect,'8'}	// [crispy] up to 8 savegames
 };
 
 menu_t LoadDef =
@@ -759,13 +728,11 @@ menu_t LoadDef =
 	&MainDef,
 	LoadMenu,
 	M_DrawLoad,
-	80,54,
+	80,
+	54,
 	0
 };
 
-//
-// SAVE GAME MENU
-//
 menuitem_t SaveMenu[]=
 {
 	{1,"", M_SaveSelect,'1'},
@@ -774,8 +741,8 @@ menuitem_t SaveMenu[]=
 	{1,"", M_SaveSelect,'4'},
 	{1,"", M_SaveSelect,'5'},
 	{1,"", M_SaveSelect,'6'},
-	{1,"", M_SaveSelect,'7'}, // [crispy] up to 8 savegames
-	{1,"", M_SaveSelect,'8'} // [crispy] up to 8 savegames
+	{1,"", M_SaveSelect,'7'},	// [crispy] up to 8 savegames
+	{1,"", M_SaveSelect,'8'}	// [crispy] up to 8 savegames
 };
 
 menu_t SaveDef =
@@ -784,207 +751,171 @@ menu_t SaveDef =
 	&MainDef,
 	SaveMenu,
 	M_DrawSave,
-	80,54,
+	80,
+	54,
 	0
 };
 
-
-//
 // M_ReadSaveStrings
 // read the strings from the savegame files
-//
 void M_ReadSaveStrings()
 {
-	FILE	*handle;
-	int		i;
-	char	name[256];
-
-	for (i = 0;i < load_end;i++)
+	for (size_t i{0ull}; i < load_end; ++i)
 	{
-		int retval;
+		char name[256];
 		M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
-	handle = fopen(name, "rb");
+		auto handle{fopen(name, "rb")};
 		if (handle == NULL)
 		{
 			M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
 			LoadMenu[i].status = 0;
 			continue;
 		}
-		retval = fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
-	fclose(handle);
-		LoadMenu[i].status = retval == SAVESTRINGSIZE;
+
+		auto retval{fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle)};
+		fclose(handle);
+		LoadMenu[i].status = (retval == SAVESTRINGSIZE);
 	}
 }
 
-
-//
 // M_LoadGame & Cie.
-//
-static int LoadDef_x = 72, LoadDef_y = 28;
+static int LoadDef_x = 72;
+static int LoadDef_y = 28;
 void M_DrawLoad()
 {
-	int				i;
+	V_DrawPatchDirect(LoadDef_x, LoadDef_y, W_CacheLumpName(DEH_String("M_LOADG"), PU_CACHE));
 
-	V_DrawPatchDirect(LoadDef_x, LoadDef_y,
-						W_CacheLumpName(DEH_String("M_LOADG"), PU_CACHE));
-
-	for (i = 0;i < load_end; i++)
+	for (size_t i{0ull}; i < load_end; ++i)
 	{
-	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
+		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
 
-	// [crispy] shade empty savegame slots
-	if (!LoadMenu[i].status)
-		dp_translation = cr[CR_DARK];
+		// [crispy] shade empty savegame slots
+		if (!LoadMenu[i].status)
+		{
+			dp_translation = cr[CR_DARK];
+		}
 
-	M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT*i, savegamestrings[i]);
 
-	dp_translation = NULL;
+		dp_translation = NULL;
 	}
 }
 
-
-
-//
-// Draw border for the savegame description
-//
 void M_DrawSaveLoadBorder(int x,int y)
 {
-	int				i;
+	V_DrawPatchDirect(x - 8, y + 7, W_CacheLumpName(DEH_String("M_LSLEFT"), PU_CACHE));
 
-	V_DrawPatchDirect(x - 8, y + 7,
-						W_CacheLumpName(DEH_String("M_LSLEFT"), PU_CACHE));
-
-	for (i = 0;i < 24;i++)
+	for (size_t i{0}; i < 24; ++i)
 	{
-	V_DrawPatchDirect(x, y + 7,
-							W_CacheLumpName(DEH_String("M_LSCNTR"), PU_CACHE));
-	x += 8;
+		V_DrawPatchDirect(x, y + 7, W_CacheLumpName(DEH_String("M_LSCNTR"), PU_CACHE));
+		x += 8;
 	}
 
-	V_DrawPatchDirect(x, y + 7,
-						W_CacheLumpName(DEH_String("M_LSRGHT"), PU_CACHE));
+	V_DrawPatchDirect(x, y + 7, W_CacheLumpName(DEH_String("M_LSRGHT"), PU_CACHE));
 }
 
-
-
-//
-// User wants to load this game
-//
 void M_LoadSelect(int choice)
 {
-	char	name[256];
+	char name[256];
 
 	M_StringCopy(name, P_SaveGameFile(choice), sizeof(name));
 
 	// [crispy] save the last game you loaded
 	SaveDef.lastOn = choice;
-	G_LoadGame (name);
-	M_ClearMenus ();
+	G_LoadGame(name);
+	M_ClearMenus();
 
 	// [crispy] allow quickload before quicksave
 	if (quickSaveSlot == -2)
-	quickSaveSlot = choice;
+	{
+		quickSaveSlot = choice;
+	}
 }
 
-//
-// Selected from DOOM menu
-//
-void M_LoadGame (int choice)
+void M_LoadGame(int choice)
 {
 	// [crispy] allow loading game while multiplayer demo playback
 	if (netgame && !demoplayback)
 	{
-	M_StartMessage(DEH_String(LOADNET),NULL,false);
-	return;
+		M_StartMessage(DEH_String(LOADNET), nullptr, false);
+		return;
 	}
 
 	M_SetupNextMenu(&LoadDef);
 	M_ReadSaveStrings();
 }
 
-
-//
 // M_SaveGame & Cie.
-//
-static int SaveDef_x = 72, SaveDef_y = 28;
+static int SaveDef_x = 72;
+static int SaveDef_y = 28;
 void M_DrawSave()
 {
-	int				i;
-
 	V_DrawPatchDirect(SaveDef_x, SaveDef_y, W_CacheLumpName(DEH_String("M_SAVEG"), PU_CACHE));
-	for (i = 0;i < load_end; i++)
+	for (size_t i{0ull}; i < load_end; ++i)
 	{
-	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-	M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT*i);
+		M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT*i, savegamestrings[i]);
 	}
 
 	if (saveStringEnter)
 	{
-	i = M_StringWidth(savegamestrings[saveSlot]);
-	M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
+		auto width{M_StringWidth(savegamestrings[saveSlot])};
+		// NOTE: SHOULD WIDTH BE ALLOWED TO BE NEGATIVE? TODO INVESTIGATE
+		M_WriteText(LoadDef.x + width, LoadDef.y + LINEHEIGHT*saveSlot, "_");
 	}
 }
 
-//
 // M_Responder calls this when user is finished
-//
 void M_DoSave(int slot)
 {
-	G_SaveGame (slot,savegamestrings[slot]);
-	M_ClearMenus ();
+	G_SaveGame(slot,savegamestrings[slot]);
+	M_ClearMenus();
 
 	// PICK QUICKSAVE SLOT YET?
 	if (quickSaveSlot == -2)
-	quickSaveSlot = slot;
+	{
+		quickSaveSlot = slot;
+	}
 }
 
-//
 // Generate a default save slot name when the user saves to
 // an empty slot via the joypad.
-//
 static void SetDefaultSaveName(int slot)
 {
 	// map from IWAD or PWAD?
 	if (W_IsIWADLump(maplumpinfo) && strcmp(savegamedir, ""))
 	{
-		M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE,
-					"%s", maplumpinfo->name);
+		M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE, "%s", maplumpinfo->name);
 	}
 	else
 	{
-		char *wadname = M_StringDuplicate(W_WadNameForLump(maplumpinfo));
-		char *ext = strrchr(wadname, '.');
+		auto wadname{M_StringDuplicate(W_WadNameForLump(maplumpinfo))};
+		auto ext = strrchr(*wadname, '.');
 
-		if (ext != NULL)
+		if (ext != nullptr)
 		{
 			*ext = '\0';
 		}
 
-		M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE,
-					"%s (%s)", maplumpinfo->name,
-					wadname);
-		free(wadname);
+		M_snprintf(savegamestrings[itemOn], SAVESTRINGSIZE, "%s (%s)", maplumpinfo->name, *wadname);
 	}
+
 	M_ForceUppercase(savegamestrings[itemOn]);
 	joypadSave = false;
 }
 
 // [crispy] override savegame name if it already starts with a map identifier
-static bool StartsWithMapIdentifier (char *str)
+static bool StartsWithMapIdentifier(char* str)
 {
 	M_ForceUppercase(str);
 
-	if (strlen(str) >= 4 &&
-		str[0] == 'E' && isdigit(str[1]) &&
-		str[2] == 'M' && isdigit(str[3]))
+	if (strlen(str) >= 4 && str[0] == 'E' && isdigit(str[1]) && str[2] == 'M' && isdigit(str[3]))
 	{
 		return true;
 	}
 
-	if (strlen(str) >= 5 &&
-		str[0] == 'M' && str[1] == 'A' && str[2] == 'P' &&
-		isdigit(str[3]) && isdigit(str[4]))
+	if (strlen(str) >= 5 && str[0] == 'M' && str[1] == 'A' && str[2] == 'P' && isdigit(str[3]) && isdigit(str[4]))
 	{
 		return true;
 	}
@@ -992,13 +923,9 @@ static bool StartsWithMapIdentifier (char *str)
 	return false;
 }
 
-//
 // User wants to save. Start string input for M_Responder
-//
 void M_SaveSelect(int choice)
 {
-	int x, y;
-
 	// we are going to be intercepting all chars
 	saveStringEnter = 1;
 
@@ -1006,15 +933,17 @@ void M_SaveSelect(int choice)
 	LoadDef.lastOn = choice;
 
 	// We need to turn on text input:
-	x = LoadDef.x - 11;
-	y = LoadDef.y + choice * LINEHEIGHT - 4;
-	I_StartTextInput(x, y, x + 8 + 24 * 8 + 8, y + LINEHEIGHT - 2);
+	auto x{LoadDef.x - 11};
+	auto y{LoadDef.y + choice*LINEHEIGHT - 4};
+	// NOTE: TODO INVESTIGATE 2*8 + 24*8 = 26*8 = 208, where does this value come from?
+	// maybe it makes sense as bits in a byte: 1*128 + 1*64 + 0*32 + 1*16 + 0*8 + 0*4 + 0*2 + 0*1 = 208 = 11010000
+	// ... but why write it out as 8 + 24*8 + 8?
+	I_StartTextInput(x, y, x + 8 + 24*8 + 8, y + LINEHEIGHT - 2);
 
 	saveSlot = choice;
 	M_StringCopy(saveOldString,savegamestrings[choice], SAVESTRINGSIZE);
-	if (!strcmp(savegamestrings[choice], EMPTYSTRING) ||
-		// [crispy] override savegame name if it already starts with a map identifier
-		StartsWithMapIdentifier(savegamestrings[choice]))
+	// [crispy] override savegame name if it already starts with a map identifier
+	if (!strcmp(savegamestrings[choice], EMPTYSTRING) || StartsWithMapIdentifier(savegamestrings[choice]))
 	{
 		savegamestrings[choice][0] = 0;
 
@@ -1023,40 +952,35 @@ void M_SaveSelect(int choice)
 			SetDefaultSaveName(choice);
 		}
 	}
+
 	saveCharIndex = strlen(savegamestrings[choice]);
 }
 
-//
-// Selected from DOOM menu
-//
-void M_SaveGame (int choice)
+void M_SaveGame(int choice)
 {
 	if (!usergame)
 	{
-	M_StartMessage(DEH_String(SAVEDEAD),NULL,false);
-	return;
+		M_StartMessage(DEH_String(SAVEDEAD), nullptr, false);
+		return;
 	}
 
 	if (gamestate != GS_LEVEL)
-	return;
+	{
+		return;
+	}
 
 	M_SetupNextMenu(&SaveDef);
 	M_ReadSaveStrings();
 }
 
-
-
-//
-//		M_QuickSave
-//
 static char tempstring[90];
 
 void M_QuickSaveResponse(int key)
 {
 	if (key == key_menu_confirm)
 	{
-	M_DoSave(quickSaveSlot);
-	S_StartSound(NULL,sfx_swtchx);
+		M_DoSave(quickSaveSlot);
+		S_StartSound(nullptr, sfx_swtchx);
 	}
 }
 
@@ -1180,7 +1104,7 @@ void M_DrawReadThisCommercial()
 //
 void M_DrawSound()
 {
-	V_DrawPatchDirect (60, 38, W_CacheLumpName(DEH_String("M_SVOL"), PU_CACHE));
+	V_DrawPatchDirect(60, 38, W_CacheLumpName(DEH_String("M_SVOL"), PU_CACHE));
 
 	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
 			16,sfxVolume);
@@ -1291,7 +1215,7 @@ void M_VerifyNightmare(int key)
 	return;
 
 	G_DeferedInitNew(nightmare,epi+1,1);
-	M_ClearMenus ();
+	M_ClearMenus();
 }
 
 void M_ChooseSkill(int choice)
@@ -1303,7 +1227,7 @@ void M_ChooseSkill(int choice)
 	}
 
 	G_DeferedInitNew(choice,epi+1,1);
-	M_ClearMenus ();
+	M_ClearMenus();
 }
 
 void M_Episode(int choice)
@@ -1376,7 +1300,7 @@ static void M_DrawMouse()
 {
 	char mouse_menu_text[48];
 
-	V_DrawPatchDirect (60, LoadDef_y, W_CacheLumpName(DEH_String("M_MSENS"), PU_CACHE));
+	V_DrawPatchDirect(60, LoadDef_y, W_CacheLumpName(DEH_String("M_MSENS"), PU_CACHE));
 
 	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_horiz + 6,
 				"HORIZONTAL: TURN");
@@ -1663,8 +1587,8 @@ void M_EndGameResponse(int key)
 	// [crispy] clear quicksave slot
 	quickSaveSlot = -1;
 	currentMenu->lastOn = itemOn;
-	M_ClearMenus ();
-	D_StartTitle ();
+	M_ClearMenus();
+	D_StartTitle();
 }
 
 void M_EndGame(int choice)
@@ -1756,7 +1680,7 @@ void M_QuitResponse(int key)
 		S_StartSound(NULL,quitsounds[(gametic>>2)&7]);
 	I_WaitVBL(105);
 	}
-	I_Quit ();
+	I_Quit();
 }
 
 
@@ -1853,7 +1777,7 @@ void M_ChangeDetail(int choice)
 	choice = 0;
 	detailLevel = 1 - detailLevel;
 
-	R_SetViewSize (screenblocks, detailLevel);
+	R_SetViewSize(screenblocks, detailLevel);
 
 	if (!detailLevel)
 	players[consoleplayer].message = DEH_String(DETAILHI);
@@ -1891,7 +1815,7 @@ void M_SizeDisplay(int choice)
 	}
 
 
-	R_SetViewSize (screenblocks, detailLevel);
+	R_SetViewSize(screenblocks, detailLevel);
 }
 
 
@@ -2516,7 +2440,7 @@ bool M_Responder (event_t* ev)
 	if ((devparm && key == key_menu_help) ||
 		(key != 0 && (key == key_menu_screenshot || key == key_menu_cleanscreenshot)))
 	{
-	G_ScreenShot ();
+	G_ScreenShot();
 	return true;
 	}
 
@@ -2541,7 +2465,7 @@ bool M_Responder (event_t* ev)
 	}
 		else if (key == key_menu_help)		// Help key
 		{
-		M_StartControlPanel ();
+		M_StartControlPanel();
 
 		if (gameversion >= exe_ultimate)
 			currentMenu = &ReadDef2;
@@ -2568,7 +2492,7 @@ bool M_Responder (event_t* ev)
 		}
 		else if (key == key_menu_volume)	// Sound Volume
 		{
-		M_StartControlPanel ();
+		M_StartControlPanel();
 		currentMenu = &SoundDef;
 		itemOn = sfx_vol;
 		S_StartSound(NULL,sfx_swtchn);
@@ -2617,11 +2541,11 @@ bool M_Responder (event_t* ev)
 		usegamma = 0;
 		players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
 #ifndef CRISPY_TRUECOLOR
-			I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
+			I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"),PU_CACHE));
 #else
 			{
 		extern void R_InitColormaps ();
-		I_SetPalette (0);
+		I_SetPalette(0);
 		R_InitColormaps();
 		inhelpscreens = true;
 		R_FillBackScreen();
@@ -2650,7 +2574,7 @@ bool M_Responder (event_t* ev)
 	{
 	if (key == key_menu_activate)
 	{
-		M_StartControlPanel ();
+		M_StartControlPanel();
 		S_StartSound(NULL,sfx_swtchn);
 		return true;
 	}
@@ -2737,7 +2661,7 @@ bool M_Responder (event_t* ev)
 		// Deactivate menu
 
 	currentMenu->lastOn = itemOn;
-	M_ClearMenus ();
+	M_ClearMenus();
 	S_StartSound(NULL,sfx_swtchx);
 	return true;
 	}
@@ -2984,7 +2908,7 @@ void M_Drawer ()
 			dp_translation = cr[CR_DARK];
 
 		if (W_CheckNumForName(name) > 0 && currentMenu->lumps_missing == -1)
-		V_DrawPatchDirect (x, y, W_CacheLumpName(name, PU_CACHE));
+		V_DrawPatchDirect(x, y, W_CacheLumpName(name, PU_CACHE));
 		else if (alttext)
 		M_WriteText(x, y+8-(M_StringHeight(alttext)/2), alttext);
 

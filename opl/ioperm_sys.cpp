@@ -1,21 +1,17 @@
-//
-// Copyright(C) 2002, 2003 Marcel Telka
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//		Interface to the ioperm.sys driver, based on code from the
+/**********************************************************************************************************************************************\
+	Copyright(C) 2002, 2003 Marcel Telka
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+		Interface to the ioperm.sys driver, based on code from the
 //		Cygwin ioperm library.
-//
+\**********************************************************************************************************************************************/
 
 #ifdef _WIN32
 
@@ -31,8 +27,7 @@
 
 #define IOPERM_FILE L"\\\\.\\ioperm"
 
-#define IOCTL_IOPERM				\
-	CTL_CODE(FILE_DEVICE_UNKNOWN, 0xA00, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#define IOCTL_IOPERM CTL_CODE(FILE_DEVICE_UNKNOWN, 0xA00, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
 struct ioperm_data
 {
@@ -45,55 +40,60 @@ struct ioperm_data
 // Windows 9x, so they are dynamically loaded from the DLL at runtime.
 
 // haleyjd 09/09/10: Moved calling conventions into ()'s
-
-static SC_HANDLE (WINAPI *MyOpenSCManagerW)(wchar_t *lpMachineName,
-											wchar_t *lpDatabaseName,
+static SC_HANDLE (WINAPI* MyOpenSCManagerW)(const wchar_t* lpMachineName,
+											const wchar_t* lpDatabaseName,
 											DWORD dwDesiredAccess) = NULL;
-static SC_HANDLE (WINAPI *MyCreateServiceW)(SC_HANDLE hSCManager,
-											wchar_t *lpServiceName,
-											wchar_t *lpDisplayName,
+
+static SC_HANDLE (WINAPI* MyCreateServiceW)(SC_HANDLE hSCManager,
+											const wchar_t* lpServiceName,
+											const wchar_t* lpDisplayName,
 											DWORD dwDesiredAccess,
 											DWORD dwServiceType,
 											DWORD dwStartType,
 											DWORD dwErrorControl,
-											wchar_t *lpBinaryPathName,
-											wchar_t *lpLoadOrderGroup,
+											const wchar_t* lpBinaryPathName,
+											const wchar_t* lpLoadOrderGroup,
 											LPDWORD lpdwTagId,
-											wchar_t *lpDependencies,
-											wchar_t *lpServiceStartName,
-											wchar_t *lpPassword);
-static SC_HANDLE (WINAPI *MyOpenServiceW)(SC_HANDLE hSCManager,
-											wchar_t *lpServiceName,
+											const wchar_t* lpDependencies,
+											const wchar_t* lpServiceStartName,
+											const wchar_t* lpPassword);
+
+static SC_HANDLE (WINAPI* MyOpenServiceW)(SC_HANDLE hSCManager,
+											const wchar_t* lpServiceName,
 											DWORD dwDesiredAccess);
-static BOOL (WINAPI *MyStartServiceW)(SC_HANDLE hService,
+
+static BOOL (WINAPI* MyStartServiceW)(SC_HANDLE hService,
 										DWORD dwNumServiceArgs,
-										wchar_t **lpServiceArgVectors);
-static BOOL (WINAPI *MyControlService)(SC_HANDLE hService,
+										const wchar_t** lpServiceArgVectors);
+
+static BOOL (WINAPI* MyControlService)(SC_HANDLE hService,
 										DWORD dwControl,
 										LPSERVICE_STATUS lpServiceStatus);
-static BOOL (WINAPI *MyCloseServiceHandle)(SC_HANDLE hSCObject);
-static BOOL (WINAPI *MyDeleteService)(SC_HANDLE hService);
 
+static BOOL (WINAPI* MyCloseServiceHandle)(SC_HANDLE hSCObject);
+static BOOL (WINAPI* MyDeleteService)(SC_HANDLE hService);
+
+// NOTE: this is one of the most hideous abuses of structs + arrays I have ever seen
 static struct
 {
-	char *name;
-	void **fn;
+	const char* name;
+	void** fn;
 } dll_functions[] = {
-	{ "OpenSCManagerW",		(void **) &MyOpenSCManagerW },
-	{ "CreateServiceW",		(void **) &MyCreateServiceW },
-	{ "OpenServiceW",		(void **) &MyOpenServiceW },
-	{ "StartServiceW",		(void **) &MyStartServiceW },
-	{ "ControlService",		(void **) &MyControlService },
-	{ "CloseServiceHandle", (void **) &MyCloseServiceHandle },
-	{ "DeleteService",		(void **) &MyDeleteService },
+	{ "OpenSCManagerW",		(void**) &MyOpenSCManagerW },
+	{ "CreateServiceW",		(void**) &MyCreateServiceW },
+	{ "OpenServiceW",		(void**) &MyOpenServiceW },
+	{ "StartServiceW",		(void**) &MyStartServiceW },
+	{ "ControlService",		(void**) &MyControlService },
+	{ "CloseServiceHandle", (void**) &MyCloseServiceHandle },
+	{ "DeleteService",		(void**) &MyDeleteService },
 };
 
 // Globals
 
-static SC_HANDLE scm = NULL;
-static SC_HANDLE svc = NULL;
-static int service_was_created = 0;
-static int service_was_started = 0;
+inline static SC_HANDLE scm = NULL;
+inline static SC_HANDLE svc = NULL;
+inline static int service_was_created = 0;
+inline static int service_was_started = 0;
 
 static int LoadLibraryPointers()
 {

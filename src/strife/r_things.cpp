@@ -1,27 +1,19 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Refresh of things, i.e. objects represented by sprites.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
 
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+	DESCRIPTION:
+	Refresh of things, i.e. objects represented by sprites.
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
-
 
 #include "deh_main.h"
 #include "doomdef.h"
@@ -38,15 +30,11 @@
 // haleyjd
 #include "p_local.h"
 
-
-
 #define MINZ				(FRACUNIT*4)
 #define BASEYCENTER			100
 
-//void R_DrawColumn ();
-//void R_DrawFuzzColumn ();
-
-
+//void R_DrawColumn();
+//void R_DrawFuzzColumn();
 
 typedef struct
 {
@@ -58,8 +46,6 @@ typedef struct
 	int		bottomclip;
 
 } maskdraw_t;
-
-
 
 //
 // Sprite rotation 0 is facing the viewer,
@@ -92,21 +78,13 @@ spriteframe_t	sprtemp[29];
 int		maxframe;
 const char	*spritename;
 
-
-
-
 //
 // R_InstallSpriteLump
 // Local function for R_InitSprites.
 //
-void
-R_InstallSpriteLump
-( int		lump,
- unsigned	frame,
- unsigned	rotation,
- bool	flipped )
+void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation, bool flipped)
 {
-	int		r;
+	int r;
 
 	if (frame >= 29 || rotation > 8)
 	I_Error("R_InstallSpriteLump: "
@@ -119,11 +97,11 @@ R_InstallSpriteLump
 	{
 	// the lump should be used for all rotations
 	if (sprtemp[frame].rotate == false)
-		I_Error ("R_InitSprites: Sprite %s frame %c has "
+		I_Error("R_InitSprites: Sprite %s frame %c has "
 				"multip rot=0 lump", spritename, 'A'+frame);
 
 	if (sprtemp[frame].rotate == true)
-		I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
+		I_Error("R_InitSprites: Sprite %s frame %c has rotations "
 				"and a rot=0 lump", spritename, 'A'+frame);
 
 	sprtemp[frame].rotate = false;
@@ -137,7 +115,7 @@ R_InstallSpriteLump
 
 	// the lump is only used for one rotation
 	if (sprtemp[frame].rotate == false)
-	I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
+	I_Error("R_InitSprites: Sprite %s frame %c has rotations "
 			"and a rot=0 lump", spritename, 'A'+frame);
 
 	sprtemp[frame].rotate = true;
@@ -145,7 +123,7 @@ R_InstallSpriteLump
 	// make 0 based
 	rotation--;
 	if (sprtemp[frame].lump[rotation] != -1)
-	I_Error ("R_InitSprites: Sprite %s : %c : %c "
+	I_Error("R_InitSprites: Sprite %s : %c : %c "
 			"has two lumps mapped to it",
 			spritename, 'A'+frame, '1'+rotation);
 
@@ -171,7 +149,7 @@ R_InstallSpriteLump
 // letter/number appended.
 // The rotation character can be 0 to signify no rotations.
 //
-void R_InitSpriteDefs (const char** namelist)
+void R_InitSpriteDefs(const char** namelist)
 {
 	const char **check;
 	int		i;
@@ -203,7 +181,7 @@ void R_InitSpriteDefs (const char** namelist)
 	for (i=0 ; i<numsprites ; i++)
 	{
 	spritename = DEH_String(namelist[i]);
-	memset (sprtemp,-1, sizeof(sprtemp));
+	memset(sprtemp,-1, sizeof(sprtemp));
 
 	maxframe = -1;
 
@@ -221,13 +199,13 @@ void R_InitSpriteDefs (const char** namelist)
 		else
 			patched = l;
 
-		R_InstallSpriteLump (patched, frame, rotation, false);
+		R_InstallSpriteLump(patched, frame, rotation, false);
 
 		if (lumpinfo[l]->name[6])
 		{
 			frame = lumpinfo[l]->name[6] - 'A';
 			rotation = lumpinfo[l]->name[7] - '0';
-			R_InstallSpriteLump (l, frame, rotation, true);
+			R_InstallSpriteLump(l, frame, rotation, true);
 		}
 		}
 	}
@@ -247,7 +225,7 @@ void R_InitSpriteDefs (const char** namelist)
 		{
 			case -1:
 		// no rotations were found for that frame at all
-		I_Error ("R_InitSprites: No patches found "
+		I_Error("R_InitSprites: No patches found "
 				"for %s frame %c", spritename, frame+'A');
 		break;
 
@@ -259,7 +237,7 @@ void R_InitSpriteDefs (const char** namelist)
 		// must have all 8 frames
 		for (rotation=0 ; rotation<8 ; rotation++)
 			if (sprtemp[frame].lump[rotation] == -1)
-			I_Error ("R_InitSprites: Sprite %s frame %c "
+			I_Error("R_InitSprites: Sprite %s frame %c "
 					"is missing rotations",
 					spritename, frame+'A');
 		break;
@@ -269,8 +247,8 @@ void R_InitSpriteDefs (const char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes =
-		Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
-	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
+		Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+	memcpy(sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
 	}
 
 }
@@ -292,7 +270,7 @@ int				sprbotscreen;		// villsa [STRIFE]
 // R_InitSprites
 // Called at program start.
 //
-void R_InitSprites (const char** namelist)
+void R_InitSprites(const char** namelist)
 {
 	int		i;
 
@@ -301,7 +279,7 @@ void R_InitSprites (const char** namelist)
 	negonearray[i] = -1;
 	}
 
-	R_InitSpriteDefs (namelist);
+	R_InitSpriteDefs(namelist);
 }
 
 
@@ -310,7 +288,7 @@ void R_InitSprites (const char** namelist)
 // R_ClearSprites
 // Called at frame start.
 //
-void R_ClearSprites ()
+void R_ClearSprites()
 {
 	vissprite_p = vissprites;
 }
@@ -321,7 +299,7 @@ void R_ClearSprites ()
 //
 vissprite_t	overflowsprite;
 
-vissprite_t* R_NewVisSprite ()
+vissprite_t* R_NewVisSprite()
 {
 	if (vissprite_p == &vissprites[MAXVISSPRITES])
 	return &overflowsprite;
@@ -349,7 +327,7 @@ fixed_t		sprtopscreen;
 //
 // villsa [STRIFE] new baseclip argument
 //
-void R_DrawMaskedColumn (column_t *column, int baseclip)
+void R_DrawMaskedColumn(column_t *column, int baseclip)
 {
 	int		topscreen;
 	int	bottomscreen;
@@ -387,7 +365,7 @@ void R_DrawMaskedColumn (column_t *column, int baseclip)
 
 			// Drawn by either R_DrawColumn
 			// or (SHADOW) R_DrawFuzzColumn.
-			colfunc ();
+			colfunc();
 		}
 		column = (column_t *)( (byte *)column + column->length + 4);
 	}
@@ -401,11 +379,7 @@ void R_DrawMaskedColumn (column_t *column, int baseclip)
 // R_DrawVisSprite
 // mfloorclip and mceilingclip should also be set.
 //
-void
-R_DrawVisSprite
-( vissprite_t*			vis,
- int					x1,
- int					x2 )
+void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 {
 	column_t*			column;
 	int					texturecolumn;
@@ -414,7 +388,7 @@ R_DrawVisSprite
 	int					clip;	// villsa [STRIFE]
 	int					translation;	// villsa [STRIFE]
 
-	patch = W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum(vis->patch+firstspritelump, PU_CACHE);
 
 	dc_colormap = vis->colormap;
 
@@ -481,11 +455,11 @@ R_DrawVisSprite
 		texturecolumn = frac>>FRACBITS;
 #ifdef RANGECHECK
 		if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
-			I_Error ("R_DrawSpriteRange: bad texturecolumn");
+			I_Error("R_DrawSpriteRange: bad texturecolumn");
 #endif
 		column = (column_t *) ((byte *)patch +
 								LONG(patch->columnofs[texturecolumn]));
-		R_DrawMaskedColumn (column, clip); // villsa [STRIFE] clip argument
+		R_DrawMaskedColumn(column, clip); // villsa [STRIFE] clip argument
 	}
 
 	colfunc = basecolfunc;
@@ -498,7 +472,7 @@ R_DrawVisSprite
 // Generates a vissprite for a thing
 // if it might be visible.
 //
-void R_ProjectSprite (mobj_t* thing)
+void R_ProjectSprite(mobj_t* thing)
 {
 	fixed_t		tr_x;
 	fixed_t		tr_y;
@@ -554,13 +528,13 @@ void R_ProjectSprite (mobj_t* thing)
 	// decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
 	if ((unsigned int) thing->sprite >= (unsigned int) numsprites)
-	I_Error ("R_ProjectSprite: invalid sprite number %i ",
+	I_Error("R_ProjectSprite: invalid sprite number %i ",
 			thing->sprite);
 #endif
 	sprdef = &sprites[thing->sprite];
 #ifdef RANGECHECK
 	if ( (thing->frame&FF_FRAMEMASK) >= sprdef->numframes )
-	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
+	I_Error("R_ProjectSprite: invalid sprite frame %i : %i ",
 			thing->sprite, thing->frame);
 #endif
 	sprframe = &sprdef->spriteframes[ thing->frame & FF_FRAMEMASK];
@@ -568,7 +542,7 @@ void R_ProjectSprite (mobj_t* thing)
 	if (sprframe->rotate)
 	{
 	// choose a different rotation based on player view
-	ang = R_PointToAngle (thing->x, thing->y);
+	ang = R_PointToAngle(thing->x, thing->y);
 	rot = (ang-thing->angle+(unsigned)(ANG45/2)*9)>>29;
 	lump = sprframe->lump[rot];
 	flip = (bool)sprframe->flip[rot];
@@ -582,21 +556,21 @@ void R_ProjectSprite (mobj_t* thing)
 
 	// calculate edges of the shape
 	tx -= spriteoffset[lump];
-	x1 = (centerxfrac + FixedMul (tx,xscale) ) >>FRACBITS;
+	x1 = (centerxfrac + FixedMul(tx,xscale) ) >>FRACBITS;
 
 	// off the right side?
 	if (x1 > viewwidth)
 	return;
 
 	tx += spritewidth[lump];
-	x2 = ((centerxfrac + FixedMul (tx,xscale) ) >>FRACBITS) - 1;
+	x2 = ((centerxfrac + FixedMul(tx,xscale) ) >>FRACBITS) - 1;
 
 	// off the left side
 	if (x2 < 0)
 	return;
 
 	// store information in a vissprite
-	vis = R_NewVisSprite ();
+	vis = R_NewVisSprite();
 	vis->mobjflags = thing->flags;
 	vis->scale = xscale<<detailshift;
 	vis->gx = thing->x;
@@ -613,7 +587,7 @@ void R_ProjectSprite (mobj_t* thing)
 	vis->texturemid = vis->gzt - viewz;
 	vis->x1 = x1 < 0 ? 0 : x1;
 	vis->x2 = x2 >= viewwidth ? viewwidth-1 : x2;
-	iscale = FixedDiv (FRACUNIT, xscale);
+	iscale = FixedDiv(FRACUNIT, xscale);
 
 	if (flip)
 	{
@@ -667,7 +641,7 @@ void R_ProjectSprite (mobj_t* thing)
 // R_AddSprites
 // During BSP traversal, this adds sprites by sector.
 //
-void R_AddSprites (sector_t* sec)
+void R_AddSprites(sector_t* sec)
 {
 	mobj_t*		thing;
 	int			lightnum;
@@ -693,14 +667,14 @@ void R_AddSprites (sector_t* sec)
 
 	// Handle all things in sector.
 	for (thing = sec->thinglist ; thing ; thing = thing->snext)
-	R_ProjectSprite (thing);
+	R_ProjectSprite(thing);
 }
 
 
 //
 // R_DrawPSprite
 //
-void R_DrawPSprite (pspdef_t* psp)
+void R_DrawPSprite(pspdef_t* psp)
 {
 	fixed_t		tx;
 	int			x1;
@@ -715,13 +689,13 @@ void R_DrawPSprite (pspdef_t* psp)
 	// decide which patch to use
 #ifdef RANGECHECK
 	if ( (unsigned)psp->state->sprite >= (unsigned int) numsprites)
-		I_Error ("R_ProjectSprite: invalid sprite number %i ",
+		I_Error("R_ProjectSprite: invalid sprite number %i ",
 					psp->state->sprite);
 #endif
 	sprdef = &sprites[psp->state->sprite];
 #ifdef RANGECHECK
 	if ( (psp->state->frame & FF_FRAMEMASK) >= sprdef->numframes)
-		I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
+		I_Error("R_ProjectSprite: invalid sprite frame %i : %i ",
 					psp->state->sprite, psp->state->frame);
 #endif
 	sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
@@ -735,14 +709,14 @@ void R_DrawPSprite (pspdef_t* psp)
 	tx = psp->sx-160*FRACUNIT;
 
 	tx -= spriteoffset[lump];
-	x1 = (centerxfrac + FixedMul (tx,pspritescale) ) >>FRACBITS;
+	x1 = (centerxfrac + FixedMul(tx,pspritescale) ) >>FRACBITS;
 
 	// off the right side
 	if (x1 > viewwidth)
 		return;
 
 	tx += spritewidth[lump];
-	x2 = ((centerxfrac + FixedMul (tx, pspritescale) ) >>FRACBITS) - 1;
+	x2 = ((centerxfrac + FixedMul(tx, pspritescale) ) >>FRACBITS) - 1;
 
 	// off the left side
 	if (x2 < 0)
@@ -812,7 +786,7 @@ void R_DrawPSprite (pspdef_t* psp)
 		vis->colormap = colormaps + INVERSECOLORMAP * 256 * sizeof(lighttable_t);
 	}
 
-	R_DrawVisSprite (vis, vis->x1, vis->x2);
+	R_DrawVisSprite(vis, vis->x1, vis->x2);
 }
 
 
@@ -820,7 +794,7 @@ void R_DrawPSprite (pspdef_t* psp)
 //
 // R_DrawPlayerSprites
 //
-void R_DrawPlayerSprites ()
+void R_DrawPlayerSprites()
 {
 	int		i;
 	int		lightnum;
@@ -848,7 +822,7 @@ void R_DrawPlayerSprites ()
 		i++,psp++)
 	{
 	if (psp->state)
-		R_DrawPSprite (psp);
+		R_DrawPSprite(psp);
 	}
 }
 
@@ -861,7 +835,7 @@ void R_DrawPlayerSprites ()
 vissprite_t	vsprsortedhead;
 
 
-void R_SortVisSprites ()
+void R_SortVisSprites()
 {
 	int			i;
 	int			count;
@@ -961,17 +935,14 @@ void R_DrawSprite (vissprite_t* spr)
 		scale = ds->scale2;
 	}
 
-	if (scale < spr->scale
-		|| ( lowscale < spr->scale
-			&& !R_PointOnSegSide (spr->gx, spr->gy, ds->curline) ) )
+	if (scale < spr->scale || (lowscale < spr->scale && !R_PointOnSegSide(spr->gx, spr->gy, ds->curline))
 	{
 		// masked mid texture?
 		if (ds->maskedtexturecol)
-		R_RenderMaskedSegRange (ds, r1, r2);
+		R_RenderMaskedSegRange(ds, r1, r2);
 		// seg is behind sprite
 		continue;
 	}
-
 
 	// clip this piece of the sprite
 	silhouette = ds->silhouette;
@@ -1024,7 +995,7 @@ void R_DrawSprite (vissprite_t* spr)
 
 	mfloorclip = clipbot;
 	mceilingclip = cliptop;
-	R_DrawVisSprite (spr, spr->x1, spr->x2);
+	R_DrawVisSprite(spr, spr->x1, spr->x2);
 }
 
 
@@ -1033,12 +1004,12 @@ void R_DrawSprite (vissprite_t* spr)
 //
 // R_DrawMasked
 //
-void R_DrawMasked ()
+void R_DrawMasked()
 {
 	vissprite_t*	spr;
 	drawseg_t*		ds;
 
-	R_SortVisSprites ();
+	R_SortVisSprites();
 
 	if (vissprite_p > vissprites)
 	{
@@ -1048,19 +1019,19 @@ void R_DrawMasked ()
 			spr=spr->next)
 	{
 
-		R_DrawSprite (spr);
+		R_DrawSprite(spr);
 	}
 	}
 
 	// render any remaining masked mid textures
 	for (ds=ds_p-1 ; ds >= drawsegs ; ds--)
 	if (ds->maskedtexturecol)
-		R_RenderMaskedSegRange (ds, ds->x1, ds->x2);
+		R_RenderMaskedSegRange(ds, ds->x1, ds->x2);
 
 	// draw the psprites on top of everything
 	// but does not draw on side views
 	if (!viewangleoffset)
-	R_DrawPlayerSprites ();
+	R_DrawPlayerSprites();
 }
 
 

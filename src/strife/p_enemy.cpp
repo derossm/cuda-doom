@@ -1,22 +1,18 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Enemy thinking, AI.
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Enemy thinking, AI.
 //	Action Pointer Functions
 //	that are associated with states/frames.
-//
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -402,7 +398,7 @@ bool P_Move (mobj_t*	actor)
 		return false;
 
 	if ((unsigned)actor->movedir >= 8)
-		I_Error ("Weird actor->movedir!");
+		I_Error("Weird actor->movedir!");
 
 	tryx = actor->x + actor->info->speed*xspeed[actor->movedir];
 	tryy = actor->y + actor->info->speed*yspeed[actor->movedir];
@@ -2175,8 +2171,8 @@ void A_Tracer (mobj_t* actor)
 	}
 
 	exact = actor->angle>>ANGLETOFINESHIFT;
-	actor->momx = FixedMul (actor->info->speed, finecosine[exact]);
-	actor->momy = FixedMul (actor->info->speed, finesine[exact]);
+	actor->momx = FixedMul(actor->info->speed, finecosine[exact]);
+	actor->momy = FixedMul(actor->info->speed, finesine[exact]);
 
 	// change slope
 	dist = P_AproxDistance (dest->x - actor->x,

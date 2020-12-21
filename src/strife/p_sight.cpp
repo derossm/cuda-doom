@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	LineOfSight/Visibility checks, uses REJECT Lookup Table.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	LineOfSight/Visibility checks, uses REJECT Lookup Table.
+\**********************************************************************************************************************************************/
 
 
 
@@ -111,15 +107,15 @@ P_InterceptVector2
 	fixed_t	num;
 	fixed_t	den;
 
-	den = FixedMul (v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
+	den = FixedMul(v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
 
 	if (den == 0)
 		return 0;
-	//	I_Error ("P_InterceptVector: parallel");
+	//	I_Error("P_InterceptVector: parallel");
 
-	num = FixedMul ( (v1->x - v2->x)>>8 ,v1->dy) +
-		FixedMul ( (v2->y - v1->y)>>8 , v1->dx);
-	frac = FixedDiv (num , den);
+	num = FixedMul( (v1->x - v2->x)>>8,v1->dy) +
+		FixedMul( (v2->y - v1->y)>>8, v1->dx);
+	frac = FixedDiv(num, den);
 
 	return frac;
 }
@@ -151,7 +147,7 @@ bool P_CrossSubsector (int num)
 
 #ifdef RANGECHECK
 	if (num>=numsubsectors)
-		I_Error ("P_CrossSubsector: ss %i with numss = %i",
+		I_Error("P_CrossSubsector: ss %i with numss = %i",
 					num,
 					numsubsectors);
 #endif
@@ -235,14 +231,14 @@ bool P_CrossSubsector (int num)
 
 		if (front->floorheight != back->floorheight)
 		{
-			slope = FixedDiv (openbottom - sightzstart , frac);
+			slope = FixedDiv(openbottom - sightzstart, frac);
 			if (slope > bottomslope)
 				bottomslope = slope;
 		}
 
 		if (front->ceilingheight != back->ceilingheight)
 		{
-			slope = FixedDiv (opentop - sightzstart , frac);
+			slope = FixedDiv(opentop - sightzstart, frac);
 			if (slope < topslope)
 				topslope = slope;
 		}

@@ -1,19 +1,15 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
 // DESCRIPTION: Ceiling aninmation (lowering, crushing, raising)
-//
+\**********************************************************************************************************************************************/
 
 
 
@@ -189,8 +185,8 @@ EV_DoCeiling
 
 	// new door thinker
 	rtn = 1;
-	ceiling = Z_Malloc (sizeof(*ceiling), PU_LEVSPEC, 0);
-	P_AddThinker (&ceiling->thinker);
+	ceiling = Z_Malloc(sizeof(*ceiling), PU_LEVSPEC, 0);
+	P_AddThinker(&ceiling->thinker);
 	sec->specialdata = ceiling;
 	ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;
 	ceiling->sector = sec;
@@ -265,7 +261,7 @@ void P_RemoveActiveCeiling(ceiling_t* c)
 	if (activeceilings[i] == c)
 	{
 		activeceilings[i]->sector->specialdata = NULL;
-		P_RemoveThinker (&activeceilings[i]->thinker);
+		P_RemoveThinker(&activeceilings[i]->thinker);
 		activeceilings[i] = NULL;
 		break;
 	}

@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Floor animation: raising stairs.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Floor animation: raising stairs.
+\**********************************************************************************************************************************************/
 
 
 
@@ -286,7 +282,7 @@ EV_DoFloor
 
 		// new floor thinker
 		rtn = 1;
-		floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
 		P_AddThinker (&floor->thinker);
 		sec->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -520,7 +516,7 @@ EV_BuildStairs
 
 		// new floor thinker
 		rtn = 1;
-		floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
 		P_AddThinker (&floor->thinker);
 		sec->tag = 0; // haleyjd 20140919: [STRIFE] clears tag of first stair sector
 		sec->specialdata = floor;
@@ -563,7 +559,7 @@ EV_BuildStairs
 
 				sec = tsec;
 				secnum = newsecnum;
-				floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+				floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
 
 				P_AddThinker (&floor->thinker);
 

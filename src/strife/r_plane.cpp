@@ -1,22 +1,18 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Here is a core component: drawing the floors and ceilings,
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Here is a core component: drawing the floors and ceilings,
 //		while maintaining a per column clipping list only.
 //	Moreover, the sky areas have to be determined.
-//
+\**********************************************************************************************************************************************/
 
 
 #include <stdio.h>
@@ -32,14 +28,8 @@
 #include "r_local.h"
 #include "r_sky.h"
 
-
-
 planefunction_t		floorfunc;
 planefunction_t		ceilingfunc;
-
-//
-// opening
-//
 
 // Here comes the obnoxious "visplane".
 // haleyjd 08/29/10: [STRIFE] MAXVISPLANES increased to 200
@@ -92,7 +82,7 @@ fixed_t			cachedystep[MAXHEIGHT];
 // R_InitPlanes
 // Only at game startup.
 //
-void R_InitPlanes ()
+void R_InitPlanes()
 {
  // Doh!
 }
@@ -111,11 +101,7 @@ void R_InitPlanes ()
 //
 // BASIC PRIMITIVE
 //
-void
-R_MapPlane
-( int		y,
- int		x1,
- int		x2 )
+void R_MapPlane(int y, int x1, int x2)
 {
 	angle_t	angle;
 	fixed_t	distance;
@@ -128,16 +114,16 @@ R_MapPlane
 		|| x2 >= viewwidth
 		|| y > viewheight)
 	{
-	I_Error ("R_MapPlane: %i, %i at %i",x1,x2,y);
+	I_Error("R_MapPlane: %i, %i at %i",x1,x2,y);
 	}
 #endif
 
 	if (planeheight != cachedheight[y])
 	{
 	cachedheight[y] = planeheight;
-	distance = cacheddistance[y] = FixedMul (planeheight, yslope[y]);
-	ds_xstep = cachedxstep[y] = FixedMul (distance,basexscale);
-	ds_ystep = cachedystep[y] = FixedMul (distance,baseyscale);
+	distance = cacheddistance[y] = FixedMul(planeheight, yslope[y]);
+	ds_xstep = cachedxstep[y] = FixedMul(distance,basexscale);
+	ds_ystep = cachedystep[y] = FixedMul(distance,baseyscale);
 	}
 	else
 	{
@@ -146,7 +132,7 @@ R_MapPlane
 	ds_ystep = cachedystep[y];
 	}
 
-	length = FixedMul (distance,distscale[x1]);
+	length = FixedMul(distance,distscale[x1]);
 	angle = (viewangle + xtoviewangle[x1])>>ANGLETOFINESHIFT;
 	ds_xfrac = viewx + FixedMul(finecosine[angle], length);
 	ds_yfrac = -viewy - FixedMul(finesine[angle], length);
@@ -168,7 +154,7 @@ R_MapPlane
 	ds_x2 = x2;
 
 	// high or low detail
-	spanfunc ();
+	spanfunc();
 }
 
 
@@ -176,7 +162,7 @@ R_MapPlane
 // R_ClearPlanes
 // At begining of frame.
 //
-void R_ClearPlanes ()
+void R_ClearPlanes()
 {
 	int		i;
 	angle_t	angle;
@@ -192,14 +178,14 @@ void R_ClearPlanes ()
 	lastopening = openings;
 
 	// texture calculation
-	memset (cachedheight, 0, sizeof(cachedheight));
+	memset(cachedheight, 0, sizeof(cachedheight));
 
 	// left to right mapping
 	angle = (viewangle-ANG90)>>ANGLETOFINESHIFT;
 
 	// scale will be unit scale at SCREENWIDTH/2 distance
-	basexscale = FixedDiv (finecosine[angle],centerxfrac);
-	baseyscale = -FixedDiv (finesine[angle],centerxfrac);
+	basexscale = FixedDiv(finecosine[angle],centerxfrac);
+	baseyscale = -FixedDiv(finesine[angle],centerxfrac);
 }
 
 
@@ -208,11 +194,7 @@ void R_ClearPlanes ()
 //
 // R_FindPlane
 //
-visplane_t*
-R_FindPlane
-( fixed_t	height,
- int		picnum,
- int		lightlevel )
+visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel)
 {
 	visplane_t*	check;
 
@@ -237,7 +219,7 @@ R_FindPlane
 	return check;
 
 	if (lastvisplane - visplanes == MAXVISPLANES)
-	I_Error ("R_FindPlane: no more visplanes");
+	I_Error("R_FindPlane: no more visplanes");
 
 	lastvisplane++;
 
@@ -247,7 +229,7 @@ R_FindPlane
 	check->minx = SCREENWIDTH;
 	check->maxx = -1;
 
-	memset (check->top,0xff,sizeof(check->top));
+	memset(check->top,0xff,sizeof(check->top));
 
 	return check;
 }
@@ -256,11 +238,7 @@ R_FindPlane
 //
 // R_CheckPlane
 //
-visplane_t*
-R_CheckPlane
-( visplane_t*	pl,
- int		start,
- int		stop )
+visplane_t* R_CheckPlane(visplane_t* pl, int start, int stop)
 {
 	int		intrl;
 	int		intrh;
@@ -312,7 +290,7 @@ R_CheckPlane
 	pl->minx = start;
 	pl->maxx = stop;
 
-	memset (pl->top,0xff,sizeof(pl->top));
+	memset(pl->top,0xff,sizeof(pl->top));
 
 	return pl;
 }
@@ -321,22 +299,16 @@ R_CheckPlane
 //
 // R_MakeSpans
 //
-void
-R_MakeSpans
-( int		x,
- int		t1,
- int		b1,
- int		t2,
- int		b2 )
+void R_MakeSpans(int x, int t1, int b1, int t2, int b2)
 {
 	while (t1 < t2 && t1<=b1)
 	{
-	R_MapPlane (t1,spanstart[t1],x-1);
+	R_MapPlane(t1,spanstart[t1],x-1);
 	t1++;
 	}
 	while (b1 > b2 && b1>=t1)
 	{
-	R_MapPlane (b1,spanstart[b1],x-1);
+	R_MapPlane(b1,spanstart[b1],x-1);
 	b1--;
 	}
 
@@ -358,7 +330,7 @@ R_MakeSpans
 // R_DrawPlanes
 // At the end of each frame.
 //
-void R_DrawPlanes ()
+void R_DrawPlanes()
 {
 	visplane_t*		pl;
 	int			light;
@@ -369,15 +341,15 @@ void R_DrawPlanes ()
 
 #ifdef RANGECHECK
 	if (ds_p - drawsegs > MAXDRAWSEGS)
-	I_Error ("R_DrawPlanes: drawsegs overflow (%" PRIiPTR ")",
+	I_Error("R_DrawPlanes: drawsegs overflow (%" PRIiPTR ")",
 			ds_p - drawsegs);
 
 	if (lastvisplane - visplanes > MAXVISPLANES)
-	I_Error ("R_DrawPlanes: visplane overflow (%" PRIiPTR ")",
+	I_Error("R_DrawPlanes: visplane overflow (%" PRIiPTR ")",
 			lastvisplane - visplanes);
 
 	if (lastopening - openings > MAXOPENINGS)
-	I_Error ("R_DrawPlanes: opening overflow (%" PRIiPTR ")",
+	I_Error("R_DrawPlanes: opening overflow (%" PRIiPTR ")",
 			lastopening - openings);
 #endif
 
@@ -408,7 +380,7 @@ void R_DrawPlanes ()
 			angle = (viewangle + xtoviewangle[x])>>ANGLETOSKYSHIFT;
 			dc_x = x;
 			dc_source = R_GetColumn(skytexture, angle);
-			colfunc ();
+			colfunc();
 		}
 		}
 		continue;

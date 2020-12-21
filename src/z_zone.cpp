@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Zone Memory Allocation. Neat.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Zone Memory Allocation. Neat.
+\**********************************************************************************************************************************************/
 
 #include <string.h>
 
@@ -175,7 +171,7 @@ static void ScanForBlock(void *start, void *end)
 //
 // Z_Free
 //
-void Z_Free (void* ptr)
+void Z_Free(void* ptr)
 {
 	memblock_t*		block;
 	memblock_t*		other;
@@ -183,7 +179,7 @@ void Z_Free (void* ptr)
 	block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
 
 	if (block->id != ZONEID)
-	I_Error ("Z_Free: freed a pointer without ZONEID");
+	I_Error("Z_Free: freed a pointer without ZONEID");
 
 	if (block->tag != PU_FREE && block->user != NULL)
 	{
@@ -283,7 +279,7 @@ Z_Malloc
 		if (rover == start)
 		{
 			// scanned all the way around the list
-//			I_Error ("Z_Malloc: failed on allocation of %i bytes", size);
+//			I_Error("Z_Malloc: failed on allocation of %i bytes", size);
 
 			// [crispy] allocate another zone twice as big
 			Z_Init();
@@ -307,7 +303,7 @@ Z_Malloc
 
 				// the rover can be the base block
 				base = base->prev;
-				Z_Free ((byte *)rover+sizeof(memblock_t));
+				Z_Free((byte *)rover+sizeof(memblock_t));
 				base = base->next;
 				rover = base->next;
 			}
@@ -340,7 +336,7 @@ Z_Malloc
 	}
 
 	if (user == NULL && tag >= PU_PURGELEVEL)
-		I_Error ("Z_Malloc: an owner is required for purgable blocks");
+		I_Error("Z_Malloc: an owner is required for purgable blocks");
 
 	base->user = user;
 	base->tag = tag;
@@ -385,7 +381,7 @@ Z_FreeTags
 		continue;
 
 	if (block->tag >= lowtag && block->tag <= hightag)
-		Z_Free ( (byte *)block+sizeof(memblock_t));
+		Z_Free( (byte *)block+sizeof(memblock_t));
 	}
 }
 
@@ -481,13 +477,13 @@ void Z_CheckHeap ()
 	}
 
 	if ( (byte *)block + block->size != (byte *)block->next)
-		I_Error ("Z_CheckHeap: block size does not touch the next block\n");
+		I_Error("Z_CheckHeap: block size does not touch the next block\n");
 
 	if ( block->next->prev != block)
-		I_Error ("Z_CheckHeap: next block doesn't have proper back link\n");
+		I_Error("Z_CheckHeap: next block doesn't have proper back link\n");
 
 	if (block->tag == PU_FREE && block->next->tag == PU_FREE)
-		I_Error ("Z_CheckHeap: two consecutive free blocks\n");
+		I_Error("Z_CheckHeap: two consecutive free blocks\n");
 	}
 }
 

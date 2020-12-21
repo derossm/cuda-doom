@@ -1,22 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Floor animation: raising stairs.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
 
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Floor animation: raising stairs.
+\**********************************************************************************************************************************************/
 
 #include "z_zone.h"
 #include "doomdef.h"
@@ -37,17 +31,8 @@
 // FLOORS
 //
 
-//
 // Move a plane (floor or ceiling) and check for crushing
-//
-result_e
-T_MovePlane
-( sector_t*	sector,
- fixed_t	speed,
- fixed_t	dest,
- bool	crush,
- int		floorOrCeiling,
- int		direction )
+result_e T_MovePlane(sector_t* sector, fixed_t speed, fixed_t dest, bool crush, int floorOrCeiling, int direction)
 {
 	bool	flag;
 	fixed_t	lastpos;
@@ -252,7 +237,7 @@ void T_MoveFloor(floormove_t* floor)
 }
 
 // [crispy] easter egg: homage to an old friend (thinker)
-void T_MoveGoobers (floormove_t *floor)
+void T_MoveGoobers(floormove_t *floor)
 {
 	result_e res1, res2;
 
@@ -283,7 +268,7 @@ void T_MoveGoobers (floormove_t *floor)
 }
 
 // [crispy] easter egg: homage to an old friend
-void EV_DoGoobers ()
+void EV_DoGoobers()
 {
 	int i;
 
@@ -305,7 +290,7 @@ void EV_DoGoobers ()
 	floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
 	P_AddThinker(&floor->thinker);
 	sec->specialdata = floor;
-	floor->thinker.function.acp1 = (actionf_p1) T_MoveGoobers;
+	floor->thinker.function.acp1 = (actionf_p1)T_MoveGoobers;
 	floor->sector = sec;
 	// [crispy] actually destination ceilingheight here (destination floorheight is always 0),
 	// leave destination ceilingheight for untagged closed sectors (i.e. DR-type doors) at 0,
@@ -322,10 +307,7 @@ void EV_DoGoobers ()
 //
 // HANDLE FLOOR TYPES
 //
-int
-EV_DoFloor
-( line_t*	line,
- floor_e	floortype )
+int EV_DoFloor(line_t* line, floor_e floortype)
 {
 	int			secnum;
 	int			rtn;
@@ -345,10 +327,10 @@ EV_DoFloor
 
 	// new floor thinker
 	rtn = 1;
-	floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
-	P_AddThinker (&floor->thinker);
+	floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+	P_AddThinker(&floor->thinker);
 	sec->specialdata = floor;
-	floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
+	floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
 	floor->type = floortype;
 	floor->crush = false;
 
@@ -510,16 +492,7 @@ EV_DoFloor
 	return rtn;
 }
 
-
-
-
-//
-// BUILD A STAIRCASE!
-//
-int
-EV_BuildStairs
-( line_t*	line,
- stair_e	type )
+int EV_BuildStairs(line_t* line, stair_e type)
 {
 	int			secnum;
 	int			height;
@@ -549,10 +522,10 @@ EV_BuildStairs
 
 	// new floor thinker
 	rtn = 1;
-	floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
-	P_AddThinker (&floor->thinker);
+	floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+	P_AddThinker(&floor->thinker);
 	sec->specialdata = floor;
-	floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
+	floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
 	floor->direction = 1;
 	floor->sector = sec;
 	switch(type)
@@ -608,12 +581,12 @@ EV_BuildStairs
 
 		sec = tsec;
 		secnum = newsecnum;
-		floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
 
-		P_AddThinker (&floor->thinker);
+		P_AddThinker(&floor->thinker);
 
 		sec->specialdata = floor;
-		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
+		floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
 		floor->direction = 1;
 		floor->sector = sec;
 		floor->speed = speed;

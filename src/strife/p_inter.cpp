@@ -1,22 +1,17 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Handling interactions (i.e., collisions).
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
 
-// Data.
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+		Handling interactions (i.e., collisions).
+\**********************************************************************************************************************************************/
+
 #include "doomdef.h"
 #include "dstrings.h"
 #include "sounds.h"
@@ -41,9 +36,7 @@
 #include "p_dialog.h"
 #include "f_finale.h"
 
-
 #define BONUSADD	6
-
 
 // a weapon is found with two clip loads,
 // a big item has five clip loads
@@ -51,19 +44,16 @@
 int maxammo[NUMAMMO]	= { 250, 50, 25, 400, 100, 30, 16 };
 int clipammo[NUMAMMO]	= { 10, 4, 2, 20, 4, 6, 4 };
 
-
 //
 // GET STUFF
 //
 
-//
 // P_GiveAmmo
 // Num is the number of clip loads,
 // not the individual count (0= 1/2 clip).
 // Returns false if the ammo can't be picked up at all
 //
 // [STRIFE] Modified for Strife ammo types
-//
 bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
 {
 	int		oldammo;
@@ -72,7 +62,7 @@ bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
 		return false;
 
 	if(ammo > NUMAMMO)
-		I_Error ("P_GiveAmmo: bad type %i", ammo);
+		I_Error("P_GiveAmmo: bad type %i", ammo);
 
 	if(player->ammo[ammo] == player->maxammo[ammo])
 		return false;
@@ -142,13 +132,10 @@ bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
 	return true;
 }
 
-
-//
 // P_GiveWeapon
 // The weapon name may have a MF_DROPPED flag ored in.
 //
 // villsa [STRIFE] some stuff has been changed/moved around
-//
 bool P_GiveWeapon(player_t* player, weapontype_t weapon, bool dropped)
 {
 	bool gaveammo;
@@ -222,14 +209,10 @@ bool P_GiveWeapon(player_t* player, weapontype_t weapon, bool dropped)
 	return(gaveweapon || gaveammo);
 }
 
-
-
-//
 // P_GiveBody
 // Returns false if the body isn't needed at all
 //
 // villsa [STRIFE] a lot of changes have been added for stamina
-//
 bool P_GiveBody(player_t* player, int num)
 {
 	int maxhealth;
@@ -286,15 +269,11 @@ bool P_GiveBody(player_t* player, int num)
 	return true;
 }
 
-
-
-//
 // P_GiveArmor
 // Returns false if the armor is worse
 // than the current armor.
 //
 // [STRIFE] Modified for Strife armor items
-//
 bool P_GiveArmor(player_t* player, int armortype)
 {
 	int hits;
@@ -318,13 +297,9 @@ bool P_GiveArmor(player_t* player, int armortype)
 	return true;
 }
 
-
-
-//
 // P_GiveCard
 //
 // [STRIFE] Modified to use larger bonuscount
-//
 bool P_GiveCard(player_t* player, card_t card)
 {
 	if (player->cards[card])
@@ -337,12 +312,9 @@ bool P_GiveCard(player_t* player, card_t card)
 	return true;
 }
 
-
-//
 // P_GivePower
 //
 // [STRIFE] Modifications for new powerups
-//
 bool P_GivePower(player_t* player, powertype_t power)
 {
 	// haleyjd 09/14/10: [STRIFE] moved to top, exception for Shadow Armor
@@ -422,15 +394,12 @@ bool P_GivePower(player_t* player, powertype_t power)
 	return true;
 }
 
-
 // villsa [STRIFE]
 static char pickupmsg[80];
 
-//
 // P_TouchSpecialThing
 //
 // [STRIFE] Rewritten for Strife collectables.
-//
 void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 {
 	player_t*	player;
@@ -731,7 +700,6 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 			player->questflags |= 1 << ((special->info->speed - 1) & 31);
 	}
 
-
 	// haleyjd 08/30/10: [STRIFE] No itemcount
 	//if (special->flags & MF_COUNTITEM)
 	//	player->itemcount++;
@@ -747,11 +715,9 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 // villsa [STRIFE]
 static char plrkilledmsg[80];
 
-//
 // KillMobj
 //
 // [STRIFE] Major modifications for drop types, no tic randomization, etc.
-//
 void P_KillMobj(mobj_t* source, mobj_t* target)
 {
 	mobjtype_t item;
@@ -864,7 +830,6 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 			// switch view prior to dying
 			AM_Stop ();
 		}
-
 	}
 
 	// villsa [STRIFE] some modifications to setting states
@@ -1031,11 +996,9 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 	}
 }
 
-//
 // P_IsMobjBoss
 //
 // villsa [STRIFE] new function
-//
 static bool P_IsMobjBoss(mobjtype_t type)
 {
 	switch(type)
@@ -1052,8 +1015,6 @@ static bool P_IsMobjBoss(mobjtype_t type)
 	}
 }
 
-
-//
 // P_DamageMobj
 // Damages both enemies and players
 // "inflictor" is the thing that caused the damage
@@ -1066,7 +1027,6 @@ static bool P_IsMobjBoss(mobjtype_t type)
 //
 // [STRIFE] Extensive changes for spectrals, fire damage, disintegration, and
 // a plethora of mobjtype-specific hacks.
-//
 void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 {
 	angle_t		ang;
@@ -1234,8 +1194,8 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 		}
 
 		ang >>= ANGLETOFINESHIFT;
-		target->momx += FixedMul (thrust, finecosine[ang]);
-		target->momy += FixedMul (thrust, finesine[ang]);
+		target->momx += FixedMul(thrust, finecosine[ang]);
+		target->momy += FixedMul(thrust, finesine[ang]);
 	}
 
 	// player specific
@@ -1247,7 +1207,6 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 		{
 			damage = target->health - 1;
 		}
-
 
 		// Below certain threshold,
 		// ignore damage in GOD mode.
@@ -1320,7 +1279,6 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 			while(player->health < 50 && P_UseInventoryItem(player, SPR_STMP));
 		}
 	}
-
 
 	if(target->health <= 0)
 	{
@@ -1404,4 +1362,3 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 			P_SetMobjState (target, target->info->seestate);
 	}
 }
-

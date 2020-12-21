@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	DOOM graphics stuff for SDL.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	DOOM graphics stuff for SDL.
+\**********************************************************************************************************************************************/
 
 
 #include <stdlib.h>
@@ -1075,7 +1071,7 @@ void I_GraphicsCheckCommandLine()
 	// Disable blitting the screen.
 	//
 
-	noblit = M_CheckParm ("-noblit");
+	noblit = M_CheckParm("-noblit");
 
 	//!
 	// @category video
@@ -1921,7 +1917,7 @@ void I_BindVideoVariables()
 }
 
 #ifdef CRISPY_TRUECOLOR
-const pixel_t I_BlendAdd (const pixel_t bg, const pixel_t fg)
+const pixel_t I_BlendAdd(const pixel_t bg, const pixel_t fg)
 {
 	uint32_t r, g, b;
 
@@ -1933,7 +1929,7 @@ const pixel_t I_BlendAdd (const pixel_t bg, const pixel_t fg)
 }
 
 // [crispy] http://stereopsis.com/doubleblend.html
-const pixel_t I_BlendDark (const pixel_t bg, const int d)
+const pixel_t I_BlendDark(const pixel_t bg, const int d)
 {
 	const uint32_t ag = (bg & 0xff00ff00) >> 8;
 	const uint32_t rb = bg & 0x00ff00ff;
@@ -1947,7 +1943,7 @@ const pixel_t I_BlendDark (const pixel_t bg, const int d)
 	return amask | sag | srb;
 }
 
-const pixel_t I_BlendOver (const pixel_t bg, const pixel_t fg)
+const pixel_t I_BlendOver(const pixel_t bg, const pixel_t fg)
 {
 	const uint32_t r = ((blend_alpha * (fg & rmask) + (0xff - blend_alpha) * (bg & rmask)) >> 8) & rmask;
 	const uint32_t g = ((blend_alpha * (fg & gmask) + (0xff - blend_alpha) * (bg & gmask)) >> 8) & gmask;
@@ -1956,9 +1952,9 @@ const pixel_t I_BlendOver (const pixel_t bg, const pixel_t fg)
 	return amask | r | g | b;
 }
 
-const pixel_t (*blendfunc) (const pixel_t fg, const pixel_t bg) = I_BlendOver;
+const pixel_t (*blendfunc)(const pixel_t fg, const pixel_t bg) = I_BlendOver;
 
-const pixel_t I_MapRGB (const uint8_t r, const uint8_t g, const uint8_t b)
+const pixel_t I_MapRGB(const uint8_t r, const uint8_t g, const uint8_t b)
 {
 /*
 	return amask |

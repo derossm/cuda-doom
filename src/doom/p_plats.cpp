@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Plats (i.e. elevator platforms) code, raising/lowering.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Plats (i.e. elevator platforms) code, raising/lowering.
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 
@@ -285,7 +281,7 @@ void P_AddActivePlat(plat_t* plat)
 		activeplats[i] = plat;
 		return;
 	}
-	I_Error ("P_AddActivePlat: no more plats!");
+	I_Error("P_AddActivePlat: no more plats!");
 }
 
 void P_RemoveActivePlat(plat_t* plat)
@@ -300,5 +296,5 @@ void P_RemoveActivePlat(plat_t* plat)
 
 		return;
 	}
-	I_Error ("P_RemoveActivePlat: can't find plat!");
+	I_Error("P_RemoveActivePlat: can't find plat!");
 }

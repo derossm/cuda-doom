@@ -1,60 +1,76 @@
 # Coding style guidelines
 
+Rule 0: 
 Rule 1: Thou shalt never use signed values for lengths, sizes, or index positions.
-Rule 2: TBD
+Rule 2: Thou shalt declare no more than one object in any one statement.
+Rule 3: TBD
+Rule 4: 
+Rule 5: 
+Rule 6: 
+Rule 7: 
+Rule 8: 
+Rule 9: 
+Rule A: 
+Rule B: 
+Rule C: 
+Rule D: 
+Rule E: 
+Rule F: 
 
-The coding style guidelines for Chocolate Doom are designed to keep the style of the original source code. This maintains consistency throughout
-the program, and does not require the original code to be changed. Some of these guidelines are stricter than what was done in the original
-source; follow these when writing new code only: there is no need to change existing code to fit them.
+The coding style guidelines for Cuda Doom are designed to COMPLETELY OVERHAUL EVERYTHING ABOUT the original source code to conform to modern C++20 standards.
 
-You should set tabs to *display* as eight spaces, not four.
-{STRONGLY DISAGREE: Set TAB to display as 4 character spaces}
+Start by following the Core Guidelines. Then profile and optimize for efficiency in the most HOT code; everywhere else, prioritize readibility and maintainability.
 
-However, *indentation* should be four spaces. If possible, do not use tab characters at all.
-{STRONGLY DISAGREE: ONE character vs FOUR characters is a free compression ratio of 4:1; ALWAYS use tabs for indentation}
+Tabs should always be set to display as four spaces, otherwise your identations will look wrong. Use ONLY tabs for indentation; always align to tabs, even if 1-3 spaces here or there might look more aesthetically pleasing. The only exceptions are for ASCII art and creating elaborately decorated comments when you are bored.
 
-There is a utility called “expand” which will remove tab characters. For the {INCORRECT} reasoning behind this, see:
-http://www.jwz.org/doc/tabs-vs-spaces.html
+All code should always be TAB aligned.
 
-Please write code to an 80 column limit so that it fits within a standard 80 column terminal.
-{STRONGLY DISAGREE: use at least 144 width; this is not the 1980's, and no one has smaller than 1920 pixel width displays. Also, consider allowing users to define their own wrapping preferences. I still have the old itch to use hard breaks myself, but we probably should move forward with modern UX instead of "hard coding" the line breaks in our documentation when it doesn't directly affect our pretty ASCII art and aligned tables etc.}
+Try writing code to 144 width (consider refactoring with more object wrappers if this is insufficient space to avoid multi-line statements); hard wrap code with
+160 width (note: above line is exactly 160 characters, with a line break at column 161, if your editor isn't pre-maturely wrapping).
 
-Do not leave trailing whitespace at the end of lines.
+This is 80 characters:
+```cpp
+/******************************************************************************/
+```
 
-Functions should be named like this: `AB_FunctionName`. The `AB` prefix denotes the subsystem (`AM_` for automap, `G_` for game, etc). If a
-function is static, you can omit the prefix and just name it like `FunctionName`. {Global} Functions and global variables should always be made
-static if possible.
+This is 144 characters:
+```cpp
+/**********************************************************************************************************************************************/
+```
+This is 160 characters:
+```cpp
+/**************************************************************************************************************************************************************/
+```
 
-Put `_t` on the end of types created with typedef.
-{NOTE: do not use typedefs, but if you must, do follow this convention of postfixing `_t` to the typename}
+Comments may be aligned to any preference, if decorating them as described earlier, but otherwise consider allowing users to define their own wrapping preferences. I know we all have the instinct to use hard breaks, to control with absolute precision how our comments display on the screen, but we probably should move forward with modern UX instead of "hard coding" the line breaks in our documentation when it doesn't directly affect our pretty ASCII art and aligned tables etc.
 
-Type names like this should be all lowercase and have the subsystem name at the start. An example of this is `txt_window_t`. When creating
-structures, always typedef them.
-{STRONGLY DISAGREE: NEVER use typedef when defining object interfaces}
+Do not leave trailing whitespace at the end of lines. Do not mix tabs and spaces in code. Do no use repeating spaces in code.
 
-Do not use Hungarian notation.
-{NOTE: use the notation described here, whether or not it falls into Hungarian or any other notation style}
+Do not use double spaces after periods in your comments; that convention is from the days of typewriters and has no business on computers.
+See https://www.instructionalsolutions.com/blog/one-space-vs-two-after-period for why using two spaces is wrong.
 
-Do not use the GOTO statement.
-{NOTE: unless you have a really good reason, such as DEMONSTRABLE profiled performance increase in extremely hot sections of code and
-known alternatives fail to approach performance parity; don't use it for no reason like they do in midiproc hell code}
+Global functions should be named like this: `AB_FunctionName`. The `AB` prefix denotes the subsystem (`AM_` for automap, `G_` for game, etc). Global functions and global variables should always be made static if possible, but should also both be avoided like the plague.
 
-Use C++-style comments, ie. `//` comments, not `/* ... */` comments. I don’t care that this isn’t standard ANSI C.
-{STRONGLY DISAGREE: use `/* ... */` for multi-line comments and `//` for single-line comments}
+Almost never use typedef, but if you find some genuine use case, put `_t` on the end of types created with typedef. Type names like this should be all lowercase and have the subsystem name at the start. An example of this is `txt_window_t`.
 
-Variables should be named like this: `my_variable_name`, not like this: `MyVariableName`.
-{STRONGLY DISAGREE: `my_variable_name` for global scope functions only (which should be extremely rare),
-use `MyVariableName` for object declaration and definitions, and use `myVariableName` for object instances.}
+If you are considering using GOTO, you are probably making a mistake and should re-think your entire design and the algorithms you are using to implement it. If GOTO still seems appropriate, profile the code with and without using GOTO, and if the difference is within 1%, don't use GOTO unless the code is EXTREMELY HOT. If the difference is a full percentage or greater (and the code section is EXTREMELY HOT), document these results, and add a note to reprofile this code every time a major update to the compiler happens as well as advising anyone bored to to consider ways to refactor this code without using GOTO while not sacrificing performance.
 
-In pointer variable declarations, place the `*` next to the variable name, not the type.
-{STRONGLY DISAGREE: Pointer is part of the Type}
+Use `//` for short comments; use `\* *\` for detailed comments describing complicated behavior, brief comments nested inside code statements, and heading comment blocks.
 
-When casting variables from one type to another, put a space after the last closing brace.
-{NOTE: don't cast unless absolutely necessary for performance optimization}
+Types should be named `MyObjectName` for object declaration and definitions, object instances should be named `myObjectName`; public methods should use the `myMemberMethod` naming style; private members can use `_myMemberName` to distinguish internal usage, where there needs to be a separate public member with the same logical name. Global constants should use `MY_GLOBAL_CONSTANT` style, and global functions should use `my_global_function` style.
+
+There shouldn't be any global variables, so there is no style guideline for how to name them. Consider `REPLACE_THIS_GLOBAL_MY_GLOBAL` so you don't forget to fix this hack later, if you must use a global variable.
+
+In pointer variable declarations, place `*` next to the Type name, not the variable name; the pointer-ness is part of the object Type, not part of the object identifier.
+
+If the type is a constant pointer, then use the `Type *const`. This is not a pointer, so it isn't a `*` by it-self; this is a const-pointer, which should be thought of as a different thing than a pointer and having a different representation; the entire `*const` is the const-pointer, and the two symbols are conceptually inseparable.
+
+Note that `const Type*` is a pointer to a `const Type` where the two words together describe one thing at which to be pointed; conceptually this
+can be thought of as `(const Type)*`, even if syntactically the parens aren't allowed. 
 
 When using an if, do, while, or for statement, always use the { } braces even when they are not necessary. For example, do this:
 
-```c
+```cpp
 if (condition)
 {
 	body;
@@ -63,23 +79,14 @@ if (condition)
 
 Not this:
 
-```c
+```cpp
 if (condition)	// NO
 	body;
 ```
 
-Write code like this:
-
-```c
-typedef struct
-{
-	int member1;
-	char* member2;
-} my_structure_t;
-{NOTE: irrelevant since we aren't using typedef struct nonsense}
-
 {NOTE: do not use this many arguments, make a new type to pass if you must pass this much information}
 {NOTE: use meaningful variable names, and meaningful zero-cost type wrappers instead of using int for everything}
+```cpp
 void FunctionName(int argument, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7)
 {
 	auto assign_var{arg2 + arg3 * arg4 * (arg5 + arg6)};
@@ -102,7 +109,7 @@ void FunctionName(int argument, int arg2, int arg3, int arg4, int arg5, int arg6
 		body;
 	}
 
-	{NOTE: switches are actually GOTO's with window dressing, so use them sparringly}
+	// NOTE: switches are actually GOTO's with window dressing, so use them sparringly
 	switch (argument)
 	{
 		case FIRST:
@@ -117,14 +124,14 @@ void FunctionName(int argument, int arg2, int arg3, int arg4, int arg5, int arg6
 			break;
 	}
 
-	{NOTE: avoid raw for loops}
-	for (auto a{0}; a < 10; ++a)
+	// NOTE: avoid raw for loops
+	for (auto i{0ull}; i < 10; ++i)
 	{
 		FunctionCall(arg1, arg2, arg3, arg4, argNotSplitOntoSecondLine);
 	}
 
-	auto a{0};
-	while (a < 10)
+	auto k{0ull};
+	while (k < 10)
 	{
 		loop_body;
 	}
@@ -136,111 +143,31 @@ void FunctionName(int argument, int arg2, int arg3, int arg4, int arg5, int arg6
 }
 ```
 
-## Editor-specific default settings
-
-If you use vim, you can put this into your `.vimrc` (or install the
-`localvimrc` script):
-
-```
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-```
-
-Or, if you use Emacs, put this in your `.emacs`:
-
-```lisp
-(add-hook 'c-mode-hook (lambda ()
-(when (and buffer-file-name
-		(string-match "chocolate-doom" buffer-file-name))
-(c-set-style "bsd")
-(setq tab-width 4)
-(setq c-basic-offset 4))))
-```
-
-## Security
-
-The C standard library has a number of unsafe functions that should be avoided when writing code for Chocolate Doom. These are:
-
-Unsafe function	|	Safer alternative
-----------------|------------------------
-`gets()`		|	`fgets(.., stdin)`
-`sprintf`		|	`M_snprintf()`
-`snprintf`		|	`M_snprintf()`
-`vsprintf`		|	`M_vsnprintf()`
-`vsnprintf`		|	`M_vsnprintf()`
-`strcpy()`		|	`M_StringCopy()`
-`strncpy()`		|	`M_StringCopy()`
-`strcat()`		|	`M_StringConcat()`
-`strncat()`		|	`M_StringConcat()`
-`strdup()`		|	`M_StringDuplicate()`
-`realloc()`		|	`I_Realloc()`
-{NOTE: avoid ALL of these old C functions and design for modern algorithms}
-
-Lots of the code includes calls to DEH_String() to simulate string replacement by the Dehacked tool. Be careful when using Dehacked
-replacements of printf format strings. For example, do not do this:
-
-```c
-printf(DEH_String("foo %s"), s);
-sprintf(mybuf, DEH_String("bar %s"), t);
-```
-
-Instead do this:
-
-```c
-DEH_printf("foo %s", s);
-DEH_snprintf(mybuf, sizeof(mybuf), "bar %s", t);
-```
-
-This does the format string replacement safely in a way that checks the arguments securely.
-{STRONGLY DISAGREE: instead, let's not use any hacked code at all and design for modern CPU's and GPU's with C++20 and CUDA}
-
 ## Portability
 
-Chocolate Doom is designed to be cross-platform and work on different Operating Systems and processors. Bear this in mind when writing code.
+CUDA Doom is designed to be somewhat cross-platform, but also require a modern OS (Windows10, Ubuntu, Android), modern hardware (AVX2), and focus on nvidia optimizations with CUDA. There is no support for OSX, iPhone, etc. Possible support for Xbox One, Xbox Series X/S, PS4, PS5, PS Vita, Nintendo Switch, etc.
 
-Do not use the `long` type (its size differs across platforms; use `int` or `int64_t` depending on which you want).
+Use Doom’s byte data type for byte data. Prefer auto for most types, but specify `size_t` for sizes, lengths, and indicies etc.
 
-Use Doom’s byte data type for byte data. `int` is assumed to be a 32-bit integer, and `short` is a 16-bit integer. You can also use the
-ISO C99 data types: `intN_t` and `uintN_t` where N is 8, 16, 32, 64.
-{SOMEWHAT DISAGREE: use C++ type system to the fullest, but do avoid use of int, short, long when it matters; prefer auto when it doesn't}
+You can assume little-endianess; no system we care about in use today still uses big-endian.
 
-Be careful with platform dependencies: do not use Windows API functions, for example. Use SDL where possible.
-
-Preprocessor `#defines` are set that can be used to identify the OS if necessary: `_WIN32` for Windows and `__MACOSX__` for Mac OS X. Others
-are set through SDL. Try to avoid this if possible.
-
-Be careful of endianness! Doom has `SHORT()` and `LONG()` macros that do endianness conversion. Never assume that integer types have a
-particular byte ordering. Similarly, never assume that fields inside a structure are aligned in a particular way. This is most
-relevant when reading or writing data to a file or a network pipe.
-{SOMEWHAT DISAGREE: little endian WON the war a long time ago, but your code shouldn't rely on byte ordering anyway}
-
-For signed integers, you shouldn’t assume that `(i >> n)` is the same as `(i / (1 << n))`. However, most processors handle bitshifts of signed
-integers properly, so it’s not a huge problem.
-{STRONGLY DISAGREE: avoid using SHIFT operators; only consider for final stage performance optimizations where profiled bottlenecks exist}
+For signed integers, you shouldn’t assume that `(i >> n)` is the same as `(i / (1 << n))`. However, you shouldn't be using bitshifts, so this isn't important to think about.
 
 ## GNU GPL and licensing
 
-All code submitted to the project must be licensed under the GNU GPLv2 or a
-compatible license. If you use code that you haven’t 100% written
-yourself, say so. Add a copyright header to the start of every file. Use
-this template:
+All code submitted to the project must be licensed under the GNU GPLv2 or a compatible license. If you use code that you haven’t 100% written yourself, say so. Add a copyright header to the start of every file. Use this template:
 
-```
-//
-// Copyright(C) YEAR Author's name
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-//
-// *File description goes here*
-//
+```cpp
+/**********************************************************************************************************************************************\
+	Copyright(C) YEAR Author's Name
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
+	published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	<File description goes here>
+\**********************************************************************************************************************************************/
+#pragma once
 ```

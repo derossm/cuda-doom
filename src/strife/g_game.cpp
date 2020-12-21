@@ -1,19 +1,15 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
 // DESCRIPTION: none
-//
+\**********************************************************************************************************************************************/
 
 #include <string.h>
 #include <stdlib.h>
@@ -689,7 +685,7 @@ void G_DoLoadLevel ()
 		// haleyjd 20110204 [STRIFE]: PST_REBORN if players[i].health <= 0
 		if (playeringame[i] && (players[i].playerstate == PST_DEAD || players[i].health <= 0))
 			players[i].playerstate = PST_REBORN;
-		memset (players[i].frags,0,sizeof(players[i].frags));
+		memset(players[i].frags,0,sizeof(players[i].frags));
 	}
 
 	P_SetupLevel (gamemap, 0, gameskill);
@@ -700,7 +696,7 @@ void G_DoLoadLevel ()
 
 	// clear cmd building stuff
 
-	memset (gamekeydown, 0, sizeof(gamekeydown));
+	memset(gamekeydown, 0, sizeof(gamekeydown));
 	joyxmove = joyymove = joystrafemove = joylook = 0;
 	mousex = mousey = 0;
 	sendpause = sendsave = paused = false;
@@ -962,7 +958,7 @@ void G_Ticker ()
 		{
 			cmd = &players[i].cmd;
 
-			memcpy (cmd, &netcmds[i], sizeof(ticcmd_t));
+			memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
 
 			if (demoplayback)
 				G_ReadDemoTiccmd (cmd);
@@ -998,7 +994,7 @@ void G_Ticker ()
 				if (gametic > BACKUPTICS
 					&& consistancy[i][buf] != cmd->consistancy)
 				{
-					I_Error ("consistency failure (%i should be %i)",
+					I_Error("consistency failure (%i should be %i)",
 								cmd->consistancy, consistancy[i][buf]);
 				}
 				if (players[i].mo)
@@ -1122,8 +1118,8 @@ void G_PlayerFinishLevel (int player)
 
 	p = &players[player];
 
-	memset (p->powers, 0, sizeof (p->powers));
-	memset (p->cards, 0, sizeof (p->cards));
+	memset(p->powers, 0, sizeof (p->powers));
+	memset(p->cards, 0, sizeof (p->cards));
 	p->mo->flags &= ~MF_SHADOW;		// cancel invisibility
 	p->extralight = 0;			// cancel gun flashes
 	p->fixedcolormap = 0;		// cancel ir gogles
@@ -1154,7 +1150,7 @@ void G_PlayerReborn (int player)
 	memcpy(frags,players[player].frags,sizeof(frags));
 
 	p = &players[player];
-	memset (p, 0, sizeof(*p));
+	memset(p, 0, sizeof(*p));
 
 	memcpy(p->frags, frags, sizeof(p->frags));
 
@@ -1239,9 +1235,7 @@ G_CheckSpot
 	ss = R_PointInSubsector (x,y);
 	an = ( ANG45 * (((unsigned int) mthing->angle)/45) ) >> ANGLETOFINESHIFT;
 
-	mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an]
-						, ss->sector->floorheight
-						, MT_TFOG);
+	mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an], ss->sector->floorheight, MT_TFOG);
 
 	if (players[consoleplayer].viewz != 1)
 		S_StartSound (mo, sfx_telept);	// don't start sound on first frame
@@ -1264,7 +1258,7 @@ void G_DeathMatchSpawnPlayer (int playernum)
 
 	selections = deathmatch_p - deathmatchstarts;
 	if (selections < 4)
-		I_Error ("Only %i deathmatch spots, at least 4 required!", selections);
+		I_Error("Only %i deathmatch spots, at least 4 required!", selections);
 
 	for (j=0 ; j<20 ; j++)
 	{
@@ -1721,7 +1715,7 @@ void G_DoLoadGame (bool userload)
 	P_UnArchiveSpecials ();
 
 	if (!P_ReadSaveGameEOF())
-		I_Error ("Bad savegame");
+		I_Error("Bad savegame");
 
 	fclose(save_stream);
 
@@ -1852,7 +1846,7 @@ void G_DoSaveGame (char *path)
 
 	if (vanilla_savegame_limit && ftell(save_stream) > SAVEGAMESIZE)
 	{
-		I_Error ("Savegame buffer overrun");
+		I_Error("Savegame buffer overrun");
 	}
 	*/
 
@@ -2217,7 +2211,7 @@ void G_RecordDemo (const char* name)
 	i = M_CheckParmWithArgs("-maxdemo", 1);
 	if (i)
 		maxsize = atoi(myargv[i+1])*1024;
-	demobuffer = Z_Malloc (maxsize,PU_STATIC,NULL);
+	demobuffer = Z_Malloc(maxsize,PU_STATIC,NULL);
 	demoend = demobuffer + maxsize;
 
 	demorecording = true;
@@ -2435,7 +2429,7 @@ bool G_CheckDemoStatus ()
 		timingdemo = false;
 		demoplayback = false;
 
-		I_Error ("timed %i gametics in %i realtics (%f fps)",
+		I_Error("timed %i gametics in %i realtics (%f fps)",
 					gametic, realtics, fps);
 	}
 
@@ -2464,9 +2458,9 @@ bool G_CheckDemoStatus ()
 	{
 		*demo_p++ = DEMOMARKER;
 		M_WriteFile (demoname, demobuffer, demo_p - demobuffer);
-		Z_Free (demobuffer);
+		Z_Free(demobuffer);
 		demorecording = false;
-		I_Error ("Demo %s recorded", demoname);
+		I_Error("Demo %s recorded", demoname);
 	}
 
 	return false;

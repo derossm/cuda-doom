@@ -1,115 +1,82 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-// Copyright(C) 2005, 2006 Andrey Budko
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Movement/collision utility functions,
-//	as used by function in p_map.c.
-//	BLOCKMAP Iterator functions,
-//	and some PIT_* functions to use for iteration.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+	Copyright(C) 2005, 2006 Andrey Budko
 
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+		Movement/collision utility functions, as used by function in p_map.cpp
+		BLOCKMAP Iterator functions, and some PIT_* functions to use for iteration
+\**********************************************************************************************************************************************/
 
 #include <stdlib.h>
 
-
 #include "m_bbox.h"
-
 #include "doomdef.h"
 #include "doomstat.h"
 #include "p_local.h"
-
-
-// State.
 #include "r_state.h"
 
-//
-// P_AproxDistance
 // Gives an estimation of distance (not exact)
-//
-// [STRIFE] Verified unmodified
-//
-fixed_t
-P_AproxDistance
-( fixed_t	dx,
- fixed_t	dy )
+fixed_t P_AproxDistance(fixed_t dx, fixed_t dy)
 {
 	dx = abs(dx);
 	dy = abs(dy);
 	if (dx < dy)
+	{
 		return dx+dy-(dx>>1);
+	}
+
 	return dx+dy-(dy>>1);
 }
 
-
-//
-// P_PointOnLineSide
-// Returns 0 or 1
-//
-// [STRIFE] Verified unmodified
-//
-int
-P_PointOnLineSide
-( fixed_t	x,
- fixed_t	y,
- line_t*	line )
+// return values
+// false:	point on front
+// true:	point on back
+bool P_PointOnLineSide(fixed_t x, fixed_t y, line_t* line)
 {
-	fixed_t dx;
-	fixed_t dy;
-	fixed_t left;
-	fixed_t right;
-
 	if (!line->dx)
 	{
 		if (x <= line->v1->x)
+		{
 			return line->dy > 0;
+		}
 
 		return line->dy < 0;
 	}
+
 	if (!line->dy)
 	{
 		if (y <= line->v1->y)
+		{
 			return line->dx < 0;
+		}
 
 		return line->dx > 0;
 	}
 
-	dx = (x - line->v1->x);
-	dy = (y - line->v1->y);
+	fixed_t dx{(x - line->v1->x)};
+	fixed_t dy{(y - line->v1->y)};
 
-	left = FixedMul ( line->dy>>FRACBITS , dx );
-	right = FixedMul ( dy , line->dx>>FRACBITS );
+	fixed_t left{FixedMul(line->dy>>FRACBITS, dx)};
+	fixed_t right{FixedMul(dy, line->dx>>FRACBITS)};
 
 	if (right < left)
 		return 0;		// front side
 	return 1;			// back side
 }
 
-
-
-//
 // P_BoxOnLineSide
 // Considers the line to be infinite
 // Returns side 0 or 1, -1 if box crosses the line.
 //
 // [STRIFE] Verified unmodified
-//
-int
-P_BoxOnLineSide
-( fixed_t* tmbox,
- line_t*	ld )
+int P_BoxOnLineSide(fixed_t* tmbox, line_t*	ld)
 {
 	int		p1 = 0;
 	int		p2 = 0;
@@ -159,11 +126,7 @@ P_BoxOnLineSide
 //
 // [STRIFE] Verified unmodified
 //
-int
-P_PointOnDivlineSide
-( fixed_t		x,
- fixed_t		y,
- divline_t*	line )
+int P_PointOnDivlineSide(fixed_t x, fixed_t y, divline_t* line)
 {
 	fixed_t dx;
 	fixed_t dy;
@@ -196,8 +159,8 @@ P_PointOnDivlineSide
 		return 0;
 	}
 
-	left = FixedMul ( line->dy>>8, dx>>8 );
-	right = FixedMul ( dy>>8 , line->dx>>8 );
+	left = FixedMul(line->dy>>8, dx>>8);
+	right = FixedMul(dy>>8, line->dx>>8);
 
 	if (right < left)
 		return 0;		// front side
@@ -241,17 +204,17 @@ P_InterceptVector
 	fixed_t num;
 	fixed_t den;
 
-	den = FixedMul (v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
+	den = FixedMul(v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
 
 	if (den == 0)
 		return 0;
-	// I_Error ("P_InterceptVector: parallel");
+	// I_Error("P_InterceptVector: parallel");
 
 	num =
-		FixedMul ( (v1->x - v2->x)>>8 ,v1->dy )
-		+FixedMul ( (v2->y - v1->y)>>8, v1->dx );
+		FixedMul( (v1->x - v2->x)>>8,v1->dy )
+		+FixedMul( (v2->y - v1->y)>>8, v1->dx );
 
-	frac = FixedDiv (num , den);
+	frac = FixedDiv(num, den);
 
 	return frac;
 #else	// UNUSED, float debug.
@@ -901,24 +864,9 @@ static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
 }
 #endif
 
-
-//
-// P_PathTraverse
-// Traces a line from x1,y1 to x2,y2,
-// calling the traverser function for each.
-// Returns true if the traverser function returns true
-// for all lines.
-//
-// [STRIFE] Verified unmodified
-//
-bool
-P_PathTraverse
-( fixed_t		x1,
- fixed_t		y1,
- fixed_t		x2,
- fixed_t		y2,
- int			flags,
- bool (*trav) (intercept_t *))
+// Traces a line from x1,y1 to x2,y2, calling the traverser function for each.
+// Returns true if the traverser function returns true for all lines.
+bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, bool (*trav)(intercept_t*))
 {
 	fixed_t xt1;
 	fixed_t yt1;
@@ -933,17 +881,17 @@ P_PathTraverse
 	fixed_t xintercept;
 	fixed_t yintercept;
 
-	int		mapx;
-	int		mapy;
+	int mapx;
+	int mapy;
 
-	int		mapxstep;
-	int		mapystep;
+	int mapxstep;
+	int mapystep;
 
-	int		count;
+	int count;
 
 	earlyout = (flags & PT_EARLYOUT) != 0;
 
-	validcount++;
+	++validcount;
 	intercept_p = intercepts;
 
 	if ( ((x1-bmaporgx)&(MAPBLOCKSIZE-1)) == 0)
@@ -971,13 +919,13 @@ P_PathTraverse
 	{
 		mapxstep = 1;
 		partial = FRACUNIT - ((x1>>MAPBTOFRAC)&(FRACUNIT-1));
-		ystep = FixedDiv (y2-y1,abs(x2-x1));
+		ystep = FixedDiv(y2-y1,abs(x2-x1));
 	}
 	else if (xt2 < xt1)
 	{
 		mapxstep = -1;
 		partial = (x1>>MAPBTOFRAC)&(FRACUNIT-1);
-		ystep = FixedDiv (y2-y1,abs(x2-x1));
+		ystep = FixedDiv(y2-y1,abs(x2-x1));
 	}
 	else
 	{
@@ -986,20 +934,19 @@ P_PathTraverse
 		ystep = 256*FRACUNIT;
 	}
 
-	yintercept = (y1>>MAPBTOFRAC) + FixedMul (partial, ystep);
-
+	yintercept = (y1>>MAPBTOFRAC) + FixedMul(partial, ystep);
 
 	if (yt2 > yt1)
 	{
 		mapystep = 1;
 		partial = FRACUNIT - ((y1>>MAPBTOFRAC)&(FRACUNIT-1));
-		xstep = FixedDiv (x2-x1,abs(y2-y1));
+		xstep = FixedDiv(x2-x1,abs(y2-y1));
 	}
 	else if (yt2 < yt1)
 	{
 		mapystep = -1;
 		partial = (y1>>MAPBTOFRAC)&(FRACUNIT-1);
-		xstep = FixedDiv (x2-x1,abs(y2-y1));
+		xstep = FixedDiv(x2-x1,abs(y2-y1));
 	}
 	else
 	{
@@ -1007,7 +954,7 @@ P_PathTraverse
 		partial = FRACUNIT;
 		xstep = 256*FRACUNIT;
 	}
-	xintercept = (x1>>MAPBTOFRAC) + FixedMul (partial, xstep);
+	xintercept = (x1>>MAPBTOFRAC) + FixedMul(partial, xstep);
 
 	// Step through map blocks.
 	// Count is present to prevent a round off error
@@ -1015,7 +962,7 @@ P_PathTraverse
 	mapx = xt1;
 	mapy = yt1;
 
-	for (count = 0 ; count < 64 ; count++)
+	for (count = 0; count < 64; ++count)
 	{
 		if (flags & PT_ADDLINES)
 		{
@@ -1029,8 +976,7 @@ P_PathTraverse
 				return false;	// early out
 		}
 
-		if (mapx == xt2
-			&& mapy == yt2)
+		if (mapx == xt2 && mapy == yt2)
 		{
 			break;
 		}
@@ -1045,11 +991,8 @@ P_PathTraverse
 			xintercept += xstep;
 			mapy += mapystep;
 		}
-
 	}
+
 	// go through the sorted list
 	return P_TraverseIntercepts ( trav, FRACUNIT );
 }
-
-
-

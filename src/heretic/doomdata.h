@@ -1,33 +1,27 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DoomData.h
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 // all external data is defined here
 // most of the data is loaded into different structures at run time
+\**********************************************************************************************************************************************/
+#pragma once
 
 #ifndef __DOOMDATA__
 #define __DOOMDATA__
 
-#include "doomtype.h"
+#include "..\doomtype.h"
 
 /*
 ===============================================================================
-
 						map level types
-
 ===============================================================================
 */
 
@@ -47,32 +41,35 @@ enum
 	ML_BLOCKMAP
 };
 
-
 typedef PACKED_STRUCT (
 {
-	short x, y;
+	short x;
+	short y;
 }) mapvertex_t;
 
 typedef PACKED_STRUCT (
 {
 	short textureoffset;
 	short rowoffset;
-	char toptexture[8], bottomtexture[8], midtexture[8];
-	short sector;				// on viewer's side
+	char toptexture[8];
+	char bottomtexture[8];
+	char midtexture[8];
+	short sector;					// on viewer's side
 }) mapsidedef_t;
 
 typedef PACKED_STRUCT (
 {
-	short v1, v2;
+	short v1;
+	short v2;
 	short flags;
-	short special, tag;
-	short sidenum[2];			// sidenum[1] will be -1 if one sided
+	short special;
+	short tag;
+	short sidenum[2];				// sidenum[1] will be -1 if one sided
 }) maplinedef_t;
 
 #define	ML_BLOCKING			1
 #define	ML_BLOCKMONSTERS	2
-#define	ML_TWOSIDED			4		// backside will not be present at all
-																		// if not two sided
+#define	ML_TWOSIDED			4		// backside will not be present at all if not two sided
 
 // if a texture is pegged, the texture will have the end exposed to air held
 // constant at the top or bottom of the texture (stairs or pulled down things)
@@ -87,13 +84,15 @@ typedef PACKED_STRUCT (
 #define	ML_DONTDRAW			128		// don't draw on the automap
 #define	ML_MAPPED			256		// set if allready drawn in automap
 
-
 typedef PACKED_STRUCT (
 {
-	short floorheight, ceilingheight;
-	char floorpic[8], ceilingpic[8];
+	short floorheight;
+	short ceilingheight;
+	char floorpic[8];
+	char ceilingpic[8];
 	short lightlevel;
-	short special, tag;
+	short special;
+	short tag;
 }) mapsector_t;
 
 typedef PACKED_STRUCT (
@@ -104,23 +103,30 @@ typedef PACKED_STRUCT (
 
 typedef PACKED_STRUCT (
 {
-	short v1, v2;
+	short v1;
+	short v2;
 	short angle;
-	short linedef, side;
+	short linedef;
+	short side;
 	short offset;
 }) mapseg_t;
 
 #define	NF_SUBSECTOR	0x8000
+
 typedef PACKED_STRUCT (
 {
-	short x, y, dx, dy;			// partition line
+	short x;					// partition line
+	short y;
+	short dx;
+	short dy;
 	short bbox[2][4];			// bounding box for each child
-	unsigned short children[2]; // if NF_SUBSECTOR its a subsector
+	unsigned short children[2];	// if NF_SUBSECTOR its a subsector
 }) mapnode_t;
 
 typedef PACKED_STRUCT (
 {
-	short x, y;
+	short x;
+	short y;
 	short angle;
 	short type;
 	short options;
@@ -133,9 +139,7 @@ typedef PACKED_STRUCT (
 
 /*
 ===============================================================================
-
 						texture definition
-
 ===============================================================================
 */
 
@@ -162,31 +166,16 @@ typedef PACKED_STRUCT (
 
 /*
 ===============================================================================
-
 							graphics
-
 ===============================================================================
 */
 
 // a pic is an unmasked block of pixels
 typedef struct
 {
-	byte width, height;
+	byte width;
+	byte height;
 	byte data;
 } pic_t;
-
-
-
-
-/*
-===============================================================================
-
-							status
-
-===============================================================================
-*/
-
-
-
 
 #endif // __DOOMDATA__

@@ -1,21 +1,17 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Handle Sector base lighting effects.
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Handle Sector base lighting effects.
 //	Muzzle flash?
-//
+\**********************************************************************************************************************************************/
 
 
 
@@ -66,7 +62,7 @@ void P_SpawnFireFlicker (sector_t*	sector)
 	// Nothing special about it during gameplay.
 	sector->special = 0;
 
-	flick = Z_Malloc ( sizeof(*flick), PU_LEVSPEC, 0);
+	flick = Z_Malloc( sizeof(*flick), PU_LEVSPEC, 0);
 
 	P_AddThinker (&flick->thinker);
 
@@ -121,7 +117,7 @@ void P_SpawnLightFlash (sector_t*	sector)
 	// nothing special about it during gameplay
 	sector->special = 0;
 
-	flash = Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0);
+	flash = Z_Malloc( sizeof(*flash), PU_LEVSPEC, 0);
 
 	P_AddThinker (&flash->thinker);
 
@@ -178,7 +174,7 @@ P_SpawnStrobeFlash
 {
 	strobe_t*	flash;
 
-	flash = Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0);
+	flash = Z_Malloc( sizeof(*flash), PU_LEVSPEC, 0);
 
 	P_AddThinker (&flash->thinker);
 

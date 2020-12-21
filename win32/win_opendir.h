@@ -1,13 +1,13 @@
-// 03/10/2006 James Haley
-//
-// For this module only:
-// This code is public domain. No change sufficient enough to constitute a
-// significant or original work has been made, and thus it remains as such.
-//
-// DESCRIPTION:
-//
-// Implementation of POSIX opendir for Visual C++.
-// Derived from the MinGW C Library Extensions Source (released to the public domain).
+/**********************************************************************************************************************************************\
+	03/10/2006 James Haley
+
+	For this module only:
+		This code is public domain. No change sufficient enough to constitute a significant or original work has been made,
+		and thus it remains as such.
+
+	DESCRIPTION:
+		Implementation of POSIX opendir for Visual C++. Derived from the MinGW C Library Extensions Source (released to the public domain).
+\**********************************************************************************************************************************************/
 #pragma once
 
 #ifndef I_OPNDIR_H__
@@ -21,10 +21,10 @@
 
 struct dirent
 {
-	long			d_ino;	/* Always zero. */
-	unsigned short	d_reclen; /* Always zero. */
-	unsigned short	d_namlen; /* Length of name in d_name. */
-	char			d_name[FILENAME_MAX]; /* File name. */
+	long d_ino;						/* Always zero. */
+	unsigned short d_reclen;		/* Always zero. */
+	unsigned short d_namlen;		/* Length of name in d_name. */
+	char d_name[FILENAME_MAX];		/* File name. */
 };
 
 /*
@@ -43,13 +43,13 @@ typedef struct
 	struct dirent dd_dir;
 
 	/* _findnext handle */
-	intptr_t	dd_handle;
+	intptr_t dd_handle;
 
 	/*
 	* Status of search:
-	*	0 = not started yet (next entry to read is first entry)
+	* 0 = not started yet (next entry to read is first entry)
 	* -1 = off the end
-	*	positive = 0 based index of next entry
+	* positive = 0 based index of next entry
 	*/
 	int dd_stat;
 

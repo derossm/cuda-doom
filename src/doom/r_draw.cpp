@@ -1,22 +1,18 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	The actual span/column drawing functions.
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	The actual span/column drawing functions.
 //	Here find the main potential for optimization,
 //		e.g. inline assembly, different algorithms.
-//
+\**********************************************************************************************************************************************/
 
 
 
@@ -122,7 +118,7 @@ void R_DrawColumn ()
 	if ((unsigned)dc_x >= SCREENWIDTH
 	|| dc_yl < 0
 	|| dc_yh >= SCREENHEIGHT)
-	I_Error ("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
+	I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 #endif
 
 	// Framebuffer destination address.
@@ -262,7 +258,7 @@ void R_DrawColumnLow ()
 	|| dc_yh >= SCREENHEIGHT)
 	{
 
-	I_Error ("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
+	I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 	}
 	//	dccount++;
 #endif
@@ -391,7 +387,7 @@ void R_DrawFuzzColumn ()
 	if ((unsigned)dc_x >= SCREENWIDTH
 	|| dc_yl < 0 || dc_yh >= SCREENHEIGHT)
 	{
-	I_Error ("R_DrawFuzzColumn: %i to %i at %i",
+	I_Error("R_DrawFuzzColumn: %i to %i at %i",
 			dc_yl, dc_yh, dc_x);
 	}
 #endif
@@ -475,7 +471,7 @@ void R_DrawFuzzColumnLow ()
 	if ((unsigned)x >= SCREENWIDTH
 	|| dc_yl < 0 || dc_yh >= SCREENHEIGHT)
 	{
-	I_Error ("R_DrawFuzzColumn: %i to %i at %i",
+	I_Error("R_DrawFuzzColumn: %i to %i at %i",
 			dc_yl, dc_yh, dc_x);
 	}
 #endif
@@ -560,7 +556,7 @@ void R_DrawTranslatedColumn ()
 	|| dc_yl < 0
 	|| dc_yh >= SCREENHEIGHT)
 	{
-	I_Error ( "R_DrawColumn: %i to %i at %i",
+	I_Error( "R_DrawColumn: %i to %i at %i",
 			dc_yl, dc_yh, dc_x);
 	}
 
@@ -609,7 +605,7 @@ void R_DrawTranslatedColumnLow ()
 	|| dc_yl < 0
 	|| dc_yh >= SCREENHEIGHT)
 	{
-	I_Error ( "R_DrawColumn: %i to %i at %i",
+	I_Error( "R_DrawColumn: %i to %i at %i",
 			dc_yl, dc_yh, x);
 	}
 
@@ -656,7 +652,7 @@ void R_DrawTLColumn ()
 	|| dc_yl < 0
 	|| dc_yh >= SCREENHEIGHT)
 	{
-	I_Error ( "R_DrawColumn: %i to %i at %i",
+	I_Error( "R_DrawColumn: %i to %i at %i",
 			dc_yl, dc_yh, dc_x);
 	}
 #endif
@@ -702,7 +698,7 @@ void R_DrawTLColumnLow ()
 	|| dc_yl < 0
 	|| dc_yh >= SCREENHEIGHT)
 	{
-	I_Error ( "R_DrawColumn: %i to %i at %i",
+	I_Error( "R_DrawColumn: %i to %i at %i",
 			dc_yl, dc_yh, x);
 	}
 #endif
@@ -741,7 +737,7 @@ void R_InitTranslationTables ()
 {
 	int		i;
 
-	translationtables = Z_Malloc (256*3, PU_STATIC, 0);
+	translationtables = Z_Malloc(256*3, PU_STATIC, 0);
 
 	// translate just the 16 green colors
 	for (i=0 ; i<256 ; i++)
@@ -1089,13 +1085,13 @@ void R_FillBackScreen ()
 #ifndef CRISPY_TRUECOLOR
 	for (x=0 ; x<SCREENWIDTH/64 ; x++)
 	{
-		memcpy (dest, src+((y&63)<<6), 64);
+		memcpy(dest, src+((y&63)<<6), 64);
 		dest += 64;
 	}
 
 	if (SCREENWIDTH&63)
 	{
-		memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
+		memcpy(dest, src+((y&63)<<6), SCREENWIDTH&63);
 		dest += (SCREENWIDTH&63);
 	}
 #else

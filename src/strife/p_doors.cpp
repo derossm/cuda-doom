@@ -1,19 +1,15 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
 // DESCRIPTION: Door animation code (opening/closing)
-//
+\**********************************************************************************************************************************************/
 
 
 
@@ -393,7 +389,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 
 		// new door thinker
 		rtn = 1;
-		door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
+		door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
 		P_AddThinker (&door->thinker);
 		sec->specialdata = door;
 
@@ -796,7 +792,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 	// haleyjd 09/15/10: [STRIFE] Removed DOOM door sounds
 
 	// new door thinker
-	door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
+	door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
 	P_AddThinker (&door->thinker);
 	sec->specialdata = door;
 	door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
@@ -870,7 +866,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 {
 	vldoor_t*	door;
 
-	door = Z_Malloc ( sizeof(*door), PU_LEVSPEC, 0);
+	door = Z_Malloc( sizeof(*door), PU_LEVSPEC, 0);
 
 	P_AddThinker (&door->thinker);
 
@@ -895,7 +891,7 @@ P_SpawnDoorRaiseIn5Mins
 {
 	vldoor_t*	door;
 
-	door = Z_Malloc ( sizeof(*door), PU_LEVSPEC, 0);
+	door = Z_Malloc( sizeof(*door), PU_LEVSPEC, 0);
 
 	P_AddThinker (&door->thinker);
 
@@ -1308,7 +1304,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
 	// Init sliding door vars
 	if(!door)
 	{
-		door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
+		door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
 		P_AddThinker (&door->thinker);
 
 		sec->specialdata = door;

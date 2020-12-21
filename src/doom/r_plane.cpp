@@ -1,22 +1,18 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Here is a core component: drawing the floors and ceilings,
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Here is a core component: drawing the floors and ceilings,
 //		while maintaining a per column clipping list only.
 //	Moreover, the sky areas have to be determined.
-//
+\**********************************************************************************************************************************************/
 
 
 #include <stdio.h>
@@ -133,7 +129,7 @@ R_MapPlane
 		|| x2 >= viewwidth
 		|| y > viewheight)
 	{
-	I_Error ("R_MapPlane: %i, %i at %i",x1,x2,y);
+	I_Error("R_MapPlane: %i, %i at %i",x1,x2,y);
 	}
 #endif
 
@@ -148,9 +144,9 @@ R_MapPlane
 	if (planeheight != cachedheight[y])
 	{
 	cachedheight[y] = planeheight;
-	distance = cacheddistance[y] = FixedMul (planeheight, yslope[y]);
-	ds_xstep = cachedxstep[y] = (FixedMul (viewsin, planeheight) / dy) << detailshift;
-	ds_ystep = cachedystep[y] = (FixedMul (viewcos, planeheight) / dy) << detailshift;
+	distance = cacheddistance[y] = FixedMul(planeheight, yslope[y]);
+	ds_xstep = cachedxstep[y] = (FixedMul(viewsin, planeheight) / dy) << detailshift;
+	ds_ystep = cachedystep[y] = (FixedMul(viewcos, planeheight) / dy) << detailshift;
 	}
 	else
 	{
@@ -206,14 +202,14 @@ void R_ClearPlanes ()
 	lastopening = openings;
 
 	// texture calculation
-	memset (cachedheight, 0, sizeof(cachedheight));
+	memset(cachedheight, 0, sizeof(cachedheight));
 
 	// left to right mapping
 	angle = (viewangle-ANG90)>>ANGLETOFINESHIFT;
 
 	// scale will be unit scale at SCREENWIDTH/2 distance
-	basexscale = FixedDiv (finecosine[angle],centerxfrac);
-	baseyscale = -FixedDiv (finesine[angle],centerxfrac);
+	basexscale = FixedDiv(finecosine[angle],centerxfrac);
+	baseyscale = -FixedDiv(finesine[angle],centerxfrac);
 }
 
 
@@ -277,7 +273,7 @@ R_FindPlane
 
 	R_RaiseVisplanes(&check); // [crispy] remove VISPLANES limit
 	if (lastvisplane - visplanes == MAXVISPLANES && false)
-	I_Error ("R_FindPlane: no more visplanes");
+	I_Error("R_FindPlane: no more visplanes");
 
 	lastvisplane++;
 
@@ -287,7 +283,7 @@ R_FindPlane
 	check->minx = SCREENWIDTH;
 	check->maxx = -1;
 
-	memset (check->top,0xff,sizeof(check->top));
+	memset(check->top,0xff,sizeof(check->top));
 
 	return check;
 }
@@ -355,13 +351,13 @@ R_CheckPlane
 	lastvisplane->lightlevel = pl->lightlevel;
 
 	if (lastvisplane - visplanes == MAXVISPLANES && false) // [crispy] remove VISPLANES limit
-	I_Error ("R_CheckPlane: no more visplanes");
+	I_Error("R_CheckPlane: no more visplanes");
 
 	pl = lastvisplane++;
 	pl->minx = start;
 	pl->maxx = stop;
 
-	memset (pl->top,0xff,sizeof(pl->top));
+	memset(pl->top,0xff,sizeof(pl->top));
 
 	return pl;
 }
@@ -418,15 +414,15 @@ void R_DrawPlanes ()
 
 #ifdef RANGECHECK
 	if (ds_p - drawsegs > numdrawsegs)
-	I_Error ("R_DrawPlanes: drawsegs overflow (%" PRIiPTR ")",
+	I_Error("R_DrawPlanes: drawsegs overflow (%" PRIiPTR ")",
 			ds_p - drawsegs);
 
 	if (lastvisplane - visplanes > numvisplanes)
-	I_Error ("R_DrawPlanes: visplane overflow (%" PRIiPTR ")",
+	I_Error("R_DrawPlanes: visplane overflow (%" PRIiPTR ")",
 			lastvisplane - visplanes);
 
 	if (lastopening - openings > MAXOPENINGS)
-	I_Error ("R_DrawPlanes: opening overflow (%" PRIiPTR ")",
+	I_Error("R_DrawPlanes: opening overflow (%" PRIiPTR ")",
 			lastopening - openings);
 #endif
 

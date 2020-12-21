@@ -1,19 +1,14 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
 
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+\**********************************************************************************************************************************************/
 
 // HEADER FILES ------------------------------------------------------------
 
@@ -3265,7 +3260,7 @@ static void CopyFile(char *source_name, char *dest_name)
 	read_handle = fopen(source_name, "rb");
 	if (read_handle == NULL)
 	{
-		I_Error ("Couldn't read file %s", source_name);
+		I_Error("Couldn't read file %s", source_name);
 	}
 	file_length = file_remaining = M_FileLength(read_handle);
 
@@ -3284,10 +3279,10 @@ static void CopyFile(char *source_name, char *dest_name)
 	write_handle = fopen(dest_name, "wb");
 	if (write_handle == NULL)
 	{
-		I_Error ("Couldn't read file %s", dest_name);
+		I_Error("Couldn't read file %s", dest_name);
 	}
 
-	buffer = Z_Malloc (BUFFER_CHUNK_SIZE, PU_STATIC, NULL);
+	buffer = Z_Malloc(BUFFER_CHUNK_SIZE, PU_STATIC, NULL);
 
 	do
 	{
@@ -3300,13 +3295,13 @@ static void CopyFile(char *source_name, char *dest_name)
 		read_count = fread(buffer, 1, buf_count, read_handle);
 		if (read_count < buf_count)
 		{
-			I_Error ("Couldn't read file %s", source_name);
+			I_Error("Couldn't read file %s", source_name);
 		}
 
 		write_count = fwrite(buffer, 1, buf_count, write_handle);
 		if (write_count < buf_count)
 		{
-			I_Error ("Couldn't write to file %s", dest_name);
+			I_Error("Couldn't write to file %s", dest_name);
 		}
 
 		file_remaining -= buf_count;

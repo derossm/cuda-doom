@@ -1,21 +1,17 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Do all the WAD I/O, get map description,
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Do all the WAD I/O, get map description,
 //	set up initial state and misc. LUTs.
-//
+\**********************************************************************************************************************************************/
 
 
 
@@ -129,7 +125,7 @@ void P_LoadVertexes (int lump)
 	numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
 
 	// Allocate zone memory for buffer.
-	vertexes = Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,0);
+	vertexes = Z_Malloc(numvertexes*sizeof(vertex_t),PU_LEVEL,0);
 
 	// Load data into cache.
 	data = W_CacheLumpNum (lump, PU_STATIC);
@@ -166,8 +162,8 @@ void P_LoadSegs (int lump)
 	int					sidenum;
 
 	numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-	segs = Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,0);
-	memset (segs, 0, numsegs*sizeof(seg_t));
+	segs = Z_Malloc(numsegs*sizeof(seg_t),PU_LEVEL,0);
+	memset(segs, 0, numsegs*sizeof(seg_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
 	ml = (mapseg_t *)data;
@@ -224,11 +220,11 @@ void P_LoadSubsectors (int lump)
 	subsector_t*	ss;
 
 	numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-	subsectors = Z_Malloc (numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
+	subsectors = Z_Malloc(numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
 	ms = (mapsubsector_t *)data;
-	memset (subsectors,0, numsubsectors*sizeof(subsector_t));
+	memset(subsectors,0, numsubsectors*sizeof(subsector_t));
 	ss = subsectors;
 
 	for (i=0 ; i<numsubsectors ; i++, ss++, ms++)
@@ -253,8 +249,8 @@ void P_LoadSectors (int lump)
 	sector_t*		ss;
 
 	numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-	sectors = Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,0);
-	memset (sectors, 0, numsectors*sizeof(sector_t));
+	sectors = Z_Malloc(numsectors*sizeof(sector_t),PU_LEVEL,0);
+	memset(sectors, 0, numsectors*sizeof(sector_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
 	ms = (mapsector_t *)data;
@@ -288,7 +284,7 @@ void P_LoadNodes (int lump)
 	node_t*	no;
 
 	numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-	nodes = Z_Malloc (numnodes*sizeof(node_t),PU_LEVEL,0);
+	nodes = Z_Malloc(numnodes*sizeof(node_t),PU_LEVEL,0);
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
 	mn = (mapnode_t *)data;
@@ -400,8 +396,8 @@ void P_LoadLineDefs (int lump)
 	vertex_t*		v2;
 
 	numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-	lines = Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);
-	memset (lines, 0, numlines*sizeof(line_t));
+	lines = Z_Malloc(numlines*sizeof(line_t),PU_LEVEL,0);
+	memset(lines, 0, numlines*sizeof(line_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
 	mld = (maplinedef_t *)data;
@@ -422,7 +418,7 @@ void P_LoadLineDefs (int lump)
 		ld->slopetype = ST_HORIZONTAL;
 	else
 	{
-		if (FixedDiv (ld->dy , ld->dx) > 0)
+		if (FixedDiv(ld->dy, ld->dx) > 0)
 		ld->slopetype = ST_POSITIVE;
 		else
 		ld->slopetype = ST_NEGATIVE;
@@ -479,8 +475,8 @@ void P_LoadSideDefs (int lump)
 	side_t*		sd;
 
 	numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-	sides = Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,0);
-	memset (sides, 0, numsides*sizeof(side_t));
+	sides = Z_Malloc(numsides*sizeof(side_t),PU_LEVEL,0);
+	memset(sides, 0, numsides*sizeof(side_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
 	msd = (mapsidedef_t *)data;
@@ -579,7 +575,7 @@ void P_GroupLines ()
 	}
 
 	// build line tables for each sector
-	linebuffer = Z_Malloc (totallines*sizeof(line_t *), PU_LEVEL, 0);
+	linebuffer = Z_Malloc(totallines*sizeof(line_t *), PU_LEVEL, 0);
 
 	for (i=0; i<numsectors; ++i)
 	{

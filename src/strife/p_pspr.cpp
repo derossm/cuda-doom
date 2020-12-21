@@ -1,21 +1,17 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Weapon sprite animation, weapon objects.
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Weapon sprite animation, weapon objects.
 //	Action functions for weapons.
-//
+\**********************************************************************************************************************************************/
 
 
 #include "doomdef.h"
@@ -295,9 +291,9 @@ void A_WeaponReady( player_t* player, pspdef_t* psp)
 
 	// bob the weapon based on movement speed
 	angle = (128*leveltime)&FINEMASK;
-	psp->sx = FRACUNIT + FixedMul (player->bob, finecosine[angle]);
+	psp->sx = FRACUNIT + FixedMul(player->bob, finecosine[angle]);
 	angle &= FINEANGLES/2-1;
-	psp->sy = WEAPONTOP + FixedMul (player->bob, finesine[angle]);
+	psp->sy = WEAPONTOP + FixedMul(player->bob, finesine[angle]);
 }
 
 

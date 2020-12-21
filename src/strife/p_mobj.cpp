@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Moving object handling. Spawn functions.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Moving object handling. Spawn functions.
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 
@@ -240,8 +236,8 @@ void P_XYMovement (mobj_t* mo)
 	{
 		if(player)
 		{
-			mo->momx = FixedMul (mo->momx, AIRFRICTION);
-			mo->momy = FixedMul (mo->momy, AIRFRICTION);
+			mo->momx = FixedMul(mo->momx, AIRFRICTION);
+			mo->momy = FixedMul(mo->momy, AIRFRICTION);
 		}
 		return;		// no friction when airborne
 	}
@@ -278,8 +274,8 @@ void P_XYMovement (mobj_t* mo)
 	}
 	else
 	{
-		mo->momx = FixedMul (mo->momx, FRICTION);
-		mo->momy = FixedMul (mo->momy, FRICTION);
+		mo->momx = FixedMul(mo->momx, FRICTION);
+		mo->momy = FixedMul(mo->momy, FRICTION);
 	}
 }
 
@@ -470,7 +466,7 @@ P_NightmareRespawn (mobj_t* mobj)
 	// because of removal of the body?
 	mo = P_SpawnMobj (mobj->x,
 						mobj->y,
-						mobj->subsector->sector->floorheight , MT_TFOG);
+						mobj->subsector->sector->floorheight, MT_TFOG);
 	// initiate teleport sound
 	S_StartSound (mo, sfx_telept);
 
@@ -478,7 +474,7 @@ P_NightmareRespawn (mobj_t* mobj)
 	//ss = R_PointInSubsector (x,y);
 
 	// haleyjd [STRIFE]: Uses ONFLOORZ instead of ss->sector->floorheight
-	mo = P_SpawnMobj (x, y, ONFLOORZ , MT_TFOG);
+	mo = P_SpawnMobj (x, y, ONFLOORZ, MT_TFOG);
 
 	S_StartSound (mo, sfx_telept);
 
@@ -627,8 +623,8 @@ P_SpawnMobj
 	state_t*	st;
 	mobjinfo_t*	info;
 
-	mobj = Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
-	memset (mobj, 0, sizeof (*mobj));
+	mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
+	memset(mobj, 0, sizeof (*mobj));
 	info = &mobjinfo[type];
 
 	mobj->type = type;
@@ -772,7 +768,7 @@ void P_RespawnSpecials ()
 
 	// spawn a teleport fog at the new spot
 	ss = R_PointInSubsector (x,y);
-	mo = P_SpawnMobj (x, y, ss->sector->floorheight , MT_IFOG);
+	mo = P_SpawnMobj (x, y, ss->sector->floorheight, MT_IFOG);
 	S_StartSound (mo, sfx_itmbk);
 
 	// find which type to spawn
@@ -920,7 +916,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	{
 		if (deathmatch_p < &deathmatchstarts[10])
 		{
-			memcpy (deathmatch_p, mthing, sizeof(*mthing));
+			memcpy(deathmatch_p, mthing, sizeof(*mthing));
 			deathmatch_p++;
 		}
 		return;
@@ -966,7 +962,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 			break;
 
 	if (i==NUMMOBJTYPES)
-		I_Error ("P_SpawnMapThing: Unknown type %i at (%i, %i)",
+		I_Error("P_SpawnMapThing: Unknown type %i at (%i, %i)",
 					mthing->type,
 					mthing->x, mthing->y);
 
@@ -1190,8 +1186,8 @@ P_SpawnMissile
 
 	th->angle = an;
 	an >>= ANGLETOFINESHIFT;
-	th->momx = FixedMul (th->info->speed, finecosine[an]);
-	th->momy = FixedMul (th->info->speed, finesine[an]);
+	th->momx = FixedMul(th->info->speed, finecosine[an]);
+	th->momy = FixedMul(th->info->speed, finesine[an]);
 
 	dist = P_AproxDistance (dest->x - source->x, dest->y - source->y);
 	dist = dist / th->info->speed;
@@ -1240,8 +1236,8 @@ mobj_t* P_SpawnFacingMissile(mobj_t* source, mobj_t* target, mobjtype_t type)
 	}
 
 	an >>= ANGLETOFINESHIFT;
-	th->momx = FixedMul (th->info->speed, finecosine[an]);
-	th->momy = FixedMul (th->info->speed, finesine[an]);
+	th->momx = FixedMul(th->info->speed, finecosine[an]);
+	th->momy = FixedMul(th->info->speed, finesine[an]);
 
 	dist = P_AproxDistance (target->x - source->x, target->y - source->y);
 	dist = dist / th->info->speed;

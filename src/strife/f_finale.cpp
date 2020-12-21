@@ -1,24 +1,19 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-// Copyright(C) 2010 James Haley, Samuel Villarreal
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Game completion, final screen animation.
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+	Copyright(C) 2010 James Haley, Samuel Villarreal
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Game completion, final screen animation.
 //
 // [STRIFE] Module marked finished 2010-09-13 22:56
-//
-
+\**********************************************************************************************************************************************/
 
 #include <stdio.h>
 #include <ctype.h>
@@ -49,11 +44,6 @@ typedef enum
 	F_STAGE_CAST,
 } finalestage_t;
 
-// ?
-//#include "doomstat.h"
-//#include "r_local.h"
-//#include "f_finale.h"
-
 // Stage of animation:
 finalestage_t finalestage;
 
@@ -63,52 +53,6 @@ unsigned int finalecount;
 const char	*slideshow_panel;
 unsigned int slideshow_tics;
 int			slideshow_state;
-
-// haleyjd 09/13/10: [STRIFE] All this is unused.
-/*
-#define	TEXTSPEED	3
-#define	TEXTWAIT	250
-
-typedef struct
-{
-	GameMission_t mission;
-	int episode, level;
-	char *background;
-	char *text;
-} textscreen_t;
-
-static textscreen_t textscreens[] =
-{
-	{ doom,		1, 8, "FLOOR4_8", E1TEXT},
-	{ doom,		2, 8, "SFLR6_1",	E2TEXT},
-	{ doom,		3, 8, "MFLR8_4",	E3TEXT},
-	{ doom,		4, 8, "MFLR8_3",	E4TEXT},
-
-	{ doom2,		1, 6, "SLIME16",	C1TEXT},
-	{ doom2,		1, 11, "RROCK14",	C2TEXT},
-	{ doom2,		1, 20, "RROCK07",	C3TEXT},
-	{ doom2,		1, 30, "RROCK17",	C4TEXT},
-	{ doom2,		1, 15, "RROCK13",	C5TEXT},
-	{ doom2,		1, 31, "RROCK19",	C6TEXT},
-
-	{ pack_tnt, 1, 6, "SLIME16",	T1TEXT},
-	{ pack_tnt, 1, 11, "RROCK14",	T2TEXT},
-	{ pack_tnt, 1, 20, "RROCK07",	T3TEXT},
-	{ pack_tnt, 1, 30, "RROCK17",	T4TEXT},
-	{ pack_tnt, 1, 15, "RROCK13",	T5TEXT},
-	{ pack_tnt, 1, 31, "RROCK19",	T6TEXT},
-
-	{ pack_plut, 1, 6, "SLIME16",	P1TEXT},
-	{ pack_plut, 1, 11, "RROCK14",	P2TEXT},
-	{ pack_plut, 1, 20, "RROCK07",	P3TEXT},
-	{ pack_plut, 1, 30, "RROCK17",	P4TEXT},
-	{ pack_plut, 1, 15, "RROCK13",	P5TEXT},
-	{ pack_plut, 1, 31, "RROCK19",	P6TEXT},
-};
-
-char*	finaletext;
-char*	finaleflat;
-*/
 
 void	F_StartCast ();
 void	F_CastTicker ();
@@ -161,12 +105,10 @@ enum
 	SLIDE_DEMOEND2 // Next state = -1
 };
 
-//
 // F_StartFinale
 //
 // [STRIFE]
 // haleyjd 09/13/10: Modified to drive slideshow sequences.
-//
 void F_StartFinale ()
 {
 #if 0
@@ -246,11 +188,9 @@ void F_StartFinale ()
 	finalecount = 0;
 }
 
-//
 // F_Responder
 //
 // [STRIFE] Verified unmodified
-//
 bool F_Responder (event_t *event)
 {
 	if (finalestage == F_STAGE_CAST)
@@ -259,13 +199,11 @@ bool F_Responder (event_t *event)
 	return false;
 }
 
-//
 // F_WaitTicker
 //
 // [STRIFE] New function
 // haleyjd 09/13/10: This is called from G_Ticker if gamestate is 1, but we
 // have no idea for what it's supposed to be. It is unused.
-//
 void F_WaitTicker()
 {
 	if(++finalecount >= 250)
@@ -276,12 +214,10 @@ void F_WaitTicker()
 	}
 }
 
-//
 // F_DoSlideShow
 //
 // [STRIFE] New function
 // haleyjd 09/13/10: Handles slideshow states. Begging to be tabulated!
-//
 static void F_DoSlideShow()
 {
 	patch_t *patch;
@@ -537,19 +473,19 @@ void F_TextWrite ()
 	int		cy;
 
 	// erase the entire screen to a tiled background
-	src = W_CacheLumpName ( finaleflat , PU_CACHE);
+	src = W_CacheLumpName ( finaleflat, PU_CACHE);
 	dest = I_VideoBuffer;
 
 	for (y=0 ; y<SCREENHEIGHT ; y++)
 	{
 	for (x=0 ; x<SCREENWIDTH/64 ; x++)
 	{
-		memcpy (dest, src+((y&63)<<6), 64);
+		memcpy(dest, src+((y&63)<<6), 64);
 		dest += 64;
 	}
 	if (SCREENWIDTH&63)
 	{
-		memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
+		memcpy(dest, src+((y&63)<<6), SCREENWIDTH&63);
 		dest += (SCREENWIDTH&63);
 	}
 	}
@@ -1045,4 +981,3 @@ void F_Drawer ()
 		break;
 	}
 }
-

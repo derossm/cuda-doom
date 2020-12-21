@@ -1,19 +1,14 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// F_finale.c
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+\**********************************************************************************************************************************************/
 
 #include <ctype.h>
 
@@ -39,14 +34,6 @@ extern bool automapactive;
 extern bool viewactive;
 
 extern void D_StartTitle();
-
-/*
-=======================
-=
-= F_StartFinale
-=
-=======================
-*/
 
 void F_StartFinale()
 {
@@ -86,11 +73,8 @@ void F_StartFinale()
 	finalecount = 0;
 	FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
 
-//		S_ChangeMusic(mus_victor, true);
 	S_StartSong(mus_cptd, true);
 }
-
-
 
 bool F_Responder(event_t * event)
 {
@@ -99,26 +83,14 @@ bool F_Responder(event_t * event)
 		return false;
 	}
 	if (finalestage == 1 && gameepisode == 2)
-	{							// we're showing the water pic, make any key kick to demo mode
+	{
+		// we're showing the water pic, make any key kick to demo mode
 		finalestage++;
-		/*
-		memset((byte *) 0xa0000, 0, SCREENWIDTH * SCREENHEIGHT);
-		memset(I_VideoBuffer, 0, SCREENWIDTH * SCREENHEIGHT);
-		I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
-		*/
+
 		return true;
 	}
 	return false;
 }
-
-
-/*
-=======================
-=
-= F_Ticker
-=
-=======================
-*/
 
 void F_Ticker()
 {
@@ -131,45 +103,17 @@ void F_Ticker()
 		{
 			finalestage = 1;
 		}
-
-//				wipegamestate = -1;				// force a wipe
-/*
-		if (gameepisode == 3)
-			S_StartMusic (mus_bunny);
-*/
 	}
 }
 
-
-/*
-=======================
-=
-= F_TextWrite
-=
-=======================
-*/
-
-//#include "hu_stuff.h"
-//extern		patch_t *hu_font[HU_FONTSIZE];
-
 void F_TextWrite()
 {
-	byte *src, *dest;
-	int x, y;
-	int count;
-	const char *ch;
-	int c;
-	int cx, cy;
-	patch_t *w;
-
-//
-// erase the entire screen to a tiled background
-//
-	src = W_CacheLumpName(finaleflat, PU_CACHE);
-	dest = I_VideoBuffer;
-	for (y = 0; y < SCREENHEIGHT; y++)
+	// erase the entire screen to a tiled background
+	byte* src{W_CacheLumpName(finaleflat, PU_CACHE)};
+	auto dest{I_VideoBuffer};
+	for (size_t y{0}; y < SCREENHEIGHT; ++y)
 	{
-		for (x = 0; x < SCREENWIDTH / 64; x++)
+		for (size_t x{0}; x < SCREENWIDTH / 64; ++x)
 		{
 			memcpy(dest, src + ((y & 63) << 6), 64);
 			dest += 64;
@@ -181,44 +125,48 @@ void F_TextWrite()
 		}
 	}
 
-//		V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
-
-//
-// draw some of the text onto the screen
-//
-	cx = 20;
-	cy = 5;
-	ch = finaletext;
-
-	count = (finalecount - 10) / TEXTSPEED;
-	if (count < 0)
-		count = 0;
-	for (; count; count--)
+	if (finalecount <= 10)
 	{
-		c = *ch++;
-		if (!c)
-			break;
-		if (c == '\n')
-		{
-			cx = 20;
-			cy += 9;
-			continue;
-		}
-
-		c = toupper(c);
-		if (c < 33)
-		{
-			cx += 5;
-			continue;
-		}
-
-		w = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
-		if (cx + SHORT(w->width) > SCREENWIDTH)
-			break;
-		V_DrawPatch(cx, cy, w);
-		cx += SHORT(w->width);
+		return;
 	}
+	else
+	{
+		// draw some of the text onto the screen
+		auto cx = 20;
+		auto cy = 5;
+		auto ch{finaletext};
+		for (auto count{(finalecount - 10) / TEXTSPEED}; count > 0; --count)
+		{
+			auto c{*ch++};
+			if (!c)
+			{
+				break;
+			}
+			else if (c == '\n')
+			{
+				cx = 20;
+				cy += 9;
+				continue;
+			}
 
+			c = toupper(c);
+			if (c < 33)
+			{
+				cx += 5;
+				continue;
+			}
+
+			patch_t* w = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+
+			if (cx + SHORT(w->width) > SCREENWIDTH)
+			{
+				break;
+			}
+
+			V_DrawPatch(cx, cy, w);
+			cx += SHORT(w->width);
+		}
+	}
 }
 
 
@@ -247,14 +195,6 @@ void F_DrawPatchCol(int x, patch_t * patch, int col)
 		column = (column_t *) ((byte *) column + column->length + 4);
 	}
 }
-
-/*
-==================
-=
-= F_DemonScroll
-=
-==================
-*/
 
 void F_DemonScroll()
 {
@@ -286,14 +226,6 @@ void F_DemonScroll()
 		V_CopyScaledBuffer(I_VideoBuffer, p2, ORIGWIDTH * ORIGHEIGHT);
 	}
 }
-
-/*
-==================
-=
-= F_DrawUnderwater
-=
-==================
-*/
 
 void F_DrawUnderwater()
 {
@@ -341,14 +273,6 @@ void F_DrawUnderwater()
 
 
 #if 0
-/*
-==================
-=
-= F_BunnyScroll
-=
-==================
-*/
-
 void F_BunnyScroll()
 {
 	int scrolled, x;
@@ -400,14 +324,6 @@ void F_BunnyScroll()
 				W_CacheLumpName(name, PU_CACHE));
 }
 #endif
-
-/*
-=======================
-=
-= F_Drawer
-=
-=======================
-*/
 
 void F_Drawer()
 {

@@ -1,18 +1,15 @@
-// Copyright(C) 2012 James Haley
-// Copyright(C) 2017 Alex Mayfield
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 2012 James Haley
+	Copyright(C) 2017 Alex Mayfield
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+
 // Win32/SDL_mixer MIDI Server
 //
 // Uses pipes to communicate with Doom. This allows this separate process to
@@ -21,6 +18,7 @@
 // volumes to different devices for the same process.
 //
 // Seriously, how did they screw up something so fundamental?
+\**********************************************************************************************************************************************/
 
 #ifdef _WIN32
 

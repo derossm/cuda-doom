@@ -1,21 +1,17 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	DOOM Network game communication and protocol,
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	DOOM Network game communication and protocol,
 //	all OS independend parts.
-//
+\**********************************************************************************************************************************************/
 
 #include <stdlib.h>
 
@@ -64,7 +60,7 @@ static void PlayerQuitGame(player_t *player)
 
 	if (demorecording)
 	{
-		G_CheckDemoStatus ();
+		G_CheckDemoStatus();
 	}
 }
 
@@ -89,9 +85,9 @@ static void RunTic(ticcmd_t *cmds, bool *ingame)
 	// run a tic.
 
 	if (advancedemo)
-		D_DoAdvanceDemo ();
+		D_DoAdvanceDemo();
 
-	G_Ticker ();
+	G_Ticker();
 }
 
 static loop_interface_t doom_loop_interface = {

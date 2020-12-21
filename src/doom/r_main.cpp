@@ -1,22 +1,18 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Rendering main loop and setup functions,
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Rendering main loop and setup functions,
 //		utility functions (BSP, geometry, trigonometry).
 //	See tables.c, too.
-//
+\**********************************************************************************************************************************************/
 
 
 
@@ -196,8 +192,8 @@ R_PointOnSide
 	return 0;
 	}
 
-	left = FixedMul ( node->dy>>FRACBITS , dx );
-	right = FixedMul ( dy , node->dx>>FRACBITS );
+	left = FixedMul( node->dy>>FRACBITS, dx );
+	right = FixedMul( dy, node->dx>>FRACBITS );
 
 	if (right < left)
 	{
@@ -259,8 +255,8 @@ R_PointOnSegSide
 	return 0;
 	}
 
-	left = FixedMul ( ldy>>FRACBITS , dx );
-	right = FixedMul ( dy , ldx>>FRACBITS );
+	left = FixedMul( ldy>>FRACBITS, dx );
+	right = FixedMul( dy, ldx>>FRACBITS );
 
 	if (right < left)
 	{
@@ -457,7 +453,7 @@ R_PointToDist
 	angle = (tantoangle[frac>>DBITS]+ANG90) >> ANGLETOFINESHIFT;
 
 	// use as cosine
-	dist = FixedDiv (dx, finesine[angle] );
+	dist = FixedDiv(dx, finesine[angle] );
 
 	return dist;
 }
@@ -517,9 +513,9 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 	fixed_t		cosv;
 
 	sinv = finesine[(visangle-rw_normalangle)>>ANGLETOFINESHIFT];
-	dist = FixedDiv (rw_distance, sinv);
+	dist = FixedDiv(rw_distance, sinv);
 	cosv = finecosine[(viewangle-visangle)>>ANGLETOFINESHIFT];
-	z = abs(FixedMul (dist, cosv));
+	z = abs(FixedMul(dist, cosv));
 	scale = FixedDiv(projection, z);
 	return scale;
 }
@@ -536,7 +532,7 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 
 	if (den > num>>FRACBITS)
 	{
-	scale = FixedDiv (num, den);
+	scale = FixedDiv(num, den);
 
 	if (scale > 64*FRACUNIT)
 		scale = 64*FRACUNIT;
@@ -628,7 +624,7 @@ void R_InitTextureMapping ()
 	//
 	// Calc focallength
 	// so FIELDOFVIEW angles covers SCREENWIDTH.
-	focallength = FixedDiv (centerxfrac_nonwide,
+	focallength = FixedDiv(centerxfrac_nonwide,
 				finetangent[FINEANGLES/4+FIELDOFVIEW/2] );
 
 	for (i=0 ; i<FINEANGLES/2 ; i++)
@@ -639,7 +635,7 @@ void R_InitTextureMapping ()
 		t = viewwidth+1;
 	else
 	{
-		t = FixedMul (finetangent[i], focallength);
+		t = FixedMul(finetangent[i], focallength);
 		t = (centerxfrac - t+FRACUNIT-1)>>FRACBITS;
 
 		if (t < -1)
@@ -664,7 +660,7 @@ void R_InitTextureMapping ()
 	// Take out the fencepost cases from viewangletox.
 	for (i=0 ; i<FINEANGLES/2 ; i++)
 	{
-	t = FixedMul (finetangent[i], focallength);
+	t = FixedMul(finetangent[i], focallength);
 	t = centerx - t;
 
 	if (viewangletox[i] == -1)
@@ -751,7 +747,7 @@ void R_InitLightTables ()
 	startmap = ((LIGHTLEVELS-LIGHTBRIGHT-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
 	for (j=0 ; j<MAXLIGHTZ ; j++)
 	{
-		scale = FixedDiv ((ORIGWIDTH/2*FRACUNIT), (j+1)<<LIGHTZSHIFT);
+		scale = FixedDiv((ORIGWIDTH/2*FRACUNIT), (j+1)<<LIGHTZSHIFT);
 		scale >>= LIGHTSCALESHIFT;
 		level = startmap - scale/DISTMAP;
 
@@ -891,7 +887,7 @@ void R_ExecuteSetViewSize ()
 	{
 	dy = ((i-(viewheight/2 + ((j-LOOKDIRMIN) * (1 << crispy->hires)) * (screenblocks < 11 ? screenblocks : 11) / 10))<<FRACBITS)+FRACUNIT/2;
 	dy = abs(dy);
-	yslopes[j][i] = FixedDiv (num, dy);
+	yslopes[j][i] = FixedDiv(num, dy);
 	}
 	}
 	yslope = yslopes[LOOKDIRMIN];
@@ -899,7 +895,7 @@ void R_ExecuteSetViewSize ()
 	for (i=0 ; i<viewwidth ; i++)
 	{
 	cosadj = abs(finecosine[xtoviewangle[i]>>ANGLETOFINESHIFT]);
-	distscale[i] = FixedDiv (FRACUNIT,cosadj);
+	distscale[i] = FixedDiv(FRACUNIT,cosadj);
 	}
 
 	// Calculate the light levels to use

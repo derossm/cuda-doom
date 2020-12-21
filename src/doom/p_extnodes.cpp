@@ -1,22 +1,18 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-// Copyright(C) 2015-2018 Fabian Greffrath
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	[crispy] support maps with NODES in compressed or uncompressed ZDBSP
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+	Copyright(C) 2015-2018 Fabian Greffrath
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	[crispy] support maps with NODES in compressed or uncompressed ZDBSP
 //	format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
-//
+\**********************************************************************************************************************************************/
 
 #include "m_bbox.h"
 #include "p_local.h"
@@ -191,9 +187,9 @@ void P_LoadNodes_DeePBSP (int lump)
 	const byte *data;
 	int i;
 
-	numnodes = (W_LumpLength (lump) - 8) / sizeof(mapnode_deepbsp_t);
+	numnodes = (W_LumpLength(lump) - 8) / sizeof(mapnode_deepbsp_t);
 	nodes = Z_Malloc(numnodes * sizeof(node_t), PU_LEVEL, 0);
-	data = W_CacheLumpNum (lump, PU_STATIC);
+	data = W_CacheLumpNum(lump, PU_STATIC);
 
 	// [crispy] warn about missing nodes
 	if (!data || !numnodes)
@@ -241,7 +237,7 @@ void P_LoadNodes_DeePBSP (int lump)
 // - added support for compressed ZDBSP nodes
 // - added support for flipped levels
 // [MB] 2020-04-30: Fix endianess for ZDoom extended nodes
-void P_LoadNodes_ZDBSP (int lump, bool compressed)
+void P_LoadNodes_ZDBSP(int lump, bool compressed)
 {
 	byte *data;
 	unsigned int i;
@@ -494,7 +490,7 @@ void P_LoadNodes_ZDBSP (int lump, bool compressed)
 
 // [crispy] allow loading of Hexen-format maps
 // adapted from chocolate-doom/src/hexen/p_setup.c:348-400
-void P_LoadThings_Hexen (int lump)
+void P_LoadThings_Hexen(int lump)
 {
 	byte *data;
 	int i;
@@ -531,7 +527,7 @@ void P_LoadThings_Hexen (int lump)
 
 // [crispy] allow loading of Hexen-format maps
 // adapted from chocolate-doom/src/hexen/p_setup.c:410-490
-void P_LoadLineDefs_Hexen (int lump)
+void P_LoadLineDefs_Hexen(int lump)
 {
 	byte *data;
 	int i;
@@ -637,4 +633,3 @@ void P_LoadLineDefs_Hexen (int lump)
 
 	W_ReleaseLumpNum(lump);
 }
-

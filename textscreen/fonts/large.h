@@ -1,6 +1,6 @@
-/* Font data generated from large.png; do not edit.
-	Please see textscreen/fonts/README for copyright
-	information. */
+/**********************************************************************************************************************************************\
+	Font data generated from large.png; do not edit. Please see textscreen/fonts/README for copyright information.
+\**********************************************************************************************************************************************/
 #pragma once
 
 static const uint8_t large_font_data[] =

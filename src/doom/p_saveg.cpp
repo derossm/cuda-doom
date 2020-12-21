@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Archiving: SaveGame I/O.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Archiving: SaveGame I/O.
+\**********************************************************************************************************************************************/
 
 
 #include <stdio.h>
@@ -1675,7 +1671,7 @@ void P_ArchiveThinkers ()
 		continue;
 	}
 
-	// I_Error ("P_ArchiveThinkers: Unknown thinker function");
+	// I_Error("P_ArchiveThinkers: Unknown thinker function");
 	}
 
 	// add a terminating marker
@@ -1703,7 +1699,7 @@ void P_UnArchiveThinkers ()
 	if (currentthinker->function.acp1 == (actionf_p1)P_MobjThinker)
 		P_RemoveMobj ((mobj_t *)currentthinker);
 	else
-		Z_Free (currentthinker);
+		Z_Free(currentthinker);
 
 	currentthinker = next;
 	}
@@ -1720,7 +1716,7 @@ void P_UnArchiveThinkers ()
 
 		case tc_mobj:
 		saveg_read_pad();
-		mobj = Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+		mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
 			saveg_read_mobj_t(mobj);
 
 		// [crispy] restore mobj->target and mobj->tracer fields
@@ -1736,7 +1732,7 @@ void P_UnArchiveThinkers ()
 		break;
 
 		default:
-		I_Error ("Unknown tclass %i in savegame",tclass);
+		I_Error("Unknown tclass %i in savegame",tclass);
 	}
 
 	}
@@ -1920,7 +1916,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_ceiling:
 		saveg_read_pad();
-		ceiling = Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL);
+		ceiling = Z_Malloc(sizeof(*ceiling), PU_LEVEL, NULL);
 			saveg_read_ceiling_t(ceiling);
 		ceiling->sector->specialdata = ceiling;
 
@@ -1933,7 +1929,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_door:
 		saveg_read_pad();
-		door = Z_Malloc (sizeof(*door), PU_LEVEL, NULL);
+		door = Z_Malloc(sizeof(*door), PU_LEVEL, NULL);
 			saveg_read_vldoor_t(door);
 		door->sector->specialdata = door;
 		door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
@@ -1942,7 +1938,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_floor:
 		saveg_read_pad();
-		floor = Z_Malloc (sizeof(*floor), PU_LEVEL, NULL);
+		floor = Z_Malloc(sizeof(*floor), PU_LEVEL, NULL);
 			saveg_read_floormove_t(floor);
 		floor->sector->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
@@ -1951,7 +1947,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_plat:
 		saveg_read_pad();
-		plat = Z_Malloc (sizeof(*plat), PU_LEVEL, NULL);
+		plat = Z_Malloc(sizeof(*plat), PU_LEVEL, NULL);
 			saveg_read_plat_t(plat);
 		plat->sector->specialdata = plat;
 
@@ -1964,7 +1960,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_flash:
 		saveg_read_pad();
-		flash = Z_Malloc (sizeof(*flash), PU_LEVEL, NULL);
+		flash = Z_Malloc(sizeof(*flash), PU_LEVEL, NULL);
 			saveg_read_lightflash_t(flash);
 		flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
 		P_AddThinker (&flash->thinker);
@@ -1972,7 +1968,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_strobe:
 		saveg_read_pad();
-		strobe = Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL);
+		strobe = Z_Malloc(sizeof(*strobe), PU_LEVEL, NULL);
 			saveg_read_strobe_t(strobe);
 		strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
 		P_AddThinker (&strobe->thinker);
@@ -1980,14 +1976,14 @@ void P_UnArchiveSpecials ()
 
 		case tc_glow:
 		saveg_read_pad();
-		glow = Z_Malloc (sizeof(*glow), PU_LEVEL, NULL);
+		glow = Z_Malloc(sizeof(*glow), PU_LEVEL, NULL);
 			saveg_read_glow_t(glow);
 		glow->thinker.function.acp1 = (actionf_p1)T_Glow;
 		P_AddThinker (&glow->thinker);
 		break;
 
 		default:
-		I_Error ("P_UnarchiveSpecials:Unknown tclass %i "
+		I_Error("P_UnarchiveSpecials:Unknown tclass %i "
 				"in savegame",tclass);
 	}
 

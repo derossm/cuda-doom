@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
 //
 // DESCRIPTION: the automap code
-//
+\**********************************************************************************************************************************************/
 
 
 #include <stdio.h>
@@ -726,14 +722,14 @@ AM_Responder
 
 		if (!automapactive)
 		{
-			AM_Start ();
+			AM_Start();
 			viewactive = false;
 		}
 		else
 		{
 			bigstate = 0;
 			viewactive = true;
-			AM_Stop ();
+			AM_Stop();
 		}
 
 		return true;
@@ -743,7 +739,7 @@ AM_Responder
 	{
 	if (ev->type == ev_keydown && ev->data1 == key_map_toggle)
 	{
-		AM_Start ();
+		AM_Start();
 		viewactive = false;
 		rc = true;
 	}
@@ -814,7 +810,7 @@ AM_Responder
 		{
 			bigstate = 0;
 			viewactive = true;
-			AM_Stop ();
+			AM_Stop();
 		}
 		else if (key == key_map_maxzoom)
 		{

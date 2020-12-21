@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//		Main loop code.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+		Main loop code.
+\**********************************************************************************************************************************************/
 
 #include <stdlib.h>
 #include <string.h>
@@ -147,7 +143,7 @@ static bool BuildNewTic()
 
 	gameticdiv = gametic/ticdup;
 
-	I_StartTic ();
+	I_StartTic();
 	loop_interface->ProcessEvents();
 
 	// Always run the menu
@@ -706,7 +702,7 @@ void TryRunTics ()
 	}
 	else
 	{
-		NetUpdate ();
+		NetUpdate();
 	}
 
 	lowtic = GetLowTic();
@@ -754,12 +750,12 @@ void TryRunTics ()
 	// wait for new tics if needed
 	while (!PlayersInGame() || lowtic < gametic/ticdup + counts)
 	{
-	NetUpdate ();
+	NetUpdate();
 
 		lowtic = GetLowTic();
 
 	if (lowtic < gametic/ticdup)
-		I_Error ("TryRunTics: lowtic < gametic");
+		I_Error("TryRunTics: lowtic < gametic");
 
 		// Still no tics to run? Sleep until some are available.
 		if (lowtic < gametic/ticdup + counts)
@@ -793,22 +789,23 @@ void TryRunTics ()
 			SinglePlayerClear(set);
 		}
 
-	for (i=0 ; i<ticdup ; i++)
-	{
+		for (i=0 ; i<ticdup ; i++)
+		{
 			if (gametic/ticdup > lowtic)
-				I_Error ("gametic>lowtic");
+			{
+				I_Error("gametic>lowtic");
+			}
 
 			memcpy(local_playeringame, set->ingame, sizeof(local_playeringame));
 
 			loop_interface->RunTic(set->cmds, set->ingame);
-		gametic++;
+			gametic++;
 
-		// modify command for duplicated tics
-
+			// modify command for duplicated tics
 			TicdupSquash(set);
-	}
+		}
 
-	NetUpdate ();	// check for new console commands
+		NetUpdate();	// check for new console commands
 	}
 }
 
@@ -897,4 +894,3 @@ bool D_NonVanillaPlayback(bool conditional, int lumpnum,
 
 	return true;
 }
-

@@ -1,19 +1,14 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 1993-2008 Raven Software
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 1993-2008 Raven Software
+	Copyright(C) 2005-2014 Simon Howard
 
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+\**********************************************************************************************************************************************/
 #pragma once
 
 #ifndef __H2DEF__
@@ -481,7 +476,7 @@ struct inventory_t
 
 struct player_t
 {
-	mobj_t *mo;
+	mobj_t* mo;
 	playerstate_t playerstate;
 	ticcmd_t cmd;
 
@@ -502,7 +497,7 @@ struct player_t
 	artitype_t readyArtifact;
 	int artifactCount;
 	int inventorySlotNum;
-	int powers[NUMPOWERS];
+	int powers[NUM_POWERS];
 	int keys;
 	int pieces;									// Fourth Weapon pieces
 	signed int frags[MAX_PLAYERS];				// kills of other players
@@ -510,20 +505,24 @@ struct player_t
 	weapontype_t pendingweapon;					// wp_nochange if not changing
 	bool weaponowned[NUM_WEAPONS];
 	int mana[NUM_MANA];
-	int attackdown, usedown;					// true if button down last tic
+	int attackdown;								// true if button down last tic
+	int usedown;
 	int cheats;									// bit flags
 
 	int refire;									// refired shots are less accurate
 
-	int killcount, itemcount, secretcount;		// for intermission
+	int killcount;								// for intermission
+	int itemcount;
+	int secretcount;
 	char message[MAX_HINT_SIZE];				// hint messages
 	int messageTics;							// counter for showing messages
 	short ultimateMessage;
 	short yellowMessage;
-	int damagecount, bonuscount;		// for screen flashing
+	int damagecount;			// for screen flashing
+	int bonuscount;
 	int poisoncount;			// screen flash for poison damage
-	mobj_t *poisoner;			// NULL for non-player mobjs
-	mobj_t *attacker;			// who did damage (NULL for floors)
+	mobj_t* poisoner;			// NULL for non-player mobjs
+	mobj_t* attacker;			// who did damage (NULL for floors)
 	int extralight;				// so gun flashes light up areas
 	int fixedcolormap;			// can be set to REDCOLORMAP, etc
 	int colormap;				// 0-3 for which color to draw player
@@ -580,11 +579,10 @@ extern bool deathmatch;		// only if started as net death
 
 extern bool netgame;			// only true if >1 player
 
-extern bool cmdfrag;			// true if a CMD_FRAG packet should be sent out every
-												// kill
+extern bool cmdfrag;			// true if a CMD_FRAG packet should be sent out every kill
 
-extern bool playeringame[MAXPLAYERS];
-extern pclass_t PlayerClass[MAXPLAYERS];
+extern bool playeringame[MAX_PLAYERS];
+extern pclass_t PlayerClass[MAX_PLAYERS];
 
 extern int consoleplayer;		// player taking events and displaying
 
@@ -592,7 +590,7 @@ extern int displayplayer;
 
 extern int viewangleoffset;		// ANG90 = left side, ANG270 = right
 
-extern player_t players[MAXPLAYERS];
+extern player_t players[MAX_PLAYERS];
 
 extern bool DebugSound;		// debug flag for displaying sound info
 
@@ -609,7 +607,6 @@ extern int Sky2Texture;
 
 extern gamestate_t gamestate;
 extern skill_t gameskill;
-//extern		bool			respawnmonsters;
 extern int gameepisode;
 extern int gamemap;
 extern int prevmap;
@@ -633,7 +630,7 @@ extern int mouseSensitivity;
 
 extern bool precache;		// if true, load all graphics at level load
 
-extern byte *screen;			// off screen work buffer, from V_video.c
+extern byte* screen;		// off screen work buffer, from V_video.c
 
 extern bool singledemo;		// quit after playing a demo from cmdline
 

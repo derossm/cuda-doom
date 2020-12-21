@@ -1,20 +1,16 @@
-//
-// Copyright(C) 1993-1996 Id Software, Inc.
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// DESCRIPTION:
-//	Refresh of things, i.e. objects represented by sprites.
-//
+/**********************************************************************************************************************************************\
+	Copyright(C) 1993-1996 Id Software, Inc.
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+	Refresh of things, i.e. objects represented by sprites.
+\**********************************************************************************************************************************************/
 
 
 
@@ -234,7 +230,7 @@ void R_InitSpriteDefs(const char **namelist)
 	for (i=0 ; i<numsprites ; i++)
 	{
 	spritename = DEH_String(namelist[i]);
-	memset (sprtemp,-1, sizeof(sprtemp));
+	memset(sprtemp,-1, sizeof(sprtemp));
 
 	maxframe = -1;
 
@@ -291,7 +287,7 @@ void R_InitSpriteDefs(const char **namelist)
 		// must have all 8 frames
 		for (rotation=0 ; rotation<8 ; rotation++)
 			if (sprtemp[frame].lump[rotation] == -1)
-			I_Error ("R_InitSprites: Sprite %s frame %c "
+			I_Error("R_InitSprites: Sprite %s frame %c "
 					"is missing rotations",
 					spritename, frame+'A');
 
@@ -311,8 +307,8 @@ void R_InitSpriteDefs(const char **namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes =
-		Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
-	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
+		Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+	memcpy(sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
 	}
 
 }
@@ -639,7 +635,7 @@ void R_ProjectSprite (mobj_t* thing)
 	// decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
 	if ((unsigned int) thing->sprite >= (unsigned int) numsprites)
-	I_Error ("R_ProjectSprite: invalid sprite number %i ",
+	I_Error("R_ProjectSprite: invalid sprite number %i ",
 			thing->sprite);
 #endif
 	sprdef = &sprites[thing->sprite];
@@ -650,7 +646,7 @@ void R_ProjectSprite (mobj_t* thing)
 	}
 #ifdef RANGECHECK
 	if ( (thing->frame&FF_FRAMEMASK) >= sprdef->numframes )
-	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
+	I_Error("R_ProjectSprite: invalid sprite frame %i : %i ",
 			thing->sprite, thing->frame);
 #endif
 	sprframe = &sprdef->spriteframes[ thing->frame & FF_FRAMEMASK];
@@ -697,14 +693,14 @@ void R_ProjectSprite (mobj_t* thing)
 	// calculate edges of the shape
 	// [crispy] fix sprite offsets for mirrored sprites
 	tx -= flip ? spritewidth[lump] - spriteoffset[lump] : spriteoffset[lump];
-	x1 = (centerxfrac + FixedMul (tx,xscale) ) >>FRACBITS;
+	x1 = (centerxfrac + FixedMul(tx,xscale) ) >>FRACBITS;
 
 	// off the right side?
 	if (x1 > viewwidth)
 	return;
 
 	tx += spritewidth[lump];
-	x2 = ((centerxfrac + FixedMul (tx,xscale) ) >>FRACBITS) - 1;
+	x2 = ((centerxfrac + FixedMul(tx,xscale) ) >>FRACBITS) - 1;
 
 	// off the left side
 	if (x2 < 0)
@@ -736,7 +732,7 @@ void R_ProjectSprite (mobj_t* thing)
 	vis->texturemid = gzt - viewz;
 	vis->x1 = x1 < 0 ? 0 : x1;
 	vis->x2 = x2 >= viewwidth ? viewwidth-1 : x2;
-	iscale = FixedDiv (FRACUNIT, xscale);
+	iscale = FixedDiv(FRACUNIT, xscale);
 
 	if (flip)
 	{
@@ -914,7 +910,7 @@ static void R_DrawLSprite ()
 	vis->mobjflags |= MF_TRANSLUCENT;
 	vis->blendfunc = I_BlendAdd;
 #endif
-	vis->xiscale = FixedDiv (FRACUNIT, xscale);
+	vis->xiscale = FixedDiv(FRACUNIT, xscale);
 	vis->texturemid = laserspot->z - viewz;
 	vis->scale = xscale<<detailshift;
 
@@ -984,7 +980,7 @@ void R_DrawPSprite (pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate 
 	// decide which patch to use
 #ifdef RANGECHECK
 	if ( (unsigned)psp->state->sprite >= (unsigned int) numsprites)
-	I_Error ("R_ProjectSprite: invalid sprite number %i ",
+	I_Error("R_ProjectSprite: invalid sprite number %i ",
 			psp->state->sprite);
 #endif
 	sprdef = &sprites[psp->state->sprite];
@@ -995,7 +991,7 @@ void R_DrawPSprite (pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate 
 	}
 #ifdef RANGECHECK
 	if ( (psp->state->frame & FF_FRAMEMASK) >= sprdef->numframes)
-	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
+	I_Error("R_ProjectSprite: invalid sprite frame %i : %i ",
 			psp->state->sprite, psp->state->frame);
 #endif
 	sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
@@ -1008,14 +1004,14 @@ void R_DrawPSprite (pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate 
 
 	// [crispy] fix sprite offsets for mirrored sprites
 	tx -= flip ? 2 * tx - spriteoffset[lump] + spritewidth[lump] : spriteoffset[lump];
-	x1 = (centerxfrac + FixedMul (tx,pspritescale) ) >>FRACBITS;
+	x1 = (centerxfrac + FixedMul(tx,pspritescale) ) >>FRACBITS;
 
 	// off the right side
 	if (x1 > viewwidth)
 	return;
 
 	tx += spritewidth[lump];
-	x2 = ((centerxfrac + FixedMul (tx, pspritescale) ) >>FRACBITS) - 1;
+	x2 = ((centerxfrac + FixedMul(tx, pspritescale) ) >>FRACBITS) - 1;
 
 	// off the left side
 	if (x2 < 0)
