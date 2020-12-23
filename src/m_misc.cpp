@@ -261,7 +261,7 @@ const char* M_StrCaseStr(const char* haystack, const char* needle)
 
 // Check if a file exists by probing for common case variation of its filename.
 // Returns a newly allocated string that the caller is responsible for freeing.
-std::unique_ptr<char*> M_FileCaseExists(const char* path)
+std::unique_ptr<const char*> M_FileCaseExists(const char* path)
 {
 	auto path_dup{M_StringDuplicate(path)};
 
@@ -327,7 +327,7 @@ std::unique_ptr<char*> M_FileCaseExists(const char* path)
 // Returns the path to a temporary file of the given name, stored inside the system temporary directory.
 //
 // The returned value must be freed with Z_Free after use.
-std::unique_ptr<char*> M_TempFile(const char* s)
+std::unique_ptr<const char*> M_TempFile(const char* s)
 {
 	const char* tempdir;
 
@@ -350,7 +350,7 @@ std::unique_ptr<char*> M_TempFile(const char* s)
 
 // Returns the directory portion of the given path, without the trailing slash separator character. If no directory is described in the path,
 // the string "." is returned. In either case, the result is newly allocated and must be freed by the caller after use.
-std::unique_ptr<char*> M_DirName(const char* path)
+std::unique_ptr<const char*> M_DirName(const char* path)
 {
 	auto p{strrchr(path, DIR_SEPARATOR)};
 	if (p == NULL)
@@ -366,7 +366,7 @@ std::unique_ptr<char*> M_DirName(const char* path)
 }
 
 // Safe version of strdup() that checks the string was successfully allocated.
-std::unique_ptr<char*> M_StringDuplicate(const char* orig)
+std::unique_ptr<const char*> M_StringDuplicate(const char* orig)
 {
 	/*
 	auto result{strdup(orig)};
@@ -379,10 +379,10 @@ std::unique_ptr<char*> M_StringDuplicate(const char* orig)
 	return result;
 	*/
 
-	return std::make_unique<char*>(orig);
+	return std::make_unique<const char*>(orig);
 }
 
-std::unique_ptr<char*> M_StringReplace(const char* haystack, const char* needle, const char* replacement)
+std::unique_ptr<const char*> M_StringReplace(const char* haystack, const char* needle, const char* replacement)
 {
 	auto needle_len{strlen(needle)};
 
@@ -432,7 +432,7 @@ std::unique_ptr<char*> M_StringReplace(const char* haystack, const char* needle,
 }
 
 // Return a newly-malloced string with all the strings given as arguments concatenated together.
-std::unique_ptr<char*> M_StringJoin(const char* s, ...)
+std::unique_ptr<const char*> M_StringJoin(const char* s, ...)
 {
 	va_list args;
 
@@ -472,7 +472,7 @@ std::unique_ptr<char*> M_StringJoin(const char* s, ...)
 }
 
 #ifdef _WIN32
-std::unique_ptr<char*> M_OEMToUTF8(const char* oem)
+std::unique_ptr<const char*> M_OEMToUTF8(const char* oem)
 {
 	auto size{strlen(oem)};
 	if (size == std::numeric_limits<size_t>::max())

@@ -20,13 +20,11 @@
 #ifndef DOXYGEN
 
 #define TXT_UNCAST_ARG_NAME(name) uncast_ ## name
-#define TXT_UNCAST_ARG(name)	void * TXT_UNCAST_ARG_NAME(name)
+#define TXT_UNCAST_ARG(name) void * TXT_UNCAST_ARG_NAME(name)
 #define TXT_CAST_ARG(type, name) type *name = (type *) uncast_ ## name
 
 #else
-
 #define TXT_UNCAST_ARG(name) txt_widget_t *name
-
 #endif
 
 typedef enum
@@ -53,23 +51,65 @@ typedef enum
  * depend on the type of the widget. It is possible to be notified
  * when a signal occurs using the @ref TXT_SignalConnect function.
  */
-typedef struct txt_widget_s txt_widget_t;
+using TxtWidgetSizeCalc = CUDADOOM::TXT::WidgetSizeCalc;
+using TxtWidgetDrawer = CUDADOOM::TXT::WidgetDrawer;
+using TxtWidgetDestroy = CUDADOOM::TXT::WidgetDestroy;
+using TxtWidgetKeyPress = CUDADOOM::TXT::WidgetKeyPress;
+using TxtWidgetSignalFunc = CUDADOOM::TXT::WidgetSignalFunc;
+using TxtMousePressFunc = CUDADOOM::TXT::MousePressFunc;
+using TxtWidgetLayoutFunc = CUDADOOM::TXT::WidgetLayoutFunc;
+using TxtWidgetSelectableFunc = CUDADOOM::TXT::WidgetSelectableFunc;
+using TxtWidgetFocusFunc = CUDADOOM::TXT::WidgetFocusFunc;
 
-typedef struct txt_widget_class_s txt_widget_class_t;
-typedef struct txt_callback_table_s txt_callback_table_t;
+using txt_callback_t = CUDADOOM::TXT::CallbackEntry;
+using txt_callback_s = CUDADOOM::TXT::CallbackEntry;
 
-typedef void (*TxtWidgetSizeCalc)(TXT_UNCAST_ARG(widget));
-typedef void (*TxtWidgetDrawer)(TXT_UNCAST_ARG(widget));
-typedef void (*TxtWidgetDestroy)(TXT_UNCAST_ARG(widget));
-typedef int (*TxtWidgetKeyPress)(TXT_UNCAST_ARG(widget), int key);
-typedef void (*TxtWidgetSignalFunc)(TXT_UNCAST_ARG(widget), void* user_data);
-typedef void (*TxtMousePressFunc)(TXT_UNCAST_ARG(widget), int x, int y, int b);
-typedef void (*TxtWidgetLayoutFunc)(TXT_UNCAST_ARG(widget));
-typedef int (*TxtWidgetSelectableFunc)(TXT_UNCAST_ARG(widget));
-typedef void (*TxtWidgetFocusFunc)(TXT_UNCAST_ARG(widget), int focused);
+using txt_callback_table_t = CUDADOOM::TXT::CallbackTable;
+using txt_callback_table_s = CUDADOOM::TXT::CallbackTable;
 
-struct txt_widget_class_s
+using txt_widget_class_t = CUDADOOM::TXT::WidgetClass;
+using txt_widget_class_s = CUDADOOM::TXT::WidgetClass;
+
+using txt_widget_s = CUDADOOM::TXT::Widget;
+using txt_widget_t = CUDADOOM::TXT::Widget;
+
+namespace CUDADOOM::TXT
 {
+
+typedef void (*WidgetSizeCalc)(TXT_UNCAST_ARG(widget));
+typedef void (*WidgetDrawer)(TXT_UNCAST_ARG(widget));
+typedef void (*WidgetDestroy)(TXT_UNCAST_ARG(widget));
+typedef int (*WidgetKeyPress)(TXT_UNCAST_ARG(widget), int key);
+typedef void (*WidgetSignalFunc)(TXT_UNCAST_ARG(widget), void* user_data);
+typedef void (*MousePressFunc)(TXT_UNCAST_ARG(widget), int x, int y, int b);
+typedef void (*WidgetLayoutFunc)(TXT_UNCAST_ARG(widget));
+typedef int (*WidgetSelectableFunc)(TXT_UNCAST_ARG(widget));
+typedef void (*WidgetFocusFunc)(TXT_UNCAST_ARG(widget), bool focused);
+
+struct CallbackEntry
+{
+public:
+	char* signal_name{nullptr};
+	void* user_data{nullptr};
+	TxtWidgetSignalFunc func{nullptr};
+};
+
+struct CallbackTable
+{
+public:
+	std::vector<CallbackEntry> callbacks;
+	size_t numCallbacks{0ull};
+	size_t refCount{0ull};
+
+public:
+	CallbackTable() noexcept : callbacks(20)
+	{
+	}
+};
+
+class WidgetClass
+{
+public:
 	TxtWidgetSelectableFunc selectable;
 	TxtWidgetSizeCalc size_calc;
 	TxtWidgetDrawer drawer;
@@ -78,25 +118,96 @@ struct txt_widget_class_s
 	TxtMousePressFunc mouse_press;
 	TxtWidgetLayoutFunc layout;
 	TxtWidgetFocusFunc focus_change;
+
+public:
+	//TxtWidgetClass(){};
 };
 
-struct txt_widget_s
+class Widget
 {
-	txt_widget_class_t* widget_class;
-	txt_callback_table_t* callback_table;
-	int visible;
-	txt_horiz_align_t align;
-	int focused;
+	// TEMP PUBLIC UNTIL ALL DEPENDENTS CONVERTED TODO UPDATE THIS
+public:
+	Widget* parent{nullptr};
+	WidgetClass* widget_class{nullptr};
+	CallbackTable* callback_table{nullptr};
 
 	// These are set automatically when the window is drawn and should not be set manually.
-	int x;
-	int y;
-	unsigned int w;
-	unsigned int h;
+	int64_t x{};
+	int64_t y{};
+	uint64_t width{};
+	uint64_t height{};
 
-	// Pointer up to parent widget that contains this widget.
-	txt_widget_t* parent;
+	txt_horiz_align_t align{};
+
+	bool _visible{false};
+	bool _focused{false};
+
+public:
+	inline bool visible() const noexcept
+	{
+		return _visible;
+	}
+
+	inline void toggleVisibility() noexcept
+	{
+		_visible = !_visible;
+	}
+
+	inline void show() noexcept
+	{
+		_visible = true;
+	}
+
+	inline void hide() noexcept
+	{
+		_visible = false;
+	}
+
+	inline bool focused() noexcept
+	{
+		return _focused;
+	}
+
+	inline void toggleFocus() noexcept
+	{
+		_focused = !_focused;
+	}
+
+	inline void startFocus() noexcept
+	{
+		_focused = true;
+	}
+
+	inline void stopFocus() noexcept
+	{
+		_focused = false;
+	}
+
+	void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget))
+	{
+		TXT_CAST_ARG(txt_widget_t, widget);
+
+		widget->widget_class->size_calc(widget);
+	}
+
+	void TXT_DrawWidget(TXT_UNCAST_ARG(widget));
+	void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char* signal_name);
+	int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key);
+	void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b);
+	void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
+	void TXT_LayoutWidget(TXT_UNCAST_ARG(widget));
+	int TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
+	int TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
+	void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), bool focused);
+	void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, TxtWidgetSignalFunc func, void* user_data);
+	void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align);
+	int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
+	int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
+	void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
+	int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
 };
+
+} /* END NAMESPACE CUDADOOM::TXT */
 
 void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t* widget_class);
 void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget));
@@ -108,7 +219,7 @@ void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
 void TXT_LayoutWidget(TXT_UNCAST_ARG(widget));
 int TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
 int TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
-void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused);
+void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), bool focused);
 
 /**
  * Set a callback function to be invoked when a signal occurs.

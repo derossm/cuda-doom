@@ -33,6 +33,15 @@
 		"xstddef": "cpp",
 		"xstring": "cpp",
 		"xtr1common": "cpp",
-		"xutility": "cpp"
+		"xutility": "cpp",
+		"system_error": "cpp",
+		"algorithm": "cpp",
+		"array": "cpp",
+		"charconv": "cpp",
+		"cmath": "cpp",
+		"map": "cpp",
+		"stdexcept": "cpp",
+		"vector": "cpp",
+		"xtree": "cpp"
 	}
 }

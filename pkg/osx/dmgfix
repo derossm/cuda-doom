@@ -9,7 +9,7 @@
 --
 -- This program is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
--- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 -- GNU General Public License for more details.
 --
 --
@@ -21,46 +21,46 @@
 --
 
 on run argv
-    set dmgFile to POSIX file (item 1 of argv)
-    set diskName to item 2 of argv
-    set appName to item 3 of argv
+	set dmgFile to POSIX file (item 1 of argv)
+	set diskName to item 2 of argv
+	set appName to item 3 of argv
 
-    tell application "Finder"
-        --activate
-        open dmgFile
-        delay 1
-        set theDisk to disk diskName
-        open POSIX file "/"
+	tell application "Finder"
+		--activate
+		open dmgFile
+		delay 1
+		set theDisk to disk diskName
+		open POSIX file "/"
 
-        -- window options:
+		-- window options:
 
-        set bgfile to file "background.png" of theDisk
-        set win to the front Finder window
-        tell win
-            set target to theDisk
-            set current view to icon view
-            set sidebar width to 0
-            set toolbar visible to false
-            set statusbar visible to false
-            set bounds to {200, 200, 717, 545}
-        end tell
-        tell icon view options of win
-            set icon size to 96
-            set background picture to bgfile
-        end tell
+		set bgfile to file "background.png" of theDisk
+		set win to the front Finder window
+		tell win
+			set target to theDisk
+			set current view to icon view
+			set sidebar width to 0
+			set toolbar visible to false
+			set statusbar visible to false
+			set bounds to {200, 200, 717, 545}
+		end tell
+		tell icon view options of win
+			set icon size to 96
+			set background picture to bgfile
+		end tell
 
-        -- hide background file:
+		-- hide background file:
 
-        set bgloc to quoted form of POSIX path of (bgfile as text)
-        do shell script "SetFile -a V " & bgloc
+		set bgloc to quoted form of POSIX path of (bgfile as text)
+		do shell script "SetFile -a V " & bgloc
 
-        -- icon positions:
+		-- icon positions:
 
-        set position of file "README" of theDisk to {110, 220}
-        set position of file "Software License" of theDisk to {400, 220}
-        set position of file appName of theDisk to {110, 80}
-        set position of file "Applications" of theDisk to {400, 80}
+		set position of file "README" of theDisk to {110, 220}
+		set position of file "Software License" of theDisk to {400, 220}
+		set position of file appName of theDisk to {110, 80}
+		set position of file "Applications" of theDisk to {400, 80}
 
-        eject theDisk
-    end tell
+		eject theDisk
+	end tell
 end run

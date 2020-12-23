@@ -21,10 +21,10 @@ call add(tagfiles, topdir . "pcsound/tags")
 call add(tagfiles, topdir . "textscreen/tags")
 
 for tagfile in tagfiles
-    " Don't go beyond the project top level when adding parent dirs:
-    if stridx(tagfile, topdir) >= 0
-        exec "set tags+=" . tagfile
-    endif
+	" Don't go beyond the project top level when adding parent dirs:
+	if stridx(tagfile, topdir) >= 0
+		exec "set tags+=" . tagfile
+	endif
 endfor
 
 unlet topdir

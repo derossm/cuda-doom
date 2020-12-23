@@ -28,13 +28,13 @@ of a string type, the value is surrounded by quotes (").
 For example:
 .RS
 .PP
-integer_value                1
+integer_value				1
 .br
-integer_value2               1
+integer_value2				1
 .br
-floating_point_value         4.2
+floating_point_value		4.2
 .br
-string_value                 "hello world"
+string_value				"hello world"
 .RE
 .PP
 Invalid lines or comments in the file will be ignored, but it is advisable

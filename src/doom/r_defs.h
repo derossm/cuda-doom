@@ -16,26 +16,12 @@
 #ifndef __R_DEFS__
 #define __R_DEFS__
 
-
-// Screenwidth.
 #include "doomdef.h"
-
-// Some more or less basic data types
-// we depend on.
 #include "m_fixed.h"
-
-// We rely on the thinker data struct
-// to handle sound origins in sectors.
 #include "d_think.h"
-// SECTORS do store MObjs anyway.
 #include "p_mobj.h"
-
 #include "i_video.h"
-
 #include "v_patch.h"
-
-
-
 
 // Silhouette, needed for clipping Segs (mainly)
 // and sprites representing things.
@@ -46,20 +32,14 @@
 
 #define MAXDRAWSEGS		256
 
-
-
-
-
 //
 // INTERNAL MAP TYPES
 // used by play and refresh
 //
 
-//
 // Your plain vanilla vertex.
 // Note: transformed values not buffered locally,
 // like some DOOM-alikes ("wt", "WebView") did.
-//
 typedef struct
 {
 	fixed_t	x;
@@ -73,7 +53,6 @@ typedef struct
 	fixed_t	r_y;
 	bool	moved;
 } vertex_t;
-
 
 // Forward of LineDefs, for Sectors.
 struct line_s;
@@ -93,10 +72,8 @@ typedef struct
 
 } degenmobj_t;
 
-//
 // The SECTORS record, at runtime.
 // Stores things/mobjs.
-//
 typedef	struct
 {
 	fixed_t	floorheight;
@@ -160,13 +137,7 @@ typedef	struct
 	short	oldspecial;
 } sector_t;
 
-
-
-
-//
 // The SideDef.
-//
-
 typedef struct
 {
 	// add this to the calculated texture column
@@ -188,11 +159,7 @@ typedef struct
 	fixed_t	basetextureoffset;
 } side_t;
 
-
-
-//
 // Move clipping aid for LineDefs.
-//
 typedef enum
 {
 	ST_HORIZONTAL,
@@ -201,8 +168,6 @@ typedef enum
 	ST_NEGATIVE
 
 } slopetype_t;
-
-
 
 typedef struct line_s
 {
@@ -245,16 +210,11 @@ typedef struct line_s
 	degenmobj_t	soundorg;
 } line_t;
 
-
-
-
-//
 // A SubSector.
 // References a Sector.
 // Basically, this is a list of LineSegs,
 // indicating the visible walls that define
 // (all or some) sides of a convex BSP leaf.
-//
 typedef struct subsector_s
 {
 	sector_t*	sector;
@@ -262,8 +222,6 @@ typedef struct subsector_s
 	int	firstline; // [crispy] extended nodes
 
 } subsector_t;
-
-
 
 //
 // The LineSeg.
@@ -286,12 +244,10 @@ typedef struct
 	sector_t*	frontsector;
 	sector_t*	backsector;
 
-	uint32_t	length; // [crispy] fix long wall wobble
-	angle_t	r_angle; // [crispy] re-calculated angle used for rendering
-	int	fakecontrast;
+	uint32_t length; // [crispy] fix long wall wobble
+	angle_t r_angle; // [crispy] re-calculated angle used for rendering
+	int fakecontrast;
 } seg_t;
-
-
 
 //
 // BSP node.
@@ -312,17 +268,10 @@ typedef struct
 
 } node_t;
 
-
-
-
 // PC direct to screen pointers
 //B UNUSED - keep till detailshift in r_draw.c resolved
 //extern byte*	destview;
 //extern byte*	destscreen;
-
-
-
-
 
 //
 // OTHER TYPES
@@ -335,12 +284,7 @@ typedef struct
 // Could even us emore than 32 levels.
 typedef pixel_t		lighttable_t;
 
-
-
-
-//
 // ?
-//
 typedef struct drawseg_s
 {
 	seg_t*		curline;
@@ -416,8 +360,6 @@ typedef struct vissprite_s
 
 } vissprite_t;
 
-
-//
 // Sprites are patches with a special naming convention
 // so they can be recognized by R_InitSprites.
 // The base name is NNNNFx or NNNNFxFx, with
@@ -431,28 +373,23 @@ typedef struct vissprite_s
 // thus NNNNF2F5 defines a mirrored patch.
 // Some sprites will only have one picture used
 // for all views: NNNNF0
-//
 typedef struct
 {
 	// If false use 0 for any position.
 	// Note: as eight entries are available,
 	// we might as well insert the same name eight times.
-	int	rotate; // [crispy] we use a value of 2 for 16 sprite rotations
+	int rotate; // [crispy] we use a value of 2 for 16 sprite rotations
 
 	// Lump to use for view angles 0-7.
-	short	lump[16]; // [crispy] support 16 sprite rotations
+	short lump[16]; // [crispy] support 16 sprite rotations
 
 	// Flip bit (1 = flip) to use for view angles 0-7.
-	byte	flip[16]; // [crispy] support 16 sprite rotations
+	byte flip[16]; // [crispy] support 16 sprite rotations
 
 } spriteframe_t;
 
-
-
-//
 // A sprite definition:
 // a number of animation frames.
-//
 typedef struct
 {
 	int			numframes;
@@ -460,30 +397,26 @@ typedef struct
 
 } spritedef_t;
 
-
-
-//
 // Now what is a visplane, anyway?
-//
 typedef struct
 {
- fixed_t		height;
- int			picnum;
- int			lightlevel;
- int			minx;
- int			maxx;
+	fixed_t height;
+	int picnum;
+	int lightlevel;
+	int minx;
+	int maxx;
 
- // leave pads for [minx-1]/[maxx+1]
+	// leave pads for [minx-1]/[maxx+1]
 
- unsigned int		pad1; // [crispy] hires / 32-bit integer math
- // Here lies the rub for all
- // dynamic resize/change of resolution.
- unsigned int		top[MAXWIDTH]; // [crispy] hires / 32-bit integer math
- unsigned int		pad2; // [crispy] hires / 32-bit integer math
- unsigned int		pad3; // [crispy] hires / 32-bit integer math
- // See above.
- unsigned int		bottom[MAXWIDTH]; // [crispy] hires / 32-bit integer math
- unsigned int		pad4; // [crispy] hires / 32-bit integer math
+	unsigned int pad1; // [crispy] hires / 32-bit integer math
+	// Here lies the rub for all
+	// dynamic resize/change of resolution.
+	unsigned int top[MAXWIDTH]; // [crispy] hires / 32-bit integer math
+	unsigned int pad2; // [crispy] hires / 32-bit integer math
+	unsigned int pad3; // [crispy] hires / 32-bit integer math
+	// See above.
+	unsigned int bottom[MAXWIDTH]; // [crispy] hires / 32-bit integer math
+	unsigned int pad4; // [crispy] hires / 32-bit integer math
 
 } visplane_t;
 
@@ -494,7 +427,5 @@ typedef struct
 	int l, w, h;
 } laserpatch_t;
 extern laserpatch_t *laserpatch;
-
-
 
 #endif

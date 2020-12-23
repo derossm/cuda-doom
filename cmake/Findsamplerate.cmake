@@ -31,34 +31,41 @@
 # - Visual Studio
 
 # Use pkg-config to find library locations in *NIX environments.
+set(SAMPLERATE_DIR "${VCPKG_DIR}/libsamplerate")
+
 find_package(PkgConfig QUIET)
 if(PKG_CONFIG_FOUND)
 	pkg_search_module(PC_SAMPLERATE QUIET samplerate)
 endif()
 
 # Find the include directory.
-find_path(SAMPLERATE_INCLUDE_DIR "samplerate.h"
-	HINTS ${PC_SAMPLERATE_INCLUDE_DIRS})
+find_path(SAMPLERATE_INCLUDE_DIR "samplerate.h" HINTS ${PC_SAMPLERATE_INCLUDE_DIRS})
+#set(SAMPLERATE_INCLUDE_DIR "${SAMPLERATE_DIR}/include")
 
-# Find the version.  I don't know if there is a correct way to find this on
+# Find the version. I don't know if there is a correct way to find this on
 # Windows - the config.h in the tarball is wrong for 0.1.19.
 if(PC_SAMPLERATE_VERSION)
 	set(SAMPLERATE_VERSION "${PC_SAMPLERATE_VERSION}")
 endif()
 
 # Find the library.
-find_library(SAMPLERATE_LIBRARY "samplerate"
-	HINTS ${PC_SAMPLERATE_LIBRARY_DIRS})
+find_library(SAMPLERATE_LIBRARY "samplerate" HINTS ${PC_SAMPLERATE_LIBRARY_DIRS})
+#set(SAMPLERATE_LIBRARY_DIR "${SAMPLERATE_DIR}/lib")
+#set(SAMPLERATE_LIBRARY "${SAMPLERATE_LIBRARY_DIR}/SDL2_mixer.lib")
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(samplerate
-	FOUND_VAR SAMPLERATE_FOUND
-	REQUIRED_VARS SAMPLERATE_INCLUDE_DIR SAMPLERATE_LIBRARY
-	VERSION_VAR SAMPLERATE_VERSION
-)
+									FOUND_VAR SAMPLERATE_FOUND
+									REQUIRED_VARS SAMPLERATE_INCLUDE_DIR SAMPLERATE_LIBRARY
+									VERSION_VAR SAMPLERATE_VERSION)
 
 if(SAMPLERATE_FOUND)
 	# Imported target.
 	add_library(samplerate::samplerate UNKNOWN IMPORTED)
-	set_target_properties(samplerate::samplerate PROPERTIES INTERFACE_COMPILE_OPTIONS "${PC_SAMPLERATE_CFLAGS_OTHER}" INTERFACE_INCLUDE_DIRECTORIES "${SAMPLERATE_INCLUDE_DIR}" IMPORTED_LOCATION "${SAMPLERATE_LIBRARY}")
+
+	set_target_properties(
+		samplerate::samplerate PROPERTIES
+		INTERFACE_COMPILE_OPTIONS "${PC_SAMPLERATE_CFLAGS_OTHER}"
+		INTERFACE_INCLUDE_DIRECTORIES "${SAMPLERATE_INCLUDE_DIR}"
+		IMPORTED_LOCATION "${SAMPLERATE_LIBRARY}")
 endif()

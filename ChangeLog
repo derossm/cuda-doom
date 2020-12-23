@@ -257,7 +257,7 @@ Thanks to JNechaevsky for suggesting all of the above!
 * The "Crispness" menu has been disabled in the Setup tool because of its size and functionality being unable to cover all the options.
 * The "Invert Vertical Axis" option in the Setup tool has been replaced with "Permanent Mouse Look".
 * DoomBSP's original BLOCKMAP builder is now used instead of MBF's one as Crispy's internal BLOCKMAP builder (with removed limits and support for flipped levels and BLOCKMAP compression).
-* Linedefs without tags don't apply locally  anymore even in singleplayer (they send the wrong signal, maps that have this must be considered broken).
+* Linedefs without tags don't apply locally anymore even in singleplayer (they send the wrong signal, maps that have this must be considered broken).
 
 '''Bug Fixes'''
 
@@ -328,7 +328,7 @@ This is another bug-fix release with only few new features.
 * Inputs are now flipped when recording or playing back demos with <tt>-fliplevels</tt>. Demos with monsters will still desync, though, because of the way the flipped BLOCKMAP is processed. Thanks to Danfun64 for reporting this issue and to Jon and Linguica for nagging me to fix it.
 * The GOOBERS cheat now leaves DR-type closed doors intact.
 * An Archvile fire's <tt>floorz</tt> and <tt>ceilingz</tt> values are now updated to prevent it from jumping back and forth between the floor heights of its (faulty) spawn sector and the target's actual sector. Thanks to buvk and vadrig4r for discussing this issue and to Quasar for his excellent analysis in [https://www.doomworld.com/vb/post/1297952 this thread].
-* Removed map objects may now finish playing their sounds.  When a map object is removed from the map by P_RemoveMobj(), instead of stopping its sounds, its coordinates are transfered to a "sound object" so stereo positioning and distance calculations continue to work even after the corresponding map object has already disappeared. Thanks to Megamur for requesting and jeff-d and kb1 for discussing this feature and especially jeff-d for the original implementation idea.
+* Removed map objects may now finish playing their sounds. When a map object is removed from the map by P_RemoveMobj(), instead of stopping its sounds, its coordinates are transfered to a "sound object" so stereo positioning and distance calculations continue to work even after the corresponding map object has already disappeared. Thanks to Megamur for requesting and jeff-d and kb1 for discussing this feature and especially jeff-d for the original implementation idea.
 * The "power up" sound is now played when selecting the Berserk fist, but only if it is not playing already. This brings back a feature that was removed more than a year ago, because I considered it "useless" back then.
 * The "saw up" sound is now played to finish when the Chainsaw is selected.
 * Empty demo lumps are now ignored. That is, it is now possible to load empty <tt>DEMO1.lmp</tt>, <tt>DEMO2.lmp</tt> and <tt>DEMO3.lmp</tt> files to prevent the game from running any demos during the title screen.
@@ -341,7 +341,7 @@ This is another bug-fix release with only few new features.
 '''Bug Fixes'''
 
 * The incorrect vertical offset for stretched MBF sky-transfer skies has been fixed. Thanks to plumsinus for the bug report.
-* The game missions pack_nerve and pack_master have been added as valid game mode/mission combinations. This should fix network games with these PWADs. Thanks  to Danfun64 for the bug report.
+* The game missions pack_nerve and pack_master have been added as valid game mode/mission combinations. This should fix network games with these PWADs. Thanks to Danfun64 for the bug report.
 * The resolution choice in the setup tool has been adapted to only show resolutions actually supported by Crispy Doom. Thanks to Zodomaniac for the discussion.
 * The music lump format detection has been fixed. Technically, this means that the MUS format header check has been enabled again. With the variety of music formats supported by Crispy Doom (through SDL_Mixer) it was not sufficient anymore to assume that any file which isn't in MIDI format must be in MUS format, except when the format conversion from MUS to MIDI fails. Thanks to Zodomaniac for the bug report and for providing some lumps in FLAC format which were reported as successfully converted by the mus2mid() function. This will break playback of the D_DM2TTL lump of DECA.WAD which erroneously has its format header read "PWAD" instead of "MUS".
 * The checks for "FRAME" keys in [CODEPTR] sections in BEX files are now case-insensitive.
@@ -956,66 +956,65 @@ Crispy Doom 1.0 has been released on March 10, 2014.
 
 Due to the increased display resolution, the supported video modes differ from Chocolate Doom. The following table gives an overview over the available video modes in Crispy Doom 1.0 and Chocolate Doom 2.0.0. A red backgrond color means that a video mode has been disabled in fullscreen mode for quality concerns. Additionally, all video modes that would result in a display resolution exceeding [[wikipedia:WUXGA|WUXGA]] (1920x1200) have been disabled in Crispy Doom.
 
-{| class="wikitable"
-! Video Mode
-! Chocolate Doom 2.0.0
-! Crispy Doom 1.0
-|-
-| mode_scale_1x   || style="background-color: green" | 320x200   || style="background-color: green" | 640x400
-|-
-| mode_scale_2x   || style="background-color: green" | 640x400   || style="background-color: green" | 1280x800
-|-
-| mode_scale_3x   || style="background-color: green" | 960x600   || style="background-color: green" | 1920x1200
-|-
-| mode_scale_4x   || style="background-color: green" | 1280x800  || style="background-color: red"   | 2560x1600
-|-
-| mode_scale_5x   || style="background-color: green" | 1600x1000 || style="background-color: red"   | 3200x2000
-|-
-| mode_stretch_1x || style="background-color: red"   | 320x240   || style="background-color: green" | 640x480
-|-
-| mode_stretch_2x || style="background-color: green" | 640x480   || style="background-color: green" | 1280x960
-|-
-| mode_stretch_3x || style="background-color: green" | 960x720   || style="background-color: red"   | 1920x1440
-|-
-| mode_stretch_4x || style="background-color: green" | 1280x960  || style="background-color: red"   | 2560x1920
-|-
-| mode_stretch_5x || style="background-color: green" | 1600x1200 || style="background-color: red"   | 3200x2400
-|-
-| mode_squash_1x  || style="background-color: red"   | 256x200   || style="background-color: red"   | 512x400
-|-
-| mode_squash_1p5x || -- ||  style="background-color: green" | 800x600
-|-
-| mode_squash_2x  || style="background-color: red"   | 512x400   || style="background-color: green" | 1024x800
-|-
-| mode_squash_3x  || style="background-color: green" | 800x600   || style="background-color: green" | 1600x1200
-|-
-| mode_squash_4x  || style="background-color: green" | 1024x800  || style="background-color: red"   | 2048x1600
-|-
-| mode_squash_5x  || style="background-color: green" | 1280x1000 || style="background-color: red"   | 2560x2000
-|}
+{
+| class="wikitable" ! Video Mode ! Chocolate Doom 2.0.0 ! Crispy Doom 1.0
+|-------------------------------------------------------------------------------------------------------------------|
+| mode_scale_1x		|| style="background-color: green"	| 320x200	|| style="background-color: green"	| 640x400	|
+|-																													|
+| mode_scale_2x		|| style="background-color: green"	| 640x400	|| style="background-color: green"	| 1280x800	|
+|-																													|
+| mode_scale_3x		|| style="background-color: green"	| 960x600	|| style="background-color: green"	| 1920x1200	|
+|-																													|
+| mode_scale_4x		|| style="background-color: green"	| 1280x800	|| style="background-color: red"	| 2560x1600	|
+|-																													|
+| mode_scale_5x		|| style="background-color: green"	| 1600x1000	|| style="background-color: red"	| 3200x2000	|
+|-																													|
+| mode_stretch_1x	|| style="background-color: red"	| 320x240	|| style="background-color: green"	| 640x480	|
+|-																													|
+| mode_stretch_2x	|| style="background-color: green"	| 640x480	|| style="background-color: green"	| 1280x960	|
+|-																													|
+| mode_stretch_3x	|| style="background-color: green"	| 960x720	|| style="background-color: red"	| 1920x1440	|
+|-																													|
+| mode_stretch_4x	|| style="background-color: green"	| 1280x960	|| style="background-color: red"	| 2560x1920	|
+|-																													|
+| mode_stretch_5x	|| style="background-color: green"	| 1600x1200	|| style="background-color: red"	| 3200x2400	|
+|-																													|
+| mode_squash_1x	|| style="background-color: red"	| 256x200	|| style="background-color: red"	| 512x400	|
+|-																													|
+| mode_squash_1p5x	|| -----------------------------	| -------	|| style="background-color: green"	| 800x600	|
+|-																													|
+| mode_squash_2x	|| style="background-color: red"	| 512x400	|| style="background-color: green"	| 1024x800	|
+|-																													|
+| mode_squash_3x	|| style="background-color: green"	| 800x600	|| style="background-color: green"	| 1600x1200	|
+|-																													|
+| mode_squash_4x	|| style="background-color: green"	| 1024x800	|| style="background-color: red"	| 2048x1600	|
+|-																													|
+| mode_squash_5x	|| style="background-color: green"	| 1280x1000	|| style="background-color: red"	| 2560x2000	|
+|-------------------------------------------------------------------------------------------------------------------|
+}
 
 '''Raised Limits'''
 The static engine limits in all four games have been raised in line with [http://prboom-plus.sourceforge.net/doom-plus.features.html Doom+]. For the four included games this results in the following limits:
-{| class="wikitable"
-! rowspan="2" | Limit
-! colspan="4" | Chocolate 2.0.0 || colspan="4" | Crispy 1.0
-|-
-! Doom || Heretic || Hexen || Strife || Doom || Heretic || Hexen || Strife
-|-
-| MAXVISPLANES  || 128 || 128 || 160 || 200 || 128*8 || 128*8 || 160*8 || 200*8
-|-
-| MAXVISSPRITES || 128 || 128 || 192 || 128 || 128*8 || 128*8 || 192*8 || 128*8
-|-
-| MAXDRAWSEGS   || 256 || 256 || 256 || 256 || 256*8 || 256*8 || 256*8 || 256*8
-|-
-| MAXPLATS      || 30  || 30 || 30 || 30 || 30*256 || 30*256 || 30*256 || 30*256
-|-
-| SAVEGAMESIZE  || --   || 196608 || -- || -- || -- || 196608*16 || -- || --
-|-
-| MAXLINEANIMS  || 64  || 64 || 64 || 96 || 64*256 || 64*256 || 64*256 || 96*256
-|-
-| MAXOPENINGS   || 320*64 || 320*64 || 320*64 || 320*64 || 640*64*4 || 640*64*4 || 640*64*4 || 640*64*4
-|}
+{
+| class="wikitable" ! rowspan="2" | Limit ! colspan="4" | Chocolate 2.0.0 || colspan="4" | Crispy 1.0
+|-------------------------------------------------------------------------------------------------------------------|
+! Doom			|| Heretic	|| Hexen	|| Strife	|| Doom		|| Heretic	|| Hexen		|| Strife	|| -----	|
+|-																													|
+| MAXVISPLANES	|| 128		|| 128		|| 160		|| 200		|| 128*8	|| 128*8		|| 160*8	|| 200*8	|
+|-																													|
+| MAXVISSPRITES	|| 128		|| 128		|| 192		|| 128		|| 128*8	|| 128*8		|| 192*8	|| 128*8	|
+|-																													|
+| MAXDRAWSEGS	|| 256		|| 256		|| 256		|| 256		|| 256*8	|| 256*8		|| 256*8	|| 256*8	|
+|-																													|
+| MAXPLATS		|| 30		|| 30		|| 30		|| 30		|| 30*256	|| 30*256		|| 30*256	|| 30*256	|
+|-																													|
+| SAVEGAMESIZE	|| --		|| 196608	|| --		|| --		|| -----	|| 196608*16	|| -----	|| -----	|
+|-																													|
+| MAXLINEANIMS	|| 64		|| 64		|| 64		|| 96		|| 64*256	|| 64*256		|| 64*256	|| 96*256	|
+|-																													|
+| MAXOPENINGS	|| 320*64	|| 320*64	|| 320*64	|| 320*64	|| 640*64*4	|| 640*64*4		|| 640*64*4	|| 640*64*4	|
+|-------------------------------------------------------------------------------------------------------------------|
+}
 
 '''Improved Support for the BFG Edition'''
 

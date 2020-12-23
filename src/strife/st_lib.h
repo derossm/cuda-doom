@@ -9,119 +9,98 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	The status bar widget code.
+		The status bar widget code.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #ifndef __STLIB__
 #define __STLIB__
 
-
 // We are referring to patches.
 #include "r_defs.h"
 
-//
-// Typedefs of widgets
-//
-
 // Number widget
-
 typedef struct
 {
 	// upper right-hand corner
 	// of the number (right-justified)
-	int			x;
-	int			y;
+	int x;
+	int y;
 
 	// max # of digits in number
 	int width;
 
 	// haleyjd 09/01/10: [STRIFE] Removed "oldnum" member
-	//int			oldnum;
+	//int oldnum;
 
 	// pointer to current value
-	int*		num;
+	int* num;
 
 	// haleyjd 09/01/10: [STRIFE] Removed "on" member
-	// bool*	on;
+	// bool* on;
 
 	// list of patches for 0-9
-	patch_t**	p;
+	patch_t** p;
 
 	// user data
 	int data;
-
 } st_number_t;
-
-
 
 // Percent widget ("child" of number widget,
 // or, more precisely, contains a number widget.)
 typedef struct
 {
 	// number information
-	st_number_t		n;
+	st_number_t n;
 
 	// percent sign graphic
-	patch_t*		p;
-
+	patch_t* p;
 } st_percent_t;
-
-
 
 // Multiple Icon widget
 typedef struct
 {
-		// center-justified location of icons
-	int			x;
-	int			y;
+	// center-justified location of icons
+	int x;
+	int y;
 
 	// last icon number
-	int			oldinum;
+	int oldinum;
 
 	// pointer to current icon
-	int*		inum;
+	int* inum;
 
 	// pointer to bool stating
 	// whether to update icon
-	bool*		on;
+	bool* on;
 
 	// list of icons
-	patch_t**		p;
+	patch_t** p;
 
 	// user data
-	int			data;
-
+	int data;
 } st_multicon_t;
 
-
-
-
 // Binary Icon widget
-
 typedef struct
 {
 	// center-justified location of icon
-	int			x;
-	int			y;
+	int x;
+	int y;
 
 	// last icon value
-	bool		oldval;
+	bool oldval;
 
 	// pointer to current icon status
-	bool*		val;
+	bool* val;
 
 	// pointer to bool
 	// stating whether to update icon
-	bool*		on;
+	bool* on;
 
-
-	patch_t*		p;	// icon
-	int			data;	// user data
-
+	patch_t* p;	// icon
+	int data;	// user data
 } st_binicon_t;
-
-
 
 //
 // Widget creation, access, and update routines
@@ -133,86 +112,73 @@ typedef struct
 //
 void STlib_init();
 
-
-
 // Number widget routines
 
 // haleyjd 09/01/10: [STRIFE] Removed "on" parameter.
-void
-STlib_initNum
-( st_number_t*			n,
- int					x,
- int					y,
- patch_t**				pl,
- int*					num,
- int					width );
+void STlib_initNum(st_number_t* n, int x, int y, patch_t** pl, int* num, int width);
 
 // haleyjd 09/01/10: [STRIFE] Made globally visible.
-void
-STlib_drawNum
-( st_number_t* n);
+void STlib_drawNum(st_number_t* n);
 
 // haleyjd 09/01/10: [STRIFE] New function
-void
-STlib_drawNumPositive
-( st_number_t* n);
+void STlib_drawNumPositive(st_number_t* n);
 
 /* haleyjd 09/01/10: [STRIFE] All the below were removed
 void
 STlib_updateNum
 ( st_number_t*		n,
- bool		refresh );
+	bool		refresh );
 
 
 // Percent widget routines
 void
 STlib_initPercent
 ( st_percent_t*		p,
- int			x,
- int			y,
- patch_t**		pl,
- int*			num,
- bool*		on,
- patch_t*		percent );
+	int			x,
+	int			y,
+	patch_t**		pl,
+	int*			num,
+	bool*		on,
+	patch_t*		percent );
 
 
 void
 STlib_updatePercent
 ( st_percent_t*		per,
- int			refresh );
+	int			refresh );
 
 
 // Multiple Icon widget routines
 void
 STlib_initMultIcon
 ( st_multicon_t*	mi,
- int			x,
- int			y,
- patch_t**		il,
- int*			inum,
- bool*		on );
+	int			x,
+	int			y,
+	patch_t**		il,
+	int*			inum,
+	bool*		on );
 
 
 void
 STlib_updateMultIcon
 ( st_multicon_t*	mi,
- bool		refresh );
+	bool		refresh );
 
 // Binary Icon widget routines
 
 void
 STlib_initBinIcon
 ( st_binicon_t*		b,
- int			x,
- int			y,
- patch_t*		i,
- bool*		val,
- bool*		on );
+	int			x,
+	int			y,
+	patch_t*		i,
+	bool*		val,
+	bool*		on );
 
 void
 STlib_updateBinIcon
 ( st_binicon_t*		bi,
- bool		refresh );
+	bool		refresh );
 */
 
 #endif

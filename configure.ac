@@ -1,5 +1,4 @@
-AC_INIT(Crispy Doom, 5.10.0,
-        fabian@greffrath.com, crispy-doom)
+AC_INIT(Crispy Doom, 5.10.0, fabian@greffrath.com, crispy-doom)
 
 PACKAGE_SHORTNAME=${PACKAGE_NAME% Doom}
 PACKAGE_SHORTDESC="Limit-removing enhanced-resolution Doom source port"
@@ -22,13 +21,13 @@ AC_CHECK_PROG(HAVE_PYTHON, python3, true, false)
 
 OPT_LEVEL=2
 
-# If this is gcc, we have some options we'd like to turn on.  Turn on
+# If this is gcc, we have some options we'd like to turn on. Turn on
 # optimisation and debugging symbols.
 
 if test "$GCC" = "yes"
 then
-        WARNINGS="-Wall -Wdeclaration-after-statement -Wredundant-decls"
-        CFLAGS="-O$OPT_LEVEL -g $WARNINGS $orig_CFLAGS"
+		WARNINGS="-Wall -Wdeclaration-after-statement -Wredundant-decls"
+		CFLAGS="-O$OPT_LEVEL -g $WARNINGS $orig_CFLAGS"
 fi
 
 PKG_CHECK_MODULES(SDL, [sdl2 >= 2.0.7])
@@ -40,10 +39,10 @@ AC_ARG_ENABLE([bash-completion],
 AS_HELP_STRING([--disable-bash-completion], [Disable bash-completion])
 )
 AS_IF([test "x$enable_bash_completion" != xno], [
-    AS_IF([test "x$HAVE_PYTHON" = xfalse], [
-        AC_MSG_WARN([Building bash-completion requires Python, but Python not found])
-        enable_bash_completion=no
-    ])
+	AS_IF([test "x$HAVE_PYTHON" = xfalse], [
+		AC_MSG_WARN([Building bash-completion requires Python, but Python not found])
+		enable_bash_completion=no
+	])
 ])
 
 # Check for doc.
@@ -51,10 +50,10 @@ AC_ARG_ENABLE([doc],
 AS_HELP_STRING([--disable-doc], [Disable documentation])
 )
 AS_IF([test "x$enable_doc" != xno], [
-    AS_IF([test "x$HAVE_PYTHON" = xfalse], [
-        AC_MSG_WARN([Building documentation requires Python, but Python not found])
-        enable_doc=no
-    ])
+	AS_IF([test "x$HAVE_PYTHON" = xfalse], [
+		AC_MSG_WARN([Building documentation requires Python, but Python not found])
+		enable_doc=no
+	])
 ])
 
 # Check for fonts.
@@ -62,10 +61,10 @@ AC_ARG_ENABLE([fonts],
 AS_HELP_STRING([--disable-fonts], [Disable fonts])
 )
 AS_IF([test "x$enable_fonts" != xno], [
-    AS_IF([test "x$HAVE_PYTHON" = xfalse], [
-        AC_MSG_WARN([Building fonts require Python, but Python not found])
-        enable_fonts=no
-    ])
+	AS_IF([test "x$HAVE_PYTHON" = xfalse], [
+		AC_MSG_WARN([Building fonts require Python, but Python not found])
+		enable_fonts=no
+	])
 ])
 
 # Check for icons.
@@ -73,72 +72,72 @@ AC_ARG_ENABLE([icons],
 AS_HELP_STRING([--disable-icons], [Disable icons])
 )
 AS_IF([test "x$enable_icons" != xno], [
-    AS_IF([test "x$HAVE_PYTHON" = xfalse], [
-        AC_MSG_WARN([Building icons require Python, but Python not found])
-        enable_icons=no
-    ])
+	AS_IF([test "x$HAVE_PYTHON" = xfalse], [
+		AC_MSG_WARN([Building icons require Python, but Python not found])
+		enable_icons=no
+	])
 ])
 
 # [Crispy] Check for zlib.
 AC_ARG_WITH([zlib],
 AS_HELP_STRING([--without-zlib],
-    [Build without zlib @<:@default=check@:>@]),
+	[Build without zlib @<:@default=check@:>@]),
 [],
 [
-    [with_zlib=check]
+	[with_zlib=check]
 ])
 AS_IF([test "x$with_zlib" != xno], [
-    PKG_CHECK_MODULES(LIBZ, zlib, [
-        AC_DEFINE([HAVE_LIBZ], [1], [zlib installed])
-    ], [
-        AS_IF([test "x$with_zlib" != xcheck], [AC_MSG_FAILURE(
-            [--with-zlib was given, but test for zlib failed])
-        ])
-    ])
+	PKG_CHECK_MODULES(LIBZ, zlib, [
+		AC_DEFINE([HAVE_LIBZ], [1], [zlib installed])
+	], [
+		AS_IF([test "x$with_zlib" != xcheck], [AC_MSG_FAILURE(
+			[--with-zlib was given, but test for zlib failed])
+		])
+	])
 ])
 
 # Check for libsamplerate.
 AC_ARG_WITH([libsamplerate],
 AS_HELP_STRING([--without-libsamplerate],
-    [Build without libsamplerate @<:@default=check@:>@]),
+	[Build without libsamplerate @<:@default=check@:>@]),
 [],
 [
-    [with_libsamplerate=check]
+	[with_libsamplerate=check]
 ])
 AS_IF([test "x$with_libsamplerate" != xno], [
-    PKG_CHECK_MODULES(SAMPLERATE, samplerate >= 0.1.8, [
-        AC_DEFINE([HAVE_LIBSAMPLERATE], [1], [libsamplerate installed])
-    ], [
-        AS_IF([test "x$with_libsamplerate" != xcheck], [AC_MSG_FAILURE(
-            [--with-libsamplerate was given, but test for libsamplerate failed])
-        ])
-    ])
+	PKG_CHECK_MODULES(SAMPLERATE, samplerate >= 0.1.8, [
+		AC_DEFINE([HAVE_LIBSAMPLERATE], [1], [libsamplerate installed])
+	], [
+		AS_IF([test "x$with_libsamplerate" != xcheck], [AC_MSG_FAILURE(
+			[--with-libsamplerate was given, but test for libsamplerate failed])
+		])
+	])
 ])
 
 # Check for libpng.
 AC_ARG_WITH([libpng],
 AS_HELP_STRING([--without-libpng],
-    [Build without libpng @<:@default=check@:>@]),
+	[Build without libpng @<:@default=check@:>@]),
 [],
 [
-    [with_libpng=check]
+	[with_libpng=check]
 ])
 AS_IF([test "x$with_libpng" != xno], [
-    PKG_CHECK_MODULES(PNG, libpng >= 1.2.50, [
-        AC_DEFINE([HAVE_LIBPNG], [1], [libpng installed])
-    ], [
-        AS_IF([test "x$with_libpng" != xcheck], [AC_MSG_FAILURE(
-            [--with-libpng was given, but test for libpng failed])
-        ])
-    ])
+	PKG_CHECK_MODULES(PNG, libpng >= 1.2.50, [
+		AC_DEFINE([HAVE_LIBPNG], [1], [libpng installed])
+	], [
+		AS_IF([test "x$with_libpng" != xcheck], [AC_MSG_FAILURE(
+			[--with-libpng was given, but test for libpng failed])
+		])
+	])
 ])
 
 # [crispy] true-color rendering as a compile-time option
 AC_ARG_ENABLE([truecolor],
 AS_HELP_STRING([--enable-truecolor],
-    [true-color rendering (experimental) @<:@default=no@:>@]))
+	[true-color rendering (experimental) @<:@default=no@:>@]))
 AS_IF([test "x$enable_truecolor" = "xyes"], [
-    AC_DEFINE([CRISPY_TRUECOLOR], [1], [true-color rendering])
+	AC_DEFINE([CRISPY_TRUECOLOR], [1], [true-color rendering])
 ])
 
 # TODO: We currently link everything against libraries that don't need it.
@@ -162,11 +161,11 @@ AC_CHECK_LIB(amd64, amd64_iopl)
 
 case "$host" in
   *-*-mingw* | *-*-cygwin* | *-*-msvc* )
-    AC_CHECK_TOOL(WINDRES, windres, )
-    ;;
+	AC_CHECK_TOOL(WINDRES, windres, )
+	;;
   *)
-    WINDRES=
-    ;;
+	WINDRES=
+	;;
 esac
 
 AC_CHECK_TOOL(OBJDUMP, objdump, )
@@ -175,7 +174,7 @@ AC_CHECK_TOOL(STRIP, strip, )
 AC_ARG_ENABLE([werror], AS_HELP_STRING([--enable-werror], [Treat warnings as errors]))
 
 AS_IF([test "x$enable_werror" = "xyes"], [
-        CFLAGS="$CFLAGS -Werror"
+		CFLAGS="$CFLAGS -Werror"
 ])
 
 AM_CONDITIONAL(HAVE_WINDRES, test "$WINDRES" != "")
@@ -198,8 +197,7 @@ dnl With a hyphen, used almost everywhere else.
 PROGRAM_PREFIX=${PROGRAM_SPREFIX}-
 
 AC_SUBST(PROGRAM_PREFIX)
-AC_DEFINE_UNQUOTED(PROGRAM_PREFIX, "$PROGRAM_PREFIX",
-                   Change this when you create your awesome forked version)
+AC_DEFINE_UNQUOTED(PROGRAM_PREFIX, "$PROGRAM_PREFIX", Change this when you create your awesome forked version)
 AC_SUBST(PROGRAM_SPREFIX)
 
 AM_CONFIG_HEADER(config.h:config.hin)

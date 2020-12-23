@@ -8,9 +8,7 @@ HEXEN_ZIP=$(PROGRAM_PREFIX)hexen-$(PACKAGE_VERSION)-win32.zip
 STRIFE_ZIP=$(PROGRAM_PREFIX)strife-$(PACKAGE_VERSION)-win32.zip
 ZIPS=$(DOOM_ZIP) $(HERETIC_ZIP) # $(HEXEN_ZIP) $(STRIFE_ZIP)
 
-DLL_FILES=$(TOPLEVEL)/src/SDL.dll                      \
-          $(TOPLEVEL)/src/SDL_mixer.dll                \
-          $(TOPLEVEL)/src/SDL_net.dll
+DLL_FILES=$(TOPLEVEL)/src/SDL.dll $(TOPLEVEL)/src/SDL_mixer.dll $(TOPLEVEL)/src/SDL_net.dll
 
 all: $(ZIPS)
 
@@ -36,20 +34,15 @@ hook-strife: staging-strife
 
 staging-%:
 	mkdir $@
-	LC_ALL=C ./cp-with-libs --ldflags="$(LDFLAGS)" \
-	               $(TOPLEVEL)/src/$(PROGRAM_PREFIX)$*.exe $@
-	LC_ALL=C ./cp-with-libs --ldflags="$(LDFLAGS)" \
-	               $(TOPLEVEL)/src/$(PROGRAM_PREFIX)setup.exe \
-	               $@/$(PROGRAM_PREFIX)$*-setup.exe
-	LC_ALL=C ./cp-with-libs --ldflags="$(LDFLAGS)" \
-	               $(TOPLEVEL)/midiproc/$(PROGRAM_PREFIX)midiproc.exe \
-	               $@/$(PROGRAM_PREFIX)midiproc.exe
+	LC_ALL=C ./cp-with-libs --ldflags="$(LDFLAGS)" $(TOPLEVEL)/src/$(PROGRAM_PREFIX)$*.exe $@
+	LC_ALL=C ./cp-with-libs --ldflags="$(LDFLAGS)" $(TOPLEVEL)/src/$(PROGRAM_PREFIX)setup.exe $@/$(PROGRAM_PREFIX)$*-setup.exe
+	LC_ALL=C ./cp-with-libs --ldflags="$(LDFLAGS)" $(TOPLEVEL)/midiproc/$(PROGRAM_PREFIX)midiproc.exe $@/$(PROGRAM_PREFIX)midiproc.exe
 
 	$(STRIP) $@/*.exe $@/*.dll
 
-	-for f in $(DOC_FILES); do                              \
-		pandoc  -f gfm -o $@/$$(basename $$f .md).html  \
-			-s $(TOPLEVEL)/$$f;                     \
+	-for f in $(DOC_FILES); do							\
+		pandoc -f gfm -o $@/$$(basename $$f .md).html	\
+			-s $(TOPLEVEL)/$$f;							\
 	done
 	-pandoc -f gfm -s -o $@/CMDLINE.html $(TOPLEVEL)/man/CMDLINE.$*.md
 	-pandoc -f gfm -s -o $@/INSTALL.html $(TOPLEVEL)/man/INSTALL.$*

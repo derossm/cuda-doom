@@ -1,7 +1,7 @@
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 cmake_minimum_required(VERSION 3.7.2)
-project("Cuda Doom" VERSION 1.0.0 LANGUAGES CXX)
+project("CUDA Doom" VERSION 0.0.1 LANGUAGES CXX)
 
 # Autotools variables
 set(top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
@@ -12,11 +12,11 @@ set(PACKAGE_NAME "${PROJECT_NAME}")
 set(PACKAGE_TARNAME "cuda-doom")
 set(PACKAGE_VERSION "${PROJECT_VERSION}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
-set(PACKAGE_BUGREPORT "https://github.com/fabiangreffrath/crispy-doom/issues")
+set(PACKAGE_BUGREPORT "https://github.com/derossm/cuda-doom")
 
 string(REGEX REPLACE " Doom$" "" PACKAGE_SHORTNAME "${PACKAGE_NAME}")
 set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2020")
-set(PACKAGE_LICENSE "GNU General Public License, version 2")
+set(PACKAGE_LICENSE "Crsipy Doom released under the GNU General Public License, version 2. Any original work in CUDA Doom released under the GNU All-permissive License, where allowed by law.")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -24,18 +24,46 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Any settings that should apply to all targets in this directory and all
 # subdirectories should go here. Use judiciously.
 if(MSVC)
-	add_definitions(
-		"/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE"
-		"/D_CRT_NONSTDC_NO_DEPRECATE")
+	add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
 	add_compile_options(
 		"/Zc:__cplusplus" "/experimental:module" "/permissive-" "/Zc:preprocessor"
 		"/Zc:wchar_t" "/W0" "/Zc:inline" "/Od" "/MDd" "/Zc:forScope" "/fp:precise"
 		"/arch:AVX2" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-")
-	add_compile_definitions(
-		"WIN32_LEAN_AND_MEAN" "NOMINMAX")
+	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX")
 else()
 	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 endif()
+
+#set(SDL2_DIR "${SDL2_DIR}" CACHE PATH "G:/dev/api/SDL2")
+#set(SDL2_MIXER_DIR "${SDL2_MIXER_DIR}" CACHE PATH "G:/dev/api/SDL2_mixer")
+#set(SDL2_NET_DIR "${SDL2_NET_DIR}" CACHE PATH "G:/dev/api/SDL2_net")
+
+#set(ZLIB_DIR "G:/dev/api/zlib")
+#set(LIBM_DIR "G:/dev/api/openlibm")
+#set(LIBPNG_DIR "G:/dev/api/libpng")
+#set(SAMPLERATE_DIR "G:/dev/api/libsamplerate")
+
+#find_package(zlib REQUIRED)
+#find_package(png CONFIG REQUIRED)
+
+#find_package(sdl2 CONFIG REQUIRED)
+#target_link_libraries(sdl2 PRIVATE SDL2::SDL2 SDL2::SDL2main)
+
+#find_package(sdl2-mixer CONFIG REQUIRED)
+#target_link_libraries(sdl2-mixer PRIVATE SDL2::SDL2_mixer)
+
+#find_package(sdl2-net CONFIG REQUIRED)
+#target_link_libraries(sdl2-net PRIVATE SDL2::SDL2_net)
+
+#set(SDL2_DIR "G:/dev/api/SDL2")
+#set(SDL2_MIXER_DIR "G:/dev/api/SDL2_mixer")
+#set(SDL2_NET_DIR "G:/dev/api/SDL2_net")
+
+#set(ZLIB_DIR "G:/dev/api/zlib")
+#set(LIBM_DIR "G:/dev/api/openlibm")
+#set(LIBPNG_DIR "G:/dev/api/libpng")
+#set(SAMPLERATE_DIR "G:/dev/api/libsamplerate")
+set(VCPKG_DIR "G:/dev/vcpkg/packages")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)

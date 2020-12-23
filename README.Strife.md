@@ -1,14 +1,14 @@
 ````````````````````````````````````````````````````````````````````````
 
-          Samuel ‘Kaiser’ Villarreal and James ‘Quasar’ Haley Present
+		  Samuel ‘Kaiser’ Villarreal and James ‘Quasar’ Haley Present
 
-           C      H      O      C      O      L      A      T      E
-            ______________________________._________________________
-           /   _____/\__    ___/\______   \   \_   _____/\_   _____/
-           \_____  \   |    |    |       _/   ||    __)   |    __)_
-           /        \  |    |    |    |   \   ||     \    |        \
-          /_______  /  |____|    |____|_  /___|\___  /   /_______  /
-                  \/                    \/         \/            \/
+		   C	  H		 O		C	   O	  L		 A		T	   E
+			______________________________._________________________
+		   /   _____/\__	___/\______	  \	  \_   _____/\_	  _____/
+		   \_____  \   |	|	 | 		 _/	  ||	__)	  |	   __)_
+		   /		\  |	|	 |	  |	  \	  ||	 \	  |		   \
+		  /_______  /  |____|	 |____|_  /___|\___  /	 /_______  /
+				  \/					\/		   \/			 \/
 
 ````````````````````````````````````````````````````````````````````````
 
@@ -86,20 +86,20 @@ redundant and unnecessary.
 
 Some new command-line parameters in Chocolate Strife include the following:
 
-  - -nograph
-    - Disables the graphical introduction sequence. -devparm implies this.
+	- -nograph
+		- Disables the graphical introduction sequence. -devparm implies this.
 
-  - -novoice
-    - Disables voices even if voices.wad can be found.
+	- -novoice
+		- Disables voices even if voices.wad can be found.
 
-  - -work
-	- Enables Rogue’s playtesting mode. Automatic godmode, and pressing the inventory drop key will toggle noclipping.
+	- -work
+		- Enables Rogue’s playtesting mode. Automatic godmode, and pressing the inventory drop key will toggle noclipping.
 
-  - -flip
-	- Flips player gun graphics. This is buggy, however, because it does not reverse the graphics’ x offsets (this is an accurate emulation of the vanilla engine’s behavior).
+	- -flip
+		- Flips player gun graphics. This is buggy, however, because it does not reverse the graphics’ x offsets (this is an accurate emulation of the vanilla engine’s behavior).
 
-  - -random
-	- Randomizes the timing and location of item respawns in deathmatch, when item respawning is enabled.
+	- -random
+		- Randomizes the timing and location of item respawns in deathmatch, when item respawning is enabled.
 
 
 ## Copyright

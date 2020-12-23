@@ -11,9 +11,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef TXT_INPUTBOX_H
-#define TXT_INPUTBOX_H
-
 /**
  * @file txt_inputbox.h
  *
@@ -28,31 +25,11 @@
  *
  * Input box widgets can be of an integer or string type.
  */
+
+#include "derma\common.h"
+#include "derma\txt_common.h"
+
 #include "txt_widget.h"
-
-#include <memory>
-#include <string>
-#include <variant>
-
-//template<typename T>
-struct txt_inputbox_t
-{
-	txt_widget_t widget;
-	std::string buffer;
-	bool editing;
-	std::variant<char**, int*> value;
-
-	//using type = T;
-};
-
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "doomkeys.h"
-
-#include "txt_inputbox.h"
 #include "txt_gui.h"
 #include "txt_io.h"
 #include "txt_main.h"
@@ -69,114 +46,119 @@ struct txt_inputbox_t
  *					will be freed and the variable set to point
  *					to the new string value. String will be in
  *					UTF-8 format.
- * @param size		Width of the input box, in characters.
+ * @param width		Width of the input box, in characters.
  * @return			Pointer to the new input box widget.
  */
-auto TXT_NewInputBox(char** value, int size)
+auto TXT_NewInputBox(char** value, size_t width)
 {
-	return InputBox<char**>().NewInputBox(value, size);
+	return CUDADOOM::TXT::InputBox<char**>(value, width);
 }
 
 /**
  * Create a new input box widget for controlling an integer value.
  *
  * @param value		Pointer to an integer variable containing the value of the input box.
- * @param size		Width of the input box, in characters.
+ * @param width		Width of the input box, in characters.
  * @return			Pointer to the new input box widget.
  */
-auto TXT_NewIntInputBox(int* value, int size)
+auto TXT_NewIntInputBox(int* value, size_t width)
 {
-	return InputBox<int*>().NewInputBox(value, size);
+	return CUDADOOM::TXT::InputBox<int*>(value, width);
 }
 
 template<typename T, typename U>
 class StrongType
 {
-	T value_;
+	T _val;
 public:
-	explicit StrongType(const T& value) noexcept : value_(value) {}
+	explicit StrongType(const T& _val) noexcept : _val(value) {}
 	//T get() { return value_; }
 };
 
 struct KeyType{};
 using Key = StrongType<int, KeyType>;
 
-template<typename T>
-class InputBox
+class DepType
 {
-	static void SetBufferFromValue(txt_inputbox_t *inputbox) noexcept
-	{
-		T& value{inputbox->value};
-		if (inputbox->widget.widget_class == &txt_inputbox_class)
-		{
-			if (value != nullptr)
-			{
-				TXT_StringCopy(inputbox->buffer, *value, strnlen(*value, inputbox->buffer_len) + 1);
-			}
-			else
-			{
-				TXT_StringCopy(inputbox->buffer, "", inputbox->buffer_len);
-			}
-		}
-		else if (inputbox->widget.widget_class == &txt_int_inputbox_class)
-		{
-			TXT_snprintf(inputbox->buffer, inputbox->buffer_len, "%i", *value);
-		}
-	}
+};
 
-	static void StartEditing(txt_inputbox_t *inputbox)
-	{
-		// Integer input boxes start from an empty buffer:
+namespace CUDADOOM::TXT
+{
 
-		if (inputbox->widget.widget_class == &txt_int_inputbox_class)
+template<typename T>
+class InputBox : public Widget
+{
+	//T _val;
+	std::string buffer;
+	bool _editing{false};
+
+	txt_widget_class_t txt_inputbox_class =
+	{
+		TXT_AlwaysSelectable,
+		TXT_InputBoxSizeCalc,
+		TXT_InputBoxDrawer,
+		TXT_InputBoxKeyPress,
+		TXT_InputBoxDestructor,
+		TXT_InputBoxMousePress,
+		nullptr,
+		TXT_InputBoxFocused,
+	};
+
+public:
+	using type = T;
+
+	InputBox(T _val = nullptr, size_t widthIn = 0) noexcept :	buffer{std::string(_val)};
+																widget_class{&txt_inputbox_class},
+																callback_table{TXT_NewCallbackTable()},
+																focused{false},
+																visible{true},
+																align{TXT_HORIZ_LEFT},
+																width{widthIn}
+	{
+	/* 	if (_val)
 		{
-			TXT_StringCopy(inputbox->buffer, "", inputbox->buffer_len);
+			buffer = std::string(valueIn);
 		}
 		else
 		{
-			SetBufferFromValue(inputbox);
-		}
-
-		// Switch to text input mode so we get shifted input.
-		TXT_SetInputMode(TXT_INPUT_TEXT);
-		inputbox->editing = 1;
+			buffer = std::string("");
+		} */
 	}
 
-	static void StopEditing(txt_inputbox_t *inputbox) noexcept
+	void set(T _val) noexcept
 	{
-		if (inputbox->editing)
+		if (_val != nullptr)
 		{
-			// Switch back to normal input mode.
-			TXT_SetInputMode(TXT_INPUT_NORMAL);
-			inputbox->editing = 0;
+			buffer = std::string(_val);
 		}
 	}
 
-	static void FinishEditing(txt_inputbox_t *inputbox) noexcept
+	std::string get() const noexcept
 	{
-		if (!inputbox->editing)
-		{
-			return;
-		}
-
-		// Save the new value back to the variable.
-
-		if (inputbox->widget.widget_class == &txt_inputbox_class)
-		{
-			free(*((T)inputbox->value));
-			*((T)inputbox->value) = strdup(inputbox->buffer);
-		}
-		else if (inputbox->widget.widget_class == &txt_int_inputbox_class)
-		{
-			*((T)inputbox->value) = atoi(inputbox->buffer);
-		}
-
-		TXT_EmitSignal(&inputbox->widget, "changed");
-
-		StopEditing(inputbox);
+		return buffer;
 	}
 
-	static void TXT_InputBoxSizeCalc(TXT_UNCAST_ARG(inputbox)) noexcept
+	bool editing() const noexcept
+	{
+		return _editing;
+	}
+
+	void toggleEditing() noexcept
+	{
+		_editing = !_editing;
+	}
+
+	void startEditing() noexcept
+	{
+		_editing = true;
+	}
+
+	void stopEditing() noexcept
+	{
+		_editing = false;
+	}
+
+	void inputBoxSizeCalc(TXT_UNCAST_ARG(inputbox)) noexcept
 	{
 		TXT_CAST_ARG(txt_inputbox_t, inputbox);
 
@@ -186,12 +168,9 @@ class InputBox
 		inputbox->widget.h = 1;
 	}
 
-	static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox)) noexcept
+	void inputBoxDrawer(TXT_UNCAST_ARG(inputbox)) noexcept
 	{
 		TXT_CAST_ARG(txt_inputbox_t, inputbox);
-		//int focused;
-		//int chars;
-		//int w;
 
 		auto focused = inputbox->widget.focused;
 		auto w = inputbox->widget.w;
@@ -248,15 +227,7 @@ class InputBox
 		}
 	}
 
-	static void TXT_InputBoxDestructor(TXT_UNCAST_ARG(inputbox)) noexcept
-	{
-		TXT_CAST_ARG(txt_inputbox_t, inputbox);
-
-		StopEditing(inputbox);
-		free(inputbox->buffer);
-	}
-
-	static void Backspace(txt_inputbox_t *inputbox) noexcept
+	void backspace(txt_inputbox_t *inputbox) noexcept
 	{
 		unsigned int len;
 		char *p;
@@ -270,7 +241,7 @@ class InputBox
 		}
 	}
 
-	static void AddCharacter(txt_inputbox_t *inputbox, int key) noexcept
+	void addCharacter(txt_inputbox_t *inputbox, int key) noexcept
 	{
 		char *end, *p;
 
@@ -284,7 +255,7 @@ class InputBox
 		}
 	}
 
-	static int TXT_InputBoxKeyPress(TXT_UNCAST_ARG(inputbox), int key) noexcept
+	int keyPress(TXT_UNCAST_ARG(inputbox), int key) noexcept
 	{
 		TXT_CAST_ARG(txt_inputbox_t, inputbox);
 		unsigned int c;
@@ -335,7 +306,7 @@ class InputBox
 		return 1;
 	}
 
-	void TXT_InputBoxMousePress(TXT_UNCAST_ARG(inputbox), int x, int y, int key) noexcept
+	void mousePress(TXT_UNCAST_ARG(inputbox), int x, int y, int key) noexcept
 	{
 		TXT_CAST_ARG(txt_inputbox_t, inputbox);
 
@@ -351,80 +322,6 @@ class InputBox
 			}
 		}
 	}
-
-	void TXT_InputBoxFocused(TXT_UNCAST_ARG(inputbox), int focused) noexcept
-	{
-		TXT_CAST_ARG(txt_inputbox_t, inputbox);
-
-		// Stop editing when we lose focus.
-
-		if (inputbox->editing && !focused)
-		{
-			FinishEditing(inputbox);
-		}
-	}
-
-	txt_widget_class_t txt_inputbox_class =
-	{
-		TXT_AlwaysSelectable,
-		TXT_InputBoxSizeCalc,
-		TXT_InputBoxDrawer,
-		TXT_InputBoxKeyPress,
-		TXT_InputBoxDestructor,
-		TXT_InputBoxMousePress,
-		nullptr,
-		TXT_InputBoxFocused,
-	};
-
-	txt_widget_class_t txt_int_inputbox_class =
-	{
-		TXT_AlwaysSelectable,
-		TXT_InputBoxSizeCalc,
-		TXT_InputBoxDrawer,
-		TXT_InputBoxKeyPress,
-		TXT_InputBoxDestructor,
-		TXT_InputBoxMousePress,
-		nullptr,
-		TXT_InputBoxFocused,
-	};
-
-public:
-	auto NewInputBox(txt_widget_class_t *widget_class, T value, int size) noexcept
-	{
-		auto inputBox = std::make_unique<txt_input_box_t>;
-		//txt_inputbox_t *inputbox;
-
-		//inputbox = malloc(sizeof(txt_inputbox_t));
-
-		TXT_InitWidget(inputbox, widget_class);
-		inputbox->value = value;
-		inputbox->size = size;
-		// 'size' is the maximum number of characters that can be entered,
-		// but for a UTF-8 string, each character can take up to four characters.
-		inputbox->buffer_len = size * 4 + 1;
-		inputbox->buffer = malloc(inputbox->buffer_len);
-		inputbox->editing = 0;
-
-		return inputbox;
-	}
-
-	InputBox() noexcept
-	{
-		//widget->callback_table = TXT_NewCallbackTable();
-		//widget->parent = nullptr;
-
-		// Not focused until we hear otherwise.
-
-		//widget->focused = 0;
-
-		// Visible by default.
-
-		//widget->visible = 1;
-
-		// Align left by default
-
-		//widget->align = TXT_HORIZ_LEFT;
-	}
 };
 
-#endif /* #ifndef TXT_INPUTBOX_H */
+}

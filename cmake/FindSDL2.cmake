@@ -32,20 +32,24 @@
 
 # Cache variable that allows you to point CMake at a directory containing
 # an extracted development library.
-set(SDL2_DIR "${SDL2_DIR}" CACHE PATH "G:/dev/api/SDL2-2.0.12")
+#set(SDL2_DIR "${SDL2_DIR}" CACHE PATH "${VCPKG_DIR}/sdl2_x64-windows")
+set(SDL2_DIR "${VCPKG_DIR}/sdl2_x64-windows")
+#set(SDL2_INCLUDE_DIR "${SDL2_DIR}/include")
+#set(SDL2_LIBRARY_DIR "${SDL2_DIR}/lib/x64")
+
+#set(SDL2_LIBRARY "${SDL2_LIBRARY_DIR}/SDL2.lib")
+#set(SDL2_MAIN_LIBRARY "${SDL2_LIBRARY_DIR}/SDL2main.lib")
 
 # Use pkg-config to find library locations in *NIX environments.
-#find_package(PkgConfig QUIET)
-#if(PKG_CONFIG_FOUND)
-#	pkg_search_module(PC_SDL2 QUIET sdl2)
-#endif()
+find_package(PkgConfig QUIET)
+if(PKG_CONFIG_FOUND)
+	pkg_search_module(PC_SDL2 QUIET sdl2)
+endif()
 
 # Find the include directory.
-#find_path(SDL2_INCLUDE_DIR "SDL_version.h"
-#	HINTS "${SDL2_DIR}/include")# ${PC_SDL2_INCLUDE_DIRS})
-set(SDL2_INCLUDE_DIR "G:/dev/api/SDL2-2.0.12/include")
+find_path(SDL2_INCLUDE_DIR "SDL_version.h" HINTS "${SDL2_DIR}/include/SDL2" ${PC_SDL2_INCLUDE_DIRS})
 
-# Find the version.  Taken and modified from CMake's FindSDL.cmake.
+# Find the version. Taken and modified from CMake's FindSDL.cmake.
 if(SDL2_INCLUDE_DIR AND EXISTS "${SDL2_INCLUDE_DIR}/SDL_version.h")
 	file(STRINGS "${SDL2_INCLUDE_DIR}/SDL_version.h" SDL2_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL_MAJOR_VERSION[ \t]+[0-9]+$")
 	file(STRINGS "${SDL2_INCLUDE_DIR}/SDL_version.h" SDL2_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL_MINOR_VERSION[ \t]+[0-9]+$")
@@ -63,28 +67,32 @@ if(SDL2_INCLUDE_DIR AND EXISTS "${SDL2_INCLUDE_DIR}/SDL_version.h")
 endif()
 
 # Find the SDL2 and SDL2main libraries
-#if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
-#	find_library(SDL2_LIBRARY "SDL2"
-#		HINTS "${SDL2_DIR}/lib/x86" ${PC_SDL2_LIBRARY_DIRS})
-#	find_library(SDL2_MAIN_LIBRARY "SDL2main"
-#		HINTS "${SDL2_DIR}/lib/x64" ${PC_SDL2_LIBRARY_DIRS})
-#else()
-#	find_library(SDL2_LIBRARY "SDL2"
-#		HINTS "${SDL2_DIR}/lib/x86" ${PC_SDL2_LIBRARY_DIRS})
-##	find_library(SDL2_MAIN_LIBRARY "SDL2main"
-#		HINTS "${SDL2_DIR}/lib/x64" ${PC_SDL2_LIBRARY_DIRS})
-#endif()
-set(SDL2_LIBRARY "G:/dev/api/SDL2-2.0.12/lib/x64/SDL2.lib")
-set(SDL2_MAIN_LIBRARY "G:/dev/api/SDL2-2.0.12/lib/x64/SDL2main.lib")
+if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
+	find_library(SDL2_LIBRARY "SDL2"
+		HINTS "${SDL2_DIR}/lib" ${PC_SDL2_LIBRARY_DIRS})
+	find_library(SDL2_MAIN_LIBRARY "SDL2main"
+		HINTS "${SDL2_DIR}/lib/manual-link" ${PC_SDL2_LIBRARY_DIRS})
+else()
+	find_library(SDL2_LIBRARY "SDL2"
+		HINTS "${SDL2_DIR}/lib" ${PC_SDL2_LIBRARY_DIRS})
+	find_library(SDL2_MAIN_LIBRARY "SDL2main"
+		HINTS "${SDL2_DIR}/lib/manual-link" ${PC_SDL2_LIBRARY_DIRS})
+endif()
 set(SDL2_LIBRARIES "${SDL2_MAIN_LIBRARY}" "${SDL2_LIBRARY}")
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SDL2 FOUND_VAR SDL2_FOUND REQUIRED_VARS SDL2_INCLUDE_DIR SDL2_LIBRARIES VERSION_VAR SDL2_VERSION)
+find_package_handle_standard_args(SDL2
+									FOUND_VAR SDL2_FOUND
+									REQUIRED_VARS SDL2_INCLUDE_DIR SDL2_LIBRARIES
+									VERSION_VAR SDL2_VERSION)
 
 if(SDL2_FOUND)
 	# SDL2 imported target.
 	add_library(SDL2::SDL2 UNKNOWN IMPORTED)
-	set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_COMPILE_OPTIONS "${PC_SDL2_CFLAGS_OTHER}" INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIR}" IMPORTED_LOCATION "${SDL2_LIBRARY}")
+	set_target_properties(SDL2::SDL2 PROPERTIES
+		INTERFACE_COMPILE_OPTIONS "${PC_SDL2_CFLAGS_OTHER}"
+		INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIR}"
+		IMPORTED_LOCATION "${SDL2_LIBRARY}")
 
 	# SDL2main imported target.
 	if(MINGW)
@@ -92,7 +100,7 @@ if(SDL2_FOUND)
 		add_library(SDL2::_SDL2main_detail UNKNOWN IMPORTED)
 		set_target_properties(SDL2::_SDL2main_detail PROPERTIES IMPORTED_LOCATION "${SDL2_MAIN_LIBRARY}")
 
-		# Ensure that SDL2main comes before SDL2 in the linker order.  CMake
+		# Ensure that SDL2main comes before SDL2 in the linker order. CMake
 		# isn't smart enough to keep proper ordering for indirect dependencies
 		# so we have to spell it out here.
 		target_link_libraries(SDL2::_SDL2main_detail INTERFACE SDL2::SDL2)

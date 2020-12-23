@@ -7,9 +7,6 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-	DESCRIPTION:
- Nil.
 \**********************************************************************************************************************************************/
 #pragma once
 
@@ -19,8 +16,8 @@
 #include "doomtype.h"
 
 // MISC
-extern int		myargc;
-extern char**	myargv;
+extern int myargc;
+extern char** myargv;
 
 // Returns the position of the given parameter
 // in the arg list (0 if not found).

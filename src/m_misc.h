@@ -21,8 +21,7 @@
 
 #include "doomtype.h"
 
-#include <limits>
-#include <memory>
+#include "derma\common.h"
 
 auto M_WriteFile(const char* name, const void* source, size_t length);
 auto M_ReadFile(const char* name, byte** buffer);
@@ -37,13 +36,13 @@ auto M_vsnprintf(char* buf, size_t buf_len, const char* s, va_list args);
 auto M_snprintf(char* buf, size_t buf_len, const char* s, ...) PRINTF_ATTR(3, 4);
 const char* M_BaseName(const char* path);
 const char* M_StrCaseStr(const char* haystack, const char* needle);
-std::unique_ptr<char*> M_TempFile(const char* s);
-std::unique_ptr<char*> M_FileCaseExists(const char* file);
-std::unique_ptr<char*> M_DirName(const char* path);
-std::unique_ptr<char*> M_StringDuplicate(const char* orig);
-std::unique_ptr<char*> M_StringReplace(const char* haystack, const char* needle, const char* replacement);
-std::unique_ptr<char*> M_StringJoin(const char* s, ...);
-std::unique_ptr<char*> M_OEMToUTF8(const char* ansi);
+std::unique_ptr<const char*> M_TempFile(const char* s);
+std::unique_ptr<const char*> M_FileCaseExists(const char* file);
+std::unique_ptr<const char*> M_DirName(const char* path);
+std::unique_ptr<const char*> M_StringDuplicate(const char* orig);
+std::unique_ptr<const char*> M_StringReplace(const char* haystack, const char* needle, const char* replacement);
+std::unique_ptr<const char*> M_StringJoin(const char* s, ...);
+std::unique_ptr<const char*> M_OEMToUTF8(const char* ansi);
 void M_MakeDirectory(const char* dir);
 void M_ExtractFileBase(const char* path, char* dest);
 void M_ForceUppercase(char* text);

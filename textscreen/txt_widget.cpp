@@ -16,48 +16,32 @@
 #include "txt_gui.h"
 #include "txt_desktop.h"
 
-typedef struct
+txt_callback_table_t* TXT_NewCallbackTable()
 {
-	char *signal_name;
-	TxtWidgetSignalFunc func;
-	void *user_data;
-} txt_callback_t;
-
-struct txt_callback_table_s
-{
-	int refcount;
-	txt_callback_t *callbacks;
-	int num_callbacks;
-};
-
-txt_callback_table_t *TXT_NewCallbackTable()
-{
-	txt_callback_table_t *table;
+	txt_callback_table_t* table;
 
 	table = malloc(sizeof(txt_callback_table_t));
 	table->callbacks = NULL;
-	table->num_callbacks = 0;
-	table->refcount = 1;
+	table->numCallbacks = 0;
+	table->refCount = 1;
 
 	return table;
 }
 
-void TXT_RefCallbackTable(txt_callback_table_t *table)
+void TXT_RefCallbackTable(txt_callback_table_t* table)
 {
-	++table->refcount;
+	++table->refCount;
 }
 
-void TXT_UnrefCallbackTable(txt_callback_table_t *table)
+void TXT_UnrefCallbackTable(txt_callback_table_t* table)
 {
-	int i;
+	--table->refCount;
 
-	--table->refcount;
-
-	if (table->refcount == 0)
+	if (table->refCount == 0)
 	{
 		// No more references to this table
 
-		for (i=0; i<table->num_callbacks; ++i)
+		for (auto i{0}; i<table->numCallbacks; ++i)
 		{
 			free(table->callbacks[i].signal_name);
 		}
@@ -67,68 +51,59 @@ void TXT_UnrefCallbackTable(txt_callback_table_t *table)
 	}
 }
 
-void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t *widget_class)
+[[deprecated]]
+void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t* widget_class)
 {
 	TXT_CAST_ARG(txt_widget_t, widget);
 
 	widget->widget_class = widget_class;
 	widget->callback_table = TXT_NewCallbackTable();
-	widget->parent = NULL;
+	widget->parent = nullptr;
 
 	// Not focused until we hear otherwise.
 
 	widget->focused = 0;
 
 	// Visible by default.
-
 	widget->visible = 1;
 
 	// Align left by default
-
 	widget->align = TXT_HORIZ_LEFT;
 }
 
-void TXT_SignalConnect(TXT_UNCAST_ARG(widget),
-						const char *signal_name,
-						TxtWidgetSignalFunc func,
-						void *user_data)
+void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, TxtWidgetSignalFunc func, void* user_data)
 {
 	TXT_CAST_ARG(txt_widget_t, widget);
-	txt_callback_table_t *table;
-	txt_callback_t *callback;
 
-	table = widget->callback_table;
+	//txt_callback_table_t*
+	auto table{widget->callback_table};
 
 	// Add a new callback to the table
+	table->callbacks = realloc(table->callbacks, sizeof(txt_callback_t) * (table->numCallbacks + 1));
 
-	table->callbacks
-			= realloc(table->callbacks,
-						sizeof(txt_callback_t) * (table->num_callbacks + 1));
-	callback = &table->callbacks[table->num_callbacks];
-	++table->num_callbacks;
+	//txt_callback_t*
+	auto callback{&table->callbacks[table->numCallbacks]};
+	++table->numCallbacks;
 
 	callback->signal_name = strdup(signal_name);
 	callback->func = func;
 	callback->user_data = user_data;
 }
 
-void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char *signal_name)
+void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char* signal_name)
 {
 	TXT_CAST_ARG(txt_widget_t, widget);
-	txt_callback_table_t *table;
-	int i;
 
-	table = widget->callback_table;
+	// txt_callback_table_t*
+	auto table{widget->callback_table};
 
 	// Don't destroy the table while we're searching through it
 	// (one of the callbacks may destroy this window)
-
 	TXT_RefCallbackTable(table);
 
 	// Search the table for all callbacks with this name and invoke
 	// the functions.
-
-	for (i=0; i<table->num_callbacks; ++i)
+	for (size_t i{0}; i < table->numCallbacks; ++i)
 	{
 		if (!strcmp(table->callbacks[i].signal_name, signal_name))
 		{
@@ -137,15 +112,7 @@ void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char *signal_name)
 	}
 
 	// Finished using the table
-
 	TXT_UnrefCallbackTable(table);
-}
-
-void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget))
-{
-	TXT_CAST_ARG(txt_widget_t, widget);
-
-	widget->widget_class->size_calc(widget);
 }
 
 void TXT_DrawWidget(TXT_UNCAST_ARG(widget))
@@ -155,27 +122,25 @@ void TXT_DrawWidget(TXT_UNCAST_ARG(widget))
 
 	// The drawing function might change the fg/bg colors,
 	// so make sure we restore them after it's done.
-
 	TXT_SaveColors(&colors);
 
 	// For convenience...
-
 	TXT_GotoXY(widget->x, widget->y);
 
 	// Call drawer method
-
 	widget->widget_class->drawer(widget);
 
 	TXT_RestoreColors(&colors);
 }
 
+// TODO MAKE SURE ALL THIS IS BEING DONE in the REAL destructor
 void TXT_DestroyWidget(TXT_UNCAST_ARG(widget))
 {
 	TXT_CAST_ARG(txt_widget_t, widget);
 
-	widget->widget_class->destructor(widget);
+	//widget->widget_class->destructor(widget);
 	TXT_UnrefCallbackTable(widget->callback_table);
-	free(widget);
+	//free(widget);
 }
 
 int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key)
@@ -190,7 +155,7 @@ int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key)
 	return 0;
 }
 
-void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), int focused)
+void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), bool focused)
 {
 	TXT_CAST_ARG(txt_widget_t, widget);
 

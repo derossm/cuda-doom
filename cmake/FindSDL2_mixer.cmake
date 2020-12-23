@@ -32,7 +32,8 @@
 
 # Cache variable that allows you to point CMake at a directory containing
 # an extracted development library.
-set(SDL2_MIXER_DIR "${SDL2_MIXER_DIR}" CACHE PATH "G:/dev/api/SDL2_mixer-2.0.4")
+#set(SDL2_MIXER_DIR "${SDL2_MIXER_DIR}" CACHE PATH "${VCPKG_DIR}/sdl2-mixer_x64-windows")
+set(SDL2_MIXER_DIR "${VCPKG_DIR}/sdl2-mixer_x64-windows")
 
 # Use pkg-config to find library locations in *NIX environments.
 find_package(PkgConfig QUIET)
@@ -41,11 +42,10 @@ if(PKG_CONFIG_FOUND)
 endif()
 
 # Find the include directory.
-#find_path(SDL2_MIXER_INCLUDE_DIR "SDL_mixer.h"
-#	HINTS "${SDL2_MIXER_DIR}/include" ${PC_SDL2_MIXER_INCLUDE_DIRS})
-set(SDL2_MIXER_INCLUDE_DIR "G:/dev/api/SDL2_mixer-2.0.4/include")
+find_path(SDL2_MIXER_INCLUDE_DIR "SDL_mixer.h" HINTS "${SDL2_MIXER_DIR}/include/SDL2" ${PC_SDL2_MIXER_INCLUDE_DIRS})
+#set(SDL2_MIXER_INCLUDE_DIR "${SDL2_MIXER_DIR}/include")
 
-# Find the version.  Taken and modified from CMake's FindSDL.cmake.
+# Find the version. Taken and modified from CMake's FindSDL.cmake.
 if(SDL2_MIXER_INCLUDE_DIR AND EXISTS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h")
 	file(STRINGS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL2_MIXER_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL_MIXER_MAJOR_VERSION[ \t]+[0-9]+$")
 	file(STRINGS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL2_MIXER_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL_MIXER_MINOR_VERSION[ \t]+[0-9]+$")
@@ -63,17 +63,21 @@ if(SDL2_MIXER_INCLUDE_DIR AND EXISTS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h")
 endif()
 
 # Find the library.
-#if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
-#	find_library(SDL2_MIXER_LIBRARY "SDL2_mixer"
-#		HINTS "${SDL2_MIXER_DIR}/lib/x86" ${PC_SDL2_MIXER_LIBRARY_DIRS})
-#else()
-#	find_library(SDL2_MIXER_LIBRARY "SDL2_mixer"
-#		HINTS "${SDL2_MIXER_DIR}/lib/x64" ${PC_SDL2_MIXER_LIBRARY_DIRS})
-#endif()
-set(SDL2_MIXER_LIBRARY "G:/dev/api/SDL2_mixer-2.0.4/lib/x64/SDL2_mixer.lib")
+if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
+	find_library(SDL2_MIXER_LIBRARY "SDL2_mixer"
+		HINTS "${SDL2_MIXER_DIR}/lib" ${PC_SDL2_MIXER_LIBRARY_DIRS})
+else()
+	find_library(SDL2_MIXER_LIBRARY "SDL2_mixer"
+		HINTS "${SDL2_MIXER_DIR}/lib" ${PC_SDL2_MIXER_LIBRARY_DIRS})
+endif()
+#set(SDL2_MIXER_LIBRARY_DIR "${SDL2_MIXER_DIR}/lib/x64")
+#set(SDL2_MIXER_LIBRARY "${SDL2_MIXER_LIBRARY_DIR}/SDL2_mixer.lib")
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SDL2_mixer FOUND_VAR SDL2_MIXER_FOUND REQUIRED_VARS SDL2_MIXER_INCLUDE_DIR SDL2_MIXER_LIBRARY VERSION_VAR SDL2_MIXER_VERSION)
+find_package_handle_standard_args(SDL2_mixer
+									FOUND_VAR SDL2_MIXER_FOUND
+									REQUIRED_VARS SDL2_MIXER_INCLUDE_DIR SDL2_MIXER_LIBRARY
+									VERSION_VAR SDL2_MIXER_VERSION)
 
 if(SDL2_MIXER_FOUND)
 	# Imported target.

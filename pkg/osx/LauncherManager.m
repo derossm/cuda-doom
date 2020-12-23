@@ -1,14 +1,12 @@
-// Copyright(C) 2005-2014 Simon Howard
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+/**********************************************************************************************************************************************\
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+\**********************************************************************************************************************************************/
 
 #include <AppKit/AppKit.h>
 #include "Execute.h"
@@ -17,391 +15,336 @@
 
 @implementation LauncherManager
 
-// Save configuration.  Invoked when we launch the game or quit.
-
+// Save configuration. Invoked when we launch the game or quit.
 - (void) saveConfig
 {
-    NSUserDefaults *defaults;
+	NSUserDefaults *defaults;
 
-    // Save IWAD configuration and selected IWAD.
+	// Save IWAD configuration and selected IWAD.
+	[self->iwadController saveConfig];
 
-    [self->iwadController saveConfig];
-
-    // Save command line arguments.
-
-    defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[self->commandLineArguments stringValue]
-              forKey:@"command_line_args"];
+	// Save command line arguments.
+	defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:[self->commandLineArguments stringValue] forKey:@"command_line_args"];
 }
 
 // Load configuration, invoked on startup.
-
 - (void) setConfig
 {
-    NSUserDefaults *defaults;
-    NSString *args;
+	NSUserDefaults *defaults;
+	NSString *args;
 
-    defaults = [NSUserDefaults standardUserDefaults];
+	defaults = [NSUserDefaults standardUserDefaults];
 
-    args = [defaults stringForKey:@"command_line_args"];
+	args = [defaults stringForKey:@"command_line_args"];
 
-    if (args != nil)
-    {
-        [self->commandLineArguments setStringValue:args];
-    }
+	if (args != nil)
+	{
+		[self->commandLineArguments setStringValue:args];
+	}
 }
 
 // Get the next command line argument from the command line.
 // The position counter used to iterate over arguments is in 'pos'.
 // The index of the argument that was found is saved in arg_pos.
-
 static NSString *GetNextArgument(NSString *commandLine, int *pos, int *arg_pos)
 {
-    NSRange arg_range;
+	NSRange arg_range;
 
-    // Skip past any whitespace
+	// Skip past any whitespace
+	while (*pos < [commandLine length]
+		&& isspace([commandLine characterAtIndex: *pos]))
+	{
+		++*pos;
+	}
 
-    while (*pos < [commandLine length]
-        && isspace([commandLine characterAtIndex: *pos]))
-    {
-        ++*pos;
-    }
+	if (*pos >= [commandLine length])
+	{
+		*arg_pos = *pos;
+		return nil;
+	}
 
-    if (*pos >= [commandLine length])
-    {
-        *arg_pos = *pos;
-        return nil;
-    }
+	// We are at the start of the argument. This may be a quoted string argument, or a "normal" one.
+	if ([commandLine characterAtIndex: *pos] == '\"')
+	{
+		// Quoted string, skip past first quote
+		++*pos;
 
-    // We are at the start of the argument.  This may be a quoted
-    // string argument, or a "normal" one.
+		// Save start position:
+		*arg_pos = *pos;
 
-    if ([commandLine characterAtIndex: *pos] == '\"')
-    {
-        // Quoted string, skip past first quote
+		while (*pos < [commandLine length] && [commandLine characterAtIndex: *pos] != '\"')
+		{
+			++*pos;
+		}
 
-        ++*pos;
+		// Unexpected end of string?
+		if (*pos >= [commandLine length])
+		{
+			return nil;
+		}
 
-        // Save start position:
+		arg_range = NSMakeRange(*arg_pos, *pos - *arg_pos);
 
-        *arg_pos = *pos;
+		// Skip past last quote
+		++*pos;
+	}
+	else
+	{
+		// Normal argument
 
-        while (*pos < [commandLine length]
-            && [commandLine characterAtIndex: *pos] != '\"')
-        {
-            ++*pos;
-        }
+		// Save position:
+		*arg_pos = *pos;
 
-        // Unexpected end of string?
+		// Read until end:
+		while (*pos < [commandLine length] && !isspace([commandLine characterAtIndex: *pos]))
+		{
+			++*pos;
+		}
 
-        if (*pos >= [commandLine length])
-        {
-            return nil;
-        }
+		arg_range = NSMakeRange(*arg_pos, *pos - *arg_pos);
+	}
 
-        arg_range = NSMakeRange(*arg_pos, *pos - *arg_pos);
-
-        // Skip past last quote
-
-        ++*pos;
-    }
-    else
-    {
-        // Normal argument
-
-        // Save position:
-
-        *arg_pos = *pos;
-
-        // Read until end:
-
-        while (*pos < [commandLine length]
-            && !isspace([commandLine characterAtIndex: *pos]))
-        {
-            ++*pos;
-        }
-
-        arg_range = NSMakeRange(*arg_pos, *pos - *arg_pos);
-    }
-
-    return [commandLine substringWithRange: arg_range];
+	return [commandLine substringWithRange: arg_range];
 }
 
-// Given the specified command line argument, find the index
-// to insert the new file within the command line.  Returns -1 if the
-// argument is not already within the arguments string.
-
+// Given the specified command line argument, find the index to insert the new file within the command line.
+// Returns -1 if the argument is not already within the arguments string.
 static int GetFileInsertIndex(NSString *commandLine, NSString *needle)
 {
-    NSString *arg;
-    int arg_pos;
-    int pos;
+	NSString *arg;
+	int arg_pos;
+	int pos;
 
-    pos = 0;
+	pos = 0;
 
-    // Find the command line parameter we are searching
-    // for (-merge, -deh, etc)
+	// Find the command line parameter we are searching for (-merge, -deh, etc)
+	for (;;)
+	{
+		arg = GetNextArgument(commandLine, &pos, &arg_pos);
 
-    for (;;)
-    {
-        arg = GetNextArgument(commandLine, &pos, &arg_pos);
+		// Searched to end of string and never found?
+		if (arg == nil)
+		{
+			return -1;
+		}
 
-        // Searched to end of string and never found?
+		if (![arg caseInsensitiveCompare: needle])
+		{
+			break;
+		}
+	}
 
-        if (arg == nil)
-        {
-            return -1;
-        }
+	// Now skip over existing files. For example, if we have -file foo.wad bar.wad, the new file should be appended to the end of the list.
+	for (;;)
+	{
+		arg = GetNextArgument(commandLine, &pos, &arg_pos);
 
-        if (![arg caseInsensitiveCompare: needle])
-        {
-            break;
-        }
-    }
+		// If we search to the end of the string now, it is fine; the new string should be added to the end of the command line.
+		// Otherwise, if we find an argument that begins with '-', it is a new command line parameter and the end of the list.
+		if (arg == nil || [arg characterAtIndex: 0] == '-')
+		{
+			break;
+		}
+	}
 
-    // Now skip over existing files.  For example, if we
-    // have -file foo.wad bar.wad, the new file should be appended
-    // to the end of the list.
-
-    for (;;)
-    {
-        arg = GetNextArgument(commandLine, &pos, &arg_pos);
-
-        // If we search to the end of the string now, it is fine;
-        // the new string should be added to the end of the command
-        // line.  Otherwise, if we find an argument that begins
-        // with '-', it is a new command line parameter and the end
-        // of the list.
-
-        if (arg == nil || [arg characterAtIndex: 0] == '-')
-        {
-            break;
-        }
-    }
-
-    // arg_pos should now contain the offset to insert the new filename.
-
-    return arg_pos;
+	// arg_pos should now contain the offset to insert the new filename.
+	return arg_pos;
 }
 
 // Given the specified string, append a filename, quoted if necessary.
-
 static NSString *AppendQuotedFilename(NSString *str, NSString *fileName)
 {
-    int i;
+	int i;
 
-    // Search the filename for spaces, and quote if necessary.
+	// Search the filename for spaces, and quote if necessary.
+	for (i=0; i<[fileName length]; ++i)
+	{
+		if (isspace([fileName characterAtIndex: i]))
+		{
+			str = [str stringByAppendingString: @" \""];
+			str = [str stringByAppendingString: fileName];
+			str = [str stringByAppendingString: @"\" "];
 
-    for (i=0; i<[fileName length]; ++i)
-    {
-        if (isspace([fileName characterAtIndex: i]))
-        {
-            str = [str stringByAppendingString: @" \""];
-            str = [str stringByAppendingString: fileName];
-            str = [str stringByAppendingString: @"\" "];
+			return str;
+		}
+	}
 
-            return str;
-        }
-    }
+	str = [str stringByAppendingString: @" "];
+	str = [str stringByAppendingString: fileName];
 
-    str = [str stringByAppendingString: @" "];
-    str = [str stringByAppendingString: fileName];
-
-    return str;
+	return str;
 }
 
-// Clear out the existing command line options.
-// Invoked before the first file is added.
-
+// Clear out the existing command line options. Invoked before the first file is added.
 - (void) clearCommandLine
 {
-    [self->commandLineArguments setStringValue: @""];
+	[self->commandLineArguments setStringValue: @""];
 }
 
 // Add a file to the command line to load with the game.
-
-- (void) addFileToCommandLine: (NSString *) fileName
-         forArgument: (NSString *) arg
+- (void) addFileToCommandLine: (NSString *) fileName forArgument: (NSString *) arg
 {
-    NSString *commandLine;
-    int insert_pos;
+	NSString *commandLine;
+	int insert_pos;
 
-    // Get the current command line
+	// Get the current command line
+	commandLine = [self->commandLineArguments stringValue];
 
-    commandLine = [self->commandLineArguments stringValue];
+	// Find the location to insert the new filename:
+	insert_pos = GetFileInsertIndex(commandLine, arg);
 
-    // Find the location to insert the new filename:
+	// If position < 0, we should add the new argument and filename to the end.
+	// Otherwise, append the new filename to the existing list of files.
+	if (insert_pos < 0)
+	{
+		commandLine = [commandLine stringByAppendingString: @" "];
+		commandLine = [commandLine stringByAppendingString: arg];
+		commandLine = AppendQuotedFilename(commandLine, fileName);
+	}
+	else
+	{
+		NSString *start;
+		NSString *end;
 
-    insert_pos = GetFileInsertIndex(commandLine, arg);
+		// Divide existing command line in half:
+		start = [commandLine substringToIndex: insert_pos];
+		end = [commandLine substringFromIndex: insert_pos];
 
-    // If position < 0, we should add the new argument and filename
-    // to the end.  Otherwise, append the new filename to the existing
-    // list of files.
+		// Construct new command line:
+		commandLine = AppendQuotedFilename(start, fileName);
+		commandLine = [commandLine stringByAppendingString: @" "];
+		commandLine = [commandLine stringByAppendingString: end];
+	}
 
-    if (insert_pos < 0)
-    {
-        commandLine = [commandLine stringByAppendingString: @" "];
-        commandLine = [commandLine stringByAppendingString: arg];
-        commandLine = AppendQuotedFilename(commandLine, fileName);
-    }
-    else
-    {
-        NSString *start;
-        NSString *end;
-
-        // Divide existing command line in half:
-
-        start = [commandLine substringToIndex: insert_pos];
-        end = [commandLine substringFromIndex: insert_pos];
-
-        // Construct new command line:
-
-        commandLine = AppendQuotedFilename(start, fileName);
-        commandLine = [commandLine stringByAppendingString: @" "];
-        commandLine = [commandLine stringByAppendingString: end];
-    }
-
-    [self->commandLineArguments setStringValue: commandLine];
+	[self->commandLineArguments setStringValue: commandLine];
 }
 
 - (void) launch: (id)sender
 {
-    NSString *iwad;
-    NSString *args;
-    char *executable_name;
-    const char *game_name;
+	NSString *iwad;
+	NSString *args;
+	char *executable_name;
+	const char *game_name;
 
-    [self saveConfig];
+	[self saveConfig];
 
-    iwad = [self->iwadController getIWADLocation];
-    args = [self->commandLineArguments stringValue];
+	iwad = [self->iwadController getIWADLocation];
+	args = [self->commandLineArguments stringValue];
 
-    if (iwad == nil)
-    {
-        NSRunAlertPanel(@"No IWAD selected",
-                        @"You have not selected an IWAD (game) file.\n\n"
-                         "You must configure and select a valid IWAD file "
-                         "in order to launch the game.",
-                        @"OK", nil, nil);
-        return;
-    }
+	if (iwad == nil)
+	{
+		NSRunAlertPanel(@"No IWAD selected", @"You have not selected an IWAD (game) file.\n\n"
+						"You must configure and select a valid IWAD file in order to launch the game.", @"OK", nil, nil);
+		return;
+	}
 
-    game_name = [self->iwadController getGameName];
-    asprintf(&executable_name, "%s%s", PROGRAM_PREFIX, game_name);
+	game_name = [self->iwadController getGameName];
+	asprintf(&executable_name, "%s%s", PROGRAM_PREFIX, game_name);
 
-    ExecuteProgram(executable_name, [iwad UTF8String],
-                                    [args UTF8String]);
-    [NSApp terminate:sender];
+	ExecuteProgram(executable_name, [iwad UTF8String], [args UTF8String]);
+	[NSApp terminate:sender];
 }
 
 // Invoked when the "Setup Tool" button is clicked, to run the setup tool:
-
 - (void) runSetup: (id)sender
 {
-    const char *game_name;
-    char *arg;
+	const char *game_name;
+	char *arg;
 
-    [self saveConfig];
-    [self->iwadController setEnvironment];
+	[self saveConfig];
+	[self->iwadController setEnvironment];
 
-    // Provide the -game command line parameter to select the game
-    // to configure, based on the game selected in the dropdown.
+	// Provide the -game command line parameter to select the game
+	// to configure, based on the game selected in the dropdown.
+	game_name = [self->iwadController getGameName];
+	asprintf(&arg, "-game %s", game_name);
 
-    game_name = [self->iwadController getGameName];
-    asprintf(&arg, "-game %s", game_name);
+	ExecuteProgram(PROGRAM_PREFIX "setup", NULL, arg);
 
-    ExecuteProgram(PROGRAM_PREFIX "setup", NULL, arg);
-
-    free(arg);
+	free(arg);
 }
 
-// Invoked when the "Terminal" option is selected from the menu, to open
-// a terminal window.
-
+// Invoked when the "Terminal" option is selected from the menu, to open a terminal window.
 - (void) openTerminal: (id) sender
 {
-    char *doomwadpath;
+	char *doomwadpath;
 
-    [self saveConfig];
+	[self saveConfig];
 
-    doomwadpath = [self->iwadController doomWadPath];
+	doomwadpath = [self->iwadController doomWadPath];
 
-    OpenTerminalWindow(doomwadpath);
+	OpenTerminalWindow(doomwadpath);
 
-    free(doomwadpath);
+	free(doomwadpath);
 }
 
 - (void) openREADME: (id) sender
 {
-    OpenDocumentation("README");
+	OpenDocumentation("README");
 }
 
 - (void) openINSTALL: (id) sender
 {
-    OpenDocumentation("INSTALL");
+	OpenDocumentation("INSTALL");
 }
 
 - (void) openCMDLINE: (id) sender
 {
-    const char *game_name;
-    char filename[32];
+	const char *game_name;
+	char filename[32];
 
-    // We need to open the appropriate doc file for the currently
-    // selected game.
+	// We need to open the appropriate doc file for the currently selected game.
+	game_name = [self->iwadController getGameName];
+	snprintf(filename, sizeof(filename), "CMDLINE-%s", game_name);
 
-    game_name = [self->iwadController getGameName];
-    snprintf(filename, sizeof(filename), "CMDLINE-%s", game_name);
-
-    OpenDocumentation(filename);
+	OpenDocumentation(filename);
 }
 
 - (void) openCOPYING: (id) sender
 {
-    OpenDocumentation("COPYING");
+	OpenDocumentation("COPYING");
 }
 
 - (void) openDocumentation: (id) sender
 {
-    OpenDocumentation("");
+	OpenDocumentation("");
 }
 
 - (void) openAutoload: (id) sender
 {
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *path = [self->iwadController autoloadPath];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	NSString *path = [self->iwadController autoloadPath];
 
-    if (path == nil)
-    {
-        return;
-    }
+	if (path == nil)
+	{
+		return;
+	}
 
-    if (![fm fileExistsAtPath:path])
-    {
-        [fm createDirectoryAtPath:path
-            withIntermediateDirectories:YES
-            attributes:nil
-            error:nil];
-    }
+	if (![fm fileExistsAtPath:path])
+	{
+		[fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+	}
 
-    [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Finder"];
+	[[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Finder"];
 }
 
 - (void) awakeFromNib
 {
-    [self->launcherWindow setTitle: @PACKAGE_NAME " Launcher"];
-    [self->launcherWindow center];
-    [self->launcherWindow setDefaultButtonCell: [self->launchButton cell]];
-    [self setConfig];
+	[self->launcherWindow setTitle: @PACKAGE_NAME " Launcher"];
+	[self->launcherWindow center];
+	[self->launcherWindow setDefaultButtonCell: [self->launchButton cell]];
+	[self setConfig];
 }
 
 - (BOOL) addIWADPath: (NSString *) path
 {
-    return [self->iwadController addIWADPath: path];
+	return [self->iwadController addIWADPath: path];
 }
 
 - (BOOL) selectGameByName: (const char *) name
 {
-    return [self->iwadController selectGameByName: name];
+	return [self->iwadController selectGameByName: name];
 }
 
 @end
