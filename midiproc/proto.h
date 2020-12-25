@@ -12,8 +12,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef __PROTO__
-#define __PROTO__
+#include "../derma/common.h"
 
 typedef enum {
 	MIDIPIPE_PACKET_TYPE_REGISTER_SONG,
@@ -25,5 +24,3 @@ typedef enum {
 	MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG,
 	MIDIPIPE_PACKET_TYPE_ACK
 } net_midipipe_packet_type_t;
-
-#endif

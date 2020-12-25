@@ -15,74 +15,58 @@ set(PACKAGE_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
 set(PACKAGE_BUGREPORT "https://github.com/derossm/cuda-doom")
 
 string(REGEX REPLACE " Doom$" "" PACKAGE_SHORTNAME "${PACKAGE_NAME}")
-set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2020")
-set(PACKAGE_LICENSE "Crsipy Doom released under the GNU General Public License, version 2. Any original work in CUDA Doom released under the GNU All-permissive License, where allowed by law.")
+set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2021")
+set(PACKAGE_LICENSE "Crsipy Doom released under the GNU General Public License, version 2. Any original work added by CUDA Doom released under the GNU All-permissive License, where allowed by law.")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Any settings that should apply to all targets in this directory and all
-# subdirectories should go here. Use judiciously.
+# Any settings that should apply to all targets in this directory and all subdirectories should go here. Use judiciously.
 if(MSVC)
-	add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
+	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
 	add_compile_options(
 		"/Zc:__cplusplus" "/experimental:module" "/permissive-" "/Zc:preprocessor"
-		"/Zc:wchar_t" "/W0" "/Zc:inline" "/Od" "/MDd" "/Zc:forScope" "/fp:precise"
+		"/Zc:wchar_t" "/W4" "/Zc:inline" "/Od" "/MDd" "/Zc:forScope" "/fp:precise"
 		"/arch:AVX2" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-")
 	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX")
 else()
 	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 endif()
 
-#set(SDL2_DIR "${SDL2_DIR}" CACHE PATH "G:/dev/api/SDL2")
-#set(SDL2_MIXER_DIR "${SDL2_MIXER_DIR}" CACHE PATH "G:/dev/api/SDL2_mixer")
-#set(SDL2_NET_DIR "${SDL2_NET_DIR}" CACHE PATH "G:/dev/api/SDL2_net")
+set(VCPKG_DIR "G:/dev/vcpkg/packages/")
+set(ARCHITECTURE "_x64-windows")
 
-#set(ZLIB_DIR "G:/dev/api/zlib")
-#set(LIBM_DIR "G:/dev/api/openlibm")
-#set(LIBPNG_DIR "G:/dev/api/libpng")
-#set(SAMPLERATE_DIR "G:/dev/api/libsamplerate")
-
-#find_package(zlib REQUIRED)
-#find_package(png CONFIG REQUIRED)
-
-#find_package(sdl2 CONFIG REQUIRED)
-#target_link_libraries(sdl2 PRIVATE SDL2::SDL2 SDL2::SDL2main)
-
-#find_package(sdl2-mixer CONFIG REQUIRED)
-#target_link_libraries(sdl2-mixer PRIVATE SDL2::SDL2_mixer)
-
-#find_package(sdl2-net CONFIG REQUIRED)
-#target_link_libraries(sdl2-net PRIVATE SDL2::SDL2_net)
-
-#set(SDL2_DIR "G:/dev/api/SDL2")
-#set(SDL2_MIXER_DIR "G:/dev/api/SDL2_mixer")
-#set(SDL2_NET_DIR "G:/dev/api/SDL2_net")
-
-#set(ZLIB_DIR "G:/dev/api/zlib")
-#set(LIBM_DIR "G:/dev/api/openlibm")
-#set(LIBPNG_DIR "G:/dev/api/libpng")
-#set(SAMPLERATE_DIR "G:/dev/api/libsamplerate")
-set(VCPKG_DIR "G:/dev/vcpkg/packages")
-
-find_package(SDL2 REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_net REQUIRED)
-
-# Check for libsamplerate.
-find_package(samplerate)
-if(SAMPLERATE_FOUND)
-	set(HAVE_LIBSAMPLERATE TRUE)
+# libm or fdlibm (Freely Distributable libm) : c math library IEEE 754 floating-point arithmetic
+find_package(m 5.3 REQUIRED)
+if(M_FOUND)
+	set(HAVE_LIBM TRUE)
 endif()
 
-# Check for libpng.
-find_package(PNG)
+# zlib : compression library
+find_package(zlib 1.2.0 REQUIRED)
+if(ZLIB_FOUND)
+	set(HAVE_ZLIB TRUE)
+endif()
+
+# libpng : interface for reading/writing PNG format files
+find_package(PNG 1.6.0 REQUIRED)
 if(PNG_FOUND)
 	set(HAVE_LIBPNG TRUE)
 endif()
 
-include(CheckSymbolExists)
-include(CheckIncludeFile)
+# samplerate : samplerate converter for audio
+find_package(samplerate 0.1.0 REQUIRED)
+if(SAMPLERATE_FOUND)
+	set(HAVE_LIBSAMPLERATE TRUE)
+endif()
+
+# sdl2 : Simple DirectMedia Layer
+find_package(SDL2 2.0.0 REQUIRED)
+find_package(SDL2_mixer 2.0.0 REQUIRED)
+find_package(SDL2_net 2.0.0 REQUIRED)
+
+#include(CheckSymbolExists)
+#include(CheckIncludeFile)
 #check_symbol_exists(strcasecmp "strings.h" HAVE_DECL_STRCASECMP)
 #check_symbol_exists(strncasecmp "strings.h" HAVE_DECL_STRNCASECMP)
 #check_include_file("dirent.h" HAVE_DIRENT_H)
@@ -96,7 +80,6 @@ string(TOLOWER "${PACKAGE_SHORTNAME}" PROGRAM_SPREFIX)
 set(PROGRAM_PREFIX "${PROGRAM_SPREFIX}-")
 
 configure_file(cmake/config.h.cin config.h)
-
 configure_file(src/resource.rc.in src/resource.rc)
 configure_file(src/setup-res.rc.in src/setup-res.rc)
 configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)

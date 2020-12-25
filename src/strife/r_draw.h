@@ -13,11 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __R_DRAW__
 #define __R_DRAW__
-
-
-
 
 extern lighttable_t*	dc_colormap;
 extern int		dc_x;
@@ -28,7 +27,6 @@ extern fixed_t		dc_texturemid;
 
 // first pixel in a column
 extern byte*		dc_source;
-
 
 // The span blitting interface.
 // Hook in assembler or system specific BLT
@@ -83,25 +81,19 @@ void	R_DrawSpan ();
 // Low resolution mode, 160x200?
 void	R_DrawSpanLow ();
 
-
 void
 R_InitBuffer
 ( int		width,
  int		height );
 
-
 // Initialize color translation tables,
 // for player rendering etc.
 void	R_InitTranslationTables ();
-
-
 
 // Rendering function.
 void R_FillBackScreen ();
 
 // If the view size is not full screen, draws a border around it.
 void R_DrawViewBorder ();
-
-
 
 #endif

@@ -9,6 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
 
 #ifndef TESTCONFIG_H
 #define TESTCONFIG_H
@@ -35,4 +36,3 @@ bool OpenFolder(const char *path);
 txt_window_action_t *TestConfigAction();
 
 #endif /* #ifndef TESTCONFIG_H */
-

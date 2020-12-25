@@ -24,53 +24,41 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Currently works with the following generators:
-# - Unix Makefiles (Linux, MSYS2)
-# - Ninja (Linux, MSYS2)
-# - Visual Studio
 
-# Cache variable that allows you to point CMake at a directory containing
-# an extracted development library.
-#set(SDL2_NET_DIR "${SDL2_NET_DIR}" CACHE PATH "${VCPKG_DIR}/sdl2-net_x64-windows")
-set(SDL2_NET_DIR "${VCPKG_DIR}/sdl2-net_x64-windows")
+# set in <project_root_dir>/CMakeLists.txt
+# Windows: VCPKG_DIR = "<install_location>/vcpkg/packages/"
+# x64: ARCHITECTURE = "_x64-windows"
+set(SDL2_NET_DIR "${VCPKG_DIR}sdl2-net${ARCHITECTURE}")
 
-# Use pkg-config to find library locations in *NIX environments.
-find_package(PkgConfig QUIET)
-if(PKG_CONFIG_FOUND)
-	pkg_search_module(PC_SDL2_NET QUIET SDL2_net)
-endif()
-
-# Find the include directory.
 find_path(SDL2_NET_INCLUDE_DIR "SDL_net.h" HINTS "${SDL2_NET_DIR}/include/SDL2" ${PC_SDL2_NET_INCLUDE_DIRS})
-#set(SDL2_NET_INCLUDE_DIR "G:/dev/api/SDL2_net/include")
 
-# Find the version. Taken and modified from CMake's FindSDL.cmake.
 if(SDL2_NET_INCLUDE_DIR AND EXISTS "${SDL2_NET_INCLUDE_DIR}/SDL_net.h")
-	file(STRINGS "${SDL2_NET_INCLUDE_DIR}/SDL_net.h" SDL2_NET_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL_NET_MAJOR_VERSION[ \t]+[0-9]+$")
-	file(STRINGS "${SDL2_NET_INCLUDE_DIR}/SDL_net.h" SDL2_NET_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL_NET_MINOR_VERSION[ \t]+[0-9]+$")
-	file(STRINGS "${SDL2_NET_INCLUDE_DIR}/SDL_net.h" SDL2_NET_VERSION_PATCH_LINE REGEX "^#define[ \t]+SDL_NET_PATCHLEVEL[ \t]+[0-9]+$")
-	string(REGEX REPLACE "^#define[ \t]+SDL_NET_MAJOR_VERSION[ \t]+([0-9]+)$" "\\1" SDL2_NET_VERSION_MAJOR "${SDL2_NET_VERSION_MAJOR_LINE}")
-	string(REGEX REPLACE "^#define[ \t]+SDL_NET_MINOR_VERSION[ \t]+([0-9]+)$" "\\1" SDL2_NET_VERSION_MINOR "${SDL2_NET_VERSION_MINOR_LINE}")
-	string(REGEX REPLACE "^#define[ \t]+SDL_NET_PATCHLEVEL[ \t]+([0-9]+)$" "\\1" SDL2_NET_VERSION_PATCH "${SDL2_NET_VERSION_PATCH_LINE}")
+	file(STRINGS "${SDL2_NET_INCLUDE_DIR}/SDL_net.h"
+			SDL2_NET_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL_NET_MAJOR_VERSION[ \t]+[0-9]+$")
+	file(STRINGS "${SDL2_NET_INCLUDE_DIR}/SDL_net.h"
+			SDL2_NET_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL_NET_MINOR_VERSION[ \t]+[0-9]+$")
+	file(STRINGS "${SDL2_NET_INCLUDE_DIR}/SDL_net.h"
+			SDL2_NET_VERSION_PATCH_LINE REGEX "^#define[ \t]+SDL_NET_PATCHLEVEL[ \t]+[0-9]+$")
+
+	string(REGEX REPLACE "^#define[ \t]+SDL_NET_MAJOR_VERSION[ \t]+([0-9]+)$" "\\1"
+			SDL2_NET_VERSION_MAJOR "${SDL2_NET_VERSION_MAJOR_LINE}")
+	string(REGEX REPLACE "^#define[ \t]+SDL_NET_MINOR_VERSION[ \t]+([0-9]+)$" "\\1"
+			SDL2_NET_VERSION_MINOR "${SDL2_NET_VERSION_MINOR_LINE}")
+	string(REGEX REPLACE "^#define[ \t]+SDL_NET_PATCHLEVEL[ \t]+([0-9]+)$" "\\1"
+			SDL2_NET_VERSION_PATCH "${SDL2_NET_VERSION_PATCH_LINE}")
+
 	set(SDL2_NET_VERSION "${SDL2_NET_VERSION_MAJOR}.${SDL2_NET_VERSION_MINOR}.${SDL2_NET_VERSION_PATCH}")
+
 	unset(SDL2_NET_VERSION_MAJOR_LINE)
 	unset(SDL2_NET_VERSION_MINOR_LINE)
 	unset(SDL2_NET_VERSION_PATCH_LINE)
+
 	unset(SDL2_NET_VERSION_MAJOR)
 	unset(SDL2_NET_VERSION_MINOR)
 	unset(SDL2_NET_VERSION_PATCH)
 endif()
 
-# Find the library.
-if(CMAKE_SIZEOF_VOID_P STREQUAL 8)
-	find_library(SDL2_NET_LIBRARY "SDL2_net"
-		HINTS "${SDL2_NET_DIR}/lib" ${PC_SDL2_NET_LIBRARY_DIRS})
-else()
-	find_library(SDL2_NET_LIBRARY "SDL2_net"
-		HINTS "${SDL2_NET_DIR}/lib" ${PC_SDL2_NET_LIBRARY_DIRS})
-endif()
-#set(SDL2_NET_LIBRARY "G:/dev/api/SDL2_net/lib/x64/SDL2_net.lib")
+find_library(SDL2_NET_LIBRARY "SDL2_net" HINTS "${SDL2_NET_DIR}/lib" ${PC_SDL2_NET_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(SDL2_net
@@ -79,7 +67,10 @@ find_package_handle_standard_args(SDL2_net
 									VERSION_VAR SDL2_NET_VERSION)
 
 if(SDL2_NET_FOUND)
-	# Imported target.
 	add_library(SDL2::net UNKNOWN IMPORTED)
-	set_target_properties(SDL2::net PROPERTIES INTERFACE_COMPILE_OPTIONS "${PC_SDL2_NET_CFLAGS_OTHER}" INTERFACE_INCLUDE_DIRECTORIES "${SDL2_NET_INCLUDE_DIR}" INTERFACE_LINK_LIBRARIES SDL2::SDL2 IMPORTED_LOCATION "${SDL2_NET_LIBRARY}")
+	set_target_properties(SDL2::net PROPERTIES
+							INTERFACE_COMPILE_OPTIONS "${PC_SDL2_NET_CFLAGS_OTHER}"
+							INTERFACE_INCLUDE_DIRECTORIES "${SDL2_NET_INCLUDE_DIR}"
+							INTERFACE_LINK_LIBRARIES SDL2::SDL2
+							IMPORTED_LOCATION "${SDL2_NET_LIBRARY}")
 endif()

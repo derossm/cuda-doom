@@ -13,11 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __R_DRAW__
 #define __R_DRAW__
-
-
-
 
 extern lighttable_t*	dc_colormap[2];
 extern int		dc_x;
@@ -30,7 +29,6 @@ extern byte*		dc_brightmap;
 
 // first pixel in a column
 extern byte*		dc_source;
-
 
 // The span blitting interface.
 // Hook in assembler or system specific BLT

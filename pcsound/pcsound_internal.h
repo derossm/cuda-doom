@@ -12,18 +12,16 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef PCSOUND_INTERNAL_H
-#define PCSOUND_INTERNAL_H
+#include "../derma/common.h"
 
 #include "pcsound.h"
 
 #define PCSOUND_8253_FREQUENCY 1193280
 
-typedef struct pcsound_driver_s pcsound_driver_t;
 typedef int (*pcsound_init_func)(pcsound_callback_func callback);
 typedef void (*pcsound_shutdown_func)();
 
-struct pcsound_driver_s
+struct pcsound_driver_t
 {
 	const char* name;
 	pcsound_init_func init_func;
@@ -31,5 +29,3 @@ struct pcsound_driver_s
 };
 
 extern int pcsound_sample_rate;
-
-#endif /* #ifndef PCSOUND_INTERNAL_H */

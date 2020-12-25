@@ -13,6 +13,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __P_MOBJ__
 #define __P_MOBJ__
 
@@ -31,11 +33,6 @@
 // tied to animation frames.
 // Needs precompiled tables/data structures.
 #include "info.h"
-
-
-
-
-
 
 //
 // NOTES: mobj_t

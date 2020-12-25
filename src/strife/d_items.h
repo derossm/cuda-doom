@@ -13,12 +13,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __D_ITEMS__
 #define __D_ITEMS__
 
 #include "doomdef.h"
-
-
 
 // Weapon info: sprite frames, ammunition use.
 typedef struct

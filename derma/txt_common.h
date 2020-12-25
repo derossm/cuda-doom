@@ -25,4 +25,13 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "..\doomkeys.h"
+#include "common.h"
+#include "..\src\doomkeys.h"
+
+namespace CUDADOOM
+{
+	namespace TXT
+	{
+		
+	}
+}

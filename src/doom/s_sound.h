@@ -13,6 +13,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __S_SOUND__
 #define __S_SOUND__
 
@@ -27,12 +29,9 @@
 
 void S_Init(int sfxVolume, int musicVolume);
 
-
 // Shut down sound
 
 void S_Shutdown();
-
-
 
 //
 // Per level startup code.
@@ -73,7 +72,6 @@ void S_StopMusic();
 void S_PauseSound();
 void S_ResumeSound();
 
-
 //
 // Updates music & sounds
 //
@@ -88,4 +86,3 @@ void S_UpdateSndChannels ();
 void S_UpdateStereoSeparation ();
 
 #endif
-

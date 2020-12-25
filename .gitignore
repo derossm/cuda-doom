@@ -58,3 +58,4 @@ GRTAGS
 GTAGS
 /HTML/
 /.vscode
+.vscode/settings.json

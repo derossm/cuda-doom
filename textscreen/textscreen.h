@@ -9,12 +9,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/common.h"
+
 #ifndef TEXTSCREEN_H
 #define TEXTSCREEN_H
 
-#include "../src/doomkeys.h"
-#include "txt_main.h"
+#include "..\src\doomkeys.h"
 
+#include "txt_main.h"
 #include "txt_button.h"
 #include "txt_checkbox.h"
 #include "txt_conditional.h"

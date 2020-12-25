@@ -12,12 +12,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/common.h"
+
 #ifndef __D_IWAD__
 #define __D_IWAD__
 
 #include "d_mode.h"
-
-#include "derma\common.h"
 
 #define IWAD_MASK_DOOM	(	(1 << doom)			\
 						|	(1 << doom2)		\

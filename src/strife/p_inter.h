@@ -13,6 +13,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __P_INTER__
 #define __P_INTER__
 
@@ -23,6 +25,6 @@ bool P_GiveArmor(player_t* player, int armortype);
 bool P_GivePower(player_t* player, powertype_t power);
 bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num);
 bool P_GiveWeapon(player_t* player, weapontype_t weapon, bool dropped);
-void	P_KillMobj(mobj_t* source, mobj_t* target);
+void P_KillMobj(mobj_t* source, mobj_t* target);
 
 #endif

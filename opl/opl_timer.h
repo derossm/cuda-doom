@@ -12,8 +12,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef OPL_TIMER_H
-#define OPL_TIMER_H
+#include "../derma/common.h"
 
 #include "opl.h"
 
@@ -25,5 +24,3 @@ void OPL_Timer_Lock();
 void OPL_Timer_Unlock();
 void OPL_Timer_SetPaused(int paused);
 void OPL_Timer_AdjustCallbacks(float factor);
-
-#endif /* #ifndef OPL_TIMER_H */

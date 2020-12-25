@@ -9,6 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
 
 #ifndef TXT_KEY_INPUT_H
 #define TXT_KEY_INPUT_H
@@ -32,5 +33,3 @@ struct txt_key_input_s
 txt_key_input_t *TXT_NewKeyInput(int *variable);
 
 #endif /* #ifndef TXT_KEY_INPUT_H */
-
-

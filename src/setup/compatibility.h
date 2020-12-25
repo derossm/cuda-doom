@@ -9,6 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
 
 #ifndef SETUP_COMPATIBILITY_H
 #define SETUP_COMPATIBILITY_H

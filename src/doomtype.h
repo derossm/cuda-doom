@@ -14,15 +14,32 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef __DOOMTYPE__
-#define __DOOMTYPE__
+#include "../derma/common.h"
 
 #include "config.h"
 
+#ifndef CRISPY_TRUECOLOR
+	using pixel_t = uint8_t;
+	using dpixel_t = int16_t;
+#else
+	using pixel_t = uint32_t;
+	using dpixel_t = int64_t;
+#endif
+
+#ifdef _WIN32
+	#define DIR_SEPARATOR '\\'
+	#define DIR_SEPARATOR_S "\\"
+	#define PATH_SEPARATOR ';'
+#else
+	#define DIR_SEPARATOR '/'
+	#define DIR_SEPARATOR_S "/"
+	#define PATH_SEPARATOR ':'
+#endif
+
+#define arrlen(array) (sizeof(array) / sizeof(*array))
+
 // #define macros to provide functions missing in Windows. Outside Windows, we use strings.h for str[n]casecmp.
 #if !HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP
-	#include <string.h>
-
 	#if !HAVE_DECL_STRCASECMP
 		#define strcasecmp stricmp
 	#endif
@@ -72,39 +89,3 @@
 #endif
 
 #define PACKED_STRUCT(...) PACKEDPREFIX struct __VA_ARGS__ PACKEDATTR
-
-// C99 integer types; with gcc we just use this. Other compilers
-// should add conditional statements that define the C99 types.
-
-// What is really wanted here is stdint.h; however, some old versions
-// of Solaris don't have stdint.h and only have inttypes.h (the
-// pre-standardisation version). inttypes.h is also in the C99
-// standard and defined to include stdint.h, so include this.
-
-#include <inttypes.h>
-
-typedef uint8_t byte;
-
-#ifndef CRISPY_TRUECOLOR
-	typedef uint8_t pixel_t;
-	typedef int16_t dpixel_t;
-#else
-	typedef uint32_t pixel_t;
-	typedef int64_t dpixel_t;
-#endif
-
-#include <limits.h>
-
-#ifdef _WIN32
-	#define DIR_SEPARATOR '\\'
-	#define DIR_SEPARATOR_S "\\"
-	#define PATH_SEPARATOR ';'
-#else
-	#define DIR_SEPARATOR '/'
-	#define DIR_SEPARATOR_S "/"
-	#define PATH_SEPARATOR ':'
-#endif
-
-#define arrlen(array) (sizeof(array) / sizeof(*array))
-
-#endif	// __DOOMTYPE__

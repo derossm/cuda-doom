@@ -13,18 +13,16 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __D_MAIN__
 #define __D_MAIN__
 
 #include "doomdef.h"
 
-
-
-
 // Read events from all input devices
 
 void D_ProcessEvents ();
-
 
 //
 // BASE LEVEL

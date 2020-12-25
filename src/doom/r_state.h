@@ -13,17 +13,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __R_STATE__
 #define __R_STATE__
 
 // Need data structure definitions.
 #include "d_player.h"
 #include "r_data.h"
-
-
-
-
-
 
 //
 // Refresh internal data structures,

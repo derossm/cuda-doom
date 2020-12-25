@@ -13,6 +13,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __S_SOUND__
 #define __S_SOUND__
 
@@ -24,29 +26,22 @@
 // Sets channels, SFX and music volume,
 // allocates channel buffer, sets S_sfx lookup.
 //
-
 void S_Init(int sfxVolume, int musicVolume, int voiceVolume);
-
 
 // Shut down sound
 
 void S_Shutdown();
-
-
-
 //
 // Per level startup code.
 // Kills playing sounds at start of level,
 // determines music if any, changes music.
 //
-
 void S_Start();
 
 //
 // Start sound for thing at <origin>
 // using <sound_id> from sounds.h
 //
-
 void S_StartSound(void *origin, int sound_id);
 
 // haleyjd 09/11/10: [STRIFE] Start a voice.
@@ -54,7 +49,6 @@ void I_StartVoice(const char *lumpname);
 
 // Stop sound for thing at <origin>
 void S_StopSound(mobj_t *origin);
-
 
 // Start music using <music_id> from sounds.h
 void S_StartMusic(int music_id);
@@ -73,7 +67,6 @@ void S_StopMusic();
 void S_PauseSound();
 void S_ResumeSound();
 
-
 //
 // Updates music & sounds
 //
@@ -88,4 +81,3 @@ extern int snd_channels;
 extern int disable_voices;
 
 #endif
-

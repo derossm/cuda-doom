@@ -13,10 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __R_SKY__
 #define __R_SKY__
-
-
 
 // SKY, store the number for name.
 #define			SKYFLATNAME "F_SKY1"

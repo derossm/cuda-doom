@@ -13,11 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __P_SETUP__
 #define __P_SETUP__
-
-
-
 
 // NOT called by W_Ticker. Fixme.
 // [STRIFE] Removed episode parameter

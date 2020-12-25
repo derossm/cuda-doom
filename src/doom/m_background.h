@@ -15,6 +15,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 /*
 
 The following array contains a seamlessly tiling 64x64 icon depicting
@@ -22,8 +24,6 @@ Crisps to use as a background texture for the Crispness menu. It has
 been converted from a raw lump in Doom's flat format with the following
 code. The actual artwork has been created by Julia Nechaevskaya, thank
 you so incredibly much for this! - Fabian
-
-#include <stdio.h>
 
 int main (int argc, char **argv)
 {

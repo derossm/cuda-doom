@@ -9,6 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
 
 #ifndef SETUP_JOYSTICK_H
 #define SETUP_JOYSTICK_H
@@ -19,4 +20,3 @@ void ConfigJoystick(void *widget, void *user_data);
 void BindJoystickVariables();
 
 #endif /* #ifndef SETUP_JOYSTICK_H */
-

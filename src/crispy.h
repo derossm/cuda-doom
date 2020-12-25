@@ -14,19 +14,22 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef __CRISPY_H__
-#define __CRISPY_H__
+#include "../derma/common.h"
 
 #include "doomtype.h"
 
+// TODO ENFORCE DO NOT USE THESE "HANDY" MACROS, TEMP MEASURE CALL LAMBDA TO STD ALGORITHMS
 #ifndef MIN
-#define MIN(a,b) (((a)<(b))?(a):(b))
+//#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MIN(a,b) [](auto a, auto b){return std::min(a, b);}(a, b)
 #endif
 #ifndef MAX
-#define MAX(a,b) (((a)>(b))?(a):(b))
+//#define MAX(a,b) (((a)>(b))?(a):(b))
+#define MAX(a,b) [](auto a, auto b){return std::max(a, b);}(a, b)
 #endif
 #ifndef BETWEEN
-#define BETWEEN(l,u,x) (((l)>(x))?(l):((x)>(u))?(u):(x))
+//#define BETWEEN(l,u,x) (((l)>(x))?(l):((x)>(u))?(u):(x))
+#define BETWEEN(l,u,x) [](auto v, auto lo, auto hi){return std::clamp(v, lo, hi);}(x, l, u)
 #endif
 
 struct crispy_t
@@ -227,5 +230,3 @@ enum
 	RATIO_21_9,
 	NUM_RATIOS
 };
-
-#endif

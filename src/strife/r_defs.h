@@ -13,9 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __R_DEFS__
 #define __R_DEFS__
-
 
 // Screenwidth.
 #include "doomdef.h"
@@ -34,9 +35,6 @@
 
 #include "v_patch.h"
 
-
-
-
 // Silhouette, needed for clipping Segs (mainly)
 // and sprites representing things.
 #define SIL_NONE		0
@@ -45,10 +43,6 @@
 #define SIL_BOTH		3
 
 #define MAXDRAWSEGS		256*8
-
-
-
-
 
 //
 // INTERNAL MAP TYPES
@@ -437,8 +431,5 @@ typedef struct
  unsigned short		pad4;
 
 } visplane_t;
-
-
-
 
 #endif

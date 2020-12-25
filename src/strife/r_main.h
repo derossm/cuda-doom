@@ -13,14 +13,13 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __R_MAIN__
 #define __R_MAIN__
 
 #include "d_player.h"
 #include "r_data.h"
-
-
-
 
 //
 // POV related.
@@ -30,8 +29,6 @@ extern fixed_t		viewsin;
 
 extern int		viewwindowx;
 extern int		viewwindowy;
-
-
 
 extern int		centerx;
 extern int		centery;
@@ -44,7 +41,6 @@ extern int		validcount;
 
 extern int		linecount;
 extern int		loopcount;
-
 
 //
 // Lighting LUT.
@@ -69,17 +65,14 @@ extern lighttable_t*	zlight[LIGHTLEVELS][MAXLIGHTZ];
 extern int		extralight;
 extern lighttable_t*	fixedcolormap;
 
-
 // Number of diminishing brightness levels.
 // There a 0-31, i.e. 32 LUT in the COLORMAP lump.
 #define NUMCOLORMAPS		32
-
 
 // Blocky/low detail mode.
 //B remove this?
 // 0 = high, 1 = low
 extern	int		detailshift;
-
 
 //
 // Function pointers to switch refresh/drawing functions.
@@ -91,7 +84,6 @@ extern void		(*basecolfunc) ();
 extern void		(*fuzzcolfunc) ();
 // No shadow effects on floors.
 extern void		(*spanfunc) ();
-
 
 //
 // Utility functions.
@@ -124,7 +116,6 @@ R_PointToDist
 ( fixed_t	x,
  fixed_t	y );
 
-
 fixed_t R_ScaleFromGlobalAngle (angle_t visangle);
 
 subsector_t*
@@ -137,8 +128,6 @@ R_AddPointToBox
 ( int		x,
  int		y,
  fixed_t*	box );
-
-
 
 //
 // REFRESH - the actual rendering functions.

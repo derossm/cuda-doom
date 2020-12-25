@@ -1,40 +1,35 @@
 # Findm.cmake
 #
-# Copyright (c) 2018, Alex Mayfield <alexmax2742@gmail.com>
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#	 * Redistributions of source code must retain the above copyright
-#		notice, this list of conditions and the following disclaimer.
-#	 * Redistributions in binary form must reproduce the above copyright
-#		notice, this list of conditions and the following disclaimer in the
-#		documentation and/or other materials provided with the distribution.
-#	 * Neither the name of the <organization> nor the
-#		names of its contributors may be used to endorse or promote products
-#		derived from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Finds libm, so we can link against it for math functions. If libm doesn't
-# exist, linking against the m target will have no effect.
+# Find libm, so we can link against it for math functions.
+# If libm doesn't exist, linking against the m target will have no effect.
 
 find_library(M_LIBRARY m)
 
-#set(LIBM_DIR "G:/dev/api/openlibm")
-#set(LIBM_INCLUDE_DIR "${LIBM_DIR}/include")
-#set(LIBM_LIBRARY_DIR "${LIBM_DIR}")
+# set in <project_root_dir>/CMakeLists.txt
+# Windows: VCPKG_DIR = "<install_location>/vcpkg/packages/"
+# x64: ARCHITECTURE = "_x64-windows"
+set(M_DIR "${VCPKG_DIR}fdlibm${ARCHITECTURE}")
 
-add_library(m INTERFACE)
-if(M_LIBRARY)
-	target_link_libraries(m INTERFACE "${M_LIBRARY}")
+find_path(M_INCLUDE_DIR "fdlibm.h" HINTS "${M_DIR}/include" ${PC_M_INCLUDE_DIRS})
+
+if(PC_M_VERSION)
+	set(M_VERSION "${PC_M_VERSION}")
+endif()
+
+find_library(M_LIBRARY "fdlibm" HINTS "${M_DIR}/lib/manual-link" ${PC_M_LIBRARY_DIRS})
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(m
+									FOUND_VAR M_FOUND
+									REQUIRED_VARS M_LIBRARY
+									VERSION_VAR M_VERSION)
+
+if(M_FOUND)
+	add_library(m::m UNKNOWN IMPORTED)
+	#target_link_libraries(m INTERFACE "${M_LIBRARY}")
+
+	set_target_properties(m::m PROPERTIES
+		INTERFACE_COMPILE_OPTIONS "${PC_M_CFLAGS_OTHER}"
+		INTERFACE_INCLUDE_DIRECTORIES "${M_INCLUDE_DIR}"
+		IMPORTED_LOCATION "${M_LIBRARY}")
 endif()

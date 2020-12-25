@@ -13,6 +13,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef HERETIC_CT_CHAT_H
 #define HERETIC_CT_CHAT_H
 
@@ -31,4 +33,3 @@
 extern char *chat_macros[10];
 
 #endif /* #ifndef HERETIC_CT_CHAT_H */
-

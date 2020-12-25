@@ -16,9 +16,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __P_SPEC__
 #define __P_SPEC__
-
 
 //
 // End-level timer (-TIMER option)
@@ -26,10 +27,8 @@
 extern	bool levelTimer;
 extern	int	levelTimeCount;
 
-
 //		Define values for map objects
 #define MO_TELEPORTMAN			14
-
 
 // at game start
 void	P_InitPicAnims ();

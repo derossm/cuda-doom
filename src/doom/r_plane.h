@@ -13,18 +13,17 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __R_PLANE__
 #define __R_PLANE__
 
-
 #include "r_data.h"
-
 
 #define PL_SKYFLAT (0x80000000)
 
 // Visplane related.
 extern int*		lastopening; // [crispy] 32-bit integer math
-
 
 typedef void (*planefunction_t) (int top, int bottom);
 

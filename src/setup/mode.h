@@ -9,6 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
 
 #ifndef SETUP_MODE_H
 #define SETUP_MODE_H
@@ -26,4 +27,3 @@ const char *GetGameTitle();
 const iwad_t **GetIwads();
 
 #endif /* #ifndef SETUP_MODE_H */
-

@@ -12,27 +12,24 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef OPL_OPL_H
-#define OPL_OPL_H
-
-#include <inttypes.h>
+#include "../derma/common.h"
 
 typedef void (*opl_callback_t)(void* data);
 
 // Result from OPL_Init(), indicating what type of OPL chip was detected, if any.
-typedef enum
+enum class opl_init_result_t
 {
 	OPL_INIT_NONE,
 	OPL_INIT_OPL2,
 	OPL_INIT_OPL3
-} opl_init_result_t;
+};
 
-typedef enum
+enum class opl_port_t
 {
 	OPL_REGISTER_PORT = 0,
 	OPL_DATA_PORT = 1,
 	OPL_REGISTER_PORT_OPL3 = 2
-} opl_port_t;
+};
 
 #define OPL_NUM_OPERATORS		21
 #define OPL_NUM_VOICES			9
@@ -61,9 +58,9 @@ typedef enum
 #define OPL_MS		((uint64_t) 1000)
 #define OPL_US		((uint64_t) 1)
 
-//
+// ======================================== //
 // Low-level functions.
-//
+// ======================================== //
 
 // Initialize the OPL subsystem.
 opl_init_result_t OPL_Init(unsigned int port_base);
@@ -80,9 +77,9 @@ void OPL_WritePort(opl_port_t port, unsigned int value);
 // Read from one of the OPL I/O ports:
 unsigned int OPL_ReadPort(opl_port_t port);
 
-//
+// ======================================== //
 // Higher-level functions.
-//
+// ======================================== //
 
 // Read the cuurrent status byte of the OPL chip.
 unsigned int OPL_ReadStatus();
@@ -96,9 +93,9 @@ opl_init_result_t OPL_Detect();
 // Initialize all registers, performed on startup.
 void OPL_InitRegisters(int opl3);
 
-//
+// ======================================== //
 // Timer callback functions.
-//
+// ======================================== //
 
 // Set a timer callback. After the specified number of microseconds
 // have elapsed, the callback will be invoked.
@@ -122,5 +119,3 @@ void OPL_Delay(uint64_t us);
 
 // Pause the OPL callbacks.
 void OPL_SetPaused(int paused);
-
-#endif

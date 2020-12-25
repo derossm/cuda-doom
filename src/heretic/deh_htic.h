@@ -11,6 +11,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef DEH_HTIC_H
 #define DEH_HTIC_H
 
@@ -45,4 +47,3 @@ void DEH_SuggestHereticVersion(deh_hhe_version_t version);
 extern deh_hhe_version_t deh_hhe_version;
 
 #endif /* #ifndef DEH_HTIC_H */
-

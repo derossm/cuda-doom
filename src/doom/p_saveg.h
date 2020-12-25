@@ -13,10 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __P_SAVEG__
 #define __P_SAVEG__
-
-#include <stdio.h>
 
 #define SAVEGAME_EOF 0x1d
 #define VERSIONSIZE 16

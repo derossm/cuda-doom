@@ -11,6 +11,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
 
 #ifndef HERETIC_INFO_H
 #define HERETIC_INFO_H
@@ -1573,4 +1574,3 @@ typedef struct
 extern mobjinfo_t mobjinfo[NUMMOBJTYPES];
 
 #endif /* #ifndef HERETIC_INFO_H */
-

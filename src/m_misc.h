@@ -13,15 +13,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/common.h"
+
 #ifndef __M_MISC__
 #define __M_MISC__
 
-#include <stdio.h>
-#include <stdarg.h>
-
 #include "doomtype.h"
-
-#include "derma\common.h"
 
 auto M_WriteFile(const char* name, const void* source, size_t length);
 auto M_ReadFile(const char* name, byte** buffer);

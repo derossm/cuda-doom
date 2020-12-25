@@ -11,12 +11,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/common.h"
+
 #ifndef DEH_IO_H
 #define DEH_IO_H
 
 #include "deh_defs.h"
-
-#include <memory>
 
 enum class deh_input_type_t
 {

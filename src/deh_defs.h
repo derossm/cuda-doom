@@ -11,8 +11,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef DEH_DEFS_H
-#define DEH_DEFS_H
+#include "../derma/common.h"
 
 #include "sha1.h"
 
@@ -43,5 +42,3 @@ struct deh_section_t
 	// Called when generating an SHA1 sum of the dehacked state
 	deh_sha1_hash_t sha1_hash;
 };
-
-#endif /* #ifndef DEH_DEFS_H */

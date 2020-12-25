@@ -13,6 +13,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef HERETIC_P_ACTION_H
 #define HERETIC_P_ACTION_H
 
@@ -144,4 +146,3 @@ void A_MntrFloorFire();
 void A_ESound();
 
 #endif /* #ifndef HERETIC_P_ACTION_H */
-

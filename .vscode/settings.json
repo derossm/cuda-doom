@@ -42,6 +42,8 @@
 		"map": "cpp",
 		"stdexcept": "cpp",
 		"vector": "cpp",
-		"xtree": "cpp"
-	}
+		"xtree": "cpp",
+		"xiosbase": "cpp"
+	},
+	"git.allowForcePush": true
 }

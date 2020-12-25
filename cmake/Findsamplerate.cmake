@@ -24,34 +24,19 @@
 # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Currently works with the following generators:
-# - Unix Makefiles (Linux, MSYS2)
-# - Ninja (Linux, MSYS2)
-# - Visual Studio
 
-# Use pkg-config to find library locations in *NIX environments.
-set(SAMPLERATE_DIR "${VCPKG_DIR}/libsamplerate")
+# set in <project_root_dir>/CMakeLists.txt
+# Windows: VCPKG_DIR = "<install_location>/vcpkg/packages/"
+# x64: ARCHITECTURE = "_x64-windows"
+set(SAMPLERATE_DIR "${VCPKG_DIR}libsamplerate${ARCHITECTURE}")
 
-find_package(PkgConfig QUIET)
-if(PKG_CONFIG_FOUND)
-	pkg_search_module(PC_SAMPLERATE QUIET samplerate)
-endif()
+find_path(SAMPLERATE_INCLUDE_DIR "samplerate.h" HINTS "${SAMPLERATE_DIR}/include" ${PC_SAMPLERATE_INCLUDE_DIRS})
 
-# Find the include directory.
-find_path(SAMPLERATE_INCLUDE_DIR "samplerate.h" HINTS ${PC_SAMPLERATE_INCLUDE_DIRS})
-#set(SAMPLERATE_INCLUDE_DIR "${SAMPLERATE_DIR}/include")
-
-# Find the version. I don't know if there is a correct way to find this on
-# Windows - the config.h in the tarball is wrong for 0.1.19.
 if(PC_SAMPLERATE_VERSION)
 	set(SAMPLERATE_VERSION "${PC_SAMPLERATE_VERSION}")
 endif()
 
-# Find the library.
-find_library(SAMPLERATE_LIBRARY "samplerate" HINTS ${PC_SAMPLERATE_LIBRARY_DIRS})
-#set(SAMPLERATE_LIBRARY_DIR "${SAMPLERATE_DIR}/lib")
-#set(SAMPLERATE_LIBRARY "${SAMPLERATE_LIBRARY_DIR}/SDL2_mixer.lib")
+find_library(SAMPLERATE_LIBRARY "libsamplerate-0" HINTS "${SAMPLERATE_DIR}/lib" ${PC_SAMPLERATE_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(samplerate
@@ -60,11 +45,9 @@ find_package_handle_standard_args(samplerate
 									VERSION_VAR SAMPLERATE_VERSION)
 
 if(SAMPLERATE_FOUND)
-	# Imported target.
 	add_library(samplerate::samplerate UNKNOWN IMPORTED)
 
-	set_target_properties(
-		samplerate::samplerate PROPERTIES
+	set_target_properties(samplerate::samplerate PROPERTIES
 		INTERFACE_COMPILE_OPTIONS "${PC_SAMPLERATE_CFLAGS_OTHER}"
 		INTERFACE_INCLUDE_DIRECTORIES "${SAMPLERATE_INCLUDE_DIR}"
 		IMPORTED_LOCATION "${SAMPLERATE_LIBRARY}")

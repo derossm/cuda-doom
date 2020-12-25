@@ -9,9 +9,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef LAUNCHER_LAUNCHERMANAGER_H
-#define LAUNCHER_LAUNCHERMANAGER_H
+#include "../../derma/common.h"
 
+// TODO What are these AppKits?
+#ifdef APPKIT_EXISTS
+#undef APPKIT_EXISTS
+#endif
+
+#ifdef APPKIT_EXISTS
 #include <AppKit/AppKit.h>
 #include <AppKit/NSNibLoading.h>
 #include "IWADController.h"
@@ -43,5 +48,4 @@
 - (void) openDocumentation: (id) sender;
 
 @end
-
-#endif /* #ifndef LAUNCHER_LAUNCHERMANAGER_H */
+#endif /* APPKIT_EXISTS */

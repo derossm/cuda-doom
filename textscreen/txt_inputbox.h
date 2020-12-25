@@ -11,6 +11,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/common.h"
+
 /**
  * @file txt_inputbox.h
  *
@@ -25,9 +27,6 @@
  *
  * Input box widgets can be of an integer or string type.
  */
-
-#include "derma\common.h"
-#include "derma\txt_common.h"
 
 #include "txt_widget.h"
 #include "txt_gui.h"

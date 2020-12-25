@@ -9,9 +9,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef LAUNCHER_IWADCONTROLLER_H
-#define LAUNCHER_IWADCONTROLLER_H
+#include "../../derma/common.h"
 
+// TODO What are these AppKits?
+#ifdef APPKIT_EXISTS
+#undef APPKIT_EXISTS
+#endif
+
+#ifdef APPKIT_EXISTS
 #include <AppKit/AppKit.h>
 #include <AppKit/NSNibLoading.h>
 
@@ -49,5 +54,4 @@
 - (BOOL) selectGameByName: (const char *) name;
 
 @end
-
-#endif /* #ifndef LAUNCHER_IWADCONTROLLER_H */
+#endif /* APPKIT_EXISTS */

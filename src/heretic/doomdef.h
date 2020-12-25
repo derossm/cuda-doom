@@ -11,14 +11,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 // DoomDef.h
 
 #ifndef __DOOMDEF__
 #define __DOOMDEF__
-
-#include <stdio.h>
-#include <string.h>
-#include <limits.h>
 
 #define HERETIC_VERSION			130
 #define HERETIC_VERSION_TEXT	"v1.3"

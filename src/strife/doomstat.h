@@ -18,6 +18,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __D_STATE__
 #define __D_STATE__
 
@@ -34,8 +36,6 @@
 
 #include "net_defs.h"
 
-
-
 // ------------------------
 // Command line parameters.
 //
@@ -47,7 +47,6 @@ extern bool flipparm;		// [STRIFE] checkparm of -flip
 
 extern bool	devparm;	// DEBUG: launched with -devparm
 
-
 // -----------------------------------------------------
 // Game Mode - identify IWAD as shareware, retail etc.
 //
@@ -58,7 +57,6 @@ extern const char		*gamedescription;
 
 // Set if homebrew PWAD stuff has been added.
 extern bool	modifiedgame;
-
 
 // -------------------------------------------
 // Selected skill type, map etc.
@@ -117,7 +115,6 @@ extern int snd_SfxDevice;
 extern int snd_DesiredMusicDevice;
 extern int snd_DesiredSfxDevice;
 
-
 // -------------------------
 // Status flags for refresh.
 //
@@ -134,16 +131,12 @@ extern int		menupausetime; // haleyjd 09/04/10: [STRIFE]
 extern bool menuindialog;	// haleyjd: ditto
 extern bool	paused;			// Game Pause?
 
-
 extern bool		viewactive;
 
 extern bool		nodrawers;
 
 extern bool			testcontrols;
 extern int				testcontrols_mousespeed;
-
-
-
 
 // This one is related to the 3-screen display mode.
 // ANG90 = left side, ANG270 = right
@@ -152,7 +145,6 @@ extern int	viewangleoffset;
 // Player taking events, and displaying.
 extern int	consoleplayer;
 extern int	displayplayer;
-
 
 // -------------------------------------
 // Scores, rating.
@@ -165,8 +157,6 @@ extern	int	totalsecret;
 // Timer, for scores.
 extern int	levelstarttic;	// gametic at level start
 extern int	leveltime;	// tics in game play for par
-
-
 
 // --------------------------------------
 // DEMO playback/recording related stuff.
@@ -187,16 +177,8 @@ extern bool lowres_turn;
 // Quit after playing a demo from cmdline.
 extern bool		singledemo;
 
-
-
-
 //?
 extern gamestate_t		gamestate;
-
-
-
-
-
 
 //-----------------------------
 // Internal parameters, fixed.
@@ -204,13 +186,11 @@ extern gamestate_t		gamestate;
 // according to user inputs. Partly load from
 // WAD, partly set at startup time.
 
-
 // Bookkeeping on players - state.
 extern	player_t	players[MAXPLAYERS];
 
 // Alive? Disconnected?
 extern bool		playeringame[MAXPLAYERS];
-
 
 // Player spawn spots for deathmatch.
 #define MAX_DM_STARTS	10
@@ -228,11 +208,6 @@ extern mapthing_t		riftSpots[MAXRIFTSPOTS];
 // Parameters for world map / intermission.
 extern wbstartstruct_t		wminfo;
 
-
-
-
-
-
 //-----------------------------------------
 // Internal parameters, used for engine.
 //
@@ -243,7 +218,6 @@ extern char *			savegamedir;
 // if true, load all graphics at level load
 extern bool			precache;
 
-
 // wipegamestate can be set to -1
 // to force a wipe on the next draw
 extern gamestate_t		wipegamestate;
@@ -252,22 +226,15 @@ extern int				mouseSensitivity;
 
 //extern int				bodyqueslot; [STRIFE] unused
 
-
-
 // Needed to store the number of the dummy sky flat.
 // Used for rendering,
 // as well as tracking projectiles etc.
 extern int		skyflatnum;
 
-
-
 // Netgame stuff (buffers and pointers, i.e. indices).
-
 
 extern	int		rndindex;
 
 extern ticcmd_t		*netcmds;
-
-
 
 #endif

@@ -11,6 +11,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
 
 #ifndef HERETIC_M_RANDOM_H
 #define HERETIC_M_RANDOM_H
@@ -32,4 +33,3 @@ extern int rndindex;
 int P_SubRandom ();
 
 #endif // HERETIC_M_RANDOM_H
-

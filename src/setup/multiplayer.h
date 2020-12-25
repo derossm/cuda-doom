@@ -9,6 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
 
 #ifndef SETUP_MULTIPLAYER_H
 #define SETUP_MULTIPLAYER_H
@@ -24,4 +25,3 @@ void SetPlayerNameDefault();
 void BindMultiplayerVariables();
 
 #endif /* #ifndef SETUP_MULTIPLAYER_H */
-

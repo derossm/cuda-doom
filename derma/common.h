@@ -25,10 +25,10 @@
 #include <variant>
 #include <any>
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <algorithm>
+#include <numeric>
+
+#include <cassert>
 
 class DepType;
 
@@ -42,3 +42,14 @@ namespace CUDADOOM
 }
 
 using txt_inputbox_t = CUDADOOM::TXT::InputBox<DepType>;
+
+#include <cstdlib>
+#include <cstdio>
+#include <cctype>
+#include <cstring>
+
+#include <cinttypes>
+#include <climits>
+#include <cstdarg>
+
+using byte = uint8_t;

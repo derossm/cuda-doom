@@ -22,30 +22,23 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef OPL_OPL3_H
-#define OPL_OPL3_H
-
-#include <inttypes.h>
+#include "../derma/common.h"
 
 #define OPL_WRITEBUF_SIZE	1024
 #define OPL_WRITEBUF_DELAY	2
 
-typedef uintptr_t		Bitu;
-typedef intptr_t		Bits;
-typedef uint64_t		Bit64u;
-typedef int64_t			Bit64s;
-typedef uint32_t		Bit32u;
-typedef int32_t			Bit32s;
-typedef uint16_t		Bit16u;
-typedef int16_t			Bit16s;
-typedef uint8_t			Bit8u;
-typedef int8_t			Bit8s;
+using Bitu = uintptr_t;
+using Bits = intptr_t;
+using Bit64u = uint64_t;
+using Bit64s = int64_t;
+using Bit32u = uint32_t;
+using Bit32s = int32_t;
+using Bit16u = uint16_t;
+using Bit16s = int16_t;
+using Bit8u = uint8_t;
+using Bit8s = int8_t;
 
-typedef struct _opl3_slot opl3_slot;
-typedef struct _opl3_channel opl3_channel;
-typedef struct _opl3_chip opl3_chip;
-
-struct _opl3_slot
+struct opl3_slot
 {
 	opl3_channel* channel;
 	opl3_chip* chip;
@@ -78,7 +71,7 @@ struct _opl3_slot
 	Bit8u slot_num;
 };
 
-struct _opl3_channel
+struct opl3_channel
 {
 	opl3_slot* slots[2];
 	opl3_channel* pair;
@@ -96,14 +89,14 @@ struct _opl3_channel
 	Bit8u ch_num;
 };
 
-typedef struct _opl3_writebuf
+struct opl3_writebuf
 {
 	Bit64u time;
 	Bit16u reg;
 	Bit8u data;
-} opl3_writebuf;
+};
 
-struct _opl3_chip
+struct opl3_chip
 {
 	opl3_channel channel[18];
 	opl3_slot slot[36];
@@ -148,5 +141,3 @@ void OPL3_Reset(opl3_chip* chip, Bit32u samplerate);
 void OPL3_WriteReg(opl3_chip* chip, Bit16u reg, Bit8u v);
 void OPL3_WriteRegBuffered(opl3_chip* chip, Bit16u reg, Bit8u v);
 void OPL3_GenerateStream(opl3_chip* chip, Bit16s* sndptr, Bit32u numsamples);
-
-#endif

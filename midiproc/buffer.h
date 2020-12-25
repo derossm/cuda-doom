@@ -12,8 +12,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef __BUFFER__
-#define __BUFFER__
+#include "../derma/common.h"
 
 #include "../src/doomtype.h"
 
@@ -48,5 +47,3 @@ auto Reader_ReadInt8(buffer_reader_t* reader, uint8_t* out);
 auto Reader_ReadInt16(buffer_reader_t* reader, uint16_t* out);
 auto Reader_ReadInt32(buffer_reader_t* reader, uint32_t* out);
 char* Reader_ReadString(buffer_reader_t* reader);
-
-#endif

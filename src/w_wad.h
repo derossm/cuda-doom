@@ -13,10 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/common.h"
+
 #ifndef __W_WAD__
 #define __W_WAD__
-
-#include <stdio.h>
 
 #include "doomtype.h"
 #include "w_file.h"

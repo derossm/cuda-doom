@@ -8,27 +8,21 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	PC speaker interface.
+		PC speaker interface.
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef PCSOUND_H
-#define PCSOUND_H
+#include "../derma/common.h"
 
 typedef void (*pcsound_callback_func)(int* duration, int* frequency);
 
 // Initialise the PC speaker subsystem. The given function is called
 // periodically to request more sound data to play.
-
 int PCSound_Init(pcsound_callback_func callback_func);
 
 // Shut down the PC speaker subsystem.
-
 void PCSound_Shutdown();
 
 // Set the preferred output sample rate when emulating a PC speaker.
 // This must be called before PCSound_Init.
-
 void PCSound_SetSampleRate(int rate);
-
-#endif /* #ifndef PCSOUND_H */

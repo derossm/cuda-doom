@@ -15,12 +15,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __D_THINK__
 #define __D_THINK__
-
-
-
-
 
 //
 // Experimental stuff.
@@ -40,15 +38,10 @@ typedef union
 
 } actionf_t;
 
-
-
-
-
 // Historically, "think_t" is yet another
 // function pointer to a routine to handle
 // an actor.
 typedef actionf_t think_t;
-
 
 // Doubly linked list of actors.
 typedef struct thinker_s
@@ -58,7 +51,5 @@ typedef struct thinker_s
 	think_t		function;
 
 } thinker_t;
-
-
 
 #endif

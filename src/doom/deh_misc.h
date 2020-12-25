@@ -11,6 +11,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef DEH_MISC_H
 #define DEH_MISC_H
 
@@ -72,4 +74,3 @@ extern int deh_species_infighting;
 #endif
 
 #endif /* #ifndef DEH_MISC_H */
-

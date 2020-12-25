@@ -9,9 +9,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#ifndef LAUNCHER_APPCONTROLLER_H
-#define LAUNCHER_APPCONTROLLER_H
+#include "../../derma/common.h"
 
+// TODO What are these AppKits?
+#ifdef APPKIT_EXISTS
+#undef APPKIT_EXISTS
+#endif
+
+#ifdef APPKIT_EXISTS
 #include <AppKit/AppKit.h>
 #include "LauncherManager.h"
 
@@ -36,5 +41,4 @@
 - (void)showPrefPanel:(id)sender;
 
 @end
-
-#endif
+#endif /* APPKIT_EXISTS */

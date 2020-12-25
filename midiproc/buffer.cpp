@@ -18,43 +18,32 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-#include <memory>
-
-//
-// Create a new buffer.
-//
 auto NewBuffer()
 {
 	auto buf{std::make_unique<buffer_t>()};
 	//buffer_t* buf = malloc(sizeof(buffer_t));
 
 	buf->buffer_end = buf->buffer + BUFFER_SIZE;
-	Buffer_Clear(*buf);
+	Buffer_Clear(buf.get());
 
 	return buf;
 }
 
-//
-// Free a buffer.
-//
-// {NOTE: this is NEVER called ANYWHERE in the solution, so this was a memory leak lol}
-void DeleteBuffer(buffer_t* buf)
+void Buffer_Clear(buffer_t* buf)
 {
-	//free(buf);
+	buf->data = buf->buffer;
+	buf->data_end = buf->buffer;
+	buf->data_len = 0;
 }
 
-//
-// Return the data in the buffer.
-//
-auto Buffer_Data(buffer_t* buf, byte** data)
+// return the length of the buffer passed out in the 2nd param, GROSS TODO FIX
+auto Buffer_Data(buffer_t* /*IN*/ buf, byte** /*OUT*/ data)
 {
 	*data = buf->data;
 	return buf->data_len;
 }
 
-//
 // Push data onto the end of the buffer.
-//
 auto Buffer_Push(buffer_t* buf, const void* data, size_t len)
 {
 	if (len <= 0)
@@ -88,10 +77,7 @@ auto Buffer_Push(buffer_t* buf, const void* data, size_t len)
 	return true;
 }
 
-
-//
 // Shift len bytes off of the front of the buffer.
-//
 void Buffer_Shift(buffer_t* buf, size_t len)
 {
 	if (len <= 0)
@@ -113,22 +99,8 @@ void Buffer_Shift(buffer_t* buf, size_t len)
 	}
 }
 
-//
-// Clear the buffer.
-//
-void Buffer_Clear(buffer_t* buf)
-{
-	buf->data = buf->buffer;
-	buf->data_end = buf->buffer;
-	buf->data_len = 0;
-}
-
-//
-// Create a new buffer reader.
-//
 // WARNING: This reader will invalidate if the underlying buffer changes.
 //			Use it, then delete it before you touch the underlying buffer again.
-//
 auto NewReader(buffer_t* buffer)
 {
 	//buffer_reader_t *reader = malloc(sizeof(buffer_reader_t));
@@ -140,25 +112,16 @@ auto NewReader(buffer_t* buffer)
 	return reader;
 }
 
-//
-// Delete a buffer reader.
-//
 void DeleteReader(buffer_reader_t* reader)
 {
 	//free(reader);
 }
 
-//
-// Count the number of bytes read thus far.
-//
 auto Reader_BytesRead(buffer_reader_t* reader)
 {
 	return reader->pos - reader->buffer->data;
 }
 
-//
-// Read an unsigned byte from a buffer.
-//
 auto Reader_ReadInt8(buffer_reader_t* reader, uint8_t* out)
 {
 	byte* data;
@@ -177,9 +140,6 @@ auto Reader_ReadInt8(buffer_reader_t* reader, uint8_t* out)
 	return true;
 }
 
-//
-// Read an unsigned short from a buffer.
-//
 auto Reader_ReadInt16(buffer_reader_t* reader, uint16_t* out)
 {
 	byte* data;
@@ -199,9 +159,6 @@ auto Reader_ReadInt16(buffer_reader_t* reader, uint16_t* out)
 	return true;
 }
 
-//
-// Read an unsigned int from a buffer.
-//
 auto Reader_ReadInt32(buffer_reader_t* reader, uint32_t* out)
 {
 	byte* data;
@@ -221,9 +178,6 @@ auto Reader_ReadInt32(buffer_reader_t* reader, uint32_t* out)
 	return true;
 }
 
-//
-// Read a string from a buffer.
-//
 char* Reader_ReadString(buffer_reader_t* reader)
 {
 	byte* data;

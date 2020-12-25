@@ -13,9 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __STLIB__
 #define __STLIB__
-
 
 // We are referring to patches.
 #include "r_defs.h"

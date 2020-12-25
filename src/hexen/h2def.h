@@ -11,12 +11,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/common.h"
+
 #ifndef __H2DEF__
 #define __H2DEF__
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
 #include "st_start.h"
 #include "d_ticcmd.h"
