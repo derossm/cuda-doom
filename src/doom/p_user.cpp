@@ -41,11 +41,7 @@ bool		onground;
 // P_Thrust
 // Moves the given origin along a given angle.
 //
-void
-P_Thrust
-( player_t*	player,
- angle_t	angle,
- fixed_t	move )
+void P_Thrust(player_t* player, angle_t angle, fixed_t move)
 {
 	angle >>= ANGLETOFINESHIFT;
 
@@ -412,7 +408,7 @@ void P_PlayerThink (player_t* player)
 		// even if cheated.
 		if ((newweapon != wp_plasma
 			&& newweapon != wp_bfg)
-		|| (gamemode != shareware) )
+		|| (gamemode != GameMode_t::shareware) )
 		{
 		player->pendingweapon = newweapon;
 		}

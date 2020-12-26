@@ -396,7 +396,7 @@ void R_DrawViewBorder()
 	if (scaledviewwidth == SCREENWIDTH)
 		return;
 
-	if (gamemode == shareware)
+	if (gamemode == GameMode_t::shareware)
 	{
 		src = W_CacheLumpName(DEH_String("FLOOR04"), pu_tags_t::PU_CACHE);
 	}
@@ -462,7 +462,7 @@ void R_DrawTopBorder()
 	if (scaledviewwidth == SCREENWIDTH)
 		return;
 
-	if (gamemode == shareware)
+	if (gamemode == GameMode_t::shareware)
 	{
 		src = W_CacheLumpName(DEH_String("FLOOR04"), pu_tags_t::PU_CACHE);
 	}

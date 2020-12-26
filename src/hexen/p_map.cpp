@@ -361,7 +361,7 @@ bool PIT_CheckThing(mobj_t * thing)
 	BlockingMobj = thing;
 	if (tmthing->flags2 & MF2_PASSMOBJ)
 	{							// check if a mobj passed over/under another object
-		if (tmthing->type == MT_BISHOP && thing->type == MT_BISHOP)
+		if (tmthing->type == mobjtype_t::MT_BISHOP && thing->type == mobjtype_t::MT_BISHOP)
 		{						// don't let bishops fly over other bishops
 			return false;
 		}
@@ -379,7 +379,7 @@ bool PIT_CheckThing(mobj_t * thing)
 	// Check for skulls slamming into things
 	if (tmthing->flags & MF_SKULLFLY)
 	{
-		if (tmthing->type == MT_MINOTAUR)
+		if (tmthing->type == mobjtype_t::MT_MINOTAUR)
 		{
 			// Slamming minotaurs shouldn't move non-creatures
 			if (!(thing->flags & MF_COUNTKILL))
@@ -387,7 +387,7 @@ bool PIT_CheckThing(mobj_t * thing)
 				return (false);
 			}
 		}
-		else if (tmthing->type == MT_HOLY_FX)
+		else if (tmthing->type == mobjtype_t::MT_HOLY_FX)
 		{
 			if (thing->flags & MF_SHOOTABLE && thing != tmthing->target)
 			{
@@ -420,15 +420,15 @@ bool PIT_CheckThing(mobj_t * thing)
 					{
 						P_SpawnMobj(tmthing->x, tmthing->y, tmthing->z,
 									MT_HOLY_PUFF);
-						S_StartSound(tmthing, SFX_SPIRIT_ATTACK);
+						S_StartSound(tmthing, sfxenum_t::SFX_SPIRIT_ATTACK);
 						if (thing->flags & MF_COUNTKILL && P_Random() < 128
-							&& !S_GetSoundPlayingInfo(thing, SFX_PUPPYBEAT))
+							&& !S_GetSoundPlayingInfo(thing, sfxenum_t::SFX_PUPPYBEAT))
 						{
-							if ((thing->type == MT_CENTAUR) ||
-								(thing->type == MT_CENTAURLEADER) ||
-								(thing->type == MT_ETTIN))
+							if ((thing->type == mobjtype_t::MT_CENTAUR) ||
+								(thing->type == mobjtype_t::MT_CENTAURLEADER) ||
+								(thing->type == mobjtype_t::MT_ETTIN))
 							{
-								S_StartSound(thing, SFX_PUPPYBEAT);
+								S_StartSound(thing, sfxenum_t::SFX_PUPPYBEAT);
 							}
 						}
 					}
@@ -492,8 +492,8 @@ bool PIT_CheckThing(mobj_t * thing)
 				return false;
 			}
 		}
-		if (tmthing->type == MT_LIGHTNING_FLOOR
-			|| tmthing->type == MT_LIGHTNING_CEILING)
+		if (tmthing->type == mobjtype_t::MT_LIGHTNING_FLOOR
+			|| tmthing->type == mobjtype_t::MT_LIGHTNING_CEILING)
 		{
 			if (thing->flags & MF_SHOOTABLE && thing != tmthing->target)
 			{
@@ -505,8 +505,8 @@ bool PIT_CheckThing(mobj_t * thing)
 				if ((!thing->player && !(thing->flags2 & MF2_BOSS))
 					|| !(leveltime & 1))
 				{
-					if (thing->type == MT_CENTAUR
-						|| thing->type == MT_CENTAURLEADER)
+					if (thing->type == mobjtype_t::MT_CENTAUR
+						|| thing->type == mobjtype_t::MT_CENTAURLEADER)
 					{			// Lightning does more damage to centaurs
 						P_DamageMobj(thing, tmthing, tmthing->target, 9);
 					}
@@ -514,19 +514,18 @@ bool PIT_CheckThing(mobj_t * thing)
 					{
 						P_DamageMobj(thing, tmthing, tmthing->target, 3);
 					}
-					if (!(S_GetSoundPlayingInfo(tmthing,
-												SFX_MAGE_LIGHTNING_ZAP)))
+					if (!(S_GetSoundPlayingInfo(tmthing, sfxenum_t::SFX_MAGE_LIGHTNING_ZAP)))
 					{
-						S_StartSound(tmthing, SFX_MAGE_LIGHTNING_ZAP);
+						S_StartSound(tmthing, sfxenum_t::SFX_MAGE_LIGHTNING_ZAP);
 					}
 					if (thing->flags & MF_COUNTKILL && P_Random() < 64
-						&& !S_GetSoundPlayingInfo(thing, SFX_PUPPYBEAT))
+						&& !S_GetSoundPlayingInfo(thing, sfxenum_t::SFX_PUPPYBEAT))
 					{
-						if ((thing->type == MT_CENTAUR) ||
-							(thing->type == MT_CENTAURLEADER) ||
-							(thing->type == MT_ETTIN))
+						if ((thing->type == mobjtype_t::MT_CENTAUR) ||
+							(thing->type == mobjtype_t::MT_CENTAURLEADER) ||
+							(thing->type == mobjtype_t::MT_ETTIN))
 						{
-							S_StartSound(thing, SFX_PUPPYBEAT);
+							S_StartSound(thing, sfxenum_t::SFX_PUPPYBEAT);
 						}
 					}
 				}
@@ -535,7 +534,7 @@ bool PIT_CheckThing(mobj_t * thing)
 				{
 					return false;
 				}
-				if (tmthing->type == MT_LIGHTNING_FLOOR)
+				if (tmthing->type == mobjtype_t::MT_LIGHTNING_FLOOR)
 				{
 					if (tmthing->special2.m
 						&& !tmthing->special2.m->special1.m)
@@ -550,7 +549,7 @@ bool PIT_CheckThing(mobj_t * thing)
 			}
 			return true;		// lightning zaps through all sprites
 		}
-		else if (tmthing->type == MT_LIGHTNING_ZAP)
+		else if (tmthing->type == mobjtype_t::MT_LIGHTNING_ZAP)
 		{
 			mobj_t *lmo;
 
@@ -559,7 +558,7 @@ bool PIT_CheckThing(mobj_t * thing)
 				lmo = tmthing->special2.m;
 				if (lmo)
 				{
-					if (lmo->type == MT_LIGHTNING_FLOOR)
+					if (lmo->type == mobjtype_t::MT_LIGHTNING_FLOOR)
 					{
 						if (lmo->special2.m
 							&& !lmo->special2.m->special1.m)
@@ -578,15 +577,15 @@ bool PIT_CheckThing(mobj_t * thing)
 				}
 			}
 		}
-		else if (tmthing->type == MT_MSTAFF_FX2 && thing != tmthing->target)
+		else if (tmthing->type == mobjtype_t::MT_MSTAFF_FX2 && thing != tmthing->target)
 		{
 			if (!thing->player && !(thing->flags2 & MF2_BOSS))
 			{
 				switch (thing->type)
 				{
-					case MT_FIGHTER_BOSS:		// these not flagged boss
-					case MT_CLERIC_BOSS:		// so they can be blasted
-					case MT_MAGE_BOSS:
+					case mobjtype_t::MT_FIGHTER_BOSS:		// these not flagged boss
+					case mobjtype_t::MT_CLERIC_BOSS:		// so they can be blasted
+					case mobjtype_t::MT_MAGE_BOSS:
 						break;
 					default:
 						P_DamageMobj(thing, tmthing, tmthing->target, 10);
@@ -637,11 +636,11 @@ bool PIT_CheckThing(mobj_t * thing)
 			if (!(thing->flags & MF_NOBLOOD) &&
 				!(thing->flags2 & MF2_REFLECTIVE) &&
 				!(thing->flags2 & MF2_INVULNERABLE) &&
-				!(tmthing->type == MT_TELOTHER_FX1) &&
-				!(tmthing->type == MT_TELOTHER_FX2) &&
-				!(tmthing->type == MT_TELOTHER_FX3) &&
-				!(tmthing->type == MT_TELOTHER_FX4) &&
-				!(tmthing->type == MT_TELOTHER_FX5) && (P_Random() < 192))
+				!(tmthing->type == mobjtype_t::MT_TELOTHER_FX1) &&
+				!(tmthing->type == mobjtype_t::MT_TELOTHER_FX2) &&
+				!(tmthing->type == mobjtype_t::MT_TELOTHER_FX3) &&
+				!(tmthing->type == mobjtype_t::MT_TELOTHER_FX4) &&
+				!(tmthing->type == mobjtype_t::MT_TELOTHER_FX5) && (P_Random() < 192))
 			{
 				P_BloodSplatter(tmthing->x, tmthing->y, tmthing->z, thing);
 			}
@@ -1056,7 +1055,7 @@ bool P_TryMove(mobj_t * thing, fixed_t x, fixed_t y)
 		floatok = true;
 		if (!(thing->flags & MF_TELEPORT)
 			&& tmceilingz - thing->z < thing->height
-			&& thing->type != MT_LIGHTNING_CEILING
+			&& thing->type != mobjtype_t::MT_LIGHTNING_CEILING
 			&& !(thing->flags2 & MF2_FLY))
 		{						// mobj must lower itself to fit
 			goto pushline;
@@ -1077,7 +1076,7 @@ bool P_TryMove(mobj_t * thing, fixed_t x, fixed_t y)
 		}
 		if (!(thing->flags & MF_TELEPORT)
 			// The Minotaur floor fire (MT_MNTRFX2) can step up any amount
-			&& thing->type != MT_MNTRFX2 && thing->type != MT_LIGHTNING_FLOOR
+			&& thing->type != mobjtype_t::MT_MNTRFX2 && thing->type != mobjtype_t::MT_LIGHTNING_FLOOR
 			&& tmfloorz - thing->z > 24 * FRACUNIT)
 		{
 			goto pushline;
@@ -1776,7 +1775,7 @@ bool PTR_ShootTraverse(intercept_t * in)
 		if (!(in->d.thing->flags & MF_NOBLOOD) &&
 			!(in->d.thing->flags2 & MF2_INVULNERABLE))
 		{
-			if (PuffType == MT_AXEPUFF || PuffType == MT_AXEPUFF_GLOW)
+			if (PuffType == mobjtype_t::MT_AXEPUFF || PuffType == mobjtype_t::MT_AXEPUFF_GLOW)
 			{
 				P_BloodSplatter2(x, y, z, in->d.thing);
 			}
@@ -1785,7 +1784,7 @@ bool PTR_ShootTraverse(intercept_t * in)
 				P_BloodSplatter(x, y, z, in->d.thing);
 			}
 		}
-		if (PuffType == MT_FLAMEPUFF2)
+		if (PuffType == mobjtype_t::MT_FLAMEPUFF2)
 		{						// Cleric FlameStrike does fire damage
 			P_DamageMobj(th, &LavaInflictor, shootthing, la_damage);
 		}
@@ -1859,15 +1858,15 @@ void P_LineAttack(mobj_t * t1, angle_t angle, fixed_t distance, fixed_t slope,
 	{
 		switch (PuffType)
 		{
-			case MT_PUNCHPUFF:
-				S_StartSound(t1, SFX_FIGHTER_PUNCH_MISS);
+			case mobjtype_t::MT_PUNCHPUFF:
+				S_StartSound(t1, sfxenum_t::SFX_FIGHTER_PUNCH_MISS);
 				break;
-			case MT_HAMMERPUFF:
-			case MT_AXEPUFF:
-			case MT_AXEPUFF_GLOW:
-				S_StartSound(t1, SFX_FIGHTER_HAMMER_MISS);
+			case mobjtype_t::MT_HAMMERPUFF:
+			case mobjtype_t::MT_AXEPUFF:
+			case mobjtype_t::MT_AXEPUFF_GLOW:
+				S_StartSound(t1, sfxenum_t::SFX_FIGHTER_HAMMER_MISS);
 				break;
-			case MT_FLAMEPUFF:
+			case mobjtype_t::MT_FLAMEPUFF:
 				P_SpawnPuff(x2, y2, shootz + FixedMul(slope, distance));
 				break;
 			default:
@@ -1900,20 +1899,20 @@ bool PTR_UseTraverse(intercept_t * in)
 			{
 				switch (usething->player->playerClass)
 				{
-					case PCLASS_FIGHTER:
-						sound = SFX_PLAYER_FIGHTER_FAILED_USE;
+					case pclass_t::PCLASS_FIGHTER:
+						sound = sfxenum_t::SFX_PLAYER_FIGHTER_FAILED_USE;
 						break;
-					case PCLASS_CLERIC:
-						sound = SFX_PLAYER_CLERIC_FAILED_USE;
+					case pclass_t::PCLASS_CLERIC:
+						sound = sfxenum_t::SFX_PLAYER_CLERIC_FAILED_USE;
 						break;
-					case PCLASS_MAGE:
-						sound = SFX_PLAYER_MAGE_FAILED_USE;
+					case pclass_t::PCLASS_MAGE:
+						sound = sfxenum_t::SFX_PLAYER_MAGE_FAILED_USE;
 						break;
-					case PCLASS_PIG:
-						sound = SFX_PIG_ACTIVE1;
+					case pclass_t::PCLASS_PIG:
+						sound = sfxenum_t::SFX_PIG_ACTIVE1;
 						break;
 					default:
-						sound = SFX_NONE;
+						sound = sfxenum_t::SFX_NONE;
 						break;
 				}
 				S_StartSound(usething, sound);
@@ -1927,20 +1926,20 @@ bool PTR_UseTraverse(intercept_t * in)
 			{
 				switch (usething->player->playerClass)
 				{
-					case PCLASS_FIGHTER:
-						sound = SFX_PLAYER_FIGHTER_FAILED_USE;
+					case pclass_t::PCLASS_FIGHTER:
+						sound = sfxenum_t::SFX_PLAYER_FIGHTER_FAILED_USE;
 						break;
-					case PCLASS_CLERIC:
-						sound = SFX_PLAYER_CLERIC_FAILED_USE;
+					case pclass_t::PCLASS_CLERIC:
+						sound = sfxenum_t::SFX_PLAYER_CLERIC_FAILED_USE;
 						break;
-					case PCLASS_MAGE:
-						sound = SFX_PLAYER_MAGE_FAILED_USE;
+					case pclass_t::PCLASS_MAGE:
+						sound = sfxenum_t::SFX_PLAYER_MAGE_FAILED_USE;
 						break;
-					case PCLASS_PIG:
-						sound = SFX_PIG_ACTIVE1;
+					case pclass_t::PCLASS_PIG:
+						sound = sfxenum_t::SFX_PIG_ACTIVE1;
 						break;
 					default:
-						sound = SFX_NONE;
+						sound = sfxenum_t::SFX_NONE;
 						break;
 				}
 				S_StartSound(usething, sound);
@@ -2009,22 +2008,22 @@ bool PTR_PuzzleItemTraverse(intercept_t * in)
 			P_LineOpening(in->d.line);
 			if (openrange <= 0)
 			{
-				sound = SFX_NONE;
+				sound = sfxenum_t::SFX_NONE;
 				if (PuzzleItemUser->player)
 				{
 					switch (PuzzleItemUser->player->playerClass)
 					{
-						case PCLASS_FIGHTER:
-							sound = SFX_PUZZLE_FAIL_FIGHTER;
+						case pclass_t::PCLASS_FIGHTER:
+							sound = sfxenum_t::SFX_PUZZLE_FAIL_FIGHTER;
 							break;
-						case PCLASS_CLERIC:
-							sound = SFX_PUZZLE_FAIL_CLERIC;
+						case pclass_t::PCLASS_CLERIC:
+							sound = sfxenum_t::SFX_PUZZLE_FAIL_CLERIC;
 							break;
-						case PCLASS_MAGE:
-							sound = SFX_PUZZLE_FAIL_MAGE;
+						case pclass_t::PCLASS_MAGE:
+							sound = sfxenum_t::SFX_PUZZLE_FAIL_MAGE;
 							break;
 						default:
-							sound = SFX_NONE;
+							sound = sfxenum_t::SFX_NONE;
 							break;
 					}
 				}
@@ -2247,7 +2246,7 @@ bool PIT_ChangeSector(mobj_t * thing)
 				P_SetMobjState(thing, S_GIBS1);
 				thing->height = 0;
 				thing->radius = 0;
-				S_StartSound(thing, SFX_PLAYER_FALLING_SPLAT);
+				S_StartSound(thing, sfxenum_t::SFX_PLAYER_FALLING_SPLAT);
 			}
 		}
 		return true;			// keep checking

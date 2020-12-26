@@ -326,7 +326,7 @@ void P_LoadThings (int lump)
 		// Do not spawn cool, new monsters if !commercial
 		// STRIFE-TODO: replace with isregistered stuff
 		/*
-		if (gamemode != commercial)
+		if (gamemode != GameMode_t::commercial)
 		{
 			switch (SHORT(mt->type))
 			{
@@ -733,13 +733,7 @@ static void P_LoadReject(int lumpnum)
 //
 // P_SetupLevel
 //
-void
-P_SetupLevel
-( int		map,
- int		playermask,
- skill_t	skill)
-{
-	int		i;
+void P_SetupLevel(int map, int playermask, skill_t skill) { int		i;
 	char	lumpname[9];
 	int		lumpnum;
 

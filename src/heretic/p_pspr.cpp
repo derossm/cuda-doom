@@ -302,7 +302,7 @@ void P_CloseWeapons()
 		return;
 	}
 	spot = P_Random() % MaceSpotCount;
-	P_SpawnMobj(MaceSpots[spot].x, MaceSpots[spot].y, ONFLOORZ, MT_WMACE);
+	P_SpawnMobj(MaceSpots[spot].x, MaceSpots[spot].y, ONFLOORZ, mobjtype_t::MT_WMACE);
 }
 
 //---------------------------------------------------------------------------
@@ -725,7 +725,7 @@ void A_Lower(player_t * player, pspdef_t * psp)
 	{							// Not lowered all the way yet
 		return;
 	}
-	if (player->playerstate == PST_DEAD)
+	if (player->playerstate == PlayerState_t::PST_DEAD)
 	{							// Player is dead, so don't bring up a pending weapon
 		psp->sy = WEAPONBOTTOM;
 		return;
@@ -836,7 +836,7 @@ void A_BeakAttackPL1(player_t * player, pspdef_t * psp)
 	damage = 1 + (P_Random() & 3);
 	angle = player->mo->angle;
 	slope = P_AimLineAttack(player->mo, angle, MELEERANGE);
-	PuffType = MT_BEAKPUFF;
+	PuffType = mobjtype_t::MT_BEAKPUFF;
 	P_LineAttack(player->mo, angle, MELEERANGE, slope, damage);
 	if (linetarget)
 	{
@@ -864,7 +864,7 @@ void A_BeakAttackPL2(player_t * player, pspdef_t * psp)
 	damage = HITDICE(4);
 	angle = player->mo->angle;
 	slope = P_AimLineAttack(player->mo, angle, MELEERANGE);
-	PuffType = MT_BEAKPUFF;
+	PuffType = mobjtype_t::MT_BEAKPUFF;
 	P_LineAttack(player->mo, angle, MELEERANGE, slope, damage);
 	if (linetarget)
 	{
@@ -893,7 +893,7 @@ void A_StaffAttackPL1(player_t * player, pspdef_t * psp)
 	angle = player->mo->angle;
 	angle += P_SubRandom() << 18;
 	slope = P_AimLineAttack(player->mo, angle, MELEERANGE);
-	PuffType = MT_STAFFPUFF;
+	PuffType = mobjtype_t::MT_STAFFPUFF;
 	P_LineAttack(player->mo, angle, MELEERANGE, slope, damage);
 	if (linetarget)
 	{
@@ -922,7 +922,7 @@ void A_StaffAttackPL2(player_t * player, pspdef_t * psp)
 	angle = player->mo->angle;
 	angle += P_SubRandom() << 18;
 	slope = P_AimLineAttack(player->mo, angle, MELEERANGE);
-	PuffType = MT_STAFFPUFF2;
+	PuffType = mobjtype_t::MT_STAFFPUFF2;
 	P_LineAttack(player->mo, angle, MELEERANGE, slope, damage);
 	if (linetarget)
 	{
@@ -956,7 +956,7 @@ void A_FireBlasterPL1(player_t * player, pspdef_t * psp)
 	{
 		angle += P_SubRandom() << 18;
 	}
-	PuffType = MT_BLASTERPUFF1;
+	PuffType = mobjtype_t::MT_BLASTERPUFF1;
 	P_LineAttack(mo, angle, MISSILERANGE, bulletslope, damage);
 	S_StartSound(player->mo, sfx_blssht);
 }
@@ -973,7 +973,7 @@ void A_FireBlasterPL2(player_t * player, pspdef_t * psp)
 
 	player->ammo[am_blaster] -=
 		deathmatch ? USE_BLSR_AMMO_1 : USE_BLSR_AMMO_2;
-	mo = P_SpawnPlayerMissile(player->mo, MT_BLASTERFX1);
+	mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_BLASTERFX1);
 	if (mo)
 	{
 		mo->thinker.function = P_BlasterMobjThinker;
@@ -1002,7 +1002,7 @@ void A_FireGoldWandPL1(player_t * player, pspdef_t * psp)
 	{
 		angle += P_SubRandom() << 18;
 	}
-	PuffType = MT_GOLDWANDPUFF1;
+	PuffType = mobjtype_t::MT_GOLDWANDPUFF1;
 	P_LineAttack(mo, angle, MISSILERANGE, bulletslope, damage);
 	S_StartSound(player->mo, sfx_gldhit);
 }
@@ -1024,11 +1024,11 @@ void A_FireGoldWandPL2(player_t * player, pspdef_t * psp)
 	mo = player->mo;
 	player->ammo[am_goldwand] -=
 		deathmatch ? USE_GWND_AMMO_1 : USE_GWND_AMMO_2;
-	PuffType = MT_GOLDWANDPUFF2;
+	PuffType = mobjtype_t::MT_GOLDWANDPUFF2;
 	P_BulletSlope(mo);
 	momz = FixedMul(mobjinfo[MT_GOLDWANDFX2].speed, bulletslope);
-	P_SpawnMissileAngle(mo, MT_GOLDWANDFX2, mo->angle - (ANG45 / 8), momz);
-	P_SpawnMissileAngle(mo, MT_GOLDWANDFX2, mo->angle + (ANG45 / 8), momz);
+	P_SpawnMissileAngle(mo, mobjtype_t::MT_GOLDWANDFX2, mo->angle - (ANG45 / 8), momz);
+	P_SpawnMissileAngle(mo, mobjtype_t::MT_GOLDWANDFX2, mo->angle + (ANG45 / 8), momz);
 	angle = mo->angle - (ANG45 / 8);
 	for (i = 0; i < 5; i++)
 	{
@@ -1066,7 +1066,7 @@ void A_FireMacePL1B(player_t * player, pspdef_t * psp)
 	// Which simplifies to:
 	//	(pmo->flags2 & 1)
 	ball = P_SpawnMobj(pmo->x, pmo->y, pmo->z + 28 * FRACUNIT
-						- FOOTCLIPSIZE * (pmo->flags2 & 1), MT_MACEFX2);
+						- FOOTCLIPSIZE * (pmo->flags2 & 1), mobjtype_t::MT_MACEFX2);
 
 	ball->momz = 2 * FRACUNIT + ((player->lookdir) << (FRACBITS - 5));
 	angle = pmo->angle;
@@ -1104,7 +1104,7 @@ void A_FireMacePL1(player_t * player, pspdef_t * psp)
 	player->ammo[am_mace] -= USE_MACE_AMMO_1;
 	psp->sx = ((P_Random() & 3) - 2) * FRACUNIT;
 	psp->sy = WEAPONTOP + (P_Random() & 3) * FRACUNIT;
-	ball = P_SPMAngle(player->mo, MT_MACEFX1, player->mo->angle
+	ball = P_SPMAngle(player->mo, mobjtype_t::MT_MACEFX1, player->mo->angle
 						+ (((P_Random() & 7) - 4) << 24));
 	if (ball)
 	{
@@ -1196,7 +1196,7 @@ void A_MaceBallImpact2(mobj_t * ball)
 		ball->momz = (ball->momz * 192) >> 8;
 		P_SetMobjState(ball, ball->info->spawnstate);
 
-		tiny = P_SpawnMobj(ball->x, ball->y, ball->z, MT_MACEFX3);
+		tiny = P_SpawnMobj(ball->x, ball->y, ball->z, mobjtype_t::MT_MACEFX3);
 		angle = ball->angle + ANG90;
 		tiny->target = ball->target;
 		tiny->angle = angle;
@@ -1208,7 +1208,7 @@ void A_MaceBallImpact2(mobj_t * ball)
 		tiny->momz = ball->momz;
 		P_CheckMissileSpawn(tiny);
 
-		tiny = P_SpawnMobj(ball->x, ball->y, ball->z, MT_MACEFX3);
+		tiny = P_SpawnMobj(ball->x, ball->y, ball->z, mobjtype_t::MT_MACEFX3);
 		angle = ball->angle - ANG90;
 		tiny->target = ball->target;
 		tiny->angle = angle;
@@ -1233,7 +1233,7 @@ void A_FireMacePL2(player_t * player, pspdef_t * psp)
 	mobj_t *mo;
 
 	player->ammo[am_mace] -= deathmatch ? USE_MACE_AMMO_1 : USE_MACE_AMMO_2;
-	mo = P_SpawnPlayerMissile(player->mo, MT_MACEFX4);
+	mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_MACEFX4);
 	if (mo)
 	{
 		mo->momx += player->mo->momx;
@@ -1331,7 +1331,7 @@ void A_SpawnRippers(mobj_t * actor)
 
 	for (i = 0; i < 8; i++)
 	{
-		ripper = P_SpawnMobj(actor->x, actor->y, actor->z, MT_RIPPER);
+		ripper = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_RIPPER);
 		angle = i * ANG45;
 		ripper->target = actor->target;
 		ripper->angle = angle;
@@ -1354,9 +1354,9 @@ void A_FireCrossbowPL1(player_t * player, pspdef_t * psp)
 
 	pmo = player->mo;
 	player->ammo[am_crossbow] -= USE_CBOW_AMMO_1;
-	P_SpawnPlayerMissile(pmo, MT_CRBOWFX1);
-	P_SPMAngle(pmo, MT_CRBOWFX3, pmo->angle - (ANG45 / 10));
-	P_SPMAngle(pmo, MT_CRBOWFX3, pmo->angle + (ANG45 / 10));
+	P_SpawnPlayerMissile(pmo, mobjtype_t::MT_CRBOWFX1);
+	P_SPMAngle(pmo, mobjtype_t::MT_CRBOWFX3, pmo->angle - (ANG45 / 10));
+	P_SPMAngle(pmo, mobjtype_t::MT_CRBOWFX3, pmo->angle + (ANG45 / 10));
 }
 
 //----------------------------------------------------------------------------
@@ -1372,11 +1372,11 @@ void A_FireCrossbowPL2(player_t * player, pspdef_t * psp)
 	pmo = player->mo;
 	player->ammo[am_crossbow] -=
 		deathmatch ? USE_CBOW_AMMO_1 : USE_CBOW_AMMO_2;
-	P_SpawnPlayerMissile(pmo, MT_CRBOWFX2);
-	P_SPMAngle(pmo, MT_CRBOWFX2, pmo->angle - (ANG45 / 10));
-	P_SPMAngle(pmo, MT_CRBOWFX2, pmo->angle + (ANG45 / 10));
-	P_SPMAngle(pmo, MT_CRBOWFX3, pmo->angle - (ANG45 / 5));
-	P_SPMAngle(pmo, MT_CRBOWFX3, pmo->angle + (ANG45 / 5));
+	P_SpawnPlayerMissile(pmo, mobjtype_t::MT_CRBOWFX2);
+	P_SPMAngle(pmo, mobjtype_t::MT_CRBOWFX2, pmo->angle - (ANG45 / 10));
+	P_SPMAngle(pmo, mobjtype_t::MT_CRBOWFX2, pmo->angle + (ANG45 / 10));
+	P_SPMAngle(pmo, mobjtype_t::MT_CRBOWFX3, pmo->angle - (ANG45 / 5));
+	P_SPMAngle(pmo, mobjtype_t::MT_CRBOWFX3, pmo->angle + (ANG45 / 5));
 }
 
 //----------------------------------------------------------------------------
@@ -1391,7 +1391,7 @@ void A_BoltSpark(mobj_t * bolt)
 
 	if (P_Random() > 50)
 	{
-		spark = P_SpawnMobj(bolt->x, bolt->y, bolt->z, MT_CRBOWFX4);
+		spark = P_SpawnMobj(bolt->x, bolt->y, bolt->z, mobjtype_t::MT_CRBOWFX4);
 		spark->x += P_SubRandom() << 10;
 		spark->y += P_SubRandom() << 10;
 	}
@@ -1412,7 +1412,7 @@ void A_FireSkullRodPL1(player_t * player, pspdef_t * psp)
 		return;
 	}
 	player->ammo[am_skullrod] -= USE_SKRD_AMMO_1;
-	mo = P_SpawnPlayerMissile(player->mo, MT_HORNRODFX1);
+	mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_HORNRODFX1);
 	// Randomize the first frame
 	if (mo && P_Random() > 128)
 	{
@@ -1434,7 +1434,7 @@ void A_FireSkullRodPL2(player_t * player, pspdef_t * psp)
 {
 	player->ammo[am_skullrod] -=
 		deathmatch ? USE_SKRD_AMMO_1 : USE_SKRD_AMMO_2;
-	P_SpawnPlayerMissile(player->mo, MT_HORNRODFX2);
+	P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_HORNRODFX2);
 	// Use MissileMobj instead of the return value from
 	// P_SpawnPlayerMissile because we need to give info to the mobj
 	// even if it exploded immediately.
@@ -1558,7 +1558,7 @@ void A_SkullRodStorm(mobj_t * actor)
 	}
 	x = actor->x + ((P_Random() & 127) - 64) * FRACUNIT;
 	y = actor->y + ((P_Random() & 127) - 64) * FRACUNIT;
-	mo = P_SpawnMobj(x, y, ONCEILINGZ, MT_RAINPLR1 + actor->special2.i);
+	mo = P_SpawnMobj(x, y, ONCEILINGZ, mobjtype_t::MT_RAINPLR1 + actor->special2.i);
 	mo->target = actor->target;
 	mo->momx = 1;				// Force collision detection
 	mo->momz = -mo->info->speed;
@@ -1611,8 +1611,8 @@ void A_FirePhoenixPL1(player_t * player, pspdef_t * psp)
 	angle_t angle;
 
 	player->ammo[am_phoenixrod] -= USE_PHRD_AMMO_1;
-	P_SpawnPlayerMissile(player->mo, MT_PHOENIXFX1);
-	//P_SpawnPlayerMissile(player->mo, MT_MNTRFX2);
+	P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_PHOENIXFX1);
+	//P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_MNTRFX2);
 	angle = player->mo->angle + ANG180;
 	angle >>= ANGLETOFINESHIFT;
 	player->mo->momx += FixedMul(4 * FRACUNIT, finecosine[angle]);
@@ -1631,13 +1631,13 @@ void A_PhoenixPuff(mobj_t * actor)
 	angle_t angle;
 
 	P_SeekerMissile(actor, ANG1_X * 5, ANG1_X * 10);
-	puff = P_SpawnMobj(actor->x, actor->y, actor->z, MT_PHOENIXPUFF);
+	puff = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_PHOENIXPUFF);
 	angle = actor->angle + ANG90;
 	angle >>= ANGLETOFINESHIFT;
 	puff->momx = FixedMul((fixed_t)(FRACUNIT * 1.3), finecosine[angle]);
 	puff->momy = FixedMul((fixed_t)(FRACUNIT * 1.3), finesine[angle]);
 	puff->momz = 0;
-	puff = P_SpawnMobj(actor->x, actor->y, actor->z, MT_PHOENIXPUFF);
+	puff = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_PHOENIXPUFF);
 	angle = actor->angle - ANG90;
 	angle >>= ANGLETOFINESHIFT;
 	puff->momx = FixedMul((fixed_t)(FRACUNIT * 1.3), finecosine[angle]);
@@ -1699,7 +1699,7 @@ void A_FirePhoenixPL2(player_t * player, pspdef_t * psp)
 		z -= FOOTCLIPSIZE;
 	}
 	slope = ((player->lookdir) << FRACBITS) / 173 + (FRACUNIT / 10);
-	mo = P_SpawnMobj(x, y, z, MT_PHOENIXFX2);
+	mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_PHOENIXFX2);
 	mo->target = pmo;
 	mo->angle = angle;
 	mo->momx = pmo->momx + FixedMul(mo->info->speed,
@@ -1769,14 +1769,14 @@ void A_GauntletAttack(player_t * player, pspdef_t * psp)
 		damage = HITDICE(2);
 		dist = 4 * MELEERANGE;
 		angle += P_SubRandom() << 17;
-		PuffType = MT_GAUNTLETPUFF2;
+		PuffType = mobjtype_t::MT_GAUNTLETPUFF2;
 	}
 	else
 	{
 		damage = HITDICE(2);
 		dist = MELEERANGE + 1;
 		angle += P_SubRandom() << 18;
-		PuffType = MT_GAUNTLETPUFF1;
+		PuffType = mobjtype_t::MT_GAUNTLETPUFF1;
 	}
 	slope = P_AimLineAttack(player->mo, angle, dist);
 	P_LineAttack(player->mo, angle, dist, slope, damage);

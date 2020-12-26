@@ -590,7 +590,7 @@ void P_InitSlidingDoorFrames()
 	int		f4;
 
 	// DOOM II ONLY...
-	if ( gamemode != commercial)
+	if ( gamemode != GameMode_t::commercial)
 	return;
 
 	for (i = 0;i < MAXSLIDEDOORS; i++)
@@ -728,7 +728,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
 	slidedoor_t*	door;
 
 	// DOOM II ONLY...
-	if (gamemode != commercial)
+	if (gamemode != GameMode_t::commercial)
 	return;
 
 	// Make sure door isn't already being animated

@@ -793,7 +793,7 @@ void P_KillMobj( mobj_t* source, mobj_t* target)
 
 	target->flags &= ~(MF_SHOOTABLE|MF_FLOAT|MF_SKULLFLY);
 
-	if (target->type != MT_SKULL)
+	if (target->type != mobjtype_t::MT_SKULL)
 	{
 		target->flags &= ~MF_NOGRAVITY;
 	}
@@ -830,7 +830,7 @@ void P_KillMobj( mobj_t* source, mobj_t* target)
 		}
 
 		target->flags &= ~MF_SOLID;
-		target->player->playerstate = PST_DEAD;
+		target->player->playerstate = PlayerState_t::PST_DEAD;
 		P_DropWeapon(target->player);
 		// [crispy] center view when dying
 		target->player->centering = true;
@@ -848,7 +848,7 @@ void P_KillMobj( mobj_t* source, mobj_t* target)
 	}
 
 	// [crispy] Lost Soul, Pain Elemental and Barrel explosions are translucent
-	if (target->type == MT_SKULL || target->type == MT_PAIN || target->type == MT_BARREL)
+	if (target->type == mobjtype_t::MT_SKULL || target->type == mobjtype_t::MT_PAIN || target->type == mobjtype_t::MT_BARREL)
 	{
 		target->flags |= MF_TRANSLUCENT;
 	}
@@ -887,7 +887,7 @@ void P_KillMobj( mobj_t* source, mobj_t* target)
 	// Drop stuff.
 	// This determines the kind of object spawned
 	// during the death frame of a thing.
-	if (target->info->droppeditem != MT_NULL) // [crispy] drop generalization
+	if (target->info->droppeditem != mobjtype_t::MT_NULL) // [crispy] drop generalization
 	{
 		item = target->info->droppeditem;
 	}
@@ -1042,8 +1042,8 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 
 	target->reactiontime = 0;		// we're awake now...
 
-	if ( (!target->threshold || target->type == MT_VILE) && source && (source != target || gameversion <= GameVersion_t::exe_doom_1_2)
-		&& source->type != MT_VILE)
+	if ( (!target->threshold || target->type == mobjtype_t::MT_VILE) && source && (source != target || gameversion <= GameVersion_t::exe_doom_1_2)
+		&& source->type != mobjtype_t::MT_VILE)
 	{
 		// if not intent on another player,
 		// chase after this one

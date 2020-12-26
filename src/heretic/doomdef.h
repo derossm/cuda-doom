@@ -164,7 +164,7 @@ struct mobj_t
 	mobj_t* target;						// thing being chased/attacked (or NULL) also the originator for missiles
 	int reactiontime;					// if non 0, don't attack yet used by player to freeze a bit after teleporting
 	int threshold;						// if >0, the target will be chased no matter what (even if shot)
-	player_t* player;					// only valid if type == MT_PLAYER
+	player_t* player;					// only valid if type == mobjtype_t::MT_PLAYER
 	int lastlook;						// player number last looked for
 
 	mapthing_t spawnpoint;				// for nightmare respawn

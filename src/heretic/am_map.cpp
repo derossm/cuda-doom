@@ -374,17 +374,17 @@ void AM_initVariables()
 				continue;
 			}
 			mo = (mobj_t *) think;
-			if (mo->type == MT_CKEY)
+			if (mo->type == mobjtype_t::MT_CKEY)
 			{
 				KeyPoints[0].x = mo->x;
 				KeyPoints[0].y = mo->y;
 			}
-			else if (mo->type == MT_AKYY)
+			else if (mo->type == mobjtype_t::MT_AKYY)
 			{
 				KeyPoints[1].x = mo->x;
 				KeyPoints[1].y = mo->y;
 			}
-			else if (mo->type == MT_BKYY)
+			else if (mo->type == mobjtype_t::MT_BKYY)
 			{
 				KeyPoints[2].x = mo->x;
 				KeyPoints[2].y = mo->y;
@@ -1518,7 +1518,7 @@ void AM_Drawer()
 		AM_drawkeys();
 	}
 
-	if (gamemode == retail)
+	if (gamemode == GameMode_t::retail)
 	{
 		numepisodes = 5;
 	}

@@ -727,7 +727,7 @@ void IN_DrawSingleStats()
 
 	// [crispy] offset the stats for Ep.4 and up, to make room for level time
 	int yoffset = 0;
-	if (gamemode == retail && gameepisode > 3)
+	if (gamemode == GameMode_t::retail && gameepisode > 3)
 	{
 		yoffset = 20;
 	}
@@ -789,7 +789,7 @@ void IN_DrawSingleStats()
 	}
 
 	// [crispy] ignore "now entering" if it's the final intermission
-	if (gamemode != retail || gameepisode <= 3 || finalintermission)
+	if (gamemode != GameMode_t::retail || gameepisode <= 3 || finalintermission)
 	{
 		IN_DrTextB(DEH_String("TIME"), 85, 150);
 		IN_DrawTime(155, 150, hours, minutes, seconds);
@@ -846,7 +846,7 @@ void IN_DrawCoopStats()
 		{
 			V_DrawShadowedPatch(25, ypos,
 								W_CacheLumpNum(patchFaceOkayBase + i,
-												PU_CACHE));
+												pu_tags_t::PU_CACHE));
 			if (intertime < 40)
 			{
 				sounds = 0;
@@ -904,11 +904,11 @@ void IN_DrawDMStats()
 									((ypos << FRACBITS) +
 										dSlideY[i] * intertime) >> FRACBITS,
 									W_CacheLumpNum(patchFaceOkayBase + i,
-													PU_CACHE));
+													pu_tags_t::PU_CACHE));
 				V_DrawShadowedPatch(((xpos << FRACBITS) +
 										dSlideX[i] * intertime) >> FRACBITS, 18,
 									W_CacheLumpNum(patchFaceDeadBase + i,
-													PU_CACHE));
+													pu_tags_t::PU_CACHE));
 			}
 		}
 		sounds = 0;
@@ -932,19 +932,19 @@ void IN_DrawDMStats()
 			{
 				V_DrawShadowedPatch(40, ypos,
 									W_CacheLumpNum(patchFaceOkayBase + i,
-													PU_CACHE));
+													pu_tags_t::PU_CACHE));
 				V_DrawShadowedPatch(xpos, 18,
 									W_CacheLumpNum(patchFaceDeadBase + i,
-													PU_CACHE));
+													pu_tags_t::PU_CACHE));
 			}
 			else
 			{
 				V_DrawTLPatch(40, ypos,
 								W_CacheLumpNum(patchFaceOkayBase + i,
-												PU_CACHE));
+												pu_tags_t::PU_CACHE));
 				V_DrawTLPatch(xpos, 18,
 								W_CacheLumpNum(patchFaceDeadBase + i,
-												PU_CACHE));
+												pu_tags_t::PU_CACHE));
 			}
 			kpos = 86;
 			for (j = 0; j < MAXPLAYERS; j++)

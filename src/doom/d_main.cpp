@@ -621,7 +621,7 @@ void D_DoAdvanceDemo()
 
 	// [crispy] get rid of this demo sequence breaking bug
 	/*
-	if (gameversion == exe_ultimate || gameversion == exe_final)
+	if (gameversion == GameVersion_t::exe_ultimate || gameversion == GameVersion_t::exe_final)
 	*/
 	if (W_CheckNumForName(DEH_String("demo4")) >= 0)
 	{
@@ -895,15 +895,15 @@ void D_IdentifyVersion()
 		{
 			// Ultimate Doom
 
-			gamemode = retail;
+			gamemode = GameMode_t::retail;
 		}
 		else if (W_CheckNumForName("E3M1") > 0)
 		{
-			gamemode = registered;
+			gamemode = GameMode_t::registered;
 		}
 		else
 		{
-			gamemode = shareware;
+			gamemode = GameMode_t::shareware;
 		}
 	}
 	else
@@ -911,7 +911,7 @@ void D_IdentifyVersion()
 		int p;
 
 		// Doom 2 of some kind.
-		gamemode = commercial;
+		gamemode = GameMode_t::commercial;
 
 		// We can manually override the gamemission that we got from the
 		// IWAD detection code. This allows us to eg. play Plutonia 2
@@ -945,17 +945,17 @@ static void D_SetGameDescription()
 		{
 			gamedescription = GetGameName("Freedoom: Phase 1");
 		}
-		else if (gamemode == retail)
+		else if (gamemode == GameMode_t::retail)
 		{
 			// Ultimate Doom
 
 			gamedescription = GetGameName("The Ultimate DOOM");
 		}
-		else if (gamemode == registered)
+		else if (gamemode == GameMode_t::registered)
 		{
 			gamedescription = GetGameName("DOOM Registered");
 		}
-		else if (gamemode == shareware)
+		else if (gamemode == GameMode_t::shareware)
 		{
 			gamedescription = GetGameName("DOOM Shareware");
 		}
@@ -1134,19 +1134,19 @@ static void InitGameVersion()
 		{
 			// chex.exe - identified by iwad filename
 
-			gameversion = exe_chex;
+			gameversion = GameVersion_t::exe_chex;
 		}
 		else if (gamemission == pack_hacx)
 		{
 			// hacx.exe: identified by iwad filename
 
-			gameversion = exe_hacx;
+			gameversion = GameVersion_t::exe_hacx;
 		}
-		else if (gamemode == shareware || gamemode == registered
-				|| (gamemode == commercial && gamemission == doom2))
+		else if (gamemode == GameMode_t::shareware || gamemode == GameMode_t::registered
+				|| (gamemode == GameMode_t::commercial && gamemission == doom2))
 		{
 			// original
-			gameversion = exe_doom_1_9;
+			gameversion = GameVersion_t::exe_doom_1_9;
 
 			// Detect version from demo lump
 			for (i = 1; i <= 3; ++i)
@@ -1165,19 +1165,19 @@ static void InitGameVersion()
 						case 2:
 						case 3:
 						case 4:
-							gameversion = exe_doom_1_2;
+							gameversion = GameVersion_t::exe_doom_1_2;
 							break;
 						case 106:
-							gameversion = exe_doom_1_666;
+							gameversion = GameVersion_t::exe_doom_1_666;
 							break;
 						case 107:
-							gameversion = exe_doom_1_7;
+							gameversion = GameVersion_t::exe_doom_1_7;
 							break;
 						case 108:
-							gameversion = exe_doom_1_8;
+							gameversion = GameVersion_t::exe_doom_1_8;
 							break;
 						case 109:
-							gameversion = exe_doom_1_9;
+							gameversion = GameVersion_t::exe_doom_1_9;
 							break;
 						default:
 							status = false;
@@ -1190,11 +1190,11 @@ static void InitGameVersion()
 				}
 			}
 		}
-		else if (gamemode == retail)
+		else if (gamemode == GameMode_t::retail)
 		{
-			gameversion = exe_ultimate;
+			gameversion = GameVersion_t::exe_ultimate;
 		}
-		else if (gamemode == commercial)
+		else if (gamemode == GameMode_t::commercial)
 		{
 			// Final Doom: tnt or plutonia
 			// Defaults to emulating the first Final Doom executable,
@@ -1202,26 +1202,26 @@ static void InitGameVersion()
 			// this as the default should mean that it plays back
 			// most demos correctly.
 
-			gameversion = exe_final;
+			gameversion = GameVersion_t::exe_final;
 		}
 	}
 
 	// Deathmatch 2.0 did not exist until Doom v1.4
-	if (gameversion <= exe_doom_1_2 && deathmatch == 2)
+	if (gameversion <= GameVersion_t::exe_doom_1_2 && deathmatch == 2)
 	{
 		deathmatch = 1;
 	}
 
 	// The original exe does not support retail - 4th episode not supported
 
-	if (gameversion < exe_ultimate && gamemode == retail)
+	if (gameversion < exe_ultimate && gamemode == GameMode_t::retail)
 	{
-		gamemode = registered;
+		gamemode = GameMode_t::registered;
 	}
 
 	// EXEs prior to the Final Doom exes do not support Final Doom.
 
-	if (gameversion < exe_final && gamemode == commercial
+	if (gameversion < exe_final && gamemode == GameMode_t::commercial
 		&& (gamemission == pack_tnt || gamemission == pack_plut))
 	{
 		gamemission = doom2;
@@ -1277,7 +1277,7 @@ static void LoadIwadDeh()
 	}
 
 	// If this is the HACX IWAD, we need to load the DEHACKED lump.
-	if (gameversion == exe_hacx)
+	if (gameversion == GameVersion_t::exe_hacx)
 	{
 		if (!DEH_LoadLumpByName("DEHACKED", true, false))
 		{
@@ -1288,7 +1288,7 @@ static void LoadIwadDeh()
 
 	// Chex Quest needs a separate Dehacked patch which must be downloaded
 	// and installed next to the IWAD.
-	if (gameversion == exe_chex)
+	if (gameversion == GameVersion_t::exe_chex)
 	{
 		char *chex_deh = NULL;
 		char *dirname;
@@ -1660,7 +1660,7 @@ void D_DoomMain ()
 	//
 	// Disable auto-loading of .wad and .deh files.
 	//
-	if (!M_ParmExists("-noautoload") && gamemode != shareware)
+	if (!M_ParmExists("-noautoload") && gamemode != GameMode_t::shareware)
 	{
 		char *autoload_dir;
 
@@ -1842,10 +1842,10 @@ void D_DoomMain ()
 	W_GenerateHashTable();
 
 	// [crispy] allow overriding of special-casing
-	if (!M_ParmExists("-noautoload") && gamemode != shareware)
+	if (!M_ParmExists("-noautoload") && gamemode != GameMode_t::shareware)
 	{
-	if (gamemode == retail &&
-		gameversion == exe_ultimate &&
+	if (gamemode == GameMode_t::retail &&
+		gameversion == GameVersion_t::exe_ultimate &&
 		gamevariant != freedoom)
 	{
 		D_LoadSigilWad();
@@ -1903,13 +1903,13 @@ void D_DoomMain ()
 	};
 	int i;
 
-	if ( gamemode == shareware)
+	if ( gamemode == GameMode_t::shareware)
 		I_Error(DEH_String("\nYou cannot -file with the shareware "
 					"version. Register!"));
 
 	// Check for fake IWAD with right name,
 	// but w/o all the lumps of the registered version.
-	if (gamemode == registered)
+	if (gamemode == GameMode_t::registered)
 		for (i = 0;i < 23; i++)
 		if (W_CheckNumForName(name[i])<0)
 			I_Error(DEH_String("\nThis is not the registered version."));
@@ -1940,7 +1940,7 @@ void D_DoomMain ()
 	// [crispy] check for SSG resources
 	crispy->havessg =
 	(
-		gamemode == commercial ||
+		gamemode == GameMode_t::commercial ||
 		(
 			W_CheckNumForName("sht2a0")			!= -1 && // [crispy] wielding/firing sprite sequence
 			I_GetSfxLumpNum(&S_sfx[sfx_dshtgn]) != -1 && // [crispy] firing sound
@@ -1951,18 +1951,18 @@ void D_DoomMain ()
 	);
 
 	// [crispy] check for presence of a 5th episode
-	crispy->haved1e5 = (gameversion == exe_ultimate) &&
+	crispy->haved1e5 = (gameversion == GameVersion_t::exe_ultimate) &&
 						(W_CheckNumForName("m_epi5") != -1) &&
 						(W_CheckNumForName("e5m1") != -1) &&
 						(W_CheckNumForName("wilv40") != -1);
 
 	// [crispy] check for presence of E1M10
-	crispy->havee1m10 = (gamemode == retail) &&
+	crispy->havee1m10 = (gamemode == GameMode_t::retail) &&
 						(W_CheckNumForName("e1m10") != -1) &&
 						(W_CheckNumForName("sewers") != -1);
 
 	// [crispy] check for presence of MAP33
-	crispy->havemap33 = (gamemode == commercial) &&
+	crispy->havemap33 = (gamemode == GameMode_t::commercial) &&
 						(W_CheckNumForName("map33") != -1) &&
 						(W_CheckNumForName("cwilv32") != -1);
 
@@ -2062,7 +2062,7 @@ void D_DoomMain ()
 
 	if (p)
 	{
-		if (gamemode == commercial)
+		if (gamemode == GameMode_t::commercial)
 			startmap = atoi(myargv[p+1]);
 		else
 		{
@@ -2174,7 +2174,7 @@ void D_DoomMain ()
 	// Moved this here so that MAP01 isn't constantly looked up
 	// in the main loop.
 
-	if (gamemode == commercial && W_CheckNumForName("map01") < 0)
+	if (gamemode == GameMode_t::commercial && W_CheckNumForName("map01") < 0)
 		storedemo = true;
 
 	if (M_CheckParmWithArgs("-statdump", 1))

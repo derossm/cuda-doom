@@ -249,7 +249,7 @@ static void InitializeFade(bool fadeIn)
 		{
 			Palette[i] = 0;
 			PaletteDelta[i] = FixedDiv((*((byte *) W_CacheLumpName("playpal",
-																	PU_CACHE) +
+																	pu_tags_t::PU_CACHE) +
 											i)) << FRACBITS, 70 * FRACUNIT);
 		}
 	}

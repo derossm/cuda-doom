@@ -150,7 +150,7 @@ bool NET_Query_CheckAddedToMaster(bool *result)
 		return false;
 	}
 
-	*result = registered_with_master;
+	*result = GameMode_t::registered_with_master;
 	return true;
 }
 
@@ -729,7 +729,7 @@ static void NET_QueryPrintCallback(net_addr_t *addr,
 	formatted_printf(4, "%i/%i ", data->num_players,
 									data->max_players);
 
-	if (data->gamemode != indetermined)
+	if (data->gamemode != GameMode_t::indetermined)
 	{
 		printf("(%s) ", GameDescription(data->gamemode,
 										data->gamemission));

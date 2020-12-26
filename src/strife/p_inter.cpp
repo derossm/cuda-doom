@@ -424,13 +424,13 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 	// haleyjd 09/21/10: corrected to test for SPECTRE thingtypes specifically
 	switch(special->type)
 	{
-	case MT_SPECTRE_A:
-	case MT_SPECTRE_B:
-	case MT_SPECTRE_C:
-	case MT_SPECTRE_D:
-	case MT_SPECTRE_E:
-	case MT_ENTITY:
-	case MT_SUBENTITY:
+	case mobjtype_t::MT_SPECTRE_A:
+	case mobjtype_t::MT_SPECTRE_B:
+	case mobjtype_t::MT_SPECTRE_C:
+	case mobjtype_t::MT_SPECTRE_D:
+	case mobjtype_t::MT_SPECTRE_E:
+	case mobjtype_t::MT_ENTITY:
+	case mobjtype_t::MT_SUBENTITY:
 		P_DamageMobj(toucher, NULL, NULL, 5);
 		return;
 	default:
@@ -583,13 +583,13 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 
 	// 1 Gold
 	case SPR_COIN:
-		P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+		P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		break;
 
 	// 10 Gold
 	case SPR_CRED:
 		for(i = 0; i < 10; i++)
-			P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+			P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		break;
 
 	// 25 Gold
@@ -599,19 +599,19 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 		if(special->health < 0)
 		{
 			for(i = special->health; i != 0; i++)
-				P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+				P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		}
 		else
 		{
 			for(i = 0; i < 25; i++)
-				P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+				P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		}
 		break;
 
 	// 50 Gold
 	case SPR_CHST:
 		for(i = 0; i < 50; i++)
-			P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+			P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		break;
 
 	// Leather Armor
@@ -654,11 +654,11 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 	// villsa [STRIFE] check default items
 	case SPR_TOKN:
 	default:
-		if(special->type >= MT_KEY_BASE && special->type <= MT_NEWKEY5)
+		if(special->type >= mobjtype_t::MT_KEY_BASE && special->type <= mobjtype_t::MT_NEWKEY5)
 		{
 			// haleyjd 09/21/10: Strife player still picks up keys that
 			// he has already found. (break, not return)
-			if(!P_GiveCard(player, special->type - MT_KEY_BASE))
+			if(!P_GiveCard(player, special->type - mobjtype_t::MT_KEY_BASE))
 				break;
 		}
 		else
@@ -731,7 +731,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 
 	// villsa [STRIFE] unused
 	/*
-	if (target->type != MT_SKULL)
+	if (target->type != mobjtype_t::MT_SKULL)
 		target->flags &= ~MF_NOGRAVITY;
 	*/
 
@@ -792,10 +792,10 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 					break;
 
 				item = target->player->inventory[0].type;
-				if(item == MT_MONY_1)
+				if(item == mobjtype_t::MT_MONY_1)
 				{
 					loot = P_SpawnMobj(target->x, target->y,
-										target->z + (24*FRACUNIT), MT_MONY_25);
+										target->z + (24*FRACUNIT), mobjtype_t::MT_MONY_25);
 
 					// [STRIFE] TODO - what the hell is it doing here?
 					loot->health = target->player->inventory[0].amount;
@@ -819,7 +819,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 		}
 
 		//target->flags &= ~MF_SOLID;
-		target->player->playerstate = PST_DEAD;
+		target->player->playerstate = PlayerState_t::PST_DEAD;
 		target->player->mo->momz += 5*FRACUNIT; // [STRIFE]: small hop!
 		P_DropWeapon(target->player);
 
@@ -859,54 +859,54 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 		// villsa [STRIFE] drop default items
 		switch(target->type)
 		{
-		case MT_ORACLE:
-			item = MT_MEAT;
+		case mobjtype_t::MT_ORACLE:
+			item = mobjtype_t::MT_MEAT;
 			break;
 
-		case MT_PROGRAMMER:
-			item = MT_SIGIL_A;
+		case mobjtype_t::MT_PROGRAMMER:
+			item = mobjtype_t::MT_SIGIL_A;
 			break;
 
-		case MT_PRIEST:
-			item = MT_JUNK;
+		case mobjtype_t::MT_PRIEST:
+			item = mobjtype_t::MT_JUNK;
 			break;
 
-		case MT_BISHOP:
-			item = MT_AMINIBOX;
+		case mobjtype_t::MT_BISHOP:
+			item = mobjtype_t::MT_AMINIBOX;
 			break;
 
-		case MT_PGUARD:
-		case MT_CRUSADER:
-			item = MT_ACELL;
+		case mobjtype_t::MT_PGUARD:
+		case mobjtype_t::MT_CRUSADER:
+			item = mobjtype_t::MT_ACELL;
 			break;
 
-		case MT_RLEADER:
-			item = MT_AAMMOBOX;
+		case mobjtype_t::MT_RLEADER:
+			item = mobjtype_t::MT_AAMMOBOX;
 			break;
 
-		case MT_GUARD1:
-		case MT_REBEL1:
-		case MT_SHADOWGUARD:
-			item = MT_ACLIP;
+		case mobjtype_t::MT_GUARD1:
+		case mobjtype_t::MT_REBEL1:
+		case mobjtype_t::MT_SHADOWGUARD:
+			item = mobjtype_t::MT_ACLIP;
 			break;
 
-		case MT_SPECTRE_B:
-			item = MT_SIGIL_B;
+		case mobjtype_t::MT_SPECTRE_B:
+			item = mobjtype_t::MT_SIGIL_B;
 			break;
 
-		case MT_SPECTRE_C:
-			item = MT_SIGIL_C;
+		case mobjtype_t::MT_SPECTRE_C:
+			item = mobjtype_t::MT_SIGIL_C;
 			break;
 
-		case MT_SPECTRE_D:
-			item = MT_SIGIL_D;
+		case mobjtype_t::MT_SPECTRE_D:
+			item = mobjtype_t::MT_SIGIL_D;
 			break;
 
-		case MT_SPECTRE_E:
-			item = MT_SIGIL_E;
+		case mobjtype_t::MT_SPECTRE_E:
+			item = mobjtype_t::MT_SIGIL_E;
 			break;
 
-		case MT_COUPLING:
+		case mobjtype_t::MT_COUPLING:
 			junk.tag = 225;
 			EV_DoDoor(&junk, vld_close);
 
@@ -915,7 +915,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 
 			GiveVoiceObjective("VOC13", "LOG13", 0);
 
-			item = MT_COUPLING_BROKEN;
+			item = mobjtype_t::MT_COUPLING_BROKEN;
 			players[0].questflags |= (1 << (mobjinfo[MT_COUPLING].speed - 1));
 			break;
 
@@ -927,7 +927,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 	// handle special case for scripted target's dropped item
 	switch(item)
 	{
-	case MT_TOKEN_SHOPCLOSE:
+	case mobjtype_t::MT_TOKEN_SHOPCLOSE:
 		junk.tag = 222;
 		EV_DoDoor(&junk, vld_close);
 		P_NoiseAlert(players[0].mo, players[0].mo);
@@ -939,21 +939,21 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 
 		return;
 
-	case MT_TOKEN_PRISON_PASS:
+	case mobjtype_t::MT_TOKEN_PRISON_PASS:
 		junk.tag = 223;
 		EV_DoDoor(&junk, vld_open);
 		return;
 
-	case MT_TOKEN_DOOR3:
+	case mobjtype_t::MT_TOKEN_DOOR3:
 		junk.tag = 224;
 		EV_DoDoor(&junk, vld_open);
 		return;
 
-	case MT_SIGIL_A:
-	case MT_SIGIL_B:
-	case MT_SIGIL_C:
-	case MT_SIGIL_D:
-	case MT_SIGIL_E:
+	case mobjtype_t::MT_SIGIL_A:
+	case mobjtype_t::MT_SIGIL_B:
+	case mobjtype_t::MT_SIGIL_C:
+	case mobjtype_t::MT_SIGIL_D:
+	case mobjtype_t::MT_SIGIL_E:
 		for(i = 0; i < MAXPLAYERS; i++)
 		{
 			if(!P_GiveWeapon(&players[i], wp_sigil, false))
@@ -969,7 +969,7 @@ void P_KillMobj(mobj_t* source, mobj_t* target)
 		}
 		return;
 
-	case MT_TOKEN_ALARM:
+	case mobjtype_t::MT_TOKEN_ALARM:
 		P_NoiseAlert(players[0].mo, players[0].mo);
 
 		M_snprintf(plrkilledmsg, sizeof(plrkilledmsg),
@@ -1003,11 +1003,11 @@ static bool P_IsMobjBoss(mobjtype_t type)
 {
 	switch(type)
 	{
-	case MT_PROGRAMMER:
-	case MT_BISHOP:
-	case MT_RLEADER:
-	case MT_ORACLE:
-	case MT_PRIEST:
+	case mobjtype_t::MT_PROGRAMMER:
+	case mobjtype_t::MT_BISHOP:
+	case mobjtype_t::MT_RLEADER:
+	case mobjtype_t::MT_ORACLE:
+	case mobjtype_t::MT_PRIEST:
 		return true;
 
 	default:
@@ -1055,7 +1055,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 	{
 		// players aren't damaged by their own (or others???) sigils
 		// STRIFE-TODO: verify in deathmatch
-		if(target->type == MT_PLAYER && inflictor->health == -1)
+		if(target->type == mobjtype_t::MT_PLAYER && inflictor->health == -1)
 			return;
 		// enemies aren't damaged by enemy sigil attacks
 		if((target->flags & MF_SPECTRAL) && inflictor->health == -2)
@@ -1063,9 +1063,9 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 		// Macil2, Oracle, and Spectre C cannot be damaged by Sigil A
 		switch(target->type)
 		{
-		case MT_RLEADER2:
-		case MT_ORACLE:
-		case MT_SPECTRE_C:
+		case mobjtype_t::MT_RLEADER2:
+		case mobjtype_t::MT_ORACLE:
+		case mobjtype_t::MT_SPECTRE_C:
 			// haleyjd: added source->player validity check for safety...
 			if(source->player && source->player->sigiltype < 1)
 				return;
@@ -1078,15 +1078,15 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 	if(inflictor)
 	{
 		// Fire damage inflictors
-		if(inflictor->type == MT_SFIREBALL ||
-			inflictor->type == MT_C_FLAME	||
-			inflictor->type == MT_PFLAME)
+		if(inflictor->type == mobjtype_t::MT_SFIREBALL ||
+			inflictor->type == mobjtype_t::MT_C_FLAME	||
+			inflictor->type == mobjtype_t::MT_PFLAME)
 		{
 			temp = damage / 2;
 
 			if(P_IsMobjBoss(target->type))
 				damage /= 2;
-			else if(inflictor->type == MT_PFLAME)
+			else if(inflictor->type == mobjtype_t::MT_PFLAME)
 			{
 				damage /= 2;
 				// robots take very little damage
@@ -1098,7 +1098,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 		{
 			switch(inflictor->type)
 			{
-			case MT_HOOKSHOT:
+			case mobjtype_t::MT_HOOKSHOT:
 				// haleyjd 20110203: should use source, not inflictor
 				ang = R_PointToAngle2(
 						target->x,
@@ -1119,7 +1119,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 				target->momz = (source->z - target->z) / temp;
 				break;
 
-			case MT_POISARROW:
+			case mobjtype_t::MT_POISARROW:
 				// don't affect robots
 				if(target->flags & MF_NOBLOOD)
 					return;
@@ -1143,8 +1143,8 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 	}
 
 	// villsa [STRIFE] special cases for shopkeepers and macil
-	if((target->type >= MT_SHOPKEEPER_W && target->type <= MT_SHOPKEEPER_M)
-		|| target->type == MT_RLEADER)
+	if((target->type >= mobjtype_t::MT_SHOPKEEPER_W && target->type <= mobjtype_t::MT_SHOPKEEPER_M)
+		|| target->type == mobjtype_t::MT_RLEADER)
 	{
 		if(source)
 			target->target = source;
@@ -1154,10 +1154,10 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 	}
 
 	// villsa [STRIFE] handle fieldguard damage
-	if(target->type == MT_FIELDGUARD)
+	if(target->type == mobjtype_t::MT_FIELDGUARD)
 	{
 		// degnin ores are only allowed to damage the fieldguard
-		if(!inflictor || inflictor->type != MT_DEGNINORE)
+		if(!inflictor || inflictor->type != mobjtype_t::MT_DEGNINORE)
 			return;
 
 		damage = target->health;
@@ -1217,9 +1217,9 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 		// villsa [STRIFE] flame attacks don't damage player if wearing envirosuit
 		if(player->powers[PowerType_t::pw_ironfeet] && inflictor)
 		{
-			if(inflictor->type == MT_SFIREBALL ||
-				inflictor->type == MT_C_FLAME	||
-				inflictor->type == MT_PFLAME)
+			if(inflictor->type == mobjtype_t::MT_SFIREBALL ||
+				inflictor->type == mobjtype_t::MT_C_FLAME	||
+				inflictor->type == mobjtype_t::MT_PFLAME)
 			{
 				damage = 0;
 			}
@@ -1283,16 +1283,16 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 	if(target->health <= 0)
 	{
 		// villsa [STRIFE] grenades hurt... OUCH
-		if(inflictor && inflictor->type == MT_HEGRENADE)
+		if(inflictor && inflictor->type == mobjtype_t::MT_HEGRENADE)
 			target->health = -target->info->spawnhealth;
 		else if(!(target->flags & MF_NOBLOOD))
 		{
 			// villsa [STRIFE] disintegration death
 			if(inflictor &&
-				(inflictor->type == MT_STRIFEPUFF3 ||
-					inflictor->type == MT_L_LASER		||
-					inflictor->type == MT_TORPEDO		||
-					inflictor->type == MT_TORPEDOSPREAD))
+				(inflictor->type == mobjtype_t::MT_STRIFEPUFF3 ||
+					inflictor->type == mobjtype_t::MT_L_LASER		||
+					inflictor->type == mobjtype_t::MT_TORPEDO		||
+					inflictor->type == mobjtype_t::MT_TORPEDOSPREAD))
 			{
 				S_StartSound(target, sfx_dsrptr);
 				target->health = -6666;
@@ -1302,9 +1302,9 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 		// villsa [STRIFE] flame death stuff
 		if(!(target->flags & MF_NOBLOOD)
 			&& inflictor
-			&& (inflictor->type == MT_SFIREBALL ||
-				inflictor->type == MT_C_FLAME	||
-				inflictor->type == MT_PFLAME))
+			&& (inflictor->type == mobjtype_t::MT_SFIREBALL ||
+				inflictor->type == mobjtype_t::MT_C_FLAME	||
+				inflictor->type == mobjtype_t::MT_PFLAME))
 		{
 			target->flags &= ~(MF_SHOOTABLE|MF_FLOAT|MF_SHADOW|MF_MVIS);
 			if(target->player)
@@ -1346,10 +1346,10 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 	target->reactiontime = 0;		// we're awake now...
 
 	// villsa [STRIFE] new checks for thing types
-	if (target->type != MT_PROGRAMMER
-		&& (!target->threshold || target->type == MT_ENTITY)
+	if (target->type != mobjtype_t::MT_PROGRAMMER
+		&& (!target->threshold || target->type == mobjtype_t::MT_ENTITY)
 		&& source && source != target
-		&& source->type != MT_ENTITY
+		&& source->type != mobjtype_t::MT_ENTITY
 		&& ((source->flags & MF_ALLY) != (target->flags & MF_ALLY)))
 	{
 		// if not intent on another player,

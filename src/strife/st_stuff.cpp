@@ -607,9 +607,9 @@ bool ST_Responder(event_t* ev)
 	if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_H], ev->data2))
 	{
 		// [STRIFE]: PUMPUPH gives medical inventory items
-		P_GiveItemToPlayer(plyr, SPR_STMP, MT_INV_MED1);
-		P_GiveItemToPlayer(plyr, SPR_MDKT, MT_INV_MED2);
-		P_GiveItemToPlayer(plyr, SPR_FULL, MT_INV_MED3);
+		P_GiveItemToPlayer(plyr, SPR_STMP, mobjtype_t::MT_INV_MED1);
+		P_GiveItemToPlayer(plyr, SPR_MDKT, mobjtype_t::MT_INV_MED2);
+		P_GiveItemToPlayer(plyr, SPR_FULL, mobjtype_t::MT_INV_MED3);
 		plyr->message = DEH_String("you got the stuff!");
 	}
 	if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_P], ev->data2))
@@ -629,8 +629,8 @@ bool ST_Responder(event_t* ev)
 	if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_S], ev->data2))
 	{
 		// [STRIFE]: PUMPUPS gives stamina and accuracy upgrades
-		P_GiveItemToPlayer(plyr, SPR_TOKN, MT_TOKEN_STAMINA);
-		P_GiveItemToPlayer(plyr, SPR_TOKN, MT_TOKEN_NEW_ACCURACY);
+		P_GiveItemToPlayer(plyr, SPR_TOKN, mobjtype_t::MT_TOKEN_STAMINA);
+		P_GiveItemToPlayer(plyr, SPR_TOKN, mobjtype_t::MT_TOKEN_NEW_ACCURACY);
 		plyr->message = DEH_String("you got the stuff!");
 	}
 	if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_T], ev->data2))
@@ -674,7 +674,7 @@ bool ST_Responder(event_t* ev)
 
 		// haleyjd 20130301: different bounds in v1.31
 		// Ohmygod - this is not going to work.
-		if(gameversion == exe_strife_1_31)
+		if(gameversion == GameVersion_t::exe_strife_1_31)
 		{
 			if ((isdemoversion && (map < 32 || map > 34)) ||
 				(isregistered && (map <= 0 || map > 34)))
@@ -720,7 +720,7 @@ bool ST_Responder(event_t* ev)
 	if(cht_CheckCheat(&cheat_midas, ev->data2))
 	{
 		plyr->message = DEH_String("YOU GOT THE MIDAS TOUCH, BABY");
-		P_GiveItemToPlayer(plyr, SPR_HELT, MT_TOKEN_TOUGHNESS);
+		P_GiveItemToPlayer(plyr, SPR_HELT, mobjtype_t::MT_TOKEN_TOUGHNESS);
 	}
 
 	// villsa [STRIFE]

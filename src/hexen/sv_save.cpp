@@ -426,8 +426,8 @@ static void StreamIn_player_t(player_t *str)
 		str->weaponowned[i] = SV_ReadLong();
 	}
 
-	// int mana[NUMMANA];
-	for (i=0; i<NUMMANA; ++i)
+	// int mana[ManaType_t::NUMMANA];
+	for (i=0; i<ManaType_t::NUMMANA; ++i)
 	{
 		str->mana[i] = SV_ReadLong();
 	}
@@ -595,8 +595,8 @@ static void StreamOut_player_t(player_t *str)
 		SV_WriteLong(str->weaponowned[i]);
 	}
 
-	// int mana[NUMMANA];
-	for (i=0; i<NUMMANA; ++i)
+	// int mana[ManaType_t::NUMMANA];
+	for (i=0; i<ManaType_t::NUMMANA; ++i)
 	{
 		SV_WriteLong(str->mana[i]);
 	}
@@ -717,25 +717,25 @@ static void StreamInMobjSpecials(mobj_t *mobj)
 	switch (mobj->type)
 	{
 			// Just special1
-		case MT_BISH_FX:
-		case MT_HOLY_FX:
-		case MT_DRAGON:
-		case MT_THRUSTFLOOR_UP:
-		case MT_THRUSTFLOOR_DOWN:
-		case MT_MINOTAUR:
-		case MT_SORCFX1:
+		case mobjtype_t::MT_BISH_FX:
+		case mobjtype_t::MT_HOLY_FX:
+		case mobjtype_t::MT_DRAGON:
+		case mobjtype_t::MT_THRUSTFLOOR_UP:
+		case mobjtype_t::MT_THRUSTFLOOR_DOWN:
+		case mobjtype_t::MT_MINOTAUR:
+		case mobjtype_t::MT_SORCFX1:
 			SetMobjPtr(&mobj->special1.m, special1);
 			break;
 
 			// Just special2
-		case MT_LIGHTNING_FLOOR:
-		case MT_LIGHTNING_ZAP:
+		case mobjtype_t::MT_LIGHTNING_FLOOR:
+		case mobjtype_t::MT_LIGHTNING_ZAP:
 			SetMobjPtr(&mobj->special2.m, special2);
 			break;
 
 			// Both special1 and special2
-		case MT_HOLY_TAIL:
-		case MT_LIGHTNING_CEILING:
+		case mobjtype_t::MT_HOLY_TAIL:
+		case mobjtype_t::MT_LIGHTNING_CEILING:
 			SetMobjPtr(&mobj->special1.m, special1);
 			SetMobjPtr(&mobj->special2.m, special2);
 			break;
@@ -902,14 +902,14 @@ static void StreamOutMobjSpecials(mobj_t *mobj)
 	switch (mobj->type)
 	{
 			// Just special1
-		case MT_BISH_FX:
-		case MT_HOLY_FX:
-		case MT_DRAGON:
-		case MT_THRUSTFLOOR_UP:
-		case MT_THRUSTFLOOR_DOWN:
-		case MT_MINOTAUR:
-		case MT_SORCFX1:
-		case MT_MSTAFF_FX2:
+		case mobjtype_t::MT_BISH_FX:
+		case mobjtype_t::MT_HOLY_FX:
+		case mobjtype_t::MT_DRAGON:
+		case mobjtype_t::MT_THRUSTFLOOR_UP:
+		case mobjtype_t::MT_THRUSTFLOOR_DOWN:
+		case mobjtype_t::MT_MINOTAUR:
+		case mobjtype_t::MT_SORCFX1:
+		case mobjtype_t::MT_MSTAFF_FX2:
 			if (corpse)
 			{
 				special1 = MOBJ_NULL;
@@ -921,8 +921,8 @@ static void StreamOutMobjSpecials(mobj_t *mobj)
 			break;
 
 			// Just special2
-		case MT_LIGHTNING_FLOOR:
-		case MT_LIGHTNING_ZAP:
+		case mobjtype_t::MT_LIGHTNING_FLOOR:
+		case mobjtype_t::MT_LIGHTNING_ZAP:
 			if (corpse)
 			{
 				special2 = MOBJ_NULL;
@@ -934,8 +934,8 @@ static void StreamOutMobjSpecials(mobj_t *mobj)
 			break;
 
 			// Both special1 and special2
-		case MT_HOLY_TAIL:
-		case MT_LIGHTNING_CEILING:
+		case mobjtype_t::MT_HOLY_TAIL:
+		case mobjtype_t::MT_LIGHTNING_CEILING:
 			if (corpse)
 			{
 				special1 = MOBJ_NULL;
@@ -949,7 +949,7 @@ static void StreamOutMobjSpecials(mobj_t *mobj)
 			break;
 
 			// Miscellaneous
-		case MT_KORAX:
+		case mobjtype_t::MT_KORAX:
 			special1 = 0; // Searching index
 			break;
 
@@ -2215,9 +2215,9 @@ void SV_MapTeleport(int map, int position)
 
 		if (netgame)
 		{
-			if (players[i].playerstate == PST_DEAD)
+			if (players[i].playerstate == PlayerState_t::PST_DEAD)
 			{					// In a network game, force all players to be alive
-				players[i].playerstate = PST_REBORN;
+				players[i].playerstate = PlayerState_t::PST_REBORN;
 			}
 			if (!deathmatch)
 			{					// Cooperative net-play, retain keys and weapons
@@ -2229,7 +2229,7 @@ void SV_MapTeleport(int map, int position)
 				}
 			}
 		}
-		playerWasReborn = (players[i].playerstate == PST_REBORN);
+		playerWasReborn = (players[i].playerstate == PlayerState_t::PST_REBORN);
 		if (deathmatch)
 		{
 			memset(players[i].frags, 0, sizeof(players[i].frags));
@@ -2622,7 +2622,7 @@ static void UnarchiveMobjs()
 
 	AssertSegment(ASEG_MOBJS);
 	TargetPlayerAddrs = Z_Malloc<decltype(TargetPlayerAddrs)>(MAX_TARGET_PLAYERS * sizeof(mobj_t **),
-									PU_STATIC, NULL);
+									pu_tags_t::PU_STATIC, NULL);
 	TargetPlayerCount = 0;
 	MobjCount = SV_ReadLong();
 	MobjList = Z_Malloc<decltype(MobjList)>(MobjCount * sizeof(mobj_t *), pu_tags_t::PU_STATIC, NULL);

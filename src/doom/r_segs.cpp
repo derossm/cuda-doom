@@ -181,11 +181,7 @@ void R_FixWiggle (sector_t *sector)
 //
 // R_RenderMaskedSegRange
 //
-void
-R_RenderMaskedSegRange
-( drawseg_t*	ds,
- int		x1,
- int		x2 )
+void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 {
 	unsigned	index;
 	column_t*	col;
@@ -521,10 +517,7 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 // A wall segment will be drawn
 // between start and stop pixels (inclusive).
 //
-void
-R_StoreWallRange
-( int	start,
- int	stop )
+void R_StoreWallRange(int start, int stop)
 {
 	fixed_t		vtop;
 	int			lightnum;

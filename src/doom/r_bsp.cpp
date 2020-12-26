@@ -39,10 +39,7 @@ drawseg_t*	ds_p;
 int		numdrawsegs = 0;
 
 
-void
-R_StoreWallRange
-( int	start,
- int	stop );
+void R_StoreWallRange(int start, int stop);
 
 
 
@@ -91,10 +88,7 @@ cliprange_t	solidsegs[MAXSEGS];
 // e.g. single sided LineDefs (middle texture)
 // that entirely block the view.
 //
-void
-R_ClipSolidWallSegment
-( int			first,
- int			last )
+void R_ClipSolidWallSegment(int first, int last)
 {
 	cliprange_t*	next;
 	cliprange_t*	start;
@@ -184,10 +178,7 @@ R_ClipSolidWallSegment
 // Does handle windows,
 // e.g. LineDefs with upper and lower texture.
 //
-void
-R_ClipPassWallSegment
-( int	first,
- int	last )
+void R_ClipPassWallSegment(int first, int last)
 {
 	cliprange_t*	start;
 

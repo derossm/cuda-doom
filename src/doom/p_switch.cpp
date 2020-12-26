@@ -193,12 +193,7 @@ void P_InitSwitchList()
 //
 // Start a button counting down till it turns off.
 //
-void
-P_StartButton
-( line_t*	line,
- bwhere_e	w,
- int		texture,
- int		time )
+void P_StartButton(line_t* line, bwhere_e w, int texture, int time)
 {
 	int		i;
 
@@ -251,10 +246,7 @@ P_StartButton
 // Function that changes wall texture.
 // Tell it if switch is ok to use again (1=yes, it's a button).
 //
-void
-P_ChangeSwitchTexture
-( line_t*	line,
- int		useAgain )
+void P_ChangeSwitchTexture(line_t* line, int useAgain)
 {
 	int		texTop;
 	int		texMid;
@@ -338,11 +330,7 @@ P_ChangeSwitchTexture
 // Called when a thing uses a special line.
 // Only the front sides of lines are usable.
 //
-bool
-P_UseSpecialLine
-( mobj_t*	thing,
- line_t*	line,
- int		side )
+bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
 {
 
 	// Err...

@@ -608,7 +608,7 @@ void D_AdvanceDemo ()
 //
 void D_DoAdvanceDemo ()
 {
-	players[consoleplayer].playerstate = PST_LIVE; // not reborn
+	players[consoleplayer].playerstate = PlayerState_t::PST_LIVE; // not reborn
 	advancedemo = false;
 	usergame = false;				// no save / end game here
 	paused = false;
@@ -836,7 +836,7 @@ void D_IdentifyVersion()
 	// * if strife0.wad is found, set isdemoversion = true
 
 	// Make sure gamemode is set up correctly
-	gamemode = commercial;
+	gamemode = GameMode_t::commercial;
 	gamemission = strife;
 	isregistered = true;
 
@@ -1066,7 +1066,7 @@ static void InitGameVersion()
 	}
 	else
 	{
-		gameversion = exe_strife_1_31;
+		gameversion = GameVersion_t::exe_strife_1_31;
 	}
 }
 
@@ -1889,14 +1889,14 @@ void D_DoomMain ()
 
 		// haleyjd 08/22/2010: [STRIFE] Changed string to match binary
 		// STRIFE-FIXME: Needs to test isdemoversion variable
-		if ( gamemode == shareware)
+		if ( gamemode == GameMode_t::shareware)
 			I_Error(DEH_String("\nYou cannot -file with the demo "
 								"version. You must buy the real game!"));
 
 		// Check for fake IWAD with right name,
 		// but w/o all the lumps of the registered version.
 		// STRIFE-FIXME: Needs to test isregistered variable
-		if (gamemode == registered)
+		if (gamemode == GameMode_t::registered)
 			for (i = 0; i < 3; i++)
 				if (W_CheckNumForName(name[i])<0)
 					I_Error(DEH_String("\nThis is not the registered version."));
@@ -1989,7 +1989,7 @@ void D_DoomMain ()
 
 	if (p)
 	{
-		if (gamemode == commercial)
+		if (gamemode == GameMode_t::commercial)
 			startmap = atoi (myargv[p+1]);
 		else
 		{
@@ -2123,7 +2123,7 @@ void D_DoomMain ()
 	// in the main loop.
 	// haleyjd 08/23/2010: [STRIFE] There is no storedemo version of Strife
 	/*
-	if (gamemode == commercial && W_CheckNumForName("map01") < 0)
+	if (gamemode == GameMode_t::commercial && W_CheckNumForName("map01") < 0)
 		storedemo = true;
 	*/
 

@@ -475,7 +475,7 @@ void P_LoadThings (int lump)
 	spawn = true;
 
 	// Do not spawn cool, new monsters if !commercial
-	if (gamemode != commercial)
+	if (gamemode != GameMode_t::commercial)
 	{
 		switch (SHORT(mt->type))
 		{
@@ -1034,7 +1034,7 @@ int P_GetNumForMap (int episode, int map, bool critical)
 	char lumpname[9];
 
 	// find map name
-	if ( gamemode == commercial)
+	if ( gamemode == GameMode_t::commercial)
 	{
 	if (map<10)
 		DEH_snprintf(lumpname, 9, "map0%i", map);
@@ -1075,12 +1075,7 @@ lumpinfo_t *maplumpinfo;
 //
 // P_SetupLevel
 //
-void
-P_SetupLevel
-( int		episode,
- int		map,
- int		playermask,
- skill_t	skill)
+void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 {
 	int		i;
 	char	lumpname[9];
@@ -1159,7 +1154,7 @@ P_SetupLevel
 // [crispy] factor out map lump name and number finding into a separate function
 /*
 	// find map name
-	if ( gamemode == commercial)
+	if ( gamemode == GameMode_t::commercial)
 	{
 	if (map<10)
 		DEH_snprintf(lumpname, 9, "map0%i", map);
@@ -1270,7 +1265,7 @@ P_SetupLevel
 
 	}
 	// [crispy] support MUSINFO lump (dynamic music changing)
-	if (gamemode != shareware)
+	if (gamemode != GameMode_t::shareware)
 	{
 	S_ParseMusInfo(lumpname);
 	}

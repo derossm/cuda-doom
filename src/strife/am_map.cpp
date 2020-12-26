@@ -245,10 +245,7 @@ static bool stopped = true;
 // segment in map coordinates (with the upright y-axis n' all) so
 // that it can be used with the brain-dead drawing stuff.
 
-void
-AM_getIslope
-( mline_t*	ml,
- islope_t*	is )
+void AM_getIslope(mline_t* ml, islope_t* is)
 {
 	int dx, dy;
 
@@ -854,10 +851,7 @@ void AM_clearFB(int color)
 // faster reject and precalculated slopes. If the speed is needed,
 // use a hash algorithm to handle the common cases.
 //
-bool
-AM_clipMline
-( mline_t*	ml,
- fline_t*	fl )
+bool AM_clipMline(mline_t* ml, fline_t* fl)
 {
 	enum
 	{
@@ -990,10 +984,7 @@ AM_clipMline
 //
 // Classic Bresenham w/ whatever optimizations needed for speed
 //
-void
-AM_drawFline
-( fline_t*	fl,
- int		color )
+void AM_drawFline(fline_t* fl, int color)
 {
 	register int x;
 	register int y;
@@ -1068,10 +1059,7 @@ AM_drawFline
 //
 // Clip lines, draw visible part sof lines.
 //
-void
-AM_drawMline
-( mline_t*	ml,
- int		color )
+void AM_drawMline(mline_t* ml, int color)
 {
 	static fline_t fl;
 
@@ -1199,11 +1187,7 @@ void AM_drawWalls()
 // Rotation in 2D.
 // Used to rotate player arrow line character.
 //
-void
-AM_rotate
-( fixed_t*	x,
- fixed_t*	y,
- angle_t	a )
+void AM_rotate(fixed_t* x, fixed_t* y, angle_t a)
 {
 	fixed_t tmpx;
 
@@ -1218,15 +1202,7 @@ AM_rotate
 	*x = tmpx;
 }
 
-void
-AM_drawLineCharacter
-( mline_t*	lineguy,
- int		lineguylines,
- fixed_t	scale,
- angle_t	angle,
- int		color,
- fixed_t	x,
- fixed_t	y )
+void AM_drawLineCharacter(mline_t* lineguy, int lineguylines, fixed_t scale, angle_t angle, int color, fixed_t x, fixed_t y)
 {
 	int		i;
 	mline_t	l;

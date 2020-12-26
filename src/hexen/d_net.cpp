@@ -50,7 +50,7 @@ static void PlayerQuitGame(player_t *player)
 	M_StringCopy(exitmsg, "PLAYER 1 LEFT THE GAME", sizeof(exitmsg));
 	exitmsg[7] += player_num;
 	P_SetMessage(&players[consoleplayer], exitmsg, true);
-	S_StartSound(NULL, SFX_CHAT);
+	S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 
 	playeringame[player_num] = false;
 
@@ -125,9 +125,9 @@ static void LoadGameSettings(net_gamesettings_t *settings)
 		playeringame[i] = i < settings->num_players;
 		PlayerClass[i] = settings->player_classes[i];
 
-		if (PlayerClass[i] >= NUMCLASSES)
+		if (PlayerClass[i] >= pclass_t::NUMCLASSES)
 		{
-			PlayerClass[i] = PCLASS_FIGHTER;
+			PlayerClass[i] = pclass_t::pclass_t::PCLASS_FIGHTER;
 		}
 	}
 }
@@ -150,7 +150,7 @@ static void SaveGameSettings(net_gamesettings_t *settings)
 	settings->map = startmap;
 	settings->skill = startskill;
 	// TODO settings->loadgame = startloadgame;
-	settings->gameversion = exe_hexen_1_1;
+	settings->gameversion = GameVersion_t::exe_hexen_1_1;
 	settings->nomonsters = nomonsters;
 	settings->respawn_monsters = respawnparm;
 	settings->timelimit = 0;
@@ -195,7 +195,7 @@ static void InitConnectData(net_connect_data_t *connect_data)
 	}
 	else
 	{
-		connect_data->player_class = PCLASS_FIGHTER;
+		connect_data->player_class = pclass_t::pclass_t::PCLASS_FIGHTER;
 	}
 
 	// Read checksums of our WAD directory and dehacked information

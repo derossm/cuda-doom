@@ -496,9 +496,9 @@ bool P_LookForMonsters(mobj_t * actor)
 		{						// Out of sight
 			continue;
 		}
-		if (actor->type == MT_MINOTAUR)
+		if (actor->type == mobjtype_t::MT_MINOTAUR)
 		{
-			if ((mo->type == MT_MINOTAUR) &&
+			if ((mo->type == mobjtype_t::MT_MINOTAUR) &&
 				(mo->target != actor->special1.p->mo))
 			{
 				continue;
@@ -584,7 +584,7 @@ bool P_LookForPlayers(mobj_t * actor, bool allaround)
 				return (false);
 			}
 		}
-		if (actor->type == MT_MINOTAUR)
+		if (actor->type == mobjtype_t::MT_MINOTAUR)
 		{
 			if (actor->special1.p == player)
 			{
@@ -780,13 +780,13 @@ void A_Chase(mobj_t * actor)
 //
 	if (actor->info->activesound && P_Random() < 3)
 	{
-		if (actor->type == MT_BISHOP && P_Random() < 128)
+		if (actor->type == mobjtype_t::MT_BISHOP && P_Random() < 128)
 		{
 			S_StartSound(actor, actor->info->seesound);
 		}
-		else if (actor->type == MT_PIG)
+		else if (actor->type == mobjtype_t::MT_PIG)
 		{
-			S_StartSound(actor, SFX_PIG_ACTIVE1 + (P_Random() & 1));
+			S_StartSound(actor, sfxenum_t::SFX_PIG_ACTIVE1 + (P_Random() & 1));
 		}
 		else if (actor->flags2 & MF2_BOSS)
 		{
@@ -866,7 +866,7 @@ void A_SetReflective(mobj_t * actor)
 {
 	actor->flags2 |= MF2_REFLECTIVE;
 
-	if ((actor->type == MT_CENTAUR) || (actor->type == MT_CENTAURLEADER))
+	if ((actor->type == mobjtype_t::MT_CENTAUR) || (actor->type == mobjtype_t::MT_CENTAURLEADER))
 	{
 		A_SetInvulnerable(actor);
 	}
@@ -882,7 +882,7 @@ void A_UnSetReflective(mobj_t * actor)
 {
 	actor->flags2 &= ~MF2_REFLECTIVE;
 
-	if ((actor->type == MT_CENTAUR) || (actor->type == MT_CENTAURLEADER))
+	if ((actor->type == mobjtype_t::MT_CENTAUR) || (actor->type == mobjtype_t::MT_CENTAURLEADER))
 	{
 		A_UnSetInvulnerable(actor);
 	}
@@ -915,10 +915,10 @@ bool P_UpdateMorphedMonster(mobj_t * actor, int tics)
 	moType = actor->special2.i;
 	switch (moType)
 	{
-		case MT_WRAITHB:		// These must remain morphed
-		case MT_SERPENT:
-		case MT_SERPENTLEADER:
-		case MT_MINOTAUR:
+		case mobjtype_t::MT_WRAITHB:		// These must remain morphed
+		case mobjtype_t::MT_SERPENT:
+		case mobjtype_t::MT_SERPENTLEADER:
+		case mobjtype_t::MT_MINOTAUR:
 			return (false);
 		default:
 			break;
@@ -954,8 +954,8 @@ bool P_UpdateMorphedMonster(mobj_t * actor, int tics)
 	mo->special = oldMonster.special;
 	memcpy(mo->args, oldMonster.args, 5);
 	P_InsertMobjIntoTIDList(mo, oldMonster.tid);
-	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, MT_TFOG);
-	S_StartSound(fog, SFX_TELEPORT);
+	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
+	S_StartSound(fog, sfxenum_t::SFX_TELEPORT);
 	return (true);
 }
 
@@ -1008,7 +1008,7 @@ void A_PigAttack(mobj_t * actor)
 	if (P_CheckMeleeRange(actor))
 	{
 		P_DamageMobj(actor->target, actor, actor, 2 + (P_Random() & 1));
-		S_StartSound(actor, SFX_PIG_ATTACK);
+		S_StartSound(actor, sfxenum_t::SFX_PIG_ATTACK);
 	}
 }
 
@@ -1221,7 +1221,7 @@ void A_MinotaurLook(mobj_t * actor)
 				continue;
 			if ((mo == master) || (mo == actor))
 				continue;
-			if ((mo->type == MT_MINOTAUR) &&
+			if ((mo->type == mobjtype_t::MT_MINOTAUR) &&
 				(mo->special1.m == actor->special1.m))
 				continue;
 			actor->target = mo;
@@ -1311,7 +1311,7 @@ void A_MinotaurAtk1(mobj_t * actor)
 	if (!actor->target)
 		return;
 
-	S_StartSound(actor, SFX_MAULATOR_HAMMER_SWING);
+	S_StartSound(actor, sfxenum_t::SFX_MAULATOR_HAMMER_SWING);
 	if (P_CheckMeleeRange(actor))
 	{
 		P_DamageMobj(actor->target, actor, actor, HITDICE(4));
@@ -1381,7 +1381,7 @@ void A_MinotaurCharge(mobj_t * actor)
 
 	if (actor->args[4] > 0)
 	{
-		puff = P_SpawnMobj(actor->x, actor->y, actor->z, MT_PUNCHPUFF);
+		puff = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_PUNCHPUFF);
 		puff->momz = 2 * FRACUNIT;
 		actor->args[4]--;
 	}
@@ -1409,22 +1409,22 @@ void A_MinotaurAtk2(mobj_t * actor)
 	if (!actor->target)
 		return;
 
-	S_StartSound(actor, SFX_MAULATOR_HAMMER_SWING);
+	S_StartSound(actor, sfxenum_t::SFX_MAULATOR_HAMMER_SWING);
 	if (P_CheckMeleeRange(actor))
 	{
 		P_DamageMobj(actor->target, actor, actor, HITDICE(3));
 		return;
 	}
-	mo = P_SpawnMissile(actor, actor->target, MT_MNTRFX1);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_MNTRFX1);
 	if (mo)
 	{
 		//S_StartSound(mo, sfx_minat2);
 		momz = mo->momz;
 		angle = mo->angle;
-		P_SpawnMissileAngle(actor, MT_MNTRFX1, angle - (ANG45 / 8), momz);
-		P_SpawnMissileAngle(actor, MT_MNTRFX1, angle + (ANG45 / 8), momz);
-		P_SpawnMissileAngle(actor, MT_MNTRFX1, angle - (ANG45 / 16), momz);
-		P_SpawnMissileAngle(actor, MT_MNTRFX1, angle + (ANG45 / 16), momz);
+		P_SpawnMissileAngle(actor, mobjtype_t::MT_MNTRFX1, angle - (ANG45 / 8), momz);
+		P_SpawnMissileAngle(actor, mobjtype_t::MT_MNTRFX1, angle + (ANG45 / 8), momz);
+		P_SpawnMissileAngle(actor, mobjtype_t::MT_MNTRFX1, angle - (ANG45 / 16), momz);
+		P_SpawnMissileAngle(actor, mobjtype_t::MT_MNTRFX1, angle + (ANG45 / 16), momz);
 	}
 }
 
@@ -1455,10 +1455,10 @@ void A_MinotaurAtk3(mobj_t * actor)
 	}
 	else
 	{
-		mo = P_SpawnMissile(actor, actor->target, MT_MNTRFX2);
+		mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_MNTRFX2);
 		if (mo != NULL)
 		{
-			S_StartSound(mo, SFX_MAULATOR_HAMMER_HIT);
+			S_StartSound(mo, sfxenum_t::SFX_MAULATOR_HAMMER_HIT);
 		}
 	}
 	if (P_Random() < 192 && actor->special2.i == 0)
@@ -1514,23 +1514,23 @@ void A_Scream(mobj_t * actor)
 			// Handle the different player death screams
 			if (actor->momz <= -39 * FRACUNIT)
 			{					// Falling splat
-				sound = SFX_PLAYER_FALLING_SPLAT;
+				sound = sfxenum_t::SFX_PLAYER_FALLING_SPLAT;
 			}
 			else if (actor->health > -50)
 			{					// Normal death sound
 				switch (actor->player->playerClass)
 				{
-					case PCLASS_FIGHTER:
-						sound = SFX_PLAYER_FIGHTER_NORMAL_DEATH;
+					case pclass_t::PCLASS_FIGHTER:
+						sound = sfxenum_t::SFX_PLAYER_FIGHTER_NORMAL_DEATH;
 						break;
-					case PCLASS_CLERIC:
-						sound = SFX_PLAYER_CLERIC_NORMAL_DEATH;
+					case pclass_t::PCLASS_CLERIC:
+						sound = sfxenum_t::SFX_PLAYER_CLERIC_NORMAL_DEATH;
 						break;
-					case PCLASS_MAGE:
-						sound = SFX_PLAYER_MAGE_NORMAL_DEATH;
+					case pclass_t::PCLASS_MAGE:
+						sound = sfxenum_t::SFX_PLAYER_MAGE_NORMAL_DEATH;
 						break;
 					default:
-						sound = SFX_NONE;
+						sound = sfxenum_t::SFX_NONE;
 						break;
 				}
 			}
@@ -1538,17 +1538,17 @@ void A_Scream(mobj_t * actor)
 			{					// Crazy death sound
 				switch (actor->player->playerClass)
 				{
-					case PCLASS_FIGHTER:
-						sound = SFX_PLAYER_FIGHTER_CRAZY_DEATH;
+					case pclass_t::PCLASS_FIGHTER:
+						sound = sfxenum_t::SFX_PLAYER_FIGHTER_CRAZY_DEATH;
 						break;
-					case PCLASS_CLERIC:
-						sound = SFX_PLAYER_CLERIC_CRAZY_DEATH;
+					case pclass_t::PCLASS_CLERIC:
+						sound = sfxenum_t::SFX_PLAYER_CLERIC_CRAZY_DEATH;
 						break;
-					case PCLASS_MAGE:
-						sound = SFX_PLAYER_MAGE_CRAZY_DEATH;
+					case pclass_t::PCLASS_MAGE:
+						sound = sfxenum_t::SFX_PLAYER_MAGE_CRAZY_DEATH;
 						break;
 					default:
-						sound = SFX_NONE;
+						sound = sfxenum_t::SFX_NONE;
 						break;
 				}
 			}
@@ -1556,17 +1556,17 @@ void A_Scream(mobj_t * actor)
 			{					// Extreme death sound
 				switch (actor->player->playerClass)
 				{
-					case PCLASS_FIGHTER:
-						sound = SFX_PLAYER_FIGHTER_EXTREME1_DEATH;
+					case pclass_t::PCLASS_FIGHTER:
+						sound = sfxenum_t::SFX_PLAYER_FIGHTER_EXTREME1_DEATH;
 						break;
-					case PCLASS_CLERIC:
-						sound = SFX_PLAYER_CLERIC_EXTREME1_DEATH;
+					case pclass_t::PCLASS_CLERIC:
+						sound = sfxenum_t::SFX_PLAYER_CLERIC_EXTREME1_DEATH;
 						break;
-					case PCLASS_MAGE:
-						sound = SFX_PLAYER_MAGE_EXTREME1_DEATH;
+					case pclass_t::PCLASS_MAGE:
+						sound = sfxenum_t::SFX_PLAYER_MAGE_EXTREME1_DEATH;
 						break;
 					default:
-						sound = SFX_NONE;
+						sound = sfxenum_t::SFX_NONE;
 						break;
 				}
 				sound += P_Random() % 3;		// Three different extreme deaths
@@ -1619,8 +1619,8 @@ void A_NoBlocking(mobj_t * actor)
 /*	switch(actor->type)
 	{
 		// Add the monster dropped items here
-		case MT_MUMMYLEADERGHOST:
-			P_DropItem(actor, MT_AMGWNDWIMPY, 3, 84);
+		case mobjtype_t::MT_MUMMYLEADERGHOST:
+			P_DropItem(actor, mobjtype_t::MT_AMGWNDWIMPY, 3, 84);
 			break;
 		default:
 			break;
@@ -1647,64 +1647,64 @@ void A_Explode(mobj_t * actor)
 	damageSelf = true;
 	switch (actor->type)
 	{
-		case MT_FIREBOMB:		// Time Bombs
+		case mobjtype_t::MT_FIREBOMB:		// Time Bombs
 			actor->z += 32 * FRACUNIT;
 			actor->flags &= ~MF_SHADOW;
 			break;
-		case MT_MNTRFX2:		// Minotaur floor fire
+		case mobjtype_t::MT_MNTRFX2:		// Minotaur floor fire
 			damage = 24;
 			break;
-		case MT_BISHOP:		// Bishop radius death
+		case mobjtype_t::MT_BISHOP:		// Bishop radius death
 			damage = 25 + (P_Random() & 15);
 			break;
-		case MT_HAMMER_MISSILE:		// Fighter Hammer
+		case mobjtype_t::MT_HAMMER_MISSILE:		// Fighter Hammer
 			damage = 128;
 			damageSelf = false;
 			break;
-		case MT_FSWORD_MISSILE:		// Fighter Runesword
+		case mobjtype_t::MT_FSWORD_MISSILE:		// Fighter Runesword
 			damage = 64;
 			damageSelf = false;
 			break;
-		case MT_CIRCLEFLAME:	// Cleric Flame secondary flames
+		case mobjtype_t::MT_CIRCLEFLAME:	// Cleric Flame secondary flames
 			damage = 20;
 			damageSelf = false;
 			break;
-		case MT_SORCBALL1:		// Sorcerer balls
-		case MT_SORCBALL2:
-		case MT_SORCBALL3:
+		case mobjtype_t::MT_SORCBALL1:		// Sorcerer balls
+		case mobjtype_t::MT_SORCBALL2:
+		case mobjtype_t::MT_SORCBALL3:
 			distance = 255;
 			damage = 255;
 			actor->args[0] = 1; // don't play bounce
 			break;
-		case MT_SORCFX1:		// Sorcerer spell 1
+		case mobjtype_t::MT_SORCFX1:		// Sorcerer spell 1
 			damage = 30;
 			break;
-		case MT_SORCFX4:		// Sorcerer spell 4
+		case mobjtype_t::MT_SORCFX4:		// Sorcerer spell 4
 			damage = 20;
 			break;
-		case MT_TREEDESTRUCTIBLE:
+		case mobjtype_t::MT_TREEDESTRUCTIBLE:
 			damage = 10;
 			break;
-		case MT_DRAGON_FX2:
+		case mobjtype_t::MT_DRAGON_FX2:
 			damage = 80;
 			damageSelf = false;
 			break;
-		case MT_MSTAFF_FX:
+		case mobjtype_t::MT_MSTAFF_FX:
 			damage = 64;
 			distance = 192;
 			damageSelf = false;
 			break;
-		case MT_MSTAFF_FX2:
+		case mobjtype_t::MT_MSTAFF_FX2:
 			damage = 80;
 			distance = 192;
 			damageSelf = false;
 			break;
-		case MT_POISONCLOUD:
+		case mobjtype_t::MT_POISONCLOUD:
 			damage = 4;
 			distance = 40;
 			break;
-		case MT_ZXMAS_TREE:
-		case MT_ZSHRUB2:
+		case mobjtype_t::MT_ZXMAS_TREE:
+		case mobjtype_t::MT_ZSHRUB2:
 			damage = 30;
 			distance = 64;
 			break;
@@ -1713,7 +1713,7 @@ void A_Explode(mobj_t * actor)
 	}
 	P_RadiusAttack(actor, actor->target, damage, distance, damageSelf);
 	if (actor->z <= actor->floorz + (distance << FRACBITS)
-		&& actor->type != MT_POISONCLOUD)
+		&& actor->type != mobjtype_t::MT_POISONCLOUD)
 	{
 		P_HitFloor(actor);
 	}
@@ -1799,7 +1799,7 @@ void A_CheckSkullFloor(mobj_t * actor)
 	if (actor->z <= actor->floorz)
 	{
 		P_SetMobjState(actor, S_BLOODYSKULLX1);
-		S_StartSound(actor, SFX_DRIP);
+		S_StartSound(actor, sfxenum_t::SFX_DRIP);
 	}
 }
 
@@ -1917,29 +1917,29 @@ void P_InitCreatureCorpseQueue(bool corpseScan)
 		// Only corpses that call A_QueueCorpse from death routine
 		switch (mo->type)
 		{
-			case MT_CENTAUR:
-			case MT_CENTAURLEADER:
-			case MT_DEMON:
-			case MT_DEMON2:
-			case MT_WRAITH:
-			case MT_WRAITHB:
-			case MT_BISHOP:
-			case MT_ETTIN:
-			case MT_PIG:
-			case MT_CENTAUR_SHIELD:
-			case MT_CENTAUR_SWORD:
-			case MT_DEMONCHUNK1:
-			case MT_DEMONCHUNK2:
-			case MT_DEMONCHUNK3:
-			case MT_DEMONCHUNK4:
-			case MT_DEMONCHUNK5:
-			case MT_DEMON2CHUNK1:
-			case MT_DEMON2CHUNK2:
-			case MT_DEMON2CHUNK3:
-			case MT_DEMON2CHUNK4:
-			case MT_DEMON2CHUNK5:
-			case MT_FIREDEMON_SPLOTCH1:
-			case MT_FIREDEMON_SPLOTCH2:
+			case mobjtype_t::MT_CENTAUR:
+			case mobjtype_t::MT_CENTAURLEADER:
+			case mobjtype_t::MT_DEMON:
+			case mobjtype_t::MT_DEMON2:
+			case mobjtype_t::MT_WRAITH:
+			case mobjtype_t::MT_WRAITHB:
+			case mobjtype_t::MT_BISHOP:
+			case mobjtype_t::MT_ETTIN:
+			case mobjtype_t::MT_PIG:
+			case mobjtype_t::MT_CENTAUR_SHIELD:
+			case mobjtype_t::MT_CENTAUR_SWORD:
+			case mobjtype_t::MT_DEMONCHUNK1:
+			case mobjtype_t::MT_DEMONCHUNK2:
+			case mobjtype_t::MT_DEMONCHUNK3:
+			case mobjtype_t::MT_DEMONCHUNK4:
+			case mobjtype_t::MT_DEMONCHUNK5:
+			case mobjtype_t::MT_DEMON2CHUNK1:
+			case mobjtype_t::MT_DEMON2CHUNK2:
+			case mobjtype_t::MT_DEMON2CHUNK3:
+			case mobjtype_t::MT_DEMON2CHUNK4:
+			case mobjtype_t::MT_DEMON2CHUNK5:
+			case mobjtype_t::MT_FIREDEMON_SPLOTCH1:
+			case mobjtype_t::MT_FIREDEMON_SPLOTCH2:
 				A_QueueCorpse(mo);		// Add corpse to queue
 				break;
 			default:
@@ -2142,7 +2142,7 @@ void A_SerpentLowerHump(mobj_t * actor)
 
 void A_SerpentHumpDecide(mobj_t * actor)
 {
-	if (actor->type == MT_SERPENTLEADER)
+	if (actor->type == mobjtype_t::MT_SERPENTLEADER)
 	{
 		if (P_Random() > 30)
 		{
@@ -2160,14 +2160,14 @@ void A_SerpentHumpDecide(mobj_t * actor)
 	}
 	if (!P_CheckMeleeRange(actor))
 	{							// The hump shouldn't occur when within melee range
-		if (actor->type == MT_SERPENTLEADER && P_Random() < 128)
+		if (actor->type == mobjtype_t::MT_SERPENTLEADER && P_Random() < 128)
 		{
 			P_SetMobjState(actor, S_SERPENT_SURFACE1);
 		}
 		else
 		{
 			P_SetMobjState(actor, S_SERPENT_HUMP1);
-			S_StartSound(actor, SFX_SERPENT_ACTIVE);
+			S_StartSound(actor, sfxenum_t::SFX_SERPENT_ACTIVE);
 		}
 	}
 }
@@ -2180,7 +2180,7 @@ void A_SerpentHumpDecide(mobj_t * actor)
 
 void A_SerpentBirthScream(mobj_t * actor)
 {
-	S_StartSound(actor, SFX_SERPENT_BIRTH);
+	S_StartSound(actor, sfxenum_t::SFX_SERPENT_BIRTH);
 }
 
 //============================================================================
@@ -2191,7 +2191,7 @@ void A_SerpentBirthScream(mobj_t * actor)
 
 void A_SerpentDiveSound(mobj_t * actor)
 {
-	S_StartSound(actor, SFX_SERPENT_ACTIVE);
+	S_StartSound(actor, sfxenum_t::SFX_SERPENT_ACTIVE);
 }
 
 //============================================================================
@@ -2305,7 +2305,7 @@ void A_SerpentCheckForAttack(mobj_t * actor)
 	{
 		return;
 	}
-	if (actor->type == MT_SERPENTLEADER)
+	if (actor->type == mobjtype_t::MT_SERPENTLEADER)
 	{
 		if (!P_CheckMeleeRange(actor))
 		{
@@ -2342,7 +2342,7 @@ void A_SerpentChooseAttack(mobj_t * actor)
 	{
 		return;
 	}
-	if (actor->type == MT_SERPENTLEADER)
+	if (actor->type == mobjtype_t::MT_SERPENTLEADER)
 	{
 		P_SetMobjState(actor, S_SERPENT_MISSILE1);
 	}
@@ -2363,7 +2363,7 @@ void A_SerpentMeleeAttack(mobj_t * actor)
 	if (P_CheckMeleeRange(actor))
 	{
 		P_DamageMobj(actor->target, actor, actor, HITDICE(5));
-		S_StartSound(actor, SFX_SERPENT_MELEEHIT);
+		S_StartSound(actor, sfxenum_t::SFX_SERPENT_MELEEHIT);
 	}
 	if (P_Random() < 96)
 	{
@@ -2384,7 +2384,7 @@ void A_SerpentMissileAttack(mobj_t * actor)
 		return;
 	}
 
-	P_SpawnMissile(actor, actor->target, MT_SERPENTFX);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_SERPENTFX);
 }
 
 //============================================================================
@@ -2414,7 +2414,7 @@ void A_SerpentSpawnGibs(mobj_t * actor)
 	r2 = P_Random();
 	mo = P_SpawnMobj(actor->x + ((r2 - 128) << 12),
 						actor->y + ((r1 - 128) << 12),
-						actor->floorz + FRACUNIT, MT_SERPENT_GIB1);
+						actor->floorz + FRACUNIT, mobjtype_t::MT_SERPENT_GIB1);
 	if (mo)
 	{
 		mo->momx = (P_Random() - 128) << 6;
@@ -2425,7 +2425,7 @@ void A_SerpentSpawnGibs(mobj_t * actor)
 	r2 = P_Random();
 	mo = P_SpawnMobj(actor->x + ((r2 - 128) << 12),
 						actor->y + ((r1 - 128) << 12),
-						actor->floorz + FRACUNIT, MT_SERPENT_GIB2);
+						actor->floorz + FRACUNIT, mobjtype_t::MT_SERPENT_GIB2);
 	if (mo)
 	{
 		mo->momx = (P_Random() - 128) << 6;
@@ -2436,7 +2436,7 @@ void A_SerpentSpawnGibs(mobj_t * actor)
 	r2 = P_Random();
 	mo = P_SpawnMobj(actor->x + ((r2 - 128) << 12),
 						actor->y + ((r1 - 128) << 12),
-						actor->floorz + FRACUNIT, MT_SERPENT_GIB3);
+						actor->floorz + FRACUNIT, mobjtype_t::MT_SERPENT_GIB3);
 	if (mo)
 	{
 		mo->momx = (P_Random() - 128) << 6;
@@ -2530,8 +2530,8 @@ void A_CentaurAttack2(mobj_t * actor)
 	{
 		return;
 	}
-	P_SpawnMissile(actor, actor->target, MT_CENTAUR_FX);
-	S_StartSound(actor, SFX_CENTAURLEADER_ATTACK);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_CENTAUR_FX);
+	S_StartSound(actor, sfxenum_t::SFX_CENTAURLEADER_ATTACK);
 }
 
 //============================================================================
@@ -2625,7 +2625,7 @@ void A_BishopAttack2(mobj_t * actor)
 		P_SetMobjState(actor, S_BISHOP_WALK1);
 		return;
 	}
-	mo = P_SpawnMissile(actor, actor->target, MT_BISH_FX);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_BISH_FX);
 	if (mo)
 	{
 		mo->special1.m = actor->target;
@@ -2713,7 +2713,7 @@ void A_BishopDoBlur(mobj_t * actor)
 	{							// Thrust forward
 		P_ThrustMobj(actor, actor->angle, 11 * FRACUNIT);
 	}
-	S_StartSound(actor, SFX_BISHOP_BLUR);
+	S_StartSound(actor, sfxenum_t::SFX_BISHOP_BLUR);
 }
 
 //============================================================================
@@ -2739,7 +2739,7 @@ void A_BishopSpawnBlur(mobj_t * actor)
 			P_SetMobjState(actor, S_BISHOP_ATK1);
 		}
 	}
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_BISHOPBLUR);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_BISHOPBLUR);
 	if (mo)
 	{
 		mo->angle = actor->angle;
@@ -2882,12 +2882,12 @@ static void DragonSeek(mobj_t * actor, angle_t thresh, angle_t turnMax)
 			if (P_CheckMeleeRange(actor))
 			{
 				P_DamageMobj(actor->target, actor, actor, HITDICE(10));
-				S_StartSound(actor, SFX_DRAGON_ATTACK);
+				S_StartSound(actor, sfxenum_t::SFX_DRAGON_ATTACK);
 			}
 			else if (P_Random() < 128 && P_CheckMissileRange(actor))
 			{
-				P_SpawnMissile(actor, target, MT_DRAGON_FX);
-				S_StartSound(actor, SFX_DRAGON_ATTACK);
+				P_SpawnMissile(actor, target, mobjtype_t::MT_DRAGON_FX);
+				S_StartSound(actor, sfxenum_t::SFX_DRAGON_ATTACK);
 			}
 			actor->target = oldTarget;
 		}
@@ -2986,12 +2986,12 @@ void A_DragonFlight(mobj_t * actor)
 			&& P_CheckMeleeRange(actor))
 		{
 			P_DamageMobj(actor->target, actor, actor, HITDICE(8));
-			S_StartSound(actor, SFX_DRAGON_ATTACK);
+			S_StartSound(actor, sfxenum_t::SFX_DRAGON_ATTACK);
 		}
 		else if (abs((int) actor->angle - (int) angle) <= ANG1 * 20)
 		{
 			P_SetMobjState(actor, actor->info->missilestate);
-			S_StartSound(actor, SFX_DRAGON_ATTACK);
+			S_StartSound(actor, sfxenum_t::SFX_DRAGON_ATTACK);
 		}
 	}
 	else
@@ -3011,7 +3011,7 @@ void A_DragonFlap(mobj_t * actor)
 	A_DragonFlight(actor);
 	if (P_Random() < 240)
 	{
-		S_StartSound(actor, SFX_DRAGON_WINGFLAP);
+		S_StartSound(actor, sfxenum_t::SFX_DRAGON_WINGFLAP);
 	}
 	else
 	{
@@ -3027,7 +3027,7 @@ void A_DragonFlap(mobj_t * actor)
 
 void A_DragonAttack(mobj_t * actor)
 {
-	P_SpawnMissile(actor, actor->target, MT_DRAGON_FX);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_DRAGON_FX);
 }
 
 //============================================================================
@@ -3114,19 +3114,19 @@ void A_DemonAttack2(mobj_t * actor)
 	mobj_t *mo;
 	int fireBall;
 
-	if (actor->type == MT_DEMON)
+	if (actor->type == mobjtype_t::MT_DEMON)
 	{
-		fireBall = MT_DEMONFX1;
+		fireBall = mobjtype_t::MT_DEMONFX1;
 	}
 	else
 	{
-		fireBall = MT_DEMON2FX1;
+		fireBall = mobjtype_t::MT_DEMON2FX1;
 	}
 	mo = P_SpawnMissile(actor, actor->target, fireBall);
 	if (mo)
 	{
 		mo->z += 30 * FRACUNIT;
-		S_StartSound(actor, SFX_DEMON_MISSILE_FIRE);
+		S_StartSound(actor, sfxenum_t::SFX_DEMON_MISSILE_FIRE);
 	}
 }
 
@@ -3287,8 +3287,8 @@ bool A_SinkMobj(mobj_t * actor)
 	{
 		switch (actor->type)
 		{
-			case MT_THRUSTFLOOR_DOWN:
-			case MT_THRUSTFLOOR_UP:
+			case mobjtype_t::MT_THRUSTFLOOR_DOWN:
+			case mobjtype_t::MT_THRUSTFLOOR_UP:
 				actor->floorclip += 6 * FRACUNIT;
 				break;
 			default:
@@ -3314,11 +3314,11 @@ bool A_RaiseMobj(mobj_t * actor)
 	{
 		switch (actor->type)
 		{
-			case MT_WRAITHB:
+			case mobjtype_t::MT_WRAITHB:
 				actor->floorclip -= 2 * FRACUNIT;
 				break;
-			case MT_THRUSTFLOOR_DOWN:
-			case MT_THRUSTFLOOR_UP:
+			case mobjtype_t::MT_THRUSTFLOOR_DOWN:
+			case mobjtype_t::MT_THRUSTFLOOR_UP:
 				actor->floorclip -= actor->special2.i * FRACUNIT;
 				break;
 			default:
@@ -3393,10 +3393,10 @@ void A_WraithMissile(mobj_t * actor)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMissile(actor, actor->target, MT_WRAITHFX1);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_WRAITHFX1);
 	if (mo)
 	{
-		S_StartSound(actor, SFX_WRAITH_MISSILE_FIRE);
+		S_StartSound(actor, sfxenum_t::SFX_WRAITH_MISSILE_FIRE);
 	}
 }
 
@@ -3413,7 +3413,7 @@ void A_WraithFX2(mobj_t * actor)
 
 	for (i = 0; i < 2; i++)
 	{
-		mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_WRAITHFX2);
+		mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_WRAITHFX2);
 		if (mo)
 		{
 			if (P_Random() < 128)
@@ -3445,7 +3445,7 @@ void A_WraithFX3(mobj_t * actor)
 
 	for (i = 0; i < numdropped; i++)
 	{
-		mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_WRAITHFX3);
+		mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_WRAITHFX3);
 		if (mo)
 		{
 			mo->x += (P_Random() - 128) << 11;
@@ -3486,7 +3486,7 @@ void A_WraithFX4(mobj_t * actor)
 
 	if (spawn4)
 	{
-		mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_WRAITHFX4);
+		mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_WRAITHFX4);
 		if (mo)
 		{
 			mo->x += (P_Random() - 128) << 12;
@@ -3497,7 +3497,7 @@ void A_WraithFX4(mobj_t * actor)
 	}
 	if (spawn5)
 	{
-		mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_WRAITHFX5);
+		mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_WRAITHFX5);
 		if (mo)
 		{
 			mo->x += (P_Random() - 128) << 11;
@@ -3550,7 +3550,7 @@ void A_DropMace(mobj_t * actor)
 	mobj_t *mo;
 
 	mo = P_SpawnMobj(actor->x, actor->y,
-						actor->z + (actor->height >> 1), MT_ETTIN_MACE);
+						actor->z + (actor->height >> 1), mobjtype_t::MT_ETTIN_MACE);
 	if (mo)
 	{
 		mo->momx = (P_Random() - 128) << 11;
@@ -3577,19 +3577,19 @@ void A_FiredSpawnRock(mobj_t * actor)
 	switch (P_Random() % 5)
 	{
 		case 0:
-			rtype = MT_FIREDEMON_FX1;
+			rtype = mobjtype_t::MT_FIREDEMON_FX1;
 			break;
 		case 1:
-			rtype = MT_FIREDEMON_FX2;
+			rtype = mobjtype_t::MT_FIREDEMON_FX2;
 			break;
 		case 2:
-			rtype = MT_FIREDEMON_FX3;
+			rtype = mobjtype_t::MT_FIREDEMON_FX3;
 			break;
 		case 3:
-			rtype = MT_FIREDEMON_FX4;
+			rtype = mobjtype_t::MT_FIREDEMON_FX4;
 			break;
 		case 4:
-			rtype = MT_FIREDEMON_FX5;
+			rtype = mobjtype_t::MT_FIREDEMON_FX5;
 			break;
 	}
 
@@ -3623,9 +3623,9 @@ void A_FiredRocks(mobj_t * actor)
 void A_FiredAttack(mobj_t * actor)
 {
 	mobj_t *mo;
-	mo = P_SpawnMissile(actor, actor->target, MT_FIREDEMON_FX6);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_FIREDEMON_FX6);
 	if (mo)
-		S_StartSound(actor, SFX_FIRED_ATTACK);
+		S_StartSound(actor, sfxenum_t::SFX_FIRED_ATTACK);
 }
 
 void A_SmBounce(mobj_t * actor)
@@ -3733,14 +3733,14 @@ void A_FiredSplotch(mobj_t * actor)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FIREDEMON_SPLOTCH1);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_FIREDEMON_SPLOTCH1);
 	if (mo)
 	{
 		mo->momx = (P_Random() - 128) << 11;
 		mo->momy = (P_Random() - 128) << 11;
 		mo->momz = FRACUNIT * 3 + (P_Random() << 10);
 	}
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FIREDEMON_SPLOTCH2);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_FIREDEMON_SPLOTCH2);
 	if (mo)
 	{
 		mo->momx = (P_Random() - 128) << 11;
@@ -3843,7 +3843,7 @@ void A_IceGuyAttack(mobj_t * actor)
 
 void A_IceGuyMissilePuff(mobj_t * actor)
 {
-	P_SpawnMobj(actor->x, actor->y, actor->z + 2 * FRACUNIT, MT_ICEFX_PUFF);
+	P_SpawnMobj(actor->x, actor->y, actor->z + 2 * FRACUNIT, mobjtype_t::MT_ICEFX_PUFF);
 }
 
 //============================================================================
@@ -3876,7 +3876,7 @@ void A_IceGuyMissileExplode(mobj_t * actor)
 
 	for (i = 0; i < 8; i++)
 	{
-		mo = P_SpawnMissileAngle(actor, MT_ICEGUY_FX2, i * ANG45,
+		mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_ICEGUY_FX2, i * ANG45,
 									-0.3 * FRACUNIT);
 		if (mo)
 		{
@@ -3962,16 +3962,16 @@ void A_SorcSpinBalls(mobj_t * actor)
 	actor->special1.i = ANG1;
 	z = actor->z - actor->floorclip + actor->info->height;
 
-	mo = P_SpawnMobj(actor->x, actor->y, z, MT_SORCBALL1);
+	mo = P_SpawnMobj(actor->x, actor->y, z, mobjtype_t::MT_SORCBALL1);
 	if (mo)
 	{
 		mo->target = actor;
 		mo->special2.i = SORCFX4_RAPIDFIRE_TIME;
 	}
-	mo = P_SpawnMobj(actor->x, actor->y, z, MT_SORCBALL2);
+	mo = P_SpawnMobj(actor->x, actor->y, z, mobjtype_t::MT_SORCBALL2);
 	if (mo)
 		mo->target = actor;
-	mo = P_SpawnMobj(actor->x, actor->y, z, MT_SORCBALL3);
+	mo = P_SpawnMobj(actor->x, actor->y, z, mobjtype_t::MT_SORCBALL3);
 	if (mo)
 		mo->target = actor;
 }
@@ -3996,13 +3996,13 @@ void A_SorcBallOrbit(mobj_t * actor)
 	baseangle = (angle_t) parent->special1.i;
 	switch (actor->type)
 	{
-		case MT_SORCBALL1:
+		case mobjtype_t::MT_SORCBALL1:
 			angle = baseangle + BALL1_ANGLEOFFSET;
 			break;
-		case MT_SORCBALL2:
+		case mobjtype_t::MT_SORCBALL2:
 			angle = baseangle + BALL2_ANGLEOFFSET;
 			break;
-		case MT_SORCBALL3:
+		case mobjtype_t::MT_SORCBALL3:
 			angle = baseangle + BALL3_ANGLEOFFSET;
 			break;
 		default:
@@ -4037,15 +4037,15 @@ void A_SorcBallOrbit(mobj_t * actor)
 				// Set angle so ball angle == sorcerer angle
 				switch (actor->type)
 				{
-					case MT_SORCBALL1:
+					case mobjtype_t::MT_SORCBALL1:
 						parent->special1.i = (int) (parent->angle -
 													BALL1_ANGLEOFFSET);
 						break;
-					case MT_SORCBALL2:
+					case mobjtype_t::MT_SORCBALL2:
 						parent->special1.i = (int) (parent->angle -
 													BALL2_ANGLEOFFSET);
 						break;
-					case MT_SORCBALL3:
+					case mobjtype_t::MT_SORCBALL3:
 						parent->special1.i = (int) (parent->angle -
 													BALL3_ANGLEOFFSET);
 						break;
@@ -4065,9 +4065,9 @@ void A_SorcBallOrbit(mobj_t * actor)
 				if (parent->health > 0)
 					P_SetMobjStateNF(parent, S_SORC_ATTACK1);
 
-				if (actor->type == MT_SORCBALL1 && P_Random() < 200)
+				if (actor->type == mobjtype_t::MT_SORCBALL1 && P_Random() < 200)
 				{
-					S_StartSound(NULL, SFX_SORCERER_SPELLCAST);
+					S_StartSound(NULL, sfxenum_t::SFX_SORCERER_SPELLCAST);
 					actor->special2.i = SORCFX4_RAPIDFIRE_TIME;
 					actor->args[4] = 128;
 					parent->args[3] = SORC_FIRING_SPELL;
@@ -4106,7 +4106,7 @@ void A_SorcBallOrbit(mobj_t * actor)
 	{
 		parent->args[1]++;		// Bump rotation counter
 		// Completed full rotation - make woosh sound
-		S_StartSound(actor, SFX_SORCERER_BALLWOOSH);
+		S_StartSound(actor, sfxenum_t::SFX_SORCERER_BALLWOOSH);
 	}
 	actor->special1.i = angle;	// Set previous angle
 	x = parent->x + FixedMul(dist, finecosine[angle]);
@@ -4149,16 +4149,16 @@ void A_StopBalls(mobj_t * actor)
 
 	if ((actor->args[0] <= 0) && (chance < 200))
 	{
-		actor->special2.i = MT_SORCBALL2; // Blue
+		actor->special2.i = mobjtype_t::MT_SORCBALL2; // Blue
 	}
 	else if ((actor->health < (actor->info->spawnhealth >> 1)) &&
 				(chance < 200))
 	{
-		actor->special2.i = MT_SORCBALL3; // Green
+		actor->special2.i = mobjtype_t::MT_SORCBALL3; // Green
 	}
 	else
 	{
-		actor->special2.i = MT_SORCBALL1; // Yellow
+		actor->special2.i = mobjtype_t::MT_SORCBALL1; // Yellow
 	}
 
 
@@ -4207,7 +4207,7 @@ void A_DecelBalls(mobj_t * actor)
 // Update angle if first ball - actor is ball
 void A_SorcUpdateBallAngle(mobj_t * actor)
 {
-	if (actor->type == MT_SORCBALL1)
+	if (actor->type == mobjtype_t::MT_SORCBALL1)
 	{
 		actor->target->special1.i += ANG1 * actor->target->args[4];
 	}
@@ -4223,7 +4223,7 @@ void A_CastSorcererSpell(mobj_t * actor)
 	fixed_t z;
 	mobj_t *parent = actor->target;
 
-	S_StartSound(NULL, SFX_SORCERER_SPELLCAST);
+	S_StartSound(NULL, sfxenum_t::SFX_SORCERER_SPELLCAST);
 
 	// Put sorcerer into throw spell animation
 	if (parent->health > 0)
@@ -4231,28 +4231,28 @@ void A_CastSorcererSpell(mobj_t * actor)
 
 	switch (spell)
 	{
-		case MT_SORCBALL1:		// Offensive
+		case mobjtype_t::MT_SORCBALL1:		// Offensive
 			A_SorcOffense1(actor);
 			break;
-		case MT_SORCBALL2:		// Defensive
+		case mobjtype_t::MT_SORCBALL2:		// Defensive
 			z = parent->z - parent->floorclip +
 				SORC_DEFENSE_HEIGHT * FRACUNIT;
-			mo = P_SpawnMobj(actor->x, actor->y, z, MT_SORCFX2);
+			mo = P_SpawnMobj(actor->x, actor->y, z, mobjtype_t::MT_SORCFX2);
 			parent->flags2 |= MF2_REFLECTIVE | MF2_INVULNERABLE;
 			parent->args[0] = SORC_DEFENSE_TIME;
 			if (mo)
 				mo->target = parent;
 			break;
-		case MT_SORCBALL3:		// Reinforcements
+		case mobjtype_t::MT_SORCBALL3:		// Reinforcements
 			ang1 = actor->angle - ANG45;
 			ang2 = actor->angle + ANG45;
 			if (actor->health < (actor->info->spawnhealth / 3))
 			{					// Spawn 2 at a time
-				mo = P_SpawnMissileAngle(parent, MT_SORCFX3, ang1,
+				mo = P_SpawnMissileAngle(parent, mobjtype_t::MT_SORCFX3, ang1,
 											4 * FRACUNIT);
 				if (mo)
 					mo->target = parent;
-				mo = P_SpawnMissileAngle(parent, MT_SORCFX3, ang2,
+				mo = P_SpawnMissileAngle(parent, mobjtype_t::MT_SORCFX3, ang2,
 											4 * FRACUNIT);
 				if (mo)
 					mo->target = parent;
@@ -4261,7 +4261,7 @@ void A_CastSorcererSpell(mobj_t * actor)
 			{
 				if (P_Random() < 128)
 					ang1 = ang2;
-				mo = P_SpawnMissileAngle(parent, MT_SORCFX3, ang1,
+				mo = P_SpawnMissileAngle(parent, mobjtype_t::MT_SORCFX3, ang1,
 											4 * FRACUNIT);
 				if (mo)
 					mo->target = parent;
@@ -4280,7 +4280,7 @@ void A_SpawnReinforcements(mobj_t *actor)
 	angle_t ang;
 
 	ang = ANG1 * P_Random();
-	mo = P_SpawnMissileAngle(actor, MT_SORCFX3, ang, 5*FRACUNIT);
+	mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_SORCFX3, ang, 5*FRACUNIT);
 	if (mo) mo->target = parent;
 }
 */
@@ -4294,7 +4294,7 @@ void A_SorcOffense1(mobj_t * actor)
 
 	ang1 = actor->angle + ANG1 * 70;
 	ang2 = actor->angle - ANG1 * 70;
-	mo = P_SpawnMissileAngle(parent, MT_SORCFX1, ang1, 0);
+	mo = P_SpawnMissileAngle(parent, mobjtype_t::MT_SORCFX1, ang1, 0);
 	if (mo)
 	{
 		mo->target = parent;
@@ -4302,7 +4302,7 @@ void A_SorcOffense1(mobj_t * actor)
 		mo->args[4] = BOUNCE_TIME_UNIT;
 		mo->args[3] = 15;		// Bounce time in seconds
 	}
-	mo = P_SpawnMissileAngle(parent, MT_SORCFX1, ang2, 0);
+	mo = P_SpawnMissileAngle(parent, mobjtype_t::MT_SORCFX1, ang2, 0);
 	if (mo)
 	{
 		mo->target = parent;
@@ -4328,7 +4328,7 @@ void A_SorcOffense2(mobj_t * actor)
 	delta = (finesine[index]) * SORCFX4_SPREAD_ANGLE;
 	delta = (delta >> FRACBITS) * ANG1;
 	ang1 = actor->angle + delta;
-	mo = P_SpawnMissileAngle(parent, MT_SORCFX4, ang1, 0);
+	mo = P_SpawnMissileAngle(parent, mobjtype_t::MT_SORCFX4, ang1, 0);
 	if (mo)
 	{
 		mo->special2.i = 35 * 5 / 2;		// 5 seconds
@@ -4365,7 +4365,7 @@ void A_SpawnFizzle(mobj_t * actor)
 	z = actor->z - actor->floorclip + (actor->height >> 1);
 	for (ix = 0; ix < 5; ix++)
 	{
-		mo = P_SpawnMobj(x, y, z, MT_SORCSPARK1);
+		mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_SORCSPARK1);
 		if (mo)
 		{
 			rangle = angle + ((P_Random() % 5) << 1);
@@ -4404,7 +4404,7 @@ void A_SorcFX2Split(mobj_t * actor)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SORCFX2);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SORCFX2);
 	if (mo)
 	{
 		mo->target = actor->target;
@@ -4412,7 +4412,7 @@ void A_SorcFX2Split(mobj_t * actor)
 		mo->special1.i = actor->angle;	// Set angle
 		P_SetMobjStateNF(mo, S_SORCFX2_ORBIT1);
 	}
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SORCFX2);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SORCFX2);
 	if (mo)
 	{
 		mo->target = actor->target;
@@ -4458,7 +4458,7 @@ void A_SorcFX2Orbit(mobj_t * actor)
 		z = parent->z - parent->floorclip + SORC_DEFENSE_HEIGHT * FRACUNIT;
 		z += FixedMul(15 * FRACUNIT, finecosine[angle]);
 		// Spawn trailer
-		P_SpawnMobj(x, y, z, MT_SORCFX2_T1);
+		P_SpawnMobj(x, y, z, mobjtype_t::MT_SORCFX2_T1);
 	}
 	else						// Clock wise
 	{
@@ -4469,7 +4469,7 @@ void A_SorcFX2Orbit(mobj_t * actor)
 		z = parent->z - parent->floorclip + SORC_DEFENSE_HEIGHT * FRACUNIT;
 		z += FixedMul(20 * FRACUNIT, finesine[angle]);
 		// Spawn trailer
-		P_SpawnMobj(x, y, z, MT_SORCFX2_T1);
+		P_SpawnMobj(x, y, z, mobjtype_t::MT_SORCFX2_T1);
 	}
 
 	actor->x = x;
@@ -4486,7 +4486,7 @@ void A_SorcFX2Orbit(mobj_t * actor)
 void A_SpawnBishop(mobj_t * actor)
 {
 	mobj_t *mo;
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_BISHOP);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_BISHOP);
 	if (mo)
 	{
 		if (!P_TestMobjLocation(mo))
@@ -4500,18 +4500,18 @@ void A_SpawnBishop(mobj_t * actor)
 /*
 void A_SmokePuffEntry(mobj_t *actor)
 {
-	P_SpawnMobj(actor->x, actor->y, actor->z, MT_MNTRSMOKE);
+	P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_MNTRSMOKE);
 }
 */
 
 void A_SmokePuffExit(mobj_t * actor)
 {
-	P_SpawnMobj(actor->x, actor->y, actor->z, MT_MNTRSMOKEEXIT);
+	P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_MNTRSMOKEEXIT);
 }
 
 void A_SorcererBishopEntry(mobj_t * actor)
 {
-	P_SpawnMobj(actor->x, actor->y, actor->z, MT_SORCFX3_EXPLOSION);
+	P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SORCFX3_EXPLOSION);
 	S_StartSound(actor, actor->info->seesound);
 }
 
@@ -4534,7 +4534,7 @@ void A_SorcFX4Check(mobj_t * actor)
 
 void A_SorcBallPop(mobj_t * actor)
 {
-	S_StartSound(NULL, SFX_SORCERER_BALLPOP);
+	S_StartSound(NULL, sfxenum_t::SFX_SORCERER_BALLPOP);
 	actor->flags &= ~MF_NOGRAVITY;
 	actor->flags2 |= MF2_LOGRAV;
 	actor->momx = ((P_Random() % 10) - 5) << FRACBITS;
@@ -4556,13 +4556,13 @@ void A_BounceCheck(mobj_t * actor)
 			P_SetMobjState(actor, actor->info->deathstate);
 			switch (actor->type)
 			{
-				case MT_SORCBALL1:
-				case MT_SORCBALL2:
-				case MT_SORCBALL3:
-					S_StartSound(NULL, SFX_SORCERER_BIGBALLEXPLODE);
+				case mobjtype_t::MT_SORCBALL1:
+				case mobjtype_t::MT_SORCBALL2:
+				case mobjtype_t::MT_SORCBALL3:
+					S_StartSound(NULL, sfxenum_t::SFX_SORCERER_BIGBALLEXPLODE);
 					break;
-				case MT_SORCFX1:
-					S_StartSound(NULL, SFX_SORCERER_HEADSCREAM);
+				case mobjtype_t::MT_SORCFX1:
+					S_StartSound(NULL, sfxenum_t::SFX_SORCERER_HEADSCREAM);
 					break;
 				default:
 					break;
@@ -4786,7 +4786,7 @@ void A_FreezeDeath(mobj_t * actor)
 	actor->flags |= MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD;
 	actor->flags2 |= MF2_PUSHABLE | MF2_TELESTOMP | MF2_PASSMOBJ | MF2_SLIDE;
 	actor->height <<= 2;
-	S_StartSound(actor, SFX_FREEZE_DEATH);
+	S_StartSound(actor, sfxenum_t::SFX_FREEZE_DEATH);
 
 	if (actor->player)
 	{
@@ -4858,7 +4858,7 @@ void A_FreezeDeathChunks(mobj_t * actor)
 		actor->tics = 105;
 		return;
 	}
-	S_StartSound(actor, SFX_FREEZE_SHATTER);
+	S_StartSound(actor, sfxenum_t::SFX_FREEZE_SHATTER);
 
 	for (i = 12 + (P_Random() & 15); i >= 0; i--)
 	{
@@ -4980,7 +4980,7 @@ void A_KoraxChase(mobj_t * actor)
 	}
 	else if (P_Random() < 30)
 	{
-		S_StartSound(NULL, SFX_KORAX_ACTIVE);
+		S_StartSound(NULL, sfxenum_t::SFX_KORAX_ACTIVE);
 	}
 
 	// Teleport away
@@ -5006,7 +5006,7 @@ void A_KoraxStep(mobj_t * actor)
 
 void A_KoraxStep2(mobj_t * actor)
 {
-	S_StartSound(NULL, SFX_KORAX_STEP);
+	S_StartSound(NULL, sfxenum_t::SFX_KORAX_STEP);
 	A_Chase(actor);
 }
 
@@ -5018,27 +5018,27 @@ void A_KoraxBonePop(mobj_t * actor)
 	args[0] = args[1] = args[2] = args[3] = args[4] = 0;
 
 	// Spawn 6 spirits equalangularly
-	mo = P_SpawnMissileAngle(actor, MT_KORAX_SPIRIT1, ANG60 * 0,
+	mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_KORAX_SPIRIT1, ANG60 * 0,
 								5 * FRACUNIT);
 	if (mo)
 		KSpiritInit(mo, actor);
-	mo = P_SpawnMissileAngle(actor, MT_KORAX_SPIRIT2, ANG60 * 1,
+	mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_KORAX_SPIRIT2, ANG60 * 1,
 								5 * FRACUNIT);
 	if (mo)
 		KSpiritInit(mo, actor);
-	mo = P_SpawnMissileAngle(actor, MT_KORAX_SPIRIT3, ANG60 * 2,
+	mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_KORAX_SPIRIT3, ANG60 * 2,
 								5 * FRACUNIT);
 	if (mo)
 		KSpiritInit(mo, actor);
-	mo = P_SpawnMissileAngle(actor, MT_KORAX_SPIRIT4, ANG60 * 3,
+	mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_KORAX_SPIRIT4, ANG60 * 3,
 								5 * FRACUNIT);
 	if (mo)
 		KSpiritInit(mo, actor);
-	mo = P_SpawnMissileAngle(actor, MT_KORAX_SPIRIT5, ANG60 * 4,
+	mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_KORAX_SPIRIT5, ANG60 * 4,
 								5 * FRACUNIT);
 	if (mo)
 		KSpiritInit(mo, actor);
-	mo = P_SpawnMissileAngle(actor, MT_KORAX_SPIRIT6, ANG60 * 5,
+	mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_KORAX_SPIRIT6, ANG60 * 5,
 								5 * FRACUNIT);
 	if (mo)
 		KSpiritInit(mo, actor);
@@ -5060,11 +5060,11 @@ void KSpiritInit(mobj_t * spirit, mobj_t * korax)
 	spirit->args[1] = 0;		// initial look angle
 
 	// Spawn a tail for spirit
-	tail = P_SpawnMobj(spirit->x, spirit->y, spirit->z, MT_HOLY_TAIL);
+	tail = P_SpawnMobj(spirit->x, spirit->y, spirit->z, mobjtype_t::MT_HOLY_TAIL);
 	tail->special2.m = spirit;		// parent
 	for (i = 1; i < 3; i++)
 	{
-		next = P_SpawnMobj(spirit->x, spirit->y, spirit->z, MT_HOLY_TAIL);
+		next = P_SpawnMobj(spirit->x, spirit->y, spirit->z, mobjtype_t::MT_HOLY_TAIL);
 		P_SetMobjState(next, next->info->spawnstate + 1);
 		tail->special1.m = next;
 		tail = next;
@@ -5089,33 +5089,33 @@ void A_KoraxMissile(mobj_t * actor)
 	int type = P_Random() % 6;
 	int sound = 0;
 
-	S_StartSound(actor, SFX_KORAX_ATTACK);
+	S_StartSound(actor, sfxenum_t::SFX_KORAX_ATTACK);
 
 	switch (type)
 	{
 		case 0:
-			type = MT_WRAITHFX1;
-			sound = SFX_WRAITH_MISSILE_FIRE;
+			type = mobjtype_t::MT_WRAITHFX1;
+			sound = sfxenum_t::SFX_WRAITH_MISSILE_FIRE;
 			break;
 		case 1:
-			type = MT_DEMONFX1;
-			sound = SFX_DEMON_MISSILE_FIRE;
+			type = mobjtype_t::MT_DEMONFX1;
+			sound = sfxenum_t::SFX_DEMON_MISSILE_FIRE;
 			break;
 		case 2:
-			type = MT_DEMON2FX1;
-			sound = SFX_DEMON_MISSILE_FIRE;
+			type = mobjtype_t::MT_DEMON2FX1;
+			sound = sfxenum_t::SFX_DEMON_MISSILE_FIRE;
 			break;
 		case 3:
-			type = MT_FIREDEMON_FX6;
-			sound = SFX_FIRED_ATTACK;
+			type = mobjtype_t::MT_FIREDEMON_FX6;
+			sound = sfxenum_t::SFX_FIRED_ATTACK;
 			break;
 		case 4:
-			type = MT_CENTAUR_FX;
-			sound = SFX_CENTAURLEADER_ATTACK;
+			type = mobjtype_t::MT_CENTAUR_FX;
+			sound = sfxenum_t::SFX_CENTAURLEADER_ATTACK;
 			break;
 		case 5:
-			type = MT_SERPENTFX;
-			sound = SFX_CENTAURLEADER_ATTACK;
+			type = mobjtype_t::MT_SERPENTFX;
+			sound = sfxenum_t::SFX_CENTAURLEADER_ATTACK;
 			break;
 	}
 
@@ -5138,14 +5138,14 @@ void A_KoraxCommand(mobj_t * actor)
 	angle_t ang;
 	int numcommands;
 
-	S_StartSound(actor, SFX_KORAX_COMMAND);
+	S_StartSound(actor, sfxenum_t::SFX_KORAX_COMMAND);
 
 	// Shoot stream of lightning to ceiling
 	ang = (actor->angle - ANG90) >> ANGLETOFINESHIFT;
 	x = actor->x + FixedMul(KORAX_COMMAND_OFFSET, finecosine[ang]);
 	y = actor->y + FixedMul(KORAX_COMMAND_OFFSET, finesine[ang]);
 	z = actor->z + KORAX_COMMAND_HEIGHT;
-	P_SpawnMobj(x, y, z, MT_KORAX_BOLT);
+	P_SpawnMobj(x, y, z, mobjtype_t::MT_KORAX_BOLT);
 
 	args[0] = args[1] = args[2] = args[3] = args[4] = 0;
 
@@ -5378,7 +5378,7 @@ void A_KSpiritRoam(mobj_t * actor)
 {
 	if (actor->health-- <= 0)
 	{
-		S_StartSound(actor, SFX_SPIRIT_DIE);
+		S_StartSound(actor, sfxenum_t::SFX_SPIRIT_DIE);
 		P_SetMobjState(actor, S_KSPIRIT_DEATH1);
 	}
 	else
@@ -5391,7 +5391,7 @@ void A_KSpiritRoam(mobj_t * actor)
 		A_KSpiritWeave(actor);
 		if (P_Random() < 50)
 		{
-			S_StartSound(NULL, SFX_SPIRIT_ACTIVE);
+			S_StartSound(NULL, sfxenum_t::SFX_SPIRIT_ACTIVE);
 		}
 	}
 }
@@ -5419,7 +5419,7 @@ void A_KBoltRaise(mobj_t * actor)
 
 	if ((z + KORAX_BOLT_HEIGHT) < actor->ceilingz)
 	{
-		mo = P_SpawnMobj(actor->x, actor->y, z, MT_KORAX_BOLT);
+		mo = P_SpawnMobj(actor->x, actor->y, z, mobjtype_t::MT_KORAX_BOLT);
 		if (mo)
 		{
 			mo->special1.i = KORAX_BOLT_LIFETIME;

@@ -109,15 +109,15 @@ static int LeavePosition;
 
 //#define MAXPLMOVE		0x32 // Old Heretic Max move
 
-fixed_t MaxPlayerMove[NUMCLASSES] = { 0x3C, 0x32, 0x2D, 0x31 };
-fixed_t forwardmove[NUMCLASSES][2] = {
+fixed_t MaxPlayerMove[pclass_t::NUMCLASSES] = { 0x3C, 0x32, 0x2D, 0x31 };
+fixed_t forwardmove[pclass_t::NUMCLASSES][2] = {
 	{0x1D, 0x3C},
 	{0x19, 0x32},
 	{0x16, 0x2E},
 	{0x18, 0x31}
 };
 
-fixed_t sidemove[NUMCLASSES][2] = {
+fixed_t sidemove[pclass_t::NUMCLASSES][2] = {
 	{0x1B, 0x3B},
 	{0x18, 0x28},
 	{0x15, 0x25},
@@ -357,7 +357,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 	{
 		if (gamekeydown[key_speed] && artiskip)
 		{
-			if (players[consoleplayer].inventory[inv_ptr].type != arti_none)
+			if (players[consoleplayer].inventory[inv_ptr].type != ArtiType_t::arti_none)
 			{					// Skip an artifact
 				gamekeydown[key_useartifact] = false;
 				P_PlayerNextArtifact(&players[consoleplayer]);
@@ -403,38 +403,38 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 				&& (players[consoleplayer].mo->health < MAXHEALTH))
 	{
 		gamekeydown[key_arti_health] = false;
-		cmd->arti = arti_health;
+		cmd->arti = ArtiType_t::arti_health;
 	}
 	else if (gamekeydown[key_arti_poisonbag] && !cmd->arti)
 	{
 		gamekeydown[key_arti_poisonbag] = false;
-		cmd->arti = arti_poisonbag;
+		cmd->arti = ArtiType_t::arti_poisonbag;
 	}
 	else if (gamekeydown[key_arti_blastradius] && !cmd->arti)
 	{
 		gamekeydown[key_arti_blastradius] = false;
-		cmd->arti = arti_blastradius;
+		cmd->arti = ArtiType_t::arti_blastradius;
 	}
 	else if (gamekeydown[key_arti_teleport] && !cmd->arti)
 	{
 		gamekeydown[key_arti_teleport] = false;
-		cmd->arti = arti_teleport;
+		cmd->arti = ArtiType_t::arti_teleport;
 	}
 	else if (gamekeydown[key_arti_teleportother] && !cmd->arti)
 	{
 		gamekeydown[key_arti_teleportother] = false;
-		cmd->arti = arti_teleportother;
+		cmd->arti = ArtiType_t::arti_teleportother;
 	}
 	else if (gamekeydown[key_arti_egg] && !cmd->arti)
 	{
 		gamekeydown[key_arti_egg] = false;
-		cmd->arti = arti_egg;
+		cmd->arti = ArtiType_t::arti_egg;
 	}
 	else if (gamekeydown[key_arti_invulnerability] && !cmd->arti
 				&& !players[consoleplayer].powers[PowerType_t::pw_invulnerability])
 	{
 		gamekeydown[key_arti_invulnerability] = false;
-		cmd->arti = arti_invulnerability;
+		cmd->arti = ArtiType_t::arti_invulnerability;
 	}
 
 //
@@ -606,7 +606,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 	}
 	cmd->forwardmove += forward;
 	cmd->sidemove += side;
-	if (players[consoleplayer].playerstate == PST_LIVE)
+	if (players[consoleplayer].playerstate == PlayerState_t::PST_LIVE)
 	{
 		if (look < 0)
 		{
@@ -681,8 +681,8 @@ void G_DoLoadLevel()
 	gamestate = GameState_t::GS_LEVEL;
 	for (i = 0; i < maxplayers; i++)
 	{
-		if (playeringame[i] && players[i].playerstate == PST_DEAD)
-			players[i].playerstate = PST_REBORN;
+		if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_DEAD)
+			players[i].playerstate = PlayerState_t::PST_REBORN;
 		memset(players[i].frags, 0, sizeof(players[i].frags));
 	}
 
@@ -940,7 +940,7 @@ void G_Ticker()
 // do player reborns if needed
 //
 	for (i = 0; i < maxplayers; i++)
-		if (playeringame[i] && players[i].playerstate == PST_REBORN)
+		if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_REBORN)
 			G_DoReborn(i);
 
 //
@@ -1165,7 +1165,7 @@ void G_PlayerExitMap(int playerNumber)
 			for (i = 0; i < 25; i++)
 			{
 				player->powers[PowerType_t::pw_flight] = 0;
-				P_PlayerUseArtifact(player, arti_fly);
+				P_PlayerUseArtifact(player, ArtiType_t::arti_fly);
 			}
 			player->powers[PowerType_t::pw_flight] = 0;
 		}
@@ -1224,7 +1224,7 @@ void G_PlayerReborn(int player)
 	players[player].playerClass = PlayerClass[player];
 
 	p->usedown = p->attackdown = true; // don't do anything immediately
-	p->playerstate = PST_LIVE;
+	p->playerstate = PlayerState_t::PST_LIVE;
 	p->health = MAXHEALTH;
 	p->readyweapon = p->pendingweapon = WP_FIRST;
 	p->weaponowned[WP_FIRST] = true;
@@ -1275,9 +1275,9 @@ bool G_CheckSpot(int playernum, mapthing_t * mthing)
 	an = ((unsigned) ANG45 * (mthing->angle / 45)) >> ANGLETOFINESHIFT;
 
 	mo = P_SpawnMobj(x + 20 * finecosine[an], y + 20 * finesine[an],
-						ss->sector->floorheight + TELEFOGHEIGHT, MT_TFOG);
+						ss->sector->floorheight + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
 	if (players[consoleplayer].viewz != 1)
-		S_StartSound(mo, SFX_TELEPORT); // don't start sound on first frame
+		S_StartSound(mo, sfxenum_t::SFX_TELEPORT); // don't start sound on first frame
 
 	return true;
 }
@@ -1512,10 +1512,10 @@ void G_SecretExitLevel ()
 
 void G_Completed(int map, int position)
 {
-	if (gamemode == shareware && map > 4)
+	if (gamemode == GameMode_t::shareware && map > 4)
 	{
 		P_SetMessage(&players[consoleplayer], "ACCESS DENIED -- DEMO", true);
-		S_StartSound(NULL, SFX_CHAT);
+		S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 		return;
 	}
 
@@ -1777,7 +1777,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	// Force players to be initialized upon first level load
 	for (i = 0; i < maxplayers; i++)
 	{
-		players[i].playerstate = PST_REBORN;
+		players[i].playerstate = PlayerState_t::PST_REBORN;
 		players[i].worldTimer = 0;
 	}
 

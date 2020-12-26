@@ -1742,7 +1742,7 @@ static void NET_SV_GameEnded()
 	int i;
 
 	server_state = SERVER_WAITING_LAUNCH;
-	sv_gamemode = indetermined;
+	sv_gamemode = GameMode_t::indetermined;
 
 	for (i=0; i<MAXNETNODES; ++i)
 	{
@@ -1858,7 +1858,7 @@ void NET_SV_Init()
 	NET_SV_AssignPlayers();
 
 	server_state = SERVER_WAITING_LAUNCH;
-	sv_gamemode = indetermined;
+	sv_gamemode = GameMode_t::indetermined;
 	server_initialized = true;
 }
 

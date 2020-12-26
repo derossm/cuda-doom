@@ -355,7 +355,7 @@ bool PIT_CheckThing(mobj_t* thing)
 			// sdh: Add deh_species_infighting here. We can override the
 			// "monsters of the same species cant hurt each other" behavior
 			// through dehacked patches
-			if (thing->type != MT_PLAYER && !deh_species_infighting)
+			if (thing->type != mobjtype_t::MT_PLAYER && !deh_species_infighting)
 			{
 				// Explode, but do no damage.
 				// Let players missile other players.
@@ -1193,7 +1193,7 @@ hitline:
 			}
 			else
 			{
-				P_SpawnMobj(x, y, z, MT_STRIFEPUFF3);
+				P_SpawnMobj(x, y, z, mobjtype_t::MT_STRIFEPUFF3);
 			}
 		}
 
@@ -1246,7 +1246,7 @@ hitline:
 	// villsa [STRIFE] Check for Mauler attack range
 	if(attackrange == 2112*FRACUNIT)
 	{
-		th2 = P_SpawnMobj(x, y, z, MT_STRIFEPUFF3);
+		th2 = P_SpawnMobj(x, y, z, mobjtype_t::MT_STRIFEPUFF3);
 		th2->momz = -FRACUNIT;
 		P_DamageMobj(th, th2, shootthing, la_damage);
 		return false;
@@ -1423,7 +1423,7 @@ bool PIT_RadiusAttack(mobj_t* thing)
 	// villsa [STRIFE] unused
 	// - haleyjd: INQUISITOR
 
-	if(thing->type == MT_INQUISITOR)
+	if(thing->type == mobjtype_t::MT_INQUISITOR)
 	{
 		return true;
 	}
@@ -1554,7 +1554,7 @@ bool PIT_ChangeSector(mobj_t* thing)
 		P_DamageMobj(thing, nullptr, nullptr, 10);
 
 		// spray blood in a random direction
-		auto mo{P_SpawnMobj(thing->x, thing->y, thing->z + thing->height/2, MT_BLOOD_DEATH)};
+		auto mo{P_SpawnMobj(thing->x, thing->y, thing->z + thing->height/2, mobjtype_t::MT_BLOOD_DEATH)};
 
 		auto t{P_Random()};
 		mo->momx = (t - P_Random()) << 12;

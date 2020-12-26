@@ -192,7 +192,7 @@ void R_InitSpriteDefs(const char **namelist)
 		{
 			//continue;
 			sprites[i].numframes = 0;
-			if (gamemode == shareware)
+			if (gamemode == GameMode_t::shareware)
 				continue;
 			I_Error("R_InitSprites: No lumps found for sprite %s",
 					namelist[i]);
@@ -652,7 +652,7 @@ void R_AddSprites(sector_t * sec)
 */
 
 // Y-adjustment values for full screen (4 weapons)
-int PSpriteSY[NUMCLASSES][NUMWEAPONS] = {
+int PSpriteSY[pclass_t::NUMCLASSES][NUMWEAPONS] = {
 	{0, -12 * FRACUNIT, -10 * FRACUNIT, 10 * FRACUNIT}, // Fighter
 	{-8 * FRACUNIT, 10 * FRACUNIT, 10 * FRACUNIT, 0},	// Cleric
 	{9 * FRACUNIT, 20 * FRACUNIT, 20 * FRACUNIT, 20 * FRACUNIT},		// Mage
@@ -747,7 +747,7 @@ void R_DrawPSprite(pspdef_t * psp)
 	vis->patch = lump;
 
 	if (viewplayer->powers[PowerType_t::pw_invulnerability] && viewplayer->class
-		== PCLASS_CLERIC)
+		== pclass_t::pclass_t::PCLASS_CLERIC)
 	{
 		vis->colormap = spritelights[MAXLIGHTSCALE - 1];
 		if (viewplayer->powers[PowerType_t::pw_invulnerability] > 4 * 32)

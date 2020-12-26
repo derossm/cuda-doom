@@ -334,7 +334,7 @@ void F_Drawer()
 		switch (gameepisode)
 		{
 			case 1:
-				if (gamemode == shareware)
+				if (gamemode == GameMode_t::shareware)
 				{
 					V_DrawRawScreen(W_CacheLumpName("ORDER", pu_tags_t::PU_CACHE));
 				}

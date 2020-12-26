@@ -193,7 +193,7 @@ void R_InitSpriteDefs(const char **namelist)
 		{
 			//continue;
 			sprites[i].numframes = 0;
-			if (gamemode == shareware)
+			if (gamemode == GameMode_t::shareware)
 				continue;
 			I_Error("R_InitSprites: No lumps found for sprite %s",
 					spritename);

@@ -42,11 +42,7 @@ int				sightcounts[2];
 //
 // [STRIFE] Verified unmodified
 //
-int
-P_DivlineSide
-( fixed_t		x,
- fixed_t		y,
- divline_t*	node )
+int P_DivlineSide(fixed_t x, fixed_t y, divline_t* node)
 {
 	fixed_t		dx;
 	fixed_t		dy;
@@ -98,10 +94,7 @@ P_DivlineSide
 //
 // [STRIFE] Verified unmodified
 //
-fixed_t
-P_InterceptVector2
-( divline_t*		v2,
- divline_t*		v1 )
+fixed_t P_InterceptVector2(divline_t* v2, divline_t* v1)
 {
 	fixed_t	frac;
 	fixed_t	num;
@@ -303,10 +296,7 @@ bool P_CrossBSPNode (int bspnum)
 //
 // [STRIFE] Verified unmodified
 //
-bool
-P_CheckSight
-( mobj_t*		t1,
- mobj_t*		t2 )
+bool P_CheckSight(mobj_t* t1, mobj_t* t2)
 {
 	int			s1;
 	int			s2;

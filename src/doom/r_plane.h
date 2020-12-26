@@ -40,11 +40,7 @@ extern fixed_t		distscale[MAXWIDTH];
 void R_InitPlanes ();
 void R_ClearPlanes ();
 
-void
-R_MapPlane
-( int		y,
- int		x1,
- int		x2 );
+void R_MapPlane(int y, int x1, int x2);
 
 void
 R_MakeSpans
@@ -56,17 +52,9 @@ R_MakeSpans
 
 void R_DrawPlanes ();
 
-visplane_t*
-R_FindPlane
-( fixed_t	height,
- int		picnum,
- int		lightlevel );
+visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel);
 
-visplane_t*
-R_CheckPlane
-( visplane_t*	pl,
- int		start,
- int		stop );
+visplane_t* R_CheckPlane(visplane_t* pl, int start, int stop);
 
 
 

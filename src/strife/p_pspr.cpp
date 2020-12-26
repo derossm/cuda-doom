@@ -45,11 +45,7 @@
 // [STRIFE]
 // villsa: Removed psprite sx, sy modification via misc1/2
 //
-void
-P_SetPsprite
-( player_t*		player,
- int			position,
- statenum_t	stnum )
+void P_SetPsprite(player_t* player, int position, statenum_t stnum)
 {
 	pspdef_t*	psp;
 	state_t*	state;
@@ -343,10 +339,7 @@ void A_CheckReload(player_t* player, pspdef_t* psp)
 // Lowers current weapon,
 // and changes weapon at bottom.
 //
-void
-A_Lower
-( player_t*	player,
- pspdef_t*	psp )
+void A_Lower(player_t* player, pspdef_t* psp)
 {
 	psp->sy += LOWERSPEED;
 
@@ -355,7 +348,7 @@ A_Lower
 		return;
 
 	// Player is dead.
-	if (player->playerstate == PST_DEAD)
+	if (player->playerstate == PlayerState_t::PST_DEAD)
 	{
 		psp->sy = WEAPONBOTTOM;
 
@@ -381,10 +374,7 @@ A_Lower
 //
 // A_Raise
 //
-void
-A_Raise
-( player_t*	player,
- pspdef_t*	psp )
+void A_Raise(player_t* player, pspdef_t* psp)
 {
 	statenum_t newstate;
 
@@ -407,10 +397,7 @@ A_Raise
 //
 // A_GunFlash
 //
-void
-A_GunFlash
-( player_t*	player,
- pspdef_t*	psp )
+void A_GunFlash(player_t* player, pspdef_t* psp)
 {
 	P_SetMobjState (player->mo, S_PLAY_06);
 	P_SetPsprite (player,ps_flash,weaponinfo[player->readyweapon].flashstate);
@@ -491,7 +478,7 @@ void A_FireFlameThrower(player_t* player, pspdef_t* psp)
 	t = P_Random();
 	player->mo->angle += (t - P_Random()) << 18;
 
-	mo = P_SpawnPlayerMissile(player->mo, MT_SFIREBALL);
+	mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_SFIREBALL);
 	mo->momz += (5*FRACUNIT);
 }
 
@@ -512,7 +499,7 @@ void A_FireMissile(player_t* player, pspdef_t* psp)
 	player->mo->angle += (t - P_Random()) << (19 - (player->accuracy * 5 / 100));
 	P_SetMobjState(player->mo, S_PLAY_06);
 	player->ammo[weaponinfo[player->readyweapon].ammo]--;
-	P_SpawnPlayerMissile(player->mo, MT_MINIMISSLE);
+	P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_MINIMISSLE);
 	player->mo->angle = an;
 }
 
@@ -526,7 +513,7 @@ void A_FireMauler2(player_t* player, pspdef_t* pspr)
 	P_SetMobjState(player->mo, S_PLAY_06);
 	P_DamageMobj(player->mo, player->mo, NULL, 20);
 	player->ammo[weaponinfo[player->readyweapon].ammo] -= 30;
-	P_SpawnPlayerMissile(player->mo, MT_TORPEDO);
+	P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_TORPEDO);
 	P_Thrust(player, player->mo->angle + ANG180, 512000);
 }
 
@@ -547,15 +534,15 @@ void A_FireGrenade(player_t* player, pspdef_t* pspr)
 	// decide on what type of grenade to spawn
 	if(player->readyweapon == wp_hegrenade)
 	{
-		type = MT_HEGRENADE;
+		type = mobjtype_t::MT_HEGRENADE;
 	}
 	else if(player->readyweapon == wp_wpgrenade)
 	{
-		type = MT_PGRENADE;
+		type = mobjtype_t::MT_PGRENADE;
 	}
 	else
 	{
-		type = MT_HEGRENADE;
+		type = mobjtype_t::MT_HEGRENADE;
 		fprintf(stderr, "Warning: A_FireGrenade used on wrong weapon!\n");
 	}
 
@@ -607,7 +594,7 @@ void A_FireElectricBolt(player_t* player, pspdef_t* pspr)
 	t = P_Random();
 	player->mo->angle += (t - P_Random()) << (18 - (player->accuracy * 5 / 100));
 	player->ammo[weaponinfo[player->readyweapon].ammo]--;
-	P_SpawnPlayerMissile(player->mo, MT_ELECARROW);
+	P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_ELECARROW);
 	player->mo->angle = an;
 	S_StartSound(player->mo, sfx_xbow);
 }
@@ -626,7 +613,7 @@ void A_FirePoisonBolt(player_t* player, pspdef_t* pspr)
 	t = P_Random();
 	player->mo->angle += (t - P_Random()) << (18 - (player->accuracy * 5 / 100));
 	player->ammo[weaponinfo[player->readyweapon].ammo]--;
-	P_SpawnPlayerMissile(player->mo, MT_POISARROW);
+	P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_POISARROW);
 	player->mo->angle = an;
 	S_StartSound(player->mo, sfx_xbow);
 }
@@ -672,10 +659,7 @@ void P_BulletSlope (mobj_t *mo)
 //
 // [STRIFE] Modifications to support accuracy.
 //
-void
-P_GunShot
-( mobj_t*	mo,
- bool	accurate )
+void P_GunShot(mobj_t* mo, bool accurate)
 {
 	angle_t		angle;
 	int			damage;
@@ -810,7 +794,7 @@ void A_FireSigil(player_t* player, pspdef_t* pspr)
 
 		// simple projectile
 	case 1:
-		P_SpawnPlayerMissile(player->mo, MT_SIGIL_B_SHOT)->health = -1;
+		P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_SIGIL_B_SHOT)->health = -1;
 		break;
 
 		// spread shot
@@ -819,7 +803,7 @@ void A_FireSigil(player_t* player, pspdef_t* pspr)
 		for(i = 0; i < 20; i++)		// increment by 1/10 of 90, 20 times.
 		{
 			player->mo->angle += (ANG90 / 10);
-			mo = P_SpawnMortar(player->mo, MT_SIGIL_C_SHOT);
+			mo = P_SpawnMortar(player->mo, mobjtype_t::MT_SIGIL_C_SHOT);
 			mo->health = -1;
 			mo->z = player->mo->z + (32*FRACUNIT);
 		}
@@ -831,13 +815,13 @@ void A_FireSigil(player_t* player, pspdef_t* pspr)
 		P_BulletSlope(player->mo);
 		if(linetarget)
 		{
-			mo = P_SpawnPlayerMissile(player->mo, MT_SIGIL_D_SHOT);
+			mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_SIGIL_D_SHOT);
 			mo->tracer = linetarget;
 		}
 		else
 		{
 			an = player->mo->angle >> ANGLETOFINESHIFT;
-			mo = P_SpawnPlayerMissile(player->mo, MT_SIGIL_D_SHOT);
+			mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_SIGIL_D_SHOT);
 			mo->momx += FixedMul(mo->info->speed, finecosine[an]);
 			mo->momy += FixedMul(mo->info->speed, finesine[an]);
 		}
@@ -846,7 +830,7 @@ void A_FireSigil(player_t* player, pspdef_t* pspr)
 
 		// mega blast
 	case 4:
-		mo = P_SpawnPlayerMissile(player->mo, MT_SIGIL_E_SHOT);
+		mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_SIGIL_E_SHOT);
 		mo->health = -1;
 		if(!linetarget)
 		{
@@ -917,7 +901,7 @@ void A_TorpedoExplode(mobj_t* actor)
 	for(i = 0; i < 80; i++)
 	{
 		actor->angle += (ANG90 / 20);
-		P_SpawnMortar(actor, MT_TORPEDOSPREAD)->target = actor->target;
+		P_SpawnMortar(actor, mobjtype_t::MT_TORPEDOSPREAD)->target = actor->target;
 	}
 }
 

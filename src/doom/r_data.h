@@ -27,16 +27,10 @@
 #define LOOKDIRS	(LOOKDIRMIN+1+LOOKDIRMAX) // [crispy] lookdir range: -110..0..90
 
 // Retrieve column data for span blitting.
-byte*
-R_GetColumn
-( int		tex,
- int		col );
+byte* R_GetColumn(int tex, int col);
 
 // [crispy] wrapping column getter function for composited translucent mid-textures on 1S walls
-byte*
-R_GetColumnMod
-( int		tex,
- int		col );
+byte* R_GetColumnMod(int tex, int col);
 
 
 // I/O, setting up the stuff.

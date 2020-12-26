@@ -114,13 +114,7 @@ void HUlib_clearTextLine(hu_textline_t* t)
 //
 // [STRIFE] Verified unmodified
 //
-void
-HUlib_initTextLine
-( hu_textline_t*		t,
- int					x,
- int					y,
- patch_t**				f,
- int					sc )
+void HUlib_initTextLine(hu_textline_t* t, int x, int y, patch_t** f, int sc)
 {
 	t->x = x;
 	t->y = y;
@@ -134,10 +128,7 @@ HUlib_initTextLine
 //
 // [STRIFE] Verified unmodified.
 //
-bool
-HUlib_addCharToTextLine
-( hu_textline_t*		t,
- char					ch )
+bool HUlib_addCharToTextLine(hu_textline_t* t, char ch)
 {
 	if (t->len == HU_MAXLINELENGTH)
 		return false;
@@ -171,10 +162,7 @@ bool HUlib_delCharFromTextLine(hu_textline_t* t)
 //
 // haleyjd 09/18/10: [STRIFE] Modified to not draw underscores in text.
 //
-void
-HUlib_drawTextLine
-( hu_textline_t*		l,
- bool				drawcursor )
+void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor)
 {
 	int					i;
 	int					w;
@@ -253,15 +241,7 @@ void HUlib_eraseTextLine(hu_textline_t* l)
 //
 // [STRIFE] Verified unmodified.
 //
-void
-HUlib_initSText
-( hu_stext_t*	s,
- int			x,
- int			y,
- int			h,
- patch_t**		font,
- int			startchar,
- bool*		on )
+void HUlib_initSText(hu_stext_t* s, int x, int y, int h, patch_t** font, int startchar, bool* on)
 {
 	int i;
 
@@ -366,14 +346,7 @@ void HUlib_eraseSText(hu_stext_t* s)
 //
 // [STRIFE] Verified unmodified.
 //
-void
-HUlib_initIText
-( hu_itext_t*	it,
- int			x,
- int			y,
- patch_t**		font,
- int			startchar,
- bool*		on )
+void HUlib_initIText(hu_itext_t* it, int x, int y, patch_t** font, int startchar, bool* on)
 {
 	it->lm = 0; // default left margin is start of text
 	it->on = on;
@@ -410,10 +383,7 @@ void HUlib_resetIText(hu_itext_t* it)
 //
 // [STRIFE] Verified unmodified.
 //
-void
-HUlib_addPrefixToIText
-( hu_itext_t*	it,
- char*			str )
+void HUlib_addPrefixToIText(hu_itext_t* it, char* str)
 {
 	while (*str)
 		HUlib_addCharToTextLine(&it->l, *(str++));
@@ -423,10 +393,7 @@ HUlib_addPrefixToIText
 // wrapper function for handling general keyed input.
 // returns true if it ate the key
 // [STRIFE] Verified unmodified.
-bool
-HUlib_keyInIText
-( hu_itext_t*	it,
- unsigned char ch )
+bool HUlib_keyInIText(hu_itext_t* it, unsigned char ch )
 {
 	ch = toupper(ch);
 

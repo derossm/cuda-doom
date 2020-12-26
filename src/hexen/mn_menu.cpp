@@ -696,7 +696,7 @@ static void SCMessages(int option)
 	{
 		P_SetMessage(&players[consoleplayer], "MESSAGES OFF", true);
 	}
-	S_StartSound(NULL, SFX_CHAT);
+	S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 }
 
 static bool SCNetCheck(int option)
@@ -802,7 +802,7 @@ static void SCClass(int option)
 	MenuPClass = option;
 	switch (MenuPClass)
 	{
-	case pclass_t::PCLASS_FIGHTER:
+	case pclass_t::pclass_t::PCLASS_FIGHTER:
 		SkillMenu.x = 120;
 		SkillItems[0].text = "SQUIRE";
 		SkillItems[1].text = "KNIGHT";
@@ -810,7 +810,7 @@ static void SCClass(int option)
 		SkillItems[3].text = "BERSERKER";
 		SkillItems[4].text = "TITAN";
 		break;
-	case pclass_t::PCLASS_CLERIC:
+	case pclass_t::pclass_t::PCLASS_CLERIC:
 		SkillMenu.x = 116;
 		SkillItems[0].text = "ALTAR BOY";
 		SkillItems[1].text = "ACOLYTE";
@@ -818,7 +818,7 @@ static void SCClass(int option)
 		SkillItems[3].text = "CARDINAL";
 		SkillItems[4].text = "POPE";
 		break;
-	case pclass_t::PCLASS_MAGE:
+	case pclass_t::pclass_t::PCLASS_MAGE:
 		SkillMenu.x = 112;
 		SkillItems[0].text = "APPRENTICE";
 		SkillItems[1].text = "ENCHANTER";
@@ -911,7 +911,7 @@ static void SCScreenSize(int option)
 static void SCInfo(int option)
 {
 	InfoType = 1;
-	S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+	S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 	if (!netgame && !demoplayback)
 	{
 		paused = true;
@@ -985,7 +985,7 @@ bool MN_Responder(event_t * event)
 	if (InfoType)
 	{
 		/* The 4-Level Demo Version also has 3 Info pages
-		if (gamemode == shareware)
+		if (gamemode == GameMode_t::shareware)
 		{
 			InfoType = (InfoType + 1) % 5;
 		}
@@ -1085,7 +1085,7 @@ bool MN_Responder(event_t * event)
 				return (false);
 			}
 			SCScreenSize(LEFT_DIR);
-			S_StartSound(NULL, SFX_PICKUP_KEY);
+			S_StartSound(NULL, sfxenum_t::SFX_PICKUP_KEY);
 			BorderNeedRefresh = true;
 			UpdateState |= I_FULLSCRN;
 			return (true);
@@ -1097,7 +1097,7 @@ bool MN_Responder(event_t * event)
 				return (false);
 			}
 			SCScreenSize(RIGHT_DIR);
-			S_StartSound(NULL, SFX_PICKUP_KEY);
+			S_StartSound(NULL, sfxenum_t::SFX_PICKUP_KEY);
 			BorderNeedRefresh = true;
 			UpdateState |= I_FULLSCRN;
 			return (true);
@@ -1121,7 +1121,7 @@ bool MN_Responder(event_t * event)
 				{
 					paused = true;
 				}
-				S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+				S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 				slottextloaded = false;		//reload the slot text, when needed
 			}
 			return true;
@@ -1139,7 +1139,7 @@ bool MN_Responder(event_t * event)
 				{
 					paused = true;
 				}
-				S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+				S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 				slottextloaded = false;		//reload the slot text, when needed
 			}
 			return true;
@@ -1155,7 +1155,7 @@ bool MN_Responder(event_t * event)
 			{
 				paused = true;
 			}
-			S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+			S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 			slottextloaded = false; //reload the slot text, when needed
 			return true;
 		}
@@ -1181,7 +1181,7 @@ bool MN_Responder(event_t * event)
 					{
 						paused = true;
 					}
-					S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+					S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 					slottextloaded = false; //reload the slot text
 					quicksave = -1;
 					P_SetMessage(&players[consoleplayer],
@@ -1195,7 +1195,7 @@ bool MN_Responder(event_t * event)
 					{
 						paused = true;
 					}
-					S_StartSound(NULL, SFX_CHAT);
+					S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 				}
 			}
 			return true;
@@ -1206,7 +1206,7 @@ bool MN_Responder(event_t * event)
 			{
 				if (gamestate == GameState_t::GS_LEVEL && !demoplayback)
 				{
-					S_StartSound(NULL, SFX_CHAT);
+					S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 					SCEndGame(0);
 				}
 			}
@@ -1232,7 +1232,7 @@ bool MN_Responder(event_t * event)
 					{
 						paused = true;
 					}
-					S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+					S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 					slottextloaded = false; // reload the slot text
 					quickload = -1;
 					P_SetMessage(&players[consoleplayer],
@@ -1246,7 +1246,7 @@ bool MN_Responder(event_t * event)
 						paused = true;
 					}
 					typeofask = 4;
-					S_StartSound(NULL, SFX_CHAT);
+					S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 				}
 			}
 			return true;
@@ -1256,7 +1256,7 @@ bool MN_Responder(event_t * event)
 			if (gamestate == GameState_t::GS_LEVEL || gamestate == GameState_t::GS_FINALE)
 			{
 				SCQuitGame(0);
-				S_StartSound(NULL, SFX_CHAT);
+				S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 			}
 			return true;
 		}
@@ -1321,7 +1321,7 @@ bool MN_Responder(event_t * event)
 				}
 			}
 			while (CurrentMenu->items[CurrentItPos].type == ITT_EMPTY);
-			S_StartSound(NULL, SFX_FIGHTER_HAMMER_HITWALL);
+			S_StartSound(NULL, sfxenum_t::SFX_FIGHTER_HAMMER_HITWALL);
 			return (true);
 		}
 		else if (key == key_menu_up)				// Previous menu item
@@ -1338,7 +1338,7 @@ bool MN_Responder(event_t * event)
 				}
 			}
 			while (CurrentMenu->items[CurrentItPos].type == ITT_EMPTY);
-			S_StartSound(NULL, SFX_FIGHTER_HAMMER_HITWALL);
+			S_StartSound(NULL, sfxenum_t::SFX_FIGHTER_HAMMER_HITWALL);
 			return (true);
 		}
 		else if (key == key_menu_left)			// Slider left
@@ -1346,7 +1346,7 @@ bool MN_Responder(event_t * event)
 			if (item->type == ITT_LRFUNC && item->func != NULL)
 			{
 				item->func(LEFT_DIR);
-				S_StartSound(NULL, SFX_PICKUP_KEY);
+				S_StartSound(NULL, sfxenum_t::SFX_PICKUP_KEY);
 			}
 			return (true);
 		}
@@ -1355,7 +1355,7 @@ bool MN_Responder(event_t * event)
 			if (item->type == ITT_LRFUNC && item->func != NULL)
 			{
 				item->func(RIGHT_DIR);
-				S_StartSound(NULL, SFX_PICKUP_KEY);
+				S_StartSound(NULL, sfxenum_t::SFX_PICKUP_KEY);
 			}
 			return (true);
 		}
@@ -1381,7 +1381,7 @@ bool MN_Responder(event_t * event)
 					item->func(item->option);
 				}
 			}
-			S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+			S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 			return (true);
 		}
 		else if (key == key_menu_activate)
@@ -1391,7 +1391,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_back)
 		{
-			S_StartSound(NULL, SFX_PICKUP_KEY);
+			S_StartSound(NULL, sfxenum_t::SFX_PICKUP_KEY);
 
 			if (CurrentMenu->prevMenu == MENU_NONE)
 			{
@@ -1504,7 +1504,7 @@ void MN_ActivateMenu()
 	{
 		paused = true;
 	}
-	S_StartSound(NULL, SFX_PLATFORM_STOP);
+	S_StartSound(NULL, sfxenum_t::SFX_PLATFORM_STOP);
 	slottextloaded = false;		//reload the slot text, when needed
 }
 
@@ -1527,7 +1527,7 @@ void MN_DeactivateMenu()
 		paused = false;
 	}
 
-	S_StartSound(NULL, SFX_PLATFORM_STOP);
+	S_StartSound(NULL, sfxenum_t::SFX_PLATFORM_STOP);
 	P_ClearMessage(&players[consoleplayer]);
 }
 

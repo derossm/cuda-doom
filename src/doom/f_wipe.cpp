@@ -34,11 +34,7 @@ static pixel_t*	wipe_scr_end;
 static pixel_t*	wipe_scr;
 
 
-void
-wipe_shittyColMajorXform
-( dpixel_t*	array,
- int		width,
- int		height )
+void wipe_shittyColMajorXform(dpixel_t* array, int width, int height)
 {
 	int		x;
 	int		y;
@@ -56,21 +52,13 @@ wipe_shittyColMajorXform
 
 }
 
-int
-wipe_initColorXForm
-( int	width,
- int	height,
- int	ticks )
+int wipe_initColorXForm(int width, int height, int ticks)
 {
 	memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
 	return 0;
 }
 
-int
-wipe_doColorXForm
-( int	width,
- int	height,
- int	ticks )
+int wipe_doColorXForm(int width, int height, int ticks)
 {
 	bool	changed;
 	pixel_t*	w;
@@ -112,11 +100,7 @@ wipe_doColorXForm
 
 }
 
-int
-wipe_exitColorXForm
-( int	width,
- int	height,
- int	ticks )
+int wipe_exitColorXForm(int width, int height, int ticks)
 {
 	return 0;
 }
@@ -124,11 +108,7 @@ wipe_exitColorXForm
 
 static int*	y;
 
-int
-wipe_initMelt
-( int	width,
- int	height,
- int	ticks )
+int wipe_initMelt(int width, int height, int ticks)
 {
 	int i, r;
 
@@ -155,11 +135,7 @@ wipe_initMelt
 	return 0;
 }
 
-int
-wipe_doMelt
-( int	width,
- int	height,
- int	ticks )
+int wipe_doMelt(int width, int height, int ticks)
 {
 	int		i;
 	int		j;
@@ -210,11 +186,7 @@ wipe_doMelt
 
 }
 
-int
-wipe_exitMelt
-( int	width,
- int	height,
- int	ticks )
+int wipe_exitMelt(int width, int height, int ticks)
 {
 	Z_Free(y);
 	Z_Free(wipe_scr_start);
@@ -222,24 +194,14 @@ wipe_exitMelt
 	return 0;
 }
 
-int
-wipe_StartScreen
-( int	x,
- int	y,
- int	width,
- int	height )
+int wipe_StartScreen(int x, int y, int width, int height)
 {
 	wipe_scr_start = Z_Malloc<decltype(wipe_scr_start)>(SCREENWIDTH * SCREENHEIGHT * sizeof(*wipe_scr_start), pu_tags_t::PU_STATIC, NULL);
 	I_ReadScreen(wipe_scr_start);
 	return 0;
 }
 
-int
-wipe_EndScreen
-( int	x,
- int	y,
- int	width,
- int	height )
+int wipe_EndScreen(int x, int y, int width, int height)
 {
 	wipe_scr_end = Z_Malloc<decltype(wipe_scr_end)>(SCREENWIDTH * SCREENHEIGHT * sizeof(*wipe_scr_end), pu_tags_t::PU_STATIC, NULL);
 	I_ReadScreen(wipe_scr_end);
@@ -247,14 +209,7 @@ wipe_EndScreen
 	return 0;
 }
 
-int
-wipe_ScreenWipe
-( int	wipeno,
- int	x,
- int	y,
- int	width,
- int	height,
- int	ticks )
+int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height, int ticks)
 {
 	int rc;
 	static int (*wipes[])(int, int, int) =

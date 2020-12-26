@@ -126,11 +126,11 @@ typedef struct dialogstateset_s
 
 static dialogstateset_t dialogstatesets[] =
 {
-	{ MT_PLAYER,		S_NULL,	S_NULL,	S_NULL	},
-	{ MT_SHOPKEEPER_W, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
-	{ MT_SHOPKEEPER_B, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
-	{ MT_SHOPKEEPER_A, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
-	{ MT_SHOPKEEPER_M, S_MRGT_00, S_MRYS_00, S_MRNO_00 }
+	{ mobjtype_t::MT_PLAYER,		S_NULL,	S_NULL,	S_NULL	},
+	{ mobjtype_t::MT_SHOPKEEPER_W, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
+	{ mobjtype_t::MT_SHOPKEEPER_B, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
+	{ mobjtype_t::MT_SHOPKEEPER_A, S_MRGT_00, S_MRYS_00, S_MRNO_00 },
+	{ mobjtype_t::MT_SHOPKEEPER_M, S_MRGT_00, S_MRYS_00, S_MRNO_00 }
 };
 
 // Rogue stored this in a static global rather than making it a define...
@@ -452,7 +452,7 @@ void P_DialogLoad()
 		byte *leveldialogptr = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 		numleveldialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
 		P_ParseDialogLump(leveldialogptr, &leveldialogs, numleveldialogs,
-							PU_LEVEL);
+							pu_tags_t::PU_LEVEL);
 		Z_Free(leveldialogptr); // haleyjd: free the original lump
 	}
 
@@ -467,7 +467,7 @@ void P_DialogLoad()
 		script0ptr = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 		numscript0dialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
 		P_ParseDialogLump(script0ptr, &script0dialogs, numscript0dialogs,
-							PU_STATIC);
+							pu_tags_t::PU_STATIC);
 		Z_Free(script0ptr); // haleyjd: free the original lump
 	}
 }
@@ -486,16 +486,16 @@ int P_PlayerHasItem(player_t *player, mobjtype_t type)
 	if(type > 0)
 	{
 		// check keys
-		if(type >= MT_KEY_BASE && type < MT_INV_SHADOWARMOR)
-			return (player->cards[type - MT_KEY_BASE]);
+		if(type >= mobjtype_t::MT_KEY_BASE && type < mobjtype_t::MT_INV_SHADOWARMOR)
+			return (player->cards[type - mobjtype_t::MT_KEY_BASE]);
 
 		// check sigil pieces
-		if(type >= MT_SIGIL_A && type <= MT_SIGIL_E)
-			return (type - MT_SIGIL_A <= player->sigiltype);
+		if(type >= mobjtype_t::MT_SIGIL_A && type <= mobjtype_t::MT_SIGIL_E)
+			return (type - mobjtype_t::MT_SIGIL_A <= player->sigiltype);
 
 		// check quest tokens
-		if(type >= MT_TOKEN_QUEST1 && type <= MT_TOKEN_QUEST31)
-			return (player->questflags & (1 << (type - MT_TOKEN_QUEST1)));
+		if(type >= mobjtype_t::MT_TOKEN_QUEST1 && type <= mobjtype_t::MT_TOKEN_QUEST31)
+			return (player->questflags & (1 << (type - mobjtype_t::MT_TOKEN_QUEST1)));
 
 		// check inventory
 		for(i = 0; i < 32; i++)
@@ -696,21 +696,21 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 		player->questflags |= 1 << (mobjinfo[type].speed - 1);
 
 	// check for keys
-	if(type >= MT_KEY_BASE && type <= MT_NEWKEY5)
+	if(type >= mobjtype_t::MT_KEY_BASE && type <= mobjtype_t::MT_NEWKEY5)
 	{
-		P_GiveCard(player, type - MT_KEY_BASE);
+		P_GiveCard(player, type - mobjtype_t::MT_KEY_BASE);
 		return true;
 	}
 
 	// check for quest tokens
-	if(type >= MT_TOKEN_QUEST1 && type <= MT_TOKEN_QUEST31)
+	if(type >= mobjtype_t::MT_TOKEN_QUEST1 && type <= mobjtype_t::MT_TOKEN_QUEST31)
 	{
 		if(mobjinfo[type].name)
 		{
 			M_StringCopy(pickupstring, DEH_String(mobjinfo[type].name), 39);
 			player->message = pickupstring;
 		}
-		player->questflags |= 1 << (type - MT_TOKEN_QUEST1);
+		player->questflags |= 1 << (type - mobjtype_t::MT_TOKEN_QUEST1);
 
 		if(player == &players[consoleplayer])
 			S_StartSound(NULL, sound);
@@ -722,12 +722,12 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 	switch(sprnum)
 	{
 	case SPR_HELT: // This is given only by the "DONNYTRUMP" cheat (aka Midas)
-		P_GiveInventoryItem(player, SPR_HELT, MT_TOKEN_TOUGHNESS);
-		P_GiveInventoryItem(player, SPR_GUNT, MT_TOKEN_ACCURACY);
+		P_GiveInventoryItem(player, SPR_HELT, mobjtype_t::MT_TOKEN_TOUGHNESS);
+		P_GiveInventoryItem(player, SPR_GUNT, mobjtype_t::MT_TOKEN_ACCURACY);
 
 		// [STRIFE] Bizarre...
 		for(i = 0; i < 5 * player->accuracy + 300; i++)
-			P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+			P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		break;
 
 	case SPR_ARM1: // Armor 1
@@ -741,22 +741,22 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 		break;
 
 	case SPR_COIN: // 1 Gold
-		P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+		P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		break;
 
 	case SPR_CRED: // 10 Gold
 		for(i = 0; i < 10; i++)
-			P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+			P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		break;
 
 	case SPR_SACK: // 25 gold
 		for(i = 0; i < 25; i++)
-			P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+			P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		break;
 
 	case SPR_CHST: // 50 gold
 		for(i = 0; i < 50; i++)
-			P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+			P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 		break; // haleyjd 20141215: missing break, caused Rowan to not take ring from you.
 
 	case SPR_BBOX: // Box of Bullets
@@ -886,55 +886,55 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 	case SPR_TOKN: // Miscellaneous items - These are determined by thingtype.
 		switch(type)
 		{
-		case MT_KEY_HAND: // Severed hand
+		case mobjtype_t::MT_KEY_HAND: // Severed hand
 			P_GiveCard(player, key_SeveredHand);
 			break;
 
-		case MT_MONY_300: // 300 Gold (this is the only way to get it, in fact)
+		case mobjtype_t::MT_MONY_300: // 300 Gold (this is the only way to get it, in fact)
 			for(i = 0; i < 300; i++)
-				P_GiveInventoryItem(player, SPR_COIN, MT_MONY_1);
+				P_GiveInventoryItem(player, SPR_COIN, mobjtype_t::MT_MONY_1);
 			break;
 
-		case MT_TOKEN_AMMO: // Ammo token - you get this from the Weapons Trainer
+		case mobjtype_t::MT_TOKEN_AMMO: // Ammo token - you get this from the Weapons Trainer
 			if(player->ammo[am_bullets] >= 50)
 				return false;
 
 			player->ammo[am_bullets] = 50;
 			break;
 
-		case MT_TOKEN_HEALTH: // Health token - from the Front's doctor
+		case mobjtype_t::MT_TOKEN_HEALTH: // Health token - from the Front's doctor
 			if(!P_GiveBody(player, healthamounts[gameskill]))
 				return false;
 			break;
 
-		case MT_TOKEN_ALARM: // Alarm token - particularly from the Oracle.
+		case mobjtype_t::MT_TOKEN_ALARM: // Alarm token - particularly from the Oracle.
 			P_NoiseAlert(player->mo, player->mo);
 			A_AlertSpectreC(dialogtalker); // BUG: assumes in a dialog o_O
 			break;
 
-		case MT_TOKEN_DOOR1: // Door special 1
+		case mobjtype_t::MT_TOKEN_DOOR1: // Door special 1
 			junk.tag = 222;
 			EV_DoDoor(&junk, vld_open);
 			break;
 
-		case MT_TOKEN_PRISON_PASS: // Door special 1 - Prison pass
+		case mobjtype_t::MT_TOKEN_PRISON_PASS: // Door special 1 - Prison pass
 			junk.tag = 223;
 			EV_DoDoor(&junk, vld_open);
 			if(gamemap == 2) // If on Tarnhill, give Prison pass object
 				P_GiveInventoryItem(player, sprnum, type);
 			break;
 
-		case MT_TOKEN_SHOPCLOSE: // Door special 3 - "Shop close" - unused?
+		case mobjtype_t::MT_TOKEN_SHOPCLOSE: // Door special 3 - "Shop close" - unused?
 			junk.tag = 222;
 			EV_DoDoor(&junk, vld_close);
 			break;
 
-		case MT_TOKEN_DOOR3: // Door special 4 (or 3? :P )
+		case mobjtype_t::MT_TOKEN_DOOR3: // Door special 4 (or 3? :P )
 			junk.tag = 224;
 			EV_DoDoor(&junk, vld_close);
 			break;
 
-		case MT_TOKEN_STAMINA: // Stamina upgrade
+		case mobjtype_t::MT_TOKEN_STAMINA: // Stamina upgrade
 			if(player->stamina >= 100)
 				return false;
 
@@ -942,17 +942,17 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 			P_GiveBody(player, 200); // full healing
 			break;
 
-		case MT_TOKEN_NEW_ACCURACY: // Accuracy upgrade
+		case mobjtype_t::MT_TOKEN_NEW_ACCURACY: // Accuracy upgrade
 			if(player->accuracy >= 100)
 				return false;
 
 			player->accuracy += 10;
 			break;
 
-		case MT_SLIDESHOW: // Slideshow (start a finale)
+		case mobjtype_t::MT_SLIDESHOW: // Slideshow (start a finale)
 			gameaction = ga_victory;
 			if(gamemap == 10)
-				P_GiveItemToPlayer(player, SPR_TOKN, MT_TOKEN_QUEST17);
+				P_GiveItemToPlayer(player, SPR_TOKN, mobjtype_t::MT_TOKEN_QUEST17);
 			break;
 
 		default: // The default is to just give it as an inventory item.
@@ -1220,7 +1220,7 @@ void P_DialogDoChoice(int choice)
 		}
 		// haleyjd 20130301: v1.31 hack: if first char of message is a period,
 		// clear the player's message. Is this actually used anywhere?
-		if(gameversion == exe_strife_1_31 && message[0] == '.')
+		if(gameversion == GameVersion_t::exe_strife_1_31 && message[0] == '.')
 			message = NULL;
 		dialogplayer->message = message;
 	}

@@ -389,7 +389,7 @@ void R_InitTextures()
 											+
 											sizeof(texpatch_t) *
 											(SHORT(mtexture->patchcount) - 1),
-											PU_STATIC, 0);
+											pu_tags_t::PU_STATIC, 0);
 		texture->width = SHORT(mtexture->width);
 		texture->height = SHORT(mtexture->height);
 		texture->patchcount = SHORT(mtexture->patchcount);
@@ -406,9 +406,9 @@ void R_InitTextures()
 						texture->name);
 		}
 		texturecolumnlump[i] = Z_Malloc<decltype(texturecolumnlump[i])>(texture->width * sizeof(short),
-										PU_STATIC, 0);
+										pu_tags_t::PU_STATIC, 0);
 		texturecolumnofs[i] = Z_Malloc<decltype(texturecolumnofs[i])>(texture->width * sizeof(short),
-										PU_STATIC, 0);
+										pu_tags_t::PU_STATIC, 0);
 		j = 1;
 		while (j * 2 <= texture->width)
 			j <<= 1;

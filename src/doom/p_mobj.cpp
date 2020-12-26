@@ -48,10 +48,7 @@ int test;
 
 #define MOBJ_CYCLE_LIMIT 1000000
 
-bool
-P_SetMobjState
-( mobj_t*	mobj,
- statenum_t	state )
+bool P_SetMobjState(mobj_t* mobj, statenum_t state)
 {
 	state_t*	st;
 	int	cycle_counter = 0;
@@ -359,7 +356,7 @@ void P_ZMovement (mobj_t* mo)
 		// So we need to check that this is either retail or commercial
 		// (but not doom2)
 
-	int correct_lost_soul_bounce = gameversion >= exe_ultimate;
+	int correct_lost_soul_bounce = gameversion >= GameVersion_t::exe_ultimate;
 
 	if (correct_lost_soul_bounce && mo->flags & MF_SKULLFLY)
 	{
@@ -472,14 +469,14 @@ P_NightmareRespawn (mobj_t* mobj)
 	// because of removal of the body?
 	mo = P_SpawnMobj (mobj->x,
 				mobj->y,
-				mobj->subsector->sector->floorheight, MT_TFOG);
+				mobj->subsector->sector->floorheight, mobjtype_t::MT_TFOG);
 	// initiate teleport sound
 	S_StartSound (mo, sfx_telept);
 
 	// spawn a teleport fog at the new spot
 	ss = R_PointInSubsector (x,y);
 
-	mo = P_SpawnMobj (x, y, ss->sector->floorheight, MT_TFOG);
+	mo = P_SpawnMobj (x, y, ss->sector->floorheight, mobjtype_t::MT_TFOG);
 
 	S_StartSound (mo, sfx_telept);
 
@@ -527,7 +524,7 @@ static inline void MusInfoThinker (mobj_t *thing)
 void P_MobjThinker (mobj_t* mobj)
 {
 	// [crispy] support MUSINFO lump (dynamic music changing)
-	if (mobj->type == MT_MUSICSOURCE)
+	if (mobj->type == mobjtype_t::MT_MUSICSOURCE)
 	{
 	return MusInfoThinker(mobj);
 	}
@@ -613,13 +610,7 @@ void P_MobjThinker (mobj_t* mobj)
 //
 // P_SpawnMobj
 //
-static mobj_t*
-P_SpawnMobjSafe
-( fixed_t	x,
- fixed_t	y,
- fixed_t	z,
- mobjtype_t	type,
- bool safe )
+static mobj_t* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type, bool safe)
 {
 	mobj_t*	mobj;
 	state_t*	st;
@@ -710,12 +701,7 @@ P_SpawnMobjSafe
 	return mobj;
 }
 
-mobj_t*
-P_SpawnMobj
-( fixed_t	x,
- fixed_t	y,
- fixed_t	z,
- mobjtype_t	type )
+mobj_t* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
 {
 	return P_SpawnMobjSafe(x, y, z, type, false);
 }
@@ -733,8 +719,8 @@ void P_RemoveMobj (mobj_t* mobj)
 {
 	if ((mobj->flags & MF_SPECIAL)
 	&& !(mobj->flags & MF_DROPPED)
-	&& (mobj->type != MT_INV)
-	&& (mobj->type != MT_INS))
+	&& (mobj->type != mobjtype_t::MT_INV)
+	&& (mobj->type != mobjtype_t::MT_INS))
 	{
 	itemrespawnque[iquehead] = mobj->spawnpoint;
 	itemrespawntime[iquehead] = leveltime;
@@ -801,7 +787,7 @@ void P_RespawnSpecials ()
 
 	// spawn a teleport fog at the new spot
 	ss = R_PointInSubsector (x,y);
-	mo = P_SpawnMobj (x, y, ss->sector->floorheight, MT_IFOG);
+	mo = P_SpawnMobj (x, y, ss->sector->floorheight, mobjtype_t::MT_IFOG);
 	S_StartSound (mo, sfx_itmbk);
 
 	// find which type to spawn
@@ -870,13 +856,13 @@ void P_SpawnPlayer (mapthing_t* mthing)
 
 	p = &players[mthing->type-1];
 
-	if (p->playerstate == PST_REBORN)
+	if (p->playerstate == PlayerState_t::PST_REBORN)
 	G_PlayerReborn (mthing->type-1);
 
 	x		= mthing->x << FRACBITS;
 	y		= mthing->y << FRACBITS;
 	z		= ONFLOORZ;
-	mobj	= P_SpawnMobj (x,y,z, MT_PLAYER);
+	mobj	= P_SpawnMobj (x,y,z, mobjtype_t::MT_PLAYER);
 
 	// set color translations for player sprites
 	if (mthing->type > 1)
@@ -887,7 +873,7 @@ void P_SpawnPlayer (mapthing_t* mthing)
 	mobj->health = p->health;
 
 	p->mo = mobj;
-	p->playerstate = PST_LIVE;
+	p->playerstate = PlayerState_t::PST_LIVE;
 	p->refire = 0;
 	p->message = NULL;
 	p->damagecount = 0;
@@ -1011,7 +997,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 
 	// don't spawn any monsters if -nomonsters
 	if (nomonsters
-	&& ( i == MT_SKULL
+	&& ( i == mobjtype_t::MT_SKULL
 			|| (mobjinfo[i].flags & MF_COUNTKILL)) )
 	{
 	return;
@@ -1041,13 +1027,13 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	mobj->flags |= MF_AMBUSH;
 
 	// [crispy] support MUSINFO lump (dynamic music changing)
-	if (i == MT_MUSICSOURCE)
+	if (i == mobjtype_t::MT_MUSICSOURCE)
 	{
 	mobj->health = 1000 + musid;
 	}
 
 	// [crispy] Lost Souls bleed Puffs
-	if (crispy->coloredblood && i == MT_SKULL)
+	if (crispy->coloredblood && i == mobjtype_t::MT_SKULL)
 		mobj->flags |= MF_NOBLOOD;
 
 	// [crispy] randomly colorize space marine corpse objects
@@ -1081,27 +1067,18 @@ void P_SpawnMapThing (mapthing_t* mthing)
 //
 extern fixed_t attackrange;
 
-void
-P_SpawnPuff
-( fixed_t	x,
- fixed_t	y,
- fixed_t	z )
+void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
 {
 	return P_SpawnPuffSafe(x, y, z, false);
 }
 
-void
-P_SpawnPuffSafe
-( fixed_t	x,
- fixed_t	y,
- fixed_t	z,
- bool	safe )
+void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe)
 {
 	mobj_t*	th;
 
 	z += safe ? (Crispy_SubRandom() << 10) : (P_SubRandom() << 10);
 
-	th = P_SpawnMobjSafe (x,y,z, MT_PUFF, safe);
+	th = P_SpawnMobjSafe (x,y,z, mobjtype_t::MT_PUFF, safe);
 	th->momz = FRACUNIT;
 	th->tics -= safe ? Crispy_Random()&3 : P_Random()&3;
 
@@ -1118,18 +1095,12 @@ P_SpawnPuffSafe
 //
 // P_SpawnBlood
 //
-void
-P_SpawnBlood
-( fixed_t	x,
- fixed_t	y,
- fixed_t	z,
- int		damage,
- mobj_t*	target ) // [crispy] pass thing type
+void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, mobj_t* target) // [crispy] pass thing type
 {
 	mobj_t*	th;
 
 	z += (P_SubRandom() << 10);
-	th = P_SpawnMobj (x,y,z, MT_BLOOD);
+	th = P_SpawnMobj (x,y,z, mobjtype_t::MT_BLOOD);
 	th->momz = FRACUNIT*2;
 	th->tics -= P_Random()&3;
 
@@ -1198,11 +1169,7 @@ mobj_t *P_SubstNullMobj(mobj_t *mobj)
 //
 // P_SpawnMissile
 //
-mobj_t*
-P_SpawnMissile
-( mobj_t*	source,
- mobj_t*	dest,
- mobjtype_t	type )
+mobj_t* P_SpawnMissile(mobj_t* source, mobj_t* dest, mobjtype_t type)
 {
 	mobj_t*	th;
 	angle_t	an;
@@ -1244,10 +1211,7 @@ P_SpawnMissile
 // P_SpawnPlayerMissile
 // Tries to aim at a nearby monster
 //
-void
-P_SpawnPlayerMissile
-( mobj_t*	source,
- mobjtype_t	type )
+void P_SpawnPlayerMissile(mobj_t* source, mobjtype_t type)
 {
 	mobj_t*	th;
 	angle_t	an;

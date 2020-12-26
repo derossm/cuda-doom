@@ -77,7 +77,7 @@ mobj_t LavaInflictor;
 void P_InitLava()
 {
 	memset(&LavaInflictor, 0, sizeof(mobj_t));
-	LavaInflictor.type = MT_CIRCLEFLAME;
+	LavaInflictor.type = mobjtype_t::MT_CIRCLEFLAME;
 	LavaInflictor.flags2 = MF2_FIREDAMAGE | MF2_NODMGTHRUST;
 }
 
@@ -419,7 +419,7 @@ static bool CheckedLockedDoor(mobj_t * mo, byte lock)
 		M_snprintf(LockedBuffer, sizeof(LockedBuffer),
 					"YOU NEED THE %s\n", TextKeyMessages[lock - 1]);
 		P_SetMessage(mo->player, LockedBuffer, true);
-		S_StartSound(mo, SFX_DOOR_LOCKED);
+		S_StartSound(mo, sfxenum_t::SFX_DOOR_LOCKED);
 		return false;
 	}
 	return true;
@@ -449,7 +449,7 @@ bool EV_LineSearchForPuzzleItem(line_t * line, byte * args, mobj_t * mo)
 	for (i = 0; i < player->artifactCount; i++)
 	{
 		arti = player->inventory[i].type;
-		type = arti - arti_firstpuzzitem;
+		type = arti - ArtiType_t::arti_firstpuzzitem;
 		if (type < 0)
 			continue;
 		if (type == line->arg1)
@@ -461,13 +461,13 @@ bool EV_LineSearchForPuzzleItem(line_t * line, byte * args, mobj_t * mo)
 				P_PlayerRemoveArtifact(player, i);
 				if (player == &players[consoleplayer])
 				{
-					if (arti < arti_firstpuzzitem)
+					if (arti < ArtiType_t::arti_firstpuzzitem)
 					{
-						S_StartSound(NULL, SFX_ARTIFACT_USE);
+						S_StartSound(NULL, sfxenum_t::SFX_ARTIFACT_USE);
 					}
 					else
 					{
-						S_StartSound(NULL, SFX_PUZZLE_SUCCESS);
+						S_StartSound(NULL, sfxenum_t::SFX_PUZZLE_SUCCESS);
 					}
 					ArtifactFlash = 4;
 				}
@@ -696,7 +696,7 @@ bool P_ExecuteLineSpecial(int special, byte * args, line_t * line,
 		case 74:				// Teleport_NewMap
 			if (side == 0)
 			{					// Only teleport when crossing the front side of a line
-				if (!(mo && mo->player && mo->player->playerstate == PST_DEAD)) // Players must be alive to teleport
+				if (!(mo && mo->player && mo->player->playerstate == PlayerState_t::PST_DEAD)) // Players must be alive to teleport
 				{
 					G_Completed(args[0], args[1]);
 					buttonSuccess = true;
@@ -706,7 +706,7 @@ bool P_ExecuteLineSpecial(int special, byte * args, line_t * line,
 		case 75:				// Teleport_EndGame
 			if (side == 0)
 			{					// Only teleport when crossing the front side of a line
-				if (!(mo && mo->player && mo->player->playerstate == PST_DEAD)) // Players must be alive to teleport
+				if (!(mo && mo->player && mo->player->playerstate == PlayerState_t::PST_DEAD)) // Players must be alive to teleport
 				{
 					buttonSuccess = true;
 					if (deathmatch)
@@ -1000,7 +1000,7 @@ void P_PlayerOnSpecialFlat(player_t * player, int floorType)
 			if (!(leveltime & 31))
 			{
 				P_DamageMobj(player->mo, &LavaInflictor, NULL, 10);
-				S_StartSound(player->mo, SFX_LAVA_SIZZLE);
+				S_StartSound(player->mo, sfxenum_t::SFX_LAVA_SIZZLE);
 			}
 			break;
 		default:

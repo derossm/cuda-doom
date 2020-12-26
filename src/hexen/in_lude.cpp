@@ -208,7 +208,7 @@ static void InitStats()
 
 static void LoadPics()
 {
-	if (HubCount || gametype == DEATHMATCH)
+	if (HubCount || gametype == gametype_t::DEATHMATCH)
 	{
 		patchINTERPIC = W_CacheLumpName("INTERPIC", pu_tags_t::PU_STATIC);
 		FontBLumpBase = W_GetNumForName("FONTB16");

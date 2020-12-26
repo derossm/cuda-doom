@@ -158,10 +158,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 // * lowerAndCrush was apparently "fixed" to actually crush, and was also
 //	altered to lower all the way to the floor rather than remain 8 above.
 // * silentCrushAndRaise and crushAndRaise no longer crush.
-int
-EV_DoCeiling
-( line_t*		line,
- ceiling_e		type )
+int EV_DoCeiling(line_t* line, ceiling_e type)
 {
 	int			secnum;
 	int			rtn;

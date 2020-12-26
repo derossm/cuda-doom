@@ -159,7 +159,7 @@ bool P_CheckMeleeRange(mobj_t* actor)
 	pl = actor->target;
 	dist = P_AproxDistance(pl->x-actor->x, pl->y-actor->y);
 
-	if (gameversion <= exe_doom_1_2)
+	if (gameversion <= GameVersion_t::exe_doom_1_2)
 		range = MELEERANGE;
 	else
 		range = MELEERANGE-20*FRACUNIT+pl->info->radius;
@@ -634,7 +634,7 @@ void A_Look(mobj_t* actor)
 	}
 
 	if (actor->type==MT_SPIDER
-		|| actor->type == MT_CYBORG)
+		|| actor->type == mobjtype_t::MT_CYBORG)
 	{
 		// full volume
 		// [crispy] prevent from adding up volume
@@ -890,7 +890,7 @@ void A_BspiAttack(mobj_t *actor)
 	A_FaceTarget(actor);
 
 	// launch a missile
-	P_SpawnMissile(actor, actor->target, MT_ARACHPLAZ);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_ARACHPLAZ);
 }
 
 
@@ -915,7 +915,7 @@ void A_TroopAttack(mobj_t* actor)
 
 
 	// launch a missile
-	P_SpawnMissile(actor, actor->target, MT_TROOPSHOT);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_TROOPSHOT);
 }
 
 
@@ -936,7 +936,7 @@ void A_SargAttack(mobj_t* actor)
 
 	damage = ((P_Random()%10)+1)*4;
 
-	if (gameversion <= exe_doom_1_2)
+	if (gameversion <= GameVersion_t::exe_doom_1_2)
 		P_LineAttack(actor, actor->angle, MELEERANGE, 0, damage);
 	else
 		P_DamageMobj(actor->target, actor, actor, damage);
@@ -958,7 +958,7 @@ void A_HeadAttack(mobj_t* actor)
 	}
 
 	// launch a missile
-	P_SpawnMissile(actor, actor->target, MT_HEADSHOT);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_HEADSHOT);
 }
 
 void A_CyberAttack(mobj_t* actor)
@@ -967,7 +967,7 @@ void A_CyberAttack(mobj_t* actor)
 	return;
 
 	A_FaceTarget(actor);
-	P_SpawnMissile(actor, actor->target, MT_ROCKET);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_ROCKET);
 }
 
 
@@ -989,7 +989,7 @@ void A_BruisAttack(mobj_t* actor)
 	}
 
 	// launch a missile
-	P_SpawnMissile(actor, actor->target, MT_BRUISERSHOT);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_BRUISERSHOT);
 }
 
 
@@ -1005,7 +1005,7 @@ void A_SkelMissile(mobj_t* actor)
 
 	A_FaceTarget(actor);
 	actor->z += 16*FRACUNIT;	// so missile spawns higher
-	mo = P_SpawnMissile(actor, actor->target, MT_TRACER);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_TRACER);
 	actor->z -= 16*FRACUNIT;	// back to normal
 
 	mo->x += mo->momx;
@@ -1032,7 +1032,7 @@ void A_Tracer(mobj_t* actor)
 
 	th = P_SpawnMobj(actor->x-actor->momx,
 				actor->y-actor->momy,
-				actor->z, MT_SMOKE);
+				actor->z, mobjtype_t::MT_SMOKE);
 
 	th->momz = FRACUNIT;
 	th->tics -= P_Random()&3;
@@ -1292,7 +1292,7 @@ void A_VileTarget(mobj_t*	actor)
 
 	fog = P_SpawnMobj(actor->target->x,
 				actor->target->x,
-				actor->target->z, MT_FIRE);
+				actor->target->z, mobjtype_t::MT_FIRE);
 
 	actor->tracer = fog;
 	fog->target = actor;
@@ -1362,9 +1362,9 @@ void A_FatAttack1(mobj_t* actor)
 	// Change direction to ...
 	actor->angle += FATSPREAD;
 	target = P_SubstNullMobj(actor->target);
-	P_SpawnMissile(actor, target, MT_FATSHOT);
+	P_SpawnMissile(actor, target, mobjtype_t::MT_FATSHOT);
 
-	mo = P_SpawnMissile(actor, target, MT_FATSHOT);
+	mo = P_SpawnMissile(actor, target, mobjtype_t::MT_FATSHOT);
 	mo->angle += FATSPREAD;
 	an = mo->angle >> ANGLETOFINESHIFT;
 	mo->momx = FixedMul(mo->info->speed, finecosine[an]);
@@ -1381,9 +1381,9 @@ void A_FatAttack2(mobj_t* actor)
 	// Now here choose opposite deviation.
 	actor->angle -= FATSPREAD;
 	target = P_SubstNullMobj(actor->target);
-	P_SpawnMissile(actor, target, MT_FATSHOT);
+	P_SpawnMissile(actor, target, mobjtype_t::MT_FATSHOT);
 
-	mo = P_SpawnMissile(actor, target, MT_FATSHOT);
+	mo = P_SpawnMissile(actor, target, mobjtype_t::MT_FATSHOT);
 	mo->angle -= FATSPREAD*2;
 	an = mo->angle >> ANGLETOFINESHIFT;
 	mo->momx = FixedMul(mo->info->speed, finecosine[an]);
@@ -1400,13 +1400,13 @@ void A_FatAttack3(mobj_t*	actor)
 
 	target = P_SubstNullMobj(actor->target);
 
-	mo = P_SpawnMissile(actor, target, MT_FATSHOT);
+	mo = P_SpawnMissile(actor, target, mobjtype_t::MT_FATSHOT);
 	mo->angle -= FATSPREAD/2;
 	an = mo->angle >> ANGLETOFINESHIFT;
 	mo->momx = FixedMul(mo->info->speed, finecosine[an]);
 	mo->momy = FixedMul(mo->info->speed, finesine[an]);
 
-	mo = P_SpawnMissile(actor, target, MT_FATSHOT);
+	mo = P_SpawnMissile(actor, target, mobjtype_t::MT_FATSHOT);
 	mo->angle += FATSPREAD/2;
 	an = mo->angle >> ANGLETOFINESHIFT;
 	mo->momx = FixedMul(mo->info->speed, finecosine[an]);
@@ -1461,7 +1461,7 @@ void A_PainShootSkull(mobj_t* actor, angle_t angle)
 	currentthinker = thinkercap.next;
 	while (currentthinker != &thinkercap)
 	{
-		if ((currentthinker->function.acp1 == (actionf_p1)P_MobjThinker) && ((mobj_t *)currentthinker)->type == MT_SKULL)
+		if ((currentthinker->function.acp1 == (actionf_p1)P_MobjThinker) && ((mobj_t *)currentthinker)->type == mobjtype_t::MT_SKULL)
 		{
 			++count;
 		}
@@ -1483,7 +1483,7 @@ void A_PainShootSkull(mobj_t* actor, angle_t angle)
 	y = actor->y + FixedMul(prestep, finesine[an]);
 	z = actor->z + 8*FRACUNIT;
 
-	newmobj = P_SpawnMobj(x, y, z, MT_SKULL);
+	newmobj = P_SpawnMobj(x, y, z, mobjtype_t::MT_SKULL);
 
 	// Check for movements.
 	if (!P_TryMove (newmobj, newmobj->x, newmobj->y))
@@ -1546,7 +1546,7 @@ void A_Scream(mobj_t* actor)
 
 	// Check for bosses.
 	if (actor->type==MT_SPIDER
-	|| actor->type == MT_CYBORG)
+	|| actor->type == mobjtype_t::MT_CYBORG)
 	{
 	// full volume
 	// [crispy] prevent from adding up volume
@@ -1593,7 +1593,7 @@ static bool CheckBossEnd(mobjtype_t motype)
 		}
 
 		// Baron death on later episodes is nothing special.
-		if (motype == MT_BRUISER && gameepisode != 1)
+		if (motype == mobjtype_t::MT_BRUISER && gameepisode != 1)
 		{
 			return false;
 		}
@@ -1607,16 +1607,16 @@ static bool CheckBossEnd(mobjtype_t motype)
 		switch(gameepisode)
 		{
 			case 1:
-				return gamemap == 8 && motype == MT_BRUISER;
+				return gamemap == 8 && motype == mobjtype_t::MT_BRUISER;
 
 			case 2:
-				return gamemap == 8 && motype == MT_CYBORG;
+				return gamemap == 8 && motype == mobjtype_t::MT_CYBORG;
 
 			case 3:
-				return gamemap == 8 && motype == MT_SPIDER;
+				return gamemap == 8 && motype == mobjtype_t::MT_SPIDER;
 
 			case 4:
-				return (gamemap == 6 && motype == MT_CYBORG) || (gamemap == 8 && motype == MT_SPIDER);
+				return (gamemap == 6 && motype == mobjtype_t::MT_CYBORG) || (gamemap == 8 && motype == mobjtype_t::MT_SPIDER);
 
 			case 5:
 				return false;
@@ -1643,8 +1643,8 @@ void A_BossDeath(mobj_t* mo)
 	!(gamemission == GameMission_t::pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
 		return;
 
-	if ((mo->type != MT_FATSO)
-		&& (mo->type != MT_BABY))
+	if ((mo->type != mobjtype_t::MT_FATSO)
+		&& (mo->type != mobjtype_t::MT_BABY))
 		return;
 	}
 	else
@@ -1685,13 +1685,13 @@ void A_BossDeath(mobj_t* mo)
 	{
 		if (gamemap == 7 || (gamemission == GameMission_t::pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
 		{
-			if (mo->type == mobjtype_t::MT_FATSO)
+			if (mo->type == mobjtype_t::MT__FATSO)
 			{
 				junk.tag = 666;
 				EV_DoFloor(&junk, floor_e::lowerFloorToLowest);
 				return;
 			}
-			else if (mo->type == mobjtype_t::MT_BABY)
+			else if (mo->type == mobjtype_t::MT__BABY)
 			{
 				junk.tag = 667;
 				EV_DoFloor(&junk, floor_e::raiseToTexture);
@@ -1798,7 +1798,7 @@ void A_BrainAwake(mobj_t* mo)
 
 	m = (mobj_t *)thinker;
 
-	if (m->type == MT_BOSSTARGET )
+	if (m->type == mobjtype_t::MT_BOSSTARGET )
 	{
 		// [crispy] remove braintargets limit
 		if (numbraintargets == maxbraintargets)
@@ -1846,7 +1846,7 @@ void A_BrainScream(mobj_t* mo)
 	{
 		y = mo->y - 320*FRACUNIT;
 		z = 128 + P_Random()*2*FRACUNIT;
-		th = P_SpawnMobj(x,y,z, MT_ROCKET);
+		th = P_SpawnMobj(x,y,z, mobjtype_t::MT_ROCKET);
 		th->momz = P_Random()*512;
 
 		P_SetMobjState(th, S_BRAINEXPLODE1);
@@ -1869,7 +1869,7 @@ void A_BrainExplode(mobj_t* mo)
 	x = mo->x + P_SubRandom() * 2048;
 	y = mo->y;
 	z = 128 + P_Random()*2*FRACUNIT;
-	th = P_SpawnMobj(x,y,z, MT_ROCKET);
+	th = P_SpawnMobj(x,y,z, mobjtype_t::MT_ROCKET);
 	th->momz = P_Random()*512;
 
 	P_SetMobjState(th, S_BRAINEXPLODE1);
@@ -1915,7 +1915,7 @@ void A_BrainSpit(mobj_t* mo)
 	braintargeton = (braintargeton+1)%numbraintargets;
 
 	// spawn brain missile
-	newmobj = P_SpawnMissile(mo, targ, MT_SPAWNSHOT);
+	newmobj = P_SpawnMissile(mo, targ, mobjtype_t::MT_SPAWNSHOT);
 	newmobj->target = targ;
 	newmobj->reactiontime =
 	((targ->y - mo->y)/newmobj->momy) / newmobj->state->tics;
@@ -1946,7 +1946,7 @@ void A_SpawnFly(mobj_t* mo)
 	targ = P_SubstNullMobj(mo->target);
 
 	// First spawn teleport fog.
-	fog = P_SpawnMobj(targ->x, targ->y, targ->z, MT_SPAWNFIRE);
+	fog = P_SpawnMobj(targ->x, targ->y, targ->z, mobjtype_t::MT_SPAWNFIRE);
 	S_StartSound(fog, sfx_telept);
 
 	// Randomly select monster to spawn.
@@ -1955,27 +1955,27 @@ void A_SpawnFly(mobj_t* mo)
 	// Probability distribution (kind of :),
 	// decreasing likelihood.
 	if ( r<50 )
-	type = MT_TROOP;
+	type = mobjtype_t::MT_TROOP;
 	else if (r<90)
-	type = MT_SERGEANT;
+	type = mobjtype_t::MT_SERGEANT;
 	else if (r<120)
-	type = MT_SHADOWS;
+	type = mobjtype_t::MT_SHADOWS;
 	else if (r<130)
-	type = MT_PAIN;
+	type = mobjtype_t::MT_PAIN;
 	else if (r<160)
-	type = MT_HEAD;
+	type = mobjtype_t::MT_HEAD;
 	else if (r<162)
-	type = MT_VILE;
+	type = mobjtype_t::MT_VILE;
 	else if (r<172)
-	type = MT_UNDEAD;
+	type = mobjtype_t::MT_UNDEAD;
 	else if (r<192)
-	type = MT_BABY;
+	type = mobjtype_t::MT_BABY;
 	else if (r<222)
-	type = MT_FATSO;
+	type = mobjtype_t::MT_FATSO;
 	else if (r<246)
-	type = MT_KNIGHT;
+	type = mobjtype_t::MT_KNIGHT;
 	else
-	type = MT_BRUISER;
+	type = mobjtype_t::MT_BRUISER;
 
 	newmobj	= P_SpawnMobj(targ->x, targ->y, targ->z, type);
 
@@ -1997,7 +1997,7 @@ void A_PlayerScream(mobj_t* mo)
 	// Default death sound.
 	int		sound = sfx_pldeth;
 
-	if ( (gamemode == commercial)
+	if ( (gamemode == GameMode_t::commercial)
 	&&	(mo->health < -50))
 	{
 	// IF THE PLAYER DIES

@@ -1020,7 +1020,7 @@ static void LinkPolyobj(polyobj_t * po)
 				else
 				{
 					tempLink->next = Z_Malloc<polyblock_t>(sizeof(polyblock_t),
-												PU_LEVEL, 0);
+												pu_tags_t::PU_LEVEL, 0);
 					tempLink->next->next = NULL;
 					tempLink->next->prev = tempLink;
 					tempLink->next->polyobj = po;
@@ -1112,7 +1112,7 @@ static void InitBlockMap()
 	int topY, bottomY;
 
 	PolyBlockMap = Z_Malloc<decltype(PolyBlockMap)>(bmapwidth * bmapheight * sizeof(polyblock_t *),
-							PU_LEVEL, 0);
+							pu_tags_t::PU_LEVEL, 0);
 	memset(PolyBlockMap, 0, bmapwidth * bmapheight * sizeof(polyblock_t *));
 
 	for (i = 0; i < po_NumPolyobjs; i++)
@@ -1221,7 +1221,7 @@ static void SpawnPolyobj(int index, int tag, bool crush)
 
 			polyobjs[index].numsegs = PolySegCount;
 			polyobjs[index].segs = Z_Malloc<decltype(polyobjs[index].segs)>(PolySegCount * sizeof(seg_t *),
-											PU_LEVEL, 0);
+											pu_tags_t::PU_LEVEL, 0);
 			*(polyobjs[index].segs) = &segs[i]; // insert the first seg
 			IterFindPolySegs(segs[i].v2->x, segs[i].v2->y,
 								polyobjs[index].segs + 1);

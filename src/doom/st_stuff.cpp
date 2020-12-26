@@ -482,7 +482,7 @@ void ST_refreshBackground(bool force)
 		int x, y;
 		byte *src;
 		pixel_t *dest;
-		const char *name = (gamemode == commercial) ? DEH_String("GRNROCK") : DEH_String("FLOOR7_2");
+		const char *name = (gamemode == GameMode_t::commercial) ? DEH_String("GRNROCK") : DEH_String("FLOOR7_2");
 
 		src = W_CacheLumpName(name, pu_tags_t::PU_CACHE);
 		dest = st_backing_screen;
@@ -564,14 +564,14 @@ static int ST_cheat_massacre()
 	{
 		mobj_t *mo = (mobj_t *)th;
 
-		if (mo->flags & MF_COUNTKILL || mo->type == MT_SKULL)
+		if (mo->flags & MF_COUNTKILL || mo->type == mobjtype_t::MT_SKULL)
 		{
 		if (mo->health > 0)
 		{
 			P_DamageMobj(mo, NULL, NULL, 10000);
 			killcount++;
 		}
-		if (mo->type == MT_PAIN)
+		if (mo->type == mobjtype_t::MT_PAIN)
 		{
 			A_PainDie(mo);
 			P_SetMobjState(mo, S_PAIN_DIE6);
@@ -636,7 +636,7 @@ static int ST_cheat_spechits()
 
 	// [crispy] trigger tag 666/667 events
 	dummy.tag = 666;
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 	if (gamemap == 7 ||
 	// [crispy] Master Levels in PC slot 7
@@ -685,7 +685,7 @@ static bool WeaponAvailable (int w)
 	if (w == wp_supershotgun && !crispy->havessg)
 		return false;
 
-	if ((w == wp_bfg || w == wp_plasma) && gamemode == shareware)
+	if ((w == wp_bfg || w == wp_plasma) && gamemode == GameMode_t::shareware)
 		return false;
 
 	return true;
@@ -750,7 +750,7 @@ ST_Responder (event_t* ev)
 		{
 	// [crispy] dead players are first respawned at the current position
 	mapthing_t mt = {0};
-	if (plyr->playerstate == PST_DEAD)
+	if (plyr->playerstate == PlayerState_t::PST_DEAD)
 	{
 		signed int an;
 		extern void P_SpawnPlayer (mapthing_t* mthing);
@@ -763,7 +763,7 @@ ST_Responder (event_t* ev)
 
 		// [crispy] spawn a teleport fog
 		an = plyr->mo->angle >> ANGLETOFINESHIFT;
-		P_SpawnMobj(plyr->mo->x+20*finecosine[an], plyr->mo->y+20*finesine[an], plyr->mo->z, MT_TFOG);
+		P_SpawnMobj(plyr->mo->x+20*finecosine[an], plyr->mo->y+20*finesine[an], plyr->mo->z, mobjtype_t::MT_TFOG);
 		S_StartSound(plyr, sfx_slop);
 	}
 
@@ -853,13 +853,13 @@ ST_Responder (event_t* ev)
 	else
 	// [JN] Fixed: using a proper IDMUS selection for shareware
 	// and registered game versions.
-	if (gamemode == commercial /* || gameversion < exe_ultimate */ )
+	if (gamemode == GameMode_t::commercial /* || gameversion < exe_ultimate */ )
 	{
 		musnum = mus_runnin + (buf[0]-'0')*10 + buf[1]-'0' - 1;
 
 		/*
 		if (((buf[0]-'0')*10 + buf[1]-'0') > 35
-		&& gameversion >= exe_doom_1_8)
+		&& gameversion >= GameVersion_t::exe_doom_1_8)
 		*/
 		// [crispy] prevent crash with IDMUS00
 		if (musnum < mus_runnin || musnum >= NUMMUSIC)
@@ -975,8 +975,8 @@ ST_Responder (event_t* ev)
 				cht_CheckCheatSP(&cheat_massacre3, ev->data2))
 		{
 	int killcount = ST_cheat_massacre();
-	const char *const monster = (gameversion == exe_chex) ? "Flemoid" : "Monster";
-	const char *const killed = (gameversion == exe_chex) ? "returned" : "killed";
+	const char *const monster = (gameversion == GameVersion_t::exe_chex) ? "Flemoid" : "Monster";
+	const char *const killed = (gameversion == GameVersion_t::exe_chex) ? "returned" : "killed";
 
 	M_snprintf(msg, sizeof(msg), "%s%d %s%s%s %s",
 				crstr[CR_GOLD],
@@ -1208,7 +1208,7 @@ ST_Responder (event_t* ev)
 
 		cht_GetParam(&cheat_clev, buf);
 
-		if (gamemode == commercial)
+		if (gamemode == GameMode_t::commercial)
 		{
 	if (gamemission == pack_master)
 		epsd = 3;
@@ -1226,7 +1226,7 @@ ST_Responder (event_t* ev)
 
 		// Chex.exe always warps to episode 1.
 
-		if (gameversion == exe_chex)
+		if (gameversion == GameVersion_t::exe_chex)
 		{
 			if (epsd > 1)
 			{
@@ -1243,7 +1243,7 @@ ST_Responder (event_t* ev)
  if (P_GetNumForMap(epsd, map, false) < 0)
  {
 		// Catch invalid maps.
-		if (gamemode != commercial)
+		if (gamemode != GameMode_t::commercial)
 		{
 			// [crispy] allow IDCLEV0x to work in Doom 1
 			if (epsd == 0)
@@ -1727,7 +1727,7 @@ void ST_doPaletteStuff()
 	// as though the player is being covered in goo by an
 	// attacking flemoid.
 
-	if (gameversion == exe_chex
+	if (gameversion == GameVersion_t::exe_chex
 		&& palette >= STARTREDPALS && palette < STARTREDPALS + NUMREDPALS)
 	{
 		palette = RADIATIONPAL;

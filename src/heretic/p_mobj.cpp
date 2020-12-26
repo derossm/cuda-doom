@@ -107,7 +107,7 @@ bool P_SetMobjStateNF(mobj_t * mobj, statenum_t state)
 
 void P_ExplodeMissile(mobj_t * mo)
 {
-	if (mo->type == MT_WHIRLWIND)
+	if (mo->type == mobjtype_t::MT_WHIRLWIND)
 	{
 		if (++mo->special2.i < 60)
 		{
@@ -359,7 +359,7 @@ void P_XYMovement(mobj_t * mo)
 				if (ceilingline && ceilingline->backsector
 					&& ceilingline->backsector->ceilingpic == skyflatnum)
 				{				// Hack to prevent missiles exploding against the sky
-					if (mo->type == MT_BLOODYSKULL)
+					if (mo->type == mobjtype_t::MT_BLOODYSKULL)
 					{
 						mo->momx = mo->momy = 0;
 						mo->momz = -FRACUNIT;
@@ -519,7 +519,7 @@ void P_ZMovement(mobj_t * mo)
 				P_FloorBounceMissile(mo);
 				return;
 			}
-			else if (mo->type == MT_MNTRFX2)
+			else if (mo->type == mobjtype_t::MT_MNTRFX2)
 			{					// Minotaur floor fire can go up steps
 				return;
 			}
@@ -583,7 +583,7 @@ void P_ZMovement(mobj_t * mo)
 		{
 			if (mo->subsector->sector->ceilingpic == skyflatnum)
 			{
-				if (mo->type == MT_BLOODYSKULL)
+				if (mo->type == mobjtype_t::MT_BLOODYSKULL)
 				{
 					mo->momx = mo->momy = 0;
 					mo->momz = -FRACUNIT;
@@ -632,7 +632,7 @@ void P_NightmareRespawn(mobj_t * mobj)
 
 // spawn a teleport fog at the new spot
 	ss = R_PointInSubsector(x, y);
-	mo = P_SpawnMobj(x, y, ss->sector->floorheight + TELEFOGHEIGHT, MT_TFOG);
+	mo = P_SpawnMobj(x, y, ss->sector->floorheight + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
 	S_StartSound(mo, sfx_telept);
 
 // spawn the new monster
@@ -710,7 +710,7 @@ void P_BlasterMobjThinker(mobj_t * mobj)
 				{
 					z = mobj->floorz;
 				}
-				P_SpawnMobj(mobj->x, mobj->y, z, MT_BLASTERSMOKE);
+				P_SpawnMobj(mobj->x, mobj->y, z, mobjtype_t::MT_BLASTERSMOKE);
 			}
 		}
 	}
@@ -786,7 +786,7 @@ void P_MobjThinker(mobj_t * mobj)
 					mobj->flags2 |= MF2_ONMOBJ;
 					mobj->momz = 0;
 				}
-				if (mobj->player && (onmo->player || onmo->type == MT_POD))
+				if (mobj->player && (onmo->player || onmo->type == mobjtype_t::MT_POD))
 				{
 					mobj->momx = onmo->momx;
 					mobj->momy = onmo->momy;
@@ -999,14 +999,14 @@ void P_SpawnPlayer(mapthing_t * mthing)
 
 	p = &players[mthing->type - 1];
 
-	if (p->playerstate == PST_REBORN)
+	if (p->playerstate == PlayerState_t::PST_REBORN)
 		G_PlayerReborn(mthing->type - 1);
 
 	x = mthing->x << FRACBITS;
 	y = mthing->y << FRACBITS;
 
 	z = ONFLOORZ;
-	mobj = P_SpawnMobj(x, y, z, MT_PLAYER);
+	mobj = P_SpawnMobj(x, y, z, mobjtype_t::MT_PLAYER);
 	if (mthing->type > 1)		// set color translations for player sprites
 		mobj->flags |= (mthing->type - 1) << MF_TRANSSHIFT;
 
@@ -1014,7 +1014,7 @@ void P_SpawnPlayer(mapthing_t * mthing)
 	mobj->player = p;
 	mobj->health = p->health;
 	p->mo = mobj;
-	p->playerstate = PST_LIVE;
+	p->playerstate = PlayerState_t::PST_LIVE;
 	p->refire = 0;
 	p->message = NULL;
 	// [JN] Reset ultimatemsg, so other messages may appear.
@@ -1135,24 +1135,24 @@ void P_SpawnMapThing(mapthing_t * mthing)
 // spawn it
 	switch (i)
 	{							// Special stuff
-		case MT_WSKULLROD:
-		case MT_WPHOENIXROD:
-		case MT_AMSKRDWIMPY:
-		case MT_AMSKRDHEFTY:
-		case MT_AMPHRDWIMPY:
-		case MT_AMPHRDHEFTY:
-		case MT_AMMACEWIMPY:
-		case MT_AMMACEHEFTY:
-		case MT_ARTISUPERHEAL:
-		case MT_ARTITELEPORT:
-		case MT_ITEMSHIELD2:
-			if (gamemode == shareware)
+		case mobjtype_t::MT_WSKULLROD:
+		case mobjtype_t::MT_WPHOENIXROD:
+		case mobjtype_t::MT_AMSKRDWIMPY:
+		case mobjtype_t::MT_AMSKRDHEFTY:
+		case mobjtype_t::MT_AMPHRDWIMPY:
+		case mobjtype_t::MT_AMPHRDHEFTY:
+		case mobjtype_t::MT_AMMACEWIMPY:
+		case mobjtype_t::MT_AMMACEHEFTY:
+		case mobjtype_t::MT_ARTISUPERHEAL:
+		case mobjtype_t::MT_ARTITELEPORT:
+		case mobjtype_t::MT_ITEMSHIELD2:
+			if (gamemode == GameMode_t::shareware)
 			{					// Don't place on map in shareware version
 				return;
 			}
 			break;
-		case MT_WMACE:
-			if (gamemode != shareware)
+		case mobjtype_t::MT_WMACE:
+			if (gamemode != GameMode_t::shareware)
 			{					// Put in the mace spot list
 				P_AddMaceSpot(mthing);
 				return;
@@ -1228,12 +1228,12 @@ void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
 	}
 	switch (PuffType)
 	{
-		case MT_BEAKPUFF:
-		case MT_STAFFPUFF:
+		case mobjtype_t::MT_BEAKPUFF:
+		case mobjtype_t::MT_STAFFPUFF:
 			puff->momz = FRACUNIT;
 			break;
-		case MT_GAUNTLETPUFF1:
-		case MT_GAUNTLETPUFF2:
+		case mobjtype_t::MT_GAUNTLETPUFF1:
+		case mobjtype_t::MT_GAUNTLETPUFF2:
 			puff->momz = (fixed_t)(.8 * FRACUNIT);
 		default:
 			break;
@@ -1256,7 +1256,7 @@ void P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage)
 	mobj_t *th;
 
 	z += (P_SubRandom()<<10);
-	th = P_SpawnMobj (x,y,z, MT_BLOOD);
+	th = P_SpawnMobj (x,y,z, mobjtype_t::MT_BLOOD);
 	th->momz = FRACUNIT*2;
 	th->tics -= P_Random()&3;
 
@@ -1277,7 +1277,7 @@ void P_BloodSplatter(fixed_t x, fixed_t y, fixed_t z, mobj_t * originator)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMobj(x, y, z, MT_BLOODSPLATTER);
+	mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_BLOODSPLATTER);
 	mo->target = originator;
 	mo->momx = P_SubRandom() << 9;
 	mo->momy = P_SubRandom() << 9;
@@ -1298,7 +1298,7 @@ void P_RipperBlood(mobj_t * mo)
 	x = mo->x + (P_SubRandom() << 12);
 	y = mo->y + (P_SubRandom() << 12);
 	z = mo->z + (P_SubRandom() << 12);
-	th = P_SpawnMobj(x, y, z, MT_BLOOD);
+	th = P_SpawnMobj(x, y, z, mobjtype_t::MT_BLOOD);
 	th->flags |= MF_NOGRAVITY;
 	th->momx = mo->momx >> 1;
 	th->momy = mo->momy >> 1;
@@ -1344,8 +1344,8 @@ int P_HitFloor(mobj_t * thing)
 	switch (P_GetThingFloorType(thing))
 	{
 		case FLOOR_WATER:
-			P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_SPLASHBASE);
-			mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_SPLASH);
+			P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_SPLASHBASE);
+			mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_SPLASH);
 			mo->target = thing;
 			mo->momx = P_SubRandom() << 8;
 			mo->momy = P_SubRandom() << 8;
@@ -1353,14 +1353,14 @@ int P_HitFloor(mobj_t * thing)
 			S_StartSound(mo, sfx_gloop);
 			return (FLOOR_WATER);
 		case FLOOR_LAVA:
-			P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_LAVASPLASH);
-			mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_LAVASMOKE);
+			P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_LAVASPLASH);
+			mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_LAVASMOKE);
 			mo->momz = FRACUNIT + (P_Random() << 7);
 			S_StartSound(mo, sfx_burn);
 			return (FLOOR_LAVA);
 		case FLOOR_SLUDGE:
-			P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_SLUDGESPLASH);
-			mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_SLUDGECHUNK);
+			P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_SLUDGESPLASH);
+			mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_SLUDGECHUNK);
 			mo->target = thing;
 			mo->momx = P_SubRandom() << 8;
 			mo->momy = P_SubRandom() << 8;
@@ -1414,17 +1414,17 @@ mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type)
 
 	switch (type)
 	{
-		case MT_MNTRFX1:		// Minotaur swing attack missile
+		case mobjtype_t::MT_MNTRFX1:		// Minotaur swing attack missile
 			z = source->z + 40 * FRACUNIT;
 			break;
-		case MT_MNTRFX2:		// Minotaur floor fire missile
+		case mobjtype_t::MT_MNTRFX2:		// Minotaur floor fire missile
 			z = ONFLOORZ;
 			break;
-		case MT_SRCRFX1:		// Sorcerer Demon fireball
+		case mobjtype_t::MT_SRCRFX1:		// Sorcerer Demon fireball
 			z = source->z + 48 * FRACUNIT;
 			break;
-		case MT_KNIGHTAXE:		// Knight normal axe
-		case MT_REDAXE:		// Knight red power axe
+		case mobjtype_t::MT_KNIGHTAXE:		// Knight normal axe
+		case mobjtype_t::MT_REDAXE:		// Knight red power axe
 			z = source->z + 36 * FRACUNIT;
 			break;
 		default:
@@ -1477,13 +1477,13 @@ mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
 
 	switch (type)
 	{
-		case MT_MNTRFX1:		// Minotaur swing attack missile
+		case mobjtype_t::MT_MNTRFX1:		// Minotaur swing attack missile
 			z = source->z + 40 * FRACUNIT;
 			break;
-		case MT_MNTRFX2:		// Minotaur floor fire missile
+		case mobjtype_t::MT_MNTRFX2:		// Minotaur floor fire missile
 			z = ONFLOORZ;
 			break;
-		case MT_SRCRFX1:		// Sorcerer Demon fireball
+		case mobjtype_t::MT_SRCRFX1:		// Sorcerer Demon fireball
 			z = source->z + 48 * FRACUNIT;
 			break;
 		default:
@@ -1560,7 +1560,7 @@ mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type)
 	MissileMobj->momy = FixedMul(MissileMobj->info->speed,
 									finesine[an >> ANGLETOFINESHIFT]);
 	MissileMobj->momz = FixedMul(MissileMobj->info->speed, slope);
-	if (MissileMobj->type == MT_BLASTERFX1)
+	if (MissileMobj->type == mobjtype_t::MT_BLASTERFX1)
 	{							// Ultra-fast ripper spawning missile
 		MissileMobj->x += (MissileMobj->momx >> 3);
 		MissileMobj->y += (MissileMobj->momy >> 3);
@@ -1647,10 +1647,10 @@ void A_ContMobjSound(mobj_t * actor)
 {
 	switch (actor->type)
 	{
-		case MT_KNIGHTAXE:
+		case mobjtype_t::MT_KNIGHTAXE:
 			S_StartSound(actor, sfx_kgtatk);
 			break;
-		case MT_MUMMYFX1:
+		case mobjtype_t::MT_MUMMYFX1:
 			S_StartSound(actor, sfx_mumhed);
 			break;
 		default:

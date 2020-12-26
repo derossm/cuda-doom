@@ -41,10 +41,7 @@ void P_SpawnMapThing (mapthing_t*	mthing);
 //
 int test;
 
-bool
-P_SetMobjState
-( mobj_t*	mobj,
- statenum_t	state )
+bool P_SetMobjState(mobj_t* mobj, statenum_t state)
 {
 	state_t*	st;
 
@@ -465,7 +462,7 @@ P_NightmareRespawn (mobj_t* mobj)
 	// because of removal of the body?
 	mo = P_SpawnMobj (mobj->x,
 						mobj->y,
-						mobj->subsector->sector->floorheight, MT_TFOG);
+						mobj->subsector->sector->floorheight, mobjtype_t::MT_TFOG);
 	// initiate teleport sound
 	S_StartSound (mo, sfx_telept);
 
@@ -473,7 +470,7 @@ P_NightmareRespawn (mobj_t* mobj)
 	//ss = R_PointInSubsector (x,y);
 
 	// haleyjd [STRIFE]: Uses ONFLOORZ instead of ss->sector->floorheight
-	mo = P_SpawnMobj (x, y, ONFLOORZ, MT_TFOG);
+	mo = P_SpawnMobj (x, y, ONFLOORZ, mobjtype_t::MT_TFOG);
 
 	S_StartSound (mo, sfx_telept);
 
@@ -611,12 +608,7 @@ void P_MobjThinker (mobj_t* mobj)
 //
 // [STRIFE] Modifications to reactiontime and for terrain types.
 //
-mobj_t*
-P_SpawnMobj
-( fixed_t	x,
- fixed_t	y,
- fixed_t	z,
- mobjtype_t	type )
+mobj_t* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
 {
 	mobj_t*	mobj;
 	state_t*	st;
@@ -767,7 +759,7 @@ void P_RespawnSpecials ()
 
 	// spawn a teleport fog at the new spot
 	ss = R_PointInSubsector (x,y);
-	mo = P_SpawnMobj (x, y, ss->sector->floorheight, MT_IFOG);
+	mo = P_SpawnMobj (x, y, ss->sector->floorheight, mobjtype_t::MT_IFOG);
 	S_StartSound (mo, sfx_itmbk);
 
 	// find which type to spawn
@@ -828,13 +820,13 @@ void P_SpawnPlayer(mapthing_t* mthing)
 
 	p = &players[mthing->type-1];
 
-	if (p->playerstate == PST_REBORN)
+	if (p->playerstate == PlayerState_t::PST_REBORN)
 		G_PlayerReborn (mthing->type-1);
 
 	x		= mthing->x << FRACBITS;
 	y		= mthing->y << FRACBITS;
 	z		= ONFLOORZ;
-	mobj	= P_SpawnMobj (x,y,z, MT_PLAYER);
+	mobj	= P_SpawnMobj (x,y,z, mobjtype_t::MT_PLAYER);
 
 	// set color translations for player sprites
 	if(mthing->type > 1)
@@ -845,7 +837,7 @@ void P_SpawnPlayer(mapthing_t* mthing)
 	mobj->health = p->health;
 
 	p->mo				= mobj;
-	p->playerstate		= PST_LIVE;
+	p->playerstate		= PlayerState_t::PST_LIVE;
 	p->refire			= 0;
 	p->message			= NULL;
 	p->damagecount		= 0;
@@ -970,7 +962,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 		return;
 
 	// don't spawn any monsters if -nomonsters
-	// villsa [STRIFE] Removed MT_SKULL
+	// villsa [STRIFE] Removed mobjtype_t::MT_SKULL
 	if (nomonsters && (mobjinfo[i].flags & MF_COUNTKILL))
 		return;
 
@@ -1026,11 +1018,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 //
 extern fixed_t attackrange;
 
-void
-P_SpawnPuff
-( fixed_t	x,
- fixed_t	y,
- fixed_t	z )
+void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
 {
 	mobj_t*	th;
 	int t;
@@ -1040,7 +1028,7 @@ P_SpawnPuff
 
 	// [STRIFE] removed momz and tics randomization
 
-	th = P_SpawnMobj(x, y, z, MT_STRIFEPUFF); // [STRIFE]: new type
+	th = P_SpawnMobj(x, y, z, mobjtype_t::MT_STRIFEPUFF); // [STRIFE]: new type
 
 	// don't make punches spark on the wall
 	// [STRIFE] Use a separate melee attack range for the player
@@ -1062,7 +1050,7 @@ P_SpawnPuff
 mobj_t* P_SpawnSparkPuff(fixed_t x, fixed_t y, fixed_t z)
 {
 	int t = P_Random();
-	return P_SpawnMobj(x, y, ((t - P_Random()) << 10) + z, MT_SPARKPUFF);
+	return P_SpawnMobj(x, y, ((t - P_Random()) << 10) + z, mobjtype_t::MT_SPARKPUFF);
 }
 
 //
@@ -1072,19 +1060,14 @@ mobj_t* P_SpawnSparkPuff(fixed_t x, fixed_t y, fixed_t z)
 // * No spawn tics randomization
 // * Different damage ranges for state setting
 //
-void
-P_SpawnBlood
-( fixed_t		x,
- fixed_t		y,
- fixed_t		z,
- int			damage )
+void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage)
 {
 	mobj_t*		th;
 	int temp;
 
 	temp = P_Random();
 	z += (temp - P_Random()) << 10;
-	th = P_SpawnMobj(x, y, z, MT_BLOOD_DEATH);
+	th = P_SpawnMobj(x, y, z, mobjtype_t::MT_BLOOD_DEATH);
 	th->momz = FRACUNIT*2;
 
 	// villsa [STRIFE]: removed tics randomization
@@ -1150,11 +1133,7 @@ mobj_t *P_SubstNullMobj(mobj_t *mobj)
 //
 // [STRIFE] Added MVIS inaccuracy
 //
-mobj_t*
-P_SpawnMissile
-( mobj_t*		source,
- mobj_t*		dest,
- mobjtype_t	type )
+mobj_t* P_SpawnMissile(mobj_t* source, mobj_t* dest, mobjtype_t type)
 {
 	mobj_t*		th;
 	angle_t		an;

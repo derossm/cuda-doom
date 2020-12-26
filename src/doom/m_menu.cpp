@@ -1084,7 +1084,7 @@ void M_DrawReadThis2()
 	inhelpscreens = true;
 
 	// We only ever draw the second page if this is
-	// gameversion == exe_doom_1_9 and gamemode == registered
+	// gameversion == GameVersion_t::exe_doom_1_9 and gamemode == GameMode_t::registered
 
 	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP1"), pu_tags_t::PU_CACHE), false);
 }
@@ -1190,7 +1190,7 @@ void M_NewGame(int choice)
 
 	// Chex Quest disabled the episode select screen, as did Doom II.
 
-	if ((gamemode == commercial && !crispy->havenerve && !crispy->havemaster) || gameversion == exe_chex) // [crispy] NRFTL / The Master Levels
+	if ((gamemode == GameMode_t::commercial && !crispy->havenerve && !crispy->havemaster) || gameversion == GameVersion_t::exe_chex) // [crispy] NRFTL / The Master Levels
 	M_SetupNextMenu(&NewDef);
 	else
 	M_SetupNextMenu(&EpiDef);
@@ -1230,7 +1230,7 @@ void M_ChooseSkill(int choice)
 
 void M_Episode(int choice)
 {
-	if ( (gamemode == shareware)
+	if ( (gamemode == GameMode_t::shareware)
 		&& choice)
 	{
 	M_StartMessage(DEH_String(SWSTRING),NULL,false);
@@ -1253,13 +1253,13 @@ static const char *msgNames[2] = {"M_MSGOFF","M_MSGON"};
 void M_DrawOptions()
 {
 	V_DrawPatchDirect(108, 15, W_CacheLumpName(DEH_String("M_OPTTTL"),
-												PU_CACHE));
+												pu_tags_t::PU_CACHE));
 
 	if (OptionsDef.lumps_missing == -1)
 	{
 	V_DrawPatchDirect(OptionsDef.x + 175, OptionsDef.y + LINEHEIGHT * detail,
 				W_CacheLumpName(DEH_String(detailNames[detailLevel]),
-							PU_CACHE));
+							pu_tags_t::PU_CACHE));
 	}
 	else
 	if (OptionsDef.lumps_missing > 0)
@@ -1273,7 +1273,7 @@ void M_DrawOptions()
 	{
 	V_DrawPatchDirect(OptionsDef.x + 120, OptionsDef.y + LINEHEIGHT * messages,
 						W_CacheLumpName(DEH_String(msgNames[showMessages]),
-										PU_CACHE));
+										pu_tags_t::PU_CACHE));
 	}
 	else
 	if (OptionsDef.lumps_missing > 0)
@@ -1412,8 +1412,8 @@ static void M_DrawCrispness1()
 	M_DrawCrispnessMultiItem(crispness_translucency, "Enable Translucency", multiitem_translucency, crispy->translucency, true);
 	M_DrawCrispnessItem(crispness_smoothlight, "Smooth Diminishing Lighting", crispy->smoothlight, true);
 	M_DrawCrispnessMultiItem(crispness_brightmaps, "Apply Brightmaps to", multiitem_brightmaps, crispy->brightmaps, true);
-	M_DrawCrispnessItem(crispness_coloredblood, "Colored Blood and Corpses", crispy->coloredblood, gameversion != exe_chex);
-	M_DrawCrispnessItem(crispness_flipcorpses, "Randomly Mirrored Corpses", crispy->flipcorpses, gameversion != exe_chex);
+	M_DrawCrispnessItem(crispness_coloredblood, "Colored Blood and Corpses", crispy->coloredblood, gameversion != GameVersion_t::exe_chex);
+	M_DrawCrispnessItem(crispness_flipcorpses, "Randomly Mirrored Corpses", crispy->flipcorpses, gameversion != GameVersion_t::exe_chex);
 
 	M_DrawCrispnessGoto(crispness1_next, "Next Page >");
 	M_DrawCrispnessGoto(crispness1_prev, "< Last Page");
@@ -1672,7 +1672,7 @@ void M_QuitResponse(int key)
 	// [crispy] play quit sound only if the ENDOOM screen is also shown
 	if (!netgame && show_endoom)
 	{
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 		S_StartSound(NULL,quitsounds2[(gametic>>2)&7]);
 	else
 		S_StartSound(NULL,quitsounds[(gametic>>2)&7]);
@@ -1822,12 +1822,7 @@ void M_SizeDisplay(int choice)
 //
 //		Menu Functions
 //
-void
-M_DrawThermo
-( int	x,
- int	y,
- int	thermWidth,
- int	thermDot )
+void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
 {
 	int		xx;
 	int		i;
@@ -1940,11 +1935,7 @@ int M_StringHeight(const char* string)
 //
 //		Write a string using the hu_font
 //
-void
-M_WriteText
-( int		x,
- int		y,
- const char *string)
+void M_WriteText(int x, int y, const char void0 void1 *string)
 {
 	int		w;
 	const char *ch;
@@ -2044,7 +2035,7 @@ static int G_GotoNextLevel()
 
  int changed = false;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 		if (crispy->havemap33)
 		doom2_next[1] = 33;
@@ -2067,16 +2058,16 @@ static int G_GotoNextLevel()
 	}
 	else
 	{
-		if (gamemode == shareware)
+		if (gamemode == GameMode_t::shareware)
 		doom_next[0][7] = 11;
 
-		if (gamemode == registered)
+		if (gamemode == GameMode_t::registered)
 		doom_next[2][7] = 11;
 
 		if (!crispy->haved1e5)
 		doom_next[3][7] = 11;
 
-		if (gameversion == exe_chex)
+		if (gameversion == GameVersion_t::exe_chex)
 		{
 		doom_next[0][2] = 14;
 		doom_next[0][4] = 11;
@@ -2087,7 +2078,7 @@ static int G_GotoNextLevel()
  {
 	int epsd, map;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 		epsd = gameepisode;
 		if (gamemission == pack_nerve)
@@ -2465,7 +2456,7 @@ bool M_Responder (event_t* ev)
 		{
 		M_StartControlPanel();
 
-		if (gameversion >= exe_ultimate)
+		if (gameversion >= GameVersion_t::exe_ultimate)
 			currentMenu = &ReadDef2;
 		else
 			currentMenu = &ReadDef1;
@@ -2927,7 +2918,7 @@ void M_Drawer ()
 	else
 	V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn*LINEHEIGHT,
 				W_CacheLumpName(DEH_String(skullName[whichSkull]),
-						PU_CACHE));
+						pu_tags_t::PU_CACHE));
 }
 
 
@@ -2993,20 +2984,20 @@ void M_Init ()
 
 	// The same hacks were used in the original Doom EXEs.
 
-	if (gameversion >= exe_ultimate)
+	if (gameversion >= GameVersion_t::exe_ultimate)
 	{
 		MainMenu[readthis].routine = M_ReadThis2;
 		ReadDef2.prevMenu = NULL;
 	}
 
-	if (gameversion >= exe_final && gameversion <= exe_final2)
+	if (gameversion >= GameVersion_t::exe_final && gameversion <= GameVersion_t::exe_final2)
 	{
 		ReadDef2.routine = M_DrawReadThisCommercial;
 		// [crispy] rearrange Skull in Final Doom HELP screen
 		ReadDef2.y -= 10;
 	}
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 		MainMenu[readthis] = MainMenu[quitdoom];
 		MainDef.numitems--;
@@ -3033,7 +3024,7 @@ void M_Init ()
 		EpiDef.numitems--;
 	}
 	// chex.exe shows only one episode.
-	else if (gameversion == exe_chex)
+	else if (gameversion == GameVersion_t::exe_chex)
 	{
 		EpiDef.numitems = 1;
 		// [crispy] never show the Episode menu

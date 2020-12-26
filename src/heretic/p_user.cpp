@@ -118,7 +118,7 @@ void P_CalcHeight(player_t * player)
 //
 // move viewheight
 //
-	if (player->playerstate == PST_LIVE)
+	if (player->playerstate == PlayerState_t::PST_LIVE)
 	{
 		player->viewheight += player->deltaviewheight;
 		if (player->viewheight > VIEWHEIGHT)
@@ -150,7 +150,7 @@ void P_CalcHeight(player_t * player)
 		player->viewz = player->mo->z + player->viewheight + bob;
 	}
 	if (player->mo->flags2 & MF2_FEETARECLIPPED
-		&& player->playerstate != PST_DEAD
+		&& player->playerstate != PlayerState_t::PST_DEAD
 		&& player->mo->z <= player->mo->floorz)
 	{
 		player->viewz -= FOOTCLIPSIZE;
@@ -278,7 +278,7 @@ void P_MovePlayer(player_t * player)
 	}
 	else if (fly > 0)
 	{
-		P_PlayerUseArtifact(player, arti_fly);
+		P_PlayerUseArtifact(player, ArtiType_t::arti_fly);
 	}
 	if (player->mo->flags2 & MF2_FLY)
 	{
@@ -310,7 +310,7 @@ void P_DeathThink(player_t * player)
 	P_MovePsprites(player);
 
 	onground = (player->mo->z <= player->mo->floorz);
-	if (player->mo->type == MT_BLOODYSKULL)
+	if (player->mo->type == mobjtype_t::MT_BLOODYSKULL)
 	{							// Flying bloody skull
 		player->viewheight = 6 * FRACUNIT;
 		player->deltaviewheight = 0;
@@ -387,7 +387,7 @@ void P_DeathThink(player_t * player)
 			newtorch = 0;
 			newtorchdelta = 0;
 		}
-		player->playerstate = PST_REBORN;
+		player->playerstate = PlayerState_t::PST_REBORN;
 		// Let the mobj know the player has entered the reborn state. Some
 		// mobjs need to know when it's ok to remove themselves.
 		player->mo->special2.i = 666;
@@ -478,11 +478,11 @@ bool P_UndoPlayerChicken(player_t * player)
 	oldFlags = pmo->flags;
 	oldFlags2 = pmo->flags2;
 	P_SetMobjState(pmo, S_FREETARGMOBJ);
-	mo = P_SpawnMobj(x, y, z, MT_PLAYER);
+	mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_PLAYER);
 	if (P_TestMobjLocation(mo) == false)
 	{							// Didn't fit
 		P_RemoveMobj(mo);
-		mo = P_SpawnMobj(x, y, z, MT_CHICPLAYER);
+		mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_CHICPLAYER);
 		mo->angle = angle;
 		mo->health = player->health;
 		mo->special1.i = weapon;
@@ -512,7 +512,7 @@ bool P_UndoPlayerChicken(player_t * player)
 	player->mo = mo;
 	angle >>= ANGLETOFINESHIFT;
 	fog = P_SpawnMobj(x + 20 * finecosine[angle],
-						y + 20 * finesine[angle], z + TELEFOGHEIGHT, MT_TFOG);
+						y + 20 * finesine[angle], z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
 	S_StartSound(fog, sfx_telept);
 	P_PostChickenWeapon(player, weapon);
 	return (true);
@@ -580,7 +580,7 @@ void P_PlayerThink(player_t * player)
 		}
 	}
 
-	if (player->playerstate == PST_DEAD)
+	if (player->playerstate == PlayerState_t::PST_DEAD)
 	{
 		P_DeathThink(player);
 		return;
@@ -633,7 +633,7 @@ void P_PlayerThink(player_t * player)
 		if (player->weaponowned[newweapon]
 			&& newweapon != player->readyweapon)
 		{
-			if (WeaponInShareware[newweapon] || gamemode != shareware)
+			if (WeaponInShareware[newweapon] || gamemode != GameMode_t::shareware)
 			{
 				player->pendingweapon = newweapon;
 			}
@@ -861,8 +861,8 @@ void P_PlayerRemoveArtifact(player_t * player, int slot)
 	player->artifactCount--;
 	if (!(--player->inventory[slot].count))
 	{							// Used last of a type - compact the artifact list
-		player->readyArtifact = arti_none;
-		player->inventory[slot].type = arti_none;
+		player->readyArtifact = ArtiType_t::arti_none;
+		player->inventory[slot].type = ArtiType_t::arti_none;
 		for (i = slot + 1; i < player->inventorySlotNum; i++)
 		{
 			player->inventory[i - 1] = player->inventory[i];
@@ -939,31 +939,31 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 
 	switch (arti)
 	{
-		case arti_invulnerability:
+		case ArtiType_t::arti_invulnerability:
 			if (!P_GivePower(player, PowerType_t::pw_invulnerability))
 			{
 				return (false);
 			}
 			break;
-		case arti_invisibility:
+		case ArtiType_t::arti_invisibility:
 			if (!P_GivePower(player, PowerType_t::pw_invisibility))
 			{
 				return (false);
 			}
 			break;
-		case arti_health:
+		case ArtiType_t::arti_health:
 			if (!P_GiveBody(player, 25))
 			{
 				return (false);
 			}
 			break;
-		case arti_superhealth:
+		case ArtiType_t::arti_superhealth:
 			if (!P_GiveBody(player, 100))
 			{
 				return (false);
 			}
 			break;
-		case arti_tomeofpower:
+		case ArtiType_t::arti_tomeofpower:
 			if (player->chickenTics)
 			{					// Attempt to undo chicken
 				if (P_UndoPlayerChicken(player) == false)
@@ -992,13 +992,13 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 				}
 			}
 			break;
-		case arti_torch:
+		case ArtiType_t::arti_torch:
 			if (!P_GivePower(player, PowerType_t::pw_infrared))
 			{
 				return (false);
 			}
 			break;
-		case arti_firebomb:
+		case ArtiType_t::arti_firebomb:
 			angle = player->mo->angle >> ANGLETOFINESHIFT;
 
 			// Vanilla bug here:
@@ -1015,21 +1015,21 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 								MT_FIREBOMB);
 			mo->target = player->mo;
 			break;
-		case arti_egg:
+		case ArtiType_t::arti_egg:
 			mo = player->mo;
-			P_SpawnPlayerMissile(mo, MT_EGGFX);
-			P_SPMAngle(mo, MT_EGGFX, mo->angle - (ANG45 / 6));
-			P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 6));
-			P_SPMAngle(mo, MT_EGGFX, mo->angle - (ANG45 / 3));
-			P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 3));
+			P_SpawnPlayerMissile(mo, mobjtype_t::MT_EGGFX);
+			P_SPMAngle(mo, mobjtype_t::MT_EGGFX, mo->angle - (ANG45 / 6));
+			P_SPMAngle(mo, mobjtype_t::MT_EGGFX, mo->angle + (ANG45 / 6));
+			P_SPMAngle(mo, mobjtype_t::MT_EGGFX, mo->angle - (ANG45 / 3));
+			P_SPMAngle(mo, mobjtype_t::MT_EGGFX, mo->angle + (ANG45 / 3));
 			break;
-		case arti_fly:
+		case ArtiType_t::arti_fly:
 			if (!P_GivePower(player, PowerType_t::pw_flight))
 			{
 				return (false);
 			}
 			break;
-		case arti_teleport:
+		case ArtiType_t::arti_teleport:
 			P_ArtiTele(player);
 			break;
 		default:

@@ -114,11 +114,7 @@ void (*spanfunc) ();
 // Expand a given bbox
 // so that it encloses a given point.
 //
-void
-R_AddPointToBox
-( int		x,
- int		y,
- fixed_t*	box )
+void R_AddPointToBox(int x, int y, fixed_t* box)
 {
 	if (x< box[BOXLEFT])
 	box[BOXLEFT] = x;
@@ -137,11 +133,7 @@ R_AddPointToBox
 // check point against partition plane.
 // Returns side 0 (front) or 1 (back).
 //
-int
-R_PointOnSide
-( fixed_t	x,
- fixed_t	y,
- node_t*	node )
+int R_PointOnSide(fixed_t x, fixed_t y, node_t* node)
 {
 	fixed_t	dx;
 	fixed_t	dy;
@@ -190,11 +182,7 @@ R_PointOnSide
 }
 
 
-int
-R_PointOnSegSide
-( fixed_t	x,
- fixed_t	y,
- seg_t*	line )
+int R_PointOnSegSide(fixed_t x, fixed_t y, seg_t* line)
 {
 	fixed_t	lx;
 	fixed_t	ly;
@@ -270,11 +258,7 @@ R_PointOnSegSide
 // [crispy] turned into a general R_PointToAngle() flavor
 // called with either slope_div = SlopeDivCrispy() from R_PointToAngleCrispy()
 // or slope_div = SlopeDiv() else
-angle_t
-R_PointToAngleSlope
-( fixed_t	x,
- fixed_t	y,
- int (*slope_div) (unsigned int num, unsigned int den))
+angle_t R_PointToAngleSlope(fixed_t x, fixed_t y, int (*slope_div) angle_t0 angle_t1 (unsigned int num, unsigned int den))
 {
 	x -= viewx;
 	y -= viewy;
@@ -356,20 +340,14 @@ R_PointToAngleSlope
 	return 0;
 }
 
-angle_t
-R_PointToAngle
-( fixed_t	x,
- fixed_t	y )
+angle_t R_PointToAngle(fixed_t x, fixed_t y)
 {
 	return R_PointToAngleSlope (x, y, SlopeDiv);
 }
 
 // [crispy] overflow-safe R_PointToAngle() flavor
 // called only from R_CheckBBox(), R_AddLine() and P_SegLengths()
-angle_t
-R_PointToAngleCrispy
-( fixed_t	x,
- fixed_t	y )
+angle_t R_PointToAngleCrispy(fixed_t x, fixed_t y)
 {
 	// [crispy] fix overflows for very long distances
 	int64_t y_viewy = (int64_t)y - viewy;
@@ -387,12 +365,7 @@ R_PointToAngleCrispy
 	return R_PointToAngleSlope (x, y, SlopeDivCrispy);
 }
 
-angle_t
-R_PointToAngle2
-( fixed_t	x1,
- fixed_t	y1,
- fixed_t	x2,
- fixed_t	y2 )
+angle_t R_PointToAngle2(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2)
 {
 	viewx = x1;
 	viewy = y1;
@@ -402,10 +375,7 @@ R_PointToAngle2
 }
 
 
-fixed_t
-R_PointToDist
-( fixed_t	x,
- fixed_t	y )
+fixed_t R_PointToDist(fixed_t x, fixed_t y)
 {
 	int		angle;
 	fixed_t	dx;
@@ -763,10 +733,7 @@ int		setdetail;
 int		flipscreenwidth[MAXWIDTH];
 int		*flipviewwidth;
 
-void
-R_SetViewSize
-( int		blocks,
- int		detail )
+void R_SetViewSize(int blocks, int detail)
 {
 	setsizeneeded = true;
 	setblocks = blocks;
@@ -950,10 +917,7 @@ void R_Init ()
 //
 // R_PointInSubsector
 //
-subsector_t*
-R_PointInSubsector
-( fixed_t	x,
- fixed_t	y )
+subsector_t* R_PointInSubsector(fixed_t x, fixed_t y)
 {
 	node_t*	node;
 	int		side;

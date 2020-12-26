@@ -296,7 +296,7 @@ void D_IdentifyVersion()
 	if (W_CheckNumForName("SKY1") == -1 &&
 		W_CheckNumForName("MAP05") == -1 )
 	{
-	gamemode = shareware;
+	gamemode = GameMode_t::shareware;
 	maxplayers = 4;
 	}
 
@@ -313,7 +313,7 @@ void D_IdentifyVersion()
 	//
 
 	if (!M_ParmExists("-v10override")
-		&& gamemode != shareware && W_CheckNumForName("CLUS1MSG") < 0)
+		&& gamemode != GameMode_t::shareware && W_CheckNumForName("CLUS1MSG") < 0)
 	{
 		I_Error(
 			"You are trying to use the Hexen v1.0 IWAD. This isn't\n"
@@ -337,7 +337,7 @@ void D_SetGameDescription()
 	Press any key to continue.
 */
 
-	if (gamemode == shareware)
+	if (gamemode == GameMode_t::shareware)
 	{
 	gamedescription = "Hexen: 4 Level Demo Version";
 	}
@@ -364,7 +364,7 @@ void D_DoomMain()
 	autostart = false;
 	startskill = skill_t::sk_medium;
 	startmap = 1;
-	gamemode = commercial;
+	gamemode = GameMode_t::commercial;
 
 	I_PrintBanner(PACKAGE_STRING);
 
@@ -922,8 +922,7 @@ static void DrawAndBlit()
 	{
 		if (!netgame)
 		{
-			V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, W_CacheLumpName("PAUSED",
-																PU_CACHE));
+			V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, W_CacheLumpName("PAUSED", pu_tags_t::PU_CACHE));
 		}
 		else
 		{
@@ -1022,7 +1021,7 @@ void H2_AdvanceDemo()
 
 void H2_DoAdvanceDemo()
 {
-	players[consoleplayer].playerstate = PST_LIVE;		// don't reborn
+	players[consoleplayer].playerstate = PlayerState_t::PST_LIVE;		// don't reborn
 	advancedemo = false;
 	usergame = false;			// can't save/end game here
 	paused = false;

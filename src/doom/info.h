@@ -1242,7 +1242,7 @@ extern const char* sprnames[];
 
 enum class mobjtype_t
 {
-	MT_NULL = -1, // [crispy] null/invalid mobj (zero is reserved for MT_PLAYER)
+	MT_NULL = -1, // [crispy] null/invalid mobj (zero is reserved for mobjtype_t::MT_PLAYER)
 	MT_PLAYER,
 	MT_POSSESSED,
 	MT_SHOTGUY,
@@ -1391,54 +1391,55 @@ enum class mobjtype_t
 	// [crispy] support MUSINFO lump (dynamic music changing)
 	MT_MUSICSOURCE,
 	// [BH] 100 extra mobjs to use in dehacked patches
-	MT_EXTRA00 = 150, MT_EXTRA01, MT_EXTRA02, MT_EXTRA03, MT_EXTRA04,
-	MT_EXTRA05, MT_EXTRA06, MT_EXTRA07, MT_EXTRA08, MT_EXTRA09,
-	MT_EXTRA10, MT_EXTRA11, MT_EXTRA12, MT_EXTRA13, MT_EXTRA14,
-	MT_EXTRA15, MT_EXTRA16, MT_EXTRA17, MT_EXTRA18, MT_EXTRA19,
-	MT_EXTRA20, MT_EXTRA21, MT_EXTRA22, MT_EXTRA23, MT_EXTRA24,
-	MT_EXTRA25, MT_EXTRA26, MT_EXTRA27, MT_EXTRA28, MT_EXTRA29,
-	MT_EXTRA30, MT_EXTRA31, MT_EXTRA32, MT_EXTRA33, MT_EXTRA34,
-	MT_EXTRA35, MT_EXTRA36, MT_EXTRA37, MT_EXTRA38, MT_EXTRA39,
-	MT_EXTRA40, MT_EXTRA41, MT_EXTRA42, MT_EXTRA43, MT_EXTRA44,
-	MT_EXTRA45, MT_EXTRA46, MT_EXTRA47, MT_EXTRA48, MT_EXTRA49,
-	MT_EXTRA50, MT_EXTRA51, MT_EXTRA52, MT_EXTRA53, MT_EXTRA54,
-	MT_EXTRA55, MT_EXTRA56, MT_EXTRA57, MT_EXTRA58, MT_EXTRA59,
-	MT_EXTRA60, MT_EXTRA61, MT_EXTRA62, MT_EXTRA63, MT_EXTRA64,
-	MT_EXTRA65, MT_EXTRA66, MT_EXTRA67, MT_EXTRA68, MT_EXTRA69,
-	MT_EXTRA70, MT_EXTRA71, MT_EXTRA72, MT_EXTRA73, MT_EXTRA74,
-	MT_EXTRA75, MT_EXTRA76, MT_EXTRA77, MT_EXTRA78, MT_EXTRA79,
-	MT_EXTRA80, MT_EXTRA81, MT_EXTRA82, MT_EXTRA83, MT_EXTRA84,
-	MT_EXTRA85, MT_EXTRA86, MT_EXTRA87, MT_EXTRA88, MT_EXTRA89,
-	MT_EXTRA90, MT_EXTRA91, MT_EXTRA92, MT_EXTRA93, MT_EXTRA94,
-	MT_EXTRA95, MT_EXTRA96, MT_EXTRA97, MT_EXTRA98, MT_EXTRA99,
+	MT_EXTRA00 = 150, mobjtype_t::MT_EXTRA01, mobjtype_t::MT_EXTRA02, mobjtype_t::MT_EXTRA03, mobjtype_t::MT_EXTRA04,
+	MT_EXTRA05, mobjtype_t::MT_EXTRA06, mobjtype_t::MT_EXTRA07, mobjtype_t::MT_EXTRA08, mobjtype_t::MT_EXTRA09,
+	MT_EXTRA10, mobjtype_t::MT_EXTRA11, mobjtype_t::MT_EXTRA12, mobjtype_t::MT_EXTRA13, mobjtype_t::MT_EXTRA14,
+	MT_EXTRA15, mobjtype_t::MT_EXTRA16, mobjtype_t::MT_EXTRA17, mobjtype_t::MT_EXTRA18, mobjtype_t::MT_EXTRA19,
+	MT_EXTRA20, mobjtype_t::MT_EXTRA21, mobjtype_t::MT_EXTRA22, mobjtype_t::MT_EXTRA23, mobjtype_t::MT_EXTRA24,
+	MT_EXTRA25, mobjtype_t::MT_EXTRA26, mobjtype_t::MT_EXTRA27, mobjtype_t::MT_EXTRA28, mobjtype_t::MT_EXTRA29,
+	MT_EXTRA30, mobjtype_t::MT_EXTRA31, mobjtype_t::MT_EXTRA32, mobjtype_t::MT_EXTRA33, mobjtype_t::MT_EXTRA34,
+	MT_EXTRA35, mobjtype_t::MT_EXTRA36, mobjtype_t::MT_EXTRA37, mobjtype_t::MT_EXTRA38, mobjtype_t::MT_EXTRA39,
+	MT_EXTRA40, mobjtype_t::MT_EXTRA41, mobjtype_t::MT_EXTRA42, mobjtype_t::MT_EXTRA43, mobjtype_t::MT_EXTRA44,
+	MT_EXTRA45, mobjtype_t::MT_EXTRA46, mobjtype_t::MT_EXTRA47, mobjtype_t::MT_EXTRA48, mobjtype_t::MT_EXTRA49,
+	MT_EXTRA50, mobjtype_t::MT_EXTRA51, mobjtype_t::MT_EXTRA52, mobjtype_t::MT_EXTRA53, mobjtype_t::MT_EXTRA54,
+	MT_EXTRA55, mobjtype_t::MT_EXTRA56, mobjtype_t::MT_EXTRA57, mobjtype_t::MT_EXTRA58, mobjtype_t::MT_EXTRA59,
+	MT_EXTRA60, mobjtype_t::MT_EXTRA61, mobjtype_t::MT_EXTRA62, mobjtype_t::MT_EXTRA63, mobjtype_t::MT_EXTRA64,
+	MT_EXTRA65, mobjtype_t::MT_EXTRA66, mobjtype_t::MT_EXTRA67, mobjtype_t::MT_EXTRA68, mobjtype_t::MT_EXTRA69,
+	MT_EXTRA70, mobjtype_t::MT_EXTRA71, mobjtype_t::MT_EXTRA72, mobjtype_t::MT_EXTRA73, mobjtype_t::MT_EXTRA74,
+	MT_EXTRA75, mobjtype_t::MT_EXTRA76, mobjtype_t::MT_EXTRA77, mobjtype_t::MT_EXTRA78, mobjtype_t::MT_EXTRA79,
+	MT_EXTRA80, mobjtype_t::MT_EXTRA81, mobjtype_t::MT_EXTRA82, mobjtype_t::MT_EXTRA83, mobjtype_t::MT_EXTRA84,
+	MT_EXTRA85, mobjtype_t::MT_EXTRA86, mobjtype_t::MT_EXTRA87, mobjtype_t::MT_EXTRA88, mobjtype_t::MT_EXTRA89,
+	MT_EXTRA90, mobjtype_t::MT_EXTRA91, mobjtype_t::MT_EXTRA92, mobjtype_t::MT_EXTRA93, mobjtype_t::MT_EXTRA94,
+	MT_EXTRA95, mobjtype_t::MT_EXTRA96, mobjtype_t::MT_EXTRA97, mobjtype_t::MT_EXTRA98, mobjtype_t::MT_EXTRA99,
 	NUMMOBJTYPES
 };
 
 struct mobjinfo_t
 {
 	int doomednum;
-	int spawnstate;
+	statenum_t spawnstate;
 	int spawnhealth;
-	int seestate;
-	int seesound;
+	statenum_t seestate;
+	sfxenum_t seesound;
 	int reactiontime;
-	int attacksound;
-	int painstate;
+	sfxenum_t attacksound;
+	statenum_t painstate;
 	int painchance;
-	int painsound;
-	int meleestate;
-	int missilestate;
-	int deathstate;
-	int xdeathstate;
-	int deathsound;
+	sfxenum_t painsound;
+	statenum_t meleestate;
+	statenum_t missilestate;
+	statenum_t deathstate;
+	statenum_t xdeathstate;
+	sfxenum_t deathsound;
 	int speed;
 	int radius;
 	int height;
 	int mass;
 	int damage;
-	int activesound;
+	sfxenum_t activesound;
 	int flags;
-	int raisestate;
+	statenum_t raisestate;
+
 	// [crispy] height of the spawnstate's first sprite in pixels
 	int actualheight;
 	// [crispy] mobj to drop after death

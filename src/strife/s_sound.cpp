@@ -111,7 +111,7 @@ int snd_channels = 8;
 // haleyjd 09/11/10: [STRIFE] Handle of current voice channel.
 // This has been implemented at a higher level than it was implemented
 // in strife1.exe, as there it relied on a priority system which was
-// implicit in the SFX_PlayPatch API of DMX. Here we'll just ignore
+// implicit in the sfxenum_t::SFX_PlayPatch API of DMX. Here we'll just ignore
 // the current voice channel when doing normal sound playing.
 
 static int i_voicehandle = -1;

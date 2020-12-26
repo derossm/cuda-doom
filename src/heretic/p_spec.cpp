@@ -218,7 +218,7 @@ extern fixed_t			fractionaltic;
 void P_InitLava()
 {
 	memset(&LavaInflictor, 0, sizeof(mobj_t));
-	LavaInflictor.type = MT_PHOENIXFX2;
+	LavaInflictor.type = mobjtype_t::MT_PHOENIXFX2;
 	LavaInflictor.flags2 = MF2_FIREDAMAGE | MF2_NODMGTHRUST;
 }
 

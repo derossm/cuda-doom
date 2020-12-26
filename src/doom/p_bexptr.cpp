@@ -62,7 +62,7 @@ void A_Mushroom(mobj_t *actor)
 	target.x += i << FRACBITS;	// Aim in many directions from source
 	target.y += j << FRACBITS;
 	target.z += P_AproxDistance(i,j) * misc1;			// Aim fairly high
-	mo = P_SpawnMissile(actor, &target, MT_FATSHOT);	// Launch fireball
+	mo = P_SpawnMissile(actor, &target, mobjtype_t::MT_FATSHOT);	// Launch fireball
 	mo->momx = FixedMul(mo->momx, misc2);
 	mo->momy = FixedMul(mo->momy, misc2);				// Slow down a bit
 	mo->momz = FixedMul(mo->momz, misc2);
@@ -78,7 +78,7 @@ void A_Mushroom(mobj_t *actor)
 void A_BetaSkullAttack(mobj_t *actor)
 {
  int damage;
- if (!actor->target || actor->target->type == MT_SKULL)
+ if (!actor->target || actor->target->type == mobjtype_t::MT_SKULL)
 	return;
  S_StartSound(actor, actor->info->attacksound);
  A_FaceTarget(actor);
@@ -192,7 +192,7 @@ void A_LineEffect(mobj_t *mo)
 
 void A_FireOldBFG(mobj_t *mobj, player_t *player, pspdef_t *psp)
 {
- int type = MT_PLASMA1;
+ int type = mobjtype_t::MT_PLASMA1;
  extern void P_CheckMissileSpawn (mobj_t* th);
 
  if (!player) return; // [crispy] let pspr action pointers get called from mobj states
@@ -252,5 +252,5 @@ void A_FireOldBFG(mobj_t *mobj, player_t *player, pspdef_t *psp)
 		th->interp = -1;
 		P_CheckMissileSpawn(th);
 	}
- while ((type != MT_PLASMA2) && (type = MT_PLASMA2)); //killough: obfuscated!
+ while ((type != mobjtype_t::MT_PLASMA2) && (type = mobjtype_t::MT_PLASMA2)); //killough: obfuscated!
 }

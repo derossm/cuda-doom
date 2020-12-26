@@ -54,14 +54,7 @@ void STlib_init()
 //
 // haleyjd 09/01/10: [STRIFE]
 // * Rogue removed the "on" member of st_number_t.
-void
-STlib_initNum
-( st_number_t*		n,
- int			x,
- int			y,
- patch_t**		pl,
- int*			num,
- int			width )
+void STlib_initNum(st_number_t* n, int x, int y, patch_t** pl, int* num, int width)
 {
 	n->x	= x;
 	n->y	= y;
@@ -181,25 +174,14 @@ STlib_drawNumPositive
 
 // haleyjd 09/01/10: [STRIFE] All other functions were removed.
 /*
-void
-STlib_updateNum
-( st_number_t*		n,
- bool		refresh )
+void STlib_updateNum(st_number_t* n, bool refresh)
 {
 	if (*n->on) STlib_drawNum(n, refresh);
 }
 
 
 //
-void
-STlib_initPercent
-( st_percent_t*		p,
- int			x,
- int			y,
- patch_t**		pl,
- int*			num,
- bool*		on,
- patch_t*		percent )
+void STlib_initPercent(st_percent_t* p, int x, int y, patch_t** pl, int* num, bool* on, patch_t* percent)
 {
 	STlib_initNum(&p->n, x, y, pl, num, on, 3);
 	p->p = percent;
@@ -208,10 +190,7 @@ STlib_initPercent
 
 
 
-void
-STlib_updatePercent
-( st_percent_t*		per,
- int			refresh )
+void STlib_updatePercent(st_percent_t* per, int refresh)
 {
 	if (refresh && *per->n.on)
 	V_DrawPatch(per->n.x, per->n.y, per->p);
@@ -221,14 +200,7 @@ STlib_updatePercent
 
 
 
-void
-STlib_initMultIcon
-( st_multicon_t*	i,
- int			x,
- int			y,
- patch_t**		il,
- int*			inum,
- bool*		on )
+void STlib_initMultIcon(st_multicon_t* i, int x, int y, patch_t** il, int* inum, bool* on)
 {
 	i->x	= x;
 	i->y	= y;
@@ -240,10 +212,7 @@ STlib_initMultIcon
 
 
 
-void
-STlib_updateMultIcon
-( st_multicon_t*	mi,
- bool		refresh )
+void STlib_updateMultIcon(st_multicon_t* mi, bool refresh)
 {
 	int			w;
 	int			h;
@@ -273,14 +242,7 @@ STlib_updateMultIcon
 
 
 
-void
-STlib_initBinIcon
-( st_binicon_t*		b,
- int			x,
- int			y,
- patch_t*		i,
- bool*		val,
- bool*		on )
+void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, bool* val, bool* on)
 {
 	b->x	= x;
 	b->y	= y;
@@ -292,10 +254,7 @@ STlib_initBinIcon
 
 
 
-void
-STlib_updateBinIcon
-( st_binicon_t*		bi,
- bool		refresh )
+void STlib_updateBinIcon(st_binicon_t* bi, bool refresh)
 {
 	int			x;
 	int			y;

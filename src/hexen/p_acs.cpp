@@ -686,7 +686,7 @@ bool P_StartLockedACS(line_t * line, byte * args, mobj_t * mo, int side)
 			M_snprintf(LockedBuffer, sizeof(LockedBuffer),
 						"YOU NEED THE %s\n", TextKeyMessages[lock - 1]);
 			P_SetMessage(mo->player, LockedBuffer, true);
-			S_StartSound(mo, SFX_DOOR_LOCKED);
+			S_StartSound(mo, sfxenum_t::SFX_DOOR_LOCKED);
 			return false;
 		}
 	}

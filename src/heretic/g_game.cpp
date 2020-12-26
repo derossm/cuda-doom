@@ -54,20 +54,20 @@ struct
 	int type;	// mobjtype_t
 	int speed[2];
 } MonsterMissileInfo[] = {
-	{ MT_IMPBALL, { 10, 20 } },
-	{ MT_MUMMYFX1, { 9, 18 } },
-	{ MT_KNIGHTAXE, { 9, 18 } },
-	{ MT_REDAXE, { 9, 18 } },
-	{ MT_BEASTBALL, { 12, 20 } },
-	{ MT_WIZFX1, { 18, 24 } },
-	{ MT_SNAKEPRO_A, { 14, 20 } },
-	{ MT_SNAKEPRO_B, { 14, 20 } },
-	{ MT_HEADFX1, { 13, 20 } },
-	{ MT_HEADFX3, { 10, 18 } },
-	{ MT_MNTRFX1, { 20, 26 } },
-	{ MT_MNTRFX2, { 14, 20 } },
-	{ MT_SRCRFX1, { 20, 28 } },
-	{ MT_SOR2FX1, { 20, 28 } },
+	{ mobjtype_t::MT_IMPBALL, { 10, 20 } },
+	{ mobjtype_t::MT_MUMMYFX1, { 9, 18 } },
+	{ mobjtype_t::MT_KNIGHTAXE, { 9, 18 } },
+	{ mobjtype_t::MT_REDAXE, { 9, 18 } },
+	{ mobjtype_t::MT_BEASTBALL, { 12, 20 } },
+	{ mobjtype_t::MT_WIZFX1, { 18, 24 } },
+	{ mobjtype_t::MT_SNAKEPRO_A, { 14, 20 } },
+	{ mobjtype_t::MT_SNAKEPRO_B, { 14, 20 } },
+	{ mobjtype_t::MT_HEADFX1, { 13, 20 } },
+	{ mobjtype_t::MT_HEADFX3, { 10, 18 } },
+	{ mobjtype_t::MT_MNTRFX1, { 20, 26 } },
+	{ mobjtype_t::MT_MNTRFX2, { 14, 20 } },
+	{ mobjtype_t::MT_SRCRFX1, { 20, 28 } },
+	{ mobjtype_t::MT_SOR2FX1, { 20, 28 } },
 	{ -1, { -1, -1 } }					// Terminator
 };
 
@@ -461,7 +461,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 	{
 		if (gamekeydown[key_speed] && !noartiskip)
 		{
-			if (players[consoleplayer].inventory[inv_ptr].type != arti_none)
+			if (players[consoleplayer].inventory[inv_ptr].type != ArtiType_t::arti_none)
 			{
 				gamekeydown[key_useartifact] = false;
 				cmd->arti = 0xff;		// skip artifact code
@@ -488,53 +488,53 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 		&& !players[consoleplayer].powers[PowerType_t::pw_weaponlevel2])
 	{
 		gamekeydown[key_arti_tome] = false;
-		cmd->arti = arti_tomeofpower;
+		cmd->arti = ArtiType_t::arti_tomeofpower;
 	}
 	else if (gamekeydown[key_arti_quartz] && !cmd->arti
 		&& (players[consoleplayer].mo->health < MAXHEALTH))
 	{
 		gamekeydown[key_arti_quartz] = false;
-		cmd->arti = arti_health;
+		cmd->arti = ArtiType_t::arti_health;
 	}
 	else if (gamekeydown[key_arti_urn] && !cmd->arti)
 	{
 		gamekeydown[key_arti_urn] = false;
-		cmd->arti = arti_superhealth;
+		cmd->arti = ArtiType_t::arti_superhealth;
 	}
 	else if (gamekeydown[key_arti_bomb] && !cmd->arti)
 	{
 		gamekeydown[key_arti_bomb] = false;
-		cmd->arti = arti_firebomb;
+		cmd->arti = ArtiType_t::arti_firebomb;
 	}
 	else if (gamekeydown[key_arti_ring] && !cmd->arti)
 	{
 		gamekeydown[key_arti_ring] = false;
-		cmd->arti = arti_invulnerability;
+		cmd->arti = ArtiType_t::arti_invulnerability;
 	}
 	else if (gamekeydown[key_arti_chaosdevice] && !cmd->arti)
 	{
 		gamekeydown[key_arti_chaosdevice] = false;
-		cmd->arti = arti_teleport;
+		cmd->arti = ArtiType_t::arti_teleport;
 	}
 	else if (gamekeydown[key_arti_shadowsphere] && !cmd->arti)
 	{
 		gamekeydown[key_arti_shadowsphere] = false;
-		cmd->arti = arti_invisibility;
+		cmd->arti = ArtiType_t::arti_invisibility;
 	}
 	else if (gamekeydown[key_arti_wings] && !cmd->arti)
 	{
 		gamekeydown[key_arti_wings] = false;
-		cmd->arti = arti_fly;
+		cmd->arti = ArtiType_t::arti_fly;
 	}
 	else if (gamekeydown[key_arti_torch] && !cmd->arti)
 	{
 		gamekeydown[key_arti_torch] = false;
-		cmd->arti = arti_torch;
+		cmd->arti = ArtiType_t::arti_torch;
 	}
 	else if (gamekeydown[key_arti_morph] && !cmd->arti)
 	{
 		gamekeydown[key_arti_morph] = false;
-		cmd->arti = arti_egg;
+		cmd->arti = ArtiType_t::arti_egg;
 	}
 
 //
@@ -684,7 +684,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
 	cmd->forwardmove += forward;
 	cmd->sidemove += side;
-	if (players[consoleplayer].playerstate == PST_LIVE)
+	if (players[consoleplayer].playerstate == PlayerState_t::PST_LIVE)
 	{
 		if (look < 0)
 		{
@@ -759,8 +759,8 @@ void G_DoLoadLevel()
 	gamestate = GameState_t::GS_LEVEL;
 	for (i = 0; i < MAXPLAYERS; i++)
 	{
-		if (playeringame[i] && players[i].playerstate == PST_DEAD)
-			players[i].playerstate = PST_REBORN;
+		if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_DEAD)
+			players[i].playerstate = PlayerState_t::PST_REBORN;
 		memset(players[i].frags, 0, sizeof(players[i].frags));
 	}
 
@@ -1070,7 +1070,7 @@ void G_Ticker()
 // do player reborns if needed
 //
 	for (i = 0; i < MAXPLAYERS; i++)
-		if (playeringame[i] && players[i].playerstate == PST_REBORN)
+		if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_REBORN)
 			G_DoReborn(i);
 
 //
@@ -1288,7 +1288,7 @@ void G_PlayerFinishLevel(int player)
 	{
 		for (i = 0; i < 16; i++)
 		{
-			P_PlayerUseArtifact(p, arti_fly);
+			P_PlayerUseArtifact(p, ArtiType_t::arti_fly);
 		}
 	}
 	memset(p->powers, 0, sizeof(p->powers));
@@ -1353,7 +1353,7 @@ void G_PlayerReborn(int player)
 	players[player].secretcount = secretcount;
 
 	p->usedown = p->attackdown = true; // don't do anything immediately
-	p->playerstate = PST_LIVE;
+	p->playerstate = PlayerState_t::PST_LIVE;
 	p->health = MAXHEALTH;
 	p->readyweapon = p->pendingweapon = wp_goldwand;
 	p->weaponowned[wp_staff] = true;
@@ -1412,7 +1412,7 @@ bool G_CheckSpot(int playernum, mapthing_t * mthing)
 	an = ((unsigned) ANG45 * (mthing->angle / 45)) >> ANGLETOFINESHIFT;
 
 	mo = P_SpawnMobj(x + 20 * finecosine[an], y + 20 * finesine[an],
-						ss->sector->floorheight + TELEFOGHEIGHT, MT_TFOG);
+						ss->sector->floorheight + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
 
 	if (players[consoleplayer].viewz != 1)
 		S_StartSound(mo, sfx_telept);	// don't start sound on first frame
@@ -1846,7 +1846,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	// Force players to be initialized upon first level load
 	for (i = 0; i < MAXPLAYERS; i++)
 	{
-		players[i].playerstate = PST_REBORN;
+		players[i].playerstate = PlayerState_t::PST_REBORN;
 		players[i].didsecret = false;
 	}
 	// Set up a bunch of globals

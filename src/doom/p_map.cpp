@@ -122,11 +122,7 @@ bool PIT_StompThing (mobj_t* thing)
 //
 // P_TeleportMove
 //
-bool
-P_TeleportMove
-( mobj_t*	thing,
- fixed_t	x,
- fixed_t	y )
+bool P_TeleportMove(mobj_t* thing, fixed_t x, fixed_t y)
 {
 	int			xl;
 	int			xh;
@@ -343,8 +339,8 @@ bool PIT_CheckThing (mobj_t* thing)
 
 	if (tmthing->target
 			&& (tmthing->target->type == thing->type ||
-		(tmthing->target->type == MT_KNIGHT && thing->type == MT_BRUISER)||
-		(tmthing->target->type == MT_BRUISER && thing->type == MT_KNIGHT) ) )
+		(tmthing->target->type == mobjtype_t::MT_KNIGHT && thing->type == mobjtype_t::MT_BRUISER)||
+		(tmthing->target->type == mobjtype_t::MT_BRUISER && thing->type == mobjtype_t::MT_KNIGHT) ) )
 	{
 		// Don't hit same species as originator.
 		if (thing == tmthing->target)
@@ -354,7 +350,7 @@ bool PIT_CheckThing (mobj_t* thing)
 			// "monsters of the same species cant hurt each other" behavior
 			// through dehacked patches
 
-		if (thing->type != MT_PLAYER && !deh_species_infighting)
+		if (thing->type != mobjtype_t::MT_PLAYER && !deh_species_infighting)
 		{
 		// Explode, but do no damage.
 		// Let players missile other players.
@@ -491,11 +487,7 @@ bool PIT_CheckThing (mobj_t* thing)
 // speciallines[]
 // numspeciallines
 //
-bool
-P_CheckPosition
-( mobj_t*	thing,
- fixed_t	x,
- fixed_t	y )
+bool P_CheckPosition(mobj_t* thing, fixed_t x, fixed_t y)
 {
 	int			xl;
 	int			xh;
@@ -567,11 +559,7 @@ P_CheckPosition
 // Attempt to move to a new position,
 // crossing special lines unless MF_TELEPORT is set.
 //
-bool
-P_TryMove
-( mobj_t*	thing,
- fixed_t	x,
- fixed_t	y )
+bool P_TryMove(mobj_t* thing, fixed_t x, fixed_t y)
 {
 	fixed_t	oldx;
 	fixed_t	oldy;
@@ -1217,11 +1205,7 @@ bool PTR_ShootTraverse (intercept_t* in)
 //
 // P_AimLineAttack
 //
-fixed_t
-P_AimLineAttack
-( mobj_t*	t1,
- angle_t	angle,
- fixed_t	distance )
+fixed_t P_AimLineAttack(mobj_t* t1, angle_t angle, fixed_t distance)
 {
 	fixed_t	x2;
 	fixed_t	y2;
@@ -1261,13 +1245,7 @@ P_AimLineAttack
 // [crispy] if damage == INT_MIN, it is a trace
 // to update the laser spot position
 //
-void
-P_LineAttack
-( mobj_t*	t1,
- angle_t	angle,
- fixed_t	distance,
- fixed_t	slope,
- int		damage )
+void P_LineAttack(mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope, int damage)
 {
 	// [crispy] smooth laser spot movement with uncapped framerate
 	const fixed_t t1x = (damage == INT_MIN) ? viewx : t1->x;
@@ -1293,12 +1271,7 @@ P_LineAttack
 // [crispy] update laser spot position
 // call P_AimLineAttack() to check if a target is aimed at (linetarget)
 // then call P_LineAttack() with either aimslope or the passed slope
-void
-P_LineLaser
-( mobj_t*	t1,
- angle_t	angle,
- fixed_t	distance,
- fixed_t	slope )
+void P_LineLaser(mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope)
 {
 	fixed_t	lslope;
 
@@ -1438,8 +1411,8 @@ bool PIT_RadiusAttack (mobj_t* thing)
 
 	// Boss spider and cyborg
 	// take no damage from concussion.
-	if (thing->type == MT_CYBORG
-	|| thing->type == MT_SPIDER)
+	if (thing->type == mobjtype_t::MT_CYBORG
+	|| thing->type == mobjtype_t::MT_SPIDER)
 	return true;
 
 	dx = abs(thing->x - bombspot->x);
@@ -1468,11 +1441,7 @@ bool PIT_RadiusAttack (mobj_t* thing)
 // P_RadiusAttack
 // Source is the creature that caused the explosion at spot.
 //
-void
-P_RadiusAttack
-( mobj_t*	spot,
- mobj_t*	source,
- int		damage )
+void P_RadiusAttack(mobj_t* spot, mobj_t* source, int damage)
 {
 	int		x;
 	int		y;
@@ -1579,7 +1548,7 @@ bool PIT_ChangeSector (mobj_t*	thing)
 	mo = P_SpawnMobj (thing->x,
 				thing->y,
 				// [crispy] Lost Souls and Barrels bleed Puffs
-				thing->z + thing->height/2, (thing->flags & MF_NOBLOOD) ? MT_PUFF : MT_BLOOD);
+				thing->z + thing->height/2, (thing->flags & MF_NOBLOOD) ? mobjtype_t::MT_PUFF : mobjtype_t::MT_BLOOD);
 
 	mo->momx = P_SubRandom() << 12;
 	mo->momy = P_SubRandom() << 12;
@@ -1601,10 +1570,7 @@ bool PIT_ChangeSector (mobj_t*	thing)
 //
 // P_ChangeSector
 //
-bool
-P_ChangeSector
-( sector_t*	sector,
- bool	crunch )
+bool P_ChangeSector(sector_t* sector, bool crunch)
 {
 	int		x;
 	int		y;

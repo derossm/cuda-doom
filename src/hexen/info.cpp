@@ -3126,1448 +3126,1448 @@ state_t states[NUMSTATES] = {
 
 mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 
-	{							// MT_MAPSPOT
+	{							// mobjtype_t::MT_MAPSPOT
 		9001,						// doomednum
 		S_MAPSPOT,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOSECTOR | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_MAPSPOTGRAVITY
+	{							// mobjtype_t::MT_MAPSPOTGRAVITY
 		9013,						// doomednum
 		S_MAPSPOT,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		MF2_DONTDRAW				// flags2
 		},
 
-	{							// MT_FIREBALL1
+	{							// mobjtype_t::MT_FIREBALL1
 		-1,						// doomednum
 		S_FIREBALL1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FIREBALL1_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_FIREBALL,				// deathsound
+		sfxenum_t::SFX_FIREBALL,				// deathsound
 		2 * FRACUNIT,				// speed
 		8 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		4,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE	// flags2
 		},
 
-	{							// MT_ARROW
+	{							// mobjtype_t::MT_ARROW
 		-1,						// doomednum
 		S_ARROW_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ARROW_X1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		6 * FRACUNIT,				// speed
 		8 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		4,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_DART
+	{							// mobjtype_t::MT_DART
 		-1,						// doomednum
 		S_DART_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DART_X1,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		6 * FRACUNIT,				// speed
 		8 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		2,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_POISONDART
+	{							// mobjtype_t::MT_POISONDART
 		-1,						// doomednum
 		S_POISONDART_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_POISONDART_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		6 * FRACUNIT,				// speed
 		8 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		2,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_RIPPERBALL
+	{							// mobjtype_t::MT_RIPPERBALL
 		-1,						// doomednum
 		S_RIPPERBALL_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_RIPPERBALL_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		6 * FRACUNIT,				// speed
 		8 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		2,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_RIP	// flags2
 		},
 
-	{							// MT_PROJECTILE_BLADE
+	{							// mobjtype_t::MT_PROJECTILE_BLADE
 		-1,						// doomednum
 		S_PRJ_BLADE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_PRJ_BLADE_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		6 * FRACUNIT,				// speed
 		6 * FRACUNIT,				// radius
 		6 * FRACUNIT,				// height
 		100,						// mass
 		3,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_ICESHARD
+	{							// mobjtype_t::MT_ICESHARD
 		-1,						// doomednum
 		S_ICESHARD1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SHARDFXE1_1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_MAGE_SHARDS_EXPLODE,	// deathsound
+		sfxenum_t::SFX_MAGE_SHARDS_EXPLODE,	// deathsound
 		25 * FRACUNIT,				// speed
 		13 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		1,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_ICEDAMAGE		// flags2
 		},
 
-	{							// MT_FLAME_SMALL_TEMP
+	{							// mobjtype_t::MT_FLAME_SMALL_TEMP
 		10500,						// doomednum
 		S_FLAME_TSMALL1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FLAME_LARGE_TEMP
+	{							// mobjtype_t::MT_FLAME_LARGE_TEMP
 		10502,						// doomednum
 		S_FLAME_TLARGE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FLAME_SMALL
+	{							// mobjtype_t::MT_FLAME_SMALL
 		10501,						// doomednum
 		S_FLAME_SMALL1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		MF2_NOTELEPORT | MF2_DONTDRAW		// flags2
 		},
 
-	{							// MT_FLAME_LARGE
+	{							// mobjtype_t::MT_FLAME_LARGE
 		10503,						// doomednum
 		S_FLAME_LARGE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		MF2_NOTELEPORT | MF2_DONTDRAW		// flags2
 		},
 
-	{							// MT_HEALINGBOTTLE
+	{							// mobjtype_t::MT_HEALINGBOTTLE
 		81,						// doomednum
 		S_ITEM_PTN1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_HEALTHFLASK
+	{							// mobjtype_t::MT_HEALTHFLASK
 		82,						// doomednum
 		S_ARTI_PTN2_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_ARTIFLY
+	{							// mobjtype_t::MT_ARTIFLY
 		83,						// doomednum
 		S_ARTI_SOAR1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_ARTIINVULNERABILITY
+	{							// mobjtype_t::MT_ARTIINVULNERABILITY
 		84,						// doomednum
 		S_ARTI_INVU1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_SUMMONMAULATOR
+	{							// mobjtype_t::MT_SUMMONMAULATOR
 		86,						// doomednum
 		S_ARTI_SUMMON,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_SUMMON_FX
+	{							// mobjtype_t::MT_SUMMON_FX
 		-1,						// doomednum
 		S_SUMMON_FX1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SUMMON_FX2_1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		20 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_DROPOFF | MF_NOBLOCKMAP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_THRUSTFLOOR_UP
+	{							// mobjtype_t::MT_THRUSTFLOOR_UP
 		10091,						// doomednum
 		S_THRUSTINIT2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		128 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_THRUSTFLOOR_DOWN
+	{							// mobjtype_t::MT_THRUSTFLOOR_DOWN
 		10090,						// doomednum
 		S_THRUSTINIT1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		128 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP | MF2_DONTDRAW		// flags2
 		},
 
-	{							// MT_TELEPORTOTHER
+	{							// mobjtype_t::MT_TELEPORTOTHER
 		10040,						// doomednum
 		S_ARTI_TELOTHER1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_TELOTHER_FX1
+	{							// mobjtype_t::MT_TELOTHER_FX1
 		-1,						// doomednum
 		S_TELO_FX1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_TELO_FX9,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		20 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		10001,						// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY | MF_NOBLOCKMAP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_TELOTHER_FX2
+	{							// mobjtype_t::MT_TELOTHER_FX2
 		-1,						// doomednum
 		S_TELO_FX2_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_TELO_FX9,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		16 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		10001,						// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY | MF_NOBLOCKMAP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_TELOTHER_FX3
+	{							// mobjtype_t::MT_TELOTHER_FX3
 		-1,						// doomednum
 		S_TELO_FX3_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_TELO_FX9,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		16 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		10001,						// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY | MF_NOBLOCKMAP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_TELOTHER_FX4
+	{							// mobjtype_t::MT_TELOTHER_FX4
 		-1,						// doomednum
 		S_TELO_FX4_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_TELO_FX9,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		16 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		10001,						// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY | MF_NOBLOCKMAP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_TELOTHER_FX5
+	{							// mobjtype_t::MT_TELOTHER_FX5
 		-1,						// doomednum
 		S_TELO_FX5_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_TELO_FX9,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		16 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		10001,						// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY | MF_NOBLOCKMAP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_DIRT1
+	{							// mobjtype_t::MT_DIRT1
 		-1,						// doomednum
 		S_DIRT1_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DIRT1_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_DIRT2
+	{							// mobjtype_t::MT_DIRT2
 		-1,						// doomednum
 		S_DIRT2_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DIRT2_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_DIRT3
+	{							// mobjtype_t::MT_DIRT3
 		-1,						// doomednum
 		S_DIRT3_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DIRT3_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_DIRT4
+	{							// mobjtype_t::MT_DIRT4
 		-1,						// doomednum
 		S_DIRT4_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DIRT4_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT | MF2_LOGRAV		// flags2
 		},
 
-	{							// MT_DIRT5
+	{							// mobjtype_t::MT_DIRT5
 		-1,						// doomednum
 		S_DIRT5_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DIRT5_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT | MF2_LOGRAV		// flags2
 		},
 
-	{							// MT_DIRT6
+	{							// mobjtype_t::MT_DIRT6
 		-1,						// doomednum
 		S_DIRT6_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DIRT6_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT | MF2_LOGRAV		// flags2
 		},
 
-	{							// MT_DIRTCLUMP
+	{							// mobjtype_t::MT_DIRTCLUMP
 		-1,						// doomednum
 		S_DIRTCLUMP1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_ROCK1
+	{							// mobjtype_t::MT_ROCK1
 		-1,						// doomednum
 		S_ROCK1_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ROCK1_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_ROCK2
+	{							// mobjtype_t::MT_ROCK2
 		-1,						// doomednum
 		S_ROCK2_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ROCK2_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_ROCK3
+	{							// mobjtype_t::MT_ROCK3
 		-1,						// doomednum
 		S_ROCK3_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ROCK3_D,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FOGSPAWNER
+	{							// mobjtype_t::MT_FOGSPAWNER
 		10000,						// doomednum
 		S_SPAWNFOG1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOSECTOR,		// flags
 		MF2_DONTDRAW | MF2_FLOATBOB		// flags2
 		},
 
-	{							// MT_FOGPATCHS
+	{							// mobjtype_t::MT_FOGPATCHS
 		10001,						// doomednum
 		S_FOGPATCHS1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FOGPATCHS0,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		FRACUNIT,					// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_FLOAT | MF_NOGRAVITY | MF_SHADOW | MF_NOCLIP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FOGPATCHM
+	{							// mobjtype_t::MT_FOGPATCHM
 		10002,						// doomednum
 		S_FOGPATCHM1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FOGPATCHM0,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		FRACUNIT,					// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_FLOAT | MF_NOGRAVITY | MF_SHADOW | MF_NOCLIP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FOGPATCHL
+	{							// mobjtype_t::MT_FOGPATCHL
 		10003,						// doomednum
 		S_FOGPATCHL1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FOGPATCHL0,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		FRACUNIT,					// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_FLOAT | MF_NOGRAVITY | MF_SHADOW | MF_NOCLIP,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_QUAKE_FOCUS
+	{							// mobjtype_t::MT_QUAKE_FOCUS
 		-1,						// doomednum
 		S_QUAKE_ACTIVE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOSECTOR,		// flags
 		MF2_DONTDRAW				// flags2
 		},
 
-	{							// MT_SGSHARD1
+	{							// mobjtype_t::MT_SGSHARD1
 		-1,						// doomednum
 		S_SGSHARD1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD1_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD2
+	{							// mobjtype_t::MT_SGSHARD2
 		-1,						// doomednum
 		S_SGSHARD2_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD2_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD3
+	{							// mobjtype_t::MT_SGSHARD3
 		-1,						// doomednum
 		S_SGSHARD3_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD3_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD4
+	{							// mobjtype_t::MT_SGSHARD4
 		-1,						// doomednum
 		S_SGSHARD4_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD4_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD5
+	{							// mobjtype_t::MT_SGSHARD5
 		-1,						// doomednum
 		S_SGSHARD5_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD5_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD6
+	{							// mobjtype_t::MT_SGSHARD6
 		-1,						// doomednum
 		S_SGSHARD6_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD6_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD7
+	{							// mobjtype_t::MT_SGSHARD7
 		-1,						// doomednum
 		S_SGSHARD7_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD7_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD8
+	{							// mobjtype_t::MT_SGSHARD8
 		-1,						// doomednum
 		S_SGSHARD8_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD8_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD9
+	{							// mobjtype_t::MT_SGSHARD9
 		-1,						// doomednum
 		S_SGSHARD9_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD9_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SGSHARD0
+	{							// mobjtype_t::MT_SGSHARD0
 		-1,						// doomednum
 		S_SGSHARD0_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SGSHARD0_D,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_ARTIEGG
+	{							// mobjtype_t::MT_ARTIEGG
 		30,						// doomednum
 		S_ARTI_EGGC1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_EGGFX
+	{							// mobjtype_t::MT_EGGFX
 		-1,						// doomednum
 		S_EGGFX1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
 		0,							// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
@@ -4579,9295 +4579,9295 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		8 * FRACUNIT,				// height
 		100,						// mass
 		1,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_ARTISUPERHEAL
+	{							// mobjtype_t::MT_ARTISUPERHEAL
 		32,						// doomednum
 		S_ARTI_SPHL1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_ZWINGEDSTATUENOSKULL
+	{							// mobjtype_t::MT_ZWINGEDSTATUENOSKULL
 		9011,						// doomednum
 		S_ZWINGEDSTATUENOSKULL,	// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		62 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ZGEMPEDESTAL
+	{							// mobjtype_t::MT_ZGEMPEDESTAL
 		9012,						// doomednum
 		S_ZGEMPEDESTAL1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		40 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZSKULL
+	{							// mobjtype_t::MT_ARTIPUZZSKULL
 		9002,						// doomednum
 		S_ARTIPUZZSKULL,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEMBIG
+	{							// mobjtype_t::MT_ARTIPUZZGEMBIG
 		9003,						// doomednum
 		S_ARTIPUZZGEMBIG,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEMRED
+	{							// mobjtype_t::MT_ARTIPUZZGEMRED
 		9004,						// doomednum
 		S_ARTIPUZZGEMRED,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEMGREEN1
+	{							// mobjtype_t::MT_ARTIPUZZGEMGREEN1
 		9005,						// doomednum
 		S_ARTIPUZZGEMGREEN1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEMGREEN2
+	{							// mobjtype_t::MT_ARTIPUZZGEMGREEN2
 		9009,						// doomednum
 		S_ARTIPUZZGEMGREEN2,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEMBLUE1
+	{							// mobjtype_t::MT_ARTIPUZZGEMBLUE1
 		9006,						// doomednum
 		S_ARTIPUZZGEMBLUE1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEMBLUE2
+	{							// mobjtype_t::MT_ARTIPUZZGEMBLUE2
 		9010,						// doomednum
 		S_ARTIPUZZGEMBLUE2,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZBOOK1
+	{							// mobjtype_t::MT_ARTIPUZZBOOK1
 		9007,						// doomednum
 		S_ARTIPUZZBOOK1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZBOOK2
+	{							// mobjtype_t::MT_ARTIPUZZBOOK2
 		9008,						// doomednum
 		S_ARTIPUZZBOOK2,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZSKULL2
+	{							// mobjtype_t::MT_ARTIPUZZSKULL2
 		9014,						// doomednum
 		S_ARTIPUZZSKULL2,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZFWEAPON
+	{							// mobjtype_t::MT_ARTIPUZZFWEAPON
 		9015,						// doomednum
 		S_ARTIPUZZFWEAPON,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZCWEAPON
+	{							// mobjtype_t::MT_ARTIPUZZCWEAPON
 		9016,						// doomednum
 		S_ARTIPUZZCWEAPON,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZMWEAPON
+	{							// mobjtype_t::MT_ARTIPUZZMWEAPON
 		9017,						// doomednum
 		S_ARTIPUZZMWEAPON,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEAR
+	{							// mobjtype_t::MT_ARTIPUZZGEAR
 		9018,						// doomednum
 		S_ARTIPUZZGEAR_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEAR2
+	{							// mobjtype_t::MT_ARTIPUZZGEAR2
 		9019,						// doomednum
 		S_ARTIPUZZGEAR2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEAR3
+	{							// mobjtype_t::MT_ARTIPUZZGEAR3
 		9020,						// doomednum
 		S_ARTIPUZZGEAR3_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTIPUZZGEAR4
+	{							// mobjtype_t::MT_ARTIPUZZGEAR4
 		9021,						// doomednum
 		S_ARTIPUZZGEAR4_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARTITORCH
+	{							// mobjtype_t::MT_ARTITORCH
 		33,						// doomednum
 		S_ARTI_TRCH1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_FIREBOMB
+	{							// mobjtype_t::MT_FIREBOMB
 		-1,						// doomednum
 		S_FIREBOMB1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_FLECHETTE_EXPLODE,		// deathsound
+		sfxenum_t::SFX_FLECHETTE_EXPLODE,		// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOGRAVITY | MF_ALTSHADOW,		// flags
 		MF2_FIREDAMAGE				// flags2
 		},
 
-	{							// MT_ARTITELEPORT
+	{							// mobjtype_t::MT_ARTITELEPORT
 		36,						// doomednum
 		S_ARTI_ATLP1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_ARTIPOISONBAG
+	{							// mobjtype_t::MT_ARTIPOISONBAG
 		8000,						// doomednum
 		S_ARTI_PSBG1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_POISONBAG
+	{							// mobjtype_t::MT_POISONBAG
 		-1,						// doomednum
 		S_POISONBAG1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOGRAVITY | MF_NOBLOCKMAP,		// flags
 		0							// flags2
 		},
 
-	{							// MT_POISONCLOUD
+	{							// mobjtype_t::MT_POISONCLOUD
 		-1,						// doomednum
 		S_POISONCLOUD1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_POISONSHROOM_DEATH,	// deathsound
+		sfxenum_t::SFX_POISONSHROOM_DEATH,	// deathsound
 		0,							// speed
 		1,							// radius
 		1,							// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOGRAVITY | MF_NOBLOCKMAP | MF_SHADOW | MF_NOCLIP | MF_DROPOFF, // flags
 		MF2_NODMGTHRUST			// flags2
 		},
 
-	{							// MT_THROWINGBOMB
+	{							// mobjtype_t::MT_THROWINGBOMB
 		-1,						// doomednum
 		S_THROWINGBOMB1,			// spawnstate
 		48,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_FLECHETTE_BOUNCE,		// seesound
+		sfxenum_t::SFX_FLECHETTE_BOUNCE,		// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_THROWINGBOMB_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_FLECHETTE_EXPLODE,		// deathsound
+		sfxenum_t::SFX_FLECHETTE_EXPLODE,		// deathsound
 		12 * FRACUNIT,				// speed
 		8 * FRACUNIT,				// radius
 		10 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_FLOORBOUNCE | MF2_FIREDAMAGE	// flags2
 		},
 
-	{							// MT_SPEEDBOOTS
+	{							// mobjtype_t::MT_SPEEDBOOTS
 		8002,						// doomednum
 		S_ARTI_BOOTS1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_BOOSTMANA
+	{							// mobjtype_t::MT_BOOSTMANA
 		8003,						// doomednum
 		S_ARTI_MANA,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_BOOSTARMOR
+	{							// mobjtype_t::MT_BOOSTARMOR
 		8041,						// doomednum
 		S_ARTI_ARMOR1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_BLASTRADIUS
+	{							// mobjtype_t::MT_BLASTRADIUS
 		10110,						// doomednum
 		S_ARTI_BLAST1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_HEALRADIUS
+	{							// mobjtype_t::MT_HEALRADIUS
 		10120,						// doomednum
 		S_ARTI_HEALRAD1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_SPLASH
+	{							// mobjtype_t::MT_SPLASH
 		-1,						// doomednum
 		S_SPLASH1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SPLASHX,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_LOGRAV | MF2_CANNOTPUSH		// flags2
 		},
 
-	{							// MT_SPLASHBASE
+	{							// mobjtype_t::MT_SPLASHBASE
 		-1,						// doomednum
 		S_SPLASHBASE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_LAVASPLASH
+	{							// mobjtype_t::MT_LAVASPLASH
 		-1,						// doomednum
 		S_LAVASPLASH1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_LAVASMOKE
+	{							// mobjtype_t::MT_LAVASMOKE
 		-1,						// doomednum
 		S_LAVASMOKE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_SLUDGECHUNK
+	{							// mobjtype_t::MT_SLUDGECHUNK
 		-1,						// doomednum
 		S_SLUDGECHUNK1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SLUDGECHUNKX,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_LOGRAV | MF2_CANNOTPUSH		// flags2
 		},
 
-	{							// MT_SLUDGESPLASH
+	{							// mobjtype_t::MT_SLUDGESPLASH
 		-1,						// doomednum
 		S_SLUDGESPLASH1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC0
+	{							// mobjtype_t::MT_MISC0
 		5,							// doomednum
 		S_ZWINGEDSTATUE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		62 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC1
+	{							// mobjtype_t::MT_MISC1
 		6,							// doomednum
 		S_ZROCK1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC2
+	{							// mobjtype_t::MT_MISC2
 		7,							// doomednum
 		S_ZROCK2_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC3
+	{							// mobjtype_t::MT_MISC3
 		9,							// doomednum
 		S_ZROCK3_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC4
+	{							// mobjtype_t::MT_MISC4
 		15,						// doomednum
 		S_ZROCK4_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC5
+	{							// mobjtype_t::MT_MISC5
 		17,						// doomednum
 		S_ZCHANDELIER1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		60 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPAWNCEILING | MF_NOGRAVITY,	// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC6
+	{							// mobjtype_t::MT_MISC6
 		8063,						// doomednum
 		S_ZCHANDELIER_U,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		60 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPAWNCEILING | MF_NOGRAVITY,	// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC7
+	{							// mobjtype_t::MT_MISC7
 		24,						// doomednum
 		S_ZTREEDEAD1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		96 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC8
+	{							// mobjtype_t::MT_MISC8
 		25,						// doomednum
 		S_ZTREE,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		128 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_TREEDESTRUCTIBLE
+	{							// mobjtype_t::MT_TREEDESTRUCTIBLE
 		8062,						// doomednum
 		S_ZTREEDESTRUCTIBLE1,		// spawnstate
 		70,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZTREEDES_D1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_TREE_BREAK,			// deathsound
+		sfxenum_t::SFX_TREE_BREAK,			// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		180 * FRACUNIT,			// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD,		// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC9
+	{							// mobjtype_t::MT_MISC9
 		26,						// doomednum
 		S_ZTREESWAMP182_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		150 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC10
+	{							// mobjtype_t::MT_MISC10
 		27,						// doomednum
 		S_ZTREESWAMP172_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		120 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC11
+	{							// mobjtype_t::MT_MISC11
 		28,						// doomednum
 		S_ZSTUMPBURNED1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		12 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC12
+	{							// mobjtype_t::MT_MISC12
 		29,						// doomednum
 		S_ZSTUMPBARE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		12 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC13
+	{							// mobjtype_t::MT_MISC13
 		37,						// doomednum
 		S_ZSTUMPSWAMP1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC14
+	{							// mobjtype_t::MT_MISC14
 		38,						// doomednum
 		S_ZSTUMPSWAMP2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC15
+	{							// mobjtype_t::MT_MISC15
 		39,						// doomednum
 		S_ZSHROOMLARGE1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC16
+	{							// mobjtype_t::MT_MISC16
 		40,						// doomednum
 		S_ZSHROOMLARGE2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC17
+	{							// mobjtype_t::MT_MISC17
 		41,						// doomednum
 		S_ZSHROOMLARGE3_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC18
+	{							// mobjtype_t::MT_MISC18
 		42,						// doomednum
 		S_ZSHROOMSMALL1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC19
+	{							// mobjtype_t::MT_MISC19
 		44,						// doomednum
 		S_ZSHROOMSMALL2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC20
+	{							// mobjtype_t::MT_MISC20
 		45,						// doomednum
 		S_ZSHROOMSMALL3_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC21
+	{							// mobjtype_t::MT_MISC21
 		46,						// doomednum
 		S_ZSHROOMSMALL4_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC22
+	{							// mobjtype_t::MT_MISC22
 		47,						// doomednum
 		S_ZSHROOMSMALL5_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC23
+	{							// mobjtype_t::MT_MISC23
 		48,						// doomednum
 		S_ZSTALAGMITEPILLAR1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		138 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC24
+	{							// mobjtype_t::MT_MISC24
 		49,						// doomednum
 		S_ZSTALAGMITELARGE1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		48 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC25
+	{							// mobjtype_t::MT_MISC25
 		50,						// doomednum
 		S_ZSTALAGMITEMEDIUM1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		6 * FRACUNIT,				// radius
 		40 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC26
+	{							// mobjtype_t::MT_MISC26
 		51,						// doomednum
 		S_ZSTALAGMITESMALL1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		36 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC27
+	{							// mobjtype_t::MT_MISC27
 		52,						// doomednum
 		S_ZSTALACTITELARGE1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		66 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC28
+	{							// mobjtype_t::MT_MISC28
 		56,						// doomednum
 		S_ZSTALACTITEMEDIUM1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		6 * FRACUNIT,				// radius
 		50 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC29
+	{							// mobjtype_t::MT_MISC29
 		57,						// doomednum
 		S_ZSTALACTITESMALL1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		40 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC30
+	{							// mobjtype_t::MT_MISC30
 		58,						// doomednum
 		S_ZMOSSCEILING1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPAWNCEILING | MF_NOGRAVITY,	// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC31
+	{							// mobjtype_t::MT_MISC31
 		59,						// doomednum
 		S_ZMOSSCEILING2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		24 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPAWNCEILING | MF_NOGRAVITY,	// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC32
+	{							// mobjtype_t::MT_MISC32
 		60,						// doomednum
 		S_ZSWAMPVINE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		52 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC33
+	{							// mobjtype_t::MT_MISC33
 		61,						// doomednum
 		S_ZCORPSEKABOB1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		92 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC34
+	{							// mobjtype_t::MT_MISC34
 		62,						// doomednum
 		S_ZCORPSESLEEPING1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC35
+	{							// mobjtype_t::MT_MISC35
 		63,						// doomednum
 		S_ZTOMBSTONERIP1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		46 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC36
+	{							// mobjtype_t::MT_MISC36
 		64,						// doomednum
 		S_ZTOMBSTONESHANE1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		46 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC37
+	{							// mobjtype_t::MT_MISC37
 		65,						// doomednum
 		S_ZTOMBSTONEBIGCROSS1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		46 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC38
+	{							// mobjtype_t::MT_MISC38
 		66,						// doomednum
 		S_ZTOMBSTONEBRIANR1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		52 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC39
+	{							// mobjtype_t::MT_MISC39
 		67,						// doomednum
 		S_ZTOMBSTONECROSSCIRCLE1, // spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		52 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC40
+	{							// mobjtype_t::MT_MISC40
 		68,						// doomednum
 		S_ZTOMBSTONESMALLCROSS1,	// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		46 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC41
+	{							// mobjtype_t::MT_MISC41
 		69,						// doomednum
 		S_ZTOMBSTONEBRIANP1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		46 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC42
+	{							// mobjtype_t::MT_MISC42
 		71,						// doomednum
 		S_CORPSEHANGING_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		6 * FRACUNIT,				// radius
 		75 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC43
+	{							// mobjtype_t::MT_MISC43
 		72,						// doomednum
 		S_ZSTATUEGARGOYLEGREENTALL_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		108 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC44
+	{							// mobjtype_t::MT_MISC44
 		73,						// doomednum
 		S_ZSTATUEGARGOYLEBLUETALL_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		108 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC45
+	{							// mobjtype_t::MT_MISC45
 		74,						// doomednum
 		S_ZSTATUEGARGOYLEGREENSHORT_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		62 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC46
+	{							// mobjtype_t::MT_MISC46
 		76,						// doomednum
 		S_ZSTATUEGARGOYLEBLUESHORT_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		62 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC47
+	{							// mobjtype_t::MT_MISC47
 		8044,						// doomednum
 		S_ZSTATUEGARGOYLESTRIPETALL_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		108 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC48
+	{							// mobjtype_t::MT_MISC48
 		8045,						// doomednum
 		S_ZSTATUEGARGOYLEDARKREDTALL_1,	// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		108 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC49
+	{							// mobjtype_t::MT_MISC49
 		8046,						// doomednum
 		S_ZSTATUEGARGOYLEREDTALL_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		108 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC50
+	{							// mobjtype_t::MT_MISC50
 		8047,						// doomednum
 		S_ZSTATUEGARGOYLETANTALL_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		108 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC51
+	{							// mobjtype_t::MT_MISC51
 		8048,						// doomednum
 		S_ZSTATUEGARGOYLERUSTTALL_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		108 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC52
+	{							// mobjtype_t::MT_MISC52
 		8049,						// doomednum
 		S_ZSTATUEGARGOYLEDARKREDSHORT_1,	// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		62 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC53
+	{							// mobjtype_t::MT_MISC53
 		8050,						// doomednum
 		S_ZSTATUEGARGOYLEREDSHORT_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		62 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC54
+	{							// mobjtype_t::MT_MISC54
 		8051,						// doomednum
 		S_ZSTATUEGARGOYLETANSHORT_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		62 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC55
+	{							// mobjtype_t::MT_MISC55
 		8052,						// doomednum
 		S_ZSTATUEGARGOYLERUSTSHORT_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		14 * FRACUNIT,				// radius
 		62 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC56
+	{							// mobjtype_t::MT_MISC56
 		77,						// doomednum
 		S_ZBANNERTATTERED_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		120 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC57
+	{							// mobjtype_t::MT_MISC57
 		78,						// doomednum
 		S_ZTREELARGE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZTREELARGE1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		180 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC58
+	{							// mobjtype_t::MT_MISC58
 		79,						// doomednum
 		S_ZTREELARGE2,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZTREELARGE2,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		180 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC59
+	{							// mobjtype_t::MT_MISC59
 		80,						// doomednum
 		S_ZTREEGNARLED1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		22 * FRACUNIT,				// radius
 		100 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC60
+	{							// mobjtype_t::MT_MISC60
 		87,						// doomednum
 		S_ZTREEGNARLED2,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		22 * FRACUNIT,				// radius
 		100 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC61
+	{							// mobjtype_t::MT_MISC61
 		88,						// doomednum
 		S_ZLOG,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		25 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC62
+	{							// mobjtype_t::MT_MISC62
 		89,						// doomednum
 		S_ZSTALACTITEICELARGE,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		66 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC63
+	{							// mobjtype_t::MT_MISC63
 		90,						// doomednum
 		S_ZSTALACTITEICEMEDIUM,	// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		50 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC64
+	{							// mobjtype_t::MT_MISC64
 		91,						// doomednum
 		S_ZSTALACTITEICESMALL,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC65
+	{							// mobjtype_t::MT_MISC65
 		92,						// doomednum
 		S_ZSTALACTITEICETINY,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC66
+	{							// mobjtype_t::MT_MISC66
 		93,						// doomednum
 		S_ZSTALAGMITEICELARGE,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		66 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC67
+	{							// mobjtype_t::MT_MISC67
 		94,						// doomednum
 		S_ZSTALAGMITEICEMEDIUM,	// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		50 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC68
+	{							// mobjtype_t::MT_MISC68
 		95,						// doomednum
 		S_ZSTALAGMITEICESMALL,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC69
+	{							// mobjtype_t::MT_MISC69
 		96,						// doomednum
 		S_ZSTALAGMITEICETINY,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC70
+	{							// mobjtype_t::MT_MISC70
 		97,						// doomednum
 		S_ZROCKBROWN1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		17 * FRACUNIT,				// radius
 		72 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC71
+	{							// mobjtype_t::MT_MISC71
 		98,						// doomednum
 		S_ZROCKBROWN2,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		50 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC72
+	{							// mobjtype_t::MT_MISC72
 		99,						// doomednum
 		S_ZROCKBLACK,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		40 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC73
+	{							// mobjtype_t::MT_MISC73
 		100,						// doomednum
 		S_ZRUBBLE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC74
+	{							// mobjtype_t::MT_MISC74
 		101,						// doomednum
 		S_ZRUBBLE2,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC75
+	{							// mobjtype_t::MT_MISC75
 		102,						// doomednum
 		S_ZRUBBLE3,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC76
+	{							// mobjtype_t::MT_MISC76
 		103,						// doomednum
 		S_ZVASEPILLAR,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		12 * FRACUNIT,				// radius
 		54 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_POTTERY1
+	{							// mobjtype_t::MT_POTTERY1
 		104,						// doomednum
 		S_ZPOTTERY1,				// spawnstate
 		15,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZPOTTERY_EXPLODE,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD | MF_DROPOFF, // flags
 		MF2_SLIDE | MF2_PUSHABLE | MF2_TELESTOMP | MF2_PASSMOBJ	// flags2
 		},
 
-	{							// MT_POTTERY2
+	{							// mobjtype_t::MT_POTTERY2
 		105,						// doomednum
 		S_ZPOTTERY2,				// spawnstate
 		15,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZPOTTERY_EXPLODE,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		25 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD | MF_DROPOFF, // flags
 		MF2_SLIDE | MF2_PUSHABLE | MF2_TELESTOMP | MF2_PASSMOBJ	// flags2
 		},
 
-	{							// MT_POTTERY3
+	{							// mobjtype_t::MT_POTTERY3
 		106,						// doomednum
 		S_ZPOTTERY3,				// spawnstate
 		15,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZPOTTERY_EXPLODE,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		25 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD | MF_DROPOFF, // flags
 		MF2_SLIDE | MF2_PUSHABLE | MF2_TELESTOMP | MF2_PASSMOBJ	// flags2
 		},
 
-	{							// MT_POTTERYBIT1
+	{							// mobjtype_t::MT_POTTERYBIT1
 		-1,						// doomednum
 		S_POTTERYBIT_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_POTTERYBIT_EX0,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE,				// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_MISC77
+	{							// mobjtype_t::MT_MISC77
 		108,						// doomednum
 		S_ZCORPSELYNCHED1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		11 * FRACUNIT,				// radius
 		95 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ZLYNCHED_NOHEART
+	{							// mobjtype_t::MT_ZLYNCHED_NOHEART
 		109,						// doomednum
 		S_ZCORPSELYNCHED2,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		100 * FRACUNIT,			// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MISC78
+	{							// mobjtype_t::MT_MISC78
 		110,						// doomednum
 		S_ZCORPSESITTING,			// spawnstate
 		30,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZCORPSESITTING_X,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		35 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD,		// flags
 		0							// flags2
 		},
 
-	{							// MT_CORPSEBIT
+	{							// mobjtype_t::MT_CORPSEBIT
 		-1,						// doomednum
 		S_CORPSEBIT_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		MF2_TELESTOMP				// flags2
 		},
 
-	{							// MT_CORPSEBLOODDRIP
+	{							// mobjtype_t::MT_CORPSEBLOODDRIP
 		-1,						// doomednum
 		S_CORPSEBLOODDRIP,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_CORPSEBLOODDRIP_X1,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DRIP,					// deathsound
+		sfxenum_t::SFX_DRIP,					// deathsound
 		0,							// speed
 		FRACUNIT,					// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE,				// flags
 		MF2_LOGRAV					// flags2
 		},
 
-	{							// MT_BLOODPOOL
+	{							// mobjtype_t::MT_BLOODPOOL
 		111,						// doomednum
 		S_BLOODPOOL,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC79
+	{							// mobjtype_t::MT_MISC79
 		119,						// doomednum
 		S_ZCANDLE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC80
+	{							// mobjtype_t::MT_MISC80
 		113,						// doomednum
 		S_ZLEAFSPAWNER,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOSECTOR,		// flags
 		MF2_DONTDRAW				// flags2
 		},
 
-	{							// MT_LEAF1
+	{							// mobjtype_t::MT_LEAF1
 		-1,						// doomednum
 		S_LEAF1_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_LEAF_X1,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE,		// flags
 		MF2_NOTELEPORT | MF2_LOGRAV		// flags2
 		},
 
-	{							// MT_LEAF2
+	{							// mobjtype_t::MT_LEAF2
 		-1,						// doomednum
 		S_LEAF2_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_LEAF_X1,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE,		// flags
 		MF2_NOTELEPORT | MF2_LOGRAV		// flags2
 		},
 
-	{							// MT_ZTWINEDTORCH
+	{							// mobjtype_t::MT_ZTWINEDTORCH
 		116,						// doomednum
 		S_ZTWINEDTORCH_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ZTWINEDTORCH_UNLIT
+	{							// mobjtype_t::MT_ZTWINEDTORCH_UNLIT
 		117,						// doomednum
 		S_ZTWINEDTORCH_UNLIT,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		10 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_BRIDGE
+	{							// mobjtype_t::MT_BRIDGE
 		118,						// doomednum
 		S_BRIDGE1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		32 * FRACUNIT,				// radius
 		2 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_NOGRAVITY,	// flags
 		MF2_DONTDRAW				// flags2
 		},
 
-	{							// MT_BRIDGEBALL
+	{							// mobjtype_t::MT_BRIDGEBALL
 		-1,						// doomednum
 		S_BBALL1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_ZWALLTORCH
+	{							// mobjtype_t::MT_ZWALLTORCH
 		54,						// doomednum
 		S_ZWALLTORCH1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ZWALLTORCH_UNLIT
+	{							// mobjtype_t::MT_ZWALLTORCH_UNLIT
 		55,						// doomednum
 		S_ZWALLTORCH_U,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ZBARREL
+	{							// mobjtype_t::MT_ZBARREL
 		8100,						// doomednum
 		S_ZBARREL1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ZSHRUB1
+	{							// mobjtype_t::MT_ZSHRUB1
 		8101,						// doomednum
 		S_ZSHRUB1,					// spawnstate
 		20,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_ZSHRUB1_X1,				// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZSHRUB1_DIE,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_TREE_EXPLODE,			// deathsound
+		sfxenum_t::SFX_TREE_EXPLODE,			// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		24 * FRACUNIT,				// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ZSHRUB2
+	{							// mobjtype_t::MT_ZSHRUB2
 		8102,						// doomednum
 		S_ZSHRUB2,					// spawnstate
 		10,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_ZSHRUB2_X1,				// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZSHRUB2_DIE,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_TREE_EXPLODE,			// deathsound
+		sfxenum_t::SFX_TREE_EXPLODE,			// deathsound
 		0,							// speed
 		16 * FRACUNIT,				// radius
 		40 * FRACUNIT,				// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ZBUCKET
+	{							// mobjtype_t::MT_ZBUCKET
 		8103,						// doomednum
 		S_ZBUCKET1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		72 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SPAWNCEILING | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ZPOISONSHROOM
+	{							// mobjtype_t::MT_ZPOISONSHROOM
 		8104,						// doomednum
 		S_ZPOISONSHROOM1,			// spawnstate
 		30,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_ZPOISONSHROOM_P1,		// painstate
 		255,						// painchance
-		SFX_POISONSHROOM_PAIN,		// painsound
+		sfxenum_t::SFX_POISONSHROOM_PAIN,		// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZPOISONSHROOM_X1,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_POISONSHROOM_DEATH,	// deathsound
+		sfxenum_t::SFX_POISONSHROOM_DEATH,	// deathsound
 		0,							// speed
 		6 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SHOOTABLE | MF_SOLID | MF_NOBLOOD,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ZFIREBULL
+	{							// mobjtype_t::MT_ZFIREBULL
 		8042,						// doomednum
 		S_ZFIREBULL1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		80 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ZFIREBULL_UNLIT
+	{							// mobjtype_t::MT_ZFIREBULL_UNLIT
 		8043,						// doomednum
 		S_ZFIREBULL_U,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		80 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_FIRETHING
+	{							// mobjtype_t::MT_FIRETHING
 		8060,						// doomednum
 		S_ZFIRETHING1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		10 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_BRASSTORCH
+	{							// mobjtype_t::MT_BRASSTORCH
 		8061,						// doomednum
 		S_ZBRASSTORCH1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		6 * FRACUNIT,				// radius
 		35 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ZSUITOFARMOR
+	{							// mobjtype_t::MT_ZSUITOFARMOR
 		8064,						// doomednum
 		S_ZSUITOFARMOR,			// spawnstate
 		60,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZSUITOFARMOR_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_SUITOFARMOR_BREAK,		// deathsound
+		sfxenum_t::SFX_SUITOFARMOR_BREAK,		// deathsound
 		0,							// speed
 		16 * FRACUNIT,				// radius
 		72 * FRACUNIT,				// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ZARMORCHUNK
+	{							// mobjtype_t::MT_ZARMORCHUNK
 		-1,						// doomednum
 		S_ZARMORCHUNK1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		0,							// flags
 		0							// flags2
 		},
 
-	{							// MT_ZBELL
+	{							// mobjtype_t::MT_ZBELL
 		8065,						// doomednum
 		S_ZBELL,					// spawnstate
 		5,							// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZBELL_X1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_BELLRING,				// deathsound
+		sfxenum_t::SFX_BELLRING,				// deathsound
 		0,							// speed
 		56 * FRACUNIT,				// radius
 		120 * FRACUNIT,			// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD | MF_NOGRAVITY | MF_SPAWNCEILING,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ZBLUE_CANDLE
+	{							// mobjtype_t::MT_ZBLUE_CANDLE
 		8066,						// doomednum
 		S_ZBLUE_CANDLE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_ZIRON_MAIDEN
+	{							// mobjtype_t::MT_ZIRON_MAIDEN
 		8067,						// doomednum
 		S_ZIRON_MAIDEN,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		12 * FRACUNIT,				// radius
 		60 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ZXMAS_TREE
+	{							// mobjtype_t::MT_ZXMAS_TREE
 		8068,						// doomednum
 		S_ZXMAS_TREE,				// spawnstate
 		20,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_ZXMAS_TREE_X1,			// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ZXMAS_TREE_DIE,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_TREE_EXPLODE,			// deathsound
+		sfxenum_t::SFX_TREE_EXPLODE,			// deathsound
 		0,							// speed
 		11 * FRACUNIT,				// radius
 		130 * FRACUNIT,			// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_NOBLOOD,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCAULDRON
+	{							// mobjtype_t::MT_ZCAULDRON
 		8069,						// doomednum
 		S_ZCAULDRON1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		12 * FRACUNIT,				// radius
 		26 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCAULDRON_UNLIT
+	{							// mobjtype_t::MT_ZCAULDRON_UNLIT
 		8070,						// doomednum
 		S_ZCAULDRON_U,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		12 * FRACUNIT,				// radius
 		26 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID,					// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCHAINBIT32
+	{							// mobjtype_t::MT_ZCHAINBIT32
 		8071,						// doomednum
 		S_ZCHAINBIT32,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SPAWNCEILING,	// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCHAINBIT64
+	{							// mobjtype_t::MT_ZCHAINBIT64
 		8072,						// doomednum
 		S_ZCHAINBIT64,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SPAWNCEILING,	// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCHAINEND_HEART
+	{							// mobjtype_t::MT_ZCHAINEND_HEART
 		8073,						// doomednum
 		S_ZCHAINEND_HEART,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SPAWNCEILING,	// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCHAINEND_HOOK1
+	{							// mobjtype_t::MT_ZCHAINEND_HOOK1
 		8074,						// doomednum
 		S_ZCHAINEND_HOOK1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SPAWNCEILING,	// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCHAINEND_HOOK2
+	{							// mobjtype_t::MT_ZCHAINEND_HOOK2
 		8075,						// doomednum
 		S_ZCHAINEND_HOOK2,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SPAWNCEILING,	// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCHAINEND_SPIKE
+	{							// mobjtype_t::MT_ZCHAINEND_SPIKE
 		8076,						// doomednum
 		S_ZCHAINEND_SPIKE,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SPAWNCEILING,	// flags
 		0							// flags2
 		},
 
-	{							// MT_ZCHAINEND_SKULL
+	{							// mobjtype_t::MT_ZCHAINEND_SKULL
 		8077,						// doomednum
 		S_ZCHAINEND_SKULL,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		32 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SPAWNCEILING,	// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT1
+	{							// mobjtype_t::MT_TABLE_SHIT1
 		8500,						// doomednum
 		S_TABLE_SHIT1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT2
+	{							// mobjtype_t::MT_TABLE_SHIT2
 		8501,						// doomednum
 		S_TABLE_SHIT2,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT3
+	{							// mobjtype_t::MT_TABLE_SHIT3
 		8502,						// doomednum
 		S_TABLE_SHIT3,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT4
+	{							// mobjtype_t::MT_TABLE_SHIT4
 		8503,						// doomednum
 		S_TABLE_SHIT4,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT5
+	{							// mobjtype_t::MT_TABLE_SHIT5
 		8504,						// doomednum
 		S_TABLE_SHIT5,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT6
+	{							// mobjtype_t::MT_TABLE_SHIT6
 		8505,						// doomednum
 		S_TABLE_SHIT6,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT7
+	{							// mobjtype_t::MT_TABLE_SHIT7
 		8506,						// doomednum
 		S_TABLE_SHIT7,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT8
+	{							// mobjtype_t::MT_TABLE_SHIT8
 		8507,						// doomednum
 		S_TABLE_SHIT8,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT9
+	{							// mobjtype_t::MT_TABLE_SHIT9
 		8508,						// doomednum
 		S_TABLE_SHIT9,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TABLE_SHIT10
+	{							// mobjtype_t::MT_TABLE_SHIT10
 		8509,						// doomednum
 		S_TABLE_SHIT10,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_TFOG
+	{							// mobjtype_t::MT_TFOG
 		-1,						// doomednum
 		S_TFOG1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_MISC81
+	{							// mobjtype_t::MT_MISC81
 		140,						// doomednum
 		S_TELESMOKE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_TELEPORTMAN
+	{							// mobjtype_t::MT_TELEPORTMAN
 		14,						// doomednum
 		S_NULL,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOSECTOR,		// flags
 		0							// flags2
 		},
 
-	{							// MT_PUNCHPUFF
+	{							// mobjtype_t::MT_PUNCHPUFF
 		-1,						// doomednum
 		S_PUNCHPUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_FIGHTER_PUNCH_HITTHING,		// seesound
+		sfxenum_t::SFX_FIGHTER_PUNCH_HITTHING,		// seesound
 		8,							// reactiontime
-		SFX_FIGHTER_PUNCH_HITWALL, // attacksound
+		sfxenum_t::SFX_FIGHTER_PUNCH_HITWALL, // attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_FW_AXE
+	{							// mobjtype_t::MT_FW_AXE
 		8010,						// doomednum
 		S_AXE,						// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_AXEPUFF
+	{							// mobjtype_t::MT_AXEPUFF
 		-1,						// doomednum
 		S_HAMMERPUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_FIGHTER_AXE_HITTHING, // seesound
+		sfxenum_t::SFX_FIGHTER_AXE_HITTHING, // seesound
 		8,							// reactiontime
-		SFX_FIGHTER_HAMMER_HITWALL,		// attacksound
+		sfxenum_t::SFX_FIGHTER_HAMMER_HITWALL,		// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_AXEPUFF_GLOW
+	{							// mobjtype_t::MT_AXEPUFF_GLOW
 		-1,						// doomednum
 		S_AXEPUFF_GLOW1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_FIGHTER_AXE_HITTHING, // seesound
+		sfxenum_t::SFX_FIGHTER_AXE_HITTHING, // seesound
 		8,							// reactiontime
-		SFX_FIGHTER_HAMMER_HITWALL,		// attacksound
+		sfxenum_t::SFX_FIGHTER_HAMMER_HITWALL,		// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_AXEBLOOD
+	{							// mobjtype_t::MT_AXEBLOOD
 		-1,						// doomednum
 		S_AXEBLOOD1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_AXEBLOOD6,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_DROPOFF, // flags
 		MF2_NOTELEPORT | MF2_CANNOTPUSH	// flags2
 		},
 
-	{							// MT_FW_HAMMER
+	{							// mobjtype_t::MT_FW_HAMMER
 		123,						// doomednum
 		S_HAMM,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_HAMMER_MISSILE
+	{							// mobjtype_t::MT_HAMMER_MISSILE
 		-1,						// doomednum
 		S_HAMMER_MISSILE_1,		// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_HAMMER_MISSILE_X1,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_FIGHTER_HAMMER_EXPLODE,		// deathsound
+		sfxenum_t::SFX_FIGHTER_HAMMER_EXPLODE,		// deathsound
 		25 * FRACUNIT,				// speed
 		14 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		10,						// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS | MF2_FIREDAMAGE // flags2
 		},
 
-	{							// MT_HAMMERPUFF
+	{							// mobjtype_t::MT_HAMMERPUFF
 		-1,						// doomednum
 		S_HAMMERPUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_FIGHTER_HAMMER_HITTHING,		// seesound
+		sfxenum_t::SFX_FIGHTER_HAMMER_HITTHING,		// seesound
 		8,							// reactiontime
-		SFX_FIGHTER_HAMMER_HITWALL,		// attacksound
+		sfxenum_t::SFX_FIGHTER_HAMMER_HITWALL,		// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_FSWORD_MISSILE
+	{							// mobjtype_t::MT_FSWORD_MISSILE
 		-1,						// doomednum
 		S_FSWORD_MISSILE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FSWORD_MISSILE_X1,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_FIGHTER_SWORD_EXPLODE, // deathsound
+		sfxenum_t::SFX_FIGHTER_SWORD_EXPLODE, // deathsound
 		30 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		8,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_NOBLOCKMAP | MF_NOGRAVITY | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS	// flags2
 		},
 
-	{							// MT_FSWORD_FLAME
+	{							// mobjtype_t::MT_FSWORD_FLAME
 		-1,						// doomednum
 		S_FSWORD_FLAME1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_CW_SERPSTAFF
+	{							// mobjtype_t::MT_CW_SERPSTAFF
 		10,						// doomednum
 		S_CSTAFF,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_CSTAFF_MISSILE
+	{							// mobjtype_t::MT_CSTAFF_MISSILE
 		-1,						// doomednum
 		S_CSTAFF_MISSILE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_CSTAFF_MISSILE_X1,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_CLERIC_CSTAFF_EXPLODE, // deathsound
+		sfxenum_t::SFX_CLERIC_CSTAFF_EXPLODE, // deathsound
 		22 * FRACUNIT,				// speed
 		12 * FRACUNIT,				// radius
 		10 * FRACUNIT,				// height
 		100,						// mass
 		5,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS	// flags2
 		},
 
-	{							// MT_CSTAFFPUFF
+	{							// mobjtype_t::MT_CSTAFFPUFF
 		-1,						// doomednum
 		S_CSTAFFPUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_CLERIC_CSTAFF_HITTHING,		// seesound
+		sfxenum_t::SFX_CLERIC_CSTAFF_HITTHING,		// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_CW_FLAME
+	{							// mobjtype_t::MT_CW_FLAME
 		8009,						// doomednum
 		S_CFLAME1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_CFLAMEFLOOR
+	{							// mobjtype_t::MT_CFLAMEFLOOR
 		-1,						// doomednum
 		S_CFLAMEFLOOR1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_FLAMEPUFF
+	{							// mobjtype_t::MT_FLAMEPUFF
 		-1,						// doomednum
 		S_FLAMEPUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_CLERIC_FLAME_EXPLODE, // seesound
+		sfxenum_t::SFX_CLERIC_FLAME_EXPLODE, // seesound
 		8,							// reactiontime
-		SFX_CLERIC_FLAME_EXPLODE, // attacksound
+		sfxenum_t::SFX_CLERIC_FLAME_EXPLODE, // attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		FRACUNIT,					// radius
 		FRACUNIT,					// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_FLAMEPUFF2
+	{							// mobjtype_t::MT_FLAMEPUFF2
 		-1,						// doomednum
 		S_FLAMEPUFF2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_CLERIC_FLAME_EXPLODE, // seesound
+		sfxenum_t::SFX_CLERIC_FLAME_EXPLODE, // seesound
 		8,							// reactiontime
-		SFX_CLERIC_FLAME_EXPLODE, // attacksound
+		sfxenum_t::SFX_CLERIC_FLAME_EXPLODE, // attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		FRACUNIT,					// radius
 		FRACUNIT,					// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_CIRCLEFLAME
+	{							// mobjtype_t::MT_CIRCLEFLAME
 		-1,						// doomednum
 		S_CIRCLE_FLAME1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_CIRCLE_FLAME_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_CLERIC_FLAME_CIRCLE,	// deathsound
+		sfxenum_t::SFX_CLERIC_FLAME_CIRCLE,	// deathsound
 		0,							// speed
 		6 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		2,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE	// flags2
 		},
 
-	{							// MT_CFLAME_MISSILE
+	{							// mobjtype_t::MT_CFLAME_MISSILE
 		-1,						// doomednum
 		S_CFLAME_MISSILE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_CFLAME_MISSILE_X,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		200 * FRACUNIT,			// speed
 		14 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		8,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS | MF2_DONTDRAW | MF2_FIREDAMAGE	// flags2
 		},
 
-	{							// MT_HOLY_FX
+	{							// mobjtype_t::MT_HOLY_FX
 		-1,						// doomednum
 		S_HOLY_FX1,				// spawnstate
 		105,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_HOLY_FX_X1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_SPIRIT_DIE,			// deathsound
+		sfxenum_t::SFX_SPIRIT_DIE,			// deathsound
 		12 * FRACUNIT,				// speed
 		10 * FRACUNIT,				// radius
 		6 * FRACUNIT,				// height
 		100,						// mass
 		3,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE,		// flags
 		MF2_NOTELEPORT | MF2_SEEKERMISSILE | MF2_RIP | MF2_IMPACT | MF2_PCROSS		// flags2
 		},
 
-	{							// MT_HOLY_TAIL
+	{							// mobjtype_t::MT_HOLY_TAIL
 		-1,						// doomednum
 		S_HOLY_TAIL1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		FRACUNIT,					// radius
 		FRACUNIT,					// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_NOCLIP | MF_ALTSHADOW,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_HOLY_PUFF
+	{							// mobjtype_t::MT_HOLY_PUFF
 		-1,						// doomednum
 		S_HOLY_PUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_HOLY_MISSILE
+	{							// mobjtype_t::MT_HOLY_MISSILE
 		-1,						// doomednum
 		S_HOLY_MISSILE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_HOLY_MISSILE_X,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		30 * FRACUNIT,				// speed
 		15 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		4,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_HOLY_MISSILE_PUFF
+	{							// mobjtype_t::MT_HOLY_MISSILE_PUFF
 		-1,						// doomednum
 		S_HOLY_MISSILE_P1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_MWANDPUFF
+	{							// mobjtype_t::MT_MWANDPUFF
 		-1,						// doomednum
 		S_MWANDPUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		MF2_NOTELEPORT | MF2_CANNOTPUSH | MF2_NODMGTHRUST // flags2
 		},
 
-	{							// MT_MWANDSMOKE
+	{							// mobjtype_t::MT_MWANDSMOKE
 		-1,						// doomednum
 		S_MWANDSMOKE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		MF2_NOTELEPORT | MF2_CANNOTPUSH | MF2_NODMGTHRUST // flags2
 		},
 
-	{							// MT_MWAND_MISSILE
+	{							// mobjtype_t::MT_MWAND_MISSILE
 		-1,						// doomednum
 		S_MWAND_MISSILE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_MWANDPUFF1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		184 * FRACUNIT,			// speed
 		12 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		2,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_RIP | MF2_IMPACT | MF2_PCROSS | MF2_NODMGTHRUST | MF2_CANNOTPUSH		// flags2
 		},
 
-	{							// MT_MW_LIGHTNING
+	{							// mobjtype_t::MT_MW_LIGHTNING
 		8040,						// doomednum
 		S_MW_LIGHTNING1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_LIGHTNING_CEILING
+	{							// mobjtype_t::MT_LIGHTNING_CEILING
 		-1,						// doomednum
 		S_LIGHTNING_CEILING1,		// spawnstate
 		144,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_LIGHTNING_C_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		25 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		40 * FRACUNIT,				// height
 		100,						// mass
 		8,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_MISSILE | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS	// flags2
 		},
 
-	{							// MT_LIGHTNING_FLOOR
+	{							// mobjtype_t::MT_LIGHTNING_FLOOR
 		-1,						// doomednum
 		S_LIGHTNING_FLOOR1,		// spawnstate
 		144,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_LIGHTNING_F_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		25 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		40 * FRACUNIT,				// height
 		100,						// mass
 		8,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_MISSILE | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS	// flags2
 		},
 
-	{							// MT_LIGHTNING_ZAP
+	{							// mobjtype_t::MT_LIGHTNING_ZAP
 		-1,						// doomednum
 		S_LIGHTNING_ZAP1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_LIGHTNING_ZAP_X8,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		35 * FRACUNIT,				// height
 		100,						// mass
 		2,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_MISSILE | MF_DROPOFF,	// flags
 		0							// flags2
 		},
 
-	{							// MT_MSTAFF_FX
+	{							// mobjtype_t::MT_MSTAFF_FX
 		-1,						// doomednum
 		S_MSTAFF_FX1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_MSTAFF_FX_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_MAGE_STAFF_EXPLODE,	// deathsound
+		sfxenum_t::SFX_MAGE_STAFF_EXPLODE,	// deathsound
 		20 * FRACUNIT,				// speed
 		16 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		6,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE | MF2_RIP | MF2_IMPACT | MF2_PCROSS		// flags2
 		},
 
-	{							// MT_MSTAFF_FX2
+	{							// mobjtype_t::MT_MSTAFF_FX2
 		-1,						// doomednum
 		S_MSTAFF_FX2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_MSTAFF_FX2_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_MAGE_STAFF_EXPLODE,	// deathsound
+		sfxenum_t::SFX_MAGE_STAFF_EXPLODE,	// deathsound
 		17 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		4,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE | MF2_IMPACT | MF2_PCROSS | MF2_SEEKERMISSILE		// flags2
 		},
 
-	{							// MT_FW_SWORD1
+	{							// mobjtype_t::MT_FW_SWORD1
 		12,						// doomednum
 		S_FSWORD1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_FW_SWORD2
+	{							// mobjtype_t::MT_FW_SWORD2
 		13,						// doomednum
 		S_FSWORD2,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_FW_SWORD3
+	{							// mobjtype_t::MT_FW_SWORD3
 		16,						// doomednum
 		S_FSWORD3,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_CW_HOLY1
+	{							// mobjtype_t::MT_CW_HOLY1
 		18,						// doomednum
 		S_CHOLY1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_CW_HOLY2
+	{							// mobjtype_t::MT_CW_HOLY2
 		19,						// doomednum
 		S_CHOLY2,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_CW_HOLY3
+	{							// mobjtype_t::MT_CW_HOLY3
 		20,						// doomednum
 		S_CHOLY3,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_MW_STAFF1
+	{							// mobjtype_t::MT_MW_STAFF1
 		21,						// doomednum
 		S_MSTAFF1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_MW_STAFF2
+	{							// mobjtype_t::MT_MW_STAFF2
 		22,						// doomednum
 		S_MSTAFF2,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_MW_STAFF3
+	{							// mobjtype_t::MT_MW_STAFF3
 		23,						// doomednum
 		S_MSTAFF3,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_SNOUTPUFF
+	{							// mobjtype_t::MT_SNOUTPUFF
 		-1,						// doomednum
 		S_PUNCHPUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_MW_CONE
+	{							// mobjtype_t::MT_MW_CONE
 		53,						// doomednum
 		S_COS1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_SHARDFX1
+	{							// mobjtype_t::MT_SHARDFX1
 		-1,						// doomednum
 		S_SHARDFX1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SHARDFXE1_1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_MAGE_SHARDS_EXPLODE,	// deathsound
+		sfxenum_t::SFX_MAGE_SHARDS_EXPLODE,	// deathsound
 		25 * FRACUNIT,				// speed
 		13 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		1,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS | MF2_ICEDAMAGE	// flags2
 		},
 
-	{							// MT_BLOOD
+	{							// mobjtype_t::MT_BLOOD
 		-1,						// doomednum
 		S_BLOOD1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		0							// flags2
 		},
 
-	{							// MT_BLOODSPLATTER
+	{							// mobjtype_t::MT_BLOODSPLATTER
 		-1,						// doomednum
 		S_BLOODSPLATTER1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_BLOODSPLATTERX,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_CANNOTPUSH	// flags2
 		},
 
-	{							// MT_GIBS
+	{							// mobjtype_t::MT_GIBS
 		-1,						// doomednum
 		S_GIBS1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_CORPSE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_PLAYER_FIGHTER
+	{							// mobjtype_t::MT_PLAYER_FIGHTER
 		-1,						// doomednum
 		S_FPLAY,					// spawnstate
 		100,						// spawnhealth
 		S_FPLAY_RUN1,				// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		0,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_FPLAY_PAIN,				// painstate
 		255,						// painchance
-		SFX_PLAYER_FIGHTER_PAIN,	// painsound
+		sfxenum_t::SFX_PLAYER_FIGHTER_PAIN,	// painsound
 		S_NULL,					// meleestate
 		S_FPLAY_ATK1,				// missilestate
 		S_NULL,					// crashstate
 		S_FPLAY_DIE1,				// deathstate
 		S_FPLAY_XDIE1,				// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		16 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_DROPOFF | MF_PICKUP | MF_NOTDMATCH,	// flags
 		MF2_WINDTHRUST | MF2_FLOORCLIP | MF2_SLIDE | MF2_PASSMOBJ | MF2_TELESTOMP | MF2_PUSHWALL	// flags2
 		},
 
-	{							// MT_BLOODYSKULL
+	{							// mobjtype_t::MT_BLOODYSKULL
 		-1,						// doomednum
 		S_BLOODYSKULL1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		4 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF,		// flags
 		MF2_LOGRAV | MF2_CANNOTPUSH		// flags2
 		},
 
-	{							// MT_PLAYER_SPEED
+	{							// mobjtype_t::MT_PLAYER_SPEED
 		-1,						// doomednum
 		S_PLAYER_SPEED1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_ALTSHADOW,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ICECHUNK
+	{							// mobjtype_t::MT_ICECHUNK
 		-1,						// doomednum
 		S_ICECHUNK1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF,		// flags
 		MF2_LOGRAV | MF2_CANNOTPUSH | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_PLAYER_CLERIC
+	{							// mobjtype_t::MT_PLAYER_CLERIC
 		-1,						// doomednum
 		S_CPLAY,					// spawnstate
 		100,						// spawnhealth
 		S_CPLAY_RUN1,				// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		0,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_CPLAY_PAIN,				// painstate
 		255,						// painchance
-		SFX_PLAYER_CLERIC_PAIN,	// painsound
+		sfxenum_t::SFX_PLAYER_CLERIC_PAIN,	// painsound
 		S_NULL,					// meleestate
 		S_CPLAY_ATK1,				// missilestate
 		S_NULL,					// crashstate
 		S_CPLAY_DIE1,				// deathstate
 		S_CPLAY_XDIE1,				// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		16 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_DROPOFF | MF_PICKUP | MF_NOTDMATCH,	// flags
 		MF2_WINDTHRUST | MF2_FLOORCLIP | MF2_SLIDE | MF2_PASSMOBJ | MF2_TELESTOMP | MF2_PUSHWALL	// flags2
 		},
 
-	{							// MT_PLAYER_MAGE
+	{							// mobjtype_t::MT_PLAYER_MAGE
 		-1,						// doomednum
 		S_MPLAY,					// spawnstate
 		100,						// spawnhealth
 		S_MPLAY_RUN1,				// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		0,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_MPLAY_PAIN,				// painstate
 		255,						// painchance
-		SFX_PLAYER_MAGE_PAIN,		// painsound
+		sfxenum_t::SFX_PLAYER_MAGE_PAIN,		// painsound
 		S_NULL,					// meleestate
 		S_MPLAY_ATK1,				// missilestate
 		S_NULL,					// crashstate
 		S_MPLAY_DIE1,				// deathstate
 		S_MPLAY_XDIE1,				// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		16 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_DROPOFF | MF_PICKUP | MF_NOTDMATCH,	// flags
 		MF2_WINDTHRUST | MF2_FLOORCLIP | MF2_SLIDE | MF2_PASSMOBJ | MF2_TELESTOMP | MF2_PUSHWALL	// flags2
 		},
 
-	{							// MT_PIGPLAYER
+	{							// mobjtype_t::MT_PIGPLAYER
 		-1,						// doomednum
 		S_PIGPLAY,					// spawnstate
 		100,						// spawnhealth
 		S_PIGPLAY_RUN1,			// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		0,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_PIGPLAY_PAIN,			// painstate
 		255,						// painchance
-		SFX_PIG_PAIN,				// painsound
+		sfxenum_t::SFX_PIG_PAIN,				// painsound
 		S_NULL,					// meleestate
 		S_PIGPLAY_ATK1,			// missilestate
 		S_NULL,					// crashstate
 		S_PIG_DIE1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_PIG_DEATH,				// deathsound
+		sfxenum_t::SFX_PIG_DEATH,				// deathsound
 		0,							// speed
 		16 * FRACUNIT,				// radius
 		24 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_DROPOFF | MF_NOTDMATCH,		// flags
 		MF2_WINDTHRUST | MF2_SLIDE | MF2_PASSMOBJ | MF2_FLOORCLIP | MF2_TELESTOMP | MF2_PUSHWALL	// flags2
 		},
 
-	{							// MT_PIG
+	{							// mobjtype_t::MT_PIG
 		-1,						// doomednum
 		S_PIG_LOOK1,				// spawnstate
 		25,						// spawnhealth
 		S_PIG_WALK1,				// seestate
-		SFX_PIG_ACTIVE1,			// seesound
+		sfxenum_t::SFX_PIG_ACTIVE1,			// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_PIG_PAIN,				// painstate
 		128,						// painchance
-		SFX_PIG_PAIN,				// painsound
+		sfxenum_t::SFX_PIG_PAIN,				// painsound
 		S_PIG_ATK1,				// meleestate
 		0,							// missilestate
 		S_NULL,					// crashstate
 		S_PIG_DIE1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_PIG_DEATH,				// deathsound
+		sfxenum_t::SFX_PIG_DEATH,				// deathsound
 		10,						// speed
 		12 * FRACUNIT,				// radius
 		22 * FRACUNIT,				// height
 		60,						// mass
 		0,							// damage
-		SFX_PIG_ACTIVE1,			// activesound
+		sfxenum_t::SFX_PIG_ACTIVE1,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_WINDTHRUST | MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_PUSHWALL | MF2_TELESTOMP		// flags2
 		},
 
-	{							// MT_CENTAUR
+	{							// mobjtype_t::MT_CENTAUR
 		107,						// doomednum
 		S_CENTAUR_LOOK1,			// spawnstate
 		200,						// spawnhealth
 		S_CENTAUR_WALK1,			// seestate
-		SFX_CENTAUR_SIGHT,			// seesound
+		sfxenum_t::SFX_CENTAUR_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_CENTAUR_ATTACK,		// attacksound
+		sfxenum_t::SFX_CENTAUR_ATTACK,		// attacksound
 		S_CENTAUR_PAIN1,			// painstate
 		135,						// painchance
-		SFX_CENTAUR_PAIN,			// painsound
+		sfxenum_t::SFX_CENTAUR_PAIN,			// painsound
 		S_CENTAUR_ATK1,			// meleestate
 		0,							// missilestate
 		S_NULL,					// crashstate
 		S_CENTAUR_DEATH1,			// deathstate
 		S_CENTAUR_DEATH_X1,		// xdeathstate
-		SFX_CENTAUR_DEATH,			// deathsound
+		sfxenum_t::SFX_CENTAUR_DEATH,			// deathsound
 		13,						// speed
 		20 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		120,						// mass
 		0,							// damage
-		SFX_CENTAUR_ACTIVE,		// activesound
+		sfxenum_t::SFX_CENTAUR_ACTIVE,		// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_PUSHWALL | MF2_MCROSS | MF2_TELESTOMP	// flags2
 		},
 
-	{							// MT_CENTAURLEADER
+	{							// mobjtype_t::MT_CENTAURLEADER
 		115,						// doomednum
 		S_CENTAUR_LOOK1,			// spawnstate
 		250,						// spawnhealth
 		S_CENTAUR_WALK1,			// seestate
-		SFX_CENTAUR_SIGHT,			// seesound
+		sfxenum_t::SFX_CENTAUR_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_CENTAUR_ATTACK,		// attacksound
+		sfxenum_t::SFX_CENTAUR_ATTACK,		// attacksound
 		S_CENTAUR_PAIN1,			// painstate
 		96,						// painchance
-		SFX_CENTAUR_PAIN,			// painsound
+		sfxenum_t::SFX_CENTAUR_PAIN,			// painsound
 		S_CENTAUR_ATK1,			// meleestate
 		S_CENTAUR_MISSILE1,		// missilestate
 		S_NULL,					// crashstate
 		S_CENTAUR_DEATH1,			// deathstate
 		S_CENTAUR_DEATH_X1,		// xdeathstate
-		SFX_CENTAUR_DEATH,			// deathsound
+		sfxenum_t::SFX_CENTAUR_DEATH,			// deathsound
 		10,						// speed
 		20 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		120,						// mass
 		0,							// damage
-		SFX_CENTAUR_ACTIVE,		// activesound
+		sfxenum_t::SFX_CENTAUR_ACTIVE,		// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_PUSHWALL | MF2_MCROSS | MF2_TELESTOMP	// flags2
 		},
 
-	{							// MT_CENTAUR_FX
+	{							// mobjtype_t::MT_CENTAUR_FX
 		-1,						// doomednum
 		S_CENTAUR_FX1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_CENTAUR_FX_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_CENTAUR_MISSILE_EXPLODE,		// deathsound
+		sfxenum_t::SFX_CENTAUR_MISSILE_EXPLODE,		// deathsound
 		20 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		4,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_NOBLOCKMAP | MF_NOGRAVITY | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS	// flags2
 		},
 
-	{							// MT_CENTAUR_SHIELD
+	{							// mobjtype_t::MT_CENTAUR_SHIELD
 		-1,						// doomednum
 		S_CENTAUR_SHIELD1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_CENTAUR_SHIELD_X1,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_DROPOFF | MF_CORPSE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_CENTAUR_SWORD
+	{							// mobjtype_t::MT_CENTAUR_SWORD
 		-1,						// doomednum
 		S_CENTAUR_SWORD1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_CENTAUR_SWORD_X1,		// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_DROPOFF | MF_CORPSE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_DEMON
+	{							// mobjtype_t::MT_DEMON
 		31,						// doomednum
 		S_DEMN_LOOK1,				// spawnstate
 		250,						// spawnhealth
 		S_DEMN_CHASE1,				// seestate
-		SFX_DEMON_SIGHT,			// seesound
+		sfxenum_t::SFX_DEMON_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_DEMON_ATTACK,			// attacksound
+		sfxenum_t::SFX_DEMON_ATTACK,			// attacksound
 		S_DEMN_PAIN1,				// painstate
 		50,						// painchance
-		SFX_DEMON_PAIN,			// painsound
+		sfxenum_t::SFX_DEMON_PAIN,			// painsound
 		S_DEMN_ATK1_1,				// meleestate
 		S_DEMN_ATK2_1,				// missilestate
 		S_NULL,					// crashstate
 		S_DEMN_DEATH1,				// deathstate
 		S_DEMN_XDEATH1,			// xdeathstate
-		SFX_DEMON_DEATH,			// deathsound
+		sfxenum_t::SFX_DEMON_DEATH,			// deathsound
 		13,						// speed
 		32 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		220,						// mass
 		0,							// damage
-		SFX_DEMON_ACTIVE,			// activesound
+		sfxenum_t::SFX_DEMON_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_MCROSS | MF2_TELESTOMP // flags2
 		},
 
-	{							// MT_DEMONCHUNK1
+	{							// mobjtype_t::MT_DEMONCHUNK1
 		-1,						// doomednum
 		S_DEMONCHUNK1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMONCHUNK1_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMONCHUNK2
+	{							// mobjtype_t::MT_DEMONCHUNK2
 		-1,						// doomednum
 		S_DEMONCHUNK2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMONCHUNK2_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMONCHUNK3
+	{							// mobjtype_t::MT_DEMONCHUNK3
 		-1,						// doomednum
 		S_DEMONCHUNK3_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMONCHUNK3_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMONCHUNK4
+	{							// mobjtype_t::MT_DEMONCHUNK4
 		-1,						// doomednum
 		S_DEMONCHUNK4_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMONCHUNK4_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMONCHUNK5
+	{							// mobjtype_t::MT_DEMONCHUNK5
 		-1,						// doomednum
 		S_DEMONCHUNK5_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMONCHUNK5_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMONFX1
+	{							// mobjtype_t::MT_DEMONFX1
 		-1,						// doomednum
 		S_DEMONFX_MOVE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMONFX_BOOM1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DEMON_MISSILE_EXPLODE, // deathsound
+		sfxenum_t::SFX_DEMON_MISSILE_EXPLODE, // deathsound
 		15 * FRACUNIT,				// speed
 		10 * FRACUNIT,				// radius
 		6 * FRACUNIT,				// height
 		100,						// mass
 		5,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_NOBLOCKMAP | MF_NOGRAVITY | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS | MF2_FIREDAMAGE // flags2
 		},
 
-	{							// MT_DEMON2
+	{							// mobjtype_t::MT_DEMON2
 		8080,						// doomednum
 		S_DEMN2_LOOK1,				// spawnstate
 		250,						// spawnhealth
 		S_DEMN2_CHASE1,			// seestate
-		SFX_DEMON_SIGHT,			// seesound
+		sfxenum_t::SFX_DEMON_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_DEMON_ATTACK,			// attacksound
+		sfxenum_t::SFX_DEMON_ATTACK,			// attacksound
 		S_DEMN2_PAIN1,				// painstate
 		50,						// painchance
-		SFX_DEMON_PAIN,			// painsound
+		sfxenum_t::SFX_DEMON_PAIN,			// painsound
 		S_DEMN2_ATK1_1,			// meleestate
 		S_DEMN2_ATK2_1,			// missilestate
 		S_NULL,					// crashstate
 		S_DEMN2_DEATH1,			// deathstate
 		S_DEMN2_XDEATH1,			// xdeathstate
-		SFX_DEMON_DEATH,			// deathsound
+		sfxenum_t::SFX_DEMON_DEATH,			// deathsound
 		13,						// speed
 		32 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		220,						// mass
 		0,							// damage
-		SFX_DEMON_ACTIVE,			// activesound
+		sfxenum_t::SFX_DEMON_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_MCROSS | MF2_TELESTOMP // flags2
 		},
 
-	{							// MT_DEMON2CHUNK1
+	{							// mobjtype_t::MT_DEMON2CHUNK1
 		-1,						// doomednum
 		S_DEMON2CHUNK1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMON2CHUNK1_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMON2CHUNK2
+	{							// mobjtype_t::MT_DEMON2CHUNK2
 		-1,						// doomednum
 		S_DEMON2CHUNK2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMON2CHUNK2_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMON2CHUNK3
+	{							// mobjtype_t::MT_DEMON2CHUNK3
 		-1,						// doomednum
 		S_DEMON2CHUNK3_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMON2CHUNK3_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMON2CHUNK4
+	{							// mobjtype_t::MT_DEMON2CHUNK4
 		-1,						// doomednum
 		S_DEMON2CHUNK4_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMON2CHUNK4_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMON2CHUNK5
+	{							// mobjtype_t::MT_DEMON2CHUNK5
 		-1,						// doomednum
 		S_DEMON2CHUNK5_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMON2CHUNK5_4,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_CORPSE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_DEMON2FX1
+	{							// mobjtype_t::MT_DEMON2FX1
 		-1,						// doomednum
 		S_DEMON2FX_MOVE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DEMON2FX_BOOM1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DEMON_MISSILE_EXPLODE, // deathsound
+		sfxenum_t::SFX_DEMON_MISSILE_EXPLODE, // deathsound
 		15 * FRACUNIT,				// speed
 		10 * FRACUNIT,				// radius
 		6 * FRACUNIT,				// height
 		100,						// mass
 		5,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE | MF_NOBLOCKMAP | MF_NOGRAVITY | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS | MF2_FIREDAMAGE // flags2
 		},
 
-	{							// MT_WRAITHB
+	{							// mobjtype_t::MT_WRAITHB
 		10011,						// doomednum
 		S_WRAITH_LOOK1,			// spawnstate
 		150,						// spawnhealth
 		S_WRAITH_RAISE1,			// seestate
-		SFX_WRAITH_SIGHT,			// seesound
+		sfxenum_t::SFX_WRAITH_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_WRAITH_ATTACK,			// attacksound
+		sfxenum_t::SFX_WRAITH_ATTACK,			// attacksound
 		S_WRAITH_PAIN1,			// painstate
 		25,						// painchance
-		SFX_WRAITH_PAIN,			// painsound
+		sfxenum_t::SFX_WRAITH_PAIN,			// painsound
 		S_WRAITH_ATK1_1,			// meleestate
 		S_WRAITH_ATK2_1,			// missilestate
 		S_NULL,					// crashstate
 		S_WRAITH_DEATH1_1,			// deathstate
 		S_WRAITH_DEATH2_1,			// xdeathstate
-		SFX_WRAITH_DEATH,			// deathsound
+		sfxenum_t::SFX_WRAITH_DEATH,			// deathsound
 		11,						// speed
 		20 * FRACUNIT,				// radius
 		68 * FRACUNIT,				// height
 		75,						// mass
 		10,						// damage
-		SFX_WRAITH_ACTIVE,			// activesound
+		sfxenum_t::SFX_WRAITH_ACTIVE,			// activesound
 		MF_DROPOFF | MF_NOGRAVITY | MF_FLOAT | MF_COUNTKILL,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_PUSHWALL | MF2_TELESTOMP | MF2_DONTDRAW // flags2
 		},
 
-	{							// MT_WRAITH
+	{							// mobjtype_t::MT_WRAITH
 		34,						// doomednum
 		S_WRAITH_INIT1,			// spawnstate
 		150,						// spawnhealth
 		S_WRAITH_CHASE1,			// seestate
-		SFX_WRAITH_SIGHT,			// seesound
+		sfxenum_t::SFX_WRAITH_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_WRAITH_ATTACK,			// attacksound
+		sfxenum_t::SFX_WRAITH_ATTACK,			// attacksound
 		S_WRAITH_PAIN1,			// painstate
 		25,						// painchance
-		SFX_WRAITH_PAIN,			// painsound
+		sfxenum_t::SFX_WRAITH_PAIN,			// painsound
 		S_WRAITH_ATK1_1,			// meleestate
 		S_WRAITH_ATK2_1,			// missilestate
 		S_NULL,					// crashstate
 		S_WRAITH_DEATH1_1,			// deathstate
 		S_WRAITH_DEATH2_1,			// xdeathstate
-		SFX_WRAITH_DEATH,			// deathsound
+		sfxenum_t::SFX_WRAITH_DEATH,			// deathsound
 		11,						// speed
 		20 * FRACUNIT,				// radius
 		55 * FRACUNIT,				// height
 		75,						// mass
 		10,						// damage
-		SFX_WRAITH_ACTIVE,			// activesound
+		sfxenum_t::SFX_WRAITH_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_DROPOFF | MF_NOGRAVITY | MF_FLOAT,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_PUSHWALL | MF2_TELESTOMP		// flags2
 		},
 
-	{							// MT_WRAITHFX1
+	{							// mobjtype_t::MT_WRAITHFX1
 		-1,						// doomednum
 		S_WRTHFX_MOVE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_WRTHFX_BOOM1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_WRAITH_MISSILE_EXPLODE,		// deathsound
+		sfxenum_t::SFX_WRAITH_MISSILE_EXPLODE,		// deathsound
 		14 * FRACUNIT,				// speed
 		10 * FRACUNIT,				// radius
 		6 * FRACUNIT,				// height
 		5,							// mass
 		5,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS | MF2_FLOORCLIP | MF2_FIREDAMAGE // flags2
 		},
 
-	{							// MT_WRAITHFX2
+	{							// mobjtype_t::MT_WRAITHFX2
 		-1,						// doomednum
 		S_WRTHFX_SIZZLE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF,		// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_WRAITHFX3
+	{							// mobjtype_t::MT_WRAITHFX3
 		-1,						// doomednum
 		S_WRTHFX_DROP1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_WRTHFX_DEAD1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DRIP,					// deathsound
+		sfxenum_t::SFX_DRIP,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_WRAITHFX4
+	{							// mobjtype_t::MT_WRAITHFX4
 		-1,						// doomednum
 		S_WRTHFX_ADROP1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_WRTHFX_ADEAD1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DRIP,					// deathsound
+		sfxenum_t::SFX_DRIP,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_WRAITHFX5
+	{							// mobjtype_t::MT_WRAITHFX5
 		-1,						// doomednum
 		S_WRTHFX_BDROP1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_WRTHFX_BDEAD1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DRIP,					// deathsound
+		sfxenum_t::SFX_DRIP,					// deathsound
 		0,							// speed
 		2 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		5,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_MINOTAUR
+	{							// mobjtype_t::MT_MINOTAUR
 		9,							// doomednum
 		S_MNTR_SPAWN1,				// spawnstate
 		2500,						// spawnhealth
 		S_MNTR_WALK1,				// seestate
-		SFX_MAULATOR_SIGHT,		// seesound
+		sfxenum_t::SFX_MAULATOR_SIGHT,		// seesound
 		8,							// reactiontime
-		SFX_MAULATOR_HAMMER_SWING, // attacksound
+		sfxenum_t::SFX_MAULATOR_HAMMER_SWING, // attacksound
 		S_MNTR_PAIN1,				// painstate
 		25,						// painchance
-		SFX_MAULATOR_PAIN,			// painsound
+		sfxenum_t::SFX_MAULATOR_PAIN,			// painsound
 		S_MNTR_ATK1_1,				// meleestate
 		S_MNTR_ATK2_1,				// missilestate
 		S_NULL,					// crashstate
 		S_MNTR_DIE1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_MAULATOR_DEATH,		// deathsound
+		sfxenum_t::SFX_MAULATOR_DEATH,		// deathsound
 		16,						// speed
 		28 * FRACUNIT,				// radius
 		100 * FRACUNIT,			// height
 		800,						// mass
 		7,							// damage
-		SFX_MAULATOR_ACTIVE,		// activesound
+		sfxenum_t::SFX_MAULATOR_ACTIVE,		// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_SHADOW,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_PUSHWALL | MF2_TELESTOMP		// flags2
 		},
 
-	{							// MT_MNTRFX1
+	{							// mobjtype_t::MT_MNTRFX1
 		-1,						// doomednum
 		S_MNTRFX1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_MNTRFXI1_1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		20 * FRACUNIT,				// speed
 		10 * FRACUNIT,				// radius
 		6 * FRACUNIT,				// height
 		100,						// mass
 		3,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE	// flags2
 		},
 
-	{							// MT_MNTRFX2
+	{							// mobjtype_t::MT_MNTRFX2
 		-1,						// doomednum
 		S_MNTRFX2_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_MNTRFXI2_1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		14 * FRACUNIT,				// speed
 		5 * FRACUNIT,				// radius
 		12 * FRACUNIT,				// height
 		100,						// mass
 		4,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE	// flags2
 		},
 
-	{							// MT_MNTRFX3
+	{							// mobjtype_t::MT_MNTRFX3
 		-1,						// doomednum
 		S_MNTRFX3_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
 		0,							// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_MNTRFXI2_1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		4,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE	// flags2
 		},
 
-	{							// MT_MNTRSMOKE
+	{							// mobjtype_t::MT_MNTRSMOKE
 		-1,						// doomednum
 		S_MINOSMOKE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_MNTRSMOKEEXIT
+	{							// mobjtype_t::MT_MNTRSMOKEEXIT
 		-1,						// doomednum
 		S_MINOSMOKEX1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_SERPENT
+	{							// mobjtype_t::MT_SERPENT
 		121,						// doomednum
 		S_SERPENT_LOOK1,			// spawnstate
 		90,						// spawnhealth
 		S_SERPENT_SWIM1,			// seestate
-		SFX_SERPENT_SIGHT,			// seesound
+		sfxenum_t::SFX_SERPENT_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_SERPENT_ATTACK,		// attacksound
+		sfxenum_t::SFX_SERPENT_ATTACK,		// attacksound
 		S_SERPENT_PAIN1,			// painstate
 		96,						// painchance
-		SFX_SERPENT_PAIN,			// painsound
+		sfxenum_t::SFX_SERPENT_PAIN,			// painsound
 		S_SERPENT_SURFACE1,		// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SERPENT_DIE1,			// deathstate
 		S_SERPENT_XDIE1,			// xdeathstate
-		SFX_SERPENT_DEATH,			// deathsound
+		sfxenum_t::SFX_SERPENT_DEATH,			// deathsound
 		12,						// speed
 		32 * FRACUNIT,				// radius
 		70 * FRACUNIT,				// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_COUNTKILL | MF_NOBLOOD,		// flags
 		MF2_PASSMOBJ | MF2_DONTDRAW | MF2_CANTLEAVEFLOORPIC | MF2_NONSHOOTABLE | MF2_MCROSS		// flags2
 		},
 
-	{							// MT_SERPENTLEADER
+	{							// mobjtype_t::MT_SERPENTLEADER
 		120,						// doomednum
 		S_SERPENT_LOOK1,			// spawnstate
 		90,						// spawnhealth
 		S_SERPENT_SWIM1,			// seestate
-		SFX_SERPENT_SIGHT,			// seesound
+		sfxenum_t::SFX_SERPENT_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_SERPENT_ATTACK,		// attacksound
+		sfxenum_t::SFX_SERPENT_ATTACK,		// attacksound
 		S_SERPENT_PAIN1,			// painstate
 		96,						// painchance
-		SFX_SERPENT_PAIN,			// painsound
+		sfxenum_t::SFX_SERPENT_PAIN,			// painsound
 		S_SERPENT_SURFACE1,		// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SERPENT_DIE1,			// deathstate
 		S_SERPENT_XDIE1,			// xdeathstate
-		SFX_SERPENT_DEATH,			// deathsound
+		sfxenum_t::SFX_SERPENT_DEATH,			// deathsound
 		12,						// speed
 		32 * FRACUNIT,				// radius
 		70 * FRACUNIT,				// height
 		200,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_COUNTKILL | MF_NOBLOOD,		// flags
 		MF2_PASSMOBJ | MF2_DONTDRAW | MF2_CANTLEAVEFLOORPIC | MF2_NONSHOOTABLE | MF2_MCROSS		// flags2
 		},
 
-	{							// MT_SERPENTFX
+	{							// mobjtype_t::MT_SERPENTFX
 		-1,						// doomednum
 		S_SERPENT_FX1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
 		0,							// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SERPENT_FX_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_SERPENTFX_HIT,			// deathsound
+		sfxenum_t::SFX_SERPENTFX_HIT,			// deathsound
 		15 * FRACUNIT,				// speed
 		8 * FRACUNIT,				// radius
 		10 * FRACUNIT,				// height
 		100,						// mass
 		4,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_SERPENT_HEAD
+	{							// mobjtype_t::MT_SERPENT_HEAD
 		-1,						// doomednum
 		S_SERPENT_HEAD1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		10 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		MF2_LOGRAV					// flags2
 		},
 
-	{							// MT_SERPENT_GIB1
+	{							// mobjtype_t::MT_SERPENT_GIB1
 		-1,						// doomednum
 		S_SERPENT_GIB1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		3 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_SERPENT_GIB2
+	{							// mobjtype_t::MT_SERPENT_GIB2
 		-1,						// doomednum
 		S_SERPENT_GIB2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		3 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_SERPENT_GIB3
+	{							// mobjtype_t::MT_SERPENT_GIB3
 		-1,						// doomednum
 		S_SERPENT_GIB3_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		3 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		0							// flags2
 		},
 
-	{							// MT_BISHOP
+	{							// mobjtype_t::MT_BISHOP
 		114,						// doomednum
 		S_BISHOP_LOOK1,			// spawnstate
 		130,						// spawnhealth
 		S_BISHOP_WALK1,			// seestate
-		SFX_BISHOP_SIGHT,			// seesound
+		sfxenum_t::SFX_BISHOP_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_BISHOP_ATTACK,			// attacksound
+		sfxenum_t::SFX_BISHOP_ATTACK,			// attacksound
 		S_BISHOP_PAIN1,			// painstate
 		110,						// painchance
-		SFX_BISHOP_PAIN,			// painsound
+		sfxenum_t::SFX_BISHOP_PAIN,			// painsound
 		0,							// meleestate
 		S_BISHOP_ATK1,				// missilestate
 		S_NULL,					// crashstate
 		S_BISHOP_DEATH1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_BISHOP_DEATH,			// deathsound
+		sfxenum_t::SFX_BISHOP_DEATH,			// deathsound
 		10,						// speed
 		22 * FRACUNIT,				// radius
 		65 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_BISHOP_ACTIVE,			// activesound
+		sfxenum_t::SFX_BISHOP_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_FLOAT | MF_NOGRAVITY | MF_NOBLOOD,		// flags
 		MF2_PASSMOBJ | MF2_PUSHWALL | MF2_TELESTOMP		// flags2
 		},
 
-	{							// MT_BISHOP_PUFF
+	{							// mobjtype_t::MT_BISHOP_PUFF
 		-1,						// doomednum
 		S_BISHOP_PUFF1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SHADOW | MF_NOBLOCKMAP | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_BISHOPBLUR
+	{							// mobjtype_t::MT_BISHOPBLUR
 		-1,						// doomednum
 		S_BISHOPBLUR1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_BISHOPPAINBLUR
+	{							// mobjtype_t::MT_BISHOPPAINBLUR
 		-1,						// doomednum
 		S_BISHOPPAINBLUR1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW, // flags
 		0							// flags2
 		},
 
-	{							// MT_BISH_FX
+	{							// mobjtype_t::MT_BISH_FX
 		-1,						// doomednum
 		S_BISHFX1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_BISHFXI1_1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_BISHOP_MISSILE_EXPLODE,		// deathsound
+		sfxenum_t::SFX_BISHOP_MISSILE_EXPLODE,		// deathsound
 		10 * FRACUNIT,				// speed
 		10 * FRACUNIT,				// radius
 		6 * FRACUNIT,				// height
 		100,						// mass
 		1,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_SEEKERMISSILE // flags2
 		},
 
-	{							// MT_DRAGON
+	{							// mobjtype_t::MT_DRAGON
 		254,						// doomednum
 		S_DRAGON_LOOK1,			// spawnstate
 		640,						// spawnhealth
 		S_DRAGON_INIT,				// seestate
-		SFX_DRAGON_SIGHT,			// seesound
+		sfxenum_t::SFX_DRAGON_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_DRAGON_ATTACK,			// attacksound
+		sfxenum_t::SFX_DRAGON_ATTACK,			// attacksound
 		S_DRAGON_PAIN1,			// painstate
 		128,						// painchance
-		SFX_DRAGON_PAIN,			// painsound
+		sfxenum_t::SFX_DRAGON_PAIN,			// painsound
 		S_NULL,					// meleestate
 		S_DRAGON_ATK1,				// missilestate
 		S_NULL,					// crashstate
 		S_DRAGON_DEATH1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DRAGON_DEATH,			// deathsound
+		sfxenum_t::SFX_DRAGON_DEATH,			// deathsound
 		10 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		65 * FRACUNIT,				// height
 		INT_MAX,					// mass
 		0,							// damage
-		SFX_DRAGON_ACTIVE,			// activesound
+		sfxenum_t::SFX_DRAGON_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_FLOAT | MF_NOGRAVITY | MF_NOBLOOD,		// flags
 		MF2_PASSMOBJ | MF2_BOSS	// flags2
 		},
 
-	{							// MT_DRAGON_FX
+	{							// mobjtype_t::MT_DRAGON_FX
 		-1,						// doomednum
 		S_DRAGON_FX1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_DRAGON_FX1_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DRAGON_FIREBALL_EXPLODE,		// deathsound
+		sfxenum_t::SFX_DRAGON_FIREBALL_EXPLODE,		// deathsound
 		24 * FRACUNIT,				// speed
 		12 * FRACUNIT,				// radius
 		10 * FRACUNIT,				// height
 		100,						// mass
 		6,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE	// flags2
 		},
 
-	{							// MT_DRAGON_FX2
+	{							// mobjtype_t::MT_DRAGON_FX2
 		-1,						// doomednum
 		S_DRAGON_FX2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DRAGON_FIREBALL_EXPLODE,		// deathsound
+		sfxenum_t::SFX_DRAGON_FIREBALL_EXPLODE,		// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP,				// flags
 		MF2_NOTELEPORT | MF2_FIREDAMAGE | MF2_DONTDRAW		// flags2
 		},
 
-	{							// MT_ARMOR_1
+	{							// mobjtype_t::MT_ARMOR_1
 		8005,						// doomednum
 		S_ARMOR_1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARMOR_2
+	{							// mobjtype_t::MT_ARMOR_2
 		8006,						// doomednum
 		S_ARMOR_2,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARMOR_3
+	{							// mobjtype_t::MT_ARMOR_3
 		8007,						// doomednum
 		S_ARMOR_3,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_ARMOR_4
+	{							// mobjtype_t::MT_ARMOR_4
 		8008,						// doomednum
 		S_ARMOR_4,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL | MF_NOGRAVITY, // flags
 		0							// flags2
 		},
 
-	{							// MT_MANA1
+	{							// mobjtype_t::MT_MANA1
 		122,						// doomednum
 		S_MANA1_1,					// spawnstate
 		10,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_MANA2
+	{							// mobjtype_t::MT_MANA2
 		124,						// doomednum
 		S_MANA2_1,					// spawnstate
 		10,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_MANA3
+	{							// mobjtype_t::MT_MANA3
 		8004,						// doomednum
 		S_MANA3_1,					// spawnstate
 		20,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		8 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		MF2_FLOATBOB				// flags2
 		},
 
-	{							// MT_KEY1
+	{							// mobjtype_t::MT_KEY1
 		8030,						// doomednum
 		S_KEY1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEY2
+	{							// mobjtype_t::MT_KEY2
 		8031,						// doomednum
 		S_KEY2,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEY3
+	{							// mobjtype_t::MT_KEY3
 		8032,						// doomednum
 		S_KEY3,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEY4
+	{							// mobjtype_t::MT_KEY4
 		8033,						// doomednum
 		S_KEY4,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEY5
+	{							// mobjtype_t::MT_KEY5
 		8034,						// doomednum
 		S_KEY5,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEY6
+	{							// mobjtype_t::MT_KEY6
 		8035,						// doomednum
 		S_KEY6,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEY7
+	{							// mobjtype_t::MT_KEY7
 		8036,						// doomednum
 		S_KEY7,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEY8
+	{							// mobjtype_t::MT_KEY8
 		8037,						// doomednum
 		S_KEY8,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEY9
+	{							// mobjtype_t::MT_KEY9
 		8038,						// doomednum
 		S_KEY9,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEYA
+	{							// mobjtype_t::MT_KEYA
 		8039,						// doomednum
 		S_KEYA,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_KEYB
+	{							// mobjtype_t::MT_KEYB
 		8200,						// doomednum
 		S_KEYB,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		8 * FRACUNIT,				// radius
 		20 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SPECIAL,				// flags
 		0							// flags2
 		},
 
-	{							// MT_SOUNDWIND
+	{							// mobjtype_t::MT_SOUNDWIND
 		1410,						// doomednum
 		S_SND_WIND1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOSECTOR,		// flags
 		0							// flags2
 		},
 
-	{							// MT_SOUNDWATERFALL
+	{							// mobjtype_t::MT_SOUNDWATERFALL
 		41,						// doomednum
 		S_SND_WATERFALL,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOSECTOR,		// flags
 		0							// flags2
 		},
 
-	{							// MT_ETTIN
+	{							// mobjtype_t::MT_ETTIN
 		10030,						// doomednum
 		S_ETTIN_LOOK1,				// spawnstate
 		175,						// spawnhealth
 		S_ETTIN_CHASE1,			// seestate
-		SFX_ETTIN_SIGHT,			// seesound
+		sfxenum_t::SFX_ETTIN_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_ETTIN_ATTACK,			// attacksound
+		sfxenum_t::SFX_ETTIN_ATTACK,			// attacksound
 		S_ETTIN_PAIN1,				// painstate
 		60,						// painchance
-		SFX_ETTIN_PAIN,			// painsound
+		sfxenum_t::SFX_ETTIN_PAIN,			// painsound
 		S_ETTIN_ATK1_1,			// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ETTIN_DEATH1_1,			// deathstate
 		S_ETTIN_DEATH2_1,			// xdeathstate
-		SFX_ETTIN_DEATH,			// deathsound
+		sfxenum_t::SFX_ETTIN_DEATH,			// deathsound
 		13,						// speed
 		25 * FRACUNIT,				// radius
 		68 * FRACUNIT,				// height
 		175,						// mass
 		3,							// damage
-		SFX_ETTIN_ACTIVE,			// activesound
+		sfxenum_t::SFX_ETTIN_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PUSHWALL | MF2_MCROSS | MF2_TELESTOMP // flags2
 		},
 
-	{							// MT_ETTIN_MACE
+	{							// mobjtype_t::MT_ETTIN_MACE
 		-1,						// doomednum
 		S_ETTIN_MACE1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ETTIN_MACE5,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_DROPOFF | MF_CORPSE,	// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_FIREDEMON
+	{							// mobjtype_t::MT_FIREDEMON
 		10060,						// doomednum
 		S_FIRED_SPAWN1,			// spawnstate
 		80,						// spawnhealth
 		S_FIRED_LOOK4,				// seestate
-		SFX_FIRED_SPAWN,			// seesound
+		sfxenum_t::SFX_FIRED_SPAWN,			// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_FIRED_PAIN1,				// painstate
 		1,							// painchance
-		SFX_FIRED_PAIN,			// painsound
+		sfxenum_t::SFX_FIRED_PAIN,			// painsound
 		S_NULL,					// meleestate
 		S_FIRED_ATTACK1,			// missilestate
 		S_FIRED_XDEATH1,			// crashstate
 		S_FIRED_DEATH1,			// deathstate
 		S_FIRED_XDEATH1,			// xdeathstate
-		SFX_FIRED_DEATH,			// deathsound
+		sfxenum_t::SFX_FIRED_DEATH,			// deathsound
 		13,						// speed
 		20 * FRACUNIT,				// radius
 		68 * FRACUNIT,				// height
 		75,						// mass
 		1,							// damage
-		SFX_FIRED_ACTIVE,			// activesound
+		sfxenum_t::SFX_FIRED_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_DROPOFF | MF_NOGRAVITY | MF_FLOAT,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_PUSHWALL | MF2_INVULNERABLE | MF2_MCROSS | MF2_TELESTOMP		// flags2
 		},
 
-	{							// MT_FIREDEMON_SPLOTCH1
+	{							// mobjtype_t::MT_FIREDEMON_SPLOTCH1
 		-1,						// doomednum
 		S_FIRED_CORPSE1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_DROPOFF | MF_CORPSE,	// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_FIREDEMON_SPLOTCH2
+	{							// mobjtype_t::MT_FIREDEMON_SPLOTCH2
 		-1,						// doomednum
 		S_FIRED_CORPSE4,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_DROPOFF | MF_CORPSE,	// flags
 		MF2_NOTELEPORT | MF2_FLOORCLIP		// flags2
 		},
 
-	{							// MT_FIREDEMON_FX1
+	{							// mobjtype_t::MT_FIREDEMON_FX1
 		-1,						// doomednum
 		S_FIRED_RDROP1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FIRED_RDEAD1_1,			// deathstate
 		S_FIRED_RDEAD1_2,			// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		16,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FIREDEMON_FX2
+	{							// mobjtype_t::MT_FIREDEMON_FX2
 		-1,						// doomednum
 		S_FIRED_RDROP2,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FIRED_RDEAD2_1,			// deathstate
 		S_FIRED_RDEAD2_2,			// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		16,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FIREDEMON_FX3
+	{							// mobjtype_t::MT_FIREDEMON_FX3
 		-1,						// doomednum
 		S_FIRED_RDROP3,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FIRED_RDEAD3_1,			// deathstate
 		S_FIRED_RDEAD3_2,			// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		16,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FIREDEMON_FX4
+	{							// mobjtype_t::MT_FIREDEMON_FX4
 		-1,						// doomednum
 		S_FIRED_RDROP4,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FIRED_RDEAD4_1,			// deathstate
 		S_FIRED_RDEAD4_2,			// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		16,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FIREDEMON_FX5
+	{							// mobjtype_t::MT_FIREDEMON_FX5
 		-1,						// doomednum
 		S_FIRED_RDROP5,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FIRED_RDEAD5_1,			// deathstate
 		S_FIRED_RDEAD5_2,			// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		3 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		16,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FIREDEMON_FX6
+	{							// mobjtype_t::MT_FIREDEMON_FX6
 		-1,						// doomednum
 		S_FIRED_FX6_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_FIRED_FX6_2,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_FIRED_MISSILE_HIT,		// deathsound
+		sfxenum_t::SFX_FIRED_MISSILE_HIT,		// deathsound
 		10 * FRACUNIT,				// speed
 		10 * FRACUNIT,				// radius
 		6 * FRACUNIT,				// height
 		15,						// mass
 		1,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT | MF2_IMPACT | MF2_PCROSS | MF2_FLOORCLIP | MF2_FIREDAMAGE // flags2
 		},
 
-	{							// MT_ICEGUY
+	{							// mobjtype_t::MT_ICEGUY
 		8020,						// doomednum
 		S_ICEGUY_LOOK,				// spawnstate
 		120,						// spawnhealth
 		S_ICEGUY_WALK1,			// seestate
-		SFX_ICEGUY_SIGHT,			// seesound
+		sfxenum_t::SFX_ICEGUY_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_ICEGUY_ATTACK,			// attacksound
+		sfxenum_t::SFX_ICEGUY_ATTACK,			// attacksound
 		S_ICEGUY_PAIN1,			// painstate
 		144,						// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		0,							// meleestate
 		S_ICEGUY_ATK1,				// missilestate
 		S_NULL,					// crashstate
 		S_ICEGUY_DEATH,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		14,						// speed
 		22 * FRACUNIT,				// radius
 		75 * FRACUNIT,				// height
 		150,						// mass
 		0,							// damage
-		SFX_ICEGUY_ACTIVE,			// activesound
+		sfxenum_t::SFX_ICEGUY_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_NOBLOOD,		// flags
 		MF2_PASSMOBJ | MF2_PUSHWALL | MF2_ICEDAMAGE | MF2_MCROSS | MF2_TELESTOMP	// flags2
 		},
 
-	{							// MT_ICEGUY_FX
+	{							// mobjtype_t::MT_ICEGUY_FX
 		-1,						// doomednum
 		S_ICEGUY_FX1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_ICEGUY_FX_X1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_ICEGUY_FX_EXPLODE,		// deathsound
+		sfxenum_t::SFX_ICEGUY_FX_EXPLODE,		// deathsound
 		14 * FRACUNIT,				// speed
 		8 * FRACUNIT,				// radius
 		10 * FRACUNIT,				// height
 		100,						// mass
 		1,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_DROPOFF | MF_NOGRAVITY,	// flags
 		MF2_NOTELEPORT | MF2_ICEDAMAGE		// flags2
 		},
 
-	{							// MT_ICEFX_PUFF
+	{							// mobjtype_t::MT_ICEFX_PUFF
 		-1,						// doomednum
 		S_ICEFX_PUFF1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		FRACUNIT,					// radius
 		FRACUNIT,					// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_SHADOW | MF_DROPOFF,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_ICEGUY_FX2
+	{							// mobjtype_t::MT_ICEGUY_FX2
 		-1,						// doomednum
 		S_ICEGUY_FX2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		10 * FRACUNIT,				// speed
 		4 * FRACUNIT,				// radius
 		4 * FRACUNIT,				// height
 		100,						// mass
 		1,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_MISSILE,	// flags
 		MF2_NOTELEPORT | MF2_LOGRAV | MF2_ICEDAMAGE		// flags2
 		},
 
-	{							// MT_ICEGUY_BIT
+	{							// mobjtype_t::MT_ICEGUY_BIT
 		-1,						// doomednum
 		S_ICEGUY_BIT1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		FRACUNIT,					// radius
 		FRACUNIT,					// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF,		// flags
 		MF2_NOTELEPORT | MF2_LOGRAV		// flags2
 		},
 
-	{							// MT_ICEGUY_WISP1
+	{							// mobjtype_t::MT_ICEGUY_WISP1
 		-1,						// doomednum
 		S_ICEGUY_WISP1_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_ICEGUY_WISP2
+	{							// mobjtype_t::MT_ICEGUY_WISP2
 		-1,						// doomednum
 		S_ICEGUY_WISP2_1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_FIGHTER_BOSS
+	{							// mobjtype_t::MT_FIGHTER_BOSS
 		10100,						// doomednum
 		S_FIGHTER,					// spawnstate
 		800,						// spawnhealth
 		S_FIGHTER_RUN1,			// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_FIGHTER_PAIN,			// painstate
 		50,						// painchance
-		SFX_PLAYER_FIGHTER_PAIN,	// painsound
+		sfxenum_t::SFX_PLAYER_FIGHTER_PAIN,	// painsound
 		S_FIGHTER_ATK1,			// meleestate
 		S_FIGHTER_ATK1,			// missilestate
 		S_NULL,					// crashstate
 		S_FIGHTER_DIE1,			// deathstate
 		S_FIGHTER_XDIE1,			// xdeathstate
-		SFX_PLAYER_FIGHTER_CRAZY_DEATH,	// deathsound
+		sfxenum_t::SFX_PLAYER_FIGHTER_CRAZY_DEATH,	// deathsound
 		25,						// speed
 		16 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_TELESTOMP | MF2_PUSHWALL | MF2_MCROSS	// flags2
 		},
 
-	{							// MT_CLERIC_BOSS
+	{							// mobjtype_t::MT_CLERIC_BOSS
 		10101,						// doomednum
 		S_CLERIC,					// spawnstate
 		800,						// spawnhealth
 		S_CLERIC_RUN1,				// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_CLERIC_PAIN,				// painstate
 		50,						// painchance
-		SFX_PLAYER_CLERIC_PAIN,	// painsound
+		sfxenum_t::SFX_PLAYER_CLERIC_PAIN,	// painsound
 		S_CLERIC_ATK1,				// meleestate
 		S_CLERIC_ATK1,				// missilestate
 		S_NULL,					// crashstate
 		S_CLERIC_DIE1,				// deathstate
 		S_CLERIC_XDIE1,			// xdeathstate
-		SFX_PLAYER_CLERIC_CRAZY_DEATH,		// deathsound
+		sfxenum_t::SFX_PLAYER_CLERIC_CRAZY_DEATH,		// deathsound
 		25,						// speed
 		16 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_TELESTOMP | MF2_PUSHWALL | MF2_MCROSS	// flags2
 		},
 
-	{							// MT_MAGE_BOSS
+	{							// mobjtype_t::MT_MAGE_BOSS
 		10102,						// doomednum
 		S_MAGE,					// spawnstate
 		800,						// spawnhealth
 		S_MAGE_RUN1,				// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_MAGE_PAIN,				// painstate
 		50,						// painchance
-		SFX_PLAYER_MAGE_PAIN,		// painsound
+		sfxenum_t::SFX_PLAYER_MAGE_PAIN,		// painsound
 		S_MAGE_ATK1,				// meleestate
 		S_MAGE_ATK1,				// missilestate
 		S_NULL,					// crashstate
 		S_MAGE_DIE1,				// deathstate
 		S_MAGE_XDIE1,				// xdeathstate
-		SFX_PLAYER_MAGE_CRAZY_DEATH,		// deathsound
+		sfxenum_t::SFX_PLAYER_MAGE_CRAZY_DEATH,		// deathsound
 		25,						// speed
 		16 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_TELESTOMP | MF2_PUSHWALL | MF2_MCROSS	// flags2
 		},
 
-	{							// MT_SORCBOSS
+	{							// mobjtype_t::MT_SORCBOSS
 		10080,						// doomednum
 		S_SORC_SPAWN1,				// spawnstate
 		5000,						// spawnhealth
 		S_SORC_WALK1,				// seestate
-		SFX_SORCERER_SIGHT,		// seesound
+		sfxenum_t::SFX_SORCERER_SIGHT,		// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_SORC_PAIN1,				// painstate
 		10,						// painchance
-		SFX_SORCERER_PAIN,			// painsound
+		sfxenum_t::SFX_SORCERER_PAIN,			// painsound
 		S_NULL,					// meleestate
 		S_SORC_ATK2_1,				// missilestate
 		S_NULL,					// crashstate
 		S_SORC_DIE1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_SORCERER_DEATHSCREAM, // deathsound
+		sfxenum_t::SFX_SORCERER_DEATHSCREAM, // deathsound
 		16,						// speed
 		40 * FRACUNIT,				// radius
 		110 * FRACUNIT,			// height
 		500,						// mass
 		9,							// damage
-		SFX_SORCERER_ACTIVE,		// activesound
+		sfxenum_t::SFX_SORCERER_ACTIVE,		// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_NOBLOOD,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_PUSHWALL | MF2_BOSS | MF2_MCROSS		// flags2
 		},
 
-	{							// MT_SORCBALL1
+	{							// mobjtype_t::MT_SORCBALL1
 		-1,						// doomednum
 		S_SORCBALL1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_SORCERER_BALLBOUNCE,	// seesound
+		sfxenum_t::SFX_SORCERER_BALLBOUNCE,	// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_SORCBALL1_D1,			// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SORCBALL1_D5,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		10 * FRACUNIT,				// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_MISSILE, // flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SORCBALL2
+	{							// mobjtype_t::MT_SORCBALL2
 		-1,						// doomednum
 		S_SORCBALL2_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_SORCERER_BALLBOUNCE,	// seesound
+		sfxenum_t::SFX_SORCERER_BALLBOUNCE,	// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_SORCBALL2_D1,			// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SORCBALL2_D5,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		10 * FRACUNIT,				// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_MISSILE, // flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SORCBALL3
+	{							// mobjtype_t::MT_SORCBALL3
 		-1,						// doomednum
 		S_SORCBALL3_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_SORCERER_BALLBOUNCE,	// seesound
+		sfxenum_t::SFX_SORCERER_BALLBOUNCE,	// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_SORCBALL3_D1,			// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SORCBALL3_D5,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		10 * FRACUNIT,				// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_MISSILE, // flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SORCFX1
+	{							// mobjtype_t::MT_SORCFX1
 		-1,						// doomednum
 		S_SORCFX1_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_SORCERER_BALLBOUNCE,	// seesound
+		sfxenum_t::SFX_SORCERER_BALLBOUNCE,	// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SORCFX1_D1,				// deathstate
 		S_SORCFX1_D1,				// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		7 * FRACUNIT,				// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE,		// flags
 		MF2_NOTELEPORT | MF2_FLOORBOUNCE	// flags2
 		},
 
-	{							// MT_SORCFX2
+	{							// mobjtype_t::MT_SORCFX2
 		-1,						// doomednum
 		S_SORCFX2_SPLIT1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SORCFX2T1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		15 * FRACUNIT,				// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_SORCFX2_T1
+	{							// mobjtype_t::MT_SORCFX2_T1
 		-1,						// doomednum
 		S_SORCFX2T1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_ALTSHADOW,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_SORCFX3
+	{							// mobjtype_t::MT_SORCFX3
 		-1,						// doomednum
 		S_SORCFX3_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_SORCERER_BISHOPSPAWN, // seesound
+		sfxenum_t::SFX_SORCERER_BISHOPSPAWN, // seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_BISHMORPH1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		15 * FRACUNIT,				// speed
 		22 * FRACUNIT,				// radius
 		65 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_SORCFX3_EXPLOSION
+	{							// mobjtype_t::MT_SORCFX3_EXPLOSION
 		-1,						// doomednum
 		S_SORCFX3_EXP1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_ALTSHADOW,		// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_SORCFX4
+	{							// mobjtype_t::MT_SORCFX4
 		-1,						// doomednum
 		S_SORCFX4_1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_SORCFX4_D1,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_SORCERER_BALLEXPLODE, // deathsound
+		sfxenum_t::SFX_SORCERER_BALLEXPLODE, // deathsound
 		12 * FRACUNIT,				// speed
 		10 * FRACUNIT,				// radius
 		10 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_MISSILE | MF_NOGRAVITY, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_SORCSPARK1
+	{							// mobjtype_t::MT_SORCSPARK1
 		-1,						// doomednum
 		S_SORCSPARK1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		5 * FRACUNIT,				// radius
 		5 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF,		// flags
 		MF2_NOTELEPORT | MF2_LOGRAV		// flags2
 		},
 
-	{							// MT_BLASTEFFECT
+	{							// mobjtype_t::MT_BLASTEFFECT
 		-1,						// doomednum
 		S_BLASTEFFECT1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_NOCLIP | MF_ALTSHADOW,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_WATER_DRIP
+	{							// mobjtype_t::MT_WATER_DRIP
 		-1,						// doomednum
 		S_WATERDRIP1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DRIP,					// deathsound
+		sfxenum_t::SFX_DRIP,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		1,							// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_MISSILE,				// flags
 		MF2_LOGRAV | MF2_NOTELEPORT		// flags2
 		},
 
-	{							// MT_KORAX
+	{							// mobjtype_t::MT_KORAX
 		10200,						// doomednum
 		S_KORAX_LOOK1,				// spawnstate
 		5000,						// spawnhealth
 		S_KORAX_CHASE2,			// seestate
-		SFX_KORAX_SIGHT,			// seesound
+		sfxenum_t::SFX_KORAX_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_KORAX_ATTACK,			// attacksound
+		sfxenum_t::SFX_KORAX_ATTACK,			// attacksound
 		S_KORAX_PAIN1,				// painstate
 		20,						// painchance
-		SFX_KORAX_PAIN,			// painsound
+		sfxenum_t::SFX_KORAX_PAIN,			// painsound
 		S_NULL,					// meleestate
 		S_KORAX_ATTACK1,			// missilestate
 		S_NULL,					// crashstate
 		S_KORAX_DEATH1,			// deathstate
 		S_NULL,					// xdeathstate
-		SFX_KORAX_DEATH,			// deathsound
+		sfxenum_t::SFX_KORAX_DEATH,			// deathsound
 		10,						// speed
 		65 * FRACUNIT,				// radius
 		115 * FRACUNIT,			// height
 		2000,						// mass
 		15,						// damage
-		SFX_KORAX_ACTIVE,			// activesound
+		sfxenum_t::SFX_KORAX_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL,	// flags
 		MF2_FLOORCLIP | MF2_PUSHWALL | MF2_MCROSS | MF2_TELESTOMP | MF2_BOSS		// flags2
 		},
 
-	{							// MT_KORAX_SPIRIT1
+	{							// mobjtype_t::MT_KORAX_SPIRIT1
 		-1,						// doomednum
 		S_KSPIRIT_ROAM1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		8 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE | MF_NOCLIP, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_KORAX_SPIRIT2
+	{							// mobjtype_t::MT_KORAX_SPIRIT2
 		-1,						// doomednum
 		S_KSPIRIT_ROAM1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		8 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE | MF_NOCLIP, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_KORAX_SPIRIT3
+	{							// mobjtype_t::MT_KORAX_SPIRIT3
 		-1,						// doomednum
 		S_KSPIRIT_ROAM1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		8 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE | MF_NOCLIP, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_KORAX_SPIRIT4
+	{							// mobjtype_t::MT_KORAX_SPIRIT4
 		-1,						// doomednum
 		S_KSPIRIT_ROAM1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		8 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE | MF_NOCLIP, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_KORAX_SPIRIT5
+	{							// mobjtype_t::MT_KORAX_SPIRIT5
 		-1,						// doomednum
 		S_KSPIRIT_ROAM1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		8 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE | MF_NOCLIP, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_KORAX_SPIRIT6
+	{							// mobjtype_t::MT_KORAX_SPIRIT6
 		-1,						// doomednum
 		S_KSPIRIT_ROAM1,			// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		8 * FRACUNIT,				// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_DROPOFF | MF_NOGRAVITY | MF_ALTSHADOW | MF_MISSILE | MF_NOCLIP, // flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_DEMON_MASH
+	{							// mobjtype_t::MT_DEMON_MASH
 		-1,						// doomednum
 		S_DEMN_LOOK1,				// spawnstate
 		250,						// spawnhealth
 		S_DEMN_CHASE1,				// seestate
-		SFX_DEMON_SIGHT,			// seesound
+		sfxenum_t::SFX_DEMON_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_DEMON_ATTACK,			// attacksound
+		sfxenum_t::SFX_DEMON_ATTACK,			// attacksound
 		S_DEMN_PAIN1,				// painstate
 		50,						// painchance
-		SFX_DEMON_PAIN,			// painsound
+		sfxenum_t::SFX_DEMON_PAIN,			// painsound
 		S_DEMN_ATK1_1,				// meleestate
 		S_DEMN_ATK2_1,				// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DEMON_DEATH,			// deathsound
+		sfxenum_t::SFX_DEMON_DEATH,			// deathsound
 		13,						// speed
 		32 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		220,						// mass
 		0,							// damage
-		SFX_DEMON_ACTIVE,			// activesound
+		sfxenum_t::SFX_DEMON_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_ALTSHADOW | MF_NOBLOOD,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_MCROSS | MF2_PUSHWALL | MF2_BLASTED		// flags2
 		},
 
-	{							// MT_DEMON2_MASH
+	{							// mobjtype_t::MT_DEMON2_MASH
 		-1,						// doomednum
 		S_DEMN2_LOOK1,				// spawnstate
 		250,						// spawnhealth
 		S_DEMN2_CHASE1,			// seestate
-		SFX_DEMON_SIGHT,			// seesound
+		sfxenum_t::SFX_DEMON_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_DEMON_ATTACK,			// attacksound
+		sfxenum_t::SFX_DEMON_ATTACK,			// attacksound
 		S_DEMN2_PAIN1,				// painstate
 		50,						// painchance
-		SFX_DEMON_PAIN,			// painsound
+		sfxenum_t::SFX_DEMON_PAIN,			// painsound
 		S_DEMN2_ATK1_1,			// meleestate
 		S_DEMN2_ATK2_1,			// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_DEMON_DEATH,			// deathsound
+		sfxenum_t::SFX_DEMON_DEATH,			// deathsound
 		13,						// speed
 		32 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		220,						// mass
 		0,							// damage
-		SFX_DEMON_ACTIVE,			// activesound
+		sfxenum_t::SFX_DEMON_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_ALTSHADOW | MF_NOBLOOD,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_MCROSS | MF2_PUSHWALL | MF2_BLASTED		// flags2
 		},
 
-	{							// MT_ETTIN_MASH
+	{							// mobjtype_t::MT_ETTIN_MASH
 		-1,						// doomednum
 		S_ETTIN_LOOK1,				// spawnstate
 		175,						// spawnhealth
 		S_ETTIN_CHASE1,			// seestate
-		SFX_ETTIN_SIGHT,			// seesound
+		sfxenum_t::SFX_ETTIN_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_ETTIN_ATTACK,			// attacksound
+		sfxenum_t::SFX_ETTIN_ATTACK,			// attacksound
 		S_ETTIN_PAIN1,				// painstate
 		60,						// painchance
-		SFX_ETTIN_PAIN,			// painsound
+		sfxenum_t::SFX_ETTIN_PAIN,			// painsound
 		S_ETTIN_ATK1_1,			// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_ETTIN_DEATH,			// deathsound
+		sfxenum_t::SFX_ETTIN_DEATH,			// deathsound
 		13,						// speed
 		25 * FRACUNIT,				// radius
 		68 * FRACUNIT,				// height
 		175,						// mass
 		3,							// damage
-		SFX_ETTIN_ACTIVE,			// activesound
+		sfxenum_t::SFX_ETTIN_ACTIVE,			// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_ALTSHADOW | MF_NOBLOOD,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_MCROSS | MF2_PUSHWALL | MF2_BLASTED		// flags2
 		},
 
-	{							// MT_CENTAUR_MASH
+	{							// mobjtype_t::MT_CENTAUR_MASH
 		-1,						// doomednum
 		S_CENTAUR_LOOK1,			// spawnstate
 		200,						// spawnhealth
 		S_CENTAUR_WALK1,			// seestate
-		SFX_CENTAUR_SIGHT,			// seesound
+		sfxenum_t::SFX_CENTAUR_SIGHT,			// seesound
 		8,							// reactiontime
-		SFX_CENTAUR_ATTACK,		// attacksound
+		sfxenum_t::SFX_CENTAUR_ATTACK,		// attacksound
 		S_CENTAUR_PAIN1,			// painstate
 		135,						// painchance
-		SFX_CENTAUR_PAIN,			// painsound
+		sfxenum_t::SFX_CENTAUR_PAIN,			// painsound
 		S_CENTAUR_ATK1,			// meleestate
 		0,							// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_CENTAUR_DEATH,			// deathsound
+		sfxenum_t::SFX_CENTAUR_DEATH,			// deathsound
 		13,						// speed
 		20 * FRACUNIT,				// radius
 		64 * FRACUNIT,				// height
 		120,						// mass
 		0,							// damage
-		SFX_CENTAUR_ACTIVE,		// activesound
+		sfxenum_t::SFX_CENTAUR_ACTIVE,		// activesound
 		MF_SOLID | MF_SHOOTABLE | MF_COUNTKILL | MF_ALTSHADOW | MF_NOBLOOD,		// flags
 		MF2_FLOORCLIP | MF2_PASSMOBJ | MF2_MCROSS | MF2_PUSHWALL | MF2_BLASTED		// flags2
 		},
 
-	{							// MT_KORAX_BOLT
+	{							// mobjtype_t::MT_KORAX_BOLT
 		-1,						// doomednum
 		S_KBOLT1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		15 * FRACUNIT,				// radius
 		35 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_MISSILE | MF_DROPOFF,	// flags
 		MF2_NOTELEPORT				// flags2
 		},
 
-	{							// MT_BAT_SPAWNER
+	{							// mobjtype_t::MT_BAT_SPAWNER
 		10225,						// doomednum
 		S_SPAWNBATS1,				// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_NULL,					// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		0,							// speed
 		20 * FRACUNIT,				// radius
 		16 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOSECTOR | MF_NOGRAVITY,		// flags
 		MF2_DONTDRAW				// flags2
 		},
 
-	{							// MT_BAT
+	{							// mobjtype_t::MT_BAT
 		-1,						// doomednum
 		S_BAT1,					// spawnstate
 		1000,						// spawnhealth
 		S_NULL,					// seestate
-		SFX_NONE,					// seesound
+		sfxenum_t::SFX_NONE,					// seesound
 		8,							// reactiontime
-		SFX_NONE,					// attacksound
+		sfxenum_t::SFX_NONE,					// attacksound
 		S_NULL,					// painstate
 		0,							// painchance
-		SFX_NONE,					// painsound
+		sfxenum_t::SFX_NONE,					// painsound
 		S_NULL,					// meleestate
 		S_NULL,					// missilestate
 		S_NULL,					// crashstate
 		S_BAT_DEATH,				// deathstate
 		S_NULL,					// xdeathstate
-		SFX_NONE,					// deathsound
+		sfxenum_t::SFX_NONE,					// deathsound
 		5 * FRACUNIT,				// speed
 		3 * FRACUNIT,				// radius
 		3 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
-		SFX_NONE,					// activesound
+		sfxenum_t::SFX_NONE,					// activesound
 		MF_NOBLOCKMAP | MF_NOGRAVITY | MF_MISSILE, // flags
 		MF2_PASSMOBJ | MF2_NOTELEPORT		// flags2
 		}

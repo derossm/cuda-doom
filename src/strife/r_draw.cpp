@@ -768,10 +768,7 @@ void R_DrawSpanLow ()
 // for getting the framebuffer address
 // of a pixel to draw.
 //
-void
-R_InitBuffer
-( int		width,
- int		height )
+void R_InitBuffer(int width, int height)
 {
 	int		i;
 
@@ -835,7 +832,7 @@ void R_FillBackScreen ()
 	if (background_buffer == NULL)
 	{
 		background_buffer = Z_Malloc<decltype(background_buffer)>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
-										PU_STATIC, NULL);
+										pu_tags_t::PU_STATIC, NULL);
 	}
 
 	// haleyjd 08/29/10: [STRIFE] Use configurable back_flat
@@ -904,10 +901,7 @@ void R_FillBackScreen ()
 //
 // Copy a screen buffer.
 //
-void
-R_VideoErase
-( unsigned	ofs,
- int		count )
+void R_VideoErase(unsigned ofs, int count)
 {
  // LFB copy.
  // This might not be a good idea if memcpy

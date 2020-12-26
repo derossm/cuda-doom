@@ -793,7 +793,7 @@ static void InitMapInfo()
 
 	mapMax = 1;
 
-	if (gamemode == shareware)
+	if (gamemode == GameMode_t::shareware)
 	{
 	default_sky_name = "SKY2";
 	}

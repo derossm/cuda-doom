@@ -51,11 +51,7 @@ void R_InitSprites(const char **namelist);
 void R_ClearSprites ();
 void R_DrawMasked ();
 
-void
-R_ClipVisSprite
-( vissprite_t*		vis,
- int			xl,
- int			xh );
+void R_ClipVisSprite(vissprite_t* vis, int xl, int xh);
 
 
 #endif

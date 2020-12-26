@@ -37,11 +37,7 @@ static byte*	wipe_scr_end;
 static byte*	wipe_scr;
 
 
-void
-wipe_shittyColMajorXform
-( short*	array,
- int		width,
- int		height )
+void wipe_shittyColMajorXform(short* array, int width, int height)
 {
 	int		x;
 	int		y;
@@ -60,11 +56,7 @@ wipe_shittyColMajorXform
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_initColorXForm
-( int	width,
- int	height,
- int	ticks )
+int wipe_initColorXForm(int width, int height, int ticks)
 {
 	memcpy(wipe_scr, wipe_scr_start, width*height);
 	return 0;
@@ -77,11 +69,7 @@ wipe_initColorXForm
 // * Rogue modified the unused ColorXForm wipe in-place in order to implement
 //	their distinctive crossfade wipe.
 //
-int
-wipe_doColorXForm
-( int	width,
- int	height,
- int	ticks )
+int wipe_doColorXForm(int width, int height, int ticks)
 {
 	byte *cur_screen = wipe_scr;
 	byte *end_screen = wipe_scr_end;
@@ -104,11 +92,7 @@ wipe_doColorXForm
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_exitColorXForm
-( int	width,
- int	height,
- int	ticks )
+int wipe_exitColorXForm(int width, int height, int ticks)
 {
 	return 0;
 }
@@ -116,11 +100,7 @@ wipe_exitColorXForm
 
 static int*	y;
 
-int
-wipe_initMelt
-( int	width,
- int	height,
- int	ticks )
+int wipe_initMelt(int width, int height, int ticks)
 {
 	int i, r;
 
@@ -147,11 +127,7 @@ wipe_initMelt
 	return 0;
 }
 
-int
-wipe_doMelt
-( int	width,
- int	height,
- int	ticks )
+int wipe_doMelt(int width, int height, int ticks)
 {
 	int		i;
 	int		j;
@@ -202,11 +178,7 @@ wipe_doMelt
 
 }
 
-int
-wipe_exitMelt
-( int	width,
- int	height,
- int	ticks )
+int wipe_exitMelt(int width, int height, int ticks)
 {
 	Z_Free(y);
 	Z_Free(wipe_scr_start);
@@ -215,12 +187,7 @@ wipe_exitMelt
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_StartScreen
-( int	x,
- int	y,
- int	width,
- int	height )
+int wipe_StartScreen(int x, int y, int width, int height)
 {
 	wipe_scr_start = Z_Malloc<decltype(wipe_scr_start)>(SCREENWIDTH * SCREENHEIGHT, pu_tags_t::PU_STATIC, NULL);
 	I_ReadScreen(wipe_scr_start);
@@ -228,12 +195,7 @@ wipe_StartScreen
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_EndScreen
-( int	x,
- int	y,
- int	width,
- int	height )
+int wipe_EndScreen(int x, int y, int width, int height)
 {
 	wipe_scr_end = Z_Malloc<decltype(wipe_scr_end)>(SCREENWIDTH * SCREENHEIGHT, pu_tags_t::PU_STATIC, NULL);
 	I_ReadScreen(wipe_scr_end);
@@ -242,14 +204,7 @@ wipe_EndScreen
 }
 
 // haleyjd 08/26/10: [STRIFE] Verified unmodified.
-int
-wipe_ScreenWipe
-( int	wipeno,
- int	x,
- int	y,
- int	width,
- int	height,
- int	ticks )
+int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height, int ticks)
 {
 	int rc;
 	static int (*wipes[])(int, int, int) =

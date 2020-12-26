@@ -108,11 +108,7 @@ void R_InitPlanes ()
 //
 // BASIC PRIMITIVE
 //
-void
-R_MapPlane
-( int		y,
- int		x1,
- int		x2 )
+void R_MapPlane(int y, int x1, int x2)
 {
 // [crispy] see below
 // angle_t	angle;
@@ -240,11 +236,7 @@ static void R_RaiseVisplanes (visplane_t** vp)
 //
 // R_FindPlane
 //
-visplane_t*
-R_FindPlane
-( fixed_t	height,
- int		picnum,
- int		lightlevel )
+visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel)
 {
 	visplane_t*	check;
 
@@ -290,11 +282,7 @@ R_FindPlane
 //
 // R_CheckPlane
 //
-visplane_t*
-R_CheckPlane
-( visplane_t*	pl,
- int		start,
- int		stop )
+visplane_t* R_CheckPlane(visplane_t* pl, int start, int stop)
 {
 	int		intrl;
 	int		intrh;

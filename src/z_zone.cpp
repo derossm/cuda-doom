@@ -240,11 +240,7 @@ void Z_Free(void* ptr)
 #define MINFRAGMENT		64
 
 
-void*
-Z_Malloc
-( int		size,
- int		tag,
- void*		user )
+void* Z_Malloc(int size, int tag, void* user)
 {
 	int		extra;
 	memblock_t*	start;
@@ -360,10 +356,7 @@ Z_Malloc
 //
 // Z_FreeTags
 //
-void
-Z_FreeTags
-( int		lowtag,
- int		hightag )
+void Z_FreeTags(int lowtag, int hightag)
 {
 	memblock_t*	block;
 	memblock_t*	next;
@@ -390,10 +383,7 @@ Z_FreeTags
 // Z_DumpHeap
 // Note: TFileDumpHeap( stdout ) ?
 //
-void
-Z_DumpHeap
-( int		lowtag,
- int		hightag )
+void Z_DumpHeap(int lowtag, int hightag)
 {
 	memblock_t*	block;
 

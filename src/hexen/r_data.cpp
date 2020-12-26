@@ -360,7 +360,7 @@ void R_InitTextures()
 											+
 											sizeof(texpatch_t) *
 											(SHORT(mtexture->patchcount) - 1),
-											PU_STATIC, 0);
+											pu_tags_t::PU_STATIC, 0);
 		texture->width = SHORT(mtexture->width);
 		texture->height = SHORT(mtexture->height);
 		texture->patchcount = SHORT(mtexture->patchcount);

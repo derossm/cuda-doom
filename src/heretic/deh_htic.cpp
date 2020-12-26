@@ -130,7 +130,7 @@ int DEH_MapHereticThingType(int type)
 
 	if (deh_hhe_version > deh_hhe_1_0)
 	{
-		if (type >= MT_PHOENIXFX_REMOVED)
+		if (type >= mobjtype_t::MT_PHOENIXFX_REMOVED)
 		{
 			++type;
 		}

@@ -468,16 +468,16 @@ void R_DrawViewBorder()
 	{
 		V_DrawPatch(x, (viewwindowy >> crispy->hires) - 4, W_CacheLumpName("bordt", pu_tags_t::PU_CACHE));
 		V_DrawPatch(x, (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires), W_CacheLumpName("bordb",
-																	PU_CACHE));
+																	pu_tags_t::PU_CACHE));
 	}
 	for (y = (viewwindowy >> crispy->hires); y < (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires); y += 16)
 	{
 		V_DrawPatch((viewwindowx >> crispy->hires) - 4, y, W_CacheLumpName("bordl", pu_tags_t::PU_CACHE));
 		V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), y, W_CacheLumpName("bordr",
-																PU_CACHE));
+																pu_tags_t::PU_CACHE));
 	}
 	V_DrawPatch((viewwindowx >> crispy->hires) - 4, (viewwindowy >> crispy->hires) - 4, W_CacheLumpName("bordtl",
-																	PU_CACHE));
+																	pu_tags_t::PU_CACHE));
 	V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), (viewwindowy >> crispy->hires) - 4,
 				W_CacheLumpName("bordtr", pu_tags_t::PU_CACHE));
 	V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires),
@@ -505,7 +505,7 @@ void R_DrawTopBorder()
 	if (scaledviewwidth == SCREENWIDTH)
 		return;
 
-/*	if(gamemode == shareware)
+/*	if(gamemode == GameMode_t::shareware)
 	{
 		src = W_CacheLumpName ("FLOOR04", pu_tags_t::PU_CACHE);
 	}
@@ -538,7 +538,7 @@ void R_DrawTopBorder()
 						W_CacheLumpName("bordt", pu_tags_t::PU_CACHE));
 		}
 		V_DrawPatch((viewwindowx >> crispy->hires) - 4, (viewwindowy >> crispy->hires), W_CacheLumpName("bordl",
-																	PU_CACHE));
+																	pu_tags_t::PU_CACHE));
 		V_DrawPatch((viewwindowx >> crispy->hires) + (viewwidth >> crispy->hires), (viewwindowy >> crispy->hires),
 					W_CacheLumpName("bordr", pu_tags_t::PU_CACHE));
 		V_DrawPatch((viewwindowx >> crispy->hires) - 4, (viewwindowy >> crispy->hires) + 16,

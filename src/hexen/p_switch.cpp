@@ -22,23 +22,23 @@
 //
 //==================================================================
 switchlist_t alphSwitchListDemo[] = {
-	{"SW_1_UP", "SW_1_DN", SFX_SWITCH1},
-	{"SW_2_UP", "SW_2_DN", SFX_SWITCH1},
-	{"SW52_OFF", "SW52_ON", SFX_SWITCH2},
+	{"SW_1_UP", "SW_1_DN", sfxenum_t::SFX_SWITCH1},
+	{"SW_2_UP", "SW_2_DN", sfxenum_t::SFX_SWITCH1},
+	{"SW52_OFF", "SW52_ON", sfxenum_t::SFX_SWITCH2},
 	{"\0", "\0", 0}
 };
 
 switchlist_t alphSwitchListFull[] = {
-	{"SW_1_UP", "SW_1_DN", SFX_SWITCH1},
-	{"SW_2_UP", "SW_2_DN", SFX_SWITCH1},
-	{"VALVE1", "VALVE2", SFX_VALVE_TURN},
-	{"SW51_OFF", "SW51_ON", SFX_SWITCH2},
-	{"SW52_OFF", "SW52_ON", SFX_SWITCH2},
-	{"SW53_UP", "SW53_DN", SFX_ROPE_PULL},
-	{"PUZZLE5", "PUZZLE9", SFX_SWITCH1},
-	{"PUZZLE6", "PUZZLE10", SFX_SWITCH1},
-	{"PUZZLE7", "PUZZLE11", SFX_SWITCH1},
-	{"PUZZLE8", "PUZZLE12", SFX_SWITCH1},
+	{"SW_1_UP", "SW_1_DN", sfxenum_t::SFX_SWITCH1},
+	{"SW_2_UP", "SW_2_DN", sfxenum_t::SFX_SWITCH1},
+	{"VALVE1", "VALVE2", sfxenum_t::SFX_VALVE_TURN},
+	{"SW51_OFF", "SW51_ON", sfxenum_t::SFX_SWITCH2},
+	{"SW52_OFF", "SW52_ON", sfxenum_t::SFX_SWITCH2},
+	{"SW53_UP", "SW53_DN", sfxenum_t::SFX_ROPE_PULL},
+	{"PUZZLE5", "PUZZLE9", sfxenum_t::SFX_SWITCH1},
+	{"PUZZLE6", "PUZZLE10", sfxenum_t::SFX_SWITCH1},
+	{"PUZZLE7", "PUZZLE11", sfxenum_t::SFX_SWITCH1},
+	{"PUZZLE8", "PUZZLE12", sfxenum_t::SFX_SWITCH1},
 	{"\0", "\0", 0}
 };
 
@@ -65,7 +65,7 @@ void P_InitSwitchList()
 
 	if (!alphSwitchList)
 	{
-		if (gamemode == shareware)
+		if (gamemode == GameMode_t::shareware)
 		{
 			alphSwitchList = alphSwitchListDemo;
 		}

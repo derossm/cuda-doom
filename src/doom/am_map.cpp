@@ -1849,10 +1849,10 @@ void AM_drawThings(int colors, int colorrange)
 										colors + lightlev, pt.x, pt.y);
 				}
 				// [crispy] draw blood splats and puffs as small squares
-				else if (t->type == MT_BLOOD || t->type == MT_PUFF)
+				else if (t->type == mobjtype_t::MT_BLOOD || t->type == mobjtype_t::MT_PUFF)
 				{
 					AM_drawLineCharacter(square_mark, arrlen(square_mark), t->radius >> 2, t->angle,
-										(t->type == MT_BLOOD) ? REDS : GRAYS, pt.x, pt.y);
+										(t->type == mobjtype_t::MT_BLOOD) ? REDS : GRAYS, pt.x, pt.y);
 				}
 				else
 				{

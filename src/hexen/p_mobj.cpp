@@ -144,13 +144,13 @@ void P_ExplodeMissile(mobj_t * mo)
 
 	switch (mo->type)
 	{
-		case MT_SORCBALL1:
-		case MT_SORCBALL2:
-		case MT_SORCBALL3:
-			S_StartSound(NULL, SFX_SORCERER_BIGBALLEXPLODE);
+		case mobjtype_t::MT_SORCBALL1:
+		case mobjtype_t::MT_SORCBALL2:
+		case mobjtype_t::MT_SORCBALL3:
+			S_StartSound(NULL, sfxenum_t::SFX_SORCERER_BIGBALLEXPLODE);
 			break;
-		case MT_SORCFX1:
-			S_StartSound(NULL, SFX_SORCERER_HEADSCREAM);
+		case mobjtype_t::MT_SORCFX1:
+			S_StartSound(NULL, sfxenum_t::SFX_SORCERER_HEADSCREAM);
 			break;
 		default:
 			if (mo->info->deathsound)
@@ -173,10 +173,10 @@ void P_FloorBounceMissile(mobj_t * mo)
 	{
 		switch (mo->type)
 		{
-			case MT_SORCFX1:
-			case MT_SORCBALL1:
-			case MT_SORCBALL2:
-			case MT_SORCBALL3:
+			case mobjtype_t::MT_SORCFX1:
+			case mobjtype_t::MT_SORCBALL1:
+			case mobjtype_t::MT_SORCBALL2:
+			case mobjtype_t::MT_SORCBALL3:
 				break;
 			default:
 				P_RemoveMobj(mo);
@@ -185,19 +185,19 @@ void P_FloorBounceMissile(mobj_t * mo)
 	}
 	switch (mo->type)
 	{
-		case MT_SORCFX1:
+		case mobjtype_t::MT_SORCFX1:
 			mo->momz = -mo->momz;		// no energy absorbed
 			break;
-		case MT_SGSHARD1:
-		case MT_SGSHARD2:
-		case MT_SGSHARD3:
-		case MT_SGSHARD4:
-		case MT_SGSHARD5:
-		case MT_SGSHARD6:
-		case MT_SGSHARD7:
-		case MT_SGSHARD8:
-		case MT_SGSHARD9:
-		case MT_SGSHARD0:
+		case mobjtype_t::MT_SGSHARD1:
+		case mobjtype_t::MT_SGSHARD2:
+		case mobjtype_t::MT_SGSHARD3:
+		case mobjtype_t::MT_SGSHARD4:
+		case mobjtype_t::MT_SGSHARD5:
+		case mobjtype_t::MT_SGSHARD6:
+		case mobjtype_t::MT_SGSHARD7:
+		case mobjtype_t::MT_SGSHARD8:
+		case mobjtype_t::MT_SGSHARD9:
+		case mobjtype_t::MT_SGSHARD0:
 			mo->momz = FixedMul(mo->momz, -0.3 * FRACUNIT);
 			if (abs(mo->momz) < (FRACUNIT / 2))
 			{
@@ -215,9 +215,9 @@ void P_FloorBounceMissile(mobj_t * mo)
 	{
 		switch (mo->type)
 		{
-			case MT_SORCBALL1:
-			case MT_SORCBALL2:
-			case MT_SORCBALL3:
+			case mobjtype_t::MT_SORCBALL1:
+			case mobjtype_t::MT_SORCBALL2:
+			case mobjtype_t::MT_SORCBALL3:
 				if (!mo->args[0])
 					S_StartSound(mo, mo->info->seesound);
 				break;
@@ -507,10 +507,10 @@ void P_XYMovement(mobj_t * mo)
 						P_BounceWall(mo);
 						switch (mo->type)
 						{
-							case MT_SORCBALL1:
-							case MT_SORCBALL2:
-							case MT_SORCBALL3:
-							case MT_SORCFX1:
+							case mobjtype_t::MT_SORCBALL1:
+							case mobjtype_t::MT_SORCBALL2:
+							case mobjtype_t::MT_SORCBALL3:
+							case mobjtype_t::MT_SORCFX1:
 								break;
 							default:
 								if (mo->info->seesound)
@@ -530,14 +530,14 @@ void P_XYMovement(mobj_t * mo)
 					// Change angle for delflection/reflection
 					switch (BlockingMobj->type)
 					{
-						case MT_CENTAUR:
-						case MT_CENTAURLEADER:
+						case mobjtype_t::MT_CENTAUR:
+						case mobjtype_t::MT_CENTAURLEADER:
 							if (abs((int) angle - (int) BlockingMobj->angle) >> 24 > 45)
 								goto explode;
-							if (mo->type == MT_HOLY_FX)
+							if (mo->type == mobjtype_t::MT_HOLY_FX)
 								goto explode;
 							// Drop through to sorcerer full reflection
-						case MT_SORCBOSS:
+						case mobjtype_t::MT_SORCBOSS:
 							// Deflection
 							if (P_Random() < 128)
 								angle += ANG45;
@@ -570,12 +570,12 @@ void P_XYMovement(mobj_t * mo)
 				if (ceilingline && ceilingline->backsector
 					&& ceilingline->backsector->ceilingpic == skyflatnum)
 				{				// Hack to prevent missiles exploding against the sky
-					if (mo->type == MT_BLOODYSKULL)
+					if (mo->type == mobjtype_t::MT_BLOODYSKULL)
 					{
 						mo->momx = mo->momy = 0;
 						mo->momz = -FRACUNIT;
 					}
-					else if (mo->type == MT_HOLY_FX)
+					else if (mo->type == mobjtype_t::MT_HOLY_FX)
 					{
 						P_ExplodeMissile(mo);
 					}
@@ -615,7 +615,7 @@ void P_XYMovement(mobj_t * mo)
 	if (mo->z > mo->floorz && !(mo->flags2 & MF2_FLY)
 		&& !(mo->flags2 & MF2_ONMOBJ))
 	{							// No friction when falling
-		if (mo->type != MT_BLASTEFFECT)
+		if (mo->type != mobjtype_t::MT_BLASTEFFECT)
 			return;
 	}
 	if (mo->flags & MF_CORPSE)
@@ -745,13 +745,13 @@ void P_ZMovement(mobj_t * mo)
 				P_FloorBounceMissile(mo);
 				return;
 			}
-			else if (mo->type == MT_HOLY_FX)
+			else if (mo->type == mobjtype_t::MT_HOLY_FX)
 			{					// The spirit struck the ground
 				mo->momz = 0;
 				P_HitFloor(mo);
 				return;
 			}
-			else if (mo->type == MT_MNTRFX2 || mo->type == MT_LIGHTNING_FLOOR)
+			else if (mo->type == mobjtype_t::MT_MNTRFX2 || mo->type == mobjtype_t::MT_LIGHTNING_FLOOR)
 			{					// Minotaur floor fire can go up steps
 				return;
 			}
@@ -798,17 +798,17 @@ void P_ZMovement(mobj_t * mo)
 					else if (mo->momz < -GRAVITY * 12
 								&& !mo->player->morphTics)
 					{
-						S_StartSound(mo, SFX_PLAYER_LAND);
+						S_StartSound(mo, sfxenum_t::SFX_PLAYER_LAND);
 						switch (mo->player->playerClass)
 						{
-							case PCLASS_FIGHTER:
-								S_StartSound(mo, SFX_PLAYER_FIGHTER_GRUNT);
+							case pclass_t::PCLASS_FIGHTER:
+								S_StartSound(mo, sfxenum_t::SFX_PLAYER_FIGHTER_GRUNT);
 								break;
-							case PCLASS_CLERIC:
-								S_StartSound(mo, SFX_PLAYER_CLERIC_GRUNT);
+							case pclass_t::PCLASS_CLERIC:
+								S_StartSound(mo, sfxenum_t::SFX_PLAYER_CLERIC_GRUNT);
 								break;
-							case PCLASS_MAGE:
-								S_StartSound(mo, SFX_PLAYER_MAGE_GRUNT);
+							case pclass_t::PCLASS_MAGE:
+								S_StartSound(mo, sfxenum_t::SFX_PLAYER_MAGE_GRUNT);
 								break;
 							default:
 								break;
@@ -817,13 +817,13 @@ void P_ZMovement(mobj_t * mo)
 					else if ((P_GetThingFloorType(mo) < FLOOR_LIQUID) &&
 								(!mo->player->morphTics))
 					{
-						S_StartSound(mo, SFX_PLAYER_LAND);
+						S_StartSound(mo, sfxenum_t::SFX_PLAYER_LAND);
 					}
 					// haleyjd: removed externdriver crap
 					mo->player->centering = true;
 				}
 			}
-			else if (mo->type >= MT_POTTERY1 && mo->type <= MT_POTTERY3)
+			else if (mo->type >= mobjtype_t::MT_POTTERY1 && mo->type <= mobjtype_t::MT_POTTERY3)
 			{
 				P_DamageMobj(mo, NULL, NULL, 25);
 			}
@@ -884,18 +884,18 @@ void P_ZMovement(mobj_t * mo)
 		}
 		if (mo->flags & MF_MISSILE)
 		{
-			if (mo->type == MT_LIGHTNING_CEILING)
+			if (mo->type == mobjtype_t::MT_LIGHTNING_CEILING)
 			{
 				return;
 			}
 			if (mo->subsector->sector->ceilingpic == skyflatnum)
 			{
-				if (mo->type == MT_BLOODYSKULL)
+				if (mo->type == mobjtype_t::MT_BLOODYSKULL)
 				{
 					mo->momx = mo->momy = 0;
 					mo->momz = -FRACUNIT;
 				}
-				else if (mo->type == MT_HOLY_FX)
+				else if (mo->type == mobjtype_t::MT_HOLY_FX)
 				{
 					P_ExplodeMissile(mo);
 				}
@@ -961,14 +961,14 @@ void P_BlasterMobjThinker(mobj_t * mobj)
 			}
 			if (changexy)
 			{
-				if (mobj->type == MT_MWAND_MISSILE && (P_Random() < 128))
+				if (mobj->type == mobjtype_t::MT_MWAND_MISSILE && (P_Random() < 128))
 				{
 					z = mobj->z - 8 * FRACUNIT;
 					if (z < mobj->floorz)
 					{
 						z = mobj->floorz;
 					}
-					P_SpawnMobj(mobj->x, mobj->y, z, MT_MWANDSMOKE);
+					P_SpawnMobj(mobj->x, mobj->y, z, mobjtype_t::MT_MWANDSMOKE);
 				}
 				else if (!--mobj->special1.i)
 				{
@@ -978,7 +978,7 @@ void P_BlasterMobjThinker(mobj_t * mobj)
 					{
 						z = mobj->floorz;
 					}
-					mo = P_SpawnMobj(mobj->x, mobj->y, z, MT_CFLAMEFLOOR);
+					mo = P_SpawnMobj(mobj->x, mobj->y, z, mobjtype_t::MT_CFLAMEFLOOR);
 					if (mo)
 					{
 						mo->angle = mobj->angle;
@@ -1017,17 +1017,17 @@ static void PlayerLandedOnThing(mobj_t * mo, mobj_t * onmobj)
 	}
 	else if (mo->momz < -GRAVITY * 12 && !mo->player->morphTics)
 	{
-		S_StartSound(mo, SFX_PLAYER_LAND);
+		S_StartSound(mo, sfxenum_t::SFX_PLAYER_LAND);
 		switch (mo->player->playerClass)
 		{
-			case PCLASS_FIGHTER:
-				S_StartSound(mo, SFX_PLAYER_FIGHTER_GRUNT);
+			case pclass_t::PCLASS_FIGHTER:
+				S_StartSound(mo, sfxenum_t::SFX_PLAYER_FIGHTER_GRUNT);
 				break;
-			case PCLASS_CLERIC:
-				S_StartSound(mo, SFX_PLAYER_CLERIC_GRUNT);
+			case pclass_t::PCLASS_CLERIC:
+				S_StartSound(mo, sfxenum_t::SFX_PLAYER_CLERIC_GRUNT);
 				break;
-			case PCLASS_MAGE:
-				S_StartSound(mo, SFX_PLAYER_MAGE_GRUNT);
+			case pclass_t::PCLASS_MAGE:
+				S_StartSound(mo, sfxenum_t::SFX_PLAYER_MAGE_GRUNT);
 				break;
 			default:
 				break;
@@ -1035,7 +1035,7 @@ static void PlayerLandedOnThing(mobj_t * mo, mobj_t * onmobj)
 	}
 	else if (!mo->player->morphTics)
 	{
-		S_StartSound(mo, SFX_PLAYER_LAND);
+		S_StartSound(mo, sfxenum_t::SFX_PLAYER_LAND);
 	}
 	// haleyjd: removed externdriver crap
 	mo->player->centering = true;
@@ -1296,7 +1296,7 @@ void P_SpawnPlayer(mapthing_t * mthing)
 	}
 
 	p = &players[mthing->type - 1];
-	if (p->playerstate == PST_REBORN)
+	if (p->playerstate == PlayerState_t::PST_REBORN)
 	{
 		G_PlayerReborn(mthing->type - 1);
 	}
@@ -1319,14 +1319,14 @@ void P_SpawnPlayer(mapthing_t * mthing)
 	}
 	switch (p->playerClass)
 	{
-		case PCLASS_FIGHTER:
-			mobj = P_SpawnMobj(x, y, z, MT_PLAYER_FIGHTER);
+		case pclass_t::PCLASS_FIGHTER:
+			mobj = P_SpawnMobj(x, y, z, mobjtype_t::MT_PLAYER_FIGHTER);
 			break;
-		case PCLASS_CLERIC:
-			mobj = P_SpawnMobj(x, y, z, MT_PLAYER_CLERIC);
+		case pclass_t::PCLASS_CLERIC:
+			mobj = P_SpawnMobj(x, y, z, mobjtype_t::MT_PLAYER_CLERIC);
 			break;
-		case PCLASS_MAGE:
-			mobj = P_SpawnMobj(x, y, z, MT_PLAYER_MAGE);
+		case pclass_t::PCLASS_MAGE:
+			mobj = P_SpawnMobj(x, y, z, mobjtype_t::MT_PLAYER_MAGE);
 			break;
 		default:
 			I_Error("P_SpawnPlayer: Unknown class type");
@@ -1334,7 +1334,7 @@ void P_SpawnPlayer(mapthing_t * mthing)
 	}
 
 	// Set translation table data
-	if (p->playerClass == PCLASS_FIGHTER
+	if (p->playerClass == pclass_t::pclass_t::PCLASS_FIGHTER
 		&& (mthing->type == 1 || mthing->type == 3))
 	{
 		// The first type should be blue, and the third should be the
@@ -1353,7 +1353,7 @@ void P_SpawnPlayer(mapthing_t * mthing)
 	mobj->player = p;
 	mobj->health = p->health;
 	p->mo = mobj;
-	p->playerstate = PST_LIVE;
+	p->playerstate = PlayerState_t::PST_LIVE;
 	p->refire = 0;
 	P_ClearMessage(p);
 	p->damagecount = 0;
@@ -1555,8 +1555,8 @@ void P_SpawnMapThing(mapthing_t * mthing)
 	}
 	switch (i)
 	{							// Special stuff
-		case MT_ZLYNCHED_NOHEART:
-			P_SpawnMobj(x, y, ONFLOORZ, MT_BLOODPOOL);
+		case mobjtype_t::MT_ZLYNCHED_NOHEART:
+			P_SpawnMobj(x, y, ONFLOORZ, mobjtype_t::MT_BLOODPOOL);
 			break;
 		default:
 			break;
@@ -1607,7 +1607,7 @@ void P_SpawnMapThing(mapthing_t * mthing)
 	if (mthing->options & MTF_DORMANT)
 	{
 		mobj->flags2 |= MF2_DORMANT;
-		if (mobj->type == MT_ICEGUY)
+		if (mobj->type == mobjtype_t::MT_ICEGUY)
 		{
 			P_SetMobjState(mobj, S_ICEGUY_DORMANT);
 		}
@@ -1762,10 +1762,10 @@ void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
 	}
 	switch (PuffType)
 	{
-		case MT_PUNCHPUFF:
+		case mobjtype_t::MT_PUNCHPUFF:
 			puff->momz = FRACUNIT;
 			break;
-		case MT_HAMMERPUFF:
+		case mobjtype_t::MT_HAMMERPUFF:
 			puff->momz = .8 * FRACUNIT;
 			break;
 		default:
@@ -1788,7 +1788,7 @@ void P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage)
 	mobj_t	*th;
 
 	z += (P_SubRandom()<<10);
-	th = P_SpawnMobj (x,y,z, MT_BLOOD);
+	th = P_SpawnMobj (x,y,z, mobjtype_t::MT_BLOOD);
 	th->momz = FRACUNIT*2;
 	th->tics -= P_Random()&3;
 
@@ -1809,7 +1809,7 @@ void P_BloodSplatter(fixed_t x, fixed_t y, fixed_t z, mobj_t * originator)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMobj(x, y, z, MT_BLOODSPLATTER);
+	mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_BLOODSPLATTER);
 	mo->target = originator;
 	mo->momx = P_SubRandom() << 10;
 	mo->momy = P_SubRandom() << 10;
@@ -1830,7 +1830,7 @@ void P_BloodSplatter2(fixed_t x, fixed_t y, fixed_t z, mobj_t * originator)
 	r1 = P_Random();
 	r2 = P_Random();
 	mo = P_SpawnMobj(x + ((r2 - 128) << 11),
-						y + ((r1 - 128) << 11), z, MT_AXEBLOOD);
+						y + ((r1 - 128) << 11), z, mobjtype_t::MT_AXEBLOOD);
 	mo->target = originator;
 }
 
@@ -1848,7 +1848,7 @@ void P_RipperBlood(mobj_t * mo)
 	x = mo->x + (P_SubRandom() << 12);
 	y = mo->y + (P_SubRandom() << 12);
 	z = mo->z + (P_SubRandom() << 12);
-	th = P_SpawnMobj(x, y, z, MT_BLOOD);
+	th = P_SpawnMobj(x, y, z, mobjtype_t::MT_BLOOD);
 //		th->flags |= MF_NOGRAVITY;
 	th->momx = mo->momx >> 1;
 	th->momy = mo->momy >> 1;
@@ -1904,12 +1904,12 @@ int P_HitFloor(mobj_t * thing)
 	// Things that don't splash go here
 	switch (thing->type)
 	{
-		case MT_LEAF1:
-		case MT_LEAF2:
-//				case MT_BLOOD:					// I set these to low mass -- pm
-//				case MT_BLOODSPLATTER:
-		case MT_SPLASH:
-		case MT_SLUDGECHUNK:
+		case mobjtype_t::MT_LEAF1:
+		case mobjtype_t::MT_LEAF2:
+//				case mobjtype_t::MT_BLOOD:					// I set these to low mass -- pm
+//				case mobjtype_t::MT_BLOODSPLATTER:
+		case mobjtype_t::MT_SPLASH:
+		case mobjtype_t::MT_SLUDGECHUNK:
 			return (FLOOR_SOLID);
 		default:
 			break;
@@ -1924,40 +1924,40 @@ int P_HitFloor(mobj_t * thing)
 		case FLOOR_WATER:
 			if (smallsplash)
 			{
-				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_SPLASHBASE);
+				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_SPLASHBASE);
 				if (mo)
 					mo->floorclip += SMALLSPLASHCLIP;
-				S_StartSound(mo, SFX_AMBIENT10);		// small drip
+				S_StartSound(mo, sfxenum_t::SFX_AMBIENT10);		// small drip
 			}
 			else
 			{
-				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_SPLASH);
+				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_SPLASH);
 				mo->target = thing;
 				mo->momx = P_SubRandom() << 8;
 				mo->momy = P_SubRandom() << 8;
 				mo->momz = 2 * FRACUNIT + (P_Random() << 8);
-				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_SPLASHBASE);
+				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_SPLASHBASE);
 				if (thing->player)
 					P_NoiseAlert(thing, thing);
-				S_StartSound(mo, SFX_WATER_SPLASH);
+				S_StartSound(mo, sfxenum_t::SFX_WATER_SPLASH);
 			}
 			return (FLOOR_WATER);
 		case FLOOR_LAVA:
 			if (smallsplash)
 			{
-				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_LAVASPLASH);
+				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_LAVASPLASH);
 				if (mo)
 					mo->floorclip += SMALLSPLASHCLIP;
 			}
 			else
 			{
-				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_LAVASMOKE);
+				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_LAVASMOKE);
 				mo->momz = FRACUNIT + (P_Random() << 7);
-				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, MT_LAVASPLASH);
+				mo = P_SpawnMobj(thing->x, thing->y, ONFLOORZ, mobjtype_t::MT_LAVASPLASH);
 				if (thing->player)
 					P_NoiseAlert(thing, thing);
 			}
-			S_StartSound(mo, SFX_LAVA_SIZZLE);
+			S_StartSound(mo, sfxenum_t::SFX_LAVA_SIZZLE);
 			if (thing->player && leveltime & 31)
 			{
 				P_DamageMobj(thing, &LavaInflictor, NULL, 5);
@@ -1984,7 +1984,7 @@ int P_HitFloor(mobj_t * thing)
 				if (thing->player)
 					P_NoiseAlert(thing, thing);
 			}
-			S_StartSound(mo, SFX_SLUDGE_GLOOP);
+			S_StartSound(mo, sfxenum_t::SFX_SLUDGE_GLOOP);
 			return (FLOOR_SLUDGE);
 	}
 	return (FLOOR_SOLID);
@@ -2035,19 +2035,19 @@ mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type)
 
 	switch (type)
 	{
-		case MT_MNTRFX1:		// Minotaur swing attack missile
+		case mobjtype_t::MT_MNTRFX1:		// Minotaur swing attack missile
 			z = source->z + 40 * FRACUNIT;
 			break;
-		case MT_MNTRFX2:		// Minotaur floor fire missile
+		case mobjtype_t::MT_MNTRFX2:		// Minotaur floor fire missile
 			z = ONFLOORZ + source->floorclip;
 			break;
-		case MT_CENTAUR_FX:
+		case mobjtype_t::MT_CENTAUR_FX:
 			z = source->z + 45 * FRACUNIT;
 			break;
-		case MT_ICEGUY_FX:
+		case mobjtype_t::MT_ICEGUY_FX:
 			z = source->z + 40 * FRACUNIT;
 			break;
-		case MT_HOLY_MISSILE:
+		case mobjtype_t::MT_HOLY_MISSILE:
 			z = source->z + 40 * FRACUNIT;
 			break;
 		default:
@@ -2139,16 +2139,16 @@ mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
 
 	switch (type)
 	{
-		case MT_MNTRFX1:		// Minotaur swing attack missile
+		case mobjtype_t::MT_MNTRFX1:		// Minotaur swing attack missile
 			z = source->z + 40 * FRACUNIT;
 			break;
-		case MT_MNTRFX2:		// Minotaur floor fire missile
+		case mobjtype_t::MT_MNTRFX2:		// Minotaur floor fire missile
 			z = ONFLOORZ + source->floorclip;
 			break;
-		case MT_ICEGUY_FX2:	// Secondary Projectiles of the Ice Guy
+		case mobjtype_t::MT_ICEGUY_FX2:	// Secondary Projectiles of the Ice Guy
 			z = source->z + 3 * FRACUNIT;
 			break;
-		case MT_MSTAFF_FX2:
+		case mobjtype_t::MT_MSTAFF_FX2:
 			z = source->z + 40 * FRACUNIT;
 			break;
 		default:
@@ -2237,12 +2237,12 @@ mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type)
 	}
 	x = source->x;
 	y = source->y;
-	if (type == MT_LIGHTNING_FLOOR)
+	if (type == mobjtype_t::MT_LIGHTNING_FLOOR)
 	{
 		z = ONFLOORZ;
 		slope = 0;
 	}
-	else if (type == MT_LIGHTNING_CEILING)
+	else if (type == mobjtype_t::MT_LIGHTNING_CEILING)
 	{
 		z = ONCEILINGZ;
 		slope = 0;
@@ -2265,8 +2265,8 @@ mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type)
 	MissileMobj->momy = FixedMul(MissileMobj->info->speed,
 									finesine[an >> ANGLETOFINESHIFT]);
 	MissileMobj->momz = FixedMul(MissileMobj->info->speed, slope);
-	if (MissileMobj->type == MT_MWAND_MISSILE
-		|| MissileMobj->type == MT_CFLAME_MISSILE)
+	if (MissileMobj->type == mobjtype_t::MT_MWAND_MISSILE
+		|| MissileMobj->type == mobjtype_t::MT_CFLAME_MISSILE)
 	{							// Ultra-fast ripper spawning missile
 		MissileMobj->x += (MissileMobj->momx >> 3);
 		MissileMobj->y += (MissileMobj->momy >> 3);

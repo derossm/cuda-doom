@@ -604,7 +604,7 @@ void M_DoNameChar(int choice)
 	int map;
 
 	// 20130301: clear naming character flag for 1.31 save logic
-	if(gameversion == exe_strife_1_31)
+	if(gameversion == GameVersion_t::exe_strife_1_31)
 		namingCharacter = false;
 	sendsave = 1;
 	ClearTmp();
@@ -795,7 +795,7 @@ void M_SaveGame (int choice)
 		return;
 
 	// [STRIFE]
-	if(gameversion == exe_strife_1_31)
+	if(gameversion == GameVersion_t::exe_strife_1_31)
 	{
 		// haleyjd 20130301: in 1.31, we can choose a slot again.
 		M_SetupNextMenu(&SaveDef);
@@ -1053,7 +1053,7 @@ void M_NewGame(int choice)
 		return;
 	}
 	// haleyjd 09/07/10: [STRIFE] Removed Chex Quest and DOOM gamemodes
-	if(gameversion == exe_strife_1_31)
+	if(gameversion == GameVersion_t::exe_strife_1_31)
 		namingCharacter = true; // for 1.31 save logic
 	M_SetupNextMenu(&NewDef);
 }
@@ -1096,7 +1096,7 @@ void M_ChooseSkill(int choice)
 // haleyjd [STRIFE] Unused
 void M_Episode(int choice)
 {
-	if ( (gamemode == shareware)
+	if ( (gamemode == GameMode_t::shareware)
 		&& choice)
 	{
 	M_StartMessage(DEH_String(SWSTRING),NULL,false);
@@ -1105,7 +1105,7 @@ void M_Episode(int choice)
 	}
 
 	// Yet another hack...
-	if ( (gamemode == registered)
+	if ( (gamemode == GameMode_t::registered)
 		&& (choice > 2))
 	{
 		fprintf( stderr,
@@ -1410,12 +1410,7 @@ void M_SizeDisplay(int choice)
 //
 // haleyjd 08/28/10: [STRIFE] Changes to some patch coordinates.
 //
-void
-M_DrawThermo
-( int	x,
- int	y,
- int	thermWidth,
- int	thermDot )
+void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
 {
 	int			xx;
 	int			yy; // [STRIFE] Needs a temp y coordinate variable
@@ -1440,19 +1435,13 @@ M_DrawThermo
 
 // haleyjd: These are from DOOM v0.5 and the prebeta! They drew those ugly red &
 // blue checkboxes... preserved for historical interest, as not in Strife.
-void
-M_DrawEmptyCell
-( menu_t*	menu,
- int		item )
+void M_DrawEmptyCell(menu_t* menu, int item)
 {
 	V_DrawPatchDirect(menu->x - 10, menu->y + item * LINEHEIGHT - 1,
 						W_CacheLumpName(DEH_String("M_CELL1"), pu_tags_t::PU_CACHE));
 }
 
-void
-M_DrawSelCell
-( menu_t*	menu,
- int		item )
+void M_DrawSelCell(menu_t* menu, int item)
 {
 	V_DrawPatchDirect(menu->x - 10, menu->y + item * LINEHEIGHT - 1,
 						W_CacheLumpName(DEH_String("M_CELL2"), pu_tags_t::PU_CACHE));
@@ -1532,11 +1521,7 @@ int M_StringHeight(const char *string)
 // haleyjd 09/04/10: [STRIFE]
 // * Rogue made a lot of changes to this for the dialog system.
 //
-int
-M_WriteText
-( int			x,
- int			y,
- const char*	string) // haleyjd: made const for safety w/dialog engine
+int M_WriteText(int x, int y, const char* int0 int1	string) // haleyjd: made const for safety w/dialog engine
 {
 	int			w;
 	const char* ch;
@@ -1866,7 +1851,7 @@ bool M_Responder (event_t* ev)
 			// [STRIFE]
 			saveStringEnter = 0;
 			I_StopTextInput();
-			if(gameversion == exe_strife_1_31 && !namingCharacter)
+			if(gameversion == GameVersion_t::exe_strife_1_31 && !namingCharacter)
 			{
 				// In 1.31, we can be here as a result of normal saving again,
 				// whereas in 1.2 this only ever happens when naming your
@@ -1989,7 +1974,7 @@ bool M_Responder (event_t* ev)
 		else if (key == key_menu_save)		// Save
 		{
 			// [STRIFE]: Hub saves
-			if(gameversion == exe_strife_1_31)
+			if(gameversion == GameVersion_t::exe_strife_1_31)
 				namingCharacter = false; // just saving normally, in 1.31
 
 			if(netgame || players[consoleplayer].health <= 0 ||
@@ -2008,7 +1993,7 @@ bool M_Responder (event_t* ev)
 		else if (key == key_menu_load)		// Load
 		{
 			// [STRIFE]: Hub saves
-			if(gameversion == exe_strife_1_31)
+			if(gameversion == GameVersion_t::exe_strife_1_31)
 			{
 				// 1.31: normal save loading
 				namingCharacter = false;
@@ -2042,7 +2027,7 @@ bool M_Responder (event_t* ev)
 		else if (key == key_menu_qsave)	// Quicksave
 		{
 			// [STRIFE]: Hub saves
-			if(gameversion == exe_strife_1_31)
+			if(gameversion == GameVersion_t::exe_strife_1_31)
 				namingCharacter = false; // for 1.31 save changes
 
 			if(netgame || players[consoleplayer].health <= 0 ||
@@ -2075,7 +2060,7 @@ bool M_Responder (event_t* ev)
 			// [STRIFE]
 			// * v1.2: takes a screenshot
 			// * v1.31: does quickload again
-			if(gameversion == exe_strife_1_31)
+			if(gameversion == GameVersion_t::exe_strife_1_31)
 			{
 				namingCharacter = false;
 				S_StartSound(NULL, sfx_swtchn);
@@ -2100,7 +2085,7 @@ bool M_Responder (event_t* ev)
 			I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
 			return true;
 		}
-		else if(gameversion == exe_strife_1_31 && key == key_spy)
+		else if(gameversion == GameVersion_t::exe_strife_1_31 && key == key_spy)
 		{
 			// haleyjd 20130301: 1.31 moved screenshots to F12.
 			G_ScreenShot();
@@ -2204,7 +2189,7 @@ bool M_Responder (event_t* ev)
 	else if (key == key_menu_activate)
 	{
 		// Deactivate menu
-		if(gameversion == exe_strife_1_31) // [STRIFE]: 1.31 saving
+		if(gameversion == GameVersion_t::exe_strife_1_31) // [STRIFE]: 1.31 saving
 			namingCharacter = false;
 
 		if(menuindialog) // [STRIFE] - Get out of dialog engine semi-gracefully
@@ -2364,7 +2349,7 @@ void M_Drawer ()
 	// DRAW SIGIL
 	V_DrawPatchDirect(x + CURSORXOFF, currentMenu->y - 5 + itemOn*LINEHEIGHT,
 						W_CacheLumpName(DEH_String(cursorName[whichCursor]),
-										PU_CACHE));
+										pu_tags_t::PU_CACHE));
 
 }
 

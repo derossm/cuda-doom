@@ -426,7 +426,7 @@ void HU_Init()
 	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, pu_tags_t::PU_STATIC);
 	}
 
-	if (gameversion == exe_chex)
+	if (gameversion == GameVersion_t::exe_chex)
 	{
 	cr_stat = crstr[CR_GREEN];
 	cr_stat2 = crstr[CR_GOLD];
@@ -434,7 +434,7 @@ void HU_Init()
 	}
 	else
 	{
-	if (gameversion == exe_hacx)
+	if (gameversion == GameVersion_t::exe_hacx)
 	{
 		cr_stat = crstr[CR_BLUE];
 	}
@@ -671,7 +671,7 @@ void HU_Start()
 		case doom2:
 		s = HU_TITLE2;
 			// Pre-Final Doom compatibility: map33-map35 names don't spill over
-			if (gameversion <= exe_doom_1_9 && gamemap >= 33 && false) // [crispy] disable
+			if (gameversion <= GameVersion_t::exe_doom_1_9 && gamemap >= 33 && false) // [crispy] disable
 			{
 				s = "";
 			}
@@ -699,7 +699,7 @@ void HU_Start()
 			break;
 	}
 
-	if (logical_gamemission == doom && gameversion == exe_chex)
+	if (logical_gamemission == doom && gameversion == GameVersion_t::exe_chex)
 	{
 		s = HU_TITLE_CHEX;
 	}
@@ -783,7 +783,7 @@ static void HU_DrawCrosshair ()
 	extern byte *R_LaserspotColor ();
 
 	if (weaponinfo[plr->readyweapon].ammo == am_noammo ||
-		plr->playerstate != PST_LIVE ||
+		plr->playerstate != PlayerState_t::PST_LIVE ||
 		automapactive ||
 		menuactive ||
 		paused ||
@@ -997,7 +997,7 @@ void HU_Ticker()
 				message_nottobefuckedwith = true;
 				message_on = true;
 				message_counter = HU_MSGTIMEOUT;
-				if ( gamemode == commercial )
+				if ( gamemode == GameMode_t::commercial )
 					S_StartSound(0, sfx_radio);
 				else if (gameversion > exe_doom_1_2)
 					S_StartSound(0, sfx_tink);

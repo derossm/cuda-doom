@@ -655,7 +655,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 		return;
 
 	case 213: // DR Chalice door
-		if(!P_PlayerHasItem(player, MT_INV_CHALICE))
+		if(!P_PlayerHasItem(player, mobjtype_t::MT_INV_CHALICE))
 		{
 			player->message = DEH_String("You need the chalice!");
 			S_StartSound(NULL, sfx_oof);
@@ -884,10 +884,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 //
 // Spawn a door that opens after 5 minutes
 //
-void
-P_SpawnDoorRaiseIn5Mins
-( sector_t*	sec,
- int		secnum )
+void P_SpawnDoorRaiseIn5Mins(sector_t* sec, int secnum)
 {
 	vldoor_t*	door;
 

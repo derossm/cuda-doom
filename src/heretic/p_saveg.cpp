@@ -822,7 +822,7 @@ static void saveg_read_mobj_t(mobj_t *str)
 
 	// An extra thing type was added for v1.0 HHE compatibility.
 	// Map from the v1.3 thing type index to the internal one.
-	if (str->type >= MT_PHOENIXFX_REMOVED)
+	if (str->type >= mobjtype_t::MT_PHOENIXFX_REMOVED)
 	{
 		++str->type;
 	}
@@ -861,16 +861,16 @@ static void saveg_read_mobj_t(mobj_t *str)
 	{
 		// Gas pods use special2.m to point to the pod generator
 		// that made it.
-		case MT_POD:
+		case mobjtype_t::MT_POD:
 			str->special2.m = NULL;
 			break;
 
 		// Several thing types use special1.m to mean 'target':
-		case MT_MACEFX4:		// A_DeathBallImpact
-		case MT_WHIRLWIND:	// A_WhirlwindSeek
-		case MT_MUMMYFX1:	// A_MummyFX1Seek
-		case MT_HORNRODFX2: // A_SkullRodPL2Seek
-		case MT_PHOENIXFX1: // A_PhoenixPuff
+		case mobjtype_t::MT_MACEFX4:		// A_DeathBallImpact
+		case mobjtype_t::MT_WHIRLWIND:	// A_WhirlwindSeek
+		case mobjtype_t::MT_MUMMYFX1:	// A_MummyFX1Seek
+		case mobjtype_t::MT_HORNRODFX2: // A_SkullRodPL2Seek
+		case mobjtype_t::MT_PHOENIXFX1: // A_PhoenixPuff
 			str->special1.m = NULL;
 			break;
 
@@ -967,11 +967,11 @@ static void saveg_write_mobj_t(mobj_t *str)
 	// HHE patches. So translate the internal thing type index to the
 	// equivalent for Vanilla Heretic v1.3, for savegame compatibility.
 
-	if (str->type > MT_PHOENIXFX_REMOVED)
+	if (str->type > mobjtype_t::MT_PHOENIXFX_REMOVED)
 	{
 		SV_WriteLong(str->type - 1);
 	}
-	else if (str->type == MT_PHOENIXFX_REMOVED)
+	else if (str->type == mobjtype_t::MT_PHOENIXFX_REMOVED)
 	{
 		// This should never happen, but just in case, do something
 		// vaguely sensible ... ?

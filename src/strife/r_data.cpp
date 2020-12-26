@@ -173,12 +173,7 @@ lighttable_t	*colormaps;
 // Clip and draw a column
 // from a patch into a cached post.
 //
-void
-R_DrawColumnInCache
-( column_t*	patch,
- byte*		cache,
- int		originy,
- int		cacheheight )
+void R_DrawColumnInCache(column_t* patch, byte* cache, int originy, int cacheheight)
 {
 	int		count;
 	int		position;
@@ -231,7 +226,7 @@ void R_GenerateComposite (int texnum)
 	texture = textures[texnum];
 
 	block = Z_Malloc<decltype(block)>(texturecompositesize[texnum],
-				PU_STATIC,
+				pu_tags_t::PU_STATIC,
 				&texturecomposite[texnum]);
 
 	collump = texturecolumnlump[texnum];
@@ -562,7 +557,7 @@ void R_InitTextures()
 		texture = textures[i] =
 			Z_Malloc<texture_t>(sizeof(texture_t)
 						+ sizeof(texpatch_t)*(SHORT(mtexture->patchcount)-1),
-						PU_STATIC, 0);
+						pu_tags_t::PU_STATIC, 0);
 
 		texture->width = SHORT(mtexture->width);
 		texture->height = SHORT(mtexture->height);

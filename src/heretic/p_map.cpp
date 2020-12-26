@@ -292,7 +292,7 @@ bool PIT_CheckLine(line_t * ld)
 			return (false);
 		}
 		if (!tmthing->player && ld->flags & ML_BLOCKMONSTERS
-			&& tmthing->type != MT_POD)
+			&& tmthing->type != mobjtype_t::MT_POD)
 		{						// Block monsters only
 			return (false);
 		}
@@ -348,8 +348,8 @@ bool PIT_CheckThing(mobj_t * thing)
 	}
 	if (tmthing->flags2 & MF2_PASSMOBJ)
 	{							// check if a mobj passed over/under another object
-		if ((tmthing->type == MT_IMP || tmthing->type == MT_WIZARD)
-			&& (thing->type == MT_IMP || thing->type == MT_WIZARD))
+		if ((tmthing->type == mobjtype_t::MT_IMP || tmthing->type == mobjtype_t::MT_WIZARD)
+			&& (thing->type == mobjtype_t::MT_IMP || thing->type == mobjtype_t::MT_WIZARD))
 		{						// don't let imps/wizards fly over other imps/wizards
 			return false;
 		}
@@ -397,7 +397,7 @@ bool PIT_CheckThing(mobj_t * thing)
 			{					// Don't missile self
 				return (true);
 			}
-			if (thing->type != MT_PLAYER)
+			if (thing->type != mobjtype_t::MT_PLAYER)
 			{					// Hit same species as originator, explode, no damage
 				return (false);
 			}
@@ -844,7 +844,7 @@ bool P_TryMove(mobj_t * thing, fixed_t x, fixed_t y)
 		}
 		if (!(thing->flags & MF_TELEPORT)
 			// The Minotaur floor fire (MT_MNTRFX2) can step up any amount
-			&& thing->type != MT_MNTRFX2
+			&& thing->type != mobjtype_t::MT_MNTRFX2
 			&& tmfloorz - thing->z > 24 * FRACUNIT)
 		{						// Too big a step up
 			CheckMissileImpact(thing);
@@ -1244,7 +1244,7 @@ bool PTR_AimTraverse(intercept_t * in)
 		return true;			// can't shoot self
 	if (!(th->flags & MF_SHOOTABLE))
 		return true;			// corpse or something
-	if (th->type == MT_POD)
+	if (th->type == mobjtype_t::MT_POD)
 	{							// Can't auto-aim at pods
 		return (true);
 	}
@@ -1379,9 +1379,9 @@ bool PTR_ShootTraverse(intercept_t * in)
 	x = trace.x + FixedMul(trace.dx, frac);
 	y = trace.y + FixedMul(trace.dy, frac);
 	z = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
-	if (PuffType == MT_BLASTERPUFF1)
+	if (PuffType == mobjtype_t::MT_BLASTERPUFF1)
 	{							// Make blaster big puff
-		mo = P_SpawnMobj(x, y, z, MT_BLASTERPUFF2);
+		mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_BLASTERPUFF2);
 		S_StartSound(mo, sfx_blshit);
 	}
 	else
@@ -1553,8 +1553,8 @@ bool PIT_RadiusAttack(mobj_t * thing)
 	{
 		return true;
 	}
-	if (thing->type == MT_MINOTAUR || thing->type == MT_SORCERER1
-		|| thing->type == MT_SORCERER2)
+	if (thing->type == mobjtype_t::MT_MINOTAUR || thing->type == mobjtype_t::MT_SORCERER1
+		|| thing->type == mobjtype_t::MT_SORCERER2)
 	{							// Episode 2 and 3 bosses take no damage from PIT_RadiusAttack
 		return (true);
 	}
@@ -1597,7 +1597,7 @@ void P_RadiusAttack(mobj_t * spot, mobj_t * source, int damage)
 	xh = (spot->x + dist - bmaporgx) >> MAPBLOCKSHIFT;
 	xl = (spot->x - dist - bmaporgx) >> MAPBLOCKSHIFT;
 	bombspot = spot;
-	if (spot->type == MT_POD && spot->target)
+	if (spot->type == mobjtype_t::MT_POD && spot->target)
 	{
 		bombsource = spot->target;
 	}

@@ -254,8 +254,8 @@ bool EV_ThingSpawn(byte * args, bool fog)
 			if (fog == true)
 			{
 				fogMobj = P_SpawnMobj(mobj->x, mobj->y,
-										mobj->z + TELEFOGHEIGHT, MT_TFOG);
-				S_StartSound(fogMobj, SFX_TELEPORT);
+										mobj->z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
+				S_StartSound(fogMobj, sfxenum_t::SFX_TELEPORT);
 			}
 			newMobj->flags2 |= MF2_DROPPED;		// Don't respawn
 			if (newMobj->flags2 & MF2_FLOATBOB)
@@ -332,7 +332,7 @@ bool EV_ThingRemove(int tid)
 	searcher = -1;
 	while ((mobj = P_FindMobjFromTID(tid, &searcher)) != NULL)
 	{
-		if (mobj->type == MT_BRIDGE)
+		if (mobj->type == mobjtype_t::MT_BRIDGE)
 		{
 			A_BridgeRemove(mobj);
 			return true;
@@ -406,27 +406,27 @@ static bool ActivateThing(mobj_t * mobj)
 	}
 	switch (mobj->type)
 	{
-		case MT_ZTWINEDTORCH:
-		case MT_ZTWINEDTORCH_UNLIT:
+		case mobjtype_t::MT_ZTWINEDTORCH:
+		case mobjtype_t::MT_ZTWINEDTORCH_UNLIT:
 			P_SetMobjState(mobj, S_ZTWINEDTORCH_1);
-			S_StartSound(mobj, SFX_IGNITE);
+			S_StartSound(mobj, sfxenum_t::SFX_IGNITE);
 			break;
-		case MT_ZWALLTORCH:
-		case MT_ZWALLTORCH_UNLIT:
+		case mobjtype_t::MT_ZWALLTORCH:
+		case mobjtype_t::MT_ZWALLTORCH_UNLIT:
 			P_SetMobjState(mobj, S_ZWALLTORCH1);
-			S_StartSound(mobj, SFX_IGNITE);
+			S_StartSound(mobj, sfxenum_t::SFX_IGNITE);
 			break;
-		case MT_ZGEMPEDESTAL:
+		case mobjtype_t::MT_ZGEMPEDESTAL:
 			P_SetMobjState(mobj, S_ZGEMPEDESTAL2);
 			break;
-		case MT_ZWINGEDSTATUENOSKULL:
+		case mobjtype_t::MT_ZWINGEDSTATUENOSKULL:
 			P_SetMobjState(mobj, S_ZWINGEDSTATUENOSKULL2);
 			break;
-		case MT_THRUSTFLOOR_UP:
-		case MT_THRUSTFLOOR_DOWN:
+		case mobjtype_t::MT_THRUSTFLOOR_UP:
+		case mobjtype_t::MT_THRUSTFLOOR_DOWN:
 			if (mobj->args[0] == 0)
 			{
-				S_StartSound(mobj, SFX_THRUSTSPIKE_LOWER);
+				S_StartSound(mobj, sfxenum_t::SFX_THRUSTSPIKE_LOWER);
 				mobj->flags2 &= ~MF2_DONTDRAW;
 				if (mobj->args[1])
 					P_SetMobjState(mobj, S_BTHRUSTRAISE1);
@@ -434,31 +434,31 @@ static bool ActivateThing(mobj_t * mobj)
 					P_SetMobjState(mobj, S_THRUSTRAISE1);
 			}
 			break;
-		case MT_ZFIREBULL:
-		case MT_ZFIREBULL_UNLIT:
+		case mobjtype_t::MT_ZFIREBULL:
+		case mobjtype_t::MT_ZFIREBULL_UNLIT:
 			P_SetMobjState(mobj, S_ZFIREBULL_BIRTH);
-			S_StartSound(mobj, SFX_IGNITE);
+			S_StartSound(mobj, sfxenum_t::SFX_IGNITE);
 			break;
-		case MT_ZBELL:
+		case mobjtype_t::MT_ZBELL:
 			if (mobj->health > 0)
 			{
 				P_DamageMobj(mobj, NULL, NULL, 10);		// 'ring' the bell
 			}
 			break;
-		case MT_ZCAULDRON:
-		case MT_ZCAULDRON_UNLIT:
+		case mobjtype_t::MT_ZCAULDRON:
+		case mobjtype_t::MT_ZCAULDRON_UNLIT:
 			P_SetMobjState(mobj, S_ZCAULDRON1);
-			S_StartSound(mobj, SFX_IGNITE);
+			S_StartSound(mobj, sfxenum_t::SFX_IGNITE);
 			break;
-		case MT_FLAME_SMALL:
-			S_StartSound(mobj, SFX_IGNITE);
+		case mobjtype_t::MT_FLAME_SMALL:
+			S_StartSound(mobj, sfxenum_t::SFX_IGNITE);
 			P_SetMobjState(mobj, S_FLAME_SMALL1);
 			break;
-		case MT_FLAME_LARGE:
-			S_StartSound(mobj, SFX_IGNITE);
+		case mobjtype_t::MT_FLAME_LARGE:
+			S_StartSound(mobj, sfxenum_t::SFX_IGNITE);
 			P_SetMobjState(mobj, S_FLAME_LARGE1);
 			break;
-		case MT_BAT_SPAWNER:
+		case mobjtype_t::MT_BAT_SPAWNER:
 			P_SetMobjState(mobj, S_SPAWNBATS1);
 			break;
 		default:
@@ -488,40 +488,40 @@ static bool DeactivateThing(mobj_t * mobj)
 	}
 	switch (mobj->type)
 	{
-		case MT_ZTWINEDTORCH:
-		case MT_ZTWINEDTORCH_UNLIT:
+		case mobjtype_t::MT_ZTWINEDTORCH:
+		case mobjtype_t::MT_ZTWINEDTORCH_UNLIT:
 			P_SetMobjState(mobj, S_ZTWINEDTORCH_UNLIT);
 			break;
-		case MT_ZWALLTORCH:
-		case MT_ZWALLTORCH_UNLIT:
+		case mobjtype_t::MT_ZWALLTORCH:
+		case mobjtype_t::MT_ZWALLTORCH_UNLIT:
 			P_SetMobjState(mobj, S_ZWALLTORCH_U);
 			break;
-		case MT_THRUSTFLOOR_UP:
-		case MT_THRUSTFLOOR_DOWN:
+		case mobjtype_t::MT_THRUSTFLOOR_UP:
+		case mobjtype_t::MT_THRUSTFLOOR_DOWN:
 			if (mobj->args[0] == 1)
 			{
-				S_StartSound(mobj, SFX_THRUSTSPIKE_RAISE);
+				S_StartSound(mobj, sfxenum_t::SFX_THRUSTSPIKE_RAISE);
 				if (mobj->args[1])
 					P_SetMobjState(mobj, S_BTHRUSTLOWER);
 				else
 					P_SetMobjState(mobj, S_THRUSTLOWER);
 			}
 			break;
-		case MT_ZFIREBULL:
-		case MT_ZFIREBULL_UNLIT:
+		case mobjtype_t::MT_ZFIREBULL:
+		case mobjtype_t::MT_ZFIREBULL_UNLIT:
 			P_SetMobjState(mobj, S_ZFIREBULL_DEATH);
 			break;
-		case MT_ZCAULDRON:
-		case MT_ZCAULDRON_UNLIT:
+		case mobjtype_t::MT_ZCAULDRON:
+		case mobjtype_t::MT_ZCAULDRON_UNLIT:
 			P_SetMobjState(mobj, S_ZCAULDRON_U);
 			break;
-		case MT_FLAME_SMALL:
+		case mobjtype_t::MT_FLAME_SMALL:
 			P_SetMobjState(mobj, S_FLAME_SDORM1);
 			break;
-		case MT_FLAME_LARGE:
+		case mobjtype_t::MT_FLAME_LARGE:
 			P_SetMobjState(mobj, S_FLAME_LDORM1);
 			break;
-		case MT_BAT_SPAWNER:
+		case mobjtype_t::MT_BAT_SPAWNER:
 			P_SetMobjState(mobj, S_SPAWNBATS_OFF);
 			break;
 		default:

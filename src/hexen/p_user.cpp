@@ -29,35 +29,35 @@ bool onground;
 int newtorch;					// used in the torch flicker effect.
 int newtorchdelta;
 
-int PStateNormal[NUMCLASSES] = {
+int PStateNormal[pclass_t::NUMCLASSES] = {
 	S_FPLAY,
 	S_CPLAY,
 	S_MPLAY,
 	S_PIGPLAY
 };
 
-int PStateRun[NUMCLASSES] = {
+int PStateRun[pclass_t::NUMCLASSES] = {
 	S_FPLAY_RUN1,
 	S_CPLAY_RUN1,
 	S_MPLAY_RUN1,
 	S_PIGPLAY_RUN1
 };
 
-int PStateAttack[NUMCLASSES] = {
+int PStateAttack[pclass_t::NUMCLASSES] = {
 	S_FPLAY_ATK1,
 	S_CPLAY_ATK1,
 	S_MPLAY_ATK1,
 	S_PIGPLAY_ATK1
 };
 
-int PStateAttackEnd[NUMCLASSES] = {
+int PStateAttackEnd[pclass_t::NUMCLASSES] = {
 	S_FPLAY_ATK2,
 	S_CPLAY_ATK3,
 	S_MPLAY_ATK2,
 	S_PIGPLAY_ATK1
 };
 
-int ArmorMax[NUMCLASSES] = { 20, 18, 16, 1 };
+int ArmorMax[pclass_t::NUMCLASSES] = { 20, 18, 16, 1 };
 
 /*
 ==================
@@ -135,7 +135,7 @@ void P_CalcHeight(player_t * player)
 //
 // move viewheight
 //
-	if (player->playerstate == PST_LIVE)
+	if (player->playerstate == PlayerState_t::PST_LIVE)
 	{
 		player->viewheight += player->deltaviewheight;
 		if (player->viewheight > VIEWHEIGHT)
@@ -166,7 +166,7 @@ void P_CalcHeight(player_t * player)
 	{
 		player->viewz = player->mo->z + player->viewheight + bob;
 	}
-	if (player->mo->floorclip && player->playerstate != PST_DEAD
+	if (player->mo->floorclip && player->playerstate != PlayerState_t::PST_DEAD
 		&& player->mo->z <= player->mo->floorz)
 	{
 		player->viewz -= player->mo->floorclip;
@@ -295,7 +295,7 @@ void P_MovePlayer(player_t * player)
 	}
 	else if (fly > 0)
 	{
-		P_PlayerUseArtifact(player, arti_fly);
+		P_PlayerUseArtifact(player, ArtiType_t::arti_fly);
 	}
 	if (player->mo->flags2 & MF2_FLY)
 	{
@@ -322,8 +322,9 @@ void P_DeathThink(player_t * player)
 	P_MovePsprites(player);
 
 	onground = (player->mo->z <= player->mo->floorz);
-	if (player->mo->type == MT_BLOODYSKULL || player->mo->type == MT_ICECHUNK)
-	{							// Flying bloody skull or flying ice chunk
+	if (player->mo->type == mobjtype_t::MT_BLOODYSKULL || player->mo->type == mobjtype_t::MT_ICECHUNK)
+	{
+		// Flying bloody skull or flying ice chunk
 		player->viewheight = 6 * FRACUNIT;
 		player->deltaviewheight = 0;
 		//player->damagecount = 20;
@@ -420,7 +421,7 @@ void P_DeathThink(player_t * player)
 			newtorch = 0;
 			newtorchdelta = 0;
 		}
-		player->playerstate = PST_REBORN;
+		player->playerstate = PlayerState_t::PST_REBORN;
 		player->mo->special1.i = player->class;
 		if (player->mo->special1.i > 2)
 		{
@@ -448,20 +449,21 @@ void P_MorphPlayerThink(player_t * player)
 	}
 	pmo = player->mo;
 	if (!(pmo->momx + pmo->momy) && P_Random() < 64)
-	{							// Snout sniff
-		P_SetPspriteNF(player, ps_weapon, S_SNOUTATK2);
-		S_StartSound(pmo, SFX_PIG_ACTIVE1);		// snort
+	{
+		// Snout sniff
+		P_SetPspriteNF(player, psprnum_t::ps_weapon, S_SNOUTATK2);
+		S_StartSound(pmo, sfxenum_t::SFX_PIG_ACTIVE1);		// snort
 		return;
 	}
 	if (P_Random() < 48)
 	{
 		if (P_Random() < 128)
 		{
-			S_StartSound(pmo, SFX_PIG_ACTIVE1);
+			S_StartSound(pmo, sfxenum_t::SFX_PIG_ACTIVE1);
 		}
 		else
 		{
-			S_StartSound(pmo, SFX_PIG_ACTIVE2);
+			S_StartSound(pmo, sfxenum_t::SFX_PIG_ACTIVE2);
 		}
 	}
 }
@@ -520,14 +522,14 @@ bool P_UndoPlayerMorph(player_t * player)
 	playerNum = P_GetPlayerNum(player);
 	switch (PlayerClass[playerNum])
 	{
-		case PCLASS_FIGHTER:
-			mo = P_SpawnMobj(x, y, z, MT_PLAYER_FIGHTER);
+		case pclass_t::PCLASS_FIGHTER:
+			mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_PLAYER_FIGHTER);
 			break;
-		case PCLASS_CLERIC:
-			mo = P_SpawnMobj(x, y, z, MT_PLAYER_CLERIC);
+		case pclass_t::PCLASS_CLERIC:
+			mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_PLAYER_CLERIC);
 			break;
-		case PCLASS_MAGE:
-			mo = P_SpawnMobj(x, y, z, MT_PLAYER_MAGE);
+		case pclass_t::PCLASS_MAGE:
+			mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_PLAYER_MAGE);
 			break;
 		default:
 			I_Error("P_UndoPlayerMorph: Unknown player class %d\n",
@@ -548,7 +550,7 @@ bool P_UndoPlayerMorph(player_t * player)
 		player->morphTics = 2 * 35;
 		return (false);
 	}
-	if (player->class == PCLASS_FIGHTER)
+	if (player->class == pclass_t::pclass_t::PCLASS_FIGHTER)
 	{
 		// The first type should be blue, and the third should be the
 		// Fighter's original gold color
@@ -579,8 +581,8 @@ bool P_UndoPlayerMorph(player_t * player)
 	player->class = PlayerClass[playerNum];
 	angle >>= ANGLETOFINESHIFT;
 	fog = P_SpawnMobj(x + 20 * finecosine[angle],
-						y + 20 * finesine[angle], z + TELEFOGHEIGHT, MT_TFOG);
-	S_StartSound(fog, SFX_TELEPORT);
+						y + 20 * finesine[angle], z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
+	S_StartSound(fog, sfxenum_t::SFX_TELEPORT);
 	P_PostMorphWeapon(player, weapon);
 	return (true);
 }
@@ -629,7 +631,7 @@ void P_PlayerThink(player_t * player)
 		}
 	}
 	player->worldTimer++;
-	if (player->playerstate == PST_DEAD)
+	if (player->playerstate == PlayerState_t::PST_DEAD)
 	{
 		P_DeathThink(player);
 		return;
@@ -657,12 +659,12 @@ void P_PlayerThink(player_t * player)
 			mobj_t *speedMo;
 			int playerNum;
 
-			speedMo = P_SpawnMobj(pmo->x, pmo->y, pmo->z, MT_PLAYER_SPEED);
+			speedMo = P_SpawnMobj(pmo->x, pmo->y, pmo->z, mobjtype_t::MT_PLAYER_SPEED);
 			if (speedMo)
 			{
 				speedMo->angle = pmo->angle;
 				playerNum = P_GetPlayerNum(player);
-				if (player->class == PCLASS_FIGHTER)
+				if (player->class == pclass_t::pclass_t::PCLASS_FIGHTER)
 				{
 					// The first type should be blue, and the
 					// third should be the Fighter's original gold color
@@ -705,31 +707,28 @@ void P_PlayerThink(player_t * player)
 	}
 	switch (player->class)
 	{
-		case PCLASS_FIGHTER:
+		case pclass_t::PCLASS_FIGHTER:
 			if (player->mo->momz <= -35 * FRACUNIT
 				&& player->mo->momz >= -40 * FRACUNIT && !player->morphTics
-				&& !S_GetSoundPlayingInfo(player->mo,
-											SFX_PLAYER_FIGHTER_FALLING_SCREAM))
+				&& !S_GetSoundPlayingInfo(player->mo, sfxenum_t::SFX_PLAYER_FIGHTER_FALLING_SCREAM))
 			{
-				S_StartSound(player->mo, SFX_PLAYER_FIGHTER_FALLING_SCREAM);
+				S_StartSound(player->mo, sfxenum_t::SFX_PLAYER_FIGHTER_FALLING_SCREAM);
 			}
 			break;
-		case PCLASS_CLERIC:
+		case pclass_t::PCLASS_CLERIC:
 			if (player->mo->momz <= -35 * FRACUNIT
 				&& player->mo->momz >= -40 * FRACUNIT && !player->morphTics
-				&& !S_GetSoundPlayingInfo(player->mo,
-											SFX_PLAYER_CLERIC_FALLING_SCREAM))
+				&& !S_GetSoundPlayingInfo(player->mo, sfxenum_t::SFX_PLAYER_CLERIC_FALLING_SCREAM))
 			{
-				S_StartSound(player->mo, SFX_PLAYER_CLERIC_FALLING_SCREAM);
+				S_StartSound(player->mo, sfxenum_t::SFX_PLAYER_CLERIC_FALLING_SCREAM);
 			}
 			break;
-		case PCLASS_MAGE:
+		case pclass_t::PCLASS_MAGE:
 			if (player->mo->momz <= -35 * FRACUNIT
 				&& player->mo->momz >= -40 * FRACUNIT && !player->morphTics
-				&& !S_GetSoundPlayingInfo(player->mo,
-											SFX_PLAYER_MAGE_FALLING_SCREAM))
+				&& !S_GetSoundPlayingInfo(player->mo, sfxenum_t::SFX_PLAYER_MAGE_FALLING_SCREAM))
 			{
-				S_StartSound(player->mo, SFX_PLAYER_MAGE_FALLING_SCREAM);
+				S_StartSound(player->mo, sfxenum_t::SFX_PLAYER_MAGE_FALLING_SCREAM);
 			}
 			break;
 		default:
@@ -754,11 +753,11 @@ void P_PlayerThink(player_t * player)
 		{
 			P_DamageMobj(player->mo, NULL, NULL, 10000);
 		}
-		if (cmd->arti == NUMARTIFACTS)
+		if (cmd->arti == ArtiType_t::NUMARTIFACTS)
 		{						// use one of each artifact (except puzzle artifacts)
 			int i;
 
-			for (i = 1; i < arti_firstpuzzitem; i++)
+			for (i = 1; i < ArtiType_t::arti_firstpuzzitem; ++i)
 			{
 				P_PlayerUseArtifact(player, i);
 			}
@@ -779,8 +778,7 @@ void P_PlayerThink(player_t * player)
 		// psprite can do it (A_WeaponReady), so it doesn't happen in
 		// the middle of an attack.
 		newweapon = (cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT;
-		if (player->weaponowned[newweapon]
-			&& newweapon != player->readyweapon)
+		if (player->weaponowned[newweapon] && newweapon != player->readyweapon)
 		{
 			player->pendingweapon = newweapon;
 		}
@@ -811,7 +809,7 @@ void P_PlayerThink(player_t * player)
 	// Other Counters
 	if (player->powers[PowerType_t::pw_invulnerability])
 	{
-		if (player->class == PCLASS_CLERIC)
+		if (player->class == pclass_t::pclass_t::PCLASS_CLERIC)
 		{
 			if (!(leveltime & 7) && player->mo->flags & MF_SHADOW
 				&& !(player->mo->flags2 & MF2_DONTDRAW))
@@ -846,7 +844,7 @@ void P_PlayerThink(player_t * player)
 		if (!(--player->powers[PowerType_t::pw_invulnerability]))
 		{
 			player->mo->flags2 &= ~(MF2_INVULNERABLE | MF2_REFLECTIVE);
-			if (player->class == PCLASS_CLERIC)
+			if (player->class == pclass_t::pclass_t::PCLASS_CLERIC)
 			{
 				player->mo->flags2 &= ~(MF2_DONTDRAW | MF2_NONSHOOTABLE);
 				player->mo->flags &= ~(MF_SHADOW | MF_ALTSHADOW);
@@ -999,7 +997,7 @@ void P_ArtiTeleportOther(player_t * player)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnPlayerMissile(player->mo, MT_TELOTHER_FX1);
+	mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_TELOTHER_FX1);
 	if (mo)
 	{
 		mo->target = player->mo;
@@ -1124,12 +1122,12 @@ void P_BlastMobj(mobj_t * source, mobj_t * victim, fixed_t strength)
 		{
 			switch (victim->type)
 			{
-				case MT_SORCBALL1:		// don't blast sorcerer balls
-				case MT_SORCBALL2:
-				case MT_SORCBALL3:
+				case mobjtype_t::MT_SORCBALL1:		// don't blast sorcerer balls
+				case mobjtype_t::MT_SORCBALL2:
+				case mobjtype_t::MT_SORCBALL3:
 					return;
 					break;
-				case MT_MSTAFF_FX2:	// Reflect to originator
+				case mobjtype_t::MT_MSTAFF_FX2:	// Reflect to originator
 					victim->special1.m = victim->target;
 					victim->target = source;
 					break;
@@ -1137,7 +1135,7 @@ void P_BlastMobj(mobj_t * source, mobj_t * victim, fixed_t strength)
 					break;
 			}
 		}
-		if (victim->type == MT_HOLY_FX)
+		if (victim->type == mobjtype_t::MT_HOLY_FX)
 		{
 			if (victim->special1.m == source)
 			{
@@ -1154,7 +1152,7 @@ void P_BlastMobj(mobj_t * source, mobj_t * victim, fixed_t strength)
 		x = victim->x + FixedMul(victim->radius + FRACUNIT, finecosine[ang]);
 		y = victim->y + FixedMul(victim->radius + FRACUNIT, finesine[ang]);
 		z = victim->z - victim->floorclip + (victim->height >> 1);
-		mo = P_SpawnMobj(x, y, z, MT_BLASTEFFECT);
+		mo = P_SpawnMobj(x, y, z, mobjtype_t::MT_BLASTEFFECT);
 		if (mo)
 		{
 			mo->momx = victim->momx;
@@ -1191,7 +1189,7 @@ void P_BlastRadius(player_t * player)
 	thinker_t *think;
 	fixed_t dist;
 
-	S_StartSound(pmo, SFX_ARTIFACT_BLAST);
+	S_StartSound(pmo, sfxenum_t::SFX_ARTIFACT_BLAST);
 	P_NoiseAlert(player->mo, player->mo);
 
 	for (think = thinkercap.next; think != &thinkercap; think = think->next)
@@ -1205,8 +1203,8 @@ void P_BlastRadius(player_t * player)
 		{						// Not a valid monster
 			continue;
 		}
-		if ((mo->type == MT_POISONCLOUD) ||		// poison cloud
-			(mo->type == MT_HOLY_FX) || // holy fx
+		if ((mo->type == mobjtype_t::MT_POISONCLOUD) ||		// poison cloud
+			(mo->type == mobjtype_t::MT_HOLY_FX) || // holy fx
 			(mo->flags & MF_ICECORPSE)) // frozen corpse
 		{
 			// Let these special cases go
@@ -1224,15 +1222,15 @@ void P_BlastRadius(player_t * player)
 		{
 			continue;			// no dormant creatures
 		}
-		if ((mo->type == MT_WRAITHB) && (mo->flags2 & MF2_DONTDRAW))
+		if ((mo->type == mobjtype_t::MT_WRAITHB) && (mo->flags2 & MF2_DONTDRAW))
 		{
 			continue;			// no underground wraiths
 		}
-		if ((mo->type == MT_SPLASHBASE) || (mo->type == MT_SPLASH))
+		if ((mo->type == mobjtype_t::MT_SPLASHBASE) || (mo->type == mobjtype_t::MT_SPLASH))
 		{
 			continue;
 		}
-		if (mo->type == MT_SERPENT || mo->type == MT_SERPENTLEADER)
+		if (mo->type == mobjtype_t::MT_SERPENT || mo->type == mobjtype_t::MT_SERPENTLEADER)
 		{
 			continue;
 		}
@@ -1278,34 +1276,34 @@ bool P_HealRadius(player_t * player)
 
 		switch (player->class)
 		{
-			case PCLASS_FIGHTER:		// Radius armor boost
+			case pclass_t::PCLASS_FIGHTER:		// Radius armor boost
 				if ((P_GiveArmor(mo->player, ARMOR_ARMOR, 1)) ||
 					(P_GiveArmor(mo->player, ARMOR_SHIELD, 1)) ||
 					(P_GiveArmor(mo->player, ARMOR_HELMET, 1)) ||
 					(P_GiveArmor(mo->player, ARMOR_AMULET, 1)))
 				{
 					effective = true;
-					S_StartSound(mo, SFX_MYSTICINCANT);
+					S_StartSound(mo, sfxenum_t::SFX_MYSTICINCANT);
 				}
 				break;
-			case PCLASS_CLERIC:		// Radius heal
+			case pclass_t::PCLASS_CLERIC:		// Radius heal
 				amount = 50 + (P_Random() % 50);
 				if (P_GiveBody(mo->player, amount))
 				{
 					effective = true;
-					S_StartSound(mo, SFX_MYSTICINCANT);
+					S_StartSound(mo, sfxenum_t::SFX_MYSTICINCANT);
 				}
 				break;
-			case PCLASS_MAGE: // Radius mana boost
+			case pclass_t::PCLASS_MAGE: // Radius mana boost
 				amount = 50 + (P_Random() % 50);
 				if ((P_GiveMana(mo->player, MANA_1, amount)) ||
 					(P_GiveMana(mo->player, MANA_2, amount)))
 				{
 					effective = true;
-					S_StartSound(mo, SFX_MYSTICINCANT);
+					S_StartSound(mo, sfxenum_t::SFX_MYSTICINCANT);
 				}
 				break;
-			case PCLASS_PIG:
+			case pclass_t::PCLASS_PIG:
 			default:
 				break;
 		}
@@ -1362,8 +1360,8 @@ void P_PlayerRemoveArtifact(player_t * player, int slot)
 	player->artifactCount--;
 	if (!(--player->inventory[slot].count))
 	{							// Used last of a type - compact the artifact list
-		player->readyArtifact = arti_none;
-		player->inventory[slot].type = arti_none;
+		player->readyArtifact = ArtiType_t::arti_none;
+		player->inventory[slot].type = ArtiType_t::arti_none;
 		for (i = slot + 1; i < player->inventorySlotNum; i++)
 		{
 			player->inventory[i - 1] = player->inventory[i];
@@ -1412,18 +1410,18 @@ void P_PlayerUseArtifact(player_t * player, ArtiType_t arti)
 				P_PlayerRemoveArtifact(player, i);
 				if (player == &players[consoleplayer])
 				{
-					if (arti < arti_firstpuzzitem)
+					if (arti < ArtiType_t::arti_firstpuzzitem)
 					{
-						S_StartSound(NULL, SFX_ARTIFACT_USE);
+						S_StartSound(NULL, sfxenum_t::SFX_ARTIFACT_USE);
 					}
 					else
 					{
-						S_StartSound(NULL, SFX_PUZZLE_SUCCESS);
+						S_StartSound(NULL, sfxenum_t::SFX_PUZZLE_SUCCESS);
 					}
 					ArtifactFlash = 4;
 				}
 			}
-			else if (arti < arti_firstpuzzitem)
+			else if (arti < ArtiType_t::arti_firstpuzzitem)
 			{					// Unable to use artifact, advance pointer
 				P_PlayerNextArtifact(player);
 			}
@@ -1449,45 +1447,45 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 
 	switch (arti)
 	{
-		case arti_invulnerability:
+		case ArtiType_t::arti_invulnerability:
 			if (!P_GivePower(player, PowerType_t::pw_invulnerability))
 			{
 				return (false);
 			}
 			break;
-		case arti_health:
+		case ArtiType_t::arti_health:
 			if (!P_GiveBody(player, 25))
 			{
 				return (false);
 			}
 			break;
-		case arti_superhealth:
+		case ArtiType_t::arti_superhealth:
 			if (!P_GiveBody(player, 100))
 			{
 				return (false);
 			}
 			break;
-		case arti_healingradius:
+		case ArtiType_t::arti_healingradius:
 			if (!P_HealRadius(player))
 			{
 				return (false);
 			}
 			break;
-		case arti_torch:
+		case ArtiType_t::arti_torch:
 			if (!P_GivePower(player, PowerType_t::pw_infrared))
 			{
 				return (false);
 			}
 			break;
-		case arti_egg:
+		case ArtiType_t::arti_egg:
 			mo = player->mo;
-			P_SpawnPlayerMissile(mo, MT_EGGFX);
-			P_SPMAngle(mo, MT_EGGFX, mo->angle - (ANG45 / 6));
-			P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 6));
-			P_SPMAngle(mo, MT_EGGFX, mo->angle - (ANG45 / 3));
-			P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 3));
+			P_SpawnPlayerMissile(mo, mobjtype_t::MT_EGGFX);
+			P_SPMAngle(mo, mobjtype_t::MT_EGGFX, mo->angle - (ANG45 / 6));
+			P_SPMAngle(mo, mobjtype_t::MT_EGGFX, mo->angle + (ANG45 / 6));
+			P_SPMAngle(mo, mobjtype_t::MT_EGGFX, mo->angle - (ANG45 / 3));
+			P_SPMAngle(mo, mobjtype_t::MT_EGGFX, mo->angle + (ANG45 / 3));
 			break;
-		case arti_fly:
+		case ArtiType_t::arti_fly:
 			if (!P_GivePower(player, PowerType_t::pw_flight))
 			{
 				return (false);
@@ -1497,8 +1495,8 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 				S_StopSound(player->mo);
 			}
 			break;
-		case arti_summon:
-			mo = P_SpawnPlayerMissile(player->mo, MT_SUMMON_FX);
+		case ArtiType_t::arti_summon:
+			mo = P_SpawnPlayerMissile(player->mo, mobjtype_t::MT_SUMMON_FX);
 			if (mo)
 			{
 				mo->target = player->mo;
@@ -1506,41 +1504,41 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 				mo->momz = 5 * FRACUNIT;
 			}
 			break;
-		case arti_teleport:
+		case ArtiType_t::arti_teleport:
 			P_ArtiTele(player);
 			break;
-		case arti_teleportother:
+		case ArtiType_t::arti_teleportother:
 			P_ArtiTeleportOther(player);
 			break;
-		case arti_poisonbag:
+		case ArtiType_t::arti_poisonbag:
 			angle = player->mo->angle >> ANGLETOFINESHIFT;
-			if (player->class == PCLASS_CLERIC)
+			if (player->class == pclass_t::pclass_t::PCLASS_CLERIC)
 			{
 				mo = P_SpawnMobj(player->mo->x + 16 * finecosine[angle],
 									player->mo->y + 24 * finesine[angle],
 									player->mo->z - player->mo->floorclip +
-									8 * FRACUNIT, MT_POISONBAG);
+									8 * FRACUNIT, mobjtype_t::MT_POISONBAG);
 				if (mo)
 				{
 					mo->target = player->mo;
 				}
 			}
-			else if (player->class == PCLASS_MAGE)
+			else if (player->class == pclass_t::pclass_t::PCLASS_MAGE)
 			{
 				mo = P_SpawnMobj(player->mo->x + 16 * finecosine[angle],
 									player->mo->y + 24 * finesine[angle],
 									player->mo->z - player->mo->floorclip +
-									8 * FRACUNIT, MT_FIREBOMB);
+									8 * FRACUNIT, mobjtype_t::MT_FIREBOMB);
 				if (mo)
 				{
 					mo->target = player->mo;
 				}
 			}
-			else				// PCLASS_FIGHTER, obviously (also pig, not so obviously)
+			else				// pclass_t::PCLASS_FIGHTER, obviously (also pig, not so obviously)
 			{
 				mo = P_SpawnMobj(player->mo->x, player->mo->y,
 									player->mo->z - player->mo->floorclip +
-									35 * FRACUNIT, MT_THROWINGBOMB);
+									35 * FRACUNIT, mobjtype_t::MT_THROWINGBOMB);
 				if (mo)
 				{
 					mo->angle =
@@ -1557,13 +1555,13 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 				}
 			}
 			break;
-		case arti_speed:
+		case ArtiType_t::arti_speed:
 			if (!P_GivePower(player, PowerType_t::pw_speed))
 			{
 				return (false);
 			}
 			break;
-		case arti_boostmana:
+		case ArtiType_t::arti_boostmana:
 			if (!P_GiveMana(player, MANA_1, MAX_MANA))
 			{
 				if (!P_GiveMana(player, MANA_2, MAX_MANA))
@@ -1577,7 +1575,7 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 				P_GiveMana(player, MANA_2, MAX_MANA);
 			}
 			break;
-		case arti_boostarmor:
+		case ArtiType_t::arti_boostarmor:
 			count = 0;
 
 			for (i = 0; i < NUMARMOR; i++)
@@ -1589,28 +1587,28 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 				return false;
 			}
 			break;
-		case arti_blastradius:
+		case ArtiType_t::arti_blastradius:
 			P_BlastRadius(player);
 			break;
 
-		case arti_puzzskull:
-		case arti_puzzgembig:
-		case arti_puzzgemred:
-		case arti_puzzgemgreen1:
-		case arti_puzzgemgreen2:
-		case arti_puzzgemblue1:
-		case arti_puzzgemblue2:
-		case arti_puzzbook1:
-		case arti_puzzbook2:
-		case arti_puzzskull2:
-		case arti_puzzfweapon:
-		case arti_puzzcweapon:
-		case arti_puzzmweapon:
-		case arti_puzzgear1:
-		case arti_puzzgear2:
-		case arti_puzzgear3:
-		case arti_puzzgear4:
-			if (P_UsePuzzleItem(player, arti - arti_firstpuzzitem))
+		case ArtiType_t::arti_puzzskull:
+		case ArtiType_t::arti_puzzgembig:
+		case ArtiType_t::arti_puzzgemred:
+		case ArtiType_t::arti_puzzgemgreen1:
+		case ArtiType_t::arti_puzzgemgreen2:
+		case ArtiType_t::arti_puzzgemblue1:
+		case ArtiType_t::arti_puzzgemblue2:
+		case ArtiType_t::arti_puzzbook1:
+		case ArtiType_t::arti_puzzbook2:
+		case ArtiType_t::arti_puzzskull2:
+		case ArtiType_t::arti_puzzfweapon:
+		case ArtiType_t::arti_puzzcweapon:
+		case ArtiType_t::arti_puzzmweapon:
+		case ArtiType_t::arti_puzzgear1:
+		case ArtiType_t::arti_puzzgear2:
+		case ArtiType_t::arti_puzzgear3:
+		case ArtiType_t::arti_puzzgear4:
+			if (P_UsePuzzleItem(player, arti - ArtiType_t::arti_firstpuzzitem))
 			{
 				return true;
 			}

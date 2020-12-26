@@ -141,7 +141,7 @@ static void SaveGameSettings(net_gamesettings_t *settings)
 	settings->map = startmap;
 	settings->skill = startskill;
 	// TODO settings->loadgame = startloadgame;
-	settings->gameversion = exe_heretic_1_3;
+	settings->gameversion = GameVersion_t::exe_heretic_1_3;
 	settings->nomonsters = nomonsters;
 	settings->respawn_monsters = respawnparm;
 	settings->timelimit = 0;

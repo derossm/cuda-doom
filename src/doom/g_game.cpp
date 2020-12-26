@@ -254,7 +254,7 @@ static bool WeaponSelectable(WeaponType_t weapon)
 	// These weapons aren't available in shareware.
 
 	if ((weapon == wp_plasma || weapon == wp_bfg)
-		&& gamemission == doom && gamemode == shareware)
+		&& gamemission == doom && gamemode == GameMode_t::shareware)
 	{
 		return false;
 	}
@@ -728,7 +728,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
 	cmd->sidemove += side;
 
 	// [crispy] lookdir delta is stored in the lower 4 bits of the lookfly variable
-	if (player->playerstate == PST_LIVE)
+	if (player->playerstate == PlayerState_t::PST_LIVE)
 	{
 		if (look < 0)
 		{
@@ -797,8 +797,8 @@ void G_DoLoadLevel()
 	// The "Sky never changes in Doom II" bug was fixed in
 	// the id Anthology version of doom2.exe for Final Doom.
 	// [crispy] correct "Sky never changes in Doom II" bug
-	if ((gamemode == commercial)
-		&& (gameversion == exe_final2 || gameversion == exe_chex || true))
+	if ((gamemode == GameMode_t::commercial)
+		&& (gameversion == GameVersion_t::exe_final2 || gameversion == GameVersion_t::exe_chex || true))
 	{
 		const char *skytexturename;
 
@@ -843,8 +843,8 @@ void G_DoLoadLevel()
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
 	turbodetected[i] = false;
-	if (playeringame[i] && players[i].playerstate == PST_DEAD)
-		players[i].playerstate = PST_REBORN;
+	if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_DEAD)
+		players[i].playerstate = PlayerState_t::PST_REBORN;
 	memset(players[i].frags,0,sizeof(players[i].frags));
 	}
 
@@ -1109,7 +1109,7 @@ void G_Ticker()
 
 	// do player reborns if needed
 	for (i=0 ; i<MAXPLAYERS ; i++)
-	if (playeringame[i] && players[i].playerstate == PST_REBORN)
+	if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_REBORN)
 		G_DoReborn(i);
 
 	// do things to change the game state
@@ -1373,7 +1373,7 @@ void G_PlayerReborn(int player)
 	players[player].secretcount = secretcount;
 
 	p->usedown = p->attackdown = true;	// don't do anything immediately
-	p->playerstate = PST_LIVE;
+	p->playerstate = PlayerState_t::PST_LIVE;
 	p->health = deh_initial_health;		// Use dehacked value
 	// [crispy] negative player health
 	p->neghealth = p->health;
@@ -1431,7 +1431,7 @@ bool G_CheckSpot(int playernum, mapthing_t* mthing)
 	// The code in the released source looks like this:
 	//
 	//	an = ( ANG45 * (((unsigned int) mthing->angle)/45) ) >> ANGLETOFINESHIFT;
-	//	mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an], ss->sector->floorheight, MT_TFOG);
+	//	mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an], ss->sector->floorheight, mobjtype_t::MT_TFOG);
 	//
 	// But 'an' can be a signed value in the DOS version. This means that
 	// we get a negative index and the lookups into finecosine/finesine
@@ -1481,7 +1481,7 @@ bool G_CheckSpot(int playernum, mapthing_t* mthing)
 				break;
 		}
 		mo = P_SpawnMobj(x + 20 * xa, y + 20 * ya,
-							ss->sector->floorheight, MT_TFOG);
+							ss->sector->floorheight, mobjtype_t::MT_TFOG);
 	}
 
 	if (players[consoleplayer].viewz != 1)
@@ -1637,7 +1637,7 @@ void G_ExitLevel()
 void G_SecretExitLevel()
 {
 	// IF NO WOLF3D LEVELS, NO SECRET EXIT!
-	if ( (gamemode == commercial)
+	if ( (gamemode == GameMode_t::commercial)
 		&& (W_CheckNumForName("map31")<0))
 	secretexit = false;
 	else
@@ -1694,7 +1694,7 @@ static void G_WriteLevelStat()
 		}
 	}
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 		M_snprintf(levelString, sizeof(levelString), "MAP%02d", gamemap);
 	}
@@ -1749,11 +1749,11 @@ void G_DoCompleted ()
 	if (automapactive)
 	AM_Stop();
 
-	if (gamemode != commercial)
+	if (gamemode != GameMode_t::commercial)
 	{
 		// Chex Quest ends after 5 levels, rather than 8.
 
-		if (gameversion == exe_chex)
+		if (gameversion == GameVersion_t::exe_chex)
 		{
 			// [crispy] display tally screen after Chex Quest E1M5
 			/*
@@ -1786,7 +1786,7 @@ void G_DoCompleted ()
 /*
 //#if 0 Hmmm - why?
 	if ( (gamemap == 8)
-		&& (gamemode != commercial) )
+		&& (gamemode != GameMode_t::commercial) )
 	{
 	// victory
 	gameaction = ga_victory;
@@ -1794,7 +1794,7 @@ void G_DoCompleted ()
 	}
 
 	if ( (gamemap == 9)
-		&& (gamemode != commercial) )
+		&& (gamemode != GameMode_t::commercial) )
 	{
 	// exit secret level
 	for (i=0 ; i<MAXPLAYERS ; i++)
@@ -1829,7 +1829,7 @@ void G_DoCompleted ()
 	wminfo.next = gamemap;
 	}
 	else
-	if ( gamemode == commercial)
+	if ( gamemode == GameMode_t::commercial)
 	{
 	if (secretexit)
 		if (gamemap == 2 && critical->havemap33)
@@ -1894,7 +1894,7 @@ void G_DoCompleted ()
 
 	// Set par time. Exceptions are added for purposes of
 	// statcheck regression testing.
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 		// map33 reads its par time from beyond the cpars[] array
 		if (gamemap == 33)
@@ -1966,7 +1966,7 @@ void G_DoCompleted ()
 	automapactive = false;
 
 	// [crispy] no statdump output for ExM8
-	if (gamemode == commercial || gamemap != 8)
+	if (gamemode == GameMode_t::commercial || gamemap != 8)
 	{
 	StatCopy(&wminfo);
 	}
@@ -2011,7 +2011,7 @@ void G_WorldDone()
 	}
 	}
 	else
-	if ( gamemode == commercial )
+	if ( gamemode == GameMode_t::commercial )
 	{
 	switch (gamemap)
 	{
@@ -2029,7 +2029,7 @@ void G_WorldDone()
 	}
 	// [crispy] display tally screen after ExM8
 	else
-	if ( gamemap == 8 || (gameversion == exe_chex && gamemap == 5) )
+	if ( gamemap == 8 || (gameversion == GameVersion_t::exe_chex && gamemap == 5) )
 	{
 	gameaction = ga_victory;
 	}
@@ -2352,12 +2352,12 @@ void G_InitNew(skill_t skill, int episode, int map)
 	if (episode < 1)
 		episode = 1;
 
-	if ( gamemode == retail )
+	if ( gamemode == GameMode_t::retail )
 	{
 		if (episode > 4)
 	episode = 4;
 	}
-	else if ( gamemode == shareware )
+	else if ( gamemode == GameMode_t::shareware )
 	{
 		if (episode > 1)
 		episode = 1;	// only start episode 1 on shareware
@@ -2373,7 +2373,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	skill = skill_t::sk_nightmare;
 
  // [crispy] if NRFTL is not available, "episode 2" may mean The Master Levels ("episode 3")
- if (gamemode == commercial)
+ if (gamemode == GameMode_t::commercial)
  {
 	if (episode < 1)
 		episode = 1;
@@ -2385,7 +2385,7 @@ void G_InitNew(skill_t skill, int episode, int map)
  // [crispy] only fix episode/map if it doesn't exist
  if (P_GetNumForMap(episode, map, false) < 0)
  {
-	if (gameversion >= exe_ultimate)
+	if (gameversion >= GameVersion_t::exe_ultimate)
 	{
 		if (episode == 0)
 		{
@@ -2404,7 +2404,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 		}
 	}
 
-	if (episode > 1 && gamemode == shareware)
+	if (episode > 1 && gamemode == GameMode_t::shareware)
 	{
 		episode = 1;
 	}
@@ -2413,7 +2413,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	map = 1;
 
 	if ( (map > 9)
-		&& ( gamemode != commercial) )
+		&& ( gamemode != GameMode_t::commercial) )
 	{
 		// [crispy] support E1M10 "Sewers"
 		if (!crispy->havee1m10 || episode != 1)
@@ -2456,7 +2456,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 
 	// force players to be initialized upon first level load
 	for (i=0 ; i<MAXPLAYERS ; i++)
-	players[i].playerstate = PST_REBORN;
+	players[i].playerstate = PlayerState_t::PST_REBORN;
 
 	usergame = true;				// will be set false if a demo
 	paused = false;
@@ -2482,7 +2482,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	// restore from a saved game. This was fixed before the Doom
 	// source release, but this IS the way Vanilla DOS Doom behaves.
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 		skytexturename = DEH_String("SKY3");
 		skytexture = R_TextureNumForName(skytexturename);
@@ -2898,7 +2898,7 @@ void G_DoPlayDemo()
 		longtics = true;
 	}
 	else if (demoversion != G_VanillaVersionCode() &&
-				!(gameversion <= exe_doom_1_2 && olddemo))
+				!(gameversion <= GameVersion_t::exe_doom_1_2 && olddemo))
 	{
 		const char *message = "Demo is from a different game version!\n"
 								"(read %i, should be %i)\n"

@@ -423,7 +423,7 @@ void WI_drawLF()
 		return;
 	}
 
-	if (gamemode != commercial || wbs->last < NUMCMAPS)
+	if (gamemode != GameMode_t::commercial || wbs->last < NUMCMAPS)
 	{
 		// draw <LevelName>
 		V_DrawPatch((ORIGWIDTH - SHORT(lnames[wbs->last]->width))/2,
@@ -480,10 +480,7 @@ void WI_drawEL()
 
 }
 
-void
-WI_drawOnLnode
-( int		n,
- patch_t*	c[] )
+void WI_drawOnLnode(int n, patch_t* c[])
 {
 
 	int		i;
@@ -534,7 +531,7 @@ void WI_initAnimatedBack()
 	int		i;
 	anim_t*	a;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -563,7 +560,7 @@ void WI_updateAnimatedBack()
 	int		i;
 	anim_t*	a;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -614,7 +611,7 @@ void WI_drawAnimatedBack()
 	int			i;
 	anim_t*		a;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -644,12 +641,7 @@ void WI_drawAnimatedBack()
 // Returns new x position.
 //
 
-int
-WI_drawNum
-( int		x,
- int		y,
- int		n,
- int		digits )
+int WI_drawNum(int x, int y, int n, int digits)
 {
 
 	int		fontwidth = SHORT(num[0]->width);
@@ -701,11 +693,7 @@ WI_drawNum
 
 }
 
-void
-WI_drawPercent
-( int		x,
- int		y,
- int		p )
+void WI_drawPercent(int x, int y, int p)
 {
 	if (p < 0)
 	return;
@@ -720,12 +708,7 @@ WI_drawPercent
 // Display level completion time and par,
 // or "sucks" message if overflow.
 //
-void
-WI_drawTime
-( int		x,
- int		y,
- int		t,
- bool	suck )
+void WI_drawTime(int x, int y, int t, bool suck)
 {
 
 	int		div;
@@ -799,7 +782,7 @@ static bool		snl_pointeron = false;
 void WI_initShowNextLoc()
 {
 	// [crispy] display tally screen after ExM8
-	if ((gamemode != commercial && gamemap == 8) || (gameversion == exe_chex && gamemap == 5))
+	if ((gamemode != GameMode_t::commercial && gamemap == 8) || (gameversion == GameVersion_t::exe_chex && gamemap == 5))
 	{
 	G_WorldDone();
 	return;
@@ -834,7 +817,7 @@ void WI_drawShowNextLoc()
 	// draw animated background
 	WI_drawAnimatedBack();
 
-	if ( gamemode != commercial)
+	if ( gamemode != GameMode_t::commercial)
 	{
 	if (wbs->epsd > 2)
 	{
@@ -869,7 +852,7 @@ void WI_drawShowNextLoc()
 		return;
 
 	// draws which level you are entering..
-	if ( (gamemode != commercial)
+	if ( (gamemode != GameMode_t::commercial)
 		|| wbs->next != 30)
 	WI_drawEL();
 
@@ -1026,7 +1009,7 @@ void WI_updateDeathmatchStats()
 	{
 		S_StartSound(0, sfx_slop);
 
-		if ( gamemode == commercial)
+		if ( gamemode == GameMode_t::commercial)
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1297,7 +1280,7 @@ void WI_updateNetgameStats()
 	if (acceleratestage)
 	{
 		S_StartSound(0, sfx_sgcock);
-		if ( gamemode == commercial )
+		if ( gamemode == GameMode_t::commercial )
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1473,7 +1456,7 @@ void WI_updateStats()
 	{
 		S_StartSound(0, sfx_sgcock);
 
-		if (gamemode == commercial)
+		if (gamemode == GameMode_t::commercial)
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1503,7 +1486,7 @@ static bool WI_drawParTime ()
 		result = false;
 	}
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 		// [crispy] IWAD: Final Doom has no par times
 		if (gamemission == pack_tnt || gamemission == pack_plut)
@@ -1600,7 +1583,7 @@ void WI_drawStats()
 	}
 
 	// [crispy] exit early from the tally screen after ExM8
-	if (sp_state == 10 && ((gamemode != commercial && gamemap == 8) || (gameversion == exe_chex && gamemap == 5)))
+	if (sp_state == 10 && ((gamemode != GameMode_t::commercial && gamemap == 8) || (gameversion == GameVersion_t::exe_chex && gamemap == 5)))
 	{
 	acceleratestage = 1;
 	}
@@ -1662,7 +1645,7 @@ void WI_Ticker()
 	if (bcnt == 1)
 	{
 	// intermission music
-	if ( gamemode == commercial )
+	if ( gamemode == GameMode_t::commercial )
 		S_ChangeMusic(mus_dm2int, true);
 	// [crispy] Sigil
 	else if (crispy->haved1e5 && wbs->epsd == 4 && W_CheckNumForName(DEH_String("D_SIGINT")) != -1)
@@ -1703,7 +1686,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 	char name[9];
 	anim_t *a;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 	for (i=0 ; i<NUMCMAPS ; i++)
 	{
@@ -1847,7 +1830,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 
 	// Background image
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 		if (crispy->havenerve && wbs->epsd == 1 && W_CheckNumForName(DEH_String("NERVEINT")) != -1) // [crispy] gamemission == pack_nerve
 		{
@@ -1858,7 +1841,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 		M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
 		}
 	}
-	else if (gameversion >= exe_ultimate && wbs->epsd == 3)
+	else if (gameversion >= GameVersion_t::exe_ultimate && wbs->epsd == 3)
 	{
 		M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
 	}
@@ -1893,11 +1876,11 @@ static void WI_loadCallback(const char *name, patch_t **variable)
 
 void WI_loadData()
 {
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 	NUMCMAPS = (crispy->havemap33) ? 33 : 32;
 	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * NUMCMAPS,
-						PU_STATIC, NULL);
+						pu_tags_t::PU_STATIC, NULL);
 	num_lnames = NUMCMAPS;
 	}
 	else
@@ -1905,7 +1888,7 @@ void WI_loadData()
 	// [crispy] support E1M10 "Sewers"
 	int nummaps = crispy->havee1m10 ? NUMMAPS + 1 : NUMMAPS;
 	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * nummaps,
-						PU_STATIC, NULL);
+						pu_tags_t::PU_STATIC, NULL);
 	num_lnames = nummaps;
 	}
 
@@ -1968,9 +1951,9 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 	wbs = wbstartstruct;
 
 #ifdef RANGECHECKING
-	if (gamemode != commercial)
+	if (gamemode != GameMode_t::commercial)
 	{
-		if (gameversion >= exe_ultimate)
+		if (gameversion >= GameVersion_t::exe_ultimate)
 	RNGCHECK(wbs->epsd, 0, 3);
 		else
 	RNGCHECK(wbs->epsd, 0, 2);

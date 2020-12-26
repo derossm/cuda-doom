@@ -105,12 +105,7 @@ const char	*spritename;
 // R_InstallSpriteLump
 // Local function for R_InitSprites.
 //
-void
-R_InstallSpriteLump
-( int		lump,
- unsigned	frame,
- char		rot,
- bool	flipped )
+void R_InstallSpriteLump(int lump, unsigned frame, char rot, bool flipped)
 {
 	int		r;
 	// [crispy] support 16 sprite rotations
@@ -459,11 +454,7 @@ void R_DrawMaskedColumn (column_t* column)
 // R_DrawVisSprite
 // mfloorclip and mceilingclip should also be set.
 //
-void
-R_DrawVisSprite
-( vissprite_t*		vis,
- int			x1,
- int			x2 )
+void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 {
 	column_t*		column;
 	int			texturecolumn;
@@ -780,13 +771,13 @@ void R_ProjectSprite (mobj_t* thing)
 
 	// [crispy] colored blood
 	if (crispy->coloredblood &&
-		(thing->type == MT_BLOOD || thing->state - states == S_GIBS) &&
+		(thing->type == mobjtype_t::MT_BLOOD || thing->state - states == S_GIBS) &&
 		thing->target)
 	{
 	// [crispy] Thorn Things in Hacx bleed green blood
 	if (gamemission == pack_hacx)
 	{
-		if (thing->target->type == MT_BABY)
+		if (thing->target->type == mobjtype_t::MT_BABY)
 		{
 		vis->translation = cr[CR_RED2GREEN];
 		}
@@ -794,13 +785,13 @@ void R_ProjectSprite (mobj_t* thing)
 	else
 	{
 		// [crispy] Barons of Hell and Hell Knights bleed green blood
-		if (thing->target->type == MT_BRUISER || thing->target->type == MT_KNIGHT)
+		if (thing->target->type == mobjtype_t::MT_BRUISER || thing->target->type == mobjtype_t::MT_KNIGHT)
 		{
 		vis->translation = cr[CR_RED2GREEN];
 		}
 		else
 		// [crispy] Cacodemons bleed blue blood
-		if (thing->target->type == MT_HEAD)
+		if (thing->target->type == mobjtype_t::MT_HEAD)
 		{
 		vis->translation = cr[CR_RED2BLUE];
 		}
@@ -867,7 +858,7 @@ static void R_DrawLSprite ()
 	static patch_t*	patch;
 
 	if (weaponinfo[viewplayer->readyweapon].ammo == am_noammo ||
-		viewplayer->playerstate != PST_LIVE)
+		viewplayer->playerstate != PlayerState_t::PST_LIVE)
 	return;
 
 	if (lump != laserpatch[crispy->crosshairtype].l)

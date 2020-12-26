@@ -244,11 +244,7 @@ void P_InitPicAnims ()
 // given the number of the current sector,
 // the line number, and the side (0/1) that you want.
 //
-side_t*
-getSide
-( int		currentSector,
- int		line,
- int		side )
+side_t* getSide(int currentSector, int line, int side)
 {
 	return &sides[ (sectors[currentSector].lines[line])->sidenum[side] ];
 }
@@ -260,11 +256,7 @@ getSide
 // given the number of the current sector,
 // the line number and the side (0/1) that you want.
 //
-sector_t*
-getSector
-( int		currentSector,
- int		line,
- int		side )
+sector_t* getSector(int currentSector, int line, int side)
 {
 	return sides[ (sectors[currentSector].lines[line])->sidenum[side] ].sector;
 }
@@ -275,10 +267,7 @@ getSector
 // Given the sector number and the line number,
 // it will tell you whether the line is two-sided or not.
 //
-int
-twoSided
-( int	sector,
- int	line )
+int twoSided(int sector, int line)
 {
 	return (sectors[sector].lines[line])->flags & ML_TWOSIDED;
 }
@@ -291,10 +280,7 @@ twoSided
 // Return sector_t * of sector next to current.
 // NULL if not two-sided line
 //
-sector_t*
-getNextSector
-( line_t*	line,
- sector_t*	sec )
+sector_t* getNextSector(line_t* line, sector_t* sec)
 {
 	if (!(line->flags & ML_TWOSIDED))
 	return NULL;
@@ -371,10 +357,7 @@ fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
 // 20 adjoining sectors max!
 #define MAX_ADJOINING_SECTORS		20
 
-fixed_t
-P_FindNextHighestFloor
-( sector_t* sec,
- int		currentheight )
+fixed_t P_FindNextHighestFloor(sector_t* sec, int currentheight)
 {
 	int			i;
 	int			h;
@@ -497,10 +480,7 @@ fixed_t	P_FindHighestCeilingSurrounding(sector_t* sec)
 //
 // RETURN NEXT SECTOR # THAT LINE TAG REFERS TO
 //
-int
-P_FindSectorFromLineTag
-( line_t*	line,
- int		start )
+int P_FindSectorFromLineTag(line_t* line, int start)
 {
 	int	i;
 
@@ -539,10 +519,7 @@ P_FindSectorFromLineTag
 //
 // Find minimum light from an adjacent sector
 //
-int
-P_FindMinSurroundingLight
-( sector_t*	sector,
- int		max )
+int P_FindMinSurroundingLight(sector_t* sector, int max)
 {
 	int		i;
 	int		min;
@@ -577,28 +554,20 @@ P_FindMinSurroundingLight
 // Called every time a thing origin is about
 // to cross a line with a non 0 special.
 //
-void
-P_CrossSpecialLine
-( int		linenum,
- int		side,
- mobj_t*	thing )
+void P_CrossSpecialLine(int linenum, int side, mobj_t* thing)
 {
 	return P_CrossSpecialLinePtr(&lines[linenum], side, thing);
 }
 
 // [crispy] more MBF code pointers
-void
-P_CrossSpecialLinePtr
-( line_t*	line,
- int		side,
- mobj_t*	thing )
+void P_CrossSpecialLinePtr(line_t* line, int side, mobj_t* thing)
 {
 // line_t*	line;
 	int		ok;
 
 // line = &lines[linenum];
 
-	if (gameversion <= exe_doom_1_2)
+	if (gameversion <= GameVersion_t::exe_doom_1_2)
 	{
 		if (line->special > 98 && line->special != 104)
 		{
@@ -613,12 +582,12 @@ P_CrossSpecialLinePtr
 			// Things that should NOT trigger specials...
 			switch(thing->type)
 			{
-				case MT_ROCKET:
-				case MT_PLASMA:
-				case MT_BFG:
-				case MT_TROOPSHOT:
-				case MT_HEADSHOT:
-				case MT_BRUISERSHOT:
+				case mobjtype_t::MT_ROCKET:
+				case mobjtype_t::MT_PLASMA:
+				case mobjtype_t::MT_BFG:
+				case mobjtype_t::MT_TROOPSHOT:
+				case mobjtype_t::MT_HEADSHOT:
+				case mobjtype_t::MT_BRUISERSHOT:
 					return;
 
 				default: break;
@@ -1066,10 +1035,7 @@ P_CrossSpecialLinePtr
 // P_ShootSpecialLine - IMPACT SPECIALS
 // Called when a thing shoots a special line.
 //
-void
-P_ShootSpecialLine
-( mobj_t*	thing,
- line_t*	line )
+void P_ShootSpecialLine(mobj_t* thing, line_t* line)
 {
 	int		ok;
 

@@ -192,7 +192,7 @@ void SN_InitSequenceScript()
 				SC_ScriptError("SN_InitSequenceScript: Nested Script Error");
 			}
 			tempDataStart = (int *) Z_Malloc(SS_TEMPBUFFER_SIZE,
-												PU_STATIC, NULL);
+												pu_tags_t::PU_STATIC, NULL);
 			memset(tempDataStart, 0, SS_TEMPBUFFER_SIZE);
 			tempDataPtr = tempDataStart;
 			for (i = 0; i < SS_MAX_SCRIPTS; i++)

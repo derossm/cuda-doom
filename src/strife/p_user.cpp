@@ -60,11 +60,7 @@ bool		onground;
 //
 // [STRIFE] Verified unmodified
 //
-void
-P_Thrust
-( player_t*	player,
- angle_t	angle,
- fixed_t	move )
+void P_Thrust(player_t* player, angle_t angle, fixed_t move)
 {
 	angle >>= ANGLETOFINESHIFT;
 
@@ -120,7 +116,7 @@ void P_CalcHeight (player_t* player)
 	bob = FixedMul( player->bob/2, finesine[angle]);
 
 	// move viewheight
-	if (player->playerstate == PST_LIVE)
+	if (player->playerstate == PlayerState_t::PST_LIVE)
 	{
 		player->viewheight += player->deltaviewheight;
 
@@ -314,7 +310,7 @@ void P_DeathThink(player_t* player)
 		player->pitch = player->pitch + 3;
 
 	if(player->cmd.buttons & BT_USE)
-		player->playerstate = PST_REBORN;
+		player->playerstate = PlayerState_t::PST_REBORN;
 }
 
 
@@ -346,7 +342,7 @@ void P_PlayerThink (player_t* player)
 	*/
 
 	// haleyjd 20110205 [STRIFE]: P_DeathThink moved up
-	if (player->playerstate == PST_DEAD)
+	if (player->playerstate == PlayerState_t::PST_DEAD)
 	{
 		P_DeathThink (player);
 		return;
@@ -659,21 +655,21 @@ void P_DropInventoryItem(player_t* player, int sprite)
 		fixed_t z;
 		int r;
 
-		if(item->type == MT_MONY_1)
+		if(item->type == mobjtype_t::MT_MONY_1)
 		{
 			if(item->amount >= 50)
 			{
-				type = MT_MONY_50;
+				type = mobjtype_t::MT_MONY_50;
 				amount = 50;
 			}
 			else if(item->amount >= 25)
 			{
-				type = MT_MONY_25;
+				type = mobjtype_t::MT_MONY_25;
 				amount = 25;
 			}
 			else if(item->amount >= 10)
 			{
-				type = MT_MONY_10;
+				type = mobjtype_t::MT_MONY_10;
 				amount = 10;
 			}
 		}
@@ -754,7 +750,7 @@ bool P_TossDegninOre(player_t* player)
 	x = mo->x + FixedMul(finecosine[angle], dist);
 	y = mo->y + FixedMul(finesine[angle], dist);
 	z = mo->z + (10*FRACUNIT);
-	ore = P_SpawnMobj(x, y, z, MT_DEGNINORE);
+	ore = P_SpawnMobj(x, y, z, mobjtype_t::MT_DEGNINORE);
 
 	if(P_CheckPosition(ore, x, y))
 	{
@@ -810,7 +806,7 @@ bool P_SpawnTeleportBeacon(player_t* player)
 	x = mo->x + FixedMul(finecosine[angle], dist);
 	y = mo->y + FixedMul(finesine[angle], dist);
 	z = mo->z + (10*FRACUNIT);
-	beacon = P_SpawnMobj(x, y, z, MT_BEACON);
+	beacon = P_SpawnMobj(x, y, z, mobjtype_t::MT_BEACON);
 
 	if(P_CheckPosition(beacon, x, y))
 	{

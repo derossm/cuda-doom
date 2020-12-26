@@ -175,7 +175,7 @@ void F_StartFinale ()
 		// and no released version thereof actually works with the 1.31 EXE
 		// due to differing dialog formats... was there to be an updated demo
 		// that never got released?!
-		if(gameversion == exe_strife_1_31 && isdemoversion)
+		if(gameversion == GameVersion_t::exe_strife_1_31 && isdemoversion)
 			slideshow_state = SLIDE_DEMOEND1;
 		break;
 	}
@@ -370,7 +370,7 @@ static void F_DoSlideShow()
 		S_StartMusic(mus_fast);
 		// haleyjd 20130301: The ONLY glitch fixed in 1.31 of Strife
 		// *would* be something this insignificant, of course!
-		if(gameversion != exe_strife_1_31)
+		if(gameversion != GameVersion_t::exe_strife_1_31)
 			slideshow_state = SLIDE_CHOCO; // haleyjd: see below...
 		break;
 	case SLIDE_CHOCO:
@@ -395,7 +395,7 @@ static void F_DoSlideShow()
 	}
 
 	finalecount = 0;
-	if(gameversion != exe_strife_1_31) // See above. This was removed in 1.31.
+	if(gameversion != GameVersion_t::exe_strife_1_31) // See above. This was removed in 1.31.
 	{
 		patch = (patch_t *)W_CacheLumpName(DEH_String("PANEL0"), pu_tags_t::PU_CACHE);
 		V_DrawPatch(0, 0, patch);
@@ -434,7 +434,7 @@ void F_Ticker ()
 
 	// [STRIFE]: Rest is unused
 	/*
-	if ( gamemode == commercial)
+	if ( gamemode == GameMode_t::commercial)
 		return;
 
 	if (finalestage == F_STAGE_TEXT
@@ -541,23 +541,23 @@ typedef struct
 // haleyjd: [STRIFE] A new cast order was defined, however it is unused in any
 // of the released versions of Strife, even including the demo version :(
 castinfo_t		castorder[] = {
-	{ 1, MT_PLAYER		},
-	{ 1, MT_BEGGAR1	},
-	{ 1, MT_PEASANT2_A },
-	{ 1, MT_REBEL1		},
-	{ 1, MT_GUARD1		},
-	{ 1, MT_CRUSADER	},
-	{ 1, MT_RLEADER2	},
-	{ 0, MT_SENTINEL	},
-	{ 0, MT_STALKER	},
-	{ 0, MT_PROGRAMMER },
-	{ 0, MT_REAVER		},
-	{ 0, MT_PGUARD		},
-	{ 0, MT_INQUISITOR },
-	{ 0, MT_PRIEST		},
-	{ 0, MT_SPECTRE_A },
-	{ 0, MT_BISHOP		},
-	{ 0, MT_ENTITY		},
+	{ 1, mobjtype_t::MT_PLAYER		},
+	{ 1, mobjtype_t::MT_BEGGAR1	},
+	{ 1, mobjtype_t::MT_PEASANT2_A },
+	{ 1, mobjtype_t::MT_REBEL1		},
+	{ 1, mobjtype_t::MT_GUARD1		},
+	{ 1, mobjtype_t::MT_CRUSADER	},
+	{ 1, mobjtype_t::MT_RLEADER2	},
+	{ 0, mobjtype_t::MT_SENTINEL	},
+	{ 0, mobjtype_t::MT_STALKER	},
+	{ 0, mobjtype_t::MT_PROGRAMMER },
+	{ 0, mobjtype_t::MT_REAVER		},
+	{ 0, mobjtype_t::MT_PGUARD		},
+	{ 0, mobjtype_t::MT_INQUISITOR },
+	{ 0, mobjtype_t::MT_PRIEST		},
+	{ 0, mobjtype_t::MT_SPECTRE_A },
+	{ 0, mobjtype_t::MT_BISHOP		},
+	{ 0, mobjtype_t::MT_ENTITY		},
 	{ 1, NUMMOBJTYPES }
 };
 
@@ -822,11 +822,7 @@ void F_CastDrawer ()
 // [STRIFE] Verified unmodified, but not present in 1.2
 // It WAS present in the demo version, however...
 //
-void
-F_DrawPatchCol
-( int		x,
- patch_t*	patch,
- int		col )
+void F_DrawPatchCol(int x, patch_t* patch, int col)
 {
 	column_t*	column;
 	byte*	source;
@@ -917,7 +913,7 @@ static void F_ArtScreenDrawer()
 		switch (gameepisode)
 		{
 			case 1:
-				if (gamemode == retail)
+				if (gamemode == GameMode_t::retail)
 				{
 					lumpname = "CREDIT";
 				}

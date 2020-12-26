@@ -20,14 +20,14 @@
 
 #define BONUSADD 6
 
-int ArmorIncrement[NUMCLASSES][NUMARMOR] = {
+int ArmorIncrement[pclass_t::NUMCLASSES][NUMARMOR] = {
 	{25 * FRACUNIT, 20 * FRACUNIT, 15 * FRACUNIT, 5 * FRACUNIT},
 	{10 * FRACUNIT, 25 * FRACUNIT, 5 * FRACUNIT, 20 * FRACUNIT},
 	{5 * FRACUNIT, 15 * FRACUNIT, 10 * FRACUNIT, 25 * FRACUNIT},
 	{0, 0, 0, 0}
 };
 
-int AutoArmorSave[NUMCLASSES] =
+int AutoArmorSave[pclass_t::NUMCLASSES] =
 	{ 15 * FRACUNIT, 10 * FRACUNIT, 5 * FRACUNIT, 0 };
 
 const char *TextKeyMessages[] = {
@@ -147,11 +147,11 @@ bool P_GiveMana(player_t * player, ManaType_t mana, int count)
 	int prevMana;
 	//WeaponType_t changeWeapon;
 
-	if (mana == MANA_NONE || mana == MANA_BOTH)
+	if (mana == ManaType_t::MANA_NONE || mana == ManaType_t::MANA_BOTH)
 	{
 		return (false);
 	}
-	if ((unsigned int) mana > NUMMANA)
+	if ((unsigned int) mana > ManaType_t::NUMMANA)
 	{
 		I_Error("P_GiveMana: bad type %i", mana);
 	}
@@ -170,8 +170,8 @@ bool P_GiveMana(player_t * player, ManaType_t mana, int count)
 	{
 		player->mana[mana] = MAX_MANA;
 	}
-	if (player->playerClass == PCLASS_FIGHTER && player->readyweapon == WP_SECOND
-		&& mana == MANA_1 && prevMana <= 0)
+	if (player->playerClass == pclass_t::pclass_t::PCLASS_FIGHTER && player->readyweapon == WP_SECOND
+		&& mana == ManaType_t::MANA_1 && prevMana <= 0)
 	{
 		P_SetPsprite(player, ps_weapon, S_FAXEREADY_G);
 	}
@@ -284,7 +284,7 @@ static void TryPickupWeapon(player_t * player, pclass_t weaponClass,
 	player->bonuscount += BONUSADD;
 	if (player == &players[consoleplayer])
 	{
-		S_StartSound(NULL, SFX_PICKUP_WEAPON);
+		S_StartSound(NULL, sfxenum_t::SFX_PICKUP_WEAPON);
 		SB_PaletteFlash(false);
 	}
 }
@@ -337,7 +337,7 @@ bool P_GiveWeapon(player_t *player, pclass_t playerClass, WeaponType_t weapon)
 		player->pendingweapon = weapon;
 		if(player == &players[consoleplayer])
 		{
-			S_StartSound(NULL, SFX_PICKUP_WEAPON);
+			S_StartSound(NULL, sfxenum_t::SFX_PICKUP_WEAPON);
 		}
 		return(false);
 	}
@@ -389,7 +389,7 @@ bool P_GiveWeaponPiece(player_t *player, pclass_t playerClass, int piece)
 	if(player->pieces == 7)
 	{ // player has built the fourth weapon!
 		P_GiveWeapon(player, playerClass, WP_FOURTH);
-		S_StartSound(player->mo, SFX_WEAPON_BUILD);
+		S_StartSound(player->mo, sfxenum_t::SFX_WEAPON_BUILD);
 	}
 	return true;
 }
@@ -508,14 +508,14 @@ static void TryPickupWeaponPiece(player_t * player, pclass_t matchClass,
 	{
 		P_SetMessage(player, fourthWeaponText[matchClass], false);
 		// Play the build-sound full volume for all players
-		S_StartSound(NULL, SFX_WEAPON_BUILD);
+		S_StartSound(NULL, sfxenum_t::SFX_WEAPON_BUILD);
 	}
 	else
 	{
 		P_SetMessage(player, weaponPieceText[matchClass], false);
 		if (player == &players[consoleplayer])
 		{
-			S_StartSound(NULL, SFX_PICKUP_WEAPON);
+			S_StartSound(NULL, sfxenum_t::SFX_PICKUP_WEAPON);
 		}
 	}
 }
@@ -563,7 +563,7 @@ bool P_GiveArmor(player_t * player, ArmorType_t armortype, int amount)
 	int hits;
 	int totalArmor;
 
-	extern int ArmorMax[NUMCLASSES];
+	extern int ArmorMax[pclass_t::NUMCLASSES];
 
 	if (amount == -1)
 	{
@@ -632,7 +632,7 @@ bool P_GivePower(player_t * player, PowerType_t power)
 		}
 		player->powers[power] = INVULNTICS;
 		player->mo->flags2 |= MF2_INVULNERABLE;
-		if (player->playerClass == PCLASS_MAGE)
+		if (player->playerClass == pclass_t::pclass_t::PCLASS_MAGE)
 		{
 			player->mo->flags2 |= MF2_REFLECTIVE;
 		}
@@ -743,7 +743,7 @@ static void TryPickupArtifact(player_t * player, ArtiType_t artifactType,
 		TXT_ARTIPUZZGEAR
 	};
 
-	if (gamemode == shareware)
+	if (gamemode == GameMode_t::shareware)
 	{
 		artifactMessages[arti_blastradius] = TXT_ARTITELEPORT;
 		artifactMessages[arti_teleport] = TXT_ARTIBLASTRADIUS;
@@ -758,15 +758,15 @@ static void TryPickupArtifact(player_t * player, ArtiType_t artifactType,
 			artifact->special = 0;
 		}
 		player->bonuscount += BONUSADD;
-		if (artifactType < arti_firstpuzzitem)
+		if (artifactType < ArtiType_t::arti_firstpuzzitem)
 		{
 			SetDormantArtifact(artifact);
-			S_StartSound(artifact, SFX_PICKUP_ARTIFACT);
+			S_StartSound(artifact, sfxenum_t::SFX_PICKUP_ARTIFACT);
 			P_SetMessage(player, artifactMessages[artifactType], false);
 		}
 		else
 		{						// Puzzle item
-			S_StartSound(NULL, SFX_PICKUP_ITEM);
+			S_StartSound(NULL, sfxenum_t::SFX_PICKUP_ITEM);
 			P_SetMessage(player, artifactMessages[artifactType], true);
 			if (!netgame || deathmatch)
 			{					// Remove puzzle items if not cooperative netplay
@@ -798,10 +798,10 @@ bool P_GiveArtifact(player_t * player, ArtiType_t arti, mobj_t * mo)
 	}
 	if (i == player->inventorySlotNum)
 	{
-		if (arti < arti_firstpuzzitem)
+		if (arti < ArtiType_t::arti_firstpuzzitem)
 		{
 			i = 0;
-			while (player->inventory[i].type < arti_firstpuzzitem
+			while (player->inventory[i].type < ArtiType_t::arti_firstpuzzitem
 					&& i < player->inventorySlotNum)
 			{
 				i++;
@@ -823,7 +823,7 @@ bool P_GiveArtifact(player_t * player, ArtiType_t arti, mobj_t * mo)
 	}
 	else
 	{
-		if (arti >= arti_firstpuzzitem && netgame && !deathmatch)
+		if (arti >= ArtiType_t::arti_firstpuzzitem && netgame && !deathmatch)
 		{						// Can't carry more than 1 puzzle item in coop netplay
 			return false;
 		}
@@ -865,11 +865,11 @@ static void SetDormantArtifact(mobj_t * arti)
 	arti->flags &= ~MF_SPECIAL;
 	if (deathmatch && !(arti->flags2 & MF2_DROPPED))
 	{
-		if (arti->type == MT_ARTIINVULNERABILITY)
+		if (arti->type == mobjtype_t::MT_ARTIINVULNERABILITY)
 		{
 			P_SetMobjState(arti, S_DORMANTARTI3_1);
 		}
-		else if (arti->type == MT_SUMMONMAULATOR || arti->type == MT_ARTIFLY)
+		else if (arti->type == mobjtype_t::MT_SUMMONMAULATOR || arti->type == mobjtype_t::MT_ARTIFLY)
 		{
 			P_SetMobjState(arti, S_DORMANTARTI2_1);
 		}
@@ -894,7 +894,7 @@ void A_RestoreArtifact(mobj_t * arti)
 {
 	arti->flags |= MF_SPECIAL;
 	P_SetMobjState(arti, arti->info->spawnstate);
-	S_StartSound(arti, SFX_RESPAWN);
+	S_StartSound(arti, sfxenum_t::SFX_RESPAWN);
 }
 
 //---------------------------------------------------------------------------
@@ -908,7 +908,7 @@ void A_RestoreArtifact(mobj_t * arti)
 void A_RestoreSpecialThing1(mobj_t * thing)
 {
 	thing->flags2 &= ~MF2_DONTDRAW;
-	S_StartSound(thing, SFX_RESPAWN);
+	S_StartSound(thing, sfxenum_t::SFX_RESPAWN);
 }
 
 //---------------------------------------------------------------------------
@@ -945,7 +945,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 	{							// Toucher is dead
 		return;
 	}
-	sound = SFX_PICKUP_ITEM;
+	sound = sfxenum_t::SFX_PICKUP_ITEM;
 	player = toucher->player;
 	respawn = true;
 	switch (special->sprite)
@@ -1005,7 +1005,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			}
 			P_SetMessage(player, TextKeyMessages[special->sprite - SPR_KEY1],
 							true);
-			sound = SFX_PICKUP_KEY;
+			sound = sfxenum_t::SFX_PICKUP_KEY;
 
 			// Check and process the special now in case the key doesn't
 			// get removed for coop netplay
@@ -1030,102 +1030,102 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 
 			// Artifacts
 		case SPR_PTN2:
-			TryPickupArtifact(player, arti_health, special);
+			TryPickupArtifact(player, ArtiType_t::arti_health, special);
 			return;
 		case SPR_SOAR:
-			TryPickupArtifact(player, arti_fly, special);
+			TryPickupArtifact(player, ArtiType_t::arti_fly, special);
 			return;
 		case SPR_INVU:
-			TryPickupArtifact(player, arti_invulnerability, special);
+			TryPickupArtifact(player, ArtiType_t::arti_invulnerability, special);
 			return;
 		case SPR_SUMN:
-			TryPickupArtifact(player, arti_summon, special);
+			TryPickupArtifact(player, ArtiType_t::arti_summon, special);
 			return;
 		case SPR_PORK:
-			TryPickupArtifact(player, arti_egg, special);
+			TryPickupArtifact(player, ArtiType_t::arti_egg, special);
 			return;
 		case SPR_SPHL:
-			TryPickupArtifact(player, arti_superhealth, special);
+			TryPickupArtifact(player, ArtiType_t::arti_superhealth, special);
 			return;
 		case SPR_HRAD:
-			TryPickupArtifact(player, arti_healingradius, special);
+			TryPickupArtifact(player, ArtiType_t::arti_healingradius, special);
 			return;
 		case SPR_TRCH:
-			TryPickupArtifact(player, arti_torch, special);
+			TryPickupArtifact(player, ArtiType_t::arti_torch, special);
 			return;
 		case SPR_ATLP:
-			TryPickupArtifact(player, arti_teleport, special);
+			TryPickupArtifact(player, ArtiType_t::arti_teleport, special);
 			return;
 		case SPR_TELO:
-			TryPickupArtifact(player, arti_teleportother, special);
+			TryPickupArtifact(player, ArtiType_t::arti_teleportother, special);
 			return;
 		case SPR_PSBG:
-			TryPickupArtifact(player, arti_poisonbag, special);
+			TryPickupArtifact(player, ArtiType_t::arti_poisonbag, special);
 			return;
 		case SPR_SPED:
-			TryPickupArtifact(player, arti_speed, special);
+			TryPickupArtifact(player, ArtiType_t::arti_speed, special);
 			return;
 		case SPR_BMAN:
-			TryPickupArtifact(player, arti_boostmana, special);
+			TryPickupArtifact(player, ArtiType_t::arti_boostmana, special);
 			return;
 		case SPR_BRAC:
-			TryPickupArtifact(player, arti_boostarmor, special);
+			TryPickupArtifact(player, ArtiType_t::arti_boostarmor, special);
 			return;
 		case SPR_BLST:
-			TryPickupArtifact(player, arti_blastradius, special);
+			TryPickupArtifact(player, ArtiType_t::arti_blastradius, special);
 			return;
 
 			// Puzzle artifacts
 		case SPR_ASKU:
-			TryPickupArtifact(player, arti_puzzskull, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzskull, special);
 			return;
 		case SPR_ABGM:
-			TryPickupArtifact(player, arti_puzzgembig, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgembig, special);
 			return;
 		case SPR_AGMR:
-			TryPickupArtifact(player, arti_puzzgemred, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgemred, special);
 			return;
 		case SPR_AGMG:
-			TryPickupArtifact(player, arti_puzzgemgreen1, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgemgreen1, special);
 			return;
 		case SPR_AGG2:
-			TryPickupArtifact(player, arti_puzzgemgreen2, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgemgreen2, special);
 			return;
 		case SPR_AGMB:
-			TryPickupArtifact(player, arti_puzzgemblue1, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgemblue1, special);
 			return;
 		case SPR_AGB2:
-			TryPickupArtifact(player, arti_puzzgemblue2, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgemblue2, special);
 			return;
 		case SPR_ABK1:
-			TryPickupArtifact(player, arti_puzzbook1, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzbook1, special);
 			return;
 		case SPR_ABK2:
-			TryPickupArtifact(player, arti_puzzbook2, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzbook2, special);
 			return;
 		case SPR_ASK2:
-			TryPickupArtifact(player, arti_puzzskull2, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzskull2, special);
 			return;
 		case SPR_AFWP:
-			TryPickupArtifact(player, arti_puzzfweapon, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzfweapon, special);
 			return;
 		case SPR_ACWP:
-			TryPickupArtifact(player, arti_puzzcweapon, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzcweapon, special);
 			return;
 		case SPR_AMWP:
-			TryPickupArtifact(player, arti_puzzmweapon, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzmweapon, special);
 			return;
 		case SPR_AGER:
-			TryPickupArtifact(player, arti_puzzgear1, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgear1, special);
 			return;
 		case SPR_AGR2:
-			TryPickupArtifact(player, arti_puzzgear2, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgear2, special);
 			return;
 		case SPR_AGR3:
-			TryPickupArtifact(player, arti_puzzgear3, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgear3, special);
 			return;
 		case SPR_AGR4:
-			TryPickupArtifact(player, arti_puzzgear4, special);
+			TryPickupArtifact(player, ArtiType_t::arti_puzzgear4, special);
 			return;
 
 			// Mana
@@ -1160,61 +1160,61 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 
 			// 2nd and 3rd Mage Weapons
 		case SPR_WMCS:			// Frost Shards
-			TryPickupWeapon(player, PCLASS_MAGE, WP_SECOND,
+			TryPickupWeapon(player, pclass_t::PCLASS_MAGE, WP_SECOND,
 							special, TXT_WEAPON_M2);
 			return;
 		case SPR_WMLG:			// Arc of Death
-			TryPickupWeapon(player, PCLASS_MAGE, WP_THIRD,
+			TryPickupWeapon(player, pclass_t::PCLASS_MAGE, WP_THIRD,
 							special, TXT_WEAPON_M3);
 			return;
 
 			// 2nd and 3rd Fighter Weapons
 		case SPR_WFAX:			// Timon's Axe
-			TryPickupWeapon(player, PCLASS_FIGHTER, WP_SECOND,
+			TryPickupWeapon(player, pclass_t::PCLASS_FIGHTER, WP_SECOND,
 							special, TXT_WEAPON_F2);
 			return;
 		case SPR_WFHM:			// Hammer of Retribution
-			TryPickupWeapon(player, PCLASS_FIGHTER, WP_THIRD,
+			TryPickupWeapon(player, pclass_t::PCLASS_FIGHTER, WP_THIRD,
 							special, TXT_WEAPON_F3);
 			return;
 
 			// 2nd and 3rd Cleric Weapons
 		case SPR_WCSS:			// Serpent Staff
-			TryPickupWeapon(player, PCLASS_CLERIC, WP_SECOND,
+			TryPickupWeapon(player, pclass_t::PCLASS_CLERIC, WP_SECOND,
 							special, TXT_WEAPON_C2);
 			return;
 		case SPR_WCFM:			// Firestorm
-			TryPickupWeapon(player, PCLASS_CLERIC, WP_THIRD,
+			TryPickupWeapon(player, pclass_t::PCLASS_CLERIC, WP_THIRD,
 							special, TXT_WEAPON_C3);
 			return;
 
 			// Fourth Weapon Pieces
 		case SPR_WFR1:
-			TryPickupWeaponPiece(player, PCLASS_FIGHTER, WPIECE1, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_FIGHTER, WPIECE1, special);
 			return;
 		case SPR_WFR2:
-			TryPickupWeaponPiece(player, PCLASS_FIGHTER, WPIECE2, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_FIGHTER, WPIECE2, special);
 			return;
 		case SPR_WFR3:
-			TryPickupWeaponPiece(player, PCLASS_FIGHTER, WPIECE3, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_FIGHTER, WPIECE3, special);
 			return;
 		case SPR_WCH1:
-			TryPickupWeaponPiece(player, PCLASS_CLERIC, WPIECE1, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_CLERIC, WPIECE1, special);
 			return;
 		case SPR_WCH2:
-			TryPickupWeaponPiece(player, PCLASS_CLERIC, WPIECE2, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_CLERIC, WPIECE2, special);
 			return;
 		case SPR_WCH3:
-			TryPickupWeaponPiece(player, PCLASS_CLERIC, WPIECE3, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_CLERIC, WPIECE3, special);
 			return;
 		case SPR_WMS1:
-			TryPickupWeaponPiece(player, PCLASS_MAGE, WPIECE1, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_MAGE, WPIECE1, special);
 			return;
 		case SPR_WMS2:
-			TryPickupWeaponPiece(player, PCLASS_MAGE, WPIECE2, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_MAGE, WPIECE2, special);
 			return;
 		case SPR_WMS3:
-			TryPickupWeaponPiece(player, PCLASS_MAGE, WPIECE3, special);
+			TryPickupWeaponPiece(player, pclass_t::PCLASS_MAGE, WPIECE3, special);
 			return;
 
 		default:
@@ -1255,7 +1255,7 @@ mobj_t *ActiveMinotaur(player_t * master)
 		if (think->function != P_MobjThinker)
 			continue;
 		mo = (mobj_t *) think;
-		if (mo->type != MT_MINOTAUR)
+		if (mo->type != mobjtype_t::MT_MINOTAUR)
 			continue;
 		if (mo->health <= 0)
 			continue;
@@ -1289,10 +1289,10 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 	target->flags |= MF_CORPSE | MF_DROPOFF;
 	target->flags2 &= ~MF2_PASSMOBJ;
 	target->height >>= 2;
-	if ((target->flags & MF_COUNTKILL || target->type == MT_ZBELL)
+	if ((target->flags & MF_COUNTKILL || target->type == mobjtype_t::MT_ZBELL)
 		&& target->special)
 	{							// Initiate monster death actions
-		if (target->type == MT_SORCBOSS)
+		if (target->type == mobjtype_t::MT_SORCBOSS)
 		{
 			P_StartACS(target->special, 0, dummyArgs, target, NULL, 0);
 		}
@@ -1340,22 +1340,22 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 		target->flags &= ~MF_SOLID;
 		target->flags2 &= ~MF2_FLY;
 		target->player->powers[PowerType_t::pw_flight] = 0;
-		target->player->playerstate = PST_DEAD;
+		target->player->playerstate = PlayerState_t::PST_DEAD;
 		P_DropWeapon(target->player);
 		if (target->flags2 & MF2_FIREDAMAGE)
 		{						// Player flame death
 			switch (target->player->playerClass)
 			{
-				case PCLASS_FIGHTER:
-					S_StartSound(target, SFX_PLAYER_FIGHTER_BURN_DEATH);
+				case pclass_t::PCLASS_FIGHTER:
+					S_StartSound(target, sfxenum_t::SFX_PLAYER_FIGHTER_BURN_DEATH);
 					P_SetMobjState(target, S_PLAY_F_FDTH1);
 					return;
-				case PCLASS_CLERIC:
-					S_StartSound(target, SFX_PLAYER_CLERIC_BURN_DEATH);
+				case pclass_t::PCLASS_CLERIC:
+					S_StartSound(target, sfxenum_t::SFX_PLAYER_CLERIC_BURN_DEATH);
 					P_SetMobjState(target, S_PLAY_C_FDTH1);
 					return;
-				case PCLASS_MAGE:
-					S_StartSound(target, SFX_PLAYER_MAGE_BURN_DEATH);
+				case pclass_t::PCLASS_MAGE:
+					S_StartSound(target, sfxenum_t::SFX_PLAYER_MAGE_BURN_DEATH);
 					P_SetMobjState(target, S_PLAY_M_FDTH1);
 					return;
 				default:
@@ -1368,16 +1368,16 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 			target->flags |= MF_ICECORPSE;
 			switch (target->player->playerClass)
 			{
-				case PCLASS_FIGHTER:
+				case pclass_t::PCLASS_FIGHTER:
 					P_SetMobjState(target, S_FPLAY_ICE);
 					return;
-				case PCLASS_CLERIC:
+				case pclass_t::PCLASS_CLERIC:
 					P_SetMobjState(target, S_CPLAY_ICE);
 					return;
-				case PCLASS_MAGE:
+				case pclass_t::PCLASS_MAGE:
 					P_SetMobjState(target, S_MPLAY_ICE);
 					return;
-				case PCLASS_PIG:
+				case pclass_t::PCLASS_PIG:
 					P_SetMobjState(target, S_PIG_ICE);
 					return;
 				default:
@@ -1387,32 +1387,32 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 	}
 	if (target->flags2 & MF2_FIREDAMAGE)
 	{
-		if (target->type == MT_FIGHTER_BOSS
-			|| target->type == MT_CLERIC_BOSS || target->type == MT_MAGE_BOSS)
+		if (target->type == mobjtype_t::MT_FIGHTER_BOSS
+			|| target->type == mobjtype_t::MT_CLERIC_BOSS || target->type == mobjtype_t::MT_MAGE_BOSS)
 		{
 			switch (target->type)
 			{
-				case MT_FIGHTER_BOSS:
-					S_StartSound(target, SFX_PLAYER_FIGHTER_BURN_DEATH);
+				case mobjtype_t::MT_FIGHTER_BOSS:
+					S_StartSound(target, sfxenum_t::SFX_PLAYER_FIGHTER_BURN_DEATH);
 					P_SetMobjState(target, S_PLAY_F_FDTH1);
 					return;
-				case MT_CLERIC_BOSS:
-					S_StartSound(target, SFX_PLAYER_CLERIC_BURN_DEATH);
+				case mobjtype_t::MT_CLERIC_BOSS:
+					S_StartSound(target, sfxenum_t::SFX_PLAYER_CLERIC_BURN_DEATH);
 					P_SetMobjState(target, S_PLAY_C_FDTH1);
 					return;
-				case MT_MAGE_BOSS:
-					S_StartSound(target, SFX_PLAYER_MAGE_BURN_DEATH);
+				case mobjtype_t::MT_MAGE_BOSS:
+					S_StartSound(target, sfxenum_t::SFX_PLAYER_MAGE_BURN_DEATH);
 					P_SetMobjState(target, S_PLAY_M_FDTH1);
 					return;
 				default:
 					break;
 			}
 		}
-		else if (target->type == MT_TREEDESTRUCTIBLE)
+		else if (target->type == mobjtype_t::MT_TREEDESTRUCTIBLE)
 		{
 			P_SetMobjState(target, S_ZTREEDES_X1);
 			target->height = 24 * FRACUNIT;
-			S_StartSound(target, SFX_TREE_EXPLODE);
+			S_StartSound(target, sfxenum_t::SFX_TREE_EXPLODE);
 			return;
 		}
 	}
@@ -1421,41 +1421,41 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 		target->flags |= MF_ICECORPSE;
 		switch (target->type)
 		{
-			case MT_BISHOP:
+			case mobjtype_t::MT_BISHOP:
 				P_SetMobjState(target, S_BISHOP_ICE);
 				return;
-			case MT_CENTAUR:
-			case MT_CENTAURLEADER:
+			case mobjtype_t::MT_CENTAUR:
+			case mobjtype_t::MT_CENTAURLEADER:
 				P_SetMobjState(target, S_CENTAUR_ICE);
 				return;
-			case MT_DEMON:
-			case MT_DEMON2:
+			case mobjtype_t::MT_DEMON:
+			case mobjtype_t::MT_DEMON2:
 				P_SetMobjState(target, S_DEMON_ICE);
 				return;
-			case MT_SERPENT:
-			case MT_SERPENTLEADER:
+			case mobjtype_t::MT_SERPENT:
+			case mobjtype_t::MT_SERPENTLEADER:
 				P_SetMobjState(target, S_SERPENT_ICE);
 				return;
-			case MT_WRAITH:
-			case MT_WRAITHB:
+			case mobjtype_t::MT_WRAITH:
+			case mobjtype_t::MT_WRAITHB:
 				P_SetMobjState(target, S_WRAITH_ICE);
 				return;
-			case MT_ETTIN:
+			case mobjtype_t::MT_ETTIN:
 				P_SetMobjState(target, S_ETTIN_ICE1);
 				return;
-			case MT_FIREDEMON:
+			case mobjtype_t::MT_FIREDEMON:
 				P_SetMobjState(target, S_FIRED_ICE1);
 				return;
-			case MT_FIGHTER_BOSS:
+			case mobjtype_t::MT_FIGHTER_BOSS:
 				P_SetMobjState(target, S_FIGHTER_ICE);
 				return;
-			case MT_CLERIC_BOSS:
+			case mobjtype_t::MT_CLERIC_BOSS:
 				P_SetMobjState(target, S_CLERIC_ICE);
 				return;
-			case MT_MAGE_BOSS:
+			case mobjtype_t::MT_MAGE_BOSS:
 				P_SetMobjState(target, S_MAGE_ICE);
 				return;
-			case MT_PIG:
+			case mobjtype_t::MT_PIG:
 				P_SetMobjState(target, S_PIG_ICE);
 				return;
 			default:
@@ -1464,7 +1464,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 		}
 	}
 
-	if (target->type == MT_MINOTAUR)
+	if (target->type == mobjtype_t::MT_MINOTAUR)
 	{
 		master = target->special1.m;
 		if (master->health > 0)
@@ -1475,7 +1475,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 			}
 		}
 	}
-	else if (target->type == MT_TREEDESTRUCTIBLE)
+	else if (target->type == mobjtype_t::MT_TREEDESTRUCTIBLE)
 	{
 		target->height = 24 * FRACUNIT;
 	}
@@ -1486,7 +1486,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 	}
 	else
 	{							// Normal death
-		if ((target->type == MT_FIREDEMON) &&
+		if ((target->type == mobjtype_t::MT_FIREDEMON) &&
 			(target->z <= target->floorz + 2 * FRACUNIT) &&
 			(target->info->xdeathstate))
 		{
@@ -1561,16 +1561,16 @@ bool P_MorphPlayer(player_t * player)
 	angle = pmo->angle;
 	oldFlags2 = pmo->flags2;
 	P_SetMobjState(pmo, S_FREETARGMOBJ);
-	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, MT_TFOG);
-	S_StartSound(fog, SFX_TELEPORT);
-	beastMo = P_SpawnMobj(x, y, z, MT_PIGPLAYER);
+	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
+	S_StartSound(fog, sfxenum_t::SFX_TELEPORT);
+	beastMo = P_SpawnMobj(x, y, z, mobjtype_t::MT_PIGPLAYER);
 	beastMo->special1.i = player->readyweapon;
 	beastMo->angle = angle;
 	beastMo->player = player;
 	player->health = beastMo->health = MAXMORPHHEALTH;
 	player->mo = beastMo;
 	memset(&player->armorpoints[0], 0, NUMARMOR * sizeof(int));
-	player->playerClass = PCLASS_PIG;
+	player->playerClass = pclass_t::pclass_t::PCLASS_PIG;
 	if (oldFlags2 & MF2_FLY)
 	{
 		beastMo->flags2 |= MF2_FLY;
@@ -1604,11 +1604,11 @@ bool P_MorphMonster(mobj_t * actor)
 	moType = actor->type;
 	switch (moType)
 	{
-		case MT_PIG:
+		case mobjtype_t::MT_PIG:
 			return (false);
-		case MT_FIGHTER_BOSS:
-		case MT_CLERIC_BOSS:
-		case MT_MAGE_BOSS:
+		case mobjtype_t::MT_FIGHTER_BOSS:
+		case mobjtype_t::MT_CLERIC_BOSS:
+		case mobjtype_t::MT_MAGE_BOSS:
 			return (false);
 		default:
 			break;
@@ -1620,9 +1620,9 @@ bool P_MorphMonster(mobj_t * actor)
 	z = oldMonster.z;
 	P_RemoveMobjFromTIDList(actor);
 	P_SetMobjState(actor, S_FREETARGMOBJ);
-	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, MT_TFOG);
-	S_StartSound(fog, SFX_TELEPORT);
-	monster = P_SpawnMobj(x, y, z, MT_PIG);
+	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
+	S_StartSound(fog, sfxenum_t::SFX_TELEPORT);
+	monster = P_SpawnMobj(x, y, z, mobjtype_t::MT_PIG);
 	monster->special2.i = moType;
 	monster->special1.i = MORPHTICS + P_Random();
 	monster->flags |= (oldMonster.flags & MF_SHADOW);
@@ -1634,7 +1634,7 @@ bool P_MorphMonster(mobj_t * actor)
 	memcpy(monster->args, oldMonster.args, 5);
 
 	// check for turning off minotaur power for active icon
-	if (moType == MT_MINOTAUR)
+	if (moType == mobjtype_t::MT_MINOTAUR)
 	{
 		master = oldMonster.special1.m;
 		if (master->health > 0)
@@ -1666,12 +1666,12 @@ void P_AutoUseHealth(player_t * player, int saveHealth)
 	normalCount = superCount = 0;
 	for (i = 0; i < player->inventorySlotNum; i++)
 	{
-		if (player->inventory[i].type == arti_health)
+		if (player->inventory[i].type == ArtiType_t::arti_health)
 		{
 			normalSlot = i;
 			normalCount = player->inventory[i].count;
 		}
-		else if (player->inventory[i].type == arti_superhealth)
+		else if (player->inventory[i].type == ArtiType_t::arti_superhealth)
 		{
 			superSlot = i;
 			superCount = player->inventory[i].count;
@@ -1769,9 +1769,9 @@ void P_DamageMobj
 			switch (inflictor->type)
 			{
 					// These inflictors aren't foiled by invulnerability
-				case MT_HOLY_FX:
-				case MT_POISONCLOUD:
-				case MT_FIREBOMB:
+				case mobjtype_t::MT_HOLY_FX:
+				case mobjtype_t::MT_POISONCLOUD:
+				case mobjtype_t::MT_FIREBOMB:
 					break;
 				default:
 					return;
@@ -1810,7 +1810,7 @@ void P_DamageMobj
 	{
 		switch (inflictor->type)
 		{
-			case MT_EGGFX:
+			case mobjtype_t::MT_EGGFX:
 				if (player)
 				{
 					P_MorphPlayer(player);
@@ -1820,31 +1820,31 @@ void P_DamageMobj
 					P_MorphMonster(target);
 				}
 				return;			// Always return
-			case MT_TELOTHER_FX1:
-			case MT_TELOTHER_FX2:
-			case MT_TELOTHER_FX3:
-			case MT_TELOTHER_FX4:
-			case MT_TELOTHER_FX5:
+			case mobjtype_t::MT_TELOTHER_FX1:
+			case mobjtype_t::MT_TELOTHER_FX2:
+			case mobjtype_t::MT_TELOTHER_FX3:
+			case mobjtype_t::MT_TELOTHER_FX4:
+			case mobjtype_t::MT_TELOTHER_FX5:
 				if ((target->flags & MF_COUNTKILL) &&
-					(target->type != MT_SERPENT) &&
-					(target->type != MT_SERPENTLEADER) &&
+					(target->type != mobjtype_t::MT_SERPENT) &&
+					(target->type != mobjtype_t::MT_SERPENTLEADER) &&
 					(!(target->flags2 & MF2_BOSS)))
 				{
 					P_TeleportOther(target);
 				}
 				return;
-			case MT_MINOTAUR:
+			case mobjtype_t::MT_MINOTAUR:
 				if (inflictor->flags & MF_SKULLFLY)
 				{				// Slam only when in charge mode
 					P_MinotaurSlam(inflictor, target);
 					return;
 				}
 				break;
-			case MT_BISH_FX:
+			case mobjtype_t::MT_BISH_FX:
 				// Bishops are just too nasty
 				damage >>= 1;
 				break;
-			case MT_SHARDFX1:
+			case mobjtype_t::MT_SHARDFX1:
 				switch (inflictor->special2.i)
 				{
 					case 3:
@@ -1860,7 +1860,7 @@ void P_DamageMobj
 						break;
 				}
 				break;
-			case MT_CSTAFF_MISSILE:
+			case mobjtype_t::MT_CSTAFF_MISSILE:
 				// Cleric Serpent Staff does poison damage
 				if (target->player)
 				{
@@ -1868,24 +1868,24 @@ void P_DamageMobj
 					damage >>= 1;
 				}
 				break;
-			case MT_ICEGUY_FX2:
+			case mobjtype_t::MT_ICEGUY_FX2:
 				damage >>= 1;
 				break;
-			case MT_POISONDART:
+			case mobjtype_t::MT_POISONDART:
 				if (target->player)
 				{
 					P_PoisonPlayer(target->player, source, 20);
 					damage >>= 1;
 				}
 				break;
-			case MT_POISONCLOUD:
+			case mobjtype_t::MT_POISONCLOUD:
 				if (target->player)
 				{
 					if (target->player->poisoncount < 4)
 					{
 						P_PoisonDamage(target->player, source, 15 + (P_Random() & 15), false); // Don't play painsound
 						P_PoisonPlayer(target->player, source, 50);
-						S_StartSound(target, SFX_PLAYER_POISONCOUGH);
+						S_StartSound(target, sfxenum_t::SFX_PLAYER_POISONCOUGH);
 					}
 					return;
 				}
@@ -1894,7 +1894,7 @@ void P_DamageMobj
 					return;
 				}
 				break;
-			case MT_FSWORD_MISSILE:
+			case mobjtype_t::MT_FSWORD_MISSILE:
 				if (target->player)
 				{
 					damage -= damage >> 2;
@@ -2013,7 +2013,7 @@ void P_DamageMobj
 				target->flags2 |= MF2_ICEDAMAGE;
 			}
 		}
-		if (source && (source->type == MT_MINOTAUR))
+		if (source && (source->type == mobjtype_t::MT_MINOTAUR))
 		{						// Minotaur's kills go to his master
 			master = source->special1.m;
 			// Make sure still alive and not a pointer to fighter head
@@ -2034,8 +2034,8 @@ void P_DamageMobj
 	if ((P_Random() < target->info->painchance)
 		&& !(target->flags & MF_SKULLFLY))
 	{
-		if (inflictor && (inflictor->type >= MT_LIGHTNING_FLOOR
-							&& inflictor->type <= MT_LIGHTNING_ZAP))
+		if (inflictor && (inflictor->type >= mobjtype_t::MT_LIGHTNING_FLOOR
+							&& inflictor->type <= mobjtype_t::MT_LIGHTNING_ZAP))
 		{
 			if (P_Random() < 96)
 			{
@@ -2046,13 +2046,13 @@ void P_DamageMobj
 			{					// "electrocute" the target
 				target->frame |= FF_FULLBRIGHT;
 				if (target->flags & MF_COUNTKILL && P_Random() < 128
-					&& !S_GetSoundPlayingInfo(target, SFX_PUPPYBEAT))
+					&& !S_GetSoundPlayingInfo(target, sfxenum_t::SFX_PUPPYBEAT))
 				{
-					if ((target->type == MT_CENTAUR) ||
-						(target->type == MT_CENTAURLEADER) ||
-						(target->type == MT_ETTIN))
+					if ((target->type == mobjtype_t::MT_CENTAUR) ||
+						(target->type == mobjtype_t::MT_CENTAURLEADER) ||
+						(target->type == mobjtype_t::MT_ETTIN))
 					{
-						S_StartSound(target, SFX_PUPPYBEAT);
+						S_StartSound(target, sfxenum_t::SFX_PUPPYBEAT);
 					}
 				}
 			}
@@ -2061,16 +2061,16 @@ void P_DamageMobj
 		{
 			target->flags |= MF_JUSTHIT;		// fight back!
 			P_SetMobjState(target, target->info->painstate);
-			if (inflictor && inflictor->type == MT_POISONCLOUD)
+			if (inflictor && inflictor->type == mobjtype_t::MT_POISONCLOUD)
 			{
 				if (target->flags & MF_COUNTKILL && P_Random() < 128
-					&& !S_GetSoundPlayingInfo(target, SFX_PUPPYBEAT))
+					&& !S_GetSoundPlayingInfo(target, sfxenum_t::SFX_PUPPYBEAT))
 				{
-					if ((target->type == MT_CENTAUR) ||
-						(target->type == MT_CENTAURLEADER) ||
-						(target->type == MT_ETTIN))
+					if ((target->type == mobjtype_t::MT_CENTAUR) ||
+						(target->type == mobjtype_t::MT_CENTAURLEADER) ||
+						(target->type == mobjtype_t::MT_ETTIN))
 					{
-						S_StartSound(target, SFX_PUPPYBEAT);
+						S_StartSound(target, sfxenum_t::SFX_PUPPYBEAT);
 					}
 				}
 			}
@@ -2078,13 +2078,13 @@ void P_DamageMobj
 	}
 	target->reactiontime = 0;	// we're awake now...
 	if (!target->threshold && source && !(source->flags2 & MF2_BOSS)
-		&& !(target->type == MT_BISHOP) && !(target->type == MT_MINOTAUR))
+		&& !(target->type == mobjtype_t::MT_BISHOP) && !(target->type == mobjtype_t::MT_MINOTAUR))
 	{
 		// Target actor is not intent on another actor,
 		// so make him chase after source
-		if ((target->type == MT_CENTAUR && source->type == MT_CENTAURLEADER)
-			|| (target->type == MT_CENTAURLEADER
-				&& source->type == MT_CENTAUR))
+		if ((target->type == mobjtype_t::MT_CENTAUR && source->type == mobjtype_t::MT_CENTAURLEADER)
+			|| (target->type == mobjtype_t::MT_CENTAURLEADER
+				&& source->type == mobjtype_t::MT_CENTAUR))
 		{
 			return;
 		}
@@ -2124,7 +2124,7 @@ void P_FallingDamage(player_t * player)
 	{							// No-death threshold
 		damage = player->mo->health - 1;
 	}
-	S_StartSound(player->mo, SFX_PLAYER_LAND);
+	S_StartSound(player->mo, sfxenum_t::SFX_PLAYER_LAND);
 	P_DamageMobj(player->mo, NULL, NULL, damage);
 }
 

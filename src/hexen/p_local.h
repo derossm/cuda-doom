@@ -99,10 +99,10 @@ void P_PostMorphWeapon(player_t * player, WeaponType_t weapon);
 
 // ***** P_USER *****
 
-extern int PStateNormal[NUMCLASSES];
-extern int PStateRun[NUMCLASSES];
-extern int PStateAttack[NUMCLASSES];
-extern int PStateAttackEnd[NUMCLASSES];
+extern int PStateNormal[pclass_t::NUMCLASSES];
+extern int PStateRun[pclass_t::NUMCLASSES];
+extern int PStateAttack[pclass_t::NUMCLASSES];
+extern int PStateAttackEnd[pclass_t::NUMCLASSES];
 
 void P_PlayerThink(player_t * player);
 void P_Thrust(player_t * player, angle_t angle, fixed_t move);
@@ -152,22 +152,17 @@ int P_GetThingFloorType(mobj_t * thing);
 int P_HitFloor(mobj_t * thing);
 bool P_CheckMissileSpawn(mobj_t * missile);
 mobj_t *P_SpawnMissile(mobj_t * source, mobj_t * dest, mobjtype_t type);
-mobj_t *P_SpawnMissileXYZ(fixed_t x, fixed_t y, fixed_t z,
-							mobj_t * source, mobj_t * dest, mobjtype_t type);
-mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type,
-							angle_t angle, fixed_t momz);
-mobj_t *P_SpawnMissileAngleSpeed(mobj_t * source, mobjtype_t type,
-									angle_t angle, fixed_t momz, fixed_t speed);
+mobj_t *P_SpawnMissileXYZ(fixed_t x, fixed_t y, fixed_t z, mobj_t * source, mobj_t * dest, mobjtype_t type);
+mobj_t *P_SpawnMissileAngle(mobj_t * source, mobjtype_t type, angle_t angle, fixed_t momz);
+mobj_t *P_SpawnMissileAngleSpeed(mobj_t * source, mobjtype_t type, angle_t angle, fixed_t momz, fixed_t speed);
 mobj_t *P_SpawnPlayerMissile(mobj_t * source, mobjtype_t type);
 mobj_t *P_SPMAngle(mobj_t * source, mobjtype_t type, angle_t angle);
-mobj_t *P_SPMAngleXYZ(mobj_t * source, fixed_t x, fixed_t y,
-						fixed_t z, mobjtype_t type, angle_t angle);
+mobj_t *P_SPMAngleXYZ(mobj_t * source, fixed_t x, fixed_t y, fixed_t z, mobjtype_t type, angle_t angle);
 void P_CreateTIDList();
 void P_RemoveMobjFromTIDList(mobj_t * mobj);
 void P_InsertMobjIntoTIDList(mobj_t * mobj, int tid);
 mobj_t *P_FindMobjFromTID(int tid, int *searchPosition);
-mobj_t *P_SpawnKoraxMissile(fixed_t x, fixed_t y, fixed_t z,
-							mobj_t * source, mobj_t * dest, mobjtype_t type);
+mobj_t *P_SpawnKoraxMissile(fixed_t x, fixed_t y, fixed_t z, mobj_t * source, mobj_t * dest, mobjtype_t type);
 
 // ***** P_ENEMY *****
 
@@ -179,7 +174,6 @@ void A_NoBlocking(mobj_t * actor);
 bool P_LookForMonsters(mobj_t * actor);
 void P_InitCreatureCorpseQueue(bool corpseScan);
 void A_DeQueueCorpse(mobj_t * actor);
-
 
 // ***** P_MAPUTL *****
 
@@ -202,7 +196,6 @@ typedef struct
 #define MAXINTERCEPTS	128
 extern intercept_t intercepts[MAXINTERCEPTS], *intercept_p;
 typedef bool(*traverser_t) (intercept_t * in);
-
 
 fixed_t P_AproxDistance(fixed_t dx, fixed_t dy);
 int P_PointOnLineSide(fixed_t x, fixed_t y, line_t * line);
@@ -274,7 +267,7 @@ extern mobj_t **blocklinks;		// for thing chains
 
 // ***** P_INTER *****
 
-extern int clipmana[NUMMANA];
+extern int clipmana[ManaType_t::NUMMANA];
 
 void P_SetMessage(player_t * player, const char *message, bool ultmsg);
 void P_SetYellowMessage(player_t * player, const char *message, bool ultmsg);

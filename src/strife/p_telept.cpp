@@ -38,12 +38,7 @@
 // silent teleportation. Rogue also removed the check for missiles, and the
 // z-set was replaced with one in P_TeleportMove.
 //
-int
-EV_Teleport
-( line_t*		line,
- int			side,
- mobj_t*		thing,
- teleflags_e	flags)
+int EV_Teleport(line_t* line, int side, mobj_t* thing, teleflags_e flags)
 {
 	int			i;
 	int			tag;
@@ -82,7 +77,7 @@ EV_Teleport
 				m = (mobj_t *)thinker;
 
 				// not a teleportman
-				if (m->type != MT_TELEPORTMAN )
+				if (m->type != mobjtype_t::MT_TELEPORTMAN )
 					continue;
 
 				sector = m->subsector->sector;
@@ -106,7 +101,7 @@ EV_Teleport
 				// haleyjd 20110205 [STRIFE] This code is *not* present,
 				// because of a z-set which Rogue added to P_TeleportMove.
 				/*
-				if (gameversion < exe_final || gameversion == exe_chex)
+				if (gameversion < exe_final || gameversion == GameVersion_t::exe_chex)
 					thing->z = thing->floorz;
 				*/
 
@@ -120,7 +115,7 @@ EV_Teleport
 				// corresponding NO*SND flag - fortunately this is never done
 				// anywhere in the code.
 				if(!(flags & TF_NOSRCFOG))
-					fog = P_SpawnMobj (oldx, oldy, oldz, MT_TFOG);
+					fog = P_SpawnMobj (oldx, oldy, oldz, mobjtype_t::MT_TFOG);
 				if(!(flags & TF_NOSRCSND))
 					S_StartSound (fog, sfx_telept);
 
@@ -128,7 +123,7 @@ EV_Teleport
 
 				if(!(flags & TF_NODSTFOG))
 					fog = P_SpawnMobj (m->x+20*finecosine[an], m->y+20*finesine[an],
-										thing->z, MT_TFOG);
+										thing->z, mobjtype_t::MT_TFOG);
 				if(!(flags & TF_NODSTSND))
 					S_StartSound (fog, sfx_telept);
 

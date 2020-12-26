@@ -80,8 +80,8 @@ static void CheatTrackFunc2(player_t * player, Cheat_t * cheat);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
-extern int ArmorIncrement[NUMCLASSES][NUMARMOR];
-extern int AutoArmorSave[NUMCLASSES];
+extern int ArmorIncrement[pclass_t::NUMCLASSES][NUMARMOR];
+extern int AutoArmorSave[pclass_t::NUMCLASSES];
 
 // PUBLIC DATA DECLARATIONS ------------------------------------------------
 
@@ -303,7 +303,7 @@ void SB_Init()
 	}
 	SB_SetClassData();
 
-	if (gamemode == shareware)
+	if (gamemode == GameMode_t::shareware)
 	{
 	SET_CHEAT(CheatGodSeq, "bgokey");
 	SET_CHEAT(CheatNoClipSeq, "rjohnson");
@@ -363,7 +363,7 @@ void SB_SetClassData()
 	{
 		PatchLIFEGEM = W_CacheLumpNum(W_GetNumForName("lifegem")
 										+ maxplayers * class + consoleplayer,
-										PU_STATIC);
+										pu_tags_t::PU_STATIC);
 	}
 	SB_state = -1;
 	UpdateState |= I_FULLSCRN;
@@ -703,23 +703,23 @@ char patcharti[][10] = {
 	{"ARTIBMAN"},				// boost mana
 	{"ARTIBRAC"},				// boost armor
 	{"ARTIATLP"},				// teleport
-	{"ARTISKLL"},				// arti_puzzskull
-	{"ARTIBGEM"},				// arti_puzzgembig
-	{"ARTIGEMR"},				// arti_puzzgemred
-	{"ARTIGEMG"},				// arti_puzzgemgreen1
-	{"ARTIGMG2"},				// arti_puzzgemgreen2
-	{"ARTIGEMB"},				// arti_puzzgemblue1
-	{"ARTIGMB2"},				// arti_puzzgemblue2
-	{"ARTIBOK1"},				// arti_puzzbook1
-	{"ARTIBOK2"},				// arti_puzzbook2
-	{"ARTISKL2"},				// arti_puzzskull2
-	{"ARTIFWEP"},				// arti_puzzfweapon
-	{"ARTICWEP"},				// arti_puzzcweapon
-	{"ARTIMWEP"},				// arti_puzzmweapon
-	{"ARTIGEAR"},				// arti_puzzgear1
-	{"ARTIGER2"},				// arti_puzzgear2
-	{"ARTIGER3"},				// arti_puzzgear3
-	{"ARTIGER4"},				// arti_puzzgear4
+	{"ARTISKLL"},				// ArtiType_t::arti_puzzskull
+	{"ARTIBGEM"},				// ArtiType_t::arti_puzzgembig
+	{"ARTIGEMR"},				// ArtiType_t::arti_puzzgemred
+	{"ARTIGEMG"},				// ArtiType_t::arti_puzzgemgreen1
+	{"ARTIGMG2"},				// ArtiType_t::arti_puzzgemgreen2
+	{"ARTIGEMB"},				// ArtiType_t::arti_puzzgemblue1
+	{"ARTIGMB2"},				// ArtiType_t::arti_puzzgemblue2
+	{"ARTIBOK1"},				// ArtiType_t::arti_puzzbook1
+	{"ARTIBOK2"},				// ArtiType_t::arti_puzzbook2
+	{"ARTISKL2"},				// ArtiType_t::arti_puzzskull2
+	{"ARTIFWEP"},				// ArtiType_t::arti_puzzfweapon
+	{"ARTICWEP"},				// ArtiType_t::arti_puzzcweapon
+	{"ARTIMWEP"},				// ArtiType_t::arti_puzzmweapon
+	{"ARTIGEAR"},				// ArtiType_t::arti_puzzgear1
+	{"ARTIGER2"},				// ArtiType_t::arti_puzzgear2
+	{"ARTIGER3"},				// ArtiType_t::arti_puzzgear3
+	{"ARTIGER4"},				// ArtiType_t::arti_puzzgear4
 };
 
 int SB_state = -1;
@@ -824,12 +824,12 @@ static void DrawAnimatedIcons()
 				if (hitCenterFrame && (frame != 15 && frame != 0))
 				{
 					V_DrawPatch(20, 19, W_CacheLumpNum(SpinFlylump + 15,
-														PU_CACHE));
+														pu_tags_t::PU_CACHE));
 				}
 				else
 				{
 					V_DrawPatch(20, 19, W_CacheLumpNum(SpinFlylump + frame,
-														PU_CACHE));
+														pu_tags_t::PU_CACHE));
 					hitCenterFrame = false;
 				}
 			}
@@ -838,13 +838,13 @@ static void DrawAnimatedIcons()
 				if (!hitCenterFrame && (frame != 15 && frame != 0))
 				{
 					V_DrawPatch(20, 19, W_CacheLumpNum(SpinFlylump + frame,
-														PU_CACHE));
+														pu_tags_t::PU_CACHE));
 					hitCenterFrame = false;
 				}
 				else
 				{
 					V_DrawPatch(20, 19, W_CacheLumpNum(SpinFlylump + 15,
-														PU_CACHE));
+														pu_tags_t::PU_CACHE));
 					hitCenterFrame = true;
 				}
 			}
@@ -861,7 +861,7 @@ static void DrawAnimatedIcons()
 		{
 			frame = (leveltime / 3) & 15;
 			V_DrawPatch(60, 19, W_CacheLumpNum(SpinSpeedLump + frame,
-												PU_CACHE));
+												pu_tags_t::PU_CACHE));
 		}
 		BorderTopRefresh = true;
 		UpdateState |= I_MESSAGES;
@@ -875,7 +875,7 @@ static void DrawAnimatedIcons()
 		{
 			frame = (leveltime / 3) & 15;
 			V_DrawPatch(260, 19, W_CacheLumpNum(SpinDefenseLump + frame,
-												PU_CACHE));
+												pu_tags_t::PU_CACHE));
 		}
 		BorderTopRefresh = true;
 		UpdateState |= I_MESSAGES;
@@ -889,7 +889,7 @@ static void DrawAnimatedIcons()
 		{
 			frame = (leveltime / 3) & 15;
 			V_DrawPatch(300, 19, W_CacheLumpNum(SpinMinotaurLump + frame,
-												PU_CACHE));
+												pu_tags_t::PU_CACHE));
 		}
 		BorderTopRefresh = true;
 		UpdateState |= I_MESSAGES;
@@ -1036,7 +1036,7 @@ void DrawMainBar()
 		{
 			V_DrawPatch(143, 163,
 						W_CacheLumpName(patcharti[CPlayer->readyArtifact],
-										PU_CACHE));
+										pu_tags_t::PU_CACHE));
 			if (CPlayer->inventory[inv_ptr].count > 1)
 			{
 				DrSmallNumber(CPlayer->inventory[inv_ptr].count, 162, 184);
@@ -1234,12 +1234,12 @@ void DrawInventoryBar()
 	{
 		//V_DrawPatch(50+i*31, 160, W_CacheLumpName("ARTIBOX", pu_tags_t::PU_CACHE));
 		if (CPlayer->inventorySlotNum > x + i
-			&& CPlayer->inventory[x + i].type != arti_none)
+			&& CPlayer->inventory[x + i].type != ArtiType_t::arti_none)
 		{
 			V_DrawPatch(50 + i * 31, 163,
 						W_CacheLumpName(patcharti
 										[CPlayer->inventory[x + i].type],
-										PU_CACHE));
+										pu_tags_t::PU_CACHE));
 			if (CPlayer->inventory[x + i].count > 1)
 			{
 				DrSmallNumber(CPlayer->inventory[x + i].count, 68 + i * 31,
@@ -1281,7 +1281,7 @@ void DrawKeyBar()
 			{
 				V_DrawPatch(xPosition, 164,
 							W_CacheLumpNum(W_GetNumForName("keyslot1") + i,
-											PU_CACHE));
+											pu_tags_t::PU_CACHE));
 				xPosition += 20;
 			}
 		}
@@ -1319,7 +1319,7 @@ void DrawKeyBar()
 			{
 				V_DrawPatch(150 + 31 * i, 164,
 							W_CacheLumpNum(W_GetNumForName("armslot1") + i,
-											PU_CACHE));
+											pu_tags_t::PU_CACHE));
 			}
 		}
 		oldarmor = temp;
@@ -1333,7 +1333,7 @@ void DrawKeyBar()
 //
 //==========================================================================
 
-static int PieceX[NUMCLASSES][3] = {
+static int PieceX[pclass_t::NUMCLASSES][3] = {
 	{190, 225, 234},
 	{190, 212, 225},
 	{190, 205, 224},
@@ -1402,7 +1402,7 @@ void DrawFullScreenStuff()
 			V_DrawTLPatch(286, 170, W_CacheLumpName("ARTIBOX", pu_tags_t::PU_CACHE));
 			V_DrawPatch(284, 169,
 						W_CacheLumpName(patcharti[CPlayer->readyArtifact],
-										PU_CACHE));
+										pu_tags_t::PU_CACHE));
 			if (CPlayer->inventory[inv_ptr].count > 1)
 			{
 				DrSmallNumber(CPlayer->inventory[inv_ptr].count, 302, 192);
@@ -1415,14 +1415,14 @@ void DrawFullScreenStuff()
 		for (i = 0; i < 7; i++)
 		{
 			V_DrawTLPatch(50 + i * 31, 168, W_CacheLumpName("ARTIBOX",
-															PU_CACHE));
+															pu_tags_t::PU_CACHE));
 			if (CPlayer->inventorySlotNum > x + i
-				&& CPlayer->inventory[x + i].type != arti_none)
+				&& CPlayer->inventory[x + i].type != ArtiType_t::arti_none)
 			{
 				V_DrawPatch(49 + i * 31, 167,
 							W_CacheLumpName(patcharti
 											[CPlayer->inventory[x + i].type],
-											PU_CACHE));
+											pu_tags_t::PU_CACHE));
 				if (CPlayer->inventory[x + i].count > 1)
 				{
 					DrSmallNumber(CPlayer->inventory[x + i].count,
@@ -1535,12 +1535,12 @@ static bool HandleCheats(byte key)
 			if (CheatAddKey(&Cheats[0], key, &eat))
 			{
 				Cheats[0].func(&players[consoleplayer], &Cheats[0]);
-				S_StartSound(NULL, SFX_PLATFORM_STOP);
+				S_StartSound(NULL, sfxenum_t::SFX_PLATFORM_STOP);
 			}
 			if (CheatAddKey(&Cheats[1], key, &eat))
 			{
 				Cheats[1].func(&players[consoleplayer], &Cheats[1]);
-				S_StartSound(NULL, SFX_PLATFORM_STOP);
+				S_StartSound(NULL, sfxenum_t::SFX_PLATFORM_STOP);
 			}
 		}
 		return eat;
@@ -1555,7 +1555,7 @@ static bool HandleCheats(byte key)
 		if (CheatAddKey(&Cheats[i], key, &eat))
 		{
 			Cheats[i].func(&players[consoleplayer], &Cheats[i]);
-			S_StartSound(NULL, SFX_PLATFORM_STOP);
+			S_StartSound(NULL, sfxenum_t::SFX_PLATFORM_STOP);
 		}
 	}
 	return (eat);
@@ -1652,7 +1652,7 @@ static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
 	{
 		player->weaponowned[i] = true;
 	}
-	for (i = 0; i < NUMMANA; i++)
+	for (i = 0; i < ManaType_t::NUMMANA; i++)
 	{
 		player->mana[i] = MAX_MANA;
 	}
@@ -1711,7 +1711,7 @@ static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat)
 	int i;
 	int j;
 
-	for (i = arti_none + 1; i < arti_firstpuzzitem; i++)
+	for (i = ArtiType_t::arti_none + 1; i < ArtiType_t::arti_firstpuzzitem; i++)
 	{
 		for (j = 0; j < 25; j++)
 		{
@@ -1725,7 +1725,7 @@ static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
 {
 	int i;
 
-	for (i = arti_firstpuzzitem; i < NUMARTIFACTS; i++)
+	for (i = ArtiType_t::arti_firstpuzzitem; i < NUMARTIFACTS; i++)
 	{
 		P_GiveArtifact(player, i, NULL);
 	}

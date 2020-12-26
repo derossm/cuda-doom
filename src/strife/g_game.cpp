@@ -677,7 +677,7 @@ void G_DoLoadLevel()
 	{
 		turbodetected[i] = false;
 
-		// haleyjd 20110204 [STRIFE]: PST_REBORN if players[i].health <= 0
+		// haleyjd 20110204 [STRIFE]: PlayerState_t::PST_REBORN if players[i].health <= 0
 		if (playeringame[i] && (players[i].playerstate == PlayerState_t::PST_DEAD || players[i].health <= 0))
 		{
 			players[i].playerstate = PlayerState_t::PST_REBORN;
@@ -897,7 +897,7 @@ void G_Ticker ()
 
 	// do player reborns if needed
 	for (i=0 ; i<MAXPLAYERS ; i++)
-		if (playeringame[i] && players[i].playerstate == PST_REBORN)
+		if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_REBORN)
 			G_DoReborn (i);
 
 	// do things to change the game state
@@ -1154,7 +1154,7 @@ void G_PlayerReborn (int player)
 	p->usedown				= true;					// don't do anything immediately
 	p->attackdown			= true;
 	p->inventorydown			= true;					// villsa [STRIFE]
-	p->playerstate			= PST_LIVE;
+	p->playerstate			= PlayerState_t::PST_LIVE;
 	p->health				= deh_initial_health;	// Use dehacked value
 	p->readyweapon			= wp_fist;				// villsa [STRIFE] default to fists
 	p->pendingweapon			= wp_fist;				// villsa [STRIFE] default to fists
@@ -1186,10 +1186,7 @@ void G_PlayerReborn (int player)
 //
 void P_SpawnPlayer (mapthing_t* mthing);
 
-bool
-G_CheckSpot
-( int		playernum,
- mapthing_t*	mthing )
+bool G_CheckSpot(int playernum, mapthing_t* mthing)
 {
 	fixed_t				x;
 	fixed_t				y;
@@ -1232,7 +1229,7 @@ G_CheckSpot
 	ss = R_PointInSubsector (x,y);
 	an = ( ANG45 * (((unsigned int) mthing->angle)/45) ) >> ANGLETOFINESHIFT;
 
-	mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an], ss->sector->floorheight, MT_TFOG);
+	mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an], ss->sector->floorheight, mobjtype_t::MT_TFOG);
 
 	if (players[consoleplayer].viewz != 1)
 		S_StartSound (mo, sfx_telept);	// don't start sound on first frame
@@ -1426,7 +1423,7 @@ void G_ExitLevel (int dest)
 void G_SecretExitLevel ()
 {
 	// IF NO WOLF3D LEVELS, NO SECRET EXIT!
-	if ( (gamemode == commercial)
+	if ( (gamemode == GameMode_t::commercial)
 		&& (W_CheckNumForName("map31")<0))
 		secretexit = false;
 	else
@@ -1502,7 +1499,7 @@ void G_WorldDone ()
 	if (secretexit)
 		players[consoleplayer].didsecret = true;
 
-	if ( gamemode == commercial )
+	if ( gamemode == GameMode_t::commercial )
 	{
 	switch (gamemap)
 	{
@@ -1775,10 +1772,7 @@ bool G_WriteSaveName(int slot, const char *charname)
 // [STRIFE] No such function, at least in v1.2
 // STRIFE-TODO: Does this make a comeback in v1.31?
 /*
-void
-G_SaveGame
-( int	slot,
- char*	description )
+void G_SaveGame(int slot, char* description)
 {
 	savegameslot = slot;
 	M_StringCopy(savedescription, description, sizeof(savedescription));
@@ -1924,10 +1918,7 @@ void G_DoNewGame ()
 // * Added riftdest initialization
 // * Removed episode parameter
 //
-void
-G_InitNew
-( skill_t		skill,
- int			map )
+void G_InitNew(skill_t skill, int map)
 {
 	const char *skytexturename;
 	int				i;
@@ -2035,7 +2026,7 @@ G_InitNew
 
 	// force players to be initialized upon first level load
 	for (i=0 ; i<MAXPLAYERS ; i++)
-		players[i].playerstate = PST_REBORN;
+		players[i].playerstate = PlayerState_t::PST_REBORN;
 
 	usergame = true;				// will be set false if a demo
 	paused = false;

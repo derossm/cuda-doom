@@ -37,14 +37,7 @@
 // [STRIFE] Various changes were made to remove calls to P_ChangeSector when
 // P_ChangeSector returns true.
 //
-result_e
-T_MovePlane
-( sector_t*		sector,
- fixed_t		speed,
- fixed_t		dest,
- bool		crush,
- int			floorOrCeiling,
- int			direction )
+result_e T_MovePlane(sector_t* sector, fixed_t speed, fixed_t dest, bool crush, int floorOrCeiling, int direction)
 {
 	bool		flag;
 	fixed_t		lastpos;
@@ -259,10 +252,7 @@ void T_MoveFloor(floormove_t* floor)
 // * turboLower does not appear to adjust the floor height (STRIFE-TODO: verify)
 // * raiseFloor512AndChange type was added.
 //
-int
-EV_DoFloor
-( line_t*		line,
- floor_e		floortype )
+int EV_DoFloor(line_t* line, floor_e floortype)
 {
 	int					secnum;
 	int					rtn;
@@ -463,10 +453,7 @@ EV_DoFloor
 //
 // BUILD A STAIRCASE!
 //
-int
-EV_BuildStairs
-( line_t*	line,
- stair_e	type )
+int EV_BuildStairs(line_t* line, stair_e type)
 {
 	int					secnum;
 	int					height;

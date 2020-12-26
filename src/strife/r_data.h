@@ -25,10 +25,7 @@
 
 
 // Retrieve column data for span blitting.
-byte*
-R_GetColumn
-( int		tex,
- int		col );
+byte* R_GetColumn(int tex, int col);
 
 
 // I/O, setting up the stuff.

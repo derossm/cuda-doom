@@ -126,7 +126,7 @@ void A_DripBlood(mobj_t *actor)
 	r = P_SubRandom();
 
 	mo = P_SpawnMobj(actor->x+(r<<11),
-		actor->y+(P_SubRandom()<<11), actor->z, MT_BLOOD);
+		actor->y+(P_SubRandom()<<11), actor->z, mobjtype_t::MT_BLOOD);
 	mo->momx = P_SubRandom()<<10;
 	mo->momy = P_SubRandom()<<10;
 	mo->flags2 |= MF2_LOGRAV;
@@ -146,13 +146,13 @@ void A_PotteryExplode(mobj_t * actor)
 
 	for (i = (P_Random() & 3) + 3; i; i--)
 	{
-		mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_POTTERYBIT1);
+		mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_POTTERYBIT1);
 		P_SetMobjState(mo, mo->info->spawnstate + (P_Random() % 5));
 		mo->momz = ((P_Random() & 7) + 5) * (3 * FRACUNIT / 4);
 		mo->momx = P_SubRandom() << (FRACBITS - 6);
 		mo->momy = P_SubRandom() << (FRACBITS - 6);
 	}
-	S_StartSound(mo, SFX_POTTERY_EXPLODE);
+	S_StartSound(mo, sfxenum_t::SFX_POTTERY_EXPLODE);
 	if (actor->args[0])
 	{							// Spawn an item
 		if (!nomonsters
@@ -252,21 +252,21 @@ void A_CorpseExplode(mobj_t * actor)
 
 	for (i = (P_Random() & 3) + 3; i; i--)
 	{
-		mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_CORPSEBIT);
+		mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_CORPSEBIT);
 		P_SetMobjState(mo, mo->info->spawnstate + (P_Random() % 3));
 		mo->momz = ((P_Random() & 7) + 5) * (3 * FRACUNIT / 4);
 		mo->momx = P_SubRandom() << (FRACBITS - 6);
 		mo->momy = P_SubRandom() << (FRACBITS - 6);
 	}
 	// Spawn a skull
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_CORPSEBIT);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_CORPSEBIT);
 	P_SetMobjState(mo, S_CORPSEBIT_4);
 	if (mo)
 	{
 		mo->momz = ((P_Random() & 7) + 5) * (3 * FRACUNIT / 4);
 		mo->momx = P_SubRandom() << (FRACBITS - 6);
 		mo->momy = P_SubRandom() << (FRACBITS - 6);
-		S_StartSound(mo, SFX_FIRED_DEATH);
+		S_StartSound(mo, sfxenum_t::SFX_FIRED_DEATH);
 	}
 	P_RemoveMobj(actor);
 }
@@ -287,7 +287,7 @@ void A_LeafSpawn(mobj_t * actor)
 		// Official release of Hexen's source code relies on unspecified behavior
 		// the in order of function's argument evaluation,
 		// see ISO-IEC 9899-1999, [6.5.2.2.10]
-		mobjtype_t type = MT_LEAF1 + (P_Random() & 1);
+		mobjtype_t type = mobjtype_t::MT_LEAF1 + (P_Random() & 1);
 		fixed_t z = actor->z + (P_Random() << 14);
 		fixed_t y = actor->y + (P_SubRandom() << 14);
 		fixed_t x = actor->x + (P_SubRandom() << 14);
@@ -427,15 +427,15 @@ void A_BridgeInit(mobj_t * actor)
 	actor->special1.i = 0;
 
 	// Spawn triad into world
-	ball1 = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
+	ball1 = P_SpawnMobj(cx, cy, cz, mobjtype_t::MT_BRIDGEBALL);
 	ball1->args[0] = startangle;
 	ball1->target = actor;
 
-	ball2 = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
+	ball2 = P_SpawnMobj(cx, cy, cz, mobjtype_t::MT_BRIDGEBALL);
 	ball2->args[0] = (startangle + 85) & 255;
 	ball2->target = actor;
 
-	ball3 = P_SpawnMobj(cx, cy, cz, MT_BRIDGEBALL);
+	ball3 = P_SpawnMobj(cx, cy, cz, mobjtype_t::MT_BRIDGEBALL);
 	ball3->args[0] = (startangle + 170) & 255;
 	ball3->target = actor;
 
@@ -565,14 +565,14 @@ void A_ContMobjSound(mobj_t * actor)
 {
 	switch (actor->type)
 	{
-		case MT_SERPENTFX:
-			S_StartSound(actor, SFX_SERPENTFX_CONTINUOUS);
+		case mobjtype_t::MT_SERPENTFX:
+			S_StartSound(actor, sfxenum_t::SFX_SERPENTFX_CONTINUOUS);
 			break;
-		case MT_HAMMER_MISSILE:
-			S_StartSound(actor, SFX_FIGHTER_HAMMER_CONTINUOUS);
+		case mobjtype_t::MT_HAMMER_MISSILE:
+			S_StartSound(actor, sfxenum_t::SFX_FIGHTER_HAMMER_CONTINUOUS);
 			break;
-		case MT_QUAKE_FOCUS:
-			S_StartSound(actor, SFX_EARTHQUAKE);
+		case mobjtype_t::MT_QUAKE_FOCUS:
+			S_StartSound(actor, sfxenum_t::SFX_EARTHQUAKE);
 			break;
 		default:
 			break;
@@ -591,11 +591,11 @@ void A_ESound(mobj_t * mo)
 
 	switch (mo->type)
 	{
-		case MT_SOUNDWIND:
-			sound = SFX_WIND;
+		case mobjtype_t::MT_SOUNDWIND:
+			sound = sfxenum_t::SFX_WIND;
 			break;
 		default:
-			sound = SFX_NONE;
+			sound = sfxenum_t::SFX_NONE;
 			break;
 	}
 	S_StartSound(mo, sound);
@@ -613,13 +613,13 @@ void A_Summon(mobj_t * actor)
 	mobj_t *mo;
 	mobj_t *master;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_MINOTAUR);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_MINOTAUR);
 	if (mo)
 	{
 		if (P_TestMobjLocation(mo) == false || !actor->special1.m)
 		{						// Didn't fit - change back to artifact
 			P_SetMobjState(mo, S_NULL);
-			mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SUMMONMAULATOR);
+			mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SUMMONMAULATOR);
 			if (mo)
 				mo->flags2 |= MF2_DROPPED;
 			return;
@@ -643,8 +643,8 @@ void A_Summon(mobj_t * actor)
 		}
 
 		// Make smoke puff
-		P_SpawnMobj(actor->x, actor->y, actor->z, MT_MNTRSMOKE);
-		S_StartSound(actor, SFX_MAULATOR_ACTIVE);
+		P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_MNTRSMOKE);
+		S_StartSound(actor, sfxenum_t::SFX_MAULATOR_ACTIVE);
 	}
 }
 
@@ -676,13 +676,13 @@ void A_FogSpawn(mobj_t * actor)
 	switch (P_Random() % 3)
 	{
 		case 0:
-			mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHS);
+			mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_FOGPATCHS);
 			break;
 		case 1:
-			mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHM);
+			mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_FOGPATCHM);
 			break;
 		case 2:
-			mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_FOGPATCHL);
+			mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_FOGPATCHL);
 			break;
 	}
 
@@ -858,7 +858,7 @@ bool A_LocalQuake(byte * args, mobj_t * actor)
 		if (target)
 		{
 			focus = P_SpawnMobj(target->x,
-								target->y, target->z, MT_QUAKE_FOCUS);
+								target->y, target->z, mobjtype_t::MT_QUAKE_FOCUS);
 			if (focus)
 			{
 				focus->args[0] = args[0];
@@ -946,7 +946,7 @@ void A_TeloSpawnA(mobj_t * actor)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TELOTHER_FX2);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_TELOTHER_FX2);
 	if (mo)
 	{
 		mo->special1.i = TELEPORT_LIFE;	// Lifetime countdown
@@ -962,7 +962,7 @@ void A_TeloSpawnB(mobj_t * actor)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TELOTHER_FX3);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_TELOTHER_FX3);
 	if (mo)
 	{
 		mo->special1.i = TELEPORT_LIFE;	// Lifetime countdown
@@ -978,7 +978,7 @@ void A_TeloSpawnC(mobj_t * actor)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TELOTHER_FX4);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_TELOTHER_FX4);
 	if (mo)
 	{
 		mo->special1.i = TELEPORT_LIFE;	// Lifetime countdown
@@ -994,7 +994,7 @@ void A_TeloSpawnD(mobj_t * actor)
 {
 	mobj_t *mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_TELOTHER_FX5);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_TELOTHER_FX5);
 	if (mo)
 	{
 		mo->special1.i = TELEPORT_LIFE;	// Lifetime countdown
@@ -1035,22 +1035,22 @@ void P_SpawnDirt(mobj_t * actor, fixed_t radius)
 	switch (P_Random() % 6)
 	{
 		case 0:
-			dtype = MT_DIRT1;
+			dtype = mobjtype_t::MT_DIRT1;
 			break;
 		case 1:
-			dtype = MT_DIRT2;
+			dtype = mobjtype_t::MT_DIRT2;
 			break;
 		case 2:
-			dtype = MT_DIRT3;
+			dtype = mobjtype_t::MT_DIRT3;
 			break;
 		case 3:
-			dtype = MT_DIRT4;
+			dtype = mobjtype_t::MT_DIRT4;
 			break;
 		case 4:
-			dtype = MT_DIRT5;
+			dtype = mobjtype_t::MT_DIRT5;
 			break;
 		case 5:
-			dtype = MT_DIRT6;
+			dtype = mobjtype_t::MT_DIRT6;
 			break;
 	}
 	mo = P_SpawnMobj(x, y, z, dtype);
@@ -1092,7 +1092,7 @@ void A_ThrustInitDn(mobj_t * actor)
 	actor->floorclip = actor->info->height;
 	actor->flags = 0;
 	actor->flags2 = MF2_NOTELEPORT | MF2_FLOORCLIP | MF2_DONTDRAW;
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_DIRTCLUMP);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_DIRTCLUMP);
 	actor->special1.m = mo;
 }
 
@@ -1182,7 +1182,7 @@ void A_SoAExplode(mobj_t * actor)
 						TranslateThingType[actor->args[0]]);
 		}
 	}
-	S_StartSound(mo, SFX_SUITOFARMOR_BREAK);
+	S_StartSound(mo, sfxenum_t::SFX_SUITOFARMOR_BREAK);
 	P_RemoveMobj(actor);
 }
 
@@ -1262,7 +1262,7 @@ void A_BatSpawn(mobj_t * actor)
 	if (delta == 0)
 		delta = 1;
 	angle = actor->angle + (((P_Random() % delta) - (delta >> 1)) << 24);
-	mo = P_SpawnMissileAngle(actor, MT_BAT, angle, 0);
+	mo = P_SpawnMissileAngle(actor, mobjtype_t::MT_BAT, angle, 0);
 	if (mo)
 	{
 		mo->args[0] = P_Random() & 63; // floatbob index
@@ -1300,7 +1300,7 @@ void A_BatMove(mobj_t * actor)
 	actor->momy = FixedMul(speed, finesine[newangle]);
 
 	if (P_Random() < 15)
-		S_StartSound(actor, SFX_BAT_SCREAM);
+		S_StartSound(actor, sfxenum_t::SFX_BAT_SCREAM);
 
 	// Handle Z movement
 	actor->z = actor->target->z + 2 * FloatBobOffsets[actor->args[0]];

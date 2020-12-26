@@ -74,11 +74,11 @@ bool P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle)
 	}
 	// Spawn teleport fog at source and destination
 	fogDelta = thing->flags & MF_MISSILE ? 0 : TELEFOGHEIGHT;
-	fog = P_SpawnMobj(oldx, oldy, oldz + fogDelta, MT_TFOG);
+	fog = P_SpawnMobj(oldx, oldy, oldz + fogDelta, mobjtype_t::MT_TFOG);
 	S_StartSound(fog, sfx_telept);
 	an = angle >> ANGLETOFINESHIFT;
 	fog = P_SpawnMobj(x + 20 * finecosine[an],
-						y + 20 * finesine[an], thing->z + fogDelta, MT_TFOG);
+						y + 20 * finesine[an], thing->z + fogDelta, mobjtype_t::MT_TFOG);
 	S_StartSound(fog, sfx_telept);
 	if (thing->player && !thing->player->powers[PowerType_t::pw_weaponlevel2])
 	{							// Freeze player for about .5 sec
@@ -142,7 +142,7 @@ bool EV_Teleport(line_t * line, int side, mobj_t * thing)
 					continue;
 				}
 				m = (mobj_t *) thinker;
-				if (m->type != MT_TELEPORTMAN)
+				if (m->type != mobjtype_t::MT_TELEPORTMAN)
 				{				// Not a teleportman
 					continue;
 				}

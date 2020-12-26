@@ -360,10 +360,10 @@ static int G_GotoNextLevel()
 
  int changed = false;
 
- if (gamemode == shareware)
+ if (gamemode == GameMode_t::shareware)
 	heretic_next[0][7] = 11;
 
- if (gamemode == registered)
+ if (gamemode == GameMode_t::registered)
 	heretic_next[2][7] = 11;
 
  if (gamestate == GameState_t::GS_LEVEL)
@@ -393,7 +393,7 @@ void MN_Init()
 	messageson = true;
 	SkullBaseLump = W_GetNumForName(DEH_String("M_SKL00"));
 
-	if (gamemode == retail)
+	if (gamemode == GameMode_t::retail)
 	{							// Add episodes 4 and 5 to the menu
 		EpisodeMenu.itemCount = 5;
 		EpisodeMenu.y -= ITEM_HEIGHT;
@@ -666,7 +666,7 @@ static void DrawMainMenu()
 	frame = (MenuTime / 3) % 18;
 	V_DrawPatch(88, 0, W_CacheLumpName(DEH_String("M_HTIC"), pu_tags_t::PU_CACHE));
 	V_DrawPatch(40, 10, W_CacheLumpNum(SkullBaseLump + (17 - frame),
-										PU_CACHE));
+										pu_tags_t::PU_CACHE));
 	V_DrawPatch(232, 10, W_CacheLumpNum(SkullBaseLump + frame, pu_tags_t::PU_CACHE));
 }
 
@@ -1014,7 +1014,7 @@ static bool SCSaveGame(int option)
 
 static bool SCEpisode(int option)
 {
-	if (gamemode == shareware && option > 1)
+	if (gamemode == GameMode_t::shareware && option > 1)
 	{
 		P_SetMessage(&players[consoleplayer],
 						"ONLY AVAILABLE IN THE REGISTERED VERSION", true);
@@ -1303,7 +1303,7 @@ bool MN_Responder(event_t * event)
 
 	if (InfoType)
 	{
-		if (gamemode == shareware)
+		if (gamemode == GameMode_t::shareware)
 		{
 			InfoType = (InfoType + 1) % 5;
 		}
@@ -1860,9 +1860,9 @@ void MN_DrawInfo()
 {
 	I_SetPalette(W_CacheLumpName("PLAYPAL", pu_tags_t::PU_CACHE));
 	V_DrawRawScreen(W_CacheLumpNum(W_GetNumForName("TITLE") + InfoType,
-									PU_CACHE));
+									pu_tags_t::PU_CACHE));
 //		V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType,
-//				PU_CACHE));
+//				pu_tags_t::PU_CACHE));
 }
 
 
@@ -1928,7 +1928,7 @@ static void M_DrawCrispnessBackground()
 	byte *src, *dest;
 	int x, y;
 
-	if (gamemode == shareware)
+	if (gamemode == GameMode_t::shareware)
 	{
 		src = W_CacheLumpName(DEH_String("FLOOR04"), pu_tags_t::PU_CACHE);
 	}

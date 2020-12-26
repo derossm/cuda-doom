@@ -698,7 +698,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 			if (playeringame[i])
 			{					// must give a player spot before deathmatchspawn
 				mobj = P_SpawnMobj(playerstarts[i].x << 16,
-									playerstarts[i].y << 16, 0, MT_PLAYER);
+									playerstarts[i].y << 16, 0, mobjtype_t::MT_PLAYER);
 				players[i].mo = mobj;
 				G_DeathMatchSpawnPlayer(i);
 				P_RemoveMobj(mobj);

@@ -49,7 +49,7 @@ bool EV_Teleport(line_t* line, int side, mobj_t* thing)
 				auto m{(mobj_t*)thinker};
 
 				// not a teleportman
-				if (m->type != MT_TELEPORTMAN)
+				if (m->type != mobjtype_t::MT_TELEPORTMAN)
 				{
 					continue;
 				}
@@ -75,7 +75,7 @@ bool EV_Teleport(line_t* line, int side, mobj_t* thing)
 				// particular version; the later version included in
 				// some versions of the Id Anthology fixed this.
 
-				if (gameversion != exe_final)
+				if (gameversion != GameVersion_t::exe_final)
 				{
 					thing->z = thing->floorz;
 				}
@@ -88,10 +88,10 @@ bool EV_Teleport(line_t* line, int side, mobj_t* thing)
 				}
 
 				// spawn teleport fog at source and destination
-				auto fog{P_SpawnMobj(oldx, oldy, oldz, MT_TFOG)};
+				auto fog{P_SpawnMobj(oldx, oldy, oldz, mobjtype_t::MT_TFOG)};
 				S_StartSound(fog, sfx_telept);
 				auto an{m->angle >> ANGLETOFINESHIFT};
-				fog = P_SpawnMobj(m->x+20*finecosine[an], m->y+20*finesine[an], thing->z, MT_TFOG);
+				fog = P_SpawnMobj(m->x+20*finecosine[an], m->y+20*finesine[an], thing->z, mobjtype_t::MT_TFOG);
 
 				// emit sound, where?
 				S_StartSound(fog, sfx_telept);

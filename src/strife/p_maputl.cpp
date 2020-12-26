@@ -171,10 +171,7 @@ int P_PointOnDivlineSide(fixed_t x, fixed_t y, divline_t* line)
 //
 // P_MakeDivline
 //
-void
-P_MakeDivline
-( line_t*	li,
- divline_t*	dl )
+void P_MakeDivline(line_t* li, divline_t* dl)
 {
 	dl->x = li->v1->x;
 	dl->y = li->v1->y;
@@ -193,10 +190,7 @@ P_MakeDivline
 //
 // [STRIFE] Verified unmodified
 //
-fixed_t
-P_InterceptVector
-( divline_t*	v2,
- divline_t*	v1 )
+fixed_t P_InterceptVector(divline_t* v2, divline_t* v1)
 {
 #if 1
 	fixed_t frac;
@@ -443,11 +437,7 @@ P_SetThingPosition (mobj_t* thing)
 // haleyjd 20110203:
 // [STRIFE] Modified to track blockingline
 //
-bool
-P_BlockLinesIterator
-( int			x,
- int			y,
- bool(*func)(line_t*) )
+bool P_BlockLinesIterator(int x, int y, bool(*func)(line_t*) )
 {
 	int			offset;
 	short*		list;
@@ -489,11 +479,7 @@ P_BlockLinesIterator
 //
 // [STRIFE] Verified unmodified
 //
-bool
-P_BlockThingsIterator
-( int			x,
- int			y,
- bool(*func)(mobj_t*) )
+bool P_BlockThingsIterator(int x, int y, bool(*func)(mobj_t*) )
 {
 	mobj_t*		mobj;
 
@@ -684,10 +670,7 @@ bool PIT_AddThingIntercepts (mobj_t* thing)
 //
 // [STRIFE] Verified unmodified.
 //
-bool
-P_TraverseIntercepts
-( traverser_t	func,
- fixed_t	maxfrac )
+bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac)
 {
 	int				count;
 	fixed_t			dist;

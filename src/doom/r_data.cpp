@@ -187,13 +187,7 @@ lighttable_t	*colormaps;
 // Rewritten by Lee Killough for performance and to fix Medusa bug
 //
 
-void
-R_DrawColumnInCache
-( column_t*	patch,
- byte*		cache,
- int		originy,
- int		cacheheight,
- byte*		marks )
+void R_DrawColumnInCache(column_t* patch, byte* cache, int originy, int cacheheight, byte* marks)
 {
 	int		count;
 	int		position;
@@ -571,10 +565,7 @@ void R_GenerateLookup (int texnum)
 //
 // R_GetColumn
 //
-byte*
-R_GetColumn
-( int		tex,
- int		col )
+byte* R_GetColumn(int tex, int col)
 {
 	int		ofs;
 
@@ -588,10 +579,7 @@ R_GetColumn
 }
 
 // [crispy] wrapping column getter function for composited translucent mid-textures on 2S walls
-byte*
-R_GetColumnMod
-( int		tex,
- int		col )
+byte* R_GetColumnMod(int tex, int col)
 {
 	int		ofs;
 

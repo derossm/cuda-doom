@@ -127,7 +127,7 @@ void F_StartFinale()
 		textscreen_t *screen = &textscreens[i];
 
 		// Hack for Chex Quest
-		if (gameversion == exe_chex && screen->mission == doom)
+		if (gameversion == GameVersion_t::exe_chex && screen->mission == doom)
 		{
 			screen->level = 5;
 		}
@@ -346,23 +346,23 @@ typedef struct
 } castinfo_t;
 
 castinfo_t	castorder[] = {
-	{CC_ZOMBIE, MT_POSSESSED},
-	{CC_SHOTGUN, MT_SHOTGUY},
-	{CC_HEAVY, MT_CHAINGUY},
-	{CC_IMP, MT_TROOP},
-	{CC_DEMON, MT_SERGEANT},
-	{CC_LOST, MT_SKULL},
-	{CC_CACO, MT_HEAD},
-	{CC_HELL, MT_KNIGHT},
-	{CC_BARON, MT_BRUISER},
-	{CC_ARACH, MT_BABY},
-	{CC_PAIN, MT_PAIN},
-	{CC_REVEN, MT_UNDEAD},
-	{CC_MANCU, MT_FATSO},
-	{CC_ARCH, MT_VILE},
-	{CC_SPIDER, MT_SPIDER},
-	{CC_CYBER, MT_CYBORG},
-	{CC_HERO, MT_PLAYER},
+	{CC_ZOMBIE, mobjtype_t::MT_POSSESSED},
+	{CC_SHOTGUN, mobjtype_t::MT_SHOTGUY},
+	{CC_HEAVY, mobjtype_t::MT_CHAINGUY},
+	{CC_IMP, mobjtype_t::MT_TROOP},
+	{CC_DEMON, mobjtype_t::MT_SERGEANT},
+	{CC_LOST, mobjtype_t::MT_SKULL},
+	{CC_CACO, mobjtype_t::MT_HEAD},
+	{CC_HELL, mobjtype_t::MT_KNIGHT},
+	{CC_BARON, mobjtype_t::MT_BRUISER},
+	{CC_ARACH, mobjtype_t::MT_BABY},
+	{CC_PAIN, mobjtype_t::MT_PAIN},
+	{CC_REVEN, mobjtype_t::MT_UNDEAD},
+	{CC_MANCU, mobjtype_t::MT_FATSO},
+	{CC_ARCH, mobjtype_t::MT_VILE},
+	{CC_SPIDER, mobjtype_t::MT_SPIDER},
+	{CC_CYBER, mobjtype_t::MT_CYBORG},
+	{CC_HERO, mobjtype_t::MT_PLAYER},
 
 	{NULL,0}
 };
@@ -847,11 +847,7 @@ void F_CastDrawer ()
 //
 static fixed_t dxi, dy, dyi;
 
-void
-F_DrawPatchCol
-( int		x,
- patch_t*	patch,
- int		col )
+void F_DrawPatchCol(int x, patch_t* patch, int col)
 {
 	column_t*	column;
 	byte*	source;
@@ -988,7 +984,7 @@ static void F_ArtScreenDrawer()
 		switch (gameepisode)
 		{
 			case 1:
-				if (gameversion >= exe_ultimate)
+				if (gameversion >= GameVersion_t::exe_ultimate)
 				{
 					lumpname = "CREDIT";
 				}

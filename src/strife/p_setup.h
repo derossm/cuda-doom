@@ -20,13 +20,7 @@
 
 // NOT called by W_Ticker. Fixme.
 // [STRIFE] Removed episode parameter
-void
-P_SetupLevel
-( int		map,
- int		playermask,
- skill_t	skill);
-
-// Called by startup code.
+void P_SetupLevel(int map, int playermask, skill_t skill); // Called by startup code.
 void P_Init ();
 
 #endif

@@ -175,7 +175,7 @@ void M_CrispyToggleColoredblood(int choice)
 {
 	thinker_t *th;
 
-	if (gameversion == exe_chex)
+	if (gameversion == GameVersion_t::exe_chex)
 	{
 	return;
 	}
@@ -190,7 +190,7 @@ void M_CrispyToggleColoredblood(int choice)
 	{
 		mobj_t *mobj = (mobj_t *)th;
 
-		if (mobj->type == MT_SKULL)
+		if (mobj->type == mobjtype_t::MT_SKULL)
 		{
 			if (crispy->coloredblood)
 			{
@@ -288,7 +288,7 @@ void M_CrispyToggleExtsaveg(int choice)
 
 void M_CrispyToggleFlipcorpses(int choice)
 {
-	if (gameversion == exe_chex)
+	if (gameversion == GameVersion_t::exe_chex)
 	{
 	return;
 	}

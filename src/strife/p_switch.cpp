@@ -211,7 +211,7 @@ static void P_SpawnBrokenGlass(line_t* line)
 
 	for(i = 0; i < 7; i++)
 	{
-		glass = P_SpawnMobj(x2, y2, ONFLOORZ, MT_JUNK);
+		glass = P_SpawnMobj(x2, y2, ONFLOORZ, mobjtype_t::MT_JUNK);
 		glass->z += (24*FRACUNIT);
 		glass->flags |= (MF_SHADOW|MF_MVIS);
 
@@ -325,8 +325,8 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 					// give stamina/accuracy items
 					if(!netgame)
 					{
-						P_GiveItemToPlayer(players, SPR_TOKN, MT_TOKEN_STAMINA);
-						P_GiveItemToPlayer(players, SPR_TOKN, MT_TOKEN_NEW_ACCURACY);
+						P_GiveItemToPlayer(players, SPR_TOKN, mobjtype_t::MT_TOKEN_STAMINA);
+						P_GiveItemToPlayer(players, SPR_TOKN, mobjtype_t::MT_TOKEN_NEW_ACCURACY);
 					}
 
 				}
@@ -952,7 +952,7 @@ bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
 
 	case 209:
 		// haleyjd 09/24/10: [STRIFE] S1 Build Stairs Down 16 if Have Chalice
-		if(!P_PlayerHasItem(thing->player, MT_INV_CHALICE))
+		if(!P_PlayerHasItem(thing->player, mobjtype_t::MT_INV_CHALICE))
 		{
 			DEH_snprintf(usemessage, sizeof(usemessage), "You need the chalice!");
 			thing->player->message = usemessage;
@@ -1006,8 +1006,8 @@ bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
 		// villsa [STRIFE] S1 Complete Training Area
 		if(EV_DoFloor(line, lowerFloor))
 		{
-			P_GiveItemToPlayer(thing->player, SPR_TOKN, MT_TOKEN_STAMINA);
-			P_GiveItemToPlayer(thing->player, SPR_TOKN, MT_TOKEN_NEW_ACCURACY);
+			P_GiveItemToPlayer(thing->player, SPR_TOKN, mobjtype_t::MT_TOKEN_STAMINA);
+			P_GiveItemToPlayer(thing->player, SPR_TOKN, mobjtype_t::MT_TOKEN_NEW_ACCURACY);
 			P_ChangeSwitchTexture(line, 0);
 			DEH_snprintf(usemessage, sizeof(usemessage),
 				"Congratulations! You have completed the training area.");

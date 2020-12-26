@@ -298,7 +298,7 @@ typedef struct mobj_s
 	int					threshold;
 
 	// Additional info record for player avatars only.
-	// Only valid if type == MT_PLAYER
+	// Only valid if type == mobjtype_t::MT_PLAYER
 	struct player_s*	player;
 
 	// Player number last looked for.

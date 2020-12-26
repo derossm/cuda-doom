@@ -619,12 +619,12 @@ void SB_Drawer()
 				if (hitCenterFrame && (frame != 15 && frame != 0))
 				{
 					V_DrawPatch(20, 17, W_CacheLumpNum(spinflylump + 15,
-														PU_CACHE));
+														pu_tags_t::PU_CACHE));
 				}
 				else
 				{
 					V_DrawPatch(20, 17, W_CacheLumpNum(spinflylump + frame,
-														PU_CACHE));
+														pu_tags_t::PU_CACHE));
 					hitCenterFrame = false;
 				}
 			}
@@ -633,13 +633,13 @@ void SB_Drawer()
 				if (!hitCenterFrame && (frame != 15 && frame != 0))
 				{
 					V_DrawPatch(20, 17, W_CacheLumpNum(spinflylump + frame,
-														PU_CACHE));
+														pu_tags_t::PU_CACHE));
 					hitCenterFrame = false;
 				}
 				else
 				{
 					V_DrawPatch(20, 17, W_CacheLumpNum(spinflylump + 15,
-														PU_CACHE));
+														pu_tags_t::PU_CACHE));
 					hitCenterFrame = true;
 				}
 			}
@@ -794,7 +794,7 @@ void DrawMainBar()
 		{
 			V_DrawPatch(179, 160,
 						W_CacheLumpName(DEH_String(patcharti[CPlayer->readyArtifact]),
-										PU_CACHE));
+										pu_tags_t::PU_CACHE));
 			DrSmallNumber(CPlayer->inventory[inv_ptr].count, 201, 182);
 		}
 		oldarti = CPlayer->readyArtifact;
@@ -866,7 +866,7 @@ void DrawMainBar()
 			DrINumber(temp, 109, 162);
 			V_DrawPatch(111, 172,
 						W_CacheLumpName(DEH_String(ammopic[CPlayer->readyweapon - 1]),
-										PU_CACHE));
+										pu_tags_t::PU_CACHE));
 		}
 		oldammo = temp;
 		oldweapon = CPlayer->readyweapon;
@@ -902,7 +902,7 @@ void DrawInventoryBar()
 	{
 		//V_DrawPatch(50+i*31, 160, W_CacheLumpName("ARTIBOX", pu_tags_t::PU_CACHE));
 		if (CPlayer->inventorySlotNum > x + i
-			&& CPlayer->inventory[x + i].type != arti_none)
+			&& CPlayer->inventory[x + i].type != ArtiType_t::arti_none)
 		{
 			patch = DEH_String(patcharti[CPlayer->inventory[x + i].type]);
 
@@ -969,7 +969,7 @@ void DrawFullScreenStuff()
 			V_DrawTLPatch(50 + i * 31, 168,
 							W_CacheLumpName(DEH_String("ARTIBOX"), pu_tags_t::PU_CACHE));
 			if (CPlayer->inventorySlotNum > x + i
-				&& CPlayer->inventory[x + i].type != arti_none)
+				&& CPlayer->inventory[x + i].type != ArtiType_t::arti_none)
 			{
 				patch = DEH_String(patcharti[CPlayer->inventory[x + i].type]);
 				V_DrawPatch(50 + i * 31, 168,
@@ -1103,7 +1103,7 @@ static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
 	{
 		player->weaponowned[i] = true;
 	}
-	if (gamemode == shareware)
+	if (gamemode == GameMode_t::shareware)
 	{
 		player->weaponowned[wp_skullrod] = false;
 		player->weaponowned[wp_phoenixrod] = false;
@@ -1126,7 +1126,7 @@ static void CheatPowerFunc(player_t * player, Cheat_t * cheat)
 	}
 	else
 	{
-		P_UseArtifact(player, arti_tomeofpower);
+		P_UseArtifact(player, ArtiType_t::arti_tomeofpower);
 		P_SetMessage(player, DEH_String(TXT_CHEATPOWERON), false);
 	}
 }
@@ -1210,10 +1210,10 @@ static void CheatArtifact3Func(player_t * player, Cheat_t * cheat)
 	count = args[1] - '0';
 	if (type == 26 && count == 0)
 	{							// All artifacts
-		for (i = arti_none + 1; i < NUMARTIFACTS; i++)
+		for (i = ArtiType_t::arti_none + 1; i < NUMARTIFACTS; i++)
 		{
-			if (gamemode == shareware
-				&& (i == arti_superhealth || i == arti_teleport))
+			if (gamemode == GameMode_t::shareware
+				&& (i == ArtiType_t::arti_superhealth || i == ArtiType_t::arti_teleport))
 			{
 				continue;
 			}
@@ -1224,11 +1224,11 @@ static void CheatArtifact3Func(player_t * player, Cheat_t * cheat)
 		}
 		P_SetMessage(player, DEH_String(TXT_CHEATARTIFACTS3), false);
 	}
-	else if (type > arti_none && type < NUMARTIFACTS
+	else if (type > ArtiType_t::arti_none && type < NUMARTIFACTS
 				&& count > 0 && count < 10)
 	{
-		if (gamemode == shareware
-			&& (type == arti_superhealth || type == arti_teleport))
+		if (gamemode == GameMode_t::shareware
+			&& (type == ArtiType_t::arti_superhealth || type == ArtiType_t::arti_teleport))
 		{
 			P_SetMessage(player, DEH_String(TXT_CHEATARTIFACTSFAIL), false);
 			return;

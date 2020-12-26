@@ -97,7 +97,7 @@
 enum class mobjflag_t
 {
 	// Call P_SpecialThing when touched.
-	MF_SPECIAL			= 1,
+	MF_SPECIAL			= 1ull,
 	// Blocks.
 	MF_SOLID			= 2,
 	// Can be hit.
@@ -188,6 +188,8 @@ enum class mobjflag_t
 };
 
 struct mobj_t;
+struct subsector_t;
+struct player_t;
 
 // Map Object definition.
 struct mobj_t
@@ -257,7 +259,7 @@ struct mobj_t
 	int threshold;
 
 	// Additional info record for player avatars only.
-	// Only valid if type == MT_PLAYER
+	// Only valid if type == mobjtype_t::MT_PLAYER
 	player_t* player;
 
 	// Player number last looked for.

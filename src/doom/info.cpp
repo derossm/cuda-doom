@@ -135,7 +135,7 @@ void A_Detonate();
 void A_Mushroom();
 void A_BetaSkullAttack();
 
-state_t	states[statenum_t::NUMSTATES] = {
+state_t	states[static_cast<int>(statenum_t::NUMSTATES)] = {
 	{spritenum_t::SPR_TROO,0,-1,{nullptr},statenum_t::S_NULL,0,0},	// S_NULL
 	{spritenum_t::SPR_SHTG,4,0,{A_Light0},statenum_t::S_NULL,0,0},	// S_LIGHTDONE
 	{spritenum_t::SPR_PUNG,0,1,{A_WeaponReady},statenum_t::S_PUNCH,0,0},	// S_PUNCH
@@ -1143,11 +1143,11 @@ state_t	states[statenum_t::NUMSTATES] = {
 	{spritenum_t::SPR_DOGS,9,5,{nullptr},statenum_t::S_DOGS_RAISE6,0,0},	// S_DOGS_RAISE5
 	{spritenum_t::SPR_DOGS,8,5,{nullptr},statenum_t::S_DOGS_RUN1,0,0},	// S_DOGS_RAISE6
 #define BFGDELAY 1
-#define OLDBFG_1FRAMES(x) {spritenum_t::SPR_BFGG,1,BFGDELAY,{A_FireOldBFG},x+S_OLDBFG1+2,0,0},
+#define OLDBFG_1FRAMES(x) {spritenum_t::SPR_BFGG,1,BFGDELAY,{A_FireOldBFG},static_cast<statenum_t>(x+static_cast<int>(statenum_t::S_OLDBFG1)+2),0,0},
 #define OLDBFG_2FRAMES(x) OLDBFG_1FRAMES(x) OLDBFG_1FRAMES(x+1)
 #define OLDBFG_4FRAMES(x) OLDBFG_2FRAMES(x) OLDBFG_2FRAMES(x+2)
 #define OLDBFG_8FRAMES(x) OLDBFG_4FRAMES(x) OLDBFG_4FRAMES(x+4)
-	{spritenum_t::SPR_BFGG,0,10,{A_BFGsound},statenum_t::S_OLDBFG1+1,0,0},	// S_OLDBFG1
+	{spritenum_t::SPR_BFGG,0,10,{A_BFGsound},static_cast<statenum_t>(static_cast<int>(statenum_t::S_OLDBFG1)+1),0,0},	// S_OLDBFG1
 	OLDBFG_8FRAMES(0)
 	OLDBFG_8FRAMES(8)
 	OLDBFG_8FRAMES(16)
@@ -1193,33 +1193,33 @@ state_t	states[statenum_t::NUMSTATES] = {
 
 mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 	{
-		// MT_PLAYER	"OUR HERO"
-		-1,		// doomednum
-		statenum_t::S_PLAY,		// spawnstate
-		100,		// spawnhealth
-		statenum_t::S_PLAY_RUN1,		// seestate
+		// mobjtype_t::MT_PLAYER	"OUR HERO"
+		-1,							// doomednum
+		statenum_t::S_PLAY,			// spawnstate
+		100,						// spawnhealth
+		statenum_t::S_PLAY_RUN1,	// seestate
 		sfxenum_t::sfx_None,		// seesound
-		0,		// reactiontime
+		0,							// reactiontime
 		sfxenum_t::sfx_None,		// attacksound
-		statenum_t::S_PLAY_PAIN,		// painstate
-		255,		// painchance
+		statenum_t::S_PLAY_PAIN,	// painstate
+		255,						// painchance
 		sfxenum_t::sfx_plpain,		// painsound
-		statenum_t::S_NULL,		// meleestate
-		statenum_t::S_PLAY_ATK1,		// missilestate
-		statenum_t::S_PLAY_DIE1,		// deathstate
-		statenum_t::S_PLAY_XDIE1,		// xdeathstate
+		statenum_t::S_NULL,			// meleestate
+		statenum_t::S_PLAY_ATK1,	// missilestate
+		statenum_t::S_PLAY_DIE1,	// deathstate
+		statenum_t::S_PLAY_XDIE1,	// xdeathstate
 		sfxenum_t::sfx_pldeth,		// deathsound
-		0,		// speed
-		16*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
-		100,		// mass
-		0,		// damage
+		0,							// speed
+		16*FRACUNIT,				// radius
+		56*FRACUNIT,				// height
+		100,						// mass
+		0,							// damage
 		sfxenum_t::sfx_None,		// activesound
-		mobjflag_t::MF_SOLID|mobjflag_t::MF_SHOOTABLE|mobjflag_t::MF_DROPOFF|mobjflag_t::MF_PICKUP|mobjflag_t::MF_NOTDMATCH|mobjflag_t::MF_FLIPPABLE,		// flags
-		statenum_t::S_NULL		// raisestate
+		mobjflag_t::MF_SOLID|mobjflag_t::MF_SHOOTABLE|mobjflag_t::MF_DROPOFF|mobjflag_t::MF_PICKUP|mobjflag_t::MF_NOTDMATCH|mobjflag_t::MF_FLIPPABLE,	// flags
+		statenum_t::S_NULL			// raisestate
 	},
 	{
-		// MT_POSSESSED	"ZOMBIEMAN"
+		// mobjtype_t::MT_POSSESSED	"ZOMBIEMAN"
 		3004,		// doomednum
 		statenum_t::S_POSS_STND,		// spawnstate
 		20,		// spawnhealth
@@ -1245,7 +1245,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_POSS_RAISE1		// raisestate
 	},
 	{
-		// MT_SHOTGUY	"SHOTGUN GUY"
+		// mobjtype_t::MT_SHOTGUY	"SHOTGUN GUY"
 		9,		// doomednum
 		statenum_t::S_SPOS_STND,		// spawnstate
 		30,		// spawnhealth
@@ -1271,7 +1271,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_SPOS_RAISE1		// raisestate
 	},
 	{
-		// MT_VILE	"ARCH-VILE"
+		// mobjtype_t::MT_VILE	"ARCH-VILE"
 		64,		// doomednum
 		statenum_t::S_VILE_STND,		// spawnstate
 		700,		// spawnhealth
@@ -1297,7 +1297,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_FIRE
+		// mobjtype_t::MT_FIRE
 		-1,		// doomednum
 		statenum_t::S_FIRE1,		// spawnstate
 		1000,		// spawnhealth
@@ -1323,7 +1323,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_UNDEAD	"REVENANT"
+		// mobjtype_t::MT_UNDEAD	"REVENANT"
 		66,		// doomednum
 		statenum_t::S_SKEL_STND,		// spawnstate
 		300,		// spawnhealth
@@ -1349,7 +1349,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_SKEL_RAISE1		// raisestate
 	},
 	{
-		// MT_TRACER
+		// mobjtype_t::MT_TRACER
 		-1,		// doomednum
 		statenum_t::S_TRACER,		// spawnstate
 		1000,		// spawnhealth
@@ -1375,7 +1375,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_SMOKE
+		// mobjtype_t::MT_SMOKE
 		-1,		// doomednum
 		statenum_t::S_SMOKE1,		// spawnstate
 		1000,		// spawnhealth
@@ -1401,7 +1401,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_FATSO	"MANCUBUS"
+		// mobjtype_t::MT_FATSO	"MANCUBUS"
 		67,		// doomednum
 		statenum_t::S_FATT_STND,		// spawnstate
 		600,		// spawnhealth
@@ -1427,7 +1427,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_FATT_RAISE1		// raisestate
 	},
 	{
-		// MT_FATSHOT
+		// mobjtype_t::MT_FATSHOT
 		-1,		// doomednum
 		statenum_t::S_FATSHOT1,		// spawnstate
 		1000,		// spawnhealth
@@ -1453,7 +1453,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_CHAINGUY	"HEAVY WEAPON DUDE"
+		// mobjtype_t::MT_CHAINGUY	"HEAVY WEAPON DUDE"
 		65,		// doomednum
 		statenum_t::S_CPOS_STND,		// spawnstate
 		70,		// spawnhealth
@@ -1479,7 +1479,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_CPOS_RAISE1		// raisestate
 	},
 	{
-		// MT_TROOP	"IMP"
+		// mobjtype_t::MT_TROOP	"IMP"
 		3001,		// doomednum
 		statenum_t::S_TROO_STND,		// spawnstate
 		60,		// spawnhealth
@@ -1505,7 +1505,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_TROO_RAISE1		// raisestate
 	},
 	{
-		// MT_SERGEANT	"DEMON"
+		// mobjtype_t::MT_SERGEANT	"DEMON"
 		3002,		// doomednum
 		statenum_t::S_SARG_STND,		// spawnstate
 		150,		// spawnhealth
@@ -1531,7 +1531,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_SARG_RAISE1		// raisestate
 	},
 	{
-		// MT_SHADOWS
+		// mobjtype_t::MT_SHADOWS
 		58,		// doomednum
 		statenum_t::S_SARG_STND,		// spawnstate
 		150,		// spawnhealth
@@ -1557,7 +1557,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_SARG_RAISE1		// raisestate
 	},
 	{
-		// MT_HEAD	"CACODEMON"
+		// mobjtype_t::MT_HEAD	"CACODEMON"
 		3005,		// doomednum
 		statenum_t::S_HEAD_STND,		// spawnstate
 		400,		// spawnhealth
@@ -1583,7 +1583,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_HEAD_RAISE1		// raisestate
 	},
 	{
-		// MT_BRUISER	"BARON OF HELL"
+		// mobjtype_t::MT_BRUISER	"BARON OF HELL"
 		3003,		// doomednum
 		statenum_t::S_BOSS_STND,		// spawnstate
 		1000,		// spawnhealth
@@ -1609,7 +1609,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_BOSS_RAISE1		// raisestate
 	},
 	{
-		// MT_BRUISERSHOT
+		// mobjtype_t::MT_BRUISERSHOT
 		-1,		// doomednum
 		statenum_t::S_BRBALL1,		// spawnstate
 		1000,		// spawnhealth
@@ -1635,7 +1635,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_KNIGHT	"HELL KNIGHT"
+		// mobjtype_t::MT_KNIGHT	"HELL KNIGHT"
 		69,		// doomednum
 		statenum_t::S_BOS2_STND,		// spawnstate
 		500,		// spawnhealth
@@ -1661,7 +1661,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_BOS2_RAISE1		// raisestate
 	},
 	{
-		// MT_SKULL	"LOST SOUL"
+		// mobjtype_t::MT_SKULL	"LOST SOUL"
 		3006,		// doomednum
 		statenum_t::S_SKULL_STND,		// spawnstate
 		100,		// spawnhealth
@@ -1687,7 +1687,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_SPIDER	"THE SPIDER MASTERMIND"
+		// mobjtype_t::MT_SPIDER	"THE SPIDER MASTERMIND"
 		7,		// doomednum
 		statenum_t::S_SPID_STND,		// spawnstate
 		3000,		// spawnhealth
@@ -1713,7 +1713,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_BABY	"ARACHNOTRON"
+		// mobjtype_t::MT_BABY	"ARACHNOTRON"
 		68,		// doomednum
 		statenum_t::S_BSPI_STND,		// spawnstate
 		500,		// spawnhealth
@@ -1739,7 +1739,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_BSPI_RAISE1		// raisestate
 	},
 	{
-		// MT_CYBORG	"THE CYBERDEMON"
+		// mobjtype_t::MT_CYBORG	"THE CYBERDEMON"
 		16,		// doomednum
 		statenum_t::S_CYBER_STND,		// spawnstate
 		4000,		// spawnhealth
@@ -1765,7 +1765,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_PAIN	"PAIN ELEMENTAL"
+		// mobjtype_t::MT_PAIN	"PAIN ELEMENTAL"
 		71,		// doomednum
 		statenum_t::S_PAIN_STND,		// spawnstate
 		400,		// spawnhealth
@@ -1791,7 +1791,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_PAIN_RAISE1		// raisestate
 	},
 	{
-		// MT_WOLFSS
+		// mobjtype_t::MT_WOLFSS
 		84,		// doomednum
 		statenum_t::S_SSWV_STND,		// spawnstate
 		50,		// spawnhealth
@@ -1817,7 +1817,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_SSWV_RAISE1		// raisestate
 	},
 	{
-		// MT_KEEN
+		// mobjtype_t::MT_KEEN
 		72,		// doomednum
 		statenum_t::S_KEENSTND,		// spawnstate
 		100,		// spawnhealth
@@ -1843,7 +1843,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_BOSSBRAIN
+		// mobjtype_t::MT_BOSSBRAIN
 		88,		// doomednum
 		statenum_t::S_BRAIN,		// spawnstate
 		250,		// spawnhealth
@@ -1869,7 +1869,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_BOSSSPIT
+		// mobjtype_t::MT_BOSSSPIT
 		89,		// doomednum
 		statenum_t::S_BRAINEYE,		// spawnstate
 		1000,		// spawnhealth
@@ -1895,7 +1895,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_BOSSTARGET
+		// mobjtype_t::MT_BOSSTARGET
 		87,		// doomednum
 		statenum_t::S_NULL,		// spawnstate
 		1000,		// spawnhealth
@@ -1921,7 +1921,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_SPAWNSHOT
+		// mobjtype_t::MT_SPAWNSHOT
 		-1,		// doomednum
 		statenum_t::S_SPAWN1,		// spawnstate
 		1000,		// spawnhealth
@@ -1947,7 +1947,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_SPAWNFIRE
+		// mobjtype_t::MT_SPAWNFIRE
 		-1,		// doomednum
 		statenum_t::S_SPAWNFIRE1,		// spawnstate
 		1000,		// spawnhealth
@@ -1973,7 +1973,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_BARREL
+		// mobjtype_t::MT_BARREL
 		2035,		// doomednum
 		statenum_t::S_BAR1,		// spawnstate
 		20,		// spawnhealth
@@ -1999,7 +1999,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_TROOPSHOT
+		// mobjtype_t::MT_TROOPSHOT
 		-1,		// doomednum
 		statenum_t::S_TBALL1,		// spawnstate
 		1000,		// spawnhealth
@@ -2025,7 +2025,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_HEADSHOT
+		// mobjtype_t::MT_HEADSHOT
 		-1,		// doomednum
 		statenum_t::S_RBALL1,		// spawnstate
 		1000,		// spawnhealth
@@ -2051,7 +2051,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_ROCKET
+		// mobjtype_t::MT_ROCKET
 		-1,		// doomednum
 		statenum_t::S_ROCKET,		// spawnstate
 		1000,		// spawnhealth
@@ -2077,7 +2077,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_PLASMA
+		// mobjtype_t::MT_PLASMA
 		-1,		// doomednum
 		statenum_t::S_PLASBALL,		// spawnstate
 		1000,		// spawnhealth
@@ -2103,7 +2103,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_BFG
+		// mobjtype_t::MT_BFG
 		-1,		// doomednum
 		statenum_t::S_BFGSHOT,		// spawnstate
 		1000,		// spawnhealth
@@ -2129,7 +2129,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_ARACHPLAZ
+		// mobjtype_t::MT_ARACHPLAZ
 		-1,		// doomednum
 		statenum_t::S_ARACH_PLAZ,		// spawnstate
 		1000,		// spawnhealth
@@ -2155,7 +2155,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_PUFF
+		// mobjtype_t::MT_PUFF
 		-1,		// doomednum
 		statenum_t::S_PUFF1,		// spawnstate
 		1000,		// spawnhealth
@@ -2181,7 +2181,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_BLOOD
+		// mobjtype_t::MT_BLOOD
 		-1,		// doomednum
 		statenum_t::S_BLOOD1,		// spawnstate
 		1000,		// spawnhealth
@@ -2207,7 +2207,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_TFOG
+		// mobjtype_t::MT_TFOG
 		-1,		// doomednum
 		statenum_t::S_TFOG,		// spawnstate
 		1000,		// spawnhealth
@@ -2233,7 +2233,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_IFOG
+		// mobjtype_t::MT_IFOG
 		-1,		// doomednum
 		statenum_t::S_IFOG,		// spawnstate
 		1000,		// spawnhealth
@@ -2259,7 +2259,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_TELEPORTMAN
+		// mobjtype_t::MT_TELEPORTMAN
 		14,		// doomednum
 		statenum_t::S_NULL,		// spawnstate
 		1000,		// spawnhealth
@@ -2285,7 +2285,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_EXTRABFG
+		// mobjtype_t::MT_EXTRABFG
 		-1,		// doomednum
 		statenum_t::S_BFGEXP,		// spawnstate
 		1000,		// spawnhealth
@@ -2311,7 +2311,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC0
+		// mobjtype_t::MT_MISC0
 		2018,		// doomednum
 		statenum_t::S_ARM1,		// spawnstate
 		1000,		// spawnhealth
@@ -2337,7 +2337,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC1
+		// mobjtype_t::MT_MISC1
 		2019,		// doomednum
 		statenum_t::S_ARM2,		// spawnstate
 		1000,		// spawnhealth
@@ -2363,7 +2363,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC2
+		// mobjtype_t::MT_MISC2
 		2014,		// doomednum
 		statenum_t::S_BON1,		// spawnstate
 		1000,		// spawnhealth
@@ -2389,7 +2389,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC3
+		// mobjtype_t::MT_MISC3
 		2015,		// doomednum
 		statenum_t::S_BON2,		// spawnstate
 		1000,		// spawnhealth
@@ -2415,7 +2415,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC4
+		// mobjtype_t::MT_MISC4
 		5,		// doomednum
 		statenum_t::S_BKEY,		// spawnstate
 		1000,		// spawnhealth
@@ -2441,7 +2441,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC5
+		// mobjtype_t::MT_MISC5
 		13,		// doomednum
 		statenum_t::S_RKEY,		// spawnstate
 		1000,		// spawnhealth
@@ -2467,7 +2467,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC6
+		// mobjtype_t::MT_MISC6
 		6,		// doomednum
 		statenum_t::S_YKEY,		// spawnstate
 		1000,		// spawnhealth
@@ -2493,7 +2493,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC7
+		// mobjtype_t::MT_MISC7
 		39,		// doomednum
 		statenum_t::S_YSKULL,		// spawnstate
 		1000,		// spawnhealth
@@ -2519,7 +2519,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC8
+		// mobjtype_t::MT_MISC8
 		38,		// doomednum
 		statenum_t::S_RSKULL,		// spawnstate
 		1000,		// spawnhealth
@@ -2545,7 +2545,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC9
+		// mobjtype_t::MT_MISC9
 		40,		// doomednum
 		statenum_t::S_BSKULL,		// spawnstate
 		1000,		// spawnhealth
@@ -2571,7 +2571,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC10
+		// mobjtype_t::MT_MISC10
 		2011,		// doomednum
 		statenum_t::S_STIM,		// spawnstate
 		1000,		// spawnhealth
@@ -2597,7 +2597,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC11
+		// mobjtype_t::MT_MISC11
 		2012,		// doomednum
 		statenum_t::S_MEDI,		// spawnstate
 		1000,		// spawnhealth
@@ -2623,7 +2623,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC12
+		// mobjtype_t::MT_MISC12
 		2013,		// doomednum
 		statenum_t::S_SOUL,		// spawnstate
 		1000,		// spawnhealth
@@ -2649,7 +2649,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_INV
+		// mobjtype_t::MT_INV
 		2022,		// doomednum
 		statenum_t::S_PINV,		// spawnstate
 		1000,		// spawnhealth
@@ -2675,7 +2675,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC13
+		// mobjtype_t::MT_MISC13
 		2023,		// doomednum
 		statenum_t::S_PSTR,		// spawnstate
 		1000,		// spawnhealth
@@ -2701,7 +2701,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_INS
+		// mobjtype_t::MT_INS
 		2024,		// doomednum
 		statenum_t::S_PINS,		// spawnstate
 		1000,		// spawnhealth
@@ -2727,7 +2727,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC14
+		// mobjtype_t::MT_MISC14
 		2025,		// doomednum
 		statenum_t::S_SUIT,		// spawnstate
 		1000,		// spawnhealth
@@ -2753,7 +2753,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC15
+		// mobjtype_t::MT_MISC15
 		2026,		// doomednum
 		statenum_t::S_PMAP,		// spawnstate
 		1000,		// spawnhealth
@@ -2779,7 +2779,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC16
+		// mobjtype_t::MT_MISC16
 		2045,		// doomednum
 		statenum_t::S_PVIS,		// spawnstate
 		1000,		// spawnhealth
@@ -2805,7 +2805,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MEGA
+		// mobjtype_t::MT_MEGA
 		83,		// doomednum
 		statenum_t::S_MEGA,		// spawnstate
 		1000,		// spawnhealth
@@ -2831,7 +2831,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_CLIP
+		// mobjtype_t::MT_CLIP
 		2007,		// doomednum
 		statenum_t::S_CLIP,		// spawnstate
 		1000,		// spawnhealth
@@ -2857,7 +2857,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC17
+		// mobjtype_t::MT_MISC17
 		2048,		// doomednum
 		statenum_t::S_AMMO,		// spawnstate
 		1000,		// spawnhealth
@@ -2883,7 +2883,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC18
+		// mobjtype_t::MT_MISC18
 		2010,		// doomednum
 		statenum_t::S_ROCK,		// spawnstate
 		1000,		// spawnhealth
@@ -2909,7 +2909,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC19
+		// mobjtype_t::MT_MISC19
 		2046,		// doomednum
 		statenum_t::S_BROK,		// spawnstate
 		1000,		// spawnhealth
@@ -2935,7 +2935,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC20
+		// mobjtype_t::MT_MISC20
 		2047,		// doomednum
 		statenum_t::S_CELL,		// spawnstate
 		1000,		// spawnhealth
@@ -2961,7 +2961,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC21
+		// mobjtype_t::MT_MISC21
 		17,		// doomednum
 		statenum_t::S_CELP,		// spawnstate
 		1000,		// spawnhealth
@@ -2987,7 +2987,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC22
+		// mobjtype_t::MT_MISC22
 		2008,		// doomednum
 		statenum_t::S_SHEL,		// spawnstate
 		1000,		// spawnhealth
@@ -3013,7 +3013,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC23
+		// mobjtype_t::MT_MISC23
 		2049,		// doomednum
 		statenum_t::S_SBOX,		// spawnstate
 		1000,		// spawnhealth
@@ -3039,7 +3039,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC24
+		// mobjtype_t::MT_MISC24
 		8,		// doomednum
 		statenum_t::S_BPAK,		// spawnstate
 		1000,		// spawnhealth
@@ -3065,7 +3065,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC25
+		// mobjtype_t::MT_MISC25
 		2006,		// doomednum
 		statenum_t::S_BFUG,		// spawnstate
 		1000,		// spawnhealth
@@ -3091,7 +3091,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_CHAINGUN
+		// mobjtype_t::MT_CHAINGUN
 		2002,		// doomednum
 		statenum_t::S_MGUN,		// spawnstate
 		1000,		// spawnhealth
@@ -3117,7 +3117,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC26
+		// mobjtype_t::MT_MISC26
 		2005,		// doomednum
 		statenum_t::S_CSAW,		// spawnstate
 		1000,		// spawnhealth
@@ -3143,7 +3143,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC27
+		// mobjtype_t::MT_MISC27
 		2003,		// doomednum
 		statenum_t::S_LAUN,		// spawnstate
 		1000,		// spawnhealth
@@ -3169,7 +3169,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC28
+		// mobjtype_t::MT_MISC28
 		2004,		// doomednum
 		statenum_t::S_PLAS,		// spawnstate
 		1000,		// spawnhealth
@@ -3195,7 +3195,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_SHOTGUN
+		// mobjtype_t::MT_SHOTGUN
 		2001,		// doomednum
 		statenum_t::S_SHOT,		// spawnstate
 		1000,		// spawnhealth
@@ -3221,7 +3221,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_SUPERSHOTGUN
+		// mobjtype_t::MT_SUPERSHOTGUN
 		82,		// doomednum
 		statenum_t::S_SHOT2,		// spawnstate
 		1000,		// spawnhealth
@@ -3247,7 +3247,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC29
+		// mobjtype_t::MT_MISC29
 		85,		// doomednum
 		statenum_t::S_TECHLAMP,		// spawnstate
 		1000,		// spawnhealth
@@ -3273,7 +3273,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC30
+		// mobjtype_t::MT_MISC30
 		86,		// doomednum
 		statenum_t::S_TECH2LAMP,		// spawnstate
 		1000,		// spawnhealth
@@ -3299,7 +3299,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC31
+		// mobjtype_t::MT_MISC31
 		2028,		// doomednum
 		statenum_t::S_COLU,		// spawnstate
 		1000,		// spawnhealth
@@ -3325,7 +3325,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC32
+		// mobjtype_t::MT_MISC32
 		30,		// doomednum
 		statenum_t::S_TALLGRNCOL,		// spawnstate
 		1000,		// spawnhealth
@@ -3351,7 +3351,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC33
+		// mobjtype_t::MT_MISC33
 		31,		// doomednum
 		statenum_t::S_SHRTGRNCOL,		// spawnstate
 		1000,		// spawnhealth
@@ -3377,7 +3377,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC34
+		// mobjtype_t::MT_MISC34
 		32,		// doomednum
 		statenum_t::S_TALLREDCOL,		// spawnstate
 		1000,		// spawnhealth
@@ -3403,7 +3403,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC35
+		// mobjtype_t::MT_MISC35
 		33,		// doomednum
 		statenum_t::S_SHRTREDCOL,		// spawnstate
 		1000,		// spawnhealth
@@ -3429,7 +3429,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC36
+		// mobjtype_t::MT_MISC36
 		37,		// doomednum
 		statenum_t::S_SKULLCOL,		// spawnstate
 		1000,		// spawnhealth
@@ -3455,7 +3455,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC37
+		// mobjtype_t::MT_MISC37
 		36,		// doomednum
 		statenum_t::S_HEARTCOL,		// spawnstate
 		1000,		// spawnhealth
@@ -3481,7 +3481,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC38
+		// mobjtype_t::MT_MISC38
 		41,		// doomednum
 		statenum_t::S_EVILEYE,		// spawnstate
 		1000,		// spawnhealth
@@ -3507,7 +3507,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC39
+		// mobjtype_t::MT_MISC39
 		42,		// doomednum
 		statenum_t::S_FLOATSKULL,		// spawnstate
 		1000,		// spawnhealth
@@ -3533,7 +3533,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC40
+		// mobjtype_t::MT_MISC40
 		43,		// doomednum
 		statenum_t::S_TORCHTREE,		// spawnstate
 		1000,		// spawnhealth
@@ -3559,7 +3559,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC41
+		// mobjtype_t::MT_MISC41
 		44,		// doomednum
 		statenum_t::S_BLUETORCH,		// spawnstate
 		1000,		// spawnhealth
@@ -3585,7 +3585,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC42
+		// mobjtype_t::MT_MISC42
 		45,		// doomednum
 		statenum_t::S_GREENTORCH,		// spawnstate
 		1000,		// spawnhealth
@@ -3611,7 +3611,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC43
+		// mobjtype_t::MT_MISC43
 		46,		// doomednum
 		statenum_t::S_REDTORCH,		// spawnstate
 		1000,		// spawnhealth
@@ -3637,7 +3637,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC44
+		// mobjtype_t::MT_MISC44
 		55,		// doomednum
 		statenum_t::S_BTORCHSHRT,		// spawnstate
 		1000,		// spawnhealth
@@ -3663,7 +3663,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC45
+		// mobjtype_t::MT_MISC45
 		56,		// doomednum
 		statenum_t::S_GTORCHSHRT,		// spawnstate
 		1000,		// spawnhealth
@@ -3689,7 +3689,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC46
+		// mobjtype_t::MT_MISC46
 		57,		// doomednum
 		statenum_t::S_RTORCHSHRT,		// spawnstate
 		1000,		// spawnhealth
@@ -3715,7 +3715,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC47
+		// mobjtype_t::MT_MISC47
 		47,		// doomednum
 		statenum_t::S_STALAGTITE,		// spawnstate
 		1000,		// spawnhealth
@@ -3741,7 +3741,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC48
+		// mobjtype_t::MT_MISC48
 		48,		// doomednum
 		statenum_t::S_TECHPILLAR,		// spawnstate
 		1000,		// spawnhealth
@@ -3767,7 +3767,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC49
+		// mobjtype_t::MT_MISC49
 		34,		// doomednum
 		statenum_t::S_CANDLESTIK,		// spawnstate
 		1000,		// spawnhealth
@@ -3793,7 +3793,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC50
+		// mobjtype_t::MT_MISC50
 		35,		// doomednum
 		statenum_t::S_CANDELABRA,		// spawnstate
 		1000,		// spawnhealth
@@ -3819,7 +3819,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC51
+		// mobjtype_t::MT_MISC51
 		49,		// doomednum
 		statenum_t::S_BLOODYTWITCH,		// spawnstate
 		1000,		// spawnhealth
@@ -3845,7 +3845,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC52
+		// mobjtype_t::MT_MISC52
 		50,		// doomednum
 		statenum_t::S_MEAT2,		// spawnstate
 		1000,		// spawnhealth
@@ -3871,7 +3871,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC53
+		// mobjtype_t::MT_MISC53
 		51,		// doomednum
 		statenum_t::S_MEAT3,		// spawnstate
 		1000,		// spawnhealth
@@ -3897,7 +3897,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC54
+		// mobjtype_t::MT_MISC54
 		52,		// doomednum
 		statenum_t::S_MEAT4,		// spawnstate
 		1000,		// spawnhealth
@@ -3923,7 +3923,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC55
+		// mobjtype_t::MT_MISC55
 		53,		// doomednum
 		statenum_t::S_MEAT5,		// spawnstate
 		1000,		// spawnhealth
@@ -3949,7 +3949,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC56
+		// mobjtype_t::MT_MISC56
 		59,		// doomednum
 		statenum_t::S_MEAT2,		// spawnstate
 		1000,		// spawnhealth
@@ -3975,7 +3975,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC57
+		// mobjtype_t::MT_MISC57
 		60,		// doomednum
 		statenum_t::S_MEAT4,		// spawnstate
 		1000,		// spawnhealth
@@ -4001,7 +4001,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC58
+		// mobjtype_t::MT_MISC58
 		61,		// doomednum
 		statenum_t::S_MEAT3,		// spawnstate
 		1000,		// spawnhealth
@@ -4027,7 +4027,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC59
+		// mobjtype_t::MT_MISC59
 		62,		// doomednum
 		statenum_t::S_MEAT5,		// spawnstate
 		1000,		// spawnhealth
@@ -4053,7 +4053,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC60
+		// mobjtype_t::MT_MISC60
 		63,		// doomednum
 		statenum_t::S_BLOODYTWITCH,		// spawnstate
 		1000,		// spawnhealth
@@ -4079,7 +4079,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC61
+		// mobjtype_t::MT_MISC61
 		22,		// doomednum
 		statenum_t::S_HEAD_DIE6,		// spawnstate
 		1000,		// spawnhealth
@@ -4105,7 +4105,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC62
+		// mobjtype_t::MT_MISC62
 		15,		// doomednum
 		statenum_t::S_PLAY_DIE7,		// spawnstate
 		1000,		// spawnhealth
@@ -4131,7 +4131,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC63
+		// mobjtype_t::MT_MISC63
 		18,		// doomednum
 		statenum_t::S_POSS_DIE5,		// spawnstate
 		1000,		// spawnhealth
@@ -4157,7 +4157,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC64
+		// mobjtype_t::MT_MISC64
 		21,		// doomednum
 		statenum_t::S_SARG_DIE6,		// spawnstate
 		1000,		// spawnhealth
@@ -4183,7 +4183,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC65
+		// mobjtype_t::MT_MISC65
 		23,		// doomednum
 		statenum_t::S_SKULL_DIE6,		// spawnstate
 		1000,		// spawnhealth
@@ -4209,7 +4209,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC66
+		// mobjtype_t::MT_MISC66
 		20,		// doomednum
 		statenum_t::S_TROO_DIE5,		// spawnstate
 		1000,		// spawnhealth
@@ -4235,7 +4235,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC67
+		// mobjtype_t::MT_MISC67
 		19,		// doomednum
 		statenum_t::S_SPOS_DIE5,		// spawnstate
 		1000,		// spawnhealth
@@ -4261,7 +4261,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC68
+		// mobjtype_t::MT_MISC68
 		10,		// doomednum
 		statenum_t::S_PLAY_XDIE9,		// spawnstate
 		1000,		// spawnhealth
@@ -4287,7 +4287,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC69
+		// mobjtype_t::MT_MISC69
 		12,		// doomednum
 		statenum_t::S_PLAY_XDIE9,		// spawnstate
 		1000,		// spawnhealth
@@ -4313,7 +4313,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC70
+		// mobjtype_t::MT_MISC70
 		28,		// doomednum
 		statenum_t::S_HEADSONSTICK,		// spawnstate
 		1000,		// spawnhealth
@@ -4339,7 +4339,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC71
+		// mobjtype_t::MT_MISC71
 		24,		// doomednum
 		statenum_t::S_GIBS,		// spawnstate
 		1000,		// spawnhealth
@@ -4365,7 +4365,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC72
+		// mobjtype_t::MT_MISC72
 		27,		// doomednum
 		statenum_t::S_HEADONASTICK,		// spawnstate
 		1000,		// spawnhealth
@@ -4391,7 +4391,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC73
+		// mobjtype_t::MT_MISC73
 		29,		// doomednum
 		statenum_t::S_HEADCANDLES,		// spawnstate
 		1000,		// spawnhealth
@@ -4417,7 +4417,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC74
+		// mobjtype_t::MT_MISC74
 		25,		// doomednum
 		statenum_t::S_DEADSTICK,		// spawnstate
 		1000,		// spawnhealth
@@ -4443,7 +4443,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC75
+		// mobjtype_t::MT_MISC75
 		26,		// doomednum
 		statenum_t::S_LIVESTICK,		// spawnstate
 		1000,		// spawnhealth
@@ -4469,7 +4469,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC76
+		// mobjtype_t::MT_MISC76
 		54,		// doomednum
 		statenum_t::S_BIGTREE,		// spawnstate
 		1000,		// spawnhealth
@@ -4495,7 +4495,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC77
+		// mobjtype_t::MT_MISC77
 		70,		// doomednum
 		statenum_t::S_BBAR1,		// spawnstate
 		1000,		// spawnhealth
@@ -4521,7 +4521,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC78
+		// mobjtype_t::MT_MISC78
 		73,		// doomednum
 		statenum_t::S_HANGNOGUTS,		// spawnstate
 		1000,		// spawnhealth
@@ -4547,7 +4547,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC79
+		// mobjtype_t::MT_MISC79
 		74,		// doomednum
 		statenum_t::S_HANGBNOBRAIN,		// spawnstate
 		1000,		// spawnhealth
@@ -4573,7 +4573,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC80
+		// mobjtype_t::MT_MISC80
 		75,		// doomednum
 		statenum_t::S_HANGTLOOKDN,		// spawnstate
 		1000,		// spawnhealth
@@ -4599,7 +4599,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC81
+		// mobjtype_t::MT_MISC81
 		76,		// doomednum
 		statenum_t::S_HANGTSKULL,		// spawnstate
 		1000,		// spawnhealth
@@ -4625,7 +4625,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC82
+		// mobjtype_t::MT_MISC82
 		77,		// doomednum
 		statenum_t::S_HANGTLOOKUP,		// spawnstate
 		1000,		// spawnhealth
@@ -4651,7 +4651,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC83
+		// mobjtype_t::MT_MISC83
 		78,		// doomednum
 		statenum_t::S_HANGTNOBRAIN,		// spawnstate
 		1000,		// spawnhealth
@@ -4677,7 +4677,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC84
+		// mobjtype_t::MT_MISC84
 		79,		// doomednum
 		statenum_t::S_COLONGIBS,		// spawnstate
 		1000,		// spawnhealth
@@ -4703,7 +4703,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC85
+		// mobjtype_t::MT_MISC85
 		80,		// doomednum
 		statenum_t::S_SMALLPOOL,		// spawnstate
 		1000,		// spawnhealth
@@ -4729,7 +4729,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_MISC86
+		// mobjtype_t::MT_MISC86
 		81,		// doomednum
 		statenum_t::S_BRAINSTEM,		// spawnstate
 		1000,		// spawnhealth
@@ -4756,7 +4756,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 	},
 	// [crispy] additional BOOM and MBF states, sprites and code pointers
 	{
-		// MT_PUSH
+		// mobjtype_t::MT_PUSH
 		5001,		// doomednum
 		statenum_t::S_TNT1,		// spawnstate
 		1000,		// spawnhealth
@@ -4782,7 +4782,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_PULL
+		// mobjtype_t::MT_PULL
 		5002,		// doomednum
 		statenum_t::S_TNT1,		// spawnstate
 		1000,		// spawnhealth
@@ -4808,7 +4808,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_DOGS
+		// mobjtype_t::MT_DOGS
 		888,		// doomednum
 		statenum_t::S_DOGS_STND,		// spawnstate
 		500,		// spawnhealth
@@ -4834,7 +4834,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_DOGS_RAISE1		// raisestate
 	},
 	{
-		// MT_PLASMA1
+		// mobjtype_t::MT_PLASMA1
 		-1,		// doomednum
 		statenum_t::S_PLS1BALL,		// spawnstate
 		1000,		// spawnhealth
@@ -4860,7 +4860,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_PLASMA2
+		// mobjtype_t::MT_PLASMA2
 		-1,		// doomednum
 		statenum_t::S_PLS2BALL,		// spawnstate
 		1000,		// spawnhealth
@@ -4886,7 +4886,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_SCEPTRE
+		// mobjtype_t::MT_SCEPTRE
 		2016,		// doomednum
 		statenum_t::S_BON3,		// spawnstate
 		1000,		// spawnhealth
@@ -4912,7 +4912,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		statenum_t::S_NULL		// raisestate
 	},
 	{
-		// MT_BIBLE
+		// mobjtype_t::MT_BIBLE
 		2017,		// doomednum
 		statenum_t::S_BON4,		// spawnstate
 		1000,		// spawnhealth
@@ -4939,7 +4939,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 	},
 	// [crispy] support MUSINFO lump (dynamic music changing)
 	{
-		// MT_MUSICSOURCE
+		// mobjtype_t::MT_MUSICSOURCE
 		14164,		// doomednum
 		statenum_t::S_TNT1,		// spawnstate
 		1000,		// spawnhealth

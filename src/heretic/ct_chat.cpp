@@ -351,7 +351,7 @@ void CT_Drawer()
 			{
 				patch = W_CacheLumpNum(FontABaseLump +
 										chat_msg[consoleplayer][i] - 33,
-										PU_CACHE);
+										pu_tags_t::PU_CACHE);
 				V_DrawPatch(x, 10, patch);
 				x += patch->width;
 			}

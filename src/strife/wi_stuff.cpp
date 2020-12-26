@@ -412,7 +412,7 @@ void WI_drawLF()
 {
 	int y = WI_TITLEY;
 
-	if (gamemode != commercial || wbs->last < NUMCMAPS)
+	if (gamemode != GameMode_t::commercial || wbs->last < NUMCMAPS)
 	{
 		// draw <LevelName>
 		V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->last]->width))/2,
@@ -462,10 +462,7 @@ void WI_drawEL()
 
 }
 
-void
-WI_drawOnLnode
-( int		n,
- patch_t*	c[] )
+void WI_drawOnLnode(int n, patch_t* c[])
 {
 
 	int		i;
@@ -516,7 +513,7 @@ void WI_initAnimatedBack()
 	int		i;
 	anim_t*	a;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -545,7 +542,7 @@ void WI_updateAnimatedBack()
 	int		i;
 	anim_t*	a;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -596,7 +593,7 @@ void WI_drawAnimatedBack()
 	int			i;
 	anim_t*		a;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -619,12 +616,7 @@ void WI_drawAnimatedBack()
 // Returns new x position.
 //
 
-int
-WI_drawNum
-( int		x,
- int		y,
- int		n,
- int		digits )
+int WI_drawNum(int x, int y, int n, int digits)
 {
 
 	int		fontwidth = SHORT(num[0]->width);
@@ -676,11 +668,7 @@ WI_drawNum
 
 }
 
-void
-WI_drawPercent
-( int		x,
- int		y,
- int		p )
+void WI_drawPercent(int x, int y, int p)
 {
 	if (p < 0)
 	return;
@@ -695,11 +683,7 @@ WI_drawPercent
 // Display level completion time and par,
 // or "sucks" message if overflow.
 //
-void
-WI_drawTime
-( int		x,
- int		y,
- int		t )
+void WI_drawTime(int x, int y, int t)
 {
 
 	int		div;
@@ -794,7 +778,7 @@ void WI_drawShowNextLoc()
 	// draw animated background
 	WI_drawAnimatedBack();
 
-	if ( gamemode != commercial)
+	if ( gamemode != GameMode_t::commercial)
 	{
 	if (wbs->epsd > 2)
 	{
@@ -818,7 +802,7 @@ void WI_drawShowNextLoc()
 	}
 
 	// draws which level you are entering..
-	if ( (gamemode != commercial)
+	if ( (gamemode != GameMode_t::commercial)
 		|| wbs->next != 30)
 	WI_drawEL();
 
@@ -975,7 +959,7 @@ void WI_updateDeathmatchStats()
 	{
 		S_StartSound(0, sfx_slop);
 
-		if ( gamemode == commercial)
+		if ( gamemode == GameMode_t::commercial)
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1250,7 +1234,7 @@ void WI_updateNetgameStats()
 	if (acceleratestage)
 	{
 		S_StartSound(0, sfx_sgcock);
-		if ( gamemode == commercial )
+		if ( gamemode == GameMode_t::commercial )
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1426,7 +1410,7 @@ void WI_updateStats()
 	{
 		S_StartSound(0, sfx_sgcock);
 
-		if (gamemode == commercial)
+		if (gamemode == GameMode_t::commercial)
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1518,7 +1502,7 @@ void WI_Ticker()
 	if (bcnt == 1)
 	{
 	// intermission music
-	if ( gamemode == commercial )
+	if ( gamemode == GameMode_t::commercial )
 		S_ChangeMusic(mus_dm2int, true);
 	else
 		S_ChangeMusic(mus_inter, true);
@@ -1556,7 +1540,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 	char name[9];
 	anim_t *a;
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 	for (i=0 ; i<NUMCMAPS ; i++)
 	{
@@ -1682,12 +1666,12 @@ static void WI_loadUnloadData(load_callback_t callback)
 
 	// Background image
 
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 	M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
 		name[8] = '\0';
 	}
-	else if (gamemode == retail && wbs->epsd == 3)
+	else if (gamemode == GameMode_t::retail && wbs->epsd == 3)
 	{
 	M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
 		name[8] = '\0';
@@ -1709,16 +1693,16 @@ static void WI_loadCallback(char *name, patch_t **variable)
 
 void WI_loadData()
 {
-	if (gamemode == commercial)
+	if (gamemode == GameMode_t::commercial)
 	{
 	NUMCMAPS = 32;
 	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * NUMCMAPS,
-						PU_STATIC, NULL);
+						pu_tags_t::PU_STATIC, NULL);
 	}
 	else
 	{
 	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * NUMMAPS,
-						PU_STATIC, NULL);
+						pu_tags_t::PU_STATIC, NULL);
 	}
 
 	WI_loadUnloadData(WI_loadCallback);
@@ -1780,9 +1764,9 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 	wbs = wbstartstruct;
 
 #ifdef RANGECHECKING
-	if (gamemode != commercial)
+	if (gamemode != GameMode_t::commercial)
 	{
-		if ( gamemode == retail )
+		if ( gamemode == GameMode_t::retail )
 	RNGCHECK(wbs->epsd, 0, 3);
 		else
 	RNGCHECK(wbs->epsd, 0, 2);
@@ -1811,7 +1795,7 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 	if (!wbs->maxsecret)
 	wbs->maxsecret = 1;
 
-	if ( gamemode != retail )
+	if ( gamemode != GameMode_t::retail )
 		if (wbs->epsd > 2)
 	wbs->epsd -= 3;
 }

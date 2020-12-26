@@ -48,7 +48,7 @@
 #define STARTUP_WINDOW_X 17
 #define STARTUP_WINDOW_Y 7
 
-GameMode_t gamemode = indetermined;
+GameMode_t gamemode = GameMode_t::indetermined;
 const char *gamedescription = "unknown";
 
 bool nomonsters;				// checkparm of -nomonsters
@@ -277,7 +277,7 @@ void D_Display()
 		if (!netgame)
 		{
 			V_DrawPatch(160, (viewwindowy >> crispy->hires) + 5, W_CacheLumpName(DEH_String("PAUSED"),
-																PU_CACHE));
+																pu_tags_t::PU_CACHE));
 		}
 		else
 		{
@@ -426,7 +426,7 @@ void D_AdvanceDemo()
 
 void D_DoAdvanceDemo()
 {
-	players[consoleplayer].playerstate = PST_LIVE;		// don't reborn
+	players[consoleplayer].playerstate = PlayerState_t::PST_LIVE;		// don't reborn
 	advancedemo = false;
 	usergame = false;			// can't save / end game here
 	paused = false;
@@ -463,7 +463,7 @@ void D_DoAdvanceDemo()
 		case 5:
 			pagetic = 200;
 			gamestate = GameState_t::GS_DEMOSCREEN;
-			if (gamemode == shareware)
+			if (gamemode == GameMode_t::shareware)
 			{
 				pagename = DEH_String("ORDER");
 			}
@@ -1115,19 +1115,19 @@ void D_DoomMain()
 
 	if (W_CheckNumForName(DEH_String("E2M1")) == -1)
 	{
-		gamemode = shareware;
+		gamemode = GameMode_t::shareware;
 		gamedescription = "Heretic (shareware)";
 	}
 	else if (W_CheckNumForName("EXTENDED") != -1)
 	{
 		// Presence of the EXTENDED lump indicates the retail version
 
-		gamemode = retail;
+		gamemode = GameMode_t::retail;
 		gamedescription = "Heretic: Shadow of the Serpent Riders";
 	}
 	else
 	{
-		gamemode = registered;
+		gamemode = GameMode_t::registered;
 		gamedescription = "Heretic (registered)";
 	}
 

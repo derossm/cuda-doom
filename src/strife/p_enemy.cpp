@@ -104,10 +104,7 @@ void A_Fall (mobj_t *actor);
 
 mobj_t*		soundtarget;
 
-void
-P_RecursiveSound
-( sector_t*	sec,
- int		soundblocks )
+void P_RecursiveSound(sector_t* sec, int soundblocks)
 {
 	int		i;
 	line_t*	check;
@@ -159,10 +156,7 @@ P_RecursiveSound
 //
 // haleyjd 09/05/10: [STRIFE] Verified unmodified
 //
-void
-P_NoiseAlert
-( mobj_t*	target,
- mobj_t*	emmiter )
+void P_NoiseAlert(mobj_t* target, mobj_t* emmiter)
 {
 	soundtarget = target;
 	validcount++;
@@ -219,7 +213,7 @@ void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee)
 	for(rover = punchee->snext; rover; rover = rover->snext)
 	{
 		// we only wake up certain thing types (Acolytes and Templars?)
-		if(rover->health > 0 && rover->type >= MT_GUARD1 && rover->type <= MT_PGUARD &&
+		if(rover->health > 0 && rover->type >= mobjtype_t::MT_GUARD1 && rover->type <= mobjtype_t::MT_PGUARD &&
 			(P_CheckSight(rover, puncher) || P_CheckSight(rover, punchee)))
 		{
 			P_WakeUpThing(puncher, rover);
@@ -231,7 +225,7 @@ void P_DoPunchAlert(mobj_t *puncher, mobj_t *punchee)
 	for(rover = punchee->sprev; rover; rover = rover->sprev)
 	{
 		// we only wake up certain thing types (Acolytes and Templars?)
-		if(rover->health > 0 && rover->type >= MT_GUARD1 && rover->type <= MT_PGUARD &&
+		if(rover->health > 0 && rover->type >= mobjtype_t::MT_GUARD1 && rover->type <= mobjtype_t::MT_PGUARD &&
 			(P_CheckSight(rover, puncher) || P_CheckSight(rover, punchee)))
 		{
 			P_WakeUpThing(puncher, rover);
@@ -308,23 +302,23 @@ bool P_CheckMissileRange(mobj_t* actor)
 
 	// villsa [STRIFE] checks for acolytes
 	// haleyjd 09/05/10: Repaired to match disassembly: Was including
-	// SHADOWGUARD in the wrong case, was missing MT_SENTINEL entirely.
+	// SHADOWGUARD in the wrong case, was missing mobjtype_t::MT_SENTINEL entirely.
 	// Structure of ASM also indicates this was probably a switch
 	// statement turned into a cascading if/else by the compiler.
 	switch(actor->type)
 	{
-	case MT_GUARD1:
-	case MT_GUARD2:
-	case MT_GUARD3:
-	case MT_GUARD4:
-	case MT_GUARD5:
-	case MT_GUARD6:
+	case mobjtype_t::MT_GUARD1:
+	case mobjtype_t::MT_GUARD2:
+	case mobjtype_t::MT_GUARD3:
+	case mobjtype_t::MT_GUARD4:
+	case mobjtype_t::MT_GUARD5:
+	case mobjtype_t::MT_GUARD6:
 		// oddly, not all Acolytes are included here...
 		dist >>= 4;
 		break;
-	case MT_SHADOWGUARD:
-	case MT_CRUSADER:
-	case MT_SENTINEL:
+	case mobjtype_t::MT_SHADOWGUARD:
+	case mobjtype_t::MT_CRUSADER:
+	case mobjtype_t::MT_SENTINEL:
 		dist >>= 1;
 		break;
 	default:
@@ -336,7 +330,7 @@ bool P_CheckMissileRange(mobj_t* actor)
 		dist = 150;
 
 	// haleyjd 20100910: Hex-Rays was leaving this out completely:
-	if (actor->type == MT_CRUSADER && dist > 120)
+	if (actor->type == mobjtype_t::MT_CRUSADER && dist > 120)
 		dist = 120;
 
 	// haleyjd 20110224 [STRIFE]: reversed predicate
@@ -718,10 +712,7 @@ extern void P_BulletSlope (mobj_t *mo);
 // [STRIFE]
 // haleyjd 09/05/10: Modifications to support friendly units.
 //
-bool
-P_LookForPlayers
-( mobj_t*	actor,
- bool	allaround )
+bool P_LookForPlayers(mobj_t* actor, bool allaround)
 {
 	int			c;
 	int			stop;
@@ -739,7 +730,7 @@ P_LookForPlayers
 			// Rebels adopt the allied player's target if it is not of the same
 			// allegiance. Other allies do it unconditionally.
 			if(master && master->target &&
-				(master->target->type != MT_REBEL1 ||
+				(master->target->type != mobjtype_t::MT_REBEL1 ||
 				master->target->miscdata != actor->miscdata))
 			{
 				actor->target = master->target;
@@ -752,7 +743,7 @@ P_LookForPlayers
 				// Clear target if nothing is visible, or if the target is a
 				// friendly Rebel or the allied player.
 				if (linetarget == NULL
-					|| (actor->target->type == MT_REBEL1
+					|| (actor->target->type == mobjtype_t::MT_REBEL1
 					&& actor->target->miscdata == actor->miscdata)
 					|| actor->target == master)
 				{
@@ -896,7 +887,7 @@ seeyou:
 		// [STRIFE] Removed DOOM random sounds.
 
 		// [STRIFE] Only Inquisitors roar loudly here.
-		if (actor->type == MT_INQUISITOR)
+		if (actor->type == mobjtype_t::MT_INQUISITOR)
 			emitter = NULL;
 
 		S_StartSound (emitter, sound);
@@ -1308,7 +1299,7 @@ void A_SentinelAttack(mobj_t* actor)
 	angle_t an;
 	int i;
 
-	mo = P_SpawnFacingMissile(actor, actor->target, MT_L_LASER);
+	mo = P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_L_LASER);
 	an = actor->angle >> ANGLETOFINESHIFT;
 
 	if(mo->momy | mo->momx) // villsa - fixed typo (yes, they actually used '|' instead of'||')
@@ -1318,7 +1309,7 @@ void A_SentinelAttack(mobj_t* actor)
 			x = mo->x + FixedMul(mobjinfo[MT_L_LASER].radius * i, finecosine[an]);
 			y = mo->y + FixedMul(mobjinfo[MT_L_LASER].radius * i, finesine[an]);
 			z = mo->z + i * (mo->momz >> 2);
-			mo2 = P_SpawnMobj(x, y, z, MT_R_LASER);
+			mo2 = P_SpawnMobj(x, y, z, mobjtype_t::MT_R_LASER);
 			mo2->target = actor;
 			mo2->momx = mo->momx;
 			mo2->momy = mo->momy;
@@ -1524,20 +1515,20 @@ void A_CrusaderAttack(mobj_t* actor)
 	{
 		A_FaceTarget(actor);
 		actor->angle -= (ANG90 / 8);
-		P_SpawnFacingMissile(actor, actor->target, MT_C_FLAME);
+		P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_C_FLAME);
 	}
 	else if(P_CheckMissileRange(actor))
 	{
 		A_FaceTarget(actor);
 		actor->z += (16*FRACUNIT);
-		P_SpawnFacingMissile(actor, actor->target, MT_C_MISSILE);
+		P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_C_MISSILE);
 
 		actor->angle -= (ANG45 / 32);
 		actor->z -= (16*FRACUNIT);
-		P_SpawnFacingMissile(actor, actor->target, MT_C_MISSILE);
+		P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_C_MISSILE);
 
 		actor->angle += (ANG45 / 16);
-		P_SpawnFacingMissile(actor, actor->target, MT_C_MISSILE);
+		P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_C_MISSILE);
 
 		P_SetMobjState(actor, actor->info->seestate);
 		actor->reactiontime += 15;
@@ -1558,7 +1549,7 @@ void A_CrusaderLeft(mobj_t* actor)
 	mobj_t* mo;
 
 	actor->angle += (ANG90 / 16);
-	mo = P_SpawnFacingMissile(actor, actor->target, MT_C_FLAME);
+	mo = P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_C_FLAME);
 	mo->momz = FRACUNIT;
 	mo->z += (16*FRACUNIT);
 
@@ -1574,7 +1565,7 @@ void A_CrusaderRight(mobj_t* actor)
 	mobj_t* mo;
 
 	actor->angle -= (ANG90 / 16);
-	mo = P_SpawnFacingMissile(actor, actor->target, MT_C_FLAME);
+	mo = P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_C_FLAME);
 	mo->momz = FRACUNIT;
 	mo->z += (16*FRACUNIT);
 }
@@ -1640,12 +1631,12 @@ void A_InqGrenade(mobj_t* actor)
 
 	// grenade 1
 	actor->angle -= (ANG45 / 32);
-	mo = P_SpawnFacingMissile(actor, actor->target, MT_INQGRENADE);
+	mo = P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_INQGRENADE);
 	mo->momz += (9*FRACUNIT);
 
 	// grenade 2
 	actor->angle += (ANG45 / 16);
-	mo = P_SpawnFacingMissile(actor, actor->target, MT_INQGRENADE);
+	mo = P_SpawnFacingMissile(actor, actor->target, mobjtype_t::MT_INQGRENADE);
 	mo->momz += (16*FRACUNIT);
 
 	actor->z -= MAXRADIUS;
@@ -1770,7 +1761,7 @@ void A_ProgrammerAttack(mobj_t* actor)
 // A_Sigil_A_Action
 //
 // [STRIFE] New function
-// haleyjd 09/06/10: Called by MT_SIGIL_A_GROUND to zot anyone nearby with
+// haleyjd 09/06/10: Called by mobjtype_t::MT_SIGIL_A_GROUND to zot anyone nearby with
 // corny looking lightning bolts.
 //
 void A_Sigil_A_Action(mobj_t* actor)
@@ -1792,16 +1783,16 @@ void A_Sigil_A_Action(mobj_t* actor)
 	y = 50*FRACUNIT * ((t & 3) - (P_Random() & 3)) + actor->y;
 
 	if(actor->threshold <= 25)
-		type = MT_SIGIL_A_ZAP_LEFT;
+		type = mobjtype_t::MT_SIGIL_A_ZAP_LEFT;
 	else
-		type = MT_SIGIL_A_ZAP_RIGHT;
+		type = mobjtype_t::MT_SIGIL_A_ZAP_RIGHT;
 
 	mo = P_SpawnMobj(x, y, ONCEILINGZ, type);
 	mo->momz = -18 * FRACUNIT;
 	mo->target = actor->target;
 	mo->health = actor->health;
 
-	mo = P_SpawnMobj(actor->x, actor->y, ONCEILINGZ, MT_SIGIL_A_ZAP_RIGHT);
+	mo = P_SpawnMobj(actor->x, actor->y, ONCEILINGZ, mobjtype_t::MT_SIGIL_A_ZAP_RIGHT);
 	mo->momz = -18 * FRACUNIT;
 	mo->target = actor->target;
 	mo->health = actor->health;
@@ -1821,7 +1812,7 @@ void A_SpectreEAttack(mobj_t* actor)
 	if(!actor->target)
 		return;
 
-	mo = P_SpawnMissile(actor, actor->target, MT_SIGIL_SE_SHOT);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_SIGIL_SE_SHOT);
 	mo->health = -2;
 }
 
@@ -1840,7 +1831,7 @@ void A_SpectreCAttack(mobj_t* actor)
 	if(!actor->target)
 		return;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z + (32*FRACUNIT), MT_SIGIL_A_ZAP_RIGHT);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z + (32*FRACUNIT), mobjtype_t::MT_SIGIL_A_ZAP_RIGHT);
 	mo->momz = -(18*FRACUNIT);
 	mo->target = actor;
 	mo->health = -2;
@@ -1850,7 +1841,7 @@ void A_SpectreCAttack(mobj_t* actor)
 	for(i = 0; i < 20; i++)
 	{
 		actor->angle += (ANG90 / 10);
-		mo = P_SpawnMortar(actor, MT_SIGIL_C_SHOT);
+		mo = P_SpawnMortar(actor, mobjtype_t::MT_SIGIL_C_SHOT);
 		mo->health = -2;
 		mo->z = actor->z + (32*FRACUNIT);
 	}
@@ -1862,7 +1853,7 @@ void A_SpectreCAttack(mobj_t* actor)
 //
 // [STRIFE] New function
 // haleyjd 09/06/10: Action function called by the Oracle when it is
-// killed. Finds an MT_SPECTRE_C anywhere on the map and awakens it.
+// killed. Finds an mobjtype_t::MT_SPECTRE_C anywhere on the map and awakens it.
 //
 void A_AlertSpectreC(mobj_t* actor)
 {
@@ -1874,7 +1865,7 @@ void A_AlertSpectreC(mobj_t* actor)
 		{
 			mobj_t *mo = (mobj_t *)th;
 
-			if(mo->type == MT_SPECTRE_C)
+			if(mo->type == mobjtype_t::MT_SPECTRE_C)
 			{
 				P_SetMobjState(mo, mo->info->seestate);
 				mo->target = actor->target;
@@ -1894,13 +1885,13 @@ void A_AlertSpectreC(mobj_t* actor)
 void A_Sigil_E_Action(mobj_t* actor)
 {
 	actor->angle += ANG90;
-	P_SpawnMortar(actor, MT_SIGIL_E_OFFSHOOT);
+	P_SpawnMortar(actor, mobjtype_t::MT_SIGIL_E_OFFSHOOT);
 
 	actor->angle -= ANG180;
-	P_SpawnMortar(actor, MT_SIGIL_E_OFFSHOOT);
+	P_SpawnMortar(actor, mobjtype_t::MT_SIGIL_E_OFFSHOOT);
 
 	actor->angle += ANG90;
-	P_SpawnMortar(actor, MT_SIGIL_E_OFFSHOOT);
+	P_SpawnMortar(actor, mobjtype_t::MT_SIGIL_E_OFFSHOOT);
 
 }
 
@@ -1915,7 +1906,7 @@ void A_SigilTrail(mobj_t* actor)
 
 	mo = P_SpawnMobj(actor->x - actor->momx,
 						actor->y - actor->momy,
-						actor->z, MT_SIGIL_TRAIL);
+						actor->z, mobjtype_t::MT_SIGIL_TRAIL);
 
 	mo->angle = actor->angle;
 	mo->health = actor->health;
@@ -1936,7 +1927,7 @@ void A_SpectreDAttack(mobj_t* actor)
 	if(!actor->target)
 		return;
 
-	mo = P_SpawnMissile(actor, actor->target, MT_SIGIL_SD_SHOT);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_SIGIL_SD_SHOT);
 	mo->health = -2;
 	mo->tracer = actor->target;
 }
@@ -1955,7 +1946,7 @@ void A_FireSigilEOffshoot(mobj_t* actor)
 	if(!actor->target)
 		return;
 
-	mo = P_SpawnMissile(actor, actor->target, MT_SIGIL_E_OFFSHOOT);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_SIGIL_E_OFFSHOOT);
 	mo->health = -2;
 }
 
@@ -2038,7 +2029,7 @@ void A_BishopAttack(mobj_t* actor)
 
 	actor->z += MAXRADIUS;
 
-	mo = P_SpawnMissile(actor, actor->target, MT_SEEKMISSILE);
+	mo = P_SpawnMissile(actor, actor->target, mobjtype_t::MT_SEEKMISSILE);
 	mo->tracer = actor->target;
 
 	actor->z -= MAXRADIUS;
@@ -2055,7 +2046,7 @@ void A_FireHookShot(mobj_t* actor)
 	if(!actor->target)
 		return;
 
-	P_SpawnMissile(actor, actor->target, MT_HOOKSHOT);
+	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_HOOKSHOT);
 }
 
 //
@@ -2069,15 +2060,15 @@ void A_FireChainShot(mobj_t* actor)
 {
 	S_StartSound(actor, sfx_tend);
 
-	P_SpawnMobj(actor->x, actor->y, actor->z, MT_CHAINSHOT); // haleyjd: fixed type
+	P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_CHAINSHOT); // haleyjd: fixed type
 
 	P_SpawnMobj(actor->x - (actor->momx >> 1),
 				actor->y - (actor->momy >> 1),
-				actor->z, MT_CHAINSHOT);
+				actor->z, mobjtype_t::MT_CHAINSHOT);
 
 	P_SpawnMobj(actor->x - actor->momx,
 				actor->y - actor->momy,
-				actor->z, MT_CHAINSHOT);
+				actor->z, mobjtype_t::MT_CHAINSHOT);
 }
 
 //
@@ -2093,7 +2084,7 @@ void A_MissileSmoke(mobj_t* actor)
 	P_SpawnPuff(actor->x, actor->y, actor->z);
 	mo = P_SpawnMobj(actor->x - actor->momx,
 						actor->y - actor->momy,
-						actor->z, MT_MISSILESMOKE);
+						actor->z, mobjtype_t::MT_MISSILESMOKE);
 
 	mo->momz = FRACUNIT;
 }
@@ -2115,7 +2106,7 @@ void A_SpawnSparkPuff(mobj_t* actor)
 	r = P_Random();
 	y = (10*FRACUNIT) * ((r & 3) - (P_Random() & 3)) + actor->y;
 
-	mo = P_SpawnMobj(x, y, actor->z, MT_SPARKPUFF);
+	mo = P_SpawnMobj(x, y, actor->z, mobjtype_t::MT_SPARKPUFF);
 	P_SetMobjState(mo, S_BNG4_01); // 199
 	mo->momz = FRACUNIT;
 }
@@ -2230,7 +2221,7 @@ void A_Scream(mobj_t* actor)
 		return;
 
 	// Check for bosses.
-	if(actor->type == MT_ENTITY || actor->type == MT_INQUISITOR)
+	if(actor->type == mobjtype_t::MT_ENTITY || actor->type == mobjtype_t::MT_INQUISITOR)
 		S_StartSound(NULL, actor->info->deathsound);	// full volume
 	else
 		S_StartSound(actor, actor->info->deathsound);
@@ -2370,7 +2361,7 @@ void A_ProgrammerDie(mobj_t* actor)
 	angle_t an;
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z + 24*FRACUNIT, MT_PROGRAMMERBASE);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z + 24*FRACUNIT, mobjtype_t::MT_PROGRAMMERBASE);
 
 	// haleyjd 20110223: fix add w/ANG180
 	r = P_Random();
@@ -2394,7 +2385,7 @@ void A_InqTossArm(mobj_t* actor)
 	angle_t an;
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z + (24*FRACUNIT), MT_INQARM);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z + (24*FRACUNIT), mobjtype_t::MT_INQARM);
 
 	r = P_Random();
 	an = ((r - P_Random()) << 22) + actor->angle - ANG90;
@@ -2418,7 +2409,7 @@ void A_SpawnSpectreA(mobj_t* actor)
 {
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SPECTRE_A);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SPECTRE_A);
 	mo->momz = P_Random() << 9;
 }
 
@@ -2432,7 +2423,7 @@ void A_SpawnSpectreB(mobj_t* actor)
 {
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SPECTRE_B);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SPECTRE_B);
 	mo->momz = P_Random() << 9;
 }
 
@@ -2449,7 +2440,7 @@ void A_SpawnSpectreC(mobj_t* actor)
 {
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SPECTRE_C);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SPECTRE_C);
 	mo->momz = P_Random() << 9;
 }
 
@@ -2463,7 +2454,7 @@ void A_SpawnSpectreD(mobj_t* actor)
 {
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SPECTRE_D);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SPECTRE_D);
 	mo->momz = P_Random() << 9;
 }
 
@@ -2477,7 +2468,7 @@ void A_SpawnSpectreE(mobj_t* actor)
 {
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z, MT_SPECTRE_E);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_SPECTRE_E);
 	mo->momz = P_Random() << 9;
 }
 
@@ -2496,7 +2487,7 @@ void A_SpawnEntity(mobj_t* actor)
 {
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z + 70*FRACUNIT, MT_ENTITY);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z + 70*FRACUNIT, mobjtype_t::MT_ENTITY);
 	mo->momz = 5*FRACUNIT;
 
 	entity_pos_x = mo->x;
@@ -2538,7 +2529,7 @@ void A_EntityDeath(mobj_t* actor)
 	an = actor->angle >> ANGLETOFINESHIFT;
 	subentity = P_SpawnMobj(FixedMul(finecosine[an], dist) + entity_pos_x,
 							FixedMul(finesine[an],	dist) + entity_pos_y,
-							entity_pos_z, MT_SUBENTITY);
+							entity_pos_z, mobjtype_t::MT_SUBENTITY);
 	subentity->target = actor->target;
 	A_FaceTarget(subentity);
 	P_ThrustMobj(subentity, subentity->angle, 625 << 13);
@@ -2547,7 +2538,7 @@ void A_EntityDeath(mobj_t* actor)
 	an = (actor->angle + ANG90) >> ANGLETOFINESHIFT;
 	subentity = P_SpawnMobj(FixedMul(finecosine[an], dist) + entity_pos_x,
 							FixedMul(finesine[an],	dist) + entity_pos_y,
-							entity_pos_z, MT_SUBENTITY);
+							entity_pos_z, mobjtype_t::MT_SUBENTITY);
 	subentity->target = actor->target;
 	P_ThrustMobj(subentity, actor->angle + ANG90, 4);
 	A_FaceTarget(subentity);
@@ -2556,7 +2547,7 @@ void A_EntityDeath(mobj_t* actor)
 	an = (actor->angle - ANG90) >> ANGLETOFINESHIFT;
 	subentity = P_SpawnMobj(FixedMul(finecosine[an], dist) + entity_pos_x,
 							FixedMul(finesine[an],	dist) + entity_pos_y,
-							entity_pos_z, MT_SUBENTITY);
+							entity_pos_z, mobjtype_t::MT_SUBENTITY);
 	subentity->target = actor->target;
 	P_ThrustMobj(subentity, actor->angle - ANG90, 4);
 	A_FaceTarget(subentity);
@@ -2569,7 +2560,7 @@ void A_EntityDeath(mobj_t* actor)
 //
 void A_SpawnZombie(mobj_t* actor)
 {
-	P_SpawnMobj(actor->x, actor->y, actor->z, MT_ZOMBIE);
+	P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_ZOMBIE);
 }
 
 //
@@ -2622,7 +2613,7 @@ void A_CrystalExplode(mobj_t* actor)
 	// spawn rubble
 	for(i = 0; i < 8; i++)
 	{
-		rubble = P_SpawnMobj(actor->x, actor->y, actor->z, MT_RUBBLE1 + i);
+		rubble = P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_RUBBLE1 + i);
 		r = P_Random();
 		rubble->momx = ((r & 0x0f) - (P_Random() & 7)) << FRACBITS;
 		r = P_Random();
@@ -2649,7 +2640,7 @@ void P_FreePrisoners()
 
 	for(i = 0; i < MAXPLAYERS; i++)
 	{
-		P_GiveItemToPlayer(&players[i], SPR_TOKN, MT_TOKEN_QUEST13);
+		P_GiveItemToPlayer(&players[i], SPR_TOKN, mobjtype_t::MT_TOKEN_QUEST13);
 		players[i].message = pmsgbuffer;
 	}
 }
@@ -2669,9 +2660,9 @@ void P_DestroyConverter()
 
 	for(i = 0; i < MAXPLAYERS; i++)
 	{
-		P_GiveItemToPlayer(&players[i], SPR_TOKN, MT_TOKEN_QUEST25);
-		P_GiveItemToPlayer(&players[i], SPR_TOKN, MT_TOKEN_STAMINA);
-		P_GiveItemToPlayer(&players[i], SPR_TOKN, MT_TOKEN_NEW_ACCURACY);
+		P_GiveItemToPlayer(&players[i], SPR_TOKN, mobjtype_t::MT_TOKEN_QUEST25);
+		P_GiveItemToPlayer(&players[i], SPR_TOKN, mobjtype_t::MT_TOKEN_STAMINA);
+		P_GiveItemToPlayer(&players[i], SPR_TOKN, mobjtype_t::MT_TOKEN_NEW_ACCURACY);
 		players[i].message = pmsgbuffer;
 	}
 }
@@ -2816,7 +2807,7 @@ void A_MissileTick(mobj_t* actor)
 //
 void A_SpawnGrenadeFire(mobj_t* actor)
 {
-	P_SpawnMobj(actor->x, actor->y, actor->z, MT_PFLAME);
+	P_SpawnMobj(actor->x, actor->y, actor->z, mobjtype_t::MT_PFLAME);
 }
 
 //
@@ -2830,7 +2821,7 @@ void A_NodeChunk(mobj_t* actor)
 	int r;
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z + 10*FRACUNIT, MT_NODE);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z + 10*FRACUNIT, mobjtype_t::MT_NODE);
 	r = P_Random();
 	mo->momx = ((r & 0x0f) - (P_Random() & 7)) << FRACBITS;
 	r = P_Random();
@@ -2849,7 +2840,7 @@ void A_HeadChunk(mobj_t* actor)
 	int r;
 	mobj_t* mo;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z + 10*FRACUNIT, MT_SPECTREHEAD);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z + 10*FRACUNIT, mobjtype_t::MT_SPECTREHEAD);
 	r = P_Random();
 	mo->momx = ((r & 7) - (P_Random() & 0x0f)) << FRACBITS;
 	r = P_Random();
@@ -2885,7 +2876,7 @@ void A_BurnSpread(mobj_t* actor)
 	x = actor->x + (((P_Random() + 12) & 31) << FRACBITS);
 
 	// spawn child
-	mo = P_SpawnMobj(x, y, actor->z + (4*FRACUNIT), MT_PFLAME);
+	mo = P_SpawnMobj(x, y, actor->z + (4*FRACUNIT), mobjtype_t::MT_PFLAME);
 
 	t = P_Random();
 	mo->momx += ((t & 7) - (P_Random() & 7)) << FRACBITS;
@@ -2914,14 +2905,14 @@ void A_BossDeath (mobj_t* actor)
 	// only the following types can be a boss:
 	switch(actor->type)
 	{
-	case MT_CRUSADER:
-	case MT_SPECTRE_A:
-	case MT_SPECTRE_B:
-	case MT_SPECTRE_C:
-	case MT_SPECTRE_D:
-	case MT_SPECTRE_E:
-	case MT_SUBENTITY:
-	case MT_PROGRAMMER:
+	case mobjtype_t::MT_CRUSADER:
+	case mobjtype_t::MT_SPECTRE_A:
+	case mobjtype_t::MT_SPECTRE_B:
+	case mobjtype_t::MT_SPECTRE_C:
+	case mobjtype_t::MT_SPECTRE_D:
+	case mobjtype_t::MT_SPECTRE_E:
+	case mobjtype_t::MT_SUBENTITY:
+	case mobjtype_t::MT_PROGRAMMER:
 		break;
 	default:
 		return;
@@ -2951,24 +2942,24 @@ void A_BossDeath (mobj_t* actor)
 	// Victory!
 	switch(actor->type)
 	{
-	case MT_CRUSADER:
+	case mobjtype_t::MT_CRUSADER:
 		junk.tag = 667;
 		EV_DoFloor(&junk, lowerFloorToLowest);
 		break;
 
-	case MT_SPECTRE_A:
+	case mobjtype_t::MT_SPECTRE_A:
 		GiveVoiceObjective("VOC95", "LOG95", 0);
 		junk.tag = 999;
 		EV_DoFloor(&junk, lowerFloorToLowest);
 		break;
 
-	case MT_SPECTRE_B:
-		P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_BISHOP);
+	case mobjtype_t::MT_SPECTRE_B:
+		P_GiveItemToPlayer(&players[0], SPR_TOKN, mobjtype_t::MT_TOKEN_BISHOP);
 		GiveVoiceObjective("VOC74", "LOG74", 0);
 		break;
 
-	case MT_SPECTRE_C:
-		// Look for an MT_ORACLE - this is for in case the player awakened the
+	case mobjtype_t::MT_SPECTRE_C:
+		// Look for an mobjtype_t::MT_ORACLE - this is for in case the player awakened the
 		// Oracle's spectre without killing the Oracle, which is possible by
 		// looking up to max and firing the Sigil at it. If this were not done,
 		// a serious sequence break possibility would arise where one could
@@ -2984,15 +2975,15 @@ void A_BossDeath (mobj_t* actor)
 				mobj_t *mo = (mobj_t *)th;
 
 				// KILL ALL ORACLES! RAWWR!
-				if(mo != actor && mo->type == MT_ORACLE && mo->health > 0)
+				if(mo != actor && mo->type == mobjtype_t::MT_ORACLE && mo->health > 0)
 					P_KillMobj(actor, mo);
 			}
 		}
-		P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_ORACLE);
+		P_GiveItemToPlayer(&players[0], SPR_TOKN, mobjtype_t::MT_TOKEN_ORACLE);
 
 		// Bishop is dead? - verify.
 		if(players[0].questflags & QF_QUEST21)
-			P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_QUEST22);
+			P_GiveItemToPlayer(&players[0], SPR_TOKN, mobjtype_t::MT_TOKEN_QUEST22);
 
 		// Macil is dead?
 		if(players[0].questflags & QF_QUEST24)
@@ -3013,20 +3004,20 @@ void A_BossDeath (mobj_t* actor)
 		EV_DoDoor(&junk, vld_open); // Note this is NOT the Loremaster door...
 		break;
 
-	case MT_SPECTRE_D:
-		P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_MACIL);
+	case mobjtype_t::MT_SPECTRE_D:
+		P_GiveItemToPlayer(&players[0], SPR_TOKN, mobjtype_t::MT_TOKEN_MACIL);
 		if(players[0].questflags & QF_QUEST25) // Destroyed converter?
 			GiveVoiceObjective("VOC106", "LOG106", 0);
 		else
 			GiveVoiceObjective("VOC79", "LOG79", 0);
 		break;
 
-	case MT_SPECTRE_E:
-		P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_LOREMASTER);
+	case mobjtype_t::MT_SPECTRE_E:
+		P_GiveItemToPlayer(&players[0], SPR_TOKN, mobjtype_t::MT_TOKEN_LOREMASTER);
 		if(!netgame)
 		{
-			P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_STAMINA);
-			P_GiveItemToPlayer(&players[0], SPR_TOKN, MT_TOKEN_NEW_ACCURACY);
+			P_GiveItemToPlayer(&players[0], SPR_TOKN, mobjtype_t::MT_TOKEN_STAMINA);
+			P_GiveItemToPlayer(&players[0], SPR_TOKN, mobjtype_t::MT_TOKEN_NEW_ACCURACY);
 		}
 		if(players[0].sigiltype == 4)
 			GiveVoiceObjective("VOC85", "LOG85", 0);
@@ -3036,11 +3027,11 @@ void A_BossDeath (mobj_t* actor)
 		EV_DoFloor(&junk, lowerFloorToLowest);
 		break;
 
-	case MT_SUBENTITY:
+	case mobjtype_t::MT_SUBENTITY:
 		F_StartFinale();
 		break;
 
-	case MT_PROGRAMMER:
+	case mobjtype_t::MT_PROGRAMMER:
 		F_StartFinale();
 		G_ExitLevel(0);
 		break;
@@ -3064,8 +3055,8 @@ void A_AcolyteSpecial(mobj_t* actor)
 	int i;
 	thinker_t* th;
 
-	if(actor->type != MT_GUARD8)
-		return; // must be MT_GUARD8
+	if(actor->type != mobjtype_t::MT_GUARD8)
+		return; // must be mobjtype_t::MT_GUARD8
 
 	for(i = 0; i < MAXPLAYERS; i++)
 	{
@@ -3082,15 +3073,15 @@ void A_AcolyteSpecial(mobj_t* actor)
 		{
 			mobj_t *mo = (mobj_t *)th;
 
-			// Found a living MT_GUARD8?
+			// Found a living mobjtype_t::MT_GUARD8?
 			if(mo != actor && mo->type == actor->type && mo->health > 0)
 				return;
 		}
 	}
 
-	// All MT_GUARD8 are dead, give quest token #7 to all players
+	// All mobjtype_t::MT_GUARD8 are dead, give quest token #7 to all players
 	for(i = 0; i < MAXPLAYERS; i++)
-		P_GiveItemToPlayer(&players[i], SPR_TOKN, MT_TOKEN_QUEST7);
+		P_GiveItemToPlayer(&players[i], SPR_TOKN, mobjtype_t::MT_TOKEN_QUEST7);
 
 	// play voice, give objective
 	GiveVoiceObjective("VOC14", "LOG14", 0);
@@ -3153,7 +3144,7 @@ void A_TeleportBeacon(mobj_t* actor)
 	if(actor->target != players[actor->miscdata].mo)
 		actor->target = players[actor->miscdata].mo;
 
-	mobj = P_SpawnMobj(actor->x, actor->y, ONFLOORZ, MT_REBEL1);
+	mobj = P_SpawnMobj(actor->x, actor->y, ONFLOORZ, mobjtype_t::MT_REBEL1);
 
 	// haleyjd 20141024: missing code from disassembly; transfer allegiance
 	// originally from master player to the rebel.
@@ -3186,7 +3177,7 @@ void A_TeleportBeacon(mobj_t* actor)
 
 		if(targ)
 		{
-			if(targ->type != MT_REBEL1 || targ->miscdata != mobj->miscdata)
+			if(targ->type != mobjtype_t::MT_REBEL1 || targ->miscdata != mobj->miscdata)
 				mobj->target = targ;
 		}
 	}
@@ -3197,7 +3188,7 @@ void A_TeleportBeacon(mobj_t* actor)
 	fog_x = mobj->x + FixedMul(20*FRACUNIT, finecosine[actor->angle>>ANGLETOFINESHIFT]);
 	fog_y = mobj->y + FixedMul(20*FRACUNIT, finesine[actor->angle>>ANGLETOFINESHIFT]);
 
-	fog = P_SpawnMobj(fog_x, fog_y, mobj->z, MT_TFOG);
+	fog = P_SpawnMobj(fog_x, fog_y, mobj->z, mobjtype_t::MT_TFOG);
 	S_StartSound(fog, sfx_telept);
 
 	if(--actor->health < 0)
@@ -3218,9 +3209,9 @@ void A_BodyParts(mobj_t* actor)
 	angle_t an;
 
 	if(actor->flags & MF_NOBLOOD) // Robots are flagged NOBLOOD
-		type = MT_JUNK;
+		type = mobjtype_t::MT_JUNK;
 	else
-		type = MT_MEAT;
+		type = mobjtype_t::MT_MEAT;
 
 	mo = P_SpawnMobj(actor->x, actor->y, actor->z + (24*FRACUNIT), type);
 	P_SetMobjState(mo, mo->info->spawnstate + (P_Random() % 19));
@@ -3308,10 +3299,10 @@ void A_DropBurnFlesh(mobj_t* actor)
 
 	type = actor->type;
 
-	mo = P_SpawnMobj(actor->x, actor->y, actor->z + (24*FRACUNIT), MT_BURNDROP);
+	mo = P_SpawnMobj(actor->x, actor->y, actor->z + (24*FRACUNIT), mobjtype_t::MT_BURNDROP);
 	mo->momz = -FRACUNIT;
 
-	actor->type = MT_SFIREBALL;
+	actor->type = mobjtype_t::MT_SFIREBALL;
 	P_RadiusAttack(actor, actor, 64);
 	actor->type = type;
 }

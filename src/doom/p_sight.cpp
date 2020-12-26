@@ -78,11 +78,7 @@ bool PTR_SightTraverse(intercept_t *in)
 // P_DivlineSide
 // Returns side 0 (front), 1 (back), or 2 (on).
 //
-int
-P_DivlineSide
-( fixed_t	x,
- fixed_t	y,
- divline_t*	node )
+int P_DivlineSide(fixed_t x, fixed_t y, divline_t* node)
 {
 	fixed_t	dx;
 	fixed_t	dy;
@@ -132,10 +128,7 @@ P_DivlineSide
 // along the first divline.
 // This is only called by the addthings and addlines traversers.
 //
-fixed_t
-P_InterceptVector2
-( divline_t*	v2,
- divline_t*	v1 )
+fixed_t P_InterceptVector2(divline_t* v2, divline_t* v1)
 {
 	fixed_t	frac;
 	fixed_t	num;
@@ -331,10 +324,7 @@ bool P_CrossBSPNode (int bspnum)
 // if a straight line between t1 and t2 is unobstructed.
 // Uses REJECT.
 //
-bool
-P_CheckSight
-( mobj_t*	t1,
- mobj_t*	t2 )
+bool P_CheckSight(mobj_t* t1, mobj_t* t2)
 {
 	int		s1;
 	int		s2;
@@ -370,7 +360,7 @@ P_CheckSight
 	topslope = (t2->z+t2->height) - sightzstart;
 	bottomslope = (t2->z) - sightzstart;
 
-	if (gameversion <= exe_doom_1_2)
+	if (gameversion <= GameVersion_t::exe_doom_1_2)
 	{
 		return P_PathTraverse(t1->x, t1->y, t2->x, t2->y,
 								PT_EARLYOUT | PT_ADDLINES, PTR_SightTraverse);

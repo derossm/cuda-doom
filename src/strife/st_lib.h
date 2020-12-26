@@ -126,61 +126,27 @@ void STlib_drawNum(st_number_t* n);
 void STlib_drawNumPositive(st_number_t* n);
 
 /* haleyjd 09/01/10: [STRIFE] All the below were removed
-void
-STlib_updateNum
-( st_number_t*		n,
-	bool		refresh );
+void STlib_updateNum(st_number_t* n, bool refresh);
 
 
 // Percent widget routines
-void
-STlib_initPercent
-( st_percent_t*		p,
-	int			x,
-	int			y,
-	patch_t**		pl,
-	int*			num,
-	bool*		on,
-	patch_t*		percent );
+void STlib_initPercent(st_percent_t* p, int x, int y, patch_t** pl, int* num, bool* on, patch_t* percent);
 
 
-void
-STlib_updatePercent
-( st_percent_t*		per,
-	int			refresh );
+void STlib_updatePercent(st_percent_t* per, int refresh);
 
 
 // Multiple Icon widget routines
-void
-STlib_initMultIcon
-( st_multicon_t*	mi,
-	int			x,
-	int			y,
-	patch_t**		il,
-	int*			inum,
-	bool*		on );
+void STlib_initMultIcon(st_multicon_t* mi, int x, int y, patch_t** il, int* inum, bool* on);
 
 
-void
-STlib_updateMultIcon
-( st_multicon_t*	mi,
-	bool		refresh );
+void STlib_updateMultIcon(st_multicon_t* mi, bool refresh);
 
 // Binary Icon widget routines
 
-void
-STlib_initBinIcon
-( st_binicon_t*		b,
-	int			x,
-	int			y,
-	patch_t*		i,
-	bool*		val,
-	bool*		on );
+void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, bool* val, bool* on);
 
-void
-STlib_updateBinIcon
-( st_binicon_t*		bi,
-	bool		refresh );
+void STlib_updateBinIcon(st_binicon_t* bi, bool refresh);
 */
 
 #endif

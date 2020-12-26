@@ -321,7 +321,7 @@ void CT_Ticker()
 				{
 					P_SetMessage(&players[consoleplayer], plr_lastmsg[i],
 									true);
-					S_StartSound(NULL, SFX_CHAT);
+					S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 				}
 				else if (i == consoleplayer && (*chat_msg[i]))
 				{
@@ -330,7 +330,7 @@ void CT_Ticker()
 						P_SetMessage(&players[consoleplayer],
 										"THERE ARE NO OTHER PLAYERS IN THE GAME!",
 										true);
-						S_StartSound(NULL, SFX_CHAT);
+						S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 					}
 				}
 				CT_ClearChatMessage(i);
@@ -373,7 +373,7 @@ void CT_Drawer()
 			{
 				patch = W_CacheLumpNum(FontABaseLump +
 										chat_msg[consoleplayer][i] - 33,
-										PU_CACHE);
+										pu_tags_t::PU_CACHE);
 				V_DrawPatch(x, 10, patch);
 				x += patch->width;
 			}

@@ -482,8 +482,8 @@ bool P_GiveArtifact(player_t * player, ArtiType_t arti, mobj_t * mo)
 void P_SetDormantArtifact(mobj_t * arti)
 {
 	arti->flags &= ~MF_SPECIAL;
-	if (deathmatch && (arti->type != MT_ARTIINVULNERABILITY)
-		&& (arti->type != MT_ARTIINVISIBILITY))
+	if (deathmatch && (arti->type != mobjtype_t::MT_ARTIINVULNERABILITY)
+		&& (arti->type != mobjtype_t::MT_ARTIINVISIBILITY))
 	{
 		P_SetMobjState(arti, S_DORMANTARTI1);
 	}
@@ -530,7 +530,7 @@ void P_HideSpecialThing(mobj_t * thing)
 
 void A_RestoreSpecialThing1(mobj_t * thing)
 {
-	if (thing->type == MT_WMACE)
+	if (thing->type == mobjtype_t::MT_WMACE)
 	{							// Do random mace placement
 		P_RepositionMace(thing);
 	}
@@ -664,70 +664,70 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 
 			// Artifacts
 		case SPR_PTN2:			// Arti_HealingPotion
-			if (P_GiveArtifact(player, arti_health, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_health, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTIHEALTH), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_SOAR:			// Arti_Fly
-			if (P_GiveArtifact(player, arti_fly, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_fly, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTIFLY), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_INVU:			// Arti_Invulnerability
-			if (P_GiveArtifact(player, arti_invulnerability, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_invulnerability, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTIINVULNERABILITY), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_PWBK:			// Arti_TomeOfPower
-			if (P_GiveArtifact(player, arti_tomeofpower, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_tomeofpower, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTITOMEOFPOWER), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_INVS:			// Arti_Invisibility
-			if (P_GiveArtifact(player, arti_invisibility, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_invisibility, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTIINVISIBILITY), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_EGGC:			// Arti_Egg
-			if (P_GiveArtifact(player, arti_egg, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_egg, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTIEGG), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_SPHL:			// Arti_SuperHealth
-			if (P_GiveArtifact(player, arti_superhealth, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_superhealth, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTISUPERHEALTH), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_TRCH:			// Arti_Torch
-			if (P_GiveArtifact(player, arti_torch, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_torch, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTITORCH), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_FBMB:			// Arti_FireBomb
-			if (P_GiveArtifact(player, arti_firebomb, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_firebomb, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTIFIREBOMB), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_ATLP:			// Arti_Teleport
-			if (P_GiveArtifact(player, arti_teleport, special))
+			if (P_GiveArtifact(player, ArtiType_t::arti_teleport, special))
 			{
 				P_SetMessage(player, DEH_String(TXT_ARTITELEPORT), false);
 				P_SetDormantArtifact(special);
@@ -944,7 +944,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 		target->flags2 &= ~MF2_FLY;
 		target->player->powers[PowerType_t::pw_flight] = 0;
 		target->player->powers[PowerType_t::pw_weaponlevel2] = 0;
-		target->player->playerstate = PST_DEAD;
+		target->player->playerstate = PlayerState_t::PST_DEAD;
 		P_DropWeapon(target->player);
 		if (target->flags2 & MF2_FIREDAMAGE)
 		{						// Player flame death
@@ -1060,9 +1060,9 @@ bool P_ChickenMorphPlayer(player_t * player)
 	angle = pmo->angle;
 	oldFlags2 = pmo->flags2;
 	P_SetMobjState(pmo, S_FREETARGMOBJ);
-	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, MT_TFOG);
+	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
 	S_StartSound(fog, sfx_telept);
-	chicken = P_SpawnMobj(x, y, z, MT_CHICPLAYER);
+	chicken = P_SpawnMobj(x, y, z, mobjtype_t::MT_CHICPLAYER);
 	chicken->special1.i = player->readyweapon;
 	chicken->angle = angle;
 	chicken->player = player;
@@ -1105,12 +1105,12 @@ bool P_ChickenMorph(mobj_t * actor)
 	moType = actor->type;
 	switch (moType)
 	{
-		case MT_POD:
-		case MT_CHICKEN:
-		case MT_HEAD:
-		case MT_MINOTAUR:
-		case MT_SORCERER1:
-		case MT_SORCERER2:
+		case mobjtype_t::MT_POD:
+		case mobjtype_t::MT_CHICKEN:
+		case mobjtype_t::MT_HEAD:
+		case mobjtype_t::MT_MINOTAUR:
+		case mobjtype_t::MT_SORCERER1:
+		case mobjtype_t::MT_SORCERER2:
 			return (false);
 		default:
 			break;
@@ -1122,9 +1122,9 @@ bool P_ChickenMorph(mobj_t * actor)
 	ghost = actor->flags & MF_SHADOW;
 	target = actor->target;
 	P_SetMobjState(actor, S_FREETARGMOBJ);
-	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, MT_TFOG);
+	fog = P_SpawnMobj(x, y, z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
 	S_StartSound(fog, sfx_telept);
-	chicken = P_SpawnMobj(x, y, z, MT_CHICKEN);
+	chicken = P_SpawnMobj(x, y, z, mobjtype_t::MT_CHICKEN);
 	chicken->special2.i = moType;
 	chicken->special1.i = CHICKENTICS + P_Random();
 	chicken->flags |= ghost;
@@ -1145,9 +1145,9 @@ bool P_AutoUseChaosDevice(player_t * player)
 
 	for (i = 0; i < player->inventorySlotNum; i++)
 	{
-		if (player->inventory[i].type == arti_teleport)
+		if (player->inventory[i].type == ArtiType_t::arti_teleport)
 		{
-			P_PlayerUseArtifact(player, arti_teleport);
+			P_PlayerUseArtifact(player, ArtiType_t::arti_teleport);
 			player->health = player->mo->health = (player->health + 1) / 2;
 			return (true);
 		}
@@ -1177,12 +1177,12 @@ void P_AutoUseHealth(player_t * player, int saveHealth)
 
 	for (i = 0; i < player->inventorySlotNum; i++)
 	{
-		if (player->inventory[i].type == arti_health)
+		if (player->inventory[i].type == ArtiType_t::arti_health)
 		{
 			normalSlot = i;
 			normalCount = player->inventory[i].count;
 		}
-		else if (player->inventory[i].type == arti_superhealth)
+		else if (player->inventory[i].type == ArtiType_t::arti_superhealth)
 		{
 			superSlot = i;
 			superCount = player->inventory[i].count;
@@ -1261,7 +1261,7 @@ void P_DamageMobj
 	}
 	if (target->flags & MF_SKULLFLY)
 	{
-		if (target->type == MT_MINOTAUR)
+		if (target->type == mobjtype_t::MT_MINOTAUR)
 		{						// Minotaur is invulnerable during charge attack
 			return;
 		}
@@ -1278,7 +1278,7 @@ void P_DamageMobj
 	{
 		switch (inflictor->type)
 		{
-			case MT_EGGFX:
+			case mobjtype_t::MT_EGGFX:
 				if (player)
 				{
 					P_ChickenMorphPlayer(player);
@@ -1288,18 +1288,18 @@ void P_DamageMobj
 					P_ChickenMorph(target);
 				}
 				return;			// Always return
-			case MT_WHIRLWIND:
+			case mobjtype_t::MT_WHIRLWIND:
 				P_TouchWhirlwind(target);
 				return;
-			case MT_MINOTAUR:
+			case mobjtype_t::MT_MINOTAUR:
 				if (inflictor->flags & MF_SKULLFLY)
 				{				// Slam only when in charge mode
 					P_MinotaurSlam(inflictor, target);
 					return;
 				}
 				break;
-			case MT_MACEFX4:	// Death ball
-				if ((target->flags2 & MF2_BOSS) || target->type == MT_HEAD)
+			case mobjtype_t::MT_MACEFX4:	// Death ball
+				if ((target->flags2 & MF2_BOSS) || target->type == mobjtype_t::MT_HEAD)
 				{				// Don't allow cheap boss kills
 					break;
 				}
@@ -1316,32 +1316,32 @@ void P_DamageMobj
 				}
 				damage = 10000; // Something's gonna die
 				break;
-			case MT_PHOENIXFX2:		// Flame thrower
+			case mobjtype_t::MT_PHOENIXFX2:		// Flame thrower
 				if (target->player && P_Random() < 128)
 				{				// Freeze player for a bit
 					target->reactiontime += 4;
 				}
 				break;
-			case MT_RAINPLR1: // Rain missiles
-			case MT_RAINPLR2:
-			case MT_RAINPLR3:
-			case MT_RAINPLR4:
+			case mobjtype_t::MT_RAINPLR1: // Rain missiles
+			case mobjtype_t::MT_RAINPLR2:
+			case mobjtype_t::MT_RAINPLR3:
+			case mobjtype_t::MT_RAINPLR4:
 				if (target->flags2 & MF2_BOSS)
 				{				// Decrease damage for bosses
 					damage = (P_Random() & 7) + 1;
 				}
 				break;
-			case MT_HORNRODFX2:
-			case MT_PHOENIXFX1:
-				if (target->type == MT_SORCERER2 && P_Random() < 96)
+			case mobjtype_t::MT_HORNRODFX2:
+			case mobjtype_t::MT_PHOENIXFX1:
+				if (target->type == mobjtype_t::MT_SORCERER2 && P_Random() < 96)
 				{				// D'Sparil teleports away
 					P_DSparilTeleport(target);
 					return;
 				}
 				break;
-			case MT_BLASTERFX1:
-			case MT_RIPPER:
-				if (target->type == MT_HEAD)
+			case mobjtype_t::MT_BLASTERFX1:
+			case mobjtype_t::MT_RIPPER:
+				if (target->type == mobjtype_t::MT_HEAD)
 				{				// Less damage to Ironlich bosses
 					damage = P_Random() & 1;
 					if (!damage)
@@ -1457,14 +1457,14 @@ void P_DamageMobj
 	if (target->health <= 0)
 	{							// Death
 		target->special1.i = damage;
-		if (target->type == MT_POD && source && source->type != MT_POD)
+		if (target->type == mobjtype_t::MT_POD && source && source->type != mobjtype_t::MT_POD)
 		{						// Make sure players get frags for chain-reaction kills
 			target->target = source;
 		}
 		if (player && inflictor && !player->chickenTics)
 		{						// Check for flame death
 			if ((inflictor->flags2 & MF2_FIREDAMAGE)
-				|| ((inflictor->type == MT_PHOENIXFX1)
+				|| ((inflictor->type == mobjtype_t::MT_PHOENIXFX1)
 					&& (target->health > -50) && (damage > 25)))
 			{
 				target->flags2 |= MF2_FIREDAMAGE;
@@ -1481,7 +1481,7 @@ void P_DamageMobj
 	}
 	target->reactiontime = 0;	// we're awake now...
 	if (!target->threshold && source && !(source->flags2 & MF2_BOSS)
-		&& !(target->type == MT_SORCERER2 && source->type == MT_WIZARD))
+		&& !(target->type == mobjtype_t::MT_SORCERER2 && source->type == mobjtype_t::MT_WIZARD))
 	{
 		// Target actor is not intent on another actor,
 		// so make him chase after source
