@@ -16,8 +16,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdlib.h>
-#include <string.h>
 
 #include "z_zone.h"
 #include "i_system.h"
@@ -141,7 +139,7 @@ void Z_Free(void* ptr)
 		I_Error("Z_Free: freed a pointer without ZONEID");
 	}
 
-	if (block->tag != PU_FREE && block->user != NULL)
+	if (block->tag != pu_tags_t::PU_FREE && block->user != NULL)
 	{
 		// clear the user's mark
 
@@ -175,7 +173,7 @@ static bool ClearCache(int size)
 		return false;
 	}
 
-	// Search to the end of the PU_CACHE list. The blocks at the end
+	// Search to the end of the pu_tags_t::PU_CACHE list. The blocks at the end
 	// of the list are the ones that have been free for longer and
 	// are more likely to be unneeded now.
 
@@ -221,7 +219,7 @@ static bool ClearCache(int size)
 
 //
 // Z_Malloc
-// You can pass a NULL user if the tag is < PU_PURGELEVEL.
+// You can pass a NULL user if the tag is < pu_tags_t::PU_PURGELEVEL.
 //
 
 void *Z_Malloc(int size, int tag, void *user)
@@ -230,13 +228,13 @@ void *Z_Malloc(int size, int tag, void *user)
 	unsigned char *data;
 	void *result;
 
-	if (tag < 0 || tag >= PU_NUM_TAGS || tag == PU_FREE)
+	if (tag < 0 || tag >= pu_tags_t::PU_NUM_TAGS || tag == pu_tags_t::PU_FREE)
 	{
 		I_Error("Z_Malloc: attempted to allocate a block with an invalid "
 				"tag: %i", tag);
 	}
 
-	if (user == NULL && tag >= PU_PURGELEVEL)
+	if (user == NULL && tag >= pu_tags_t::PU_PURGELEVEL)
 	{
 		I_Error("Z_Malloc: an owner is required for purgable blocks");
 	}
@@ -356,7 +354,7 @@ void Z_DumpHeap(int lowtag, int	hightag)
 	if ( block->next->prev != block)
 		printf ("ERROR: next block doesn't have proper back link\n");
 
-	if (block->tag == PU_FREE && block->next->tag == PU_FREE)
+	if (block->tag == pu_tags_t::PU_FREE && block->next->tag == pu_tags_t::PU_FREE)
 		printf ("ERROR: two consecutive free blocks\n");
 	}
 #endif
@@ -391,7 +389,7 @@ void Z_FileDumpHeap(FILE *f)
 	if ( block->next->prev != block)
 		fprintf (f,"ERROR: next block doesn't have proper back link\n");
 
-	if (block->tag == PU_FREE && block->next->tag == PU_FREE)
+	if (block->tag == pu_tags_t::PU_FREE && block->next->tag == pu_tags_t::PU_FREE)
 		fprintf (f,"ERROR: two consecutive free blocks\n");
 	}
 #endif
@@ -448,7 +446,7 @@ void Z_ChangeTag2(void *ptr, int tag, const char *file, int line)
 		I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!",
 				file, line);
 
-	if (tag >= PU_PURGELEVEL && block->user == NULL)
+	if (tag >= pu_tags_t::PU_PURGELEVEL && block->user == NULL)
 		I_Error("%s:%i: Z_ChangeTag: an owner is required "
 				"for purgable blocks", file, line);
 

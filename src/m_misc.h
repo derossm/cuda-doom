@@ -15,9 +15,6 @@
 
 #include "../derma/common.h"
 
-#ifndef __M_MISC__
-#define __M_MISC__
-
 #include "doomtype.h"
 
 auto M_WriteFile(const char* name, const void* source, size_t length);
@@ -45,5 +42,3 @@ void M_ExtractFileBase(const char* path, char* dest);
 void M_ForceUppercase(char* text);
 void M_ForceLowercase(char* text);
 void M_NormalizeSlashes(char* str);
-
-#endif

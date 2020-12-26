@@ -14,13 +14,22 @@
 
 #include "../derma/common.h"
 
-#ifndef __I_GLOB__
-#define __I_GLOB__
-
 #define GLOB_FLAG_NOCASE 0x01
 #define GLOB_FLAG_SORTED 0x02
 
-typedef struct glob_s glob_t;
+struct glob_t
+{
+	char** globs;
+	int num_globs;
+	int flags;
+	DIR* dir;
+	char* directory;
+	char* last_filename;
+	// These fields are only used when the GLOB_FLAG_SORTED flag is set:
+	char** filenames;
+	int filenames_len;
+	int next_index;
+};
 
 // Start reading a list of file paths from the given directory which match
 // the given glob pattern. I_EndGlob() must be called on completion.
@@ -36,5 +45,3 @@ void I_EndGlob(glob_t* glob);
 // Read the name of the next globbed filename. NULL is returned if there
 // are no more found.
 const char* I_NextGlob(glob_t* glob);
-
-#endif

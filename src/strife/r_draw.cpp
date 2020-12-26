@@ -437,8 +437,8 @@ void R_InitTranslationTables ()
 	byte col1, col2;
 
 	// [STRIFE] Load xlatab. Here's how Rogue did it:
-	//	v7 = W_CacheLumpName("XLATAB", PU_CACHE); // note potential cache bug...
-	//	HIWORD(v8) = (Z_Malloc(131072, PU_STATIC, NULL) + 65535) >> 16;
+	//	v7 = W_CacheLumpName("XLATAB", pu_tags_t::PU_CACHE); // note potential cache bug...
+	//	HIWORD(v8) = (Z_Malloc(131072, pu_tags_t::PU_STATIC, NULL) + 65535) >> 16;
 	//	LOWORD(v8) = 0; // aligning to a 64K boundary, as if this is Wolf3D.
 	//	xlatab = v8;
 	//	memcpy(v8, v7, 65536);
@@ -450,7 +450,7 @@ void R_InitTranslationTables ()
 	V_LoadXlaTable();
 
 	// villsa [STRIFE] allocate a larger size for translation tables
-	translationtables = Z_Malloc(256*8, PU_STATIC, 0);
+	translationtables = Z_Malloc<decltype(translationtables)>(256*8, pu_tags_t::PU_STATIC, 0);
 
 	col1 = 0xFA;
 	col2 = 0xE0;
@@ -834,14 +834,14 @@ void R_FillBackScreen ()
 
 	if (background_buffer == NULL)
 	{
-		background_buffer = Z_Malloc(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
+		background_buffer = Z_Malloc<decltype(background_buffer)>(SCREENWIDTH * (SCREENHEIGHT - SBARHEIGHT),
 										PU_STATIC, NULL);
 	}
 
 	// haleyjd 08/29/10: [STRIFE] Use configurable back_flat
 	name = back_flat;
 
-	src = W_CacheLumpName(name, PU_CACHE);
+	src = W_CacheLumpName(name, pu_tags_t::PU_CACHE);
 	dest = background_buffer;
 
 	for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++)

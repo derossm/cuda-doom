@@ -14,7 +14,6 @@
 //	Sigil, No Rest for the Living and The Master Levels
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
 
 #include "doomstat.h"
 #include "deh_str.h"

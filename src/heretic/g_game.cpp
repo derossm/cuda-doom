@@ -11,9 +11,6 @@
 \**********************************************************************************************************************************************/
 // G_game.c
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "doomdef.h"
 #include "doomkeys.h"
 #include "deh_str.h"
@@ -74,8 +71,8 @@ struct
 	{ -1, { -1, -1 } }					// Terminator
 };
 
-gameaction_t gameaction;
-gamestate_t gamestate;
+GameAction_t gameaction;
+GameState_t gamestate;
 skill_t gameskill;
 bool respawnmonsters;
 int gameepisode;
@@ -159,8 +156,8 @@ static int next_weapon = 0;
 
 static const struct
 {
-	weapontype_t weapon;
-	weapontype_t weapon_num;
+	WeaponType_t weapon;
+	WeaponType_t weapon_num;
 } weapon_order_table[] = {
 	{ wp_staff,		wp_staff },
 	{ wp_gauntlets,	wp_staff },
@@ -222,7 +219,7 @@ int G_CmdChecksum(ticcmd_t *cmd)
 }
 */
 
-static bool WeaponSelectable(weapontype_t weapon)
+static bool WeaponSelectable(WeaponType_t weapon)
 {
 	if (weapon == wp_beak)
 	{
@@ -234,7 +231,7 @@ static bool WeaponSelectable(weapontype_t weapon)
 
 static int G_NextWeapon(int direction)
 {
-	weapontype_t weapon;
+	WeaponType_t weapon;
 	int start_i, i;
 
 	// Find index in the table.
@@ -488,7 +485,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 		}
 	}
 	if (gamekeydown[key_arti_tome] && !cmd->arti
-		&& !players[consoleplayer].powers[pw_weaponlevel2])
+		&& !players[consoleplayer].powers[PowerType_t::pw_weaponlevel2])
 	{
 		gamekeydown[key_arti_tome] = false;
 		cmd->arti = arti_tomeofpower;
@@ -560,7 +557,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 	// we generate a ticcmd. Choose a new weapon.
 	// (Can't weapon cycle when the player is a chicken)
 
-	if (gamestate == GS_LEVEL
+	if (gamestate == GameState_t::GS_LEVEL
 		&& players[consoleplayer].chickenTics == 0 && next_weapon != 0)
 	{
 		i = G_NextWeapon(next_weapon);
@@ -759,7 +756,7 @@ void G_DoLoadLevel()
 	int i;
 
 	levelstarttic = gametic;	// for time calculation
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 	for (i = 0; i < MAXPLAYERS; i++)
 	{
 		if (playeringame[i] && players[i].playerstate == PST_DEAD)
@@ -953,7 +950,7 @@ bool G_Responder(event_t * ev)
 	}
 
 	// Check for spy mode player cycle
-	if (gamestate == GS_LEVEL && ev->type == ev_keydown
+	if (gamestate == GameState_t::GS_LEVEL && ev->type == ev_keydown
 		&& ev->data1 == KEY_F12 && !deathmatch)
 	{							// Cycle the display player
 		do
@@ -969,7 +966,7 @@ bool G_Responder(event_t * ev)
 		return (true);
 	}
 
-	if (gamestate == GS_LEVEL)
+	if (gamestate == GameState_t::GS_LEVEL)
 	{
 		if (CT_Responder(ev))
 		{						// Chat ate the event
@@ -1215,19 +1212,19 @@ void G_Ticker()
 //
 	switch (gamestate)
 	{
-		case GS_LEVEL:
+		case GameState_t::GS_LEVEL:
 			P_Ticker();
 			SB_Ticker();
 			AM_Ticker();
 			CT_Ticker();
 			break;
-		case GS_INTERMISSION:
+		case GameState_t::GS_INTERMISSION:
 			IN_Ticker();
 			break;
-		case GS_FINALE:
+		case GameState_t::GS_FINALE:
 			F_Ticker();
 			break;
-		case GS_DEMOSCREEN:
+		case GameState_t::GS_DEMOSCREEN:
 			D_PageTicker();
 			break;
 	}
@@ -1653,7 +1650,7 @@ void G_DoCompleted()
 	// [crispy] total time for all completed levels (only count seconds)
 	totalleveltimes += (leveltime - leveltime % TICRATE);
 
-	gamestate = GS_INTERMISSION;
+	gamestate = GameState_t::GS_INTERMISSION;
 	IN_Start();
 }
 
@@ -1682,7 +1679,7 @@ void G_WorldDone()
 
 void G_DoWorldDone()
 {
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 	G_DoLoadLevel();
 	gameaction = ga_nothing;
 	viewactive = true;
@@ -1817,10 +1814,10 @@ void G_InitNew(skill_t skill, int episode, int map)
 		paused = false;
 		S_ResumeSound();
 	}
-	if (skill < sk_baby)
-		skill = sk_baby;
-	if (skill > sk_nightmare)
-		skill = sk_nightmare;
+	if (skill < skill_t::sk_baby)
+		skill = skill_t::sk_baby;
+	if (skill > skill_t::sk_nightmare)
+		skill = skill_t::sk_nightmare;
 	if (episode < 1)
 		episode = 1;
 	// Up to 9 episodes for testing
@@ -1840,7 +1837,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 		respawnmonsters = false;
 	}
 	// Set monster missile speeds
-	speed = skill == sk_nightmare;
+	speed = skill == skill_t::sk_nightmare;
 	for (i = 0; MonsterMissileInfo[i].type != -1; i++)
 	{
 		mobjinfo[MonsterMissileInfo[i].type].speed
@@ -1950,7 +1947,7 @@ static void IncreaseDemoBuffer()
 	// Generate a new buffer twice the size
 	new_length = current_length * 2;
 
-	new_demobuffer = Z_Malloc(new_length, PU_STATIC, 0);
+	new_demobuffer = Z_Malloc<decltype(new_demobuffer)>(new_length, pu_tags_t::PU_STATIC, 0);
 	new_demop = new_demobuffer + (demo_p - demobuffer);
 
 	// Copy over the old data
@@ -2072,7 +2069,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
 	G_InitNew(skill, episode, map);
 	usergame = false;
 	demoname_size = strlen(name) + 5 + 6; // [crispy] + 6 for "-00000"
-	demoname = Z_Malloc(demoname_size, PU_STATIC, NULL);
+	demoname = Z_Malloc<decltype(demoname)>(demoname_size, pu_tags_t::PU_STATIC, NULL);
 	M_snprintf(demoname, demoname_size, "%s.lmp", name);
 	maxsize = 0x20000;
 
@@ -2094,7 +2091,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
 	i = M_CheckParmWithArgs("-maxdemo", 1);
 	if (i)
 		maxsize = atoi(myargv[i + 1]) * 1024;
-	demobuffer = Z_Malloc(maxsize, PU_STATIC, NULL);
+	demobuffer = Z_Malloc<decltype(demobuffer)>(maxsize, pu_tags_t::PU_STATIC, NULL);
 	demoend = demobuffer + maxsize;
 
 	demo_p = demobuffer;
@@ -2153,7 +2150,7 @@ void G_DoPlayDemo()
 
 	gameaction = ga_nothing;
 	lumpnum = W_GetNumForName(defdemoname);
-	demobuffer = W_CacheLumpNum(lumpnum, PU_STATIC);
+	demobuffer = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 	demo_p = demobuffer;
 	skill = *demo_p++;
 	episode = *demo_p++;
@@ -2201,7 +2198,7 @@ void G_TimeDemo(char *name)
 	skill_t skill;
 	int episode, map, i;
 
-	demobuffer = demo_p = W_CacheLumpName(name, PU_STATIC);
+	demobuffer = demo_p = W_CacheLumpName(name, pu_tags_t::PU_STATIC);
 	skill = *demo_p++;
 	episode = *demo_p++;
 	map = *demo_p++;

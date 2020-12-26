@@ -10,20 +10,16 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	System interface for sound.
+		System interface for sound.
 \**********************************************************************************************************************************************/
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
 #include "SDL.h"
 #include "SDL_mixer.h"
 
 #ifdef HAVE_LIBSAMPLERATE
-#include <samplerate.h>
+	#include <samplerate.h>
 #endif
 
 #include "deh_str.h"
@@ -746,7 +742,7 @@ static bool CacheSFX(sfxinfo_t *sfxinfo)
 	// need to load the sound
 
 	lumpnum = sfxinfo->lumpnum;
-	data = W_CacheLumpNum(lumpnum, PU_STATIC);
+	data = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 	lumplen = W_LumpLength(lumpnum);
 
 	// [crispy] Check if this is a valid RIFF wav file

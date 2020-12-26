@@ -17,7 +17,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdlib.h>
 
 #include "doomdef.h"
 #include "doomstat.h"
@@ -996,7 +995,7 @@ P_CrossSpecialLine
 			break;
 
 		// must have comm unit
-		if(!(thing->player->powers[pw_communicator]))
+		if(!(thing->player->powers[PowerType_t::pw_communicator]))
 			break;
 
 		// load voice
@@ -1020,7 +1019,7 @@ P_CrossSpecialLine
 			break;
 
 		// must have comm unit
-		if(!(thing->player->powers[pw_communicator]))
+		if(!(thing->player->powers[PowerType_t::pw_communicator]))
 			break;
 
 		// must have... the flamethrower?!
@@ -1056,7 +1055,7 @@ P_CrossSpecialLine
 			break;
 
 		// must have comm unit
-		if(!(thing->player->powers[pw_communicator]))
+		if(!(thing->player->powers[PowerType_t::pw_communicator]))
 			break;
 
 		if(line->tag != 0)
@@ -1485,20 +1484,20 @@ void P_PlayerInSpecialSector (player_t* player)
 	case 5:
 		// HELLSLIME DAMAGE
 		// [STRIFE] +2 to nukagecount
-		if(!player->powers[pw_ironfeet])
+		if(!player->powers[PowerType_t::pw_ironfeet])
 			player->nukagecount += 2;
 		break;
 
 	case 16:
 		// [STRIFE] +4 to nukagecount
-		if(!player->powers[pw_ironfeet])
+		if(!player->powers[PowerType_t::pw_ironfeet])
 			player->nukagecount += 4;
 		break;
 
 	case 4:
 	case 7:
 		// [STRIFE] Immediate 5 damage every 31 tics
-		if(!player->powers[pw_ironfeet])
+		if(!player->powers[PowerType_t::pw_ironfeet])
 			if(!(leveltime & 0x1f))
 				P_DamageMobj(player->mo, NULL, NULL, 5);
 		break;
@@ -1820,7 +1819,7 @@ int EV_DoDonut(line_t*	line)
 			}
 
 		//	Spawn rising slime
-		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVSPEC, 0);
 		P_AddThinker (&floor->thinker);
 		s2->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1834,7 +1833,7 @@ int EV_DoDonut(line_t*	line)
 		floor->floordestheight = s3_floorheight;
 
 		//	Spawn lowering donut-hole
-		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVSPEC, 0);
 		P_AddThinker (&floor->thinker);
 		s1->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;

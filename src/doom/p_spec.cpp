@@ -17,7 +17,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdlib.h>
 
 #include "doomdef.h"
 #include "doomstat.h"
@@ -156,7 +155,7 @@ void P_InitPicAnims ()
 
 	if (from_lump)
 	{
-	animdefs = W_CacheLumpName("ANIMATED", PU_STATIC);
+	animdefs = W_CacheLumpName("ANIMATED", pu_tags_t::PU_STATIC);
 	}
 	else
 	{
@@ -1136,7 +1135,7 @@ void P_PlayerInSpecialSector (player_t* player)
 		case 5:
 	// HELLSLIME DAMAGE
 	// [crispy] no nukage damage with NOCLIP cheat
-	if (!player->powers[pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
+	if (!player->powers[PowerType_t::pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
 		if (!(leveltime&0x1f))
 		P_DamageMobj (player->mo, NULL, NULL, 10);
 	break;
@@ -1144,7 +1143,7 @@ void P_PlayerInSpecialSector (player_t* player)
 		case 7:
 	// NUKAGE DAMAGE
 	// [crispy] no nukage damage with NOCLIP cheat
-	if (!player->powers[pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
+	if (!player->powers[PowerType_t::pw_ironfeet] && !(player->mo->flags & MF_NOCLIP))
 		if (!(leveltime&0x1f))
 		P_DamageMobj (player->mo, NULL, NULL, 5);
 	break;
@@ -1154,7 +1153,7 @@ void P_PlayerInSpecialSector (player_t* player)
 		case 4:
 	// STROBE HURT
 	// [crispy] no nukage damage with NOCLIP cheat
-	if ((!player->powers[pw_ironfeet]
+	if ((!player->powers[PowerType_t::pw_ironfeet]
 		|| (P_Random()<5) ) && !(player->mo->flags & MF_NOCLIP))
 	{
 		if (!(leveltime&0x1f))
@@ -1513,7 +1512,7 @@ int EV_DoDonut(line_t*	line)
 			}
 
 		//	Spawn rising slime
-		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVSPEC, 0);
 		P_AddThinker (&floor->thinker);
 		s2->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1527,7 +1526,7 @@ int EV_DoDonut(line_t*	line)
 		floor->floordestheight = s3_floorheight;
 
 		//	Spawn lowering donut-hole
-		floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+		floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVSPEC, 0);
 		P_AddThinker (&floor->thinker);
 		s1->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;

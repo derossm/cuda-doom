@@ -13,32 +13,6 @@
 		Miscellaneous.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <errno.h>
-
-#ifdef _WIN32
-	#ifndef WIN32_LEAN_AND_MEAN
-		#define WIN32_LEAN_AND_MEAN
-	#endif
-
-	#ifndef NOMINMAX
-		#define NOMINMAX
-	#endif
-
-	#include <windows.h>
-	#include <io.h>
-
-	#ifdef _MSC_VER
-		#include <direct.h>
-	#endif
-#else	// #ifndef _WIN32
-	#include <sys/stat.h>
-	#include <sys/types.h>
-#endif	// _WIN32
-
 #include "doomtype.h"
 
 #include "deh_str.h"
@@ -161,7 +135,7 @@ auto M_ReadFile(const char* name, byte** buffer)
 
 	auto length{M_FileLength(handle)};
 
-	//byte* buf = Z_Malloc(length + 1, PU_STATIC, NULL);
+	//byte* buf = Z_Malloc<decltype(//byte* buf)>(length + 1, pu_tags_t::PU_STATIC, NULL);
 	// NOTE: I have no idea what Z_Malloc is, so I need to research this later
 	auto buf{std::make_unique<byte*>(length + 1)};
 	auto count{fread(*buf, 1, length, handle)};
@@ -274,7 +248,7 @@ std::unique_ptr<const char*> M_FileCaseExists(const char* path)
 	auto filename = strrchr(*path_dup, DIR_SEPARATOR);
 	if (filename != NULL)
 	{
-		filename++;
+		++filename;
 	}
 	else
 	{

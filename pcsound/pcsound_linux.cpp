@@ -8,21 +8,12 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	PC speaker driver for Linux.
+		PC speaker driver for Linux.
 \**********************************************************************************************************************************************/
 
 #include "config.h"
 
 #ifdef HAVE_LINUX_KD_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <linux/kd.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
-#include <fcntl.h>
 
 #include "SDL.h"
 #include "SDL_thread.h"

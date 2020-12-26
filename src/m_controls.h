@@ -13,9 +13,6 @@
 
 #include "../derma/common.h"
 
-#ifndef __M_CONTROLS_H__
-#define __M_CONTROLS_H__
-
 extern int key_right;
 extern int key_left;
 extern int key_reverse;
@@ -114,7 +111,6 @@ extern int key_map_overlay;
 extern int key_map_rotate;
 
 // menu keys:
-
 extern int key_menu_activate;
 extern int key_menu_up;
 extern int key_menu_down;
@@ -140,10 +136,10 @@ extern int key_menu_gamma;
 extern int key_menu_incscreen;
 extern int key_menu_decscreen;
 extern int key_menu_screenshot;
-extern int key_menu_cleanscreenshot; // [crispy]
-extern int key_menu_del; // [crispy]
-extern int key_menu_nextlevel; // [crispy]
-extern int key_menu_reloadlevel; // [crispy]
+extern int key_menu_cleanscreenshot;		// [crispy]
+extern int key_menu_del;					// [crispy]
+extern int key_menu_nextlevel;				// [crispy]
+extern int key_menu_reloadlevel;			// [crispy]
 
 extern int mousebfire;
 extern int mousebstrafe;
@@ -191,5 +187,3 @@ void M_BindMenuControls();
 void M_BindChatControls(unsigned int num_players);
 
 void M_ApplyPlatformDefaults();
-
-#endif /* #ifndef __M_CONTROLS_H__ */

@@ -15,11 +15,6 @@
 
 #ifdef _WIN32
 
-#include <stdio.h>
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
 #include "opl.h"
 #include "opl_internal.h"
 #include "opl_timer.h"

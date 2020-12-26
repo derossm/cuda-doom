@@ -13,8 +13,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "dstrings.h"
 #include "deh_main.h"
@@ -695,7 +693,7 @@ static void saveg_read_player_t(player_t *str)
 	// mobj_t* mo;
 	str->mo = saveg_readp();
 
-	// playerstate_t playerstate;
+	// PlayerState_t playerstate;
 	str->playerstate = saveg_read_enum();
 
 	// ticcmd_t cmd;
@@ -747,10 +745,10 @@ static void saveg_read_player_t(player_t *str)
 		str->frags[i] = saveg_read32();
 	}
 
-	// weapontype_t readyweapon;
+	// WeaponType_t readyweapon;
 	str->readyweapon = saveg_read_enum();
 
-	// weapontype_t pendingweapon;
+	// WeaponType_t pendingweapon;
 	str->pendingweapon = saveg_read_enum();
 
 	// bool weaponowned[NUMWEAPONS];
@@ -830,7 +828,7 @@ static void saveg_write_player_t(player_t *str)
 	// mobj_t* mo;
 	saveg_writep(str->mo);
 
-	// playerstate_t playerstate;
+	// PlayerState_t playerstate;
 	saveg_write_enum(str->playerstate);
 
 	// ticcmd_t cmd;
@@ -878,10 +876,10 @@ static void saveg_write_player_t(player_t *str)
 		saveg_write32(str->frags[i]);
 	}
 
-	// weapontype_t readyweapon;
+	// WeaponType_t readyweapon;
 	saveg_write_enum(str->readyweapon);
 
-	// weapontype_t pendingweapon;
+	// WeaponType_t pendingweapon;
 	saveg_write_enum(str->pendingweapon);
 
 	// bool weaponowned[NUMWEAPONS];
@@ -1716,7 +1714,7 @@ void P_UnArchiveThinkers ()
 
 		case tc_mobj:
 		saveg_read_pad();
-		mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
+		mobj = Z_Malloc<decltype(*mobj)>(sizeof(*mobj), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_mobj_t(mobj);
 
 		// [crispy] restore mobj->target and mobj->tracer fields
@@ -1916,7 +1914,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_ceiling:
 		saveg_read_pad();
-		ceiling = Z_Malloc(sizeof(*ceiling), PU_LEVEL, NULL);
+		ceiling = Z_Malloc<decltype(*ceiling)>(sizeof(*ceiling), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_ceiling_t(ceiling);
 		ceiling->sector->specialdata = ceiling;
 
@@ -1929,7 +1927,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_door:
 		saveg_read_pad();
-		door = Z_Malloc(sizeof(*door), PU_LEVEL, NULL);
+		door = Z_Malloc<decltype(*door)>(sizeof(*door), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_vldoor_t(door);
 		door->sector->specialdata = door;
 		door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
@@ -1938,7 +1936,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_floor:
 		saveg_read_pad();
-		floor = Z_Malloc(sizeof(*floor), PU_LEVEL, NULL);
+		floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_floormove_t(floor);
 		floor->sector->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
@@ -1947,7 +1945,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_plat:
 		saveg_read_pad();
-		plat = Z_Malloc(sizeof(*plat), PU_LEVEL, NULL);
+		plat = Z_Malloc<decltype(*plat)>(sizeof(*plat), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_plat_t(plat);
 		plat->sector->specialdata = plat;
 
@@ -1960,7 +1958,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_flash:
 		saveg_read_pad();
-		flash = Z_Malloc(sizeof(*flash), PU_LEVEL, NULL);
+		flash = Z_Malloc<decltype(*flash)>(sizeof(*flash), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_lightflash_t(flash);
 		flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
 		P_AddThinker (&flash->thinker);
@@ -1968,7 +1966,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_strobe:
 		saveg_read_pad();
-		strobe = Z_Malloc(sizeof(*strobe), PU_LEVEL, NULL);
+		strobe = Z_Malloc<decltype(*strobe)>(sizeof(*strobe), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_strobe_t(strobe);
 		strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
 		P_AddThinker (&strobe->thinker);
@@ -1976,7 +1974,7 @@ void P_UnArchiveSpecials ()
 
 		case tc_glow:
 		saveg_read_pad();
-		glow = Z_Malloc(sizeof(*glow), PU_LEVEL, NULL);
+		glow = Z_Malloc<decltype(*glow)>(sizeof(*glow), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_glow_t(glow);
 		glow->thinker.function.acp1 = (actionf_p1)T_Glow;
 		P_AddThinker (&glow->thinker);

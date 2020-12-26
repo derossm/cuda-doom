@@ -639,7 +639,7 @@ void A_Summon(mobj_t * actor)
 		else
 		{
 			mo->special1.m = actor->special1.m;		// Pointer to master (mobj_t *)
-			P_GivePower(master->player, pw_minotaur);
+			P_GivePower(master->player, PowerType_t::pw_minotaur);
 		}
 
 		// Make smoke puff

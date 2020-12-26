@@ -21,16 +21,13 @@
 // version: 1.8
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "opl3.h"
 
 #define RSM_FRAC	10
 
 // Channel types
-
-enum {
+enum
+{
 	ch_2op = 0,
 	ch_4op = 1,
 	ch_4op2 = 2,
@@ -38,17 +35,13 @@ enum {
 };
 
 // Envelope key types
-
-enum {
+enum
+{
 	egk_norm = 0x01,
 	egk_drum = 0x02
 };
 
-
-//
 // logsin table
-//
-
 static const Bit16u logsinrom[256] = {
 	0x859, 0x6c3, 0x607, 0x58b, 0x52e, 0x4e4, 0x4a6, 0x471,
 	0x443, 0x41a, 0x3f5, 0x3d3, 0x3b5, 0x398, 0x37e, 0x365,
@@ -84,10 +77,7 @@ static const Bit16u logsinrom[256] = {
 	0x000, 0x000, 0x000, 0x000, 0x000, 0x000, 0x000, 0x000
 };
 
-//
 // exp table
-//
-
 static const Bit16u exprom[256] = {
 	0x7fa, 0x7f5, 0x7ef, 0x7ea, 0x7e4, 0x7df, 0x7da, 0x7d4,
 	0x7cf, 0x7c9, 0x7c4, 0x7bf, 0x7b9, 0x7b4, 0x7ae, 0x7a9,
@@ -123,20 +113,14 @@ static const Bit16u exprom[256] = {
 	0x414, 0x411, 0x40e, 0x40b, 0x408, 0x406, 0x403, 0x400
 };
 
-//
 // freq mult table multiplied by 2
 //
 // 1/2, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 12, 12, 15, 15
-//
-
 static const Bit8u mt[16] = {
 	1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 20, 24, 24, 30, 30
 };
 
-//
 // ksl table
-//
-
 static const Bit8u kslrom[16] = {
 	0, 32, 40, 45, 48, 51, 53, 55, 56, 58, 59, 60, 61, 62, 63, 64
 };
@@ -145,10 +129,7 @@ static const Bit8u kslshift[4] = {
 	8, 1, 2, 0
 };
 
-//
 // envelope generator constants
-//
-
 static const Bit8u eg_incstep[4][4] = {
 	{ 0, 0, 0, 0 },
 	{ 1, 0, 0, 0 },
@@ -156,10 +137,7 @@ static const Bit8u eg_incstep[4][4] = {
 	{ 1, 1, 1, 0 }
 };
 
-//
 // address decoding
-//
-
 static const Bit8s ad_slot[0x20] = {
 	0, 1, 2, 3, 4, 5, -1, -1, 6, 7, 8, 9, 10, 11, -1, -1,
 	12, 13, 14, 15, 16, 17, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
@@ -169,12 +147,9 @@ static const Bit8u ch_slot[18] = {
 	0, 1, 2, 6, 7, 8, 12, 13, 14, 18, 19, 20, 24, 25, 26, 30, 31, 32
 };
 
-//
 // Envelope generator
-//
-
 typedef Bit16s(*envelope_sinfunc)(Bit16u phase, Bit16u envelope);
-typedef void(*envelope_genfunc)(opl3_slot *slott);
+typedef void(*envelope_genfunc)(opl3_slot* slott);
 
 static Bit16s OPL3_EnvelopeCalcExp(Bit32u level)
 {
@@ -365,8 +340,7 @@ static void OPL3_EnvelopeCalc(opl3_slot *slot)
 	Bit16s eg_inc;
 	Bit8u eg_off;
 	Bit8u reset = 0;
-	slot->eg_out = slot->eg_rout + (slot->reg_tl << 2)
-					+ (slot->eg_ksl >> kslshift[slot->reg_ksl]) + *slot->trem;
+	slot->eg_out = slot->eg_rout + (slot->reg_tl << 2) + (slot->eg_ksl >> kslshift[slot->reg_ksl]) + *slot->trem;
 	if (slot->key && slot->eg_gen == envelope_gen_num_release)
 	{
 		reset = 1;
@@ -509,10 +483,7 @@ static void OPL3_EnvelopeKeyOff(opl3_slot *slot, Bit8u type)
 	slot->key &= ~type;
 }
 
-//
 // Phase Generator
-//
-
 static void OPL3_PhaseGenerate(opl3_slot *slot)
 {
 	opl3_chip *chip;
@@ -603,10 +574,7 @@ static void OPL3_PhaseGenerate(opl3_slot *slot)
 	chip->noise = (noise >> 1) | (n_bit << 22);
 }
 
-//
 // Slot
-//
-
 static void OPL3_SlotWrite20(opl3_slot *slot, Bit8u data)
 {
 	if ((data >> 7) & 0x01)
@@ -673,10 +641,7 @@ static void OPL3_SlotCalcFB(opl3_slot *slot)
 	slot->prout = slot->out;
 }
 
-//
 // Channel
-//
-
 static void OPL3_ChannelSetupAlg(opl3_channel *channel);
 
 static void OPL3_ChannelUpdateRhythm(opl3_chip *chip, Bit8u data)
@@ -778,8 +743,7 @@ static void OPL3_ChannelWriteA0(opl3_channel *channel, Bit8u data)
 		return;
 	}
 	channel->f_num = (channel->f_num & 0x300) | data;
-	channel->ksv = (channel->block << 1)
-					| ((channel->f_num >> (0x09 - channel->chip->nts)) & 0x01);
+	channel->ksv = (channel->block << 1) | ((channel->f_num >> (0x09 - channel->chip->nts)) & 0x01);
 	OPL3_EnvelopeUpdateKSL(channel->slots[0]);
 	OPL3_EnvelopeUpdateKSL(channel->slots[1]);
 	if (channel->chip->newm && channel->chtype == ch_4op)
@@ -799,8 +763,7 @@ static void OPL3_ChannelWriteB0(opl3_channel *channel, Bit8u data)
 	}
 	channel->f_num = (channel->f_num & 0xff) | ((data & 0x03) << 8);
 	channel->block = (data >> 2) & 0x07;
-	channel->ksv = (channel->block << 1)
-					| ((channel->f_num >> (0x09 - channel->chip->nts)) & 0x01);
+	channel->ksv = (channel->block << 1) | ((channel->f_num >> (0x09 - channel->chip->nts)) & 0x01);
 	OPL3_EnvelopeUpdateKSL(channel->slots[0]);
 	OPL3_EnvelopeUpdateKSL(channel->slots[1]);
 	if (channel->chip->newm && channel->chtype == ch_4op)
@@ -1163,8 +1126,7 @@ void OPL3_Generate(opl3_chip *chip, Bit16s *buf)
 			break;
 		}
 		chip->writebuf[chip->writebuf_cur].reg &= 0x1ff;
-		OPL3_WriteReg(chip, chip->writebuf[chip->writebuf_cur].reg,
-						chip->writebuf[chip->writebuf_cur].data);
+		OPL3_WriteReg(chip, chip->writebuf[chip->writebuf_cur].reg, chip->writebuf[chip->writebuf_cur].data);
 		chip->writebuf_cur = (chip->writebuf_cur + 1) % OPL_WRITEBUF_SIZE;
 	}
 	chip->writebuf_samplecnt++;
@@ -1179,10 +1141,8 @@ void OPL3_GenerateResampled(opl3_chip *chip, Bit16s *buf)
 		OPL3_Generate(chip, chip->samples);
 		chip->samplecnt -= chip->rateratio;
 	}
-	buf[0] = (Bit16s)((chip->oldsamples[0] * (chip->rateratio - chip->samplecnt)
-						+ chip->samples[0] * chip->samplecnt) / chip->rateratio);
-	buf[1] = (Bit16s)((chip->oldsamples[1] * (chip->rateratio - chip->samplecnt)
-						+ chip->samples[1] * chip->samplecnt) / chip->rateratio);
+	buf[0] = (Bit16s)((chip->oldsamples[0] * (chip->rateratio - chip->samplecnt) + chip->samples[0] * chip->samplecnt) / chip->rateratio);
+	buf[1] = (Bit16s)((chip->oldsamples[1] * (chip->rateratio - chip->samplecnt) + chip->samples[1] * chip->samplecnt) / chip->rateratio);
 	chip->samplecnt += 1 << RSM_FRAC;
 }
 
@@ -1338,8 +1298,7 @@ void OPL3_WriteRegBuffered(opl3_chip *chip, Bit16u reg, Bit8u v)
 
 	if (chip->writebuf[chip->writebuf_last].reg & 0x200)
 	{
-		OPL3_WriteReg(chip, chip->writebuf[chip->writebuf_last].reg & 0x1ff,
-						chip->writebuf[chip->writebuf_last].data);
+		OPL3_WriteReg(chip, chip->writebuf[chip->writebuf_last].reg & 0x1ff, chip->writebuf[chip->writebuf_last].data);
 
 		chip->writebuf_cur = (chip->writebuf_last + 1) % OPL_WRITEBUF_SIZE;
 		chip->writebuf_samplecnt = chip->writebuf[chip->writebuf_last].time;

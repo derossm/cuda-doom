@@ -392,7 +392,7 @@ void P_ActivateBeak(player_t * player)
 //
 //---------------------------------------------------------------------------
 
-void P_PostChickenWeapon(player_t * player, weapontype_t weapon)
+void P_PostChickenWeapon(player_t * player, WeaponType_t weapon)
 {
 	if (weapon == wp_beak)
 	{							// Should never happen
@@ -424,7 +424,7 @@ void P_BringUpWeapon(player_t * player)
 	{
 		S_StartSound(player->mo, sfx_gntact);
 	}
-	if (player->powers[pw_weaponlevel2])
+	if (player->powers[PowerType_t::pw_weaponlevel2])
 	{
 		new = wpnlev2info[player->pendingweapon].upstate;
 	}
@@ -448,12 +448,12 @@ void P_BringUpWeapon(player_t * player)
 
 bool P_CheckAmmo(player_t * player)
 {
-	ammotype_t ammo;
+	AmmoType_t ammo;
 	int *ammoUse;
 	int count;
 
 	ammo = wpnlev1info[player->readyweapon].ammo;
-	if (player->powers[pw_weaponlevel2] && !deathmatch)
+	if (player->powers[PowerType_t::pw_weaponlevel2] && !deathmatch)
 	{
 		ammoUse = WeaponAmmoUsePL2;
 	}
@@ -508,7 +508,7 @@ bool P_CheckAmmo(player_t * player)
 		}
 	}
 	while (player->pendingweapon == wp_nochange);
-	if (player->powers[pw_weaponlevel2])
+	if (player->powers[PowerType_t::pw_weaponlevel2])
 	{
 		P_SetPsprite(player, ps_weapon,
 						wpnlev2info[player->readyweapon].downstate);
@@ -537,7 +537,7 @@ void P_FireWeapon(player_t * player)
 		return;
 	}
 	P_SetMobjState(player->mo, S_PLAY_ATK2);
-	wpinfo = player->powers[pw_weaponlevel2] ? &wpnlev2info[0]
+	wpinfo = player->powers[PowerType_t::pw_weaponlevel2] ? &wpnlev2info[0]
 		: &wpnlev1info[0];
 	attackState = player->refire ? wpinfo[player->readyweapon].holdatkstate
 		: wpinfo[player->readyweapon].atkstate;
@@ -559,7 +559,7 @@ void P_FireWeapon(player_t * player)
 
 void P_DropWeapon(player_t * player)
 {
-	if (player->powers[pw_weaponlevel2])
+	if (player->powers[PowerType_t::pw_weaponlevel2])
 	{
 		P_SetPsprite(player, ps_weapon,
 						wpnlev2info[player->readyweapon].downstate);
@@ -604,7 +604,7 @@ void A_WeaponReady(player_t * player, pspdef_t * psp)
 	// died.
 	if (player->pendingweapon != wp_nochange || !player->health)
 	{
-		if (player->powers[pw_weaponlevel2])
+		if (player->powers[PowerType_t::pw_weaponlevel2])
 		{
 			P_SetPsprite(player, ps_weapon,
 							wpnlev2info[player->readyweapon].downstate);
@@ -662,7 +662,7 @@ void A_BeakReady(player_t * player, pspdef_t * psp)
 	{							// Chicken beak attack
 		player->attackdown = true;
 		P_SetMobjState(player->mo, S_CHICPLAY_ATK1);
-		if (player->powers[pw_weaponlevel2])
+		if (player->powers[PowerType_t::pw_weaponlevel2])
 		{
 			P_SetPsprite(player, ps_weapon, S_BEAKATK2_1);
 		}
@@ -766,7 +766,7 @@ void A_Raise(player_t * player, pspdef_t * psp)
 		return;
 	}
 	psp->sy = WEAPONTOP;
-	if (player->powers[pw_weaponlevel2])
+	if (player->powers[PowerType_t::pw_weaponlevel2])
 	{
 		P_SetPsprite(player, ps_weapon,
 						wpnlev2info[player->readyweapon].readystate);
@@ -1764,7 +1764,7 @@ void A_GauntletAttack(player_t * player, pspdef_t * psp)
 	psp->sx = ((P_Random() & 3) - 2) * FRACUNIT;
 	psp->sy = WEAPONTOP + (P_Random() & 3) * FRACUNIT;
 	angle = player->mo->angle;
-	if (player->powers[pw_weaponlevel2])
+	if (player->powers[PowerType_t::pw_weaponlevel2])
 	{
 		damage = HITDICE(2);
 		dist = 4 * MELEERANGE;
@@ -1802,7 +1802,7 @@ void A_GauntletAttack(player_t * player, pspdef_t * psp)
 	{
 		player->extralight = 2;
 	}
-	if (player->powers[pw_weaponlevel2])
+	if (player->powers[PowerType_t::pw_weaponlevel2])
 	{
 		P_GiveBody(player, damage >> 1);
 		S_StartSound(player->mo, sfx_gntpow);

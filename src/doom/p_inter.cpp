@@ -44,7 +44,7 @@ int clipammo[NUMAMMO] = {10, 4, 20, 1};
 
 // Num is the number of clip loads, not the individual count (0= 1/2 clip).
 // Returns false if the ammo can't be picked up at all.
-bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num, bool dropped ) // [NS] Dropped ammo/weapons give half as much.
+bool P_GiveAmmo(player_t* player, AmmoType_t ammo, int num, bool dropped ) // [NS] Dropped ammo/weapons give half as much.
 {
 	int oldammo;
 
@@ -172,7 +172,7 @@ const char *const WeaponPickupMessages[NUMWEAPONS] =
 };
 
 // The weapon name may have a MF_DROPPED flag ored in.
-bool P_GiveWeapon(player_t* player, weapontype_t weapon, bool dropped)
+bool P_GiveWeapon(player_t* player, WeaponType_t weapon, bool dropped)
 {
 	bool	gaveammo;
 	bool	gaveweapon;
@@ -272,7 +272,7 @@ bool P_GiveArmor(player_t* player, int armortype)
 	return true;
 }
 
-void P_GiveCard(player_t* player, card_t card)
+void P_GiveCard(player_t* player, CardType_t card)
 {
 	if (player->cards[card])
 	{
@@ -283,34 +283,34 @@ void P_GiveCard(player_t* player, card_t card)
 	player->cards[card] = 1;
 }
 
-bool P_GivePower(player_t* player, int /*powertype_t*/ power)
+bool P_GivePower(player_t* player, int /*PowerType_t*/ power)
 {
-	if (power == pw_invulnerability)
+	if (power == PowerType_t::pw_invulnerability)
 	{
 		player->powers[power] = INVULNTICS;
 		return true;
 	}
 
-	if (power == pw_invisibility)
+	if (power == PowerType_t::pw_invisibility)
 	{
 		player->powers[power] = INVISTICS;
 		player->mo->flags |= MF_SHADOW;
 		return true;
 	}
 
-	if (power == pw_infrared)
+	if (power == PowerType_t::pw_infrared)
 	{
 		player->powers[power] = INFRATICS;
 		return true;
 	}
 
-	if (power == pw_ironfeet)
+	if (power == PowerType_t::pw_ironfeet)
 	{
 		player->powers[power] = IRONTICS;
 		return true;
 	}
 
-	if (power == pw_strength)
+	if (power == PowerType_t::pw_strength)
 	{
 		P_GiveBody(player, 100);
 		player->powers[power] = 1;
@@ -532,7 +532,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 
 		// power ups
 		case SPR_PINV:
-			if (!P_GivePower(player, pw_invulnerability))
+			if (!P_GivePower(player, PowerType_t::pw_invulnerability))
 			{
 				return;
 			}
@@ -544,7 +544,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 			break;
 
 		case SPR_PSTR:
-			if (!P_GivePower(player, pw_strength))
+			if (!P_GivePower(player, PowerType_t::pw_strength))
 			{
 				return;
 			}
@@ -560,7 +560,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 			break;
 
 		case SPR_PINS:
-			if (!P_GivePower(player, pw_invisibility))
+			if (!P_GivePower(player, PowerType_t::pw_invisibility))
 			{
 				return;
 			}
@@ -572,7 +572,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 			break;
 
 		case SPR_SUIT:
-			if (!P_GivePower(player, pw_ironfeet))
+			if (!P_GivePower(player, PowerType_t::pw_ironfeet))
 			{
 				return;
 			}
@@ -584,7 +584,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 			break;
 
 		case SPR_PMAP:
-			if (!P_GivePower(player, pw_allmap))
+			if (!P_GivePower(player, PowerType_t::pw_allmap))
 			{
 				return;
 			}
@@ -596,7 +596,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 			break;
 
 		case SPR_PVIS:
-			if (!P_GivePower(player, pw_infrared))
+			if (!P_GivePower(player, PowerType_t::pw_infrared))
 			{
 				return;
 			}
@@ -837,7 +837,7 @@ void P_KillMobj( mobj_t* source, mobj_t* target)
 		// [JN] & [crispy] Reset the yellow bonus palette when the player dies
 		target->player->bonuscount = 0;
 		// [JN] & [crispy] Remove the effect of the inverted palette when the player dies
-		target->player->fixedcolormap = target->player->powers[pw_infrared] ? 1 : 0;
+		target->player->fixedcolormap = target->player->powers[PowerType_t::pw_infrared] ? 1 : 0;
 
 		if (target->player == &players[consoleplayer] && automapactive)
 		{
@@ -970,7 +970,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 
 		// Below certain threshold,
 		// ignore damage in GOD mode, or with INVUL power.
-		if (damage < 1000 && ((player->cheats&CF_GODMODE) || player->powers[pw_invulnerability]))
+		if (damage < 1000 && ((player->cheats&CF_GODMODE) || player->powers[PowerType_t::pw_invulnerability]))
 		{
 			return;
 		}

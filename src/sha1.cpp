@@ -1,39 +1,27 @@
-/* sha1.c - SHA1 hash function
- *	Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
- *
- * Please see below for more legal information!
- *
- * This file is part of GnuPG.
- *
- * GnuPG is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * GnuPG is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- * USA.
- */
+/**********************************************************************************************************************************************\
+	 sha1.c - SHA1 hash function
+	Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
-/* Test vectors:
- *
- * "abc"
- * A999 3E36 4706 816A BA3E 2571 7850 C26C 9CD0 D89D
- *
- * "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
- * 8498 3E44 1C3B D26E BAAE 4AA1 F951 29E5 E546 70F1
- */
+	Please see below for more legal information!
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+	This file is part of GnuPG.
+
+	GnuPG is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	GnuPG is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+	Test vectors:
+	"abc"
+	A999 3E36 4706 816A BA3E 2571 7850 C26C 9CD0 D89D
+
+	"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
+	8498 3E44 1C3B D26E BAAE 4AA1 F951 29E5 E546 70F1
+\**********************************************************************************************************************************************/
 
 #include "i_swap.h"
 #include "sha1.h"

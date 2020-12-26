@@ -40,7 +40,7 @@ void D_IntroTick(); // [STRIFE]
 // GLOBAL VARIABLES
 //
 
-extern gameaction_t	gameaction;
+extern GameAction_t	gameaction;
 extern bool			isregistered;	// villsa [STRIFE]
 extern bool		isdemoversion; // haleyjd [STRIFE]
 extern bool			stonecold;		// villsa [STRIFE]

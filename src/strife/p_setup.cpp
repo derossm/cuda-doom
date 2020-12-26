@@ -9,13 +9,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Do all the WAD I/O, get map description,
-//	set up initial state and misc. LUTs.
+		Do all the WAD I/O, get map description, set up initial state and misc. LUTs.
 \**********************************************************************************************************************************************/
-
-
-
-#include <math.h>
 
 #include "z_zone.h"
 
@@ -36,9 +31,7 @@
 
 #include "doomstat.h"
 
-
 void	P_SpawnMapThing (mapthing_t*	mthing);
-
 
 //
 // MAP related Lookup tables.
@@ -125,10 +118,10 @@ void P_LoadVertexes (int lump)
 	numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
 
 	// Allocate zone memory for buffer.
-	vertexes = Z_Malloc(numvertexes*sizeof(vertex_t),PU_LEVEL,0);
+	vertexes = Z_Malloc<decltype(vertexes)>(numvertexes*sizeof(vertex_t),PU_LEVEL,0);
 
 	// Load data into cache.
-	data = W_CacheLumpNum (lump, PU_STATIC);
+	data = W_CacheLumpNum (lump, pu_tags_t::PU_STATIC);
 
 	ml = (mapvertex_t *)data;
 	li = vertexes;
@@ -162,7 +155,7 @@ void P_LoadSegs (int lump)
 	int					sidenum;
 
 	numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-	segs = Z_Malloc(numsegs*sizeof(seg_t),PU_LEVEL,0);
+	segs = Z_Malloc<decltype(segs)>(numsegs*sizeof(seg_t),PU_LEVEL,0);
 	memset(segs, 0, numsegs*sizeof(seg_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
@@ -220,7 +213,7 @@ void P_LoadSubsectors (int lump)
 	subsector_t*	ss;
 
 	numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-	subsectors = Z_Malloc(numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
+	subsectors = Z_Malloc<decltype(subsectors)>(numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
 	ms = (mapsubsector_t *)data;
@@ -249,7 +242,7 @@ void P_LoadSectors (int lump)
 	sector_t*		ss;
 
 	numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-	sectors = Z_Malloc(numsectors*sizeof(sector_t),PU_LEVEL,0);
+	sectors = Z_Malloc<decltype(sectors)>(numsectors*sizeof(sector_t),PU_LEVEL,0);
 	memset(sectors, 0, numsectors*sizeof(sector_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
@@ -284,7 +277,7 @@ void P_LoadNodes (int lump)
 	node_t*	no;
 
 	numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-	nodes = Z_Malloc(numnodes*sizeof(node_t),PU_LEVEL,0);
+	nodes = Z_Malloc<decltype(nodes)>(numnodes*sizeof(node_t),PU_LEVEL,0);
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
 	mn = (mapnode_t *)data;
@@ -396,7 +389,7 @@ void P_LoadLineDefs (int lump)
 	vertex_t*		v2;
 
 	numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-	lines = Z_Malloc(numlines*sizeof(line_t),PU_LEVEL,0);
+	lines = Z_Malloc<decltype(lines)>(numlines*sizeof(line_t),PU_LEVEL,0);
 	memset(lines, 0, numlines*sizeof(line_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
@@ -475,7 +468,7 @@ void P_LoadSideDefs (int lump)
 	side_t*		sd;
 
 	numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-	sides = Z_Malloc(numsides*sizeof(side_t),PU_LEVEL,0);
+	sides = Z_Malloc<decltype(sides)>(numsides*sizeof(side_t),PU_LEVEL,0);
 	memset(sides, 0, numsides*sizeof(side_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
@@ -507,7 +500,7 @@ void P_LoadBlockMap (int lump)
 	lumplen = W_LumpLength(lump);
 	count = lumplen / 2;
 
-	blockmaplump = Z_Malloc(lumplen, PU_LEVEL, NULL);
+	blockmaplump = Z_Malloc<decltype(blockmaplump)>(lumplen, pu_tags_t::PU_LEVEL, NULL);
 	W_ReadLump(lump, blockmaplump);
 	blockmap = blockmaplump + 4;
 
@@ -528,7 +521,7 @@ void P_LoadBlockMap (int lump)
 	// Clear out mobj chains
 
 	count = sizeof(*blocklinks) * bmapwidth * bmapheight;
-	blocklinks = Z_Malloc(count, PU_LEVEL, 0);
+	blocklinks = Z_Malloc<decltype(blocklinks)>(count, pu_tags_t::PU_LEVEL, 0);
 	memset(blocklinks, 0, count);
 }
 
@@ -575,7 +568,7 @@ void P_GroupLines ()
 	}
 
 	// build line tables for each sector
-	linebuffer = Z_Malloc(totallines*sizeof(line_t *), PU_LEVEL, 0);
+	linebuffer = Z_Malloc<decltype(linebuffer)>(totallines*sizeof(line_t *), pu_tags_t::PU_LEVEL, 0);
 
 	for (i=0; i<numsectors; ++i)
 	{
@@ -668,7 +661,7 @@ static void PadRejectArray(byte *array, unsigned int len)
 	{
 		0,									// Size
 		0,									// Part of z_zone block header
-		50,									// PU_LEVEL
+		50,									// pu_tags_t::PU_LEVEL
 		0x1d4a11								// DOOM_CONST_ZONEID
 	};
 
@@ -726,11 +719,11 @@ static void P_LoadReject(int lumpnum)
 
 	if (lumplen >= minlength)
 	{
-		rejectmatrix = W_CacheLumpNum(lumpnum, PU_LEVEL);
+		rejectmatrix = W_CacheLumpNum(lumpnum, pu_tags_t::PU_LEVEL);
 	}
 	else
 	{
-		rejectmatrix = Z_Malloc(minlength, PU_LEVEL, &rejectmatrix);
+		rejectmatrix = Z_Malloc<decltype(rejectmatrix)>(minlength, pu_tags_t::PU_LEVEL, &rejectmatrix);
 		W_ReadLump(lumpnum, rejectmatrix);
 
 		PadRejectArray(rejectmatrix + lumplen, minlength - lumplen);
@@ -777,7 +770,7 @@ P_SetupLevel
 	}
 	else
 #endif
-	Z_FreeTags (PU_LEVEL, PU_PURGELEVEL-1);
+	Z_FreeTags (PU_LEVEL, pu_tags_t::PU_PURGELEVEL-1);
 
 
 	// UNUSED W_Profile ();

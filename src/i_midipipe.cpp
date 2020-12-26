@@ -14,12 +14,6 @@
 
 #if _WIN32
 
-#include <stdlib.h>
-#include <sys/stat.h>
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
 #include "i_midipipe.h"
 
 #include "config.h"
@@ -127,7 +121,7 @@ static bool UsingNativeMidi()
 static bool WritePipe(net_packet_t *packet)
 {
 	DWORD bytes_written;
-	BOOL ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
+	bool ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
 						&bytes_written, NULL);
 
 	return ok;
@@ -143,7 +137,7 @@ static bool WritePipe(net_packet_t *packet)
 static bool ExpectPipe(net_packet_t *packet)
 {
 	int start;
-	BOOL ok;
+	bool ok;
 	CHAR pipe_buffer[8192];
 	DWORD pipe_buffer_read = 0;
 
@@ -414,7 +408,7 @@ bool I_MidiPipe_InitServer()
 	SECURITY_ATTRIBUTES sec_attrs;
 	PROCESS_INFORMATION proc_info;
 	STARTUPINFO startup_info;
-	BOOL ok;
+	bool ok;
 
 	if (!UsingNativeMidi() || strlen(snd_musiccmd) > 0)
 	{
@@ -438,7 +432,7 @@ bool I_MidiPipe_InitServer()
 	// Set up pipes
 	memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
 	sec_attrs.nLength = sizeof(SECURITY_ATTRIBUTES);
-	sec_attrs.bInheritHandle = TRUE;
+	sec_attrs.bInheritHandle = true;
 	sec_attrs.lpSecurityDescriptor = NULL;
 
 	if (!CreatePipe(&midi_process_in_reader, &midi_process_in_writer, &sec_attrs, 0))
@@ -476,7 +470,7 @@ bool I_MidiPipe_InitServer()
 	memset(&startup_info, 0, sizeof(startup_info));
 	startup_info.cb = sizeof(startup_info);
 
-	ok = CreateProcess(TEXT(module), TEXT(cmdline), NULL, NULL, TRUE,
+	ok = CreateProcess(TEXT(module), TEXT(cmdline), NULL, NULL, true,
 						0, NULL, dirname, &startup_info, &proc_info);
 
 	if (!ok)

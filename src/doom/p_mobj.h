@@ -94,7 +94,7 @@
 // Any questions?
 
 // Misc. mobj flags
-typedef enum
+enum class mobjflag_t
 {
 	// Call P_SpecialThing when touched.
 	MF_SPECIAL			= 1,
@@ -185,11 +185,12 @@ typedef enum
 
 	// [crispy] translucent sprite
 	MF_TRANSLUCENT		= 0x80000000
-} mobjflag_t;
+};
 
+struct mobj_t;
 
 // Map Object definition.
-typedef struct mobj_s
+struct mobj_t
 {
 	// List: thinker links.
 	thinker_t thinker;
@@ -200,8 +201,8 @@ typedef struct mobj_s
 	fixed_t z;
 
 	// More list: links in sector (if needed)
-	struct mobj_s* snext;
-	struct mobj_s* sprev;
+	mobj_t* snext;
+	mobj_t* sprev;
 
 	//More drawing info: to determine current sprite.
 	angle_t angle;		// orientation
@@ -210,10 +211,10 @@ typedef struct mobj_s
 
 	// Interaction info, by BLOCKMAP.
 	// Links in blocks (if needed).
-	struct mobj_s* bnext;
-	struct mobj_s* bprev;
+	mobj_t* bnext;
+	mobj_t* bprev;
 
-	struct subsector_s* subsector;
+	subsector_t* subsector;
 
 	// The closest interval over all contacted Sectors.
 	fixed_t floorz;
@@ -245,7 +246,7 @@ typedef struct mobj_s
 
 	// Thing being chased/attacked (or NULL),
 	// also the originator for missiles.
-	struct mobj_s* target;
+	mobj_t* target;
 
 	// Reaction time: if non 0, don't attack yet.
 	// Used by player to freeze a bit after teleporting.
@@ -257,7 +258,7 @@ typedef struct mobj_s
 
 	// Additional info record for player avatars only.
 	// Only valid if type == MT_PLAYER
-	struct player_s* player;
+	player_t* player;
 
 	// Player number last looked for.
 	int lastlook;
@@ -266,7 +267,7 @@ typedef struct mobj_s
 	mapthing_t spawnpoint;
 
 	// Thing being chased/attacked for tracers.
-	struct mobj_s* tracer;
+	mobj_t* tracer;
 
 	// [AM] If true, ok to interpolate this tic.
 	int interp;
@@ -277,6 +278,6 @@ typedef struct mobj_s
 	fixed_t oldy;
 	fixed_t oldz;
 	angle_t oldangle;
-} mobj_t;
+};
 
 #endif

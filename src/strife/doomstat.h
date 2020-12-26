@@ -178,7 +178,7 @@ extern bool lowres_turn;
 extern bool		singledemo;
 
 //?
-extern gamestate_t		gamestate;
+extern GameState_t		gamestate;
 
 //-----------------------------
 // Internal parameters, fixed.
@@ -220,7 +220,7 @@ extern bool			precache;
 
 // wipegamestate can be set to -1
 // to force a wipe on the next draw
-extern gamestate_t		wipegamestate;
+extern GameState_t		wipegamestate;
 
 extern int				mouseSensitivity;
 

@@ -14,9 +14,6 @@
 
 #include "../derma/common.h"
 
-#ifndef DEH_MAPPING_H
-#define DEH_MAPPING_H
-
 #include "doomtype.h"
 #include "deh_io.h"
 #include "sha1.h"
@@ -76,5 +73,3 @@ struct deh_mapping_s
 bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping, void *structptr, char *name, int value);
 bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping, void *structptr, char *name, char *value);
 void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping, void *structptr);
-
-#endif /* #ifndef DEH_MAPPING_H */

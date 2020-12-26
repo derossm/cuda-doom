@@ -19,8 +19,6 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <string.h>
-#include <stdlib.h>
 #include "doomstat.h"
 #include "i_system.h"
 #include "m_misc.h"
@@ -101,7 +99,7 @@ static void OpenScript(const char *name, int type)
 	if (type == LUMP_SCRIPT)
 	{							// Lump script
 		ScriptLumpNum = W_GetNumForName(name);
-		ScriptBuffer = (char *) W_CacheLumpNum(ScriptLumpNum, PU_STATIC);
+		ScriptBuffer = (char *) W_CacheLumpNum(ScriptLumpNum, pu_tags_t::PU_STATIC);
 		ScriptSize = W_LumpLength(ScriptLumpNum);
 		M_StringCopy(ScriptName, name, sizeof(ScriptName));
 	}

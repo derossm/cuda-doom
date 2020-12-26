@@ -15,13 +15,6 @@
 //	Functions to blit a block to the screen.
 \**********************************************************************************************************************************************/
 
-#include "SDL_version.h" // [crispy]
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-
 #include "i_system.h"
 
 #include "doomtype.h"
@@ -32,17 +25,22 @@
 #include "i_video.h"
 #include "m_bbox.h"
 #include "m_misc.h"
-#ifdef CRISPY_TRUECOLOR
-#include "v_trans.h"
-#endif
+
 #include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"
 #include "crispy.h"
 
 #include "config.h"
+
+#include "SDL_version.h"	// [crispy]
+
+#ifdef CRISPY_TRUECOLOR
+	#include "v_trans.h"
+#endif
+
 #ifdef HAVE_LIBPNG
-#include <png.h>
+	#include <png.h>
 #endif
 
 // TODO: There are separate RANGECHECK defines for different games, but this
@@ -679,7 +677,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t *patch)
 
 void V_LoadTintTable()
 {
-	tinttable = W_CacheLumpName("TINTTAB", PU_STATIC);
+	tinttable = W_CacheLumpName("TINTTAB", pu_tags_t::PU_STATIC);
 }
 
 //
@@ -690,7 +688,7 @@ void V_LoadTintTable()
 
 void V_LoadXlaTable()
 {
-	xlatab = W_CacheLumpName("XLATAB", PU_STATIC);
+	xlatab = W_CacheLumpName("XLATAB", pu_tags_t::PU_STATIC);
 }
 
 //
@@ -920,7 +918,7 @@ void WritePCXfile(char *filename, pixel_t *data,
 	pcx_t*	pcx;
 	byte*	pack;
 
-	pcx = Z_Malloc(width*height*2+1000, PU_STATIC, NULL);
+	pcx = Z_Malloc<decltype(pcx)>(width*height*2+1000, pu_tags_t::PU_STATIC, NULL);
 
 	pcx->manufacturer = 0x0a;		// PCX id
 	pcx->version = 5;			// 256 color
@@ -1161,7 +1159,7 @@ void V_ScreenShot(const char *format)
 	{
 	WritePNGfile(lbmname, I_VideoBuffer,
 					SCREENWIDTH, SCREENHEIGHT,
-					W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
+					W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
 	}
 	else
 #endif
@@ -1169,7 +1167,7 @@ void V_ScreenShot(const char *format)
 	// save the pcx file
 	WritePCXfile(lbmname, I_VideoBuffer,
 					SCREENWIDTH, SCREENHEIGHT,
-					W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
+					W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
 	}
 }
 

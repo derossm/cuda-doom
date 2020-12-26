@@ -13,7 +13,6 @@
 //	Switches, buttons. Two-state animation. Exits.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
 
 #include "i_system.h"
 #include "deh_main.h"
@@ -21,7 +20,7 @@
 #include "p_local.h"
 #include "i_swap.h" // [crispy] SHORT()
 #include "w_wad.h" // [crispy] W_CheckNumForName()
-#include "z_zone.h" // [crispy] PU_STATIC
+#include "z_zone.h" // [crispy] pu_tags_t::PU_STATIC
 
 #include "g_game.h"
 
@@ -112,7 +111,7 @@ void P_InitSwitchList()
 
 	if ((from_lump = (W_CheckNumForName("SWITCHES") != -1)))
 	{
-	alphSwitchList = W_CacheLumpName("SWITCHES", PU_STATIC);
+	alphSwitchList = W_CacheLumpName("SWITCHES", pu_tags_t::PU_STATIC);
 	}
 	else
 	{

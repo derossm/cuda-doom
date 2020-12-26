@@ -15,9 +15,6 @@
 
 #include "../derma/common.h"
 
-#ifndef __I_MIDIPIPE__
-#define __I_MIDIPIPE__
-
 #if _WIN32
 
 #include "SDL_mixer.h"
@@ -41,6 +38,4 @@ bool I_MidiPipe_InitServer();
 
 static const bool midi_server_registered = false;
 
-#endif
-
-#endif
+#endif /* _WIN32 */

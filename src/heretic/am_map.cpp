@@ -11,7 +11,6 @@
 \**********************************************************************************************************************************************/
 // AM_map.c
 
-#include <stdio.h>
 
 #include "doomdef.h"
 #include "deh_str.h"
@@ -365,7 +364,7 @@ void AM_initVariables()
 	// load in the location of keys, if in baby mode
 
 	memset(KeyPoints, 0, sizeof(vertex_t) * 3);
-	if (gameskill == sk_baby)
+	if (gameskill == skill_t::sk_baby)
 	{
 		for (think = thinkercap.next; think != &thinkercap;
 				think = think->next)
@@ -404,15 +403,15 @@ void AM_loadPics()
 /* for (i=0;i<10;i++)
  {
 	M_snprintf(namebuf, sizeof(namebuf), "AMMNUM%d", i);
-	marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
+	marknums[i] = W_CacheLumpName(namebuf, pu_tags_t::PU_STATIC);
  }*/
-	maplump = W_CacheLumpName(DEH_String("AUTOPAGE"), PU_STATIC);
+	maplump = W_CacheLumpName(DEH_String("AUTOPAGE"), pu_tags_t::PU_STATIC);
 }
 
 /*void AM_unloadPics()
 {
  int i;
- for (i=0;i<10;i++) Z_ChangeTag(marknums[i], PU_CACHE);
+ for (i=0;i<10;i++) Z_ChangeTag(marknums[i], pu_tags_t::PU_CACHE);
 
 }*/
 
@@ -469,7 +468,7 @@ void AM_Start()
 	if (!stopped)
 		AM_Stop();
 	stopped = false;
-	if (gamestate != GS_LEVEL)
+	if (gamestate != GameState_t::GS_LEVEL)
 	{
 		return;					// don't show automap if we aren't in a game!
 	}
@@ -533,7 +532,7 @@ bool AM_Responder(event_t * ev)
 	{
 
 		if (ev->type == ev_keydown && key == key_map_toggle
-			&& gamestate == GS_LEVEL)
+			&& gamestate == GameState_t::GS_LEVEL)
 		{
 			AM_Start();
 			viewactive = false;
@@ -1336,7 +1335,7 @@ void AM_drawWalls()
 				}
 			}
 		}
-		else if (plr->powers[pw_allmap])
+		else if (plr->powers[PowerType_t::pw_allmap])
 		{
 			if (!(lines[i].flags & LINE_NEVERSEE))
 				AM_drawMline(&l, GRAYS + 3);
@@ -1424,7 +1423,7 @@ void AM_drawPlayers()
 		}
 		if (!playeringame[i])
 			continue;
-		if (p->powers[pw_invisibility])
+		if (p->powers[PowerType_t::pw_invisibility])
 			color = 102;		// *close* to the automap color
 		else
 			color = their_colors[their_color];
@@ -1514,7 +1513,7 @@ void AM_Drawer()
 // AM_drawCrosshair(XHAIRCOLORS);
 
 // AM_drawMarks();
-	if (gameskill == sk_baby)
+	if (gameskill == skill_t::sk_baby)
 	{
 		AM_drawkeys();
 	}

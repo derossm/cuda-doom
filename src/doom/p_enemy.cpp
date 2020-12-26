@@ -14,8 +14,6 @@
 //	that are associated with states/frames.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "m_random.h"
 #include "i_system.h"
@@ -705,7 +703,7 @@ void A_Chase(mobj_t* actor)
 	if (actor->flags & MF_JUSTATTACKED)
 	{
 	actor->flags &= ~MF_JUSTATTACKED;
-	if (gameskill != sk_nightmare && !fastparm)
+	if (gameskill != skill_t::sk_nightmare && !fastparm)
 		P_NewChaseDir(actor);
 	return;
 	}
@@ -724,7 +722,7 @@ void A_Chase(mobj_t* actor)
 	// check for missile attack
 	if (actor->info->missilestate)
 	{
-	if (gameskill < sk_nightmare
+	if (gameskill < skill_t::sk_nightmare
 		&& !fastparm && actor->movecount)
 	{
 		goto nomissile;
@@ -1897,7 +1895,7 @@ void A_BrainSpit(mobj_t* mo)
 	static int	easy = 0;
 
 	easy ^= 1;
-	if (gameskill <= sk_easy && (!easy))
+	if (gameskill <= skill_t::sk_easy && (!easy))
 	return;
 
 	// [crispy] avoid division by zero by recalculating the number of spawn spots

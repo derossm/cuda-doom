@@ -45,10 +45,10 @@ const char *TextKeyMessages[] = {
 };
 
 static void SetDormantArtifact(mobj_t * arti);
-static void TryPickupArtifact(player_t * player, artitype_t artifactType,
+static void TryPickupArtifact(player_t * player, ArtiType_t artifactType,
 								mobj_t * artifact);
 static void TryPickupWeapon(player_t * player, pclass_t weaponClass,
-							weapontype_t weaponType, mobj_t * weapon,
+							WeaponType_t weaponType, mobj_t * weapon,
 							const char *message);
 static void TryPickupWeaponPiece(player_t * player, pclass_t matchClass,
 									int pieceValue, mobj_t * pieceMobj);
@@ -142,10 +142,10 @@ void P_HideSpecialThing(mobj_t * thing)
 //
 //--------------------------------------------------------------------------
 
-bool P_GiveMana(player_t * player, manatype_t mana, int count)
+bool P_GiveMana(player_t * player, ManaType_t mana, int count)
 {
 	int prevMana;
-	//weapontype_t changeWeapon;
+	//WeaponType_t changeWeapon;
 
 	if (mana == MANA_NONE || mana == MANA_BOTH)
 	{
@@ -159,7 +159,7 @@ bool P_GiveMana(player_t * player, manatype_t mana, int count)
 	{
 		return (false);
 	}
-	if (gameskill == sk_baby || gameskill == sk_nightmare)
+	if (gameskill == skill_t::sk_baby || gameskill == skill_t::sk_nightmare)
 	{							// extra mana in baby mode and nightmare mode
 		count += count >> 1;
 	}
@@ -185,7 +185,7 @@ bool P_GiveMana(player_t * player, manatype_t mana, int count)
 //==========================================================================
 
 static void TryPickupWeapon(player_t * player, pclass_t weaponClass,
-							weapontype_t weaponType, mobj_t * weapon,
+							WeaponType_t weaponType, mobj_t * weapon,
 							const char *message)
 {
 	bool remove;
@@ -298,7 +298,7 @@ static void TryPickupWeapon(player_t * player, pclass_t weaponClass,
 //--------------------------------------------------------------------------
 
 /*
-bool P_GiveWeapon(player_t *player, pclass_t playerClass, weapontype_t weapon)
+bool P_GiveWeapon(player_t *player, pclass_t playerClass, WeaponType_t weapon)
 {
 	bool gaveMana;
 	bool gaveWeapon;
@@ -558,7 +558,7 @@ bool P_GiveBody(player_t * player, int num)
 //
 //---------------------------------------------------------------------------
 
-bool P_GiveArmor(player_t * player, armortype_t armortype, int amount)
+bool P_GiveArmor(player_t * player, ArmorType_t armortype, int amount)
 {
 	int hits;
 	int totalArmor;
@@ -603,7 +603,7 @@ bool P_GiveArmor(player_t * player, armortype_t armortype, int amount)
 //
 //---------------------------------------------------------------------------
 
-int P_GiveKey(player_t * player, keytype_t key)
+int P_GiveKey(player_t * player, KeyType_t key)
 {
 	if (player->keys & (1 << key))
 	{
@@ -622,9 +622,9 @@ int P_GiveKey(player_t * player, keytype_t key)
 //
 //---------------------------------------------------------------------------
 
-bool P_GivePower(player_t * player, powertype_t power)
+bool P_GivePower(player_t * player, PowerType_t power)
 {
-	if (power == pw_invulnerability)
+	if (power == PowerType_t::pw_invulnerability)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -638,7 +638,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 		}
 		return (true);
 	}
-	if (power == pw_flight)
+	if (power == PowerType_t::pw_flight)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -653,7 +653,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 		}
 		return (true);
 	}
-	if (power == pw_infrared)
+	if (power == PowerType_t::pw_infrared)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -662,7 +662,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 		player->powers[power] = INFRATICS;
 		return (true);
 	}
-	if (power == pw_speed)
+	if (power == PowerType_t::pw_speed)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -671,19 +671,19 @@ bool P_GivePower(player_t * player, powertype_t power)
 		player->powers[power] = SPEEDTICS;
 		return (true);
 	}
-	if (power == pw_minotaur)
+	if (power == PowerType_t::pw_minotaur)
 	{
 		// Doesn't matter if already have power, renew ticker
 		player->powers[power] = MAULATORTICS;
 		return (true);
 	}
 /*
-	if(power == pw_ironfeet)
+	if(power == PowerType_t::pw_ironfeet)
 	{
 		player->powers[power] = IRONTICS;
 		return(true);
 	}
-	if(power == pw_strength)
+	if(power == PowerType_t::pw_strength)
 	{
 		P_GiveBody(player, 100);
 		player->powers[power] = 1;
@@ -704,7 +704,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 //
 //==========================================================================
 
-static void TryPickupArtifact(player_t * player, artitype_t artifactType,
+static void TryPickupArtifact(player_t * player, ArtiType_t artifactType,
 								mobj_t * artifact)
 {
 	static const char *artifactMessages[NUMARTIFACTS] = {
@@ -784,7 +784,7 @@ static void TryPickupArtifact(player_t * player, artitype_t artifactType,
 //
 //---------------------------------------------------------------------------
 
-bool P_GiveArtifact(player_t * player, artitype_t arti, mobj_t * mo)
+bool P_GiveArtifact(player_t * player, ArtiType_t arti, mobj_t * mo)
 {
 	int i;
 	int j;
@@ -1339,7 +1339,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 		}
 		target->flags &= ~MF_SOLID;
 		target->flags2 &= ~MF2_FLY;
-		target->player->powers[pw_flight] = 0;
+		target->player->powers[PowerType_t::pw_flight] = 0;
 		target->player->playerstate = PST_DEAD;
 		P_DropWeapon(target->player);
 		if (target->flags2 & MF2_FIREDAMAGE)
@@ -1471,7 +1471,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 		{
 			if (!ActiveMinotaur(master->player))
 			{
-				master->player->powers[pw_minotaur] = 0;
+				master->player->powers[PowerType_t::pw_minotaur] = 0;
 			}
 		}
 	}
@@ -1546,7 +1546,7 @@ bool P_MorphPlayer(player_t * player)
 	angle_t angle;
 	int oldFlags2;
 
-	if (player->powers[pw_invulnerability])
+	if (player->powers[PowerType_t::pw_invulnerability])
 	{							// Immune when invulnerable
 		return (false);
 	}
@@ -1641,7 +1641,7 @@ bool P_MorphMonster(mobj_t * actor)
 		{
 			if (!ActiveMinotaur(master->player))
 			{
-				master->player->powers[pw_minotaur] = 0;
+				master->player->powers[PowerType_t::pw_minotaur] = 0;
 			}
 		}
 	}
@@ -1677,7 +1677,7 @@ void P_AutoUseHealth(player_t * player, int saveHealth)
 			superCount = player->inventory[i].count;
 		}
 	}
-	if ((gameskill == sk_baby) && (normalCount * 25 >= saveHealth))
+	if ((gameskill == skill_t::sk_baby) && (normalCount * 25 >= saveHealth))
 	{							// Use quartz flasks
 		count = (saveHealth + 24) / 25;
 		for (i = 0; i < count; i++)
@@ -1695,7 +1695,7 @@ void P_AutoUseHealth(player_t * player, int saveHealth)
 			P_PlayerRemoveArtifact(player, superSlot);
 		}
 	}
-	else if ((gameskill == sk_baby)
+	else if ((gameskill == skill_t::sk_baby)
 				&& (superCount * 100 + normalCount * 25 >= saveHealth))
 	{							// Use mystic urns and quartz flasks
 		count = (saveHealth + 24) / 25;
@@ -1785,7 +1785,7 @@ void P_DamageMobj
 	if (target->player)
 	{
 		if (damage < 1000 && ((target->player->cheats & CF_GODMODE)
-								|| target->player->powers[pw_invulnerability]))
+								|| target->player->powers[PowerType_t::pw_invulnerability]))
 		{
 			return;
 		}
@@ -1800,7 +1800,7 @@ void P_DamageMobj
 		return;
 	}
 	player = target->player;
-	if (player && gameskill == sk_baby)
+	if (player && gameskill == skill_t::sk_baby)
 	{
 		// Take half damage in trainer mode
 		damage >>= 1;
@@ -1963,7 +1963,7 @@ void P_DamageMobj
 			damage -= saved >> FRACBITS;
 		}
 		if (damage >= player->health
-			&& ((gameskill == sk_baby) || deathmatch) && !player->morphTics)
+			&& ((gameskill == skill_t::sk_baby) || deathmatch) && !player->morphTics)
 		{						// Try to use some inventory health
 			P_AutoUseHealth(player, damage - player->health + 1);
 		}
@@ -2136,7 +2136,7 @@ void P_FallingDamage(player_t * player)
 
 void P_PoisonPlayer(player_t * player, mobj_t * poisoner, int poison)
 {
-	if ((player->cheats & CF_GODMODE) || player->powers[pw_invulnerability])
+	if ((player->cheats & CF_GODMODE) || player->powers[PowerType_t::pw_invulnerability])
 	{
 		return;
 	}
@@ -2170,18 +2170,18 @@ void P_PoisonDamage(player_t * player, mobj_t * source, int damage,
 	{							// mobj is invulnerable
 		return;
 	}
-	if (gameskill == sk_baby)
+	if (gameskill == skill_t::sk_baby)
 	{
 		// Take half damage in trainer mode
 		damage >>= 1;
 	}
 	if (damage < 1000 && ((player->cheats & CF_GODMODE)
-							|| player->powers[pw_invulnerability]))
+							|| player->powers[PowerType_t::pw_invulnerability]))
 	{
 		return;
 	}
 	if (damage >= player->health
-		&& ((gameskill == sk_baby) || deathmatch) && !player->morphTics)
+		&& ((gameskill == skill_t::sk_baby) || deathmatch) && !player->morphTics)
 	{							// Try to use some inventory health
 		P_AutoUseHealth(player, damage - player->health + 1);
 	}

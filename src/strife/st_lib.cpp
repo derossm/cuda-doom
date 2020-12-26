@@ -13,8 +13,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
-#include <ctype.h>
 
 #include "deh_main.h"
 #include "doomdef.h"
@@ -47,7 +45,7 @@ patch_t*		sttminus;
 void STlib_init()
 {
 	// haleyjd 08/28/10: [STRIFE] STTMINUS -> STCFN045
-	sttminus = (patch_t *) W_CacheLumpName(DEH_String("STCFN045"), PU_STATIC);
+	sttminus = (patch_t *) W_CacheLumpName(DEH_String("STCFN045"), pu_tags_t::PU_STATIC);
 }
 
 

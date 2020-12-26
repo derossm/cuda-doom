@@ -12,9 +12,6 @@
 
 #include "../derma/common.h"
 
-#ifndef __M_ARGV__
-#define __M_ARGV__
-
 #include "doomtype.h"
 
 // MISC
@@ -36,6 +33,4 @@ void M_AddLooseFiles();
 bool M_ParmExists(const char* check);
 
 // Get name of executable used to run this program:
-const char *M_GetExecutableName();
-
-#endif
+const char* M_GetExecutableName();

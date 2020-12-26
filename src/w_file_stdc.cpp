@@ -12,7 +12,6 @@
 	WAD I/O functions.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
 
 #include "m_misc.h"
 #include "w_file.h"
@@ -40,7 +39,7 @@ static wad_file_t *W_StdC_OpenFile(const char *path)
 
 	// Create a new stdc_wad_file_t to hold the file handle.
 
-	result = Z_Malloc(sizeof(stdc_wad_file_t), PU_STATIC, 0);
+	result = Z_Malloc<stdc_wad_file_t>(sizeof(stdc_wad_file_t), pu_tags_t::PU_STATIC, 0);
 	result->wad.file_class = &stdc_wad_file;
 	result->wad.mapped = NULL;
 	result->wad.length = M_FileLength(fstream);

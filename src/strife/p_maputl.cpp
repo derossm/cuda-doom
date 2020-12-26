@@ -14,7 +14,6 @@
 		BLOCKMAP Iterator functions, and some PIT_* functions to use for iteration
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
 
 #include "m_bbox.h"
 #include "doomdef.h"

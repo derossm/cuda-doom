@@ -15,8 +15,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "i_system.h"
 #include "z_zone.h"
@@ -493,7 +491,7 @@ void R_DrawPlanes ()
 	// regular flat
 		lumpnum = firstflat + (swirling ? pl->picnum : flattranslation[pl->picnum]);
 	// [crispy] add support for SMMU swirling flats
-	ds_source = swirling ? R_DistortedFlat(lumpnum) : W_CacheLumpNum(lumpnum, PU_STATIC);
+	ds_source = swirling ? R_DistortedFlat(lumpnum) : W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 	ds_brightmap = R_BrightmapForFlatNum(lumpnum-firstflat);
 
 	planeheight = abs(pl->height-viewz);

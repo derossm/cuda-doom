@@ -12,9 +12,6 @@
 	Game completion, final screen animation.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
 
 // Functions.
 #include "deh_main.h"
@@ -110,7 +107,7 @@ void F_StartFinale()
 	size_t i;
 
 	gameaction = ga_nothing;
-	gamestate = GS_FINALE;
+	gamestate = GameState_t::GS_FINALE;
 	viewactive = false;
 	automapactive = false;
 
@@ -262,7 +259,7 @@ void F_TextWrite ()
 	int		cy;
 
 	// erase the entire screen to a tiled background
-	src = W_CacheLumpName( finaleflat, PU_CACHE);
+	src = W_CacheLumpName( finaleflat, pu_tags_t::PU_CACHE);
 	dest = I_VideoBuffer;
 
 	for (y=0 ; y<SCREENHEIGHT ; y++)
@@ -822,7 +819,7 @@ void F_CastDrawer ()
 	patch_t*		patch;
 
 	// erase the entire screen to a background
-	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("BOSSBACK"), PU_CACHE), false);
+	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("BOSSBACK"), pu_tags_t::PU_CACHE), false);
 
 	F_CastPrint (DEH_String(castorder[castnum].name));
 
@@ -837,7 +834,7 @@ void F_CastDrawer ()
 	lump = sprframe->lump[castangle]; // [crispy] turnable cast
 	flip = (bool)sprframe->flip[castangle] ^ castflip; // [crispy] turnable cast, flippable death sequence
 
-	patch = W_CacheLumpNum(lump+firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum(lump+firstspritelump, pu_tags_t::PU_CACHE);
 	if (flip)
 	V_DrawPatchFlipped(ORIGWIDTH/2, 170, patch);
 	else
@@ -902,8 +899,8 @@ void F_BunnyScroll ()
 	dy = (SCREENHEIGHT << FRACBITS) / ORIGHEIGHT;
 	dyi = (ORIGHEIGHT << FRACBITS) / SCREENHEIGHT;
 
-	p1 = W_CacheLumpName(DEH_String("PFUB2"), PU_LEVEL);
-	p2 = W_CacheLumpName(DEH_String("PFUB1"), PU_LEVEL);
+	p1 = W_CacheLumpName(DEH_String("PFUB2"), pu_tags_t::PU_LEVEL);
+	p2 = W_CacheLumpName(DEH_String("PFUB1"), pu_tags_t::PU_LEVEL);
 
 	// [crispy] fill pillarboxes in widescreen mode
 	pillar_width = (SCREENWIDTH - (p1->width << FRACBITS) / dxi) / 2;
@@ -958,7 +955,7 @@ void F_BunnyScroll ()
 	{
 		V_DrawPatch((ORIGWIDTH - 13 * 8) / 2,
 					(ORIGHEIGHT - 8 * 8) / 2,
-					W_CacheLumpName(DEH_String("END0"), PU_CACHE));
+					W_CacheLumpName(DEH_String("END0"), pu_tags_t::PU_CACHE));
 	laststage = 0;
 	return;
 	}
@@ -1020,7 +1017,7 @@ static void F_ArtScreenDrawer()
 
 		lumpname = DEH_String(lumpname);
 
-		V_DrawPatchFullScreen(W_CacheLumpName(lumpname, PU_CACHE), false);
+		V_DrawPatchFullScreen(W_CacheLumpName(lumpname, pu_tags_t::PU_CACHE), false);
 	}
 }
 

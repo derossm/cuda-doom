@@ -54,7 +54,7 @@ int clipammo[NUMAMMO]	= { 10, 4, 2, 20, 4, 6, 4 };
 // Returns false if the ammo can't be picked up at all
 //
 // [STRIFE] Modified for Strife ammo types
-bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
+bool P_GiveAmmo(player_t* player, AmmoType_t ammo, int num)
 {
 	int		oldammo;
 
@@ -72,8 +72,8 @@ bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
 	else
 		num = clipammo[ammo]/2;
 
-	if(gameskill == sk_baby
-		|| gameskill == sk_nightmare)
+	if(gameskill == skill_t::sk_baby
+		|| gameskill == skill_t::sk_nightmare)
 	{
 		// give double ammo in trainer mode,
 		// you'll need in nightmare
@@ -136,7 +136,7 @@ bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num)
 // The weapon name may have a MF_DROPPED flag ored in.
 //
 // villsa [STRIFE] some stuff has been changed/moved around
-bool P_GiveWeapon(player_t* player, weapontype_t weapon, bool dropped)
+bool P_GiveWeapon(player_t* player, WeaponType_t weapon, bool dropped)
 {
 	bool gaveammo;
 	bool gaveweapon;
@@ -300,7 +300,7 @@ bool P_GiveArmor(player_t* player, int armortype)
 // P_GiveCard
 //
 // [STRIFE] Modified to use larger bonuscount
-bool P_GiveCard(player_t* player, card_t card)
+bool P_GiveCard(player_t* player, CardType_t card)
 {
 	if (player->cards[card])
 		return false;
@@ -315,18 +315,18 @@ bool P_GiveCard(player_t* player, card_t card)
 // P_GivePower
 //
 // [STRIFE] Modifications for new powerups
-bool P_GivePower(player_t* player, powertype_t power)
+bool P_GivePower(player_t* player, PowerType_t power)
 {
 	// haleyjd 09/14/10: [STRIFE] moved to top, exception for Shadow Armor
-	if(player->powers[power] && power != pw_invisibility)
+	if(player->powers[power] && power != PowerType_t::pw_invisibility)
 		return false;	// already got it
 
-	// if giving pw_invisibility and player already has MVIS, no can do.
-	if(power == pw_invisibility && (player->mo->flags & MF_MVIS))
+	// if giving PowerType_t::pw_invisibility and player already has MVIS, no can do.
+	if(power == PowerType_t::pw_invisibility && (player->mo->flags & MF_MVIS))
 		return false;
 
 	// villsa [STRIFE]
-	if(power == pw_targeter)
+	if(power == PowerType_t::pw_targeter)
 	{
 		player->powers[power] = TARGTICS;
 		P_SetPsprite(player, ps_targcenter, S_TRGT_00); // 10
@@ -340,7 +340,7 @@ bool P_GivePower(player_t* player, powertype_t power)
 		return true;
 	}
 
-	if(power == pw_invisibility)
+	if(power == PowerType_t::pw_invisibility)
 	{
 		// if player already had this power...
 		if(player->powers[power])
@@ -358,13 +358,13 @@ bool P_GivePower(player_t* player, powertype_t power)
 		return true;
 	}
 
-	if(power == pw_ironfeet)
+	if(power == PowerType_t::pw_ironfeet)
 	{
 		player->powers[power] = IRONTICS;
 		return true;
 	}
 
-	if(power == pw_strength)
+	if(power == PowerType_t::pw_strength)
 	{
 		P_GiveBody(player, 100);
 		player->powers[power] = 1;
@@ -372,7 +372,7 @@ bool P_GivePower(player_t* player, powertype_t power)
 	}
 
 	// villsa [STRIFE]
-	if(power == pw_allmap)
+	if(power == PowerType_t::pw_allmap)
 	{
 		// remember in mapstate
 		if(gamemap < 40)
@@ -383,7 +383,7 @@ bool P_GivePower(player_t* player, powertype_t power)
 	}
 
 	// villsa [STRIFE]
-	if(power == pw_communicator)
+	if(power == PowerType_t::pw_communicator)
 	{
 		player->powers[power] = 1;
 		return true;
@@ -630,7 +630,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 
 	// All-map powerup
 	case SPR_PMAP:
-		if(!P_GivePower(player, pw_allmap))
+		if(!P_GivePower(player, PowerType_t::pw_allmap))
 			return;
 		sound = sfx_yeah;
 		break;
@@ -638,7 +638,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 	// The Comm Unit - because you need Blackbird whining in your ear the
 	// whole time and telling you how lost she is :P
 	case SPR_COMM:
-		if(!P_GivePower(player, pw_communicator))
+		if(!P_GivePower(player, PowerType_t::pw_communicator))
 			return;
 		sound = sfx_yeah;
 		break;
@@ -1163,7 +1163,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 		damage = target->health;
 	}
 
-	if(player && gameskill == sk_baby)
+	if(player && gameskill == skill_t::sk_baby)
 		damage >>= 1;	// take half damage in trainer mode
 
 
@@ -1210,12 +1210,12 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 
 		// Below certain threshold,
 		// ignore damage in GOD mode.
-		// villsa [STRIFE] removed pw_invulnerability check
+		// villsa [STRIFE] removed PowerType_t::pw_invulnerability check
 		if(damage < 1000 && (player->cheats & CF_GODMODE))
 			return;
 
 		// villsa [STRIFE] flame attacks don't damage player if wearing envirosuit
-		if(player->powers[pw_ironfeet] && inflictor)
+		if(player->powers[PowerType_t::pw_ironfeet] && inflictor)
 		{
 			if(inflictor->type == MT_SFIREBALL ||
 				inflictor->type == MT_C_FLAME	||
@@ -1310,7 +1310,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 			if(target->player)
 			{
 				target->player->cheats |= CF_ONFIRE;
-				target->player->powers[pw_invisibility] = false;
+				target->player->powers[PowerType_t::pw_invisibility] = false;
 				target->player->readyweapon = 0;
 				P_SetPsprite(target->player, ps_weapon, S_WAVE_00); // 02
 				P_SetPsprite(target->player, ps_flash, S_NULL);

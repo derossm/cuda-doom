@@ -13,9 +13,6 @@
 
 #include "../derma/common.h"
 
-#ifndef DEH_IO_H
-#define DEH_IO_H
-
 #include "deh_defs.h"
 
 enum class deh_input_type_t
@@ -62,5 +59,3 @@ void DEH_Error(deh_context_t* context, const char* msg, ...) PRINTF_ATTR(2, 3);
 void DEH_Warning(deh_context_t* context, const char* msg, ...) PRINTF_ATTR(2, 3);
 bool DEH_HadError(deh_context_t* context);
 char* DEH_FileName(deh_context_t* context); // [crispy] returns filename
-
-#endif /* #ifndef DEH_IO_H */

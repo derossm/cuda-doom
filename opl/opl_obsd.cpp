@@ -17,36 +17,21 @@
 // even though they do the same thing. Take care of this
 // here, and map set_iopl to point to the appropriate name.
 
-#if defined(HAVE_LIBI386)
-
-#include <sys/types.h>
-#include <machine/sysarch.h>
-#include <i386/pio.h>
-#define set_iopl i386_iopl
-
-#elif defined(HAVE_LIBAMD64)
-
-#include <sys/types.h>
-#include <machine/sysarch.h>
-#include <amd64/pio.h>
-#define set_iopl amd64_iopl
-
-#else
-#define NO_OBSD_DRIVER
-#endif
+//#if defined(HAVE_LIBI386)
+//	#define set_iopl i386_iopl
+//#elif defined(HAVE_LIBAMD64)
+//	#define set_iopl amd64_iopl
+//#else
+//	#define NO_OBSD_DRIVER
+//#endif
 
 // If the above succeeded, proceed with the rest.
-
-#ifndef NO_OBSD_DRIVER
-
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <unistd.h>
 
 #include "opl.h"
 #include "opl_internal.h"
 #include "opl_timer.h"
+
+#ifndef NO_OBSD_DRIVER
 
 static unsigned int opl_port_base;
 
@@ -111,4 +96,3 @@ opl_driver_t opl_openbsd_driver =
 };
 
 #endif /* #ifndef NO_OBSD_DRIVER */
-

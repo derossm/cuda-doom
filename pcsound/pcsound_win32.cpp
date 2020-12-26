@@ -8,14 +8,13 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	PC speaker interface.
+		PC speaker interface.
 \**********************************************************************************************************************************************/
 
 #ifdef _WIN32
 
 #include "SDL.h"
 #include "SDL_thread.h"
-#include <windows.h>
 
 #include "pcsound.h"
 #include "pcsound_internal.h"
@@ -49,7 +48,7 @@ static int SoundThread(void *unused)
 static int PCSound_Win32_Init(pcsound_callback_func callback_func)
 {
 	OSVERSIONINFO osvi;
-	BOOL result;
+	bool result;
 
 	// Temporarily disabled - the Windows scheduler is strange and
 	// stupid.

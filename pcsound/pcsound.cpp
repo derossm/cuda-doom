@@ -11,14 +11,9 @@
 	PC speaker interface.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "config.h"
 #include "pcsound.h"
 #include "pcsound_internal.h"
-
 
 #ifdef HAVE_DEV_ISA_SPKRIO_H
 #define HAVE_BSD_SPEAKER

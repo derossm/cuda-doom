@@ -10,7 +10,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
 
 #include "h2def.h"
 #include "doomkeys.h"
@@ -308,7 +307,7 @@ void AM_initVariables()
 	// load in the location of keys, if in baby mode
 
 //		memset(KeyPoints, 0, sizeof(vertex_t)*3);
-	if (gameskill == sk_baby)
+	if (gameskill == skill_t::sk_baby)
 	{
 		for (think = thinkercap.next; think != &thinkercap;
 				think = think->next)
@@ -326,7 +325,7 @@ void AM_initVariables()
 
 void AM_loadPics()
 {
-	maplump = W_CacheLumpName("AUTOPAGE", PU_STATIC);
+	maplump = W_CacheLumpName("AUTOPAGE", pu_tags_t::PU_STATIC);
 }
 
 
@@ -384,7 +383,7 @@ void AM_Start()
 	if (!stopped)
 		AM_Stop();
 	stopped = false;
-	if (gamestate != GS_LEVEL)
+	if (gamestate != GameState_t::GS_LEVEL)
 	{
 		return;					// don't show automap if we aren't in a game!
 	}
@@ -452,7 +451,7 @@ bool AM_Responder(event_t * ev)
 	if (!automapactive)
 	{
 		if (ev->type == ev_keydown && key == key_map_toggle
-			&& gamestate == GS_LEVEL)
+			&& gamestate == GameState_t::GS_LEVEL)
 		{
 			AM_Start();
 			SB_state = -1;
@@ -1224,7 +1223,7 @@ void AM_drawWalls()
 				}
 			}
 		}
-		else if (plr->powers[pw_allmap])
+		else if (plr->powers[PowerType_t::pw_allmap])
 		{
 			if (!(lines[i].flags & LINE_NEVERSEE))
 				AM_drawMline(&l, GRAYS + 3);
@@ -1403,7 +1402,7 @@ void AM_Drawer()
 
 // AM_drawCrosshair(XHAIRCOLORS);
 // AM_drawMarks();
-//		if(gameskill == sk_baby) AM_drawkeys();
+//		if(gameskill == skill_t::sk_baby) AM_drawkeys();
 
 	MN_DrTextA(P_GetMapName(gamemap), 38, 144);
 	if (ShowKills && netgame && deathmatch)

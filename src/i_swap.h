@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Endianess handling, swapping 16bit and 32bit.
+		Endianess handling, swapping 16bit and 32bit.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __I_SWAP__
-#define __I_SWAP__
 
 #include "SDL_endian.h"
 
@@ -33,6 +30,4 @@
 // Defines for checking the endianness of the system.
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 #define SYS_BIG_ENDIAN
-#endif
-
 #endif

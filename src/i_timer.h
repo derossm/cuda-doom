@@ -15,17 +15,14 @@
 
 #include "../derma/common.h"
 
-#ifndef __I_TIMER__
-#define __I_TIMER__
-
 #define TICRATE 35
 
 // Called by D_DoomLoop,
 // returns current time in tics.
-int I_GetTime ();
+int I_GetTime();
 
 // returns current time in ms
-int I_GetTimeMS ();
+int I_GetTimeMS();
 
 // Pause for a specified number of ms
 void I_Sleep(int ms);
@@ -35,5 +32,3 @@ void I_InitTimer();
 
 // Wait for vertical retrace or pause a bit.
 void I_WaitVBL(int count);
-
-#endif

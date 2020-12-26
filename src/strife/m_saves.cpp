@@ -15,9 +15,6 @@
 // Strife Hub Saving Code
 \**********************************************************************************************************************************************/
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "z_zone.h"
 #include "i_glob.h"
@@ -302,7 +299,7 @@ void M_ReadMisObj()
 //
 void *M_Calloc(size_t n1, size_t n2)
 {
-	return (n1 *= n2) ? memset(Z_Malloc(n1, PU_STATIC, NULL), 0, n1) : NULL;
+	return (n1 *= n2) ? memset(Z_Malloc(n1, pu_tags_t::PU_STATIC, NULL), 0, n1) : NULL;
 }
 
 //

@@ -11,7 +11,6 @@
 \**********************************************************************************************************************************************/
 // P_user.c
 
-#include <stdlib.h>
 
 #include "doomdef.h"
 #include "deh_str.h"
@@ -56,7 +55,7 @@ bool WeaponInShareware[] = {
 void P_Thrust(player_t * player, angle_t angle, fixed_t move)
 {
 	angle >>= ANGLETOFINESHIFT;
-	if (player->powers[pw_flight] && !(player->mo->z <= player->mo->floorz))
+	if (player->powers[PowerType_t::pw_flight] && !(player->mo->z <= player->mo->floorz))
 	{
 		player->mo->momx += FixedMul(move, finecosine[angle]);
 		player->mo->momy += FixedMul(move, finesine[angle]);
@@ -260,7 +259,7 @@ void P_MovePlayer(player_t * player)
 	{
 		fly -= 16;
 	}
-	if (fly && player->powers[pw_flight])
+	if (fly && player->powers[PowerType_t::pw_flight])
 	{
 		if (fly != TOCENTER)
 		{
@@ -382,7 +381,7 @@ void P_DeathThink(player_t * player)
 	{
 		if (player == &players[consoleplayer])
 		{
-			I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
+			I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
 			inv_ptr = 0;
 			curpos = 0;
 			newtorch = 0;
@@ -466,7 +465,7 @@ bool P_UndoPlayerChicken(player_t * player)
 	fixed_t z;
 	angle_t angle;
 	int playerNum;
-	weapontype_t weapon;
+	WeaponType_t weapon;
 	int oldFlags;
 	int oldFlags2;
 
@@ -508,7 +507,7 @@ bool P_UndoPlayerChicken(player_t * player)
 		mo->flags |= MF_NOGRAVITY;
 	}
 	player->chickenTics = 0;
-	player->powers[pw_weaponlevel2] = 0;
+	player->powers[PowerType_t::pw_weaponlevel2] = 0;
 	player->health = mo->health = MAXHEALTH;
 	player->mo = mo;
 	angle >>= ANGLETOFINESHIFT;
@@ -528,7 +527,7 @@ bool P_UndoPlayerChicken(player_t * player)
 void P_PlayerThink(player_t * player)
 {
 	ticcmd_t *cmd;
-	weapontype_t newweapon;
+	WeaponType_t newweapon;
 
 	// [AM] Assume we can interpolate at the beginning
 	//		of the tic.
@@ -668,24 +667,24 @@ void P_PlayerThink(player_t * player)
 	// Cycle psprites
 	P_MovePsprites(player);
 	// Other Counters
-	if (player->powers[pw_invulnerability])
+	if (player->powers[PowerType_t::pw_invulnerability])
 	{
-		player->powers[pw_invulnerability]--;
+		player->powers[PowerType_t::pw_invulnerability]--;
 	}
-	if (player->powers[pw_invisibility])
+	if (player->powers[PowerType_t::pw_invisibility])
 	{
-		if (!--player->powers[pw_invisibility])
+		if (!--player->powers[PowerType_t::pw_invisibility])
 		{
 			player->mo->flags &= ~MF_SHADOW;
 		}
 	}
-	if (player->powers[pw_infrared])
+	if (player->powers[PowerType_t::pw_infrared])
 	{
-		player->powers[pw_infrared]--;
+		player->powers[PowerType_t::pw_infrared]--;
 	}
-	if (player->powers[pw_flight])
+	if (player->powers[PowerType_t::pw_flight])
 	{
-		if (!--player->powers[pw_flight])
+		if (!--player->powers[PowerType_t::pw_flight])
 		{
 			// haleyjd: removed externdriver crap
 			if (player->mo->z != player->mo->floorz)
@@ -698,9 +697,9 @@ void P_PlayerThink(player_t * player)
 			BorderTopRefresh = true;	//make sure the sprite's cleared out
 		}
 	}
-	if (player->powers[pw_weaponlevel2])
+	if (player->powers[PowerType_t::pw_weaponlevel2])
 	{
-		if (!--player->powers[pw_weaponlevel2])
+		if (!--player->powers[PowerType_t::pw_weaponlevel2])
 		{
 			if ((player->readyweapon == wp_phoenixrod)
 				&& (player->psprites[ps_weapon].state
@@ -729,10 +728,10 @@ void P_PlayerThink(player_t * player)
 		player->bonuscount--;
 	}
 	// Colormaps
-	if (player->powers[pw_invulnerability])
+	if (player->powers[PowerType_t::pw_invulnerability])
 	{
-		if (player->powers[pw_invulnerability] > BLINKTHRESHOLD
-			|| (player->powers[pw_invulnerability] & 8))
+		if (player->powers[PowerType_t::pw_invulnerability] > BLINKTHRESHOLD
+			|| (player->powers[PowerType_t::pw_invulnerability] & 8))
 		{
 			player->fixedcolormap = INVERSECOLORMAP;
 		}
@@ -741,11 +740,11 @@ void P_PlayerThink(player_t * player)
 			player->fixedcolormap = 0;
 		}
 	}
-	else if (player->powers[pw_infrared])
+	else if (player->powers[PowerType_t::pw_infrared])
 	{
-		if (player->powers[pw_infrared] <= BLINKTHRESHOLD)
+		if (player->powers[PowerType_t::pw_infrared] <= BLINKTHRESHOLD)
 		{
-			if (player->powers[pw_infrared] & 8)
+			if (player->powers[PowerType_t::pw_infrared] & 8)
 			{
 				player->fixedcolormap = 0;
 			}
@@ -899,7 +898,7 @@ void P_PlayerRemoveArtifact(player_t * player, int slot)
 //
 //----------------------------------------------------------------------------
 
-void P_PlayerUseArtifact(player_t * player, artitype_t arti)
+void P_PlayerUseArtifact(player_t * player, ArtiType_t arti)
 {
 	int i;
 
@@ -933,7 +932,7 @@ void P_PlayerUseArtifact(player_t * player, artitype_t arti)
 //
 //----------------------------------------------------------------------------
 
-bool P_UseArtifact(player_t * player, artitype_t arti)
+bool P_UseArtifact(player_t * player, ArtiType_t arti)
 {
 	mobj_t *mo;
 	angle_t angle;
@@ -941,13 +940,13 @@ bool P_UseArtifact(player_t * player, artitype_t arti)
 	switch (arti)
 	{
 		case arti_invulnerability:
-			if (!P_GivePower(player, pw_invulnerability))
+			if (!P_GivePower(player, PowerType_t::pw_invulnerability))
 			{
 				return (false);
 			}
 			break;
 		case arti_invisibility:
-			if (!P_GivePower(player, pw_invisibility))
+			if (!P_GivePower(player, PowerType_t::pw_invisibility))
 			{
 				return (false);
 			}
@@ -979,7 +978,7 @@ bool P_UseArtifact(player_t * player, artitype_t arti)
 			}
 			else
 			{
-				if (!P_GivePower(player, pw_weaponlevel2))
+				if (!P_GivePower(player, PowerType_t::pw_weaponlevel2))
 				{
 					return (false);
 				}
@@ -994,7 +993,7 @@ bool P_UseArtifact(player_t * player, artitype_t arti)
 			}
 			break;
 		case arti_torch:
-			if (!P_GivePower(player, pw_infrared))
+			if (!P_GivePower(player, PowerType_t::pw_infrared))
 			{
 				return (false);
 			}
@@ -1025,7 +1024,7 @@ bool P_UseArtifact(player_t * player, artitype_t arti)
 			P_SPMAngle(mo, MT_EGGFX, mo->angle + (ANG45 / 3));
 			break;
 		case arti_fly:
-			if (!P_GivePower(player, pw_flight))
+			if (!P_GivePower(player, PowerType_t::pw_flight))
 			{
 				return (false);
 			}

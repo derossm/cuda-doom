@@ -254,42 +254,42 @@ void SB_Init()
 	int i;
 	int startLump;
 
-	PatchH2BAR = W_CacheLumpName("H2BAR", PU_STATIC);
-	PatchH2TOP = W_CacheLumpName("H2TOP", PU_STATIC);
-	PatchINVBAR = W_CacheLumpName("INVBAR", PU_STATIC);
-	PatchLFEDGE = W_CacheLumpName("LFEDGE", PU_STATIC);
-	PatchRTEDGE = W_CacheLumpName("RTEDGE", PU_STATIC);
-	PatchSTATBAR = W_CacheLumpName("STATBAR", PU_STATIC);
-	PatchKEYBAR = W_CacheLumpName("KEYBAR", PU_STATIC);
-	PatchSELECTBOX = W_CacheLumpName("SELECTBOX", PU_STATIC);
-	PatchARTICLEAR = W_CacheLumpName("ARTICLS", PU_STATIC);
-	PatchARMCLEAR = W_CacheLumpName("ARMCLS", PU_STATIC);
-	PatchMANACLEAR = W_CacheLumpName("MANACLS", PU_STATIC);
-	PatchMANAVIAL1 = W_CacheLumpName("MANAVL1", PU_STATIC);
-	PatchMANAVIAL2 = W_CacheLumpName("MANAVL2", PU_STATIC);
-	PatchMANAVIALDIM1 = W_CacheLumpName("MANAVL1D", PU_STATIC);
-	PatchMANAVIALDIM2 = W_CacheLumpName("MANAVL2D", PU_STATIC);
-	PatchMANADIM1 = W_CacheLumpName("MANADIM1", PU_STATIC);
-	PatchMANADIM2 = W_CacheLumpName("MANADIM2", PU_STATIC);
-	PatchMANABRIGHT1 = W_CacheLumpName("MANABRT1", PU_STATIC);
-	PatchMANABRIGHT2 = W_CacheLumpName("MANABRT2", PU_STATIC);
-	PatchINVLFGEM1 = W_CacheLumpName("invgeml1", PU_STATIC);
-	PatchINVLFGEM2 = W_CacheLumpName("invgeml2", PU_STATIC);
-	PatchINVRTGEM1 = W_CacheLumpName("invgemr1", PU_STATIC);
-	PatchINVRTGEM2 = W_CacheLumpName("invgemr2", PU_STATIC);
+	PatchH2BAR = W_CacheLumpName("H2BAR", pu_tags_t::PU_STATIC);
+	PatchH2TOP = W_CacheLumpName("H2TOP", pu_tags_t::PU_STATIC);
+	PatchINVBAR = W_CacheLumpName("INVBAR", pu_tags_t::PU_STATIC);
+	PatchLFEDGE = W_CacheLumpName("LFEDGE", pu_tags_t::PU_STATIC);
+	PatchRTEDGE = W_CacheLumpName("RTEDGE", pu_tags_t::PU_STATIC);
+	PatchSTATBAR = W_CacheLumpName("STATBAR", pu_tags_t::PU_STATIC);
+	PatchKEYBAR = W_CacheLumpName("KEYBAR", pu_tags_t::PU_STATIC);
+	PatchSELECTBOX = W_CacheLumpName("SELECTBOX", pu_tags_t::PU_STATIC);
+	PatchARTICLEAR = W_CacheLumpName("ARTICLS", pu_tags_t::PU_STATIC);
+	PatchARMCLEAR = W_CacheLumpName("ARMCLS", pu_tags_t::PU_STATIC);
+	PatchMANACLEAR = W_CacheLumpName("MANACLS", pu_tags_t::PU_STATIC);
+	PatchMANAVIAL1 = W_CacheLumpName("MANAVL1", pu_tags_t::PU_STATIC);
+	PatchMANAVIAL2 = W_CacheLumpName("MANAVL2", pu_tags_t::PU_STATIC);
+	PatchMANAVIALDIM1 = W_CacheLumpName("MANAVL1D", pu_tags_t::PU_STATIC);
+	PatchMANAVIALDIM2 = W_CacheLumpName("MANAVL2D", pu_tags_t::PU_STATIC);
+	PatchMANADIM1 = W_CacheLumpName("MANADIM1", pu_tags_t::PU_STATIC);
+	PatchMANADIM2 = W_CacheLumpName("MANADIM2", pu_tags_t::PU_STATIC);
+	PatchMANABRIGHT1 = W_CacheLumpName("MANABRT1", pu_tags_t::PU_STATIC);
+	PatchMANABRIGHT2 = W_CacheLumpName("MANABRT2", pu_tags_t::PU_STATIC);
+	PatchINVLFGEM1 = W_CacheLumpName("invgeml1", pu_tags_t::PU_STATIC);
+	PatchINVLFGEM2 = W_CacheLumpName("invgeml2", pu_tags_t::PU_STATIC);
+	PatchINVRTGEM1 = W_CacheLumpName("invgemr1", pu_tags_t::PU_STATIC);
+	PatchINVRTGEM2 = W_CacheLumpName("invgemr2", pu_tags_t::PU_STATIC);
 
-//		PatchCHAINBACK = W_CacheLumpName("CHAINBACK", PU_STATIC);
+//		PatchCHAINBACK = W_CacheLumpName("CHAINBACK", pu_tags_t::PU_STATIC);
 	startLump = W_GetNumForName("IN0");
 	for (i = 0; i < 10; i++)
 	{
-		PatchINumbers[i] = W_CacheLumpNum(startLump + i, PU_STATIC);
+		PatchINumbers[i] = W_CacheLumpNum(startLump + i, pu_tags_t::PU_STATIC);
 	}
-	PatchNEGATIVE = W_CacheLumpName("NEGNUM", PU_STATIC);
+	PatchNEGATIVE = W_CacheLumpName("NEGNUM", pu_tags_t::PU_STATIC);
 	FontBNumBase = W_GetNumForName("FONTB16");
 	startLump = W_GetNumForName("SMALLIN0");
 	for (i = 0; i < 10; i++)
 	{
-		PatchSmNumbers[i] = W_CacheLumpNum(startLump + i, PU_STATIC);
+		PatchSmNumbers[i] = W_CacheLumpNum(startLump + i, pu_tags_t::PU_STATIC);
 	}
 	PlayPalette = W_GetNumForName("PLAYPAL");
 	SpinFlylump = W_GetNumForName("SPFLY0");
@@ -299,7 +299,7 @@ void SB_Init()
 
 	if (deathmatch)
 	{
-		PatchKILLS = W_CacheLumpName("KILLS", PU_STATIC);
+		PatchKILLS = W_CacheLumpName("KILLS", pu_tags_t::PU_STATIC);
 	}
 	SB_SetClassData();
 
@@ -344,20 +344,20 @@ void SB_SetClassData()
 
 	class = PlayerClass[consoleplayer]; // original player class (not pig)
 	PatchWEAPONSLOT = W_CacheLumpNum(W_GetNumForName("wpslot0")
-										+ class, PU_STATIC);
+										+ class, pu_tags_t::PU_STATIC);
 	PatchWEAPONFULL = W_CacheLumpNum(W_GetNumForName("wpfull0")
-										+ class, PU_STATIC);
+										+ class, pu_tags_t::PU_STATIC);
 	PatchPIECE1 = W_CacheLumpNum(W_GetNumForName("wpiecef1")
-									+ class, PU_STATIC);
+									+ class, pu_tags_t::PU_STATIC);
 	PatchPIECE2 = W_CacheLumpNum(W_GetNumForName("wpiecef2")
-									+ class, PU_STATIC);
+									+ class, pu_tags_t::PU_STATIC);
 	PatchPIECE3 = W_CacheLumpNum(W_GetNumForName("wpiecef3")
-									+ class, PU_STATIC);
-	PatchCHAIN = W_CacheLumpNum(W_GetNumForName("chain") + class, PU_STATIC);
+									+ class, pu_tags_t::PU_STATIC);
+	PatchCHAIN = W_CacheLumpNum(W_GetNumForName("chain") + class, pu_tags_t::PU_STATIC);
 	if (!netgame)
 	{							// single player game uses red life gem (the second gem)
 		PatchLIFEGEM = W_CacheLumpNum(W_GetNumForName("lifegem")
-										+ maxplayers * class + 1, PU_STATIC);
+										+ maxplayers * class + 1, pu_tags_t::PU_STATIC);
 	}
 	else
 	{
@@ -486,18 +486,18 @@ static void DrRedINumber(signed int val, int x, int y)
 	if (val > 99)
 	{
 		patch =
-			W_CacheLumpNum(W_GetNumForName("inred0") + val / 100, PU_CACHE);
+			W_CacheLumpNum(W_GetNumForName("inred0") + val / 100, pu_tags_t::PU_CACHE);
 		V_DrawPatch(x, y, patch);
 	}
 	val = val % 100;
 	if (val > 9 || oldval > 99)
 	{
 		patch =
-			W_CacheLumpNum(W_GetNumForName("inred0") + val / 10, PU_CACHE);
+			W_CacheLumpNum(W_GetNumForName("inred0") + val / 10, pu_tags_t::PU_CACHE);
 		V_DrawPatch(x + 8, y, patch);
 	}
 	val = val % 10;
-	patch = W_CacheLumpNum(W_GetNumForName("inred0") + val, PU_CACHE);
+	patch = W_CacheLumpNum(W_GetNumForName("inred0") + val, pu_tags_t::PU_CACHE);
 	V_DrawPatch(x + 16, y, patch);
 }
 
@@ -523,19 +523,19 @@ static void DrBNumber(signed int val, int x, int y)
 	}
 	if (val > 99)
 	{
-		patch = W_CacheLumpNum(FontBNumBase + val / 100, PU_CACHE);
+		patch = W_CacheLumpNum(FontBNumBase + val / 100, pu_tags_t::PU_CACHE);
 		V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
 	}
 	val = val % 100;
 	xpos += 12;
 	if (val > 9 || oldval > 99)
 	{
-		patch = W_CacheLumpNum(FontBNumBase + val / 10, PU_CACHE);
+		patch = W_CacheLumpNum(FontBNumBase + val / 10, pu_tags_t::PU_CACHE);
 		V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
 	}
 	val = val % 10;
 	xpos += 12;
-	patch = W_CacheLumpNum(FontBNumBase + val, PU_CACHE);
+	patch = W_CacheLumpNum(FontBNumBase + val, pu_tags_t::PU_CACHE);
 	V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
 }
 
@@ -813,10 +813,10 @@ static void DrawAnimatedIcons()
 	static bool hitCenterFrame;
 
 	// Wings of wrath
-	if (CPlayer->powers[pw_flight])
+	if (CPlayer->powers[PowerType_t::pw_flight])
 	{
-		if (CPlayer->powers[pw_flight] > BLINKTHRESHOLD
-			|| !(CPlayer->powers[pw_flight] & 16))
+		if (CPlayer->powers[PowerType_t::pw_flight] > BLINKTHRESHOLD
+			|| !(CPlayer->powers[PowerType_t::pw_flight] & 16))
 		{
 			frame = (leveltime / 3) & 15;
 			if (CPlayer->mo->flags2 & MF2_FLY)
@@ -854,10 +854,10 @@ static void DrawAnimatedIcons()
 	}
 
 	// Speed Boots
-	if (CPlayer->powers[pw_speed])
+	if (CPlayer->powers[PowerType_t::pw_speed])
 	{
-		if (CPlayer->powers[pw_speed] > BLINKTHRESHOLD
-			|| !(CPlayer->powers[pw_speed] & 16))
+		if (CPlayer->powers[PowerType_t::pw_speed] > BLINKTHRESHOLD
+			|| !(CPlayer->powers[PowerType_t::pw_speed] & 16))
 		{
 			frame = (leveltime / 3) & 15;
 			V_DrawPatch(60, 19, W_CacheLumpNum(SpinSpeedLump + frame,
@@ -868,10 +868,10 @@ static void DrawAnimatedIcons()
 	}
 
 	// Defensive power
-	if (CPlayer->powers[pw_invulnerability])
+	if (CPlayer->powers[PowerType_t::pw_invulnerability])
 	{
-		if (CPlayer->powers[pw_invulnerability] > BLINKTHRESHOLD
-			|| !(CPlayer->powers[pw_invulnerability] & 16))
+		if (CPlayer->powers[PowerType_t::pw_invulnerability] > BLINKTHRESHOLD
+			|| !(CPlayer->powers[PowerType_t::pw_invulnerability] & 16))
 		{
 			frame = (leveltime / 3) & 15;
 			V_DrawPatch(260, 19, W_CacheLumpNum(SpinDefenseLump + frame,
@@ -882,10 +882,10 @@ static void DrawAnimatedIcons()
 	}
 
 	// Minotaur Active
-	if (CPlayer->powers[pw_minotaur])
+	if (CPlayer->powers[PowerType_t::pw_minotaur])
 	{
-		if (CPlayer->powers[pw_minotaur] > BLINKTHRESHOLD
-			|| !(CPlayer->powers[pw_minotaur] & 16))
+		if (CPlayer->powers[PowerType_t::pw_minotaur] > BLINKTHRESHOLD
+			|| !(CPlayer->powers[PowerType_t::pw_minotaur] & 16))
 		{
 			frame = (leveltime / 3) & 15;
 			V_DrawPatch(300, 19, W_CacheLumpNum(SpinMinotaurLump + frame,
@@ -915,7 +915,7 @@ void SB_PaletteFlash(bool forceChange)
 	{
 		sb_palette = -1;
 	}
-	if (gamestate == GS_LEVEL)
+	if (gamestate == GameState_t::GS_LEVEL)
 	{
 		CPlayer = &players[consoleplayer];
 		if (CPlayer->poisoncount)
@@ -962,7 +962,7 @@ void SB_PaletteFlash(bool forceChange)
 	if (palette != sb_palette)
 	{
 		sb_palette = palette;
-		pal = (byte *) W_CacheLumpNum(PlayPalette, PU_CACHE) + palette * 768;
+		pal = (byte *) W_CacheLumpNum(PlayPalette, pu_tags_t::PU_CACHE) + palette * 768;
 		I_SetPalette(pal);
 	}
 }
@@ -1023,7 +1023,7 @@ void DrawMainBar()
 	{
 		V_DrawPatch(144, 160, PatchARTICLEAR);
 		V_DrawPatch(148, 164, W_CacheLumpNum(W_GetNumForName("useartia")
-												+ ArtifactFlash - 1, PU_CACHE));
+												+ ArtifactFlash - 1, pu_tags_t::PU_CACHE));
 		ArtifactFlash--;
 		oldarti = -1;			// so that the correct artifact fills in after the flash
 		UpdateState |= I_STATBAR;
@@ -1232,7 +1232,7 @@ void DrawInventoryBar()
 	V_DrawPatch(38, 162, PatchINVBAR);
 	for (i = 0; i < 7; i++)
 	{
-		//V_DrawPatch(50+i*31, 160, W_CacheLumpName("ARTIBOX", PU_CACHE));
+		//V_DrawPatch(50+i*31, 160, W_CacheLumpName("ARTIBOX", pu_tags_t::PU_CACHE));
 		if (CPlayer->inventorySlotNum > x + i
 			&& CPlayer->inventory[x + i].type != arti_none)
 		{
@@ -1306,14 +1306,14 @@ void DrawKeyBar()
 			{
 				V_DrawTLPatch(150 + 31 * i, 164,
 								W_CacheLumpNum(W_GetNumForName("armslot1") +
-												i, PU_CACHE));
+												i, pu_tags_t::PU_CACHE));
 			}
 			else if (CPlayer->armorpoints[i] <=
 						(ArmorIncrement[CPlayer->class][i] >> 1))
 			{
 				V_DrawAltTLPatch(150 + 31 * i, 164,
 									W_CacheLumpNum(W_GetNumForName("armslot1")
-												+ i, PU_CACHE));
+												+ i, pu_tags_t::PU_CACHE));
 			}
 			else
 			{
@@ -1399,7 +1399,7 @@ void DrawFullScreenStuff()
 	{
 		if (CPlayer->readyArtifact > 0)
 		{
-			V_DrawTLPatch(286, 170, W_CacheLumpName("ARTIBOX", PU_CACHE));
+			V_DrawTLPatch(286, 170, W_CacheLumpName("ARTIBOX", pu_tags_t::PU_CACHE));
 			V_DrawPatch(284, 169,
 						W_CacheLumpName(patcharti[CPlayer->readyArtifact],
 										PU_CACHE));
@@ -1453,7 +1453,7 @@ void DrawFullScreenStuff()
 void Draw_TeleportIcon()
 {
 	patch_t *patch;
-	patch = W_CacheLumpNum(W_GetNumForName("teleicon"), PU_CACHE);
+	patch = W_CacheLumpNum(W_GetNumForName("teleicon"), pu_tags_t::PU_CACHE);
 	V_DrawPatch(100, 68, patch);
 	UpdateState |= I_FULLSCRN;
 	I_FinishUpdate();
@@ -1468,7 +1468,7 @@ void Draw_TeleportIcon()
 void Draw_SaveIcon()
 {
 	patch_t *patch;
-	patch = W_CacheLumpNum(W_GetNumForName("saveicon"), PU_CACHE);
+	patch = W_CacheLumpNum(W_GetNumForName("saveicon"), pu_tags_t::PU_CACHE);
 	V_DrawPatch(100, 68, patch);
 	UpdateState |= I_FULLSCRN;
 	I_FinishUpdate();
@@ -1483,7 +1483,7 @@ void Draw_SaveIcon()
 void Draw_LoadIcon()
 {
 	patch_t *patch;
-	patch = W_CacheLumpNum(W_GetNumForName("loadicon"), PU_CACHE);
+	patch = W_CacheLumpNum(W_GetNumForName("loadicon"), pu_tags_t::PU_CACHE);
 	V_DrawPatch(100, 68, patch);
 	UpdateState |= I_FULLSCRN;
 	I_FinishUpdate();
@@ -1523,7 +1523,7 @@ static bool HandleCheats(byte key)
 	int i;
 	bool eat;
 
-	if (gameskill == sk_nightmare)
+	if (gameskill == skill_t::sk_nightmare)
 	{							// Can't cheat in nightmare mode
 		return (false);
 	}

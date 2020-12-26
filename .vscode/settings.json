@@ -1,6 +1,6 @@
 {
 	"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-	"editor.wordWrapColumn": 144,
+	"editor.wordWrapColumn": 161,
 	"editor.wordWrap": "bounded",
 	"editor.accessibilitySupport": "off",
 	"files.associations": {
@@ -43,7 +43,27 @@
 		"stdexcept": "cpp",
 		"vector": "cpp",
 		"xtree": "cpp",
-		"xiosbase": "cpp"
+		"xiosbase": "cpp",
+		"xlocale": "cpp",
+		"cinttypes": "cpp",
+		"clocale": "cpp",
+		"complex": "cpp",
+		"cstdarg": "cpp",
+		"ios": "cpp",
+		"iostream": "cpp",
+		"istream": "cpp",
+		"iterator": "cpp",
+		"numeric": "cpp",
+		"ostream": "cpp",
+		"sstream": "cpp",
+		"streambuf": "cpp",
+		"xfacet": "cpp",
+		"xlocinfo": "cpp",
+		"xlocnum": "cpp"
 	},
-	"git.allowForcePush": true
+	"git.allowForcePush": true,
+	"editor.rulers": [
+	160,
+	144
+	]
 }

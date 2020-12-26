@@ -7,13 +7,7 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-// DESCRIPTION: none
 \**********************************************************************************************************************************************/
-
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
 
 #include "doomdef.h"
 #include "doomkeys.h"
@@ -64,92 +58,91 @@
 
 #include "g_game.h"
 
-
 #define SAVEGAMESIZE	0x2c000
 
-void	G_ReadDemoTiccmd (ticcmd_t* cmd);
-void	G_WriteDemoTiccmd (ticcmd_t* cmd);
-void	G_PlayerReborn (int player);
+void G_ReadDemoTiccmd(ticcmd_t* cmd);
+void G_WriteDemoTiccmd(ticcmd_t* cmd);
+void G_PlayerReborn(int player);
 
-void	G_DoReborn (int playernum);
+void G_DoReborn(int playernum);
 
-void	G_DoLoadLevel ();
-void	G_DoNewGame ();
-void	G_DoPlayDemo ();
-void	G_DoCompleted ();
-void	G_DoVictory ();
-void	G_DoWorldDone ();
-void	G_DoSaveGame (char *path);
+void G_DoLoadLevel();
+void G_DoNewGame();
+void G_DoPlayDemo();
+void G_DoCompleted();
+void G_DoVictory();
+void G_DoWorldDone();
+void G_DoSaveGame(char *path);
 
 // Gamestate the last time G_Ticker was called.
 
-gamestate_t		oldgamestate;
+GameState_t oldgamestate;
 
-gameaction_t	gameaction;
-gamestate_t		gamestate;
-skill_t			gameskill = 2; // [STRIFE] Default value set to 2.
-bool			respawnmonsters;
-//int				gameepisode;
-int				gamemap;
+GameAction_t gameaction;
+GameState_t gamestate;
+skill_t gameskill = skill_t::sk_medium; // [STRIFE] Default value set to 2.
+bool respawnmonsters;
+//int gameepisode;
+int gamemap;
 
 // haleyjd 08/24/10: [STRIFE] New variables
-int				destmap;	// current destination map when exiting
-int				riftdest; // destination spot for player
-angle_t			riftangle; // player angle saved during exit
+int destmap;	// current destination map when exiting
+int riftdest; // destination spot for player
+angle_t riftangle; // player angle saved during exit
 
 // If non-zero, exit the level after this number of minutes.
 
-int				timelimit;
+int timelimit;
 
-bool			paused;
-bool			sendpause;				// send a pause event next tic
-bool			sendsave;				// send a save event next tic
-bool			usergame;				// ok to save / end game
+bool paused;
+bool sendpause;				// send a pause event next tic
+bool sendsave;				// send a save event next tic
+bool usergame;				// ok to save / end game
 
-bool			timingdemo;				// if true, exit with report on completion
-bool			nodrawers;				// for comparative timing purposes
-int				starttime;				// for comparative timing purposes
+bool timingdemo;				// if true, exit with report on completion
+bool nodrawers;				// for comparative timing purposes
+int starttime;				// for comparative timing purposes
 
-bool			viewactive;
+bool viewactive;
 
-int				deathmatch;				// only if started as net death
-bool			netgame;				// only true if packets are broadcast
-bool			playeringame[MAXPLAYERS];
-player_t		players[MAXPLAYERS];
+int deathmatch;				// only if started as net death
+bool netgame;				// only true if packets are broadcast
+bool playeringame[MAXPLAYERS];
+player_t players[MAXPLAYERS];
 
-bool			turbodetected[MAXPLAYERS];
+bool turbodetected[MAXPLAYERS];
 
-int				consoleplayer;			// player taking events and displaying
-int				displayplayer;			// view being displayed
-int				levelstarttic;			// gametic at level start
-int				totalkills, /*totalitems,*/ totalsecret;	// for intermission
+int consoleplayer;			// player taking events and displaying
+int displayplayer;			// view being displayed
+int levelstarttic;			// gametic at level start
+int totalkills, /*totalitems,*/ totalsecret;	// for intermission
 
-char			*demoname;
-bool			demorecording;
-bool			longtics;				// cph's doom 1.91 longtics hack
-bool			lowres_turn;			// low resolution turning for longtics
-bool			demoplayback;
-bool		netdemo;
-byte*		demobuffer;
-byte*		demo_p;
-byte*		demoend;
-bool			singledemo;				// quit after playing a demo from cmdline
+char* demoname;
+bool demorecording;
+bool longtics;				// cph's doom 1.91 longtics hack
+bool lowres_turn;			// low resolution turning for longtics
+bool demoplayback;
+bool netdemo;
+byte* demobuffer;
+byte* demo_p;
+byte* demoend;
+bool singledemo;				// quit after playing a demo from cmdline
 
-bool			precache = true;		// if true, load all graphics at start
+bool precache = true;		// if true, load all graphics at start
 
-bool			testcontrols = false;	// Invoked by setup to test controls
+bool testcontrols = false;	// Invoked by setup to test controls
 
 wbstartstruct_t wminfo;					// parms for world map / intermission
 
-byte			consistancy[MAXPLAYERS][BACKUPTICS];
+byte consistancy[MAXPLAYERS][BACKUPTICS];
 
 #define MAXPLMOVE		(forwardmove[1])
 
 #define TURBOTHRESHOLD	0x32
 
-fixed_t			forwardmove[2] = {0x19, 0x32};
-fixed_t			sidemove[2] = {0x18, 0x28};
-fixed_t			angleturn[3] = {640, 1280, 320};	// + slow turn
+fixed_t forwardmove[2] = {0x19, 0x32};
+fixed_t sidemove[2] = {0x18, 0x28};
+fixed_t angleturn[3] = {640, 1280, 320};	// + slow turn
 
 int mouse_fire_countdown = 0;	// villsa [STRIFE]
 
@@ -173,92 +166,90 @@ static int next_weapon = 0;
 
 static const struct
 {
-	weapontype_t weapon;
-	weapontype_t weapon_num;
+	WeaponType_t weapon;
+	WeaponType_t weapon_num;
 } weapon_order_table[] = {
-	{ wp_fist,					wp_fist },
-	{ wp_poisonbow,				wp_elecbow },
-	{ wp_elecbow,				wp_elecbow },
-	{ wp_rifle,					wp_rifle },
-	{ wp_missile,				wp_missile },
-	{ wp_wpgrenade,				wp_hegrenade },
-	{ wp_hegrenade,				wp_hegrenade },
-	{ wp_flame,					wp_flame },
-	{ wp_torpedo,				wp_mauler },
-	{ wp_mauler,				wp_mauler },
-	{ wp_sigil,					wp_sigil },
+	{ WeaponType_t::wp_fist,		WeaponType_t::wp_fist },
+	{ WeaponType_t::wp_poisonbow,	WeaponType_t::wp_elecbow },
+	{ WeaponType_t::wp_elecbow,		WeaponType_t::wp_elecbow },
+	{ WeaponType_t::wp_rifle,		WeaponType_t::wp_rifle },
+	{ WeaponType_t::wp_missile,		WeaponType_t::wp_missile },
+	{ WeaponType_t::wp_wpgrenade,	WeaponType_t::wp_hegrenade },
+	{ WeaponType_t::wp_hegrenade,	WeaponType_t::wp_hegrenade },
+	{ WeaponType_t::wp_flame,		WeaponType_t::wp_flame },
+	{ WeaponType_t::wp_torpedo,		WeaponType_t::wp_mauler },
+	{ WeaponType_t::wp_mauler,		WeaponType_t::wp_mauler },
+	{ WeaponType_t::wp_sigil,		WeaponType_t::wp_sigil },
 };
 
-#define SLOWTURNTICS	6
+#define SLOWTURNTICS		6
 
-#define NUMKEYS		256
-#define MAX_JOY_BUTTONS 20
+#define NUMKEYS				256
+#define MAX_JOY_BUTTONS		20
 
 static bool gamekeydown[NUMKEYS];
-static int		turnheld;		// for accelerative turning
+static int turnheld;		// for accelerative turning
 
 static bool mousearray[MAX_MOUSE_BUTTONS + 1];
-static bool *mousebuttons = &mousearray[1]; // allow [-1]
+static bool *mousebuttons = &mousearray[1];	// allow [-1]
 
 // mouse values are used once
-int				mousex;
-int				mousey;
+int mousex;
+int mousey;
 
-static int		dclicktime;
+static int dclicktime;
 static bool dclickstate;
-static int		dclicks;
-static int		dclicktime2;
+static int dclicks;
+static int dclicktime2;
 static bool dclickstate2;
-static int		dclicks2;
+static int dclicks2;
 
 // joystick values are repeated
-static int		joyxmove;
-static int		joyymove;
-static int		joystrafemove;
-static int		joylook;
+static int joyxmove;
+static int joyymove;
+static int joystrafemove;
+static int joylook;
 static bool joyarray[MAX_JOY_BUTTONS + 1];
 static bool *joybuttons = &joyarray[1];		// allow [-1]
 
-static int		savegameslot = 6; // [STRIFE] initialized to 6
-static char		savedescription[32];
+static int savegameslot = 6;				// [STRIFE] initialized to 6
+static char savedescription[32];
 
-int		testcontrols_mousespeed;
+int testcontrols_mousespeed;
 
 #define	BODYQUESIZE	32
 
-mobj_t*		bodyque[BODYQUESIZE];
-//int		bodyqueslot; [STRIFE] unused
+mobj_t* bodyque[BODYQUESIZE];
+//int bodyqueslot; [STRIFE] unused
 
-int				vanilla_savegame_limit = 1;
-int				vanilla_demo_limit = 1;
+int vanilla_savegame_limit = 1;
+int vanilla_demo_limit = 1;
 
-
-int G_CmdChecksum (ticcmd_t* cmd)
+int G_CmdChecksum(ticcmd_t* cmd)
 {
-	size_t		i;
-	int		sum = 0;
+	int sum = 0;
 
-	for (i=0 ; i< sizeof(*cmd)/4 - 1 ; i++)
-	sum += ((int *)cmd)[i];
+	for (size_t i{0}; i < sizeof(*cmd)/4 - 1; ++i)
+	{
+		sum += ((int *)cmd)[i];
+	}
 
 	return sum;
 }
 
-static bool WeaponSelectable(weapontype_t weapon)
+static bool WeaponSelectable(WeaponType_t weapon)
 {
-	player_t *player;
+	player_t* player;
 
 	player = &players[consoleplayer];
 
 	// Can't select a weapon if we don't own it.
-
 	if (!player->weaponowned[weapon])
 	{
 		return false;
 	}
 
 	// Can't use registered-only weapons in demo mode:
-
 	if (isdemoversion && !weaponinfo[weapon].availabledemo)
 	{
 		return false;
@@ -268,9 +259,8 @@ static bool WeaponSelectable(weapontype_t weapon)
 	// These must match the weapon-switching rules in P_PlayerThink()
 
 	// haleyjd 20141024: same fix here as in P_PlayerThink for torpedo.
-
-	if (weapon == wp_torpedo
-		&& player->ammo[weaponinfo[wp_torpedo].ammo] < 30)
+	if (weapon == WeaponType_t::wp_torpedo
+		&& player->ammo[weaponinfo[WeaponType_t::wp_torpedo].ammo] < 30)
 	{
 		return false;
 	}
@@ -283,14 +273,12 @@ static bool WeaponSelectable(weapontype_t weapon)
 	return true;
 }
 
-static int G_NextWeapon(int direction)
+static WeaponType_t G_NextWeapon(int direction)
 {
-	weapontype_t weapon;
-	int start_i, i;
+	WeaponType_t weapon;
 
 	// Find index in the table.
-
-	if (players[consoleplayer].pendingweapon == wp_nochange)
+	if (players[consoleplayer].pendingweapon == WeaponType_t::wp_nochange)
 	{
 		weapon = players[consoleplayer].readyweapon;
 	}
@@ -299,7 +287,8 @@ static int G_NextWeapon(int direction)
 		weapon = players[consoleplayer].pendingweapon;
 	}
 
-	for (i=0; i<arrlen(weapon_order_table); ++i)
+	int i{0};
+	for (; i<arrlen(weapon_order_table); ++i)
 	{
 		if (weapon_order_table[i].weapon == weapon)
 		{
@@ -308,7 +297,7 @@ static int G_NextWeapon(int direction)
 	}
 
 	// Switch weapon.
-	start_i = i;
+	auto start_i = i;
 	do
 	{
 		i += direction;
@@ -324,28 +313,31 @@ static int G_NextWeapon(int direction)
 // or reads it from the demo buffer.
 // If recording a demo, write it out
 //
-void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
+void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
 {
-	int		i;
-	bool	strafe;
-	bool	bstrafe;
-	int		speed;
-	int		tspeed;
-	int		forward;
-	int		side;
+	int i;
+	bool strafe;
+	bool bstrafe;
+	int speed;
+	int tspeed;
+	int forward;
+	int side;
 
 	memset(cmd, 0, sizeof(ticcmd_t));
 
-	cmd->consistancy =
-		consistancy[consoleplayer][maketic%BACKUPTICS];
+	cmd->consistancy = consistancy[consoleplayer][maketic%BACKUPTICS];
 
 	// villsa [STRIFE] look up key
 	if(gamekeydown[key_lookup] || joylook < 0)
-		cmd->buttons2 |= BT2_LOOKUP;
+	{
+		cmd->buttons2 |= buttoncode2_t::BT2_LOOKUP;
+	}
 
 	// villsa [STRIFE] look down key
 	if(gamekeydown[key_lookdown] || joylook > 0)
-		cmd->buttons2 |= BT2_LOOKDOWN;
+	{
+		cmd->buttons2 |= buttoncode2_t::BT2_LOOKDOWN;
+	}
 
 	// villsa [STRIFE] inventory use key
 	if(gamekeydown[key_invuse])
@@ -353,7 +345,7 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 		player_t* player = &players[consoleplayer];
 		if(player->numinventory > 0)
 		{
-			cmd->buttons2 |= BT2_INVUSE;
+			cmd->buttons2 |= buttoncode2_t::BT2_INVUSE;
 			cmd->inventory = player->inventory[player->inventorycursor].sprite;
 		}
 	}
@@ -364,52 +356,47 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 		player_t* player = &players[consoleplayer];
 		if(player->numinventory > 0)
 		{
-			cmd->buttons2 |= BT2_INVDROP;
+			cmd->buttons2 |= buttoncode2_t::BT2_INVDROP;
 			cmd->inventory = player->inventory[player->inventorycursor].sprite;
 		}
 	}
 
 	// villsa [STRIFE] use medkit
 	if(gamekeydown[key_usehealth])
-		cmd->buttons2 |= BT2_HEALTH;
+	{
+		cmd->buttons2 |= buttoncode2_t::BT2_HEALTH;
+	}
 
+	strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe] || joybuttons[joybstrafe];
 
-
-	strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe]
-		|| joybuttons[joybstrafe];
-
-	// fraggle: support the old "joyb_speed = 31" hack which
-	// allowed an autorun effect
-
-	speed = key_speed >= NUMKEYS
-			|| joybspeed >= MAX_JOY_BUTTONS
-			|| gamekeydown[key_speed]
-			|| joybuttons[joybspeed];
+	// fraggle: support the old "joyb_speed = 31" hack which allowed an autorun effect
+	speed = key_speed >= NUMKEYS || joybspeed >= MAX_JOY_BUTTONS || gamekeydown[key_speed] || joybuttons[joybspeed];
 
 	forward = side = 0;
 
 	// villsa [STRIFE] running causes centerview to occur
-	if(speed)
-		cmd->buttons2 |= BT2_CENTERVIEW;
+	if(speed){
+		cmd->buttons2 |= buttoncode2_t::BT2_CENTERVIEW;}
 
 	// villsa [STRIFE] disable running if low on health
-	if (players[consoleplayer].health <= 15)
-		speed = 0;
+	if (players[consoleplayer].health <= 15){
+		speed = 0;}
 
 	// use two stage accelerative turning
 	// on the keyboard and joystick
 	if (joyxmove < 0
 		|| joyxmove > 0
 		|| gamekeydown[key_right]
-		|| gamekeydown[key_left])
-		turnheld += ticdup;
-	else
-		turnheld = 0;
+		|| gamekeydown[key_left]){
+		turnheld += ticdup;}
+	else{
+		turnheld = 0;}
 
-	if (turnheld < SLOWTURNTICS)
+	if (turnheld < SLOWTURNTICS){
 		tspeed = 2;				// slow turn
-	else
-		tspeed = speed;
+		}
+	else{
+		tspeed = speed;}
 
 	// let movement keys cancel each other out
 	if (strafe)
@@ -424,22 +411,22 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 			//	fprintf(stderr, "strafe left\n");
 			side -= sidemove[speed];
 		}
-		if (joyxmove > 0)
-			side += sidemove[speed];
-		if (joyxmove < 0)
-			side -= sidemove[speed];
+		if (joyxmove > 0){
+			side += sidemove[speed];}
+		if (joyxmove < 0){
+			side -= sidemove[speed];}
 
 	}
 	else
 	{
-		if (gamekeydown[key_right])
-			cmd->angleturn -= angleturn[tspeed];
-		if (gamekeydown[key_left])
-			cmd->angleturn += angleturn[tspeed];
-		if (joyxmove > 0)
-			cmd->angleturn -= angleturn[tspeed];
-		if (joyxmove < 0)
-			cmd->angleturn += angleturn[tspeed];
+		if (gamekeydown[key_right]){
+			cmd->angleturn -= angleturn[tspeed];}
+		if (gamekeydown[key_left]){
+			cmd->angleturn += angleturn[tspeed];}
+		if (joyxmove > 0){
+			cmd->angleturn -= angleturn[tspeed];}
+		if (joyxmove < 0){
+			cmd->angleturn += angleturn[tspeed];}
 	}
 
 	if (gamekeydown[key_up])
@@ -453,10 +440,10 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 		forward -= forwardmove[speed];
 	}
 
-	if (joyymove < 0)
-		forward += forwardmove[speed];
-	if (joyymove > 0)
-		forward -= forwardmove[speed];
+	if (joyymove < 0){
+		forward += forwardmove[speed];}
+	if (joyymove > 0){
+		forward -= forwardmove[speed];}
 
 	if (gamekeydown[key_strafeleft]
 		|| joybuttons[joybstrafeleft]
@@ -478,28 +465,33 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 	cmd->chatchar = HU_dequeueChatChar();
 
 	// villsa [STRIFE] - add mouse button support for jump
-	if (gamekeydown[key_jump] || mousebuttons[mousebjump]
-		|| joybuttons[joybjump])
-		cmd->buttons2 |= BT2_JUMP;
+	if (gamekeydown[key_jump] || mousebuttons[mousebjump] || joybuttons[joybjump])
+	{
+		cmd->buttons2 |= buttoncode2_t::BT2_JUMP;
+	}
 
 	// villsa [STRIFE]: Moved mousebuttons[mousebfire] to below
 	if (gamekeydown[key_fire] || joybuttons[joybfire])
-		cmd->buttons |= BT_ATTACK;
+	{
+		cmd->buttons |= buttoncode_t::BT_ATTACK;
+	}
 
 	// villsa [STRIFE]
 	if(mousebuttons[mousebfire])
 	{
 			if(mouse_fire_countdown <= 0)
-				cmd->buttons |= BT_ATTACK;
+			{
+				cmd->buttons |= buttoncode_t::BT_ATTACK;
+			}
 			else
+			{
 				--mouse_fire_countdown;
+			}
 	}
 
-	if (gamekeydown[key_use]
-		|| joybuttons[joybuse]
-		|| mousebuttons[mousebuse])
+	if (gamekeydown[key_use] || joybuttons[joybuse] || mousebuttons[mousebuse])
 	{
-		cmd->buttons |= BT_USE;
+		cmd->buttons |= buttoncode_t::BT_USE;
 		// clear double clicks if hit use button
 		dclicks = 0;
 	}
@@ -508,24 +500,23 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 	// next_weapon variable is set to change weapons when
 	// we generate a ticcmd. Choose a new weapon.
 
-	if (gamestate == GS_LEVEL && next_weapon != 0)
+	if (gamestate == GameState_t::GS_LEVEL && next_weapon != 0)
 	{
 		i = G_NextWeapon(next_weapon);
-		cmd->buttons |= BT_CHANGE;
-		cmd->buttons |= i << BT_WEAPONSHIFT;
+		cmd->buttons |= buttoncode_t::BT_CHANGE;
+		cmd->buttons |= i << buttoncode_t::BT_WEAPONSHIFT;
 	}
 	else
 	{
 		// Check weapon keys.
-
 		for (i=0; i<arrlen(weapon_keys); ++i)
 		{
 			int key = *weapon_keys[i];
 
 			if (gamekeydown[key])
 			{
-				cmd->buttons |= BT_CHANGE;
-				cmd->buttons |= i<<BT_WEAPONSHIFT;
+				cmd->buttons |= buttoncode_t::BT_CHANGE;
+				cmd->buttons |= i<<buttoncode_t::BT_WEAPONSHIFT;
 				break;
 			}
 		}
@@ -550,14 +541,18 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 		{
 			dclickstate = mousebuttons[mousebforward];
 			if (dclickstate)
-				dclicks++;
+			{
+				++dclicks;
+			}
 			if (dclicks == 2)
 			{
-				cmd->buttons |= BT_USE;
+				cmd->buttons |= buttoncode_t::BT_USE;
 				dclicks = 0;
 			}
 			else
+			{
 				dclicktime = 0;
+			}
 		}
 		else
 		{
@@ -570,21 +565,19 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 		}
 
 		// strafe double click
-		bstrafe =
-			mousebuttons[mousebstrafe]
-			|| joybuttons[joybstrafe];
+		bstrafe = mousebuttons[mousebstrafe] || joybuttons[joybstrafe];
 		if (bstrafe != dclickstate2 && dclicktime2 > 1 )
 		{
 			dclickstate2 = bstrafe;
-			if (dclickstate2)
-				dclicks2++;
+			if (dclickstate2){
+				++dclicks2;}
 			if (dclicks2 == 2)
 			{
-				cmd->buttons |= BT_USE;
+				cmd->buttons |= buttoncode_t::BT_USE;
 				dclicks2 = 0;
 			}
-			else
-				dclicktime2 = 0;
+			else{
+				dclicktime2 = 0;}
 		}
 		else
 		{
@@ -597,13 +590,13 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 		}
 	}
 
-	if (!novert)
-		forward += mousey;
+	if (!novert){
+		forward += mousey;}
 
-	if (strafe)
-		side += mousex*2;
-	else
-		cmd->angleturn -= mousex*0x8;
+	if (strafe){
+		side += mousex*2;}
+	else{
+		cmd->angleturn -= mousex*0x8;}
 
 	if (mousex == 0)
 	{
@@ -614,14 +607,14 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 
 	mousex = mousey = 0;
 
-	if (forward > MAXPLMOVE)
-		forward = MAXPLMOVE;
-	else if (forward < -MAXPLMOVE)
-		forward = -MAXPLMOVE;
-	if (side > MAXPLMOVE)
-		side = MAXPLMOVE;
-	else if (side < -MAXPLMOVE)
-		side = -MAXPLMOVE;
+	if (forward > MAXPLMOVE){
+		forward = MAXPLMOVE;}
+	else if (forward < -MAXPLMOVE){
+		forward = -MAXPLMOVE;}
+	if (side > MAXPLMOVE){
+		side = MAXPLMOVE;}
+	else if (side < -MAXPLMOVE){
+		side = -MAXPLMOVE;}
 
 	cmd->forwardmove += forward;
 	cmd->sidemove += side;
@@ -630,13 +623,13 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 	if (sendpause)
 	{
 		sendpause = false;
-		cmd->buttons = BT_SPECIAL | BTS_PAUSE;
+		cmd->buttons = buttoncode_t::BT_SPECIAL | buttoncode_t::BTS_PAUSE;
 	}
 
 	if (sendsave)
 	{
 		sendsave = false;
-		cmd->buttons = BT_SPECIAL | BTS_SAVEGAME | (savegameslot<<BTS_SAVESHIFT);
+		cmd->buttons = buttoncode_t::BT_SPECIAL | buttoncode_t::BTS_SAVEGAME | (savegameslot<<buttoncode_t::BTS_SAVESHIFT);
 	}
 
 	// low-res turning
@@ -664,34 +657,38 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
 //
 // G_DoLoadLevel
 //
-void G_DoLoadLevel ()
+void G_DoLoadLevel()
 {
-	int				i;
+	int i;
 
 	// haleyjd 10/03/10: [STRIFE] This is not done here.
 	//skyflatnum = R_FlatNumForName(DEH_String(SKYFLATNAME));
 
 	levelstarttic = gametic;		// for time calculation
 
-	if (wipegamestate == GS_LEVEL)
+	if (wipegamestate == GameState_t::GS_LEVEL)
+	{
 		wipegamestate = -1;				// force a wipe
+	}
 
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
 		turbodetected[i] = false;
 
 		// haleyjd 20110204 [STRIFE]: PST_REBORN if players[i].health <= 0
-		if (playeringame[i] && (players[i].playerstate == PST_DEAD || players[i].health <= 0))
-			players[i].playerstate = PST_REBORN;
+		if (playeringame[i] && (players[i].playerstate == PlayerState_t::PST_DEAD || players[i].health <= 0))
+		{
+			players[i].playerstate = PlayerState_t::PST_REBORN;
+		}
 		memset(players[i].frags,0,sizeof(players[i].frags));
 	}
 
 	P_SetupLevel (gamemap, 0, gameskill);
 	displayplayer = consoleplayer;		// view the guy you are playing
 	starttime = I_GetTime(); // haleyjd 20110204 [STRIFE]
-	gameaction = ga_nothing;
+	gameaction = GameAction_t::ga_nothing;
 	Z_CheckHeap ();
 
 	// clear cmd building stuff
@@ -715,7 +712,7 @@ static void SetJoyButtons(unsigned int buttons_mask)
 {
 	int i;
 
-	for (i=0; i<MAX_JOY_BUTTONS; ++i)
+	for (i=0; i < MAX_JOY_BUTTONS; ++i)
 	{
 		int button_on = (buttons_mask & (1 << i)) != 0;
 
@@ -743,7 +740,7 @@ static void SetMouseButtons(unsigned int buttons_mask)
 {
 	int i;
 
-	for (i=0; i<MAX_MOUSE_BUTTONS; ++i)
+	for (i=0; i < MAX_MOUSE_BUTTONS; ++i)
 	{
 		unsigned int button_on = (buttons_mask & (1 << i)) != 0;
 
@@ -769,10 +766,10 @@ static void SetMouseButtons(unsigned int buttons_mask)
 // G_Responder
 // Get info needed to make ticcmd_ts for the players.
 //
-bool G_Responder (event_t* ev)
+bool G_Responder(event_t* ev)
 {
 	// allow spy mode changes even during the demo
-	if (gamestate == GS_LEVEL && ev->type == ev_keydown
+	if (gamestate == GameState_t::GS_LEVEL && ev->type == evtype_t::ev_keydown
 		&& ev->data1 == key_spy && (singledemo || !gameskill) ) // [STRIFE]: o_O
 	{
 		// spy mode
@@ -786,13 +783,13 @@ bool G_Responder (event_t* ev)
 	}
 
 	// any other key pops up menu if in demos
-	if (gameaction == ga_nothing && !singledemo &&
-		(demoplayback || gamestate == GS_DEMOSCREEN)
+	if (gameaction == GameAction_t::ga_nothing && !singledemo &&
+		(demoplayback || gamestate == GameState_t::GS_DEMOSCREEN)
 		)
 	{
-		if (ev->type == ev_keydown ||
-			(ev->type == ev_mouse && ev->data1) ||
-			(ev->type == ev_joystick && ev->data1) )
+		if (ev->type == evtype_t::ev_keydown ||
+			(ev->type == evtype_t::ev_mouse && ev->data1) ||
+			(ev->type == evtype_t::ev_joystick && ev->data1) )
 		{
 			if(devparm && ev->data1 == 'g')
 				D_PageTicker(); // [STRIFE]: wat? o_O
@@ -803,7 +800,7 @@ bool G_Responder (event_t* ev)
 		return false;
 	}
 
-	if (gamestate == GS_LEVEL)
+	if (gamestate == GameState_t::GS_LEVEL)
 	{
 #if 0
 		if (devparm && ev->type == ev_keydown && ev->data1 == ';')
@@ -820,13 +817,13 @@ bool G_Responder (event_t* ev)
 			return true;	// automap ate it
 	}
 
-	if (gamestate == GS_FINALE)
+	if (gamestate == GameState_t::GS_FINALE)
 	{
 		if (F_Responder (ev))
 			return true;	// finale ate the event
 	}
 
-	if (testcontrols && ev->type == ev_mouse)
+	if (testcontrols && ev->type == evtype_t::ev_mouse)
 	{
 		// If we are invoked by setup to test the controls, save the
 		// mouse speed so that we can display it on-screen.
@@ -839,7 +836,7 @@ bool G_Responder (event_t* ev)
 	// If the next/previous weapon keys are pressed, set the next_weapon
 	// variable to change weapons when the next ticcmd is generated.
 
-	if (ev->type == ev_keydown && ev->data1 == key_prevweapon)
+	if (ev->type == evtype_t::ev_keydown && ev->data1 == key_prevweapon)
 	{
 		next_weapon = -1;
 	}
@@ -850,7 +847,7 @@ bool G_Responder (event_t* ev)
 
 	switch (ev->type)
 	{
-	case ev_keydown:
+	case evtype_t::ev_keydown:
 		if (ev->data1 == key_pause)
 		{
 			sendpause = true;
@@ -862,18 +859,18 @@ bool G_Responder (event_t* ev)
 
 		return true;	// eat key down events
 
-	case ev_keyup:
+	case evtype_t::ev_keyup:
 		if (ev->data1 <NUMKEYS)
 			gamekeydown[ev->data1] = false;
 		return false;	// always let key up events filter down
 
-	case ev_mouse:
+	case evtype_t::ev_mouse:
 		SetMouseButtons(ev->data1);
 		mousex = ev->data2*(mouseSensitivity+5)/10;
 		mousey = ev->data3*(mouseSensitivity+5)/10;
 		return true;	// eat events
 
-	case ev_joystick:
+	case evtype_t::ev_joystick:
 		SetJoyButtons(ev->data1);
 		joyxmove = ev->data2;
 		joyymove = ev->data3;
@@ -1040,7 +1037,7 @@ void G_Ticker ()
 	// Have we just finished displaying an intermission screen?
 	// haleyjd 08/23/10: [STRIFE] No intermission.
 	/*
-	if (oldgamestate == GS_INTERMISSION && gamestate != GS_INTERMISSION)
+	if (oldgamestate == GameState_t::GS_INTERMISSION && gamestate != GameState_t::GS_INTERMISSION)
 	{
 		WI_End();
 	}
@@ -1051,7 +1048,7 @@ void G_Ticker ()
 	// do main actions
 	switch (gamestate)
 	{
-	case GS_LEVEL:
+	case GameState_t::GS_LEVEL:
 		P_Ticker ();
 		ST_Ticker ();
 		AM_Ticker ();
@@ -1060,19 +1057,19 @@ void G_Ticker ()
 
 		// haleyjd 08/23/10: [STRIFE] No intermission.
 		/*
-	case GS_INTERMISSION:
+	case GameState_t::GS_INTERMISSION:
 		WI_Ticker ();
 		break;
 		*/
-	case GS_UNKNOWN: // STRIFE-TODO: What is this? is it ever used??
+	case GameState_t::GS_UNKNOWN: // STRIFE-TODO: What is this? is it ever used??
 		F_WaitTicker();
 		break;
 
-	case GS_FINALE:
+	case GameState_t::GS_FINALE:
 		F_Ticker ();
 		break;
 
-	case GS_DEMOSCREEN:
+	case GameState_t::GS_DEMOSCREEN:
 		D_PageTicker ();
 		break;
 	}
@@ -1470,13 +1467,13 @@ void G_DoCompleted ()
 	{
 		if(playeringame[i])
 		{
-			// [STRIFE] restore pw_allmap power from mapstate cache
+			// [STRIFE] restore PowerType_t::pw_allmap power from mapstate cache
 			if(destmap < 40)
-				players[i].powers[pw_allmap] = players[i].mapstate[destmap];
+				players[i].powers[PowerType_t::pw_allmap] = players[i].mapstate[destmap];
 
 			// Shadowarmor doesn't persist between maps in netgames
 			if(netgame)
-				players[i].powers[pw_invisibility] = 0;
+				players[i].powers[PowerType_t::pw_invisibility] = 0;
 		}
 	}
 
@@ -1566,7 +1563,7 @@ void G_DoWorldDone ()
 	bool temp_shadow = false;
 	bool temp_mvis	= false;
 
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 	gamemap = destmap;
 
 	// [STRIFE] HUB LOAD
@@ -1610,7 +1607,7 @@ void G_DoWorldDone ()
 //
 void G_DoWorldDone2()
 {
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 	gameaction = ga_nothing;
 	viewactive = true;
 }
@@ -1941,14 +1938,14 @@ G_InitNew
 		S_ResumeSound ();
 	}
 
-	if (skill > sk_nightmare)
-		skill = sk_nightmare;
+	if (skill > skill_t::sk_nightmare)
+		skill = skill_t::sk_nightmare;
 
 	// [STRIFE] Removed episode nonsense and gamemap clipping
 
 	M_ClearRandom ();
 
-	if (skill == sk_nightmare || respawnparm )
+	if (skill == skill_t::sk_nightmare || respawnparm )
 		respawnmonsters = true;
 	else
 		respawnmonsters = false;
@@ -2011,7 +2008,7 @@ G_InitNew
 		// The Bishop's homing missiles - again, seemingly backward.
 		mobjinfo[MT_SEEKMISSILE].speed >>= 1;
 	}
-	if(fastparm || (skill == sk_nightmare && skill != gameskill))
+	if(fastparm || (skill == skill_t::sk_nightmare && skill != gameskill))
 	{
 		// BLOODBATH! Make some things super-aggressive.
 
@@ -2023,7 +2020,7 @@ G_InitNew
 		// Bishop's homing missiles again get SLOWER and not faster o_O
 		mobjinfo[MT_SEEKMISSILE].speed >>= 1;
 	}
-	else if(skill != sk_nightmare && gameskill == sk_nightmare)
+	else if(skill != skill_t::sk_nightmare && gameskill == skill_t::sk_nightmare)
 	{
 		// Setting back to an ordinary skill after being on Bloodbath?
 		// Put stuff back to normal.
@@ -2118,7 +2115,7 @@ static void IncreaseDemoBuffer()
 	// Generate a new buffer twice the size
 	new_length = current_length * 2;
 
-	new_demobuffer = Z_Malloc(new_length, PU_STATIC, 0);
+	new_demobuffer = Z_Malloc<decltype(new_demobuffer)>(new_length, pu_tags_t::PU_STATIC, 0);
 	new_demop = new_demobuffer + (demo_p - demobuffer);
 
 	// Copy over the old data
@@ -2196,7 +2193,7 @@ void G_RecordDemo (const char* name)
 
 	usergame = false;
 	demoname_size = strlen(name) + 5;
-	demoname = Z_Malloc(demoname_size, PU_STATIC, NULL);
+	demoname = Z_Malloc<decltype(demoname)>(demoname_size, pu_tags_t::PU_STATIC, NULL);
 	M_snprintf(demoname, demoname_size, "%s.lmp", name);
 	maxsize = 0x20000;
 
@@ -2211,7 +2208,7 @@ void G_RecordDemo (const char* name)
 	i = M_CheckParmWithArgs("-maxdemo", 1);
 	if (i)
 		maxsize = atoi(myargv[i+1])*1024;
-	demobuffer = Z_Malloc(maxsize,PU_STATIC,NULL);
+	demobuffer = Z_Malloc<decltype(demobuffer)>(maxsize,PU_STATIC,NULL);
 	demoend = demobuffer + maxsize;
 
 	demorecording = true;
@@ -2310,7 +2307,7 @@ void G_DoPlayDemo ()
 	int		demoversion;
 
 	gameaction = ga_nothing;
-	demobuffer = demo_p = W_CacheLumpName (defdemoname, PU_STATIC);
+	demobuffer = demo_p = W_CacheLumpName (defdemoname, pu_tags_t::PU_STATIC);
 
 	demoversion = *demo_p++;
 

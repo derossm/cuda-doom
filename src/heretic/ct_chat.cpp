@@ -12,8 +12,6 @@
 // Chat mode
 \**********************************************************************************************************************************************/
 
-#include <string.h>
-#include <ctype.h>
 
 #include "doomdef.h"
 #include "doomkeys.h"
@@ -358,7 +356,7 @@ void CT_Drawer()
 				x += patch->width;
 			}
 		}
-		V_DrawPatch(x, 10, W_CacheLumpName(DEH_String("FONTA59"), PU_CACHE));
+		V_DrawPatch(x, 10, W_CacheLumpName(DEH_String("FONTA59"), pu_tags_t::PU_CACHE));
 		BorderTopRefresh = true;
 		UpdateState |= I_MESSAGES;
 	}
@@ -421,7 +419,7 @@ void CT_AddChar(int player, char c)
 	}
 	else
 	{
-		patch = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+		patch = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
 		msglen[player] += patch->width;
 	}
 }
@@ -450,7 +448,7 @@ void CT_BackSpace(int player)
 	}
 	else
 	{
-		patch = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+		patch = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
 		msglen[player] -= patch->width;
 	}
 	chat_msg[player][msgptr[player]] = 0;

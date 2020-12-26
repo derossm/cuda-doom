@@ -54,7 +54,7 @@ int GetWeaponAmmo[NUMWEAPONS] = {
 	0							// beak
 };
 
-static weapontype_t GetAmmoChange[] = {
+static WeaponType_t GetAmmoChange[] = {
 	wp_goldwand,
 	wp_crossbow,
 	wp_blaster,
@@ -158,10 +158,10 @@ void P_SetCenterMessage(player_t * player, const char *message)
 //
 //--------------------------------------------------------------------------
 
-bool P_GiveAmmo(player_t * player, ammotype_t ammo, int count)
+bool P_GiveAmmo(player_t * player, AmmoType_t ammo, int count)
 {
 	int prevAmmo;
-	//weapontype_t changeWeapon;
+	//WeaponType_t changeWeapon;
 
 	if (ammo == am_noammo)
 	{
@@ -175,7 +175,7 @@ bool P_GiveAmmo(player_t * player, ammotype_t ammo, int count)
 	{
 		return (false);
 	}
-	if (gameskill == sk_baby || gameskill == sk_nightmare)
+	if (gameskill == skill_t::sk_baby || gameskill == skill_t::sk_nightmare)
 	{							// extra ammo in baby mode and nightmare mode
 		count += count >> 1;
 	}
@@ -201,7 +201,7 @@ bool P_GiveAmmo(player_t * player, ammotype_t ammo, int count)
 		}
 	}
 /*
-	if(player->powers[pw_weaponlevel2])
+	if(player->powers[PowerType_t::pw_weaponlevel2])
 	{
 		changeWeapon = GetAmmoChangePL2[player->readyweapon][ammo];
 	}
@@ -228,7 +228,7 @@ bool P_GiveAmmo(player_t * player, ammotype_t ammo, int count)
 //
 //--------------------------------------------------------------------------
 
-bool P_GiveWeapon(player_t * player, weapontype_t weapon)
+bool P_GiveWeapon(player_t * player, WeaponType_t weapon)
 {
 	bool gaveAmmo;
 	bool gaveWeapon;
@@ -325,7 +325,7 @@ bool P_GiveArmor(player_t * player, int armortype)
 //
 //---------------------------------------------------------------------------
 
-void P_GiveKey(player_t * player, keytype_t key)
+void P_GiveKey(player_t * player, KeyType_t key)
 {
 	extern int playerkeys;
 	extern vertex_t KeyPoints[];
@@ -352,9 +352,9 @@ void P_GiveKey(player_t * player, keytype_t key)
 //
 //---------------------------------------------------------------------------
 
-bool P_GivePower(player_t * player, powertype_t power)
+bool P_GivePower(player_t * player, PowerType_t power)
 {
-	if (power == pw_invulnerability)
+	if (power == PowerType_t::pw_invulnerability)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -363,7 +363,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 		player->powers[power] = INVULNTICS;
 		return (true);
 	}
-	if (power == pw_weaponlevel2)
+	if (power == PowerType_t::pw_weaponlevel2)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -372,7 +372,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 		player->powers[power] = WPNLEV2TICS;
 		return (true);
 	}
-	if (power == pw_invisibility)
+	if (power == PowerType_t::pw_invisibility)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -382,7 +382,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 		player->mo->flags |= MF_SHADOW;
 		return (true);
 	}
-	if (power == pw_flight)
+	if (power == PowerType_t::pw_flight)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -397,7 +397,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 		}
 		return (true);
 	}
-	if (power == pw_infrared)
+	if (power == PowerType_t::pw_infrared)
 	{
 		if (player->powers[power] > BLINKTHRESHOLD)
 		{						// Already have it
@@ -407,12 +407,12 @@ bool P_GivePower(player_t * player, powertype_t power)
 		return (true);
 	}
 /*
-	if(power == pw_ironfeet)
+	if(power == PowerType_t::pw_ironfeet)
 	{
 		player->powers[power] = IRONTICS;
 		return(true);
 	}
-	if(power == pw_strength)
+	if(power == PowerType_t::pw_strength)
 	{
 		P_GiveBody(player, 100);
 		player->powers[power] = 1;
@@ -435,7 +435,7 @@ bool P_GivePower(player_t * player, powertype_t power)
 //
 //---------------------------------------------------------------------------
 
-bool P_GiveArtifact(player_t * player, artitype_t arti, mobj_t * mo)
+bool P_GiveArtifact(player_t * player, ArtiType_t arti, mobj_t * mo)
 {
 	int i;
 
@@ -617,7 +617,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			P_SetMessage(player, DEH_String(TXT_ITEMBAGOFHOLDING), false);
 			break;
 		case SPR_SPMP:			// Item_SuperMap
-			if (!P_GivePower(player, pw_allmap))
+			if (!P_GivePower(player, PowerType_t::pw_allmap))
 			{
 				return;
 			}
@@ -925,7 +925,7 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 				}
 				if (source->player->chickenTics)
 				{				// Make a super chicken
-					P_GivePower(source->player, pw_weaponlevel2);
+					P_GivePower(source->player, PowerType_t::pw_weaponlevel2);
 				}
 			}
 		}
@@ -942,8 +942,8 @@ void P_KillMobj(mobj_t * source, mobj_t * target)
 		}
 		target->flags &= ~MF_SOLID;
 		target->flags2 &= ~MF2_FLY;
-		target->player->powers[pw_flight] = 0;
-		target->player->powers[pw_weaponlevel2] = 0;
+		target->player->powers[PowerType_t::pw_flight] = 0;
+		target->player->powers[PowerType_t::pw_weaponlevel2] = 0;
 		target->player->playerstate = PST_DEAD;
 		P_DropWeapon(target->player);
 		if (target->flags2 & MF2_FIREDAMAGE)
@@ -1043,13 +1043,13 @@ bool P_ChickenMorphPlayer(player_t * player)
 	if (player->chickenTics)
 	{
 		if ((player->chickenTics < CHICKENTICS - TICRATE)
-			&& !player->powers[pw_weaponlevel2])
+			&& !player->powers[PowerType_t::pw_weaponlevel2])
 		{						// Make a super chicken
-			P_GivePower(player, pw_weaponlevel2);
+			P_GivePower(player, PowerType_t::pw_weaponlevel2);
 		}
 		return (false);
 	}
-	if (player->powers[pw_invulnerability])
+	if (player->powers[PowerType_t::pw_invulnerability])
 	{							// Immune when invulnerable
 		return (false);
 	}
@@ -1069,8 +1069,8 @@ bool P_ChickenMorphPlayer(player_t * player)
 	player->health = chicken->health = MAXCHICKENHEALTH;
 	player->mo = chicken;
 	player->armorpoints = player->armortype = 0;
-	player->powers[pw_invisibility] = 0;
-	player->powers[pw_weaponlevel2] = 0;
+	player->powers[PowerType_t::pw_invisibility] = 0;
+	player->powers[PowerType_t::pw_weaponlevel2] = 0;
 	if (oldFlags2 & MF2_FLY)
 	{
 		chicken->flags2 |= MF2_FLY;
@@ -1188,7 +1188,7 @@ void P_AutoUseHealth(player_t * player, int saveHealth)
 			superCount = player->inventory[i].count;
 		}
 	}
-	if ((gameskill == sk_baby) && (normalCount * 25 >= saveHealth))
+	if ((gameskill == skill_t::sk_baby) && (normalCount * 25 >= saveHealth))
 	{							// Use quartz flasks
 		count = (saveHealth + 24) / 25;
 		for (i = 0; i < count; i++)
@@ -1206,7 +1206,7 @@ void P_AutoUseHealth(player_t * player, int saveHealth)
 			P_PlayerRemoveArtifact(player, superSlot);
 		}
 	}
-	else if ((gameskill == sk_baby)
+	else if ((gameskill == skill_t::sk_baby)
 				&& (superCount * 100 + normalCount * 25 >= saveHealth))
 	{							// Use mystic urns and quartz flasks
 		count = (saveHealth + 24) / 25;
@@ -1268,7 +1268,7 @@ void P_DamageMobj
 		target->momx = target->momy = target->momz = 0;
 	}
 	player = target->player;
-	if (player && gameskill == sk_baby)
+	if (player && gameskill == skill_t::sk_baby)
 	{
 		// Take half damage in trainer mode
 		damage >>= 1;
@@ -1305,7 +1305,7 @@ void P_DamageMobj
 				}
 				else if (target->player)
 				{				// Player specific checks
-					if (target->player->powers[pw_invulnerability])
+					if (target->player->powers[PowerType_t::pw_invulnerability])
 					{			// Can't hurt invulnerable players
 						break;
 					}
@@ -1372,7 +1372,7 @@ void P_DamageMobj
 		}
 		ang >>= ANGLETOFINESHIFT;
 		if (source && source->player && (source == inflictor)
-			&& source->player->powers[pw_weaponlevel2]
+			&& source->player->powers[PowerType_t::pw_weaponlevel2]
 			&& source->player->readyweapon == wp_staff)
 		{
 			// Staff power level 2
@@ -1403,7 +1403,7 @@ void P_DamageMobj
 		//}
 
 		if (damage < 1000 && ((player->cheats & CF_GODMODE)
-								|| player->powers[pw_invulnerability]))
+								|| player->powers[PowerType_t::pw_invulnerability]))
 		{
 			return;
 		}
@@ -1427,7 +1427,7 @@ void P_DamageMobj
 			damage -= saved;
 		}
 		if (damage >= player->health
-			&& ((gameskill == sk_baby) || deathmatch) && !player->chickenTics)
+			&& ((gameskill == skill_t::sk_baby) || deathmatch) && !player->chickenTics)
 		{						// Try to use some inventory health
 			P_AutoUseHealth(player, damage - player->health + 1);
 		}

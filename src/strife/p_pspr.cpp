@@ -137,7 +137,7 @@ void P_BringUpWeapon (player_t* player)
 //
 bool P_CheckAmmo (player_t* player)
 {
-	ammotype_t			ammo;
+	AmmoType_t			ammo;
 	int					count;
 
 	ammo = weaponinfo[player->readyweapon].ammo;
@@ -441,7 +441,7 @@ void A_Punch(player_t* player, pspdef_t* psp)
 	stamina = player->stamina;
 	damage = (P_Random() & ((stamina/10) + 7)) * ((stamina/10) + 2);
 
-	if(player->powers[pw_strength])
+	if(player->powers[PowerType_t::pw_strength])
 		damage *= 10;
 
 	angle = player->mo->angle;

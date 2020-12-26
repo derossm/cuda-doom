@@ -14,14 +14,6 @@
 //	See tables.c, too.
 \**********************************************************************************************************************************************/
 
-
-
-
-
-#include <stdlib.h>
-#include <math.h>
-
-
 #include "doomdef.h"
 #include "doomstat.h" // [AM] leveltime, paused, menuactive
 #include "d_loop.h"
@@ -35,30 +27,23 @@
 #include "r_sky.h"
 #include "st_stuff.h" // [crispy] ST_refreshBackground()
 
-
-
-
-
 // Fineangles in the SCREENWIDTH wide window.
-#define FIELDOFVIEW		2048
+#define FIELDOFVIEW 2048
 
-
-
-int			viewangleoffset;
+int viewangleoffset;
 
 // increment every time a check is made
-int			validcount = 1;
+int validcount = 1;
 
+lighttable_t* fixedcolormap;
+extern lighttable_t** walllights;
 
-lighttable_t*		fixedcolormap;
-extern lighttable_t**	walllights;
+int centerx;
+int centery;
 
-int			centerx;
-int			centery;
-
-fixed_t			centerxfrac;
-fixed_t			centeryfrac;
-fixed_t			projection;
+fixed_t centerxfrac;
+fixed_t centeryfrac;
+fixed_t projection;
 
 // just for profiling purposes
 int			framecount;

@@ -10,8 +10,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
-#include <math.h>
 #include "m_random.h"
 #include "h2def.h"
 #include "m_bbox.h"
@@ -808,7 +806,7 @@ void R_RenderPlayerView(player_t * player)
 	NetUpdate();				// check for new console commands
 
 	// Make displayed player invisible locally
-	if (localQuakeHappening[displayplayer] && gamestate == GS_LEVEL)
+	if (localQuakeHappening[displayplayer] && gamestate == GameState_t::GS_LEVEL)
 	{
 		players[displayplayer].mo->flags2 |= MF2_DONTDRAW;
 		R_RenderBSPNode(numnodes - 1); // head node is the last node output

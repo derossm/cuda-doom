@@ -11,7 +11,6 @@
 \**********************************************************************************************************************************************/
 // P_enemy.c
 
-#include <stdlib.h>
 #include "doomdef.h"
 #include "i_system.h"
 #include "i_timer.h"
@@ -681,7 +680,7 @@ void A_Chase(mobj_t * actor)
 		actor->threshold--;
 	}
 
-	if (gameskill == sk_nightmare)
+	if (gameskill == skill_t::sk_nightmare)
 	{							// Monsters move faster in nightmare mode
 		actor->tics -= actor->tics / 2;
 		if (actor->tics < 3)
@@ -723,7 +722,7 @@ void A_Chase(mobj_t * actor)
 	if (actor->flags & MF_JUSTATTACKED)
 	{
 		actor->flags &= ~MF_JUSTATTACKED;
-		if (gameskill != sk_nightmare)
+		if (gameskill != skill_t::sk_nightmare)
 			P_NewChaseDir(actor);
 		return;
 	}
@@ -744,7 +743,7 @@ void A_Chase(mobj_t * actor)
 //
 	if (actor->info->missilestate)
 	{
-		if (gameskill < sk_nightmare && actor->movecount)
+		if (gameskill < skill_t::sk_nightmare && actor->movecount)
 			goto nomissile;
 		if (!P_CheckMissileRange(actor))
 			goto nomissile;

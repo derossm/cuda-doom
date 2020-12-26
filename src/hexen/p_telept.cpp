@@ -65,7 +65,7 @@ bool P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle,
 	if (thing->player)
 	{
 		player = thing->player;
-		if (player->powers[pw_flight] && aboveFloor)
+		if (player->powers[PowerType_t::pw_flight] && aboveFloor)
 		{
 			thing->z = thing->floorz + aboveFloor;
 			if (thing->z + thing->height > thing->ceilingz)
@@ -107,7 +107,7 @@ bool P_Teleport(mobj_t * thing, fixed_t x, fixed_t y, angle_t angle,
 							y + 20 * finesine[an], thing->z + fogDelta,
 							MT_TFOG);
 		S_StartSound(fog, SFX_TELEPORT);
-		if (thing->player && !thing->player->powers[pw_speed])
+		if (thing->player && !thing->player->powers[PowerType_t::pw_speed])
 		{						// Freeze player for about .5 sec
 			thing->reactiontime = 18;
 		}

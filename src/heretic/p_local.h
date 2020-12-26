@@ -108,7 +108,7 @@ void P_SetupPsprites(player_t * curplayer);
 void P_MovePsprites(player_t * curplayer);
 void P_DropWeapon(player_t * player);
 void P_ActivateBeak(player_t * player);
-void P_PostChickenWeapon(player_t * player, weapontype_t weapon);
+void P_PostChickenWeapon(player_t * player, WeaponType_t weapon);
 void P_UpdateBeak(player_t * player, pspdef_t * psp);
 
 // ***** P_USER *****
@@ -116,8 +116,8 @@ void P_UpdateBeak(player_t * player, pspdef_t * psp);
 void P_PlayerThink(player_t * player);
 void P_Thrust(player_t * player, angle_t angle, fixed_t move);
 void P_PlayerRemoveArtifact(player_t * player, int slot);
-void P_PlayerUseArtifact(player_t * player, artitype_t arti);
-bool P_UseArtifact(player_t * player, artitype_t arti);
+void P_PlayerUseArtifact(player_t * player, ArtiType_t arti);
+bool P_UseArtifact(player_t * player, ArtiType_t arti);
 int P_GetPlayerNum(player_t * player);
 
 // ***** P_MOBJ *****
@@ -258,10 +258,10 @@ void P_SetCenterMessage(player_t * player, const char *message); // [crispy] Set
 void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher);
 void P_DamageMobj(mobj_t * target, mobj_t * inflictor, mobj_t * source,
 					int damage);
-bool P_GiveAmmo(player_t * player, ammotype_t ammo, int count);
-bool P_GiveArtifact(player_t * player, artitype_t arti, mobj_t * mo);
+bool P_GiveAmmo(player_t * player, AmmoType_t ammo, int count);
+bool P_GiveArtifact(player_t * player, ArtiType_t arti, mobj_t * mo);
 bool P_GiveBody(player_t * player, int num);
-bool P_GivePower(player_t * player, powertype_t power);
+bool P_GivePower(player_t * player, PowerType_t power);
 bool P_ChickenMorphPlayer(player_t * player);
 
 // ***** AM_MAP *****

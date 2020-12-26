@@ -38,6 +38,11 @@ using Bit16s = int16_t;
 using Bit8u = uint8_t;
 using Bit8s = int8_t;
 
+struct opl3_slot;
+struct opl3_channel;
+struct opl3_writebuf;
+struct opl3_chip;
+
 struct opl3_slot
 {
 	opl3_channel* channel;

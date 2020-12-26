@@ -12,7 +12,6 @@
 		Common code to parse command line, identifying WAD files to load.
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
 
 #include "config.h"
 #include "d_iwad.h"

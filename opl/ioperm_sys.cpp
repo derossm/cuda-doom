@@ -15,14 +15,6 @@
 
 #ifdef _WIN32
 
-#include <stdio.h>
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <winioctl.h>
-
-#include <errno.h>
-
 #include "ioperm_sys.h"
 
 #define IOPERM_FILE L"\\\\.\\ioperm"
@@ -62,16 +54,16 @@ static SC_HANDLE (WINAPI* MyOpenServiceW)(SC_HANDLE hSCManager,
 											const wchar_t* lpServiceName,
 											DWORD dwDesiredAccess);
 
-static BOOL (WINAPI* MyStartServiceW)(SC_HANDLE hService,
+static bool (WINAPI* MyStartServiceW)(SC_HANDLE hService,
 										DWORD dwNumServiceArgs,
 										const wchar_t** lpServiceArgVectors);
 
-static BOOL (WINAPI* MyControlService)(SC_HANDLE hService,
+static bool (WINAPI* MyControlService)(SC_HANDLE hService,
 										DWORD dwControl,
 										LPSERVICE_STATUS lpServiceStatus);
 
-static BOOL (WINAPI* MyCloseServiceHandle)(SC_HANDLE hSCObject);
-static BOOL (WINAPI* MyDeleteService)(SC_HANDLE hService);
+static bool (WINAPI* MyCloseServiceHandle)(SC_HANDLE hSCObject);
+static bool (WINAPI* MyDeleteService)(SC_HANDLE hService);
 
 // NOTE: this is one of the most hideous abuses of structs + arrays I have ever seen
 static struct
@@ -135,7 +127,7 @@ int IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on)
 	HANDLE h;
 	struct ioperm_data ioperm_data;
 	DWORD BytesReturned;
-	BOOL r;
+	bool r;
 
 	h = CreateFileW(IOPERM_FILE, GENERIC_READ, 0, NULL,
 					OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);

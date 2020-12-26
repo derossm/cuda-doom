@@ -16,15 +16,9 @@
 
 #include "../derma/common.h"
 
-#ifndef __DOOMKEYS__
-#define __DOOMKEYS__
-
-//
 // DOOM keyboard definition.
 // This is the stuff configured by Setup.Exe.
 // Most key data are simple ascii (uppercased).
-//
-
 enum class Keybinds
 {
 	KEY_RIGHTARROW	= 0xae,
@@ -236,5 +230,3 @@ enum class Keybinds
 	{ ',', "," },	{ '.', "." },	{ '/', "/" },	{ '\\', "\\" },		\
 	{ '\'', "\'" },														\
 }
-
-#endif			// __DOOMKEYS__

@@ -182,7 +182,7 @@ void S_StartSong(int song, bool loop)
 		}
 
 		lumpnum = W_GetNumForName(songLump);
-		Mus_SndPtr = W_CacheLumpNum(lumpnum, PU_STATIC);
+		Mus_SndPtr = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 		length = W_LumpLength(lumpnum);
 
 		RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
@@ -293,7 +293,7 @@ void S_StartSongName(const char *songLump, bool loop)
 		}
 
 		lumpnum = W_GetNumForName(songLump);
-		Mus_SndPtr = W_CacheLumpNum(lumpnum, PU_MUSIC);
+		Mus_SndPtr = W_CacheLumpNum(lumpnum, pu_tags_t::PU_MUSIC);
 		length = W_LumpLength(lumpnum);
 
 		RegisteredSong = I_RegisterSong(Mus_SndPtr, length);
@@ -784,8 +784,8 @@ void S_UpdateSounds(mobj_t * listener)
 void S_Init()
 {
 	I_SetOPLDriverVer(opl_doom2_1_666);
-	SoundCurve = W_CacheLumpName("SNDCURVE", PU_STATIC);
-//		SoundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL);
+	SoundCurve = W_CacheLumpName("SNDCURVE", pu_tags_t::PU_STATIC);
+//		SoundCurve = Z_Malloc<decltype(//		SoundCurve)>(MAX_SND_DIST, pu_tags_t::PU_STATIC, NULL);
 
 	if (snd_Channels > 8)
 	{

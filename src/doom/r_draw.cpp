@@ -722,7 +722,7 @@ void R_DrawTLColumnLow()
 //
 void R_InitTranslationTables()
 {
-	translationtables = Z_Malloc(256*3, PU_STATIC, 0);
+	translationtables = Z_Malloc<decltype(translationtables)>(256*3, pu_tags_t::PU_STATIC, 0);
 
 	// translate just the 16 green colors
 	for (size_t i{0} ; i < 256 ; ++i)
@@ -899,12 +899,6 @@ void R_DrawSpan()
 
 void R_DrawSpanLow()
 {
-	// unsigned int position, step;
-	unsigned int xtemp, ytemp;
-	pixel_t *dest;
-	int count;
-	int spot;
-
 #ifdef RANGECHECK
 	if (ds_x2 < ds_x1 || ds_x1<0 || ds_x2>=SCREENWIDTH || (unsigned)ds_y>SCREENHEIGHT)
 	{
@@ -914,13 +908,14 @@ void R_DrawSpanLow()
 #endif
 
 /*
+	// unsigned int position, step;
 	position = ((ds_xfrac << 10) & 0xffff0000)
 				| ((ds_yfrac >> 6) & 0x0000ffff);
 	step = ((ds_xstep << 10) & 0xffff0000)
 			| ((ds_ystep >> 6) & 0x0000ffff);
 */
 
-	count = (ds_x2 - ds_x1);
+	int count = (ds_x2 - ds_x1);
 
 	// Blocky mode, need to multiply by 2.
 	ds_x1 <<= 1;
@@ -929,17 +924,17 @@ void R_DrawSpanLow()
 	// dest = ylookup[ds_y] + columnofs[ds_x1];
 	do
 	{
-		byte source;
 		// Calculate current texture index in u,v.
 		// [crispy] fix flats getting more distorted the closer they are to the right
-		ytemp = (ds_yfrac >> 10) & 0x0fc0;
-		xtemp = (ds_xfrac >> 16) & 0x3f;
-		spot = xtemp | ytemp;
+		unsigned int ytemp{(ds_yfrac >> 10) & 0x0fc0};
+		unsigned int xtemp{(ds_xfrac >> 16) & 0x3f};
+		int spot{xtemp | ytemp};
 
 		// Lowres/blocky mode does it twice,
 		// while scale is adjusted appropriately.
-		source = ds_source[spot];
-		dest = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
+		byte source{ds_source[spot]};
+	
+		pixel_t* dest{ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]]};
 		*dest = ds_colormap[ds_brightmap[source]][source];
 		dest = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
 		*dest = ds_colormap[ds_brightmap[source]][source];
@@ -950,13 +945,11 @@ void R_DrawSpanLow()
 	} while (--count);
 }
 
-//
 // R_InitBuffer
 // Creats lookup tables that avoid
 // multiplies and other hazzles
 // for getting the framebuffer address
 // of a pixel to draw.
-//
 void R_InitBuffer(int width, int height)
 {
 	// Handle resize,
@@ -981,7 +974,7 @@ void R_InitBuffer(int width, int height)
 	}
 
 	// Preclaculate all row offsets.
-	for (i=0 ; i<height ; i++)
+	for (size_t i{0}; i < height; ++i)
 	{
 		ylookup[i] = I_VideoBuffer + (i+viewwindowy)*SCREENWIDTH;
 	}
@@ -993,23 +986,14 @@ void R_InitBuffer(int width, int height)
 // Also draws a beveled edge.
 void R_FillBackScreen()
 {
-	byte* src;
-	pixel_t* dest;
-	int x;
-	int y;
-	patch_t* patch;
-
 	// DOOM border patch.
 	const char* name1 = DEH_String("FLOOR7_2");
 
 	// DOOM II border patch.
 	const char* name2 = DEH_String("GRNROCK");
 
-	const char* name;
-
 	// If we are running full screen, there is no need to do any of this,
 	// and the background buffer can be freed if it was previously in use.
-
 	if (scaledviewwidth == SCREENWIDTH)
 	{
 		if (background_buffer != nullptr)
@@ -1022,12 +1006,15 @@ void R_FillBackScreen()
 	}
 
 	// Allocate the background buffer if necessary
-
 	if (background_buffer == nullptr)
 	{
-		background_buffer = Z_Malloc(MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer), PU_STATIC, nullptr);
+		background_buffer = Z_Malloc<decltype(background_buffer)>(
+										MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
+										pu_tags_t::PU_STATIC,
+										nullptr);
 	}
 
+	const char* name;
 	if (gamemode == GameMode_t::commercial)
 	{
 		name = name2;
@@ -1037,13 +1024,13 @@ void R_FillBackScreen()
 		name = name1;
 	}
 
-	src = W_CacheLumpName(name, PU_CACHE);
-	dest = background_buffer;
+	byte* src = W_CacheLumpName(name, pu_tags_t::PU_CACHE);
+	pixel_t* dest = background_buffer;
 
-	for (y = 0; y<SCREENHEIGHT-SBARHEIGHT; ++y)
+	for (auto y{0}; y < SCREENHEIGHT-SBARHEIGHT; ++y)
 	{
 #ifndef CRISPY_TRUECOLOR
-		for (x = 0 ; x < SCREENWIDTH/64; ++x)
+		for (auto x{0}; x < SCREENWIDTH/64; ++x)
 		{
 			memcpy(dest, src+((y&63)<<6), 64);
 			dest += 64;
@@ -1055,7 +1042,7 @@ void R_FillBackScreen()
 			dest += (SCREENWIDTH&63);
 		}
 #else
-		for (x=0 ; x<SCREENWIDTH ; x++)
+		for (auto x{0}; x < SCREENWIDTH ; ++x)
 		{
 			*dest++ = colormaps[src[((y&63)<<6) + (x&63)]];
 		}
@@ -1064,47 +1051,44 @@ void R_FillBackScreen()
 
 	// Draw screen and bezel; this is done to a separate screen buffer.
 	V_UseBuffer(background_buffer);
-	patch = W_CacheLumpName(DEH_String("brdr_t"),PU_CACHE);
+	patch_t* patch = W_CacheLumpName(DEH_String("brdr_t"), pu_tags_t::PU_CACHE);
 
-	for ( x= 0 ; x < (scaledviewwidth >> crispy->hires); x += 8)
+	for (auto x{0}; x < (scaledviewwidth >> crispy->hires); x += 8)
 	{
 		V_DrawPatch((viewwindowx >> crispy->hires)+x-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8, patch);
 	}
-	patch = W_CacheLumpName(DEH_String("brdr_b"),PU_CACHE);
+	patch = W_CacheLumpName(DEH_String("brdr_b"), pu_tags_t::PU_CACHE);
 
-	for (x = 0; x < (scaledviewwidth >> crispy->hires); x += 8)
+	for (auto x{0}; x < (scaledviewwidth >> crispy->hires); x += 8)
 	{
 		V_DrawPatch((viewwindowx >> crispy->hires)+x-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires), patch);
 	}
-	patch = W_CacheLumpName(DEH_String("brdr_l"),PU_CACHE);
+	patch = W_CacheLumpName(DEH_String("brdr_l"), pu_tags_t::PU_CACHE);
 
-	for (y = 0; y < (viewheight >> crispy->hires); y += 8)
+	for (auto y{0}; y < (viewheight >> crispy->hires); y += 8)
 	{
 		V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+y, patch);
 	}
-	patch = W_CacheLumpName(DEH_String("brdr_r"),PU_CACHE);
+	patch = W_CacheLumpName(DEH_String("brdr_r"), pu_tags_t::PU_CACHE);
 
-	for (y = 0; y < (viewheight >> crispy->hires); y += 8)
+	for (auto y{0}; y < (viewheight >> crispy->hires); y += 8)
 	{
 		V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+y, patch);
 	}
 
 	// Draw beveled edge.
-	V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA,
-				(viewwindowy >> crispy->hires)-8,
-				W_CacheLumpName(DEH_String("brdr_tl"),PU_CACHE));
+	V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8,
+				W_CacheLumpName(DEH_String("brdr_tl"), pu_tags_t::PU_CACHE));
 
-	V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA,
-				(viewwindowy >> crispy->hires)-8,
-				W_CacheLumpName(DEH_String("brdr_tr"),PU_CACHE));
+	V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8,
+				W_CacheLumpName(DEH_String("brdr_tr"), pu_tags_t::PU_CACHE));
 
-	V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA,
-				(viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
-				W_CacheLumpName(DEH_String("brdr_bl"),PU_CACHE));
+	V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
+				W_CacheLumpName(DEH_String("brdr_bl"), pu_tags_t::PU_CACHE));
 
 	V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA,
 				(viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
-				W_CacheLumpName(DEH_String("brdr_br"),PU_CACHE));
+				W_CacheLumpName(DEH_String("brdr_br"), pu_tags_t::PU_CACHE));
 
 	V_RestoreBuffer();
 }
@@ -1113,10 +1097,8 @@ void R_FillBackScreen()
 void R_VideoErase(unsigned ofs, int count)
 {
 	// LFB copy.
-	// This might not be a good idea if memcpy
-	// is not optiomal, e.g. byte by byte on
-	// a 32bit CPU, as GNU GCC/Linux libc did
-	// at one point.
+	// This might not be a good idea if memcpy is not optiomal, e.g. byte by byte on
+	// a 32bit CPU, as GNU GCC/Linux libc did at one point.
 	if (background_buffer != nullptr)
 	{
 		memcpy(I_VideoBuffer + ofs, background_buffer + ofs, count * sizeof(*I_VideoBuffer));
@@ -1124,8 +1106,7 @@ void R_VideoErase(unsigned ofs, int count)
 }
 
 // R_DrawViewBorder
-// Draws the border around the view
-// for different size windows?
+// Draws the border around the view for different size windows?
 void R_DrawViewBorder()
 {
 	if (scaledviewwidth == SCREENWIDTH)
@@ -1153,5 +1134,5 @@ void R_DrawViewBorder()
 		ofs += SCREENWIDTH;
 	}
 
-	V_MarkRect(0,0,SCREENWIDTH, SCREENHEIGHT-SBARHEIGHT);
+	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT-SBARHEIGHT);
 }

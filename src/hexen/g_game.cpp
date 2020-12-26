@@ -11,7 +11,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <string.h>
 #include "m_random.h"
 #include "h2def.h"
 #include "s_sound.h"
@@ -57,8 +56,8 @@ void H2_AdvanceDemo();
 
 extern bool mn_SuicideConsole;
 
-gameaction_t gameaction;
-gamestate_t gamestate;
+GameAction_t gameaction;
+GameState_t gamestate;
 skill_t gameskill;
 //bool			respawnmonsters;
 int gameepisode;
@@ -432,7 +431,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 		cmd->arti = arti_egg;
 	}
 	else if (gamekeydown[key_arti_invulnerability] && !cmd->arti
-				&& !players[consoleplayer].powers[pw_invulnerability])
+				&& !players[consoleplayer].powers[PowerType_t::pw_invulnerability])
 	{
 		gamekeydown[key_arti_invulnerability] = false;
 		cmd->arti = arti_invulnerability;
@@ -455,7 +454,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
 	// Weapon cycling. Switch to previous or next weapon.
 	// (Disabled when player is a pig).
-	if (gamestate == GS_LEVEL
+	if (gamestate == GameState_t::GS_LEVEL
 		&& players[consoleplayer].morphTics == 0 && next_weapon != 0)
 	{
 		int start_i;
@@ -599,7 +598,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 	{
 		side = -MaxPlayerMove[pClass];
 	}
-	if (players[consoleplayer].powers[pw_speed]
+	if (players[consoleplayer].powers[PowerType_t::pw_speed]
 		&& !players[consoleplayer].morphTics)
 	{							// Adjust for a player with a speed artifact
 		forward = (3 * forward) >> 1;
@@ -679,7 +678,7 @@ void G_DoLoadLevel()
 	int i;
 
 	levelstarttic = gametic;	// for time calculation
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 	for (i = 0; i < maxplayers; i++)
 	{
 		if (playeringame[i] && players[i].playerstate == PST_DEAD)
@@ -790,7 +789,7 @@ bool G_Responder(event_t * ev)
 	}
 
 	// Check for spy mode player cycle
-	if (gamestate == GS_LEVEL && ev->type == ev_keydown
+	if (gamestate == GameState_t::GS_LEVEL && ev->type == ev_keydown
 		&& ev->data1 == key_spy && !deathmatch)
 	{							// Cycle the display player
 		do
@@ -810,7 +809,7 @@ bool G_Responder(event_t * ev)
 	{							// Chat ate the event
 		return (true);
 	}
-	if (gamestate == GS_LEVEL)
+	if (gamestate == GameState_t::GS_LEVEL)
 	{
 		if (SB_Responder(ev))
 		{						// Status bar ate the event
@@ -1091,19 +1090,19 @@ void G_Ticker()
 //
 	switch (gamestate)
 	{
-		case GS_LEVEL:
+		case GameState_t::GS_LEVEL:
 			P_Ticker();
 			SB_Ticker();
 			AM_Ticker();
 			CT_Ticker();
 			break;
-		case GS_INTERMISSION:
+		case GameState_t::GS_INTERMISSION:
 			IN_Ticker();
 			break;
-		case GS_FINALE:
+		case GameState_t::GS_FINALE:
 			F_Ticker();
 			break;
-		case GS_DEMOSCREEN:
+		case GameState_t::GS_DEMOSCREEN:
 			H2_PageTicker();
 			break;
 	}
@@ -1147,13 +1146,13 @@ void G_PlayerExitMap(int playerNumber)
 //		else
 
 	// Strip all current powers (retain flight)
-	flightPower = player->powers[pw_flight];
+	flightPower = player->powers[PowerType_t::pw_flight];
 	memset(player->powers, 0, sizeof(player->powers));
-	player->powers[pw_flight] = flightPower;
+	player->powers[PowerType_t::pw_flight] = flightPower;
 
 	if (deathmatch)
 	{
-		player->powers[pw_flight] = 0;
+		player->powers[PowerType_t::pw_flight] = 0;
 	}
 	else
 	{
@@ -1165,10 +1164,10 @@ void G_PlayerExitMap(int playerNumber)
 			// Strip flight artifact
 			for (i = 0; i < 25; i++)
 			{
-				player->powers[pw_flight] = 0;
+				player->powers[PowerType_t::pw_flight] = 0;
 				P_PlayerUseArtifact(player, arti_fly);
 			}
-			player->powers[pw_flight] = 0;
+			player->powers[PowerType_t::pw_flight] = 0;
 		}
 	}
 
@@ -1484,7 +1483,7 @@ void G_TeleportNewMap(int map, int position)
 void G_DoTeleportNewMap()
 {
 	SV_MapTeleport(LeaveMap, LeavePosition);
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 	gameaction = ga_nothing;
 	RebornPosition = LeavePosition;
 }
@@ -1550,7 +1549,7 @@ void G_DoCompleted()
 	}
 	else
 	{
-		gamestate = GS_INTERMISSION;
+		gamestate = GameState_t::GS_INTERMISSION;
 		IN_Start();
 	}
 
@@ -1588,7 +1587,7 @@ void G_DoCompleted()
 	{
 		gamemap++;
 	}
-	gamestate = GS_INTERMISSION;
+	gamestate = GameState_t::GS_INTERMISSION;
 	IN_Start();
 */
 }
@@ -1612,7 +1611,7 @@ void G_WorldDone()
 
 void G_DoWorldDone()
 {
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 	G_DoLoadLevel();
 	gameaction = ga_nothing;
 	viewactive = true;
@@ -1758,13 +1757,13 @@ void G_InitNew(skill_t skill, int episode, int map)
 		paused = false;
 		S_ResumeSound();
 	}
-	if (skill < sk_baby)
+	if (skill < skill_t::sk_baby)
 	{
-		skill = sk_baby;
+		skill = skill_t::sk_baby;
 	}
-	if (skill > sk_nightmare)
+	if (skill > skill_t::sk_nightmare)
 	{
-		skill = sk_nightmare;
+		skill = skill_t::sk_nightmare;
 	}
 	if (map < 1)
 	{
@@ -1869,7 +1868,7 @@ static void IncreaseDemoBuffer()
 	// Generate a new buffer twice the size
 	new_length = current_length * 2;
 
-	new_demobuffer = Z_Malloc(new_length, PU_STATIC, 0);
+	new_demobuffer = Z_Malloc<decltype(new_demobuffer)>(new_length, pu_tags_t::PU_STATIC, 0);
 	new_demop = new_demobuffer + (demo_p - demobuffer);
 
 	// Copy over the old data
@@ -1981,7 +1980,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
 	G_InitNew(skill, episode, map);
 	usergame = false;
 	demoname_size = strlen(name) + 5;
-	demoname = Z_Malloc(demoname_size, PU_STATIC, NULL);
+	demoname = Z_Malloc<decltype(demoname)>(demoname_size, pu_tags_t::PU_STATIC, NULL);
 	M_snprintf(demoname, demoname_size, "%s.lmp", name);
 	maxsize = 0x20000;
 
@@ -1996,7 +1995,7 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
 	i = M_CheckParmWithArgs("-maxdemo", 1);
 	if (i)
 		maxsize = atoi(myargv[i + 1]) * 1024;
-	demobuffer = Z_Malloc(maxsize, PU_STATIC, NULL);
+	demobuffer = Z_Malloc<decltype(demobuffer)>(maxsize, pu_tags_t::PU_STATIC, NULL);
 	demoend = demobuffer + maxsize;
 
 	demo_p = demobuffer;
@@ -2060,7 +2059,7 @@ void G_DoPlayDemo()
 
 	gameaction = ga_nothing;
 	lumpnum = W_GetNumForName(defdemoname);
-	demobuffer = W_CacheLumpNum(lumpnum, PU_STATIC);
+	demobuffer = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 	demo_p = demobuffer;
 	skill = *demo_p++;
 	episode = *demo_p++;
@@ -2117,7 +2116,7 @@ void G_TimeDemo(char *name)
 	skill_t skill;
 	int episode, map, i;
 
-	demobuffer = demo_p = W_CacheLumpName(name, PU_STATIC);
+	demobuffer = demo_p = W_CacheLumpName(name, pu_tags_t::PU_STATIC);
 	skill = *demo_p++;
 	episode = *demo_p++;
 	map = *demo_p++;

@@ -94,7 +94,7 @@ void P_InitTerrainTypes()
 	int size;
 
 	size = (numflats + 1) * sizeof(int);
-	TerrainTypes = Z_Malloc(size, PU_STATIC, 0);
+	TerrainTypes = Z_Malloc<decltype(TerrainTypes)>(size, pu_tags_t::PU_STATIC, 0);
 	memset(TerrainTypes, 0, size);
 	for (i = 0; TerrainTypeDefs[i].type != -1; i++)
 	{
@@ -437,7 +437,7 @@ bool EV_LineSearchForPuzzleItem(line_t * line, byte * args, mobj_t * mo)
 	player_t *player;
 	int i;
 	int type;
-	artitype_t arti;
+	ArtiType_t arti;
 
 	if (!mo)
 		return false;

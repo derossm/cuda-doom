@@ -13,10 +13,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 #include "SDL.h"
 #include "SDL_mixer.h"
@@ -991,7 +987,7 @@ static bool IsMusicLump(int lumpnum)
 		return false;
 	}
 
-	data = W_CacheLumpNum(lumpnum, PU_STATIC);
+	data = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 
 	result = memcmp(data, MUS_HEADER_MAGIC, 4) == 0
 			|| memcmp(data, MID_HEADER_MAGIC, 4) == 0;
@@ -1036,7 +1032,7 @@ static void DumpSubstituteConfig(const char *filename)
 		}
 
 		// Calculate hash.
-		data = W_CacheLumpNum(lumpnum, PU_STATIC);
+		data = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 		SHA1_Init(&context);
 		SHA1_Update(&context, data, W_LumpLength(lumpnum));
 		SHA1_Final(digest, &context);

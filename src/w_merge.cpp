@@ -14,10 +14,6 @@
 // read the deutex source code made my brain hurt.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 #include "doomtype.h"
 #include "i_swap.h" // [crispy] LONG()
@@ -142,7 +138,7 @@ static void InitSpriteList()
 	if (sprite_frames == NULL)
 	{
 		sprite_frames_alloced = 128;
-		sprite_frames = Z_Malloc(sizeof(*sprite_frames) * sprite_frames_alloced,
+		sprite_frames = Z_Malloc<decltype(*sprite_frames)>(sizeof(*sprite_frames) * sprite_frames_alloced,
 									PU_STATIC, NULL);
 	}
 
@@ -201,7 +197,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
 	{
 		sprite_frame_t *newframes;
 
-		newframes = Z_Malloc(sprite_frames_alloced * 2 * sizeof(*sprite_frames),
+		newframes = Z_Malloc<decltype(newframes)>(sprite_frames_alloced * 2 * sizeof(*sprite_frames),
 								PU_STATIC, NULL);
 		memcpy(newframes, sprite_frames,
 				sprite_frames_alloced * sizeof(*sprite_frames));

@@ -14,9 +14,6 @@
 
 #include "../derma/common.h"
 
-#ifndef __D_IWAD__
-#define __D_IWAD__
-
 #include "d_mode.h"
 
 #define IWAD_MASK_DOOM	(	(1 << doom)			\
@@ -39,13 +36,20 @@ struct iwad_t
 };
 
 bool D_IsIWADName(const char* name);
-const char* D_FindWADByName(const char* filename);
-const char* D_TryFindWADByName(const char* filename);
-const char* D_FindIWAD(int mask, GameMission_t* mission);
+auto D_FindWADByName(const char* filename);
+auto D_TryFindWADByName(const char* filename);
+auto D_FindIWAD(int mask, GameMission_t* mission);
 const iwad_t** D_FindAllIWADs(int mask);
-const char* D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant);
-const char* D_SuggestIWADName(GameMission_t mission, GameMode_t mode);
-const char* D_SuggestGameName(GameMission_t mission, GameMode_t mode);
+auto D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant);
+auto D_SuggestIWADName(GameMission_t mission, GameMode_t mode);
+auto D_SuggestGameName(GameMission_t mission, GameMode_t mode);
 void D_CheckCorrectIWAD(GameMission_t mission);
 
+#if defined(_WIN32) && !defined(_WIN32_WCE)
+struct registry_value_t
+{
+	HKEY root;
+	const char* path;
+	const char* value;
+};
 #endif

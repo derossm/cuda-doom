@@ -15,9 +15,6 @@
 
 #include "buffer.h"
 
-#include <stdlib.h>
-#include <stddef.h>
-
 auto NewBuffer()
 {
 	auto buf{std::make_unique<buffer_t>()};

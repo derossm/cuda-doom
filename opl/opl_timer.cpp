@@ -9,8 +9,7 @@
 
 	DESCRIPTION:
 		OPL timer thread.
-//		Once started using OPL_Timer_StartThread, the thread sleeps,
-//		waking up to invoke callbacks set using OPL_Timer_SetCallback.
+		Once started using OPL_Timer_StartThread, the thread sleeps, waking up to invoke callbacks set using OPL_Timer_SetCallback.
 \**********************************************************************************************************************************************/
 
 #include "SDL.h"
@@ -18,48 +17,40 @@
 #include "opl_timer.h"
 #include "opl_queue.h"
 
-typedef enum
+enum class thread_state_t
 {
 	THREAD_STATE_STOPPED,
 	THREAD_STATE_RUNNING,
 	THREAD_STATE_STOPPING,
-} thread_state_t;
+};
 
-static SDL_Thread *timer_thread = NULL;
+static SDL_Thread* timer_thread = nullptr;
 static thread_state_t timer_thread_state;
 static uint64_t current_time;
 
 // If non-zero, callbacks are currently paused.
-
 static int opl_timer_paused;
 
-// Offset in microseconds to adjust time due to the fact that playback
-// was paused.
-
+// Offset in microseconds to adjust time due to the fact that playback was paused.
 static uint64_t pause_offset = 0;
 
 // Queue of callbacks waiting to be invoked.
 // The callback queue mutex is held while the callback queue structure
 // or current_time is being accessed.
-
-static opl_callback_queue_t *callback_queue;
-static SDL_mutex *callback_queue_mutex;
+static opl_callback_queue_t* callback_queue;
+static SDL_mutex* callback_queue_mutex;
 
 // The timer mutex is held while timer callback functions are being
 // invoked, so that the calling code can prevent clashes.
-
-static SDL_mutex *timer_mutex;
+static SDL_mutex* timer_mutex;
 
 // Returns true if there is a callback at the head of the queue ready
 // to be invoked. Otherwise, next_time is set to the time when the
 // timer thread must wake up again to check.
-
-static int CallbackWaiting(uint64_t *next_time)
+static int CallbackWaiting(uint64_t* next_time)
 {
 	// If paused, just wait in 50ms increments until unpaused.
-	// Update pause_offset so after we unpause, the callback
-	// times will be right.
-
+	// Update pause_offset so after we unpause, the callback times will be right.
 	if (opl_timer_paused)
 	{
 		*next_time = current_time + 50 * OPL_MS;
@@ -67,9 +58,7 @@ static int CallbackWaiting(uint64_t *next_time)
 		return 0;
 	}
 
-	// If there are no queued callbacks, sleep for 50ms at a time
-	// until a callback is added.
-
+	// If there are no queued callbacks, sleep for 50ms at a time until a callback is added.
 	if (OPL_Queue_IsEmpty(callback_queue))
 	{
 		*next_time = current_time + 50 * OPL_MS;
@@ -77,9 +66,7 @@ static int CallbackWaiting(uint64_t *next_time)
 	}
 
 	// Read the time of the first callback in the queue.
-	// If the time for the callback has not yet arrived,
-	// we must sleep until the callback time.
-
+	// If the time for the callback has not yet arrived, we must sleep until the callback time.
 	*next_time = OPL_Queue_Peek(callback_queue) + pause_offset;
 
 	return *next_time <= current_time;
@@ -88,20 +75,16 @@ static int CallbackWaiting(uint64_t *next_time)
 static uint64_t GetNextTime()
 {
 	opl_callback_t callback;
-	void *callback_data;
+	void* callback_data;
 	uint64_t next_time;
 	int have_callback;
 
-	// Keep running through callbacks until there are none ready to
-	// run. When we run out of callbacks, next_time will be set.
-
+	// Keep running through callbacks until there are none ready to run. When we run out of callbacks, next_time will be set.
 	do
 	{
 		SDL_LockMutex(callback_queue_mutex);
 
-		// Check if the callback at the head of the list is ready to
-		// be invoked. If so, pop from the head of the queue.
-
+		// Check if the callback at the head of the list is ready to be invoked. If so, pop from the head of the queue.
 		have_callback = CallbackWaiting(&next_time);
 
 		if (have_callback)
@@ -111,9 +94,7 @@ static uint64_t GetNextTime()
 
 		SDL_UnlockMutex(callback_queue_mutex);
 
-		// Now invoke the callback, if we have one.
-		// The timer mutex is held while the callback is invoked.
-
+		// Now invoke the callback, if we have one. The timer mutex is held while the callback is invoked.
 		if (have_callback)
 		{
 			SDL_LockMutex(timer_mutex);
@@ -125,18 +106,15 @@ static uint64_t GetNextTime()
 	return next_time;
 }
 
-static int ThreadFunction(void *unused)
+static int ThreadFunction(void* unused)
 {
 	uint64_t next_time;
 	uint64_t now;
 
 	// Keep running until OPL_Timer_StopThread is called.
-
-	while (timer_thread_state == THREAD_STATE_RUNNING)
+	while (timer_thread_state == thread_state_t::THREAD_STATE_RUNNING)
 	{
-		// Get the next time that we must sleep until, and
-		// wait until that time.
-
+		// Get the next time that we must sleep until, and wait until that time.
 		next_time = GetNextTime();
 		now = SDL_GetTicks() * OPL_MS;
 
@@ -146,13 +124,12 @@ static int ThreadFunction(void *unused)
 		}
 
 		// Update the current time.
-
 		SDL_LockMutex(callback_queue_mutex);
 		current_time = next_time;
 		SDL_UnlockMutex(callback_queue_mutex);
 	}
 
-	timer_thread_state = THREAD_STATE_STOPPED;
+	timer_thread_state = thread_state_t::THREAD_STATE_STOPPED;
 
 	return 0;
 }
@@ -175,7 +152,7 @@ int OPL_Timer_StartThread()
 {
 	InitResources();
 
-	timer_thread_state = THREAD_STATE_RUNNING;
+	timer_thread_state = thread_state_t::THREAD_STATE_RUNNING;
 	current_time = SDL_GetTicks();
 	opl_timer_paused = 0;
 	pause_offset = 0;
@@ -184,7 +161,7 @@ int OPL_Timer_StartThread()
 
 	if (timer_thread == NULL)
 	{
-		timer_thread_state = THREAD_STATE_STOPPED;
+		timer_thread_state = thread_state_t::THREAD_STATE_STOPPED;
 		FreeResources();
 
 		return 0;
@@ -195,9 +172,9 @@ int OPL_Timer_StartThread()
 
 void OPL_Timer_StopThread()
 {
-	timer_thread_state = THREAD_STATE_STOPPING;
+	timer_thread_state = thread_state_t::THREAD_STATE_STOPPING;
 
-	while (timer_thread_state != THREAD_STATE_STOPPED)
+	while (timer_thread_state != thread_state_t::THREAD_STATE_STOPPED)
 	{
 		SDL_Delay(1);
 	}
@@ -205,11 +182,10 @@ void OPL_Timer_StopThread()
 	FreeResources();
 }
 
-void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void *data)
+void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void* data)
 {
 	SDL_LockMutex(callback_queue_mutex);
-	OPL_Queue_Push(callback_queue, callback, data,
-					current_time + us - pause_offset);
+	OPL_Queue_Push(callback_queue, callback, data, current_time + us - pause_offset);
 	SDL_UnlockMutex(callback_queue_mutex);
 }
 
@@ -243,4 +219,3 @@ void OPL_Timer_SetPaused(int paused)
 	opl_timer_paused = paused;
 	SDL_UnlockMutex(callback_queue_mutex);
 }
-

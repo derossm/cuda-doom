@@ -19,12 +19,12 @@
 #define __P_INTER__
 
 // haleyjd [STRIFE]: Multiple externals added
-bool P_GiveCard(player_t* player, card_t card);
+bool P_GiveCard(player_t* player, CardType_t card);
 bool P_GiveBody(player_t* player, int num);
 bool P_GiveArmor(player_t* player, int armortype);
-bool P_GivePower(player_t* player, powertype_t power);
-bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num);
-bool P_GiveWeapon(player_t* player, weapontype_t weapon, bool dropped);
+bool P_GivePower(player_t* player, PowerType_t power);
+bool P_GiveAmmo(player_t* player, AmmoType_t ammo, int num);
+bool P_GiveWeapon(player_t* player, WeaponType_t weapon, bool dropped);
 void P_KillMobj(mobj_t* source, mobj_t* target);
 
 #endif

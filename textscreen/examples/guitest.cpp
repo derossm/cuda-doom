@@ -11,9 +11,6 @@
 		Demonstrates all the main textscreen widgets in use and shows how a simple textscreen program can be written.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "..\textscreen.h"
 

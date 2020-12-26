@@ -12,7 +12,6 @@
 	Moving object handling. Spawn functions.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
 
 #include "i_system.h"
 #include "z_zone.h"
@@ -623,7 +622,7 @@ P_SpawnMobj
 	state_t*	st;
 	mobjinfo_t*	info;
 
-	mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
+	mobj = Z_Malloc<decltype(*mobj)>(sizeof(*mobj), pu_tags_t::PU_LEVEL, NULL);
 	memset(mobj, 0, sizeof (*mobj));
 	info = &mobjinfo[type];
 
@@ -638,7 +637,7 @@ P_SpawnMobj
 
 	// haleyjd 09/25/10: [STRIFE] Doesn't do this; messes up flamethrower
 	// and a lot of other stuff using reactiontime as a counter.
-	//if (gameskill != sk_nightmare)
+	//if (gameskill != skill_t::sk_nightmare)
 	mobj->reactiontime = info->reactiontime;
 
 	mobj->lastlook = P_Random () % MAXPLAYERS;
@@ -946,9 +945,9 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	if (!netgame && (mthing->options & 16) )
 		return;
 
-	if (gameskill == sk_baby)
+	if (gameskill == skill_t::sk_baby)
 		bit = 1;
-	else if (gameskill == sk_nightmare)
+	else if (gameskill == skill_t::sk_nightmare)
 		bit = 4;
 	else
 		bit = 1<<(gameskill-1);

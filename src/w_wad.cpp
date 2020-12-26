@@ -15,10 +15,6 @@
 
 
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "doomtype.h"
 
@@ -145,7 +141,7 @@ wad_file_t *W_AddFile (const char *filename)
 		// them back. Effectively we're constructing a "fake WAD directory"
 		// here, as it would appear on disk.
 
-	fileinfo = Z_Malloc(sizeof(filelump_t), PU_STATIC, 0);
+	fileinfo = Z_Malloc<filelump_t>(sizeof(filelump_t), pu_tags_t::PU_STATIC, 0);
 	fileinfo->filepos = LONG(0);
 	fileinfo->size = LONG(wad_file->length);
 
@@ -187,7 +183,7 @@ wad_file_t *W_AddFile (const char *filename)
 
 	header.infotableofs = LONG(header.infotableofs);
 	length = header.numlumps*sizeof(filelump_t);
-	fileinfo = Z_Malloc(length, PU_STATIC, 0);
+	fileinfo = Z_Malloc<decltype(fileinfo)>(length, pu_tags_t::PU_STATIC, 0);
 
 		W_Read(wad_file, header.infotableofs, fileinfo, length);
 	numfilelumps = header.numlumps;
@@ -387,8 +383,8 @@ void W_ReadLump(lumpindex_t lump, void *dest)
 // the lump data.
 //
 // 'tag' is the type of zone memory buffer to allocate for the lump
-// (usually PU_STATIC or PU_CACHE). If the lump is loaded as
-// PU_STATIC, it should be released back using W_ReleaseLumpNum
+// (usually pu_tags_t::PU_STATIC or pu_tags_t::PU_CACHE). If the lump is loaded as
+// pu_tags_t::PU_STATIC, it should be released back using W_ReleaseLumpNum
 // when no longer needed (do not use Z_ChangeTag).
 //
 
@@ -426,7 +422,7 @@ void *W_CacheLumpNum(lumpindex_t lumpnum, int tag)
 	{
 		// Not yet loaded, so load it now
 
-		lump->cache = Z_Malloc(W_LumpLength(lumpnum), tag, &lump->cache);
+		lump->cache = Z_Malloc<decltype(lump->cache)>(W_LumpLength(lumpnum), tag, &lump->cache);
 	W_ReadLump (lumpnum, lump->cache);
 		result = lump->cache;
 	}
@@ -471,7 +467,7 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum)
 	}
 	else
 	{
-		Z_ChangeTag(lump->cache, PU_CACHE);
+		Z_ChangeTag(lump->cache, pu_tags_t::PU_CACHE);
 	}
 }
 
@@ -510,7 +506,7 @@ void W_Profile ()
 	else
 	{
 		block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
-		if (block->tag < PU_PURGELEVEL)
+		if (block->tag < pu_tags_t::PU_PURGELEVEL)
 		ch = 'S';
 		else
 		ch = 'P';
@@ -561,7 +557,7 @@ void W_GenerateHashTable()
 	// Generate hash table
 	if (numlumps > 0)
 	{
-		lumphash = Z_Malloc(sizeof(lumpindex_t) * numlumps, PU_STATIC, NULL);
+		lumphash = Z_Malloc<lumpindex_t>(sizeof(lumpindex_t) * numlumps, pu_tags_t::PU_STATIC, NULL);
 
 		for (i = 0; i < numlumps; ++i)
 		{

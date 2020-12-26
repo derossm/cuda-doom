@@ -35,10 +35,10 @@
 - (void) runSetup: (id)sender;
 - (void) awakeFromNib;
 - (void) clearCommandLine;
-- (BOOL) addIWADPath: (NSString *) path;
+- (bool) addIWADPath: (NSString *) path;
 - (void) addFileToCommandLine: (NSString *) fileName
 			forArgument: (NSString *) args;
-- (BOOL) selectGameByName: (const char *) name;
+- (bool) selectGameByName: (const char *) name;
 - (void) openTerminal: (id) sender;
 
 - (void) openREADME: (id) sender;

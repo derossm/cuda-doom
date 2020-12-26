@@ -12,25 +12,38 @@
 
 #include "../derma/common.h"
 
-#ifndef MEMIO_H
-#define MEMIO_H
+enum class memfile_mode_t
+{
+	MODE_READ,
+	MODE_WRITE
+};
 
-typedef struct _MEMFILE MEMFILE;
-
-typedef enum
+enum class mem_rel_t
 {
 	MEM_SEEK_SET,
 	MEM_SEEK_CUR,
-	MEM_SEEK_END,
-} mem_rel_t;
+	MEM_SEEK_END
+};
 
-MEMFILE* mem_fopen_read(void* buf, size_t buflen);
-size_t mem_fread(void* buf, size_t size, size_t nmemb, MEMFILE* stream);
-MEMFILE* mem_fopen_write();
-size_t mem_fwrite(const void* ptr, size_t size, size_t nmemb, MEMFILE* stream);
-void mem_get_buf(MEMFILE* stream, void** buf, size_t* buflen);
+using BufferType = unsigned char;
+using BufferType_Void = unsigned char;
+
+struct MEMFILE
+{
+	BufferType* buf;
+	size_t buflen;
+	size_t alloced;
+	size_t position;
+	memfile_mode_t mode;
+};
+
+auto mem_fopen_read(BufferType_Void* buf, size_t buflen);
+size_t mem_fread(BufferType_Void* buf, size_t size, size_t nmemb, MEMFILE* stream);
+
+auto mem_fopen_write();
+auto mem_fwrite(const BufferType_Void* ptr, size_t size, size_t nmemb, MEMFILE* stream);
+
+void mem_get_buf(MEMFILE* stream, BufferType_Void** buf, size_t* buflen);
 void mem_fclose(MEMFILE* stream);
-long mem_ftell(MEMFILE* stream);
-int mem_fseek(MEMFILE* stream, signed long offset, mem_rel_t whence);
-
-#endif /* #ifndef MEMIO_H */
+auto mem_ftell(MEMFILE* stream);
+auto mem_fseek(MEMFILE* stream, signed long offset, mem_rel_t whence);

@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	System specific interface stuff.
+		System specific interface stuff.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __I_SYSTEM__
-#define __I_SYSTEM__
 
 #include "d_ticcmd.h"
 #include "d_event.h"
@@ -26,38 +23,31 @@ typedef void (*atexit_func_t)();
 // Called by DoomMain.
 void I_Init ();
 
-// Called by startup code
-// to get the ammount of memory to malloc
-// for the zone management.
-byte*	I_ZoneBase(int* size);
+// Called by startup code to get the ammount of memory to malloc for the zone management.
+byte* I_ZoneBase(int* size);
 
 bool I_ConsoleStdout();
 
 // Asynchronous interrupt functions should maintain private queues
-// that are read by the synchronous functions
-// to be converted into events.
+// that are read by the synchronous functions to be converted into events.
 
-// Either returns a null ticcmd,
-// or calls a loadable driver to build it.
-// This ticcmd will then be modified by the gameloop
-// for normal input.
+// Either returns a null ticcmd, or calls a loadable driver to build it.
+// This ticcmd will then be modified by the gameloop for normal input.
 ticcmd_t* I_BaseTiccmd();
 
-// Called by M_Responder when quit is selected.
-// Clean exit, displays sell blurb.
-void I_Quit () NORETURN;
+// Called by M_Responder when quit is selected. Clean exit, displays sell blurb.
+void I_Quit()NORETURN;
 
 void I_Error(const char* error, ...) NORETURN PRINTF_ATTR(1, 2);
 
-void I_Tactile (int on, int off, int total);
+void I_Tactile(int on, int off, int total);
 
 void *I_Realloc(void* ptr, size_t size);
 
 bool I_GetMemoryValue(unsigned int offset, void* value, int size);
 
 // Schedule a function to be called when the program exits.
-// If run_if_error is true, the function is called if the exit
-// is due to an error (I_Error)
+// If run_if_error is true, the function is called if the exit is due to an error (I_Error)
 void I_AtExit(atexit_func_t func, bool run_if_error);
 
 // Add all system-specific config file variable bindings.
@@ -71,5 +61,3 @@ void I_PrintBanner(const char* text);
 
 // Print a dividing line for startup banners.
 void I_PrintDivider();
-
-#endif

@@ -15,42 +15,32 @@
 
 #include "../../derma/common.h"
 
-#ifndef __DOOMDEF__
-#define __DOOMDEF__
-
 #include "doomtype.h"
 #include "i_timer.h"
 #include "d_mode.h"
 
-//
-// Global parameters/defines.
-//
 // DOOM version
 #define DOOM_VERSION 109
 
 // Version code for cph's longtics hack ("v1.91")
 #define DOOM_191_VERSION 111
 
-
-// If rangecheck is undefined,
-// most parameter validation debugging code will not be compiled
+// If rangecheck is undefined, most parameter validation debugging code will not be compiled
 #define RANGECHECK
 
 // The maximum number of players, multiplayer/networking.
 #define MAXPLAYERS 4
 
-// The current state of the game: whether we are
-// playing, gazing at the intermission screen,
-// the game final animation, or a demo.
-typedef enum
+// The current state of the game: whether we are playing, gazing at the intermission screen, the game final animation, or a demo.
+enum class GameState_t
 {
 	GS_LEVEL,
 	GS_INTERMISSION,
 	GS_FINALE,
 	GS_DEMOSCREEN,
-} gamestate_t;
+};
 
-typedef enum
+enum class GameAction_t
 {
 	ga_nothing,
 	ga_loadlevel,
@@ -62,11 +52,9 @@ typedef enum
 	ga_victory,
 	ga_worlddone,
 	ga_screenshot
-} gameaction_t;
+};
 
-//
 // Difficulty/skill settings/filters.
-//
 
 // Skill flags.
 #define	MTF_EASY		1
@@ -76,11 +64,8 @@ typedef enum
 // Deaf monsters/do not react to sound.
 #define	MTF_AMBUSH		8
 
-
-//
 // Key cards.
-//
-typedef enum
+enum class CardType_t
 {
 	it_bluecard,
 	it_yellowcard,
@@ -90,15 +75,10 @@ typedef enum
 	it_redskull,
 
 	NUMCARDS
+};
 
-} card_t;
-
-
-
-// The defined weapons,
-// including a marker indicating
-// user has not changed weapon.
-typedef enum
+// The defined weapons, including a marker indicating user has not changed weapon.
+enum class WeaponType_t
 {
 	wp_fist,
 	wp_pistol,
@@ -114,12 +94,10 @@ typedef enum
 
 	// No pending weapon change.
 	wp_nochange
-
-} weapontype_t;
-
+};
 
 // Ammunition types defined.
-typedef enum
+enum class AmmoType_t
 {
 	am_clip,	// Pistol / chaingun ammo.
 	am_shell,	// Shotgun / double barreled shotgun.
@@ -127,12 +105,10 @@ typedef enum
 	am_misl,	// Missile launcher.
 	NUMAMMO,
 	am_noammo	// Unlimited for chainsaw / fist.
-
-} ammotype_t;
-
+};
 
 // Power up artifacts.
-typedef enum
+enum class PowerType_t
 {
 	pw_invulnerability,
 	pw_strength,
@@ -144,23 +120,13 @@ typedef enum
 	// [crispy] showfps and mapcoords are now "powers"
 	pw_showfps,
 	pw_mapcoords
+};
 
-} powertype_t;
-
-
-
-//
-// Power up durations,
-// how many seconds till expiration,
-// assuming TICRATE is 35 ticks/second.
-//
-typedef enum
+// Power up durations, how many seconds till expiration, assuming TICRATE is 35 ticks/second.
+enum class PowerDuration_t
 {
 	INVULNTICS	= (30*TICRATE),
 	INVISTICS	= (60*TICRATE),
 	INFRATICS	= (120*TICRATE),
 	IRONTICS	= (60*TICRATE)
-
-} powerduration_t;
-
-#endif	// __DOOMDEF__
+};

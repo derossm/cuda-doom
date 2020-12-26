@@ -9,51 +9,39 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
- Internally used data structures for virtually everything,
-//	lots of other stuff.
+		Internally used data structures for virtually everything, lots of other stuff.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __DOOMDEF__
-#define __DOOMDEF__
-
 #include "doomtype.h"
 #include "i_timer.h"
 #include "d_mode.h"
 
-//
-// Global parameters/defines.
-//
 // DOOM version
-//
 // haleyjd 09/28/10: Replaced with Strife version
 #define STRIFE_VERSION 101
 
 // Version code for cph's longtics hack ("v1.91")
 #define DOOM_191_VERSION 111
 
-
 // Maximum players for Strife:
 #define MAXPLAYERS 8
 
-// If rangecheck is undefined,
-// most parameter validation debugging code will not be compiled
+// If rangecheck is undefined, most parameter validation debugging code will not be compiled
 #define RANGECHECK
 
-// The current state of the game: whether we are
-// playing, gazing at the intermission screen,
-// the game final animation, or a demo.
-typedef enum
+// The current state of the game: whether we are playing, gazing at the intermission screen, the game final animation, or a demo.
+enum class GameState_t
 {
 	GS_LEVEL,
 	GS_UNKNOWN,
 	GS_FINALE,
 	GS_DEMOSCREEN,
-} gamestate_t;
+};
 
-typedef enum
+enum class GameAction_t
 {
 	ga_nothing,
 	ga_loadlevel,
@@ -65,7 +53,7 @@ typedef enum
 	ga_victory,
 	ga_worlddone,
 	ga_screenshot
-} gameaction_t;
+};
 
 //
 // Difficulty/skill settings/filters.
@@ -92,13 +80,9 @@ typedef enum
 // villsa [STRIFE] TODO - identify
 #define MTF_UNKNOWN2			1024
 
-
-
-//
 // Key cards.
-//
 // villsa [STRIFE]
-typedef enum
+enum class CardType_t
 {
 	key_BaseKey,		// 0
 	key_GovsKey,		// 1
@@ -129,15 +113,13 @@ typedef enum
 	key_NewKey5,		// 26
 
 	NUMCARDS			// 27
-} card_t;
-
-
+};
 
 // The defined weapons,
 // including a marker indicating
 // user has not changed weapon.
 // villsa [STRIFE]
-typedef enum
+enum class WeaponType_t
 {
 	wp_fist,
 	wp_elecbow,
@@ -155,12 +137,10 @@ typedef enum
 
 	// No pending weapon change.
 	wp_nochange
-
-} weapontype_t;
-
+};
 
 // Ammunition types defined.
-typedef enum
+enum class AmmoType_t
 {
 	am_bullets,
 	am_elecbolts,
@@ -173,13 +153,11 @@ typedef enum
 	NUMAMMO,
 
 	am_noammo	// unlimited ammo
-
-} ammotype_t;
-
+};
 
 // Power up artifacts.
 // villsa [STRIFE]
-typedef enum
+enum class PowerType_t
 {
 	pw_strength,
 	pw_invisibility,
@@ -188,12 +166,11 @@ typedef enum
 	pw_communicator,
 	pw_targeter,
 	NUMPOWERS
-
-} powertype_t;
+};
 
 // villsa [STRIFE]
 // quest numbers
-typedef enum
+enum class QuestType_t
 {				// Hex			Watcom Name				player_t offset
 	tk_quest1, // 0x00000001	questflags & 1			0x4D
 	tk_quest2, // 0x00000002	questflags & 2
@@ -228,60 +205,54 @@ typedef enum
 	tk_quest31, // 0x40000000	BYTE3(questflags) & 40h
 	tk_quest32, // most likely unused
 	tk_numquests
-} questtype_t;
+};
 
 // haleyjd 09/12/10: [STRIFE]
 // flag values for each quest.
 enum
-{ // Name		Flag from bitnum		Purpose, if known
-	QF_QUEST1 = (1 << tk_quest1), // Obtained Beldin's ring
-	QF_QUEST2 = (1 << tk_quest2), // Stole the Chalice
-	QF_QUEST3 = (1 << tk_quest3), // Permission to visit Irale (visited Macil)
-	QF_QUEST4 = (1 << tk_quest4), // Accepted Gov. Mourel's "messy" chore
-	QF_QUEST5 = (1 << tk_quest5), // Accepted Gov. Mourel's "bloody" chore
-	QF_QUEST6 = (1 << tk_quest6), // Destroyed the Power Coupling
-	QF_QUEST7 = (1 << tk_quest7), // Killed Blue Acolytes ("Scanning Team")
-	QF_QUEST8 = (1 << tk_quest8), // Unused; formerly, picked up Broken Coupling
-	QF_QUEST9 = (1 << tk_quest9), // Obtained Derwin's ear
-	QF_QUEST10 = (1 << tk_quest10), // Obtained Prison Pass
-	QF_QUEST11 = (1 << tk_quest11), // Obtained Prison Key
-	QF_QUEST12 = (1 << tk_quest12), // Obtained Judge Wolenick's hand
-	QF_QUEST13 = (1 << tk_quest13), // Freed the Prisoners
-	QF_QUEST14 = (1 << tk_quest14), // Destroyed the Power Crystal
-	QF_QUEST15 = (1 << tk_quest15), // Obtained Guard Uniform
-	QF_QUEST16 = (1 << tk_quest16), // Destroyed the Gate Mechanism
-	QF_QUEST17 = (1 << tk_quest17), // Heard Macil's story about the Sigil (MAP10)
-	QF_QUEST18 = (1 << tk_quest18), // Obtained Oracle Pass
-	QF_QUEST19 = (1 << tk_quest19),
-	QF_QUEST20 = (1 << tk_quest20),
-	QF_QUEST21 = (1 << tk_quest21), // Killed Bishop
-	QF_QUEST22 = (1 << tk_quest22), // Killed Oracle with QUEST21 set
-	QF_QUEST23 = (1 << tk_quest23), // Killed Oracle (always given)
-	QF_QUEST24 = (1 << tk_quest24), // Killed Macil
-	QF_QUEST25 = (1 << tk_quest25), // Destroyed the Converter
-	QF_QUEST26 = (1 << tk_quest26), // Killed Loremaster
-	QF_QUEST27 = (1 << tk_quest27), // Destroyed the Computer (checked for good ending)
-	QF_QUEST28 = (1 << tk_quest28), // Obtained Catacomb Key (checked by line type 228)
-	QF_QUEST29 = (1 << tk_quest29), // Destroyed the Mines Transmitter
-	QF_QUEST30 = (1 << tk_quest30),
-	QF_QUEST31 = (1 << tk_quest31),
-	QF_QUEST32 = (1U << tk_quest32), // Unused; BUG: Broken Coupling accidentally sets it.
+{
+	// Name			Flag from bitnum				Purpose, if known
+	QF_QUEST1 	= (1 << QuestType_t::tk_quest1),	// Obtained Beldin's ring
+	QF_QUEST2	= (1 << QuestType_t::tk_quest2),	// Stole the Chalice
+	QF_QUEST3	= (1 << QuestType_t::tk_quest3),	// Permission to visit Irale (visited Macil)
+	QF_QUEST4	= (1 << QuestType_t::tk_quest4),	// Accepted Gov. Mourel's "messy" chore
+	QF_QUEST5	= (1 << QuestType_t::tk_quest5),	// Accepted Gov. Mourel's "bloody" chore
+	QF_QUEST6	= (1 << QuestType_t::tk_quest6),	// Destroyed the Power Coupling
+	QF_QUEST7	= (1 << QuestType_t::tk_quest7),	// Killed Blue Acolytes ("Scanning Team")
+	QF_QUEST8	= (1 << QuestType_t::tk_quest8),	// Unused; formerly, picked up Broken Coupling
+	QF_QUEST9	= (1 << QuestType_t::tk_quest9),	// Obtained Derwin's ear
+	QF_QUEST10	= (1 << QuestType_t::tk_quest10),	// Obtained Prison Pass
+	QF_QUEST11	= (1 << QuestType_t::tk_quest11),	// Obtained Prison Key
+	QF_QUEST12	= (1 << QuestType_t::tk_quest12),	// Obtained Judge Wolenick's hand
+	QF_QUEST13	= (1 << QuestType_t::tk_quest13),	// Freed the Prisoners
+	QF_QUEST14	= (1 << QuestType_t::tk_quest14),	// Destroyed the Power Crystal
+	QF_QUEST15	= (1 << QuestType_t::tk_quest15),	// Obtained Guard Uniform
+	QF_QUEST16	= (1 << QuestType_t::tk_quest16),	// Destroyed the Gate Mechanism
+	QF_QUEST17	= (1 << QuestType_t::tk_quest17),	// Heard Macil's story about the Sigil (MAP10)
+	QF_QUEST18	= (1 << QuestType_t::tk_quest18),	// Obtained Oracle Pass
+	QF_QUEST19	= (1 << QuestType_t::tk_quest19),
+	QF_QUEST20	= (1 << QuestType_t::tk_quest20),
+	QF_QUEST21	= (1 << QuestType_t::tk_quest21),	// Killed Bishop
+	QF_QUEST22	= (1 << QuestType_t::tk_quest22),	// Killed Oracle with QUEST21 set
+	QF_QUEST23	= (1 << QuestType_t::tk_quest23),	// Killed Oracle (always given)
+	QF_QUEST24	= (1 << QuestType_t::tk_quest24),	// Killed Macil
+	QF_QUEST25	= (1 << QuestType_t::tk_quest25),	// Destroyed the Converter
+	QF_QUEST26	= (1 << QuestType_t::tk_quest26),	// Killed Loremaster
+	QF_QUEST27	= (1 << QuestType_t::tk_quest27),	// Destroyed the Computer (checked for good ending)
+	QF_QUEST28	= (1 << QuestType_t::tk_quest28),	// Obtained Catacomb Key (checked by line type 228)
+	QF_QUEST29	= (1 << QuestType_t::tk_quest29),	// Destroyed the Mines Transmitter
+	QF_QUEST30	= (1 << QuestType_t::tk_quest30),
+	QF_QUEST31	= (1 << QuestType_t::tk_quest31),
+	QF_QUEST32	= (1U << QuestType_t::tk_quest32),	// Unused; BUG: Broken Coupling accidentally sets it.
 
 	QF_ALLQUESTS = (QF_QUEST31 + (QF_QUEST31 - 1)) // does not include bit 32!
 };
 
-//
-// Power up durations,
-// how many seconds till expiration,
-// assuming TICRATE is 35 ticks/second.
-//
-typedef enum
+// Power up durations, how many seconds till expiration, assuming TICRATE is 35 ticks/second.
+enum class PowerDuration_t
 {
 	INVISTICS	= (55*TICRATE), // villsa [STRIFE] changed from 60 to 55
 	IRONTICS	= (80*TICRATE), // villsa [STRIFE] changed from 60 to 80
 	PMUPTICS	= (80*TICRATE), // villsa [STRIFE]
 	TARGTICS	= (160*TICRATE),// villsa [STRIFE]
-
-} powerduration_t;
-
-#endif			// __DOOMDEF__
+};

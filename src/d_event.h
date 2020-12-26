@@ -12,14 +12,7 @@
 
 #include "../derma/common.h"
 
-#ifndef __D_EVENT__
-#define __D_EVENT__
-
 #include "doomtype.h"
-
-//
-// Event handling.
-//
 
 // Input event types.
 enum class evtype_t
@@ -130,5 +123,3 @@ void D_PostEvent(event_t* ev);
 
 // Read an event from the event queue
 event_t* D_PopEvent();
-
-#endif

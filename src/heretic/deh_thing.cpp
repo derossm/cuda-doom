@@ -10,8 +10,6 @@
 // Parses "Thing" sections in dehacked files
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "doomtype.h"
 #include "m_misc.h"

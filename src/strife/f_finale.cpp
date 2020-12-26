@@ -15,8 +15,6 @@
 // [STRIFE] Module marked finished 2010-09-13 22:56
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
 
 // Functions.
 #include "deh_main.h"
@@ -117,7 +115,7 @@ void F_StartFinale ()
 #endif
 
 	gameaction = ga_nothing;
-	gamestate = GS_FINALE;
+	gamestate = GameState_t::GS_FINALE;
 	viewactive = false;
 	automapactive = false;
 	wipegamestate = -1; // [STRIFE]
@@ -132,7 +130,7 @@ void F_StartFinale ()
 	// system in place, this only manages to fuck up the fade-out that is
 	// supposed to happen at the beginning of all finales. So, don't do it!
 #if 0
-	panel = (patch_t *)W_CacheLumpName(slideshow_panel, PU_CACHE);
+	panel = (patch_t *)W_CacheLumpName(slideshow_panel, pu_tags_t::PU_CACHE);
 	V_DrawPatch(0, 0, panel);
 #endif
 
@@ -208,7 +206,7 @@ void F_WaitTicker()
 {
 	if(++finalecount >= 250)
 	{
-		gamestate	= GS_FINALE;
+		gamestate	= GameState_t::GS_FINALE;
 		finalestage = 0;
 		finalecount = 0;
 	}
@@ -358,7 +356,7 @@ static void F_DoSlideShow()
 		break;
 
 	case SLIDE_EXITHACK: // state -99: super hack state
-		gamestate = GS_LEVEL;
+		gamestate = GameState_t::GS_LEVEL;
 		P_DialogStartP1();
 		break;
 	case SLIDE_HACKHACK: // state -9: unknown bizarre unused state
@@ -399,7 +397,7 @@ static void F_DoSlideShow()
 	finalecount = 0;
 	if(gameversion != exe_strife_1_31) // See above. This was removed in 1.31.
 	{
-		patch = (patch_t *)W_CacheLumpName(DEH_String("PANEL0"), PU_CACHE);
+		patch = (patch_t *)W_CacheLumpName(DEH_String("PANEL0"), pu_tags_t::PU_CACHE);
 		V_DrawPatch(0, 0, patch);
 	}
 }
@@ -473,7 +471,7 @@ void F_TextWrite ()
 	int		cy;
 
 	// erase the entire screen to a tiled background
-	src = W_CacheLumpName ( finaleflat, PU_CACHE);
+	src = W_CacheLumpName ( finaleflat, pu_tags_t::PU_CACHE);
 	dest = I_VideoBuffer;
 
 	for (y=0 ; y<SCREENHEIGHT ; y++)
@@ -585,7 +583,7 @@ void F_StartCast ()
 	viewactive = false;
 	automapactive = false;
 	castnum = 0;
-	gamestate = GS_FINALE;
+	gamestate = GameState_t::GS_FINALE;
 	caststate = &states[mobjinfo[castorder[castnum].type].seestate];
 	casttics = caststate->tics;
 	if(casttics > 50)
@@ -799,7 +797,7 @@ void F_CastDrawer ()
 	patch_t*		patch;
 
 	// erase the entire screen to a background
-	V_DrawPatch (0, 0, W_CacheLumpName (DEH_String("BOSSBACK"), PU_CACHE));
+	V_DrawPatch (0, 0, W_CacheLumpName (DEH_String("BOSSBACK"), pu_tags_t::PU_CACHE));
 
 	F_CastPrint (DEH_String(castorder[castnum].name));
 
@@ -809,7 +807,7 @@ void F_CastDrawer ()
 	lump = sprframe->lump[0];
 	flip = (bool)sprframe->flip[0];
 
-	patch = W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum (lump+firstspritelump, pu_tags_t::PU_CACHE);
 	if (flip)
 	V_DrawPatchFlipped(160, 170, patch);
 	else
@@ -873,8 +871,8 @@ void F_DrawMap34End ()
 //	patch_t*	p1;
 //	patch_t*	p2;
 
-//	p1 = W_CacheLumpName (DEH_String("credit"), PU_LEVEL);
-//	p2 = W_CacheLumpName (DEH_String("vellogo"), PU_LEVEL);
+//	p1 = W_CacheLumpName (DEH_String("credit"), pu_tags_t::PU_LEVEL);
+//	p2 = W_CacheLumpName (DEH_String("vellogo"), pu_tags_t::PU_LEVEL);
 
 	V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
 
@@ -940,7 +938,7 @@ static void F_ArtScreenDrawer()
 
 		lumpname = DEH_String(lumpname);
 
-		V_DrawPatch (0, 0, W_CacheLumpName(lumpname, PU_CACHE));
+		V_DrawPatch (0, 0, W_CacheLumpName(lumpname, pu_tags_t::PU_CACHE));
 	}
 }
 */
@@ -962,7 +960,7 @@ void F_Drawer ()
 	case F_STAGE_TEXT:
 		// Draw slideshow panel
 		{
-			patch_t *slide = W_CacheLumpName(slideshow_panel, PU_CACHE);
+			patch_t *slide = W_CacheLumpName(slideshow_panel, pu_tags_t::PU_CACHE);
 			V_DrawPatch(0, 0, slide);
 		}
 		break;
@@ -970,7 +968,7 @@ void F_Drawer ()
 		if(gamemap <= 29)
 		{
 			// draw credits
-			patch_t *credits = W_CacheLumpName(DEH_String("CREDIT"), PU_CACHE);
+			patch_t *credits = W_CacheLumpName(DEH_String("CREDIT"), pu_tags_t::PU_CACHE);
 			V_DrawPatch(0, 0, credits);
 		}
 		else if(gamemap == 34)

@@ -13,7 +13,6 @@
 //	Switches, buttons. Two-state animation. Exits.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
 
 #include "i_system.h"
 #include "deh_main.h"
@@ -967,7 +966,7 @@ bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
 	case 211:
 		// villsa [STRIFE] S1 Play VOC## sound
 		if(&players[consoleplayer] == thing->player &&
-			thing->player->powers[pw_communicator])
+			thing->player->powers[PowerType_t::pw_communicator])
 		{
 			DEH_snprintf(usemessage, sizeof(usemessage), "voc%i", line->tag);
 			I_StartVoice(usemessage);

@@ -14,8 +14,6 @@
 	AES implementation taken from Linux kernel's AES implementation, found in crypto/aes_generic.c. It has been hacked to work independently.
 \**********************************************************************************************************************************************/
 
-#include <stdint.h>
-
 #include "aes_prng.h"
 #include "doomtype.h"
 #include "i_swap.h"

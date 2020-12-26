@@ -11,8 +11,6 @@
 \**********************************************************************************************************************************************/
 // MN_menu.c
 
-#include <stdlib.h>
-#include <ctype.h>
 
 #include "deh_str.h"
 #include "doomdef.h"
@@ -244,12 +242,12 @@ static Menu_t SaveMenu = {
 };
 
 static MenuItem_t SkillItems[] = {
-	{ITT_EFUNC, "THOU NEEDETH A WET-NURSE", SCSkill, sk_baby, MENU_NONE},
-	{ITT_EFUNC, "YELLOWBELLIES-R-US", SCSkill, sk_easy, MENU_NONE},
-	{ITT_EFUNC, "BRINGEST THEM ONETH", SCSkill, sk_medium, MENU_NONE},
-	{ITT_EFUNC, "THOU ART A SMITE-MEISTER", SCSkill, sk_hard, MENU_NONE},
+	{ITT_EFUNC, "THOU NEEDETH A WET-NURSE", SCSkill, skill_t::sk_baby, MENU_NONE},
+	{ITT_EFUNC, "YELLOWBELLIES-R-US", SCSkill, skill_t::sk_easy, MENU_NONE},
+	{ITT_EFUNC, "BRINGEST THEM ONETH", SCSkill, skill_t::sk_medium, MENU_NONE},
+	{ITT_EFUNC, "THOU ART A SMITE-MEISTER", SCSkill, skill_t::sk_hard, MENU_NONE},
 	{ITT_EFUNC, "BLACK PLAGUE POSSESSES THEE",
-		SCSkill, sk_nightmare, MENU_NONE}
+		SCSkill, skill_t::sk_nightmare, MENU_NONE}
 };
 
 static Menu_t SkillMenu = {
@@ -333,7 +331,7 @@ static int G_ReloadLevel()
 {
  int result = false;
 
- if (gamestate == GS_LEVEL)
+ if (gamestate == GameState_t::GS_LEVEL)
  {
 	// [crispy] restart demos from the map they were started
 	if (demorecording)
@@ -368,7 +366,7 @@ static int G_GotoNextLevel()
  if (gamemode == registered)
 	heretic_next[2][7] = 11;
 
- if (gamestate == GS_LEVEL)
+ if (gamestate == GameState_t::GS_LEVEL)
  {
 	int epsd, map;
 
@@ -435,7 +433,7 @@ void MN_DrTextA(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
 			V_DrawPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}
@@ -465,7 +463,7 @@ int MN_TextAWidth(const char *text)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
 			width += SHORT(p->width) - 1;
 		}
 	}
@@ -493,7 +491,7 @@ void MN_DrTextB(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontBBaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontBBaseLump + c - 33, pu_tags_t::PU_CACHE);
 			V_DrawPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}
@@ -523,7 +521,7 @@ int MN_TextBWidth(const char *text)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontBBaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontBBaseLump + c - 33, pu_tags_t::PU_CACHE);
 			width += SHORT(p->width) - 1;
 		}
 	}
@@ -643,14 +641,14 @@ void MN_Drawer()
 		y = CurrentMenu->y + (CurrentItPos * (ITEM_HEIGHT/2)) + SELECTOR_YOFFSET;
 		selName = DEH_String(MenuTime & 8 ? "INVGEMR1" : "INVGEMR2");
 		V_DrawPatch(x + (SELECTOR_XOFFSET/2), y,
-					W_CacheLumpName(selName, PU_CACHE));
+					W_CacheLumpName(selName, pu_tags_t::PU_CACHE));
 		}
 		else
 		{
 		y = CurrentMenu->y + (CurrentItPos * ITEM_HEIGHT) + SELECTOR_YOFFSET;
 		selName = DEH_String(MenuTime & 16 ? "M_SLCTR1" : "M_SLCTR2");
 		V_DrawPatch(x + SELECTOR_XOFFSET, y,
-					W_CacheLumpName(selName, PU_CACHE));
+					W_CacheLumpName(selName, pu_tags_t::PU_CACHE));
 		}
 	}
 }
@@ -666,10 +664,10 @@ static void DrawMainMenu()
 	int frame;
 
 	frame = (MenuTime / 3) % 18;
-	V_DrawPatch(88, 0, W_CacheLumpName(DEH_String("M_HTIC"), PU_CACHE));
+	V_DrawPatch(88, 0, W_CacheLumpName(DEH_String("M_HTIC"), pu_tags_t::PU_CACHE));
 	V_DrawPatch(40, 10, W_CacheLumpNum(SkullBaseLump + (17 - frame),
 										PU_CACHE));
-	V_DrawPatch(232, 10, W_CacheLumpNum(SkullBaseLump + frame, PU_CACHE));
+	V_DrawPatch(232, 10, W_CacheLumpNum(SkullBaseLump + frame, pu_tags_t::PU_CACHE));
 }
 
 //---------------------------------------------------------------------------
@@ -796,7 +794,7 @@ static void DrawFileSlots(Menu_t * menu)
 	y = menu->y;
 	for (i = 0; i < 6; i++)
 	{
-		V_DrawPatch(x, y, W_CacheLumpName(DEH_String("M_FSLOT"), PU_CACHE));
+		V_DrawPatch(x, y, W_CacheLumpName(DEH_String("M_FSLOT"), pu_tags_t::PU_CACHE));
 		if (SlotStatus[i])
 		{
 			MN_DrTextA(SlotText[i], x + 5, y + 5);
@@ -1352,7 +1350,7 @@ bool MN_Responder(event_t * event)
 					players[consoleplayer].message = NULL;
 					paused = false;
 					I_SetPalette(W_CacheLumpName
-									("PLAYPAL", PU_CACHE));
+									("PLAYPAL", pu_tags_t::PU_CACHE));
 					D_StartTitle();		// go to intro/demo mode.
 					break;
 
@@ -1428,7 +1426,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_save)			// F2 (save game)
 		{
-			if (gamestate == GS_LEVEL && !demoplayback)
+			if (gamestate == GameState_t::GS_LEVEL && !demoplayback)
 			{
 				MenuActive = true;
 				FileMenuKeySteal = false;
@@ -1484,7 +1482,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_qsave)			// F6 (quicksave)
 		{
-			if (gamestate == GS_LEVEL && !demoplayback)
+			if (gamestate == GameState_t::GS_LEVEL && !demoplayback)
 			{
 				if (!quicksave || quicksave == -1)
 				{
@@ -1518,7 +1516,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_endgame)			// F7 (end game)
 		{
-			if (gamestate == GS_LEVEL && !demoplayback)
+			if (gamestate == GameState_t::GS_LEVEL && !demoplayback)
 			{
 				S_StartSound(NULL, sfx_chat);
 				SCEndGame(0);
@@ -1563,7 +1561,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_quit)			// F10 (quit)
 		{
-			if (gamestate == GS_LEVEL)
+			if (gamestate == GameState_t::GS_LEVEL)
 			{
 				SCQuitGame(0);
 				S_StartSound(NULL, sfx_chat);
@@ -1577,7 +1575,7 @@ bool MN_Responder(event_t * event)
 			{
 				usegamma = 0;
 			}
-			I_SetPalette((byte *) W_CacheLumpName("PLAYPAL", PU_CACHE));
+			I_SetPalette((byte *) W_CacheLumpName("PLAYPAL", pu_tags_t::PU_CACHE));
 			return true;
 		}
 		// [crispy] those two can be considered as shortcuts for the ENGAGE cheat
@@ -1597,7 +1595,7 @@ bool MN_Responder(event_t * event)
 
 	if (!MenuActive)
 	{
-		if (key == key_menu_activate || gamestate == GS_DEMOSCREEN || demoplayback)
+		if (key == key_menu_activate || gamestate == GameState_t::GS_DEMOSCREEN || demoplayback)
 		{
 			MN_ActivateMenu();
 			return (true);
@@ -1860,7 +1858,7 @@ void MN_DeactivateMenu()
 
 void MN_DrawInfo()
 {
-	I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
+	I_SetPalette(W_CacheLumpName("PLAYPAL", pu_tags_t::PU_CACHE));
 	V_DrawRawScreen(W_CacheLumpNum(W_GetNumForName("TITLE") + InfoType,
 									PU_CACHE));
 //		V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType,
@@ -1897,13 +1895,13 @@ static void DrawSlider(Menu_t * menu, int item, int width, int slot)
 
 	x = menu->x + 24;
 	y = menu->y + 2 + (item * ITEM_HEIGHT);
-	V_DrawPatch(x - 32, y, W_CacheLumpName(DEH_String("M_SLDLT"), PU_CACHE));
+	V_DrawPatch(x - 32, y, W_CacheLumpName(DEH_String("M_SLDLT"), pu_tags_t::PU_CACHE));
 	for (x2 = x, count = width; count--; x2 += 8)
 	{
 		V_DrawPatch(x2, y, W_CacheLumpName(DEH_String(count & 1 ? "M_SLDMD1"
-											: "M_SLDMD2"), PU_CACHE));
+											: "M_SLDMD2"), pu_tags_t::PU_CACHE));
 	}
-	V_DrawPatch(x2, y, W_CacheLumpName(DEH_String("M_SLDRT"), PU_CACHE));
+	V_DrawPatch(x2, y, W_CacheLumpName(DEH_String("M_SLDRT"), pu_tags_t::PU_CACHE));
 
 	// [crispy] print the value
 	M_snprintf(num, 4, "%3d", slot);
@@ -1916,7 +1914,7 @@ static void DrawSlider(Menu_t * menu, int item, int width, int slot)
 	}
 
 	V_DrawPatch(x + 4 + slot * 8, y + 7,
-				W_CacheLumpName(DEH_String("M_SLDKB"), PU_CACHE));
+				W_CacheLumpName(DEH_String("M_SLDKB"), pu_tags_t::PU_CACHE));
 }
 
 //---------------------------------------------------------------------------
@@ -1932,11 +1930,11 @@ static void M_DrawCrispnessBackground()
 
 	if (gamemode == shareware)
 	{
-		src = W_CacheLumpName(DEH_String("FLOOR04"), PU_CACHE);
+		src = W_CacheLumpName(DEH_String("FLOOR04"), pu_tags_t::PU_CACHE);
 	}
 	else
 	{
-		src = W_CacheLumpName(DEH_String("FLAT513"), PU_CACHE);
+		src = W_CacheLumpName(DEH_String("FLAT513"), pu_tags_t::PU_CACHE);
 	}
 	dest = I_VideoBuffer;
 

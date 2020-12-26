@@ -7,13 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses Text substitution sections in dehacked files
+	DESCRIPTION:
+		Parses Text substitution sections in dehacked files
 \**********************************************************************************************************************************************/
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
 
 #include "doomtype.h"
 #include "deh_str.h"
@@ -21,27 +17,22 @@
 
 #include "z_zone.h"
 
-typedef struct
-{
-	char *from_text;
-	char *to_text;
-} deh_substitution_t;
-
-static deh_substitution_t **hash_table = NULL;
+static deh_substitution_t** hash_table{nullptr};
 static int hash_table_entries;
 static int hash_table_length = -1;
 
 // This is the algorithm used by glib
-
 static unsigned int strhash(const char *s)
 {
-	const char *p = s;
+	auto p = s;
 	unsigned int h = *p;
 
 	if (h)
 	{
 		for (p += 1; *p; p++)
+		{
 			h = (h << 5) - h + *p;
+		}
 	}
 
 	return h;
@@ -49,13 +40,13 @@ static unsigned int strhash(const char *s)
 
 static deh_substitution_t *SubstitutionForString(const char *s)
 {
-	int entry;
-
 	// Fallback if we have not initialized the hash table yet
 	if (hash_table_length < 0)
-	return NULL;
+	{
+		return nullptr;
+	}
 
-	entry = strhash(s) % hash_table_length;
+	auto entry = strhash(s) % hash_table_length;
 
 	while (hash_table[entry] != NULL)
 	{
@@ -69,15 +60,13 @@ static deh_substitution_t *SubstitutionForString(const char *s)
 	}
 
 	// no substitution found
-	return NULL;
+	return nullptr;
 }
 
-// Look up a string to see if it has been replaced with something else
-// This will be used throughout the program to substitute text
-
-const char *DEH_String(const char *s)
+// Look up a string to see if it has been replaced with something else, this will be used throughout the program to substitute text
+const char* DEH_String(const char* s)
 {
-	deh_substitution_t *subst;
+	deh_substitution_t* subst;
 
 	subst = SubstitutionForString(s);
 
@@ -92,7 +81,6 @@ const char *DEH_String(const char *s)
 }
 
 // [crispy] returns true if a string has been substituted
-
 bool DEH_HasStringReplacement(const char *s)
 {
 	return DEH_String(s) != s;
@@ -101,37 +89,27 @@ bool DEH_HasStringReplacement(const char *s)
 static void InitHashTable()
 {
 	// init hash table
-
 	hash_table_entries = 0;
 	hash_table_length = 16;
-	hash_table = Z_Malloc(sizeof(deh_substitution_t *) * hash_table_length,
-							PU_STATIC, NULL);
-	memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
+	hash_table = Z_Malloc<deh_substitution_t>(sizeof(deh_substitution_t*) * hash_table_length, pu_tags_t::PU_STATIC, NULL);
+	memset(hash_table, 0, sizeof(deh_substitution_t*) * hash_table_length);
 }
 
-static void DEH_AddToHashtable(deh_substitution_t *sub);
+static void DEH_AddToHashtable(deh_substitution_t* sub);
 
 static void IncreaseHashtable()
 {
-	deh_substitution_t **old_table;
-	int old_table_length;
-	int i;
-
 	// save the old table
-
-	old_table = hash_table;
-	old_table_length = hash_table_length;
+	auto old_table = hash_table;
+	auto old_table_length = hash_table_length;
 
 	// double the size
-
 	hash_table_length *= 2;
-	hash_table = Z_Malloc(sizeof(deh_substitution_t *) * hash_table_length,
-							PU_STATIC, NULL);
+	hash_table = Z_Malloc<deh_substitution_t>(sizeof(deh_substitution_t *) * hash_table_length, pu_tags_t::PU_STATIC, NULL);
 	memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
 
 	// go through the old table and insert all the old entries
-
-	for (i=0; i<old_table_length; ++i)
+	for (auto i{0}; i < old_table_length; ++i)
 	{
 		if (old_table[i] != NULL)
 		{
@@ -140,23 +118,19 @@ static void IncreaseHashtable()
 	}
 
 	// free the old table
-
 	Z_Free(old_table);
 }
 
-static void DEH_AddToHashtable(deh_substitution_t *sub)
+static void DEH_AddToHashtable(deh_substitution_t* sub)
 {
-	int entry;
-
 	// if the hash table is more than 60% full, increase its size
-
 	if ((hash_table_entries * 10) / hash_table_length > 6)
 	{
 		IncreaseHashtable();
 	}
 
 	// find where to insert it
-	entry = strhash(sub->from_text) % hash_table_length;
+	size_t entry = strhash(sub->from_text) % hash_table_length;
 
 	while (hash_table[entry] != NULL)
 	{
@@ -167,9 +141,9 @@ static void DEH_AddToHashtable(deh_substitution_t *sub)
 	++hash_table_entries;
 }
 
-void DEH_AddStringReplacement(const char *from_text, const char *to_text)
+void DEH_AddStringReplacement(const char* from_text, const char* to_text)
 {
-	deh_substitution_t *sub;
+	deh_substitution_t* sub;
 	size_t len;
 
 	// Initialize the hash table if this is the first time
@@ -186,79 +160,62 @@ void DEH_AddStringReplacement(const char *from_text, const char *to_text)
 		Z_Free(sub->to_text);
 
 		len = strlen(to_text) + 1;
-		sub->to_text = Z_Malloc(len, PU_STATIC, NULL);
+		sub->to_text = Z_Malloc<decltype(sub->to_text)>(len, pu_tags_t::PU_STATIC, NULL);
 		memcpy(sub->to_text, to_text, len);
 	}
 	else
 	{
 		// We need to allocate a new substitution.
-		sub = Z_Malloc(sizeof(*sub), PU_STATIC, 0);
+		sub = Z_Malloc<decltype(*sub)>(sizeof(*sub), pu_tags_t::PU_STATIC, 0);
 
 		// We need to create our own duplicates of the provided strings.
 		len = strlen(from_text) + 1;
-		sub->from_text = Z_Malloc(len, PU_STATIC, NULL);
+		sub->from_text = Z_Malloc<decltype(sub->from_text)>(len, pu_tags_t::PU_STATIC, NULL);
 		memcpy(sub->from_text, from_text, len);
 
 		len = strlen(to_text) + 1;
-		sub->to_text = Z_Malloc(len, PU_STATIC, NULL);
+		sub->to_text = Z_Malloc<decltype(sub->to_text)>(len, pu_tags_t::PU_STATIC, NULL);
 		memcpy(sub->to_text, to_text, len);
 
 		DEH_AddToHashtable(sub);
 	}
 }
 
-typedef enum
-{
-	FORMAT_ARG_INVALID,
-	FORMAT_ARG_INT,
-	FORMAT_ARG_FLOAT,
-	FORMAT_ARG_CHAR,
-	FORMAT_ARG_STRING,
-	FORMAT_ARG_PTR,
-	FORMAT_ARG_SAVE_POS
-} format_arg_t;
-
-// Get the type of a format argument.
-// We can mix-and-match different format arguments as long as they
-// are for the same data type.
-
+// Get the type of a format argument. We can mix-and-match different format arguments as long as they are for the same data type.
 static format_arg_t FormatArgumentType(char c)
 {
 	switch (c)
 	{
 		case 'd': case 'i': case 'o': case 'u': case 'x': case 'X':
-			return FORMAT_ARG_INT;
+			return format_arg_t::FORMAT_ARG_INT;
 
 		case 'e': case 'E': case 'f': case 'F': case 'g': case 'G':
 		case 'a': case 'A':
-			return FORMAT_ARG_FLOAT;
+			return format_arg_t::FORMAT_ARG_FLOAT;
 
 		case 'c': case 'C':
-			return FORMAT_ARG_CHAR;
+			return format_arg_t::FORMAT_ARG_CHAR;
 
 		case 's': case 'S':
-			return FORMAT_ARG_STRING;
+			return format_arg_t::FORMAT_ARG_STRING;
 
 		case 'p':
-			return FORMAT_ARG_PTR;
+			return format_arg_t::FORMAT_ARG_PTR;
 
 		case 'n':
-			return FORMAT_ARG_SAVE_POS;
+			return format_arg_t::FORMAT_ARG_SAVE_POS;
 
 		default:
-			return FORMAT_ARG_INVALID;
+			return format_arg_t::FORMAT_ARG_INVALID;
 	}
 }
 
-// Given the specified string, get the type of the first format
-// string encountered.
-
-static format_arg_t NextFormatArgument(const char **str)
+// Given the specified string, get the type of the first format string encountered.
+static format_arg_t NextFormatArgument(const char** str)
 {
 	format_arg_t argtype;
 
 	// Search for the '%' starting the next string.
-
 	while (**str != '\0')
 	{
 		if (**str == '%')
@@ -266,7 +223,6 @@ static format_arg_t NextFormatArgument(const char **str)
 			++*str;
 
 			// Don't stop for double-%s.
-
 			if (**str != '%')
 			{
 				break;
@@ -277,12 +233,11 @@ static format_arg_t NextFormatArgument(const char **str)
 	}
 
 	// Find the type of the format string.
-
 	while (**str != '\0')
 	{
 		argtype = FormatArgumentType(**str);
 
-		if (argtype != FORMAT_ARG_INVALID)
+		if (argtype != format_arg_t::FORMAT_ARG_INVALID)
 		{
 			++*str;
 
@@ -293,32 +248,25 @@ static format_arg_t NextFormatArgument(const char **str)
 	}
 
 	// Stop searching, we have reached the end.
-
 	*str = NULL;
 
-	return FORMAT_ARG_INVALID;
+	return format_arg_t::FORMAT_ARG_INVALID;
 }
 
-// Check if the specified argument type is a valid replacement for
-// the original.
-
-static bool ValidArgumentReplacement(format_arg_t original,
-										format_arg_t replacement)
+// Check if the specified argument type is a valid replacement for the original.
+static bool ValidArgumentReplacement(format_arg_t original, format_arg_t replacement)
 {
-	// In general, the original and replacement types should be
-	// identical. However, there are some cases where the replacement
-	// is valid and the types don't match.
+	// In general, the original and replacement types should be identical.
+	// However, there are some cases where the replacement is valid and the types don't match.
 
 	// Characters can be represented as ints.
-
-	if (original == FORMAT_ARG_CHAR && replacement == FORMAT_ARG_INT)
+	if (original == format_arg_t::FORMAT_ARG_CHAR && replacement == format_arg_t::FORMAT_ARG_INT)
 	{
 		return true;
 	}
 
 	// Strings are pointers.
-
-	if (original == FORMAT_ARG_STRING && replacement == FORMAT_ARG_PTR)
+	if (original == format_arg_t::FORMAT_ARG_STRING && replacement == format_arg_t::FORMAT_ARG_PTR)
 	{
 		return true;
 	}
@@ -327,38 +275,35 @@ static bool ValidArgumentReplacement(format_arg_t original,
 }
 
 // Return true if the specified string contains no format arguments.
-
-static bool ValidFormatReplacement(const char *original, const char *replacement)
+static bool ValidFormatReplacement(const char* original, const char* replacement)
 {
-	const char *rover1;
-	const char *rover2;
-	int argtype1, argtype2;
+	const char* rover1;
+	const char* rover2;
+	int argtype1;
+	int argtype2;
 
 	// Check each argument in turn and compare types.
-
-	rover1 = original; rover2 = replacement;
+	rover1 = original;
+	rover2 = replacement;
 
 	for (;;)
 	{
 		argtype1 = NextFormatArgument(&rover1);
 		argtype2 = NextFormatArgument(&rover2);
 
-		if (argtype2 == FORMAT_ARG_INVALID)
+		if (argtype2 == format_arg_t::FORMAT_ARG_INVALID)
 		{
 			// No more arguments left to read from the replacement string.
-
 			break;
 		}
-		else if (argtype1 == FORMAT_ARG_INVALID)
+		else if (argtype1 == format_arg_t::FORMAT_ARG_INVALID)
 		{
 			// Replacement string has more arguments than the original.
-
 			return false;
 		}
 		else if (!ValidArgumentReplacement(argtype1, argtype2))
 		{
 			// Not a valid replacement argument.
-
 			return false;
 		}
 	}
@@ -367,17 +312,15 @@ static bool ValidFormatReplacement(const char *original, const char *replacement
 }
 
 // Get replacement format string, checking arguments.
-
-static const char *FormatStringReplacement(const char *s)
+static const char *FormatStringReplacement(const char* s)
 {
-	const char *repl;
+	const char* repl;
 
 	repl = DEH_String(s);
 
 	if (!ValidFormatReplacement(s, repl))
 	{
-		printf("WARNING: Unsafe dehacked replacement provided for "
-				"printf format string: %s\n", s);
+		printf("WARNING: Unsafe dehacked replacement provided for printf format string: %s\n", s);
 
 		return s;
 	}
@@ -386,11 +329,10 @@ static const char *FormatStringReplacement(const char *s)
 }
 
 // printf(), performing a replacement on the format string.
-
-void DEH_printf(const char *fmt, ...)
+void DEH_printf(const char* fmt, ...)
 {
 	va_list args;
-	const char *repl;
+	const char* repl;
 
 	repl = FormatStringReplacement(fmt);
 
@@ -402,11 +344,10 @@ void DEH_printf(const char *fmt, ...)
 }
 
 // fprintf(), performing a replacement on the format string.
-
-void DEH_fprintf(FILE *fstream, const char *fmt, ...)
+void DEH_fprintf(FILE* fstream, const char* fmt, ...)
 {
 	va_list args;
-	const char *repl;
+	const char* repl;
 
 	repl = FormatStringReplacement(fmt);
 
@@ -418,11 +359,10 @@ void DEH_fprintf(FILE *fstream, const char *fmt, ...)
 }
 
 // snprintf(), performing a replacement on the format string.
-
-void DEH_snprintf(char *buffer, size_t len, const char *fmt, ...)
+void DEH_snprintf(char* buffer, size_t len, const char* fmt, ...)
 {
 	va_list args;
-	const char *repl;
+	const char* repl;
 
 	repl = FormatStringReplacement(fmt);
 
@@ -432,4 +372,3 @@ void DEH_snprintf(char *buffer, size_t len, const char *fmt, ...)
 
 	va_end(args);
 }
-

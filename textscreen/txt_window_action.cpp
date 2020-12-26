@@ -8,10 +8,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
 #include "doomkeys.h"
 
 #include "txt_window_action.h"
@@ -28,23 +24,19 @@ static void TXT_WindowActionSizeCalc(TXT_UNCAST_ARG(action))
 
 	TXT_GetKeyDescription(action->key, buf, sizeof(buf));
 
-	// Width is label length, plus key description length, plus '='
-	// and two surrounding spaces.
-
-	action->widget.w = TXT_UTF8_Strlen(action->label)
-						+ TXT_UTF8_Strlen(buf) + 3;
+	// Width is label length, plus key description length, plus '=' and two surrounding spaces.
+	action->widget.w = TXT_UTF8_Strlen(action->label) + TXT_UTF8_Strlen(buf) + 3;
 	action->widget.h = 1;
 }
 
 static void TXT_WindowActionDrawer(TXT_UNCAST_ARG(action))
 {
 	TXT_CAST_ARG(txt_window_action_t, action);
-	int hovering;
 	char buf[10];
 
 	TXT_GetKeyDescription(action->key, buf, sizeof(buf));
 
-	hovering = TXT_HoveringOverWidget(action);
+	auto hovering = TXT_HoveringOverWidget(action);
 	TXT_SetWidgetBG(action);
 
 	TXT_DrawString(" ");
@@ -65,26 +57,24 @@ static void TXT_WindowActionDestructor(TXT_UNCAST_ARG(action))
 	free(action->label);
 }
 
-static int TXT_WindowActionKeyPress(TXT_UNCAST_ARG(action), int key)
+auto TXT_WindowActionKeyPress(TXT_UNCAST_ARG(action), int key)
 {
 	TXT_CAST_ARG(txt_window_action_t, action);
 
 	if (tolower(key) == tolower(action->key))
 	{
 		TXT_EmitSignal(action, "pressed");
-		return 1;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
-static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action),
-										int x, int y, int b)
+static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action), int x, int y, int b)
 {
 	TXT_CAST_ARG(txt_window_action_t, action);
 
 	// Simulate a press of the key
-
 	if (b == TXT_MOUSE_LEFT)
 	{
 		TXT_WindowActionKeyPress(action, action->key);
@@ -102,9 +92,9 @@ txt_widget_class_t txt_window_action_class =
 	NULL,
 };
 
-txt_window_action_t *TXT_NewWindowAction(int key, const char *label)
+txt_window_action_t* TXT_NewWindowAction(int key, const char* label)
 {
-	txt_window_action_t *action;
+	txt_window_action_t* action;
 
 	action = malloc(sizeof(txt_window_action_t));
 
@@ -130,36 +120,27 @@ static void WindowSelectCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
 }
 
 // An action with the name "close" the closes the window
-
-txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window)
+txt_window_action_t* TXT_NewWindowEscapeAction(txt_window_t* window)
 {
-	txt_window_action_t *action;
-
-	action = TXT_NewWindowAction(KEY_ESCAPE, "Close");
+	auto action{TXT_NewWindowAction(KEY_ESCAPE, "Close")};
 	TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
 	return action;
 }
 
 // Exactly the same as the above, but the button is named "abort"
-
-txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window)
+txt_window_action_t* TXT_NewWindowAbortAction(txt_window_t* window)
 {
-	txt_window_action_t *action;
-
-	action = TXT_NewWindowAction(KEY_ESCAPE, "Abort");
+	auto action{TXT_NewWindowAction(KEY_ESCAPE, "Abort")};
 	TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
 	return action;
 }
 
-txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window)
+txt_window_action_t* TXT_NewWindowSelectAction(txt_window_t* window)
 {
-	txt_window_action_t *action;
-
-	action = TXT_NewWindowAction(KEY_ENTER, "Select");
+	auto action{TXT_NewWindowAction(KEY_ENTER, "Select")};
 	TXT_SignalConnect(action, "pressed", WindowSelectCallback, window);
 
 	return action;
 }
-

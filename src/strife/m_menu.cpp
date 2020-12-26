@@ -14,8 +14,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdlib.h>
-#include <ctype.h>
 
 
 #include "doomdef.h"
@@ -633,7 +631,7 @@ void M_DrawLoad()
 	int				i;
 
 	V_DrawPatchDirect(72, 28,
-						W_CacheLumpName(DEH_String("M_LOADG"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_LOADG"), pu_tags_t::PU_CACHE));
 
 	for (i = 0;i < load_end; i++)
 	{
@@ -652,17 +650,17 @@ void M_DrawSaveLoadBorder(int x,int y)
 	int				i;
 
 	V_DrawPatchDirect(x - 8, y + 7,
-						W_CacheLumpName(DEH_String("M_LSLEFT"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE));
 
 	for (i = 0;i < 24;i++)
 	{
 		V_DrawPatchDirect(x, y + 7,
-							W_CacheLumpName(DEH_String("M_LSCNTR"), PU_CACHE));
+							W_CacheLumpName(DEH_String("M_LSCNTR"), pu_tags_t::PU_CACHE));
 		x += 8;
 	}
 
 	V_DrawPatchDirect(x, y + 7,
-						W_CacheLumpName(DEH_String("M_LSRGHT"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_LSRGHT"), pu_tags_t::PU_CACHE));
 }
 
 
@@ -713,7 +711,7 @@ void M_DrawSave()
 {
 	int				i;
 
-	V_DrawPatchDirect(72, 28, W_CacheLumpName(DEH_String("M_SAVEG"), PU_CACHE));
+	V_DrawPatchDirect(72, 28, W_CacheLumpName(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE));
 	for (i = 0;i < load_end; i++)
 	{
 		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
@@ -793,7 +791,7 @@ void M_SaveGame (int choice)
 		return;
 	}
 
-	if (gamestate != GS_LEVEL)
+	if (gamestate != GameState_t::GS_LEVEL)
 		return;
 
 	// [STRIFE]
@@ -842,7 +840,7 @@ void M_QuickSave()
 		return;
 	}
 
-	if (gamestate != GS_LEVEL)
+	if (gamestate != GameState_t::GS_LEVEL)
 		return;
 
 	if (quickSaveSlot < 0)
@@ -905,7 +903,7 @@ void M_DrawReadThis1()
 {
 	inhelpscreens = true;
 
-	V_DrawPatchDirect (0, 0, W_CacheLumpName(DEH_String("HELP1"), PU_CACHE));
+	V_DrawPatchDirect (0, 0, W_CacheLumpName(DEH_String("HELP1"), pu_tags_t::PU_CACHE));
 }
 
 
@@ -918,7 +916,7 @@ void M_DrawReadThis2()
 {
 	inhelpscreens = true;
 
-	V_DrawPatchDirect(0, 0, W_CacheLumpName(DEH_String("HELP2"), PU_CACHE));
+	V_DrawPatchDirect(0, 0, W_CacheLumpName(DEH_String("HELP2"), pu_tags_t::PU_CACHE));
 }
 
 
@@ -930,7 +928,7 @@ void M_DrawReadThis3()
 {
 	inhelpscreens = true;
 
-	V_DrawPatchDirect(0, 0, W_CacheLumpName(DEH_String("HELP3"), PU_CACHE));
+	V_DrawPatchDirect(0, 0, W_CacheLumpName(DEH_String("HELP3"), pu_tags_t::PU_CACHE));
 }
 
 //
@@ -942,7 +940,7 @@ void M_DrawReadThis3()
 //
 void M_DrawSound()
 {
-	V_DrawPatchDirect (100, 10, W_CacheLumpName(DEH_String("M_SVOL"), PU_CACHE));
+	V_DrawPatchDirect (100, 10, W_CacheLumpName(DEH_String("M_SVOL"), pu_tags_t::PU_CACHE));
 
 	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
 					16,sfxVolume);
@@ -1030,7 +1028,7 @@ void M_MusicVol(int choice)
 void M_DrawMainMenu()
 {
 	V_DrawPatchDirect(84, 2,
-						W_CacheLumpName(DEH_String("M_STRIFE"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_STRIFE"), pu_tags_t::PU_CACHE));
 }
 
 
@@ -1043,8 +1041,8 @@ void M_DrawMainMenu()
 //
 void M_DrawNewGame()
 {
-	V_DrawPatchDirect(96, 14, W_CacheLumpName(DEH_String("M_NGAME"), PU_CACHE));
-	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_SKILL"), PU_CACHE));
+	V_DrawPatchDirect(96, 14, W_CacheLumpName(DEH_String("M_NGAME"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_SKILL"), pu_tags_t::PU_CACHE));
 }
 
 void M_NewGame(int choice)
@@ -1071,7 +1069,7 @@ int		epi;
 
 void M_DrawEpisode()
 {
-	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_EPISOD"), PU_CACHE));
+	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_EPISOD"), pu_tags_t::PU_CACHE));
 }
 
 void M_VerifyNightmare(int key)
@@ -1132,7 +1130,7 @@ void M_DrawOptions()
 {
 	// haleyjd 08/27/10: [STRIFE] M_OPTTTL -> M_OPTION
 	V_DrawPatchDirect(108, 15,
-						W_CacheLumpName(DEH_String("M_OPTION"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_OPTION"), pu_tags_t::PU_CACHE));
 
 	// haleyjd 08/26/10: [STRIFE] Removed messages, sensitivity, detail.
 
@@ -1425,18 +1423,18 @@ M_DrawThermo
 
 	xx = x;
 	yy = y + 6; // [STRIFE] +6 to y coordinate
-	V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERML"), PU_CACHE));
+	V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERML"), pu_tags_t::PU_CACHE));
 	xx += 8;
 	for (i=0;i<thermWidth;i++)
 	{
-		V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERMM"), PU_CACHE));
+		V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERMM"), pu_tags_t::PU_CACHE));
 		xx += 8;
 	}
-	V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERMR"), PU_CACHE));
+	V_DrawPatchDirect(xx, yy, W_CacheLumpName(DEH_String("M_THERMR"), pu_tags_t::PU_CACHE));
 
 	// [STRIFE] +2 to initial y coordinate
 	V_DrawPatchDirect((x + 8) + thermDot * 8, y + 2,
-						W_CacheLumpName(DEH_String("M_THERMO"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_THERMO"), pu_tags_t::PU_CACHE));
 }
 
 
@@ -1448,7 +1446,7 @@ M_DrawEmptyCell
  int		item )
 {
 	V_DrawPatchDirect(menu->x - 10, menu->y + item * LINEHEIGHT - 1,
-						W_CacheLumpName(DEH_String("M_CELL1"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_CELL1"), pu_tags_t::PU_CACHE));
 }
 
 void
@@ -1457,7 +1455,7 @@ M_DrawSelCell
  int		item )
 {
 	V_DrawPatchDirect(menu->x - 10, menu->y + item * LINEHEIGHT - 1,
-						W_CacheLumpName(DEH_String("M_CELL2"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_CELL2"), pu_tags_t::PU_CACHE));
 }
 
 
@@ -2356,7 +2354,7 @@ void M_Drawer ()
 
 		if (name[0])
 		{
-			V_DrawPatchDirect (x, y, W_CacheLumpName(name, PU_CACHE));
+			V_DrawPatchDirect (x, y, W_CacheLumpName(name, pu_tags_t::PU_CACHE));
 		}
 		y += LINEHEIGHT;
 	}

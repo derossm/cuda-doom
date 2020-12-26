@@ -10,8 +10,6 @@
 // Parses "Sound" sections in dehacked files
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "doomtype.h"
 #include "deh_defs.h"

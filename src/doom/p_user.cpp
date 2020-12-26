@@ -14,10 +14,6 @@
 //	Pending weapon.
 \**********************************************************************************************************************************************/
 
-
-
-
-#include <stdlib.h> // [crispy] abs()
 #include "doomdef.h"
 #include "d_event.h"
 
@@ -25,11 +21,8 @@
 
 #include "doomstat.h"
 
-
-
 // Index of the special effects (INVUL inverse) map.
 #define INVERSECOLORMAP		32
-
 
 //
 // Movement.
@@ -268,7 +261,7 @@ void P_DeathThink (player_t* player)
 void P_PlayerThink (player_t* player)
 {
 	ticcmd_t*		cmd;
-	weapontype_t	newweapon;
+	WeaponType_t	newweapon;
 
 	// [AM] Assume we can interpolate at the beginning
 	//		of the tic.
@@ -398,7 +391,7 @@ void P_PlayerThink (player_t* player)
 	if (newweapon == wp_fist
 		&& player->weaponowned[wp_chainsaw]
 		&& !(player->readyweapon == wp_chainsaw
-			&& player->powers[pw_strength]))
+			&& player->powers[PowerType_t::pw_strength]))
 	{
 		newweapon = wp_chainsaw;
 	}
@@ -450,21 +443,21 @@ void P_PlayerThink (player_t* player)
 	// Counters, time dependend power ups.
 
 	// Strength counts up to diminish fade.
-	if (player->powers[pw_strength])
-	player->powers[pw_strength]++;
+	if (player->powers[PowerType_t::pw_strength])
+	player->powers[PowerType_t::pw_strength]++;
 
-	if (player->powers[pw_invulnerability])
-	player->powers[pw_invulnerability]--;
+	if (player->powers[PowerType_t::pw_invulnerability])
+	player->powers[PowerType_t::pw_invulnerability]--;
 
-	if (player->powers[pw_invisibility])
-	if (! --player->powers[pw_invisibility] )
+	if (player->powers[PowerType_t::pw_invisibility])
+	if (! --player->powers[PowerType_t::pw_invisibility] )
 		player->mo->flags &= ~MF_SHADOW;
 
-	if (player->powers[pw_infrared])
-	player->powers[pw_infrared]--;
+	if (player->powers[PowerType_t::pw_infrared])
+	player->powers[PowerType_t::pw_infrared]--;
 
-	if (player->powers[pw_ironfeet])
-	player->powers[pw_ironfeet]--;
+	if (player->powers[PowerType_t::pw_ironfeet])
+	player->powers[PowerType_t::pw_ironfeet]--;
 
 	if (player->damagecount)
 	player->damagecount--;
@@ -474,19 +467,19 @@ void P_PlayerThink (player_t* player)
 
 
 	// Handling colormaps.
-	if (player->powers[pw_invulnerability])
+	if (player->powers[PowerType_t::pw_invulnerability])
 	{
-	if (player->powers[pw_invulnerability] > 4*32
-		|| (player->powers[pw_invulnerability]&8) )
+	if (player->powers[PowerType_t::pw_invulnerability] > 4*32
+		|| (player->powers[PowerType_t::pw_invulnerability]&8) )
 		player->fixedcolormap = INVERSECOLORMAP;
 	else
 		// [crispy] Visor effect when Invulnerability is fading out
-		player->fixedcolormap = player->powers[pw_infrared] ? 1 : 0;
+		player->fixedcolormap = player->powers[PowerType_t::pw_infrared] ? 1 : 0;
 	}
-	else if (player->powers[pw_infrared])
+	else if (player->powers[PowerType_t::pw_infrared])
 	{
-	if (player->powers[pw_infrared] > 4*32
-		|| (player->powers[pw_infrared]&8) )
+	if (player->powers[PowerType_t::pw_infrared] > 4*32
+		|| (player->powers[PowerType_t::pw_infrared]&8) )
 	{
 		// almost full bright
 		player->fixedcolormap = 1;

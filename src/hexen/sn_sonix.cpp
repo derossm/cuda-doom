@@ -12,7 +12,6 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <string.h>
 #include "m_random.h"
 #include "h2def.h"
 #include "i_system.h"
@@ -283,7 +282,7 @@ void SN_InitSequenceScript()
 
 			*tempDataPtr++ = SS_CMD_END;
 			dataSize = (tempDataPtr - tempDataStart) * sizeof(int);
-			SequenceData[i] = (int *) Z_Malloc(dataSize, PU_STATIC, NULL);
+			SequenceData[i] = (int *) Z_Malloc(dataSize, pu_tags_t::PU_STATIC, NULL);
 			memcpy(SequenceData[i], tempDataStart, dataSize);
 			Z_Free(tempDataStart);
 			inSequence = -1;
@@ -313,7 +312,7 @@ void SN_StartSequence(mobj_t * mobj, int sequence)
 	seqnode_t *node;
 
 	SN_StopSequence(mobj);		// Stop any previous sequence
-	node = (seqnode_t *) Z_Malloc(sizeof(seqnode_t), PU_STATIC, NULL);
+	node = (seqnode_t *) Z_Malloc<seqnode_t>(sizeof(seqnode_t), pu_tags_t::PU_STATIC, NULL);
 	node->sequencePtr = SequenceData[SequenceTranslate[sequence].scriptNum];
 	node->sequence = sequence;
 	node->mobj = mobj;

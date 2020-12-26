@@ -11,8 +11,6 @@
 // DESCRIPTION: none
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "i_sound.h"
 #include "i_system.h"
@@ -724,7 +722,7 @@ void S_StartSound(void *origin_p, int sfx_id)
 	pitch = Clamp(pitch);
 
 	// kill old sound
-	if (!crispy->soundfull || origin || gamestate != GS_LEVEL)
+	if (!crispy->soundfull || origin || gamestate != GameState_t::GS_LEVEL)
 	{
 	S_StopSound(origin);
 	}
@@ -909,7 +907,7 @@ void S_ChangeMusic(int musicnum, int looping)
 	char namebuf[9];
 	void *handle;
 
-	if (gamestate != GS_LEVEL)
+	if (gamestate != GameState_t::GS_LEVEL)
 	{
 	prevmap = -1;
 	}
@@ -984,7 +982,7 @@ void S_ChangeMusic(int musicnum, int looping)
 		music->lumpnum = W_GetNumForName(namebuf);
 	}
 
-	music->data = W_CacheLumpNum(music->lumpnum, PU_STATIC);
+	music->data = W_CacheLumpNum(music->lumpnum, pu_tags_t::PU_STATIC);
 
 	handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
 	music->handle = handle;
@@ -1039,7 +1037,7 @@ void S_ChangeMusInfoMusic (int lumpnum, int looping)
 
 	music->lumpnum = lumpnum;
 
-	music->data = W_CacheLumpNum(music->lumpnum, PU_STATIC);
+	music->data = W_CacheLumpNum(music->lumpnum, pu_tags_t::PU_STATIC);
 	music->handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
 
 	I_PlaySong(music->handle, looping);

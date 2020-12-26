@@ -11,12 +11,10 @@
 
 	DESCRIPTION:
 		[crispy] add support for SMMU swirling flats
+		[crispy] adapted from smmu/r_ripple.c, by Simon Howard
 \**********************************************************************************************************************************************/
 
-// [crispy] adapted from smmu/r_ripple.c, by Simon Howard
-
 #include <tables.h>
-
 #include <i_system.h>
 #include <w_wad.h>
 #include <z_zone.h>
@@ -34,8 +32,8 @@
 #define SEQUENCE 1024
 #define FLATSIZE (64 * 64)
 
-static int *offsets;
-static int *offset;
+static int* offsets;
+static int* offset;
 
 #define AMP 2
 #define AMP2 2
@@ -45,31 +43,24 @@ void R_InitDistortedFlats()
 {
 	if (!offsets)
 	{
-		int i;
-
 		offsets = I_Realloc(NULL, SEQUENCE * FLATSIZE * sizeof(*offsets));
 		offset = offsets;
 
-		for (i = 0; i < SEQUENCE; i++)
+		for (size_t i{0}; i < SEQUENCE; ++i)
 		{
-			int x, y;
-
-			for (x = 0; x < 64; x++)
+			for (size_t x{0}; x < 64; ++x)
 			{
-				for (y = 0; y < 64; y++)
+				for (size_t y{0}; y < 64; ++y)
 				{
-					int x1, y1;
-					int sinvalue, sinvalue2;
-
-					sinvalue = (y * swirlfactor + i * SPEED * 5 + 900) & 8191;
-					sinvalue2 = (x * swirlfactor2 + i * SPEED * 4 + 300) & 8191;
-					x1 = x + 128
+					auto sinvalue = (y * swirlfactor + i * SPEED * 5 + 900) & 8191;
+					auto sinvalue2 = (x * swirlfactor2 + i * SPEED * 4 + 300) & 8191;
+					auto x1 = x + 128
 						+ ((finesine[sinvalue] * AMP) >> FRACBITS)
 						+ ((finesine[sinvalue2] * AMP2) >> FRACBITS);
 
 					sinvalue = (x * swirlfactor + i * SPEED * 3 + 700) & 8191;
 					sinvalue2 = (y * swirlfactor2 + i * SPEED * 4 + 1200) & 8191;
-					y1 = y + 128
+					auto y1 = y + 128
 						+ ((finesine[sinvalue] * AMP) >> FRACBITS)
 						+ ((finesine[sinvalue2] * AMP2) >> FRACBITS);
 
@@ -85,7 +76,7 @@ void R_InitDistortedFlats()
 	}
 }
 
-char *R_DistortedFlat(int flatnum)
+char* R_DistortedFlat(int flatnum)
 {
 	static int swirltic = -1;
 	static int swirlflat = -1;
@@ -101,12 +92,9 @@ char *R_DistortedFlat(int flatnum)
 
 	if (swirlflat != flatnum)
 	{
-		char *normalflat;
-		int i;
+		auto normalflat = (char*)W_CacheLumpNum(flatnum, pu_tags_t::PU_STATIC);
 
-		normalflat = W_CacheLumpNum(flatnum, PU_STATIC);
-
-		for (i = 0; i < FLATSIZE; i++)
+		for (size_t i{0u}; i < FLATSIZE; ++i)
 		{
 			distortedflat[i] = normalflat[offset[i]];
 		}

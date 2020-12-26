@@ -12,8 +12,6 @@
 	Refresh of things, i.e. objects represented by sprites.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "deh_main.h"
 #include "doomdef.h"
@@ -170,7 +168,7 @@ void R_InitSpriteDefs(const char** namelist)
 	if (!numsprites)
 	return;
 
-	sprites = Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
+	sprites = Z_Malloc<decltype(sprites)>(numsprites *sizeof(*sprites), pu_tags_t::PU_STATIC, NULL);
 
 	start = firstspritelump-1;
 	end = lastspritelump+1;
@@ -247,7 +245,7 @@ void R_InitSpriteDefs(const char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes =
-		Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+		Z_Malloc(maxframe * sizeof(spriteframe_t), pu_tags_t::PU_STATIC, NULL);
 	memcpy(sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
 	}
 
@@ -388,7 +386,7 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 	int					clip;	// villsa [STRIFE]
 	int					translation;	// villsa [STRIFE]
 
-	patch = W_CacheLumpNum(vis->patch+firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum(vis->patch+firstspritelump, pu_tags_t::PU_CACHE);
 
 	dc_colormap = vis->colormap;
 
@@ -749,14 +747,14 @@ void R_DrawPSprite(pspdef_t* psp)
 
 	vis->patch = lump;
 
-	if (viewplayer->powers[pw_invisibility] > 4*32
-		|| (viewplayer->powers[pw_invisibility] & 8))
+	if (viewplayer->powers[PowerType_t::pw_invisibility] > 4*32
+		|| (viewplayer->powers[PowerType_t::pw_invisibility] & 8))
 	{
 		// shadow draw
 		vis->colormap	= spritelights[MAXLIGHTSCALE-1];
 		vis->mobjflags |= MF_SHADOW;
 	}
-	else if(viewplayer->powers[pw_invisibility] & 4)
+	else if(viewplayer->powers[PowerType_t::pw_invisibility] & 4)
 	{
 		vis->mobjflags |= (MF_SHADOW|MF_MVIS);
 	}

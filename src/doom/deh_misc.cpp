@@ -10,8 +10,6 @@
 // Parses "Misc" sections in dehacked files
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
-#include <string.h>
 
 #include "doomtype.h"
 #include "deh_defs.h"

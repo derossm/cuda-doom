@@ -162,7 +162,7 @@ extern void AM_Stop();
 
 void IN_Start()
 {
-	I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
+	I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
 	IN_LoadPics();
 	IN_InitStats();
 	intermission = true;
@@ -359,7 +359,7 @@ static void LoadLumpCallback(const char *lumpname, int lumpnum, patch_t **ptr)
 
 	// Cache the lump
 
-	*ptr = W_CacheLumpNum(lumpnum, PU_STATIC);
+	*ptr = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 }
 
 void IN_LoadPics()
@@ -605,7 +605,7 @@ void IN_DrawStatBack()
 	byte *src;
 	byte *dest;
 
-	src = W_CacheLumpName(DEH_String("FLOOR16"), PU_CACHE);
+	src = W_CacheLumpName(DEH_String("FLOOR16"), pu_tags_t::PU_CACHE);
 	dest = I_VideoBuffer;
 
 	for (y = 0; y < SCREENHEIGHT; y++)
@@ -1115,7 +1115,7 @@ void IN_DrTextB(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontBLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontBLump + c - 33, pu_tags_t::PU_CACHE);
 			V_DrawShadowedPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}

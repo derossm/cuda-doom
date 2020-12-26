@@ -12,18 +12,8 @@
 	DOOM graphics stuff for SDL.
 \**********************************************************************************************************************************************/
 
-
-#include <stdlib.h>
-
 #include "SDL.h"
 #include "SDL_opengl.h"
-
-#ifdef _WIN32
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#endif
 
 #include "icon.c"
 
@@ -1647,7 +1637,7 @@ void I_InitGraphics()
 
 	// Set the palette
 
-	doompal = W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE);
+	doompal = W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE);
 	I_SetPalette(doompal);
 	SDL_SetPaletteColors(screenbuffer->format->palette, palette, 0, 256);
 #endif

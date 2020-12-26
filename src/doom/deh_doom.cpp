@@ -10,7 +10,6 @@
 // Top-level dehacked definitions for Doom dehacked.
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
 #include "deh_defs.h"
 #include "deh_main.h"
 

@@ -12,8 +12,6 @@
 		The status bar widget code.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <ctype.h>
 
 #include "deh_main.h"
 #include "doomdef.h"
@@ -38,7 +36,7 @@ void STlib_init()
 {
 	if (W_CheckNumForName(DEH_String("STTMINUS")) >= 0)
 	{
-		sttminus = (patch_t*)W_CacheLumpName(DEH_String("STTMINUS"), PU_STATIC);
+		sttminus = (patch_t*)W_CacheLumpName(DEH_String("STTMINUS"), pu_tags_t::PU_STATIC);
 	}
 	else
 	{

@@ -342,7 +342,7 @@ static void StreamIn_player_t(player_t *str)
 	str->mo = SV_ReadPtr();
 	str->mo = NULL;
 
-	// playerstate_t playerstate;
+	// PlayerState_t playerstate;
 	str->playerstate = SV_ReadLong();
 
 	// ticcmd_t cmd;
@@ -387,7 +387,7 @@ static void StreamIn_player_t(player_t *str)
 		StreamIn_inventory_t(&str->inventory[i]);
 	}
 
-	// artitype_t readyArtifact;
+	// ArtiType_t readyArtifact;
 	str->readyArtifact = SV_ReadLong();
 
 	// int artifactCount;
@@ -414,10 +414,10 @@ static void StreamIn_player_t(player_t *str)
 		str->frags[i] = SV_ReadLong();
 	}
 
-	// weapontype_t readyweapon;
+	// WeaponType_t readyweapon;
 	str->readyweapon = SV_ReadLong();
 
-	// weapontype_t pendingweapon;
+	// WeaponType_t pendingweapon;
 	str->pendingweapon = SV_ReadLong();
 
 	// bool weaponowned[NUMWEAPONS];
@@ -511,7 +511,7 @@ static void StreamOut_player_t(player_t *str)
 	// mobj_t *mo;
 	SV_WritePtr(str->mo);
 
-	// playerstate_t playerstate;
+	// PlayerState_t playerstate;
 	SV_WriteLong(str->playerstate);
 
 	// ticcmd_t cmd;
@@ -556,7 +556,7 @@ static void StreamOut_player_t(player_t *str)
 		StreamOut_inventory_t(&str->inventory[i]);
 	}
 
-	// artitype_t readyArtifact;
+	// ArtiType_t readyArtifact;
 	SV_WriteLong(str->readyArtifact);
 
 	// int artifactCount;
@@ -583,10 +583,10 @@ static void StreamOut_player_t(player_t *str)
 		SV_WriteLong(str->frags[i]);
 	}
 
-	// weapontype_t readyweapon;
+	// WeaponType_t readyweapon;
 	SV_WriteLong(str->readyweapon);
 
-	// weapontype_t pendingweapon;
+	// WeaponType_t pendingweapon;
 	SV_WriteLong(str->pendingweapon);
 
 	// bool weaponowned[NUMWEAPONS];
@@ -2621,14 +2621,14 @@ static void UnarchiveMobjs()
 	mobj_t *mobj;
 
 	AssertSegment(ASEG_MOBJS);
-	TargetPlayerAddrs = Z_Malloc(MAX_TARGET_PLAYERS * sizeof(mobj_t **),
+	TargetPlayerAddrs = Z_Malloc<decltype(TargetPlayerAddrs)>(MAX_TARGET_PLAYERS * sizeof(mobj_t **),
 									PU_STATIC, NULL);
 	TargetPlayerCount = 0;
 	MobjCount = SV_ReadLong();
-	MobjList = Z_Malloc(MobjCount * sizeof(mobj_t *), PU_STATIC, NULL);
+	MobjList = Z_Malloc<decltype(MobjList)>(MobjCount * sizeof(mobj_t *), pu_tags_t::PU_STATIC, NULL);
 	for (i = 0; i < MobjCount; i++)
 	{
-		MobjList[i] = Z_Malloc(sizeof(mobj_t), PU_LEVEL, NULL);
+		MobjList[i] = Z_Malloc<mobj_t>(sizeof(mobj_t), pu_tags_t::PU_LEVEL, NULL);
 	}
 	for (i = 0; i < MobjCount; i++)
 	{
@@ -2853,7 +2853,7 @@ static void UnarchiveThinkers()
 		{
 			if (tClass == info->tClass)
 			{
-				thinker = Z_Malloc(info->size, PU_LEVEL, NULL);
+				thinker = Z_Malloc<decltype(thinker)>(info->size, pu_tags_t::PU_LEVEL, NULL);
 				info->readFunc(thinker);
 				thinker->function = info->thinkerFunc;
 				if (info->restoreFunc)
@@ -3272,7 +3272,7 @@ static void CopyFile(char *source_name, char *dest_name)
 
 	if (vanilla_savegame_limit)
 	{
-		buffer = Z_Malloc(file_length, PU_STATIC, NULL);
+		buffer = Z_Malloc<decltype(buffer)>(file_length, pu_tags_t::PU_STATIC, NULL);
 		Z_Free(buffer);
 	}
 
@@ -3282,7 +3282,7 @@ static void CopyFile(char *source_name, char *dest_name)
 		I_Error("Couldn't read file %s", dest_name);
 	}
 
-	buffer = Z_Malloc(BUFFER_CHUNK_SIZE, PU_STATIC, NULL);
+	buffer = Z_Malloc<decltype(buffer)>(BUFFER_CHUNK_SIZE, pu_tags_t::PU_STATIC, NULL);
 
 	do
 	{

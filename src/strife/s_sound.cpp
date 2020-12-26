@@ -11,9 +11,6 @@
 // DESCRIPTION: none
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
 
 #include "i_sound.h"
 #include "i_system.h"
@@ -143,7 +140,7 @@ void S_Init(int sfxVolume, int musicVolume, int voiceVolume)
 	// Allocating the internal channels for mixing
 	// (the maximum numer of sounds rendered
 	// simultaneously) within zone memory.
-	channels = Z_Malloc(snd_channels*sizeof(channel_t), PU_STATIC, 0);
+	channels = Z_Malloc<decltype(channels)>(snd_channels*sizeof(channel_t), pu_tags_t::PU_STATIC, 0);
 
 	// Free all channels for use
 	for (i=0 ; i<snd_channels ; i++)
@@ -788,7 +785,7 @@ void S_ChangeMusic(int musicnum, int looping)
 		music->lumpnum = W_GetNumForName(namebuf);
 	}
 
-	music->data = W_CacheLumpNum(music->lumpnum, PU_STATIC);
+	music->data = W_CacheLumpNum(music->lumpnum, pu_tags_t::PU_STATIC);
 
 	handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
 	music->handle = handle;

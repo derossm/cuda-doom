@@ -13,9 +13,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "memio.h"
 #include "mus2mid.h"
@@ -360,7 +357,7 @@ static bool LoadInstrumentTable()
 {
 	byte *lump;
 
-	lump = W_CacheLumpName(DEH_String("genmidi"), PU_STATIC);
+	lump = W_CacheLumpName(DEH_String("genmidi"), pu_tags_t::PU_STATIC);
 
 	// DMX does not check header
 

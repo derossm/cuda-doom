@@ -10,7 +10,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
 #include "doomdef.h"
 #include "deh_str.h"
 #include "i_system.h"
@@ -471,7 +470,7 @@ void R_DrawPlanes()
 		//
 		lumpnum = firstflat + flattranslation[pl->picnum];
 
-		tempSource = W_CacheLumpNum(lumpnum, PU_STATIC);
+		tempSource = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 
 		switch (pl->special)
 		{

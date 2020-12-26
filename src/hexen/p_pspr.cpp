@@ -335,7 +335,7 @@ void P_ActivateMorphWeapon(player_t * player)
 //
 //---------------------------------------------------------------------------
 
-void P_PostMorphWeapon(player_t * player, weapontype_t weapon)
+void P_PostMorphWeapon(player_t * player, WeaponType_t weapon)
 {
 	player->pendingweapon = WP_NOCHANGE;
 	player->readyweapon = weapon;
@@ -385,7 +385,7 @@ void P_BringUpWeapon(player_t * player)
 
 bool P_CheckMana(player_t * player)
 {
-	manatype_t mana;
+	ManaType_t mana;
 	int count;
 
 	mana = WeaponInfo[player->readyweapon][player->playerClass].mana;

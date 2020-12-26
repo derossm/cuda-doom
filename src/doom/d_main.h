@@ -13,10 +13,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include ../"../derma/common.h"
-
-#ifndef __D_MAIN__
-#define __D_MAIN__
+#include "../../derma/common.h"
 
 #include "doomdef.h"
 
@@ -35,6 +32,4 @@ void D_StartTitle ();
 //
 // GLOBAL VARIABLES
 //
-extern gameaction_t	gameaction;
-
-#endif
+extern GameAction_t	gameaction;

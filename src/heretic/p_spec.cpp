@@ -235,7 +235,7 @@ void P_InitTerrainTypes()
 	int size;
 
 	size = (numflats + 1) * sizeof(int);
-	TerrainTypes = Z_Malloc(size, PU_STATIC, 0);
+	TerrainTypes = Z_Malloc<decltype(TerrainTypes)>(size, pu_tags_t::PU_STATIC, 0);
 	memset(TerrainTypes, 0, size);
 	for (i = 0; TerrainTypeDefs[i].type != -1; i++)
 	{
@@ -1122,7 +1122,7 @@ int EV_DoDonut(line_t * line)
 			//
 			//		Spawn rising slime
 			//
-			floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+			floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVSPEC, 0);
 			P_AddThinker(&floor->thinker);
 			s2->specialdata = floor;
 			floor->thinker.function = T_MoveFloor;
@@ -1138,7 +1138,7 @@ int EV_DoDonut(line_t * line)
 			//
 			//		Spawn lowering donut-hole
 			//
-			floor = Z_Malloc(sizeof(*floor), PU_LEVSPEC, 0);
+			floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVSPEC, 0);
 			P_AddThinker(&floor->thinker);
 			s1->specialdata = floor;
 			floor->thinker.function = T_MoveFloor;

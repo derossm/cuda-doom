@@ -7,29 +7,6 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-// Code for invoking Doom
-
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
-#include <sys/types.h>
-
-#ifdef _WIN32
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <process.h>
-#include <shellapi.h>
-
-#else
-
-#include <sys/wait.h>
-#include <unistd.h>
-
-#endif
 
 #include "textscreen.h"
 
@@ -46,9 +23,7 @@ struct execute_context_s
 	FILE *stream;
 };
 
-// Returns the path to a temporary file of the given name, stored
-// inside the system temporary directory.
-
+// Returns the path to a temporary file of the given name, stored inside the system temporary directory.
 static char *TempFile(const char *s)
 {
 	const char *tempdir;
@@ -236,7 +211,7 @@ static int ExecuteCommand(const char *program, const char *arg)
 	startup_info.cb = sizeof(startup_info);
 
 	if (!CreateProcessW(NULL, command,
-						NULL, NULL, FALSE, 0, NULL, NULL,
+						NULL, NULL, false, 0, NULL, NULL,
 						&startup_info, &proc_info))
 	{
 		result = -1;

@@ -389,7 +389,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 
 		// new door thinker
 		rtn = 1;
-		door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
+		door = Z_Malloc<decltype(*door)>(sizeof(*door), pu_tags_t::PU_LEVSPEC, 0);
 		P_AddThinker (&door->thinker);
 		sec->specialdata = door;
 
@@ -792,7 +792,7 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 	// haleyjd 09/15/10: [STRIFE] Removed DOOM door sounds
 
 	// new door thinker
-	door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
+	door = Z_Malloc<decltype(*door)>(sizeof(*door), pu_tags_t::PU_LEVSPEC, 0);
 	P_AddThinker (&door->thinker);
 	sec->specialdata = door;
 	door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
@@ -866,7 +866,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 {
 	vldoor_t*	door;
 
-	door = Z_Malloc( sizeof(*door), PU_LEVSPEC, 0);
+	door = Z_Malloc<decltype(door)>( sizeof(*door), pu_tags_t::PU_LEVSPEC, 0);
 
 	P_AddThinker (&door->thinker);
 
@@ -891,7 +891,7 @@ P_SpawnDoorRaiseIn5Mins
 {
 	vldoor_t*	door;
 
-	door = Z_Malloc( sizeof(*door), PU_LEVSPEC, 0);
+	door = Z_Malloc<decltype(door)>( sizeof(*door), pu_tags_t::PU_LEVSPEC, 0);
 
 	P_AddThinker (&door->thinker);
 
@@ -1304,7 +1304,7 @@ void EV_SlidingDoor(line_t* line, mobj_t* thing)
 	// Init sliding door vars
 	if(!door)
 	{
-		door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
+		door = Z_Malloc<decltype(*door)>(sizeof(*door), pu_tags_t::PU_LEVSPEC, 0);
 		P_AddThinker (&door->thinker);
 
 		sec->specialdata = door;

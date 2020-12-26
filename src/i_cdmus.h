@@ -12,9 +12,6 @@
 
 #include "../derma/common.h"
 
-#ifndef __ICDMUS__
-#define __ICDMUS__
-
 #define CDERR_NOTINSTALLED		10		// MSCDEX not installed
 #define CDERR_NOAUDIOSUPPORT	11		// CD-ROM Doesn't support audio
 #define CDERR_NOAUDIOTRACKS 	12		// Current CD has no audio tracks
@@ -34,5 +31,3 @@ int I_CDMusSetVolume(int volume);
 int I_CDMusFirstTrack();
 int I_CDMusLastTrack();
 int I_CDMusTrackLength(int track);
-
-#endif

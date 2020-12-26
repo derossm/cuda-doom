@@ -10,8 +10,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "doomdef.h"
 #include "deh_str.h"
 #include "i_swap.h"
@@ -156,7 +154,7 @@ void R_InitSpriteDefs(const char **namelist)
 	if (!numsprites)
 		return;
 
-	sprites = Z_Malloc(numsprites * sizeof(*sprites), PU_STATIC, NULL);
+	sprites = Z_Malloc<decltype(sprites)>(numsprites * sizeof(*sprites), pu_tags_t::PU_STATIC, NULL);
 
 	start = firstspritelump - 1;
 	end = lastspritelump + 1;
@@ -226,7 +224,7 @@ void R_InitSpriteDefs(const char **namelist)
 		//
 		sprites[i].numframes = maxframe;
 		sprites[i].spriteframes =
-			Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+			Z_Malloc(maxframe * sizeof(spriteframe_t), pu_tags_t::PU_STATIC, NULL);
 		memcpy(sprites[i].spriteframes, sprtemp,
 				maxframe * sizeof(spriteframe_t));
 	}
@@ -397,7 +395,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
 	fixed_t baseclip;
 
 
-	patch = W_CacheLumpNum(vis->patch + firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum(vis->patch + firstspritelump, pu_tags_t::PU_CACHE);
 
 	dc_colormap = vis->colormap;
 
@@ -791,8 +789,8 @@ void R_DrawPSprite(pspdef_t * psp)
 		vis->startfrac += vis->xiscale * (vis->x1 - x1);
 	vis->patch = lump;
 
-	if (viewplayer->powers[pw_invisibility] > 4 * 32 ||
-		viewplayer->powers[pw_invisibility] & 8)
+	if (viewplayer->powers[PowerType_t::pw_invisibility] > 4 * 32 ||
+		viewplayer->powers[PowerType_t::pw_invisibility] & 8)
 	{
 		// Invisibility
 		vis->colormap = spritelights[MAXLIGHTSCALE - 1];

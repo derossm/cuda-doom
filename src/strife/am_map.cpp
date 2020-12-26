@@ -13,7 +13,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
 
 #include "deh_main.h"
 
@@ -462,7 +461,7 @@ void AM_loadPics()
 	for (i=0;i<10;i++)
 	{
 		DEH_snprintf(namebuf, 9, "PLMNUM%d", i);
-		marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
+		marknums[i] = W_CacheLumpName(namebuf, pu_tags_t::PU_STATIC);
 	}
 
 }
@@ -1187,7 +1186,7 @@ void AM_drawWalls()
 			}
 		}
 		// villsa [STRIFE] show all of the map on map 15
-		else if(plr->powers[pw_allmap] || gamemap == 15)
+		else if(plr->powers[PowerType_t::pw_allmap] || gamemap == 15)
 		{
 			if(!(line->flags & LINE_NEVERSEE))
 				AM_drawMline(&l, CTWALLCOLORS);
@@ -1300,7 +1299,7 @@ void AM_drawPlayers()
 		continue;
 
 		// villsa [STRIFE] change to 27
-	if(p->powers[pw_invisibility])
+	if(p->powers[PowerType_t::pw_invisibility])
 		color = 27; // *close* to black
 	else
 		color = their_colors[their_color];
@@ -1403,7 +1402,7 @@ void AM_Drawer ()
 	AM_drawPlayers();
 
 	// villsa [STRIFE] draw things when map powerup is enabled
-	if(cheating == 2 || plr->powers[pw_allmap] > 1)
+	if(cheating == 2 || plr->powers[PowerType_t::pw_allmap] > 1)
 		AM_drawThings();
 
 	// villsa [STRIFE] not used

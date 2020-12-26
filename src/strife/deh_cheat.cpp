@@ -10,8 +10,6 @@
 // Parses "Cheat" sections in dehacked files
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
-#include <string.h>
 
 #include "doomtype.h"
 

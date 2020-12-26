@@ -14,7 +14,6 @@
 //	Pending weapon.
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
 
 #include "doomdef.h"
 #include "d_event.h"
@@ -335,7 +334,7 @@ void P_DeathThink(player_t* player)
 void P_PlayerThink (player_t* player)
 {
 	ticcmd_t*		cmd;
-	weapontype_t	newweapon;
+	WeaponType_t	newweapon;
 
 	// villsa [STRIFE] unused code (see ST_Responder)
 	/*
@@ -509,27 +508,27 @@ void P_PlayerThink (player_t* player)
 	// Counters, time dependend power ups.
 
 	// Strength counts up to diminish fade.
-	if (player->powers[pw_strength])
-		player->powers[pw_strength]++;
+	if (player->powers[PowerType_t::pw_strength])
+		player->powers[PowerType_t::pw_strength]++;
 
 	// villsa [STRIFE] targeter powerup
-	if(player->powers[pw_targeter])
+	if(player->powers[PowerType_t::pw_targeter])
 	{
-		player->powers[pw_targeter]--;
-		if(player->powers[pw_targeter] == 1)
+		player->powers[PowerType_t::pw_targeter]--;
+		if(player->powers[PowerType_t::pw_targeter] == 1)
 		{
 			P_SetPsprite(player, ps_targcenter, S_NULL);
 			P_SetPsprite(player, ps_targleft,	S_NULL);
 			P_SetPsprite(player, ps_targright, S_NULL);
 		}
-		else if(player->powers[pw_targeter] - 1 < 5*TICRATE)
+		else if(player->powers[PowerType_t::pw_targeter] - 1 < 5*TICRATE)
 		{
-			if(player->powers[pw_targeter] & 32)
+			if(player->powers[PowerType_t::pw_targeter] & 32)
 			{
 				P_SetPsprite(player, ps_targright, S_NULL);
 				P_SetPsprite(player, ps_targleft, S_TRGT_01);	// 11
 			}
-			else if(player->powers[pw_targeter] & 16) // haleyjd 20110205: missing else
+			else if(player->powers[PowerType_t::pw_targeter] & 16) // haleyjd 20110205: missing else
 			{
 				P_SetPsprite(player, ps_targright, S_TRGT_02); // 12
 				P_SetPsprite(player, ps_targleft, S_NULL);
@@ -537,24 +536,24 @@ void P_PlayerThink (player_t* player)
 		}
 	}
 
-	if(player->powers[pw_invisibility])
+	if(player->powers[PowerType_t::pw_invisibility])
 	{
 		// villsa [STRIFE] remove mvis flag as well
-		if(!--player->powers[pw_invisibility])
+		if(!--player->powers[PowerType_t::pw_invisibility])
 			player->mo->flags &= ~(MF_SHADOW|MF_MVIS);
 	}
 
-	if(player->powers[pw_ironfeet])
+	if(player->powers[PowerType_t::pw_ironfeet])
 	{
-		player->powers[pw_ironfeet]--;
+		player->powers[PowerType_t::pw_ironfeet]--;
 
 		// villsa [STRIFE] gasmask sound
 		if(!(leveltime & 0x3f))
 			S_StartSound(player->mo, sfx_mask);
 	}
 
-	if(player->powers[pw_allmap] > 1)
-		player->powers[pw_allmap]--;
+	if(player->powers[PowerType_t::pw_allmap] > 1)
+		player->powers[PowerType_t::pw_allmap]--;
 
 	// haleyjd 08/30/10: [STRIFE]
 	// Nukage count keeps track of exposure to hazardous conditions over time.
@@ -882,18 +881,18 @@ bool P_ItemBehavior(player_t* player, int item)
 		return P_GiveArmor(player, 1);
 
 	case SPR_SHD1: // 186
-		return P_GivePower(player, pw_invisibility);
+		return P_GivePower(player, PowerType_t::pw_invisibility);
 
 	case SPR_MASK: // 187
-		return P_GivePower(player, pw_ironfeet);
+		return P_GivePower(player, PowerType_t::pw_ironfeet);
 
 	case SPR_PMUP: // 191
-		if(!player->powers[pw_allmap])
+		if(!player->powers[PowerType_t::pw_allmap])
 		{
 			player->message = "The scanner won't work without a map!";
 			return false;
 		}
-		player->powers[pw_allmap] = PMUPTICS;
+		player->powers[PowerType_t::pw_allmap] = PMUPTICS;
 		return true; // haleyjd 20110228: repaired
 
 	case SPR_STMP: // 180
@@ -909,7 +908,7 @@ bool P_ItemBehavior(player_t* player, int item)
 		return P_SpawnTeleportBeacon(player);
 
 	case SPR_TARG: // 108
-		return P_GivePower(player, pw_targeter);
+		return P_GivePower(player, PowerType_t::pw_targeter);
 	}
 
 	return false;

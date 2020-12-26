@@ -13,7 +13,6 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <stdarg.h>
 
 #include "config.h"
 
@@ -298,7 +297,7 @@ byte *ST_LoadScreen()
 
 	lump = W_GetNumForName("STARTUP");
 	length = W_LumpLength(lump);
-	buffer = (byte *) Z_Malloc(length, PU_STATIC, NULL);
+	buffer = (byte *) Z_Malloc(length, pu_tags_t::PU_STATIC, NULL);
 	W_ReadLump(lump, buffer);
 	return (buffer);
 }

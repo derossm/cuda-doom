@@ -7,13 +7,7 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-// DESCRIPTION: none
 \**********************************************************************************************************************************************/
-
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
 
 #include "doomdef.h"
 #include "doomkeys.h"
@@ -87,10 +81,10 @@ void G_DoSaveGame();
 
 // Gamestate the last time G_Ticker was called.
 
-gamestate_t		oldgamestate;
+GameState_t		oldgamestate;
 
-gameaction_t	gameaction;
-gamestate_t		gamestate;
+GameAction_t	gameaction;
+GameState_t		gamestate;
 skill_t			gameskill;
 bool		respawnmonsters;
 int				gameepisode;
@@ -176,8 +170,8 @@ static int next_weapon = 0;
 
 static const struct
 {
-	weapontype_t weapon;
-	weapontype_t weapon_num;
+	WeaponType_t weapon;
+	WeaponType_t weapon_num;
 } weapon_order_table[] = {
 	{ wp_fist,			wp_fist },
 	{ wp_chainsaw,		wp_fist },
@@ -248,7 +242,7 @@ int G_CmdChecksum(ticcmd_t* cmd)
 	return sum;
 }
 
-static bool WeaponSelectable(weapontype_t weapon)
+static bool WeaponSelectable(WeaponType_t weapon)
 {
 	// Can't select the super shotgun in Doom 1.
 
@@ -277,7 +271,7 @@ static bool WeaponSelectable(weapontype_t weapon)
 
 	if (weapon == wp_fist
 		&& players[consoleplayer].weaponowned[wp_chainsaw]
-		&& !players[consoleplayer].powers[pw_strength])
+		&& !players[consoleplayer].powers[PowerType_t::pw_strength])
 	{
 		return false;
 	}
@@ -287,7 +281,7 @@ static bool WeaponSelectable(weapontype_t weapon)
 
 static int G_NextWeapon(int direction)
 {
-	weapontype_t weapon;
+	WeaponType_t weapon;
 	int start_i, i;
 
 	// Find index in the table.
@@ -448,7 +442,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
 	}
 
 	// [crispy] extra high precision IDMYPOS variant, updates for 10 seconds
-	if (player->powers[pw_mapcoords])
+	if (player->powers[PowerType_t::pw_mapcoords])
 	{
 		M_snprintf(playermessage, sizeof(playermessage),
 			"X=%.10f Y=%.10f A=%d",
@@ -457,10 +451,10 @@ void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
 			player->mo->angle >> 24);
 		player->message = playermessage;
 
-		player->powers[pw_mapcoords]--;
+		player->powers[PowerType_t::pw_mapcoords]--;
 
 		// [crispy] discard instead of going static
-		if (!player->powers[pw_mapcoords])
+		if (!player->powers[PowerType_t::pw_mapcoords])
 		{
 			player->message = "";
 		}
@@ -584,7 +578,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
 	// next_weapon variable is set to change weapons when
 	// we generate a ticcmd. Choose a new weapon.
 
-	if (gamestate == GS_LEVEL && next_weapon != 0)
+	if (gamestate == GameState_t::GS_LEVEL && next_weapon != 0)
 	{
 		i = G_NextWeapon(next_weapon);
 		cmd->buttons |= BT_CHANGE;
@@ -841,10 +835,10 @@ void G_DoLoadLevel()
 
 	levelstarttic = gametic;		// for time calculation
 
-	if (wipegamestate == GS_LEVEL)
+	if (wipegamestate == GameState_t::GS_LEVEL)
 	wipegamestate = -1;				// force a wipe
 
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -958,7 +952,7 @@ static void SetMouseButtons(unsigned int buttons_mask)
 bool G_Responder (event_t* ev)
 {
 	// allow spy mode changes even during the demo
-	if (gamestate == GS_LEVEL && ev->type == ev_keydown
+	if (gamestate == GameState_t::GS_LEVEL && ev->type == ev_keydown
 		&& ev->data1 == key_spy && (singledemo || !deathmatch) )
 	{
 	// spy mode
@@ -973,7 +967,7 @@ bool G_Responder (event_t* ev)
 
 	// any other key pops up menu if in demos
 	if (gameaction == ga_nothing && !singledemo &&
-	(demoplayback || gamestate == GS_DEMOSCREEN)
+	(demoplayback || gamestate == GameState_t::GS_DEMOSCREEN)
 	)
 	{
 	if (ev->type == ev_keydown ||
@@ -989,7 +983,7 @@ bool G_Responder (event_t* ev)
 	return false;
 	}
 
-	if (gamestate == GS_LEVEL)
+	if (gamestate == GameState_t::GS_LEVEL)
 	{
 #if 0
 	if (devparm && ev->type == ev_keydown && ev->data1 == ';')
@@ -1006,7 +1000,7 @@ bool G_Responder (event_t* ev)
 		return true;	// automap ate it
 	}
 
-	if (gamestate == GS_FINALE)
+	if (gamestate == GameState_t::GS_FINALE)
 	{
 	if (F_Responder(ev))
 		return true;	// finale ate the event
@@ -1153,7 +1147,7 @@ void G_Ticker()
 		break;
 		case ga_screenshot:
 		// [crispy] redraw view without weapons and HUD
-		if (gamestate == GS_LEVEL && (crispy->cleanscreenshot || crispy->screenshotmsg == 1))
+		if (gamestate == GameState_t::GS_LEVEL && (crispy->cleanscreenshot || crispy->screenshotmsg == 1))
 		{
 		crispy->screenshotmsg = 4;
 		crispy->post_rendering_hook = G_CrispyScreenShot;
@@ -1272,7 +1266,7 @@ void G_Ticker()
 
 	// Have we just finished displaying an intermission screen?
 
-	if (oldgamestate == GS_INTERMISSION && gamestate != GS_INTERMISSION)
+	if (oldgamestate == GameState_t::GS_INTERMISSION && gamestate != GameState_t::GS_INTERMISSION)
 	{
 		WI_End();
 	}
@@ -1283,22 +1277,22 @@ void G_Ticker()
 	// do main actions
 	switch (gamestate)
 	{
-		case GS_LEVEL:
+		case GameState_t::GS_LEVEL:
 	P_Ticker();
 	ST_Ticker();
 	AM_Ticker();
 	HU_Ticker();
 	break;
 
-		case GS_INTERMISSION:
+		case GameState_t::GS_INTERMISSION:
 	WI_Ticker();
 	break;
 
-		case GS_FINALE:
+		case GameState_t::GS_FINALE:
 	F_Ticker();
 	break;
 
-		case GS_DEMOSCREEN:
+		case GameState_t::GS_DEMOSCREEN:
 	D_PageTicker();
 	break;
 	}
@@ -1967,7 +1961,7 @@ void G_DoCompleted ()
 	// will agree with Compet-n.
 	wminfo.totaltimes = (totalleveltimes += (leveltime - leveltime % TICRATE));
 
-	gamestate = GS_INTERMISSION;
+	gamestate = GameState_t::GS_INTERMISSION;
 	viewactive = false;
 	automapactive = false;
 
@@ -2043,7 +2037,7 @@ void G_WorldDone()
 
 void G_DoWorldDone()
 {
-	gamestate = GS_LEVEL;
+	gamestate = GameState_t::GS_LEVEL;
 	gamemap = wminfo.next+1;
 	G_DoLoadLevel();
 	gameaction = ga_nothing;
@@ -2375,8 +2369,8 @@ void G_InitNew(skill_t skill, int episode, int map)
 	}
 	*/
 
-	if (skill > sk_nightmare)
-	skill = sk_nightmare;
+	if (skill > skill_t::sk_nightmare)
+	skill = skill_t::sk_nightmare;
 
  // [crispy] if NRFTL is not available, "episode 2" may mean The Master Levels ("episode 3")
  if (gamemode == commercial)
@@ -2431,13 +2425,13 @@ void G_InitNew(skill_t skill, int episode, int map)
 
 	M_ClearRandom();
 
-	if (skill == sk_nightmare || respawnparm )
+	if (skill == skill_t::sk_nightmare || respawnparm )
 	respawnmonsters = true;
 	else
 	respawnmonsters = false;
 
 	// [crispy] make sure "fast" parameters are really only applied once
-	if ((fastparm || skill == sk_nightmare) && !fast_applied)
+	if ((fastparm || skill == skill_t::sk_nightmare) && !fast_applied)
 	{
 	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
 		// [crispy] Fix infinite loop caused by Demon speed bug
@@ -2450,7 +2444,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	mobjinfo[MT_TROOPSHOT].speed = 20*FRACUNIT;
 	fast_applied = true;
 	}
-	else if (!fastparm && skill != sk_nightmare && fast_applied)
+	else if (!fastparm && skill != skill_t::sk_nightmare && fast_applied)
 	{
 	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
 		states[i].tics <<= 1;
@@ -2616,7 +2610,7 @@ static void IncreaseDemoBuffer()
 	// Generate a new buffer twice the size
 	new_length = current_length * 2;
 
-	new_demobuffer = Z_Malloc(new_length, PU_STATIC, 0);
+	new_demobuffer = Z_Malloc<decltype(new_demobuffer)>(new_length, pu_tags_t::PU_STATIC, 0);
 	new_demop = new_demobuffer + (demo_p - demobuffer);
 
 	// Copy over the old data
@@ -2707,7 +2701,7 @@ void G_RecordDemo(const char *name)
 
 	usergame = false;
 	demoname_size = strlen(name) + 5 + 6; // [crispy] + 6 for "-00000"
-	demoname = Z_Malloc(demoname_size, PU_STATIC, NULL);
+	demoname = Z_Malloc<decltype(demoname)>(demoname_size, pu_tags_t::PU_STATIC, NULL);
 	M_snprintf(demoname, demoname_size, "%s.lmp", name);
 
 	// [crispy] prevent overriding demos by adding a file name suffix
@@ -2730,7 +2724,7 @@ void G_RecordDemo(const char *name)
 	i = M_CheckParmWithArgs("-maxdemo", 1);
 	if (i)
 	maxsize = atoi(myargv[i+1])*1024;
-	demobuffer = Z_Malloc(maxsize,PU_STATIC,NULL);
+	demobuffer = Z_Malloc<decltype(demobuffer)>(maxsize,PU_STATIC,NULL);
 	demoend = demobuffer + maxsize;
 
 	demorecording = true;
@@ -2874,7 +2868,7 @@ void G_DoPlayDemo()
 
 	lumpnum = W_GetNumForName(defdemoname);
 	gameaction = ga_nothing;
-	demobuffer = W_CacheLumpNum(lumpnum, PU_STATIC);
+	demobuffer = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 	demo_p = demobuffer;
 
 	// [crispy] ignore empty demo lumps
@@ -3092,7 +3086,7 @@ bool G_CheckDemoStatus()
 			singletics = false;
 
 			// [crispy] start music for the current level
-			if (gamestate == GS_LEVEL)
+			if (gamestate == GameState_t::GS_LEVEL)
 			{
 				S_Start();
 			}

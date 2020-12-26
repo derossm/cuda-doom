@@ -11,8 +11,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "h2def.h"
 #include "i_system.h"
 #include "i_swap.h"
@@ -155,7 +153,7 @@ void R_InitSpriteDefs(const char **namelist)
 	if (!numsprites)
 		return;
 
-	sprites = Z_Malloc(numsprites * sizeof(*sprites), PU_STATIC, NULL);
+	sprites = Z_Malloc<decltype(sprites)>(numsprites * sizeof(*sprites), pu_tags_t::PU_STATIC, NULL);
 
 	start = firstspritelump - 1;
 	end = lastspritelump + 1;
@@ -225,7 +223,7 @@ void R_InitSpriteDefs(const char **namelist)
 		//
 		sprites[i].numframes = maxframe;
 		sprites[i].spriteframes =
-			Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+			Z_Malloc(maxframe * sizeof(spriteframe_t), pu_tags_t::PU_STATIC, NULL);
 		memcpy(sprites[i].spriteframes, sprtemp,
 				maxframe * sizeof(spriteframe_t));
 	}
@@ -371,7 +369,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
 	fixed_t baseclip;
 
 
-	patch = W_CacheLumpNum(vis->patch + firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum(vis->patch + firstspritelump, pu_tags_t::PU_CACHE);
 
 	dc_colormap = vis->colormap;
 
@@ -748,11 +746,11 @@ void R_DrawPSprite(pspdef_t * psp)
 		vis->startfrac += vis->xiscale * (vis->x1 - x1);
 	vis->patch = lump;
 
-	if (viewplayer->powers[pw_invulnerability] && viewplayer->class
+	if (viewplayer->powers[PowerType_t::pw_invulnerability] && viewplayer->class
 		== PCLASS_CLERIC)
 	{
 		vis->colormap = spritelights[MAXLIGHTSCALE - 1];
-		if (viewplayer->powers[pw_invulnerability] > 4 * 32)
+		if (viewplayer->powers[PowerType_t::pw_invulnerability] > 4 * 32)
 		{
 			if (viewplayer->mo->flags2 & MF2_DONTDRAW)
 			{					// don't draw the psprite
@@ -763,7 +761,7 @@ void R_DrawPSprite(pspdef_t * psp)
 				vis->mobjflags |= MF_ALTSHADOW;
 			}
 		}
-		else if (viewplayer->powers[pw_invulnerability] & 8)
+		else if (viewplayer->powers[PowerType_t::pw_invulnerability] & 8)
 		{
 			vis->mobjflags |= MF_SHADOW;
 		}

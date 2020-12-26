@@ -10,9 +10,6 @@
 	Functions for presenting the information captured from the statistics buffer to a file.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "d_player.h"
 #include "d_mode.h"

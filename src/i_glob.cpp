@@ -7,29 +7,18 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// File globbing API. This allows the contents of the filesystem
-// to be interrogated.
+	DESCRIPTION:
+		File globbing API. This allows the contents of the filesystem to be interrogated.
 \**********************************************************************************************************************************************/
-
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 #include "i_glob.h"
 #include "m_misc.h"
 #include "config.h"
 
 #if defined(_MSC_VER)
-// For Visual C++, we need to include the win_opendir module.
-#include <win_opendir.h>
-#include <sys/stat.h>
 #define S_ISDIR(m)		(((m)& S_IFMT) == S_IFDIR)
 #elif defined(HAVE_DIRENT_H)
-#include <dirent.h>
-#include <sys/stat.h>
 #elif defined(__WATCOMC__)
-// Watcom has the same API in a different header.
-#include <direct.h>
 #else
 #define NO_DIRENT_IMPLEMENTATION
 #endif
@@ -66,20 +55,6 @@ static bool IsDirectory(char *dir, struct dirent *de)
 		return S_ISDIR(sb.st_mode);
 	}
 }
-
-struct glob_s
-{
-	char **globs;
-	int num_globs;
-	int flags;
-	DIR *dir;
-	char *directory;
-	char *last_filename;
-	// These fields are only used when the GLOB_FLAG_SORTED flag is set:
-	char **filenames;
-	int filenames_len;
-	int next_index;
-};
 
 static void FreeStringList(char **globs, int num_globs)
 {

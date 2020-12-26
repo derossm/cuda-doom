@@ -10,16 +10,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Configuration file interface.
+		Configuration file interface.
 \**********************************************************************************************************************************************/
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <errno.h>
-#include <assert.h>
 
 #include "SDL_filesystem.h"
 

@@ -26,9 +26,8 @@
 #define AM_MSGENTERED (AM_MSGHEADER | ('e'<<8))
 #define AM_MSGEXITED (AM_MSGHEADER | ('x'<<8))
 
-
 // Called by main loop.
-bool AM_Responder (event_t* ev);
+bool AM_Responder(event_t* ev);
 
 // Called by main loop.
 void AM_Ticker();
@@ -41,8 +40,44 @@ void AM_Drawer();
 // if the level is completed while it is up.
 void AM_Stop();
 
-
 extern cheatseq_t cheat_amap;
 
+struct fpoint_t
+{
+	int x;
+	int y;
+};
+
+struct fline_t
+{
+	fpoint_t a;
+	fpoint_t b;
+};
+
+struct mpoint_t
+{
+	int64_t x;
+	int64_t y;
+};
+
+struct mline_t
+{
+	mpoint_t a;
+	mpoint_t b;
+};
+
+struct islope_t
+{
+	fixed_t slp;
+	fixed_t islp;
+};
+
+enum class keycolor_t
+{
+	no_key,
+	red_key,
+	yellow_key,
+	blue_key
+};
 
 #endif

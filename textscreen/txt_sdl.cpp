@@ -7,15 +7,11 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Text mode emulation in SDL
+	DESCRIPTION:
+		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
 
 #include "SDL.h"
-
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "doomkeys.h"
 
@@ -101,9 +97,6 @@ static const SDL_Color ega_colors[] =
 };
 
 #ifdef _WIN32
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 
 // Examine system DPI settings to determine whether to use the large font.
 

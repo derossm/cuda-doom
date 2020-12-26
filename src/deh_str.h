@@ -14,9 +14,6 @@
 
 #include "../derma/common.h"
 
-#ifndef DEH_STR_H
-#define DEH_STR_H
-
 #include "doomtype.h"
 
 // Used to do dehacked text substitutions throughout the program
@@ -35,4 +32,19 @@ bool DEH_HasStringReplacement(const char *s);
 	#define DEH_snprintf snprintf
 #endif
 
-#endif /* #ifndef DEH_STR_H */
+struct deh_substitution_t
+{
+	char* from_text;
+	char* to_text;
+};
+
+enum class format_arg_t
+{
+	FORMAT_ARG_INVALID,
+	FORMAT_ARG_INT,
+	FORMAT_ARG_FLOAT,
+	FORMAT_ARG_CHAR,
+	FORMAT_ARG_STRING,
+	FORMAT_ARG_PTR,
+	FORMAT_ARG_SAVE_POS
+};

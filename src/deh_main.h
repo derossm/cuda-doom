@@ -13,9 +13,6 @@
 
 #include "../derma/common.h"
 
-#ifndef DEH_MAIN_H
-#define DEH_MAIN_H
-
 #include "doomtype.h"
 #include "deh_str.h"
 #include "sha1.h"
@@ -43,5 +40,3 @@ extern bool deh_allow_extended_strings;
 extern bool deh_allow_long_strings;
 extern bool deh_allow_long_cheats;
 extern bool deh_apply_cheats;
-
-#endif /* #ifndef DEH_MAIN_H */

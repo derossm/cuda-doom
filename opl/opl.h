@@ -58,6 +58,14 @@ enum class opl_port_t
 #define OPL_MS		((uint64_t) 1000)
 #define OPL_US		((uint64_t) 1)
 
+struct delay_data_t
+{
+	int finished;
+
+	SDL_mutex *mutex;
+	SDL_cond *cond;
+};
+
 // ======================================== //
 // Low-level functions.
 // ======================================== //

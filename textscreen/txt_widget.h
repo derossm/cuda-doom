@@ -11,9 +11,6 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_WIDGET_H
-#define TXT_WIDGET_H
-
 /**
  * @file txt_widget.h
  *
@@ -53,27 +50,6 @@ typedef enum
  * depend on the type of the widget. It is possible to be notified
  * when a signal occurs using the @ref TXT_SignalConnect function.
  */
-using TxtWidgetSizeCalc = CUDADOOM::TXT::WidgetSizeCalc;
-using TxtWidgetDrawer = CUDADOOM::TXT::WidgetDrawer;
-using TxtWidgetDestroy = CUDADOOM::TXT::WidgetDestroy;
-using TxtWidgetKeyPress = CUDADOOM::TXT::WidgetKeyPress;
-using TxtWidgetSignalFunc = CUDADOOM::TXT::WidgetSignalFunc;
-using TxtMousePressFunc = CUDADOOM::TXT::MousePressFunc;
-using TxtWidgetLayoutFunc = CUDADOOM::TXT::WidgetLayoutFunc;
-using TxtWidgetSelectableFunc = CUDADOOM::TXT::WidgetSelectableFunc;
-using TxtWidgetFocusFunc = CUDADOOM::TXT::WidgetFocusFunc;
-
-using txt_callback_t = CUDADOOM::TXT::CallbackEntry;
-using txt_callback_s = CUDADOOM::TXT::CallbackEntry;
-
-using txt_callback_table_t = CUDADOOM::TXT::CallbackTable;
-using txt_callback_table_s = CUDADOOM::TXT::CallbackTable;
-
-using txt_widget_class_t = CUDADOOM::TXT::WidgetClass;
-using txt_widget_class_s = CUDADOOM::TXT::WidgetClass;
-
-using txt_widget_s = CUDADOOM::TXT::Widget;
-using txt_widget_t = CUDADOOM::TXT::Widget;
 
 namespace CUDADOOM::TXT
 {
@@ -275,4 +251,24 @@ void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
  */
 int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
 
-#endif /* #ifndef TXT_WIDGET_H */
+using TxtWidgetSizeCalc = CUDADOOM::TXT::WidgetSizeCalc;
+using TxtWidgetDrawer = CUDADOOM::TXT::WidgetDrawer;
+using TxtWidgetDestroy = CUDADOOM::TXT::WidgetDestroy;
+using TxtWidgetKeyPress = CUDADOOM::TXT::WidgetKeyPress;
+using TxtWidgetSignalFunc = CUDADOOM::TXT::WidgetSignalFunc;
+using TxtMousePressFunc = CUDADOOM::TXT::MousePressFunc;
+using TxtWidgetLayoutFunc = CUDADOOM::TXT::WidgetLayoutFunc;
+using TxtWidgetSelectableFunc = CUDADOOM::TXT::WidgetSelectableFunc;
+using TxtWidgetFocusFunc = CUDADOOM::TXT::WidgetFocusFunc;
+
+using txt_callback_t = CUDADOOM::TXT::CallbackEntry;
+using txt_callback_s = CUDADOOM::TXT::CallbackEntry;
+
+using txt_callback_table_t = CUDADOOM::TXT::CallbackTable;
+using txt_callback_table_s = CUDADOOM::TXT::CallbackTable;
+
+using txt_widget_class_t = CUDADOOM::TXT::WidgetClass;
+using txt_widget_class_s = CUDADOOM::TXT::WidgetClass;
+
+using txt_widget_s = CUDADOOM::TXT::Widget;
+using txt_widget_t = CUDADOOM::TXT::Widget;

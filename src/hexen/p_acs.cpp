@@ -447,7 +447,7 @@ void P_LoadACScripts(int lump)
 	acsHeader_t *header;
 	acsInfo_t *info;
 
-	ActionCodeBase = W_CacheLumpNum(lump, PU_LEVEL);
+	ActionCodeBase = W_CacheLumpNum(lump, pu_tags_t::PU_LEVEL);
 	ActionCodeSize = W_LumpLength(lump);
 
 	M_snprintf(EvalContext, sizeof(EvalContext),
@@ -463,7 +463,7 @@ void P_LoadACScripts(int lump)
 		return;
 	}
 
-	ACSInfo = Z_Malloc(ACScriptCount * sizeof(acsInfo_t), PU_LEVEL, 0);
+	ACSInfo = Z_Malloc<decltype(ACSInfo)>(ACScriptCount * sizeof(acsInfo_t), pu_tags_t::PU_LEVEL, 0);
 	memset(ACSInfo, 0, ACScriptCount * sizeof(acsInfo_t));
 	for (i = 0, info = ACSInfo; i < ACScriptCount; i++, info++)
 	{
@@ -495,7 +495,7 @@ void P_LoadACScripts(int lump)
 
 	ACStringCount = ReadCodeInt();
 	ACSAssert(ACStringCount >= 0, "negative string count %d", ACStringCount);
-	ACStrings = Z_Malloc(ACStringCount * sizeof(char *), PU_LEVEL, NULL);
+	ACStrings = Z_Malloc<decltype(ACStrings)>(ACStringCount * sizeof(char *), pu_tags_t::PU_LEVEL, NULL);
 
 	for (i=0; i<ACStringCount; ++i)
 	{
@@ -518,7 +518,7 @@ static void StartOpenACS(int number, int infoIndex, int offset)
 {
 	acs_t *script;
 
-	script = Z_Malloc(sizeof(acs_t), PU_LEVSPEC, 0);
+	script = Z_Malloc<acs_t>(sizeof(acs_t), pu_tags_t::PU_LEVSPEC, 0);
 	memset(script, 0, sizeof(acs_t));
 	script->number = number;
 
@@ -600,7 +600,7 @@ bool P_StartACS(int number, int map, byte * args, mobj_t * activator,
 	{							// Script is already executing
 		return false;
 	}
-	script = Z_Malloc(sizeof(acs_t), PU_LEVSPEC, 0);
+	script = Z_Malloc<acs_t>(sizeof(acs_t), pu_tags_t::PU_LEVSPEC, 0);
 	memset(script, 0, sizeof(acs_t));
 	script->number = number;
 	script->infoIndex = infoIndex;

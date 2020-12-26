@@ -12,7 +12,6 @@
 
 // HEADER FILES ------------------------------------------------------------
 
-#include <ctype.h>
 #include "h2def.h"
 #include "doomkeys.h"
 #include "i_input.h"
@@ -38,16 +37,16 @@
 
 // TYPES -------------------------------------------------------------------
 
-typedef enum
+enum ItemType_t
 {
 	ITT_EMPTY,
 	ITT_EFUNC,
 	ITT_LRFUNC,
 	ITT_SETMENU,
 	ITT_INERT
-} ItemType_t;
+};
 
-typedef enum
+enum MenuType_t
 {
 	MENU_MAIN,
 	MENU_CLASS,
@@ -58,18 +57,18 @@ typedef enum
 	MENU_LOAD,
 	MENU_SAVE,
 	MENU_NONE
-} MenuType_t;
+};
 
-typedef struct
+struct MenuItem_t
 {
 	ItemType_t type;
 	const char *text;
 	void (*func) (int option);
 	int option;
 	MenuType_t menu;
-} MenuItem_t;
+};
 
-typedef struct
+struct Menu_t
 {
 	int x;
 	int y;
@@ -78,7 +77,7 @@ typedef struct
 	MenuItem_t *items;
 	int oldItPos;
 	MenuType_t prevMenu;
-} Menu_t;
+};
 
 // EXTERNAL FUNCTION PROTOTYPES --------------------------------------------
 
@@ -229,11 +228,11 @@ static Menu_t SaveMenu = {
 };
 
 static MenuItem_t SkillItems[] = {
-	{ITT_EFUNC, NULL, SCSkill, sk_baby, MENU_NONE},
-	{ITT_EFUNC, NULL, SCSkill, sk_easy, MENU_NONE},
-	{ITT_EFUNC, NULL, SCSkill, sk_medium, MENU_NONE},
-	{ITT_EFUNC, NULL, SCSkill, sk_hard, MENU_NONE},
-	{ITT_EFUNC, NULL, SCSkill, sk_nightmare, MENU_NONE}
+	{ITT_EFUNC, NULL, SCSkill, skill_t::sk_baby, MENU_NONE},
+	{ITT_EFUNC, NULL, SCSkill, skill_t::sk_easy, MENU_NONE},
+	{ITT_EFUNC, NULL, SCSkill, skill_t::sk_medium, MENU_NONE},
+	{ITT_EFUNC, NULL, SCSkill, skill_t::sk_hard, MENU_NONE},
+	{ITT_EFUNC, NULL, SCSkill, skill_t::sk_nightmare, MENU_NONE}
 };
 
 static Menu_t SkillMenu = {
@@ -301,14 +300,6 @@ static const char *GammaText[] = {
 	TXT_GAMMA_LEVEL_4
 };
 
-// CODE --------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
-//
-// PROC MN_Init
-//
-//---------------------------------------------------------------------------
-
 void MN_Init()
 {
 	InitFonts();
@@ -317,12 +308,6 @@ void MN_Init()
 	MauloBaseLump = W_GetNumForName("FBULA0"); // ("M_SKL00");
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC InitFonts
-//
-//---------------------------------------------------------------------------
-
 static void InitFonts()
 {
 	FontABaseLump = W_GetNumForName("FONTA_S") + 1;
@@ -330,14 +315,7 @@ static void InitFonts()
 	FontBBaseLump = W_GetNumForName("FONTB_S") + 1;
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC MN_DrTextA
-//
 // Draw text using font A.
-//
-//---------------------------------------------------------------------------
-
 void MN_DrTextA(const char *text, int x, int y)
 {
 	char c;
@@ -351,18 +329,12 @@ void MN_DrTextA(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
 			V_DrawPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}
 	}
 }
-
-//==========================================================================
-//
-// MN_DrTextAYellow
-//
-//==========================================================================
 
 void MN_DrTextAYellow(const char *text, int x, int y)
 {
@@ -377,21 +349,14 @@ void MN_DrTextAYellow(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontAYellowBaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontAYellowBaseLump + c - 33, pu_tags_t::PU_CACHE);
 			V_DrawPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}
 	}
 }
 
-//---------------------------------------------------------------------------
-//
-// FUNC MN_TextAWidth
-//
 // Returns the pixel width of a string using font A.
-//
-//---------------------------------------------------------------------------
-
 int MN_TextAWidth(const char *text)
 {
 	char c;
@@ -407,21 +372,14 @@ int MN_TextAWidth(const char *text)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
 			width += SHORT(p->width) - 1;
 		}
 	}
 	return (width);
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC MN_DrTextB
-//
 // Draw text using font B.
-//
-//---------------------------------------------------------------------------
-
 void MN_DrTextB(const char *text, int x, int y)
 {
 	char c;
@@ -435,21 +393,14 @@ void MN_DrTextB(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontBBaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontBBaseLump + c - 33, pu_tags_t::PU_CACHE);
 			V_DrawPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}
 	}
 }
 
-//---------------------------------------------------------------------------
-//
-// FUNC MN_TextBWidth
-//
 // Returns the pixel width of a string using font B.
-//
-//---------------------------------------------------------------------------
-
 int MN_TextBWidth(const char *text)
 {
 	char c;
@@ -465,18 +416,12 @@ int MN_TextBWidth(const char *text)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontBBaseLump + c - 33, PU_CACHE);
+			p = W_CacheLumpNum(FontBBaseLump + c - 33, pu_tags_t::PU_CACHE);
 			width += SHORT(p->width) - 1;
 		}
 	}
 	return (width);
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC MN_Ticker
-//
-//---------------------------------------------------------------------------
 
 void MN_Ticker()
 {
@@ -486,12 +431,6 @@ void MN_Ticker()
 	}
 	MenuTime++;
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC MN_Drawer
-//
-//---------------------------------------------------------------------------
 
 const char *QuitEndMsg[] = {
 	"ARE YOU SURE YOU WANT TO QUIT?",
@@ -563,34 +502,20 @@ void MN_Drawer()
 		}
 		y = CurrentMenu->y + (CurrentItPos * ITEM_HEIGHT) + SELECTOR_YOFFSET;
 		selName = MenuTime & 16 ? "M_SLCTR1" : "M_SLCTR2";
-		V_DrawPatch(x + SELECTOR_XOFFSET, y,
-					W_CacheLumpName(selName, PU_CACHE));
+		V_DrawPatch(x + SELECTOR_XOFFSET, y, W_CacheLumpName(selName, pu_tags_t::PU_CACHE));
 	}
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC DrawMainMenu
-//
-//---------------------------------------------------------------------------
 
 static void DrawMainMenu()
 {
 	int frame;
 
 	frame = (MenuTime / 5) % 7;
-	V_DrawPatch(88, 0, W_CacheLumpName("M_HTIC", PU_CACHE));
+	V_DrawPatch(88, 0, W_CacheLumpName("M_HTIC", pu_tags_t::PU_CACHE));
 // Old Gold skull positions: (40, 10) and (232, 10)
-	V_DrawPatch(37, 80, W_CacheLumpNum(MauloBaseLump + (frame + 2) % 7,
-										PU_CACHE));
-	V_DrawPatch(278, 80, W_CacheLumpNum(MauloBaseLump + frame, PU_CACHE));
+	V_DrawPatch(37, 80, W_CacheLumpNum(MauloBaseLump + (frame + 2) % 7, pu_tags_t::PU_CACHE));
+	V_DrawPatch(278, 80, W_CacheLumpNum(MauloBaseLump + frame, pu_tags_t::PU_CACHE));
 }
-
-//==========================================================================
-//
-// DrawClassMenu
-//
-//==========================================================================
 
 static void DrawClassMenu()
 {
@@ -608,28 +533,14 @@ static void DrawClassMenu()
 
 	MN_DrTextB("CHOOSE CLASS:", 34, 24);
 	playerClass = (pclass_t) CurrentMenu->items[CurrentItPos].option;
-	V_DrawPatch(174, 8, W_CacheLumpName(boxLumpName[playerClass], PU_CACHE));
-	V_DrawPatch(174 + 24, 8 + 12,
-				W_CacheLumpNum(W_GetNumForName(walkLumpName[playerClass])
-								+ ((MenuTime >> 3) & 3), PU_CACHE));
+	V_DrawPatch(174, 8, W_CacheLumpName(boxLumpName[playerClass], pu_tags_t::PU_CACHE));
+	V_DrawPatch(174 + 24, 8 + 12, W_CacheLumpNum(W_GetNumForName(walkLumpName[playerClass]) + ((MenuTime >> 3) & 3), pu_tags_t::PU_CACHE));
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC DrawSkillMenu
-//
-//---------------------------------------------------------------------------
 
 static void DrawSkillMenu()
 {
 	MN_DrTextB("CHOOSE SKILL LEVEL:", 74, 16);
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC DrawFilesMenu
-//
-//---------------------------------------------------------------------------
 
 static void DrawFilesMenu()
 {
@@ -638,12 +549,6 @@ static void DrawFilesMenu()
 	quickload = 0;
 	P_ClearMessage(&players[consoleplayer]);
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC DrawLoadMenu
-//
-//---------------------------------------------------------------------------
 
 static void DrawLoadMenu()
 {
@@ -654,12 +559,6 @@ static void DrawLoadMenu()
 	}
 	DrawFileSlots(&LoadMenu);
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC DrawSaveMenu
-//
-//---------------------------------------------------------------------------
 
 static void DrawSaveMenu()
 {
@@ -687,8 +586,7 @@ static bool ReadDescriptionForSlot(int slot, char *description)
 		return false;
 	}
 
-	found = fread(description, HXS_DESCRIPTION_LENGTH, 1, fp) == 1
-			&& fread(versionText, HXS_VERSION_TEXT_LENGTH, 1, fp) == 1;
+	found = fread(description, HXS_DESCRIPTION_LENGTH, 1, fp) == 1 && fread(versionText, HXS_VERSION_TEXT_LENGTH, 1, fp) == 1;
 
 	found = found && strcmp(versionText, HXS_VERSION_TEXT) == 0;
 
@@ -697,14 +595,7 @@ static bool ReadDescriptionForSlot(int slot, char *description)
 	return found;
 }
 
-//===========================================================================
-//
-// MN_LoadSlotText
-//
 // For each slot, looks for save games and reads the description field.
-//
-//===========================================================================
-
 void MN_LoadSlotText()
 {
 	char description[HXS_DESCRIPTION_LENGTH];
@@ -726,12 +617,6 @@ void MN_LoadSlotText()
 	slottextloaded = true;
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC DrawFileSlots
-//
-//---------------------------------------------------------------------------
-
 static void DrawFileSlots(Menu_t * menu)
 {
 	int i;
@@ -742,7 +627,7 @@ static void DrawFileSlots(Menu_t * menu)
 	y = menu->y;
 	for (i = 0; i < 6; i++)
 	{
-		V_DrawPatch(x, y, W_CacheLumpName("M_FSLOT", PU_CACHE));
+		V_DrawPatch(x, y, W_CacheLumpName("M_FSLOT", pu_tags_t::PU_CACHE));
 		if (SlotStatus[i])
 		{
 			MN_DrTextA(SlotText[i], x + 5, y + 5);
@@ -750,12 +635,6 @@ static void DrawFileSlots(Menu_t * menu)
 		y += ITEM_HEIGHT;
 	}
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC DrawOptionsMenu
-//
-//---------------------------------------------------------------------------
 
 static void DrawOptionsMenu()
 {
@@ -770,24 +649,12 @@ static void DrawOptionsMenu()
 	DrawSlider(&OptionsMenu, 3, 10, mouseSensitivity);
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC DrawOptions2Menu
-//
-//---------------------------------------------------------------------------
-
 static void DrawOptions2Menu()
 {
 	DrawSlider(&Options2Menu, 1, 9, screenblocks - 3);
 	DrawSlider(&Options2Menu, 3, 16, snd_MaxVolume);
 	DrawSlider(&Options2Menu, 5, 16, snd_MusicVolume);
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC SCQuitGame
-//
-//---------------------------------------------------------------------------
 
 static void SCQuitGame(int option)
 {
@@ -799,12 +666,6 @@ static void SCQuitGame(int option)
 		paused = true;
 	}
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC SCEndGame
-//
-//---------------------------------------------------------------------------
 
 static void SCEndGame(int option)
 {
@@ -824,12 +685,6 @@ static void SCEndGame(int option)
 	}
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC SCMessages
-//
-//---------------------------------------------------------------------------
-
 static void SCMessages(int option)
 {
 	messageson ^= 1;
@@ -844,12 +699,6 @@ static void SCMessages(int option)
 	S_StartSound(NULL, SFX_CHAT);
 }
 
-//===========================================================================
-//
-// SCNetCheck
-//
-//===========================================================================
-
 static bool SCNetCheck(int option)
 {
 	if (!netgame)
@@ -859,40 +708,25 @@ static bool SCNetCheck(int option)
 	switch (option)
 	{
 		case 1:				// new game
-			P_SetMessage(&players[consoleplayer],
-							"YOU CAN'T START A NEW GAME IN NETPLAY!", true);
+			P_SetMessage(&players[consoleplayer], "YOU CAN'T START A NEW GAME IN NETPLAY!", true);
 			break;
 		case 2:				// load game
-			P_SetMessage(&players[consoleplayer],
-							"YOU CAN'T LOAD A GAME IN NETPLAY!", true);
+			P_SetMessage(&players[consoleplayer], "YOU CAN'T LOAD A GAME IN NETPLAY!", true);
 			break;
 		case 3:				// end game
-			P_SetMessage(&players[consoleplayer],
-							"YOU CAN'T END A GAME IN NETPLAY!", true);
+			P_SetMessage(&players[consoleplayer], "YOU CAN'T END A GAME IN NETPLAY!", true);
 			break;
 	}
 	MenuActive = false;
-	S_StartSound(NULL, SFX_CHAT);
+	S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 	return false;
 }
-
-//===========================================================================
-//
-// SCNetCheck2
-//
-//===========================================================================
 
 static void SCNetCheck2(int option)
 {
 	SCNetCheck(option);
 	return;
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC SCLoadGame
-//
-//---------------------------------------------------------------------------
 
 static void SCLoadGame(int option)
 {
@@ -902,7 +736,8 @@ static void SCLoadGame(int option)
 		demoextend = false;
 	}
 	if (!SlotStatus[option])
-	{							// Don't try to load from an empty slot
+	{
+		// Don't try to load from an empty slot
 		return;
 	}
 	G_LoadGame(option);
@@ -915,12 +750,6 @@ static void SCLoadGame(int option)
 	}
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC SCSaveGame
-//
-//---------------------------------------------------------------------------
-
 static void SCSaveGame(int option)
 {
 	char *ptr;
@@ -930,8 +759,7 @@ static void SCSaveGame(int option)
 		int x, y;
 
 		FileMenuKeySteal = true;
-		// We need to activate the text input interface to type the save
-		// game name:
+		// We need to activate the text input interface to type the save game name:
 		x = SaveMenu.x + 1;
 		y = SaveMenu.y + 1 + option * ITEM_HEIGHT;
 		I_StartTextInput(x, y, x + 190, y + ITEM_HEIGHT - 2);
@@ -964,57 +792,43 @@ static void SCSaveGame(int option)
 	}
 }
 
-//==========================================================================
-//
-// SCClass
-//
-//==========================================================================
-
 static void SCClass(int option)
 {
 	if (netgame)
 	{
-		P_SetMessage(&players[consoleplayer],
-						"YOU CAN'T START A NEW GAME FROM WITHIN A NETGAME!",
-						true);
+		P_SetMessage(&players[consoleplayer], "YOU CAN'T START A NEW GAME FROM WITHIN A NETGAME!", true);
 		return;
 	}
 	MenuPClass = option;
 	switch (MenuPClass)
 	{
-		case PCLASS_FIGHTER:
-			SkillMenu.x = 120;
-			SkillItems[0].text = "SQUIRE";
-			SkillItems[1].text = "KNIGHT";
-			SkillItems[2].text = "WARRIOR";
-			SkillItems[3].text = "BERSERKER";
-			SkillItems[4].text = "TITAN";
-			break;
-		case PCLASS_CLERIC:
-			SkillMenu.x = 116;
-			SkillItems[0].text = "ALTAR BOY";
-			SkillItems[1].text = "ACOLYTE";
-			SkillItems[2].text = "PRIEST";
-			SkillItems[3].text = "CARDINAL";
-			SkillItems[4].text = "POPE";
-			break;
-		case PCLASS_MAGE:
-			SkillMenu.x = 112;
-			SkillItems[0].text = "APPRENTICE";
-			SkillItems[1].text = "ENCHANTER";
-			SkillItems[2].text = "SORCERER";
-			SkillItems[3].text = "WARLOCK";
-			SkillItems[4].text = "ARCHIMAGE";
-			break;
+	case pclass_t::PCLASS_FIGHTER:
+		SkillMenu.x = 120;
+		SkillItems[0].text = "SQUIRE";
+		SkillItems[1].text = "KNIGHT";
+		SkillItems[2].text = "WARRIOR";
+		SkillItems[3].text = "BERSERKER";
+		SkillItems[4].text = "TITAN";
+		break;
+	case pclass_t::PCLASS_CLERIC:
+		SkillMenu.x = 116;
+		SkillItems[0].text = "ALTAR BOY";
+		SkillItems[1].text = "ACOLYTE";
+		SkillItems[2].text = "PRIEST";
+		SkillItems[3].text = "CARDINAL";
+		SkillItems[4].text = "POPE";
+		break;
+	case pclass_t::PCLASS_MAGE:
+		SkillMenu.x = 112;
+		SkillItems[0].text = "APPRENTICE";
+		SkillItems[1].text = "ENCHANTER";
+		SkillItems[2].text = "SORCERER";
+		SkillItems[3].text = "WARLOCK";
+		SkillItems[4].text = "ARCHIMAGE";
+		break;
 	}
-	SetMenu(MENU_SKILL);
+	SetMenu(MenuType_t::MENU_SKILL);
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC SCSkill
-//
-//---------------------------------------------------------------------------
 
 static void SCSkill(int option)
 {
@@ -1031,12 +845,6 @@ static void SCSkill(int option)
 	MN_DeactivateMenu();
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC SCMouseSensi
-//
-//---------------------------------------------------------------------------
-
 static void SCMouseSensi(int option)
 {
 	if (option == RIGHT_DIR)
@@ -1052,12 +860,6 @@ static void SCMouseSensi(int option)
 	}
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC SCSfxVolume
-//
-//---------------------------------------------------------------------------
-
 static void SCSfxVolume(int option)
 {
 	if (option == RIGHT_DIR)
@@ -1071,14 +873,8 @@ static void SCSfxVolume(int option)
 	{
 		snd_MaxVolume--;
 	}
-	soundchanged = true;		// we'll set it when we leave the menu
+	soundchanged = true;	// we'll set it when we leave the menu
 }
-
-//---------------------------------------------------------------------------
-//
-// PROC SCMusicVolume
-//
-//---------------------------------------------------------------------------
 
 static void SCMusicVolume(int option)
 {
@@ -1096,12 +892,6 @@ static void SCMusicVolume(int option)
 	S_SetMusicVolume();
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC SCScreenSize
-//
-//---------------------------------------------------------------------------
-
 static void SCScreenSize(int option)
 {
 	if (option == RIGHT_DIR)
@@ -1118,12 +908,6 @@ static void SCScreenSize(int option)
 	R_SetViewSize(screenblocks, detailLevel);
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC SCInfo
-//
-//---------------------------------------------------------------------------
-
 static void SCInfo(int option)
 {
 	InfoType = 1;
@@ -1133,12 +917,6 @@ static void SCInfo(int option)
 		paused = true;
 	}
 }
-
-//---------------------------------------------------------------------------
-//
-// FUNC MN_Responder
-//
-//---------------------------------------------------------------------------
 
 bool MN_Responder(event_t * event)
 {
@@ -1151,15 +929,10 @@ bool MN_Responder(event_t * event)
 	extern void G_CheckDemoStatus();
 	char *textBuffer;
 
-	// In testcontrols mode, none of the function keys should do anything
-	// - the only key is escape to quit.
-
+	// In testcontrols mode, none of the function keys should do anything- the only key is escape to quit.
 	if (testcontrols)
 	{
-		if (event->type == ev_quit
-			|| (event->type == ev_keydown
-			&& (event->data1 == key_menu_activate
-			|| event->data1 == key_menu_quit)))
+		if (event->type == evtype_t::ev_quit || (event->type == evtype_t::ev_keydown && (event->data1 == key_menu_activate || event->data1 == key_menu_quit)))
 		{
 			I_Quit();
 			return true;
@@ -1169,7 +942,7 @@ bool MN_Responder(event_t * event)
 	}
 
 	// "close" button pressed on window?
-	if (event->type == ev_quit)
+	if (event->type == evtype_t::ev_quit)
 	{
 		// First click on close = bring up quit confirm message.
 		// Second click = confirm quit.
@@ -1182,7 +955,7 @@ bool MN_Responder(event_t * event)
 		else
 		{
 			SCQuitGame(0);
-			S_StartSound(NULL, SFX_CHAT);
+			S_StartSound(NULL, sfxenum_t::SFX_CHAT);
 		}
 
 		return true;
@@ -1190,7 +963,7 @@ bool MN_Responder(event_t * event)
 
 	// Allow the menu to be activated from a joystick button if a button
 	// is bound for joybmenu.
-	if (event->type == ev_joystick)
+	if (event->type == evtype_t::ev_joystick)
 	{
 		if (joybmenu >= 0 && (event->data1 & (1 << joybmenu)) != 0)
 		{
@@ -1201,7 +974,7 @@ bool MN_Responder(event_t * event)
 
 	// Only care about keypresses beyond this point.
 
-	if (event->type != ev_keydown)
+	if (event->type != evtype_t::ev_keydown)
 	{
 		return false;
 	}
@@ -1235,7 +1008,7 @@ bool MN_Responder(event_t * event)
 			SB_state = -1;		//refresh the statbar
 			BorderNeedRefresh = true;
 		}
-		S_StartSound(NULL, SFX_DOOR_LIGHT_CLOSE);
+		S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 		return (true);			//make the info screen eat the keypress
 	}
 
@@ -1261,7 +1034,7 @@ bool MN_Responder(event_t * event)
 					askforquit = false;
 					typeofask = 0;
 					paused = false;
-					I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
+					I_SetPalette(W_CacheLumpName("PLAYPAL", pu_tags_t::PU_CACHE));
 					H2_StartTitle();	// go to intro/demo mode.
 					return false;
 				case 3:
@@ -1337,7 +1110,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_save)			// F2 (save game)
 		{
-			if (gamestate == GS_LEVEL && !demoplayback)
+			if (gamestate == GameState_t::GS_LEVEL && !demoplayback)
 			{
 				MenuActive = true;
 				FileMenuKeySteal = false;
@@ -1395,7 +1168,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_qsave)			// F6 (quicksave)
 		{
-			if (gamestate == GS_LEVEL && !demoplayback)
+			if (gamestate == GameState_t::GS_LEVEL && !demoplayback)
 			{
 				if (!quicksave || quicksave == -1)
 				{
@@ -1431,7 +1204,7 @@ bool MN_Responder(event_t * event)
 		{
 			if (SCNetCheck(3))
 			{
-				if (gamestate == GS_LEVEL && !demoplayback)
+				if (gamestate == GameState_t::GS_LEVEL && !demoplayback)
 				{
 					S_StartSound(NULL, SFX_CHAT);
 					SCEndGame(0);
@@ -1480,7 +1253,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_quit)			// F10 (quit)
 		{
-			if (gamestate == GS_LEVEL || gamestate == GS_FINALE)
+			if (gamestate == GameState_t::GS_LEVEL || gamestate == GameState_t::GS_FINALE)
 			{
 				SCQuitGame(0);
 				S_StartSound(NULL, SFX_CHAT);
@@ -1523,7 +1296,7 @@ bool MN_Responder(event_t * event)
 
 	if (!MenuActive)
 	{
-		if (key == key_menu_activate || gamestate == GS_DEMOSCREEN || demoplayback)
+		if (key == key_menu_activate || gamestate == GameState_t::GS_DEMOSCREEN || demoplayback)
 		{
 			MN_ActivateMenu();
 			return (true);
@@ -1712,12 +1485,6 @@ bool MN_Responder(event_t * event)
 	return (false);
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC MN_ActivateMenu
-//
-//---------------------------------------------------------------------------
-
 void MN_ActivateMenu()
 {
 	if (MenuActive)
@@ -1741,53 +1508,35 @@ void MN_ActivateMenu()
 	slottextloaded = false;		//reload the slot text, when needed
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC MN_DeactivateMenu
-//
-//---------------------------------------------------------------------------
-
 void MN_DeactivateMenu()
 {
 	if (CurrentMenu != NULL)
 	{
 		CurrentMenu->oldItPos = CurrentItPos;
 	}
+
 	MenuActive = false;
+
 	if (FileMenuKeySteal)
 	{
 		I_StopTextInput();
 	}
+
 	if (!netgame)
 	{
 		paused = false;
 	}
+
 	S_StartSound(NULL, SFX_PLATFORM_STOP);
 	P_ClearMessage(&players[consoleplayer]);
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC MN_DrawInfo
-//
-//---------------------------------------------------------------------------
-
 void MN_DrawInfo()
 {
-	I_SetPalette(W_CacheLumpName("PLAYPAL", PU_CACHE));
-	V_CopyScaledBuffer(I_VideoBuffer,
-			(byte *) W_CacheLumpNum(W_GetNumForName("TITLE") + InfoType,
-									PU_CACHE), ORIGWIDTH * ORIGHEIGHT);
-//		V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType,
-//				PU_CACHE));
+	I_SetPalette(W_CacheLumpName("PLAYPAL", pu_tags_t::PU_CACHE));
+	V_CopyScaledBuffer(I_VideoBuffer, (byte*) W_CacheLumpNum(W_GetNumForName("TITLE") + InfoType, pu_tags_t::PU_CACHE), ORIGWIDTH * ORIGHEIGHT);
+//	V_DrawPatch(0, 0, W_CacheLumpNum(W_GetNumForName("TITLE")+InfoType, pu_tags_t::PU_CACHE));
 }
-
-
-//---------------------------------------------------------------------------
-//
-// PROC SetMenu
-//
-//---------------------------------------------------------------------------
 
 static void SetMenu(MenuType_t menu)
 {
@@ -1796,28 +1545,18 @@ static void SetMenu(MenuType_t menu)
 	CurrentItPos = CurrentMenu->oldItPos;
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC DrawSlider
-//
-//---------------------------------------------------------------------------
-
 static void DrawSlider(Menu_t * menu, int item, int width, int slot)
 {
-	int x;
-	int y;
 	int x2;
 	int count;
 
-	x = menu->x + 24;
-	y = menu->y + 2 + (item * ITEM_HEIGHT);
-	V_DrawPatch(x - 32, y, W_CacheLumpName("M_SLDLT", PU_CACHE));
+	int x = menu->x + 24;
+	int y = menu->y + 2 + (item * ITEM_HEIGHT);
+	V_DrawPatch(x - 32, y, W_CacheLumpName("M_SLDLT", pu_tags_t::PU_CACHE));
 	for (x2 = x, count = width; count--; x2 += 8)
 	{
-		V_DrawPatch(x2, y, W_CacheLumpName(count & 1 ? "M_SLDMD1"
-											: "M_SLDMD2", PU_CACHE));
+		V_DrawPatch(x2, y, W_CacheLumpName(count & 1 ? "M_SLDMD1" : "M_SLDMD2", pu_tags_t::PU_CACHE));
 	}
-	V_DrawPatch(x2, y, W_CacheLumpName("M_SLDRT", PU_CACHE));
-	V_DrawPatch(x + 4 + slot * 8, y + 7,
-				W_CacheLumpName("M_SLDKB", PU_CACHE));
+	V_DrawPatch(x2, y, W_CacheLumpName("M_SLDRT", pu_tags_t::PU_CACHE));
+	V_DrawPatch(x + 4 + slot * 8, y + 7, W_CacheLumpName("M_SLDKB", pu_tags_t::PU_CACHE));
 }

@@ -12,7 +12,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <ctype.h>
 
 #include "doomdef.h"
 #include "doomkeys.h"
@@ -171,12 +170,12 @@ void HU_Init()
 	for (i=0;i<HU_FONTSIZE;i++)
 	{
 		DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
-		hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
+		hu_font[i] = (patch_t *) W_CacheLumpName(buffer, pu_tags_t::PU_STATIC);
 
 		// haleyjd 09/18/10: load yfont as well; and yes, this is exactly
 		// how Rogue did it :P
 		buffer[2] = 'B';
-		yfont[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
+		yfont[i] = (patch_t *) W_CacheLumpName(buffer, pu_tags_t::PU_STATIC);
 	}
 }
 

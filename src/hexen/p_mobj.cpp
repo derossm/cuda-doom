@@ -1168,7 +1168,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
 	mobjinfo_t *info;
 	fixed_t space;
 
-	mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
+	mobj = Z_Malloc<decltype(*mobj)>(sizeof(*mobj), pu_tags_t::PU_LEVEL, NULL);
 	memset(mobj, 0, sizeof(*mobj));
 	info = &mobjinfo[type];
 	mobj->type = type;
@@ -1181,7 +1181,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
 	mobj->flags2 = info->flags2;
 	mobj->damage = info->damage;
 	mobj->health = info->spawnhealth;
-	if (gameskill != sk_nightmare)
+	if (gameskill != skill_t::sk_nightmare)
 	{
 		mobj->reactiontime = info->reactiontime;
 	}
@@ -1467,11 +1467,11 @@ void P_SpawnMapThing(mapthing_t * mthing)
 	}
 
 	// Check current skill with spawn flags
-	if (gameskill == sk_baby || gameskill == sk_easy)
+	if (gameskill == skill_t::sk_baby || gameskill == skill_t::sk_easy)
 	{
 		spawnMask = MTF_EASY;
 	}
-	else if (gameskill == sk_hard || gameskill == sk_nightmare)
+	else if (gameskill == skill_t::sk_hard || gameskill == skill_t::sk_nightmare)
 	{
 		spawnMask = MTF_HARD;
 	}

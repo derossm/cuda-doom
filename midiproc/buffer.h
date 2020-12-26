@@ -14,7 +14,7 @@
 
 #include "../derma/common.h"
 
-#include "../src/doomtype.h"
+#include <doomtype.h>
 
 #define BUFFER_SIZE 1024
 

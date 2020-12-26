@@ -91,7 +91,7 @@ void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor);
 void HUlib_eraseTextLine(hu_textline_t* l);
 
 // ?
-// TODO REMOVE THIS BOOL POINTER NONSENSE
+// TODO REMOVE THIS bool POINTER NONSENSE
 void HUlib_initSText(hu_stext_t* s, int x, int y, int h, patch_t** font, int startchar, bool* on);
 
 void HUlib_addLineToSText(hu_stext_t* s);

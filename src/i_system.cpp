@@ -7,24 +7,7 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-	DESCRIPTION:
 \**********************************************************************************************************************************************/
-
-
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#include <stdarg.h>
-
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
 
 #include "SDL.h"
 

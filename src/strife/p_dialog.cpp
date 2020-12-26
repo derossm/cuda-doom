@@ -15,7 +15,6 @@
 // Dialog Engine for Strife
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
 
 #include "z_zone.h"
 #include "w_wad.h"
@@ -394,7 +393,7 @@ static void P_ParseDialogLump(byte *lump, mapdialog_t **dialogs,
 	int i;
 	byte *rover = lump;
 
-	*dialogs = Z_Malloc(numdialogs * sizeof(mapdialog_t), tag, NULL);
+	*dialogs = Z_Malloc<decltype(*dialogs)>(numdialogs * sizeof(mapdialog_t), tag, NULL);
 
 	for(i = 0; i < numdialogs; i++)
 	{
@@ -450,7 +449,7 @@ void P_DialogLoad()
 		numleveldialogs = 0;
 	else
 	{
-		byte *leveldialogptr = W_CacheLumpNum(lumpnum, PU_STATIC);
+		byte *leveldialogptr = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 		numleveldialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
 		P_ParseDialogLump(leveldialogptr, &leveldialogs, numleveldialogs,
 							PU_LEVEL);
@@ -465,7 +464,7 @@ void P_DialogLoad()
 		script0loaded = true;
 		// BUG: Rogue should have used W_GetNumForName here...
 		lumpnum = W_CheckNumForName(DEH_String("script00"));
-		script0ptr = W_CacheLumpNum(lumpnum, PU_STATIC);
+		script0ptr = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 		numscript0dialogs = W_LumpLength(lumpnum) / ORIG_MAPDIALOG_SIZE;
 		P_ParseDialogLump(script0ptr, &script0dialogs, numscript0dialogs,
 							PU_STATIC);
@@ -771,13 +770,13 @@ bool P_GiveItemToPlayer(player_t *player, int sprnum, mobjtype_t type)
 		break;
 
 	case SPR_PMAP: // Map powerup
-		if(!P_GivePower(player, pw_allmap))
+		if(!P_GivePower(player, PowerType_t::pw_allmap))
 			return false;
 		sound = sfx_yeah; // bluh-doop!
 		break;
 
 	case SPR_COMM: // Communicator
-		if(!P_GivePower(player, pw_communicator))
+		if(!P_GivePower(player, PowerType_t::pw_communicator))
 			return false;
 		sound = sfx_yeah; // bluh-doop!
 		break;
@@ -1077,7 +1076,7 @@ static void P_DialogDrawer()
 	// draw background
 	if(dialogbgpiclumpnum != -1)
 	{
-		patch_t *patch = W_CacheLumpNum(dialogbgpiclumpnum, PU_CACHE);
+		patch_t *patch = W_CacheLumpNum(dialogbgpiclumpnum, pu_tags_t::PU_CACHE);
 		V_DrawPatchDirect(0, 0, patch);
 	}
 
@@ -1216,7 +1215,7 @@ void P_DialogDoChoice(int choice)
 		if((objective = currentchoice->objective))
 		{
 			DEH_snprintf(mission_objective, OBJECTIVE_LEN, "log%i", objective);
-			objlump = W_CacheLumpName(mission_objective, PU_CACHE);
+			objlump = W_CacheLumpName(mission_objective, pu_tags_t::PU_CACHE);
 			M_StringCopy(mission_objective, objlump, OBJECTIVE_LEN);
 		}
 		// haleyjd 20130301: v1.31 hack: if first char of message is a period,
@@ -1380,7 +1379,7 @@ void P_DialogStart(player_t *player)
 	pic = W_CheckNumForName(currentdialog->backpic);
 	dialogbgpiclumpnum = pic;
 	if(pic != -1)
-		V_DrawPatchDirect(0, 0, W_CacheLumpNum(pic, PU_CACHE));
+		V_DrawPatchDirect(0, 0, W_CacheLumpNum(pic, pu_tags_t::PU_CACHE));
 
 	// get voice
 	I_StartVoice(currentdialog->voice);

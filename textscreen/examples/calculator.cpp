@@ -10,9 +10,6 @@
 	Example program: desktop calculator
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "..\textscreen.h"
 

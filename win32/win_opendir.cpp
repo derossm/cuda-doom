@@ -1,4 +1,4 @@
-//
+/**********************************************************************************************************************************************\
 // 03/10/2006 James Haley
 //
 // For this module only:
@@ -27,31 +27,21 @@
 // * Updated by Jeremy Bettis <jeremy@hksys.com>
 // * Significantly revised and rewinddir, seekdir and telldir added by Colin
 // * Peters <colin@fu.is.saga-u.ac.jp>
-//
+\**********************************************************************************************************************************************/
 
 #ifndef _MSC_VER
 #error i_opndir.c is for Microsoft Visual C++ only
 #endif
 
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h> /* for GetFileAttributes */
-
-#include <tchar.h>
 #define SUFFIX	_T("*")
 #define	SLASH	_T("\\")
 
 #include "win_opendir.h"
 
-//
 // opendir
 //
 // Returns a pointer to a DIR structure appropriately filled in to begin
 // searching a directory.
-//
 DIR *opendir(const _TCHAR *szPath)
 {
 	DIR *nd;

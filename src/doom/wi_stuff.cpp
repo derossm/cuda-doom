@@ -13,7 +13,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
 
 #include "z_zone.h"
 
@@ -1887,7 +1886,7 @@ static void WI_loadCallback(const char *name, patch_t **variable)
 {
  // [crispy] prevent crashes with maps without map title graphics lump
  if (W_CheckNumForName(name) != -1)
-	*variable = W_CacheLumpName(name, PU_STATIC);
+	*variable = W_CacheLumpName(name, pu_tags_t::PU_STATIC);
  else
 	*variable = NULL;
 }
@@ -1897,7 +1896,7 @@ void WI_loadData()
 	if (gamemode == commercial)
 	{
 	NUMCMAPS = (crispy->havemap33) ? 33 : 32;
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
+	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * NUMCMAPS,
 						PU_STATIC, NULL);
 	num_lnames = NUMCMAPS;
 	}
@@ -1905,7 +1904,7 @@ void WI_loadData()
 	{
 	// [crispy] support E1M10 "Sewers"
 	int nummaps = crispy->havee1m10 ? NUMMAPS + 1 : NUMMAPS;
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * nummaps,
+	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * nummaps,
 						PU_STATIC, NULL);
 	num_lnames = nummaps;
 	}
@@ -1916,10 +1915,10 @@ void WI_loadData()
 	// them with the status bar code
 
 	// your face
-	star = W_CacheLumpName(DEH_String("STFST01"), PU_STATIC);
+	star = W_CacheLumpName(DEH_String("STFST01"), pu_tags_t::PU_STATIC);
 
 	// dead face
-	bstar = W_CacheLumpName(DEH_String("STFDEAD0"), PU_STATIC);
+	bstar = W_CacheLumpName(DEH_String("STFDEAD0"), pu_tags_t::PU_STATIC);
 }
 
 static void WI_unloadCallback(const char *name, patch_t **variable)

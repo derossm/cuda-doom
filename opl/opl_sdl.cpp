@@ -13,12 +13,6 @@
 
 #include "config.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <assert.h>
-
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -31,85 +25,71 @@
 
 #define MAX_SOUND_SLICE_TIME 100 /* ms */
 
-typedef struct
+struct opl_timer_t
 {
-	unsigned int rate;		// Number of times the timer is advanced per sec.
+	unsigned int rate;			// Number of times the timer is advanced per sec.
 	unsigned int enabled;		// Non-zero if timer is enabled.
-	unsigned int value;		// Last value that was set.
+	unsigned int value;			// Last value that was set.
 	uint64_t expire_time;		// Calculated time that timer will expire.
-} opl_timer_t;
+};
 
-// When the callback mutex is locked using OPL_Lock, callback functions
-// are not invoked.
-
-static SDL_mutex *callback_mutex = NULL;
+// When the callback mutex is locked using OPL_Lock, callback functions are not invoked.
+static SDL_mutex* callback_mutex = nullptr;
 
 // Queue of callbacks waiting to be invoked.
-
-static opl_callback_queue_t *callback_queue;
+static opl_callback_queue_t* callback_queue;
 
 // Mutex used to control access to the callback queue.
-
-static SDL_mutex *callback_queue_mutex = NULL;
+static SDL_mutex* callback_queue_mutex = nullptr;
 
 // Current time, in us since startup:
-
 static uint64_t current_time;
 
 // If non-zero, playback is currently paused.
-
 static int opl_sdl_paused;
 
-// Time offset (in us) due to the fact that callbacks
-// were previously paused.
-
+// Time offset (in us) due to the fact that callbacks were previously paused.
 static uint64_t pause_offset;
 
 // OPL software emulator structure.
-
 static opl3_chip opl_chip;
 static int opl_opl3mode;
 
 // Temporary mixing buffer used by the mixing callback.
-
-static uint8_t *mix_buffer = NULL;
+static uint8_t* mix_buffer = nullptr;
 
 // Register number that was written.
-
 static int register_num = 0;
 
 // Timers; DBOPL does not do timer stuff itself.
-
 static opl_timer_t timer1 = { 12500, 0, 0, 0 };
 static opl_timer_t timer2 = { 3125, 0, 0, 0 };
 
 // SDL parameters.
-
 static int sdl_was_initialized = 0;
-static int mixing_freq, mixing_channels;
+static int mixing_freq;
+static int mixing_channels;
 static Uint16 mixing_format;
 
 static int SDLIsInitialized()
 {
-	int freq, channels;
+	int freq;
+	int channels;
 	Uint16 format;
 
 	return Mix_QuerySpec(&freq, &format, &channels);
 }
 
-// Advance time by the specified number of samples, invoking any
-// callback functions as appropriate.
-
+// Advance time by the specified number of samples, invoking any callback functions as appropriate.
 static void AdvanceTime(unsigned int nsamples)
 {
 	opl_callback_t callback;
-	void *callback_data;
+	void* callback_data;
 	uint64_t us;
 
 	SDL_LockMutex(callback_queue_mutex);
 
 	// Advance time.
-
 	us = ((uint64_t) nsamples * OPL_SECOND) / mixing_freq;
 	current_time += us;
 
@@ -118,14 +98,10 @@ static void AdvanceTime(unsigned int nsamples)
 		pause_offset += us;
 	}
 
-	// Are there callbacks to invoke now? Keep invoking them
-	// until there are no more left.
-
-	while (!OPL_Queue_IsEmpty(callback_queue)
-		&& current_time >= OPL_Queue_Peek(callback_queue) + pause_offset)
+	// Are there callbacks to invoke now? Keep invoking them until there are no more left.
+	while (!OPL_Queue_IsEmpty(callback_queue) && current_time >= OPL_Queue_Peek(callback_queue) + pause_offset)
 	{
 		// Pop the callback from the queue to invoke it.
-
 		if (!OPL_Queue_Pop(callback_queue, &callback, &callback_data))
 		{
 			break;
@@ -137,7 +113,6 @@ static void AdvanceTime(unsigned int nsamples)
 		// from being invoked), but we must not be holding
 		// callback_queue_mutex, as the callback must be able to
 		// call OPL_SetCallback to schedule new callbacks.
-
 		SDL_UnlockMutex(callback_queue_mutex);
 
 		SDL_LockMutex(callback_mutex);
@@ -151,29 +126,24 @@ static void AdvanceTime(unsigned int nsamples)
 }
 
 // Call the OPL emulator code to fill the specified buffer.
-
 static void FillBuffer(uint8_t *buffer, unsigned int nsamples)
 {
-	// This seems like a reasonable assumption. mix_buffer is
-	// 1 second long, which should always be much longer than the
-	// SDL mix buffer.
+	// This seems like a reasonable assumption. mix_buffer is 1 second long,
+	// which should always be much longer than the SDL mix buffer.
 	assert(nsamples < mixing_freq);
 
-	// OPL output is generated into temporary buffer and then mixed
-	// (to avoid overflows etc.)
-	OPL3_GenerateStream(&opl_chip, (Bit16s *) mix_buffer, nsamples);
-	SDL_MixAudioFormat(buffer, mix_buffer, AUDIO_S16SYS, nsamples * 4,
-						SDL_MIX_MAXVOLUME);
+	// OPL output is generated into temporary buffer and then mixed (to avoid overflows etc.)
+	OPL3_GenerateStream(&opl_chip, (Bit16s*)mix_buffer, nsamples);
+	SDL_MixAudioFormat(buffer, mix_buffer, AUDIO_S16SYS, nsamples * 4, SDL_MIX_MAXVOLUME);
 }
 
 // Callback function to fill a new sound buffer:
-
 static void OPL_Mix_Callback(void *udata, Uint8 *buffer, int len)
 {
-	unsigned int filled, buffer_samples;
+	unsigned int filled;
+	unsigned int buffer_samples;
 
-	// Repeatedly call the OPL emulator update function until the buffer is
-	// full.
+	// Repeatedly call the OPL emulator update function until the buffer is full.
 	filled = 0;
 	buffer_samples = len / 4;
 
@@ -184,10 +154,8 @@ static void OPL_Mix_Callback(void *udata, Uint8 *buffer, int len)
 
 		SDL_LockMutex(callback_queue_mutex);
 
-		// Work out the time until the next callback waiting in
-		// the callback queue must be invoked. We can then fill the
-		// buffer with this many samples.
-
+		// Work out the time until the next callback waiting in the callback queue must be invoked.
+		// We can then fill the buffer with this many samples.
 		if (opl_sdl_paused || OPL_Queue_IsEmpty(callback_queue))
 		{
 			nsamples = buffer_samples - filled;
@@ -208,12 +176,10 @@ static void OPL_Mix_Callback(void *udata, Uint8 *buffer, int len)
 		SDL_UnlockMutex(callback_queue_mutex);
 
 		// Add emulator output to buffer.
-
 		FillBuffer(buffer + filled * 4, nsamples);
 		filled += nsamples;
 
 		// Invoke callbacks for this point in time.
-
 		AdvanceTime(nsamples);
 	}
 }
@@ -231,7 +197,7 @@ static void OPL_SDL_Shutdown()
 		sdl_was_initialized = 0;
 	}
 
-/*
+	/*
 	if (opl_chip != NULL)
 	{
 		OPLDestroy(opl_chip);
@@ -254,14 +220,10 @@ static void OPL_SDL_Shutdown()
 
 static unsigned int GetSliceSize()
 {
-	int limit;
-	int n;
-
-	limit = (opl_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
+	int limit{(opl_sample_rate * MAX_SOUND_SLICE_TIME) / 1000};
 
 	// Try all powers of two, not exceeding the limit.
-
-	for (n=0;; ++n)
+	for (int n{0};; ++n)
 	{
 		// 2^n <= limit < 2^n+1 ?
 
@@ -272,7 +234,6 @@ static unsigned int GetSliceSize()
 	}
 
 	// Should never happen?
-
 	return 1024;
 }
 
@@ -280,7 +241,6 @@ static int OPL_SDL_Init(unsigned int port_base)
 {
 	// Check if SDL_mixer has been opened already
 	// If not, we must initialize it now
-
 	if (!SDLIsInitialized())
 	{
 		if (SDL_Init(SDL_INIT_AUDIO) < 0)
@@ -299,9 +259,7 @@ static int OPL_SDL_Init(unsigned int port_base)
 
 		SDL_PauseAudio(0);
 
-		// When this module shuts down, it has the responsibility to
-		// shut down SDL.
-
+		// When this module shuts down, it has the responsibility to shut down SDL.
 		sdl_was_initialized = 1;
 	}
 	else
@@ -313,21 +271,16 @@ static int OPL_SDL_Init(unsigned int port_base)
 	pause_offset = 0;
 
 	// Queue structure of callbacks to invoke.
-
 	callback_queue = OPL_Queue_Create();
 	current_time = 0;
 
 	// Get the mixer frequency, format and number of channels.
-
 	Mix_QuerySpec(&mixing_freq, &mixing_format, &mixing_channels);
 
 	// Only supports AUDIO_S16SYS
-
 	if (mixing_format != AUDIO_S16SYS || mixing_channels != 2)
 	{
-		fprintf(stderr,
-				"OPL_SDL only supports native signed 16-bit LSB, "
-				"stereo format!\n");
+		fprintf(stderr, "OPL_SDL only supports native signed 16-bit LSB, stereo format!\n");
 
 		OPL_SDL_Shutdown();
 		return 0;
@@ -337,7 +290,6 @@ static int OPL_SDL_Init(unsigned int port_base)
 	mix_buffer = malloc(mixing_freq * 4);
 
 	// Create the emulator structure:
-
 	OPL3_Reset(&opl_chip, mixing_freq);
 	opl_opl3mode = 0;
 
@@ -354,9 +306,9 @@ static int OPL_SDL_Init(unsigned int port_base)
 
 static unsigned int OPL_SDL_PortRead(opl_port_t port)
 {
-	unsigned int result = 0;
+	unsigned int result{0};
 
-	if (port == OPL_REGISTER_PORT_OPL3)
+	if (port == opl_port_t::OPL_REGISTER_PORT_OPL3)
 	{
 		return 0xff;
 	}
@@ -376,18 +328,13 @@ static unsigned int OPL_SDL_PortRead(opl_port_t port)
 	return result;
 }
 
-static void OPLTimer_CalculateEndTime(opl_timer_t *timer)
+static void OPLTimer_CalculateEndTime(opl_timer_t* timer)
 {
-	int tics;
-
-	// If the timer is enabled, calculate the time when the timer
-	// will expire.
-
+	// If the timer is enabled, calculate the time when the timer will expire.
 	if (timer->enabled)
 	{
-		tics = 0x100 - timer->value;
-		timer->expire_time = current_time
-							+ ((uint64_t) tics * OPL_SECOND) / timer->rate;
+		int tics{0x100 - timer->value};
+		timer->expire_time = current_time + ((uint64_t) tics * OPL_SECOND) / timer->rate;
 	}
 }
 
@@ -439,26 +386,24 @@ static void WriteRegister(unsigned int reg_num, unsigned int value)
 
 static void OPL_SDL_PortWrite(opl_port_t port, unsigned int value)
 {
-	if (port == OPL_REGISTER_PORT)
+	if (port == opl_port_t::OPL_REGISTER_PORT)
 	{
 		register_num = value;
 	}
-	else if (port == OPL_REGISTER_PORT_OPL3)
+	else if (port == opl_port_t::OPL_REGISTER_PORT_OPL3)
 	{
 		register_num = value | 0x100;
 	}
-	else if (port == OPL_DATA_PORT)
+	else if (port == opl_port_t::OPL_DATA_PORT)
 	{
 		WriteRegister(register_num, value);
 	}
 }
 
-static void OPL_SDL_SetCallback(uint64_t us, opl_callback_t callback,
-								void *data)
+static void OPL_SDL_SetCallback(uint64_t us, opl_callback_t callback, void* data)
 {
 	SDL_LockMutex(callback_queue_mutex);
-	OPL_Queue_Push(callback_queue, callback, data,
-					current_time - pause_offset + us);
+	OPL_Queue_Push(callback_queue, callback, data, current_time - pause_offset + us);
 	SDL_UnlockMutex(callback_queue_mutex);
 }
 
@@ -505,4 +450,3 @@ opl_driver_t opl_sdl_driver =
 	OPL_SDL_SetPaused,
 	OPL_SDL_AdjustCallbacks,
 };
-

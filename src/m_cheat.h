@@ -9,41 +9,30 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Cheat code checking.
+		Cheat code checking.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef __M_CHEAT__
-#define __M_CHEAT__
-
-//
-// CHEAT SEQUENCE PACKAGE
-//
-
 // declaring a cheat
 #define CHEAT(value, parameters)	{ value, sizeof(value) - 1, parameters, 0, 0, "" }
 
-#define MAX_CHEAT_LEN 25
-#define MAX_CHEAT_PARAMS 5
+#define MAX_CHEAT_LEN				25
+#define MAX_CHEAT_PARAMS			5
 
-typedef struct
+struct cheatseq_t
 {
 	// settings for this cheat
-
 	char sequence[MAX_CHEAT_LEN];
 	size_t sequence_len;
 	int parameter_chars;
 
 	// state used during the game
-
 	size_t chars_read;
 	int param_chars_read;
 	char parameter_buf[MAX_CHEAT_PARAMS];
-} cheatseq_t;
+};
 
 int cht_CheckCheat(cheatseq_t* cht, char key);
 void cht_GetParam(cheatseq_t* cht, char* buffer);
-
-#endif

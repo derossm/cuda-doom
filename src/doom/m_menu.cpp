@@ -13,8 +13,6 @@
 //	Sliders and icons. Kinda widget stuff.
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
-#include <ctype.h>
 
 #include "doomdef.h"
 #include "doomkeys.h"
@@ -784,7 +782,7 @@ static int LoadDef_x = 72;
 static int LoadDef_y = 28;
 void M_DrawLoad()
 {
-	V_DrawPatchDirect(LoadDef_x, LoadDef_y, W_CacheLumpName(DEH_String("M_LOADG"), PU_CACHE));
+	V_DrawPatchDirect(LoadDef_x, LoadDef_y, W_CacheLumpName(DEH_String("M_LOADG"), pu_tags_t::PU_CACHE));
 
 	for (size_t i{0ull}; i < load_end; ++i)
 	{
@@ -804,15 +802,15 @@ void M_DrawLoad()
 
 void M_DrawSaveLoadBorder(int x,int y)
 {
-	V_DrawPatchDirect(x - 8, y + 7, W_CacheLumpName(DEH_String("M_LSLEFT"), PU_CACHE));
+	V_DrawPatchDirect(x - 8, y + 7, W_CacheLumpName(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE));
 
 	for (size_t i{0}; i < 24; ++i)
 	{
-		V_DrawPatchDirect(x, y + 7, W_CacheLumpName(DEH_String("M_LSCNTR"), PU_CACHE));
+		V_DrawPatchDirect(x, y + 7, W_CacheLumpName(DEH_String("M_LSCNTR"), pu_tags_t::PU_CACHE));
 		x += 8;
 	}
 
-	V_DrawPatchDirect(x, y + 7, W_CacheLumpName(DEH_String("M_LSRGHT"), PU_CACHE));
+	V_DrawPatchDirect(x, y + 7, W_CacheLumpName(DEH_String("M_LSRGHT"), pu_tags_t::PU_CACHE));
 }
 
 void M_LoadSelect(int choice)
@@ -851,7 +849,7 @@ static int SaveDef_x = 72;
 static int SaveDef_y = 28;
 void M_DrawSave()
 {
-	V_DrawPatchDirect(SaveDef_x, SaveDef_y, W_CacheLumpName(DEH_String("M_SAVEG"), PU_CACHE));
+	V_DrawPatchDirect(SaveDef_x, SaveDef_y, W_CacheLumpName(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE));
 	for (size_t i{0ull}; i < load_end; ++i)
 	{
 		M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT*i);
@@ -964,7 +962,7 @@ void M_SaveGame(int choice)
 		return;
 	}
 
-	if (gamestate != GS_LEVEL)
+	if (gamestate != GameState_t::GS_LEVEL)
 	{
 		return;
 	}
@@ -994,7 +992,7 @@ void M_QuickSave()
 	return;
 	}
 
-	if (gamestate != GS_LEVEL)
+	if (gamestate != GameState_t::GS_LEVEL)
 	return;
 
 	if (quickSaveSlot < 0)
@@ -1073,7 +1071,7 @@ void M_DrawReadThis1()
 {
 	inhelpscreens = true;
 
-	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP2"), PU_CACHE), false);
+	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP2"), pu_tags_t::PU_CACHE), false);
 }
 
 
@@ -1088,14 +1086,14 @@ void M_DrawReadThis2()
 	// We only ever draw the second page if this is
 	// gameversion == exe_doom_1_9 and gamemode == registered
 
-	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP1"), PU_CACHE), false);
+	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP1"), pu_tags_t::PU_CACHE), false);
 }
 
 void M_DrawReadThisCommercial()
 {
 	inhelpscreens = true;
 
-	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP"), PU_CACHE), false);
+	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP"), pu_tags_t::PU_CACHE), false);
 }
 
 
@@ -1104,7 +1102,7 @@ void M_DrawReadThisCommercial()
 //
 void M_DrawSound()
 {
-	V_DrawPatchDirect(60, 38, W_CacheLumpName(DEH_String("M_SVOL"), PU_CACHE));
+	V_DrawPatchDirect(60, 38, W_CacheLumpName(DEH_String("M_SVOL"), pu_tags_t::PU_CACHE));
 
 	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
 			16,sfxVolume);
@@ -1161,7 +1159,7 @@ void M_MusicVol(int choice)
 void M_DrawMainMenu()
 {
 	V_DrawPatchDirect(94, 2,
-						W_CacheLumpName(DEH_String("M_DOOM"), PU_CACHE));
+						W_CacheLumpName(DEH_String("M_DOOM"), pu_tags_t::PU_CACHE));
 }
 
 
@@ -1172,8 +1170,8 @@ void M_DrawMainMenu()
 //
 void M_DrawNewGame()
 {
-	V_DrawPatchDirect(96, 14, W_CacheLumpName(DEH_String("M_NEWG"), PU_CACHE));
-	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_SKILL"), PU_CACHE));
+	V_DrawPatchDirect(96, 14, W_CacheLumpName(DEH_String("M_NEWG"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_SKILL"), pu_tags_t::PU_CACHE));
 }
 
 void M_NewGame(int choice)
@@ -1206,7 +1204,7 @@ int		epi;
 
 void M_DrawEpisode()
 {
-	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_EPISOD"), PU_CACHE));
+	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_EPISOD"), pu_tags_t::PU_CACHE));
 }
 
 void M_VerifyNightmare(int key)
@@ -1300,7 +1298,7 @@ static void M_DrawMouse()
 {
 	char mouse_menu_text[48];
 
-	V_DrawPatchDirect(60, LoadDef_y, W_CacheLumpName(DEH_String("M_MSENS"), PU_CACHE));
+	V_DrawPatchDirect(60, LoadDef_y, W_CacheLumpName(DEH_String("M_MSENS"), pu_tags_t::PU_CACHE));
 
 	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_horiz + 6,
 				"HORIZONTAL: TURN");
@@ -1841,14 +1839,14 @@ M_DrawThermo
 	}
 
 	xx = x;
-	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERML"), PU_CACHE));
+	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERML"), pu_tags_t::PU_CACHE));
 	xx += 8;
 	for (i=0;i<thermWidth;i++)
 	{
-	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERMM"), PU_CACHE));
+	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERMM"), pu_tags_t::PU_CACHE));
 	xx += 8;
 	}
-	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERMR"), PU_CACHE));
+	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERMR"), pu_tags_t::PU_CACHE));
 
 	M_snprintf(num, 4, "%3d", thermDot);
 	M_WriteText(xx + 8, y + 3, num);
@@ -1861,7 +1859,7 @@ M_DrawThermo
 	}
 
 	V_DrawPatchDirect((x + 8) + thermDot * 8, y,
-				W_CacheLumpName(DEH_String("M_THERMO"), PU_CACHE));
+				W_CacheLumpName(DEH_String("M_THERMO"), pu_tags_t::PU_CACHE));
 
 	dp_translation = NULL;
 }
@@ -2011,7 +2009,7 @@ static int G_ReloadLevel()
 {
  int result = false;
 
- if (gamestate == GS_LEVEL)
+ if (gamestate == GameState_t::GS_LEVEL)
  {
 	// [crispy] restart demos from the map they were started
 	if (demorecording)
@@ -2085,7 +2083,7 @@ static int G_GotoNextLevel()
 		}
 	}
 
- if (gamestate == GS_LEVEL)
+ if (gamestate == GameState_t::GS_LEVEL)
  {
 	int epsd, map;
 
@@ -2901,14 +2899,14 @@ void M_Drawer ()
 	if (name[0] && (W_CheckNumForName(name) > 0 || alttext))
 	{
 		// [crispy] shade unavailable menu items
-		if ((currentMenu == &MainDef && i == savegame && (!usergame || gamestate != GS_LEVEL)) ||
+		if ((currentMenu == &MainDef && i == savegame && (!usergame || gamestate != GameState_t::GS_LEVEL)) ||
 			(currentMenu == &OptionsDef && i == endgame && (!usergame || netgame)) ||
 			(currentMenu == &MainDef && i == loadgame && (netgame && !demoplayback)) ||
 			(currentMenu == &MainDef && i == newgame && (demorecording || (netgame && !demoplayback))))
 			dp_translation = cr[CR_DARK];
 
 		if (W_CheckNumForName(name) > 0 && currentMenu->lumps_missing == -1)
-		V_DrawPatchDirect(x, y, W_CacheLumpName(name, PU_CACHE));
+		V_DrawPatchDirect(x, y, W_CacheLumpName(name, pu_tags_t::PU_CACHE));
 		else if (alttext)
 		M_WriteText(x, y+8-(M_StringHeight(alttext)/2), alttext);
 
@@ -3094,9 +3092,9 @@ void M_Init ()
 	const patch_t *patchl, *patchs, *patchm;
 	short captionheight, vstep;
 
-	patchl = W_CacheLumpName(DEH_String("M_LOADG"), PU_CACHE);
-	patchs = W_CacheLumpName(DEH_String("M_SAVEG"), PU_CACHE);
-	patchm = W_CacheLumpName(DEH_String("M_LSLEFT"), PU_CACHE);
+	patchl = W_CacheLumpName(DEH_String("M_LOADG"), pu_tags_t::PU_CACHE);
+	patchs = W_CacheLumpName(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE);
+	patchm = W_CacheLumpName(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE);
 
 	LoadDef_x = (ORIGWIDTH - SHORT(patchl->width)) / 2 + SHORT(patchl->leftoffset);
 	SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);

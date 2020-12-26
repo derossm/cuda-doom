@@ -17,10 +17,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 #include "m_misc.h"
 #include "w_wad.h"
@@ -213,7 +209,7 @@ static char *ReadDMXConfig()
 	}
 
 	len = W_LumpLength(lumpnum);
-	data = Z_Malloc(len + 1, PU_STATIC, NULL);
+	data = Z_Malloc<decltype(data)>(len + 1, pu_tags_t::PU_STATIC, NULL);
 	W_ReadLump(lumpnum, data);
 
 	data[len] = '\0';

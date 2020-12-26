@@ -190,49 +190,49 @@ void SB_Init()
 	int i;
 	int startLump;
 
-	PatchLTFACE = W_CacheLumpName(DEH_String("LTFACE"), PU_STATIC);
-	PatchRTFACE = W_CacheLumpName(DEH_String("RTFACE"), PU_STATIC);
-	PatchBARBACK = W_CacheLumpName(DEH_String("BARBACK"), PU_STATIC);
-	PatchINVBAR = W_CacheLumpName(DEH_String("INVBAR"), PU_STATIC);
-	PatchCHAIN = W_CacheLumpName(DEH_String("CHAIN"), PU_STATIC);
+	PatchLTFACE = W_CacheLumpName(DEH_String("LTFACE"), pu_tags_t::PU_STATIC);
+	PatchRTFACE = W_CacheLumpName(DEH_String("RTFACE"), pu_tags_t::PU_STATIC);
+	PatchBARBACK = W_CacheLumpName(DEH_String("BARBACK"), pu_tags_t::PU_STATIC);
+	PatchINVBAR = W_CacheLumpName(DEH_String("INVBAR"), pu_tags_t::PU_STATIC);
+	PatchCHAIN = W_CacheLumpName(DEH_String("CHAIN"), pu_tags_t::PU_STATIC);
 	if (deathmatch)
 	{
-		PatchSTATBAR = W_CacheLumpName(DEH_String("STATBAR"), PU_STATIC);
+		PatchSTATBAR = W_CacheLumpName(DEH_String("STATBAR"), pu_tags_t::PU_STATIC);
 	}
 	else
 	{
-		PatchSTATBAR = W_CacheLumpName(DEH_String("LIFEBAR"), PU_STATIC);
+		PatchSTATBAR = W_CacheLumpName(DEH_String("LIFEBAR"), pu_tags_t::PU_STATIC);
 	}
 	if (!netgame)
 	{							// single player game uses red life gem
-		PatchLIFEGEM = W_CacheLumpName(DEH_String("LIFEGEM2"), PU_STATIC);
+		PatchLIFEGEM = W_CacheLumpName(DEH_String("LIFEGEM2"), pu_tags_t::PU_STATIC);
 	}
 	else
 	{
 		PatchLIFEGEM = W_CacheLumpNum(W_GetNumForName(DEH_String("LIFEGEM0"))
-										+ consoleplayer, PU_STATIC);
+										+ consoleplayer, pu_tags_t::PU_STATIC);
 	}
-	PatchLTFCTOP = W_CacheLumpName(DEH_String("LTFCTOP"), PU_STATIC);
-	PatchRTFCTOP = W_CacheLumpName(DEH_String("RTFCTOP"), PU_STATIC);
-	PatchSELECTBOX = W_CacheLumpName(DEH_String("SELECTBOX"), PU_STATIC);
-	PatchINVLFGEM1 = W_CacheLumpName(DEH_String("INVGEML1"), PU_STATIC);
-	PatchINVLFGEM2 = W_CacheLumpName(DEH_String("INVGEML2"), PU_STATIC);
-	PatchINVRTGEM1 = W_CacheLumpName(DEH_String("INVGEMR1"), PU_STATIC);
-	PatchINVRTGEM2 = W_CacheLumpName(DEH_String("INVGEMR2"), PU_STATIC);
-	PatchBLACKSQ = W_CacheLumpName(DEH_String("BLACKSQ"), PU_STATIC);
-	PatchARMCLEAR = W_CacheLumpName(DEH_String("ARMCLEAR"), PU_STATIC);
-	PatchCHAINBACK = W_CacheLumpName(DEH_String("CHAINBACK"), PU_STATIC);
+	PatchLTFCTOP = W_CacheLumpName(DEH_String("LTFCTOP"), pu_tags_t::PU_STATIC);
+	PatchRTFCTOP = W_CacheLumpName(DEH_String("RTFCTOP"), pu_tags_t::PU_STATIC);
+	PatchSELECTBOX = W_CacheLumpName(DEH_String("SELECTBOX"), pu_tags_t::PU_STATIC);
+	PatchINVLFGEM1 = W_CacheLumpName(DEH_String("INVGEML1"), pu_tags_t::PU_STATIC);
+	PatchINVLFGEM2 = W_CacheLumpName(DEH_String("INVGEML2"), pu_tags_t::PU_STATIC);
+	PatchINVRTGEM1 = W_CacheLumpName(DEH_String("INVGEMR1"), pu_tags_t::PU_STATIC);
+	PatchINVRTGEM2 = W_CacheLumpName(DEH_String("INVGEMR2"), pu_tags_t::PU_STATIC);
+	PatchBLACKSQ = W_CacheLumpName(DEH_String("BLACKSQ"), pu_tags_t::PU_STATIC);
+	PatchARMCLEAR = W_CacheLumpName(DEH_String("ARMCLEAR"), pu_tags_t::PU_STATIC);
+	PatchCHAINBACK = W_CacheLumpName(DEH_String("CHAINBACK"), pu_tags_t::PU_STATIC);
 	startLump = W_GetNumForName(DEH_String("IN0"));
 	for (i = 0; i < 10; i++)
 	{
-		PatchINumbers[i] = W_CacheLumpNum(startLump + i, PU_STATIC);
+		PatchINumbers[i] = W_CacheLumpNum(startLump + i, pu_tags_t::PU_STATIC);
 	}
-	PatchNEGATIVE = W_CacheLumpName(DEH_String("NEGNUM"), PU_STATIC);
+	PatchNEGATIVE = W_CacheLumpName(DEH_String("NEGNUM"), pu_tags_t::PU_STATIC);
 	FontBNumBase = W_GetNumForName(DEH_String("FONTB16"));
 	startLump = W_GetNumForName(DEH_String("SMALLIN0"));
 	for (i = 0; i < 10; i++)
 	{
-		PatchSmNumbers[i] = W_CacheLumpNum(startLump + i, PU_STATIC);
+		PatchSmNumbers[i] = W_CacheLumpNum(startLump + i, pu_tags_t::PU_STATIC);
 	}
 	playpalette = W_GetNumForName(DEH_String("PLAYPAL"));
 	spinbooklump = W_GetNumForName(DEH_String("SPINBK0"));
@@ -305,7 +305,7 @@ static void DrINumber(signed int val, int x, int y)
 	{
 		if (val < -9)
 		{
-			V_DrawPatch(x + 1, y + 1, W_CacheLumpName(DEH_String("LAME"), PU_CACHE));
+			V_DrawPatch(x + 1, y + 1, W_CacheLumpName(DEH_String("LAME"), pu_tags_t::PU_CACHE));
 		}
 		else
 		{
@@ -353,19 +353,19 @@ static void DrBNumber(signed int val, int x, int y)
 	}
 	if (val > 99)
 	{
-		patch = W_CacheLumpNum(FontBNumBase + val / 100, PU_CACHE);
+		patch = W_CacheLumpNum(FontBNumBase + val / 100, pu_tags_t::PU_CACHE);
 		V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
 	}
 	val = val % 100;
 	xpos += 12;
 	if (val > 9 || oldval > 99)
 	{
-		patch = W_CacheLumpNum(FontBNumBase + val / 10, PU_CACHE);
+		patch = W_CacheLumpNum(FontBNumBase + val / 10, pu_tags_t::PU_CACHE);
 		V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
 	}
 	val = val % 10;
 	xpos += 12;
-	patch = W_CacheLumpNum(FontBNumBase + val, PU_CACHE);
+	patch = W_CacheLumpNum(FontBNumBase + val, pu_tags_t::PU_CACHE);
 	V_DrawShadowedPatch(xpos + 6 - SHORT(patch->width) / 2, y, patch);
 }
 
@@ -571,9 +571,9 @@ void SB_Drawer()
 			if (players[consoleplayer].cheats & CF_GODMODE)
 			{
 				V_DrawPatch(16, 167,
-							W_CacheLumpName(DEH_String("GOD1"), PU_CACHE));
+							W_CacheLumpName(DEH_String("GOD1"), pu_tags_t::PU_CACHE));
 				V_DrawPatch(287, 167,
-							W_CacheLumpName(DEH_String("GOD2"), PU_CACHE));
+							W_CacheLumpName(DEH_String("GOD2"), pu_tags_t::PU_CACHE));
 			}
 			oldhealth = -1;
 		}
@@ -608,10 +608,10 @@ void SB_Drawer()
 	SB_PaletteFlash();
 
 	// Flight icons
-	if (CPlayer->powers[pw_flight])
+	if (CPlayer->powers[PowerType_t::pw_flight])
 	{
-		if (CPlayer->powers[pw_flight] > BLINKTHRESHOLD
-			|| !(CPlayer->powers[pw_flight] & 16))
+		if (CPlayer->powers[PowerType_t::pw_flight] > BLINKTHRESHOLD
+			|| !(CPlayer->powers[PowerType_t::pw_flight] & 16))
 		{
 			frame = (leveltime / 3) & 15;
 			if (CPlayer->mo->flags2 & MF2_FLY)
@@ -653,14 +653,14 @@ void SB_Drawer()
 		}
 	}
 
-	if (CPlayer->powers[pw_weaponlevel2] && !CPlayer->chickenTics)
+	if (CPlayer->powers[PowerType_t::pw_weaponlevel2] && !CPlayer->chickenTics)
 	{
-		if (CPlayer->powers[pw_weaponlevel2] > BLINKTHRESHOLD
-			|| !(CPlayer->powers[pw_weaponlevel2] & 16))
+		if (CPlayer->powers[PowerType_t::pw_weaponlevel2] > BLINKTHRESHOLD
+			|| !(CPlayer->powers[PowerType_t::pw_weaponlevel2] & 16))
 		{
 			frame = (leveltime / 3) & 15;
 			V_DrawPatch(300, 17,
-						W_CacheLumpNum(spinbooklump + frame, PU_CACHE));
+						W_CacheLumpNum(spinbooklump + frame, pu_tags_t::PU_CACHE));
 			BorderTopRefresh = true;
 			UpdateState |= I_MESSAGES;
 		}
@@ -671,10 +671,10 @@ void SB_Drawer()
 		}
 	}
 /*
-		if(CPlayer->powers[pw_weaponlevel2] > BLINKTHRESHOLD
-			|| (CPlayer->powers[pw_weaponlevel2]&8))
+		if(CPlayer->powers[PowerType_t::pw_weaponlevel2] > BLINKTHRESHOLD
+			|| (CPlayer->powers[PowerType_t::pw_weaponlevel2]&8))
 		{
-			V_DrawPatch(291, 0, W_CacheLumpName("ARTIPWBK", PU_CACHE));
+			V_DrawPatch(291, 0, W_CacheLumpName("ARTIPWBK", pu_tags_t::PU_CACHE));
 		}
 		else
 		{
@@ -719,7 +719,7 @@ void SB_PaletteFlash()
 	if (palette != sb_palette)
 	{
 		sb_palette = palette;
-		pal = (byte *) W_CacheLumpNum(playpalette, PU_CACHE) + palette * 768;
+		pal = (byte *) W_CacheLumpNum(playpalette, pu_tags_t::PU_CACHE) + palette * 768;
 		I_SetPalette(pal);
 	}
 }
@@ -781,7 +781,7 @@ void DrawMainBar()
 
 		temp = W_GetNumForName(DEH_String("useartia")) + ArtifactFlash - 1;
 
-		V_DrawPatch(182, 161, W_CacheLumpNum(temp, PU_CACHE));
+		V_DrawPatch(182, 161, W_CacheLumpNum(temp, pu_tags_t::PU_CACHE));
 		ArtifactFlash--;
 		oldarti = -1;			// so that the correct artifact fills in after the flash
 		UpdateState |= I_STATBAR;
@@ -843,15 +843,15 @@ void DrawMainBar()
 	{
 		if (CPlayer->keys[key_yellow])
 		{
-			V_DrawPatch(153, 164, W_CacheLumpName(DEH_String("ykeyicon"), PU_CACHE));
+			V_DrawPatch(153, 164, W_CacheLumpName(DEH_String("ykeyicon"), pu_tags_t::PU_CACHE));
 		}
 		if (CPlayer->keys[key_green])
 		{
-			V_DrawPatch(153, 172, W_CacheLumpName(DEH_String("gkeyicon"), PU_CACHE));
+			V_DrawPatch(153, 172, W_CacheLumpName(DEH_String("gkeyicon"), pu_tags_t::PU_CACHE));
 		}
 		if (CPlayer->keys[key_blue])
 		{
-			V_DrawPatch(153, 180, W_CacheLumpName(DEH_String("bkeyicon"), PU_CACHE));
+			V_DrawPatch(153, 180, W_CacheLumpName(DEH_String("bkeyicon"), pu_tags_t::PU_CACHE));
 		}
 		oldkeys = playerkeys;
 		UpdateState |= I_STATBAR;
@@ -900,13 +900,13 @@ void DrawInventoryBar()
 	V_DrawPatch(34, 160, PatchINVBAR);
 	for (i = 0; i < 7; i++)
 	{
-		//V_DrawPatch(50+i*31, 160, W_CacheLumpName("ARTIBOX", PU_CACHE));
+		//V_DrawPatch(50+i*31, 160, W_CacheLumpName("ARTIBOX", pu_tags_t::PU_CACHE));
 		if (CPlayer->inventorySlotNum > x + i
 			&& CPlayer->inventory[x + i].type != arti_none)
 		{
 			patch = DEH_String(patcharti[CPlayer->inventory[x + i].type]);
 
-			V_DrawPatch(50 + i * 31, 160, W_CacheLumpName(patch, PU_CACHE));
+			V_DrawPatch(50 + i * 31, 160, W_CacheLumpName(patch, pu_tags_t::PU_CACHE));
 			DrSmallNumber(CPlayer->inventory[x + i].count, 69 + i * 31, 182);
 		}
 	}
@@ -956,8 +956,8 @@ void DrawFullScreenStuff()
 		if (CPlayer->readyArtifact > 0)
 		{
 			patch = DEH_String(patcharti[CPlayer->readyArtifact]);
-			V_DrawTLPatch(286, 170, W_CacheLumpName(DEH_String("ARTIBOX"), PU_CACHE));
-			V_DrawPatch(286, 170, W_CacheLumpName(patch, PU_CACHE));
+			V_DrawTLPatch(286, 170, W_CacheLumpName(DEH_String("ARTIBOX"), pu_tags_t::PU_CACHE));
+			V_DrawPatch(286, 170, W_CacheLumpName(patch, pu_tags_t::PU_CACHE));
 			DrSmallNumber(CPlayer->inventory[inv_ptr].count, 307, 192);
 		}
 	}
@@ -967,13 +967,13 @@ void DrawFullScreenStuff()
 		for (i = 0; i < 7; i++)
 		{
 			V_DrawTLPatch(50 + i * 31, 168,
-							W_CacheLumpName(DEH_String("ARTIBOX"), PU_CACHE));
+							W_CacheLumpName(DEH_String("ARTIBOX"), pu_tags_t::PU_CACHE));
 			if (CPlayer->inventorySlotNum > x + i
 				&& CPlayer->inventory[x + i].type != arti_none)
 			{
 				patch = DEH_String(patcharti[CPlayer->inventory[x + i].type]);
 				V_DrawPatch(50 + i * 31, 168,
-							W_CacheLumpName(patch, PU_CACHE));
+							W_CacheLumpName(patch, pu_tags_t::PU_CACHE));
 				DrSmallNumber(CPlayer->inventory[x + i].count, 69 + i * 31,
 								190);
 			}
@@ -1024,7 +1024,7 @@ static bool HandleCheats(byte key)
 	bool eat;
 
 	/* [crispy] check for nightmare/netgame per cheat, to allow "harmless" cheats
-	if (netgame || gameskill == sk_nightmare)
+	if (netgame || gameskill == skill_t::sk_nightmare)
 	{							// Can't cheat in a net-game, or in nightmare mode
 		return (false);
 	}
@@ -1119,9 +1119,9 @@ static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
 static void CheatPowerFunc(player_t * player, Cheat_t * cheat)
 {
 	NIGHTMARE_NETGAME_CHECK;
-	if (player->powers[pw_weaponlevel2])
+	if (player->powers[PowerType_t::pw_weaponlevel2])
 	{
-		player->powers[pw_weaponlevel2] = 0;
+		player->powers[PowerType_t::pw_weaponlevel2] = 0;
 		P_SetMessage(player, DEH_String(TXT_CHEATPOWEROFF), false);
 	}
 	else

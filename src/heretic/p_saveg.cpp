@@ -11,7 +11,6 @@
 \**********************************************************************************************************************************************/
 // P_tick.c
 
-#include <stdlib.h>
 
 #include "doomdef.h"
 #include "i_swap.h"
@@ -349,7 +348,7 @@ static void saveg_read_player_t(player_t *str)
 	SV_ReadLong();
 	str->mo = NULL;
 
-	// playerstate_t playerstate;
+	// PlayerState_t playerstate;
 	str->playerstate = SV_ReadLong();
 
 	// ticcmd_t cmd;
@@ -389,7 +388,7 @@ static void saveg_read_player_t(player_t *str)
 		saveg_read_inventory_t(&str->inventory[i]);
 	}
 
-	// artitype_t readyArtifact;
+	// ArtiType_t readyArtifact;
 	str->readyArtifact = SV_ReadLong();
 
 	// int artifactCount;
@@ -419,10 +418,10 @@ static void saveg_read_player_t(player_t *str)
 		str->frags[i] = SV_ReadLong();
 	}
 
-	// weapontype_t readyweapon;
+	// WeaponType_t readyweapon;
 	str->readyweapon = SV_ReadLong();
 
-	// weapontype_t pendingweapon;
+	// WeaponType_t pendingweapon;
 	str->pendingweapon = SV_ReadLong();
 
 	// bool weaponowned[NUMWEAPONS];
@@ -518,7 +517,7 @@ static void saveg_write_player_t(player_t *str)
 	// the player number reference is stored in the mo.
 	SV_WritePtr(str->mo);
 
-	// playerstate_t playerstate;
+	// PlayerState_t playerstate;
 	SV_WriteLong(str->playerstate);
 
 	// ticcmd_t cmd;
@@ -558,7 +557,7 @@ static void saveg_write_player_t(player_t *str)
 		saveg_write_inventory_t(&str->inventory[i]);
 	}
 
-	// artitype_t readyArtifact;
+	// ArtiType_t readyArtifact;
 	SV_WriteLong(str->readyArtifact);
 
 	// int artifactCount;
@@ -588,10 +587,10 @@ static void saveg_write_player_t(player_t *str)
 		SV_WriteLong(str->frags[i]);
 	}
 
-	// weapontype_t readyweapon;
+	// WeaponType_t readyweapon;
 	SV_WriteLong(str->readyweapon);
 
-	// weapontype_t pendingweapon;
+	// WeaponType_t pendingweapon;
 	SV_WriteLong(str->pendingweapon);
 
 	// bool weaponowned[NUMWEAPONS];
@@ -1708,7 +1707,7 @@ void P_UnArchiveThinkers()
 				return;			// end of list
 
 			case tc_mobj:
-				mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, NULL);
+				mobj = Z_Malloc<decltype(*mobj)>(sizeof(*mobj), pu_tags_t::PU_LEVEL, NULL);
 				saveg_read_mobj_t(mobj);
 				mobj->target = NULL;
 				P_SetThingPosition(mobj);
@@ -1835,7 +1834,7 @@ void P_UnArchiveSpecials()
 				return;			// end of list
 
 			case tc_ceiling:
-				ceiling = Z_Malloc(sizeof(*ceiling), PU_LEVEL, NULL);
+				ceiling = Z_Malloc<decltype(*ceiling)>(sizeof(*ceiling), pu_tags_t::PU_LEVEL, NULL);
 				saveg_read_ceiling_t(ceiling);
 				ceiling->sector->specialdata = T_MoveCeiling; // ???
 				ceiling->thinker.function = T_MoveCeiling;
@@ -1844,7 +1843,7 @@ void P_UnArchiveSpecials()
 				break;
 
 			case tc_door:
-				door = Z_Malloc(sizeof(*door), PU_LEVEL, NULL);
+				door = Z_Malloc<decltype(*door)>(sizeof(*door), pu_tags_t::PU_LEVEL, NULL);
 				saveg_read_vldoor_t(door);
 				door->sector->specialdata = door;
 				door->thinker.function = T_VerticalDoor;
@@ -1852,7 +1851,7 @@ void P_UnArchiveSpecials()
 				break;
 
 			case tc_floor:
-				floor = Z_Malloc(sizeof(*floor), PU_LEVEL, NULL);
+				floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVEL, NULL);
 				saveg_read_floormove_t(floor);
 				floor->sector->specialdata = T_MoveFloor;
 				floor->thinker.function = T_MoveFloor;
@@ -1860,7 +1859,7 @@ void P_UnArchiveSpecials()
 				break;
 
 			case tc_plat:
-				plat = Z_Malloc(sizeof(*plat), PU_LEVEL, NULL);
+				plat = Z_Malloc<decltype(*plat)>(sizeof(*plat), pu_tags_t::PU_LEVEL, NULL);
 				saveg_read_plat_t(plat);
 				plat->sector->specialdata = T_PlatRaise;
 				// In the original Heretic code this was a conditional "fix"
@@ -1875,21 +1874,21 @@ void P_UnArchiveSpecials()
 				break;
 
 			case tc_flash:
-				flash = Z_Malloc(sizeof(*flash), PU_LEVEL, NULL);
+				flash = Z_Malloc<decltype(*flash)>(sizeof(*flash), pu_tags_t::PU_LEVEL, NULL);
 				saveg_read_lightflash_t(flash);
 				flash->thinker.function = T_LightFlash;
 				P_AddThinker(&flash->thinker);
 				break;
 
 			case tc_strobe:
-				strobe = Z_Malloc(sizeof(*strobe), PU_LEVEL, NULL);
+				strobe = Z_Malloc<decltype(*strobe)>(sizeof(*strobe), pu_tags_t::PU_LEVEL, NULL);
 				saveg_read_strobe_t(strobe);
 				strobe->thinker.function = T_StrobeFlash;
 				P_AddThinker(&strobe->thinker);
 				break;
 
 			case tc_glow:
-				glow = Z_Malloc(sizeof(*glow), PU_LEVEL, NULL);
+				glow = Z_Malloc<decltype(*glow)>(sizeof(*glow), pu_tags_t::PU_LEVEL, NULL);
 				saveg_read_glow_t(glow);
 				glow->thinker.function = T_Glow;
 				P_AddThinker(&glow->thinker);

@@ -335,7 +335,7 @@ void P_InitLightning()
 		LevelHasLightning = false;
 		return;
 	}
-	LightningLightLevels = (int *) Z_Malloc(secCount * sizeof(int), PU_LEVEL,
+	LightningLightLevels = (int *) Z_Malloc(secCount * sizeof(int), pu_tags_t::PU_LEVEL,
 											NULL);
 	NextLightningFlash = ((P_Random() & 15) + 5) * 35; // don't flash at level start
 }

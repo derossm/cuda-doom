@@ -13,12 +13,6 @@
 		parse command line parameters, configure game parameters (turbo), and call the startup functions.
 \**********************************************************************************************************************************************/
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h> // [crispy] time_t, time(), struct tm, localtime()
-
 #include "config.h"
 #include "deh_main.h"
 #include "doomdef.h"
@@ -68,10 +62,8 @@
 #include "r_local.h"
 #include "statdump.h"
 
-
 #include "d_main.h"
 
-//
 // D-DoomLoop()
 // Not a globally visible function,
 // just included for source reference,
@@ -79,207 +71,216 @@
 // Manages timing and IO,
 // calls all ?_Responder, ?_Ticker, and ?_Drawer,
 // calls I_GetTime, I_StartFrame, and I_StartTic
-//
-void D_DoomLoop ();
+void D_DoomLoop();
 
-static char *gamedescription;
+static char* gamedescription;
 
 // Location where savegames are stored
-
-char *			savegamedir;
+char* savegamedir;
 
 // location of IWAD and WAD files
+char* iwadfile;
 
-char *			iwadfile;
 
-
-bool		devparm;	// started game with -devparm
-bool			nomonsters;	// checkparm of -nomonsters
-bool			respawnparm;	// checkparm of -respawn
-bool			fastparm;	// checkparm of -fast
+bool devparm;		// started game with -devparm
+bool nomonsters;	// checkparm of -nomonsters
+bool respawnparm;	// checkparm of -respawn
+bool fastparm;		// checkparm of -fast
 
 //extern int soundVolume;
-//extern int	sfxVolume;
-//extern int	musicVolume;
+//extern int sfxVolume;
+//extern int musicVolume;
 
-extern bool	inhelpscreens;
+extern bool inhelpscreens;
 
-skill_t		startskill;
-int				startepisode;
-int		startmap;
-bool		autostart;
-int				startloadgame;
+skill_t startskill;
+int startepisode;
+int startmap;
+bool autostart;
+int startloadgame;
 
-bool		advancedemo;
+bool advancedemo;
 
 // Store demo, do not accept any inputs
-bool			storedemo;
+bool storedemo;
 
 // If true, the main game loop has started.
-bool			main_loop_started = false;
+bool main_loop_started = false;
 
-char		wadfile[1024];		// primary wad file
-char		mapdir[1024];			// directory of development maps
+char wadfile[1024];			// primary wad file
+char mapdir[1024];			// directory of development maps
 
-int				show_endoom = 0; // [crispy] disable
-int				show_diskicon = 1;
-
+int show_endoom = 0;		// [crispy] disable
+int show_diskicon = 1;
 
 void D_ConnectNetGame();
 void D_CheckNetGame();
 
-
-//
 // D_ProcessEvents
 // Send all the events of the given timestamp down the responder chain
-//
-void D_ProcessEvents ()
+void D_ProcessEvents()
 {
-	event_t*	ev;
+	event_t* ev;
 
 	// IF STORE DEMO, DO NOT ACCEPT INPUT
 	if (storedemo)
+	{
 		return;
+	}
 
 	while ((ev = D_PopEvent()) != NULL)
 	{
-	if (M_Responder(ev))
-		continue;				// menu ate the event
-	G_Responder(ev);
+		if (M_Responder(ev))
+		{
+			continue;				// menu ate the event
+		}
+
+		G_Responder(ev);
 	}
 }
 
-
-
-
-//
 // D_Display
 // draw current display, possibly wiping it from the previous
-//
-
 // wipegamestate can be set to -1 to force a wipe on the next draw
-gamestate_t		wipegamestate = GS_DEMOSCREEN;
+GameState_t wipegamestate = GameState_t::GS_DEMOSCREEN;
 extern bool setsizeneeded;
-extern int				showMessages;
-void R_ExecuteSetViewSize ();
+extern int showMessages;
+void R_ExecuteSetViewSize();
 
-bool D_Display ()
+bool D_Display()
 {
-	static bool		viewactivestate = false;
-	static bool		menuactivestate = false;
-	static bool		inhelpscreensstate = false;
-	static bool		fullscreen = false;
-	static gamestate_t		oldgamestate = -1;
-	static int			borderdrawcount;
-	int				y;
-	bool			wipe;
-	bool			redrawsbar;
+	static bool viewactivestate = false;
+	static bool menuactivestate = false;
+	static bool inhelpscreensstate = false;
+	static bool fullscreen = false;
+	static GameState_t oldgamestate = -1;
+	static int borderdrawcount;
+	int y;
+	bool wipe;
+	bool redrawsbar;
 
 	redrawsbar = false;
 
 	// change the view size if needed
 	if (setsizeneeded)
 	{
-	R_ExecuteSetViewSize();
-	oldgamestate = -1;						// force background redraw
-	borderdrawcount = 3;
+		R_ExecuteSetViewSize();
+		oldgamestate = -1;						// force background redraw
+		borderdrawcount = 3;
 	}
 
 	// save the current screen if about to wipe
 	if (gamestate != wipegamestate)
 	{
-	wipe = true;
-	wipe_StartScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
+		wipe = true;
+		wipe_StartScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
 	}
 	else
-	wipe = false;
+	{
+		wipe = false;
+	}
 
-	if (gamestate == GS_LEVEL && gametic)
-	HU_Erase();
+	if (gamestate == GameState_t::GS_LEVEL && gametic)
+	{
+		HU_Erase();
+	}
 
 	// do buffered drawing
 	switch (gamestate)
 	{
-		case GS_LEVEL:
-	if (!gametic)
+	case GameState_t::GS_LEVEL:
+		if (!gametic)
+		{
+			break;
+		}
+		if (automapactive && !crispy->automapoverlay)
+		{
+			// [crispy] update automap while playing
+			R_RenderPlayerView(&players[displayplayer]);
+			AM_Drawer();
+		}
+		if (wipe || (viewheight != SCREENHEIGHT && fullscreen))
+		{
+			redrawsbar = true;
+		}
+		if (inhelpscreensstate && !inhelpscreens)
+		{
+			redrawsbar = true;				// just put away the help screen
+		}
+		ST_Drawer(viewheight == SCREENHEIGHT, redrawsbar);
+		fullscreen = viewheight == SCREENHEIGHT;
 		break;
-	if (automapactive && !crispy->automapoverlay)
-	{
-		// [crispy] update automap while playing
-		R_RenderPlayerView(&players[displayplayer]);
-		AM_Drawer();
-	}
-	if (wipe || (viewheight != SCREENHEIGHT && fullscreen))
-		redrawsbar = true;
-	if (inhelpscreensstate && !inhelpscreens)
-		redrawsbar = true;				// just put away the help screen
-	ST_Drawer(viewheight == SCREENHEIGHT, redrawsbar );
-	fullscreen = viewheight == SCREENHEIGHT;
-	break;
 
-		case GS_INTERMISSION:
-	WI_Drawer();
-	break;
+	case GameState_t::GS_INTERMISSION:
+		WI_Drawer();
+		break;
 
-		case GS_FINALE:
-	F_Drawer();
-	break;
+	case GameState_t::GS_FINALE:
+		F_Drawer();
+		break;
 
-		case GS_DEMOSCREEN:
-	D_PageDrawer();
-	break;
+	case GameState_t::GS_DEMOSCREEN:
+		D_PageDrawer();
+		break;
 	}
 
 	// draw buffered stuff to screen
 	I_UpdateNoBlit();
 
 	// draw the view directly
-	if (gamestate == GS_LEVEL && (!automapactive || crispy->automapoverlay) && gametic)
+	if (gamestate == GameState_t::GS_LEVEL && (!automapactive || crispy->automapoverlay) && gametic)
 	{
-	R_RenderPlayerView(&players[displayplayer]);
+		R_RenderPlayerView(&players[displayplayer]);
 
 		// [crispy] Crispy HUD
 		if (screenblocks >= CRISPY_HUD)
+		{
 			ST_Drawer(false, true);
+		}
 	}
 
 	// [crispy] in automap overlay mode,
 	// the HUD is drawn on top of everything else
-	if (gamestate == GS_LEVEL && gametic && !(automapactive && crispy->automapoverlay))
-	HU_Drawer();
+	if (gamestate == GameState_t::::GS_LEVEL && gametic && !(automapactive && crispy->automapoverlay))
+	{
+		HU_Drawer();
+	}
 
 	// clean up border stuff
-	if (gamestate != oldgamestate && gamestate != GS_LEVEL)
+	if (gamestate != oldgamestate && gamestate != GameState_t::GS_LEVEL)
+	{
 #ifndef CRISPY_TRUECOLOR
-	I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"),PU_CACHE));
+		I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
 #else
-	I_SetPalette(0);
+		I_SetPalette(0);
 #endif
+	}
 
 	// see if the border needs to be initially drawn
-	if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
+	if (gamestate == GameState_t::GS_LEVEL && oldgamestate != GameState_t::GS_LEVEL)
 	{
-	viewactivestate = false;		// view was not active
-	R_FillBackScreen();	// draw the pattern into the back screen
+		viewactivestate = false;		// view was not active
+		R_FillBackScreen();	// draw the pattern into the back screen
 	}
 
 	// see if the border needs to be updated to the screen
-	if (gamestate == GS_LEVEL && (!automapactive || crispy->automapoverlay) && scaledviewwidth != SCREENWIDTH)
+	if (gamestate == GameState_t::GS_LEVEL && (!automapactive || crispy->automapoverlay) && scaledviewwidth != SCREENWIDTH)
 	{
-	if (menuactive || menuactivestate || !viewactivestate)
-		borderdrawcount = 3;
-	if (borderdrawcount)
-	{
-		R_DrawViewBorder ();	// erase old menu stuff
-		borderdrawcount--;
-	}
+		if (menuactive || menuactivestate || !viewactivestate)
+		{
+			borderdrawcount = 3;
+		}
 
+		if (borderdrawcount)
+		{
+			R_DrawViewBorder ();	// erase old menu stuff
+			--borderdrawcount;
+		}
 	}
 
 	if (testcontrols)
 	{
 		// Box showing current mouse speed
-
 		V_DrawMouseSpeedBox(testcontrols_mousespeed);
 	}
 
@@ -292,42 +293,45 @@ bool D_Display ()
 	// draw the automap and HUD on top of everything else
 	if (automapactive && crispy->automapoverlay)
 	{
-	AM_Drawer();
-	HU_Drawer();
+		AM_Drawer();
+		HU_Drawer();
 
-	// [crispy] force redraw of status bar and border
-	viewactivestate = false;
-	inhelpscreensstate = true;
+		// [crispy] force redraw of status bar and border
+		viewactivestate = false;
+		inhelpscreensstate = true;
 	}
 
 	// [crispy] draw neither pause pic nor menu when taking a clean screenshot
 	if (crispy->cleanscreenshot)
 	{
-	return false;
+		return false;
 	}
 
 	// draw pause pic
 	if (paused)
 	{
-	if (automapactive && !crispy->automapoverlay)
-		y = 4;
-	else
-		y = (viewwindowy >> crispy->hires)+4;
-	V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((scaledviewwidth >> crispy->hires) - 68) / 2 - WIDESCREENDELTA, y,
-							W_CacheLumpName(DEH_String("M_PAUSE"), PU_CACHE));
+		if (automapactive && !crispy->automapoverlay)
+		{
+			y = 4;
+		}
+		else
+		{
+			y = (viewwindowy >> crispy->hires)+4;
+		}
+		V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((scaledviewwidth >> crispy->hires) - 68) / 2 - WIDESCREENDELTA, y,
+							W_CacheLumpName(DEH_String("M_PAUSE"), pu_tags_t::PU_CACHE));
 	}
-
 
 	// menus go directly to the screen
 	M_Drawer();			// menu is drawn even on top of everything
-	NetUpdate();			// send out any new accumulation
+	NetUpdate();		// send out any new accumulation
 
 	return wipe;
 }
 
 void EnableLoadingDisk() // [crispy] un-static
 {
-	const char *disk_lump_name;
+	const char* disk_lump_name;
 
 	if (show_diskicon)
 	{
@@ -340,18 +344,12 @@ void EnableLoadingDisk() // [crispy] un-static
 			disk_lump_name = DEH_String("STDISK");
 		}
 
-		V_EnableLoadingDisk(disk_lump_name,
-							SCREENWIDTH - LOADING_DISK_W,
-							SCREENHEIGHT - LOADING_DISK_H);
+		V_EnableLoadingDisk(disk_lump_name, SCREENWIDTH - LOADING_DISK_W, SCREENHEIGHT - LOADING_DISK_H);
 	}
 }
 
-//
 // Add configuration file variable bindings.
-//
-
-
-static const char * const chat_macro_defaults[10] =
+static const char* const chat_macro_defaults[10] =
 {
 	HUSTR_CHATMACRO0,
 	HUSTR_CHATMACRO1,
@@ -365,11 +363,8 @@ static const char * const chat_macro_defaults[10] =
 	HUSTR_CHATMACRO9
 };
 
-
 void D_BindVariables()
 {
-	int i;
-
 	M_ApplyPlatformDefaults();
 
 	I_BindInputVariables();
@@ -400,14 +395,14 @@ void D_BindVariables()
 	M_BindIntVariable("detaillevel",			&detailLevel);
 	M_BindIntVariable("snd_channels",			&snd_channels);
 	// [crispy] unconditionally disable savegame and demo limits
-// M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-// M_BindIntVariable("vanilla_demo_limit",		&vanilla_demo_limit);
+	//M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
+	//M_BindIntVariable("vanilla_demo_limit",		&vanilla_demo_limit);
 	M_BindIntVariable("show_endoom",			&show_endoom);
 	M_BindIntVariable("show_diskicon",			&show_diskicon);
 
 	// Multiplayer chat macros
 
-	for (i=0; i<10; ++i)
+	for (auto i{0}; i < 10; ++i)
 	{
 		char buf[12];
 
@@ -464,32 +459,26 @@ void D_BindVariables()
 	M_BindIntVariable("crispy_widescreen",		&crispy->widescreen);
 }
 
-//
-// D_GrabMouseCallback
-//
 // Called to determine whether to grab the mouse pointer
-//
-
 bool D_GrabMouseCallback()
 {
 	// Drone players don't need mouse focus
-
 	if (drone)
+	{
 		return false;
+	}
 
 	// when menu is active or game is paused, release the mouse
-
 	if (menuactive || paused)
+	{
 		return false;
+	}
 
 	// only grab mouse when playing levels (but not demos)
 
-	return (gamestate == GS_LEVEL) && !demoplayback && !advancedemo;
+	return (gamestate == GameState_t::GS_LEVEL) && !demoplayback && !advancedemo;
 }
 
-//
-// D_RunFrame
-//
 void D_RunFrame()
 {
 	int nowtime;
@@ -524,7 +513,7 @@ void D_RunFrame()
 	// Update display, next frame, with current state if no profiling is on
 	if (screenvisible && !nodrawers)
 	{
-		if ((wipe = D_Display ()))
+		if ((wipe = D_Display()))
 		{
 			// start wipe on this frame
 			wipe_EndScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
@@ -546,23 +535,19 @@ void D_RunFrame()
 	}
 }
 
-//
-// D_DoomLoop
-//
-void D_DoomLoop ()
+void D_DoomLoop()
 {
-	if (gamevariant == bfgedition &&
-		(demorecording || (gameaction == ga_playdemo) || netgame))
+	if (gamevariant == GameVariant_t::bfgedition && (demorecording || (gameaction == GameAction_t::ga_playdemo) || netgame))
 	{
-		printf(" WARNING: You are playing using one of the Doom Classic\n"
-				" IWAD files shipped with the Doom 3: BFG Edition. These are\n"
-				" known to be incompatible with the regular IWAD files and\n"
-				" may cause demos and network games to get out of sync.\n");
+		printf(" WARNING: You are playing using one of the Doom Classic\n IWAD files shipped with the Doom 3: BFG Edition. These are\n"
+				" known to be incompatible with the regular IWAD files and\n may cause demos and network games to get out of sync.\n");
 	}
 
 	// [crispy] no need to write a demo header in demo continue mode
 	if (demorecording && gameaction != ga_playdemo)
-	G_BeginRecording ();
+	{
+		G_BeginRecording();
+	}
 
 	main_loop_started = true;
 
@@ -590,61 +575,40 @@ void D_DoomLoop ()
 	}
 }
 
-
-
-//
 // DEMO LOOP
-//
-int				demosequence;
-int				pagetic;
-const char					*pagename;
+int demosequence;
+int pagetic;
+const char* pagename;
 
-
-//
-// D_PageTicker
 // Handles timing for warped projection
-//
-void D_PageTicker ()
+void D_PageTicker()
 {
 	if (--pagetic < 0)
 	D_AdvanceDemo();
 }
 
-
-
-//
-// D_PageDrawer
-//
-void D_PageDrawer ()
+void D_PageDrawer()
 {
-	V_DrawPatchFullScreen(W_CacheLumpName(pagename, PU_CACHE), crispy->fliplevels);
+	V_DrawPatchFullScreen(W_CacheLumpName(pagename, pu_tags_t::PU_CACHE), crispy->fliplevels);
 }
 
-
-//
-// D_AdvanceDemo
 // Called after each demo or intro demosequence finishes
-//
-void D_AdvanceDemo ()
+void D_AdvanceDemo()
 {
 	advancedemo = true;
 }
 
-
-//
 // This cycles through the demo sequences.
 // FIXME - version dependend demo numbers?
-//
-void D_DoAdvanceDemo ()
+void D_DoAdvanceDemo()
 {
-	players[consoleplayer].playerstate = PST_LIVE; // not reborn
+	players[consoleplayer].playerstate = PlayerState_t::PST_LIVE; // not reborn
 	advancedemo = false;
 	usergame = false;				// no save / end game here
 	paused = false;
-	gameaction = ga_nothing;
+	gameaction = GameAction_t::ga_nothing;
 	// [crispy] update the "singleplayer" variable
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
-
 
 	// The Ultimate Doom executable changed the demo sequence to add
 	// a DEMO4 demo. Final Doom was based on Ultimate, so also
@@ -660,66 +624,81 @@ void D_DoAdvanceDemo ()
 	if (gameversion == exe_ultimate || gameversion == exe_final)
 	*/
 	if (W_CheckNumForName(DEH_String("demo4")) >= 0)
+	{
 		demosequence = (demosequence+1)%7;
+	}
 	else
+	{
 		demosequence = (demosequence+1)%6;
+	}
 
 	switch (demosequence)
 	{
-		case 0:
-	if ( gamemode == commercial )
-		pagetic = TICRATE * 11;
-	else
-		pagetic = 170;
-	gamestate = GS_DEMOSCREEN;
-	pagename = DEH_String("TITLEPIC");
-	if ( gamemode == commercial )
-		S_StartMusic(mus_dm2ttl);
-	else
-		S_StartMusic(mus_intro);
-	break;
-		case 1:
-	G_DeferedPlayDemo(DEH_String("demo1"));
-	break;
-		case 2:
-	pagetic = 200;
-	gamestate = GS_DEMOSCREEN;
-	pagename = DEH_String("CREDIT");
-	break;
-		case 3:
-	G_DeferedPlayDemo(DEH_String("demo2"));
-	break;
-		case 4:
-	gamestate = GS_DEMOSCREEN;
-	if ( gamemode == commercial)
-	{
-		pagetic = TICRATE * 11;
-		pagename = DEH_String("TITLEPIC");
-		S_StartMusic(mus_dm2ttl);
-	}
-	else
-	{
-		pagetic = 200;
-
-		if (gameversion >= exe_ultimate)
-			pagename = DEH_String("CREDIT");
+	case 0:
+		if (gamemode == GameMode_t::commercial)
+		{
+			pagetic = TICRATE * 11;
+		}
 		else
-			pagename = DEH_String("HELP2");
-	}
-	break;
-		case 5:
-	G_DeferedPlayDemo(DEH_String("demo3"));
-	break;
+		{
+			pagetic = 170;
+		}
+		gamestate = GameState_t::GS_DEMOSCREEN;
+		pagename = DEH_String("TITLEPIC");
+		if (gamemode == GameMode_t::commercial)
+		{
+			S_StartMusic(mus_dm2ttl);
+		}
+		else
+		{
+			S_StartMusic(mus_intro);
+		}
+		break;
+	case 1:
+		G_DeferedPlayDemo(DEH_String("demo1"));
+		break;
+	case 2:
+		pagetic = 200;
+		gamestate = GameState_t::GS_DEMOSCREEN;
+		pagename = DEH_String("CREDIT");
+		break;
+	case 3:
+		G_DeferedPlayDemo(DEH_String("demo2"));
+		break;
+	case 4:
+		gamestate = GameState_t::GS_DEMOSCREEN;
+		if (gamemode == GameMode_t::commercial)
+		{
+			pagetic = TICRATE * 11;
+			pagename = DEH_String("TITLEPIC");
+			S_StartMusic(mus_dm2ttl);
+		}
+		else
+		{
+			pagetic = 200;
+
+			if (gameversion >= gameversion_t::exe_ultimate)
+			{
+				pagename = DEH_String("CREDIT");
+			}
+			else
+			{
+				pagename = DEH_String("HELP2");
+			}
+		}
+		break;
+	case 5:
+		G_DeferedPlayDemo(DEH_String("demo3"));
+		break;
 		// THE DEFINITIVE DOOM Special Edition demo
-		case 6:
-	G_DeferedPlayDemo(DEH_String("demo4"));
-	break;
+	case 6:
+		G_DeferedPlayDemo(DEH_String("demo4"));
+		break;
 	}
 
 	// The Doom 3: BFG Edition version of doom2.wad does not have a
 	// TITLETPIC lump. Use INTERPIC instead as a workaround.
-	if (gamevariant == bfgedition && !strcasecmp(pagename, "TITLEPIC")
-		&& W_CheckNumForName("titlepic") < 0)
+	if (gamevariant == GameVariant_t::bfgedition && !strcasecmp(pagename, "TITLEPIC") && W_CheckNumForName("titlepic") < 0)
 	{
 		// [crispy] use DMENUPIC instead of TITLEPIC, it's awesome
 		pagename = DEH_String("DMENUPIC");
@@ -1175,7 +1154,7 @@ static void InitGameVersion()
 				M_snprintf(demolumpname, 6, "demo%i", i);
 				if (W_CheckNumForName(demolumpname) > 0)
 				{
-					demolump = W_CacheLumpName(demolumpname, PU_STATIC);
+					demolump = W_CacheLumpName(demolumpname, pu_tags_t::PU_STATIC);
 					demoversion = demolump[0];
 					W_ReleaseLumpName(demolumpname);
 					status = true;
@@ -1280,7 +1259,7 @@ static void D_Endoom()
 		return;
 	}
 
-	endoom = W_CacheLumpName(DEH_String("ENDOOM"), PU_STATIC);
+	endoom = W_CacheLumpName(DEH_String("ENDOOM"), pu_tags_t::PU_STATIC);
 
 	I_Endoom(endoom);
 }
@@ -2000,7 +1979,7 @@ void D_DoomMain ()
 	D_ConnectNetGame();
 
 	// get skill / episode / map from parms
-	startskill = sk_medium;
+	startskill = skill_t::sk_medium;
 	startepisode = 1;
 	startmap = 1;
 	autostart = false;

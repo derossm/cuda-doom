@@ -12,9 +12,6 @@
 // Parses INCLUDE directives in BEX files
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "m_misc.h"
 

@@ -16,8 +16,6 @@
 
 
 
-#include <stdio.h>
-#include <ctype.h>
 
 #include "i_swap.h" // [crispy] SHORT()
 #include "i_system.h"
@@ -486,7 +484,7 @@ void ST_refreshBackground(bool force)
 		pixel_t *dest;
 		const char *name = (gamemode == commercial) ? DEH_String("GRNROCK") : DEH_String("FLOOR7_2");
 
-		src = W_CacheLumpName(name, PU_CACHE);
+		src = W_CacheLumpName(name, pu_tags_t::PU_CACHE);
 		dest = st_backing_screen;
 
 		for (y = SCREENHEIGHT-(ST_HEIGHT<<crispy->hires); y < SCREENHEIGHT; y++)
@@ -504,7 +502,7 @@ void ST_refreshBackground(bool force)
 		// [crispy] preserve bezel bottom edge
 		if (scaledviewwidth == SCREENWIDTH)
 		{
-			patch_t *const patch = W_CacheLumpName(DEH_String("brdr_b"), PU_CACHE);
+			patch_t *const patch = W_CacheLumpName(DEH_String("brdr_b"), pu_tags_t::PU_CACHE);
 
 			for (x = 0; x < WIDESCREENDELTA; x += 8)
 			{
@@ -745,7 +743,7 @@ ST_Responder (event_t* ev)
  // if a user keypress...
  else if (ev->type == ev_keydown)
  {
-	if (!netgame && gameskill != sk_nightmare)
+	if (!netgame && gameskill != skill_t::sk_nightmare)
 	{
 		// 'dqd' cheat for toggleable god mode
 		if (cht_CheckCheatSP(&cheat_god, ev->data2))
@@ -926,7 +924,7 @@ ST_Responder (event_t* ev)
 	{
 		if (!plyr->powers[i])
 		P_GivePower( plyr, i);
-		else if (i!=pw_strength && i!=pw_allmap) // [crispy] disable full Automap
+		else if (i!=PowerType_t::pw_strength && i!=PowerType_t::pw_allmap) // [crispy] disable full Automap
 		plyr->powers[i] = 1;
 		else
 		plyr->powers[i] = 0;
@@ -951,7 +949,7 @@ ST_Responder (event_t* ev)
 		else if (cht_CheckCheatSP(&cheat_choppers, ev->data2))
 		{
 	plyr->weaponowned[wp_chainsaw] = true;
-	plyr->powers[pw_invulnerability] = true;
+	plyr->powers[PowerType_t::pw_invulnerability] = true;
 	plyr->message = DEH_String(STSTR_CHOPPERS);
 		}
 		// 'mypos' for player position
@@ -966,7 +964,7 @@ ST_Responder (event_t* ev)
 		plyr->message = buf;
 */
 		// [crispy] extra high precision IDMYPOS variant, updates for 10 seconds
-		plyr->powers[pw_mapcoords] = 10*TICRATE;
+		plyr->powers[PowerType_t::pw_mapcoords] = 10*TICRATE;
 		}
 
 // [crispy] now follow "critical" Crispy Doom specific cheats
@@ -1071,7 +1069,7 @@ ST_Responder (event_t* ev)
 	if (w == -1)
 	{
 		GiveBackpack(false);
-		plyr->powers[pw_strength] = 0;
+		plyr->powers[PowerType_t::pw_strength] = 0;
 
 		for (i = 0; i < NUMWEAPONS; i++)
 		{
@@ -1103,15 +1101,15 @@ ST_Responder (event_t* ev)
 	// make '1' apply beserker strength toggle
 	if (w == wp_fist)
 	{
-		if (!plyr->powers[pw_strength])
+		if (!plyr->powers[PowerType_t::pw_strength])
 		{
-		P_GivePower(plyr, pw_strength);
+		P_GivePower(plyr, PowerType_t::pw_strength);
 		S_StartSound(NULL, sfx_getpow);
 		plyr->message = DEH_String(GOTBERSERK);
 		}
 		else
 		{
-		plyr->powers[pw_strength] = 0;
+		plyr->powers[PowerType_t::pw_strength] = 0;
 		plyr->message = DEH_String(STSTR_BEHOLDX);
 		}
 	}
@@ -1119,7 +1117,7 @@ ST_Responder (event_t* ev)
 	{
 		if (!plyr->weaponowned[w])
 		{
-		extern bool P_GiveWeapon (player_t* player, weapontype_t weapon, bool dropped);
+		extern bool P_GiveWeapon (player_t* player, WeaponType_t weapon, bool dropped);
 		extern const char *const WeaponPickupMessages[NUMWEAPONS];
 
 		P_GiveWeapon(plyr, w, false);
@@ -1164,7 +1162,7 @@ ST_Responder (event_t* ev)
 	if (cht_CheckCheat(&cheat_showfps, ev->data2) ||
 				cht_CheckCheat(&cheat_showfps2, ev->data2))
 	{
-	plyr->powers[pw_showfps] ^= 1;
+	plyr->powers[PowerType_t::pw_showfps] ^= 1;
 	}
 	// [crispy] implement Boom's "tnthom" cheat
 	else if (cht_CheckCheat(&cheat_hom, ev->data2))
@@ -1391,7 +1389,7 @@ void ST_updateFaceWidget()
 	// [crispy] fix status bar face hysteresis
 	int		painoffset;
 	// [crispy] no evil grin or rampage face in god mode
-	const bool invul = (plyr->cheats & CF_GODMODE) || plyr->powers[pw_invulnerability];
+	const bool invul = (plyr->cheats & CF_GODMODE) || plyr->powers[PowerType_t::pw_invulnerability];
 
 	painoffset = ST_calcPainOffset();
 
@@ -1685,10 +1683,10 @@ void ST_doPaletteStuff()
 
 	cnt = plyr->damagecount;
 
-	if (plyr->powers[pw_strength])
+	if (plyr->powers[PowerType_t::pw_strength])
 	{
 	// slowly fade the berzerk out
-	bzc = 12 - (plyr->powers[pw_strength]>>6);
+	bzc = 12 - (plyr->powers[PowerType_t::pw_strength]>>6);
 
 	if (bzc > cnt)
 		cnt = bzc;
@@ -1718,8 +1716,8 @@ void ST_doPaletteStuff()
 	palette += STARTBONUSPALS;
 	}
 
-	else if ( plyr->powers[pw_ironfeet] > 4*32
-			|| plyr->powers[pw_ironfeet]&8)
+	else if ( plyr->powers[PowerType_t::pw_ironfeet] > 4*32
+			|| plyr->powers[PowerType_t::pw_ironfeet]&8)
 	palette = RADIATIONPAL;
 	else
 	palette = 0;
@@ -1745,7 +1743,7 @@ void ST_doPaletteStuff()
 	{
 	st_palette = palette;
 #ifndef CRISPY_TRUECOLOR
-	pal = (byte *) W_CacheLumpNum (lu_palette, PU_CACHE)+palette*768;
+	pal = (byte *) W_CacheLumpNum (lu_palette, pu_tags_t::PU_CACHE)+palette*768;
 	I_SetPalette (pal);
 #else
 	I_SetPalette (palette);
@@ -1798,7 +1796,7 @@ static byte* ST_WidgetColor(int i)
 
 			// [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
 			if (plyr->cheats & CF_GODMODE ||
-				plyr->powers[pw_invulnerability])
+				plyr->powers[PowerType_t::pw_invulnerability])
 				return cr[CR_GRAY];
 			else if (health < 25)
 				return cr[CR_RED];
@@ -1828,7 +1826,7 @@ static byte* ST_WidgetColor(int i)
 		{
 		// [crispy] Invulnerability powerup and God Mode cheat turn Armor values gray
 		if (plyr->cheats & CF_GODMODE ||
-				plyr->powers[pw_invulnerability])
+				plyr->powers[PowerType_t::pw_invulnerability])
 				return cr[CR_GRAY];
 		// [crispy] color by armor type
 		else if (plyr->armortype >= 2)
@@ -1875,7 +1873,7 @@ static inline void ST_DrawGibbedPlayerSprites ()
 	}
 
 	sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
-	patch = W_CacheLumpNum(sprframe->lump[0] + firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum(sprframe->lump[0] + firstspritelump, pu_tags_t::PU_CACHE);
 
 	if (plyr->mo->flags & MF_TRANSLATION)
 	{
@@ -1906,7 +1904,7 @@ void ST_drawWidgets(bool refresh)
 	if (st_crispyhud)
 	{
 	// [crispy] draw berserk pack instead of no ammo if appropriate
-	if (plyr->readyweapon == wp_fist && plyr->powers[pw_strength])
+	if (plyr->readyweapon == wp_fist && plyr->powers[PowerType_t::pw_strength])
 	{
 		static int lump = -1;
 		patch_t *patch;
@@ -1921,7 +1919,7 @@ void ST_drawWidgets(bool refresh)
 			}
 		}
 
-		patch = W_CacheLumpNum(lump, PU_CACHE);
+		patch = W_CacheLumpNum(lump, pu_tags_t::PU_CACHE);
 
 		// [crispy] (23,179) is the center of the Ammo widget
 		V_DrawPatch(ST_AMMOX - 21 - SHORT(patch->width)/2 + SHORT(patch->leftoffset),
@@ -2139,7 +2137,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 
 static void ST_loadCallback(const char *lumpname, patch_t **variable)
 {
-	*variable = W_CacheLumpName(lumpname, PU_STATIC);
+	*variable = W_CacheLumpName(lumpname, pu_tags_t::PU_STATIC);
 }
 
 void ST_loadGraphics()
@@ -2164,7 +2162,7 @@ void ST_loadData()
 	DEH_snprintf(lumpname, 9, "STKEYS%d", i);
 	lumpnum = W_CheckNumForName(lumpname);
 
-	keys[i] = (lumpnum != -1) ? W_CacheLumpNum(lumpnum, PU_STATIC) : keys[i-3];
+	keys[i] = (lumpnum != -1) ? W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC) : keys[i-3];
 	}
 }
 
@@ -2404,7 +2402,7 @@ void ST_Start ()
 	char namebuf[8];
 
 	DEH_snprintf(namebuf, 7, "STFB%d", consoleplayer);
-	faceback = W_CacheLumpName(namebuf, PU_STATIC);
+	faceback = W_CacheLumpName(namebuf, pu_tags_t::PU_STATIC);
 	}
 }
 
@@ -2414,7 +2412,7 @@ void ST_Stop ()
 	return;
 
 #ifndef CRISPY_TRUECOLOR
-	I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
+	I_SetPalette (W_CacheLumpNum (lu_palette, pu_tags_t::PU_CACHE));
 #else
 	I_SetPalette (0);
 #endif
@@ -2441,7 +2439,7 @@ void ST_Init ()
 	}
 
 	ST_loadData();
-	st_backing_screen = (pixel_t *) Z_Malloc(MAXWIDTH * (ST_HEIGHT << 1) * sizeof(*st_backing_screen), PU_STATIC, 0);
+	st_backing_screen = (pixel_t *) Z_Malloc(MAXWIDTH * (ST_HEIGHT << 1) * sizeof(*st_backing_screen), pu_tags_t::PU_STATIC, 0);
 }
 
 // [crispy] Demo Timer widget
@@ -2459,7 +2457,7 @@ void ST_DrawDemoTimer (const int time)
 
 	// [crispy] draw the Demo Timer widget with gray numbers
 	dp_translation = cr[CR_GRAY];
-	dp_translucent = (gamestate == GS_LEVEL);
+	dp_translucent = (gamestate == GameState_t::GS_LEVEL);
 
 	while (n-- > 0)
 	{

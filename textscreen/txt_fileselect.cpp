@@ -7,12 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Routines for selecting files.
+	DESCRIPTION:
+		Routines for selecting files.
 \**********************************************************************************************************************************************/
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "doomkeys.h"
 
@@ -36,11 +33,6 @@ struct txt_fileselect_s {
 const char *TXT_DIRECTORY[] = { "__directory__", NULL };
 
 #ifndef _WIN32
-
-#include <fcntl.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/wait.h>
 
 static char *ExecReadOutput(char **argv)
 {
@@ -159,12 +151,9 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
 
 // Windows code. Use comdlg32 to pop up a dialog box.
 
-#include <windows.h>
-#include <shlobj.h>
-
-static BOOL (*MyGetOpenFileName)(LPOPENFILENAME) = NULL;
+static bool (*MyGetOpenFileName)(LPOPENFILENAME) = NULL;
 static LPITEMIDLIST (*MySHBrowseForFolder)(LPBROWSEINFO) = NULL;
-static BOOL (*MySHGetPathFromIDList)(LPITEMIDLIST, LPTSTR) = NULL;
+static bool (*MySHGetPathFromIDList)(LPITEMIDLIST, LPTSTR) = NULL;
 
 // Load library functions from DLL files.
 

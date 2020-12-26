@@ -170,7 +170,7 @@ void P_BringUpWeapon (player_t* player)
 
 #if 0
 	// [crispy] play "power up" sound when selecting berserk fist...
-	if (player->pendingweapon == wp_fist && player->powers[pw_strength])
+	if (player->pendingweapon == wp_fist && player->powers[PowerType_t::pw_strength])
 	{
 	// [crispy] ...only if not playing already
 	if (player == &players[consoleplayer])
@@ -197,7 +197,7 @@ void P_BringUpWeapon (player_t* player)
 //
 bool P_CheckAmmo (player_t* player)
 {
-	ammotype_t		ammo;
+	AmmoType_t		ammo;
 	int			count;
 
 	ammo = weaponinfo[player->readyweapon].ammo;
@@ -535,7 +535,7 @@ A_Punch
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	damage = (P_Random ()%10+1)<<1;
 
-	if (player->powers[pw_strength])
+	if (player->powers[PowerType_t::pw_strength])
 	damage *= 10;
 
 	angle = player->mo->angle;

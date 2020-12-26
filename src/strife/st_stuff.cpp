@@ -16,7 +16,6 @@
 
 
 
-#include <stdio.h>
 
 #include "i_system.h"
 #include "i_video.h"
@@ -637,7 +636,7 @@ bool ST_Responder(event_t* ev)
 	if(cht_CheckCheat(&cheat_powerup[ST_PUMPUP_T], ev->data2))
 	{
 		// [STRIFE] PUMPUPT gives targeter
-		P_GivePower(plyr, pw_targeter);
+		P_GivePower(plyr, PowerType_t::pw_targeter);
 		plyr->message = DEH_String("you got the stuff!");
 	}
 	// [STRIFE]: PUMPUP
@@ -854,10 +853,10 @@ void ST_doPaletteStuff()
 
 	cnt = plyr->damagecount;
 
-	if (plyr->powers[pw_strength])
+	if (plyr->powers[PowerType_t::pw_strength])
 	{
 		// slowly fade the berzerk out
-		bzc = 12 - (plyr->powers[pw_strength]>>6);
+		bzc = 12 - (plyr->powers[PowerType_t::pw_strength]>>6);
 
 		if (bzc > cnt)
 			cnt = bzc;
@@ -896,7 +895,7 @@ void ST_doPaletteStuff()
 	if (palette != st_palette)
 	{
 		st_palette = palette;
-		pal = (byte *) W_CacheLumpNum(lu_palette, PU_CACHE)+palette*768;
+		pal = (byte *) W_CacheLumpNum(lu_palette, pu_tags_t::PU_CACHE)+palette*768;
 		I_SetPalette(pal);
 	}
 
@@ -1037,9 +1036,9 @@ void ST_doRefresh()
 
 			lumpnum = W_CheckNumForName(iconname);
 			if(lumpnum == -1)
-				patch = W_CacheLumpName(DEH_String("STCFN063"), PU_CACHE);
+				patch = W_CacheLumpName(DEH_String("STCFN063"), pu_tags_t::PU_CACHE);
 			else
-				patch = W_CacheLumpNum(lumpnum, PU_STATIC);
+				patch = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 
 			V_DrawPatch(icon_x, 182, patch);
 			ST_drawNumFontY(num_x, 191, plyr->inventory[i].amount);
@@ -1210,7 +1209,7 @@ static bool ST_drawKeysPopup()
 		for(pnum = 0; pnum < MAXPLAYERS/2; pnum++)
 		{
 			DEH_snprintf(buffer, sizeof(buffer), "stcolor%d", pnum+1);
-			colpatch = W_CacheLumpName(buffer, PU_CACHE);
+			colpatch = W_CacheLumpName(buffer, pu_tags_t::PU_CACHE);
 			V_DrawPatchDirect(28, y, colpatch);
 			frags = ST_calcFrags(pnum);
 			DEH_snprintf(buffer, sizeof(buffer), "%s%d", player_names[pnum], frags);
@@ -1227,7 +1226,7 @@ static bool ST_drawKeysPopup()
 		for(pnum = MAXPLAYERS/2; pnum < MAXPLAYERS; pnum++)
 		{
 			DEH_snprintf(buffer, sizeof(buffer), "stcolor%d", pnum+1);
-			colpatch = W_CacheLumpName(buffer, PU_CACHE);
+			colpatch = W_CacheLumpName(buffer, pu_tags_t::PU_CACHE);
 			V_DrawPatchDirect(158, y, colpatch);
 			frags = ST_calcFrags(pnum);
 			DEH_snprintf(buffer, sizeof(buffer), "%s%d", player_names[pnum], frags);
@@ -1291,7 +1290,7 @@ static bool ST_drawKeysPopup()
 				// Get spawnstate sprite name and load corresponding icon
 				DEH_snprintf(sprname, sizeof(sprname), "I_%s",
 					sprnames[states[info->spawnstate].sprite]);
-				patch = W_CacheLumpName(sprname, PU_CACHE);
+				patch = W_CacheLumpName(sprname, pu_tags_t::PU_CACHE);
 				V_DrawPatchDirect(x, y, patch);
 				HUlib_drawYellowText(x + ST_KEYNAME_X, y + ST_KEYNAME_Y, info->name);
 			}
@@ -1327,7 +1326,7 @@ bool ST_DrawExternal()
 	}
 	else
 	{
-		ammotype_t ammo;
+		AmmoType_t ammo;
 
 		ST_drawNumFontY2(15, 194, plyr->health);
 		ammo = weaponinfo[plyr->readyweapon].ammo;
@@ -1369,32 +1368,32 @@ bool ST_DrawExternal()
 			if(plyr->weaponowned[wp_elecbow])
 			{
 				V_DrawPatchDirect(38, 86,
-					W_CacheLumpName(DEH_String("CBOWA0"), PU_CACHE));
+					W_CacheLumpName(DEH_String("CBOWA0"), pu_tags_t::PU_CACHE));
 			}
 			if(plyr->weaponowned[wp_rifle])
 			{
 				V_DrawPatchDirect(40, 107,
-					W_CacheLumpName(DEH_String("RIFLA0"), PU_CACHE));
+					W_CacheLumpName(DEH_String("RIFLA0"), pu_tags_t::PU_CACHE));
 			}
 			if(plyr->weaponowned[wp_missile])
 			{
 				V_DrawPatchDirect(39, 131,
-					W_CacheLumpName(DEH_String("MMSLA0"), PU_CACHE));
+					W_CacheLumpName(DEH_String("MMSLA0"), pu_tags_t::PU_CACHE));
 			}
 			if(plyr->weaponowned[wp_hegrenade])
 			{
 				V_DrawPatchDirect(78, 87,
-					W_CacheLumpName(DEH_String("GRNDA0"), PU_CACHE));
+					W_CacheLumpName(DEH_String("GRNDA0"), pu_tags_t::PU_CACHE));
 			}
 			if(plyr->weaponowned[wp_flame])
 			{
 				V_DrawPatchDirect(80, 117,
-					W_CacheLumpName(DEH_String("FLAMA0"), PU_CACHE));
+					W_CacheLumpName(DEH_String("FLAMA0"), pu_tags_t::PU_CACHE));
 			}
 			if(plyr->weaponowned[wp_mauler])
 			{
 				V_DrawPatchDirect(75, 142,
-					W_CacheLumpName(DEH_String("TRPDA0"), PU_CACHE));
+					W_CacheLumpName(DEH_String("TRPDA0"), pu_tags_t::PU_CACHE));
 			}
 
 			// haleyjd 20110213: draw ammo
@@ -1407,10 +1406,10 @@ bool ST_DrawExternal()
 			ST_drawNumFontY2(261, 84, plyr->accuracy);
 			ST_drawNumFontY2(261, 108, plyr->stamina);
 
-			if(plyr->powers[pw_communicator])
+			if(plyr->powers[PowerType_t::pw_communicator])
 			{
 				V_DrawPatchDirect(280, 130,
-					W_CacheLumpName(DEH_String("I_COMM"), PU_CACHE));
+					W_CacheLumpName(DEH_String("I_COMM"), pu_tags_t::PU_CACHE));
 			}
 	}
 
@@ -1483,7 +1482,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 
 static void ST_loadCallback(const char *lumpname, patch_t **variable)
 {
-	*variable = W_CacheLumpName(lumpname, PU_STATIC);
+	*variable = W_CacheLumpName(lumpname, pu_tags_t::PU_STATIC);
 }
 
 void ST_loadGraphics()
@@ -1595,7 +1594,7 @@ void ST_Stop ()
 	if (st_stopped)
 		return;
 
-	I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
+	I_SetPalette (W_CacheLumpNum (lu_palette, pu_tags_t::PU_CACHE));
 
 	st_stopped = true;
 }
@@ -1605,6 +1604,6 @@ void ST_Init ()
 	ST_loadData();
 
 	// haleyjd 20100919: This is not used by Strife. More memory for voices!
-	//st_backing_screen = (byte *) Z_Malloc(ST_WIDTH * ST_HEIGHT, PU_STATIC, 0);
+	//st_backing_screen = (byte *) Z_Malloc(ST_WIDTH * ST_HEIGHT, pu_tags_t::PU_STATIC, 0);
 }
 

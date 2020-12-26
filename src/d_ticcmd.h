@@ -10,22 +10,16 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	System specific interface stuff.
+		System specific interface stuff.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef __D_TICCMD__
-#define __D_TICCMD__
-
 #include "doomtype.h"
 
-// The data sampled per tick (single player)
-// and transmitted to other peers (multiplayer).
-// Mainly movements/button commands per game tick,
-// plus a checksum for internal state consistency.
-
+// The data sampled per tick (single player) and transmitted to other peers (multiplayer).
+// Mainly movements/button commands per game tick, plus a checksum for internal state consistency.
 struct ticcmd_t
 {
 	signed char	forwardmove;	// *2048 for move
@@ -43,9 +37,7 @@ struct ticcmd_t
 
 	// Heretic/Hexen specific:
 	byte lookfly;				// look/fly up/down/centering
-	byte arti;					// artitype_t to use
+	byte arti;					// ArtiType_t to use
 
 	int lookdir;
 };
-
-#endif

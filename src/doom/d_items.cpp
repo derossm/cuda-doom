@@ -14,23 +14,21 @@
 
 #include "d_items.h"
 
-//
 // PSPRITE ACTIONS for waepons.
 // This struct controls the weapon animations.
 //
 // Each entry is:
-//	ammo/amunition type
+// ammo/amunition type
 // upstate
 // downstate
 // readystate
 // atkstate, i.e. attack/fire/hit frame
 // flashstate, muzzle flash
-//
-weaponinfo_t	weaponinfo[NUMWEAPONS] =
+weaponinfo_t weaponinfo[WeaponType_t::NUMWEAPONS] =
 {
 	{
 	// fist
-	am_noammo,
+	AmmoType_t::am_noammo,
 	S_PUNCHUP,
 	S_PUNCHDOWN,
 	S_PUNCH,
@@ -39,7 +37,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	},
 	{
 	// pistol
-	am_clip,
+	AmmoType_t::am_clip,
 	S_PISTOLUP,
 	S_PISTOLDOWN,
 	S_PISTOL,
@@ -48,7 +46,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	},
 	{
 	// shotgun
-	am_shell,
+	AmmoType_t::am_shell,
 	S_SGUNUP,
 	S_SGUNDOWN,
 	S_SGUN,
@@ -57,7 +55,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	},
 	{
 	// chaingun
-	am_clip,
+	AmmoType_t::am_clip,
 	S_CHAINUP,
 	S_CHAINDOWN,
 	S_CHAIN,
@@ -66,7 +64,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	},
 	{
 	// missile launcher
-	am_misl,
+	AmmoType_t::am_misl,
 	S_MISSILEUP,
 	S_MISSILEDOWN,
 	S_MISSILE,
@@ -75,7 +73,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	},
 	{
 	// plasma rifle
-	am_cell,
+	AmmoType_t::am_cell,
 	S_PLASMAUP,
 	S_PLASMADOWN,
 	S_PLASMA,
@@ -84,7 +82,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	},
 	{
 	// bfg 9000
-	am_cell,
+	AmmoType_t::am_cell,
 	S_BFGUP,
 	S_BFGDOWN,
 	S_BFG,
@@ -93,7 +91,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	},
 	{
 	// chainsaw
-	am_noammo,
+	AmmoType_t::am_noammo,
 	S_SAWUP,
 	S_SAWDOWN,
 	S_SAW,
@@ -102,7 +100,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	},
 	{
 	// super shotgun
-	am_shell,
+	AmmoType_t::am_shell,
 	S_DSGUNUP,
 	S_DSGUNDOWN,
 	S_DSGUN,
@@ -110,11 +108,3 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_DSGUNFLASH1
 	},
 };
-
-
-
-
-
-
-
-

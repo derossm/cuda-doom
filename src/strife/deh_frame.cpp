@@ -10,8 +10,6 @@
 // Parses "Frame" sections in dehacked files
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "doomtype.h"
 #include "d_items.h"

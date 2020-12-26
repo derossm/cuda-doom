@@ -13,9 +13,6 @@
 // HEADER FILES ------------------------------------------------------------
 
 // haleyjd: removed WATCOMC
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 #include "config.h"
 
@@ -271,7 +268,7 @@ static bool D_GrabMouseCallback()
 
 	// only grab mouse when playing levels (but not demos)
 
-	return (gamestate == GS_LEVEL) && !advancedemo && !demoplayback;
+	return (gamestate == GameState_t::GS_LEVEL) && !advancedemo && !demoplayback;
 }
 
 // Message displayed when quitting Hexen
@@ -365,7 +362,7 @@ void D_DoomMain()
 	I_AtExit(D_HexenQuitMessage, false);
 	startepisode = 1;
 	autostart = false;
-	startskill = sk_medium;
+	startskill = skill_t::sk_medium;
 	startmap = 1;
 	gamemode = commercial;
 
@@ -888,7 +885,7 @@ static void DrawAndBlit()
 	// Do buffered drawing
 	switch (gamestate)
 	{
-		case GS_LEVEL:
+		case GameState_t::GS_LEVEL:
 			if (!gametic)
 			{
 				break;
@@ -905,13 +902,13 @@ static void DrawAndBlit()
 			UpdateState |= I_FULLVIEW;
 			SB_Drawer();
 			break;
-		case GS_INTERMISSION:
+		case GameState_t::GS_INTERMISSION:
 			IN_Drawer();
 			break;
-		case GS_FINALE:
+		case GameState_t::GS_FINALE:
 			F_Drawer();
 			break;
-		case GS_DEMOSCREEN:
+		case GameState_t::GS_DEMOSCREEN:
 			PageDrawer();
 			break;
 	}
@@ -930,7 +927,7 @@ static void DrawAndBlit()
 		}
 		else
 		{
-			V_DrawPatch(160, 70, W_CacheLumpName("PAUSED", PU_CACHE));
+			V_DrawPatch(160, 70, W_CacheLumpName("PAUSED", pu_tags_t::PU_CACHE));
 		}
 	}
 
@@ -996,10 +993,10 @@ void H2_PageTicker()
 
 static void PageDrawer()
 {
-	V_DrawRawScreen(W_CacheLumpName(pagename, PU_CACHE));
+	V_DrawRawScreen(W_CacheLumpName(pagename, pu_tags_t::PU_CACHE));
 	if (demosequence == 1)
 	{
-		V_DrawPatch(4, 160, W_CacheLumpName("ADVISOR", PU_CACHE));
+		V_DrawPatch(4, 160, W_CacheLumpName("ADVISOR", pu_tags_t::PU_CACHE));
 	}
 	UpdateState |= I_FULLSCRN;
 }
@@ -1035,13 +1032,13 @@ void H2_DoAdvanceDemo()
 	{
 		case 0:
 			pagetic = 280;
-			gamestate = GS_DEMOSCREEN;
+			gamestate = GameState_t::GS_DEMOSCREEN;
 			pagename = "TITLE";
 			S_StartSongName("hexen", true);
 			break;
 		case 1:
 			pagetic = 210;
-			gamestate = GS_DEMOSCREEN;
+			gamestate = GameState_t::GS_DEMOSCREEN;
 			pagename = "TITLE";
 			break;
 		case 2:
@@ -1051,7 +1048,7 @@ void H2_DoAdvanceDemo()
 			break;
 		case 3:
 			pagetic = 200;
-			gamestate = GS_DEMOSCREEN;
+			gamestate = GameState_t::GS_DEMOSCREEN;
 			pagename = "CREDIT";
 			break;
 		case 4:
@@ -1061,7 +1058,7 @@ void H2_DoAdvanceDemo()
 			break;
 		case 5:
 			pagetic = 200;
-			gamestate = GS_DEMOSCREEN;
+			gamestate = GameState_t::GS_DEMOSCREEN;
 			pagename = "CREDIT";
 			break;
 		case 6:

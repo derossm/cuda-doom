@@ -11,8 +11,6 @@
 \**********************************************************************************************************************************************/
 // D_main.c
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "txt_main.h"
 #include "txt_io.h"
@@ -166,7 +164,7 @@ static void CrispyDrawStats ()
 	if (!height || !coord_x)
 	{
 	const int FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
-	const patch_t *const p = W_CacheLumpNum(FontABaseLump + 'A' - 33, PU_CACHE);
+	const patch_t *const p = W_CacheLumpNum(FontABaseLump + 'A' - 33, pu_tags_t::PU_CACHE);
 
 	height = SHORT(p->height) + 1;
 	coord_x = ORIGWIDTH - 7 * SHORT(p->width);
@@ -213,7 +211,7 @@ static void CrispyDrawFps()
 	player_t* const player = &players[consoleplayer];
 
 	const int FontABaseLump = W_GetNumForName(DEH_String("FONTA_S")) + 1;
-	const patch_t* const p = W_CacheLumpNum(FontABaseLump + 'A' - 33, PU_CACHE);
+	const patch_t* const p = W_CacheLumpNum(FontABaseLump + 'A' - 33, pu_tags_t::PU_CACHE);
 
 	height = SHORT(p->height) + 1;
 	coord_x = ORIGWIDTH - 6 * SHORT(p->width);
@@ -245,7 +243,7 @@ void D_Display()
 //
 	switch (gamestate)
 	{
-		case GS_LEVEL:
+		case GameState_t::GS_LEVEL:
 			if (!gametic)
 				break;
 			if (automapactive)
@@ -258,13 +256,13 @@ void D_Display()
 			CrispyDrawStats();
 			CrispyDrawFps();
 			break;
-		case GS_INTERMISSION:
+		case GameState_t::GS_INTERMISSION:
 			IN_Drawer();
 			break;
-		case GS_FINALE:
+		case GameState_t::GS_FINALE:
 			F_Drawer();
 			break;
-		case GS_DEMOSCREEN:
+		case GameState_t::GS_DEMOSCREEN:
 			D_PageDrawer();
 			break;
 	}
@@ -283,7 +281,7 @@ void D_Display()
 		}
 		else
 		{
-			V_DrawPatch(160, 70, W_CacheLumpName(DEH_String("PAUSED"), PU_CACHE));
+			V_DrawPatch(160, 70, W_CacheLumpName(DEH_String("PAUSED"), pu_tags_t::PU_CACHE));
 		}
 	}
 	// Handle player messages
@@ -317,7 +315,7 @@ bool D_GrabMouseCallback()
 
 	// only grab mouse when playing levels (but not demos)
 
-	return (gamestate == GS_LEVEL) && !demoplayback && !advancedemo;
+	return (gamestate == GameState_t::GS_LEVEL) && !demoplayback && !advancedemo;
 }
 
 //---------------------------------------------------------------------------
@@ -404,10 +402,10 @@ void D_PageTicker()
 
 void D_PageDrawer()
 {
-	V_DrawRawScreen(W_CacheLumpName(pagename, PU_CACHE));
+	V_DrawRawScreen(W_CacheLumpName(pagename, pu_tags_t::PU_CACHE));
 	if (demosequence == 1)
 	{
-		V_DrawPatch(4, 160, W_CacheLumpName(DEH_String("ADVISOR"), PU_CACHE));
+		V_DrawPatch(4, 160, W_CacheLumpName(DEH_String("ADVISOR"), pu_tags_t::PU_CACHE));
 	}
 	UpdateState |= I_FULLSCRN;
 }
@@ -438,13 +436,13 @@ void D_DoAdvanceDemo()
 	{
 		case 0:
 			pagetic = 210;
-			gamestate = GS_DEMOSCREEN;
+			gamestate = GameState_t::GS_DEMOSCREEN;
 			pagename = DEH_String("TITLE");
 			S_StartSong(mus_titl, false);
 			break;
 		case 1:
 			pagetic = 140;
-			gamestate = GS_DEMOSCREEN;
+			gamestate = GameState_t::GS_DEMOSCREEN;
 			pagename = DEH_String("TITLE");
 			break;
 		case 2:
@@ -454,7 +452,7 @@ void D_DoAdvanceDemo()
 			break;
 		case 3:
 			pagetic = 200;
-			gamestate = GS_DEMOSCREEN;
+			gamestate = GameState_t::GS_DEMOSCREEN;
 			pagename = DEH_String("CREDIT");
 			break;
 		case 4:
@@ -464,7 +462,7 @@ void D_DoAdvanceDemo()
 			break;
 		case 5:
 			pagetic = 200;
-			gamestate = GS_DEMOSCREEN;
+			gamestate = GameState_t::GS_DEMOSCREEN;
 			if (gamemode == shareware)
 			{
 				pagename = DEH_String("ORDER");
@@ -689,7 +687,7 @@ void initStartup()
 
 	// Blit main screen
 	textScreen = TXT_GetScreenData();
-	loading = W_CacheLumpName(DEH_String("LOADING"), PU_CACHE);
+	loading = W_CacheLumpName(DEH_String("LOADING"), pu_tags_t::PU_CACHE);
 	memcpy(textScreen, loading, 4000);
 
 	// Print version string
@@ -826,7 +824,7 @@ static void D_Endoom()
 		return;
 	}
 
-	endoom_data = W_CacheLumpName(DEH_String("ENDTEXT"), PU_STATIC);
+	endoom_data = W_CacheLumpName(DEH_String("ENDTEXT"), pu_tags_t::PU_STATIC);
 
 	I_Endoom(endoom_data);
 }
@@ -884,7 +882,7 @@ void D_DoomMain()
 	noartiskip = M_ParmExists("-noartiskip");
 
 	debugmode = M_ParmExists("-debug");
-	startskill = sk_medium;
+	startskill = skill_t::sk_medium;
 	startepisode = 1;
 	startmap = 1;
 	autostart = false;

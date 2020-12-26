@@ -13,8 +13,6 @@
 	[crispy] Archiving: Extended SaveGame I/O.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "config.h"
 #include "doomstat.h"
@@ -150,7 +148,7 @@ static void P_ReadFireFlicker (const char *key)
 	{
 		fireflicker_t *flick;
 
-		flick = Z_Malloc(sizeof(*flick), PU_LEVEL, NULL);
+		flick = Z_Malloc<decltype(*flick)>(sizeof(*flick), pu_tags_t::PU_LEVEL, NULL);
 
 		flick->sector = &sectors[sector];
 		flick->count = count;

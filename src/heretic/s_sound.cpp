@@ -10,7 +10,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
 
 #include "doomdef.h"
 #include "i_system.h"
@@ -96,7 +95,7 @@ void S_StartSong(int song, bool loop)
 	{
 		mus_lumpnum = (W_GetNumForName(S_music[song][0].name));
 	}
-	mus_sndptr = W_CacheLumpNum(mus_lumpnum, PU_MUSIC);
+	mus_sndptr = W_CacheLumpNum(mus_lumpnum, pu_tags_t::PU_MUSIC);
 	mus_len = W_LumpLength(mus_lumpnum);
 	rs = I_RegisterSong(mus_sndptr, mus_len);
 	I_PlaySong(rs, loop);		//'true' denotes endless looping.
@@ -495,7 +494,7 @@ void S_UpdateSounds(mobj_t * listener)
 				dist = 0;
 
 // calculate the volume based upon the distance from the sound origin.
-//			vol = (*((byte *)W_CacheLumpName("SNDCURVE", PU_CACHE)+dist)*(snd_MaxVolume*8))>>7;
+//			vol = (*((byte *)W_CacheLumpName("SNDCURVE", pu_tags_t::PU_CACHE)+dist)*(snd_MaxVolume*8))>>7;
 			vol = soundCurve[dist];
 
 			angle = R_PointToAngle2(listener->x, listener->y,
@@ -518,7 +517,7 @@ void S_UpdateSounds(mobj_t * listener)
 void S_Init()
 {
 	I_SetOPLDriverVer(opl_doom2_1_666);
-	soundCurve = Z_Malloc(MAX_SND_DIST, PU_STATIC, NULL);
+	soundCurve = Z_Malloc<decltype(soundCurve)>(MAX_SND_DIST, pu_tags_t::PU_STATIC, NULL);
 	if (snd_Channels > 8)
 	{
 		snd_Channels = 8;
@@ -572,7 +571,7 @@ void S_SetMaxVolume(bool fullprocess)
 	if (!fullprocess)
 	{
 		soundCurve[0] =
-			(*((byte *) W_CacheLumpName("SNDCURVE", PU_CACHE)) *
+			(*((byte *) W_CacheLumpName("SNDCURVE", pu_tags_t::PU_CACHE)) *
 				(snd_MaxVolume * 8)) >> 7;
 	}
 	else
@@ -580,7 +579,7 @@ void S_SetMaxVolume(bool fullprocess)
 		for (i = 0; i < MAX_SND_DIST; i++)
 		{
 			soundCurve[i] =
-				(*((byte *) W_CacheLumpName("SNDCURVE", PU_CACHE) + i) *
+				(*((byte *) W_CacheLumpName("SNDCURVE", pu_tags_t::PU_CACHE) + i) *
 					(snd_MaxVolume * 8)) >> 7;
 		}
 	}

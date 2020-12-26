@@ -7,14 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Dehacked I/O code (does all reads from dehacked files)
+	DESCRIPTION:
+		Dehacked I/O code (does all reads from dehacked files)
 \**********************************************************************************************************************************************/
-
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 
 #include "m_misc.h"
 #include "w_wad.h"
@@ -23,18 +18,16 @@
 #include "deh_defs.h"
 #include "deh_io.h"
 
-#include<memory>
-
 auto DEH_NewContext()
 {
 	auto context{std::make_unique<deh_context_t>()};
 
-	//context = Z_Malloc(sizeof(*context), PU_STATIC, NULL);
+	//context = Z_Malloc<decltype(*context)>(sizeof(*context), pu_tags_t::PU_STATIC, NULL);
 
 	// Initial read buffer size of 128 bytes
 
 	context->readbuffer_size = 128;
-	//context->readbuffer = Z_Malloc(context->readbuffer_size, PU_STATIC, NULL);
+	//context->readbuffer = Z_Malloc<decltype(context->readbuffer)>(context->readbuffer_size, pu_tags_t::PU_STATIC, NULL);
 	context->readbuffer = std::make_unique<char*>(context->readbuffer_size);
 	context->linenum = 0;
 	context->last_was_newline = true;
@@ -47,7 +40,6 @@ auto DEH_NewContext()
 
 // Open a dehacked file for reading
 // Returns NULL if open failed
-
 auto DEH_OpenFile(const char* filename)
 {
 	auto fstream{fopen(filename, "r")};
@@ -67,13 +59,12 @@ auto DEH_OpenFile(const char* filename)
 }
 
 // Open a WAD lump for reading.
-
 deh_context_t *DEH_OpenLump(int lumpnum)
 {
 	deh_context_t *context;
 	void *lump;
 
-	lump = W_CacheLumpNum(lumpnum, PU_STATIC);
+	lump = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 
 	context = DEH_NewContext();
 
@@ -90,7 +81,6 @@ deh_context_t *DEH_OpenLump(int lumpnum)
 }
 
 // Close dehacked file
-
 void DEH_CloseFile(deh_context_t* context)
 {
 	if (context->type == DEH_INPUT_FILE)
@@ -135,14 +125,12 @@ int DEH_GetCharLump(deh_context_t *context)
 }
 
 // Reads a single character from a dehacked file
-
 int DEH_GetChar(deh_context_t *context)
 {
 	int result = 0;
 
 	// Read characters, but ignore carriage returns
 	// Essentially this is a DOS->Unix conversion
-
 	do
 	{
 		switch (context->type)
@@ -158,7 +146,6 @@ int DEH_GetChar(deh_context_t *context)
 	} while (result == '\r');
 
 	// Track the current line number
-
 	if (context->last_was_newline)
 	{
 		++context->linenum;
@@ -170,14 +157,13 @@ int DEH_GetChar(deh_context_t *context)
 }
 
 // Increase the read buffer size
-
 static void IncreaseReadBuffer(deh_context_t *context)
 {
 	char *newbuffer;
 	int newbuffer_size;
 
 	newbuffer_size = context->readbuffer_size * 2;
-	newbuffer = Z_Malloc(newbuffer_size, PU_STATIC, NULL);
+	newbuffer = Z_Malloc<decltype(newbuffer)>(newbuffer_size, pu_tags_t::PU_STATIC, NULL);
 
 	memcpy(newbuffer, context->readbuffer, context->readbuffer_size);
 

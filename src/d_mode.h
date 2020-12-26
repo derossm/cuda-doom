@@ -9,15 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Functions and definitions relating to the game type and operational
-//	mode.
+		Functions and definitions relating to the game type and operational mode.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __D_MODE__
-#define __D_MODE__
 
 #include "doomtype.h"
 
@@ -98,5 +94,3 @@ int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode);
 bool D_IsEpisodeMap(GameMission_t mission);
 char* D_GameMissionString(GameMission_t mission);
 char* D_GameModeString(GameMode_t mode);
-
-#endif /* #ifndef __D_MODE__ */

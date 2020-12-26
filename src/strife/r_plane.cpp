@@ -15,8 +15,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "i_system.h"
 #include "z_zone.h"
@@ -388,7 +386,7 @@ void R_DrawPlanes()
 
 	// regular flat
 		lumpnum = firstflat + flattranslation[pl->picnum];
-	ds_source = W_CacheLumpNum(lumpnum, PU_STATIC);
+	ds_source = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 
 	planeheight = abs(pl->height-viewz);
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;

@@ -51,7 +51,7 @@ typedef enum
 	// Ready to restart/respawn???
 	PST_REBORN
 
-} playerstate_t;
+} PlayerState_t;
 
 
 //
@@ -94,7 +94,7 @@ typedef struct inventory_s
 typedef struct player_s
 {
 	mobj_t*		mo;
-	playerstate_t	playerstate;
+	PlayerState_t	playerstate;
 	ticcmd_t		cmd;
 
 	// Determine POV,
@@ -141,10 +141,10 @@ typedef struct player_s
 
 	// Frags, kills of other players.
 	int			frags[MAXPLAYERS];
-	weapontype_t	readyweapon;
+	WeaponType_t	readyweapon;
 
 	// Is wp_nochange if not changing.
-	weapontype_t	pendingweapon;
+	WeaponType_t	pendingweapon;
 
 	bool		weaponowned[NUMWEAPONS];
 	int			ammo[NUMAMMO];

@@ -15,8 +15,6 @@
 
 
 
-#include <stdio.h>
-#include <stdlib.h>
 
 
 #include "deh_main.h"
@@ -219,7 +217,7 @@ void R_InitSpriteDefs(const char **namelist)
 	if (!numsprites)
 	return;
 
-	sprites = Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
+	sprites = Z_Malloc<decltype(sprites)>(numsprites *sizeof(*sprites), pu_tags_t::PU_STATIC, NULL);
 
 	start = firstspritelump-1;
 	end = lastspritelump+1;
@@ -307,7 +305,7 @@ void R_InitSpriteDefs(const char **namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes =
-		Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+		Z_Malloc(maxframe * sizeof(spriteframe_t), pu_tags_t::PU_STATIC, NULL);
 	memcpy(sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
 	}
 
@@ -473,7 +471,7 @@ R_DrawVisSprite
 	patch_t*		patch;
 
 
-	patch = W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+	patch = W_CacheLumpNum (vis->patch+firstspritelump, pu_tags_t::PU_CACHE);
 
 	// [crispy] brightmaps for select sprites
 	dc_colormap[0] = vis->colormap[0];
@@ -843,7 +841,7 @@ byte *R_LaserspotColor ()
 
 		// [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
 		if (viewplayer->cheats & CF_GODMODE ||
-			viewplayer->powers[pw_invulnerability])
+			viewplayer->powers[PowerType_t::pw_invulnerability])
 			return cr[CR_GRAY];
 		else if (health < 25)
 			return cr[CR_RED];
@@ -875,7 +873,7 @@ static void R_DrawLSprite ()
 	if (lump != laserpatch[crispy->crosshairtype].l)
 	{
 	lump = laserpatch[crispy->crosshairtype].l;
-	patch = W_CacheLumpNum(lump, PU_STATIC);
+	patch = W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
 	}
 
 	P_LineLaser(viewplayer->mo, viewangle,
@@ -1046,8 +1044,8 @@ void R_DrawPSprite (pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate 
 
 	vis->patch = lump;
 
-	if (viewplayer->powers[pw_invisibility] > 4*32
-	|| viewplayer->powers[pw_invisibility] & 8)
+	if (viewplayer->powers[PowerType_t::pw_invisibility] > 4*32
+	|| viewplayer->powers[PowerType_t::pw_invisibility] & 8)
 	{
 	// shadow draw
 	vis->colormap[0] = vis->colormap[1] = NULL;

@@ -10,7 +10,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include <ctype.h>
 
 #include "doomdef.h"
 #include "deh_str.h"
@@ -38,7 +37,7 @@ extern void D_StartTitle();
 void F_StartFinale()
 {
 	gameaction = ga_nothing;
-	gamestate = GS_FINALE;
+	gamestate = GameState_t::GS_FINALE;
 	viewactive = false;
 	automapactive = false;
 	players[consoleplayer].messageTics = 1;
@@ -109,7 +108,7 @@ void F_Ticker()
 void F_TextWrite()
 {
 	// erase the entire screen to a tiled background
-	byte* src{W_CacheLumpName(finaleflat, PU_CACHE)};
+	byte* src{W_CacheLumpName(finaleflat, pu_tags_t::PU_CACHE)};
 	auto dest{I_VideoBuffer};
 	for (size_t y{0}; y < SCREENHEIGHT; ++y)
 	{
@@ -156,7 +155,7 @@ void F_TextWrite()
 				continue;
 			}
 
-			patch_t* w = W_CacheLumpNum(FontABaseLump + c - 33, PU_CACHE);
+			patch_t* w = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
 
 			if (cx + SHORT(w->width) > SCREENWIDTH)
 			{
@@ -206,8 +205,8 @@ void F_DemonScroll()
 	{
 		return;
 	}
-	p1 = W_CacheLumpName(DEH_String("FINAL1"), PU_LEVEL);
-	p2 = W_CacheLumpName(DEH_String("FINAL2"), PU_LEVEL);
+	p1 = W_CacheLumpName(DEH_String("FINAL1"), pu_tags_t::PU_LEVEL);
+	p2 = W_CacheLumpName(DEH_String("FINAL2"), pu_tags_t::PU_LEVEL);
 	if (finalecount < 70)
 	{
 		V_CopyScaledBuffer(I_VideoBuffer, p1, ORIGHEIGHT * ORIGWIDTH);
@@ -247,10 +246,10 @@ void F_DrawUnderwater()
 				underwawa = true;
 				V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
 				lumpname = DEH_String("E2PAL");
-				palette = W_CacheLumpName(lumpname, PU_STATIC);
+				palette = W_CacheLumpName(lumpname, pu_tags_t::PU_STATIC);
 				I_SetPalette(palette);
 				W_ReleaseLumpName(lumpname);
-				V_DrawRawScreen(W_CacheLumpName(DEH_String("E2END"), PU_CACHE));
+				V_DrawRawScreen(W_CacheLumpName(DEH_String("E2END"), pu_tags_t::PU_CACHE));
 			}
 			paused = false;
 			MenuActive = false;
@@ -261,12 +260,12 @@ void F_DrawUnderwater()
 			if (underwawa)
 			{
 				lumpname = DEH_String("PLAYPAL");
-				palette = W_CacheLumpName(lumpname, PU_STATIC);
+				palette = W_CacheLumpName(lumpname, pu_tags_t::PU_STATIC);
 				I_SetPalette(palette);
 				W_ReleaseLumpName(lumpname);
 				underwawa = false;
 			}
-			V_DrawRawScreen(W_CacheLumpName(DEH_String("TITLE"), PU_CACHE));
+			V_DrawRawScreen(W_CacheLumpName(DEH_String("TITLE"), pu_tags_t::PU_CACHE));
 			//D_StartTitle(); // go to intro/demo mode.
 	}
 }
@@ -281,8 +280,8 @@ void F_BunnyScroll()
 	int stage;
 	static int laststage;
 
-	p1 = W_CacheLumpName("PFUB2", PU_LEVEL);
-	p2 = W_CacheLumpName("PFUB1", PU_LEVEL);
+	p1 = W_CacheLumpName("PFUB2", pu_tags_t::PU_LEVEL);
+	p2 = W_CacheLumpName("PFUB1", pu_tags_t::PU_LEVEL);
 
 	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
@@ -305,7 +304,7 @@ void F_BunnyScroll()
 	if (finalecount < 1180)
 	{
 		V_DrawPatch((SCREENWIDTH - 13 * 8) / 2, (SCREENHEIGHT - 8 * 8) / 2, 0,
-					W_CacheLumpName("END0", PU_CACHE));
+					W_CacheLumpName("END0", pu_tags_t::PU_CACHE));
 		laststage = 0;
 		return;
 	}
@@ -321,7 +320,7 @@ void F_BunnyScroll()
 
 	M_snprintf(name, sizeof(name), "END%i", stage);
 	V_DrawPatch((SCREENWIDTH - 13 * 8) / 2, (SCREENHEIGHT - 8 * 8) / 2,
-				W_CacheLumpName(name, PU_CACHE));
+				W_CacheLumpName(name, pu_tags_t::PU_CACHE));
 }
 #endif
 
@@ -337,11 +336,11 @@ void F_Drawer()
 			case 1:
 				if (gamemode == shareware)
 				{
-					V_DrawRawScreen(W_CacheLumpName("ORDER", PU_CACHE));
+					V_DrawRawScreen(W_CacheLumpName("ORDER", pu_tags_t::PU_CACHE));
 				}
 				else
 				{
-					V_DrawRawScreen(W_CacheLumpName("CREDIT", PU_CACHE));
+					V_DrawRawScreen(W_CacheLumpName("CREDIT", pu_tags_t::PU_CACHE));
 				}
 				break;
 			case 2:
@@ -352,7 +351,7 @@ void F_Drawer()
 				break;
 			case 4:			// Just show credits screen for extended episodes
 			case 5:
-				V_DrawRawScreen(W_CacheLumpName("CREDIT", PU_CACHE));
+				V_DrawRawScreen(W_CacheLumpName("CREDIT", pu_tags_t::PU_CACHE));
 				break;
 		}
 	}

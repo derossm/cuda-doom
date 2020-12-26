@@ -14,34 +14,18 @@
 #include "config.h"
 
 // OpenBSD/NetBSD:
-
-#ifdef HAVE_DEV_ISA_SPKRIO_H
-#define HAVE_BSD_SPEAKER
-#include <dev/isa/spkrio.h>
-#endif
+//#ifdef HAVE_DEV_ISA_SPKRIO_H
+//	#define HAVE_BSD_SPEAKER
+//	#include <dev/isa/spkrio.h>
+//#endif
 
 // FreeBSD
-
-#ifdef HAVE_DEV_SPEAKER_SPEAKER_H
-#define HAVE_BSD_SPEAKER
-#include <dev/speaker/speaker.h>
-#endif
+//#ifdef HAVE_DEV_SPEAKER_SPEAKER_H
+//	#define HAVE_BSD_SPEAKER
+//	#include <dev/speaker/speaker.h>
+//#endif
 
 #ifdef HAVE_BSD_SPEAKER
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <signal.h>
-#include <sys/ioctl.h>
-#include <sys/signal.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <fcntl.h>
-
 #include "SDL.h"
 #include "SDL_thread.h"
 
@@ -50,7 +34,6 @@
 
 #define SPEAKER_DEVICE "/dev/speaker"
 
-//
 // This driver is far more complicated than it should be, because
 // OpenBSD has sucky support for threads. Because multithreading
 // is done in userspace, invoking the ioctl to make the speaker

@@ -12,7 +12,6 @@
 	Mission begin melt/wipe screen special effect.
 \**********************************************************************************************************************************************/
 
-#include <string.h>
 
 #include "z_zone.h"
 #include "i_video.h"
@@ -48,7 +47,7 @@ wipe_shittyColMajorXform
 	int		y;
 	short*	dest;
 
-	dest = (short*) Z_Malloc(width*height*2, PU_STATIC, 0);
+	dest = (short*) Z_Malloc(width*height*2, pu_tags_t::PU_STATIC, 0);
 
 	for(y=0;y<height;y++)
 	for(x=0;x<width;x++)
@@ -135,7 +134,7 @@ wipe_initMelt
 
 	// setup initial column positions
 	// (y<0 => not ready to scroll yet)
-	y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
+	y = (int *) Z_Malloc(width*sizeof(int), pu_tags_t::PU_STATIC, 0);
 	y[0] = -(M_Random()%16);
 	for (i=1;i<width;i++)
 	{
@@ -223,7 +222,7 @@ wipe_StartScreen
  int	width,
  int	height )
 {
-	wipe_scr_start = Z_Malloc(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
+	wipe_scr_start = Z_Malloc<decltype(wipe_scr_start)>(SCREENWIDTH * SCREENHEIGHT, pu_tags_t::PU_STATIC, NULL);
 	I_ReadScreen(wipe_scr_start);
 	return 0;
 }
@@ -236,7 +235,7 @@ wipe_EndScreen
  int	width,
  int	height )
 {
-	wipe_scr_end = Z_Malloc(SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);
+	wipe_scr_end = Z_Malloc<decltype(wipe_scr_end)>(SCREENWIDTH * SCREENHEIGHT, pu_tags_t::PU_STATIC, NULL);
 	I_ReadScreen(wipe_scr_end);
 	V_DrawBlock(x, y, width, height, wipe_scr_start); // restore start scr.
 	return 0;
@@ -266,7 +265,7 @@ wipe_ScreenWipe
 	{
 	go = 1;
 		// haleyjd 20110629 [STRIFE]: We *must* use a temp buffer here.
-	wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, 0); // DEBUG
+	wipe_scr = (byte *) Z_Malloc(width*height, pu_tags_t::PU_STATIC, 0); // DEBUG
 	//wipe_scr = I_VideoBuffer;
 	(*wipes[wipeno*3])(width, height, ticks);
 	}

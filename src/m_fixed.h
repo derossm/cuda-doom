@@ -9,23 +9,20 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Fixed point arithemtics, implementation.
+		Fixed point arithemtics, implementation.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __M_FIXED__
-#define __M_FIXED__
 
 // Fixed point, 32bit as 16.16.
 #define FRACBITS			16
 #define FRACUNIT			(1<<FRACBITS)
 #define FIXED2DOUBLE(x)		(x / (double)FRACUNIT)
 
-typedef int fixed_t;
+//typedef int fixed_t;
+using fixed_t = int;
+// TODO FIX THE DISGUSTING USE OF SHIFTS TO SIMULATE FLOATING POINT AND INSTEAD USE FLOATING POINT; this isn't the 1990's
 
 fixed_t FixedMul(fixed_t a, fixed_t b);
 fixed_t FixedDiv(fixed_t a, fixed_t b);
-
-#endif

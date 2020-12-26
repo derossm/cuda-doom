@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	The not so system specific sound interface.
+		The not so system specific sound interface.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __I_SOUND__
-#define __I_SOUND__
 
 #include "doomtype.h"
 
@@ -62,7 +59,7 @@ struct sfxinfo_t
 };
 
 // MusicInfo struct.
-typedef struct
+struct musicinfo_t
 {
 	// up to 6-character name
 	const char* name;
@@ -76,9 +73,9 @@ typedef struct
 	// music handle once registered
 	void* handle;
 
-} musicinfo_t;
+};
 
-typedef enum
+enum class snddevice_t
 {
 	SNDDEVICE_NONE = 0,
 	SNDDEVICE_PCSPEAKER = 1,
@@ -90,56 +87,44 @@ typedef enum
 	SNDDEVICE_SOUNDCANVAS = 7,
 	SNDDEVICE_GENMIDI = 8,
 	SNDDEVICE_AWE32 = 9,
-	SNDDEVICE_CD = 10,
-} snddevice_t;
+	SNDDEVICE_CD = 10
+} ;
 
 // Interface for sound modules
-typedef struct
+struct sound_module_t
 {
 	// List of sound devices that this sound module is used for.
-
 	snddevice_t* sound_devices;
 	int num_sound_devices;
 
-	// Initialise sound module
-	// Returns true if successfully initialised
-
+	// Initialize sound module. Returns true if successfully initialized.
 	bool (*Init)(bool use_sfx_prefix);
 
 	// Shutdown sound module
-
 	void (*Shutdown)();
 
 	// Returns the lump index of the given sound.
-
 	int (*GetSfxLumpNum)(sfxinfo_t* sfxinfo);
 
 	// Called periodically to update the subsystem.
-
 	void (*Update)();
 
 	// Update the sound settings on the given channel.
-
 	void (*UpdateSoundParams)(int channel, int vol, int sep);
 
-	// Start a sound on a given channel. Returns the channel id
-	// or -1 on failure.
-
+	// Start a sound on a given channel. Returns the channel id or -1 on failure.
 	int (*StartSound)(sfxinfo_t* sfxinfo, int channel, int vol, int sep, int pitch);
 
 	// Stop the sound playing on the given channel.
-
 	void (*StopSound)(int channel);
 
 	// Query if a sound is playing on the given channel
-
 	bool (*SoundIsPlaying)(int channel);
 
 	// Called on startup to precache sound effects (if necessary)
-
 	void (*CacheSounds)(sfxinfo_t* sounds, int num_sounds);
 
-} sound_module_t;
+};
 
 void I_InitSound(bool use_sfx_prefix);
 void I_ShutdownSound();
@@ -152,7 +137,7 @@ bool I_SoundIsPlaying(int channel);
 void I_PrecacheSounds(sfxinfo_t* sounds, int num_sounds);
 
 // Interface for music modules
-typedef struct
+struct music_module_t
 {
 	// List of sound devices that this music module is used for.
 	snddevice_t* sound_devices;
@@ -173,8 +158,7 @@ typedef struct
 	// Un-pause music
 	void (*ResumeMusic)();
 
-	// Register a song handle from data
-	// Returns a handle that can be used to play the song
+	// Register a song handle from data. Returns a handle that can be used to play the song
 	void *(*RegisterSong)(void *data, int len);
 
 	// Un-register (free) song data
@@ -191,7 +175,7 @@ typedef struct
 
 	// Invoked periodically to poll.
 	void (*Poll)();
-} music_module_t;
+};
 
 void I_InitMusic();
 void I_ShutdownMusic();
@@ -215,12 +199,11 @@ extern int snd_pitchshift;
 void I_BindSoundVariables();
 
 // DMX version to emulate for OPL emulation:
-typedef enum {
+enum class opl_driver_ver_t
+{
 	opl_doom1_1_666,	// Doom 1 v1.666
 	opl_doom2_1_666,	// Doom 2 v1.666, Hexen, Heretic
 	opl_doom_1_9		// Doom v1.9, Strife
-} opl_driver_ver_t;
+};
 
 void I_SetOPLDriverVer(opl_driver_ver_t ver);
-
-#endif

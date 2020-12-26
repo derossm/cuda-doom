@@ -15,10 +15,6 @@
 //	and call the startup functions.
 \**********************************************************************************************************************************************/
 
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "config.h"
 #include "deh_main.h"
@@ -197,7 +193,7 @@ void D_ProcessEvents ()
 // * 20100901: Added ST_DrawExternal and popupactivestate static variable
 // * 20110206: Start wipegamestate at GS_UNKNOWN (STRIFE-TODO: rename?)
 //
-gamestate_t		wipegamestate = GS_UNKNOWN;
+GameState_t		wipegamestate = GS_UNKNOWN;
 extern bool setsizeneeded;
 //extern int				showMessages; [STRIFE] no such variable
 void R_ExecuteSetViewSize ();
@@ -209,7 +205,7 @@ void D_Display ()
 	static bool				inhelpscreensstate = false;
 	static bool				popupactivestate = false; // [STRIFE]
 	static bool				fullscreen = false;
-	static gamestate_t			oldgamestate = -1;
+	static GameState_t			oldgamestate = -1;
 	static int					borderdrawcount;
 	int							nowtime;
 	int							tics;
@@ -241,13 +237,13 @@ void D_Display ()
 	else
 		wipe = false;
 
-	if (gamestate == GS_LEVEL && gametic)
+	if (gamestate == GameState_t::GS_LEVEL && gametic)
 		HU_Erase();
 
 	// do buffered drawing
 	switch (gamestate)
 	{
-	case GS_LEVEL:
+	case GameState_t::GS_LEVEL:
 		if (!gametic)
 			break;
 		if (automapactive)
@@ -263,16 +259,16 @@ void D_Display ()
 
 		// haleyjd 08/23/2010: [STRIFE] No intermission
 		/*
-		case GS_INTERMISSION:
+		case GameState_t::GS_INTERMISSION:
 			WI_Drawer ();
 			break;
 		*/
 
-	case GS_FINALE:
+	case GameState_t::GS_FINALE:
 		F_Drawer ();
 		break;
 
-	case GS_DEMOSCREEN:
+	case GameState_t::GS_DEMOSCREEN:
 		D_PageDrawer ();
 		break;
 
@@ -284,22 +280,22 @@ void D_Display ()
 	I_UpdateNoBlit ();
 
 	// draw the view directly
-	if (gamestate == GS_LEVEL && !automapactive && gametic)
+	if (gamestate == GameState_t::GS_LEVEL && !automapactive && gametic)
 		R_RenderPlayerView (&players[displayplayer]);
 
 	// clean up border stuff
-	if (gamestate != oldgamestate && gamestate != GS_LEVEL)
+	if (gamestate != oldgamestate && gamestate != GameState_t::GS_LEVEL)
 		I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
 
 	// see if the border needs to be initially drawn
-	if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
+	if (gamestate == GameState_t::GS_LEVEL && oldgamestate != GameState_t::GS_LEVEL)
 	{
 		viewactivestate = false;		// view was not active
 		R_FillBackScreen ();	// draw the pattern into the back screen
 	}
 
 	// see if the border needs to be updated to the screen
-	if (gamestate == GS_LEVEL && !automapactive && scaledviewwidth != (320 << crispy->hires))
+	if (gamestate == GameState_t::GS_LEVEL && !automapactive && scaledviewwidth != (320 << crispy->hires))
 	{
 		if (menuactive || menuactivestate || !viewactivestate)
 		{
@@ -327,7 +323,7 @@ void D_Display ()
 	oldgamestate = wipegamestate = gamestate;
 
 	// haleyjd 20120208: [STRIFE] Rogue moved this down to below border drawing
-	if (gamestate == GS_LEVEL && gametic)
+	if (gamestate == GameState_t::GS_LEVEL && gametic)
 	{
 		HU_Drawer ();
 		if(ST_DrawExternal())
@@ -347,7 +343,7 @@ void D_Display ()
 		else
 			y = (viewwindowy >> crispy->hires)+4;
 		V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((scaledviewwidth >> crispy->hires) - 68) / 2, y,
-							W_CacheLumpName (DEH_String("M_PAUSE"), PU_CACHE));
+							W_CacheLumpName (DEH_String("M_PAUSE"), pu_tags_t::PU_CACHE));
 	}
 
 
@@ -496,7 +492,7 @@ bool D_GrabMouseCallback()
 
 	// only grab mouse when playing levels (but not demos)
 
-	return (gamestate == GS_LEVEL) && !demoplayback;
+	return (gamestate == GameState_t::GS_LEVEL) && !demoplayback;
 }
 
 // During startup, never grab the mouse.
@@ -588,7 +584,7 @@ void D_PageTicker ()
 //
 void D_PageDrawer ()
 {
-	V_DrawPatch (0, 0, W_CacheLumpName(pagename, PU_CACHE));
+	V_DrawPatch (0, 0, W_CacheLumpName(pagename, pu_tags_t::PU_CACHE));
 }
 
 
@@ -627,7 +623,7 @@ void D_DoAdvanceDemo ()
 	case -4: // show exit screen
 		menuactive = false;
 		pagetic = 3*TICRATE;
-		gamestate = GS_DEMOSCREEN;
+		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagename = DEH_String("PANEL7");
 		S_StartMusic(mus_fast);
 		if(isdemoversion)
@@ -637,70 +633,70 @@ void D_DoAdvanceDemo ()
 		return;
 	case -3: // show Velocity logo for demo version
 		pagetic = 6*TICRATE;
-		gamestate = GS_DEMOSCREEN;
+		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagename = DEH_String("vellogo");
 		demosequence = -5; // exit
 		return;
 	case -2: // title screen
 		pagetic = 6*TICRATE;
-		gamestate = GS_DEMOSCREEN;
+		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagename = DEH_String("TITLEPIC");
 		S_StartMusic(mus_logo);
 		demosequence = -1; // start intro cinematic
 		return;
 	case -1: // start of intro cinematic
 		pagetic = 10;
-		gamestate = GS_DEMOSCREEN;
+		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagename = DEH_String("PANEL0");
 		S_StartSound(NULL, sfx_rb2act);
 		wipegamestate = -1;
 		break;
 	case 0: // Rogue logo
 		pagetic = 4*TICRATE;
-		gamestate = GS_DEMOSCREEN;
+		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagename = DEH_String("RGELOGO");
 		wipegamestate = -1;
 		break;
 	case 1:
 		pagetic = 7*TICRATE;				// The comet struck our planet without
-		gamestate = GS_DEMOSCREEN;		// warning.We lost our paradise in a
+		gamestate = GameState_t::GS_DEMOSCREEN;		// warning.We lost our paradise in a
 		pagename = DEH_String("PANEL1"); // single, violent stroke.
 		I_StartVoice(DEH_String("pro1"));
 		S_StartMusic(mus_intro);
 		break;
 	case 2:
 		pagetic = 9*TICRATE;				// The impact released a virus which
-		gamestate = GS_DEMOSCREEN;		// swept through the land and killed
+		gamestate = GameState_t::GS_DEMOSCREEN;		// swept through the land and killed
 		pagename = DEH_String("PANEL2"); // millions. They turned out to be
 		I_StartVoice(DEH_String("pro2")); // the lucky ones...
 		break;
 	case 3:
 		pagetic = 12*TICRATE;				// For those that did not die became
-		gamestate = GS_DEMOSCREEN;		// mutations of humanity. Some became
+		gamestate = GameState_t::GS_DEMOSCREEN;		// mutations of humanity. Some became
 		pagename = DEH_String("PANEL3"); // fanatics who heard the voice of a
 		I_StartVoice(DEH_String("pro3")); // malignant God in their heads, and
 		break;							// called themselves the Order.
 	case 4:
 		pagetic = 11*TICRATE;				// Those of us who were deaf to this
 		pagename = DEH_String("PANEL4"); // voice suffer horribly and are
-		gamestate = GS_DEMOSCREEN;		// forced to serve these ruthless
+		gamestate = GameState_t::GS_DEMOSCREEN;		// forced to serve these ruthless
 		I_StartVoice(DEH_String("pro4")); // psychotics, who wield weapons more
 		break;							// powerful than anything we can muster.
 	case 5:
 		pagetic = 10*TICRATE;				// They destroy our women and children,
-		gamestate = GS_DEMOSCREEN;		// so that we must hide them underground,
+		gamestate = GameState_t::GS_DEMOSCREEN;		// so that we must hide them underground,
 		pagename = DEH_String("PANEL5"); // and live like animals in constant
 		I_StartVoice(DEH_String("pro5")); // fear for our lives.
 		break;
 	case 6:								// But there are whispers of discontent.
 		pagetic = 16*TICRATE;				// If we organize, can we defeat our
-		gamestate = GS_DEMOSCREEN;		// masters? Weapons are being stolen,
+		gamestate = GameState_t::GS_DEMOSCREEN;		// masters? Weapons are being stolen,
 		pagename = DEH_String("PANEL6"); // soldiers are being trained. A
 		I_StartVoice(DEH_String("pro6")); // Movement is born! Born of lifelong
 		break;							// STRIFE!
 	case 7: // titlepic again - unused...
 		pagetic = 9*TICRATE;
-		gamestate = GS_DEMOSCREEN;
+		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagename = DEH_String("TITLEPIC");
 		wipegamestate = -1;
 		break;
@@ -711,12 +707,12 @@ void D_DoAdvanceDemo ()
 		break;
 	case 9: // velocity logo? - unused...
 		pagetic = 6*TICRATE;
-		gamestate = GS_DEMOSCREEN;
+		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagename = DEH_String("vellogo");
 		wipegamestate = -1;
 		break;
 	case 10: // credits
-		gamestate = GS_DEMOSCREEN;
+		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagetic = 12*TICRATE;
 		pagename = DEH_String("CREDIT");
 		wipegamestate = -1;
@@ -743,7 +739,7 @@ void D_DoAdvanceDemo ()
 //
 void D_StartTitle ()
 {
-	gamestate = GS_DEMOSCREEN;
+	gamestate = GameState_t::GS_DEMOSCREEN;
 	gameaction = ga_nothing;
 	demosequence = -2;
 	D_AdvanceDemo ();
@@ -803,7 +799,7 @@ static char *GetGameName(char *gamename)
 			// We also need to cut off spaces to get the basic name
 
 			gamename_size = strlen(deh_sub) + 10;
-			gamename = Z_Malloc(gamename_size, PU_STATIC, 0);
+			gamename = Z_Malloc<decltype(gamename)>(gamename_size, pu_tags_t::PU_STATIC, 0);
 			M_snprintf(gamename, gamename_size, deh_sub,
 						STRIFE_VERSION / 100, STRIFE_VERSION % 100);
 
@@ -856,7 +852,7 @@ void D_IdentifyVersion()
 		{
 			const char *iwad = myargv[p + 1];
 			size_t len		= strlen(iwad) + 1;
-			char	*iwadpath = Z_Malloc(len, PU_STATIC, NULL);
+			char	*iwadpath = Z_Malloc<decltype(char	*iwadpath)>(len, pu_tags_t::PU_STATIC, NULL);
 			char	*voiceswad;
 
 			// extract base path of IWAD parameter
@@ -907,7 +903,7 @@ void DoTimeBomb()
 	int serial_year;
 	int serial_month;
 
-	serial = W_CacheLumpName("serial", PU_CACHE);
+	serial = W_CacheLumpName("serial", pu_tags_t::PU_CACHE);
 	serialnum = atoi(serial);
 
 	// Rogue, much like Governor Mourel, were lousy liars. These deceptive
@@ -1106,7 +1102,7 @@ static void D_Endoom()
 	}
 
 	// haleyjd 08/27/10: [STRIFE] ENDOOM -> ENDSTRF
-	endoom = W_CacheLumpName(DEH_String("ENDSTRF"), PU_STATIC);
+	endoom = W_CacheLumpName(DEH_String("ENDSTRF"), pu_tags_t::PU_STATIC);
 
 	I_Endoom(endoom);
 }
@@ -1296,14 +1292,14 @@ static void D_InitIntroSequence()
 		V_RestoreBuffer(); // make the V_ routines work
 
 		// Load all graphics
-		rawgfx_startup0	= W_CacheLumpName("STARTUP0", PU_STATIC);
-		rawgfx_startp[0] = W_CacheLumpName("STRTPA1", PU_STATIC);
-		rawgfx_startp[1] = W_CacheLumpName("STRTPB1", PU_STATIC);
-		rawgfx_startp[2] = W_CacheLumpName("STRTPC1", PU_STATIC);
-		rawgfx_startp[3] = W_CacheLumpName("STRTPD1", PU_STATIC);
-		rawgfx_startlz[0] = W_CacheLumpName("STRTLZ1", PU_STATIC);
-		rawgfx_startlz[1] = W_CacheLumpName("STRTLZ2", PU_STATIC);
-		rawgfx_startbot	= W_CacheLumpName("STRTBOT", PU_STATIC);
+		rawgfx_startup0	= W_CacheLumpName("STARTUP0", pu_tags_t::PU_STATIC);
+		rawgfx_startp[0] = W_CacheLumpName("STRTPA1", pu_tags_t::PU_STATIC);
+		rawgfx_startp[1] = W_CacheLumpName("STRTPB1", pu_tags_t::PU_STATIC);
+		rawgfx_startp[2] = W_CacheLumpName("STRTPC1", pu_tags_t::PU_STATIC);
+		rawgfx_startp[3] = W_CacheLumpName("STRTPD1", pu_tags_t::PU_STATIC);
+		rawgfx_startlz[0] = W_CacheLumpName("STRTLZ1", pu_tags_t::PU_STATIC);
+		rawgfx_startlz[1] = W_CacheLumpName("STRTLZ2", pu_tags_t::PU_STATIC);
+		rawgfx_startbot	= W_CacheLumpName("STRTBOT", pu_tags_t::PU_STATIC);
 
 		// Draw the background
 		D_IntroBackground();
@@ -1769,7 +1765,7 @@ void D_DoomMain ()
 	if(devparm)
 	{
 		char msgbuf[80];
-		char *serial = W_CacheLumpName("SERIAL", PU_CACHE);
+		char *serial = W_CacheLumpName("SERIAL", pu_tags_t::PU_CACHE);
 		int serialnum = atoi(serial);
 
 		DEH_snprintf(msgbuf, sizeof(msgbuf), "Wad Serial Number: %d:", serialnum);
@@ -1909,7 +1905,7 @@ void D_DoomMain ()
 	D_IntroTick(); // [STRIFE]
 
 	// get skill / episode / map from parms
-	startskill = sk_easy; // [STRIFE]: inits to sk_easy
+	startskill = skill_t::sk_easy; // [STRIFE]: inits to skill_t::sk_easy
 	startepisode = 1;
 	startmap = 1;
 	autostart = false;

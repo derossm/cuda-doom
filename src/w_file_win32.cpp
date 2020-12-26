@@ -14,13 +14,6 @@
 
 #include "config.h"
 
-#ifdef _WIN32
-
-#include <stdio.h>
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
 #include "i_system.h"
 #include "m_misc.h"
 #include "w_file.h"
@@ -109,7 +102,7 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
 
 	// Create a new win32_wad_file_t to hold the file handle.
 
-	result = Z_Malloc(sizeof(win32_wad_file_t), PU_STATIC, 0);
+	result = Z_Malloc<win>(sizeof(win32_wad_file_t), pu_tags_t::PU_STATIC, 0);
 	result->wad.file_class = &win32_wad_file;
 	result->wad.length = GetFileLength(handle);
 	result->wad.path = M_StringDuplicate(path);

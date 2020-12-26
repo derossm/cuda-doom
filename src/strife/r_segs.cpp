@@ -12,8 +12,6 @@
 	All the clipping: columns, horizontal spans, sky columns.
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "i_system.h"
 

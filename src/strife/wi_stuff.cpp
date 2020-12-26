@@ -14,7 +14,6 @@
 
 // haleyjd 08/23/2010: There is no intermission in Strife
 #if 0
-#include <stdio.h>
 
 #include "z_zone.h"
 
@@ -1705,7 +1704,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 
 static void WI_loadCallback(char *name, patch_t **variable)
 {
-	*variable = W_CacheLumpName(name, PU_STATIC);
+	*variable = W_CacheLumpName(name, pu_tags_t::PU_STATIC);
 }
 
 void WI_loadData()
@@ -1713,12 +1712,12 @@ void WI_loadData()
 	if (gamemode == commercial)
 	{
 	NUMCMAPS = 32;
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
+	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * NUMCMAPS,
 						PU_STATIC, NULL);
 	}
 	else
 	{
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMMAPS,
+	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * NUMMAPS,
 						PU_STATIC, NULL);
 	}
 
@@ -1728,10 +1727,10 @@ void WI_loadData()
 	// them with the status bar code
 
 	// your face
-	star = W_CacheLumpName(DEH_String("STFST01"), PU_STATIC);
+	star = W_CacheLumpName(DEH_String("STFST01"), pu_tags_t::PU_STATIC);
 
 	// dead face
-	bstar = W_CacheLumpName(DEH_String("STFDEAD0"), PU_STATIC);
+	bstar = W_CacheLumpName(DEH_String("STFDEAD0"), pu_tags_t::PU_STATIC);
 }
 
 static void WI_unloadCallback(char *name, patch_t **variable)

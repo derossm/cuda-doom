@@ -22,11 +22,6 @@
 
 #ifdef _WIN32
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "SDL.h"
 #include "SDL_mixer.h"
 
@@ -36,24 +31,22 @@
 #include "config.h"
 #include "doomtype.h"
 
-static HANDLE	midi_process_in; // Standard In.
-static HANDLE	midi_process_out; // Standard Out.
+static HANDLE midi_process_in;		// Standard In.
+static HANDLE midi_process_out;		// Standard Out.
 
 // Sound sample rate to use for digital output (Hz)
 static int snd_samplerate = 0;
 
 // Currently playing music track.
-static Mix_Music *music = NULL;
+static Mix_Music* music = nullptr;
 
 //=============================================================================
 //
 // Private functions
 //
 
-//
 // Write an unsigned integer into a simple CHAR buffer.
-//
-static bool WriteInt16(CHAR *out, size_t osize, unsigned int in)
+static bool WriteInt16(CHAR* out, size_t osize, unsigned int in)
 {
 	if (osize < 2)
 	{
@@ -66,9 +59,7 @@ static bool WriteInt16(CHAR *out, size_t osize, unsigned int in)
 	return true;
 }
 
-//
 // Cleanly close our in-use pipes.
-//
 static void FreePipes()
 {
 	if (midi_process_in != NULL)
@@ -98,9 +89,6 @@ static void UnregisterSong()
 	music = NULL;
 }
 
-//
-// Cleanly shut down SDL.
-//
 static void ShutdownSDL()
 {
 	UnregisterSong();
@@ -109,9 +97,7 @@ static void ShutdownSDL()
 }
 
 //=============================================================================
-//
 // SDL_mixer Interface
-//
 
 static bool RegisterSong(const char *filename)
 {
@@ -154,11 +140,9 @@ static void StopSong()
 }
 
 //=============================================================================
-//
 // Pipe Server Interface
-//
 
-static bool MidiPipe_RegisterSong(buffer_reader_t *reader)
+static bool MidiPipe_RegisterSong(buffer_reader_t* reader)
 {
 	char *filename = Reader_ReadString(reader);
 	if (filename == NULL)
@@ -169,13 +153,13 @@ static bool MidiPipe_RegisterSong(buffer_reader_t *reader)
 	return RegisterSong(filename);
 }
 
-static bool MidiPipe_UnregisterSong(buffer_reader_t *reader)
+static bool MidiPipe_UnregisterSong(buffer_reader_t* reader)
 {
 	UnregisterSong();
 	return true;
 }
 
-bool MidiPipe_SetVolume(buffer_reader_t *reader)
+bool MidiPipe_SetVolume(buffer_reader_t* reader)
 {
 	int vol;
 	bool ok = Reader_ReadInt32(reader, (uint32_t*)&vol);
@@ -189,7 +173,7 @@ bool MidiPipe_SetVolume(buffer_reader_t *reader)
 	return true;
 }
 
-bool MidiPipe_PlaySong(buffer_reader_t *reader)
+bool MidiPipe_PlaySong(buffer_reader_t* reader)
 {
 	int loops;
 	bool ok = Reader_ReadInt32(reader, (uint32_t*)&loops);
@@ -216,37 +200,31 @@ bool MidiPipe_Shutdown()
 }
 
 //=============================================================================
-//
 // Server Implementation
-//
 
-//
 // Parses a command and directs to the proper read function.
-//
 bool ParseCommand(buffer_reader_t *reader, uint16_t command)
 {
 	switch (command)
 	{
-	case MIDIPIPE_PACKET_TYPE_REGISTER_SONG:
+	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_REGISTER_SONG:
 		return MidiPipe_RegisterSong(reader);
-	case MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG:
+	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG:
 		return MidiPipe_UnregisterSong(reader);
-	case MIDIPIPE_PACKET_TYPE_SET_VOLUME:
+	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_SET_VOLUME:
 		return MidiPipe_SetVolume(reader);
-	case MIDIPIPE_PACKET_TYPE_PLAY_SONG:
+	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_PLAY_SONG:
 		return MidiPipe_PlaySong(reader);
-	case MIDIPIPE_PACKET_TYPE_STOP_SONG:
+	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_STOP_SONG:
 		return MidiPipe_StopSong();
-	case MIDIPIPE_PACKET_TYPE_SHUTDOWN:
+	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_SHUTDOWN:
 		return MidiPipe_Shutdown();
 	default:
 		return false;
 	}
 }
 
-//
 // Server packet parser
-//
 bool ParseMessage(buffer_t *buf)
 {
 	CHAR buffer[2];
@@ -267,36 +245,31 @@ bool ParseMessage(buffer_t *buf)
 		goto fail;
 	}
 
-	// We parsed a complete message! We can now safely shift
-	// the prior message off the front of the buffer.
+	// We parsed a complete message! We can now safely shift the prior message off the front of the buffer.
 	bytes_read = Reader_BytesRead(reader);
 	DeleteReader(reader);
 	Buffer_Shift(buf, bytes_read);
 
 	// Send acknowledgement back that the command has completed.
-	if (!WriteInt16(buffer, sizeof(buffer), MIDIPIPE_PACKET_TYPE_ACK))
+	if (!WriteInt16(buffer, sizeof(buffer), net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_ACK))
 	{
 		goto fail;
 	}
 
-	WriteFile(midi_process_out, buffer, sizeof(buffer),
-				&bytes_written, NULL);
+	WriteFile(midi_process_out, buffer, sizeof(buffer), &bytes_written, NULL);
 
 	return true;
 
 fail:
-	// We did not read a complete packet. Delete our reader and try again
-	// with more data.
+	// We did not read a complete packet. Delete our reader and try again with more data.
 	DeleteReader(reader);
 	return false;
 }
 
-//
 // The main pipe "listening" loop
-//
 bool ListenForever()
 {
-	BOOL wok = FALSE;
+	bool wok{false};
 	CHAR pipe_buffer[8192];
 	DWORD pipe_buffer_read = 0;
 
@@ -306,8 +279,7 @@ bool ListenForever()
 	for (;;)
 	{
 		// Wait until we see some data on the pipe.
-		wok = PeekNamedPipe(midi_process_in, NULL, 0, NULL,
-							&pipe_buffer_read, NULL);
+		wok = PeekNamedPipe(midi_process_in, NULL, 0, NULL, &pipe_buffer_read, NULL);
 		if (!wok)
 		{
 			break;
@@ -319,8 +291,7 @@ bool ListenForever()
 		}
 
 		// Read data off the pipe and add it to the buffer.
-		wok = ReadFile(midi_process_in, pipe_buffer, sizeof(pipe_buffer),
-						&pipe_buffer_read, NULL);
+		wok = ReadFile(midi_process_in, pipe_buffer, sizeof(pipe_buffer), &pipe_buffer_read, NULL);
 		if (!wok)
 		{
 			break;
@@ -394,10 +365,8 @@ int main(int argc, char *argv[])
 	// Make sure we're not launching this process by itself.
 	if (argc < 5)
 	{
-		MessageBox(NULL, TEXT("This program is tasked with playing Native ")
-					TEXT("MIDI music, and is intended to be launched by ")
-					TEXT(PACKAGE_NAME) TEXT("."),
-					TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
+		MessageBox(NULL, TEXT("This program is tasked with playing Native MIDI music, and is intended to be launched by ")
+						TEXT(PACKAGE_NAME) TEXT("."), TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
 
 		return EXIT_FAILURE;
 	}
@@ -407,35 +376,30 @@ int main(int argc, char *argv[])
 	{
 		char message[1024];
 		_snprintf(message, sizeof(message),
-					"It appears that the version of %s and %smidiproc are out "
-					"of sync. Please reinstall %s.\r\n\r\n"
-					"Server Version: %s\r\nClient Version: %s",
-					PACKAGE_NAME, PROGRAM_PREFIX, PACKAGE_NAME,
-					PACKAGE_STRING, argv[1]);
+			"It appears that the version of %s and %smidiproc are out of sync. Please reinstall %s.\n\nServer Version: %s\nClient Version: %s",
+			PACKAGE_NAME, PROGRAM_PREFIX, PACKAGE_NAME, PACKAGE_STRING, argv[1]);
 		message[sizeof(message) - 1] = '\0';
 
-		MessageBox(NULL, TEXT(message),
-					TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
+		MessageBox(NULL, TEXT(message), TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
 
 		return EXIT_FAILURE;
 	}
 
 	// Parse out the sample rate - if we can't, default to 44100.
 	snd_samplerate = strtol(argv[2], NULL, 10);
-	if (snd_samplerate == LONG_MAX || snd_samplerate == LONG_MIN ||
-		snd_samplerate == 0)
+	if (snd_samplerate == LONG_MAX || snd_samplerate == LONG_MIN || snd_samplerate == 0)
 	{
 		snd_samplerate = 44100;
 	}
 
 	// Parse out our handle ids.
-	in = (HANDLE) strtol(argv[3], NULL, 10);
+	in = (HANDLE)strtol(argv[3], NULL, 10);
 	if (in == 0)
 	{
 		return EXIT_FAILURE;
 	}
 
-	out = (HANDLE) strtol(argv[4], NULL, 10);
+	out = (HANDLE)strtol(argv[4], NULL, 10);
 	if (out == 0)
 	{
 		return EXIT_FAILURE;

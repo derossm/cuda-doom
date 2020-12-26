@@ -23,7 +23,7 @@
 @interface AppController : NSObject
 {
 	LauncherManager *launcherManager;
-	BOOL filesAdded;
+	bool filesAdded;
 }
 
 + (void)initialize;
@@ -34,9 +34,9 @@
 - (void)awakeFromNib;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotif;
-- (BOOL)applicationShouldTerminate:(id)sender;
+- (bool)applicationShouldTerminate:(id)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotif;
-- (BOOL)application:(NSApplication *)application openFile:(NSString *)fileName;
+- (bool)application:(NSApplication *)application openFile:(NSString *)fileName;
 
 - (void)showPrefPanel:(id)sender;
 

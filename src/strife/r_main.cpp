@@ -12,9 +12,6 @@
 		Rendering main loop and setup functions, utility functions (BSP, geometry, trigonometry).
 \**********************************************************************************************************************************************/
 
-#include <stdlib.h>
-#include <math.h>
-
 #include "doomdef.h"
 #include "doomstat.h"	// villsa [STRIFE]
 #include "d_main.h"

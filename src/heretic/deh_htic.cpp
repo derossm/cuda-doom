@@ -10,9 +10,6 @@
 // Top-level dehacked definitions for Heretic dehacked (HHE).
 \**********************************************************************************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "deh_defs.h"
 #include "deh_main.h"

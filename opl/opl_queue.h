@@ -16,7 +16,20 @@
 
 #include "opl.h"
 
-typedef struct opl_callback_queue_s opl_callback_queue_t;
+#define MAX_OPL_QUEUE 64
+
+struct opl_queue_entry_t
+{
+	opl_callback_t callback;
+	void* data;
+	uint64_t time;
+};
+
+struct opl_callback_queue_t
+{
+	opl_queue_entry_t entries[MAX_OPL_QUEUE];
+	unsigned int num_entries;
+};
 
 opl_callback_queue_t* OPL_Queue_Create();
 int OPL_Queue_IsEmpty(opl_callback_queue_t* queue);

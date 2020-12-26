@@ -15,9 +15,6 @@
 
 #include "../derma/common.h"
 
-#ifndef __M_CONFIG__
-#define __M_CONFIG__
-
 #include "doomtype.h"
 
 void M_LoadDefaults();
@@ -30,12 +27,10 @@ void M_BindFloatVariable(const char* name, float* variable);
 void M_BindStringVariable(const char* name, char** variable);
 bool M_SetVariable(const char* name, const char* value);
 int M_GetIntVariable(const char* name);
-const char *M_GetStringVariable(const char* name);
+const char* M_GetStringVariable(const char* name);
 float M_GetFloatVariable(const char* name);
 void M_SetConfigFilenames(const char* main_config, const char* extra_config);
-char *M_GetSaveGameDir(const char* iwadname);
-char *M_GetAutoloadDir(const char* iwadname);
+char* M_GetSaveGameDir(const char* iwadname);
+char* M_GetAutoloadDir(const char* iwadname);
 
 extern const char* configdir;
-
-#endif

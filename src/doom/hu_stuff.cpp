@@ -12,8 +12,6 @@
 \**********************************************************************************************************************************************/
 
 
-#include <ctype.h>
-#include <stdlib.h>
 
 #include "doomdef.h"
 #include "doomkeys.h"
@@ -425,7 +423,7 @@ void HU_Init()
 	for (i=0;i<HU_FONTSIZE;i++)
 	{
 	DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
-	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
+	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, pu_tags_t::PU_STATIC);
 	}
 
 	if (gameversion == exe_chex)
@@ -459,7 +457,7 @@ void HU_Init()
 		DEH_snprintf(buffer, 9, "STCFN%.3d", toupper(laserpatch[i].c));
 		laserpatch[i].l = W_GetNumForName(buffer);
 
-		patch = W_CacheLumpNum(laserpatch[i].l, PU_STATIC);
+		patch = W_CacheLumpNum(laserpatch[i].l, pu_tags_t::PU_STATIC);
 
 		laserpatch[i].w -= SHORT(patch->leftoffset);
 		laserpatch[i].h -= SHORT(patch->topoffset);
@@ -473,7 +471,7 @@ void HU_Init()
 
 	if (!patch)
 	{
-		patch = W_CacheLumpNum(laserpatch[i].l, PU_STATIC);
+		patch = W_CacheLumpNum(laserpatch[i].l, pu_tags_t::PU_STATIC);
 	}
 
 	laserpatch[i].w += SHORT(patch->width)/2;
@@ -795,7 +793,7 @@ static void HU_DrawCrosshair ()
 	if (lump != laserpatch[crispy->crosshairtype].l)
 	{
 	lump = laserpatch[crispy->crosshairtype].l;
-	patch = W_CacheLumpNum(lump, PU_STATIC);
+	patch = W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
 	}
 
 	dp_translucent = true;
@@ -874,7 +872,7 @@ void HU_Drawer()
 	HUlib_drawTextLine(&w_coorda, false);
 	}
 
-	if (plr->powers[pw_showfps])
+	if (plr->powers[PowerType_t::pw_showfps])
 	{
 	HUlib_drawTextLine(&w_fps, false);
 	}
@@ -1105,7 +1103,7 @@ void HU_Ticker()
 		HUlib_addCharToTextLine(&w_coorda, *(s++));
 	}
 
-	if (plr->powers[pw_showfps])
+	if (plr->powers[PowerType_t::pw_showfps])
 	{
 	M_snprintf(str, sizeof(str), "%s%-4d %sFPS", crstr[CR_GRAY], crispy->fps, cr_stat2);
 	HUlib_clearTextLine(&w_fps);

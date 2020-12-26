@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Main loop stuff.
+		Main loop stuff.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __D_LOOP__
-#define __D_LOOP__
 
 #include "net_defs.h"
 
@@ -43,14 +40,14 @@ struct loop_interface_t
 void D_RegisterLoopCallbacks(loop_interface_t* i);
 
 // Create any new ticcmds and broadcast to other players.
-void NetUpdate ();
+void NetUpdate();
 
 // Broadcasts special packets to other players
 // to notify of game exit
-void D_QuitNetGame ();
+void D_QuitNetGame();
 
 // how many ticks to run?
-void TryRunTics ();
+void TryRunTics();
 
 // Called at start of game loop to initialize timers
 void D_StartGameLoop();
@@ -71,5 +68,3 @@ bool D_NonVanillaRecord(bool conditional, const char* feature);
 
 // Check if it is permitted to play back a demo with a non-vanilla feature.
 bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char* feature);
-
-#endif

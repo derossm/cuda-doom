@@ -13,9 +13,6 @@
 
 #include "../../derma/common.h"
 
-#ifndef __H2DEF__
-#define __H2DEF__
-
 #include "st_start.h"
 #include "d_ticcmd.h"
 #include "d_event.h"
@@ -77,12 +74,14 @@ inline constexpr size_t BTS_SAVE_SHIFT{2ul};
 inline constexpr size_t BTS_PAUSE{1ul};						// pause the game
 inline constexpr size_t BTS_SAVE_GAME{2ul};					// save the game at each console, savegame slot numbers occupy the second byte of buttons
 
+inline constexpr size_t MAX_SPECIAL_ARGS{5};
+
 // The top 3 bits of the artifact field in the ticcmd_t struct are used as additional flags
 #define AFLAG_MASK			0x3F
 #define AFLAG_SUICIDE		0x40
 #define AFLAG_JUMP			0x80
 
-enum class gamestate_t
+enum class GameState_t
 {
 	GS_LEVEL,
 	GS_INTERMISSION,
@@ -90,7 +89,7 @@ enum class gamestate_t
 	GS_DEMOSCREEN
 };
 
-enum class gameaction_t
+enum class GameAction_t
 {
 	ga_nothing,
 	ga_loadlevel,
@@ -107,7 +106,7 @@ enum class gameaction_t
 	ga_screenshot
 };
 
-enum class wipe_t
+enum class Wipe_t
 {
 	wipe_0,
 	wipe_1,
@@ -131,42 +130,53 @@ typedef void (*think_t) ();
 
 struct thinker_t
 {
-	struct thinker_s *prev, *next;
+	thinker_t* prev;
+	thinker_t* next;
 	think_t function;
 };
 
-struct player_s;
+struct player_t;
 
 union specialval_t
 {
 	intptr_t i;
-	struct mobj_s *m;
-	struct player_s *p;
+	mobj_t* m;
+	player_t* p;
 };
+
+struct mobj_t;
 
 struct mobj_t
 {
 	thinker_t thinker;				// thinker node
 
 // info for drawing
-	fixed_t x, y, z;
-	struct mobj_s *snext, *sprev;	// links in sector (if needed)
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
+	mobj_t* snext;					// links in sector (if needed)
+	mobj_t* sprev;
 	angle_t angle;
 	spritenum_t sprite;				// used to find patch_t and flip value
 	int frame;						// might be ord with FF_FULLBRIGHT
 
 // interaction info
-	struct mobj_s *bnext, *bprev;	// links in blocks (if needed)
-	struct subsector_s *subsector;
-	fixed_t floorz, ceilingz;		// closest together of contacted secs
+	mobj_t* bnext;					// links in blocks (if needed)
+	mobj_t* bprev;
+	subsector_t* subsector;
+	fixed_t floorz;					// closest together of contacted secs
+	fixed_t ceilingz;
 	fixed_t floorpic;				// contacted sec floorpic
-	fixed_t radius, height;			// for movement checking
-	fixed_t momx, momy, momz;		// momentums
+	fixed_t radius;					// for movement checking
+	fixed_t height;
+	fixed_t momx;					// momentums
+	fixed_t momy;
+	fixed_t momz;
 	int validcount;					// if == validcount, already checked
 	mobjtype_t type;
-	mobjinfo_t *info;				// &mobjinfo[mobj->type]
+	mobjinfo_t* info;				// &mobjinfo[mobj->type]
 	int tics;						// state tic counter
-	state_t *state;
+	state_t* state;
 	int damage;						// For missiles
 	int flags;
 	int flags2;						// Heretic flags
@@ -175,10 +185,10 @@ struct mobj_t
 	int health;
 	int movedir;					// 0-7
 	int movecount;					// when 0, select a new dir
-	struct mobj_s *target;			// thing being chased/attacked (or NULL) also the originator for missiles
+	mobj_t* target;					// thing being chased/attacked (or NULL) also the originator for missiles
 	int reactiontime;				// if non 0, don't attack yet used by player to freeze a bit after teleporting
 	int threshold;					// if > 0, the target will be chased no matter what (even if shot)
-	struct player_s *player;		// only valid if type == MT_PLAYER
+	player_t* player;				// only valid if type == MT_PLAYER
 	int lastlook;					// player number last looked for
 	fixed_t floorclip;				// value to use for floor clipping
 	int archiveNum;					// Identity during archive
@@ -191,7 +201,9 @@ struct mobj_t
 struct degenmobj_t
 {
 	thinker_t thinker;			// not used for anything
-	fixed_t x, y, z;
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
 };
 
 //
@@ -298,7 +310,7 @@ enum class pclass_t
 	NUMCLASSES
 };
 
-enum class playerstate_t
+enum class PlayerState_t
 {
 	PST_LIVE,					// playing
 	PST_DEAD,					// dead on the ground
@@ -316,12 +328,13 @@ enum class psprnum_t
 
 struct pspdef_t
 {
-	state_t *state;				// a NULL state means not active
+	state_t* state;				// a NULL state means not active
 	int tics;
-	fixed_t sx, sy;
+	fixed_t sx;
+	fixed_t sy;
 };
 
-enum class keytype_t
+enum class KeyType_t
 {
 	KEY_1,
 	KEY_2,
@@ -337,7 +350,7 @@ enum class keytype_t
 	NUMKEYS
 };
 
-enum class armortype_t
+enum class ArmorType_t
 {
 	ARMOR_ARMOR,
 	ARMOR_SHIELD,
@@ -346,7 +359,7 @@ enum class armortype_t
 	NUMARMOR
 };
 
-enum class weapontype_t
+enum class WeaponType_t
 {
 	WP_FIRST,
 	WP_SECOND,
@@ -356,7 +369,7 @@ enum class weapontype_t
 	WP_NOCHANGE
 };
 
-enum class manatype_t
+enum class ManaType_t
 {
 	MANA_1,
 	MANA_2,
@@ -373,7 +386,7 @@ enum class manatype_t
 
 struct weaponinfo_t
 {
-	manatype_t mana;
+	ManaType_t mana;
 	int upstate;
 	int downstate;
 	int readystate;
@@ -382,9 +395,9 @@ struct weaponinfo_t
 	int flashstate;
 };
 
-extern weaponinfo_t WeaponInfo[(size_t)weapontype_t::NUMWEAPONS][(size_t)pclass_t::NUMCLASSES];
+extern weaponinfo_t WeaponInfo[(size_t)WeaponType_t::NUMWEAPONS][(size_t)pclass_t::NUMCLASSES];
 
-enum class artitype_t
+enum class ArtiType_t
 {
 	arti_none,
 	arti_invulnerability,
@@ -424,7 +437,7 @@ enum class artitype_t
 	NUMARTIFACTS
 };
 
-enum class powertype_t
+enum class PowerType_t
 {
 	pw_None,
 	pw_invulnerability,
@@ -450,12 +463,12 @@ inline constexpr size_t MAULATOR_TICS{25*35};
 inline constexpr size_t MESSAGE_TICS{4*35};
 inline constexpr size_t BLINK_THRESHOLD{4*35};
 
-inline constexpr size_t NUM_WEAPONS{(size_t)weapontype_t::NUMWEAPONS};
-inline constexpr size_t NUM_ARMOR{(size_t)armortype_t::NUMARMOR};
-inline constexpr size_t NUM_MANA{(size_t)manatype_t::NUMMANA};
-inline constexpr size_t NUM_ARTIFACTS{(size_t)artitype_t::NUMARTIFACTS};
-inline constexpr size_t NUM_INVENTORY_SLOTS{(size_t)artitype_t::NUMARTIFACTS};
-inline constexpr size_t NUM_POWERS{(size_t)powertype_t::NUMPOWERS};
+inline constexpr size_t NUM_WEAPONS{(size_t)WeaponType_t::NUMWEAPONS};
+inline constexpr size_t NUM_ARMOR{(size_t)ArmorType_t::NUMARMOR};
+inline constexpr size_t NUM_MANA{(size_t)ManaType_t::NUMMANA};
+inline constexpr size_t NUM_ARTIFACTS{(size_t)ArtiType_t::NUMARTIFACTS};
+inline constexpr size_t NUM_INVENTORY_SLOTS{(size_t)ArtiType_t::NUMARTIFACTS};
+inline constexpr size_t NUM_POWERS{(size_t)PowerType_t::NUMPOWERS};
 inline constexpr size_t NUM_P_SPRITES{(size_t)psprnum_t::NUMPSPRITES};
 
 struct inventory_t
@@ -475,7 +488,7 @@ struct inventory_t
 struct player_t
 {
 	mobj_t* mo;
-	playerstate_t playerstate;
+	PlayerState_t playerstate;
 	ticcmd_t cmd;
 
 	pclass_t playerClass;						// player class type
@@ -492,15 +505,15 @@ struct player_t
 	int armorpoints[NUM_ARMOR];
 
 	inventory_t inventory[NUM_INVENTORY_SLOTS];
-	artitype_t readyArtifact;
+	ArtiType_t readyArtifact;
 	int artifactCount;
 	int inventorySlotNum;
 	int powers[NUM_POWERS];
 	int keys;
 	int pieces;									// Fourth Weapon pieces
 	signed int frags[MAX_PLAYERS];				// kills of other players
-	weapontype_t readyweapon;
-	weapontype_t pendingweapon;					// wp_nochange if not changing
+	WeaponType_t readyweapon;
+	WeaponType_t pendingweapon;					// wp_nochange if not changing
 	bool weaponowned[NUM_WEAPONS];
 	int mana[NUM_MANA];
 	int attackdown;								// true if button down last tic
@@ -516,25 +529,25 @@ struct player_t
 	int messageTics;							// counter for showing messages
 	short ultimateMessage;
 	short yellowMessage;
-	int damagecount;			// for screen flashing
+	int damagecount;							// for screen flashing
 	int bonuscount;
-	int poisoncount;			// screen flash for poison damage
-	mobj_t* poisoner;			// NULL for non-player mobjs
-	mobj_t* attacker;			// who did damage (NULL for floors)
-	int extralight;				// so gun flashes light up areas
-	int fixedcolormap;			// can be set to REDCOLORMAP, etc
-	int colormap;				// 0-3 for which color to draw player
-	pspdef_t psprites[NUM_P_SPRITES];		// view sprites (gun, etc)
-	int morphTics;				// player is a pig if > 0
-	unsigned int jumpTics;		// delay the next jump for a moment
-	unsigned int worldTimer;	// total time the player's been playing
+	int poisoncount;							// screen flash for poison damage
+	mobj_t* poisoner;							// NULL for non-player mobjs
+	mobj_t* attacker;							// who did damage (NULL for floors)
+	int extralight;								// so gun flashes light up areas
+	int fixedcolormap;							// can be set to REDCOLORMAP, etc
+	int colormap;								// 0-3 for which color to draw player
+	pspdef_t psprites[NUM_P_SPRITES];			// view sprites (gun, etc)
+	int morphTics;								// player is a pig if > 0
+	unsigned int jumpTics;						// delay the next jump for a moment
+	unsigned int worldTimer;					// total time the player's been playing
 };
 
 #define CF_NOCLIP		1
 #define	CF_GODMODE		2
-#define	CF_NOMOMENTUM	4							// not really a cheat, just a debug aid
+#define	CF_NOMOMENTUM	4						// not really a cheat, just a debug aid
 
-#define	SBARHEIGHT		(39 << crispy->hires)		// status bar height at bottom of screen
+#define	SBARHEIGHT		(39 << crispy->hires)	// status bar height at bottom of screen
 
 void NET_SendFrags(player_t* player);
 
@@ -548,53 +561,53 @@ void NET_SendFrags(player_t* player);
 
 #define TELEFOGHEIGHT (32*FRACUNIT)
 
-extern GameMode_t gamemode;			// Always commercial
+extern GameMode_t gamemode;					// Always commercial
 
-extern gameaction_t gameaction;
+extern GameAction_t gameaction;
 
 extern bool paused;
 
-extern bool DevMaps;			// true = map development mode
-extern char *DevMapsDir;		// development maps directory
+extern bool DevMaps;						// true = map development mode
+extern char *DevMapsDir;					// development maps directory
 
-extern bool nomonsters;		// checkparm of -nomonsters
+extern bool nomonsters;						// checkparm of -nomonsters
 
-extern bool respawnparm;		// checkparm of -respawn
+extern bool respawnparm;					// checkparm of -respawn
 
-extern bool randomclass;		// checkparm of -randclass
+extern bool randomclass;					// checkparm of -randclass
 
-extern bool debugmode;		// checkparm of -debug
+extern bool debugmode;						// checkparm of -debug
 
-extern bool usergame;		// ok to save / end game
+extern bool usergame;						// ok to save / end game
 
-extern bool ravpic;			// checkparm of -ravpic
+extern bool ravpic;							// checkparm of -ravpic
 
-extern bool altpal;			// checkparm to use an alternate palette routine
+extern bool altpal;							// checkparm to use an alternate palette routine
 
-extern bool cdrom;			// true if cd-rom mode active ("-cdrom")
+extern bool cdrom;							// true if cd-rom mode active ("-cdrom")
 
-extern bool deathmatch;		// only if started as net death
+extern bool deathmatch;						// only if started as net death
 
-extern bool netgame;			// only true if >1 player
+extern bool netgame;						// only true if >1 player
 
-extern bool cmdfrag;			// true if a CMD_FRAG packet should be sent out every kill
+extern bool cmdfrag;						// true if a CMD_FRAG packet should be sent out every kill
 
 extern bool playeringame[MAX_PLAYERS];
 extern pclass_t PlayerClass[MAX_PLAYERS];
 
-extern int consoleplayer;		// player taking events and displaying
+extern int consoleplayer;					// player taking events and displaying
 
 extern int displayplayer;
 
-extern int viewangleoffset;		// ANG90 = left side, ANG270 = right
+extern int viewangleoffset;					// ANG90 = left side, ANG270 = right
 
 extern player_t players[MAX_PLAYERS];
 
-extern bool DebugSound;		// debug flag for displaying sound info
+extern bool DebugSound;						// debug flag for displaying sound info
 
 extern bool demoplayback;
-extern bool demoextend;		// allow demos to persist through exit/respawn
-extern int maxzone;				// Maximum chunk allocated for zone heap
+extern bool demoextend;						// allow demos to persist through exit/respawn
+extern int maxzone;							// Maximum chunk allocated for zone heap
 
 // Truncate angleturn in ticcmds to nearest 256.
 // Used when recording Vanilla demos in netgames.
@@ -603,7 +616,7 @@ extern bool lowres_turn;
 extern int Sky1Texture;
 extern int Sky2Texture;
 
-extern gamestate_t gamestate;
+extern GameState_t gamestate;
 extern skill_t gameskill;
 extern int gameepisode;
 extern int gamemap;
@@ -621,7 +634,7 @@ extern mapthing_t deathmatchstarts[MAXDEATHMATCHSTARTS];
 extern int RebornPosition;
 
 #define MAX_PLAYER_STARTS 8
-extern mapthing_t playerstarts[MAX_PLAYER_STARTS][MAXPLAYERS];
+extern mapthing_t playerstarts[MAX_PLAYER_STARTS][MAX_PLAYERS];
 extern int maxplayers;
 
 extern int mouseSensitivity;
@@ -674,7 +687,7 @@ void H2_GameLoop();
 //---------
 //SYSTEM IO
 //---------
-byte *I_AllocLow(int length);
+byte* I_AllocLow(int length);
 // allocates from low memory under dos, just mallocs under unix
 
 // haleyjd: was WATCOMC, again preserved for historical interest as in Heretic
@@ -723,22 +736,21 @@ void G_DeferedInitNew(skill_t skill, int episode, int map);
 
 void G_DeferredNewGame(skill_t skill);
 
-void G_DeferedPlayDemo(const char *demo);
+void G_DeferedPlayDemo(const char* demo);
 
 void G_LoadGame(int slot);
 // can be called by the startup code or M_Responder
 // calls P_SetupLevel or W_EnterWorld
 void G_DoLoadGame();
 
-void G_SaveGame(int slot, char *description);
+void G_SaveGame(int slot, char* description);
 // called by M_Responder
 
-void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
-					const char *name);
+void G_RecordDemo(skill_t skill, int numplayers, int episode, int map, const char* name);
 // only called by startup code
 
-void G_PlayDemo(char *name);
-void G_TimeDemo(char *name);
+void G_PlayDemo(char* name);
+void G_TimeDemo(char* name);
 
 void G_TeleportNewMap(int map, int position);
 
@@ -752,7 +764,7 @@ void G_StartNewInit();
 void G_WorldDone();
 
 void G_Ticker();
-bool G_Responder(event_t * ev);
+bool G_Responder(event_t* ev);
 
 void G_ScreenShot();
 
@@ -764,9 +776,9 @@ void G_ScreenShot();
 #define HXS_VERSION_TEXT_LENGTH 16
 #define HXS_DESCRIPTION_LENGTH 24
 
-extern char *SavePath;
+extern char* SavePath;
 
-void SV_SaveGame(int slot, const char *description);
+void SV_SaveGame(int slot, const char* description);
 void SV_SaveMap(bool savePlayers);
 void SV_LoadGame(int slot);
 void SV_MapTeleport(int map, int position);
@@ -806,7 +818,7 @@ bool P_GetMapDoubleSky(int map);
 bool P_GetMapLightning(int map);
 bool P_GetMapFadeTable(int map);
 char *P_GetMapSongLump(int map);
-void P_PutMapSongLump(int map, char *lumpName);
+void P_PutMapSongLump(int map, char* lumpName);
 int P_GetCDStartTrack();
 int P_GetCDEnd1Track();
 int P_GetCDEnd2Track();
@@ -831,7 +843,7 @@ extern int UpdateState;
 #define I_MESSAGES	4
 #define I_FULLSCRN	8
 
-void R_RenderPlayerView(player_t * player);
+void R_RenderPlayerView(player_t* player);
 // called by G_Drawer
 
 void R_Init();
@@ -844,48 +856,47 @@ void R_DrawTopBorder();
 void R_SetViewSize(int blocks, int detail);
 // called by M_Responder
 
-int R_FlatNumForName(const char *name);
+int R_FlatNumForName(const char* name);
 
-int R_TextureNumForName(const char *name);
-int R_CheckTextureNumForName(const char *name);
+int R_TextureNumForName(const char* name);
+int R_CheckTextureNumForName(const char* name);
 // called by P_Ticker for switches and animations
 // returns the texture number for the texture name
-
 
 //----
 //MISC
 //----
-extern int localQuakeHappening[MAXPLAYERS];
+extern int localQuakeHappening[MAX_PLAYERS];
 
-int M_DrawText(int x, int y, bool direct, char *string);
+int M_DrawText(int x, int y, bool direct, char* string);
 
 //------------------------------
 // SC_man.c
 //------------------------------
 
-void SC_Open(const char *name);
-void SC_OpenLump(const char *name);
-void SC_OpenFile(const char *name);
+void SC_Open(const char* name);
+void SC_OpenLump(const char* name);
+void SC_OpenFile(const char* name);
 void SC_Close();
 bool SC_GetString();
 void SC_MustGetString();
-void SC_MustGetStringName(char *name);
+void SC_MustGetStringName(char* name);
 bool SC_GetNumber();
 void SC_MustGetNumber();
 void SC_UnGet();
 //bool SC_Check();
-bool SC_Compare(const char *text);
-int SC_MatchString(const char **strings);
-int SC_MustMatchString(const char **strings);
-void SC_ScriptError(const char *message);
+bool SC_Compare(const char* text);
+int SC_MatchString(const char** strings);
+int SC_MustMatchString(const char** strings);
+void SC_ScriptError(const char* message);
 
-extern char *sc_String;
+extern char* sc_String;
 extern int sc_Number;
 extern int sc_Line;
 extern bool sc_End;
 extern bool sc_Crossed;
 extern bool sc_FileScripts;
-extern const char *sc_ScriptsDir;
+extern const char* sc_ScriptsDir;
 
 //------------------------------
 // SN_sonix.c
@@ -917,7 +928,7 @@ enum
 	SEQ_NUMSEQ
 };
 
-typedef enum
+enum class seqtype_t
 {
 	SEQTYPE_STONE,
 	SEQTYPE_HEAVY,
@@ -930,35 +941,32 @@ typedef enum
 	SEQTYPE_EARTH,
 	SEQTYPE_METAL2,
 	SEQTYPE_NUMSEQ
-} seqtype_t;
+};
 
 void SN_InitSequenceScript();
-void SN_StartSequence(mobj_t * mobj, int sequence);
-void SN_StartSequenceName(mobj_t * mobj, char *name);
-void SN_StopSequence(mobj_t * mobj);
+void SN_StartSequence(mobj_t* mobj, int sequence);
+void SN_StartSequenceName(mobj_t* mobj, char* name);
+void SN_StopSequence(mobj_t* mobj);
 void SN_UpdateActiveSequences();
 void SN_StopAllSequences();
-int SN_GetSequenceOffset(int sequence, int *sequencePtr);
-void SN_ChangeNodeData(int nodeNum, int seqOffset, int delayTics, int volume,
-						int currentSoundID);
+int SN_GetSequenceOffset(int sequence, int* sequencePtr);
+void SN_ChangeNodeData(int nodeNum, int seqOffset, int delayTics, int volume, int currentSoundID);
 
-
-typedef struct seqnode_s seqnode_t;
-struct seqnode_s
+struct seqnode_t
 {
-	int *sequencePtr;
+	int* sequencePtr;
 	int sequence;
-	mobj_t *mobj;
+	mobj_t* mobj;
 	int currentSoundID;
 	int delayTics;
 	int volume;
 	int stopSound;
-	seqnode_t *prev;
-	seqnode_t *next;
+	seqnode_t* prev;
+	seqnode_t* next;
 };
 
 extern int ActiveSequences;
-extern seqnode_t *SequenceListHead;
+extern seqnode_t* SequenceListHead;
 
 //----------------------
 // Interlude (IN_lude.c)
@@ -979,7 +987,7 @@ void IN_Drawer();
 
 void CT_Init();
 void CT_Drawer();
-bool CT_Responder(event_t * ev);
+bool CT_Responder(event_t* ev);
 void CT_Ticker();
 char CT_dequeueChatChar();
 
@@ -1001,7 +1009,7 @@ extern int inv_ptr;
 extern int curpos;
 void SB_Init();
 void SB_SetClassData();
-bool SB_Responder(event_t * event);
+bool SB_Responder(event_t* event);
 void SB_Ticker();
 void SB_Drawer();
 void Draw_TeleportIcon();
@@ -1015,17 +1023,15 @@ void Draw_LoadIcon();
 void MN_Init();
 void MN_ActivateMenu();
 void MN_DeactivateMenu();
-bool MN_Responder(event_t * event);
+bool MN_Responder(event_t* event);
 void MN_Ticker();
 void MN_Drawer();
-void MN_DrTextA(const char *text, int x, int y);
-void MN_DrTextAYellow(const char *text, int x, int y);
-int MN_TextAWidth(const char *text);
-void MN_DrTextB(const char *text, int x, int y);
-int MN_TextBWidth(const char *text);
+void MN_DrTextA(const char* text, int x, int y);
+void MN_DrTextAYellow(const char* text, int x, int y);
+int MN_TextAWidth(const char* text);
+void MN_DrTextB(const char* text, int x, int y);
+int MN_TextBWidth(const char* text);
 
 extern int messageson;
 
 #include "sounds.h"
-
-#endif // __H2DEF__
