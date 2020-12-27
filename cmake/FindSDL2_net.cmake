@@ -26,9 +26,9 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # set in <project_root_dir>/CMakeLists.txt
-# Windows: VCPKG_DIR = "<install_location>/vcpkg/packages/"
+# Windows: VCPKG_DIR = "<install_location>/vcpkg/packages"
 # x64: ARCHITECTURE = "_x64-windows"
-set(SDL2_NET_DIR "${VCPKG_DIR}sdl2-net${ARCHITECTURE}")
+set(SDL2_NET_DIR "${VCPKG_DIR}/sdl2-net${ARCHITECTURE}")
 
 find_path(SDL2_NET_INCLUDE_DIR "SDL_net.h" HINTS "${SDL2_NET_DIR}/include/SDL2" ${PC_SDL2_NET_INCLUDE_DIRS})
 
@@ -61,10 +61,7 @@ endif()
 find_library(SDL2_NET_LIBRARY "SDL2_net" HINTS "${SDL2_NET_DIR}/lib" ${PC_SDL2_NET_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SDL2_net
-									FOUND_VAR SDL2_NET_FOUND
-									REQUIRED_VARS SDL2_NET_INCLUDE_DIR SDL2_NET_LIBRARY
-									VERSION_VAR SDL2_NET_VERSION)
+find_package_handle_standard_args(SDL2_net FOUND_VAR SDL2_NET_FOUND REQUIRED_VARS SDL2_NET_INCLUDE_DIR SDL2_NET_LIBRARY VERSION_VAR SDL2_NET_VERSION)
 
 if(SDL2_NET_FOUND)
 	add_library(SDL2::net UNKNOWN IMPORTED)

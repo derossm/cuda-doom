@@ -9,25 +9,19 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	WAD I/O functions.
+		WAD I/O functions.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef __W_WAD__
-#define __W_WAD__
-
 #include "doomtype.h"
 #include "w_file.h"
+#include "z_zone.h"
 
-// TYPES
+using lumpindex_t = int;
 
-// WADFILE I/O related stuff.
-typedef struct lumpinfo_s lumpinfo_t;
-typedef int lumpindex_t;
-
-struct lumpinfo_s
+struct lumpinfo_t
 {
 	char name[8];
 	wad_file_t* wad_file;
@@ -53,8 +47,8 @@ lumpindex_t W_CheckNumForNameFromTo(const char* name, int from, int to);
 int W_LumpLength(lumpindex_t lump);
 void W_ReadLump(lumpindex_t lump, void* dest);
 
-void* W_CacheLumpNum(lumpindex_t lump, int tag);
-void* W_CacheLumpName(const char* name, int tag);
+void* W_CacheLumpNum(lumpindex_t lump, pu_tags_t tag);
+void* W_CacheLumpName(const char* name, pu_tags_t tag);
 
 void W_GenerateHashTable();
 
@@ -65,5 +59,3 @@ void W_ReleaseLumpName(const char* name);
 
 const char* W_WadNameForLump(const lumpinfo_t* lump);
 bool W_IsIWADLump(const lumpinfo_t* lump);
-
-#endif

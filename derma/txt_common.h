@@ -26,11 +26,10 @@
 #pragma once
 
 #include "common.h"
-#include "..\src\doomkeys.h"
 
-namespace CUDADOOM
+namespace cudadoom
 {
-	namespace TXT
+	namespace txt
 	{
 		
 	}

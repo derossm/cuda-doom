@@ -11,9 +11,10 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_SEPARATOR_H
-#define TXT_SEPARATOR_H
+#include "txt_widget.h"
 
+namespace cudadoom::txt
+{
 /**
  * @file txt_separator.h
  *
@@ -28,17 +29,13 @@
  * allows the separator to be used as a section divider for grouping
  * related controls.
  */
-typedef struct txt_separator_s txt_separator_t;
-
-#include "txt_widget.h"
-
-struct txt_separator_s
+struct txt_separator_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	char* label;
 };
 
-extern txt_widget_class_t txt_separator_class;
+extern WidgetClass txt_separator_class;
 
 /**
  * Create a new horizontal separator widget.
@@ -55,7 +52,6 @@ txt_separator_t* TXT_NewSeparator(const char* label);
  * @param separator		The separator.
  * @param label			The new label (UTF-8 format).
  */
-
 void TXT_SetSeparatorLabel(txt_separator_t* separator, const char* label);
 
-#endif /* #ifndef TXT_SEPARATOR_H */
+} /* END NAMESPACE cudadoom::txt */

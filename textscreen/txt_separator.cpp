@@ -8,13 +8,15 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "txt_separator.h"
 #include "txt_gui.h"
 #include "txt_io.h"
 #include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_window.h"
+
+namespace cudadoom::txt
+{
 
 static void TXT_SeparatorSizeCalc(TXT_UNCAST_ARG(separator))
 {
@@ -53,7 +55,7 @@ static void TXT_SeparatorDrawer(TXT_UNCAST_ARG(separator))
 	{
 		TXT_GotoXY(x, y);
 
-		TXT_FGColor(TXT_COLOR_BRIGHT_GREEN);
+		TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_GREEN);
 		TXT_DrawString(" ");
 		TXT_DrawString(separator->label);
 		TXT_DrawString(" ");
@@ -81,7 +83,7 @@ void TXT_SetSeparatorLabel(txt_separator_t *separator, const char *label)
 	}
 }
 
-txt_widget_class_t txt_separator_class =
+WidgetClass txt_separator_class =
 {
 	TXT_NeverSelectable,
 	TXT_SeparatorSizeCalc,
@@ -96,7 +98,7 @@ txt_separator_t *TXT_NewSeparator(const char *label)
 {
 	txt_separator_t *separator;
 
-	separator = malloc(sizeof(txt_separator_t));
+	separator = static_cast<decltype(separator)>(malloc(sizeof(txt_separator_t)));
 
 	TXT_InitWidget(separator, &txt_separator_class);
 
@@ -106,3 +108,4 @@ txt_separator_t *TXT_NewSeparator(const char *label)
 	return separator;
 }
 
+} /* END NAMESPACE cudadoom::txt */

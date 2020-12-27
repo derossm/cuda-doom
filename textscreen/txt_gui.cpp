@@ -14,22 +14,17 @@
 #include "txt_main.h"
 #include "txt_utf8.h"
 
-typedef struct txt_cliparea_s txt_cliparea_t;
+#define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)
+#define VALID_Y(y) ((y) >= cliparea->y1 && (y) < cliparea->y2)
 
-struct txt_cliparea_s
+namespace cudadoom::txt
 {
-	int x1, x2;
-	int y1, y2;
-	txt_cliparea_t *next;
-};
-
 // Array of border characters for drawing windows. The array looks like this:
 //
 // +-++
 // | ||
 // +-++
 // +-++
-
 static const int borders[4][4] =
 {
 	{0xda, 0xc4, 0xc2, 0xbf},
@@ -39,9 +34,6 @@ static const int borders[4][4] =
 };
 
 static txt_cliparea_t *cliparea = NULL;
-
-#define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)
-#define VALID_Y(y) ((y) >= cliparea->y1 && (y) < cliparea->y2)
 
 void TXT_DrawDesktopBackground(const char *title)
 {
@@ -57,8 +49,8 @@ void TXT_DrawDesktopBackground(const char *title)
 
 	for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
 	{
-		*p++ = 0xb1;
-		*p++ = TXT_COLOR_GREY | (TXT_COLOR_BLUE << 4);
+		*(p++) = 0xb1;
+		*(p++) = txt_color_t::TXT_COLOR_GREY | (txt_color_t::TXT_COLOR_BLUE << 4);
 	}
 
 	// Draw the top and bottom banners
@@ -67,23 +59,23 @@ void TXT_DrawDesktopBackground(const char *title)
 
 	for (i=0; i<TXT_SCREEN_W; ++i)
 	{
-		*p++ = ' ';
-		*p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
+		*(p++) = ' ';
+		*(p++) = txt_color_t::TXT_COLOR_BLACK | (txt_color_t::TXT_COLOR_GREY << 4);
 	}
 
 	p = screendata + (TXT_SCREEN_H - 1) * TXT_SCREEN_W * 2;
 
 	for (i=0; i<TXT_SCREEN_W; ++i)
 	{
-		*p++ = ' ';
-		*p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
+		*(p++) = ' ';
+		*(p++) = txt_color_t::TXT_COLOR_BLACK | (txt_color_t::TXT_COLOR_GREY << 4);
 	}
 
 	// Print the title
 
 	TXT_GotoXY(0, 0);
-	TXT_FGColor(TXT_COLOR_BLACK);
-	TXT_BGColor(TXT_COLOR_GREY, 0);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BLACK);
+	TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
 
 	TXT_DrawString(" ");
 	TXT_DrawString(title);
@@ -105,7 +97,7 @@ void TXT_DrawShadow(int x, int y, int w, int h)
 		{
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
-				p[1] = TXT_COLOR_DARK_GREY;
+				p[1] = txt_color_t::TXT_COLOR_DARK_GREY;
 			}
 
 			p += 2;
@@ -120,7 +112,7 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
 	int bx, by;
 
 	TXT_SaveColors(&colors);
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 
 	for (y1=y; y1<y+h; ++y1)
 	{
@@ -153,8 +145,8 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
 	if (title != NULL)
 	{
 		TXT_GotoXY(x + 1, y + 1);
-		TXT_BGColor(TXT_COLOR_GREY, 0);
-		TXT_FGColor(TXT_COLOR_BLUE);
+		TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
+		TXT_FGColor(txt_color_t::TXT_COLOR_BLUE);
 
 		for (x1=0; x1<w-2; ++x1)
 		{
@@ -183,7 +175,7 @@ void TXT_DrawSeparator(int x, int y, int w)
 	data = TXT_GetScreenData();
 
 	TXT_SaveColors(&colors);
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 
 	if (!VALID_Y(y))
 	{
@@ -321,8 +313,8 @@ void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 	}
 
 	TXT_SaveColors(&colors);
-	TXT_FGColor(TXT_COLOR_BLACK);
-	TXT_BGColor(TXT_COLOR_GREY, 0);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BLACK);
+	TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
 
 	TXT_GotoXY(x, y);
 	TXT_PutChar('\x1b');
@@ -370,8 +362,8 @@ void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 	}
 
 	TXT_SaveColors(&colors);
-	TXT_FGColor(TXT_COLOR_BLACK);
-	TXT_BGColor(TXT_COLOR_GREY, 0);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BLACK);
+	TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
 
 	TXT_GotoXY(x, y);
 	TXT_PutChar('\x18');
@@ -414,7 +406,7 @@ void TXT_InitClipArea()
 {
 	if (cliparea == NULL)
 	{
-		cliparea = malloc(sizeof(txt_cliparea_t));
+		cliparea = static_cast<decltype(cliparea)>(malloc(sizeof(txt_cliparea_t)));
 		cliparea->x1 = 0;
 		cliparea->x2 = TXT_SCREEN_W;
 		cliparea->y1 = 0;
@@ -427,7 +419,7 @@ void TXT_PushClipArea(int x1, int x2, int y1, int y2)
 {
 	txt_cliparea_t *newarea;
 
-	newarea = malloc(sizeof(txt_cliparea_t));
+	newarea = static_cast<decltype(newarea)>(malloc(sizeof(txt_cliparea_t)));
 
 	// Set the new clip area to the intersection of the old
 	// area and the new one.
@@ -472,3 +464,4 @@ void TXT_PopClipArea()
 	cliparea = next_cliparea;
 }
 
+} /* END NAMESPACE cudadoom::txt */

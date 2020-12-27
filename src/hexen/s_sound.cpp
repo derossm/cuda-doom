@@ -801,10 +801,10 @@ void S_Init()
 		snd_pitchshift = 1;
 	}
 
-	I_PrecacheSounds(S_sfx, NUMSFX);
+	I_PrecacheSounds(S_sfx, sfxenum_t::NUMSFX);
 
 	// Attempt to setup CD music
-	if (snd_musicdevice == SNDDEVICE_CD)
+	if (snd_musicdevice == snddevice_t::SNDDEVICE_CD)
 	{
 		ST_Message("	Attempting to initialize CD Music: ");
 		if (!cdrom)
@@ -830,51 +830,43 @@ void S_Init()
 	}
 }
 
-//==========================================================================
-//
-// S_GetChannelInfo
-//
-//==========================================================================
-
-void S_GetChannelInfo(SoundInfo_t * s)
+auto S_GetChannelInfo()
 {
-	int i;
-	ChanInfo_t *c;
+	SoundInfo_t info;
+	info.channelCount = snd_Channels;
+	info.musicVolume = snd_MusicVolume;
+	info.soundVolume = snd_MaxVolume;
 
-	s->channelCount = snd_Channels;
-	s->musicVolume = snd_MusicVolume;
-	s->soundVolume = snd_MaxVolume;
-	for (i = 0; i < snd_Channels; i++)
+	size_t i{0};
+	for (auto& iter{info.chan[i]}; i < snd_Channels; iter = info.chan[i])
 	{
-		c = &s->chan[i];
-		c->id = Channel[i].sound_id;
-		c->priority = Channel[i].priority;
-		c->name = S_sfx[c->id].name;
-		c->mo = Channel[i].mo;
+		iter.id = Channel[i].sound_id;
+		iter.priority = Channel[i].priority;
+		iter.name = S_sfx[iter.id].name;
+		iter.mo = Channel[i].mo;
 
-		if (c->mo != NULL)
+		if (iter.mo != nullptr)
 		{
-			c->distance = P_AproxDistance(c->mo->x - viewx, c->mo->y - viewy)
-				>> FRACBITS;
+			iter.distance = P_AproxDistance(iter.mo->x - viewx, iter.mo->y - viewy) >> FRACBITS;
+			//iter.distance = P_ApproxDistance();
 		}
 		else
 		{
-			c->distance = 0;
+			iter.distance = 0;
 		}
+
+		// NOTE - design philosophy insight:
+		// We could pre-fix increment the index while assigning the next iter reference, but then anyone maintaining this code would have to
+		// look at an increment operator in an unusual place and waste brain power on double checking it works correctly. So, unless this
+		// function profiles extremely hot, and testing that change results in measurable gains, we won't be needlessly clever.
+		// tl;dr unless we gain seconds in runtime performance, don't waste seconds of brain power down the line
+		++i;
 	}
 }
 
-//==========================================================================
-//
-// S_GetSoundPlayingInfo
-//
-//==========================================================================
-
-bool S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id)
+bool S_GetSoundPlayingInfo(mobj_t* mobj, int sound_id)
 {
-	int i;
-
-	for (i = 0; i < snd_Channels; i++)
+	for (size_t i{0}; i < snd_Channels; ++i)
 	{
 		if (Channel[i].sound_id == sound_id && Channel[i].mo == mobj)
 		{
@@ -886,12 +878,6 @@ bool S_GetSoundPlayingInfo(mobj_t * mobj, int sound_id)
 	}
 	return false;
 }
-
-//==========================================================================
-//
-// S_SetMusicVolume
-//
-//==========================================================================
 
 void S_SetMusicVolume()
 {
@@ -921,12 +907,6 @@ void S_SetMusicVolume()
 	}
 }
 
-//==========================================================================
-//
-// S_ShutDown
-//
-//==========================================================================
-
 void S_ShutDown()
 {
 	I_StopSong();
@@ -938,16 +918,8 @@ void S_ShutDown()
 	}
 }
 
-//==========================================================================
-//
-// S_InitScript
-//
-//==========================================================================
-
 void S_InitScript()
 {
-	int i;
-
 	SC_OpenLump("sndinfo");
 
 	while (SC_GetString())
@@ -971,25 +943,24 @@ void S_InitScript()
 		}
 		else
 		{
-			for (i = 0; i < NUMSFX; i++)
+			size_t i{0};
+			for (; i < sfxenum_t::NUMSFX; ++i)
 			{
 				if (!strcmp(S_sfx[i].tagname, sc_String))
 				{
 					SC_MustGetString();
 					if (*sc_String != '?')
 					{
-						M_StringCopy(S_sfx[i].name, sc_String,
-										sizeof(S_sfx[i].name));
+						M_StringCopy(S_sfx[i].name, sc_String, sizeof(S_sfx[i].name));
 					}
 					else
 					{
-						M_StringCopy(S_sfx[i].name, "default",
-										sizeof(S_sfx[i].name));
+						M_StringCopy(S_sfx[i].name, "default", sizeof(S_sfx[i].name));
 					}
 					break;
 				}
 			}
-			if (i == NUMSFX)
+			if (i == sfxenum_t::NUMSFX)
 			{
 				SC_MustGetString();
 			}
@@ -997,7 +968,7 @@ void S_InitScript()
 	}
 	SC_Close();
 
-	for (i = 0; i < NUMSFX; i++)
+	for (size_t i{0}; i < sfxenum_t::NUMSFX; ++i)
 	{
 		if (!strcmp(S_sfx[i].name, ""))
 		{
@@ -1005,4 +976,3 @@ void S_InitScript()
 		}
 	}
 }
-

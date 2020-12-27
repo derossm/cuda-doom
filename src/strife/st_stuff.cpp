@@ -965,7 +965,7 @@ void ST_drawLine(int x, int y, int len, int color)
 	{
 		if (crispy->hires)
 			*(drawpos + SCREENWIDTH) = putcolor;
-		*drawpos++ = putcolor;
+		*(drawpos++) = putcolor;
 		++i;
 	}
 }

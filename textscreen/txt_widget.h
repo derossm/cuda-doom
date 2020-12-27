@@ -23,22 +23,25 @@
 #define TXT_CAST_ARG(type, name) type *name = (type *) uncast_ ## name
 
 #else
-#define TXT_UNCAST_ARG(name) txt_widget_t *name
+#define TXT_UNCAST_ARG(name) cudadoom::txt::Widget *name
 #endif
 
-typedef enum
+namespace cudadoom::txt
+{
+
+enum class AlignVertical
 {
 	TXT_VERT_TOP,
 	TXT_VERT_CENTER,
 	TXT_VERT_BOTTOM
-} txt_vert_align_t;
+};
 
-typedef enum
+enum class AlignHorizontal
 {
 	TXT_HORIZ_LEFT,
 	TXT_HORIZ_CENTER,
 	TXT_HORIZ_RIGHT
-} txt_horiz_align_t;
+};
 
 /**
  * A GUI widget.
@@ -50,9 +53,6 @@ typedef enum
  * depend on the type of the widget. It is possible to be notified
  * when a signal occurs using the @ref TXT_SignalConnect function.
  */
-
-namespace CUDADOOM::TXT
-{
 
 typedef void (*WidgetSizeCalc)(TXT_UNCAST_ARG(widget));
 typedef void (*WidgetDrawer)(TXT_UNCAST_ARG(widget));
@@ -69,7 +69,7 @@ struct CallbackEntry
 public:
 	char* signal_name{nullptr};
 	void* user_data{nullptr};
-	TxtWidgetSignalFunc func{nullptr};
+	WidgetSignalFunc func{nullptr};
 };
 
 struct CallbackTable
@@ -88,14 +88,14 @@ public:
 class WidgetClass
 {
 public:
-	TxtWidgetSelectableFunc selectable;
-	TxtWidgetSizeCalc size_calc;
-	TxtWidgetDrawer drawer;
-	TxtWidgetKeyPress key_press;
-	TxtWidgetDestroy destructor;
-	TxtMousePressFunc mouse_press;
-	TxtWidgetLayoutFunc layout;
-	TxtWidgetFocusFunc focus_change;
+	WidgetSelectableFunc selectable;
+	WidgetSizeCalc size_calc;
+	WidgetDrawer drawer;
+	WidgetKeyPress key_press;
+	WidgetDestroy destructor;
+	MousePressFunc mouse_press;
+	WidgetLayoutFunc layout;
+	WidgetFocusFunc focus_change;
 
 public:
 	//TxtWidgetClass(){};
@@ -115,7 +115,7 @@ public:
 	uint64_t width{};
 	uint64_t height{};
 
-	txt_horiz_align_t align{};
+	AlignHorizontal align{};
 
 	bool _visible{false};
 	bool _focused{false};
@@ -126,24 +126,14 @@ public:
 		return _visible;
 	}
 
-	inline void toggleVisibility() noexcept
-	{
-		_visible = !_visible;
-	}
-
-	inline void show() noexcept
-	{
-		_visible = true;
-	}
-
-	inline void hide() noexcept
-	{
-		_visible = false;
-	}
-
-	inline bool focused() noexcept
+	inline bool focused() const noexcept
 	{
 		return _focused;
+	}
+
+	inline void toggleVisible() noexcept
+	{
+		_visible = !_visible;
 	}
 
 	inline void toggleFocus() noexcept
@@ -151,19 +141,64 @@ public:
 		_focused = !_focused;
 	}
 
-	inline void startFocus() noexcept
+	inline void setVisible() noexcept
+	{
+		_visible = true;
+	}
+
+	inline void setFocus() noexcept
 	{
 		_focused = true;
 	}
 
-	inline void stopFocus() noexcept
+	inline void unsetVisible() noexcept
+	{
+		_visible = false;
+	}
+
+	inline void unsetFocus() noexcept
 	{
 		_focused = false;
 	}
 
-	void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget))
+	inline void toggleVisibility() noexcept
 	{
-		TXT_CAST_ARG(txt_widget_t, widget);
+		toggleVisible();
+	}
+
+	inline void show() noexcept
+	{
+		setVisible();
+	}
+
+	inline void hide() noexcept
+	{
+		unsetVisible();
+	}
+
+	inline void focus() noexcept
+	{
+		setFocus();
+	}
+
+	inline void unfocus() noexcept
+	{
+		unsetFocus();
+	}
+
+	inline void setFocused() noexcept
+	{
+		setFocus();
+	}
+
+	inline void unsetFocused() noexcept
+	{
+		unsetFocus();
+	}
+
+	inline void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget))
+	{
+		TXT_CAST_ARG(Widget, widget);
 
 		widget->widget_class->size_calc(widget);
 	}
@@ -174,20 +209,18 @@ public:
 	void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b);
 	void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
 	void TXT_LayoutWidget(TXT_UNCAST_ARG(widget));
-	int TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
-	int TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
+	bool TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
+	bool TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
 	void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), bool focused);
-	void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, TxtWidgetSignalFunc func, void* user_data);
-	void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align);
+	void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, WidgetSignalFunc func, void* user_data);
+	void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), AlignHorizontal horiz_align);
 	int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
-	int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
+	bool TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
 	void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
-	int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
+	bool TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
 };
 
-} /* END NAMESPACE CUDADOOM::TXT */
-
-void TXT_InitWidget(TXT_UNCAST_ARG(widget), txt_widget_class_t* widget_class);
+void TXT_InitWidget(TXT_UNCAST_ARG(widget), WidgetClass* widget_class);
 void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget));
 void TXT_DrawWidget(TXT_UNCAST_ARG(widget));
 void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char* signal_name);
@@ -195,8 +228,8 @@ int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key);
 void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b);
 void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
 void TXT_LayoutWidget(TXT_UNCAST_ARG(widget));
-int TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
-int TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
+bool TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
+bool TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
 void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), bool focused);
 
 /**
@@ -207,7 +240,7 @@ void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), bool focused);
  * @param func			The callback function to invoke.
  * @param user_data	User-specified pointer to pass to the callback function.
  */
-void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, TxtWidgetSignalFunc func, void* user_data);
+void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, WidgetSignalFunc func, void* user_data);
 
 /**
  * Set the policy for how a widget should be aligned within a table.
@@ -216,7 +249,7 @@ void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, TxtWidge
  * @param widget		The widget.
  * @param horiz_align The alignment to use.
  */
-void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align);
+void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), AlignHorizontal horiz_align);
 
 /**
  * Query whether a widget is selectable with the cursor.
@@ -224,7 +257,7 @@ void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), txt_horiz_align_t horiz_align);
  * @param widget		The widget.
  * @return				Non-zero if the widget is selectable.
  */
-int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
+bool TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
 
 /**
  * Query whether the mouse is hovering over the specified widget.
@@ -232,7 +265,7 @@ int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
  * @param widget		The widget.
  * @return				Non-zero if the mouse cursor is over the widget.
  */
-int TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
+bool TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
 
 /**
  * Set the background to draw the specified widget, depending on
@@ -249,26 +282,24 @@ void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
  * @param haystack		The widget that might contain needle.
  * @param needle		The widget being queried.
  */
-int TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
+bool TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
 
-using TxtWidgetSizeCalc = CUDADOOM::TXT::WidgetSizeCalc;
-using TxtWidgetDrawer = CUDADOOM::TXT::WidgetDrawer;
-using TxtWidgetDestroy = CUDADOOM::TXT::WidgetDestroy;
-using TxtWidgetKeyPress = CUDADOOM::TXT::WidgetKeyPress;
-using TxtWidgetSignalFunc = CUDADOOM::TXT::WidgetSignalFunc;
-using TxtMousePressFunc = CUDADOOM::TXT::MousePressFunc;
-using TxtWidgetLayoutFunc = CUDADOOM::TXT::WidgetLayoutFunc;
-using TxtWidgetSelectableFunc = CUDADOOM::TXT::WidgetSelectableFunc;
-using TxtWidgetFocusFunc = CUDADOOM::TXT::WidgetFocusFunc;
+} /* END NAMESPACE cudadoom::txt */
 
-using txt_callback_t = CUDADOOM::TXT::CallbackEntry;
-using txt_callback_s = CUDADOOM::TXT::CallbackEntry;
+//using TxtWidgetSizeCalc = cudadoom::txt::WidgetSizeCalc;
+//using TxtWidgetDrawer = cudadoom::txt::WidgetDrawer;
+//using TxtWidgetDestroy = cudadoom::txt::WidgetDestroy;
+//using TxtWidgetKeyPress = cudadoom::txt::WidgetKeyPress;
+//using TxtWidgetSignalFunc = cudadoom::txt::WidgetSignalFunc;
+//using TxtMousePressFunc = cudadoom::txt::MousePressFunc;
+//using TxtWidgetLayoutFunc = cudadoom::txt::WidgetLayoutFunc;
+//using TxtWidgetSelectableFunc = cudadoom::txt::WidgetSelectableFunc;
+//using TxtWidgetFocusFunc = cudadoom::txt::WidgetFocusFunc;
 
-using txt_callback_table_t = CUDADOOM::TXT::CallbackTable;
-using txt_callback_table_s = CUDADOOM::TXT::CallbackTable;
+//using txt_callback_t = cudadoom::txt::CallbackEntry;
 
-using txt_widget_class_t = CUDADOOM::TXT::WidgetClass;
-using txt_widget_class_s = CUDADOOM::TXT::WidgetClass;
+//using txt_callback_table_t = cudadoom::txt::CallbackTable;
 
-using txt_widget_s = CUDADOOM::TXT::Widget;
-using txt_widget_t = CUDADOOM::TXT::Widget;
+//using cudadoom::txt::WidgetClass = cudadoom::txt::WidgetClass;
+
+//using cudadoom::txt::Widget = cudadoom::txt::Widget;

@@ -47,7 +47,7 @@ typedef struct
 	int speed;
 } animdef_t;
 
-#define	MAXANIMS		32
+#define MAXANIMS		32
 
 extern anim_t anims[MAXANIMS], *lastanim;
 extern int *TerrainTypes;
@@ -55,12 +55,12 @@ extern int *TerrainTypes;
 //
 //		Animating line specials
 //
-#define	MAXLINEANIMS		64*256
+#define MAXLINEANIMS		64*256
 extern short numlinespecials;
 extern line_t *linespeciallist[MAXLINEANIMS];
 
 //		Define values for map objects
-#define	MO_TELEPORTMAN		14
+#define MO_TELEPORTMAN		14
 
 // at game start
 void P_InitPicAnims();
@@ -139,9 +139,9 @@ typedef struct
 } glow_t;
 
 #define GLOWSPEED		8
-#define	STROBEBRIGHT	5
-#define	FASTDARK		15
-#define	SLOWDARK		35
+#define STROBEBRIGHT	5
+#define FASTDARK		15
+#define SLOWDARK		35
 
 void T_LightFlash(lightflash_t * flash);
 void P_SpawnLightFlash(sector_t * sector);
@@ -183,8 +183,8 @@ typedef struct
 	void *soundorg;
 } button_t;
 
-#define	MAXSWITCHES	50		// max # of wall switches in a level
-#define	MAXBUTTONS	16		// 4 players, 4 buttons each at once, max.
+#define MAXSWITCHES	50		// max # of wall switches in a level
+#define MAXBUTTONS	16		// 4 players, 4 buttons each at once, max.
 #define BUTTONTIME	35		// 1 second
 
 extern button_t buttonlist[MAXBUTTONS];
@@ -231,9 +231,9 @@ typedef struct
 	plattype_e type;
 } plat_t;
 
-#define	PLATWAIT	3
-#define	PLATSPEED	FRACUNIT
-#define	MAXPLATS	30*256
+#define PLATWAIT	3
+#define PLATSPEED	FRACUNIT
+#define MAXPLATS	30*256
 
 extern plat_t *activeplats[MAXPLATS];
 
@@ -273,8 +273,8 @@ typedef struct
 	int topcountdown;			// when it reaches 0, start going down
 } vldoor_t;
 
-#define	VDOORSPEED	FRACUNIT*2
-#define	VDOORWAIT		150
+#define VDOORSPEED	FRACUNIT*2
+#define VDOORWAIT		150
 
 void EV_VerticalDoor(line_t * line, mobj_t * thing);
 int EV_DoDoor(line_t * line, vldoor_e type, fixed_t speed);
@@ -311,8 +311,8 @@ typedef struct
 	int olddirection;
 } ceiling_t;
 
-#define	CEILSPEED		FRACUNIT
-#define	CEILWAIT		150
+#define CEILSPEED		FRACUNIT
+#define CEILWAIT		150
 #define MAXCEILINGS		30
 
 extern ceiling_t *activeceilings[MAXCEILINGS];
@@ -361,7 +361,7 @@ typedef struct
 	fixed_t speed;
 } floormove_t;
 
-#define	FLOORSPEED	FRACUNIT
+#define FLOORSPEED	FRACUNIT
 
 typedef enum
 {

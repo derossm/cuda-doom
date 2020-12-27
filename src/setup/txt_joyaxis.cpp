@@ -450,7 +450,7 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
 	}
 
 	TXT_SetWidgetBG(joystick_axis);
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 
 	TXT_DrawString(buf);
 
@@ -495,7 +495,7 @@ static void TXT_JoystickAxisMousePress(TXT_UNCAST_ARG(widget),
 	}
 }
 
-txt_widget_class_t txt_joystick_axis_class =
+WidgetClass txt_joystick_axis_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_JoystickAxisSizeCalc,
@@ -511,7 +511,7 @@ txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert,
 {
 	txt_joystick_axis_t *joystick_axis;
 
-	joystick_axis = malloc(sizeof(txt_joystick_axis_t));
+	joystick_axis = static_cast<decltype(joystick_axis)>(malloc(sizeof(txt_joystick_axis_t)));
 
 	TXT_InitWidget(joystick_axis, &txt_joystick_axis_class);
 	joystick_axis->axis = axis;

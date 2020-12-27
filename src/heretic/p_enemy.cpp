@@ -236,7 +236,7 @@ fixed_t xspeed[8] =
 fixed_t yspeed[8] =
 	{ 0, 47000, FRACUNIT, 47000, 0, -47000, -FRACUNIT, -47000 };
 
-#define	MAXSPECIALCROSS		8
+#define MAXSPECIALCROSS		8
 extern line_t **spechit; // [crispy] remove SPECHIT limit
 extern int numspechit;
 

@@ -454,7 +454,7 @@ void P_WriteExtendedSaveGameData ()
 {
 	int i;
 
-	line = malloc(MAX_LINE_LEN);
+	line = static_cast<decltype(line)>(malloc(MAX_LINE_LEN));
 
 	for (i = 0; i < arrlen(extsavegdata); i++)
 	{
@@ -494,8 +494,8 @@ void P_ReadExtendedSaveGameData (int pass)
 	byte episode, map;
 	int lumpnum = -1;
 
-	line = malloc(MAX_LINE_LEN);
-	string = malloc(MAX_STRING_LEN);
+	line = static_cast<decltype(line)>(malloc(MAX_LINE_LEN));
+	string = static_cast<decltype(string)>(malloc(MAX_STRING_LEN));
 
 	// [crispy] two-pass reading of extended savegame data
 	if (pass == 1)

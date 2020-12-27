@@ -183,7 +183,7 @@ typedef PACKED_STRUCT (
 // BSP node structure.
 
 // Indicate a leaf.
-#define	NF_SUBSECTOR	0x8000
+#define NF_SUBSECTOR	0x8000
 
 typedef PACKED_STRUCT (
 {

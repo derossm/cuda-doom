@@ -220,7 +220,7 @@ static char		savename[256]; // [crispy] moved here, made static
 static int		savegameslot;
 static char		savedescription[32];
 
-#define	BODYQUESIZE	32
+#define BODYQUESIZE	32
 
 mobj_t*		bodyque[BODYQUESIZE];
 int		bodyqueslot;
@@ -1078,7 +1078,6 @@ bool G_Responder (event_t* ev)
 	return false;
 }
 
-
 // [crispy] re-read game parameters from command line
 static void G_ReadGameParms()
 {
@@ -1097,26 +1096,19 @@ static void G_CrispyScreenShot()
 	crispy->screenshotmsg = 2;
 }
 
-//
-// G_Ticker
 // Make ticcmd_ts for the players.
-//
 void G_Ticker()
 {
-	int		i;
-	int		buf;
-	ticcmd_t*	cmd;
-
 	// do player reborns if needed
-	for (i=0 ; i<MAXPLAYERS ; i++)
-	if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_REBORN)
-		G_DoReborn(i);
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
+		if (playeringame[i] && players[i].playerstate == PlayerState_t::PST_REBORN)
+			G_DoReborn(i);
 
 	// do things to change the game state
 	while (gameaction != ga_nothing)
 	{
-	switch (gameaction)
-	{
+		switch (gameaction)
+		{
 		case ga_loadlevel:
 		G_DoLoadLevel();
 		break;
@@ -1146,122 +1138,127 @@ void G_Ticker()
 		G_DoWorldDone();
 		break;
 		case ga_screenshot:
-		// [crispy] redraw view without weapons and HUD
-		if (gamestate == GameState_t::GS_LEVEL && (crispy->cleanscreenshot || crispy->screenshotmsg == 1))
-		{
-		crispy->screenshotmsg = 4;
-		crispy->post_rendering_hook = G_CrispyScreenShot;
-		}
-		else
-		{
-		G_CrispyScreenShot();
-		}
-		gameaction = ga_nothing;
-		break;
+			// [crispy] redraw view without weapons and HUD
+			if (gamestate == GameState_t::GS_LEVEL && (crispy->cleanscreenshot || crispy->screenshotmsg == 1))
+			{
+				crispy->screenshotmsg = 4;
+				crispy->post_rendering_hook = G_CrispyScreenShot;
+			}
+			else
+			{
+				G_CrispyScreenShot();
+			}
+			gameaction = ga_nothing;
+			break;
 		case ga_nothing:
-		break;
+			break;
+		}
 	}
-	}
 
-	// get commands, check consistancy,
-	// and build new consistancy check
-	buf = (gametic/ticdup)%BACKUPTICS;
+	// get commands, check consistancy, and build new consistancy check
+	auto buf = (gametic/ticdup)%BACKUPTICS;
 
-	for (i=0 ; i<MAXPLAYERS ; i++)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
-	if (playeringame[i])
-	{
-		cmd = &players[i].cmd;
+		if (playeringame[i])
+		{
+			auto cmd = &players[i].cmd;
 
-		memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
+			memcpy(cmd, &netcmds[i], sizeof(ticcmd_t));
 
-		if (demoplayback)
-		G_ReadDemoTiccmd(cmd);
-		// [crispy] do not record tics while still playing back in demo continue mode
-		if (demorecording && !demoplayback)
-		G_WriteDemoTiccmd(cmd);
+			if (demoplayback)
+			{
+				G_ReadDemoTiccmd(cmd);
+			}
 
-		// check for turbo cheats
+			// [crispy] do not record tics while still playing back in demo continue mode
+			if (demorecording && !demoplayback)
+			{
+				G_WriteDemoTiccmd(cmd);
+			}
 
-			// check ~ 4 seconds whether to display the turbo message.
-			// store if the turbo threshold was exceeded in any tics
-			// over the past 4 seconds. offset the checking period
-			// for each player so messages are not displayed at the
-			// same time.
+			// check for turbo cheats
 
+			// check ~ 4 seconds whether to display the turbo message. store if the turbo threshold was exceeded in any tics
+			// over the past 4 seconds. offset the checking period for each player so messages are not displayed at the same time.
 			if (cmd->forwardmove > TURBOTHRESHOLD)
 			{
 				turbodetected[i] = true;
 			}
 
-			if ((gametic & 31) == 0
-				&& ((gametic >> 5) % MAXPLAYERS) == i
-				&& turbodetected[i])
+			if ((gametic & 31) == 0 && ((gametic >> 5) % MAXPLAYERS) == i && turbodetected[i])
 			{
 				static char turbomessage[80];
 				extern char *player_names[4];
-				M_snprintf(turbomessage, sizeof(turbomessage),
-							"%s is turbo!", player_names[i]);
+				M_snprintf(turbomessage, sizeof(turbomessage), "%s is turbo!", player_names[i]);
 				players[consoleplayer].message = turbomessage;
 				turbodetected[i] = false;
 			}
 
-		if (netgame && !netdemo && !(gametic%ticdup) )
-		{
-		if (gametic > BACKUPTICS
-			&& consistancy[i][buf] != cmd->consistancy)
-		{
-			I_Error("consistency failure (%i should be %i)",
-					cmd->consistancy, consistancy[i][buf]);
+			if (netgame && !netdemo && !(gametic%ticdup))
+			{
+				if (gametic > BACKUPTICS && consistancy[i][buf] != cmd->consistancy)
+				{
+					I_Error("consistency failure (%i should be %i)", cmd->consistancy, consistancy[i][buf]);
+				}
+				if (players[i].mo)
+				{
+					consistancy[i][buf] = players[i].mo->x;
+				}
+				else
+				{
+					consistancy[i][buf] = rndindex;
+				}
+			}
 		}
-		if (players[i].mo)
-			consistancy[i][buf] = players[i].mo->x;
-		else
-			consistancy[i][buf] = rndindex;
-		}
-	}
 	}
 
 	// check for special buttons
-	for (i=0 ; i<MAXPLAYERS ; i++)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
-	if (playeringame[i])
-	{
-		if (players[i].cmd.buttons & BT_SPECIAL)
+		if (playeringame[i])
 		{
-		switch (players[i].cmd.buttons & BT_SPECIALMASK)
-		{
-			case BTS_PAUSE:
-			paused ^= 1;
-			if (paused)
-			S_PauseSound();
-			else
-			// [crispy] Fixed bug when music was hearable with zero volume
-			if (musicVolume)
-			S_ResumeSound();
-			break;
-
-			case BTS_SAVEGAME:
-			// [crispy] never override savegames by demo playback
-			if (demoplayback)
-			break;
-			if (!savedescription[0])
+			if (players[i].cmd.buttons & BT_SPECIAL)
+			{
+				switch (players[i].cmd.buttons & BT_SPECIALMASK)
+				{
+				case buttoncode_t::BTS_PAUSE:
+					paused ^= 1;
+					if (paused)
 					{
-						M_StringCopy(savedescription, "NET GAME",
-										sizeof(savedescription));
+						S_PauseSound();
+					}
+					// [crispy] Fixed bug when music was hearable with zero volume
+					else if (musicVolume)
+					{
+						S_ResumeSound();
 					}
 
-			savegameslot =
-			(players[i].cmd.buttons & BTS_SAVEMASK)>>BTS_SAVESHIFT;
-			gameaction = ga_savegame;
-			// [crispy] un-pause immediately after saving
-			// (impossible to send save and pause specials within the same tic)
-			if (demorecording && paused)
-			sendpause = true;
-			break;
+					break;
+
+				case buttoncode_t::BTS_SAVEGAME:
+					// [crispy] never override savegames by demo playback
+					if (demoplayback)
+					{
+						break;
+					}
+
+					if (!savedescription[0])
+					{
+						M_StringCopy(savedescription, "NET GAME", sizeof(savedescription));
+					}
+
+					savegameslot =
+					(players[i].cmd.buttons & buttoncode_t::BTS_SAVEMASK)>>buttoncode_t::BTS_SAVESHIFT;
+					gameaction = ga_savegame;
+					// [crispy] un-pause immediately after saving
+					// (impossible to send save and pause specials within the same tic)
+					if (demorecording && paused)
+					sendpause = true;
+					break;
+				}
+			}
 		}
-		}
-	}
 	}
 
 	// Have we just finished displaying an intermission screen?
@@ -2571,22 +2568,22 @@ void G_ReadDemoTiccmd(ticcmd_t* cmd)
 	return;
 	}
 
-	cmd->forwardmove = ((signed char)*demo_p++);
-	cmd->sidemove = ((signed char)*demo_p++);
+	cmd->forwardmove = ((signed char)*(demo_p++));
+	cmd->sidemove = ((signed char)*(demo_p++));
 
 	// If this is a longtics demo, read back in higher resolution
 
 	if (longtics)
 	{
-		cmd->angleturn = *demo_p++;
-		cmd->angleturn |= (*demo_p++) << 8;
+		cmd->angleturn = *(demo_p++);
+		cmd->angleturn |= (*(demo_p++)) << 8;
 	}
 	else
 	{
-		cmd->angleturn = ((unsigned char) *demo_p++)<<8;
+		cmd->angleturn = ((unsigned char) *(demo_p++))<<8;
 	}
 
-	cmd->buttons = (unsigned char)*demo_p++;
+	cmd->buttons = (unsigned char)*(demo_p++);
 
 	// [crispy] increase demo tics counter
 	// applies to both recording and playback,
@@ -2635,22 +2632,22 @@ void G_WriteDemoTiccmd(ticcmd_t* cmd)
 
 	demo_start = demo_p;
 
-	*demo_p++ = cmd->forwardmove;
-	*demo_p++ = cmd->sidemove;
+	*(demo_p++) = cmd->forwardmove;
+	*(demo_p++) = cmd->sidemove;
 
 	// If this is a longtics demo, record in higher resolution
 
 	if (longtics)
 	{
-		*demo_p++ = (cmd->angleturn & 0xff);
-		*demo_p++ = (cmd->angleturn >> 8) & 0xff;
+		*(demo_p++) = (cmd->angleturn & 0xff);
+		*(demo_p++) = (cmd->angleturn >> 8) & 0xff;
 	}
 	else
 	{
-		*demo_p++ = cmd->angleturn >> 8;
+		*(demo_p++) = cmd->angleturn >> 8;
 	}
 
-	*demo_p++ = cmd->buttons;
+	*(demo_p++) = cmd->buttons;
 
 	// reset demo pointer back
 	demo_p = demo_start;
@@ -2767,27 +2764,27 @@ void G_BeginRecording()
 
 	if (longtics)
 	{
-		*demo_p++ = DOOM_191_VERSION;
+		*(demo_p++) = DOOM_191_VERSION;
 	}
 	else if (gameversion > exe_doom_1_2)
 	{
-		*demo_p++ = G_VanillaVersionCode();
+		*(demo_p++) = G_VanillaVersionCode();
 	}
 
-	*demo_p++ = gameskill;
-	*demo_p++ = gameepisode;
-	*demo_p++ = gamemap;
+	*(demo_p++) = gameskill;
+	*(demo_p++) = gameepisode;
+	*(demo_p++) = gamemap;
 	if (longtics || gameversion > exe_doom_1_2)
 	{
-		*demo_p++ = deathmatch;
-		*demo_p++ = respawnparm;
-		*demo_p++ = fastparm;
-		*demo_p++ = nomonsters;
-		*demo_p++ = consoleplayer;
+		*(demo_p++) = deathmatch;
+		*(demo_p++) = respawnparm;
+		*(demo_p++) = fastparm;
+		*(demo_p++) = nomonsters;
+		*(demo_p++) = consoleplayer;
 	}
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
-	*demo_p++ = playeringame[i];
+	*(demo_p++) = playeringame[i];
 }
 
 
@@ -2880,7 +2877,7 @@ void G_DoPlayDemo()
 	return;
 	}
 
-	demoversion = *demo_p++;
+	demoversion = *(demo_p++);
 
 	if (demoversion >= 0 && demoversion <= 4)
 	{
@@ -2924,16 +2921,16 @@ void G_DoPlayDemo()
 		}
 	}
 
-	skill = *demo_p++;
-	episode = *demo_p++;
-	map = *demo_p++;
+	skill = *(demo_p++);
+	episode = *(demo_p++);
+	map = *(demo_p++);
 	if (!olddemo)
 	{
-		deathmatch = *demo_p++;
-		respawnparm = *demo_p++;
-		fastparm = *demo_p++;
-		nomonsters = *demo_p++;
-		consoleplayer = *demo_p++;
+		deathmatch = *(demo_p++);
+		respawnparm = *(demo_p++);
+		fastparm = *(demo_p++);
+		nomonsters = *(demo_p++);
+		consoleplayer = *(demo_p++);
 	}
 	else
 	{
@@ -2946,7 +2943,7 @@ void G_DoPlayDemo()
 
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
-	playeringame[i] = *demo_p++;
+	playeringame[i] = *(demo_p++);
 
 	if (playeringame[1] || M_CheckParm("-solo-net") > 0
 						|| M_CheckParm("-netdemo") > 0)
@@ -3110,7 +3107,7 @@ bool G_CheckDemoStatus()
 
 	if (demorecording)
 	{
-	*demo_p++ = DEMOMARKER;
+	*(demo_p++) = DEMOMARKER;
 	M_WriteFile(demoname, demobuffer, demo_p - demobuffer);
 	Z_Free(demobuffer);
 	demorecording = false;

@@ -368,7 +368,7 @@ void R_DrawSpan()
 	do
 	{
 		spot = ((yfrac >> (16 - 6)) & (63 * 64)) + ((xfrac >> 16) & 63);
-		*dest++ = ds_colormap[ds_source[spot]];
+		*(dest++) = ds_colormap[ds_source[spot]];
 		xfrac += ds_xstep;
 		yfrac += ds_ystep;
 	}
@@ -396,7 +396,7 @@ void R_DrawSpanLow()
 	do
 	{
 		spot = ((yfrac >> (16 - 6)) & (63 * 64)) + ((xfrac >> 16) & 63);
-		*dest++ = ds_colormap[ds_source[spot]];
+		*(dest++) = ds_colormap[ds_source[spot]];
 		xfrac += ds_xstep;
 		yfrac += ds_ystep;
 	}

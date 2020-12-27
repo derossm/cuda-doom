@@ -268,7 +268,7 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 	if (line->special == 11)
 	sound = sfx_swtchx;
 
-	for (i = 0;i < numswitches*2;i++)
+	for (i = 0;i < numswitches*(2;i++))
 	{
 	if (switchlist[i] == texTop)
 	{

@@ -126,7 +126,7 @@ void R_ClipSolidWallSegment(int first, int last)
 		return;					// post just extended past the bottom of one post
 
 	while (next++ != newend)	// remove a post
-		*++start = *next;
+		*(++)start = *next;
 	newend = start + 1;
 }
 
@@ -453,7 +453,7 @@ void R_Subsector(int num)
 		polySeg = sub->poly->segs;
 		while (polyCount--)
 		{
-			R_AddLine(*polySeg++);
+			R_AddLine(*(polySeg++));
 		}
 	}
 	while (count--)

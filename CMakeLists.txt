@@ -25,15 +25,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(MSVC)
 	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
 	add_compile_options(
-		"/Zc:__cplusplus" "/experimental:module" "/permissive-" "/Zc:preprocessor"
-		"/Zc:wchar_t" "/W4" "/Zc:inline" "/Od" "/MDd" "/Zc:forScope" "/fp:precise"
-		"/arch:AVX2" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-")
+		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-"
+		"/Zc:__cplusplus" "/permissive-" "/Zc:preprocessor" "/experimental:module" "/MD"
+		"/W4" "/Od" "/arch:AVX2"
+		)
 	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX")
 else()
 	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 endif()
 
-set(VCPKG_DIR "G:/dev/vcpkg/packages/")
+set(VCPKG_DIR "G:/dev/vcpkg/packages")
 set(ARCHITECTURE "_x64-windows")
 
 # libm or fdlibm (Freely Distributable libm) : c math library IEEE 754 floating-point arithmetic

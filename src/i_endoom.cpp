@@ -33,41 +33,41 @@ void I_Endoom(byte *endoom_data)
 
 	// Set up text mode screen
 
-	TXT_Init();
+	cudadoom::txt::TXT_Init();
 
-	TXT_SetWindowTitle(PACKAGE_STRING);
+	cudadoom::txt::TXT_SetWindowTitle(PACKAGE_STRING);
 	// SDL2-TODO I_InitWindowTitle();
 	// SDL2-TODO I_InitWindowIcon();
 
 	// Write the data to the screen memory
 
-	screendata = TXT_GetScreenData();
+	screendata = cudadoom::txt::TXT_GetScreenData();
 
-	indent = (ENDOOM_W - TXT_SCREEN_W) / 2;
+	indent = (ENDOOM_W - cudadoom::txt::TXT_SCREEN_W) / 2;
 
-	for (y=0; y<TXT_SCREEN_H; ++y)
+	for (y=0; y<cudadoom::txt::TXT_SCREEN_H; ++y)
 	{
-		memcpy(screendata + (y * TXT_SCREEN_W * 2),
+		memcpy(screendata + (y * cudadoom::txt::TXT_SCREEN_W * 2),
 				endoom_data + (y * ENDOOM_W + indent) * 2,
-				TXT_SCREEN_W * 2);
+				cudadoom::txt::TXT_SCREEN_W * 2);
 	}
 
 	// Wait for a keypress
 
 	while (true)
 	{
-		TXT_UpdateScreen();
+		cudadoom::txt::TXT_UpdateScreen();
 
-		if (TXT_GetChar() > 0)
+		if (cudadoom::txt::TXT_GetChar() > 0)
 		{
 			break;
 		}
 
-		TXT_Sleep(0);
+		cudadoom::txt::TXT_Sleep(0);
 	}
 
 	// Shut down text mode screen
 
-	TXT_Shutdown();
+	cudadoom::txt::TXT_Shutdown();
 }
 

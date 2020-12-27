@@ -136,7 +136,7 @@ void F_TextWrite()
 		auto ch{finaletext};
 		for (auto count{(finalecount - 10) / TEXTSPEED}; count > 0; --count)
 		{
-			auto c{*ch++};
+			auto c{*(ch++)};
 			if (!c)
 			{
 				break;
@@ -188,7 +188,7 @@ void F_DrawPatchCol(int x, patch_t * patch, int col)
 
 		while (count--)
 		{
-			*dest = *source++;
+			*dest = *(source++);
 			dest += SCREENWIDTH;
 		}
 		column = (column_t *) ((byte *) column + column->length + 4);

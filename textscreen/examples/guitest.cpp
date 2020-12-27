@@ -33,236 +33,236 @@ txt_label_t* value_label;
 txt_window_t* firstwin;
 int cheesy;
 
-void ClosePwnBox(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
+void ClosePwnBox(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(window))
 {
-	TXT_CAST_ARG(txt_window_t, window);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_window_t, window);
 
-	TXT_CloseWindow(window);
+	cudadoom::txt::TXT_CloseWindow(window);
 }
 
-void PwnBox(TXT_UNCAST_ARG(widget), void* user_data)
+void PwnBox(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	txt_window_t* window;
-	txt_window_action_t* close_button;
+	cudadoom::txt::txt_window_t* window;
+	cudadoom::txt::txt_window_action_t* close_button;
 
-	window = TXT_NewWindow("Pwned!");
-	TXT_AddWidget(window, TXT_NewLabel(" BOOM! HEADSHOT! "));
+	window = cudadoom::txt::TXT_NewWindow("Pwned!");
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel(" BOOM! HEADSHOT! "));
 
-	close_button = TXT_NewWindowAction(KEY_ENTER, "Close");
-	TXT_SignalConnect(close_button, "pressed", ClosePwnBox, window);
+	close_button = cudadoom::txt::TXT_NewWindowAction(KEY_ENTER, "Close");
+	cudadoom::txt::TXT_SignalConnect(close_button, "pressed", ClosePwnBox, window);
 
-	TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
-	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, close_button);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_LEFT, NULL);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_RIGHT, close_button);
 }
 
-void UpdateLabel(TXT_UNCAST_ARG(widget), void* user_data)
+void UpdateLabel(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
 	char buf[40];
 
-	TXT_StringCopy(buf, " Current value: ", sizeof(buf));
+	cudadoom::txt::TXT_StringCopy(buf, " Current value: ", sizeof(buf));
 	if (cheesy)
 	{
-		TXT_StringConcat(buf, "Cheesy ", sizeof(buf));
+		cudadoom::txt::TXT_StringConcat(buf, "Cheesy ", sizeof(buf));
 	}
-	TXT_StringConcat(buf, radio_values[radiobutton_value], sizeof(buf));
-	TXT_StringConcat(buf, "\n", sizeof(buf));
+	cudadoom::txt::TXT_StringConcat(buf, radio_values[radiobutton_value], sizeof(buf));
+	cudadoom::txt::TXT_StringConcat(buf, "\n", sizeof(buf));
 
-	TXT_SetLabel(value_label, buf);
+	cudadoom::txt::TXT_SetLabel(value_label, buf);
 }
 
-void CloseWindow(TXT_UNCAST_ARG(button), void* user_data)
+void CloseWindow(cudadoom::txt::TXT_UNCAST_ARG(button), void* user_data)
 {
-	TXT_CloseWindow(firstwin);
+	cudadoom::txt::TXT_CloseWindow(firstwin);
 }
 
-void UnicodeWindow(TXT_UNCAST_ARG(widget), void* user_data)
+void UnicodeWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
 	static const char *strings[] = {"lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"};
 
 	static int var1;
 	static int var2;
-	txt_window_t* window = TXT_NewWindow("Questo è in Italiano");
+	cudadoom::txt::txt_window_t* window = cudadoom::txt::TXT_NewWindow("Questo è in Italiano");
 
-	TXT_AddWidgets(window,
-					TXT_NewButton("Questo è un tasto"),
-					TXT_NewCheckBox("Questo è un checkbox", &var1),
-					TXT_NewDropdownList(&var2, strings, 7),
-					TXT_NewSeparator("Questo è un separatore"),
-					TXT_NewLabel("Leggi questo, è pieno di\ninformazioni interessanti"),
-					TXT_NewRadioButton("Ma questo non è un radio??", &var1, 0),
+	cudadoom::txt::TXT_AddWidgets(window,
+					cudadoom::txt::TXT_NewButton("Questo è un tasto"),
+					cudadoom::txt::TXT_NewCheckBox("Questo è un checkbox", &var1),
+					cudadoom::txt::TXT_NewDropdownList(&var2, strings, 7),
+					cudadoom::txt::TXT_NewSeparator("Questo è un separatore"),
+					cudadoom::txt::TXT_NewLabel("Leggi questo, è pieno di\ninformazioni interessanti"),
+					cudadoom::txt::TXT_NewRadioButton("Ma questo non è un radio??", &var1, 0),
 					NULL);
 
-	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, TXT_NewWindowAction(KEY_ENTER, "Nullità"));
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_RIGHT, cudadoom::txt::TXT_NewWindowAction(KEY_ENTER, "Nullità"));
 
 }
 
 void SetupWindow(void)
 {
-	txt_window_t* window;
-	txt_table_t* table;
-	txt_table_t* rightpane;
-	txt_checkbox_t *cheesy_checkbox;
-	txt_window_action_t* pwn;
-	txt_label_t* toplabel;
+	cudadoom::txt::txt_window_t* window;
+	cudadoom::txt::txt_table_t* table;
+	cudadoom::txt::txt_table_t* rightpane;
+	cudadoom::txt::txt_checkbox_t *cheesy_checkbox;
+	cudadoom::txt::txt_window_action_t* pwn;
+	cudadoom::txt::txt_label_t* toplabel;
 	char buf[100];
 
-	window = TXT_NewWindow("Window test");
+	window = cudadoom::txt::TXT_NewWindow("Window test");
 
-	TXT_SetWindowHelpURL(window, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+	cudadoom::txt::TXT_SetWindowHelpURL(window, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 
-	TXT_AddWidget(window, TXT_NewSeparator("Main section"));
-	table = TXT_NewTable(3);
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewSeparator("Main section"));
+	table = cudadoom::txt::TXT_NewTable(3);
 
-	toplabel = TXT_NewLabel("This is a multiline label.\nA single label object contains\nall three of these lines.");
-	TXT_AddWidget(window, toplabel);
-	TXT_SetWidgetAlign(toplabel, TXT_HORIZ_CENTER);
+	toplabel = cudadoom::txt::TXT_NewLabel("This is a multiline label.\nA single label object contains\nall three of these lines.");
+	cudadoom::txt::TXT_AddWidget(window, toplabel);
+	cudadoom::txt::TXT_SetWidgetAlign(toplabel, cudadoom::txt::TXT_HORIZ_CENTER);
 
-	//TXT_AddWidget(window, TXT_NewScrollPane(15, 4, table));
-	TXT_AddWidget(window, table);
+	//cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewScrollPane(15, 4, table));
+	cudadoom::txt::TXT_AddWidget(window, table);
 
 	for (size_t i{0ull}; i<3; ++i)
 	{
-		TXT_snprintf(buf, sizeof(buf), "Option %i in a table:", i + 1);
-		TXT_AddWidget(table, TXT_NewLabel(buf));
-		TXT_snprintf(buf, sizeof(buf), " Button %i-1 ", i + 1);
-		TXT_AddWidget(table, TXT_NewButton(buf));
-		TXT_snprintf(buf, sizeof(buf), " Button %i-2 ", i + 1);
-		TXT_AddWidget(table, TXT_NewButton(buf));
+		cudadoom::txt::TXT_snprintf(buf, sizeof(buf), "Option %i in a table:", i + 1);
+		cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewLabel(buf));
+		cudadoom::txt::TXT_snprintf(buf, sizeof(buf), " Button %i-1 ", i + 1);
+		cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewButton(buf));
+		cudadoom::txt::TXT_snprintf(buf, sizeof(buf), " Button %i-2 ", i + 1);
+		cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewButton(buf));
 	}
 
-	TXT_AddWidgets(table,
-					TXT_NewLabel("Still the same table, but:\nThis label magically overflows\nacross multiple cells! Cool, huh?"),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewButton("Do nothing"),
-					TXT_TABLE_OVERFLOW_DOWN,
-					TXT_TABLE_OVERFLOW_DOWN,
-					TXT_NewButton2("Qualcosa?", UnicodeWindow, NULL),
+	cudadoom::txt::TXT_AddWidgets(table,
+					cudadoom::txt::TXT_NewLabel("Still the same table, but:\nThis label magically overflows\nacross multiple cells! Cool, huh?"),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewButton("Do nothing"),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_DOWN,
+					cudadoom::txt::TXT_TABLE_OVERFLOW_DOWN,
+					cudadoom::txt::TXT_NewButton2("Qualcosa?", UnicodeWindow, NULL),
 					NULL);
 
-	TXT_AddWidget(window, TXT_NewStrut(0, 1));
-	value_label = TXT_NewLabel("");
-	TXT_AddWidget(window, value_label);
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewStrut(0, 1));
+	value_label = cudadoom::txt::TXT_NewLabel("");
+	cudadoom::txt::TXT_AddWidget(window, value_label);
 
-	table = TXT_NewTable(2);
-	TXT_AddWidget(window, table);
-	TXT_SetWidgetAlign(table, TXT_HORIZ_CENTER);
+	table = cudadoom::txt::TXT_NewTable(2);
+	cudadoom::txt::TXT_AddWidget(window, table);
+	cudadoom::txt::TXT_SetWidgetAlign(table, cudadoom::txt::TXT_HORIZ_CENTER);
 
-	cheesy_checkbox = TXT_NewCheckBox("Cheesy", &cheesy);
-	TXT_AddWidget(table, cheesy_checkbox);
-	TXT_SignalConnect(cheesy_checkbox, "changed", UpdateLabel, NULL);
+	cheesy_checkbox = cudadoom::txt::TXT_NewCheckBox("Cheesy", &cheesy);
+	cudadoom::txt::TXT_AddWidget(table, cheesy_checkbox);
+	cudadoom::txt::TXT_SignalConnect(cheesy_checkbox, "changed", UpdateLabel, NULL);
 
-	rightpane = TXT_NewTable(1);
-	TXT_AddWidget(table, rightpane);
+	rightpane = cudadoom::txt::TXT_NewTable(1);
+	cudadoom::txt::TXT_AddWidget(table, rightpane);
 
 	for (size_t i{0}; i<3; ++i)
 	{
-		txt_radiobutton_t* rbut;
+		cudadoom::txt::txt_radiobutton_t* rbut;
 
-		rbut = TXT_NewRadioButton(radio_values[i], &radiobutton_value, i);
-		TXT_AddWidget(rightpane, rbut);
-		TXT_SignalConnect(rbut, "selected", UpdateLabel, NULL);
+		rbut = cudadoom::txt::TXT_NewRadioButton(radio_values[i], &radiobutton_value, i);
+		cudadoom::txt::TXT_AddWidget(rightpane, rbut);
+		cudadoom::txt::TXT_SignalConnect(rbut, "selected", UpdateLabel, NULL);
 	}
 
 	UpdateLabel(NULL, NULL);
 
-	TXT_AddWidget(window, TXT_NewButton2("Close Window", CloseWindow, NULL));
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewButton2("Close Window", CloseWindow, NULL));
 
-	pwn = TXT_NewWindowAction(KEY_F1, "PWN!");
-	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, pwn);
-	TXT_SignalConnect(pwn, "pressed", PwnBox, NULL);
+	pwn = cudadoom::txt::TXT_NewWindowAction(KEY_F1, "PWN!");
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_CENTER, pwn);
+	cudadoom::txt::TXT_SignalConnect(pwn, "pressed", PwnBox, NULL);
 
 	firstwin = window;
 }
 
 void Window2(void)
 {
-	txt_window_t* window;
-	txt_table_t* table;
-	txt_table_t* unselectable_table;
-	txt_scrollpane_t* scrollpane;
+	cudadoom::txt::txt_window_t* window;
+	cudadoom::txt::txt_table_t* table;
+	cudadoom::txt::txt_table_t* unselectable_table;
+	cudadoom::txt::txt_scrollpane_t* scrollpane;
 
-	window = TXT_NewWindow("Another test");
-	TXT_SetWindowPosition(window, TXT_HORIZ_RIGHT, TXT_VERT_TOP, TXT_SCREEN_W - 1, 1);
+	window = cudadoom::txt::TXT_NewWindow("Another test");
+	cudadoom::txt::TXT_SetWindowPosition(window, cudadoom::txt::TXT_HORIZ_RIGHT, cudadoom::txt::TXT_VERT_TOP, cudadoom::txt::TXT_SCREEN_W - 1, 1);
 
-	TXT_AddWidgets(window, TXT_NewScrollPane(40, 1, TXT_NewLabel("* Unselectable scroll pane *")), unselectable_table = TXT_NewTable(1), NULL);
+	cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewScrollPane(40, 1, cudadoom::txt::TXT_NewLabel("* Unselectable scroll pane *")), unselectable_table = cudadoom::txt::TXT_NewTable(1), NULL);
 
-	TXT_AddWidget(unselectable_table, TXT_NewLabel("* Unselectable table *"));
-	TXT_AddWidget(unselectable_table, TXT_NewLabel(
+	cudadoom::txt::TXT_AddWidget(unselectable_table, cudadoom::txt::TXT_NewLabel("* Unselectable table *"));
+	cudadoom::txt::TXT_AddWidget(unselectable_table, cudadoom::txt::TXT_NewLabel(
 		"This is a UTF-8 string:\n\xc3\x80 bient\xc3\xb4t na\xc3\xaet "
 		"\xc3\xa9v\xc3\xaaque \xc3\xa0 l'\xc5\x93uvre p\xc3\xa8re."));
 
-	TXT_AddWidget(window, TXT_NewSeparator("Input boxes"));
-	table = TXT_NewTable(2);
-	TXT_AddWidget(window, table);
-	TXT_AddWidgets(table,
-					TXT_NewLabel("String: "),
-					TXT_NewInputBox(&textbox_value, 20),
-					TXT_NewLabel("Int: "),
-					TXT_NewIntInputBox(&numbox_value, 10),
-					TXT_NewLabel("Spin control:"),
-					TXT_NewSpinControl(&numbox_value, 0, 15),
-					TXT_NewLabel("File:"),
-					TXT_NewFileSelector(&file_path, 28, "Select file:", extensions),
-					TXT_NewLabel("Directory:"),
-					TXT_NewFileSelector(&dir_path, 28, "Select directory:", TXT_DIRECTORY),
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewSeparator("Input boxes"));
+	table = cudadoom::txt::TXT_NewTable(2);
+	cudadoom::txt::TXT_AddWidget(window, table);
+	cudadoom::txt::TXT_AddWidgets(table,
+					cudadoom::txt::TXT_NewLabel("String: "),
+					cudadoom::txt::TXT_NewInputBox(&textbox_value, 20),
+					cudadoom::txt::TXT_NewLabel("Int: "),
+					cudadoom::txt::TXT_NewIntInputBox(&numbox_value, 10),
+					cudadoom::txt::TXT_NewLabel("Spin control:"),
+					cudadoom::txt::TXT_NewSpinControl(&numbox_value, 0, 15),
+					cudadoom::txt::TXT_NewLabel("File:"),
+					cudadoom::txt::TXT_NewFileSelector(&file_path, 28, "Select file:", extensions),
+					cudadoom::txt::TXT_NewLabel("Directory:"),
+					cudadoom::txt::TXT_NewFileSelector(&dir_path, 28, "Select directory:", cudadoom::txt::TXT_DIRECTORY),
 					NULL);
 
-	TXT_AddWidget(window, TXT_NewSeparator("Scroll pane test"));
-	scrollpane = TXT_NewScrollPane(40, 5, TXT_NewLabel(
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewSeparator("Scroll pane test"));
+	scrollpane = cudadoom::txt::TXT_NewScrollPane(40, 5, cudadoom::txt::TXT_NewLabel(
 		"This is a scrollable pane. The contents\nof this box are larger than the box\nitself, but it can be scrolled around\n"
 		"to explore the full contents.\n\nScrollable panes can be scrolled both\nvertically and horizontally. They\n"
 		"can contain any widget. The scroll bars\nappear automatically as needed.\n\n"
 		"This is a very long line of text that forces a horizontal scrollbar"
 	));
-	TXT_AddWidget(window, scrollpane);
+	cudadoom::txt::TXT_AddWidget(window, scrollpane);
 }
 
 void ScrollingMenu(void)
 {
-	txt_window_t *window;
-	txt_button_t *button;
-	txt_table_t *table;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_button_t *button;
+	cudadoom::txt::txt_table_t *table;
 
-	window = TXT_NewWindow("Scrollable menu");
+	window = cudadoom::txt::TXT_NewWindow("Scrollable menu");
 
-	table = TXT_NewTable(1);
+	table = cudadoom::txt::TXT_NewTable(1);
 
-	TXT_AddWidgets(table,
-					TXT_NewButton("Configure display"),
-					TXT_NewButton("Configure joystick"),
-					TXT_NewButton("Configure keyboard"),
-					TXT_NewButton("Configure mouse"),
-					TXT_NewButton("Configure sound"),
-					TXT_NewStrut(0, 1),
-					button = TXT_NewButton("Save Parameters and launch DOOM"),
-					TXT_NewStrut(0, 1),
-					TXT_NewButton("Start a network game"),
-					TXT_NewButton("Join a network game"),
-					TXT_NewButton("Multiplayer configuration"),
+	cudadoom::txt::TXT_AddWidgets(table,
+					cudadoom::txt::TXT_NewButton("Configure display"),
+					cudadoom::txt::TXT_NewButton("Configure joystick"),
+					cudadoom::txt::TXT_NewButton("Configure keyboard"),
+					cudadoom::txt::TXT_NewButton("Configure mouse"),
+					cudadoom::txt::TXT_NewButton("Configure sound"),
+					cudadoom::txt::TXT_NewStrut(0, 1),
+					button = cudadoom::txt::TXT_NewButton("Save Parameters and launch DOOM"),
+					cudadoom::txt::TXT_NewStrut(0, 1),
+					cudadoom::txt::TXT_NewButton("Start a network game"),
+					cudadoom::txt::TXT_NewButton("Join a network game"),
+					cudadoom::txt::TXT_NewButton("Multiplayer configuration"),
 					NULL);
 
-	TXT_SignalConnect(button, "pressed", PwnBox, NULL);
+	cudadoom::txt::TXT_SignalConnect(button, "pressed", PwnBox, NULL);
 
-	TXT_AddWidget(window, TXT_NewScrollPane(0, 6, table));
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewScrollPane(0, 6, table));
 }
 
 int main(int argc, char *argv[])
 {
-	if (!TXT_Init())
+	if (!cudadoom::txt::TXT_Init())
 	{
 		fprintf(stderr, "Failed to initialise GUI\n");
 		exit(-1);
 	}
 
-	TXT_SetDesktopTitle("Not Chocolate Doom Setup");
+	cudadoom::txt::TXT_SetDesktopTitle("Not Chocolate Doom Setup");
 
 	ScrollingMenu();
 	Window2();
 	SetupWindow();
 
-	TXT_GUIMainLoop();
+	cudadoom::txt::TXT_GUIMainLoop();
 
-	TXT_Shutdown();
+	cudadoom::txt::TXT_Shutdown();
 
 	return 0;
 }

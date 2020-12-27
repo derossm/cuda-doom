@@ -891,7 +891,7 @@ void R_DrawSpan()
 	xtemp = position>>26;
 	spot = xtemp | ytemp;
 	position += step;
-	*dest++ = colormap[source[spot]];
+	*(dest++) = colormap[source[spot]];
 	count--;
 	}
 }
@@ -1044,7 +1044,7 @@ void R_FillBackScreen()
 #else
 		for (auto x{0}; x < SCREENWIDTH ; ++x)
 		{
-			*dest++ = colormaps[src[((y&63)<<6) + (x&63)]];
+			*(dest++) = colormaps[src[((y&63)<<6) + (x&63)]];
 		}
 #endif
 	}

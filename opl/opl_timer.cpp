@@ -21,7 +21,7 @@ enum class thread_state_t
 {
 	THREAD_STATE_STOPPED,
 	THREAD_STATE_RUNNING,
-	THREAD_STATE_STOPPING,
+	THREAD_STATE_STOPPING
 };
 
 static SDL_Thread* timer_thread = nullptr;
@@ -34,23 +34,18 @@ static int opl_timer_paused;
 // Offset in microseconds to adjust time due to the fact that playback was paused.
 static uint64_t pause_offset = 0;
 
-// Queue of callbacks waiting to be invoked.
-// The callback queue mutex is held while the callback queue structure
-// or current_time is being accessed.
+// Queue of callbacks waiting to be invoked. The callback queue mutex is held while the callback queue structure or current_time is being accessed.
 static opl_callback_queue_t* callback_queue;
 static SDL_mutex* callback_queue_mutex;
 
-// The timer mutex is held while timer callback functions are being
-// invoked, so that the calling code can prevent clashes.
+// The timer mutex is held while timer callback functions are being invoked, so that the calling code can prevent clashes.
 static SDL_mutex* timer_mutex;
 
-// Returns true if there is a callback at the head of the queue ready
-// to be invoked. Otherwise, next_time is set to the time when the
-// timer thread must wake up again to check.
+// Returns true if there is a callback at the head of the queue ready to be invoked.
+// Otherwise, next_time is set to the time when the timer thread must wake up again to check.
 static int CallbackWaiting(uint64_t* next_time)
 {
-	// If paused, just wait in 50ms increments until unpaused.
-	// Update pause_offset so after we unpause, the callback times will be right.
+	// If paused, just wait in 50ms increments until unpaused. Update pause_offset so after we unpause, the callback times will be right.
 	if (opl_timer_paused)
 	{
 		*next_time = current_time + 50 * OPL_MS;
@@ -65,8 +60,7 @@ static int CallbackWaiting(uint64_t* next_time)
 		return 0;
 	}
 
-	// Read the time of the first callback in the queue.
-	// If the time for the callback has not yet arrived, we must sleep until the callback time.
+	// Read the time of the first callback in the queue. If the time for the callback has not yet arrived, we must sleep until the callback time.
 	*next_time = OPL_Queue_Peek(callback_queue) + pause_offset;
 
 	return *next_time <= current_time;
@@ -182,7 +176,7 @@ void OPL_Timer_StopThread()
 	FreeResources();
 }
 
-void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void* data)
+void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, delay_data_t* data)
 {
 	SDL_LockMutex(callback_queue_mutex);
 	OPL_Queue_Push(callback_queue, callback, data, current_time + us - pause_offset);

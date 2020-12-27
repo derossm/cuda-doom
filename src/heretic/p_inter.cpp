@@ -584,21 +584,21 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_ITEMHEALTH), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ITEMHEALTH), false);
 			break;
 		case SPR_SHLD:			// Item_Shield1
 			if (!P_GiveArmor(player, 1))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_ITEMSHIELD1), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ITEMSHIELD1), false);
 			break;
 		case SPR_SHD2:			// Item_Shield2
 			if (!P_GiveArmor(player, 2))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_ITEMSHIELD2), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ITEMSHIELD2), false);
 			break;
 		case SPR_BAGH:			// Item_BagOfHolding
 			if (!player->backpack)
@@ -614,21 +614,21 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			P_GiveAmmo(player, am_crossbow, AMMO_CBOW_WIMPY);
 			P_GiveAmmo(player, am_skullrod, AMMO_SKRD_WIMPY);
 			P_GiveAmmo(player, am_phoenixrod, AMMO_PHRD_WIMPY);
-			P_SetMessage(player, DEH_String(TXT_ITEMBAGOFHOLDING), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ITEMBAGOFHOLDING), false);
 			break;
 		case SPR_SPMP:			// Item_SuperMap
 			if (!P_GivePower(player, PowerType_t::pw_allmap))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_ITEMSUPERMAP), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ITEMSUPERMAP), false);
 			break;
 
 			// Keys
 		case SPR_BKYY:			// Key_Blue
 			if (!player->keys[key_blue])
 			{
-				P_SetMessage(player, DEH_String(TXT_GOTBLUEKEY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_GOTBLUEKEY), false);
 			}
 			P_GiveKey(player, key_blue);
 			sound = sfx_keyup;
@@ -640,7 +640,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 		case SPR_CKYY:			// Key_Yellow
 			if (!player->keys[key_yellow])
 			{
-				P_SetMessage(player, DEH_String(TXT_GOTYELLOWKEY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_GOTYELLOWKEY), false);
 			}
 			sound = sfx_keyup;
 			P_GiveKey(player, key_yellow);
@@ -652,7 +652,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 		case SPR_AKYY:			// Key_Green
 			if (!player->keys[key_green])
 			{
-				P_SetMessage(player, DEH_String(TXT_GOTGREENKEY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_GOTGREENKEY), false);
 			}
 			sound = sfx_keyup;
 			P_GiveKey(player, key_green);
@@ -666,70 +666,70 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 		case SPR_PTN2:			// Arti_HealingPotion
 			if (P_GiveArtifact(player, ArtiType_t::arti_health, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTIHEALTH), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTIHEALTH), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_SOAR:			// Arti_Fly
 			if (P_GiveArtifact(player, ArtiType_t::arti_fly, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTIFLY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTIFLY), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_INVU:			// Arti_Invulnerability
 			if (P_GiveArtifact(player, ArtiType_t::arti_invulnerability, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTIINVULNERABILITY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTIINVULNERABILITY), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_PWBK:			// Arti_TomeOfPower
 			if (P_GiveArtifact(player, ArtiType_t::arti_tomeofpower, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTITOMEOFPOWER), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTITOMEOFPOWER), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_INVS:			// Arti_Invisibility
 			if (P_GiveArtifact(player, ArtiType_t::arti_invisibility, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTIINVISIBILITY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTIINVISIBILITY), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_EGGC:			// Arti_Egg
 			if (P_GiveArtifact(player, ArtiType_t::arti_egg, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTIEGG), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTIEGG), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_SPHL:			// Arti_SuperHealth
 			if (P_GiveArtifact(player, ArtiType_t::arti_superhealth, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTISUPERHEALTH), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTISUPERHEALTH), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_TRCH:			// Arti_Torch
 			if (P_GiveArtifact(player, ArtiType_t::arti_torch, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTITORCH), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTITORCH), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_FBMB:			// Arti_FireBomb
 			if (P_GiveArtifact(player, ArtiType_t::arti_firebomb, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTIFIREBOMB), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTIFIREBOMB), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
 		case SPR_ATLP:			// Arti_Teleport
 			if (P_GiveArtifact(player, ArtiType_t::arti_teleport, special))
 			{
-				P_SetMessage(player, DEH_String(TXT_ARTITELEPORT), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_ARTITELEPORT), false);
 				P_SetDormantArtifact(special);
 			}
 			return;
@@ -740,84 +740,84 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOGOLDWAND1), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOGOLDWAND1), false);
 			break;
 		case SPR_AMG2:			// Ammo_GoldWandHefty
 			if (!P_GiveAmmo(player, am_goldwand, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOGOLDWAND2), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOGOLDWAND2), false);
 			break;
 		case SPR_AMM1:			// Ammo_MaceWimpy
 			if (!P_GiveAmmo(player, am_mace, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOMACE1), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOMACE1), false);
 			break;
 		case SPR_AMM2:			// Ammo_MaceHefty
 			if (!P_GiveAmmo(player, am_mace, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOMACE2), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOMACE2), false);
 			break;
 		case SPR_AMC1:			// Ammo_CrossbowWimpy
 			if (!P_GiveAmmo(player, am_crossbow, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOCROSSBOW1), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOCROSSBOW1), false);
 			break;
 		case SPR_AMC2:			// Ammo_CrossbowHefty
 			if (!P_GiveAmmo(player, am_crossbow, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOCROSSBOW2), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOCROSSBOW2), false);
 			break;
 		case SPR_AMB1:			// Ammo_BlasterWimpy
 			if (!P_GiveAmmo(player, am_blaster, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOBLASTER1), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOBLASTER1), false);
 			break;
 		case SPR_AMB2:			// Ammo_BlasterHefty
 			if (!P_GiveAmmo(player, am_blaster, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOBLASTER2), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOBLASTER2), false);
 			break;
 		case SPR_AMS1:			// Ammo_SkullRodWimpy
 			if (!P_GiveAmmo(player, am_skullrod, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOSKULLROD1), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOSKULLROD1), false);
 			break;
 		case SPR_AMS2:			// Ammo_SkullRodHefty
 			if (!P_GiveAmmo(player, am_skullrod, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOSKULLROD2), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOSKULLROD2), false);
 			break;
 		case SPR_AMP1:			// Ammo_PhoenixRodWimpy
 			if (!P_GiveAmmo(player, am_phoenixrod, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOPHOENIXROD1), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOPHOENIXROD1), false);
 			break;
 		case SPR_AMP2:			// Ammo_PhoenixRodHefty
 			if (!P_GiveAmmo(player, am_phoenixrod, special->health))
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_AMMOPHOENIXROD2), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_AMMOPHOENIXROD2), false);
 			break;
 
 			// Weapons
@@ -826,7 +826,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_WPNMACE), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_WPNMACE), false);
 			sound = sfx_wpnup;
 			break;
 		case SPR_WBOW:			// Weapon_Crossbow
@@ -834,7 +834,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_WPNCROSSBOW), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_WPNCROSSBOW), false);
 			sound = sfx_wpnup;
 			break;
 		case SPR_WBLS:			// Weapon_Blaster
@@ -842,7 +842,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_WPNBLASTER), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_WPNBLASTER), false);
 			sound = sfx_wpnup;
 			break;
 		case SPR_WSKL:			// Weapon_SkullRod
@@ -850,7 +850,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_WPNSKULLROD), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_WPNSKULLROD), false);
 			sound = sfx_wpnup;
 			break;
 		case SPR_WPHX:			// Weapon_PhoenixRod
@@ -858,7 +858,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_WPNPHOENIXROD), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_WPNPHOENIXROD), false);
 			sound = sfx_wpnup;
 			break;
 		case SPR_WGNT:			// Weapon_Gauntlets
@@ -866,7 +866,7 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, DEH_String(TXT_WPNGAUNTLETS), false);
+			P_SetMessage(player, DEH_String(cudadoom::txt::TXT_WPNGAUNTLETS), false);
 			sound = sfx_wpnup;
 			break;
 		default:

@@ -720,7 +720,7 @@ void HU_Start()
 	m = ptr;
 
 	while (*m)
-		HUlib_addCharToTextLine(&w_map, *(m++));
+		HUlib_addCharToTextLine(&w_map, *((m++)));
 
 	free(ptr);
 	}
@@ -735,7 +735,7 @@ void HU_Start()
 	s = ptr;
 
 	while (*s)
-	HUlib_addCharToTextLine(&w_title, *(s++));
+	HUlib_addCharToTextLine(&w_title, *((s++)));
 
 	free(ptr);
 
@@ -1031,21 +1031,21 @@ void HU_Ticker()
 	HUlib_clearTextLine(&w_kills);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_kills, *(s++));
+		HUlib_addCharToTextLine(&w_kills, *((s++)));
 
 	M_snprintf(str, sizeof(str), "%sI %s%d/%d", cr_stat, crstr[CR_GRAY],
 			plr->itemcount, totalitems);
 	HUlib_clearTextLine(&w_items);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_items, *(s++));
+		HUlib_addCharToTextLine(&w_items, *((s++)));
 
 	M_snprintf(str, sizeof(str), "%sS %s%d/%d", cr_stat, crstr[CR_GRAY],
 			plr->secretcount, totalsecret);
 	HUlib_clearTextLine(&w_scrts);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_scrts, *(s++));
+		HUlib_addCharToTextLine(&w_scrts, *((s++)));
 	}
 
 	if (crispy->leveltime == WIDGETS_ALWAYS || (automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
@@ -1061,7 +1061,7 @@ void HU_Ticker()
 	HUlib_clearTextLine(&w_ltime);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_ltime, *(s++));
+		HUlib_addCharToTextLine(&w_ltime, *((s++)));
 	}
 
 	// [crispy] "use" button timer overrides the level time widget
@@ -1076,7 +1076,7 @@ void HU_Ticker()
 	HUlib_clearTextLine(&w_ltime);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_ltime, *(s++));
+		HUlib_addCharToTextLine(&w_ltime, *((s++)));
 	}
 
 	if (crispy->playercoords == WIDGETS_ALWAYS || (automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
@@ -1086,21 +1086,21 @@ void HU_Ticker()
 	HUlib_clearTextLine(&w_coordx);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_coordx, *(s++));
+		HUlib_addCharToTextLine(&w_coordx, *((s++)));
 
 	M_snprintf(str, sizeof(str), "%sY %s%-5d", cr_stat2, crstr[CR_GRAY],
 			(plr->mo->y)>>FRACBITS);
 	HUlib_clearTextLine(&w_coordy);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_coordy, *(s++));
+		HUlib_addCharToTextLine(&w_coordy, *((s++)));
 
 	M_snprintf(str, sizeof(str), "%sA %s%-5d", cr_stat2, crstr[CR_GRAY],
 			(plr->mo->angle)/ANG1);
 	HUlib_clearTextLine(&w_coorda);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_coorda, *(s++));
+		HUlib_addCharToTextLine(&w_coorda, *((s++)));
 	}
 
 	if (plr->powers[PowerType_t::pw_showfps])
@@ -1109,7 +1109,7 @@ void HU_Ticker()
 	HUlib_clearTextLine(&w_fps);
 	s = str;
 	while (*s)
-		HUlib_addCharToTextLine(&w_fps, *(s++));
+		HUlib_addCharToTextLine(&w_fps, *((s++)));
 	}
 }
 
@@ -1254,7 +1254,7 @@ bool HU_Responder(event_t *ev)
 
 		// send the macro message
 		while (*macromessage)
-		HU_queueChatChar(*macromessage++);
+		HU_queueChatChar(*(macromessage++));
 		HU_queueChatChar(KEY_ENTER);
 
 			// leave chat mode and notify that it was sent

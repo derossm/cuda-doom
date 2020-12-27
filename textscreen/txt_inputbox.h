@@ -13,12 +13,15 @@
 
 #include "../derma/common.h"
 
-/**
- * @file txt_inputbox.h
- *
- * Input box widget.
- */
+#include "txt_widget.h"
+#include "txt_gui.h"
+#include "txt_io.h"
+#include "txt_main.h"
+#include "txt_utf8.h"
+#include "txt_window.h"
 
+namespace cudadoom::txt
+{
 /**
  * Input box widget.
  *
@@ -27,13 +30,6 @@
  *
  * Input box widgets can be of an integer or string type.
  */
-
-#include "txt_widget.h"
-#include "txt_gui.h"
-#include "txt_io.h"
-#include "txt_main.h"
-#include "txt_utf8.h"
-#include "txt_window.h"
 
 /**
  * Create a new input box widget for controlling a string value.
@@ -50,7 +46,7 @@
  */
 auto TXT_NewInputBox(char** value, size_t width)
 {
-	return CUDADOOM::TXT::InputBox<char**>(value, width);
+	return InputBox<char**>(value, width);
 }
 
 /**
@@ -62,7 +58,7 @@ auto TXT_NewInputBox(char** value, size_t width)
  */
 auto TXT_NewIntInputBox(int* value, size_t width)
 {
-	return CUDADOOM::TXT::InputBox<int*>(value, width);
+	return InputBox<int*>(value, width);
 }
 
 template<typename T, typename U>
@@ -81,9 +77,6 @@ class DepType
 {
 };
 
-namespace CUDADOOM::TXT
-{
-
 template<typename T>
 class InputBox : public Widget
 {
@@ -91,7 +84,7 @@ class InputBox : public Widget
 	std::string buffer;
 	bool _editing{false};
 
-	txt_widget_class_t txt_inputbox_class =
+	WidgetClass txt_inputbox_class =
 	{
 		TXT_AlwaysSelectable,
 		TXT_InputBoxSizeCalc,
@@ -171,30 +164,26 @@ public:
 	{
 		TXT_CAST_ARG(txt_inputbox_t, inputbox);
 
-		auto focused = inputbox->widget.focused;
-		auto w = inputbox->widget.w;
+		auto focused = inputbox->widget.focused();
+		auto w = inputbox->widget.width;
 
-		// Select the background color based on whether we are currently
-		// editing, and if not, whether the widget is focused.
-
-		if (inputbox->editing && focused)
+		// Select the background color based on whether we are currently editing, and if not, whether the widget is focused.
+		if (inputbox->editing() && focused)
 		{
-			TXT_BGColor(TXT_COLOR_BLACK, 0);
+			TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, false);
 		}
 		else
 		{
 			TXT_SetWidgetBG(inputbox);
 		}
 
-		if (!inputbox->editing)
+		if (!inputbox->editing())
 		{
 			// If not editing, use the current value from inputbox->value.
-
 			SetBufferFromValue(inputbox);
 		}
 
 		// If string size exceeds the widget's width, show only the end.
-
 		auto chars{[&]()
 		{
 			if (TXT_UTF8_Strlen(inputbox->buffer) > w - 1)
@@ -215,7 +204,7 @@ public:
 
 		if (chars < w && inputbox->editing && focused)
 		{
-			TXT_BGColor(TXT_COLOR_BLACK, 1);
+			TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, true);
 			TXT_DrawString("_");
 			++chars;
 		}
@@ -242,12 +231,12 @@ public:
 
 	void addCharacter(txt_inputbox_t *inputbox, int key) noexcept
 	{
-		char *end, *p;
+		char *end;
+		char *p;
 
 		if (TXT_UTF8_Strlen(inputbox->buffer) < inputbox->size)
 		{
 			// Add character to the buffer
-
 			end = inputbox->buffer + strlen(inputbox->buffer);
 			p = TXT_EncodeUTF8(end, key);
 			*p = '\0';
@@ -268,7 +257,6 @@ public:
 			}
 
 			// Backspace or delete erases the contents of the box.
-
 			if ((key == KEY_DEL || key == KEY_BACKSPACE) && inputbox->widget.widget_class == &txt_inputbox_class)
 			{
 				free(*((T)inputbox->value));
@@ -295,8 +283,7 @@ public:
 
 		c = TXT_KEY_TO_UNICODE(key);
 
-		// Add character to the buffer, but only if it's a printable character
-		// that we can represent on the screen.
+		// Add character to the buffer, but only if it's a printable character that we can represent on the screen.
 		if (isprint(c) || (c >= 128 && TXT_UnicodeCharacter(c) >= 0))
 		{
 			AddCharacter(inputbox, c);
@@ -312,15 +299,13 @@ public:
 		if (key == TXT_MOUSE_LEFT)
 		{
 			// Make mouse clicks start editing the box
-
 			if (!inputbox->editing)
 			{
 				// Send a simulated keypress to start editing
-
 				TXT_WidgetKeyPress(inputbox, KEY_ENTER);
 			}
 		}
 	}
 };
 
-}
+} /* END NAMESPACE cudadoom::txt */

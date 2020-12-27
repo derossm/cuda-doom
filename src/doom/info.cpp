@@ -4934,7 +4934,7 @@ mobjinfo_t mobjinfo[mobjtype_t::NUMMOBJTYPES] = {
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		mobjflag_t::MF_SPECIAL|mobjflag_t::MF_COUNTITEM,		// flags
+		value(mobjflag_t::MF_SPECIAL)|value(mobjflag_t::MF_COUNTITEM),		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	// [crispy] support MUSINFO lump (dynamic music changing)

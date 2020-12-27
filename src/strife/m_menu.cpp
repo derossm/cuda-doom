@@ -1535,7 +1535,7 @@ int M_WriteText(int x, int y, const char* int0 int1	string) // haleyjd: made con
 
 	while(1)
 	{
-		c = *ch++;
+		c = *(ch++);
 		if (!c)
 			break;
 

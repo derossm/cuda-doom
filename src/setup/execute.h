@@ -33,6 +33,6 @@ int ExecuteDoom(execute_context_t *context);
 int FindInstalledIWADs();
 bool OpenFolder(const char *path);
 
-txt_window_action_t *TestConfigAction();
+cudadoom::txt::txt_window_action_t *TestConfigAction();
 
 #endif /* #ifndef TESTCONFIG_H */

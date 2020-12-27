@@ -11,15 +11,10 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_STRUT_H
-#define TXT_STRUT_H
+#include "txt_widget.h"
 
-/**
- * @file txt_strut.h
- *
- * Strut widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * Strut widget.
  *
@@ -27,13 +22,10 @@
  * be visualised as a transparent box. Struts are used to provide
  * spacing between widgets.
  */
-typedef struct txt_strut_s txt_strut_t;
 
-#include "txt_widget.h"
-
-struct txt_strut_s
+struct txt_strut_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	int width;
 	int height;
 };
@@ -46,4 +38,4 @@ struct txt_strut_s
  */
 txt_strut_t* TXT_NewStrut(int width, int height);
 
-#endif /* #ifndef TXT_STRUT_H */
+} /* END NAMESPACE cudadoom::txt */

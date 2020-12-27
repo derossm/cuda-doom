@@ -17,6 +17,9 @@
 #include "txt_utf8.h"
 #include "txt_window.h"
 
+namespace cudadoom::txt
+{
+
 static void TXT_WindowActionSizeCalc(TXT_UNCAST_ARG(action))
 {
 	TXT_CAST_ARG(txt_window_action_t, action);
@@ -25,8 +28,8 @@ static void TXT_WindowActionSizeCalc(TXT_UNCAST_ARG(action))
 	TXT_GetKeyDescription(action->key, buf, sizeof(buf));
 
 	// Width is label length, plus key description length, plus '=' and two surrounding spaces.
-	action->widget.w = TXT_UTF8_Strlen(action->label) + TXT_UTF8_Strlen(buf) + 3;
-	action->widget.h = 1;
+	action->widget.width = TXT_UTF8_Strlen(action->label) + TXT_UTF8_Strlen(buf) + 3;
+	action->widget.height = 1;
 }
 
 static void TXT_WindowActionDrawer(TXT_UNCAST_ARG(action))
@@ -40,12 +43,12 @@ static void TXT_WindowActionDrawer(TXT_UNCAST_ARG(action))
 	TXT_SetWidgetBG(action);
 
 	TXT_DrawString(" ");
-	TXT_FGColor(hovering ? TXT_COLOR_BRIGHT_WHITE : TXT_COLOR_BRIGHT_GREEN);
+	TXT_FGColor(hovering ? txt_color_t::TXT_COLOR_BRIGHT_WHITE : txt_color_t::TXT_COLOR_BRIGHT_GREEN);
 	TXT_DrawString(buf);
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 	TXT_DrawString("=");
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 	TXT_DrawString(action->label);
 	TXT_DrawString(" ");
 }
@@ -81,7 +84,7 @@ static void TXT_WindowActionMousePress(TXT_UNCAST_ARG(action), int x, int y, int
 	}
 }
 
-txt_widget_class_t txt_window_action_class =
+WidgetClass txt_window_action_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_WindowActionSizeCalc,
@@ -94,9 +97,7 @@ txt_widget_class_t txt_window_action_class =
 
 txt_window_action_t* TXT_NewWindowAction(int key, const char* label)
 {
-	txt_window_action_t* action;
-
-	action = malloc(sizeof(txt_window_action_t));
+	txt_window_action_t* action = static_cast<decltype(action)>(malloc(sizeof(txt_window_action_t)));
 
 	TXT_InitWidget(action, &txt_window_action_class);
 	action->key = key;
@@ -144,3 +145,5 @@ txt_window_action_t* TXT_NewWindowSelectAction(txt_window_t* window)
 
 	return action;
 }
+
+} /* END NAMESPACE cudadoom::txt */

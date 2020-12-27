@@ -8,7 +8,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	PC speaker interface.
+		PC speaker interface.
 \**********************************************************************************************************************************************/
 
 #include "SDL.h"
@@ -20,69 +20,54 @@
 #define MAX_SOUND_SLICE_TIME 70 /* ms */
 #define SQUARE_WAVE_AMP 0x2000
 
-// If true, we initialized SDL and have the responsibility to shut it
-// down
-
-static int sdl_was_initialized = 0;
+// If true, we initialized SDL and have the responsibility to shut it down
+static int sdl_was_initialized{0};
 
 // Callback function to invoke when we want new sound data
-
 static pcsound_callback_func callback;
 
 // Output sound format
-
 static int mixing_freq;
 static Uint16 mixing_format;
 static int mixing_channels;
 
-// Currently playing sound
-// current_remaining is the number of remaining samples that must be played
-// before we invoke the callback to get the next frequency.
-
+// Currently playing sound current_remaining is the number of remaining samples that must be played before we invoke the callback to get the next frequency.
 static int current_remaining;
 static int current_freq;
 
-static int phase_offset = 0;
+static int phase_offset{0};
 
 // Mixer function that does the PC speaker emulation
-
-static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
+static void PCSound_Mix_Callback(void* udata, Uint8* stream, int len)
 {
 	Sint16 *leftptr;
 	Sint16 *rightptr;
 	Sint16 this_value;
 	int oldfreq;
-	int i;
 	int nsamples;
 
 	// Number of samples is quadrupled, because of 16-bit and stereo
 
 	nsamples = len / 4;
 
-	leftptr = (Sint16 *) stream;
-	rightptr = ((Sint16 *) stream) + 1;
+	leftptr = (Sint16*) stream;
+	rightptr = ((Sint16*) stream) + 1;
 
 	// Fill the output buffer
 
-	for (i=0; i<nsamples; ++i)
+	for (size_t i{0}; i < nsamples; ++i)
 	{
-		// Has this sound expired? If so, invoke the callback to get
-		// the next frequency.
-
+		// Has this sound expired? If so, invoke the callback to get the next frequency.
 		while (current_remaining == 0)
 		{
 			oldfreq = current_freq;
 
 			// Get the next frequency to play
-
 			callback(&current_remaining, &current_freq);
 
 			if (current_freq != 0)
 			{
-				// Adjust phase to match to the new frequency.
-				// This gives us a smooth transition between different tones,
-				// with no impulse changes.
-
+				// Adjust phase to match to the new frequency. This gives us a smooth transition between different tones, with no impulse changes.
 				phase_offset = (phase_offset * oldfreq) / current_freq;
 			}
 
@@ -90,21 +75,17 @@ static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
 		}
 
 		// Set the value for this sample.
-
 		if (current_freq == 0)
 		{
 			// Silence
-
 			this_value = 0;
 		}
 		else
 		{
 			int frac;
 
-			// Determine whether we are at a peak or trough in the current
-			// sound. Multiply by 2 so that frac % 2 will give 0 or 1
-			// depending on whether we are at a peak or trough.
-
+			// Determine whether we are at a peak or trough in the current sound.
+			// Multiply by 2 so that frac % 2 will give 0 or 1 depending on whether we are at a peak or trough.
 			frac = (phase_offset * current_freq * 2) / mixing_freq;
 
 			if ((frac % 2) == 0)
@@ -122,7 +103,6 @@ static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
 		--current_remaining;
 
 		// Use the same value for the left and right channels.
-
 		*leftptr += this_value;
 		*rightptr += this_value;
 
@@ -133,7 +113,8 @@ static void PCSound_Mix_Callback(void *udata, Uint8 *stream, int len)
 
 static int SDLIsInitialized()
 {
-	int freq, channels;
+	int freq;
+	int channels;
 	Uint16 format;
 
 	return Mix_QuerySpec(&freq, &format, &channels);
@@ -149,19 +130,14 @@ static void PCSound_SDL_Shutdown()
 	}
 }
 
-// Calculate slice size, based on MAX_SOUND_SLICE_TIME.
-// The result must be a power of two.
-
+// Calculate slice size, based on MAX_SOUND_SLICE_TIME. The result must be a power of two.
 static int GetSliceSize()
 {
-	int limit;
-	int n;
-
-	limit = (pcsound_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
+	int limit = (pcsound_sample_rate * MAX_SOUND_SLICE_TIME) / 1000;
 
 	// Try all powers of two, not exceeding the limit.
 
-	for (n=0;; ++n)
+	for (size_t n{0}; ; ++n)
 	{
 		// 2^n <= limit < 2^n+1 ?
 
@@ -172,7 +148,6 @@ static int GetSliceSize()
 	}
 
 	// Should never happen?
-
 	return 1024;
 }
 
@@ -180,9 +155,7 @@ static int PCSound_SDL_Init(pcsound_callback_func callback_func)
 {
 	int slicesize;
 
-	// Check if SDL_mixer has been opened already
-	// If not, we must initialize it now
-
+	// Check if SDL_mixer has been opened already; If not, we must initialize it now
 	if (!SDLIsInitialized())
 	{
 		if (SDL_Init(SDL_INIT_AUDIO) < 0)
@@ -203,23 +176,17 @@ static int PCSound_SDL_Init(pcsound_callback_func callback_func)
 
 		SDL_PauseAudio(0);
 
-		// When this module shuts down, it has the responsibility to
-		// shut down SDL.
-
+		// When this module shuts down, it has the responsibility to shut down SDL.
 		sdl_was_initialized = 1;
 	}
 
 	// Get the mixer frequency, format and number of channels.
-
 	Mix_QuerySpec(&mixing_freq, &mixing_format, &mixing_channels);
 
 	// Only supports AUDIO_S16SYS
-
 	if (mixing_format != AUDIO_S16SYS || mixing_channels != 2)
 	{
-		fprintf(stderr,
-				"PCSound_SDL only supports native signed 16-bit LSB, "
-				"stereo format!\n");
+		fprintf(stderr, "PCSound_SDL only supports native signed 16-bit LSB, stereo format!\n");
 
 		PCSound_SDL_Shutdown();
 		return 0;
@@ -240,4 +207,3 @@ pcsound_driver_t pcsound_sdl_driver =
 	PCSound_SDL_Init,
 	PCSound_SDL_Shutdown,
 };
-

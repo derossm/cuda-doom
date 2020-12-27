@@ -13,13 +13,11 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_MAIN_H
-#define TXT_MAIN_H
-
-// For the moment, txt_sdl.c is the only implementation of the base
-// text mode screen API:
-
 #include "txt_sdl.h"
+
+namespace cudadoom::txt
+{
+// For the moment, txt_sdl.c is the only implementation of the base text mode screen API:
 
 // textscreen key values:
 // Key values are difficult because we have to support multiple conflicting
@@ -60,7 +58,7 @@
 
 #define TXT_COLOR_BLINKING (1 << 3)
 
-typedef enum
+enum class txt_color_t
 {
 	TXT_COLOR_BLACK,
 	TXT_COLOR_BLUE,
@@ -78,20 +76,20 @@ typedef enum
 	TXT_COLOR_BRIGHT_MAGENTA,
 	TXT_COLOR_YELLOW,
 	TXT_COLOR_BRIGHT_WHITE
-} txt_color_t;
+};
 
 // Modifier keys.
-typedef enum
+enum class txt_modifier_t
 {
 	TXT_MOD_SHIFT,
 	TXT_MOD_CTRL,
 	TXT_MOD_ALT,
 	TXT_NUM_MODIFIERS
-} txt_modifier_t;
+};
 
 // Due to the way the SDL API works, we provide different ways of configuring
 // how we read input events, each of which is useful in different scenarios.
-typedef enum
+enum class txt_input_mode_t
 {
 	// "Localized" output that takes software keyboard layout into account,
 	// but key shifting has no effect.
@@ -106,7 +104,7 @@ typedef enum
 	// Setting this mode may activate the on-screen keyboard, depending on
 	// device and OS.
 	TXT_INPUT_TEXT
-} txt_input_mode_t;
+};
 
 #ifdef __GNUC__
 
@@ -182,4 +180,4 @@ int TXT_vsnprintf(char* buf, size_t buf_len, const char* s, va_list args);
 // Safe version of snprintf().
 int TXT_snprintf(char* buf, size_t buf_len, const char* s, ...) PRINTF_ATTR(3, 4);
 
-#endif /* #ifndef TXT_MAIN_H */
+} /* END NAMESPACE cudadoom::txt */

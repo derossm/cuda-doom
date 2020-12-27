@@ -8,7 +8,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "doomkeys.h"
 
 #include "txt_desktop.h"
@@ -21,13 +20,16 @@
 #define HELP_KEY KEY_F1
 #define MAXWINDOWS 128
 
-static char *desktop_title;
-static txt_window_t *all_windows[MAXWINDOWS];
+namespace cudadoom::txt
+{
+
+static char* desktop_title;
+static txt_window_t* all_windows[MAXWINDOWS];
 static int num_windows = 0;
 static int main_loop_running = 0;
 
 static TxtIdleCallback periodic_callback = NULL;
-static void *periodic_callback_data;
+static void* periodic_callback_data;
 static unsigned int periodic_callback_period;
 
 void TXT_AddDesktopWindow(txt_window_t *win)
@@ -150,8 +152,8 @@ static void DrawDesktopBackground(const char *title)
 
 	for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
 	{
-		*p++ = 0xb1;
-		*p++ = TXT_COLOR_GREY | (TXT_COLOR_BLUE << 4);
+		*(p++) = 0xb1;
+		*(p++) = txt_color_t::TXT_COLOR_GREY | (txt_color_t::TXT_COLOR_BLUE << 4);
 	}
 
 	// Draw the top and bottom banners
@@ -160,23 +162,23 @@ static void DrawDesktopBackground(const char *title)
 
 	for (i=0; i<TXT_SCREEN_W; ++i)
 	{
-		*p++ = ' ';
-		*p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
+		*(p++) = ' ';
+		*(p++) = txt_color_t::TXT_COLOR_BLACK | (txt_color_t::TXT_COLOR_GREY << 4);
 	}
 
 	p = screendata + (TXT_SCREEN_H - 1) * TXT_SCREEN_W * 2;
 
 	for (i=0; i<TXT_SCREEN_W; ++i)
 	{
-		*p++ = ' ';
-		*p++ = TXT_COLOR_BLACK | (TXT_COLOR_GREY << 4);
+		*(p++) = ' ';
+		*(p++) = txt_color_t::TXT_COLOR_BLACK | (txt_color_t::TXT_COLOR_GREY << 4);
 	}
 
 	// Print the title
 
 	TXT_GotoXY(0, 0);
-	TXT_FGColor(TXT_COLOR_BLACK);
-	TXT_BGColor(TXT_COLOR_GREY, 0);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BLACK);
+	TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
 
 	TXT_PutChar(' ');
 	TXT_Puts(title);
@@ -194,18 +196,18 @@ static void DrawHelpIndicator()
 
 	if (y == 0 && x >= TXT_SCREEN_W - 9)
 	{
-		fgcolor = TXT_COLOR_GREY;
-		TXT_BGColor(TXT_COLOR_BLACK, 0);
+		fgcolor = txt_color_t::TXT_COLOR_GREY;
+		TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, false);
 	}
 	else
 	{
-		fgcolor = TXT_COLOR_BLACK;
-		TXT_BGColor(TXT_COLOR_GREY, 0);
+		fgcolor = txt_color_t::TXT_COLOR_BLACK;
+		TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
 	}
 
 	TXT_GotoXY(TXT_SCREEN_W - 9, 0);
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 	TXT_DrawString(" ");
 	TXT_DrawString(keybuf);
 
@@ -314,8 +316,8 @@ void TXT_DrawASCIITable()
 
 	screendata = TXT_GetScreenData();
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
-	TXT_BGColor(TXT_COLOR_BLACK, 0);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
+	TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, false);
 
 	for (y=0; y<16; ++y)
 	{
@@ -377,3 +379,4 @@ void TXT_GUIMainLoop()
 	}
 }
 
+} /* END NAMESPACE cudadoom::txt */

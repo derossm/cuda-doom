@@ -11,25 +11,20 @@
 
 #include "../derma/common.h"
 
-/**
- * @file txt_window_action.h
- *
- * Window action widget.
- */
+#include "txt_widget.h"
+#include "txt_window.h"
 
+namespace cudadoom::txt
+{
 /**
  * Window action widget.
  *
  * A window action is attached to a window and corresponds to a keyboard shortcut that is active within that window.
  * When the key is pressed, the action is triggered. When a window action is triggered, the "pressed" signal is emitted.
  */
-
-#include "txt_widget.h"
-#include "txt_window.h"
-
 struct txt_window_action_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	char* label;
 	int key;
 };
@@ -67,3 +62,5 @@ txt_window_action_t* TXT_NewWindowAbortAction(txt_window_t* window);
  * @return				Pointer to the new window action widget.
  */
 txt_window_action_t* TXT_NewWindowSelectAction(txt_window_t* window);
+
+} /* END NAMESPACE cudadoom::txt */

@@ -31,18 +31,18 @@
 #define FOOTCLIPSIZE	10*FRACUNIT
 
 #define TOCENTER -8
-#define	FLOATSPEED (FRACUNIT*4)
+#define FLOATSPEED (FRACUNIT*4)
 
-#define	MAXHEALTH 100
+#define MAXHEALTH 100
 #define MAXCHICKENHEALTH 30
-#define	VIEWHEIGHT (41*FRACUNIT)
+#define VIEWHEIGHT (41*FRACUNIT)
 
 // mapblocks are used to check movement against lines and things
 #define MAPBLOCKUNITS	128
-#define	MAPBLOCKSIZE	(MAPBLOCKUNITS*FRACUNIT)
-#define	MAPBLOCKSHIFT	(FRACBITS+7)
-#define	MAPBMASK		(MAPBLOCKSIZE-1)
-#define	MAPBTOFRAC		(MAPBLOCKSHIFT-FRACBITS)
+#define MAPBLOCKSIZE	(MAPBLOCKUNITS*FRACUNIT)
+#define MAPBLOCKSHIFT	(FRACBITS+7)
+#define MAPBMASK		(MAPBLOCKSIZE-1)
+#define MAPBTOFRAC		(MAPBLOCKSHIFT-FRACBITS)
 
 // player radius for movement checking
 #define PLAYERRADIUS 16*FRACUNIT
@@ -52,12 +52,12 @@
 // nearby
 #define MAXRADIUS 32*FRACUNIT
 
-#define	GRAVITY FRACUNIT
-#define	MAXMOVE (30*FRACUNIT)
+#define GRAVITY FRACUNIT
+#define MAXMOVE (30*FRACUNIT)
 
-#define	USERANGE (64*FRACUNIT)
-#define	MELEERANGE (64*FRACUNIT)
-#define	MISSILERANGE (32*64*FRACUNIT)
+#define USERANGE (64*FRACUNIT)
+#define MELEERANGE (64*FRACUNIT)
+#define MISSILERANGE (32*64*FRACUNIT)
 
 typedef enum
 {
@@ -182,7 +182,7 @@ typedef struct
 	} d;
 } intercept_t;
 
-#define	MAXINTERCEPTS	128
+#define MAXINTERCEPTS	128
 extern intercept_t *intercepts, *intercept_p; // [crispy] remove INTERCEPTS limit
 extern void check_intercept(); // [crispy] remove INTERCEPTS limit
 typedef bool(*traverser_t) (intercept_t * in);
@@ -203,8 +203,8 @@ bool P_BlockLinesIterator(int x, int y, bool(*func) (line_t *));
 bool P_BlockThingsIterator(int x, int y, bool(*func) (mobj_t *));
 
 #define PT_ADDLINES		1
-#define	PT_ADDTHINGS	2
-#define	PT_EARLYOUT		4
+#define PT_ADDTHINGS	2
+#define PT_EARLYOUT		4
 
 extern divline_t trace;
 bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2,

@@ -11,15 +11,12 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_WINDOW_H
-#define TXT_WINDOW_H
+#include "txt_widget.h"
+#include "txt_table.h"
+#include "txt_window_action.h"
 
-/**
- * @file txt_window.h
- *
- * Windows.
- */
-
+namespace cudadoom::txt
+{
 /**
  * A window.
  *
@@ -38,17 +35,12 @@
  * escape button is pressed, while the right slot contains an
  * action to activate the currently-selected widget.
  */
-typedef struct txt_window_s txt_window_t;
-
-#include "txt_widget.h"
-#include "txt_table.h"
-#include "txt_window_action.h"
 
 // Callback function for window key presses
 typedef int (*TxtWindowKeyPress)(txt_window_t* window, int key, void* user_data);
 typedef int (*TxtWindowMousePress)(txt_window_t* window, int x, int y, int b, void* user_data);
 
-struct txt_window_s
+struct txt_window_t
 {
 	// Base class: all windows are tables with one column.
 	txt_table_t table;
@@ -57,13 +49,13 @@ struct txt_window_s
 	char* title;
 
 	// Screen coordinates of the window
-	txt_vert_align_t vert_align;
-	txt_horiz_align_t horiz_align;
+	AlignVertical vert_align;
+	AlignHorizontal horiz_align;
 	int x;
 	int y;
 
 	// Actions that appear in the box at the bottom of the window
-	txt_widget_t* actions[3];
+	Widget* actions[3];
 
 	// Callback functions to invoke when keys/mouse buttons are pressed
 	TxtWindowKeyPress key_listener;
@@ -124,7 +116,7 @@ void TXT_CloseWindow(txt_window_t* window);
  * @param x				X coordinate (horizontal axis) for window position.
  * @param y				Y coordinate (vertical axis) for window position.
  */
-void TXT_SetWindowPosition(txt_window_t* window, txt_horiz_align_t horiz_align, txt_vert_align_t vert_align, int x, int y);
+void TXT_SetWindowPosition(txt_window_t* window, AlignHorizontal horiz_align, AlignVertical vert_align, int x, int y);
 
 /**
  * Set a window action for a given window.
@@ -137,7 +129,7 @@ void TXT_SetWindowPosition(txt_window_t* window, txt_horiz_align_t horiz_align, 
  * @param action	The window action widget. If this is NULL, any
  *					current window action in the given slot is removed.
  */
-void TXT_SetWindowAction(txt_window_t* window, txt_horiz_align_t position, TXT_UNCAST_ARG(action));
+void TXT_SetWindowAction(txt_window_t* window, AlignHorizontal position, TXT_UNCAST_ARG(action));
 
 /**
  * Set a callback function to be invoked whenever a key is pressed within
@@ -182,7 +174,6 @@ void TXT_SetWindowHelpURL(txt_window_t* window, const char* help_url);
  *
  * @param window			The window.
  */
-
 void TXT_OpenWindowHelpURL(txt_window_t* window);
 
-#endif /* #ifndef TXT_WINDOW_H */
+} /* END NAMESPACE cudadoom::txt */

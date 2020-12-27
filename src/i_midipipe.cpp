@@ -211,7 +211,7 @@ static bool BlockForAck()
 	net_packet_t *packet;
 
 	packet = NET_NewPacket(2);
-	NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_ACK);
+	NET_WriteInt16(packet, cudadoom::midi::PacketType::ACK);
 	ok = ExpectPipe(packet);
 	NET_FreePacket(packet);
 
@@ -235,7 +235,7 @@ bool I_MidiPipe_RegisterSong(char *filename)
 	net_packet_t *packet;
 
 	packet = NET_NewPacket(64);
-	NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_REGISTER_SONG);
+	NET_WriteInt16(packet, cudadoom::midi::PacketType::REGISTER_SONG);
 	NET_WriteString(packet, filename);
 	ok = WritePipe(packet);
 	NET_FreePacket(packet);
@@ -266,7 +266,7 @@ void I_MidiPipe_UnregisterSong()
 	net_packet_t *packet;
 
 	packet = NET_NewPacket(64);
-	NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG);
+	NET_WriteInt16(packet, cudadoom::midi::PacketType::SHUTDOWN);
 	ok = WritePipe(packet);
 	NET_FreePacket(packet);
 
@@ -293,7 +293,7 @@ void I_MidiPipe_SetVolume(int vol)
 	net_packet_t *packet;
 
 	packet = NET_NewPacket(6);
-	NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_SET_VOLUME);
+	NET_WriteInt16(packet, cudadoom::midi::PacketType::SET_VOLUME);
 	NET_WriteInt32(packet, vol);
 	ok = WritePipe(packet);
 	NET_FreePacket(packet);
@@ -319,7 +319,7 @@ void I_MidiPipe_PlaySong(int loops)
 	net_packet_t *packet;
 
 	packet = NET_NewPacket(6);
-	NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_PLAY_SONG);
+	NET_WriteInt16(packet, cudadoom::midi::PacketType::PLAY_SONG);
 	NET_WriteInt32(packet, loops);
 	ok = WritePipe(packet);
 	NET_FreePacket(packet);
@@ -345,7 +345,7 @@ void I_MidiPipe_StopSong()
 	net_packet_t *packet;
 
 	packet = NET_NewPacket(2);
-	NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_STOP_SONG);
+	NET_WriteInt16(packet, cudadoom::midi::PacketType::STOP_SONG);
 	ok = WritePipe(packet);
 	NET_FreePacket(packet);
 
@@ -370,7 +370,7 @@ void I_MidiPipe_ShutdownServer()
 	net_packet_t *packet;
 
 	packet = NET_NewPacket(2);
-	NET_WriteInt16(packet, MIDIPIPE_PACKET_TYPE_SHUTDOWN);
+	NET_WriteInt16(packet, cudadoom::midi::PacketType::SHUTDOWN);
 	ok = WritePipe(packet);
 	NET_FreePacket(packet);
 

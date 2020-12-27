@@ -11,24 +11,23 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_CONDITIONAL_H
-#define TXT_CONDITIONAL_H
+#include "txt_widget.h"
 
-/**
- * @file txt_conditional.h
- *
- * Conditional widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * Conditional widget.
  *
  * A conditional widget contains another widget, and conditionally
  * shows or hides it based on the value of a variable.
  */
-typedef struct txt_conditional_s txt_conditional_t;
-
-#include "txt_widget.h"
+struct txt_conditional_t
+{
+	Widget widget;
+	int *var;
+	int expected_value;
+	Widget *child;
+};
 
 /**
  * Create a new conditional widget.
@@ -51,6 +50,6 @@ txt_conditional_t* TXT_NewConditional(int* var, int expected_value, TXT_UNCAST_A
  * @return					Either child (if condition is true) or a null
  *							widget.
  */
-txt_widget_t* TXT_If(int condition, TXT_UNCAST_ARG(child));
+Widget* TXT_If(int condition, TXT_UNCAST_ARG(child));
 
-#endif /* #ifndef TXT_CONDITIONAL_H */
+} /* END NAMESPACE cudadoom::txt */

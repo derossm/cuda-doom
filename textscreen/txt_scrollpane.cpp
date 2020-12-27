@@ -19,6 +19,9 @@
 #define SCROLLBAR_VERTICAL	(1 << 0)
 #define SCROLLBAR_HORIZONTAL (1 << 1)
 
+namespace cudadoom::txt
+{
+
 static int FullWidth(txt_scrollpane_t *scrollpane)
 {
 	if (scrollpane->child != NULL)
@@ -231,7 +234,7 @@ static void TXT_ScrollPaneFocused(TXT_UNCAST_ARG(scrollpane), int focused)
 
 static void ShowSelectedWidget(txt_scrollpane_t *scrollpane)
 {
-	txt_widget_t *selected;
+	Widget *selected;
 
 	selected = TXT_GetSelectedWidget(scrollpane->child);
 
@@ -540,7 +543,7 @@ static int TXT_ScrollPaneSelectable(TXT_UNCAST_ARG(scrollpane))
 	return TXT_SelectableWidget(scrollpane->child);
 }
 
-txt_widget_class_t txt_scrollpane_class =
+WidgetClass txt_scrollpane_class =
 {
 	TXT_ScrollPaneSelectable,
 	TXT_ScrollPaneSizeCalc,
@@ -554,10 +557,10 @@ txt_widget_class_t txt_scrollpane_class =
 
 txt_scrollpane_t *TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target))
 {
-	TXT_CAST_ARG(txt_widget_t, target);
+	TXT_CAST_ARG(Widget, target);
 	txt_scrollpane_t *scrollpane;
 
-	scrollpane = malloc(sizeof(txt_scrollpane_t));
+	scrollpane = static_cast<decltype(scrollpane)>(malloc(sizeof(txt_scrollpane_t)));
 	TXT_InitWidget(scrollpane, &txt_scrollpane_class);
 	scrollpane->w = w;
 	scrollpane->h = h;
@@ -574,3 +577,4 @@ txt_scrollpane_t *TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target))
 	return scrollpane;
 }
 
+} /* END NAMESPACE cudadoom::txt */

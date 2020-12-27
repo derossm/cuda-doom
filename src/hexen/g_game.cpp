@@ -1696,7 +1696,7 @@ void G_DoSaveGame()
 	SV_SaveGame(savegameslot, savedescription);
 	gameaction = ga_nothing;
 	savedescription[0] = 0;
-	P_SetMessage(&players[consoleplayer], TXT_GAMESAVED, true);
+	P_SetMessage(&players[consoleplayer], cudadoom::txt::TXT_GAMESAVED, true);
 }
 
 //==========================================================================
@@ -1832,24 +1832,24 @@ void G_ReadDemoTiccmd(ticcmd_t * cmd)
 		G_CheckDemoStatus();
 		return;
 	}
-	cmd->forwardmove = ((signed char) *demo_p++);
-	cmd->sidemove = ((signed char) *demo_p++);
+	cmd->forwardmove = ((signed char) *(demo_p++));
+	cmd->sidemove = ((signed char) *(demo_p++));
 
 	// If this is a longtics demo, read back in higher resolution
 
 	if (longtics)
 	{
-		cmd->angleturn = *demo_p++;
-		cmd->angleturn |= (*demo_p++) << 8;
+		cmd->angleturn = *(demo_p++);
+		cmd->angleturn |= (*(demo_p++)) << 8;
 	}
 	else
 	{
-		cmd->angleturn = ((unsigned char) *demo_p++) << 8;
+		cmd->angleturn = ((unsigned char) *(demo_p++)) << 8;
 	}
 
-	cmd->buttons = (unsigned char) *demo_p++;
-	cmd->lookfly = (unsigned char) *demo_p++;
-	cmd->arti = (unsigned char) *demo_p++;
+	cmd->buttons = (unsigned char) *(demo_p++);
+	cmd->lookfly = (unsigned char) *(demo_p++);
+	cmd->arti = (unsigned char) *(demo_p++);
 }
 
 // Increase the size of the demo buffer to allow unlimited demos
@@ -1893,24 +1893,24 @@ void G_WriteDemoTiccmd(ticcmd_t * cmd)
 
 	demo_start = demo_p;
 
-	*demo_p++ = cmd->forwardmove;
-	*demo_p++ = cmd->sidemove;
+	*(demo_p++) = cmd->forwardmove;
+	*(demo_p++) = cmd->sidemove;
 
 	// If this is a longtics demo, record in higher resolution
 
 	if (longtics)
 	{
-		*demo_p++ = (cmd->angleturn & 0xff);
-		*demo_p++ = (cmd->angleturn >> 8) & 0xff;
+		*(demo_p++) = (cmd->angleturn & 0xff);
+		*(demo_p++) = (cmd->angleturn >> 8) & 0xff;
 	}
 	else
 	{
-		*demo_p++ = cmd->angleturn >> 8;
+		*(demo_p++) = cmd->angleturn >> 8;
 	}
 
-	*demo_p++ = cmd->buttons;
-	*demo_p++ = cmd->lookfly;
-	*demo_p++ = cmd->arti;
+	*(demo_p++) = cmd->buttons;
+	*(demo_p++) = cmd->lookfly;
+	*(demo_p++) = cmd->arti;
 
 	// reset demo pointer back
 	demo_p = demo_start;
@@ -1999,9 +1999,9 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
 	demoend = demobuffer + maxsize;
 
 	demo_p = demobuffer;
-	*demo_p++ = skill;
-	*demo_p++ = episode;
-	*demo_p++ = map;
+	*(demo_p++) = skill;
+	*(demo_p++) = episode;
+	*(demo_p++) = map;
 
 	// Write special parameter bits onto player one byte.
 	// This aligns with vvHeretic demo usage. Hexen demo support has no
@@ -2024,12 +2024,12 @@ void G_RecordDemo(skill_t skill, int numplayers, int episode, int map,
 		*demo_p |= DEMOHEADER_NOMONSTERS;
 	}
 	demo_p++;
-	*demo_p++ = PlayerClass[0];
+	*(demo_p++) = PlayerClass[0];
 
 	for (i = 1; i < maxplayers; i++)
 	{
-		*demo_p++ = playeringame[i];
-		*demo_p++ = PlayerClass[i];
+		*(demo_p++) = playeringame[i];
+		*(demo_p++) = PlayerClass[i];
 	}
 
 	demorecording = true;
@@ -2061,9 +2061,9 @@ void G_DoPlayDemo()
 	lumpnum = W_GetNumForName(defdemoname);
 	demobuffer = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 	demo_p = demobuffer;
-	skill = *demo_p++;
-	episode = *demo_p++;
-	map = *demo_p++;
+	skill = *(demo_p++);
+	episode = *(demo_p++);
+	map = *(demo_p++);
 
 	// When recording we store some extra options inside the upper bits
 	// of the player 1 present byte. However, this is a non-vanilla extension.
@@ -2088,8 +2088,8 @@ void G_DoPlayDemo()
 
 	for (i = 0; i < maxplayers; i++)
 	{
-		playeringame[i] = (*demo_p++) != 0;
-		PlayerClass[i] = *demo_p++;
+		playeringame[i] = (*(demo_p++)) != 0;
+		PlayerClass[i] = *(demo_p++);
 	}
 
 	// Initialize world info, etc.
@@ -2117,9 +2117,9 @@ void G_TimeDemo(char *name)
 	int episode, map, i;
 
 	demobuffer = demo_p = W_CacheLumpName(name, pu_tags_t::PU_STATIC);
-	skill = *demo_p++;
-	episode = *demo_p++;
-	map = *demo_p++;
+	skill = *(demo_p++);
+	episode = *(demo_p++);
+	map = *(demo_p++);
 
 	// Read special parameter bits: see G_RecordDemo() for details.
 	longtics = (*demo_p & DEMOHEADER_LONGTICS) != 0;
@@ -2130,8 +2130,8 @@ void G_TimeDemo(char *name)
 
 	for (i = 0; i < maxplayers; i++)
 	{
-		playeringame[i] = (*demo_p++) != 0;
-		PlayerClass[i] = *demo_p++;
+		playeringame[i] = (*(demo_p++)) != 0;
+		PlayerClass[i] = *(demo_p++);
 	}
 
 	G_InitNew(skill, episode, map);
@@ -2181,7 +2181,7 @@ bool G_CheckDemoStatus()
 
 	if (demorecording)
 	{
-		*demo_p++ = DEMOMARKER;
+		*(demo_p++) = DEMOMARKER;
 		M_WriteFile(demoname, demobuffer, demo_p - demobuffer);
 		Z_Free(demobuffer);
 		demorecording = false;

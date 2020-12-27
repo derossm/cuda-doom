@@ -38,7 +38,7 @@ enum class pu_tags_t
 void Z_Init();
 
 template<typename T>
-T* Z_Malloc(size_t size, pu_tags_t tag, void* ptr);
+T& Z_Malloc(size_t size, pu_tags_t tag, void* user);
 
 void Z_Free(void* ptr);
 void Z_FreeTags(pu_tags_t lowtag, pu_tags_t hightag);
@@ -104,7 +104,8 @@ void Z_ClearZone(memzone_t* zone)
 	zone->blocklist.next = block;
 	//zone->blocklist.next = zone->blocklist.prev = block = (memblock_t*)((byte*)zone + sizeof(memzone_t));
 
-	zone->blocklist.user = zone;
+	// TODO fix more void** to void* issues
+	zone->blocklist.user = (void**)zone;
 	zone->blocklist.tag = pu_tags_t::PU_STATIC;
 	zone->rover = block;
 
@@ -130,7 +131,7 @@ void Z_Init()
 	mainzone->blocklist.next = block;
 	//mainzone->blocklist.next = mainzone->blocklist.prev = block = (memblock_t*)((byte*)mainzone + sizeof(memzone_t));
 
-	mainzone->blocklist.user = mainzone;
+	mainzone->blocklist.user = (void**)mainzone;
 	mainzone->blocklist.tag = pu_tags_t::PU_STATIC;
 	mainzone->rover = block;
 
@@ -244,7 +245,7 @@ void Z_Free(void* ptr)
 #define MINFRAGMENT 64
 // You can pass a NULL user if the tag is < PU_PURGELEVEL.
 template<typename T>
-T* Z_Malloc(size_t size, pu_tags_t tag, void* user)
+T& Z_Malloc(size_t size, pu_tags_t tag, void* user)
 {
 	size = (size + MEM_ALIGN - 1) & ~(MEM_ALIGN - 1);
 
@@ -288,9 +289,7 @@ T* Z_Malloc(size_t size, pu_tags_t tag, void* user)
 			}
 			else
 			{
-				// free the rover block (adding the size to base)
-
-				// the rover can be the base block
+				// free the rover block (adding the size to base) the rover can be the base block
 				base = base->prev;
 				Z_Free((byte*)rover + sizeof(memblock_t));
 				base = base->next;
@@ -303,7 +302,6 @@ T* Z_Malloc(size_t size, pu_tags_t tag, void* user)
 		}
 
 	} while (base->tag != pu_tags_t::PU_FREE || base->size < size);
-
 
 	// found a block big enough
 	auto extra{base->size - size};
@@ -332,7 +330,7 @@ T* Z_Malloc(size_t size, pu_tags_t tag, void* user)
 	base->user = user;
 	base->tag = tag;
 
-	auto result{(void*)((byte*)base + sizeof(memblock_t))};
+	auto result{static_cast<T>((byte*)base + sizeof(memblock_t))};
 
 	if (base->user)
 	{

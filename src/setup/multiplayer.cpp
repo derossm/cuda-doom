@@ -130,8 +130,8 @@ static int udpport = 2342;
 static int timer = 0;
 static int privateserver = 0;
 
-static txt_dropdown_list_t *skillbutton;
-static txt_button_t *warpbutton;
+static cudadoom::txt::txt_dropdown_list_t *skillbutton;
+static cudadoom::txt::txt_button_t *warpbutton;
 static warptype_t warptype = WARP_MAPxy;
 static int warpepisode = 1;
 static int warpmap = 1;
@@ -140,7 +140,7 @@ static int warpmap = 1;
 
 static char *connect_address = NULL;
 
-static txt_window_t *query_window;
+static cudadoom::txt::txt_window_t *query_window;
 static int query_servers_found;
 
 // Find an IWAD from its description
@@ -278,7 +278,7 @@ static void StartGame(int multiplayer)
 
 	AddWADs(exec);
 
-	TXT_Shutdown();
+	cudadoom::txt::TXT_Shutdown();
 
 	M_SaveDefaults();
 	PassThroughArguments(exec);
@@ -288,12 +288,12 @@ static void StartGame(int multiplayer)
 	exit(0);
 }
 
-static void StartServerGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void StartServerGame(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
 	StartGame(1);
 }
 
-static void StartSinglePlayerGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void StartSinglePlayerGame(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
 	StartGame(0);
 }
@@ -311,7 +311,7 @@ static void UpdateWarpButton()
 		M_snprintf(buf, sizeof(buf), "MAP%02i", warpmap);
 	}
 
-	TXT_SetButtonLabel(warpbutton, buf);
+	cudadoom::txt::TXT_SetButtonLabel(warpbutton, buf);
 }
 
 static void UpdateSkillButton()
@@ -354,7 +354,7 @@ static void UpdateSkillButton()
 	}
 }
 
-static void SetExMyWarp(TXT_UNCAST_ARG(widget), void *val)
+static void SetExMyWarp(cudadoom::txt::TXT_UNCAST_ARG(widget), void *val)
 {
 	int l;
 
@@ -366,7 +366,7 @@ static void SetExMyWarp(TXT_UNCAST_ARG(widget), void *val)
 	UpdateWarpButton();
 }
 
-static void SetMAPxyWarp(TXT_UNCAST_ARG(widget), void *val)
+static void SetMAPxyWarp(cudadoom::txt::TXT_UNCAST_ARG(widget), void *val)
 {
 	int l;
 
@@ -377,31 +377,32 @@ static void SetMAPxyWarp(TXT_UNCAST_ARG(widget), void *val)
 	UpdateWarpButton();
 }
 
-static void CloseLevelSelectDialog(TXT_UNCAST_ARG(button), TXT_UNCAST_ARG(window))
+static void CloseLevelSelectDialog(cudadoom::txt::TXT_UNCAST_ARG(button), cudadoom::txt::TXT_UNCAST_ARG(window))
 {
-	TXT_CAST_ARG(txt_window_t, window);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_window_t, window);
 
-	TXT_CloseWindow(window);
+	cudadoom::txt::TXT_CloseWindow(window);
 }
 
-static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
+static void LevelSelectDialog(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(user_data))
 {
-	txt_window_t *window;
-	txt_button_t *button;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_button_t *button;
 	const iwad_t *iwad;
 	char buf[10];
 	int episodes;
-	intptr_t x, y;
+	intptr_t x;
+	intptr_t y;
 	intptr_t l;
 	int i;
 
-	window = TXT_NewWindow("Select level");
+	window = cudadoom::txt::TXT_NewWindow("Select level");
 	iwad = GetCurrentIWAD();
 
 	if (warptype == WARP_ExMy)
 	{
 		episodes = D_GetNumEpisodes(iwad->mission, iwad->mode);
-		TXT_SetTableColumns(window, episodes);
+		cudadoom::txt::TXT_SetTableColumns(window, episodes);
 
 		// ExMy levels
 
@@ -416,29 +417,29 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
 
 				if (!D_ValidEpisodeMap(iwad->mission, iwad->mode, x, y))
 				{
-					TXT_AddWidget(window, NULL);
+					cudadoom::txt::TXT_AddWidget(window, NULL);
 					continue;
 				}
 
 				M_snprintf(buf, sizeof(buf),
 							" E%" PRIiPTR "M%" PRIiPTR " ", x, y);
-				button = TXT_NewButton(buf);
-				TXT_SignalConnect(button, "pressed",
+				button = cudadoom::txt::TXT_NewButton(buf);
+				cudadoom::txt::TXT_SignalConnect(button, "pressed",
 									SetExMyWarp, (void *) (x * 10 + y));
-				TXT_SignalConnect(button, "pressed",
+				cudadoom::txt::TXT_SignalConnect(button, "pressed",
 									CloseLevelSelectDialog, window);
-				TXT_AddWidget(window, button);
+				cudadoom::txt::TXT_AddWidget(window, button);
 
 				if (warpepisode == x && warpmap == y)
 				{
-					TXT_SelectWidget(window, button);
+					cudadoom::txt::TXT_SelectWidget(window, button);
 				}
 			}
 		}
 	}
 	else
 	{
-		TXT_SetTableColumns(window, 6);
+		cudadoom::txt::TXT_SetTableColumns(window, 6);
 
 		for (i=0; i<60; ++i)
 		{
@@ -449,27 +450,27 @@ static void LevelSelectDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
 
 			if (!D_ValidEpisodeMap(iwad->mission, iwad->mode, 1, l))
 			{
-				TXT_AddWidget(window, NULL);
+				cudadoom::txt::TXT_AddWidget(window, NULL);
 				continue;
 			}
 
 			M_snprintf(buf, sizeof(buf), " MAP%02" PRIiPTR " ", l);
-			button = TXT_NewButton(buf);
-			TXT_SignalConnect(button, "pressed",
+			button = cudadoom::txt::TXT_NewButton(buf);
+			cudadoom::txt::TXT_SignalConnect(button, "pressed",
 								SetMAPxyWarp, (void *) l);
-			TXT_SignalConnect(button, "pressed",
+			cudadoom::txt::TXT_SignalConnect(button, "pressed",
 								CloseLevelSelectDialog, window);
-			TXT_AddWidget(window, button);
+			cudadoom::txt::TXT_AddWidget(window, button);
 
 			if (warpmap == l)
 			{
-				TXT_SelectWidget(window, button);
+				cudadoom::txt::TXT_SelectWidget(window, button);
 			}
 		}
 	}
 }
 
-static void IWADSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void IWADSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
 	const iwad_t *iwad;
 
@@ -484,7 +485,7 @@ static void IWADSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 
 // Called when the IWAD button is changed, to update warptype.
 
-static void UpdateWarpType(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void UpdateWarpType(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
 	warptype_t new_warptype;
 	const iwad_t *iwad;
@@ -543,10 +544,10 @@ static const iwad_t **GetFallbackIwadList()
 	return fallback_iwad_list;
 }
 
-static txt_widget_t *IWADSelector()
+static cudadoom::txt::Widget *IWADSelector()
 {
-	txt_dropdown_list_t *dropdown;
-	txt_widget_t *result;
+	cudadoom::txt::txt_dropdown_list_t *dropdown;
+	cudadoom::txt::Widget *result;
 	int num_iwads;
 	unsigned int i;
 
@@ -563,7 +564,7 @@ static txt_widget_t *IWADSelector()
 			++num_iwads;
 	}
 
-	iwad_labels = malloc(sizeof(*iwad_labels) * num_iwads);
+	iwad_labels = static_cast<decltype(iwad_labels)>(malloc(sizeof(*iwad_labels) * num_iwads));
 
 	for (i=0; i < num_iwads; ++i)
 	{
@@ -585,18 +586,17 @@ static txt_widget_t *IWADSelector()
 	{
 		// We have only one IWAD. Show as a label.
 
-		result = (txt_widget_t *) TXT_NewLabel(found_iwads[0]->description);
+		result = (cudadoom::txt::Widget *) cudadoom::txt::TXT_NewLabel(found_iwads[0]->description);
 	}
 	else
 	{
 		// Dropdown list allowing IWAD to be selected.
 
-		dropdown = TXT_NewDropdownList(&found_iwad_selected,
-										iwad_labels, num_iwads);
+		dropdown = cudadoom::txt::TXT_NewDropdownList(&found_iwad_selected, iwad_labels, num_iwads);
 
-		TXT_SignalConnect(dropdown, "changed", IWADSelected, NULL);
+		cudadoom::txt::TXT_SignalConnect(dropdown, "changed", IWADSelected, NULL);
 
-		result = (txt_widget_t *) dropdown;
+		result = (cudadoom::txt::Widget *) dropdown;
 	}
 
 	// The first time the dialog is opened, found_iwad_selected=-1,
@@ -617,12 +617,12 @@ static txt_widget_t *IWADSelector()
 // a different callback depending on whether to start a multiplayer
 // or single player game.
 
-static txt_window_action_t *StartGameAction(int multiplayer)
+static cudadoom::txt::txt_window_action_t *StartGameAction(int multiplayer)
 {
-	txt_window_action_t *action;
-	TxtWidgetSignalFunc callback;
+	cudadoom::txt::txt_window_action_t *action;
+	cudadoom::txt::WidgetSignalFunc callback;
 
-	action = TXT_NewWindowAction(KEY_F10, "Start");
+	action = cudadoom::txt::TXT_NewWindowAction(KEY_F10, "Start");
 
 	if (multiplayer)
 	{
@@ -633,70 +633,67 @@ static txt_window_action_t *StartGameAction(int multiplayer)
 		callback = StartSinglePlayerGame;
 	}
 
-	TXT_SignalConnect(action, "pressed", callback, NULL);
+	cudadoom::txt::TXT_SignalConnect(action, "pressed", callback, NULL);
 
 	return action;
 }
 
-static void OpenWadsWindow(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(user_data))
+static void OpenWadsWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(user_data))
 {
-	txt_window_t *window;
+	cudadoom::txt::txt_window_t *window;
 	int i;
 
-	window = TXT_NewWindow("Add WADs");
+	window = cudadoom::txt::TXT_NewWindow("Add WADs");
 
 	for (i=0; i<NUM_WADS; ++i)
 	{
-		TXT_AddWidget(window,
-						TXT_NewFileSelector(&wads[i], 60, "Select a WAD file",
-											wad_extensions));
+		cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewFileSelector(&wads[i], 60, "Select a WAD file", wad_extensions));
 	}
 }
 
-static void OpenExtraParamsWindow(TXT_UNCAST_ARG(widget),
-									TXT_UNCAST_ARG(user_data))
+static void OpenExtraParamsWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(user_data))
 {
-	txt_window_t *window;
+	cudadoom::txt::txt_window_t *window;
 	int i;
 
-	window = TXT_NewWindow("Extra command line parameters");
+	window = cudadoom::txt::TXT_NewWindow("Extra command line parameters");
 
 	for (i=0; i<NUM_EXTRA_PARAMS; ++i)
 	{
-		TXT_AddWidget(window, TXT_NewInputBox(&extra_params[i], 70));
+		cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewInputBox(&extra_params[i], 70));
 	}
 }
 
-static txt_window_action_t *WadWindowAction()
+static cudadoom::txt::txt_window_action_t *WadWindowAction()
 {
-	txt_window_action_t *action;
+	cudadoom::txt::txt_window_action_t *action;
 
-	action = TXT_NewWindowAction('w', "Add WADs");
-	TXT_SignalConnect(action, "pressed", OpenWadsWindow, NULL);
+	action = cudadoom::txt::TXT_NewWindowAction('w', "Add WADs");
+	cudadoom::txt::TXT_SignalConnect(action, "pressed", OpenWadsWindow, NULL);
 
 	return action;
 }
 
-static txt_dropdown_list_t *GameTypeDropdown()
+static cudadoom::txt::txt_dropdown_list_t *GameTypeDropdown()
 {
 	switch (gamemission)
 	{
 		case doom:
 		default:
-			return TXT_NewDropdownList(&deathmatch, gamemodes, 4);
+			return cudadoom::txt::TXT_NewDropdownList(&deathmatch, gamemodes, 4);
 
 		// Heretic and Hexen don't support Deathmatch II:
 
 		case heretic:
 		case hexen:
-			return TXT_NewDropdownList(&deathmatch, gamemodes, 2);
+			return cudadoom::txt::TXT_NewDropdownList(&deathmatch, gamemodes, 2);
 
 		// Strife supports both deathmatch modes, but doesn't support
 		// multiplayer co-op. Use a different variable to indicate whether
 		// to use altdeath or not.
 
 		case strife:
-			return TXT_NewDropdownList(&strife_altdeath, strife_gamemodes, 2);
+			return cudadoom::txt::TXT_NewDropdownList(&strife_altdeath, strife_gamemodes, 2);
 	}
 }
 
@@ -706,103 +703,86 @@ static txt_dropdown_list_t *GameTypeDropdown()
 
 static void StartGameMenu(const char *window_title, int multiplayer)
 {
-	txt_window_t *window;
-	txt_widget_t *iwad_selector;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::Widget *iwad_selector;
 
-	window = TXT_NewWindow(window_title);
-	TXT_SetTableColumns(window, 2);
-	TXT_SetColumnWidths(window, 12, 6);
+	window = cudadoom::txt::TXT_NewWindow(window_title);
+	cudadoom::txt::TXT_SetTableColumns(window, 2);
+	cudadoom::txt::TXT_SetColumnWidths(window, 12, 6);
 
 	if (multiplayer)
 	{
-		TXT_SetWindowHelpURL(window, MULTI_START_HELP_URL);
+		cudadoom::txt::TXT_SetWindowHelpURL(window, MULTI_START_HELP_URL);
 	}
 	else
 	{
-		TXT_SetWindowHelpURL(window, LEVEL_WARP_HELP_URL);
+		cudadoom::txt::TXT_SetWindowHelpURL(window, LEVEL_WARP_HELP_URL);
 	}
 
-	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, WadWindowAction());
-	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, StartGameAction(multiplayer));
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_CENTER, WadWindowAction());
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_RIGHT, StartGameAction(multiplayer));
 
-	TXT_AddWidgets(window,
-					TXT_NewLabel("Game"),
-					iwad_selector = IWADSelector(),
-					NULL);
+	cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewLabel("Game"), iwad_selector = IWADSelector(), NULL);
 
 	if (gamemission == hexen)
 	{
-		txt_dropdown_list_t *cc_dropdown;
-		TXT_AddWidgets(window,
-						TXT_NewLabel("Character class "),
-						cc_dropdown = TXT_NewDropdownList(&character_class,
-															character_classes, 3),
-						NULL);
+		cudadoom::txt::txt_dropdown_list_t *cc_dropdown;
+		cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewLabel("Character class "), cc_dropdown = cudadoom::txt::TXT_NewDropdownList(&character_class, character_classes, 3), NULL);
 
 		// Update skill level dropdown when the character class is changed:
 
-		TXT_SignalConnect(cc_dropdown, "changed", UpdateWarpType, NULL);
+		cudadoom::txt::TXT_SignalConnect(cc_dropdown, "changed", UpdateWarpType, NULL);
 	}
 
-	TXT_AddWidgets(window,
-					TXT_NewLabel("Skill"),
-					skillbutton = TXT_NewDropdownList(&skill, doom_skills, 5),
-					TXT_NewLabel("Level warp"),
-					warpbutton = TXT_NewButton2("?", LevelSelectDialog, NULL),
+	cudadoom::txt::TXT_AddWidgets(window,
+					cudadoom::txt::TXT_NewLabel("Skill"),
+					skillbutton = cudadoom::txt::TXT_NewDropdownList(&skill, doom_skills, 5),
+					cudadoom::txt::TXT_NewLabel("Level warp"),
+					warpbutton = cudadoom::txt::TXT_NewButton2("?", LevelSelectDialog, NULL),
 					NULL);
 
 	if (multiplayer)
 	{
-		TXT_AddWidgets(window,
-				TXT_NewLabel("Game type"),
+		cudadoom::txt::TXT_AddWidgets(window,
+				cudadoom::txt::TXT_NewLabel("Game type"),
 				GameTypeDropdown(),
-				TXT_NewLabel("Time limit"),
-				TXT_NewHorizBox(TXT_NewIntInputBox(&timer, 2),
-								TXT_NewLabel("minutes"),
+				cudadoom::txt::TXT_NewLabel("Time limit"),
+				cudadoom::txt::TXT_NewHorizBox(cudadoom::txt::TXT_NewIntInputBox(&timer, 2),
+								cudadoom::txt::TXT_NewLabel("minutes"),
 								NULL),
 				NULL);
 	}
 
-	TXT_AddWidgets(window,
-					TXT_NewSeparator("Monster options"),
-					TXT_NewInvertedCheckBox("Monsters enabled", &nomonsters),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewCheckBox("Fast monsters", &fast),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewCheckBox("Respawning monsters", &respawn),
-					TXT_TABLE_OVERFLOW_RIGHT,
+	cudadoom::txt::TXT_AddWidgets(window,
+					cudadoom::txt::TXT_NewSeparator("Monster options"),
+					cudadoom::txt::TXT_NewInvertedCheckBox("Monsters enabled", &nomonsters),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewCheckBox("Fast monsters", &fast),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewCheckBox("Respawning monsters", &respawn),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
 					NULL);
 
 	if (multiplayer)
 	{
-		TXT_AddWidgets(window,
-						TXT_NewSeparator("Advanced"),
-						TXT_NewLabel("UDP port"),
-						TXT_NewIntInputBox(&udpport, 5),
-						TXT_NewInvertedCheckBox("Register with master server",
-												&privateserver),
-						TXT_TABLE_OVERFLOW_RIGHT,
-						NULL);
+		cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewSeparator("Advanced"), cudadoom::txt::TXT_NewLabel("UDP port"), cudadoom::txt::TXT_NewIntInputBox(&udpport, 5),
+						cudadoom::txt::TXT_NewInvertedCheckBox("Register with master server", &privateserver), cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT, NULL);
 	}
 
-	TXT_AddWidgets(window,
-					TXT_NewButton2("Add extra parameters...",
-									OpenExtraParamsWindow, NULL),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					NULL);
+	cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewButton2("Add extra parameters...", OpenExtraParamsWindow, NULL), cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT, NULL);
 
-	TXT_SignalConnect(iwad_selector, "changed", UpdateWarpType, NULL);
+	cudadoom::txt::TXT_SignalConnect(iwad_selector, "changed", UpdateWarpType, NULL);
 
 	UpdateWarpType(NULL, NULL);
 	UpdateWarpButton();
 }
 
-void StartMultiGame(TXT_UNCAST_ARG(widget), void *user_data)
+void StartMultiGame(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 {
 	StartGameMenu("Start multiplayer game", 1);
 }
 
-void WarpMenu(TXT_UNCAST_ARG(widget), void *user_data)
+void WarpMenu(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 {
 	StartGameMenu("Level Warp", 0);
 }
@@ -813,7 +793,7 @@ static void DoJoinGame(void *unused1, void *unused2)
 
 	if (connect_address == NULL || strlen(connect_address) <= 0)
 	{
-		TXT_MessageBox(NULL, "Please enter a server address\n"
+		cudadoom::txt::TXT_MessageBox(NULL, "Please enter a server address\n"
 								"to connect to.");
 		return;
 	}
@@ -834,7 +814,7 @@ static void DoJoinGame(void *unused1, void *unused2)
 	AddIWADParameter(exec);
 	AddWADs(exec);
 
-	TXT_Shutdown();
+	cudadoom::txt::TXT_Shutdown();
 
 	M_SaveDefaults();
 
@@ -845,28 +825,25 @@ static void DoJoinGame(void *unused1, void *unused2)
 	exit(0);
 }
 
-static txt_window_action_t *JoinGameAction()
+static cudadoom::txt::txt_window_action_t *JoinGameAction()
 {
-	txt_window_action_t *action;
+	cudadoom::txt::txt_window_action_t *action;
 
-	action = TXT_NewWindowAction(KEY_F10, "Connect");
-	TXT_SignalConnect(action, "pressed", DoJoinGame, NULL);
+	action = cudadoom::txt::TXT_NewWindowAction(KEY_F10, "Connect");
+	cudadoom::txt::TXT_SignalConnect(action, "pressed", DoJoinGame, NULL);
 
 	return action;
 }
 
-static void SelectQueryAddress(TXT_UNCAST_ARG(button),
-								TXT_UNCAST_ARG(querydata))
+static void SelectQueryAddress(cudadoom::txt::TXT_UNCAST_ARG(button), cudadoom::txt::TXT_UNCAST_ARG(querydata))
 {
-	TXT_CAST_ARG(txt_button_t, button);
-	TXT_CAST_ARG(net_querydata_t, querydata);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_button_t, button);
+	cudadoom::txt::TXT_CAST_ARG(net_querydata_t, querydata);
 	int i;
 
 	if (querydata->server_state != 0)
 	{
-		TXT_MessageBox("Cannot connect to server",
-						"Gameplay is already in progress\n"
-						"on this server.");
+		cudadoom::txt::TXT_MessageBox("Cannot connect to server", "Gameplay is already in progress\non this server.");
 		return;
 	}
 
@@ -881,8 +858,7 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
 	{
 		for (i = 0; found_iwads[i] != NULL; ++i)
 		{
-			if (found_iwads[i]->mode == querydata->gamemode
-				&& found_iwads[i]->mission == querydata->gamemission)
+			if (found_iwads[i]->mode == querydata->gamemode && found_iwads[i]->mission == querydata->gamemission)
 			{
 				found_iwad_selected = i;
 				iwadfile = found_iwads[i]->name;
@@ -892,32 +868,21 @@ static void SelectQueryAddress(TXT_UNCAST_ARG(button),
 
 		if (found_iwads[i] == NULL)
 		{
-			TXT_MessageBox(NULL,
-							"The game on this server seems to be:\n"
-							"\n"
-							"	%s\n"
-							"\n"
-							"but the IWAD file %s is not found!\n"
-							"Without the required IWAD file, it may not be\n"
-							"possible to join this game.",
-							D_SuggestGameName(querydata->gamemission,
-												querydata->gamemode),
-							D_SuggestIWADName(querydata->gamemission,
-												querydata->gamemode));
+			cudadoom::txt::TXT_MessageBox(NULL,
+							"The game on this server seems to be:\n\n	%s\n\nbut the IWAD file %s is not found!\n"
+							"Without the required IWAD file, it may not be\npossible to join this game.",
+							D_SuggestGameName(querydata->gamemission, querydata->gamemode),
+							D_SuggestIWADName(querydata->gamemission, querydata->gamemode));
 		}
 	}
 
 	// Finished with search.
-
-	TXT_CloseWindow(query_window);
+	cudadoom::txt::TXT_CloseWindow(query_window);
 }
 
-static void QueryResponseCallback(net_addr_t *addr,
-									net_querydata_t *querydata,
-									unsigned int ping_time,
-									TXT_UNCAST_ARG(results_table))
+static void QueryResponseCallback(net_addr_t *addr, net_querydata_t *querydata, unsigned int ping_time, cudadoom::txt::TXT_UNCAST_ARG(results_table))
 {
-	TXT_CAST_ARG(txt_table_t, results_table);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, results_table);
 	char ping_time_str[16];
 	char description[47];
 
@@ -939,8 +904,7 @@ static void QueryResponseCallback(net_addr_t *addr,
 	// connected to the server.
 	if (querydata->num_players > 0)
 	{
-		M_snprintf(description, sizeof(description), "(%d/%d) ",
-					querydata->num_players, querydata->max_players);
+		M_snprintf(description, sizeof(description), "(%d/%d) ", querydata->num_players, querydata->max_players);
 	}
 	else
 	{
@@ -949,118 +913,92 @@ static void QueryResponseCallback(net_addr_t *addr,
 
 	M_StringConcat(description, querydata->description, sizeof(description));
 
-	TXT_AddWidgets(results_table,
-					TXT_NewLabel(ping_time_str),
-					TXT_NewButton2(NET_AddrToString(addr),
-									SelectQueryAddress, querydata),
-					TXT_NewLabel(description),
-					NULL);
+	cudadoom::txt::TXT_AddWidgets(results_table, cudadoom::txt::TXT_NewLabel(ping_time_str), cudadoom::txt::TXT_NewButton2(NET_AddrToString(addr), SelectQueryAddress, querydata),
+					cudadoom::txt::TXT_NewLabel(description), NULL);
 
 	++query_servers_found;
 }
 
-static void QueryPeriodicCallback(TXT_UNCAST_ARG(results_table))
+static void QueryPeriodicCallback(cudadoom::txt::TXT_UNCAST_ARG(results_table))
 {
-	TXT_CAST_ARG(txt_table_t, results_table);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, results_table);
 
 	if (!NET_Query_Poll(QueryResponseCallback, results_table))
 	{
-		TXT_SetPeriodicCallback(NULL, NULL, 0);
+		cudadoom::txt::TXT_SetPeriodicCallback(NULL, NULL, 0);
 
 		if (query_servers_found == 0)
 		{
-			TXT_AddWidgets(results_table,
-				TXT_TABLE_EMPTY,
-				TXT_NewLabel("No compatible servers found."),
+			cudadoom::txt::TXT_AddWidgets(results_table,
+				cudadoom::txt::TXT_TABLE_EMPTY,
+				cudadoom::txt::TXT_NewLabel("No compatible servers found."),
 				NULL
 			);
 		}
 	}
 }
 
-static void QueryWindowClosed(TXT_UNCAST_ARG(window), void *unused)
+static void QueryWindowClosed(cudadoom::txt::TXT_UNCAST_ARG(window), void *unused)
 {
-	TXT_SetPeriodicCallback(NULL, NULL, 0);
+	cudadoom::txt::TXT_SetPeriodicCallback(NULL, NULL, 0);
 }
 
 static void ServerQueryWindow(const char *title)
 {
-	txt_table_t *results_table;
+	cudadoom::txt::txt_table_t *results_table;
 
 	query_servers_found = 0;
 
-	query_window = TXT_NewWindow(title);
+	query_window = cudadoom::txt::TXT_NewWindow(title);
 
-	TXT_AddWidget(query_window,
-					TXT_NewScrollPane(70, 10,
-									results_table = TXT_NewTable(3)));
+	cudadoom::txt::TXT_AddWidget(query_window, cudadoom::txt::TXT_NewScrollPane(70, 10, results_table = cudadoom::txt::TXT_NewTable(3)));
 
-	TXT_SetColumnWidths(results_table, 7, 22, 40);
-	TXT_SetPeriodicCallback(QueryPeriodicCallback, results_table, 1);
+	cudadoom::txt::TXT_SetColumnWidths(results_table, 7, 22, 40);
+	cudadoom::txt::TXT_SetPeriodicCallback(QueryPeriodicCallback, results_table, 1);
 
-	TXT_SignalConnect(query_window, "closed", QueryWindowClosed, NULL);
+	cudadoom::txt::TXT_SignalConnect(query_window, "closed", QueryWindowClosed, NULL);
 }
 
-static void FindInternetServer(TXT_UNCAST_ARG(widget),
-								TXT_UNCAST_ARG(user_data))
+static void FindInternetServer(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(user_data))
 {
 	NET_StartMasterQuery();
 	ServerQueryWindow("Find Internet server");
 }
 
-static void FindLANServer(TXT_UNCAST_ARG(widget),
-							TXT_UNCAST_ARG(user_data))
+static void FindLANServer(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(user_data))
 {
 	NET_StartLANQuery();
 	ServerQueryWindow("Find LAN server");
 }
 
-void JoinMultiGame(TXT_UNCAST_ARG(widget), void *user_data)
+void JoinMultiGame(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 {
-	txt_window_t *window;
-	txt_inputbox_t *address_box;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_inputbox_t *address_box;
 
-	window = TXT_NewWindow("Join multiplayer game");
-	TXT_SetTableColumns(window, 2);
-	TXT_SetColumnWidths(window, 12, 12);
+	window = cudadoom::txt::TXT_NewWindow("Join multiplayer game");
+	cudadoom::txt::TXT_SetTableColumns(window, 2);
+	cudadoom::txt::TXT_SetColumnWidths(window, 12, 12);
 
-	TXT_SetWindowHelpURL(window, MULTI_JOIN_HELP_URL);
+	cudadoom::txt::TXT_SetWindowHelpURL(window, MULTI_JOIN_HELP_URL);
 
-	TXT_AddWidgets(window,
-					TXT_NewLabel("Game"),
-					IWADSelector(),
-					NULL);
+	cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewLabel("Game"), IWADSelector(), NULL);
 
 	if (gamemission == hexen)
 	{
-		TXT_AddWidgets(window,
-						TXT_NewLabel("Character class "),
-						TXT_NewDropdownList(&character_class,
-											character_classes, 3),
-						NULL);
+		cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewLabel("Character class "), cudadoom::txt::TXT_NewDropdownList(&character_class, character_classes, 3), NULL);
 	}
 
-	TXT_AddWidgets(window,
-					TXT_NewSeparator("Server"),
-					TXT_NewLabel("Connect to address: "),
-					address_box = TXT_NewInputBox(&connect_address, 30),
+	cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewSeparator("Server"), cudadoom::txt::TXT_NewLabel("Connect to address: "),
+					address_box = cudadoom::txt::TXT_NewInputBox(&connect_address, 30), cudadoom::txt::TXT_NewButton2("Find server on Internet...", FindInternetServer, NULL),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT, cudadoom::txt::TXT_NewButton2("Find server on local network...", FindLANServer, NULL),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT, cudadoom::txt::TXT_NewStrut(0, 1),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT, cudadoom::txt::TXT_NewButton2("Add extra parameters...", OpenExtraParamsWindow, NULL), NULL);
 
-					TXT_NewButton2("Find server on Internet...",
-									FindInternetServer, NULL),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewButton2("Find server on local network...",
-									FindLANServer, NULL),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewStrut(0, 1),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewButton2("Add extra parameters...",
-									OpenExtraParamsWindow, NULL),
-					NULL);
+	cudadoom::txt::TXT_SelectWidget(window, address_box);
 
-	TXT_SelectWidget(window, address_box);
-
-	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, WadWindowAction());
-	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, JoinGameAction());
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_CENTER, WadWindowAction());
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_RIGHT, JoinGameAction());
 }
 
 void SetChatMacroDefaults()
@@ -1081,7 +1019,6 @@ void SetChatMacroDefaults()
 	};
 
 	// If the chat macros have not been set, initialize with defaults.
-
 	for (i=0; i<10; ++i)
 	{
 		if (chat_macros[i] == NULL)
@@ -1099,42 +1036,33 @@ void SetPlayerNameDefault()
 	}
 }
 
-void MultiplayerConfig(TXT_UNCAST_ARG(widget), void *user_data)
+void MultiplayerConfig(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 {
-	txt_window_t *window;
-	txt_label_t *label;
-	txt_table_t *table;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_label_t *label;
+	cudadoom::txt::txt_table_t *table;
 	char buf[10];
 	int i;
 
-	window = TXT_NewWindow("Multiplayer Configuration");
-	TXT_SetWindowHelpURL(window, MULTI_CONFIG_HELP_URL);
+	window = cudadoom::txt::TXT_NewWindow("Multiplayer Configuration");
+	cudadoom::txt::TXT_SetWindowHelpURL(window, MULTI_CONFIG_HELP_URL);
 
-	TXT_AddWidgets(window,
-					TXT_NewStrut(0, 1),
-					TXT_NewHorizBox(TXT_NewLabel("Player name: "),
-									TXT_NewInputBox(&net_player_name, 25),
-									NULL),
-					TXT_NewStrut(0, 1),
-					TXT_NewSeparator("Chat macros"),
-					NULL);
+	cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewStrut(0, 1), cudadoom::txt::TXT_NewHorizBox(cudadoom::txt::TXT_NewLabel("Player name: "), cudadoom::txt::TXT_NewInputBox(&net_player_name, 25), NULL),
+					cudadoom::txt::TXT_NewStrut(0, 1), cudadoom::txt::TXT_NewSeparator("Chat macros"), NULL);
 
-	table = TXT_NewTable(2);
+	table = cudadoom::txt::TXT_NewTable(2);
 
 	for (i=0; i<10; ++i)
 	{
 		M_snprintf(buf, sizeof(buf), "#%i ", i + 1);
 
-		label = TXT_NewLabel(buf);
-		TXT_SetFGColor(label, TXT_COLOR_BRIGHT_CYAN);
+		label = cudadoom::txt::TXT_NewLabel(buf);
+		cudadoom::txt::TXT_SetFGColor(label, cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 
-		TXT_AddWidgets(table,
-						label,
-						TXT_NewInputBox(&chat_macros[(i + 1) % 10], 40),
-						NULL);
+		cudadoom::txt::TXT_AddWidgets(table, label, cudadoom::txt::TXT_NewInputBox(&chat_macros[(i + 1) % 10], 40), NULL);
 	}
 
-	TXT_AddWidget(window, table);
+	cudadoom::txt::TXT_AddWidget(window, table);
 }
 
 void BindMultiplayerVariables()
@@ -1184,4 +1112,3 @@ void BindMultiplayerVariables()
 			break;
 	}
 }
-

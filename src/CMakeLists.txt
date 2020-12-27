@@ -5,7 +5,7 @@ endforeach()
 # Common source files used by absolutely everything:
 
 set(COMMON_SOURCE_FILES
-	crispy.cpp			crispy.h
+						crispy.h
 	i_main.cpp
 	i_system.cpp		i_system.h
 	m_argv.cpp			m_argv.h
@@ -73,7 +73,7 @@ set(GAME_SOURCE_FILES
 	net_client.cpp		net_client.h
 	net_common.cpp		net_common.h
 	net_dedicated.cpp	net_dedicated.h
-	net_defs.h
+						net_defs.h
 	net_gui.cpp			net_gui.h
 	net_io.cpp			net_io.h
 	net_loop.cpp		net_loop.h

@@ -1166,17 +1166,12 @@ void P_PlayerInSpecialSector (player_t* player)
 	// [crispy] ignore unknown special sectors
 	if (error != sector)
 	{
-	error = sector;
-	fprintf (stderr, "P_PlayerInSpecialSector: "
-			"unknown special %i\n",
-			sector->special);
+		error = sector;
+		fprintf (stderr, "P_PlayerInSpecialSector: unknown special %i\n", sector->special);
 	}
 	break;
 	};
 }
-
-
-
 
 //
 // P_UpdateSpecials
@@ -1328,8 +1323,7 @@ void R_InterpolateTextureOffsets ()
 #define DONUT_FLOORHEIGHT_DEFAULT 0x00000000
 #define DONUT_FLOORPIC_DEFAULT 0x16
 
-static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic,
-							line_t *line, sector_t *pillar_sector)
+static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic, line_t *line, sector_t *pillar_sector)
 {
 	static int first = 1;
 	static int tmp_s3_floorheight;

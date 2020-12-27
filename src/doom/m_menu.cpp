@@ -1343,9 +1343,9 @@ static void M_DrawCrispnessBackground()
 		for (x = 0; x < SCREENWIDTH; x++)
 		{
 #ifndef CRISPY_TRUECOLOR
-			*dest++ = src[(y & 63) * 64 + (x & 63)];
+			*(dest++) = src[(y & 63) * 64 + (x & 63)];
 #else
-			*dest++ = colormaps[src[(y & 63) * 64 + (x & 63)]];
+			*(dest++) = colormaps[src[(y & 63) * 64 + (x & 63)]];
 #endif
 		}
 	}
@@ -1950,7 +1950,7 @@ void M_WriteText(int x, int y, const char void0 void1 *string)
 
 	while(1)
 	{
-	c = *ch++;
+	c = *(ch++);
 	if (!c)
 		break;
 	if (c == '\n')
@@ -1964,7 +1964,7 @@ void M_WriteText(int x, int y, const char void0 void1 *string)
 	{
 		if (*ch >= '0' && *ch <= '0' + CRMAX - 1)
 		{
-		c = *ch++;
+		c = *(ch++);
 		dp_translation = cr[(int) (c - '0')];
 		continue;
 		}

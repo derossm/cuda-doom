@@ -25,9 +25,9 @@
 
 static int console_handle;
 static pcsound_callback_func callback;
-static int sound_thread_running = 0;
+static int sound_thread_running{0};
 static SDL_Thread *sound_thread_handle;
-static int sleep_adjust = 0;
+static int sleep_adjust{0};
 
 static void AdjustedSleep(unsigned int ms)
 {
@@ -36,7 +36,6 @@ static void AdjustedSleep(unsigned int ms)
 	unsigned int actual_time;
 
 	// Adjust based on previous error to keep the tempo right
-
 	if (sleep_adjust > ms)
 	{
 		sleep_adjust -= ms;
@@ -48,7 +47,6 @@ static void AdjustedSleep(unsigned int ms)
 	}
 
 	// Do the sleep and record how long it takes
-
 	start_time = SDL_GetTicks();
 
 	SDL_Delay(ms);
@@ -70,7 +68,6 @@ static void AdjustedSleep(unsigned int ms)
 	}
 
 	// Save sleep_adjust for next time
-
 	sleep_adjust = actual_time - ms;
 }
 
@@ -104,33 +101,27 @@ static int SoundThread(void *unused)
 static int PCSound_Linux_Init(pcsound_callback_func callback_func)
 {
 	// Try to open the console
-
 	console_handle = open(CONSOLE_DEVICE, O_WRONLY);
 
 	if (console_handle == -1)
 	{
 		// Don't have permissions for the console device?
-
-	fprintf(stderr, "PCSound_Linux_Init: Failed to open '%s': %s\n",
-			CONSOLE_DEVICE, strerror(errno));
+		fprintf(stderr, "PCSound_Linux_Init: Failed to open '%s': %s\n", CONSOLE_DEVICE, strerror(errno));
 		return 0;
 	}
 
 	if (ioctl(console_handle, KIOCSOUND, 0) < 0)
 	{
 		// KIOCSOUND not supported: non-PC linux?
-
 		close(console_handle);
 		return 0;
 	}
 
 	// Start a thread up to generate PC speaker output
-
 	callback = callback_func;
 	sound_thread_running = 1;
 
-	sound_thread_handle =
-		SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
+	sound_thread_handle = SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
 
 	return 1;
 }
@@ -150,4 +141,3 @@ pcsound_driver_t pcsound_linux_driver =
 };
 
 #endif /* #ifdef HAVE_LINUX_KD_H */
-

@@ -20,16 +20,10 @@
 #include "txt_main.h"
 #include "txt_widget.h"
 
-struct txt_fileselect_s {
-	txt_widget_t widget;
-	txt_inputbox_t *inputbox;
-	int size;
-	const char *prompt;
-	const char **extensions;
-};
+namespace cudadoom::txt
+{
 
 // Dummy value to select a directory.
-
 const char *TXT_DIRECTORY[] = { "__directory__", NULL };
 
 #ifndef _WIN32
@@ -58,9 +52,7 @@ static char *ExecReadOutput(char **argv)
 	fcntl(pipefd[0], F_SETFL, O_NONBLOCK);
 
 	// Read program output into 'result' string.
-	// Wait until the program has completed and (if it was successful)
-	// a full line has been read.
-
+	// Wait until the program has completed and (if it was successful) a full line has been read.
 	result = NULL;
 	result_len = 0;
 	completed = 0;
@@ -108,7 +100,6 @@ static char *ExecReadOutput(char **argv)
 	close(pipefd[1]);
 
 	// Must have a success exit code.
-
 	if (WEXITSTATUS(status) != 0)
 	{
 		free(result);
@@ -116,7 +107,6 @@ static char *ExecReadOutput(char **argv)
 	}
 
 	// Strip off newline from the end.
-
 	if (result != NULL && result[result_len - 1] == '\n')
 	{
 		result[result_len - 1] = '\0';
@@ -150,13 +140,11 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
 #elif defined(xxxdisabled_WIN32)
 
 // Windows code. Use comdlg32 to pop up a dialog box.
-
 static bool (*MyGetOpenFileName)(LPOPENFILENAME) = NULL;
 static LPITEMIDLIST (*MySHBrowseForFolder)(LPBROWSEINFO) = NULL;
 static bool (*MySHGetPathFromIDList)(LPITEMIDLIST, LPTSTR) = NULL;
 
 // Load library functions from DLL files.
-
 static int LoadDLLs()
 {
 	HMODULE comdlg32, shell32
@@ -200,7 +188,6 @@ static int InitLibraries()
 }
 
 // Generate the "filter" string from the list of extensions.
-
 static char *GenerateFilterString(const char **extensions)
 {
 	unsigned int result_len = 1;
@@ -218,7 +205,7 @@ static char *GenerateFilterString(const char **extensions)
 		result_len += 16 + strlen(extensions[i]) * 3;
 	}
 
-	result = malloc(result_len);
+	result = static_cast<decltype(result)>(malloc(result_len));
 	out = result; out_len = result_len;
 
 	for (i = 0; extensions[i] != NULL; ++i)
@@ -341,22 +328,22 @@ static char *CreateEscapedString(const char *original)
 		}
 	}
 
-	result = malloc(strlen(original) + count_extras + 1);
+	result = static_cast<decltype(result)>(malloc(strlen(original) + count_extras + 1));
 	if (!result)
 	{
 		return NULL;
 	}
 	out = result;
-	*out++ = '"';
+	*(out++) = '"';
 	for (in = original; *in; ++in)
 	{
 		if (strchr(ESCAPED_CHARS, *in))
 		{
-			*out++ = '\\';
+			*(out++) = '\\';
 		}
-		*out++ = *in;
+		*(out++) = *in;
 	}
-	*out++ = '"';
+	*(out++) = '"';
 	*out = 0;
 
 	return result;
@@ -364,7 +351,6 @@ static char *CreateEscapedString(const char *original)
 }
 
 // Build list of extensions, like: {"wad","lmp","txt"}
-
 static char *CreateExtensionsList(const char **extensions)
 {
 	char *result, *escaped;
@@ -382,7 +368,7 @@ static char *CreateExtensionsList(const char **extensions)
 		result_len += 5 + strlen(extensions[i]) * 2;
 	}
 
-	result = malloc(result_len);
+	result = static_cast<decltype(result)>(malloc(result_len));
 	if (!result)
 	{
 		return NULL;
@@ -434,7 +420,6 @@ static char *GenerateSelector(const char *const window_title, const char **exten
 	}
 
 	// Calculate size.
-
 	if (window_title != NULL)
 	{
 		window_title_escaped = CreateEscapedString(window_title);
@@ -450,7 +435,7 @@ static char *GenerateSelector(const char *const window_title, const char **exten
 		result_len += strlen(ext_list);
 	}
 
-	result = malloc(result_len);
+	result = static_cast<decltype(result)>(malloc(result_len));
 	if (!result)
 	{
 		free(window_title_escaped);
@@ -489,7 +474,7 @@ static char *GenerateAppleScript(const char *window_title, const char **extensio
 	}
 
 	result_len = strlen(APPLESCRIPT_WRAPPER) + strlen(selector);
-	result = malloc(result_len);
+	result = static_cast<decltype(result)>(malloc(result_len));
 	if (!result)
 	{
 		free(selector);
@@ -532,9 +517,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
 
 #else
 
-// Linux version: invoke the Zenity command line program to pop up a
-// dialog box. This avoids adding Gtk+ as a compile dependency.
-
+// Linux version: invoke the Zenity command line program to pop up a dialog box. This avoids adding Gtk+ as a compile dependency.
 #define ZENITY_BINARY "/usr/bin/zenity"
 
 static unsigned int NumExtensions(const char **extensions)
@@ -559,12 +542,10 @@ int TXT_CanSelectFiles()
 	return ZenityAvailable();
 }
 
-//
 // ExpandExtension
 // given an extension (like wad)
 // return a pointer to a string that is a case-insensitive
 // pattern representation (like [Ww][Aa][Dd])
-//
 static char *ExpandExtension(const char *orig)
 {
 	int oldlen, newlen, i;
@@ -572,7 +553,7 @@ static char *ExpandExtension(const char *orig)
 
 	oldlen = strlen(orig);
 	newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
-	newext = malloc(newlen+1);
+	newext = static_cast<decltype(newext)>(malloc(newlen+1));
 
 	if (newext == NULL)
 	{
@@ -584,14 +565,14 @@ static char *ExpandExtension(const char *orig)
 	{
 		if (isalpha(orig[i]))
 		{
-			*c++ = '[';
-			*c++ = tolower(orig[i]);
-			*c++ = toupper(orig[i]);
-			*c++ = ']';
+			*(c++) = '[';
+			*(c++) = tolower(orig[i]);
+			*(c++) = toupper(orig[i]);
+			*(c++) = ']';
 		}
 		else
 		{
-			*c++ = orig[i];
+			*(c++) = orig[i];
 		}
 	}
 	*c = '\0';
@@ -619,7 +600,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
 	if (window_title != NULL)
 	{
 		len = 10 + strlen(window_title);
-		argv[argc] = malloc(len);
+		argv[argc] = static_cast<decltype(argv[argc])>(malloc(len));
 		TXT_snprintf(argv[argc], len, "--title=%s", window_title);
 		++argc;
 	}
@@ -637,7 +618,7 @@ char *TXT_SelectFile(const char *window_title, const char **extensions)
 			if (newext)
 			{
 				len = 30 + strlen(extensions[i]) + strlen(newext);
-				argv[argc] = malloc(len);
+				argv[argc] = static_cast<decltype(argv[argc])>(malloc(len));
 				TXT_snprintf(argv[argc], len, "--file-filter=.%s | *.%s",
 								extensions[i], newext);
 				++argc;
@@ -691,7 +672,7 @@ static void TXT_FileSelectDrawer(TXT_UNCAST_ARG(fileselect))
 
 	// Triple bar symbol gives a distinguishing look to the file selector.
 	TXT_DrawCodePageString("\xf0 ");
-	TXT_BGColor(TXT_COLOR_BLACK, 0);
+	TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, false);
 	TXT_DrawWidget(fileselect->inputbox);
 }
 
@@ -712,10 +693,7 @@ static int DoSelectFile(txt_fileselect_t *fileselect)
 		path = TXT_SelectFile(fileselect->prompt,
 								fileselect->extensions);
 
-		// Update inputbox variable.
-		// If cancel was pressed (ie. NULL was returned by TXT_SelectFile)
-		// then reset to empty string, not NULL).
-
+		// Update inputbox variable. If cancel was pressed (ie. NULL was returned by TXT_SelectFile) then reset to empty string, not NULL).
 		if (path == NULL)
 		{
 			path = strdup("");
@@ -737,10 +715,7 @@ static int TXT_FileSelectKeyPress(TXT_UNCAST_ARG(fileselect), int key)
 	// When the enter key is pressed, pop up a file selection dialog,
 	// if file selectors work. Allow holding down 'alt' to override
 	// use of the native file selector, so the user can just type a path.
-
-	if (!fileselect->inputbox->editing
-		&& !TXT_GetModifierState(TXT_MOD_ALT)
-		&& key == KEY_ENTER)
+	if (!fileselect->inputbox->editing && !TXT_GetModifierState(TXT_MOD_ALT) && key == KEY_ENTER)
 	{
 		if (DoSelectFile(fileselect))
 		{
@@ -751,14 +726,11 @@ static int TXT_FileSelectKeyPress(TXT_UNCAST_ARG(fileselect), int key)
 	return TXT_WidgetKeyPress(fileselect->inputbox, key);
 }
 
-static void TXT_FileSelectMousePress(TXT_UNCAST_ARG(fileselect),
-										int x, int y, int b)
+static void TXT_FileSelectMousePress(TXT_UNCAST_ARG(fileselect), int x, int y, int b)
 {
 	TXT_CAST_ARG(txt_fileselect_t, fileselect);
 
-	if (!fileselect->inputbox->editing
-		&& !TXT_GetModifierState(TXT_MOD_ALT)
-		&& b == TXT_MOUSE_LEFT)
+	if (!fileselect->inputbox->editing && !TXT_GetModifierState(TXT_MOD_ALT) && b == TXT_MOUSE_LEFT)
 	{
 		if (DoSelectFile(fileselect))
 		{
@@ -776,7 +748,7 @@ static void TXT_FileSelectFocused(TXT_UNCAST_ARG(fileselect), int focused)
 	TXT_SetWidgetFocus(fileselect->inputbox, focused);
 }
 
-txt_widget_class_t txt_fileselect_class =
+WidgetClass txt_fileselect_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_FileSelectSizeCalc,
@@ -788,9 +760,7 @@ txt_widget_class_t txt_fileselect_class =
 	TXT_FileSelectFocused,
 };
 
-// If the (inner) inputbox widget is changed, emit a change to the
-// outer (fileselect) widget.
-
+// If the (inner) inputbox widget is changed, emit a change to the outer (fileselect) widget.
 static void InputBoxChanged(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(fileselect))
 {
 	TXT_CAST_ARG(txt_fileselect_t, fileselect);
@@ -798,12 +768,11 @@ static void InputBoxChanged(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(fileselect))
 	TXT_EmitSignal(&fileselect->widget, "changed");
 }
 
-txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
-										const char *prompt, const char **extensions)
+txt_fileselect_t *TXT_NewFileSelector(char **variable, int size, const char *prompt, const char **extensions)
 {
 	txt_fileselect_t *fileselect;
 
-	fileselect = malloc(sizeof(txt_fileselect_t));
+	fileselect = static_cast<decltype(fileselect)>(malloc(sizeof(txt_fileselect_t)));
 	TXT_InitWidget(fileselect, &txt_fileselect_class);
 	fileselect->inputbox = TXT_NewInputBox(variable, 1024);
 	fileselect->inputbox->widget.parent = &fileselect->widget;
@@ -811,9 +780,9 @@ txt_fileselect_t *TXT_NewFileSelector(char **variable, int size,
 	fileselect->prompt = prompt;
 	fileselect->extensions = extensions;
 
-	TXT_SignalConnect(fileselect->inputbox, "changed",
-						InputBoxChanged, fileselect);
+	TXT_SignalConnect(fileselect->inputbox, "changed", InputBoxChanged, fileselect);
 
 	return fileselect;
 }
 
+} /* END NAMESPACE cudadoom::txt */

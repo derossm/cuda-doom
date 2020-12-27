@@ -502,7 +502,7 @@ void R_InitTextureMapping()
 ====================
 */
 
-#define		DISTMAP	2
+#define DISTMAP	2
 
 void R_InitLightTables()
 {

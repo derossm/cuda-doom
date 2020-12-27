@@ -99,7 +99,7 @@ static void TXT_MouseInputDrawer(TXT_UNCAST_ARG(mouse_input))
 	}
 
 	TXT_SetWidgetBG(mouse_input);
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 
 	TXT_DrawString(buf);
 
@@ -146,7 +146,7 @@ static void TXT_MouseInputMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b
 	}
 }
 
-txt_widget_class_t txt_mouse_input_class =
+WidgetClass txt_mouse_input_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_MouseInputSizeCalc,
@@ -161,7 +161,7 @@ txt_mouse_input_t *TXT_NewMouseInput(int *variable)
 {
 	txt_mouse_input_t *mouse_input;
 
-	mouse_input = malloc(sizeof(txt_mouse_input_t));
+	mouse_input = static_cast<decltype(mouse_input)>(malloc(sizeof(txt_mouse_input_t)));
 
 	TXT_InitWidget(mouse_input, &txt_mouse_input_class);
 	mouse_input->variable = variable;

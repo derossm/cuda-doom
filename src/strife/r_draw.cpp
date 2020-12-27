@@ -626,7 +626,7 @@ void R_DrawSpan ()
 
 	// Lookup pixel from flat texture tile,
 	// re-index using light/colormap.
-	*dest++ = ds_colormap[ds_source[spot]];
+	*(dest++) = ds_colormap[ds_source[spot]];
 
 		position += step;
 
@@ -701,7 +701,7 @@ void R_DrawSpan ()
 	xtemp = position>>26;
 	spot = xtemp | ytemp;
 	position += step;
-	*dest++ = colormap[source[spot]];
+	*(dest++) = colormap[source[spot]];
 	count--;
 	}
 }
@@ -753,8 +753,8 @@ void R_DrawSpanLow ()
 
 	// Lowres/blocky mode does it twice,
 	// while scale is adjusted appropriately.
-	*dest++ = ds_colormap[ds_source[spot]];
-	*dest++ = ds_colormap[ds_source[spot]];
+	*(dest++) = ds_colormap[ds_source[spot]];
+	*(dest++) = ds_colormap[ds_source[spot]];
 
 	position += step;
 

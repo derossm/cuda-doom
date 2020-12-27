@@ -269,7 +269,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 	output = Z_Malloc<decltype(output)>(outlen, pu_tags_t::PU_STATIC, 0);
 
 	// initialize stream state for decompression
-	zstream = malloc(sizeof(*zstream));
+	zstream = static_cast<decltype(zstream)>(malloc(sizeof(*zstream)));
 	memset(zstream, 0, sizeof(*zstream));
 	zstream->next_in = data + 4;
 	zstream->avail_in = len - 4;

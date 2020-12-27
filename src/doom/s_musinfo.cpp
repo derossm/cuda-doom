@@ -168,7 +168,7 @@ static bool SC_GetString()
 	{
 		while (ScriptPtr < ScriptEndPtr && *ScriptPtr <= 32)
 		{
-			if (*ScriptPtr++ == '\n')
+			if (*(ScriptPtr++) == '\n')
 			{
 				sc_Line++;
 				sc_Crossed = true;
@@ -185,7 +185,7 @@ static bool SC_GetString()
 		}
 		else
 		{						// Skip comment
-			while (*ScriptPtr++ != '\n')
+			while (*(ScriptPtr++) != '\n')
 			{
 				if (ScriptPtr >= ScriptEndPtr)
 				{
@@ -203,7 +203,7 @@ static bool SC_GetString()
 		ScriptPtr++;
 		while (*ScriptPtr != ASCII_QUOTE)
 		{
-			*text++ = *ScriptPtr++;
+			*(text++) = *(ScriptPtr++);
 			if (ScriptPtr == ScriptEndPtr
 				|| text == &sc_String[MAX_STRING_SIZE - 1])
 			{
@@ -216,7 +216,7 @@ static bool SC_GetString()
 	{							// Normal string
 		while ((*ScriptPtr > 32) && (*ScriptPtr != ASCII_COMMENT))
 		{
-			*text++ = *ScriptPtr++;
+			*(text++) = *(ScriptPtr++);
 			if (ScriptPtr == ScriptEndPtr
 				|| text == &sc_String[MAX_STRING_SIZE - 1])
 			{

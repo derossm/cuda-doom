@@ -11,15 +11,10 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_SCROLLPANE_H
-#define TXT_SCROLLPANE_H
+#include "txt_widget.h"
 
-/**
- * @file txt_scrollpane.h
- *
- * Scrollable pane widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * Scrollable pane widget.
  *
@@ -27,20 +22,16 @@
  * that is larger than it. Scroll bars appear on the side to allow
  * different areas of the contained widget to be seen.
  */
-typedef struct txt_scrollpane_s txt_scrollpane_t;
-
-#include "txt_widget.h"
-
-struct txt_scrollpane_s
+struct txt_scrollpane_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	int w;
 	int h;
 	int x;
 	int y;
 	int expand_w;
 	int expand_h;
-	txt_widget_t* child;
+	Widget* child;
 };
 
 /**
@@ -52,7 +43,6 @@ struct txt_scrollpane_s
  *						contain.
  * @return				Pointer to the new scroll pane widget.
  */
-
 txt_scrollpane_t* TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target));
 
-#endif /* #ifndef TXT_SCROLLPANE_H */
+} /* END NAMESPACE cudadoom::txt */

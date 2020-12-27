@@ -11,15 +11,10 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_SPINCONTROL_H
-#define TXT_SPINCONTROL_H
+#include "txt_widget.h"
 
-/**
- * @file txt_spinctrl.h
- *
- * Spin control widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * Spin control widget.
  *
@@ -27,19 +22,16 @@
  * set numeric values, but also has buttons that allow its value
  * to be increased or decreased.
  */
-typedef struct txt_spincontrol_s txt_spincontrol_t;
 
-typedef enum
+enum class txt_spincontrol_type_t
 {
 	TXT_SPINCONTROL_INT,
 	TXT_SPINCONTROL_FLOAT
-} txt_spincontrol_type_t;
+};
 
-#include "txt_widget.h"
-
-struct txt_spincontrol_s
+struct txt_spincontrol_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	txt_spincontrol_type_t type;
 	union
 	{
@@ -75,4 +67,4 @@ txt_spincontrol_t* TXT_NewSpinControl(int* value, int min, int max);
 
 txt_spincontrol_t* TXT_NewFloatSpinControl(float* value, float min, float max);
 
-#endif /* #ifndef TXT_SPINCONTROL_H */
+} /* END NAMESPACE cudadoom::txt */

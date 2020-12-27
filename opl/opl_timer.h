@@ -18,7 +18,7 @@
 
 int OPL_Timer_StartThread();
 void OPL_Timer_StopThread();
-void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, void* data);
+void OPL_Timer_SetCallback(uint64_t us, opl_callback_t callback, delay_data_t* data);
 void OPL_Timer_ClearCallbacks();
 void OPL_Timer_Lock();
 void OPL_Timer_Unlock();

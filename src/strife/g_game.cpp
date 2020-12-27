@@ -217,7 +217,7 @@ static char savedescription[32];
 
 int testcontrols_mousespeed;
 
-#define	BODYQUESIZE	32
+#define BODYQUESIZE	32
 
 mobj_t* bodyque[BODYQUESIZE];
 //int bodyqueslot; [STRIFE] unused
@@ -2082,12 +2082,12 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 		G_CheckDemoStatus ();
 		return;
 	}
-	cmd->forwardmove = ((signed char)*demo_p++);
-	cmd->sidemove = ((signed char)*demo_p++);
-	cmd->angleturn = ((unsigned char) *demo_p++)<<8;
-	cmd->buttons = (unsigned char)*demo_p++;
-	cmd->buttons2 = (unsigned char)*demo_p++; // [STRIFE]
-	cmd->inventory = (int)*demo_p++;			// [STRIFE]
+	cmd->forwardmove = ((signed char)*(demo_p++));
+	cmd->sidemove = ((signed char)*(demo_p++));
+	cmd->angleturn = ((unsigned char) *(demo_p++))<<8;
+	cmd->buttons = (unsigned char)*(demo_p++);
+	cmd->buttons2 = (unsigned char)*(demo_p++); // [STRIFE]
+	cmd->inventory = (int)*(demo_p++);			// [STRIFE]
 }
 
 // Increase the size of the demo buffer to allow unlimited demos
@@ -2136,12 +2136,12 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
 
 	demo_start = demo_p;
 
-	*demo_p++ = cmd->forwardmove;
-	*demo_p++ = cmd->sidemove;
-	*demo_p++ = cmd->angleturn >> 8;
-	*demo_p++ = cmd->buttons;
-	*demo_p++ = cmd->buttons2;					// [STRIFE]
-	*demo_p++ = (byte)(cmd->inventory & 0xff); // [STRIFE]
+	*(demo_p++) = cmd->forwardmove;
+	*(demo_p++) = cmd->sidemove;
+	*(demo_p++) = cmd->angleturn >> 8;
+	*(demo_p++) = cmd->buttons;
+	*(demo_p++) = cmd->buttons2;					// [STRIFE]
+	*(demo_p++) = (byte)(cmd->inventory & 0xff); // [STRIFE]
 
 	// reset demo pointer back
 	demo_p = demo_start;
@@ -2228,19 +2228,19 @@ void G_BeginRecording ()
 	demo_p = demobuffer;
 
 	// Save the right version code for this demo
-	*demo_p++ = STRIFE_VERSION;
+	*(demo_p++) = STRIFE_VERSION;
 
-	*demo_p++ = gameskill;
-	//*demo_p++ = gameepisode; [STRIFE] Doesn't have episodes.
-	*demo_p++ = gamemap;
-	*demo_p++ = deathmatch;
-	*demo_p++ = respawnparm;
-	*demo_p++ = fastparm;
-	*demo_p++ = nomonsters;
-	*demo_p++ = consoleplayer;
+	*(demo_p++) = gameskill;
+	//*(demo_p++) = gameepisode; [STRIFE] Doesn't have episodes.
+	*(demo_p++) = gamemap;
+	*(demo_p++) = deathmatch;
+	*(demo_p++) = respawnparm;
+	*(demo_p++) = fastparm;
+	*(demo_p++) = nomonsters;
+	*(demo_p++) = consoleplayer;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
-		*demo_p++ = playeringame[i];
+		*(demo_p++) = playeringame[i];
 }
 
 
@@ -2300,7 +2300,7 @@ void G_DoPlayDemo ()
 	gameaction = ga_nothing;
 	demobuffer = demo_p = W_CacheLumpName (defdemoname, pu_tags_t::PU_STATIC);
 
-	demoversion = *demo_p++;
+	demoversion = *(demo_p++);
 
 	if (demoversion == STRIFE_VERSION)
 	{
@@ -2328,17 +2328,17 @@ void G_DoPlayDemo ()
 							DemoVersionDescription(demoversion));
 	}
 
-	skill = *demo_p++;
-	//episode = *demo_p++; [STRIFE] No episodes
-	map = *demo_p++;
-	deathmatch = *demo_p++;
-	respawnparm = *demo_p++;
-	fastparm = *demo_p++;
-	nomonsters = *demo_p++;
-	consoleplayer = *demo_p++;
+	skill = *(demo_p++);
+	//episode = *(demo_p++); [STRIFE] No episodes
+	map = *(demo_p++);
+	deathmatch = *(demo_p++);
+	respawnparm = *(demo_p++);
+	fastparm = *(demo_p++);
+	nomonsters = *(demo_p++);
+	consoleplayer = *(demo_p++);
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
-		playeringame[i] = *demo_p++;
+		playeringame[i] = *(demo_p++);
 
 	//!
 	// @category demo
@@ -2444,7 +2444,7 @@ bool G_CheckDemoStatus ()
 
 	if (demorecording)
 	{
-		*demo_p++ = DEMOMARKER;
+		*(demo_p++) = DEMOMARKER;
 		M_WriteFile (demoname, demobuffer, demo_p - demobuffer);
 		Z_Free(demobuffer);
 		demorecording = false;

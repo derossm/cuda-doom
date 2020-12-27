@@ -1107,7 +1107,7 @@ void IN_DrTextB(const char *text, int x, int y)
 	char c;
 	patch_t *p;
 
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{

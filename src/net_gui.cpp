@@ -28,14 +28,14 @@
 #include "net_query.h"
 #include "net_server.h"
 
-#include "textscreen.h"
+#include "txt_textscreen.h"
 
-static txt_window_t *window;
+static cudadoom::txt::txt_window_t *window;
 static int old_max_players;
-static txt_label_t *player_labels[NET_MAXPLAYERS];
-static txt_label_t *ip_labels[NET_MAXPLAYERS];
-static txt_label_t *drone_label;
-static txt_label_t *master_msg_label;
+static cudadoom::txt::txt_label_t *player_labels[NET_MAXPLAYERS];
+static cudadoom::txt::txt_label_t *ip_labels[NET_MAXPLAYERS];
+static cudadoom::txt::txt_label_t *drone_label;
+static cudadoom::txt::txt_label_t *master_msg_label;
 static bool had_warning;
 
 // Number of players we expect to be in the game. When the number is
@@ -43,33 +43,33 @@ static bool had_warning;
 // zero, do not autostart.
 static int expected_nodes;
 
-static void EscapePressed(TXT_UNCAST_ARG(widget), void *unused)
+static void EscapePressed(cudadoom::txt::TXT_UNCAST_ARG(widget), void *unused)
 {
-	TXT_Shutdown();
+	cudadoom::txt::TXT_Shutdown();
 	I_Quit();
 }
 
-static void StartGame(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void StartGame(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
 	NET_CL_LaunchGame();
 }
 
 static void OpenWaitDialog()
 {
-	txt_window_action_t *cancel;
+	cudadoom::txt::txt_window_action_t *cancel;
 
-	TXT_SetDesktopTitle(PACKAGE_STRING);
+	cudadoom::txt::TXT_SetDesktopTitle(PACKAGE_STRING);
 
-	window = TXT_NewWindow("Waiting for game start...");
+	window = cudadoom::txt::TXT_NewWindow("Waiting for game start...");
 
-	TXT_AddWidget(window, TXT_NewLabel("\nPlease wait...\n\n"));
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel("\nPlease wait...\n\n"));
 
-	cancel = TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
-	TXT_SignalConnect(cancel, "pressed", EscapePressed, NULL);
+	cancel = cudadoom::txt::TXT_NewWindowAction(KEY_ESCAPE, "Cancel");
+	cudadoom::txt::TXT_SignalConnect(cancel, "pressed", EscapePressed, NULL);
 
-	TXT_SetWindowAction(window, TXT_HORIZ_LEFT, cancel);
-	TXT_SetWindowPosition(window, TXT_HORIZ_CENTER, TXT_VERT_BOTTOM,
-									TXT_SCREEN_W / 2, TXT_SCREEN_H - 9);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_LEFT, cancel);
+	cudadoom::txt::TXT_SetWindowPosition(window, cudadoom::txt::TXT_HORIZ_CENTER, cudadoom::txt::TXT_VERT_BOTTOM,
+									cudadoom::txt::TXT_SCREEN_W / 2, cudadoom::txt::TXT_SCREEN_H - 9);
 
 	old_max_players = 0;
 }
@@ -77,39 +77,39 @@ static void OpenWaitDialog()
 static void BuildWindow()
 {
 	char buf[50];
-	txt_table_t *table;
+	cudadoom::txt::txt_table_t *table;
 	int i;
 
-	TXT_ClearTable(window);
-	table = TXT_NewTable(3);
-	TXT_AddWidget(window, table);
+	cudadoom::txt::TXT_ClearTable(window);
+	table = cudadoom::txt::TXT_NewTable(3);
+	cudadoom::txt::TXT_AddWidget(window, table);
 
 	// Add spacers
 
-	TXT_AddWidget(table, NULL);
-	TXT_AddWidget(table, TXT_NewStrut(25, 1));
-	TXT_AddWidget(table, TXT_NewStrut(17, 1));
+	cudadoom::txt::TXT_AddWidget(table, NULL);
+	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewStrut(25, 1));
+	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewStrut(17, 1));
 
 	// Player labels
 
 	for (i = 0; i < net_client_wait_data.max_players; ++i)
 	{
 		M_snprintf(buf, sizeof(buf), " %i. ", i + 1);
-		TXT_AddWidget(table, TXT_NewLabel(buf));
-		player_labels[i] = TXT_NewLabel("");
-		ip_labels[i] = TXT_NewLabel("");
-		TXT_AddWidget(table, player_labels[i]);
-		TXT_AddWidget(table, ip_labels[i]);
+		cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewLabel(buf));
+		player_labels[i] = cudadoom::txt::TXT_NewLabel("");
+		ip_labels[i] = cudadoom::txt::TXT_NewLabel("");
+		cudadoom::txt::TXT_AddWidget(table, player_labels[i]);
+		cudadoom::txt::TXT_AddWidget(table, ip_labels[i]);
 	}
 
-	drone_label = TXT_NewLabel("");
+	drone_label = cudadoom::txt::TXT_NewLabel("");
 
-	TXT_AddWidget(window, drone_label);
+	cudadoom::txt::TXT_AddWidget(window, drone_label);
 }
 
 static void UpdateGUI()
 {
-	txt_window_action_t *startgame;
+	cudadoom::txt::txt_window_action_t *startgame;
 	char buf[50];
 	unsigned int i;
 
@@ -131,27 +131,27 @@ static void UpdateGUI()
 
 	for (i = 0; i < net_client_wait_data.max_players; ++i)
 	{
-		txt_color_t color = TXT_COLOR_BRIGHT_WHITE;
+		cudadoom::txt::txt_color_t color = cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_WHITE;
 
 		if ((signed) i == net_client_wait_data.consoleplayer)
 		{
-			color = TXT_COLOR_YELLOW;
+			color = cudadoom::txt::txt_color_t::TXT_COLOR_YELLOW;
 		}
 
-		TXT_SetFGColor(player_labels[i], color);
-		TXT_SetFGColor(ip_labels[i], color);
+		cudadoom::txt::TXT_SetFGColor(player_labels[i], color);
+		cudadoom::txt::TXT_SetFGColor(ip_labels[i], color);
 
 		if (i < net_client_wait_data.num_players)
 		{
-			TXT_SetLabel(player_labels[i],
+			cudadoom::txt::TXT_SetLabel(player_labels[i],
 							net_client_wait_data.player_names[i]);
-			TXT_SetLabel(ip_labels[i],
+			cudadoom::txt::TXT_SetLabel(ip_labels[i],
 							net_client_wait_data.player_addrs[i]);
 		}
 		else
 		{
-			TXT_SetLabel(player_labels[i], "");
-			TXT_SetLabel(ip_labels[i], "");
+			cudadoom::txt::TXT_SetLabel(player_labels[i], "");
+			cudadoom::txt::TXT_SetLabel(ip_labels[i], "");
 		}
 	}
 
@@ -159,43 +159,43 @@ static void UpdateGUI()
 	{
 		M_snprintf(buf, sizeof(buf), " (+%i observer clients)",
 					net_client_wait_data.num_drones);
-		TXT_SetLabel(drone_label, buf);
+		cudadoom::txt::TXT_SetLabel(drone_label, buf);
 	}
 	else
 	{
-		TXT_SetLabel(drone_label, "");
+		cudadoom::txt::TXT_SetLabel(drone_label, "");
 	}
 
 	if (net_client_wait_data.is_controller)
 	{
-		startgame = TXT_NewWindowAction(' ', "Start game");
-		TXT_SignalConnect(startgame, "pressed", StartGame, NULL);
+		startgame = cudadoom::txt::TXT_NewWindowAction(' ', "Start game");
+		cudadoom::txt::TXT_SignalConnect(startgame, "pressed", StartGame, NULL);
 	}
 	else
 	{
 		startgame = NULL;
 	}
 
-	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, startgame);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_RIGHT, startgame);
 }
 
 static void BuildMasterStatusWindow()
 {
-	txt_window_t *master_window;
+	cudadoom::txt::txt_window_t *master_window;
 
-	master_window = TXT_NewWindow(NULL);
-	master_msg_label = TXT_NewLabel("");
-	TXT_AddWidget(master_window, master_msg_label);
+	master_window = cudadoom::txt::TXT_NewWindow(NULL);
+	master_msg_label = cudadoom::txt::TXT_NewLabel("");
+	cudadoom::txt::TXT_AddWidget(master_window, master_msg_label);
 
 	// This window is here purely for information, so it should be
 	// in the background.
 
-	TXT_LowerWindow(master_window);
-	TXT_SetWindowPosition(master_window, TXT_HORIZ_CENTER, TXT_VERT_CENTER,
-											TXT_SCREEN_W / 2, TXT_SCREEN_H - 4);
-	TXT_SetWindowAction(master_window, TXT_HORIZ_LEFT, NULL);
-	TXT_SetWindowAction(master_window, TXT_HORIZ_CENTER, NULL);
-	TXT_SetWindowAction(master_window, TXT_HORIZ_RIGHT, NULL);
+	cudadoom::txt::TXT_LowerWindow(master_window);
+	cudadoom::txt::TXT_SetWindowPosition(master_window, cudadoom::txt::TXT_HORIZ_CENTER, cudadoom::txt::TXT_VERT_CENTER,
+											cudadoom::txt::TXT_SCREEN_W / 2, cudadoom::txt::TXT_SCREEN_H - 4);
+	cudadoom::txt::TXT_SetWindowAction(master_window, cudadoom::txt::TXT_HORIZ_LEFT, NULL);
+	cudadoom::txt::TXT_SetWindowAction(master_window, cudadoom::txt::TXT_HORIZ_CENTER, NULL);
+	cudadoom::txt::TXT_SetWindowAction(master_window, cudadoom::txt::TXT_HORIZ_RIGHT, NULL);
 }
 
 static void CheckMasterStatus()
@@ -214,13 +214,13 @@ static void CheckMasterStatus()
 
 	if (added)
 	{
-		TXT_SetLabel(master_msg_label,
+		cudadoom::txt::TXT_SetLabel(master_msg_label,
 			"Your server is now registered with the global master server.\n"
 			"Other players can find your server online.");
 	}
 	else
 	{
-		TXT_SetLabel(master_msg_label,
+		cudadoom::txt::TXT_SetLabel(master_msg_label,
 			"Failed to register with the master server. Your server is not\n"
 			"publicly accessible. You may need to reconfigure your Internet\n"
 			"router to add a port forward for UDP port 2342. Look up\n"
@@ -242,19 +242,19 @@ static void PrintSHA1Digest(const char *s, const byte *digest)
 	printf("\n");
 }
 
-static void CloseWindow(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
+static void CloseWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(window))
 {
-	TXT_CAST_ARG(txt_window_t, window);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_window_t, window);
 
-	TXT_CloseWindow(window);
+	cudadoom::txt::TXT_CloseWindow(window);
 }
 
 static void CheckSHA1Sums()
 {
 	bool correct_wad, correct_deh;
 	bool same_freedoom;
-	txt_window_t *window;
-	txt_window_action_t *cont_button;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_window_action_t *cont_button;
 
 	if (!net_client_received_wait_data || had_warning)
 	{
@@ -296,14 +296,14 @@ static void CheckSHA1Sums()
 		PrintSHA1Digest("Server", net_client_wait_data.deh_sha1sum);
 	}
 
-	window = TXT_NewWindow("WARNING!");
+	window = cudadoom::txt::TXT_NewWindow("WARNING!");
 
-	cont_button = TXT_NewWindowAction(KEY_ENTER, "Continue");
-	TXT_SignalConnect(cont_button, "pressed", CloseWindow, window);
+	cont_button = cudadoom::txt::TXT_NewWindowAction(KEY_ENTER, "Continue");
+	cudadoom::txt::TXT_SignalConnect(cont_button, "pressed", CloseWindow, window);
 
-	TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
-	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, cont_button);
-	TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, NULL);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_LEFT, NULL);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_CENTER, cont_button);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_RIGHT, NULL);
 
 	if (!same_freedoom)
 	{
@@ -313,14 +313,14 @@ static void CheckSHA1Sums()
 
 		if (net_local_is_freedoom)
 		{
-			TXT_AddWidget(window, TXT_NewLabel
+			cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel
 			("You are using the Freedoom IWAD to play with players\n"
 				"using an official Doom IWAD. Make sure that you are\n"
 				"playing the same levels as other players.\n"));
 		}
 		else
 		{
-			TXT_AddWidget(window, TXT_NewLabel
+			cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel
 			("You are using an official IWAD to play with players\n"
 				"using the Freedoom IWAD. Make sure that you are\n"
 				"playing the same levels as other players.\n"));
@@ -328,7 +328,7 @@ static void CheckSHA1Sums()
 	}
 	else if (!correct_wad)
 	{
-		TXT_AddWidget(window, TXT_NewLabel
+		cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel
 			("Your WAD directory does not match other players in the game.\n"
 				"Check that you have loaded the exact same WAD files as other\n"
 				"players.\n"));
@@ -336,13 +336,13 @@ static void CheckSHA1Sums()
 
 	if (!correct_deh)
 	{
-		TXT_AddWidget(window, TXT_NewLabel
+		cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel
 			("Your dehacked signature does not match other players in the\n"
 				"game. Check that you have loaded the same dehacked patches\n"
 				"as other players.\n"));
 	}
 
-	TXT_AddWidget(window, TXT_NewLabel
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel
 			("If you continue, this may cause your game to desync."));
 
 	had_warning = true;
@@ -387,18 +387,18 @@ static void CheckAutoLaunch()
 
 void NET_WaitForLaunch()
 {
-	if (!TXT_Init())
+	if (!cudadoom::txt::TXT_Init())
 	{
 		fprintf(stderr, "Failed to initialize GUI\n");
 		exit(-1);
 	}
 
-	TXT_SetColor(TXT_COLOR_BLUE, 0x04, 0x14, 0x40); // Romero's "funky blue" color
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BLUE, 0x04, 0x14, 0x40); // Romero's "funky blue" color
 
 	// [crispy] Crispy colors for Crispy Network GUI
-	TXT_SetColor(TXT_COLOR_BRIGHT_GREEN, 249, 227, 0); // 0xF9, 0xE3, 0x00
-	TXT_SetColor(TXT_COLOR_CYAN, 220, 153, 0);			// 0xDC, 0x99, 0x00
-	TXT_SetColor(TXT_COLOR_BRIGHT_CYAN, 76, 160, 223); // 0x4C, 0xA0, 0xDF
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_GREEN, 249, 227, 0); // 0xF9, 0xE3, 0x00
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_CYAN, 220, 153, 0);			// 0xDC, 0x99, 0x00
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_CYAN, 76, 160, 223); // 0x4C, 0xA0, 0xDF
 
 	I_InitWindowIcon();
 
@@ -413,8 +413,8 @@ void NET_WaitForLaunch()
 		CheckSHA1Sums();
 		CheckMasterStatus();
 
-		TXT_DispatchEvents();
-		TXT_DrawDesktop();
+		cudadoom::txt::TXT_DispatchEvents();
+		cudadoom::txt::TXT_DrawDesktop();
 
 		NET_CL_Run();
 		NET_SV_Run();
@@ -424,8 +424,8 @@ void NET_WaitForLaunch()
 			I_Error("Lost connection to server");
 		}
 
-		TXT_Sleep(100);
+		cudadoom::txt::TXT_Sleep(100);
 	}
 
-	TXT_Shutdown();
+	cudadoom::txt::TXT_Shutdown();
 }

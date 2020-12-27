@@ -25,7 +25,7 @@ typedef struct txt_mouse_input_s txt_mouse_input_t;
 
 struct txt_mouse_input_s
 {
-	txt_widget_t widget;
+	Widget widget;
 	int *variable;
 	int check_conflicts;
 };

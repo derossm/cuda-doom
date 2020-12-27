@@ -43,7 +43,7 @@
 #define TXT_GAMMA_LEVEL_15	"GAMMA CORRECTION LEVEL 1.5"
 #define TXT_GAMMA_LEVEL_25	"GAMMA CORRECTION LEVEL 2.5"
 #define TXT_GAMMA_LEVEL_35	"GAMMA CORRECTION LEVEL 3.5"
-#define	EMPTYSTRING	"empty slot"
+#define EMPTYSTRING	"empty slot"
 
 // P_inter.c ---------------------------------------------------------------
 
@@ -55,16 +55,16 @@
 
 // Keys
 
-#define	TXT_KEY_STEEL		"STEEL KEY"
-#define	TXT_KEY_CAVE		"CAVE KEY"
-#define	TXT_KEY_AXE			"AXE KEY"
-#define	TXT_KEY_FIRE		"FIRE KEY"
-#define	TXT_KEY_EMERALD		"EMERALD KEY"
-#define	TXT_KEY_DUNGEON		"DUNGEON KEY"
-#define	TXT_KEY_SILVER		"SILVER KEY"
-#define	TXT_KEY_RUSTED		"RUSTED KEY"
-#define	TXT_KEY_HORN		"HORN KEY"
-#define	TXT_KEY_SWAMP		"SWAMP KEY"
+#define TXT_KEY_STEEL		"STEEL KEY"
+#define TXT_KEY_CAVE		"CAVE KEY"
+#define TXT_KEY_AXE			"AXE KEY"
+#define TXT_KEY_FIRE		"FIRE KEY"
+#define TXT_KEY_EMERALD		"EMERALD KEY"
+#define TXT_KEY_DUNGEON		"DUNGEON KEY"
+#define TXT_KEY_SILVER		"SILVER KEY"
+#define TXT_KEY_RUSTED		"RUSTED KEY"
+#define TXT_KEY_HORN		"HORN KEY"
+#define TXT_KEY_SWAMP		"SWAMP KEY"
 #define TXT_KEY_CASTLE		"CASTLE KEY"
 
 // Artifacts

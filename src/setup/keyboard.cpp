@@ -76,7 +76,7 @@ static int *map_keys[] = { &key_map_north, &key_map_south, &key_map_east,
 							&key_map_overlay, &key_map_rotate,
 							NULL };
 
-static void UpdateJoybSpeed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(var))
+static void UpdateJoybSpeed(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(var))
 {
 	if (always_run)
 	{
@@ -139,9 +139,9 @@ static void CheckKeyGroup(int *variable, int **group)
 
 // Callback invoked when a key control is set
 
-static void KeySetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
+static void KeySetCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(variable))
 {
-	TXT_CAST_ARG(int, variable);
+	cudadoom::txt::TXT_CAST_ARG(int, variable);
 
 	CheckKeyGroup(variable, controls);
 	CheckKeyGroup(variable, menu_nav);
@@ -151,62 +151,62 @@ static void KeySetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
 
 // Add a label and keyboard input to the specified table.
 
-static void AddKeyControl(TXT_UNCAST_ARG(table), const char *name, int *var)
+static void AddKeyControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char *name, int *var)
 {
-	TXT_CAST_ARG(txt_table_t, table);
-	txt_key_input_t *key_input;
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, table);
+	cudadoom::txt::txt_key_input_t *key_input;
 
-	TXT_AddWidget(table, TXT_NewLabel(name));
-	key_input = TXT_NewKeyInput(var);
-	TXT_AddWidget(table, key_input);
+	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewLabel(name));
+	key_input = cudadoom::txt::TXT_NewKeyInput(var);
+	cudadoom::txt::TXT_AddWidget(table, key_input);
 
-	TXT_SignalConnect(key_input, "set", KeySetCallback, var);
+	cudadoom::txt::TXT_SignalConnect(key_input, "set", KeySetCallback, var);
 }
 
-static void AddSectionLabel(TXT_UNCAST_ARG(table), const char *title,
+static void AddSectionLabel(cudadoom::txt::TXT_UNCAST_ARG(table), const char *title,
 							bool add_space)
 {
-	TXT_CAST_ARG(txt_table_t, table);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, table);
 	char buf[64];
 
 	if (add_space)
 	{
-		TXT_AddWidgets(table,
-						TXT_NewStrut(0, 1),
-						TXT_TABLE_EOL,
+		cudadoom::txt::TXT_AddWidgets(table,
+						cudadoom::txt::TXT_NewStrut(0, 1),
+						cudadoom::txt::TXT_TABLE_EOL,
 						NULL);
 	}
 
 	M_snprintf(buf, sizeof(buf), " - %s - ", title);
 
-	TXT_AddWidgets(table,
-					TXT_NewLabel(buf),
-					TXT_TABLE_EOL,
+	cudadoom::txt::TXT_AddWidgets(table,
+					cudadoom::txt::TXT_NewLabel(buf),
+					cudadoom::txt::TXT_TABLE_EOL,
 					NULL);
 }
-static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void ConfigExtraKeys(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
-	txt_window_t *window;
-	txt_scrollpane_t *scrollpane;
-	txt_table_t *table;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_scrollpane_t *scrollpane;
+	cudadoom::txt::txt_table_t *table;
 	bool extra_keys = gamemission == heretic
 						|| gamemission == hexen
 						|| gamemission == strife;
 
-	window = TXT_NewWindow("Extra keyboard controls");
+	window = cudadoom::txt::TXT_NewWindow("Extra keyboard controls");
 
-	TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-	table = TXT_NewTable(2);
+	table = cudadoom::txt::TXT_NewTable(2);
 
-	TXT_SetColumnWidths(table, 21, 9);
+	cudadoom::txt::TXT_SetColumnWidths(table, 21, 9);
 
 	if (extra_keys || 1) // Crispy
 	{
 		// When we have extra controls, a scrollable pane must be used.
 
-		scrollpane = TXT_NewScrollPane(0, 13, table);
-		TXT_AddWidget(window, scrollpane);
+		scrollpane = cudadoom::txt::TXT_NewScrollPane(0, 13, table);
+		cudadoom::txt::TXT_AddWidget(window, scrollpane);
 
 
 		if (gamemission == doom)
@@ -319,7 +319,7 @@ static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 	}
 	else
 	{
-		TXT_AddWidget(window, table);
+		cudadoom::txt::TXT_AddWidget(window, table);
 	}
 
 	AddSectionLabel(table, "Weapons", extra_keys);
@@ -336,19 +336,19 @@ static void ConfigExtraKeys(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 	AddKeyControl(table, "Next weapon", &key_nextweapon);
 }
 
-static void OtherKeysDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void OtherKeysDialog(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
-	txt_window_t *window;
-	txt_table_t *table;
-	txt_scrollpane_t *scrollpane;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_table_t *table;
+	cudadoom::txt::txt_scrollpane_t *scrollpane;
 
-	window = TXT_NewWindow("Other keys");
+	window = cudadoom::txt::TXT_NewWindow("Other keys");
 
-	TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-	table = TXT_NewTable(2);
+	table = cudadoom::txt::TXT_NewTable(2);
 
-	TXT_SetColumnWidths(table, 25, 9);
+	cudadoom::txt::TXT_SetColumnWidths(table, 25, 9);
 
 	AddSectionLabel(table, "Menu navigation", false);
 
@@ -421,44 +421,44 @@ static void OtherKeysDialog(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 		AddKeyControl(table, "- to player 8",		&key_multi_msgplayer[7]);
 	}
 
-	scrollpane = TXT_NewScrollPane(0, 13, table);
+	scrollpane = cudadoom::txt::TXT_NewScrollPane(0, 13, table);
 
-	TXT_AddWidget(window, scrollpane);
+	cudadoom::txt::TXT_AddWidget(window, scrollpane);
 }
 
-void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigKeyboard(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 {
-	txt_window_t *window;
-	txt_checkbox_t *run_control;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_checkbox_t *run_control;
 
 	always_run = joybspeed >= 20;
 
-	window = TXT_NewWindow("Keyboard configuration");
+	window = cudadoom::txt::TXT_NewWindow("Keyboard configuration");
 
-	TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
 	// The window is on a 5-column grid layout that looks like:
 	// Label | Control | | Label | Control
 	// There is a small gap between the two conceptual "columns" of
 	// controls, just for spacing.
-	TXT_SetTableColumns(window, 5);
-	TXT_SetColumnWidths(window, 15, 8, 2, 15, 8);
+	cudadoom::txt::TXT_SetTableColumns(window, 5);
+	cudadoom::txt::TXT_SetColumnWidths(window, 15, 8, 2, 15, 8);
 
-	TXT_AddWidget(window, TXT_NewSeparator("Movement"));
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewSeparator("Movement"));
 	AddKeyControl(window, "Move Forward", &key_up);
-	TXT_AddWidget(window, TXT_TABLE_EMPTY);
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_TABLE_EMPTY);
 	AddKeyControl(window, "Strafe Left", &key_strafeleft);
 
 	AddKeyControl(window, "Move Backward", &key_down);
-	TXT_AddWidget(window, TXT_TABLE_EMPTY);
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_TABLE_EMPTY);
 	AddKeyControl(window, "Strafe Right", &key_straferight);
 
 	AddKeyControl(window, "Turn Left", &key_left);
-	TXT_AddWidget(window, TXT_TABLE_EMPTY);
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_TABLE_EMPTY);
 	AddKeyControl(window, "Speed On", &key_speed);
 
 	AddKeyControl(window, "Turn Right", &key_right);
-	TXT_AddWidget(window, TXT_TABLE_EMPTY);
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_TABLE_EMPTY);
 	AddKeyControl(window, "Strafe On", &key_strafe);
 
 	if (gamemission == hexen || gamemission == strife)
@@ -471,28 +471,28 @@ void ConfigKeyboard(TXT_UNCAST_ARG(widget), void *user_data)
 		AddKeyControl(window, "Jump [*]", &key_jump);
 	}
 
-	TXT_AddWidget(window, TXT_NewSeparator("Action"));
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewSeparator("Action"));
 	AddKeyControl(window, "Fire/Attack", &key_fire);
-	TXT_AddWidget(window, TXT_TABLE_EMPTY);
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_TABLE_EMPTY);
 	AddKeyControl(window, "Use", &key_use);
 
-	TXT_AddWidgets(window,
-					TXT_NewButton2("More controls...", ConfigExtraKeys, NULL),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_TABLE_EMPTY,
-					TXT_NewButton2("Other keys...", OtherKeysDialog, NULL),
-					TXT_TABLE_OVERFLOW_RIGHT,
+	cudadoom::txt::TXT_AddWidgets(window,
+					cudadoom::txt::TXT_NewButton2("More controls...", ConfigExtraKeys, NULL),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_TABLE_EMPTY,
+					cudadoom::txt::TXT_NewButton2("Other keys...", OtherKeysDialog, NULL),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
 
-					TXT_NewSeparator("Misc."),
-					run_control = TXT_NewCheckBox("Always run", &always_run),
-					TXT_TABLE_EOL,
-					TXT_NewInvertedCheckBox("Use native keyboard mapping",
+					cudadoom::txt::TXT_NewSeparator("Misc."),
+					run_control = cudadoom::txt::TXT_NewCheckBox("Always run", &always_run),
+					cudadoom::txt::TXT_TABLE_EOL,
+					cudadoom::txt::TXT_NewInvertedCheckBox("Use native keyboard mapping",
 											&vanilla_keyboard_mapping),
-					TXT_TABLE_EOL,
+					cudadoom::txt::TXT_TABLE_EOL,
 					NULL);
 
-	TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, NULL);
-	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
+	cudadoom::txt::TXT_SignalConnect(run_control, "changed", UpdateJoybSpeed, NULL);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_CENTER, TestConfigAction());
 }
 
 void BindKeyboardVariables()

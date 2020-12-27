@@ -94,7 +94,7 @@ line_t *ceilingline;
 
 // keep track of special lines as they are hit, but don't process them
 // until the move is proven valid
-#define	MAXSPECIALCROSS		8
+#define MAXSPECIALCROSS		8
 line_t **spechit; // [crispy] remove SPECHIT limit
 int numspechit;
 

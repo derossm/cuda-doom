@@ -157,7 +157,7 @@ int wipe_doMelt(int width, int height, int ticks)
 		idx = 0;
 		for (j=dy;j;j--)
 		{
-			d[idx] = *(s++);
+			d[idx] = *((s++));
 			idx += width;
 		}
 		y[i] += dy;
@@ -166,7 +166,7 @@ int wipe_doMelt(int width, int height, int ticks)
 		idx = 0;
 		for (j=height-y[i];j;j--)
 		{
-			d[idx] = *(s++);
+			d[idx] = *((s++));
 			idx += width;
 		}
 		done = false;

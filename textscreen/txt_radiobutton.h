@@ -11,15 +11,10 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_RADIOBUTTON_H
-#define TXT_RADIOBUTTON_H
+#include "txt_widget.h"
 
-/**
- * @file txt_radiobutton.h
- *
- * Radio button widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * A radio button widget.
  *
@@ -37,13 +32,9 @@
  *
  * When a radio button is selected, the "selected" signal is emitted.
  */
-typedef struct txt_radiobutton_s txt_radiobutton_t;
-
-#include "txt_widget.h"
-
-struct txt_radiobutton_s
+struct txt_radiobutton_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	char* label;
 	int* variable;
 	int value;
@@ -70,4 +61,4 @@ txt_radiobutton_t* TXT_NewRadioButton(const char* label, int* variable, int valu
  */
 void TXT_SetRadioButtonLabel(txt_radiobutton_t* radiobutton, const char* value);
 
-#endif /* #ifndef TXT_RADIOBUTTON_H */
+} /* END NAMESPACE cudadoom::txt */

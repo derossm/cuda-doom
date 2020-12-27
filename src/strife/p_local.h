@@ -54,7 +54,7 @@
 #define MISSILERANGE	(32*64*FRACUNIT)
 
 // follow a player exlusively for 3 seconds
-#define	BASETHRESHOLD			100
+#define BASETHRESHOLD			100
 
 
 

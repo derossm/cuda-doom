@@ -225,9 +225,9 @@ void P_MovePlayer(player_t * player)
 	}
 	if (cmd->forwardmove || cmd->sidemove)
 	{
-		if (player->mo->state == &states[PStateNormal[player->class]])
+		if (player->mo->state == &states[PStateNormal[player->playerClass]])
 		{
-			P_SetMobjState(player->mo, PStateRun[player->class]);
+			P_SetMobjState(player->mo, PStateRun[player->playerClass]);
 		}
 	}
 
@@ -422,7 +422,7 @@ void P_DeathThink(player_t * player)
 			newtorchdelta = 0;
 		}
 		player->playerstate = PlayerState_t::PST_REBORN;
-		player->mo->special1.i = player->class;
+		player->mo->special1.i = player->playerClass;
 		if (player->mo->special1.i > 2)
 		{
 			player->mo->special1.i = 0;
@@ -533,7 +533,7 @@ bool P_UndoPlayerMorph(player_t * player)
 			break;
 		default:
 			I_Error("P_UndoPlayerMorph: Unknown player class %d\n",
-					player->class);
+					player->playerClass);
 			return false;
 	}
 	if (P_TestMobjLocation(mo) == false)
@@ -550,7 +550,7 @@ bool P_UndoPlayerMorph(player_t * player)
 		player->morphTics = 2 * 35;
 		return (false);
 	}
-	if (player->class == pclass_t::pclass_t::PCLASS_FIGHTER)
+	if (player->playerClass == pclass_t::PCLASS_FIGHTER)
 	{
 		// The first type should be blue, and the third should be the
 		// Fighter's original gold color
@@ -578,7 +578,7 @@ bool P_UndoPlayerMorph(player_t * player)
 	player->morphTics = 0;
 	player->health = mo->health = MAXHEALTH;
 	player->mo = mo;
-	player->class = PlayerClass[playerNum];
+	player->playerClass = PlayerClass[playerNum];
 	angle >>= ANGLETOFINESHIFT;
 	fog = P_SpawnMobj(x + 20 * finecosine[angle],
 						y + 20 * finesine[angle], z + TELEFOGHEIGHT, mobjtype_t::MT_TFOG);
@@ -664,7 +664,7 @@ void P_PlayerThink(player_t * player)
 			{
 				speedMo->angle = pmo->angle;
 				playerNum = P_GetPlayerNum(player);
-				if (player->class == pclass_t::pclass_t::PCLASS_FIGHTER)
+				if (player->playerClass == pclass_t::PCLASS_FIGHTER)
 				{
 					// The first type should be blue, and the
 					// third should be the Fighter's original gold color
@@ -682,7 +682,7 @@ void P_PlayerThink(player_t * player)
 					speedMo->flags |= playerNum << MF_TRANSSHIFT;
 				}
 				speedMo->target = pmo;
-				speedMo->special1.i = player->class;
+				speedMo->special1.i = player->playerClass;
 				if (speedMo->special1.i > 2)
 				{
 					speedMo->special1.i = 0;
@@ -705,7 +705,7 @@ void P_PlayerThink(player_t * player)
 	{
 		P_PlayerOnSpecialFlat(player, floorType);
 	}
-	switch (player->class)
+	switch (player->playerClass)
 	{
 		case pclass_t::PCLASS_FIGHTER:
 			if (player->mo->momz <= -35 * FRACUNIT
@@ -809,7 +809,7 @@ void P_PlayerThink(player_t * player)
 	// Other Counters
 	if (player->powers[PowerType_t::pw_invulnerability])
 	{
-		if (player->class == pclass_t::pclass_t::PCLASS_CLERIC)
+		if (player->playerClass == pclass_t::PCLASS_CLERIC)
 		{
 			if (!(leveltime & 7) && player->mo->flags & MF_SHADOW
 				&& !(player->mo->flags2 & MF2_DONTDRAW))
@@ -830,8 +830,7 @@ void P_PlayerThink(player_t * player)
 					}
 					else
 					{
-						player->mo->flags2 &=
-							~(MF2_DONTDRAW | MF2_NONSHOOTABLE);
+						player->mo->flags2 &= ~(MF2_DONTDRAW | MF2_NONSHOOTABLE);
 					}
 				}
 				else
@@ -844,7 +843,7 @@ void P_PlayerThink(player_t * player)
 		if (!(--player->powers[PowerType_t::pw_invulnerability]))
 		{
 			player->mo->flags2 &= ~(MF2_INVULNERABLE | MF2_REFLECTIVE);
-			if (player->class == pclass_t::pclass_t::PCLASS_CLERIC)
+			if (player->playerClass == pclass_t::PCLASS_CLERIC)
 			{
 				player->mo->flags2 &= ~(MF2_DONTDRAW | MF2_NONSHOOTABLE);
 				player->mo->flags &= ~(MF_SHADOW | MF_ALTSHADOW);
@@ -1274,7 +1273,7 @@ bool P_HealRadius(player_t * player)
 			continue;
 		}
 
-		switch (player->class)
+		switch (player->playerClass)
 		{
 			case pclass_t::PCLASS_FIGHTER:		// Radius armor boost
 				if ((P_GiveArmor(mo->player, ARMOR_ARMOR, 1)) ||
@@ -1512,7 +1511,7 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 			break;
 		case ArtiType_t::arti_poisonbag:
 			angle = player->mo->angle >> ANGLETOFINESHIFT;
-			if (player->class == pclass_t::pclass_t::PCLASS_CLERIC)
+			if (player->playerClass == pclass_t::PCLASS_CLERIC)
 			{
 				mo = P_SpawnMobj(player->mo->x + 16 * finecosine[angle],
 									player->mo->y + 24 * finesine[angle],
@@ -1523,7 +1522,7 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 					mo->target = player->mo;
 				}
 			}
-			else if (player->class == pclass_t::pclass_t::PCLASS_MAGE)
+			else if (player->playerClass == pclass_t::PCLASS_MAGE)
 			{
 				mo = P_SpawnMobj(player->mo->x + 16 * finecosine[angle],
 									player->mo->y + 24 * finesine[angle],
@@ -1614,7 +1613,7 @@ bool P_UseArtifact(player_t * player, ArtiType_t arti)
 			}
 			else
 			{
-				P_SetYellowMessage(player, TXT_USEPUZZLEFAILED, false);
+				P_SetYellowMessage(player, cudadoom::txt::TXT_USEPUZZLEFAILED, false);
 				return false;
 			}
 			break;

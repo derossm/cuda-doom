@@ -8,7 +8,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "doomkeys.h"
 
 #include "txt_inputbox.h"
@@ -18,8 +17,11 @@
 #include "txt_utf8.h"
 #include "txt_window.h"
 
-extern txt_widget_class_t txt_inputbox_class;
-extern txt_widget_class_t txt_int_inputbox_class;
+namespace cudadoom::txt
+{
+
+extern WidgetClass txt_inputbox_class;
+extern WidgetClass txt_int_inputbox_class;
 
 static void SetBufferFromValue(txt_inputbox_t *inputbox)
 {
@@ -46,7 +48,6 @@ static void SetBufferFromValue(txt_inputbox_t *inputbox)
 static void StartEditing(txt_inputbox_t *inputbox)
 {
 	// Integer input boxes start from an empty buffer:
-
 	if (inputbox->widget.widget_class == &txt_int_inputbox_class)
 	{
 		TXT_StringCopy(inputbox->buffer, "", inputbox->buffer_len);
@@ -79,7 +80,6 @@ static void FinishEditing(txt_inputbox_t *inputbox)
 	}
 
 	// Save the new value back to the variable.
-
 	if (inputbox->widget.widget_class == &txt_inputbox_class)
 	{
 		free(*((char **)inputbox->value));
@@ -116,12 +116,10 @@ static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox))
 	focused = inputbox->widget.focused;
 	w = inputbox->widget.w;
 
-	// Select the background color based on whether we are currently
-	// editing, and if not, whether the widget is focused.
-
+	// Select the background color based on whether we are currently editing, and if not, whether the widget is focused.
 	if (inputbox->editing && focused)
 	{
-		TXT_BGColor(TXT_COLOR_BLACK, 0);
+		TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, false);
 	}
 	else
 	{
@@ -131,12 +129,10 @@ static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox))
 	if (!inputbox->editing)
 	{
 		// If not editing, use the current value from inputbox->value.
-
 		SetBufferFromValue(inputbox);
 	}
 
 	// If string size exceeds the widget's width, show only the end.
-
 	if (TXT_UTF8_Strlen(inputbox->buffer) > w - 1)
 	{
 		TXT_DrawCodePageString("\xae");
@@ -151,7 +147,7 @@ static void TXT_InputBoxDrawer(TXT_UNCAST_ARG(inputbox))
 
 	if (chars < w && inputbox->editing && focused)
 	{
-		TXT_BGColor(TXT_COLOR_BLACK, 1);
+		TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, true);
 		TXT_DrawString("_");
 		++chars;
 	}
@@ -275,7 +271,7 @@ static void TXT_InputBoxFocused(TXT_UNCAST_ARG(inputbox), int focused)
 	}
 }
 
-txt_widget_class_t txt_inputbox_class =
+WidgetClass txt_inputbox_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_InputBoxSizeCalc,
@@ -287,7 +283,7 @@ txt_widget_class_t txt_inputbox_class =
 	TXT_InputBoxFocused,
 };
 
-txt_widget_class_t txt_int_inputbox_class =
+WidgetClass txt_int_inputbox_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_InputBoxSizeCalc,
@@ -299,20 +295,17 @@ txt_widget_class_t txt_int_inputbox_class =
 	TXT_InputBoxFocused,
 };
 
-static txt_inputbox_t *NewInputBox(txt_widget_class_t *widget_class, void *value, int size)
+static txt_inputbox_t *NewInputBox(WidgetClass* widget_class, void* value, int size)
 {
-	txt_inputbox_t *inputbox;
-
-	inputbox = malloc(sizeof(txt_inputbox_t));
+	txt_inputbox_t* inputbox = static_cast<decltype(inputbox)>(malloc(sizeof(txt_inputbox_t)));
 
 	TXT_InitWidget(inputbox, widget_class);
 	inputbox->value = value;
 	inputbox->size = size;
-	// 'size' is the maximum number of characters that can be entered,
-	// but for a UTF-8 string, each character can take up to four
-	// characters.
+	// 'size' is the maximum number of characters that can be entered, but for a UTF-8 string, each character can take up to four characters.
 	inputbox->buffer_len = size * 4 + 1;
-	inputbox->buffer = malloc(inputbox->buffer_len);
+	// TODO finish
+	//inputbox->buffer = static_cast<decltype(inputbox->buffer)>(malloc(inputbox->buffer_len));
 	inputbox->editing = 0;
 
 	return inputbox;
@@ -327,3 +320,5 @@ txt_inputbox_t *TXT_NewIntInputBox(int *value, int size)
 {
 	return NewInputBox(&txt_int_inputbox_class, value, size);
 }
+
+} /* END NAMESPACE cudadoom::txt */

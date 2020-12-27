@@ -8,17 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "txt_conditional.h"
 #include "txt_strut.h"
 
-struct txt_conditional_s
+namespace cudadoom::txt
 {
-	txt_widget_t widget;
-	int *var;
-	int expected_value;
-	txt_widget_t *child;
-};
 
 static int ConditionTrue(txt_conditional_t *conditional)
 {
@@ -28,8 +22,7 @@ static int ConditionTrue(txt_conditional_t *conditional)
 static int TXT_CondSelectable(TXT_UNCAST_ARG(conditional))
 {
 	TXT_CAST_ARG(txt_conditional_t, conditional);
-	return ConditionTrue(conditional)
-		&& TXT_SelectableWidget(conditional->child);
+	return ConditionTrue(conditional) && TXT_SelectableWidget(conditional->child);
 }
 
 static void TXT_CondSizeCalc(TXT_UNCAST_ARG(conditional))
@@ -99,8 +92,7 @@ static int TXT_CondKeyPress(TXT_UNCAST_ARG(conditional), int key)
 	return 0;
 }
 
-static void TXT_CondMousePress(TXT_UNCAST_ARG(conditional),
-								int x, int y, int b)
+static void TXT_CondMousePress(TXT_UNCAST_ARG(conditional), int x, int y, int b)
 {
 	TXT_CAST_ARG(txt_conditional_t, conditional);
 
@@ -110,7 +102,7 @@ static void TXT_CondMousePress(TXT_UNCAST_ARG(conditional),
 	}
 }
 
-txt_widget_class_t txt_conditional_class =
+WidgetClass txt_conditional_class =
 {
 	TXT_CondSelectable,
 	TXT_CondSizeCalc,
@@ -122,13 +114,12 @@ txt_widget_class_t txt_conditional_class =
 	TXT_CondFocused,
 };
 
-txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
-										TXT_UNCAST_ARG(child))
+txt_conditional_t *TXT_NewConditional(int* var, int expected_value, TXT_UNCAST_ARG(child))
 {
-	TXT_CAST_ARG(txt_widget_t, child);
-	txt_conditional_t *conditional;
+	TXT_CAST_ARG(Widget, child);
+	txt_conditional_t* conditional;
 
-	conditional = malloc(sizeof(txt_conditional_t));
+	conditional = static_cast<decltype(conditional)>(malloc(sizeof(txt_conditional_t)));
 
 	TXT_InitWidget(conditional, &txt_conditional_class);
 	conditional->var = var;
@@ -141,11 +132,10 @@ txt_conditional_t *TXT_NewConditional(int *var, int expected_value,
 }
 
 // "Static" conditional that returns an empty strut if the given static
-// value is false. Kind of like a conditional but we only evaluate it at
-// creation time.
-txt_widget_t *TXT_If(int conditional, TXT_UNCAST_ARG(child))
+// value is false. Kind of like a conditional but we only evaluate it at creation time.
+Widget *TXT_If(int conditional, TXT_UNCAST_ARG(child))
 {
-	TXT_CAST_ARG(txt_widget_t, child);
+	TXT_CAST_ARG(Widget, child);
 
 	if (conditional)
 	{
@@ -153,10 +143,11 @@ txt_widget_t *TXT_If(int conditional, TXT_UNCAST_ARG(child))
 	}
 	else
 	{
-		txt_strut_t *nullwidget;
+		txt_strut_t* nullwidget;
 		TXT_DestroyWidget(child);
 		nullwidget = TXT_NewStrut(0, 0);
 		return &nullwidget->widget;
 	}
 }
 
+} /* END NAMESPACE cudadoom::txt */

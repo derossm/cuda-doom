@@ -20,7 +20,7 @@ typedef int (*opl_init_func)(unsigned int port_base);
 typedef void (*opl_shutdown_func)();
 typedef unsigned int (*opl_read_port_func)(opl_port_t port);
 typedef void (*opl_write_port_func)(opl_port_t port, unsigned int value);
-typedef void (*opl_set_callback_func)(uint64_t us, opl_callback_t callback, void* data);
+typedef void (*opl_set_callback_func)(uint64_t us, opl_callback_t callback, delay_data_t* data);
 typedef void (*opl_clear_callbacks_func)();
 typedef void (*opl_lock_func)();
 typedef void (*opl_unlock_func)();
@@ -44,4 +44,4 @@ struct opl_driver_t
 };
 
 // Sample rate to use when doing software emulation.
-extern unsigned int opl_sample_rate;
+unsigned int opl_sample_rate = 22050;

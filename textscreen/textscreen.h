@@ -11,10 +11,7 @@
 
 #include "../derma/common.h"
 
-#ifndef TEXTSCREEN_H
-#define TEXTSCREEN_H
-
-#include "..\src\doomkeys.h"
+#include "../src/doomkeys.h"
 
 #include "txt_main.h"
 #include "txt_button.h"
@@ -34,5 +31,3 @@
 #include "txt_widget.h"
 #include "txt_window_action.h"
 #include "txt_window.h"
-
-#endif /* #ifndef TEXTSCREEN_H */

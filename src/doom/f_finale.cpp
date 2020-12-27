@@ -45,8 +45,8 @@ finalestage_t finalestage;
 
 unsigned int finalecount;
 
-#define	TEXTSPEED	3
-#define	TEXTWAIT	250
+#define TEXTSPEED	3
+#define TEXTWAIT	250
 
 typedef struct
 {
@@ -278,7 +278,7 @@ void F_TextWrite ()
 #else
 	for (x=0 ; x<SCREENWIDTH ; x++)
 	{
-		*dest++ = colormaps[src[((y&63)<<6) + (x&63)]];
+		*(dest++) = colormaps[src[((y&63)<<6) + (x&63)]];
 	}
 #endif
 	}
@@ -295,7 +295,7 @@ void F_TextWrite ()
 	count = 0;
 	for ( ; count ; count-- )
 	{
-	c = *ch++;
+	c = *(ch++);
 	if (!c)
 		break;
 	if (c == '\n')
@@ -769,7 +769,7 @@ void F_CastPrint (const char *text)
 
 	while (ch)
 	{
-	c = *ch++;
+	c = *(ch++);
 	if (!c)
 		break;
 	c = toupper(c) - HU_FONTSTART;
@@ -788,7 +788,7 @@ void F_CastPrint (const char *text)
 	ch = text;
 	while (ch)
 	{
-	c = *ch++;
+	c = *(ch++);
 	if (!c)
 		break;
 	c = toupper(c) - HU_FONTSTART;

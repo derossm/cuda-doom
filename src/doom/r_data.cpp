@@ -1085,7 +1085,7 @@ static void R_InitTranMap()
 			// [crispy] shortcut: identical foreground and background
 			if (i == j)
 			{
-			*tp++ = i;
+			*(tp++) = i;
 			continue;
 			}
 
@@ -1101,7 +1101,7 @@ static void R_InitTranMap()
 			blend[g] = (tran_filter_pct * fg[g] + (100 - tran_filter_pct) * bg[g]) / (100 + btmp);
 			blend[b] = (tran_filter_pct * fg[b] + (100 - tran_filter_pct) * bg[b]) / 100;
 
-			*tp++ = I_GetPaletteIndex(blend[r], blend[g], blend[b]);
+			*(tp++) = I_GetPaletteIndex(blend[r], blend[g], blend[b]);
 		}
 		}
 

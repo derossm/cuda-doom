@@ -8,7 +8,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "doomkeys.h"
 
 #include "txt_checkbox.h"
@@ -17,6 +16,10 @@
 #include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_window.h"
+#include "txt_widget.h"
+
+namespace cudadoom::txt
+{
 
 static void TXT_CheckBoxSizeCalc(TXT_UNCAST_ARG(checkbox))
 {
@@ -24,24 +27,22 @@ static void TXT_CheckBoxSizeCalc(TXT_UNCAST_ARG(checkbox))
 
 	// Minimum width is the string length + right-side space for padding
 
-	checkbox->widget.w = TXT_UTF8_Strlen(checkbox->label) + 5;
-	checkbox->widget.h = 1;
+	checkbox->widget.width = TXT_UTF8_Strlen(checkbox->label) + 5;
+	checkbox->widget.height = 1;
 }
 
 static void TXT_CheckBoxDrawer(TXT_UNCAST_ARG(checkbox))
 {
 	TXT_CAST_ARG(txt_checkbox_t, checkbox);
 	txt_saved_colors_t colors;
-	int i;
-	int w;
 
-	w = checkbox->widget.w;
+	auto w = checkbox->widget.width;
 
 	TXT_SaveColors(&colors);
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 	TXT_DrawString("(");
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 
 	if ((*checkbox->variable != 0) ^ checkbox->inverted)
 	{
@@ -52,7 +53,7 @@ static void TXT_CheckBoxDrawer(TXT_UNCAST_ARG(checkbox))
 		TXT_DrawString(" ");
 	}
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 
 	TXT_DrawString(") ");
 
@@ -60,7 +61,7 @@ static void TXT_CheckBoxDrawer(TXT_UNCAST_ARG(checkbox))
 	TXT_SetWidgetBG(checkbox);
 	TXT_DrawString(checkbox->label);
 
-	for (i = TXT_UTF8_Strlen(checkbox->label); i < w-4; ++i)
+	for (size_t i = TXT_UTF8_Strlen(checkbox->label); i < w-4; ++i)
 	{
 		TXT_DrawString(" ");
 	}
@@ -99,7 +100,7 @@ static void TXT_CheckBoxMousePress(TXT_UNCAST_ARG(checkbox), int x, int y, int b
 	}
 }
 
-txt_widget_class_t txt_checkbox_class =
+WidgetClass txt_checkbox_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_CheckBoxSizeCalc,
@@ -114,7 +115,7 @@ txt_checkbox_t *TXT_NewCheckBox(const char *label, int *variable)
 {
 	txt_checkbox_t *checkbox;
 
-	checkbox = malloc(sizeof(txt_checkbox_t));
+	checkbox = static_cast<decltype(checkbox)>(malloc(sizeof(txt_checkbox_t)));
 
 	TXT_InitWidget(checkbox, &txt_checkbox_class);
 	checkbox->label = strdup(label);
@@ -134,3 +135,4 @@ txt_checkbox_t *TXT_NewInvertedCheckBox(const char *label, int *variable)
 	return result;
 }
 
+} /* END NAMESPACE cudadoom::txt */

@@ -219,7 +219,7 @@ void HU_Start()
 	s = DEH_String(s);
 
 	while (*s)
-		HUlib_addCharToTextLine(&w_title, *(s++));
+		HUlib_addCharToTextLine(&w_title, *((s++)));
 
 	// haleyjd 20120211: [STRIFE] check for headsupactive
 	if(!headsupactive)
@@ -585,7 +585,7 @@ bool HU_Responder(event_t *ev)
 
 			// send the macro message
 			while (*macromessage)
-				HU_queueChatChar(*macromessage++);
+				HU_queueChatChar(*(macromessage++));
 			HU_queueChatChar(KEY_ENTER);
 
 			// leave chat mode and notify that it was sent

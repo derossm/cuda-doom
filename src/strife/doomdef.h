@@ -60,9 +60,9 @@ enum class GameAction_t
 //
 
 // Skill flags.
-#define	MTF_EASY				1
-#define	MTF_NORMAL				2
-#define	MTF_HARD				4
+#define MTF_EASY				1
+#define MTF_NORMAL				2
+#define MTF_HARD				4
 // villsa [STRIFE] standing monsters
 #define MTF_STAND				8
 // villsa [STRIFE] don't spawn in single player

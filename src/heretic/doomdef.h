@@ -37,7 +37,7 @@
 #include "..\d_ticcmd.h"
 #include "..\d_loop.h"
 
-#define	SAVEGAMENAME "hticsav"
+#define SAVEGAMENAME "hticsav"
 
 /*
 ===============================================================================
@@ -50,18 +50,18 @@
 #define NUMARTIFCTS		28
 #define MAXPLAYERS		4
 
-#define	BT_ATTACK		1
-#define	BT_USE			2
-#define	BT_CHANGE		4		// if true, the next 3 bits hold weapon num
-#define	BT_WEAPONMASK	(8+16+32)
-#define	BT_WEAPONSHIFT	3
+#define BT_ATTACK		1
+#define BT_USE			2
+#define BT_CHANGE		4		// if true, the next 3 bits hold weapon num
+#define BT_WEAPONMASK	(8+16+32)
+#define BT_WEAPONSHIFT	3
 
 #define BT_SPECIAL		128		// game events, not really buttons
-#define	BTS_SAVEMASK	(4+8+16)
-#define	BTS_SAVESHIFT	2
-#define	BT_SPECIALMASK	3
-#define	BTS_PAUSE		1		// pause the game
-#define	BTS_SAVEGAME	2		// save the game at each console
+#define BTS_SAVEMASK	(4+8+16)
+#define BTS_SAVESHIFT	2
+#define BT_SPECIALMASK	3
+#define BTS_PAUSE		1		// pause the game
+#define BTS_SAVEGAME	2		// save the game at each console
 // savegame slot numbers occupy the second byte of buttons
 
 enum class GameState_t
@@ -191,46 +191,46 @@ struct degenmobj_t
 //
 // frame flags
 //
-#define	FF_FULLBRIGHT		0x8000		// flag in thing->frame
+#define FF_FULLBRIGHT		0x8000		// flag in thing->frame
 #define FF_FRAMEMASK		0x7fff
 
 // --- mobj.flags ---
 
-#define	MF_SPECIAL			1			// call P_SpecialThing when touched
-#define	MF_SOLID			2
-#define	MF_SHOOTABLE		4
-#define	MF_NOSECTOR			8			// don't use the sector links (invisible but touchable)
-#define	MF_NOBLOCKMAP		16			// don't use the blocklinks (inert but displayable)
-#define	MF_AMBUSH			32
-#define	MF_JUSTHIT			64			// try to attack right back
-#define	MF_JUSTATTACKED		128			// take at least one step before attacking
-#define	MF_SPAWNCEILING		256			// hang from ceiling instead of floor
-#define	MF_NOGRAVITY		512			// don't apply gravity every tic
+#define MF_SPECIAL			1			// call P_SpecialThing when touched
+#define MF_SOLID			2
+#define MF_SHOOTABLE		4
+#define MF_NOSECTOR			8			// don't use the sector links (invisible but touchable)
+#define MF_NOBLOCKMAP		16			// don't use the blocklinks (inert but displayable)
+#define MF_AMBUSH			32
+#define MF_JUSTHIT			64			// try to attack right back
+#define MF_JUSTATTACKED		128			// take at least one step before attacking
+#define MF_SPAWNCEILING		256			// hang from ceiling instead of floor
+#define MF_NOGRAVITY		512			// don't apply gravity every tic
 
 // movement flags
-#define	MF_DROPOFF			0x400		// allow jumps from high places
-#define	MF_PICKUP			0x800		// for players to pick up items
-#define	MF_NOCLIP			0x1000		// player cheat
-#define	MF_SLIDE			0x2000		// keep info about sliding along walls
-#define	MF_FLOAT			0x4000		// allow moves to any height, no gravity
-#define	MF_TELEPORT			0x8000		// don't cross lines or look at heights
+#define MF_DROPOFF			0x400		// allow jumps from high places
+#define MF_PICKUP			0x800		// for players to pick up items
+#define MF_NOCLIP			0x1000		// player cheat
+#define MF_SLIDE			0x2000		// keep info about sliding along walls
+#define MF_FLOAT			0x4000		// allow moves to any height, no gravity
+#define MF_TELEPORT			0x8000		// don't cross lines or look at heights
 #define MF_MISSILE			0x10000		// don't hit same species, explode on block
 
-#define	MF_DROPPED			0x20000		// dropped by a demon, not level spawned
-#define	MF_SHADOW			0x40000		// use translucent draw (shadow demons / invis)
-#define	MF_NOBLOOD			0x80000		// don't bleed when shot (use puff)
-#define	MF_CORPSE			0x100000	// don't stop moving halfway off a step
-#define	MF_INFLOAT			0x200000	// floating to a height for a move, don't
+#define MF_DROPPED			0x20000		// dropped by a demon, not level spawned
+#define MF_SHADOW			0x40000		// use translucent draw (shadow demons / invis)
+#define MF_NOBLOOD			0x80000		// don't bleed when shot (use puff)
+#define MF_CORPSE			0x100000	// don't stop moving halfway off a step
+#define MF_INFLOAT			0x200000	// floating to a height for a move, don't
 										// auto float to target's height
 
-#define	MF_COUNTKILL		0x400000	// count towards intermission kill total
-#define	MF_COUNTITEM		0x800000	// count towards intermission item total
+#define MF_COUNTKILL		0x400000	// count towards intermission kill total
+#define MF_COUNTITEM		0x800000	// count towards intermission item total
 
-#define	MF_SKULLFLY			0x1000000	// skull in flight
-#define	MF_NOTDMATCH		0x2000000	// don't spawn in death match (key cards)
+#define MF_SKULLFLY			0x1000000	// skull in flight
+#define MF_NOTDMATCH		0x2000000	// don't spawn in death match (key cards)
 
-#define	MF_TRANSLATION		0xc000000	// if 0x4 0x8 or 0xc, use a translation
-#define	MF_TRANSSHIFT		26			// table for player colormaps
+#define MF_TRANSLATION		0xc000000	// if 0x4 0x8 or 0xc, use a translation
+#define MF_TRANSSHIFT		26			// table for player colormaps
 
 // --- mobj.flags2 ---
 
@@ -373,10 +373,10 @@ enum class PowerType_t
 	NUMPOWERS
 };
 
-#define	INVULNTICS			(30*35)
-#define	INVISTICS			(60*35)
-#define	INFRATICS			(120*35)
-#define	IRONTICS			(60*35)
+#define INVULNTICS			(30*35)
+#define INVISTICS			(60*35)
+#define INFRATICS			(120*35)
+#define IRONTICS			(60*35)
 #define WPNLEV2TICS			(40*35)
 #define FLIGHTTICS			(60*35)
 
@@ -465,11 +465,11 @@ struct player_t
 };
 
 #define CF_NOCLIP					1
-#define	CF_GODMODE					2
-#define	CF_NOMOMENTUM				4		// not really a cheat, just a debug aid
+#define CF_GODMODE					2
+#define CF_NOMOMENTUM				4		// not really a cheat, just a debug aid
 #define CF_SHOWFPS					8		// [crispy]
 
-#define	SBARHEIGHT (42 << crispy->hires)	// status bar height at bottom of screen
+#define SBARHEIGHT (42 << crispy->hires)	// status bar height at bottom of screen
 
 /*
 ===============================================================================

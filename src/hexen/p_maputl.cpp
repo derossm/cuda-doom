@@ -659,7 +659,7 @@ bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac)
 			in = scan = intercepts;
 			for (scan = intercepts; scan < intercept_p; scan++)
 				if (scan->frac > maxfrac)
-					*in++ = *scan;
+					*(in++) = *scan;
 			intercept_p = in;
 			return false;
 		}

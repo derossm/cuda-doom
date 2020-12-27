@@ -24,17 +24,13 @@ static unsigned int opl_port_base;
 static int OPL_Linux_Init(unsigned int port_base)
 {
 	// Try to get permissions:
-
 	if (ioperm(port_base, 3, 1) < 0)
 	{
-		fprintf(stderr, "Failed to get I/O port permissions for 0x%x: %s\n",
-						port_base, strerror(errno));
+		fprintf(stderr, "Failed to get I/O port permissions for 0x%x: %s\n", port_base, strerror(errno));
 
 		if (errno == EPERM)
 		{
-			fprintf(stderr,
-					"\tYou may need to run the program as root in order\n"
-					"\tto acquire I/O port permissions for OPL MIDI playback.\n");
+			fprintf(stderr, "\tYou may need to run the program as root in order\n\tto acquire I/O port permissions for OPL MIDI playback.\n");
 		}
 
 		return 0;
@@ -43,7 +39,6 @@ static int OPL_Linux_Init(unsigned int port_base)
 	opl_port_base = port_base;
 
 	// Start callback thread
-
 	if (!OPL_Timer_StartThread())
 	{
 		ioperm(port_base, 2, 0);
@@ -56,11 +51,9 @@ static int OPL_Linux_Init(unsigned int port_base)
 static void OPL_Linux_Shutdown()
 {
 	// Stop callback thread
-
 	OPL_Timer_StopThread();
 
 	// Release permissions
-
 	ioperm(opl_port_base, 2, 0);
 }
 
@@ -86,8 +79,7 @@ opl_driver_t opl_linux_driver =
 	OPL_Timer_Lock,
 	OPL_Timer_Unlock,
 	OPL_Timer_SetPaused,
-	OPL_Timer_AdjustCallbacks,
+	OPL_Timer_AdjustCallbacks
 };
 
 #endif /* #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM) */
-

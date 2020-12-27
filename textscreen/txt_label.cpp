@@ -8,13 +8,15 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "txt_label.h"
 #include "txt_gui.h"
 #include "txt_io.h"
 #include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_window.h"
+
+namespace cudadoom::txt
+{
 
 static void TXT_LabelSizeCalc(TXT_UNCAST_ARG(label))
 {
@@ -36,7 +38,7 @@ static void TXT_LabelDrawer(TXT_UNCAST_ARG(label))
 
 	if (label->bgcolor >= 0)
 	{
-		TXT_BGColor(label->bgcolor, 0);
+		TXT_BGColor(label->bgcolor, false);
 	}
 	if (label->fgcolor >= 0)
 	{
@@ -96,7 +98,7 @@ static void TXT_LabelDestructor(TXT_UNCAST_ARG(label))
 	free(label->lines);
 }
 
-txt_widget_class_t txt_label_class =
+WidgetClass txt_label_class =
 {
 	TXT_NeverSelectable,
 	TXT_LabelSizeCalc,
@@ -135,7 +137,7 @@ void TXT_SetLabel(txt_label_t *label, const char *value)
 
 	// Split into lines
 
-	label->lines = malloc(sizeof(char *) * label->h);
+	label->lines = static_cast<decltype(label->lines)>(malloc(sizeof(char *) * label->h));
 	label->lines[0] = label->label;
 	y = 1;
 
@@ -166,7 +168,7 @@ txt_label_t *TXT_NewLabel(const char *text)
 {
 	txt_label_t *label;
 
-	label = malloc(sizeof(txt_label_t));
+	label = static_cast<decltype(label)>(malloc(sizeof(txt_label_t)));
 
 	TXT_InitWidget(label, &txt_label_class);
 	label->label = NULL;
@@ -192,3 +194,4 @@ void TXT_SetBGColor(txt_label_t *label, txt_color_t color)
 	label->bgcolor = color;
 }
 
+} /* END NAMESPACE cudadoom::txt */

@@ -16,6 +16,9 @@
 #include "txt_main.h"
 #include "txt_window.h"
 
+namespace cudadoom::txt
+{
+
 static void TXT_StrutSizeCalc(TXT_UNCAST_ARG(strut))
 {
 	TXT_CAST_ARG(txt_strut_t, strut);
@@ -40,7 +43,7 @@ static int TXT_StrutKeyPress(TXT_UNCAST_ARG(strut), int key)
 	return 0;
 }
 
-txt_widget_class_t txt_strut_class =
+WidgetClass txt_strut_class =
 {
 	TXT_NeverSelectable,
 	TXT_StrutSizeCalc,
@@ -53,9 +56,7 @@ txt_widget_class_t txt_strut_class =
 
 txt_strut_t *TXT_NewStrut(int width, int height)
 {
-	txt_strut_t *strut;
-
-	strut = malloc(sizeof(txt_strut_t));
+	txt_strut_t* strut = static_cast<decltype(strut)>(malloc(sizeof(txt_strut_t)));
 
 	TXT_InitWidget(strut, &txt_strut_class);
 	strut->width = width;
@@ -64,3 +65,4 @@ txt_strut_t *TXT_NewStrut(int width, int height)
 	return strut;
 }
 
+} /* END NAMESPACE cudadoom::txt */

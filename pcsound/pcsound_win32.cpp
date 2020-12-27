@@ -19,11 +19,11 @@
 #include "pcsound.h"
 #include "pcsound_internal.h"
 
-static SDL_Thread *sound_thread_handle;
+static SDL_Thread* sound_thread_handle;
 static int sound_thread_running;
 static pcsound_callback_func callback;
 
-static int SoundThread(void *unused)
+static int SoundThread(void* unused)
 {
 	int frequency;
 	int duration;
@@ -50,13 +50,10 @@ static int PCSound_Win32_Init(pcsound_callback_func callback_func)
 	OSVERSIONINFO osvi;
 	bool result;
 
-	// Temporarily disabled - the Windows scheduler is strange and
-	// stupid.
-
+	// Temporarily disabled - the Windows scheduler is strange and stupid.
 	return 0;
 
 	// Find the OS version
-
 	osvi.dwOSVersionInfoSize = sizeof(osvi);
 
 	result = GetVersionEx(&osvi);
@@ -66,20 +63,17 @@ static int PCSound_Win32_Init(pcsound_callback_func callback_func)
 		return 0;
 	}
 
-	// Beep() ignores its arguments on win9x, so this driver will
-	// not work there.
+	// Beep() ignores its arguments on win9x, so this driver will not work there.
 	if (osvi.dwPlatformId != VER_PLATFORM_WIN32_NT)
 	{
 		return 0;
 	}
 
 	// Start a thread to play sound.
-
 	callback = callback_func;
 	sound_thread_running = 1;
 
-	sound_thread_handle =
-		SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
+	sound_thread_handle = SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
 
 	return 1;
 }
@@ -98,4 +92,3 @@ pcsound_driver_t pcsound_win32_driver =
 };
 
 #endif /* #ifdef _WIN32 */
-

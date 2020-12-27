@@ -11,15 +11,9 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_CHECKBOX_H
-#define TXT_CHECKBOX_H
-
-/**
- * @file txt_checkbox.h
- *
- * Checkbox widget.
- */
-
+#include "txt_widget.h"
+namespace cudadoom::txt
+{
 /**
  * Checkbox widget.
  *
@@ -32,13 +26,9 @@
  *
  * When a checkbox is changed, it emits the "changed" signal.
  */
-typedef struct txt_checkbox_s txt_checkbox_t;
-
-#include "txt_widget.h"
-
-struct txt_checkbox_s
+struct txt_checkbox_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	char* label;
 	int* variable;
 	int inverted;
@@ -67,4 +57,4 @@ txt_checkbox_t* TXT_NewCheckBox(const char* label, int* variable);
  */
 txt_checkbox_t* TXT_NewInvertedCheckBox(const char* label, int* variable);
 
-#endif /* #ifndef TXT_CHECKBOX_H */
+} /* END NAMESPACE cudadoom::txt */

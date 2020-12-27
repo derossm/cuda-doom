@@ -33,8 +33,7 @@ static polyobj_t *GetPolyobj(int polyNum);
 static int GetPolyobjMirror(int poly);
 static void ThrustMobj(mobj_t * mobj, seg_t * seg, polyobj_t * po);
 static void UpdateSegBBox(seg_t * seg);
-static void RotatePt(int an, fixed_t * x, fixed_t * y, fixed_t startSpotX,
-						fixed_t startSpotY);
+static void RotatePt(int an, fixed_t * x, fixed_t * y, fixed_t startSpotX, fixed_t startSpotY);
 static void UnLinkPolyobj(polyobj_t * po);
 static void LinkPolyobj(polyobj_t * po);
 static bool CheckMobjBlocking(seg_t * seg, polyobj_t * po);
@@ -1179,7 +1178,7 @@ static void IterFindPolySegs(int x, int y, seg_t ** segList)
 			}
 			else
 			{
-				*segList++ = &segs[i];
+				*(segList++) = &segs[i];
 			}
 			IterFindPolySegs(segs[i].v2->x, segs[i].v2->y, segList);
 			return;

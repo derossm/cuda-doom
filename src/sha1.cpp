@@ -59,10 +59,10 @@ static void Transform(sha1_context_t* hd, byte* data)
 		byte* p2{(byte*)x};
 		for (size_t i{0}; i < 16; ++i, p2 += 4)
 		{
-			p2[3] = *data++;
-			p2[2] = *data++;
-			p2[1] = *data++;
-			p2[0] = *data++;
+			p2[3] = *(data++);
+			p2[2] = *(data++);
+			p2[1] = *(data++);
+			p2[0] = *(data++);
 		}
 	}
 #endif
@@ -193,7 +193,7 @@ void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)
 	{
 		for (; inlen && hd->count < 64; --inlen)
 		{
-			hd->buf[hd->count++] = *inbuf++;
+			hd->buf[hd->count++] = *(inbuf++);
 		}
 
 		SHA1_Update(hd, NULL, 0);
@@ -215,7 +215,7 @@ void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)
 
 	for (; inlen && hd->count < 64; --inlen)
 	{
-		hd->buf[hd->count++] = *inbuf++;
+		hd->buf[hd->count++] = *(inbuf++);
 	}
 }
 
@@ -289,7 +289,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t* hd)
 #ifdef SYS_BIG_ENDIAN
 #define X(a) do { *(uint32_t*)p = hd->h##a ; p += 4; } while(0)
 #else /* little endian */
-#define X(a) do { *p++ = hd->h##a >> 24; *p++ = hd->h##a >> 16; *p++ = hd->h##a >> 8; *p++ = hd->h##a; } while(0)
+#define X(a) do { *(p++) = hd->h##a >> 24; *(p++) = hd->h##a >> 16; *(p++) = hd->h##a >> 8; *(p++) = hd->h##a; } while(0)
 #endif
 	X(0);
 	X(1);

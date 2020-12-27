@@ -21,8 +21,8 @@
 
 // MACROS ------------------------------------------------------------------
 
-#define	TEXTSPEED 3
-#define	TEXTWAIT 140
+#define TEXTSPEED 3
+#define TEXTWAIT 140
 
 // TYPES -------------------------------------------------------------------
 
@@ -482,7 +482,7 @@ static void DrawHubText()
 
 	for (; count; --count)
 	{
-		int c = *ch++;
+		int c = *(ch++);
 		if (!c)
 		{
 			break;

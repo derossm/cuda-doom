@@ -625,24 +625,23 @@ static void ShadeChain()
 
 static void DrawSoundInfo()
 {
-	int i;
 	SoundInfo_t s;
-	ChanInfo_t *c;
+	ChanInfo_t* c;
 	char text[32];
-	int x;
-	int y;
-	int xPos[7] = { 1, 75, 112, 156, 200, 230, 260 };
+	int xPos[7]{ 1, 75, 112, 156, 200, 230, 260 };
 
 	if (leveltime & 16)
 	{
 		MN_DrTextA("*** SOUND DEBUG INFO ***", xPos[0], 20);
 	}
+
 	S_GetChannelInfo(&s);
 	if (s.channelCount == 0)
 	{
 		return;
 	}
-	x = 0;
+
+	auto x{0};
 	MN_DrTextA("NAME", xPos[x++], 30);
 	MN_DrTextA("MO.T", xPos[x++], 30);
 	MN_DrTextA("MO.X", xPos[x++], 30);
@@ -650,11 +649,12 @@ static void DrawSoundInfo()
 	MN_DrTextA("ID", xPos[x++], 30);
 	MN_DrTextA("PRI", xPos[x++], 30);
 	MN_DrTextA("DIST", xPos[x++], 30);
-	for (i = 0; i < s.channelCount; i++)
+
+	for (size_t i = 0; i < s.channelCount; ++i)
 	{
 		c = &s.chan[i];
 		x = 0;
-		y = 40 + i * 10;
+		auto y = 40 + i * 10;
 		if (c->mo == NULL)
 		{						// Channel is unused
 			MN_DrTextA("------", xPos[0], y);
@@ -1195,7 +1195,7 @@ void DrawMainBar()
 		UpdateState |= I_STATBAR;
 	}
 	// Armor
-	temp = AutoArmorSave[CPlayer->class]
+	temp = AutoArmorSave[CPlayer->playerClass]
 		+ CPlayer->armorpoints[ARMOR_ARMOR] +
 		CPlayer->armorpoints[ARMOR_SHIELD] +
 		CPlayer->armorpoints[ARMOR_HELMET] +
@@ -1288,7 +1288,7 @@ void DrawKeyBar()
 		oldkeys = CPlayer->keys;
 		UpdateState |= I_STATBAR;
 	}
-	temp = AutoArmorSave[CPlayer->class]
+	temp = AutoArmorSave[CPlayer->playerClass]
 		+ CPlayer->armorpoints[ARMOR_ARMOR] +
 		CPlayer->armorpoints[ARMOR_SHIELD] +
 		CPlayer->armorpoints[ARMOR_HELMET] +
@@ -1302,14 +1302,14 @@ void DrawKeyBar()
 				continue;
 			}
 			if (CPlayer->armorpoints[i] <=
-				(ArmorIncrement[CPlayer->class][i] >> 2))
+				(ArmorIncrement[CPlayer->playerClass][i] >> 2))
 			{
 				V_DrawTLPatch(150 + 31 * i, 164,
 								W_CacheLumpNum(W_GetNumForName("armslot1") +
 												i, pu_tags_t::PU_CACHE));
 			}
 			else if (CPlayer->armorpoints[i] <=
-						(ArmorIncrement[CPlayer->class][i] >> 1))
+						(ArmorIncrement[CPlayer->playerClass][i] >> 1))
 			{
 				V_DrawAltTLPatch(150 + 31 * i, 164,
 									W_CacheLumpNum(W_GetNumForName("armslot1")
@@ -1617,11 +1617,11 @@ static void CheatGodFunc(player_t * player, Cheat_t * cheat)
 	player->cheats ^= CF_GODMODE;
 	if (player->cheats & CF_GODMODE)
 	{
-		P_SetMessage(player, TXT_CHEATGODON, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATGODON, true);
 	}
 	else
 	{
-		P_SetMessage(player, TXT_CHEATGODOFF, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATGODOFF, true);
 	}
 	SB_state = -1;
 }
@@ -1631,11 +1631,11 @@ static void CheatNoClipFunc(player_t * player, Cheat_t * cheat)
 	player->cheats ^= CF_NOCLIP;
 	if (player->cheats & CF_NOCLIP)
 	{
-		P_SetMessage(player, TXT_CHEATNOCLIPON, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATNOCLIPON, true);
 	}
 	else
 	{
-		P_SetMessage(player, TXT_CHEATNOCLIPOFF, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATNOCLIPOFF, true);
 	}
 }
 
@@ -1646,7 +1646,7 @@ static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
 
 	for (i = 0; i < NUMARMOR; i++)
 	{
-		player->armorpoints[i] = ArmorIncrement[player->class][i];
+		player->armorpoints[i] = ArmorIncrement[player->playerClass][i];
 	}
 	for (i = 0; i < NUMWEAPONS; i++)
 	{
@@ -1656,7 +1656,7 @@ static void CheatWeaponsFunc(player_t * player, Cheat_t * cheat)
 	{
 		player->mana[i] = MAX_MANA;
 	}
-	P_SetMessage(player, TXT_CHEATWEAPONS, true);
+	P_SetMessage(player, cudadoom::txt::TXT_CHEATWEAPONS, true);
 }
 
 static void CheatHealthFunc(player_t * player, Cheat_t * cheat)
@@ -1669,13 +1669,13 @@ static void CheatHealthFunc(player_t * player, Cheat_t * cheat)
 	{
 		player->health = player->mo->health = MAXHEALTH;
 	}
-	P_SetMessage(player, TXT_CHEATHEALTH, true);
+	P_SetMessage(player, cudadoom::txt::TXT_CHEATHEALTH, true);
 }
 
 static void CheatKeysFunc(player_t * player, Cheat_t * cheat)
 {
 	player->keys = 2047;
-	P_SetMessage(player, TXT_CHEATKEYS, true);
+	P_SetMessage(player, cudadoom::txt::TXT_CHEATKEYS, true);
 }
 
 static void CheatSoundFunc(player_t * player, Cheat_t * cheat)
@@ -1683,11 +1683,11 @@ static void CheatSoundFunc(player_t * player, Cheat_t * cheat)
 	DebugSound = !DebugSound;
 	if (DebugSound)
 	{
-		P_SetMessage(player, TXT_CHEATSOUNDON, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATSOUNDON, true);
 	}
 	else
 	{
-		P_SetMessage(player, TXT_CHEATSOUNDOFF, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATSOUNDOFF, true);
 	}
 }
 
@@ -1696,11 +1696,11 @@ static void CheatTickerFunc(player_t * player, Cheat_t * cheat)
 	DisplayTicker = !DisplayTicker;
 	if (DisplayTicker)
 	{
-		P_SetMessage(player, TXT_CHEATTICKERON, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATTICKERON, true);
 	}
 	else
 	{
-		P_SetMessage(player, TXT_CHEATTICKEROFF, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATTICKEROFF, true);
 	}
 
 	I_DisplayFPSDots(DisplayTicker);
@@ -1718,7 +1718,7 @@ static void CheatArtifactAllFunc(player_t * player, Cheat_t * cheat)
 			P_GiveArtifact(player, i, NULL);
 		}
 	}
-	P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
+	P_SetMessage(player, cudadoom::txt::TXT_CHEATARTIFACTS3, true);
 }
 
 static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
@@ -1729,13 +1729,13 @@ static void CheatPuzzleFunc(player_t * player, Cheat_t * cheat)
 	{
 		P_GiveArtifact(player, i, NULL);
 	}
-	P_SetMessage(player, TXT_CHEATARTIFACTS3, true);
+	P_SetMessage(player, cudadoom::txt::TXT_CHEATARTIFACTS3, true);
 }
 
 static void CheatInitFunc(player_t * player, Cheat_t * cheat)
 {
 	G_DeferedInitNew(gameskill, gameepisode, gamemap);
-	P_SetMessage(player, TXT_CHEATWARP, true);
+	P_SetMessage(player, cudadoom::txt::TXT_CHEATWARP, true);
 }
 
 static void CheatWarpFunc(player_t * player, Cheat_t * cheat)
@@ -1752,27 +1752,27 @@ static void CheatWarpFunc(player_t * player, Cheat_t * cheat)
 	ones = args[1] - '0';
 	if (tens < 0 || tens > 9 || ones < 0 || ones > 9)
 	{							// Bad map
-		P_SetMessage(player, TXT_CHEATBADINPUT, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATBADINPUT, true);
 		return;
 	}
 	map = P_TranslateMap((args[0] - '0') * 10 + args[1] - '0');
 	if (map == -1)
 	{							// Not found
-		P_SetMessage(player, TXT_CHEATNOMAP, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATNOMAP, true);
 		return;
 	}
 	if (map == gamemap)
 	{							// Don't try to teleport to current map
-		P_SetMessage(player, TXT_CHEATBADINPUT, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATBADINPUT, true);
 		return;
 	}
 	M_snprintf(mapName, sizeof(mapName), "MAP%02d", map);
 	if (W_CheckNumForName(mapName) == -1)
 	{						// Can't find
-		P_SetMessage(player, TXT_CHEATNOMAP, true);
+		P_SetMessage(player, cudadoom::txt::TXT_CHEATNOMAP, true);
 		return;
 	}
-	P_SetMessage(player, TXT_CHEATWARP, true);
+	P_SetMessage(player, cudadoom::txt::TXT_CHEATWARP, true);
 	G_TeleportNewMap(map, 0);
 }
 
@@ -1823,7 +1823,7 @@ static void CheatIDKFAFunc(player_t * player, Cheat_t * cheat)
 	player->usedown = 0;
 
 	player->pendingweapon = WP_FIRST;
-	P_SetMessage(player, TXT_CHEATIDKFA, true);
+	P_SetMessage(player, cudadoom::txt::TXT_CHEATIDKFA, true);
 }
 
 static void CheatQuickenFunc1(player_t * player, Cheat_t * cheat)
@@ -1865,7 +1865,7 @@ static void CheatClassFunc2(player_t * player, Cheat_t * cheat)
 		P_SetMessage(player, "INVALID PLAYER CLASS", true);
 		return;
 	}
-	player->class = class;
+	player->playerClass = class;
 	for (i = 0; i < NUMARMOR; i++)
 	{
 		player->armorpoints[i] = 0;

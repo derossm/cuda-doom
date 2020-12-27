@@ -11,31 +11,23 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_LABEL_H
-#define TXT_LABEL_H
+#include "txt_main.h"
+#include "txt_widget.h"
 
-/**
- * @file txt_label.h
- *
- * Text label widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * Label widget.
  *
  * A label widget does nothing except show a text label.
  */
-typedef struct txt_label_s txt_label_t;
-
-#include "txt_main.h"
-#include "txt_widget.h"
-
-struct txt_label_s
+struct txt_label_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	char* label;
 	char** lines;
-	unsigned int w, h;
+	unsigned int w;
+	unsigned int h;
 	int fgcolor;
 	int bgcolor;
 };
@@ -71,7 +63,6 @@ void TXT_SetBGColor(txt_label_t* label, txt_color_t color);
  * @param label			The widget.
  * @param color			The foreground color to use.
  */
-
 void TXT_SetFGColor(txt_label_t* label, txt_color_t color);
 
-#endif /* #ifndef TXT_LABEL_H */
+} /* END NAMESPACE cudadoom::txt */

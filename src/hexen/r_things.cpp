@@ -382,7 +382,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
 		{
 			colfunc = R_DrawTranslatedTLColumn;
 			dc_translation = translationtables - 256
-				+ vis->class * ((maxplayers - 1) * 256) +
+				+ vis->playerClass * ((maxplayers - 1) * 256) +
 				((vis->mobjflags & MF_TRANSLATION) >> (MF_TRANSSHIFT - 8));
 		}
 		else if (vis->mobjflags & MF_SHADOW)
@@ -399,7 +399,7 @@ void R_DrawVisSprite(vissprite_t * vis, int x1, int x2)
 		// Draw using translated column function
 		colfunc = R_DrawTranslatedColumn;
 		dc_translation = translationtables - 256
-			+ vis->class * ((maxplayers - 1) * 256) +
+			+ vis->playerClass * ((maxplayers - 1) * 256) +
 			((vis->mobjflags & MF_TRANSLATION) >> (MF_TRANSSHIFT - 8));
 	}
 
@@ -556,15 +556,15 @@ void R_ProjectSprite(mobj_t * thing)
 	{
 		if (thing->player)
 		{
-			vis->class = thing->player->class;
+			vis->playerClass = thing->player->playerClass;
 		}
 		else
 		{
-			vis->class = thing->special1.i;
+			vis->playerClass = thing->special1.i;
 		}
-		if (vis->class > 2)
+		if (vis->playerClass > 2)
 		{
-			vis->class = 0;
+			vis->playerClass = 0;
 		}
 	}
 	// foot clipping
@@ -719,14 +719,14 @@ void R_DrawPSprite(pspdef_t * psp)
 //
 	vis = &avis;
 	vis->mobjflags = 0;
-	vis->class = 0;
+	vis->playerClass = 0;
 	vis->psprite = true;
 	vis->floorclip = 0;
 	vis->texturemid = (BASEYCENTER << FRACBITS) /* + FRACUNIT / 2 */
 		- (psp->sy - spritetopoffset[lump]);
 	if (viewheight == SCREENHEIGHT)
 	{
-		vis->texturemid -= PSpriteSY[viewplayer->class]
+		vis->texturemid -= PSpriteSY[viewplayer->playerClass]
 			[players[consoleplayer].readyweapon];
 	}
 	vis->x1 = x1 < 0 ? 0 : x1;
@@ -746,7 +746,7 @@ void R_DrawPSprite(pspdef_t * psp)
 		vis->startfrac += vis->xiscale * (vis->x1 - x1);
 	vis->patch = lump;
 
-	if (viewplayer->powers[PowerType_t::pw_invulnerability] && viewplayer->class
+	if (viewplayer->powers[PowerType_t::pw_invulnerability] && viewplayer->playerClass
 		== pclass_t::pclass_t::PCLASS_CLERIC)
 	{
 		vis->colormap = spritelights[MAXLIGHTSCALE - 1];

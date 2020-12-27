@@ -1113,7 +1113,7 @@ static void D_Endoom()
 static int D_GetCursorColumn()
 {
 	int x, y;
-	TXT_GetXY(&x, &y);
+	cudadoom::txt::TXT_GetXY(&x, &y);
 	return x;
 }
 
@@ -1123,7 +1123,7 @@ static int D_GetCursorColumn()
 static int D_GetCursorRow()
 {
 	int x, y;
-	TXT_GetXY(&x, &y);
+	cudadoom::txt::TXT_GetXY(&x, &y);
 	return y;
 }
 
@@ -1132,7 +1132,7 @@ static int D_GetCursorRow()
 //
 static void D_SetCursorPosition(int column, int row)
 {
-	TXT_GotoXY(column, row);
+	cudadoom::txt::TXT_GotoXY(column, row);
 }
 
 //
@@ -1142,10 +1142,10 @@ static void D_SetChar(char c)
 {
 	int x, y;
 	// Backup position
-	TXT_GetXY(&x, &y);
-	TXT_PutChar(c);
+	cudadoom::txt::TXT_GetXY(&x, &y);
+	cudadoom::txt::TXT_PutChar(c);
 	// Restore position
-	TXT_GotoXY(x, y);
+	cudadoom::txt::TXT_GotoXY(x, y);
 }
 
 //
@@ -1163,8 +1163,8 @@ static void D_DrawText(const char *string, int bc, int fc)
 	}
 
 	// Set text color
-	TXT_BGColor(bc, 0);
-	TXT_FGColor(fc);
+	cudadoom::txt::TXT_BGColor(bc, false);
+	cudadoom::txt::TXT_FGColor(fc);
 
 	// Get column position
 	column = D_GetCursorColumn();
@@ -1308,7 +1308,7 @@ static void D_InitIntroSequence()
 	}
 	else
 	{
-		if (!TXT_Init())
+		if (!cudadoom::txt::TXT_Init())
 		{
 			using_text_startup = false;
 			return;
@@ -1318,7 +1318,7 @@ static void D_InitIntroSequence()
 		I_InitWindowIcon();
 
 		// Clear screen
-		textScreen = TXT_GetScreenData();
+		textScreen = cudadoom::txt::TXT_GetScreenData();
 		memset(textScreen, 0, 4000);
 
 		using_text_startup = true;
@@ -1326,38 +1326,38 @@ static void D_InitIntroSequence()
 		// Print title
 
 		D_SetCursorPosition(0, 0);
-		D_DrawText(title, TXT_COLOR_GREEN, TXT_COLOR_BLACK);
+		D_DrawText(title, txt_color_t::TXT_COLOR_GREEN, txt_color_t::TXT_COLOR_BLACK);
 
 		DEH_snprintf(string, sizeof(string), "Rogue Entertainment");
 		D_SetCursorPosition(40 - strlen(string) / 2, 5);
-		D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
+		D_DrawText(string, txt_color_t::TXT_COLOR_BLUE, txt_color_t::TXT_COLOR_GREEN);
 
 		DEH_snprintf(string, sizeof(string), "and");
 		D_SetCursorPosition(40 - strlen(string) / 2, 7);
-		D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
+		D_DrawText(string, txt_color_t::TXT_COLOR_BLUE, txt_color_t::TXT_COLOR_GREEN);
 
 		DEH_snprintf(string, sizeof(string), "Velocity Games");
 		D_SetCursorPosition(40 - strlen(string) / 2, 9);
-		D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
+		D_DrawText(string, txt_color_t::TXT_COLOR_BLUE, txt_color_t::TXT_COLOR_GREEN);
 
 		DEH_snprintf(string, sizeof(string), "present");
 		D_SetCursorPosition(40 - strlen(string) / 2, 11);
-		D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
+		D_DrawText(string, txt_color_t::TXT_COLOR_BLUE, txt_color_t::TXT_COLOR_GREEN);
 
 		DEH_snprintf(string, sizeof(string), "S T R I F E");
 		D_SetCursorPosition(40 - strlen(string) / 2, 14);
-		D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
+		D_DrawText(string, txt_color_t::TXT_COLOR_BLUE, txt_color_t::TXT_COLOR_GREEN);
 
 		DEH_snprintf(string, sizeof(string), "Loading...");
 		D_SetCursorPosition(40 - strlen(string) / 2, 17);
-		D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
+		D_DrawText(string, txt_color_t::TXT_COLOR_BLUE, txt_color_t::TXT_COLOR_GREEN);
 
 		DEH_snprintf(string, sizeof(string),
 					"[													]");
 		D_SetCursorPosition(14, 18);
-		D_DrawText(string, TXT_COLOR_BLUE, TXT_COLOR_GREEN);
+		D_DrawText(string, txt_color_t::TXT_COLOR_BLUE, txt_color_t::TXT_COLOR_GREEN);
 
-		TXT_UpdateScreen();
+		cudadoom::txt::TXT_UpdateScreen();
 	}
 }
 
@@ -1420,12 +1420,12 @@ static void D_DrawIntroSequence()
 		for (i = 0; i < laserpos; i++)
 		{
 			D_SetCursorPosition(15 + i, 18);
-			D_DrawText("#", TXT_COLOR_GREEN, TXT_COLOR_BLUE);
+			D_DrawText("#", txt_color_t::TXT_COLOR_GREEN, txt_color_t::TXT_COLOR_BLUE);
 		}
 
 		I_Sleep(10);
 
-		TXT_UpdateScreen();
+		cudadoom::txt::TXT_UpdateScreen();
 	}
 }
 
@@ -2179,7 +2179,7 @@ void D_DoomMain ()
 
 	if (using_text_startup)
 	{
-		TXT_Shutdown();
+		cudadoom::txt::TXT_Shutdown();
 	}
 
 	D_DoomLoop (); // never returns

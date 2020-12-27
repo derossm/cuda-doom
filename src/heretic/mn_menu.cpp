@@ -425,7 +425,7 @@ void MN_DrTextA(const char *text, int x, int y)
 	char c;
 	patch_t *p;
 
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -455,7 +455,7 @@ int MN_TextAWidth(const char *text)
 	patch_t *p;
 
 	width = 0;
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -483,7 +483,7 @@ void MN_DrTextB(const char *text, int x, int y)
 	char c;
 	patch_t *p;
 
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -513,7 +513,7 @@ int MN_TextBWidth(const char *text)
 	patch_t *p;
 
 	width = 0;
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -1770,7 +1770,7 @@ bool MN_Responder(event_t * event)
 		{
 			if (isalpha(charTyped))
 			{
-				*textBuffer++ = toupper(charTyped);
+				*(textBuffer++) = toupper(charTyped);
 				*textBuffer = ASCII_CURSOR;
 				slotptr++;
 				return (true);
@@ -1779,7 +1779,7 @@ bool MN_Responder(event_t * event)
 				|| charTyped == ',' || charTyped == '.' || charTyped == '-'
 				|| charTyped == '!')
 			{
-				*textBuffer++ = charTyped;
+				*(textBuffer++) = charTyped;
 				*textBuffer = ASCII_CURSOR;
 				slotptr++;
 				return (true);

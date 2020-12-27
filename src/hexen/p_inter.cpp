@@ -31,17 +31,17 @@ int AutoArmorSave[pclass_t::NUMCLASSES] =
 	{ 15 * FRACUNIT, 10 * FRACUNIT, 5 * FRACUNIT, 0 };
 
 const char *TextKeyMessages[] = {
-	TXT_KEY_STEEL,
-	TXT_KEY_CAVE,
-	TXT_KEY_AXE,
-	TXT_KEY_FIRE,
-	TXT_KEY_EMERALD,
-	TXT_KEY_DUNGEON,
-	TXT_KEY_SILVER,
-	TXT_KEY_RUSTED,
-	TXT_KEY_HORN,
-	TXT_KEY_SWAMP,
-	TXT_KEY_CASTLE
+	cudadoom::txt::TXT_KEY_STEEL,
+	cudadoom::txt::TXT_KEY_CAVE,
+	cudadoom::txt::TXT_KEY_AXE,
+	cudadoom::txt::TXT_KEY_FIRE,
+	cudadoom::txt::TXT_KEY_EMERALD,
+	cudadoom::txt::TXT_KEY_DUNGEON,
+	cudadoom::txt::TXT_KEY_SILVER,
+	cudadoom::txt::TXT_KEY_RUSTED,
+	cudadoom::txt::TXT_KEY_HORN,
+	cudadoom::txt::TXT_KEY_SWAMP,
+	cudadoom::txt::TXT_KEY_CASTLE
 };
 
 static void SetDormantArtifact(mobj_t * arti);
@@ -409,14 +409,14 @@ static void TryPickupWeaponPiece(player_t * player, pclass_t matchClass,
 	bool gaveWeapon;
 	int gaveMana;
 	static const char *fourthWeaponText[] = {
-		TXT_WEAPON_F4,
-		TXT_WEAPON_C4,
-		TXT_WEAPON_M4
+		cudadoom::txt::TXT_WEAPON_F4,
+		cudadoom::txt::TXT_WEAPON_C4,
+		cudadoom::txt::TXT_WEAPON_M4
 	};
 	static const char *weaponPieceText[] = {
-		TXT_QUIETUS_PIECE,
-		TXT_WRAITHVERGE_PIECE,
-		TXT_BLOODSCOURGE_PIECE
+		cudadoom::txt::TXT_QUIETUS_PIECE,
+		cudadoom::txt::TXT_WRAITHVERGE_PIECE,
+		cudadoom::txt::TXT_BLOODSCOURGE_PIECE
 	};
 	static int pieceValueTrans[] = {
 		0,						// 0: never
@@ -709,44 +709,44 @@ static void TryPickupArtifact(player_t * player, ArtiType_t artifactType,
 {
 	static const char *artifactMessages[NUMARTIFACTS] = {
 		NULL,
-		TXT_ARTIINVULNERABILITY,
-		TXT_ARTIHEALTH,
-		TXT_ARTISUPERHEALTH,
-		TXT_ARTIHEALINGRADIUS,
-		TXT_ARTISUMMON,
-		TXT_ARTITORCH,
-		TXT_ARTIEGG,
-		TXT_ARTIFLY,
-		TXT_ARTIBLASTRADIUS,
-		TXT_ARTIPOISONBAG,
-		TXT_ARTITELEPORTOTHER,
-		TXT_ARTISPEED,
-		TXT_ARTIBOOSTMANA,
-		TXT_ARTIBOOSTARMOR,
-		TXT_ARTITELEPORT,
-		TXT_ARTIPUZZSKULL,
-		TXT_ARTIPUZZGEMBIG,
-		TXT_ARTIPUZZGEMRED,
-		TXT_ARTIPUZZGEMGREEN1,
-		TXT_ARTIPUZZGEMGREEN2,
-		TXT_ARTIPUZZGEMBLUE1,
-		TXT_ARTIPUZZGEMBLUE2,
-		TXT_ARTIPUZZBOOK1,
-		TXT_ARTIPUZZBOOK2,
-		TXT_ARTIPUZZSKULL2,
-		TXT_ARTIPUZZFWEAPON,
-		TXT_ARTIPUZZCWEAPON,
-		TXT_ARTIPUZZMWEAPON,
-		TXT_ARTIPUZZGEAR,		// All gear pickups use the same text
-		TXT_ARTIPUZZGEAR,
-		TXT_ARTIPUZZGEAR,
-		TXT_ARTIPUZZGEAR
+		cudadoom::txt::TXT_ARTIINVULNERABILITY,
+		cudadoom::txt::TXT_ARTIHEALTH,
+		cudadoom::txt::TXT_ARTISUPERHEALTH,
+		cudadoom::txt::TXT_ARTIHEALINGRADIUS,
+		cudadoom::txt::TXT_ARTISUMMON,
+		cudadoom::txt::TXT_ARTITORCH,
+		cudadoom::txt::TXT_ARTIEGG,
+		cudadoom::txt::TXT_ARTIFLY,
+		cudadoom::txt::TXT_ARTIBLASTRADIUS,
+		cudadoom::txt::TXT_ARTIPOISONBAG,
+		cudadoom::txt::TXT_ARTITELEPORTOTHER,
+		cudadoom::txt::TXT_ARTISPEED,
+		cudadoom::txt::TXT_ARTIBOOSTMANA,
+		cudadoom::txt::TXT_ARTIBOOSTARMOR,
+		cudadoom::txt::TXT_ARTITELEPORT,
+		cudadoom::txt::TXT_ARTIPUZZSKULL,
+		cudadoom::txt::TXT_ARTIPUZZGEMBIG,
+		cudadoom::txt::TXT_ARTIPUZZGEMRED,
+		cudadoom::txt::TXT_ARTIPUZZGEMGREEN1,
+		cudadoom::txt::TXT_ARTIPUZZGEMGREEN2,
+		cudadoom::txt::TXT_ARTIPUZZGEMBLUE1,
+		cudadoom::txt::TXT_ARTIPUZZGEMBLUE2,
+		cudadoom::txt::TXT_ARTIPUZZBOOK1,
+		cudadoom::txt::TXT_ARTIPUZZBOOK2,
+		cudadoom::txt::TXT_ARTIPUZZSKULL2,
+		cudadoom::txt::TXT_ARTIPUZZFWEAPON,
+		cudadoom::txt::TXT_ARTIPUZZCWEAPON,
+		cudadoom::txt::TXT_ARTIPUZZMWEAPON,
+		cudadoom::txt::TXT_ARTIPUZZGEAR,		// All gear pickups use the same text
+		cudadoom::txt::TXT_ARTIPUZZGEAR,
+		cudadoom::txt::TXT_ARTIPUZZGEAR,
+		cudadoom::txt::TXT_ARTIPUZZGEAR
 	};
 
 	if (gamemode == GameMode_t::shareware)
 	{
-		artifactMessages[arti_blastradius] = TXT_ARTITELEPORT;
-		artifactMessages[arti_teleport] = TXT_ARTIBLASTRADIUS;
+		artifactMessages[arti_blastradius] = cudadoom::txt::TXT_ARTITELEPORT;
+		artifactMessages[arti_teleport] = cudadoom::txt::TXT_ARTIBLASTRADIUS;
 	}
 
 	if (P_GiveArtifact(player, artifactType, artifact))
@@ -956,35 +956,35 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, TXT_ITEMHEALTH, false);
+			P_SetMessage(player, cudadoom::txt::TXT_ITEMHEALTH, false);
 			break;
 		case SPR_ARM1:
 			if (!P_GiveArmor(player, ARMOR_ARMOR, -1))
 			{
 				return;
 			}
-			P_SetMessage(player, TXT_ARMOR1, false);
+			P_SetMessage(player, cudadoom::txt::TXT_ARMOR1, false);
 			break;
 		case SPR_ARM2:
 			if (!P_GiveArmor(player, ARMOR_SHIELD, -1))
 			{
 				return;
 			}
-			P_SetMessage(player, TXT_ARMOR2, false);
+			P_SetMessage(player, cudadoom::txt::TXT_ARMOR2, false);
 			break;
 		case SPR_ARM3:
 			if (!P_GiveArmor(player, ARMOR_HELMET, -1))
 			{
 				return;
 			}
-			P_SetMessage(player, TXT_ARMOR3, false);
+			P_SetMessage(player, cudadoom::txt::TXT_ARMOR3, false);
 			break;
 		case SPR_ARM4:
 			if (!P_GiveArmor(player, ARMOR_AMULET, -1))
 			{
 				return;
 			}
-			P_SetMessage(player, TXT_ARMOR4, false);
+			P_SetMessage(player, cudadoom::txt::TXT_ARMOR4, false);
 			break;
 
 			// Keys
@@ -1134,14 +1134,14 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				return;
 			}
-			P_SetMessage(player, TXT_MANA_1, false);
+			P_SetMessage(player, cudadoom::txt::TXT_MANA_1, false);
 			break;
 		case SPR_MAN2:
 			if (!P_GiveMana(player, MANA_2, 15))
 			{
 				return;
 			}
-			P_SetMessage(player, TXT_MANA_2, false);
+			P_SetMessage(player, cudadoom::txt::TXT_MANA_2, false);
 			break;
 		case SPR_MAN3:			// Double Mana Dodecahedron
 			if (!P_GiveMana(player, MANA_1, 20))
@@ -1155,37 +1155,37 @@ void P_TouchSpecialThing(mobj_t * special, mobj_t * toucher)
 			{
 				P_GiveMana(player, MANA_2, 20);
 			}
-			P_SetMessage(player, TXT_MANA_BOTH, false);
+			P_SetMessage(player, cudadoom::txt::TXT_MANA_BOTH, false);
 			break;
 
 			// 2nd and 3rd Mage Weapons
 		case SPR_WMCS:			// Frost Shards
 			TryPickupWeapon(player, pclass_t::PCLASS_MAGE, WP_SECOND,
-							special, TXT_WEAPON_M2);
+							special, cudadoom::txt::TXT_WEAPON_M2);
 			return;
 		case SPR_WMLG:			// Arc of Death
 			TryPickupWeapon(player, pclass_t::PCLASS_MAGE, WP_THIRD,
-							special, TXT_WEAPON_M3);
+							special, cudadoom::txt::TXT_WEAPON_M3);
 			return;
 
 			// 2nd and 3rd Fighter Weapons
 		case SPR_WFAX:			// Timon's Axe
 			TryPickupWeapon(player, pclass_t::PCLASS_FIGHTER, WP_SECOND,
-							special, TXT_WEAPON_F2);
+							special, cudadoom::txt::TXT_WEAPON_F2);
 			return;
 		case SPR_WFHM:			// Hammer of Retribution
 			TryPickupWeapon(player, pclass_t::PCLASS_FIGHTER, WP_THIRD,
-							special, TXT_WEAPON_F3);
+							special, cudadoom::txt::TXT_WEAPON_F3);
 			return;
 
 			// 2nd and 3rd Cleric Weapons
 		case SPR_WCSS:			// Serpent Staff
 			TryPickupWeapon(player, pclass_t::PCLASS_CLERIC, WP_SECOND,
-							special, TXT_WEAPON_C2);
+							special, cudadoom::txt::TXT_WEAPON_C2);
 			return;
 		case SPR_WCFM:			// Firestorm
 			TryPickupWeapon(player, pclass_t::PCLASS_CLERIC, WP_THIRD,
-							special, TXT_WEAPON_C3);
+							special, cudadoom::txt::TXT_WEAPON_C3);
 			return;
 
 			// Fourth Weapon Pieces

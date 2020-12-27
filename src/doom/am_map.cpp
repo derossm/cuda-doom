@@ -1987,8 +1987,8 @@ void AM_GetMarkPoints(int* n, long* p)
 	{
 		for (auto i{0}; i < AM_NUMMARKPOINTS; ++i)
 		{
-			*p++ = (long)markpoints[i].x;
-			*p++ = (markpoints[i].x == -1) ? 0L : (long)markpoints[i].y;
+			*(p++) = (long)markpoints[i].x;
+			*(p++) = (markpoints[i].x == -1) ? 0L : (long)markpoints[i].y;
 		}
 	}
 }
@@ -2003,7 +2003,7 @@ void AM_SetMarkPoints (int n, long *p)
 
 	for (auto i{0}; i < AM_NUMMARKPOINTS; ++i)
 	{
-		markpoints[i].x = (int64_t)*p++;
-		markpoints[i].y = (int64_t)*p++;
+		markpoints[i].x = (int64_t)*(p++);
+		markpoints[i].y = (int64_t)*(p++);
 	}
 }

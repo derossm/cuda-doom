@@ -209,49 +209,49 @@ struct degenmobj_t
 //
 // frame flags
 //
-#define	FF_FULLBRIGHT	0x8000 // flag in thing->frame
+#define FF_FULLBRIGHT	0x8000 // flag in thing->frame
 #define FF_FRAMEMASK	0x7fff
 
 // --- mobj.flags ---
 
-#define	MF_SPECIAL		1		// call P_SpecialThing when touched
-#define	MF_SOLID		2
-#define	MF_SHOOTABLE	4
-#define	MF_NOSECTOR		8		// don't use the sector links
+#define MF_SPECIAL		1		// call P_SpecialThing when touched
+#define MF_SOLID		2
+#define MF_SHOOTABLE	4
+#define MF_NOSECTOR		8		// don't use the sector links
 																		// (invisible but touchable)
-#define	MF_NOBLOCKMAP	16		// don't use the blocklinks
+#define MF_NOBLOCKMAP	16		// don't use the blocklinks
 																		// (inert but displayable)
-#define	MF_AMBUSH		32
-#define	MF_JUSTHIT		64		// try to attack right back
-#define	MF_JUSTATTACKED	128		// take at least one step before attacking
-#define	MF_SPAWNCEILING	256		// hang from ceiling instead of floor
-#define	MF_NOGRAVITY	512		// don't apply gravity every tic
+#define MF_AMBUSH		32
+#define MF_JUSTHIT		64		// try to attack right back
+#define MF_JUSTATTACKED	128		// take at least one step before attacking
+#define MF_SPAWNCEILING	256		// hang from ceiling instead of floor
+#define MF_NOGRAVITY	512		// don't apply gravity every tic
 
 // movement flags
-#define	MF_DROPOFF		0x400	// allow jumps from high places
-#define	MF_PICKUP		0x800	// for players to pick up items
-#define	MF_NOCLIP		0x1000 // player cheat
-#define	MF_SLIDE		0x2000 // keep info about sliding along walls
-#define	MF_FLOAT		0x4000 // allow moves to any height, no gravity
-#define	MF_TELEPORT		0x8000 // don't cross lines or look at heights
+#define MF_DROPOFF		0x400	// allow jumps from high places
+#define MF_PICKUP		0x800	// for players to pick up items
+#define MF_NOCLIP		0x1000 // player cheat
+#define MF_SLIDE		0x2000 // keep info about sliding along walls
+#define MF_FLOAT		0x4000 // allow moves to any height, no gravity
+#define MF_TELEPORT		0x8000 // don't cross lines or look at heights
 #define MF_MISSILE		0x10000 // don't hit same species, explode on block
 
-#define	MF_ALTSHADOW	0x20000 // alternate translucent draw
-#define	MF_SHADOW		0x40000 // use translucent draw (shadow demons / invis)
-#define	MF_NOBLOOD		0x80000 // don't bleed when shot (use puff)
-#define	MF_CORPSE		0x100000		// don't stop moving halfway off a step
-#define	MF_INFLOAT		0x200000		// floating to a height for a move, don't
+#define MF_ALTSHADOW	0x20000 // alternate translucent draw
+#define MF_SHADOW		0x40000 // use translucent draw (shadow demons / invis)
+#define MF_NOBLOOD		0x80000 // don't bleed when shot (use puff)
+#define MF_CORPSE		0x100000		// don't stop moving halfway off a step
+#define MF_INFLOAT		0x200000		// floating to a height for a move, don't
 																		// auto float to target's height
 
-#define	MF_COUNTKILL	0x400000		// count towards intermission kill total
-#define	MF_ICECORPSE	0x800000		// a frozen corpse (for blasting)
+#define MF_COUNTKILL	0x400000		// count towards intermission kill total
+#define MF_ICECORPSE	0x800000		// a frozen corpse (for blasting)
 
-#define	MF_SKULLFLY		0x1000000		// skull in flight
-#define	MF_NOTDMATCH	0x2000000		// don't spawn in death match (key cards)
+#define MF_SKULLFLY		0x1000000		// skull in flight
+#define MF_NOTDMATCH	0x2000000		// don't spawn in death match (key cards)
 
 //#define MF_TRANSLATION 0xc000000		// if 0x4 0x8 or 0xc, use a translation
-#define	MF_TRANSLATION	0x1c000000		// use a translation table (>>MF_TRANSHIFT)
-#define	MF_TRANSSHIFT	26		// table for player colormaps
+#define MF_TRANSLATION	0x1c000000		// use a translation table (>>MF_TRANSHIFT)
+#define MF_TRANSSHIFT	26		// table for player colormaps
 
 
 // --- mobj.flags2 ---
@@ -544,10 +544,10 @@ struct player_t
 };
 
 #define CF_NOCLIP		1
-#define	CF_GODMODE		2
-#define	CF_NOMOMENTUM	4						// not really a cheat, just a debug aid
+#define CF_GODMODE		2
+#define CF_NOMOMENTUM	4						// not really a cheat, just a debug aid
 
-#define	SBARHEIGHT		(39 << crispy->hires)	// status bar height at bottom of screen
+#define SBARHEIGHT		(39 << crispy->hires)	// status bar height at bottom of screen
 
 void NET_SendFrags(player_t* player);
 

@@ -23,24 +23,17 @@
 #define inline __inline
 #endif
 
-typedef struct
-{
-	const char *name;
-	const uint8_t *data;
-	unsigned int w;
-	unsigned int h;
-} txt_font_t;
-
 // Fonts:
-
 #include "fonts/small.h"
 #include "fonts/normal.h"
 #include "fonts/large.h"
 #include "fonts/codepage.h"
 
 // Time between character blinks in ms
-
 #define BLINK_PERIOD 250
+
+namespace cudadoom::txt
+{
 
 SDL_Window *TXT_SDLWindow;
 static SDL_Surface *screenbuffer;
@@ -281,7 +274,7 @@ int TXT_Init()
 	SDL_SetPaletteColors(screenbuffer->format->palette, ega_colors, 0, 16);
 	SDL_UnlockSurface(screenbuffer);
 
-	screendata = malloc(TXT_SCREEN_W * TXT_SCREEN_H * 2);
+	screendata = static_cast<decltype(screendata)>(malloc(TXT_SCREEN_W * TXT_SCREEN_H * 2));
 	memset(screendata, 0, TXT_SCREEN_W * TXT_SCREEN_H * 2);
 
 	return 1;
@@ -353,11 +346,11 @@ static inline void UpdateCharacter(int x, int y)
 		{
 			if (*p & (1 << bit))
 			{
-				*s1++ = fg;
+				*(s1++) = fg;
 			}
 			else
 			{
-				*s1++ = bg;
+				*(s1++) = bg;
 			}
 
 			++bit;
@@ -968,3 +961,4 @@ int TXT_snprintf(char *buf, size_t buf_len, const char *s, ...)
 	return result;
 }
 
+} /* END NAMESPACE cudadoom::txt */

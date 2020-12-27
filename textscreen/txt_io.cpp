@@ -10,13 +10,16 @@
 // Text mode I/O functions, similar to C stdio
 \**********************************************************************************************************************************************/
 
-
 #include "txt_io.h"
 #include "txt_main.h"
 
-static int cur_x = 0, cur_y = 0;
-static txt_color_t fgcolor = TXT_COLOR_GREY;
-static txt_color_t bgcolor = TXT_COLOR_BLACK;
+namespace cudadoom::txt
+{
+
+static int cur_x = 0;
+static int cur_y = 0;
+static txt_color_t fgcolor = txt_color_t::TXT_COLOR_GREY;
+static txt_color_t bgcolor = txt_color_t::TXT_COLOR_BLACK;
 
 static void NewLine(unsigned char *screendata)
 {
@@ -41,8 +44,8 @@ static void NewLine(unsigned char *screendata)
 
 		for (i=0; i<TXT_SCREEN_W; ++i)
 		{
-			*p++ = ' ';
-			*p++ = fgcolor | (bgcolor << 4);
+			*(p++) = ' ';
+			*(p++) = fgcolor | (bgcolor << 4);
 		}
 	}
 }
@@ -131,20 +134,22 @@ void TXT_FGColor(txt_color_t color)
 	fgcolor = color;
 }
 
-void TXT_BGColor(int color, int blinking)
+void TXT_BGColor(txt_color_t color, bool blinking)
 {
 	bgcolor = color;
 	if (blinking)
-		bgcolor |= TXT_COLOR_BLINKING;
+	{
+		bgcolor |= txt_color_t::TXT_COLOR_BLINKING;
+	}
 }
 
-void TXT_SaveColors(txt_saved_colors_t *save)
+void TXT_SaveColors(txt_saved_colors_t* save)
 {
 	save->bgcolor = bgcolor;
 	save->fgcolor = fgcolor;
 }
 
-void TXT_RestoreColors(txt_saved_colors_t *save)
+void TXT_RestoreColors(txt_saved_colors_t* save)
 {
 	bgcolor = save->bgcolor;
 	fgcolor = save->fgcolor;
@@ -152,18 +157,17 @@ void TXT_RestoreColors(txt_saved_colors_t *save)
 
 void TXT_ClearScreen()
 {
-	unsigned char *screen;
-	int i;
+	auto screen{TXT_GetScreenData()};
 
-	screen = TXT_GetScreenData();
-
-	for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
+	for (size_t i{0}; i < TXT_SCREEN_W * TXT_SCREEN_H; ++i)
 	{
+		// TODO fix
 		screen[i * 2] = ' ';
-		screen[i * 2 + 1] = (bgcolor << 4) | fgcolor;
+		//screen[i * 2 + 1] = (bgcolor << 4) | fgcolor;
 	}
 
 	cur_x = 0;
 	cur_y = 0;
 }
 
+} /* END NAMESPACE cudadoom::txt */

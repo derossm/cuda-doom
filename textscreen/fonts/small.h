@@ -137,7 +137,7 @@ static const uint8_t small_font_data[] =
 	0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-static const txt_font_t small_font =
+static const cudadoom::txt::txt_font_t small_font =
 {
 	"small", small_font_data, 4, 8,
 };

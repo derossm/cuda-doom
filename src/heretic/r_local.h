@@ -19,32 +19,32 @@
 #include "i_video.h"
 #include "v_patch.h"
 
-#define	ANGLETOSKYSHIFT		22		// sky map is 256*128*4 maps
+#define ANGLETOSKYSHIFT		22		// sky map is 256*128*4 maps
 
-#define	BASEYCENTER			100
+#define BASEYCENTER			100
 
 //#define MAXWIDTH			1120
-//#define	MAXHEIGHT			832
+//#define MAXHEIGHT			832
 
-#define	PI					3.141592657
+#define PI					3.141592657
 
-#define	CENTERY				(SCREENHEIGHT/2)
+#define CENTERY				(SCREENHEIGHT/2)
 
-#define	MINZ			(FRACUNIT*4)
+#define MINZ			(FRACUNIT*4)
 
-#define	FIELDOFVIEW		2048	// fineangles in the SCREENWIDTH wide window
+#define FIELDOFVIEW		2048	// fineangles in the SCREENWIDTH wide window
 
 //
 // lighting constants
 //
-#define	LIGHTLEVELS			16
-#define	LIGHTSEGSHIFT		4
-#define	MAXLIGHTSCALE		48
-#define	LIGHTSCALESHIFT		12
-#define	MAXLIGHTZ			128
-#define	LIGHTZSHIFT			20
-#define	NUMCOLORMAPS		32		// number of diminishing
-#define	INVERSECOLORMAP		32
+#define LIGHTLEVELS			16
+#define LIGHTSEGSHIFT		4
+#define MAXLIGHTSCALE		48
+#define LIGHTSCALESHIFT		12
+#define MAXLIGHTZ			128
+#define LIGHTZSHIFT			20
+#define NUMCOLORMAPS		32		// number of diminishing
+#define INVERSECOLORMAP		32
 
 /*
 ==============================================================================
@@ -174,8 +174,8 @@ typedef struct
 
 typedef byte lighttable_t;		// this could be wider for >8 bit display
 
-#define	MAXVISPLANES	128
-#define	MAXOPENINGS		MAXWIDTH*64*4
+#define MAXVISPLANES	128
+#define MAXOPENINGS		MAXWIDTH*64*4
 
 typedef struct
 {
@@ -206,12 +206,12 @@ typedef struct drawseg_s
 	int *maskedtexturecol;		// [crispy] 32-bit integer math
 } drawseg_t;
 
-#define	SIL_NONE	0
-#define	SIL_BOTTOM	1
+#define SIL_NONE	0
+#define SIL_BOTTOM	1
 #define SIL_TOP		2
-#define	SIL_BOTH	3
+#define SIL_BOTH	3
 
-#define	MAXDRAWSEGS		256
+#define MAXDRAWSEGS		256
 
 // A vissprite_t is a thing that will be drawn during a refresh
 typedef struct vissprite_s
@@ -429,7 +429,7 @@ void R_PrecacheLevel();
 //
 // R_things.c
 //
-#define	MAXVISSPRITES	128
+#define MAXVISSPRITES	128
 
 extern vissprite_t *vissprites, *vissprite_p;
 extern vissprite_t vsprsortedhead;

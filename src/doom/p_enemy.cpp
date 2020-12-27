@@ -1342,7 +1342,7 @@ void A_VileAttack(mobj_t* actor)
 }
 
 // Mancubus attack, firing three missiles (bruisers) in three different directions? Doesn't look like it.
-#define	FATSPREAD	(ANG90/8)
+#define FATSPREAD	(ANG90/8)
 
 void A_FatRaise(mobj_t *actor)
 {
@@ -1415,7 +1415,7 @@ void A_FatAttack3(mobj_t*	actor)
 
 // SkullAttack
 // Fly at the player like a missile.
-#define	SKULLSPEED		(20*FRACUNIT)
+#define SKULLSPEED		(20*FRACUNIT)
 
 void A_SkullAttack(mobj_t* actor)
 {

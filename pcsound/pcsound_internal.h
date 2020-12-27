@@ -20,7 +20,6 @@
 
 typedef int (*pcsound_init_func)(pcsound_callback_func callback);
 typedef void (*pcsound_shutdown_func)();
-
 struct pcsound_driver_t
 {
 	const char* name;

@@ -58,7 +58,7 @@
 #define XHAIRCOLORS	GRAYS
 
 // drawing stuff
-#define	FB		0
+#define FB		0
 
 #define AM_NUMMARKPOINTS 10
 

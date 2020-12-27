@@ -57,12 +57,12 @@ enum class GameAction_t
 // Difficulty/skill settings/filters.
 
 // Skill flags.
-#define	MTF_EASY		1
-#define	MTF_NORMAL		2
-#define	MTF_HARD		4
+#define MTF_EASY		1
+#define MTF_NORMAL		2
+#define MTF_HARD		4
 
 // Deaf monsters/do not react to sound.
-#define	MTF_AMBUSH		8
+#define MTF_AMBUSH		8
 
 // Key cards.
 enum class CardType_t

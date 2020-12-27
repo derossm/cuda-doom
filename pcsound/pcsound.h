@@ -18,7 +18,7 @@ typedef void (*pcsound_callback_func)(int* duration, int* frequency);
 
 // Initialise the PC speaker subsystem. The given function is called
 // periodically to request more sound data to play.
-int PCSound_Init(pcsound_callback_func callback_func);
+bool PCSound_Init(pcsound_callback_func callback_func);
 
 // Shut down the PC speaker subsystem.
 void PCSound_Shutdown();

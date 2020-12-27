@@ -57,7 +57,7 @@
 
 static pcsound_callback_func callback;
 static int sound_server_pid;
-static int sleep_adjust = 0;
+static int sleep_adjust{0};
 static int sound_thread_running;
 static SDL_Thread *sound_thread_handle;
 static int sound_server_pipe[2];
@@ -73,7 +73,6 @@ static void AdjustedBeep(int speaker_handle, int ms, int freq)
 	tone_t tone;
 
 	// Adjust based on previous error to keep the tempo right
-
 	if (sleep_adjust > ms)
 	{
 		sleep_adjust -= ms;
@@ -85,14 +84,12 @@ static void AdjustedBeep(int speaker_handle, int ms, int freq)
 	}
 
 	// Invoke the system call and time how long it takes
-
 	start_time = SDL_GetTicks();
 
 	tone.duration = ms / 10;		// in 100ths of a second
 	tone.frequency = freq;
 
 	// Always a positive duration
-
 	if (tone.duration < 1)
 	{
 		tone.duration = 1;
@@ -121,7 +118,6 @@ static void AdjustedBeep(int speaker_handle, int ms, int freq)
 	}
 
 	// Save sleep_adjust for next time
-
 	sleep_adjust = actual_time - ms;
 }
 
@@ -131,7 +127,6 @@ static void SoundServer(int speaker_handle)
 	int result;
 
 	// Run in a loop, invoking the callback
-
 	for (;;)
 	{
 		result = read(sound_server_pipe[1], &tone, sizeof(tone_t));
@@ -143,37 +138,30 @@ static void SoundServer(int speaker_handle)
 		}
 
 		// Send back a response, so the main process knows to send another
-
 		write(sound_server_pipe[1], &tone, sizeof(tone_t));
 
 		// Beep! (blocks until complete)
-
 		AdjustedBeep(speaker_handle, tone.duration, tone.frequency);
 	}
 }
 
 // Start up the sound server. Returns non-zero if successful.
-
 static int StartSoundServer()
 {
 	int result;
 	int speaker_handle;
 
 	// Try to open the speaker device
-
 	speaker_handle = open(SPEAKER_DEVICE, O_WRONLY);
 
 	if (speaker_handle == -1)
 	{
 		// Don't have permissions for the console device?
-
-	fprintf(stderr, "StartSoundServer: Failed to open '%s': %s\n",
-						SPEAKER_DEVICE, strerror(errno));
+		fprintf(stderr, "StartSoundServer: Failed to open '%s': %s\n", SPEAKER_DEVICE, strerror(errno));
 		return 0;
 	}
 
 	// Create a pipe for communications
-
 	if (socketpair(AF_UNIX, SOCK_STREAM, 0, sound_server_pipe) < 0)
 	{
 		perror("socketpair");
@@ -181,10 +169,7 @@ static int StartSoundServer()
 		return 0;
 	}
 
-	// Start a separate process to generate PC speaker output
-	// We can't use the SDL threading functions because OpenBSD's
-	// threading sucks :-(
-
+	// Start a separate process to generate PC speaker output. We can't use the SDL threading functions because OpenBSD's threading sucks :-(
 	result = fork();
 
 	if (result < 0)
@@ -196,7 +181,6 @@ static int StartSoundServer()
 	else if (result == 0)
 	{
 		// This is the child (sound server)
-
 		SoundServer(speaker_handle);
 		close(speaker_handle);
 
@@ -205,7 +189,6 @@ static int StartSoundServer()
 	else
 	{
 		// This is the parent
-
 		sound_server_pid = result;
 		close(speaker_handle);
 	}
@@ -230,13 +213,11 @@ static int SoundThread(void *unused)
 	while (sound_thread_running)
 	{
 		// Get the next frequency to play
-
 		callback(&duration, &frequency);
 
-//printf("dur: %i, freq: %i\n", duration, frequency);
+		//printf("dur: %i, freq: %i\n", duration, frequency);
 
 		// Build up a tone structure and send to the sound server
-
 		tone.frequency = frequency;
 		tone.duration = duration;
 
@@ -247,7 +228,6 @@ static int SoundThread(void *unused)
 		}
 
 		// Wait until the sound server responds before sending another
-
 		if (read(sound_server_pipe[0], &tone, sizeof(tone_t)) < 0)
 		{
 			perror("read");
@@ -269,8 +249,7 @@ static int PCSound_BSD_Init(pcsound_callback_func callback_func)
 	}
 
 	sound_thread_running = 1;
-	sound_thread_handle =
-		SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
+	sound_thread_handle = SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
 
 	return 1;
 }
@@ -278,13 +257,11 @@ static int PCSound_BSD_Init(pcsound_callback_func callback_func)
 static void PCSound_BSD_Shutdown()
 {
 	// Stop the sound thread
-
 	sound_thread_running = 0;
 
 	SDL_WaitThread(sound_thread_handle, NULL);
 
 	// Stop the sound server
-
 	StopSoundServer();
 }
 

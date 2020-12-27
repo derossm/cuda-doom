@@ -492,9 +492,9 @@ void ST_refreshBackground(bool force)
 			for (x = 0; x < SCREENWIDTH; x++)
 			{
 #ifndef CRISPY_TRUECOLOR
-				*dest++ = src[((y&63)<<6) + (x&63)];
+				*(dest++) = src[((y&63)<<6) + (x&63)];
 #else
-				*dest++ = colormaps[src[((y&63)<<6) + (x&63)]];
+				*(dest++) = colormaps[src[((y&63)<<6) + (x&63)]];
 #endif
 			}
 		}

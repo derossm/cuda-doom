@@ -14,7 +14,17 @@
 
 #include "../derma/common.h"
 
-typedef void (*opl_callback_t)(void* data);
+#include <SDL_mutex.h>
+
+struct delay_data_t
+{
+	bool finished;
+
+	SDL_mutex* mutex;
+	SDL_cond* cond;
+};
+
+typedef void (*opl_callback_t)(delay_data_t* data);
 
 // Result from OPL_Init(), indicating what type of OPL chip was detected, if any.
 enum class opl_init_result_t
@@ -54,17 +64,13 @@ enum class opl_port_t
 #define OPL_REGS_FEEDBACK		0xC0
 
 // Times
-#define OPL_SECOND	((uint64_t) 1000 * 1000)
-#define OPL_MS		((uint64_t) 1000)
-#define OPL_US		((uint64_t) 1)
+//#define OPL_SECOND	((uint64_t) 1000 * 1000)
+//#define OPL_MS		((uint64_t) 1000)
+//#define OPL_US		((uint64_t) 1)
 
-struct delay_data_t
-{
-	int finished;
-
-	SDL_mutex *mutex;
-	SDL_cond *cond;
-};
+constexpr uint64_t OPL_SECOND{	1'000'000};
+constexpr uint64_t OPL_MS{		1'000};
+constexpr uint64_t OPL_US{		1};
 
 // ======================================== //
 // Low-level functions.
@@ -105,12 +111,10 @@ void OPL_InitRegisters(int opl3);
 // Timer callback functions.
 // ======================================== //
 
-// Set a timer callback. After the specified number of microseconds
-// have elapsed, the callback will be invoked.
-void OPL_SetCallback(uint64_t us, opl_callback_t callback, void* data);
+// Set a timer callback. After the specified number of microseconds have elapsed, the callback will be invoked.
+void OPL_SetCallback(uint64_t us, opl_callback_t callback, delay_data_t* data);
 
-// Adjust callback times by the specified factor. For example, a value of
-// 0.5 will halve all remaining times.
+// Adjust callback times by the specified factor. For example, a value of 0.5 will halve all remaining times.
 void OPL_AdjustCallbacks(float factor);
 
 // Clear all OPL callbacks that have been set.

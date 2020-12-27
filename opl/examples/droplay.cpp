@@ -8,8 +8,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		Demonstration program for OPL library to play back DRO
-//		format files.
+		Demonstration program for OPL library to play back DRO format files.
 \**********************************************************************************************************************************************/
 
 
@@ -25,10 +24,8 @@ void WriteReg(unsigned int reg, unsigned int val)
 {
 	int i;
 
-	// This was recorded from an OPL2, but we are probably playing
-	// back on an OPL3, so we need to enable the original OPL2
-	// channels. Doom does this already, but other games don't.
-
+	// This was recorded from an OPL2, but we are probably playing back on an OPL3, so we need to enable the original OPL2 channels.
+	// Doom does this already, but other games don't.
 	if ((reg & 0xf0) == OPL_REGS_FEEDBACK)
 	{
 		val |= 0x30;

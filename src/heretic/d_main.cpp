@@ -592,14 +592,14 @@ void hprintf(const char *string)
 {
 	if (using_graphical_startup)
 	{
-		TXT_BGColor(TXT_COLOR_CYAN, 0);
-		TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+		cudadoom::txt::TXT_BGColor(cudadoom::txt::txt_color_t::TXT_COLOR_CYAN, false);
+		cudadoom::txt::TXT_FGColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 
-		TXT_GotoXY(STARTUP_WINDOW_X, startup_line);
+		cudadoom::txt::TXT_GotoXY(STARTUP_WINDOW_X, startup_line);
 		++startup_line;
-		TXT_Puts(string);
+		cudadoom::txt::TXT_Puts(string);
 
-		TXT_UpdateScreen();
+		cudadoom::txt::TXT_UpdateScreen();
 	}
 
 	// haleyjd: shouldn't be WATCOMC-only
@@ -611,13 +611,13 @@ void drawstatus()
 {
 	int i;
 
-	TXT_GotoXY(1, 24);
-	TXT_BGColor(TXT_COLOR_BLUE, 0);
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+	cudadoom::txt::TXT_GotoXY(1, 24);
+	cudadoom::txt::TXT_BGColor(cudadoom::txt::txt_color_t::TXT_COLOR_BLUE, false);
+	cudadoom::txt::TXT_FGColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 
 	for (i=0; smsg[i] != '\0'; ++i)
 	{
-		TXT_PutChar(smsg[i]);
+		cudadoom::txt::TXT_PutChar(smsg[i]);
 	}
 }
 
@@ -652,17 +652,17 @@ void DrawThermo()
 
 	last_progress = progress;
 
-	TXT_GotoXY(THERM_X, THERM_Y);
+	cudadoom::txt::TXT_GotoXY(THERM_X, THERM_Y);
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_GREEN);
-	TXT_BGColor(TXT_COLOR_GREEN, 0);
+	cudadoom::txt::TXT_FGColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_GREEN);
+	cudadoom::txt::TXT_BGColor(cudadoom::txt::txt_color_t::TXT_COLOR_GREEN, false);
 
 	for (i = 0; i < progress; i++)
 	{
-		TXT_PutChar(0xdb);
+		cudadoom::txt::TXT_PutChar(0xdb);
 	}
 
-	TXT_UpdateScreen();
+	cudadoom::txt::TXT_UpdateScreen();
 }
 
 void initStartup()
@@ -676,7 +676,7 @@ void initStartup()
 		return;
 	}
 
-	if (!TXT_Init())
+	if (!cudadoom::txt::TXT_Init())
 	{
 		using_graphical_startup = false;
 		return;
@@ -686,18 +686,18 @@ void initStartup()
 	I_InitWindowIcon();
 
 	// Blit main screen
-	textScreen = TXT_GetScreenData();
+	textScreen = cudadoom::txt::TXT_GetScreenData();
 	loading = W_CacheLumpName(DEH_String("LOADING"), pu_tags_t::PU_CACHE);
 	memcpy(textScreen, loading, 4000);
 
 	// Print version string
 
-	TXT_BGColor(TXT_COLOR_RED, 0);
-	TXT_FGColor(TXT_COLOR_YELLOW);
-	TXT_GotoXY(46, 2);
-	TXT_Puts(HERETIC_VERSION_TEXT);
+	cudadoom::txt::TXT_BGColor(cudadoom::txt::txt_color_t::TXT_COLOR_RED, false);
+	cudadoom::txt::TXT_FGColor(cudadoom::txt::txt_color_t::TXT_COLOR_YELLOW);
+	cudadoom::txt::TXT_GotoXY(46, 2);
+	cudadoom::txt::TXT_Puts(HERETIC_VERSION_TEXT);
 
-	TXT_UpdateScreen();
+	cudadoom::txt::TXT_UpdateScreen();
 
 	using_graphical_startup = true;
 }
@@ -706,7 +706,7 @@ static void finishStartup()
 {
 	if (using_graphical_startup)
 	{
-		TXT_Shutdown();
+		cudadoom::txt::TXT_Shutdown();
 	}
 }
 
@@ -730,7 +730,7 @@ void CheckAbortStartup()
 	// get input before SDL video init?
 	if(using_graphical_startup)
 	{
-		if(TXT_GetChar() == 27)
+		if(cudadoom::txt::TXT_GetChar() == 27)
 			CleanExit();
 	}
 }

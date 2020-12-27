@@ -220,7 +220,8 @@ static format_arg_t NextFormatArgument(const char** str)
 	{
 		if (**str == '%')
 		{
-			++*str;
+			//++*str;
+			++(*str);
 
 			// Don't stop for double-%s.
 			if (**str != '%')
@@ -229,7 +230,8 @@ static format_arg_t NextFormatArgument(const char** str)
 			}
 		}
 
-		++*str;
+		//++*str;
+		++(*str);
 	}
 
 	// Find the type of the format string.
@@ -239,16 +241,18 @@ static format_arg_t NextFormatArgument(const char** str)
 
 		if (argtype != format_arg_t::FORMAT_ARG_INVALID)
 		{
-			++*str;
+			//++*str;
+			++(*str);
 
 			return argtype;
 		}
 
-		++*str;
+		//++*str;
+		++(*str);
 	}
 
 	// Stop searching, we have reached the end.
-	*str = NULL;
+	*str = nullptr;
 
 	return format_arg_t::FORMAT_ARG_INVALID;
 }
@@ -277,19 +281,14 @@ static bool ValidArgumentReplacement(format_arg_t original, format_arg_t replace
 // Return true if the specified string contains no format arguments.
 static bool ValidFormatReplacement(const char* original, const char* replacement)
 {
-	const char* rover1;
-	const char* rover2;
-	int argtype1;
-	int argtype2;
-
 	// Check each argument in turn and compare types.
-	rover1 = original;
-	rover2 = replacement;
+	auto rover1 = original;
+	auto rover2 = replacement;
 
 	for (;;)
 	{
-		argtype1 = NextFormatArgument(&rover1);
-		argtype2 = NextFormatArgument(&rover2);
+		auto argtype1 = NextFormatArgument(&rover1);
+		auto argtype2 = NextFormatArgument(&rover2);
 
 		if (argtype2 == format_arg_t::FORMAT_ARG_INVALID)
 		{
@@ -312,11 +311,9 @@ static bool ValidFormatReplacement(const char* original, const char* replacement
 }
 
 // Get replacement format string, checking arguments.
-static const char *FormatStringReplacement(const char* s)
+static const char* FormatStringReplacement(const char* s)
 {
-	const char* repl;
-
-	repl = DEH_String(s);
+	auto repl = DEH_String(s);
 
 	if (!ValidFormatReplacement(s, repl))
 	{

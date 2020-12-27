@@ -256,7 +256,7 @@ std::unique_ptr<const char*> M_FileCaseExists(const char* path)
 	}
 
 	// 1: lowercase filename, e.g. doom2.wad
-	M_ForceLowercase(filename);
+	//M_ForceLowercase(filename);
 
 	if (M_FileExists(*path_dup))
 	{
@@ -264,7 +264,7 @@ std::unique_ptr<const char*> M_FileCaseExists(const char* path)
 	}
 
 	// 2: uppercase filename, e.g. DOOM2.WAD
-	M_ForceUppercase(filename);
+	//M_ForceUppercase(filename);
 
 	if (M_FileExists(*path_dup))
 	{
@@ -275,7 +275,7 @@ std::unique_ptr<const char*> M_FileCaseExists(const char* path)
 	auto ext = strrchr(*path_dup, '.');
 	if (ext != NULL && ext > filename)
 	{
-		M_ForceLowercase(ext + 1);
+		//M_ForceLowercase(ext + 1);
 
 		if (M_FileExists(*path_dup))
 		{
@@ -286,7 +286,7 @@ std::unique_ptr<const char*> M_FileCaseExists(const char* path)
 	// 4. lowercase filename with uppercase first letter, e.g. Doom2.wad
 	if (strlen(filename) > 1)
 	{
-		M_ForceLowercase(filename + 1);
+		//M_ForceLowercase(filename + 1);
 
 		if (M_FileExists(*path_dup))
 		{
@@ -334,7 +334,7 @@ std::unique_ptr<const char*> M_DirName(const char* path)
 	else
 	{
 		auto result = M_StringDuplicate(path);
-		(*result)[p - path] = '\0';
+		(result.get())[p - path] = '\0';
 		return result;
 	}
 }
@@ -457,10 +457,10 @@ std::unique_ptr<const char*> M_OEMToUTF8(const char* oem)
 
 	auto len{size + 1};
 
-	//wchar_t* tmp = malloc(len * sizeof(wchar_t));
+	//wchar_t* tmp = static_cast<decltype(tmp)>(malloc(len * sizeof(wchar_t)));
 	auto tmp{std::make_unique<wchar_t*>(len)};
 	MultiByteToWideChar(CP_OEMCP, 0, oem, len, *tmp, len);
-	//char* result = malloc(len * 4);
+	//char* result = static_cast<decltype(result)>(malloc(len * 4));
 	auto result{std::make_unique<char*>(len)};
 	WideCharToMultiByte(CP_UTF8, 0, *tmp, len, *result, len * 4, NULL, NULL);
 
@@ -511,7 +511,7 @@ void M_ExtractFileBase(const char* path, char* dest)
 			break;
 		}
 
-		dest[length++] = toupper((int)*src++);
+		dest[length++] = toupper((int)*(src++));
 	}
 }
 
@@ -583,9 +583,9 @@ void M_NormalizeSlashes(char* str)
 	}
 
 	// Collapse multiple slashes
-	for (auto p{str}; *str++ = *p; )
+	for (auto p{str}; *(str++) = *p; )
 	{
-		if (*p++ == DIR_SEPARATOR)
+		if (*(p++) == DIR_SEPARATOR)
 		{
 			while (*p == DIR_SEPARATOR)
 			{

@@ -36,7 +36,7 @@
 GameMission_t gamemission;
 static const iwad_t **iwads;
 
-typedef struct
+struct mission_config_t
 {
 	const char *label;
 	GameMission_t mission;
@@ -45,7 +45,7 @@ typedef struct
 	const char *config_file;
 	const char *extra_config_file;
 	const char *executable;
-} mission_config_t;
+};
 
 // Default mission to fall back on, if no IWADs are found at all:
 
@@ -259,9 +259,9 @@ static bool CheckExecutableName(GameSelectCallback callback)
 	return false;
 }
 
-static void GameSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(config))
+static void GameSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(config))
 {
-	TXT_CAST_ARG(mission_config_t, config);
+	cudadoom::txt::TXT_CAST_ARG(mission_config_t, config);
 
 	SetMission(config);
 	game_selected_callback();
@@ -270,14 +270,14 @@ static void GameSelected(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(config))
 static void OpenGameSelectDialog(GameSelectCallback callback)
 {
 	mission_config_t *mission = NULL;
-	txt_window_t *window;
+	cudadoom::txt::txt_window_t *window;
 	const iwad_t **iwads;
 	int num_games;
 	int i;
 
-	window = TXT_NewWindow("Select game");
+	window = cudadoom::txt::TXT_NewWindow("Select game");
 
-	TXT_AddWidget(window, TXT_NewLabel("Select a game to configure:\n"));
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel("Select a game to configure:\n"));
 	num_games = 0;
 
 	// Add a button for each game.
@@ -292,7 +292,7 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 		if (iwads[0] != NULL)
 		{
 			mission = &mission_configs[i];
-			TXT_AddWidget(window, TXT_NewButton2(mission_configs[i].label,
+			cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewButton2(mission_configs[i].label,
 													GameSelected,
 													&mission_configs[i]));
 			++num_games;
@@ -301,13 +301,13 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 		free(iwads);
 	}
 
-	TXT_AddWidget(window, TXT_NewStrut(0, 1));
+	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewStrut(0, 1));
 
 	// No IWADs found at all? Fall back to doom, then.
 
 	if (num_games == 0)
 	{
-		TXT_CloseWindow(window);
+		cudadoom::txt::TXT_CloseWindow(window);
 		SetMission(DEFAULT_MISSION);
 		callback();
 		return;
@@ -317,7 +317,7 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 
 	if (num_games == 1)
 	{
-		TXT_CloseWindow(window);
+		cudadoom::txt::TXT_CloseWindow(window);
 		SetMission(mission);
 		callback();
 		return;

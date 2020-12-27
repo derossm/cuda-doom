@@ -11,15 +11,10 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_TABLE_H
-#define TXT_TABLE_H
+#include "txt_widget.h"
 
-/**
- * @file txt_table.h
- *
- * Table widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * Magic value that if used in a table, will indicate that the cell is
  * empty and the widget in the cell to the left can overflow into it.
@@ -58,17 +53,13 @@
  * widgets to place inside a horizontal list. A vertical list is
  * possible simply by creating a table containing a single column.
  */
-typedef struct txt_table_s txt_table_t;
-
-#include "txt_widget.h"
-
-struct txt_table_s
+struct txt_table_t
 {
-	txt_widget_t widget;
+	Widget widget;
 
 	// Widgets in this table
 	// The widget at (x,y) in the table is widgets[columns * y + x]
-	txt_widget_t** widgets;
+	Widget** widgets;
 	int num_widgets;
 
 	// Number of columns
@@ -79,11 +70,11 @@ struct txt_table_s
 	int selected_y;
 };
 
-extern txt_widget_class_t txt_table_class;
-extern txt_widget_t txt_table_overflow_right;
-extern txt_widget_t txt_table_overflow_down;
-extern txt_widget_t txt_table_eol;
-extern txt_widget_t txt_table_empty;
+extern WidgetClass txt_table_class;
+extern Widget txt_table_overflow_right;
+extern Widget txt_table_overflow_down;
+extern Widget txt_table_eol;
+extern Widget txt_table_empty;
 
 void TXT_InitTable(txt_table_t* table, int columns);
 
@@ -126,7 +117,7 @@ txt_table_t* TXT_NewHorizBox(TXT_UNCAST_ARG(first_widget), ...);
  * @param table		The table.
  * @return				Pointer to the widget that is currently selected.
  */
-txt_widget_t* TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
+Widget* TXT_GetSelectedWidget(TXT_UNCAST_ARG(table));
 
 /**
  * Add a widget to a table.
@@ -225,4 +216,4 @@ void TXT_ClearTable(TXT_UNCAST_ARG(table));
  */
 int TXT_PageTable(TXT_UNCAST_ARG(table), int pagex, int pagey);
 
-#endif /* #ifndef TXT_TABLE_T */
+} /* END NAMESPACE cudadoom::txt */

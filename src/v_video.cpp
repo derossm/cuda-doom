@@ -763,7 +763,7 @@ void V_DrawFilledBox(int x, int y, int w, int h, int c)
 
 		for (x1 = 0; x1 < w; ++x1)
 		{
-			*buf1++ = c;
+			*(buf1++) = c;
 		}
 
 		buf += SCREENWIDTH;
@@ -783,7 +783,7 @@ void V_DrawHorizLine(int x, int y, int w, int c)
 
 	for (x1 = 0; x1 < w; ++x1)
 	{
-		*buf++ = c;
+		*(buf++) = c;
 	}
 }
 
@@ -943,18 +943,18 @@ void WritePCXfile(char *filename, pixel_t *data,
 	for (i=0 ; i<width*height ; i++)
 	{
 	if ( (*data & 0xc0) != 0xc0)
-		*pack++ = *data++;
+		*(pack++) = *(data++);
 	else
 	{
-		*pack++ = 0xc1;
-		*pack++ = *data++;
+		*(pack++) = 0xc1;
+		*(pack++) = *(data++);
 	}
 	}
 
 	// write the palette
-	*pack++ = 0x0c;	// palette ID byte
+	*(pack++) = 0x0c;	// palette ID byte
 	for (i=0 ; i<768 ; i++)
-	*pack++ = *palette++;
+	*(pack++) = *(palette++);
 
 	// write output file
 	length = pack - (byte *)pcx;
@@ -978,20 +978,18 @@ static void warning_fn(png_structp p, png_const_charp s)
 	printf("libpng warning: %s\n", s);
 }
 
-void WritePNGfile(char *filename, pixel_t *data,
-					int width, int height,
-					byte *palette)
+void WritePNGfile(char *filename, pixel_t *data, int width, int height, byte *palette)
 {
 	png_structp ppng;
 	png_infop pinfo;
 // png_colorp pcolor;
 	FILE *handle;
-	int i, j;
+	int i;
+	int j;
 // int w_factor, h_factor;
 	byte *rowbuf;
 
 	extern void I_RenderReadPixels(byte **data, int *w, int *h, int *p);
-
 /*
 	if (aspect_ratio_correct == 1)
 	{
@@ -1008,15 +1006,13 @@ void WritePNGfile(char *filename, pixel_t *data,
 		h_factor = 1;
 	}
 */
-
 	handle = fopen(filename, "wb");
 	if (!handle)
 	{
 		return;
 	}
 
-	ppng = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL,
-									error_fn, warning_fn);
+	ppng = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, error_fn, warning_fn);
 	if (!ppng)
 	{
 		fclose(handle);
@@ -1044,11 +1040,9 @@ void WritePNGfile(char *filename, pixel_t *data,
 #endif
 					PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 /*
-	png_set_IHDR(ppng, pinfo, width, height,
-					8, PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE,
-					PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+	png_set_IHDR(ppng, pinfo, width, height, 8, PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 
-	pcolor = malloc(sizeof(*pcolor) * 256);
+	pcolor = static_cast<decltype(pcolor)>(malloc(sizeof(*pcolor) * 256));
 	if (!pcolor)
 	{
 		fclose(handle);
@@ -1066,11 +1060,9 @@ void WritePNGfile(char *filename, pixel_t *data,
 	png_set_PLTE(ppng, pinfo, pcolor, 256);
 	free(pcolor);
 */
-
 	png_write_info(ppng, pinfo);
-
 /*
-	rowbuf = malloc(width);
+	rowbuf = static_cast<decltype(rowbuf)>(malloc(width));
 
 	if (rowbuf)
 	{
@@ -1092,7 +1084,6 @@ void WritePNGfile(char *filename, pixel_t *data,
 		free(rowbuf);
 	}
 */
-
 	for (i = 0; i < height; i++)
 	{
 		png_write_row(ppng, rowbuf);

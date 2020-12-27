@@ -770,7 +770,7 @@ static const char *ReadHashPrefix(char *line)
 		return NULL;
 	}
 
-	result = malloc(len + 1);
+	result = static_cast<decltype(result)>(malloc(len + 1));
 	if (result == NULL)
 	{
 		return NULL;

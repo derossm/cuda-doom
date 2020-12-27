@@ -289,15 +289,15 @@ static Menu_t *Menus[] = {
 
 // [crispy] intermediate gamma levels
 static const char *GammaText[] = {
-	TXT_GAMMA_LEVEL_OFF,
-	TXT_GAMMA_LEVEL_05,
-	TXT_GAMMA_LEVEL_1,
-	TXT_GAMMA_LEVEL_15,
-	TXT_GAMMA_LEVEL_2,
-	TXT_GAMMA_LEVEL_25,
-	TXT_GAMMA_LEVEL_3,
-	TXT_GAMMA_LEVEL_35,
-	TXT_GAMMA_LEVEL_4
+	cudadoom::txt::TXT_GAMMA_LEVEL_OFF,
+	cudadoom::txt::TXT_GAMMA_LEVEL_05,
+	cudadoom::txt::TXT_GAMMA_LEVEL_1,
+	cudadoom::txt::TXT_GAMMA_LEVEL_15,
+	cudadoom::txt::TXT_GAMMA_LEVEL_2,
+	cudadoom::txt::TXT_GAMMA_LEVEL_25,
+	cudadoom::txt::TXT_GAMMA_LEVEL_3,
+	cudadoom::txt::TXT_GAMMA_LEVEL_35,
+	cudadoom::txt::TXT_GAMMA_LEVEL_4
 };
 
 void MN_Init()
@@ -321,7 +321,7 @@ void MN_DrTextA(const char *text, int x, int y)
 	char c;
 	patch_t *p;
 
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -341,7 +341,7 @@ void MN_DrTextAYellow(const char *text, int x, int y)
 	char c;
 	patch_t *p;
 
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -364,7 +364,7 @@ int MN_TextAWidth(const char *text)
 	patch_t *p;
 
 	width = 0;
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -385,7 +385,7 @@ void MN_DrTextB(const char *text, int x, int y)
 	char c;
 	patch_t *p;
 
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -408,7 +408,7 @@ int MN_TextBWidth(const char *text)
 	patch_t *p;
 
 	width = 0;
-	while ((c = *text++) != 0)
+	while ((c = *(text++)) != 0)
 	{
 		if (c < 33)
 		{
@@ -1289,7 +1289,7 @@ bool MN_Responder(event_t * event)
 				nomonsters = true;
 			}
 			G_DeferedInitNew(gameskill, gameepisode, gamemap);
-			P_SetMessage(&players[consoleplayer], TXT_CHEATWARP, false);
+			P_SetMessage(&players[consoleplayer], cudadoom::txt::TXT_CHEATWARP, false);
 			return true;
 		}
 	}
@@ -1465,7 +1465,7 @@ bool MN_Responder(event_t * event)
 		{
 			if (isalpha(charTyped))
 			{
-				*textBuffer++ = toupper(charTyped);
+				*(textBuffer++) = toupper(charTyped);
 				*textBuffer = ASCII_CURSOR;
 				slotptr++;
 				return (true);
@@ -1474,7 +1474,7 @@ bool MN_Responder(event_t * event)
 				|| charTyped == ',' || charTyped == '.' || charTyped == '-'
 				|| charTyped == '!')
 			{
-				*textBuffer++ = charTyped;
+				*(textBuffer++) = charTyped;
 				*textBuffer = ASCII_CURSOR;
 				slotptr++;
 				return (true);

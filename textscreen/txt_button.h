@@ -11,28 +11,19 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_BUTTON_H
-#define TXT_BUTTON_H
+#include "txt_widget.h"
 
-/**
- * @file txt_button.h
- *
- * Button widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * Button widget.
  *
  * A button is a widget that can be selected to perform some action.
  * When a button is pressed, it emits the "pressed" signal.
  */
-typedef struct txt_button_s txt_button_t;
-
-#include "txt_widget.h"
-
-struct txt_button_s
+struct txt_button_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	char* label;
 };
 
@@ -53,7 +44,7 @@ txt_button_t* TXT_NewButton(const char* label);
  * @param user_data	User-specified pointer to pass to the callback.
  * @return			Pointer to the new button widget.
  */
-txt_button_t* TXT_NewButton2(const char* label, TxtWidgetSignalFunc func, void* user_data);
+txt_button_t* TXT_NewButton2(const char* label, WidgetSignalFunc func, void* user_data);
 
 /**
  * Change the label used on a button.
@@ -63,4 +54,4 @@ txt_button_t* TXT_NewButton2(const char* label, TxtWidgetSignalFunc func, void* 
  */
 void TXT_SetButtonLabel(txt_button_t* button, const char* label);
 
-#endif /* #ifndef TXT_BUTTON_H */
+} /* END NAMESPACE cudadoom::txt */

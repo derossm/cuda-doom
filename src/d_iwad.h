@@ -35,7 +35,7 @@ struct iwad_t
 	const char* description;
 };
 
-bool D_IsIWADName(const char* name);
+auto D_IsIWADName(const char* name);
 auto D_FindWADByName(const char* filename);
 auto D_TryFindWADByName(const char* filename);
 auto D_FindIWAD(int mask, GameMission_t* mission);

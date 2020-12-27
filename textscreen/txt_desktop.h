@@ -11,15 +11,10 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_DESKTOP_H
-#define TXT_DESKTOP_H
-
-/**
- * @file txt_desktop.h
- *
- * Textscreen desktop.
- */
 #include "txt_window.h"
+
+namespace cudadoom::txt
+{
 
 typedef void (*TxtIdleCallback)(void* user_data);
 
@@ -93,4 +88,4 @@ int TXT_RaiseWindow(txt_window_t* window);
  */
 int TXT_LowerWindow(txt_window_t* window);
 
-#endif /* #ifndef TXT_DESKTOP_H */
+} /* END NAMESPACE cudadoom::txt */

@@ -53,21 +53,20 @@ auto D_IsIWADName(const char* name)
 	return false;
 }
 
-// Array of locations to search for IWAD files
-// "128 IWAD search directories should be enough for anybody".
-constexpr size_t MAX_IWAD_DIRS{128};
+// Array of locations to search for IWAD files; "128 IWAD search directories should be enough for anybody".
+//constexpr size_t MAX_IWAD_DIRS{128};
 
 static bool iwad_dirs_built{false};
-static const char* iwad_dirs[MAX_IWAD_DIRS];
-static int num_iwad_dirs{0};
+std::vector<std::unique_ptr<const char*>> iwad_dirs;
+//static int num_iwad_dirs{0};
 
-static void AddIWADDir(const char* dir)
+void AddIWADDir(std::unique_ptr<const char*>&& directory)
 {
-	if (num_iwad_dirs < MAX_IWAD_DIRS)
-	{
-		iwad_dirs[num_iwad_dirs] = dir;
-		++num_iwad_dirs;
-	}
+	//if (num_iwad_dirs < MAX_IWAD_DIRS)
+	//{
+		iwad_dirs.push_back(directory);
+		//++num_iwad_dirs;
+	//}
 }
 
 // This is Windows-specific code that automatically finds the location
@@ -214,7 +213,7 @@ auto GetRegistryString(registry_value_t* reg_val)
 	// RegOpenKeyEx(HKEY, LPCSTR, DWORD, REGSAM, PHKEY)
 	if (RegOpenKeyEx(reg_val->root, reg_val->path, 0u, KEY_READ, &key) != ERROR_SUCCESS)
 	{
-		return nullptr;
+		return std::unique_ptr<const char*>(nullptr);
 	}
 
 	std::unique_ptr<const char*> result{nullptr};
@@ -252,7 +251,7 @@ void CheckUninstallStrings()
 	{
 		auto val{GetRegistryString(&uninstall_values[i])};
 
-		if (val == nullptr || *val == NULL)
+		if (val == nullptr || *val == '\0')
 		{
 			continue;
 		}
@@ -267,7 +266,7 @@ void CheckUninstallStrings()
 		{
 			auto path{unstr + strlen(UNINSTALLER_STRING)};
 
-			AddIWADDir(path);
+			AddIWADDir(std::make_unique<const char*>(path));
 		}
 	}
 }
@@ -287,7 +286,7 @@ void CheckInstallRootPaths()
 		for (size_t j{0}; j < arrlen(root_path_subdirs); ++j)
 		{
 			auto subpath{M_StringJoin(*install_path, DIR_SEPARATOR_S, root_path_subdirs[j])};
-			AddIWADDir(*subpath);
+			AddIWADDir(std::move(subpath));
 		}
 	}
 }
@@ -306,7 +305,7 @@ void CheckSteamEdition()
 	{
 		auto subpath{M_StringJoin(*install_path, DIR_SEPARATOR_S, steam_install_subdirs[i])};
 
-		AddIWADDir(*subpath);
+		AddIWADDir(std::move(subpath));
 	}
 }
 
@@ -366,24 +365,24 @@ auto DirIsFile(const char* path, const char* filename)
 }
 
 // Check if the specified directory contains the specified IWAD file, returning the full path to the IWAD if found, or NULL if not found.
-auto CheckDirectoryHasIWAD(const char* dir, const char* iwadname)
+auto CheckDirectoryHasIWAD(const char* directory, const char* iwadname)
 {
 	// As a special case, the "directory" may refer directly to an IWAD file if the path comes from DOOMWADDIR or DOOMWADPATH.
-	auto probe{M_FileCaseExists(dir)};
-	if (DirIsFile(dir, iwadname) && probe != nullptr)
+	auto probe{M_FileCaseExists(directory)};
+	if (DirIsFile(directory, iwadname) && probe != nullptr)
 	{
 		return probe;
 	}
 
 	// Construct the full path to the IWAD if it is located in this directory, and check if it exists.
 	auto filename{[&](){
-		if (!strcmp(dir, "."))
+		if (!strcmp(directory, "."))
 		{
 			return M_StringDuplicate(iwadname);
 		}
 		else
 		{
-			return M_StringJoin(dir, DIR_SEPARATOR_S, iwadname);
+			return M_StringJoin(directory, DIR_SEPARATOR_S, iwadname);
 		}
 	}()};
 
@@ -395,11 +394,11 @@ auto CheckDirectoryHasIWAD(const char* dir, const char* iwadname)
 		return probe;
 	}
 
-	return nullptr;
+	return std::unique_ptr<const char*>(nullptr);
 }
 
 // Search a directory to try to find an IWAD; returns the location of the IWAD if found, otherwise nullptr
-auto SearchDirectoryForIWAD(const char* dir, int mask, GameMission_t* mission)
+auto SearchDirectoryForIWAD(const char* directory, int mask, GameMission_t* mission)
 {
 	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
@@ -408,7 +407,7 @@ auto SearchDirectoryForIWAD(const char* dir, int mask, GameMission_t* mission)
 			continue;
 		}
 
-		auto filename{CheckDirectoryHasIWAD(dir, DEH_String(iwads[i].name))};
+		auto filename{CheckDirectoryHasIWAD(directory, DEH_String(iwads[i].name))};
 
 		if (filename != nullptr)
 		{
@@ -462,11 +461,10 @@ void AddIWADPath(const char* path, const char* suffix)
 		auto p{strchr(left, PATH_SEPARATOR)};
 		if (p != nullptr)
 		{
-			// Break at the separator and use the left hand side as another iwad dir
+			// Break at the separator and use the left hand side as another iwad directory
 			// TODO what is this trying to do? modify a const char* for what purpose? INVESTIGATE
-			*p = '\0';
-
-			AddIWADDir(*M_StringJoin(left, suffix));
+			//*p = '\0';
+			AddIWADDir(M_StringJoin(left, suffix));
 			left = p + 1;
 		}
 		else
@@ -475,7 +473,7 @@ void AddIWADPath(const char* path, const char* suffix)
 		}
 	}
 
-	AddIWADDir(*M_StringJoin(left, suffix));
+	AddIWADDir(M_StringJoin(left, suffix));
 }
 
 #ifndef _WIN32
@@ -504,7 +502,7 @@ void AddXdgDirs()
 
 	// We support $XDG_DATA_HOME/games/doom (which will usually be ~/.local/share/games/doom)
 	// as a user-writeable extension to the usual /usr/share/games/doom location.
-	AddIWADDir(*M_StringJoin(*env, "/games/doom"));
+	AddIWADDir(M_StringJoin(*env, "/games/doom"));
 
 	// $XDG_DATA_DIRS defines the preference-ordered set of base directories to search for data files, in addition to the $XDG_DATA_HOME base directory.
 	// The directories in $XDG_DATA_DIRS should be seperated with a colon ':'.
@@ -562,7 +560,7 @@ void BuildIWADDirList()
 	AddIWADDir(".");
 
 	// Next check the directory where the executable is located. This might be different from the current directory.
-	AddIWADDir(*M_DirName(myargv[0]));
+	AddIWADDir(M_DirName(myargv[0]));
 
 	// Add DOOMWADDIR if it is in the environment
 	char* env = getenv("DOOMWADDIR");
@@ -611,17 +609,18 @@ auto D_FindWADByName(const char* name)
 	BuildIWADDirList();
 
 	// Search through all IWAD paths for a file with the given name.
-	for (size_t i{0}; i < num_iwad_dirs; ++i)
+	//for (size_t i{0}; i < num_iwad_dirs; ++i)
+	for (auto& iter: iwad_dirs)
 	{
 		// As a special case, if this is in DOOMWADDIR or DOOMWADPATH, the "directory" may actually refer directly to an IWAD file.
-		probe = M_FileCaseExists(iwad_dirs[i]);
-		if (DirIsFile(iwad_dirs[i], name) && probe != nullptr)
+		probe = M_FileCaseExists(*iter);
+		if (DirIsFile(*iter, name) && probe != nullptr)
 		{
 			return probe;
 		}
 
 		// Construct a string for the full path
-		auto path{M_StringJoin(iwad_dirs[i], DIR_SEPARATOR_S, name)};
+		auto path{M_StringJoin(*iter, DIR_SEPARATOR_S, name)};
 
 		probe = M_FileCaseExists(*path);
 		if (probe != nullptr)
@@ -631,7 +630,7 @@ auto D_FindWADByName(const char* name)
 	}
 
 	// File not found
-	return (decltype(probe))nullptr;
+	return static_cast<decltype(probe)>(nullptr);
 }
 
 // Searches for a WAD by its filename, or returns a copy of the filename if not found.
@@ -648,12 +647,12 @@ auto D_TryFindWADByName(const char* filename)
 }
 
 // Checks availability of IWAD files by name, to determine whether registered/commercial features should be executed (notably loading PWADs).
-auto D_FindIWAD(int mask, GameMission_t* mission)
+auto D_FindIWAD(int mask, GameMission_t* /*OUT*/ mission)
 {
-	char* result;
+	std::unique_ptr<const char*> result;
 
 	// Check for the -iwad parameter
-	if (size_t iwadparm{M_CheckParmWithArgs("-iwad", 1)}; iwadparm)
+	if (size_t iwadparm{static_cast<size_t>(M_CheckParmWithArgs("-iwad", 1))}; iwadparm)
 	{
 		// Search through IWAD dirs for an IWAD with the given name.
 		const char* iwadfile = myargv[iwadparm + 1];
@@ -665,18 +664,22 @@ auto D_FindIWAD(int mask, GameMission_t* mission)
 			I_Error("IWAD file '%s' not found!", iwadfile);
 		}
 
-		*mission = IdentifyIWADByName(result, mask);
+		*mission = IdentifyIWADByName(*result, mask);
 	}
 	else
 	{
 		// Search through the list and look for an IWAD
-		result = NULL;
+		result = nullptr;
 
 		BuildIWADDirList();
 
-		for (size_t i{0u}; result == nullptr && i < num_iwad_dirs; ++i)
+		//for (size_t i{0u}; result == nullptr && i < num_iwad_dirs; ++i)
+		for (auto& iter : iwad_dirs)
 		{
-			result = SearchDirectoryForIWAD(iwad_dirs[i], mask, mission);
+			if ((result = SearchDirectoryForIWAD(*iter, mask, mission)) != nullptr)
+			{
+				break;
+			}
 		}
 	}
 
@@ -685,16 +688,18 @@ auto D_FindIWAD(int mask, GameMission_t* mission)
 
 const iwad_t** D_FindAllIWADs(int mask)
 {
-	const iwad_t** result = malloc(sizeof(iwad_t*) * (arrlen(iwads) + 1));
+	const iwad_t** result = static_cast<decltype(result)>(malloc(sizeof(iwad_t*) * (arrlen(iwads) + 1)));
 	auto result_len{0u};
 
 	// Try to find all IWADs
 	for (size_t i{0u}; i < arrlen(iwads); ++i)
 	{
-		if (((1 << iwads[i].mission) & mask) == 0)
-		{
-			continue;
-		}
+		//if (((1 << iwads[i].mission) & mask) == 0)
+		//{
+		//	continue;
+		//}
+
+		//FORALL IWAD.MISSION contained in SET of NOT MASK add to result
 
 		auto filename{D_FindWADByName(iwads[i].name)};
 

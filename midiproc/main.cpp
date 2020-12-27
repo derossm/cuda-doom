@@ -35,26 +35,22 @@ static HANDLE midi_process_in;		// Standard In.
 static HANDLE midi_process_out;		// Standard Out.
 
 // Sound sample rate to use for digital output (Hz)
-static int snd_samplerate = 0;
+static int snd_samplerate{0};
 
 // Currently playing music track.
-static Mix_Music* music = nullptr;
-
-//=============================================================================
-//
-// Private functions
-//
+static Mix_Music* music{nullptr};
 
 // Write an unsigned integer into a simple CHAR buffer.
-static bool WriteInt16(CHAR* out, size_t osize, unsigned int in)
+static bool WriteInt16(CHAR* out, size_t osize, cudadoom::midi::PacketTypeAlias in)
 {
 	if (osize < 2)
 	{
 		return false;
 	}
 
-	out[0] = (in >> 8) & 0xff;
-	out[1] = in & 0xff;
+	// TODO replace shift math
+	//out[0] = (in >> 8) & 0xff;
+	//out[1] = in & 0xff;
 
 	return true;
 }
@@ -74,10 +70,7 @@ static void FreePipes()
 	}
 }
 
-//
-// Unregisters the currently playing song. This is never called from the
-// protocol, we simply do this before playing a new song.
-//
+// Unregisters the currently playing song. This is never called from the protocol, we simply do this before playing a new song.
 static void UnregisterSong()
 {
 	if (music == NULL)
@@ -98,7 +91,6 @@ static void ShutdownSDL()
 
 //=============================================================================
 // SDL_mixer Interface
-
 static bool RegisterSong(const char *filename)
 {
 	music = Mix_LoadMUS(filename);
@@ -141,11 +133,10 @@ static void StopSong()
 
 //=============================================================================
 // Pipe Server Interface
-
-static bool MidiPipe_RegisterSong(buffer_reader_t* reader)
+bool MidiPipe_RegisterSong(buffer_reader_t* reader)
 {
-	char *filename = Reader_ReadString(reader);
-	if (filename == NULL)
+	char* filename = Reader_ReadString(reader);
+	if (filename == nullptr || *filename == '\0')
 	{
 		return false;
 	}
@@ -153,7 +144,7 @@ static bool MidiPipe_RegisterSong(buffer_reader_t* reader)
 	return RegisterSong(filename);
 }
 
-static bool MidiPipe_UnregisterSong(buffer_reader_t* reader)
+bool MidiPipe_UnregisterSong()
 {
 	UnregisterSong();
 	return true;
@@ -161,30 +152,29 @@ static bool MidiPipe_UnregisterSong(buffer_reader_t* reader)
 
 bool MidiPipe_SetVolume(buffer_reader_t* reader)
 {
-	int vol;
-	bool ok = Reader_ReadInt32(reader, (uint32_t*)&vol);
-	if (!ok)
+	if (auto volume = Reader_ReadInt32(reader); volume)
 	{
+		SetVolume(volume);
+		return true;
+	}
+	else
+	{
+		// TODO why not SetVolume(0);
 		return false;
 	}
-
-	SetVolume(vol);
-
-	return true;
 }
 
 bool MidiPipe_PlaySong(buffer_reader_t* reader)
 {
-	int loops;
-	bool ok = Reader_ReadInt32(reader, (uint32_t*)&loops);
-	if (!ok)
+	if (auto loops = Reader_ReadInt32(reader); loops)
+	{
+		PlaySong(loops);
+		return true;
+	}
+	else
 	{
 		return false;
 	}
-
-	PlaySong(loops);
-
-	return true;
 }
 
 bool MidiPipe_StopSong()
@@ -205,19 +195,19 @@ bool MidiPipe_Shutdown()
 // Parses a command and directs to the proper read function.
 bool ParseCommand(buffer_reader_t *reader, uint16_t command)
 {
-	switch (command)
+	switch (static_cast<cudadoom::midi::PacketType>(command))
 	{
-	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_REGISTER_SONG:
+	case cudadoom::midi::PacketType::REGISTER_SONG:
 		return MidiPipe_RegisterSong(reader);
-	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_UNREGISTER_SONG:
-		return MidiPipe_UnregisterSong(reader);
-	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_SET_VOLUME:
+	case cudadoom::midi::PacketType::UNREGISTER_SONG:
+		return MidiPipe_UnregisterSong();
+	case cudadoom::midi::PacketType::SET_VOLUME:
 		return MidiPipe_SetVolume(reader);
-	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_PLAY_SONG:
+	case cudadoom::midi::PacketType::PLAY_SONG:
 		return MidiPipe_PlaySong(reader);
-	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_STOP_SONG:
+	case cudadoom::midi::PacketType::STOP_SONG:
 		return MidiPipe_StopSong();
-	case net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_SHUTDOWN:
+	case cudadoom::midi::PacketType::SHUTDOWN:
 		return MidiPipe_Shutdown();
 	default:
 		return false;
@@ -225,44 +215,34 @@ bool ParseCommand(buffer_reader_t *reader, uint16_t command)
 }
 
 // Server packet parser
-bool ParseMessage(buffer_t *buf)
+bool ParseMessage(buffer_t* buf)
 {
-	CHAR buffer[2];
-	DWORD bytes_written;
-	int bytes_read;
 	uint16_t command;
 	auto reader = NewReader(buf);
 
 	// Attempt to read a command out of the buffer.
-	if (!Reader_ReadInt16(reader, &command))
+	if (Reader_ReadInt16(reader.get(), &command))
 	{
-		goto fail;
+		// Attempt to parse a complete message.
+		if (ParseCommand(reader.get(), command))
+		{
+			// We parsed a complete message! We can now safely shift the prior message off the front of the buffer.
+			Buffer_Shift(buf, Reader_BytesRead(reader.get()));
+
+			CHAR buffer[2];
+			DWORD bytes_written;
+			// Send acknowledgement back that the command has completed.
+			if (WriteInt16(buffer, sizeof(buffer), _integral_value<unsigned int>(cudadoom::midi::PacketType::ACK)))
+			{
+				DeleteReader(reader.get());
+				WriteFile(midi_process_out, buffer, sizeof(buffer), &bytes_written, NULL);
+				return true;
+			}
+		}
 	}
 
-	// Attempt to parse a complete message.
-	if (!ParseCommand(reader, command))
-	{
-		goto fail;
-	}
-
-	// We parsed a complete message! We can now safely shift the prior message off the front of the buffer.
-	bytes_read = Reader_BytesRead(reader);
-	DeleteReader(reader);
-	Buffer_Shift(buf, bytes_read);
-
-	// Send acknowledgement back that the command has completed.
-	if (!WriteInt16(buffer, sizeof(buffer), net_midipipe_packet_type_t::MIDIPIPE_PACKET_TYPE_ACK))
-	{
-		goto fail;
-	}
-
-	WriteFile(midi_process_out, buffer, sizeof(buffer), &bytes_written, NULL);
-
-	return true;
-
-fail:
 	// We did not read a complete packet. Delete our reader and try again with more data.
-	DeleteReader(reader);
+	DeleteReader(reader.get());
 	return false;
 }
 
@@ -274,7 +254,7 @@ bool ListenForever()
 	DWORD pipe_buffer_read = 0;
 
 	bool ok = false;
-	buffer_t *buffer = NewBuffer();
+	auto buffer = NewBuffer();
 
 	for (;;)
 	{
@@ -297,7 +277,7 @@ bool ListenForever()
 			break;
 		}
 
-		ok = Buffer_Push(buffer, pipe_buffer, pipe_buffer_read);
+		ok = Buffer_Push(buffer.get(), pipe_buffer, pipe_buffer_read);
 		if (!ok)
 		{
 			break;
@@ -306,7 +286,7 @@ bool ListenForever()
 		do
 		{
 			// Read messages off the buffer until we can't anymore.
-			ok = ParseMessage(buffer);
+			ok = ParseMessage(buffer.get());
 		} while (ok);
 	}
 
@@ -314,15 +294,9 @@ bool ListenForever()
 }
 
 //=============================================================================
-//
 // Main Program
-//
 
-//
-// InitSDL
-//
 // Start up SDL and SDL_mixer.
-//
 bool InitSDL()
 {
 	if (SDL_Init(SDL_INIT_AUDIO) == -1)
@@ -340,11 +314,7 @@ bool InitSDL()
 	return true;
 }
 
-//
-// InitPipes
-//
 // Ensure that we can communicate.
-//
 void InitPipes(HANDLE in, HANDLE out)
 {
 	midi_process_in = in;
@@ -353,15 +323,8 @@ void InitPipes(HANDLE in, HANDLE out)
 	atexit(FreePipes);
 }
 
-//
-// main
-//
-// Application entry point.
-//
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	HANDLE in, out;
-
 	// Make sure we're not launching this process by itself.
 	if (argc < 5)
 	{
@@ -393,13 +356,13 @@ int main(int argc, char *argv[])
 	}
 
 	// Parse out our handle ids.
-	in = (HANDLE)strtol(argv[3], NULL, 10);
+	HANDLE in = (HANDLE)strtol(argv[3], NULL, 10);
 	if (in == 0)
 	{
 		return EXIT_FAILURE;
 	}
 
-	out = (HANDLE)strtol(argv[4], NULL, 10);
+	HANDLE out = (HANDLE)strtol(argv[4], NULL, 10);
 	if (out == 0)
 	{
 		return EXIT_FAILURE;

@@ -13,16 +13,16 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_IO_H
-#define TXT_IO_H
-
 #include "txt_main.h"
 
-typedef struct
+namespace cudadoom::txt
+{
+
+struct txt_saved_colors_t
 {
 	int bgcolor;
 	int fgcolor;
-} txt_saved_colors_t;
+};
 
 void TXT_PutSymbol(int c);
 void TXT_PutChar(int c);
@@ -35,4 +35,4 @@ void TXT_SaveColors(txt_saved_colors_t* save);
 void TXT_RestoreColors(txt_saved_colors_t* save);
 void TXT_ClearScreen();
 
-#endif /* #ifndef TXT_IO_H */
+} /* END NAMESPACE cudadoom::txt */

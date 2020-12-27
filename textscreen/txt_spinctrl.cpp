@@ -17,8 +17,9 @@
 #include "txt_utf8.h"
 #include "txt_window.h"
 
+namespace cudadoom::txt
+{
 // Generate the format string to be used for displaying floats
-
 static void FloatFormatString(float step, char *buf, size_t buf_len)
 {
 	int precision;
@@ -36,7 +37,6 @@ static void FloatFormatString(float step, char *buf, size_t buf_len)
 }
 
 // Number of characters needed to represent a character
-
 static unsigned int IntWidth(int val)
 {
 	char buf[25];
@@ -52,11 +52,9 @@ static unsigned int FloatWidth(float val, float step)
 	unsigned int result;
 
 	// Calculate the width of the int value
-
 	result = IntWidth((int) val);
 
 	// Add a decimal part if the precision specifies it
-
 	precision = (unsigned int) ceil(-log(step) / log(10));
 
 	if (precision > 0)
@@ -68,7 +66,6 @@ static unsigned int FloatWidth(float val, float step)
 }
 
 // Returns the minimum width of the input box
-
 static unsigned int SpinControlWidth(txt_spincontrol_t *spincontrol)
 {
 	unsigned int minw, maxw;
@@ -88,9 +85,7 @@ static unsigned int SpinControlWidth(txt_spincontrol_t *spincontrol)
 
 	}
 
-	// Choose the wider of the two values. Add one so that there is always
-	// space for the cursor when editing.
-
+	// Choose the wider of the two values. Add one so that there is always space for the cursor when editing.
 	if (minw > maxw)
 	{
 		return minw;
@@ -141,16 +136,15 @@ static void TXT_SpinControlDrawer(TXT_UNCAST_ARG(spincontrol))
 
 	TXT_SaveColors(&colors);
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 	TXT_DrawCodePageString("\x1b ");
 
 	TXT_RestoreColors(&colors);
 
 	// Choose background color
-
 	if (focused && spincontrol->editing)
 	{
-		TXT_BGColor(TXT_COLOR_BLACK, 0);
+		TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, false);
 	}
 	else
 	{
@@ -183,7 +177,7 @@ static void TXT_SpinControlDrawer(TXT_UNCAST_ARG(spincontrol))
 	}
 
 	TXT_RestoreColors(&colors);
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 	TXT_DrawCodePageString(" \x1a");
 }
 
@@ -254,7 +248,6 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
 	TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
 
 	// Enter to enter edit mode
-
 	if (spincontrol->editing)
 	{
 		if (key == KEY_ENTER)
@@ -285,7 +278,6 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
 	else
 	{
 		// Non-editing mode
-
 		if (key == KEY_ENTER)
 		{
 			spincontrol->editing = 1;
@@ -332,8 +324,7 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
 	return 0;
 }
 
-static void TXT_SpinControlMousePress(TXT_UNCAST_ARG(spincontrol),
-									int x, int y, int b)
+static void TXT_SpinControlMousePress(TXT_UNCAST_ARG(spincontrol), int x, int y, int b)
 {
 	TXT_CAST_ARG(txt_spincontrol_t, spincontrol);
 	unsigned int rel_x;
@@ -357,7 +348,7 @@ static void TXT_SpinControlFocused(TXT_UNCAST_ARG(spincontrol), int focused)
 	FinishEditing(spincontrol);
 }
 
-txt_widget_class_t txt_spincontrol_class =
+WidgetClass txt_spincontrol_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_SpinControlSizeCalc,
@@ -371,13 +362,11 @@ txt_widget_class_t txt_spincontrol_class =
 
 static txt_spincontrol_t *TXT_BaseSpinControl()
 {
-	txt_spincontrol_t *spincontrol;
-
-	spincontrol = malloc(sizeof(txt_spincontrol_t));
+	txt_spincontrol_t* spincontrol = static_cast<decltype(spincontrol)>(malloc(sizeof(txt_spincontrol_t)));
 
 	TXT_InitWidget(spincontrol, &txt_spincontrol_class);
 	spincontrol->buffer_len = 25;
-	spincontrol->buffer = malloc(spincontrol->buffer_len);
+	spincontrol->buffer = static_cast<decltype(spincontrol->buffer)>(malloc(spincontrol->buffer_len));
 	TXT_StringCopy(spincontrol->buffer, "", spincontrol->buffer_len);
 	spincontrol->editing = 0;
 
@@ -412,3 +401,4 @@ txt_spincontrol_t *TXT_NewFloatSpinControl(float *value, float min, float max)
 	return spincontrol;
 }
 
+} /* END NAMESPACE cudadoom::txt */

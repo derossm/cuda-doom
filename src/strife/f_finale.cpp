@@ -500,7 +500,7 @@ void F_TextWrite ()
 	count = 0;
 	for ( ; count ; count-- )
 	{
-	c = *ch++;
+	c = *(ch++);
 	if (!c)
 		break;
 	if (c == '\n')
@@ -744,7 +744,7 @@ void F_CastPrint (char* text)
 
 	while (ch)
 	{
-	c = *ch++;
+	c = *(ch++);
 	if (!c)
 		break;
 	c = toupper(c) - HU_FONTSTART;
@@ -763,7 +763,7 @@ void F_CastPrint (char* text)
 	ch = text;
 	while (ch)
 	{
-	c = *ch++;
+	c = *(ch++);
 	if (!c)
 		break;
 	c = toupper(c) - HU_FONTSTART;
@@ -842,7 +842,7 @@ void F_DrawPatchCol(int x, patch_t* patch, int col)
 
 	while (count--)
 	{
-		*dest = *source++;
+		*dest = *(source++);
 		dest += SCREENWIDTH;
 	}
 	column = (column_t *)( (byte *)column + column->length + 4 );

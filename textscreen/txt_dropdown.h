@@ -11,15 +11,10 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_DROPDOWN_H
-#define TXT_DROPDOWN_H
+#include "txt_widget.h"
 
-/**
- * @file txt_dropdown.h
- *
- * Dropdown list widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * Dropdown list widget.
  *
@@ -29,17 +24,21 @@
  * When the value of a dropdown list is changed, the "changed" signal
  * is emitted.
  */
-typedef struct txt_dropdown_list_s txt_dropdown_list_t;
-
-#include "txt_widget.h"
 
 // Drop-down list box.
-struct txt_dropdown_list_s
+struct txt_dropdown_list_t
 {
-	txt_widget_t widget;
+	Widget widget;
 	int* variable;
 	const char** values;
 	int num_values;
+};
+
+struct callback_data_t
+{
+	txt_window_t* window;
+	txt_dropdown_list_t* list;
+	int item;
 };
 
 /**
@@ -57,4 +56,4 @@ struct txt_dropdown_list_s
  */
 txt_dropdown_list_t *TXT_NewDropdownList(int* variable, const char** values, int num_values);
 
-#endif /* #ifndef TXT_DROPDOWN_H */
+} /* END NAMESPACE cudadoom::txt */

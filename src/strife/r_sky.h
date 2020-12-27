@@ -21,7 +21,7 @@
 
 
 // SKY, store the number for name.
-#define			SKYFLATNAME "F_SKY001" // villsa [STRIFE]
+#define SKYFLATNAME "F_SKY001" // villsa [STRIFE]
 
 // The sky map is 256*128*4 maps.
 #define ANGLETOSKYSHIFT		22

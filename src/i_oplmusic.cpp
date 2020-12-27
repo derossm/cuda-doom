@@ -1477,7 +1477,7 @@ static void I_OPL_PlaySong(void *handle, bool looping)
 
 	// Allocate track data.
 
-	tracks = malloc(MIDI_NumTracks(file) * sizeof(opl_track_data_t));
+	tracks = static_cast<decltype(tracks)>(malloc(MIDI_NumTracks(file) * sizeof(opl_track_data_t)));
 
 	num_tracks = MIDI_NumTracks(file);
 	running_tracks = num_tracks;

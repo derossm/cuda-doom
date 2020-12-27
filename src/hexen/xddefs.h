@@ -72,15 +72,15 @@ typedef PACKED_STRUCT (
 	short sidenum[2];			// sidenum[1] will be -1 if one sided
 }) maplinedef_t;
 
-#define	ML_BLOCKING			0x0001
-#define	ML_BLOCKMONSTERS	0x0002
-#define	ML_TWOSIDED			0x0004
-#define	ML_DONTPEGTOP		0x0008
-#define	ML_DONTPEGBOTTOM	0x0010
+#define ML_BLOCKING			0x0001
+#define ML_BLOCKMONSTERS	0x0002
+#define ML_TWOSIDED			0x0004
+#define ML_DONTPEGTOP		0x0008
+#define ML_DONTPEGBOTTOM	0x0010
 #define ML_SECRET			0x0020 // don't map as two sided: IT'S A SECRET!
 #define ML_SOUNDBLOCK		0x0040 // don't let sound cross two of these
-#define	ML_DONTDRAW			0x0080 // don't draw on the automap
-#define	ML_MAPPED			0x0100 // set if already drawn in automap
+#define ML_DONTDRAW			0x0080 // don't draw on the automap
+#define ML_MAPPED			0x0100 // set if already drawn in automap
 #define ML_REPEAT_SPECIAL	0x0200 // special is repeatable
 #define ML_SPAC_SHIFT		10
 #define ML_SPAC_MASK		0x1c00
@@ -121,7 +121,7 @@ typedef PACKED_STRUCT (
 	short offset;
 }) mapseg_t;
 
-#define	NF_SUBSECTOR	0x8000
+#define NF_SUBSECTOR	0x8000
 typedef PACKED_STRUCT (
 {
 	short x, y, dx, dy;			// partition line

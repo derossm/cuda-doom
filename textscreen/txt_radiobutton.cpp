@@ -8,7 +8,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "doomkeys.h"
 
 #include "txt_radiobutton.h"
@@ -17,6 +16,9 @@
 #include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_window.h"
+
+namespace cudadoom::txt
+{
 
 static void TXT_RadioButtonSizeCalc(TXT_UNCAST_ARG(radiobutton))
 {
@@ -38,10 +40,10 @@ static void TXT_RadioButtonDrawer(TXT_UNCAST_ARG(radiobutton))
 	w = radiobutton->widget.w;
 
 	TXT_SaveColors(&colors);
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 	TXT_DrawString("(");
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 
 	if (*radiobutton->variable == radiobutton->value)
 	{
@@ -52,7 +54,7 @@ static void TXT_RadioButtonDrawer(TXT_UNCAST_ARG(radiobutton))
 		TXT_DrawString(" ");
 	}
 
-	TXT_FGColor(TXT_COLOR_BRIGHT_CYAN);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
 
 	TXT_DrawString(") ");
 
@@ -104,7 +106,7 @@ static void TXT_RadioButtonMousePress(TXT_UNCAST_ARG(radiobutton),
 	}
 }
 
-txt_widget_class_t txt_radiobutton_class =
+WidgetClass txt_radiobutton_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_RadioButtonSizeCalc,
@@ -119,7 +121,7 @@ txt_radiobutton_t *TXT_NewRadioButton(const char *label, int *variable, int valu
 {
 	txt_radiobutton_t *radiobutton;
 
-	radiobutton = malloc(sizeof(txt_radiobutton_t));
+	radiobutton = static_cast<decltype(radiobutton)>(malloc(sizeof(txt_radiobutton_t)));
 
 	TXT_InitWidget(radiobutton, &txt_radiobutton_class);
 	radiobutton->label = strdup(label);
@@ -135,3 +137,4 @@ void TXT_SetRadioButtonLabel(txt_radiobutton_t *radiobutton, const char *value)
 	radiobutton->label = strdup(value);
 }
 
+} /* END NAMESPACE cudadoom::txt */

@@ -26,9 +26,9 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # set in <project_root_dir>/CMakeLists.txt
-# Windows: VCPKG_DIR = "<install_location>/vcpkg/packages/"
+# Windows: VCPKG_DIR = "<install_location>/vcpkg/packages"
 # x64: ARCHITECTURE = "_x64-windows"
-set(SDL2_MIXER_DIR "${VCPKG_DIR}sdl2-mixer${ARCHITECTURE}")
+set(SDL2_MIXER_DIR "${VCPKG_DIR}/sdl2-mixer${ARCHITECTURE}")
 
 find_path(SDL2_MIXER_INCLUDE_DIR "SDL_mixer.h" HINTS "${SDL2_MIXER_DIR}/include/SDL2" ${PC_SDL2_MIXER_INCLUDE_DIRS})
 
@@ -61,10 +61,7 @@ endif()
 find_library(SDL2_MIXER_LIBRARY "SDL2_mixer" HINTS "${SDL2_MIXER_DIR}/lib" ${PC_SDL2_MIXER_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SDL2_mixer
-									FOUND_VAR SDL2_MIXER_FOUND
-									REQUIRED_VARS SDL2_MIXER_INCLUDE_DIR SDL2_MIXER_LIBRARY
-									VERSION_VAR SDL2_MIXER_VERSION)
+find_package_handle_standard_args(SDL2_mixer FOUND_VAR SDL2_MIXER_FOUND REQUIRED_VARS SDL2_MIXER_INCLUDE_DIR SDL2_MIXER_LIBRARY VERSION_VAR SDL2_MIXER_VERSION)
 
 if(SDL2_MIXER_FOUND)
 	add_library(SDL2::mixer UNKNOWN IMPORTED)

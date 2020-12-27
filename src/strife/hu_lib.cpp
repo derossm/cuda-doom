@@ -42,7 +42,7 @@ void HUlib_drawYellowText(int x, int y, const char *text)
 	const char *rover = text;
 	char c;
 
-	while((c = *rover++))
+	while((c = *(rover++)))
 	{
 		if(c == '\n')
 		{
@@ -290,10 +290,10 @@ HUlib_addMessageToSText
 	HUlib_addLineToSText(s);
 	if (prefix)
 		while (*prefix)
-			HUlib_addCharToTextLine(&s->l[s->cl], *(prefix++));
+			HUlib_addCharToTextLine(&s->l[s->cl], *((prefix++)));
 
 	while (*msg)
-		HUlib_addCharToTextLine(&s->l[s->cl], *(msg++));
+		HUlib_addCharToTextLine(&s->l[s->cl], *((msg++)));
 }
 
 //
@@ -386,7 +386,7 @@ void HUlib_resetIText(hu_itext_t* it)
 void HUlib_addPrefixToIText(hu_itext_t* it, char* str)
 {
 	while (*str)
-		HUlib_addCharToTextLine(&it->l, *(str++));
+		HUlib_addCharToTextLine(&it->l, *((str++)));
 	it->lm = it->l.len;
 }
 

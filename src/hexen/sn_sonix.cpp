@@ -225,62 +225,62 @@ void SN_InitSequenceScript()
 		{
 			VerifySequencePtr(tempDataStart, tempDataPtr);
 			SC_MustGetString();
-			*tempDataPtr++ = SS_CMD_PLAY;
-			*tempDataPtr++ = GetSoundOffset(sc_String);
-			*tempDataPtr++ = SS_CMD_WAITUNTILDONE;
+			*(tempDataPtr++) = SS_CMD_PLAY;
+			*(tempDataPtr++) = GetSoundOffset(sc_String);
+			*(tempDataPtr++) = SS_CMD_WAITUNTILDONE;
 		}
 		else if (SC_Compare(SS_STRING_PLAY))
 		{
 			VerifySequencePtr(tempDataStart, tempDataPtr);
 			SC_MustGetString();
-			*tempDataPtr++ = SS_CMD_PLAY;
-			*tempDataPtr++ = GetSoundOffset(sc_String);
+			*(tempDataPtr++) = SS_CMD_PLAY;
+			*(tempDataPtr++) = GetSoundOffset(sc_String);
 		}
 		else if (SC_Compare(SS_STRING_PLAYTIME))
 		{
 			VerifySequencePtr(tempDataStart, tempDataPtr);
 			SC_MustGetString();
-			*tempDataPtr++ = SS_CMD_PLAY;
-			*tempDataPtr++ = GetSoundOffset(sc_String);
+			*(tempDataPtr++) = SS_CMD_PLAY;
+			*(tempDataPtr++) = GetSoundOffset(sc_String);
 			SC_MustGetNumber();
-			*tempDataPtr++ = SS_CMD_DELAY;
-			*tempDataPtr++ = sc_Number;
+			*(tempDataPtr++) = SS_CMD_DELAY;
+			*(tempDataPtr++) = sc_Number;
 		}
 		else if (SC_Compare(SS_STRING_PLAYREPEAT))
 		{
 			VerifySequencePtr(tempDataStart, tempDataPtr);
 			SC_MustGetString();
-			*tempDataPtr++ = SS_CMD_PLAYREPEAT;
-			*tempDataPtr++ = GetSoundOffset(sc_String);
+			*(tempDataPtr++) = SS_CMD_PLAYREPEAT;
+			*(tempDataPtr++) = GetSoundOffset(sc_String);
 		}
 		else if (SC_Compare(SS_STRING_DELAY))
 		{
 			VerifySequencePtr(tempDataStart, tempDataPtr);
-			*tempDataPtr++ = SS_CMD_DELAY;
+			*(tempDataPtr++) = SS_CMD_DELAY;
 			SC_MustGetNumber();
-			*tempDataPtr++ = sc_Number;
+			*(tempDataPtr++) = sc_Number;
 		}
 		else if (SC_Compare(SS_STRING_DELAYRAND))
 		{
 			VerifySequencePtr(tempDataStart, tempDataPtr);
-			*tempDataPtr++ = SS_CMD_DELAYRAND;
+			*(tempDataPtr++) = SS_CMD_DELAYRAND;
 			SC_MustGetNumber();
-			*tempDataPtr++ = sc_Number;
+			*(tempDataPtr++) = sc_Number;
 			SC_MustGetNumber();
-			*tempDataPtr++ = sc_Number;
+			*(tempDataPtr++) = sc_Number;
 		}
 		else if (SC_Compare(SS_STRING_VOLUME))
 		{
 			VerifySequencePtr(tempDataStart, tempDataPtr);
-			*tempDataPtr++ = SS_CMD_VOLUME;
+			*(tempDataPtr++) = SS_CMD_VOLUME;
 			SC_MustGetNumber();
-			*tempDataPtr++ = sc_Number;
+			*(tempDataPtr++) = sc_Number;
 		}
 		else if (SC_Compare(SS_STRING_END))
 		{
 			int dataSize;
 
-			*tempDataPtr++ = SS_CMD_END;
+			*(tempDataPtr++) = SS_CMD_END;
 			dataSize = (tempDataPtr - tempDataStart) * sizeof(int);
 			SequenceData[i] = (int *) Z_Malloc(dataSize, pu_tags_t::PU_STATIC, NULL);
 			memcpy(SequenceData[i], tempDataStart, dataSize);
@@ -292,7 +292,7 @@ void SN_InitSequenceScript()
 			SC_MustGetString();
 			SequenceTranslate[inSequence].stopSound =
 				GetSoundOffset(sc_String);
-			*tempDataPtr++ = SS_CMD_STOPSOUND;
+			*(tempDataPtr++) = SS_CMD_STOPSOUND;
 		}
 		else
 		{

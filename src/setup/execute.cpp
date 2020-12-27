@@ -86,7 +86,7 @@ execute_context_t *NewExecuteContext()
 {
 	execute_context_t *result;
 
-	result = malloc(sizeof(execute_context_t));
+	result = static_cast<decltype(result)>(malloc(sizeof(execute_context_t)));
 
 	result->response_file = TempFile("chocolat.rsp");
 	result->stream = fopen(result->response_file, "w");
@@ -269,7 +269,7 @@ static char *GetFullExePath(const char *program)
 	{
 		path_len = sep - myargv[0] + 1;
 		result_len = strlen(program) + path_len + 1;
-		result = malloc(result_len);
+		result = static_cast<decltype(result)>(malloc(result_len));
 
 		M_StringCopy(result, myargv[0], result_len);
 		result[path_len] = '\0';
@@ -345,17 +345,17 @@ int ExecuteDoom(execute_context_t *context)
 	return result;
 }
 
-static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
+static void TestCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(data))
 {
 	execute_context_t *exec;
 	char *main_cfg;
 	char *extra_cfg;
-	txt_window_t *testwindow;
+	cudadoom::txt::txt_window_t *testwindow;
 
-	testwindow = TXT_MessageBox("Starting Doom",
+	testwindow = cudadoom::txt::TXT_MessageBox("Starting Doom",
 								"Starting Doom to test the\n"
 								"settings. Please wait.");
-	TXT_DrawDesktop();
+	cudadoom::txt::TXT_DrawDesktop();
 
 	// Save temporary configuration files with the current configuration
 
@@ -372,7 +372,7 @@ static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
 	AddCmdLineParameter(exec, "-extraconfig \"%s\"", extra_cfg);
 	ExecuteDoom(exec);
 
-	TXT_CloseWindow(testwindow);
+	cudadoom::txt::TXT_CloseWindow(testwindow);
 
 	// Delete the temporary config files
 
@@ -384,10 +384,10 @@ static void TestCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(data))
 
 txt_window_action_t *TestConfigAction()
 {
-	txt_window_action_t *test_action;
+	cudadoom::txt::txt_window_action_t *test_action;
 
-	test_action = TXT_NewWindowAction('t', "Test");
-	TXT_SignalConnect(test_action, "pressed", TestCallback, NULL);
+	test_action = cudadoom::txt::TXT_NewWindowAction('t', "Test");
+	cudadoom::txt::TXT_SignalConnect(test_action, "pressed", TestCallback, NULL);
 
 	return test_action;
 }

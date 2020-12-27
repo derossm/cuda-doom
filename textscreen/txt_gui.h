@@ -7,18 +7,27 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Text mode emulation in SDL
+		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef TXT_GUI_H
-#define TXT_GUI_H
+namespace cudadoom::txt
+{
 
-#define TXT_INACTIVE_WINDOW_BACKGROUND		TXT_COLOR_BLACK
-#define TXT_ACTIVE_WINDOW_BACKGROUND		TXT_COLOR_BLUE
-#define TXT_HOVER_BACKGROUND				TXT_COLOR_CYAN
+#define TXT_INACTIVE_WINDOW_BACKGROUND		txt_color_t::TXT_COLOR_BLACK
+#define TXT_ACTIVE_WINDOW_BACKGROUND		txt_color_t::TXT_COLOR_BLUE
+#define TXT_HOVER_BACKGROUND				txt_color_t::TXT_COLOR_CYAN
+
+struct txt_cliparea_t
+{
+	int x1;
+	int x2;
+	int y1;
+	int y2;
+	txt_cliparea_t* next;
+};
 
 void TXT_DrawDesktopBackground(const char* title);
 void TXT_DrawWindowFrame(const char* title, int x, int y, int w, int h);
@@ -34,4 +43,4 @@ void TXT_InitClipArea();
 void TXT_PushClipArea(int x1, int x2, int y1, int y2);
 void TXT_PopClipArea();
 
-#endif /* #ifndef TXT_GUI_H */
+} /* END NAMESPACE cudadoom::txt */

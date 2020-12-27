@@ -8,12 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "txt_utf8.h"
 
-// Encode a Unicode character as UTF-8, storing it in the buffer 'p'
-// and returning the new, incremented position.
-
+namespace cudadoom::txt
+{
+// Encode a Unicode character as UTF-8, storing it in the buffer 'p' and returning the new, incremented position.
 char *TXT_EncodeUTF8(char *p, unsigned int c)
 {
 	if (c < 0x80)								// 1 character (ASCII):
@@ -45,20 +44,17 @@ char *TXT_EncodeUTF8(char *p, unsigned int c)
 	else
 	{
 		// Too big!
-
 		return p;
 	}
 }
 
 // Decode UTF-8 character, incrementing *ptr over the decoded bytes.
-
 unsigned int TXT_DecodeUTF8(const char **ptr)
 {
 	const char *p = *ptr;
 	unsigned int c;
 
 	// UTF-8 decode.
-
 	if ((*p & 0x80) == 0)						// 1 character (ASCII):
 	{
 		c = *p;
@@ -95,7 +91,6 @@ unsigned int TXT_DecodeUTF8(const char **ptr)
 	{
 		// Decode failure.
 		// Don't bother with 5/6 byte sequences.
-
 		c = 0;
 	}
 
@@ -103,7 +98,6 @@ unsigned int TXT_DecodeUTF8(const char **ptr)
 }
 
 // Count the number of characters in a UTF-8 string.
-
 unsigned int TXT_UTF8_Strlen(const char *s)
 {
 	const char *p;
@@ -126,7 +120,6 @@ unsigned int TXT_UTF8_Strlen(const char *s)
 }
 
 // Skip past the first n characters in a UTF-8 string.
-
 char *TXT_UTF8_SkipChars(const char *s, unsigned int n)
 {
 	unsigned int i;
@@ -142,6 +135,7 @@ char *TXT_UTF8_SkipChars(const char *s, unsigned int n)
 		}
 	}
 
-	return (char *) p;
+	return (char*) p;
 }
 
+} /* END NAMESPACE cudadoom::txt */

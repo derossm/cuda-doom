@@ -219,7 +219,7 @@ void EV_VerticalDoor(line_t * line, mobj_t * thing)
 			}
 			if (!player->keys[key_blue])
 			{
-				P_SetMessage(player, DEH_String(TXT_NEEDBLUEKEY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_NEEDBLUEKEY), false);
 				S_StartSound(NULL, sfx_plroof);
 				return;
 			}
@@ -232,7 +232,7 @@ void EV_VerticalDoor(line_t * line, mobj_t * thing)
 			}
 			if (!player->keys[key_yellow])
 			{
-				P_SetMessage(player, DEH_String(TXT_NEEDYELLOWKEY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_NEEDYELLOWKEY), false);
 				S_StartSound(NULL, sfx_plroof);
 				return;
 			}
@@ -245,7 +245,7 @@ void EV_VerticalDoor(line_t * line, mobj_t * thing)
 			}
 			if (!player->keys[key_green])
 			{
-				P_SetMessage(player, DEH_String(TXT_NEEDGREENKEY), false);
+				P_SetMessage(player, DEH_String(cudadoom::txt::TXT_NEEDGREENKEY), false);
 				S_StartSound(NULL, sfx_plroof);
 				return;
 			}

@@ -38,18 +38,15 @@ static unsigned int opl_port_base;
 static int OPL_OpenBSD_Init(unsigned int port_base)
 {
 	// Try to get permissions:
-
 	if (set_iopl(3) < 0)
 	{
-		fprintf(stderr, "Failed to get raise I/O privilege level: "
-						"check that you are running as root.\n");
+		fprintf(stderr, "Failed to get raise I/O privilege level: check that you are running as root.\n");
 		return 0;
 	}
 
 	opl_port_base = port_base;
 
 	// Start callback thread
-
 	if (!OPL_Timer_StartThread())
 	{
 		set_iopl(0);
@@ -62,11 +59,9 @@ static int OPL_OpenBSD_Init(unsigned int port_base)
 static void OPL_OpenBSD_Shutdown()
 {
 	// Stop callback thread
-
 	OPL_Timer_StopThread();
 
 	// Release I/O port permissions:
-
 	set_iopl(0);
 }
 
@@ -92,7 +87,7 @@ opl_driver_t opl_openbsd_driver =
 	OPL_Timer_Lock,
 	OPL_Timer_Unlock,
 	OPL_Timer_SetPaused,
-	OPL_Timer_AdjustCallbacks,
+	OPL_Timer_AdjustCallbacks
 };
 
 #endif /* #ifndef NO_OBSD_DRIVER */

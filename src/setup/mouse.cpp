@@ -53,9 +53,9 @@ static int *all_mouse_buttons[] = {
 	&mousebinvright
 };
 
-static void MouseSetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
+static void MouseSetCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(variable))
 {
-	TXT_CAST_ARG(int, variable);
+	cudadoom::txt::TXT_CAST_ARG(int, variable);
 	unsigned int i;
 
 	// Check if the same mouse button is used for a different action
@@ -71,33 +71,33 @@ static void MouseSetCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(variable))
 	}
 }
 
-static void AddMouseControl(TXT_UNCAST_ARG(table), const char *label, int *var)
+static void AddMouseControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char *label, int *var)
 {
-	TXT_CAST_ARG(txt_table_t, table);
-	txt_mouse_input_t *mouse_input;
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, table);
+	cudadoom::txt::txt_mouse_input_t *mouse_input;
 
-	TXT_AddWidget(table, TXT_NewLabel(label));
+	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewLabel(label));
 
-	mouse_input = TXT_NewMouseInput(var);
-	TXT_AddWidget(table, mouse_input);
+	mouse_input = cudadoom::txt::TXT_NewMouseInput(var);
+	cudadoom::txt::TXT_AddWidget(table, mouse_input);
 
-	TXT_SignalConnect(mouse_input, "set", MouseSetCallback, var);
+	cudadoom::txt::TXT_SignalConnect(mouse_input, "set", MouseSetCallback, var);
 }
 
-static void ConfigExtraButtons(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
+static void ConfigExtraButtons(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
-	txt_window_t *window;
-	txt_table_t *buttons_table;
+	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::txt_table_t *buttons_table;
 
-	window = TXT_NewWindow("Additional mouse buttons");
+	window = cudadoom::txt::TXT_NewWindow("Additional mouse buttons");
 
-	TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-	TXT_AddWidgets(window,
-					buttons_table = TXT_NewTable(4),
+	cudadoom::txt::TXT_AddWidgets(window,
+					buttons_table = cudadoom::txt::TXT_NewTable(4),
 					NULL);
 
-	TXT_SetColumnWidths(buttons_table, 16, 11, 14, 10);
+	cudadoom::txt::TXT_SetColumnWidths(buttons_table, 16, 11, 14, 10);
 
 	AddMouseControl(buttons_table, "Move forward", &mousebforward);
 	AddMouseControl(buttons_table, "Strafe left", &mousebstrafeleft);
@@ -126,83 +126,83 @@ static void ConfigExtraButtons(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(unused))
 	}
 }
 
-void ConfigMouse(TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigMouse(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 {
-	txt_window_t *window;
+	cudadoom::txt::txt_window_t *window;
 
-	window = TXT_NewWindow("Mouse configuration");
+	window = cudadoom::txt::TXT_NewWindow("Mouse configuration");
 
-	TXT_SetTableColumns(window, 2);
+	cudadoom::txt::TXT_SetTableColumns(window, 2);
 
-	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, TestConfigAction());
-	TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_CENTER, TestConfigAction());
+	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
 	if (gamemission == doom) // [crispy]
 	{
-	TXT_AddWidgets(window,
-					TXT_NewCheckBox("Enable mouse", &usemouse),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewInvertedCheckBox("Allow vertical mouse movement",
+	cudadoom::txt::TXT_AddWidgets(window,
+					cudadoom::txt::TXT_NewCheckBox("Enable mouse", &usemouse),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewInvertedCheckBox("Allow vertical mouse movement",
 											&novert),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewCheckBox("Grab mouse in windowed mode",
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewCheckBox("Grab mouse in windowed mode",
 									&grabmouse),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewCheckBox("Double click acts as \"use\"",
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewCheckBox("Double click acts as \"use\"",
 									&dclick_use),
-					TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
 
-					TXT_NewSeparator("Mouse motion"),
-					TXT_NewLabel("Speed (h/turn)"),
-					TXT_NewSpinControl(&mouseSensitivity, 0, 255), // [crispy] extended range
-					TXT_NewLabel("Speed (h/strafe)"),
-					TXT_NewSpinControl(&mouseSensitivity_x2, 0, 255), // [crispy] extended range
-					TXT_NewLabel("Acceleration (h)"),
-					TXT_NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
-					TXT_NewLabel("Acceleration threshold (h)"),
-					TXT_NewSpinControl(&mouse_threshold, 0, 32),
-					TXT_NewLabel("Speed (v)"),
-					TXT_NewSpinControl(&mouseSensitivity_y, 0, 255), // [crispy] extended range
-					TXT_NewLabel("Acceleration (v)"),
-					TXT_NewFloatSpinControl(&mouse_acceleration_y, 1.0, 5.0),
-					TXT_NewLabel("Acceleration threshold (v)"),
-					TXT_NewSpinControl(&mouse_threshold_y, 0, 32),
+					cudadoom::txt::TXT_NewSeparator("Mouse motion"),
+					cudadoom::txt::TXT_NewLabel("Speed (h/turn)"),
+					cudadoom::txt::TXT_NewSpinControl(&mouseSensitivity, 0, 255), // [crispy] extended range
+					cudadoom::txt::TXT_NewLabel("Speed (h/strafe)"),
+					cudadoom::txt::TXT_NewSpinControl(&mouseSensitivity_x2, 0, 255), // [crispy] extended range
+					cudadoom::txt::TXT_NewLabel("Acceleration (h)"),
+					cudadoom::txt::TXT_NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
+					cudadoom::txt::TXT_NewLabel("Acceleration threshold (h)"),
+					cudadoom::txt::TXT_NewSpinControl(&mouse_threshold, 0, 32),
+					cudadoom::txt::TXT_NewLabel("Speed (v)"),
+					cudadoom::txt::TXT_NewSpinControl(&mouseSensitivity_y, 0, 255), // [crispy] extended range
+					cudadoom::txt::TXT_NewLabel("Acceleration (v)"),
+					cudadoom::txt::TXT_NewFloatSpinControl(&mouse_acceleration_y, 1.0, 5.0),
+					cudadoom::txt::TXT_NewLabel("Acceleration threshold (v)"),
+					cudadoom::txt::TXT_NewSpinControl(&mouse_threshold_y, 0, 32),
 
-					TXT_NewSeparator("Buttons"),
+					cudadoom::txt::TXT_NewSeparator("Buttons"),
 					NULL);
 	}
 	else
 	{
-	TXT_AddWidgets(window,
-					TXT_NewCheckBox("Enable mouse", &usemouse),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewInvertedCheckBox("Allow vertical mouse movement",
+	cudadoom::txt::TXT_AddWidgets(window,
+					cudadoom::txt::TXT_NewCheckBox("Enable mouse", &usemouse),
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewInvertedCheckBox("Allow vertical mouse movement",
 											&novert),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewCheckBox("Grab mouse in windowed mode",
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewCheckBox("Grab mouse in windowed mode",
 									&grabmouse),
-					TXT_TABLE_OVERFLOW_RIGHT,
-					TXT_NewCheckBox("Double click acts as \"use\"",
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_NewCheckBox("Double click acts as \"use\"",
 									&dclick_use),
-					TXT_TABLE_OVERFLOW_RIGHT,
+					cudadoom::txt::TXT_TABLE_OVERFLOW_RIGHT,
 
-					TXT_NewSeparator("Mouse motion"),
-					TXT_NewLabel("Speed"),
-					TXT_NewSpinControl(&mouseSensitivity, 1, 256),
-					TXT_NewLabel("Acceleration"),
-					TXT_NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
-					TXT_NewLabel("Acceleration threshold"),
-					TXT_NewSpinControl(&mouse_threshold, 0, 32),
+					cudadoom::txt::TXT_NewSeparator("Mouse motion"),
+					cudadoom::txt::TXT_NewLabel("Speed"),
+					cudadoom::txt::TXT_NewSpinControl(&mouseSensitivity, 1, 256),
+					cudadoom::txt::TXT_NewLabel("Acceleration"),
+					cudadoom::txt::TXT_NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
+					cudadoom::txt::TXT_NewLabel("Acceleration threshold"),
+					cudadoom::txt::TXT_NewSpinControl(&mouse_threshold, 0, 32),
 
-					TXT_NewSeparator("Buttons"),
+					cudadoom::txt::TXT_NewSeparator("Buttons"),
 					NULL);
 	}
 
 	AddMouseControl(window, "Fire/Attack", &mousebfire);
 	AddMouseControl(window, "Use", &mousebuse);
 
-	TXT_AddWidget(window,
-					TXT_NewButton2("More controls...", ConfigExtraButtons, NULL));
+	cudadoom::txt::TXT_AddWidget(window,
+					cudadoom::txt::TXT_NewButton2("More controls...", ConfigExtraButtons, NULL));
 }
 
 void BindMouseVariables()

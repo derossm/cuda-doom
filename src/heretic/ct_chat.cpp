@@ -204,7 +204,7 @@ bool CT_Responder(event_t * ev)
 				CT_queueChatChar(chat_dest[consoleplayer]);		// chose the dest.
 				while (*macro)
 				{
-					CT_queueChatChar(toupper(*macro++));
+					CT_queueChatChar(toupper(*(macro++)));
 				}
 				CT_queueChatChar(KEY_ENTER);	//send it off...
 				CT_Stop();

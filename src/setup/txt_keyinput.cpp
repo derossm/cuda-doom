@@ -107,7 +107,7 @@ static void TXT_KeyInputDrawer(TXT_UNCAST_ARG(key_input))
 	}
 
 	TXT_SetWidgetBG(key_input);
-	TXT_FGColor(TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
 
 	TXT_DrawString(buf);
 
@@ -154,7 +154,7 @@ static void TXT_KeyInputMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
 	}
 }
 
-txt_widget_class_t txt_key_input_class =
+WidgetClass txt_key_input_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_KeyInputSizeCalc,
@@ -165,11 +165,9 @@ txt_widget_class_t txt_key_input_class =
 	NULL,
 };
 
-txt_key_input_t *TXT_NewKeyInput(int *variable)
+txt_key_input_t* TXT_NewKeyInput(int *variable)
 {
-	txt_key_input_t *key_input;
-
-	key_input = malloc(sizeof(txt_key_input_t));
+	txt_key_input_t* key_input = static_cast<decltype(key_input)>(malloc(sizeof(txt_key_input_t)));
 
 	TXT_InitWidget(key_input, &txt_key_input_class);
 	key_input->variable = variable;

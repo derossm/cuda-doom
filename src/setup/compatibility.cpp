@@ -22,25 +22,25 @@
 int vanilla_savegame_limit = 0;
 int vanilla_demo_limit = 0;
 
-void CompatibilitySettings(TXT_UNCAST_ARG(widget), void *user_data)
+void CompatibilitySettings(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 {
-	txt_window_t *window;
+	cudadoom::txt::txt_window_t *window;
 
 	// [crispy]
 	if (gamemission == doom)
 	{
-		TXT_MessageBox(NULL, "Please refer to the in-game Crispness menu.");
+		cudadoom::txt::TXT_MessageBox(NULL, "Please refer to the in-game Crispness menu.");
 	}
 	else
 	{
-	window = TXT_NewWindow("Compatibility");
+	window = cudadoom::txt::TXT_NewWindow("Compatibility");
 
-	TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-	TXT_AddWidgets(window,
-					TXT_NewCheckBox("Vanilla savegame limit",
+	cudadoom::txt::TXT_AddWidgets(window,
+					cudadoom::txt::TXT_NewCheckBox("Vanilla savegame limit",
 									&vanilla_savegame_limit),
-					TXT_NewCheckBox("Vanilla demo limit",
+					cudadoom::txt::TXT_NewCheckBox("Vanilla demo limit",
 									&vanilla_demo_limit),
 					NULL);
 	}

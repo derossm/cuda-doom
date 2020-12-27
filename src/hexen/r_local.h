@@ -238,12 +238,16 @@ typedef struct drawseg_s
 #define MAXDRAWSEGS				256*8
 
 // A vissprite_t is a thing that will be drawn during a refresh
-typedef struct vissprite_s
+struct vissprite_t
 {
-	struct vissprite_s *prev, *next;
-	int x1, x2;
-	fixed_t gx, gy;				// for line side calculation
-	fixed_t gz, gzt;			// global bottom / top for silhouette clipping
+	struct vissprite_t* prev;
+	struct vissprite_t* next;
+	int x1;
+	int x2;
+	fixed_t gx;				// for line side calculation
+	fixed_t gy;
+	fixed_t gz;			// global bottom / top for silhouette clipping
+	fixed_t gzt;
 	fixed_t startfrac;			// horizontal position of x1
 	fixed_t scale;
 	fixed_t xiscale;			// negative if flipped
@@ -252,10 +256,9 @@ typedef struct vissprite_s
 	lighttable_t *colormap;
 	int mobjflags;				// for color translation and shadow draw
 	bool psprite;			// true if psprite
-	int class;					// player class (used in translation)
+	int playerClass;					// player class (used in translation)
 	fixed_t floorclip;
-} vissprite_t;
-
+};
 
 extern visplane_t *floorplane, *ceilingplane;
 
@@ -267,18 +270,18 @@ extern visplane_t *floorplane, *ceilingplane;
 // is used to save space. Some sprites will only have one picture used
 // for all views.
 
-typedef struct
+struct spriteframe_t
 {
 	bool rotate;				// if false use 0 for any position
 	short lump[8];				// lump to use for view angles 0-7
 	byte flip[8];				// flip (1 = flip) to use for view angles 0-7
-} spriteframe_t;
+};
 
-typedef struct
+struct spritedef_t
 {
 	int numframes;
-	spriteframe_t *spriteframes;
-} spritedef_t;
+	spriteframe_t* spriteframes;
+};
 
 extern spritedef_t *sprites;
 extern int numsprites;
@@ -361,7 +364,6 @@ fixed_t R_ScaleFromGlobalAngle(angle_t visangle);
 subsector_t *R_PointInSubsector(fixed_t x, fixed_t y);
 //void R_AddPointToBox (int x, int y, fixed_t *box);
 
-
 //
 // R_bsp.c
 //
@@ -424,7 +426,6 @@ visplane_t *R_FindPlane(fixed_t height, int picnum, int lightlevel,
 						int special);
 visplane_t *R_CheckPlane(visplane_t * pl, int start, int stop);
 
-
 //
 // R_debug.m
 //
@@ -437,7 +438,6 @@ void RD_DrawNodeLine(node_t * node);
 void RD_DrawLineCheck(seg_t * line);
 void RD_DrawLine(seg_t * line);
 void RD_DrawBBox(fixed_t * bbox);
-
 
 //
 // R_data.c
@@ -460,7 +460,6 @@ byte *R_GetColumn(int tex, int col);
 void R_InitData();
 void R_PrecacheLevel();
 
-
 //
 // R_things.c
 //
@@ -482,9 +481,7 @@ extern fixed_t sprbotscreen;
 
 extern fixed_t pspritescale, pspriteiscale;
 
-
 void R_DrawMaskedColumn(column_t * column, signed int baseclip);
-
 
 void R_SortVisSprites();
 

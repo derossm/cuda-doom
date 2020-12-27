@@ -88,7 +88,6 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 #else
 
 // Not x86, or don't know how to do port R/W on this compiler.
-
 #define NO_PORT_RW
 
 static unsigned int OPL_Win32_PortRead(opl_port_t port)
@@ -111,26 +110,21 @@ static int OPL_Win32_Init(unsigned int port_base)
 	opl_port_base = port_base;
 
 	// Check the OS version.
-
 	memset(&version_info, 0, sizeof(version_info));
 	version_info.dwOSVersionInfoSize = sizeof(version_info);
 
 	GetVersionEx(&version_info);
 
-	// On NT-based systems, we must acquire I/O port permissions
-	// using the ioperm.sys driver.
-
+	// On NT-based systems, we must acquire I/O port permissions using the ioperm.sys driver.
 	if (version_info.dwPlatformId == VER_PLATFORM_WIN32_NT)
 	{
 		// Install driver.
-
 		if (!IOperm_InstallDriver())
 		{
 			return 0;
 		}
 
 		// Open port range.
-
 		if (!IOperm_EnablePortRange(opl_port_base, 2, 1))
 		{
 			IOperm_UninstallDriver();
@@ -139,7 +133,6 @@ static int OPL_Win32_Init(unsigned int port_base)
 	}
 
 	// Start callback thread
-
 	if (!OPL_Timer_StartThread())
 	{
 		IOperm_UninstallDriver();
@@ -156,11 +149,9 @@ static int OPL_Win32_Init(unsigned int port_base)
 static void OPL_Win32_Shutdown()
 {
 	// Stop callback thread
-
 	OPL_Timer_StopThread();
 
 	// Unload IOperm library.
-
 	IOperm_UninstallDriver();
 }
 
@@ -180,4 +171,3 @@ opl_driver_t opl_win32_driver =
 };
 
 #endif /* #ifdef _WIN32 */
-

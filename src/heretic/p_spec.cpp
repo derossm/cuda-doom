@@ -1305,21 +1305,21 @@ void P_AmbientSound()
 	done = false;
 	do
 	{
-		cmd = *AmbSfxPtr++;
+		cmd = *(AmbSfxPtr++);
 		switch (cmd)
 		{
 			case afxcmd_play:
 				AmbSfxVolume = P_Random() >> 2;
-				S_StartSoundAtVolume(NULL, *AmbSfxPtr++, AmbSfxVolume);
+				S_StartSoundAtVolume(NULL, *(AmbSfxPtr++), AmbSfxVolume);
 				break;
 			case afxcmd_playabsvol:
-				sound = *AmbSfxPtr++;
-				AmbSfxVolume = *AmbSfxPtr++;
+				sound = *(AmbSfxPtr++);
+				AmbSfxVolume = *(AmbSfxPtr++);
 				S_StartSoundAtVolume(NULL, sound, AmbSfxVolume);
 				break;
 			case afxcmd_playrelvol:
-				sound = *AmbSfxPtr++;
-				AmbSfxVolume += *AmbSfxPtr++;
+				sound = *(AmbSfxPtr++);
+				AmbSfxVolume += *(AmbSfxPtr++);
 				if (AmbSfxVolume < 0)
 				{
 					AmbSfxVolume = 0;
@@ -1331,11 +1331,11 @@ void P_AmbientSound()
 				S_StartSoundAtVolume(NULL, sound, AmbSfxVolume);
 				break;
 			case afxcmd_delay:
-				AmbSfxTics = *AmbSfxPtr++;
+				AmbSfxTics = *(AmbSfxPtr++);
 				done = true;
 				break;
 			case afxcmd_delayrand:
-				AmbSfxTics = P_Random() & (*AmbSfxPtr++);
+				AmbSfxTics = P_Random() & (*(AmbSfxPtr++));
 				done = true;
 				break;
 			case afxcmd_end:

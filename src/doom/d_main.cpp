@@ -789,7 +789,7 @@ static char *GetGameName(const char *gamename)
 			// We also need to cut off spaces to get the basic name
 
 			gamename_size = strlen(deh_sub) + 10;
-			deh_gamename = malloc(gamename_size);
+			deh_gamename = static_cast<decltype(deh_gamename)>(malloc(gamename_size));
 			if (deh_gamename == NULL)
 			{
 				I_Error("GetGameName: Failed to allocate new string");

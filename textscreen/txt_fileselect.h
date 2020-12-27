@@ -13,22 +13,22 @@
 
 #include "../derma/common.h"
 
-#ifndef TXT_FILESELECT_H
-#define TXT_FILESELECT_H
-
-/**
- * @file txt_fileselect.h
- *
- * File selection widget.
- */
-
+namespace cudadoom::txt
+{
 /**
  * File selection widget.
  *
  * A file selection widget resembles an input box (@ref txt_inputbox_t)
  * but opens a file selector dialog box when clicked.
  */
-typedef struct txt_fileselect_s txt_fileselect_t;
+struct txt_fileselect_t
+{
+	Widget widget;
+	txt_inputbox_t* inputbox;
+	int size;
+	const char* prompt;
+	const char** extensions;
+};
 
 /**
  * Returns non-zero if a native file selector is available on this
@@ -67,4 +67,4 @@ txt_fileselect_t* TXT_NewFileSelector(char** variable, int size, const char* pro
  */
 extern const char* TXT_DIRECTORY[];
 
-#endif /* #ifndef TXT_FILESELECT_H */
+} /* END NAMESPACE cudadoom::txt */

@@ -329,7 +329,7 @@ net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
 	NET_WriteInt8(packet, conn->reliable_send_seq & 0xff);
 
 	// Add to the list of reliable packets
-	rp = malloc(sizeof(net_reliable_packet_t));
+	rp = static_cast<decltype(rp)>(malloc(sizeof(net_reliable_packet_t)));
 	rp->packet = packet;
 	rp->next = NULL;
 	rp->seq = conn->reliable_send_seq;

@@ -131,7 +131,7 @@ void R_ClipSolidWallSegment(int first, int last)
 		return;					// post just extended past the bottom of one post
 
 	while (next++ != newend)	// remove a post
-		*++start = *next;
+		*(++)start = *next;
 	newend = start + 1;
 }
 

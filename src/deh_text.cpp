@@ -25,7 +25,7 @@ bool bex_notext = false;
 // Given a string length, find the maximum length of a
 // string that can replace it.
 
-static int TXT_MaxStringLength(int len)
+static int cudadoom::txt::TXT_MaxStringLength(int len)
 {
 	// Enough bytes for the string and the NUL terminator
 
@@ -57,15 +57,14 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 	// Only allow string replacements that are possible in Vanilla Doom.
 	// Chocolate Doom is unforgiving!
 
-	if (!deh_allow_long_strings && tolen > TXT_MaxStringLength(fromlen))
+	if (!deh_allow_long_strings && tolen > cudadoom::txt::TXT_MaxStringLength(fromlen))
 	{
-		DEH_Error(context, "Replacement string is longer than the maximum "
-							"possible in doom.exe");
+		DEH_Error(context, "Replacement string is longer than the maximum possible in doom.exe");
 		return NULL;
 	}
 
-	from_text = malloc(fromlen + 1);
-	to_text = malloc(tolen + 1);
+	from_text = static_cast<decltype(from_text)>(malloc(fromlen + 1));
+	to_text = static_cast<decltype(to_text)>(malloc(tolen + 1));
 
 	// read in the "from" text
 

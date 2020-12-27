@@ -8,7 +8,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "doomkeys.h"
 
 #include "txt_button.h"
@@ -18,27 +17,28 @@
 #include "txt_utf8.h"
 #include "txt_window.h"
 
+namespace cudadoom::txt
+{
+
 static void TXT_ButtonSizeCalc(TXT_UNCAST_ARG(button))
 {
 	TXT_CAST_ARG(txt_button_t, button);
 
-	button->widget.w = TXT_UTF8_Strlen(button->label);
-	button->widget.h = 1;
+	button->widget.width = TXT_UTF8_Strlen(button->label);
+	button->widget.height = 1;
 }
 
 static void TXT_ButtonDrawer(TXT_UNCAST_ARG(button))
 {
 	TXT_CAST_ARG(txt_button_t, button);
-	int i;
-	int w;
 
-	w = button->widget.w;
+	auto width = button->widget.width;
 
 	TXT_SetWidgetBG(button);
 
 	TXT_DrawString(button->label);
 
-	for (i = TXT_UTF8_Strlen(button->label); i < w; ++i)
+	for (size_t i{TXT_UTF8_Strlen(button->label)}; i < width; ++i)
 	{
 		TXT_DrawString(" ");
 	}
@@ -76,7 +76,7 @@ static void TXT_ButtonMousePress(TXT_UNCAST_ARG(button), int x, int y, int b)
 	}
 }
 
-txt_widget_class_t txt_button_class =
+WidgetClass txt_button_class =
 {
 	TXT_AlwaysSelectable,
 	TXT_ButtonSizeCalc,
@@ -87,17 +87,17 @@ txt_widget_class_t txt_button_class =
 	NULL,
 };
 
-void TXT_SetButtonLabel(txt_button_t *button, const char *label)
+void TXT_SetButtonLabel(txt_button_t* button, const char* label)
 {
 	free(button->label);
 	button->label = strdup(label);
 }
 
-txt_button_t *TXT_NewButton(const char *label)
+txt_button_t* TXT_NewButton(const char* label)
 {
-	txt_button_t *button;
+	txt_button_t* button;
 
-	button = malloc(sizeof(txt_button_t));
+	button = static_cast<decltype(button)>(malloc(sizeof(txt_button_t)));
 
 	TXT_InitWidget(button, &txt_button_class);
 	button->label = strdup(label);
@@ -106,16 +106,13 @@ txt_button_t *TXT_NewButton(const char *label)
 }
 
 // Button with a callback set automatically
-
-txt_button_t *TXT_NewButton2(const char *label, TxtWidgetSignalFunc func,
-								void *user_data)
+txt_button_t* TXT_NewButton2(const char* label, WidgetSignalFunc func, void *user_data)
 {
-	txt_button_t *button;
-
-	button = TXT_NewButton(label);
+	auto button{TXT_NewButton(label)};
 
 	TXT_SignalConnect(button, "pressed", func, user_data);
 
 	return button;
 }
 
+}

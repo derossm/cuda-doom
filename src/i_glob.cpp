@@ -66,15 +66,14 @@ static void FreeStringList(char **globs, int num_globs)
 	free(globs);
 }
 
-glob_t *I_StartMultiGlob(const char *directory, int flags,
-							const char *glob, ...)
+glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...)
 {
 	char **globs;
 	int num_globs;
 	glob_t *result;
 	va_list args;
 
-	globs = malloc(sizeof(char *));
+	globs = static_cast<decltype(globs)>(malloc(sizeof(char *)));
 	if (globs == NULL)
 	{
 		return NULL;
@@ -104,7 +103,7 @@ glob_t *I_StartMultiGlob(const char *directory, int flags,
 	}
 	va_end(args);
 
-	result = malloc(sizeof(glob_t));
+	result = static_cast<decltype(result)>(malloc(sizeof(glob_t)));
 	if (result == NULL)
 	{
 		FreeStringList(globs, num_globs);

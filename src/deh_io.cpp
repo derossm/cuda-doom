@@ -46,35 +46,36 @@ auto DEH_OpenFile(const char* filename)
 
 	if (fstream == nullptr)
 	{
-		return nullptr;
+		return std::unique_ptr<deh_context_t>(nullptr);
 	}
 
 	auto context{DEH_NewContext()};
 
 	context->type = deh_input_type_t::DEH_INPUT_FILE;
 	context->stream = fstream;
-	context->filename = std::make_unique<auto>(M_StringDuplicate(filename));
+	context->filename = std::make_unique<char*>(M_StringDuplicate(filename));
 
 	return context;
 }
 
 // Open a WAD lump for reading.
-deh_context_t *DEH_OpenLump(int lumpnum)
+auto DEH_OpenLump(int lumpnum)
 {
-	deh_context_t *context;
-	void *lump;
+	//deh_context_t *context;
+	//void *lump;
 
-	lump = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
+	auto lump = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 
-	context = DEH_NewContext();
+	auto context = DEH_NewContext();
 
-	context->type = DEH_INPUT_LUMP;
+	context->type = deh_input_type_t::DEH_INPUT_LUMP;
 	context->lumpnum = lumpnum;
-	context->input_buffer = lump;
+	context->input_buffer = std::make_unique<unsigned char*>(lump);
 	context->input_buffer_len = W_LumpLength(lumpnum);
 	context->input_buffer_pos = 0;
 
-	context->filename = malloc(9);
+	// TODO finish
+	//context->filename = malloc(9);
 	M_StringCopy(context->filename, lumpinfo[lumpnum]->name, 9);
 
 	return context;

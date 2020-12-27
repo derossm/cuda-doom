@@ -43,8 +43,9 @@ typedef void (*txt_joystick_axis_callback_t)();
 
 struct txt_joystick_axis_s
 {
-	txt_widget_t widget;
-	int *axis, *invert;
+	Widget widget;
+	int *axis;
+	int *invert;
 	txt_joystick_axis_direction_t dir;
 
 	// Only used when configuring:

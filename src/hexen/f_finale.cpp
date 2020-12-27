@@ -22,8 +22,8 @@
 
 // MACROS ------------------------------------------------------------------
 
-#define	TEXTSPEED	3
-#define	TEXTWAIT	250
+#define TEXTSPEED	3
+#define TEXTWAIT	250
 
 // TYPES -------------------------------------------------------------------
 
@@ -197,7 +197,7 @@ static void TextWrite()
 	}
 	for (; count; count--)
 	{
-		c = *ch++;
+		c = *(ch++);
 		if (!c)
 		{
 			break;

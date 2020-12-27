@@ -18,9 +18,12 @@
 #include "txt_separator.h"
 #include "txt_window.h"
 
-void TXT_SetWindowAction(txt_window_t* window, txt_horiz_align_t position, TXT_UNCAST_ARG(action))
+namespace cudadoom::txt
 {
-	TXT_CAST_ARG(txt_widget_t, action);
+
+void TXT_SetWindowAction(txt_window_t* window, AlignHorizontal position, TXT_UNCAST_ARG(action))
+{
+	TXT_CAST_ARG(Widget, action);
 
 	if (window->actions[position] != nullptr)
 	{
@@ -38,7 +41,7 @@ void TXT_SetWindowAction(txt_window_t* window, txt_horiz_align_t position, TXT_U
 
 txt_window_t* TXT_NewWindow(const char* title)
 {
-	txt_window_t* win = malloc(sizeof(txt_window_t));
+	txt_window_t* win = static_cast<decltype(win)>(malloc(sizeof(txt_window_t)));
 
 	TXT_InitTable(&win->table, 1);
 
@@ -53,8 +56,8 @@ txt_window_t* TXT_NewWindow(const char* title)
 
 	win->x = TXT_SCREEN_W / 2;
 	win->y = TXT_SCREEN_H / 2;
-	win->horiz_align = txt_horiz_align_t::TXT_HORIZ_CENTER;
-	win->vert_align = txt_vert_align_t::TXT_VERT_CENTER;
+	win->horiz_align = AlignHorizontal::TXT_HORIZ_CENTER;
+	win->vert_align = AlignVertical::TXT_VERT_CENTER;
 	win->key_listener = nullptr;
 	win->mouse_listener = nullptr;
 	win->help_url = nullptr;
@@ -69,8 +72,8 @@ txt_window_t* TXT_NewWindow(const char* title)
 	TXT_AddDesktopWindow(win);
 
 	// Default actions
-	TXT_SetWindowAction(win, txt_horiz_align_t::TXT_HORIZ_LEFT, TXT_NewWindowEscapeAction(win));
-	TXT_SetWindowAction(win, txt_horiz_align_t::TXT_HORIZ_RIGHT, TXT_NewWindowSelectAction(win));
+	TXT_SetWindowAction(win, AlignHorizontal::TXT_HORIZ_LEFT, TXT_NewWindowEscapeAction(win));
+	TXT_SetWindowAction(win, AlignHorizontal::TXT_HORIZ_RIGHT, TXT_NewWindowSelectAction(win));
 
 	return win;
 }
@@ -99,26 +102,26 @@ static void CalcWindowPosition(txt_window_t* window)
 {
 	switch (window->horiz_align)
 	{
-		case txt_horiz_align_t::TXT_HORIZ_LEFT:
+		case AlignHorizontal::TXT_HORIZ_LEFT:
 			window->window_x = window->x;
 			break;
-		case txt_horiz_align_t::TXT_HORIZ_CENTER:
+		case AlignHorizontal::TXT_HORIZ_CENTER:
 			window->window_x = window->x - (window->window_w / 2);
 			break;
-		case txt_horiz_align_t::TXT_HORIZ_RIGHT:
+		case AlignHorizontal::TXT_HORIZ_RIGHT:
 			window->window_x = window->x - (window->window_w - 1);
 			break;
 	}
 
 	switch (window->vert_align)
 	{
-		case txt_vert_align_t::TXT_VERT_TOP:
+		case AlignVertical::TXT_VERT_TOP:
 			window->window_y = window->y;
 			break;
-		case txt_vert_align_t::TXT_VERT_CENTER:
+		case AlignVertical::TXT_VERT_CENTER:
 			window->window_y = window->y - (window->window_h / 2);
 			break;
-		case txt_vert_align_t::TXT_VERT_BOTTOM:
+		case AlignVertical::TXT_VERT_BOTTOM:
 			window->window_y = window->y - (window->window_h - 1);
 			break;
 	}
@@ -126,7 +129,7 @@ static void CalcWindowPosition(txt_window_t* window)
 
 static void LayoutActionArea(txt_window_t* window)
 {
-	txt_widget_t* widget;
+	Widget* widget;
 
 	// We need to calculate the available horizontal space for the center action widget, so that we can center it within it.
 	// To start with, we have the entire action area available.
@@ -134,9 +137,9 @@ static void LayoutActionArea(txt_window_t* window)
 	auto space_left_offset = 0;
 
 	// Left action
-	if (window->actions[txt_horiz_align_t::TXT_HORIZ_LEFT] != nullptr)
+	if (window->actions[AlignHorizontal::TXT_HORIZ_LEFT] != nullptr)
 	{
-		widget = window->actions[txt_horiz_align_t::TXT_HORIZ_LEFT];
+		widget = window->actions[AlignHorizontal::TXT_HORIZ_LEFT];
 
 		TXT_CalcWidgetSize(widget);
 
@@ -151,9 +154,9 @@ static void LayoutActionArea(txt_window_t* window)
 	}
 
 	// Draw the right action
-	if (window->actions[txt_horiz_align_t::TXT_HORIZ_RIGHT] != nullptr)
+	if (window->actions[AlignHorizontal::TXT_HORIZ_RIGHT] != nullptr)
 	{
-		widget = window->actions[txt_horiz_align_t::TXT_HORIZ_RIGHT];
+		widget = window->actions[AlignHorizontal::TXT_HORIZ_RIGHT];
 
 		TXT_CalcWidgetSize(widget);
 
@@ -167,9 +170,9 @@ static void LayoutActionArea(txt_window_t* window)
 	}
 
 	// Draw the center action
-	if (window->actions[txt_horiz_align_t::TXT_HORIZ_CENTER] != nullptr)
+	if (window->actions[AlignHorizontal::TXT_HORIZ_CENTER] != nullptr)
 	{
-		widget = window->actions[txt_horiz_align_t::TXT_HORIZ_CENTER];
+		widget = window->actions[AlignHorizontal::TXT_HORIZ_CENTER];
 
 		TXT_CalcWidgetSize(widget);
 
@@ -200,7 +203,7 @@ static void CalcActionAreaSize(txt_window_t* window, unsigned int* w, unsigned i
 	// Calculate the width of all the action widgets and use this to create an overall min. width of the action area
 	for (auto i{0u}; i < 3u; ++i)
 	{
-		auto widget = (txt_widget_t*)window->actions[i];
+		auto widget = (Widget*)window->actions[i];
 
 		if (widget != nullptr)
 		{
@@ -218,7 +221,7 @@ static void CalcActionAreaSize(txt_window_t* window, unsigned int* w, unsigned i
 // Sets size and position of all widgets in a window
 void TXT_LayoutWindow(txt_window_t* window)
 {
-	auto widget = (txt_widget_t*)window;
+	auto widget = (Widget*)window;
 
 	// Calculate size of table
 	TXT_CalcWidgetSize(window);
@@ -279,11 +282,11 @@ void TXT_DrawWindow(txt_window_t* window)
 
 	if (window->table.widget.focused())
 	{
-		TXT_BGColor(TXT_ACTIVE_WINDOW_BACKGROUND, 0);
+		TXT_BGColor(TXT_ACTIVE_WINDOW_BACKGROUND, false);
 	}
 	else
 	{
-		TXT_BGColor(TXT_INACTIVE_WINDOW_BACKGROUND, 0);
+		TXT_BGColor(TXT_INACTIVE_WINDOW_BACKGROUND, false);
 	}
 
 	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
@@ -295,7 +298,7 @@ void TXT_DrawWindow(txt_window_t* window)
 	TXT_DrawWidget(window);
 
 	// Draw an action area, if we have one
-	auto widget = (txt_widget_t*)window;
+	auto widget = (Widget*)window;
 
 	if (widget->y + widget->height < window->window_y + window->window_h - 1)
 	{
@@ -307,7 +310,7 @@ void TXT_DrawWindow(txt_window_t* window)
 	}
 }
 
-void TXT_SetWindowPosition(txt_window_t* window, txt_horiz_align_t horiz_align, txt_vert_align_t vert_align, int x, int y)
+void TXT_SetWindowPosition(txt_window_t* window, AlignHorizontal horiz_align, AlignVertical vert_align, int x, int y)
 {
 	window->vert_align = vert_align;
 	window->horiz_align = horiz_align;
@@ -338,7 +341,7 @@ static int MouseButtonPress(txt_window_t* window, int b)
 
 	{
 		// Is it within the table range?
-		auto widget = (txt_widget_t*)window;
+		auto widget = (Widget*)window;
 
 		if (x >= widget->x && x < (signed) (widget->x + widget->width) && y >= widget->y && y < (signed) (widget->y + widget->height))
 		{
@@ -435,12 +438,8 @@ void TXT_OpenURL(const char* url)
 #else
 void TXT_OpenURL(const char* url)
 {
-	char* cmd;
-	size_t cmd_len;
-	int retval;
-
-	cmd_len = strlen(url) + 30;
-	cmd = malloc(cmd_len);
+	size_t cmd_len = strlen(url) + 30;
+	char* cmd = static_cast<decltype(cmd)>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
 	TXT_snprintf(cmd, cmd_len, "open \"%s\"", url);
@@ -456,7 +455,7 @@ void TXT_OpenURL(const char* url)
 	TXT_snprintf(cmd, cmd_len, "xdg-open \"%s\"", url);
 #endif
 
-	retval = system(cmd);
+	auto retval = system(cmd);
 	free(cmd);
 	if (retval != 0)
 	{
@@ -486,9 +485,11 @@ txt_window_t* TXT_MessageBox(const char* title, const char* message, ...)
 	window = TXT_NewWindow(title);
 	TXT_AddWidget(window, TXT_NewLabel(buf));
 
-	TXT_SetWindowAction(window, txt_horiz_align_t::TXT_HORIZ_LEFT, nullptr);
-	TXT_SetWindowAction(window, txt_horiz_align_t::TXT_HORIZ_CENTER, TXT_NewWindowEscapeAction(window));
-	TXT_SetWindowAction(window, txt_horiz_align_t::TXT_HORIZ_RIGHT, nullptr);
+	TXT_SetWindowAction(window, AlignHorizontal::TXT_HORIZ_LEFT, nullptr);
+	TXT_SetWindowAction(window, AlignHorizontal::TXT_HORIZ_CENTER, TXT_NewWindowEscapeAction(window));
+	TXT_SetWindowAction(window, AlignHorizontal::TXT_HORIZ_RIGHT, nullptr);
 
 	return window;
 }
+
+} /* END NAMESPACE cudadoom::txt */
