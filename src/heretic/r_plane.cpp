@@ -83,21 +83,6 @@ void R_InitSkyMap()
 	skyiscale = FRACUNIT >> crispy->hires;
 }
 
-
-/*
-====================
-=
-= R_InitPlanes
-=
-= Only at game startup
-====================
-*/
-
-void R_InitPlanes()
-{
-}
-
-
 /*
 ================
 =

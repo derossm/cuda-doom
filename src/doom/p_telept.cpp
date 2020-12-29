@@ -22,7 +22,7 @@
 bool EV_Teleport(line_t* line, int side, mobj_t* thing)
 {
 	// don't teleport missiles
-	if (thing->flags & MF_MISSILE)
+	if (thing->flags & mobjflag_t::MF_MISSILE)
 	{
 		return false;
 	}
@@ -34,7 +34,7 @@ bool EV_Teleport(line_t* line, int side, mobj_t* thing)
 	}
 
 	auto tag{line->tag};
-	for (size_t i{0ull}; i < numsectors; ++i)
+	for (size_t i{0}; i < numsectors; ++i)
 	{
 		if (sectors[i].tag == tag)
 		{

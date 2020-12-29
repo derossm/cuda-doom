@@ -717,7 +717,6 @@ void R_Init()
 		printf (".");
 
 	R_SetViewSize(screenblocks, detailLevel);
-	R_InitPlanes();
 	if(devparm)
 		printf (".");
 

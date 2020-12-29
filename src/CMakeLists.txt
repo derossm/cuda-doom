@@ -38,6 +38,7 @@ target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2main SDL2::net)
 
 set(GAME_SOURCE_FILES
 	aes_prng.cpp		aes_prng.h
+						aes_prng_tables.h
 	d_event.cpp			d_event.h
 						doomkeys.h
 						doomtype.h

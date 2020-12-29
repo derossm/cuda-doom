@@ -658,7 +658,6 @@ void R_Init()
 	R_InitTables();
 	// viewwidth / viewheight / detailLevel are set by the defaults
 	R_SetViewSize(screenblocks, detailLevel);
-	R_InitPlanes();
 	R_InitLightTables();
 	R_InitSkyMap();
 	R_InitTranslationTables();

@@ -74,18 +74,6 @@ fixed_t			cacheddistance[MAXHEIGHT];
 fixed_t			cachedxstep[MAXHEIGHT];
 fixed_t			cachedystep[MAXHEIGHT];
 
-
-
-//
-// R_InitPlanes
-// Only at game startup.
-//
-void R_InitPlanes()
-{
- // Doh!
-}
-
-
 //
 // R_MapPlane
 //

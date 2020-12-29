@@ -11,20 +11,7 @@
 
 #include "../derma/common.h"
 
-/**
- * @file txt_widget.h
- *
- * Base "widget" GUI component class.
- */
-#ifndef DOXYGEN
-
-#define TXT_UNCAST_ARG_NAME(name) uncast_ ## name
-#define TXT_UNCAST_ARG(name) void * TXT_UNCAST_ARG_NAME(name)
-#define TXT_CAST_ARG(type, name) type *name = (type *) uncast_ ## name
-
-#else
-#define TXT_UNCAST_ARG(name) cudadoom::txt::Widget *name
-#endif
+#include "txt_defines.h"
 
 namespace cudadoom::txt
 {
@@ -112,8 +99,8 @@ public:
 	// These are set automatically when the window is drawn and should not be set manually.
 	int64_t x{};
 	int64_t y{};
-	uint64_t width{};
-	uint64_t height{};
+	int64_t width{};
+	int64_t height{};
 
 	AlignHorizontal align{};
 
@@ -131,6 +118,26 @@ public:
 		return _focused;
 	}
 
+	inline void setVisible() noexcept
+	{
+		_visible = true;
+	}
+
+	inline void unsetVisible() noexcept
+	{
+		_visible = false;
+	}
+
+	inline void setFocus() noexcept
+	{
+		_focused = true;
+	}
+
+	inline void unsetFocus() noexcept
+	{
+		_focused = false;
+	}
+
 	inline void toggleVisible() noexcept
 	{
 		_visible = !_visible;
@@ -139,26 +146,6 @@ public:
 	inline void toggleFocus() noexcept
 	{
 		_focused = !_focused;
-	}
-
-	inline void setVisible() noexcept
-	{
-		_visible = true;
-	}
-
-	inline void setFocus() noexcept
-	{
-		_focused = true;
-	}
-
-	inline void unsetVisible() noexcept
-	{
-		_visible = false;
-	}
-
-	inline void unsetFocus() noexcept
-	{
-		_focused = false;
 	}
 
 	inline void toggleVisibility() noexcept
@@ -282,24 +269,6 @@ void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
  * @param haystack		The widget that might contain needle.
  * @param needle		The widget being queried.
  */
-bool TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
+bool TXT_ContainsWidget(Widget&& haystack, Widget&& needle);
 
 } /* END NAMESPACE cudadoom::txt */
-
-//using TxtWidgetSizeCalc = cudadoom::txt::WidgetSizeCalc;
-//using TxtWidgetDrawer = cudadoom::txt::WidgetDrawer;
-//using TxtWidgetDestroy = cudadoom::txt::WidgetDestroy;
-//using TxtWidgetKeyPress = cudadoom::txt::WidgetKeyPress;
-//using TxtWidgetSignalFunc = cudadoom::txt::WidgetSignalFunc;
-//using TxtMousePressFunc = cudadoom::txt::MousePressFunc;
-//using TxtWidgetLayoutFunc = cudadoom::txt::WidgetLayoutFunc;
-//using TxtWidgetSelectableFunc = cudadoom::txt::WidgetSelectableFunc;
-//using TxtWidgetFocusFunc = cudadoom::txt::WidgetFocusFunc;
-
-//using txt_callback_t = cudadoom::txt::CallbackEntry;
-
-//using txt_callback_table_t = cudadoom::txt::CallbackTable;
-
-//using cudadoom::txt::WidgetClass = cudadoom::txt::WidgetClass;
-
-//using cudadoom::txt::Widget = cudadoom::txt::Widget;

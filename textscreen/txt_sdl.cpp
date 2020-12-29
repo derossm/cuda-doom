@@ -41,17 +41,17 @@ static unsigned char *screendata;
 static SDL_Renderer *renderer;
 
 // Current input mode.
-static txt_input_mode_t input_mode = TXT_INPUT_NORMAL;
+static txt_input_mode_t input_mode = txt_input_mode_t::TXT_INPUT_NORMAL;
 
 // Dimensions of the screen image in screen coordinates (not pixels); this
 // is the value that was passed to SDL_CreateWindow().
 static int screen_image_w, screen_image_h;
 
 static TxtSDLEventCallbackFunc event_callback;
-static void *event_callback_data;
+static void* event_callback_data;
 
 // Font we are using:
-static const txt_font_t *font;
+static const txt_font_t* font;
 
 // Dummy "font" that means to try highdpi rendering, or fallback to
 // normal_font otherwise.
@@ -61,9 +61,10 @@ static const txt_font_t highdpi_font = { "normal-highdpi", NULL, 8, 16 };
 static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;
 
 // String names of keys. This is a fallback; we usually use the SDL API.
-static const struct {
+static const struct
+{
 	int key;
-	const char *name;
+	const char* name;
 } key_names[] = KEY_NAMES_ARRAY;
 
 // Unicode key mapping; see codepage.h.
@@ -136,13 +137,10 @@ static const txt_font_t *FontForName(const char *name)
 	return NULL;
 }
 
-//
 // Select the font to use, based on screen resolution
 //
 // If the highest screen resolution available is less than
 // 640x480, use the small font.
-//
-
 static void ChooseFont()
 {
 	SDL_DisplayMode desktop_info;

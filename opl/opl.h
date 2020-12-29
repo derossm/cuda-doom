@@ -64,10 +64,6 @@ enum class opl_port_t
 #define OPL_REGS_FEEDBACK		0xC0
 
 // Times
-//#define OPL_SECOND	((uint64_t) 1000 * 1000)
-//#define OPL_MS		((uint64_t) 1000)
-//#define OPL_US		((uint64_t) 1)
-
 constexpr uint64_t OPL_SECOND{	1'000'000};
 constexpr uint64_t OPL_MS{		1'000};
 constexpr uint64_t OPL_US{		1};
@@ -130,4 +126,4 @@ void OPL_Unlock();
 void OPL_Delay(uint64_t us);
 
 // Pause the OPL callbacks.
-void OPL_SetPaused(int paused);
+void OPL_SetPaused(bool paused);

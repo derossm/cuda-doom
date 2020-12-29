@@ -239,7 +239,7 @@ struct mobj_t
 
 	int tics;			// state tic counter
 	state_t* state;
-	int flags;
+	mobjflag_t flags;
 	int health;
 
 	// Movement direction, movement generation (zig-zagging).

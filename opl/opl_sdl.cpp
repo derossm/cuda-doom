@@ -221,7 +221,7 @@ static void OPL_SDL_Shutdown()
 
 static unsigned int GetSliceSize()
 {
-	unsigned int limit{opl_sample_rate*(MAX_SOUND_SLICE_TIME/1000u)};
+	unsigned int limit{opl_sample_rate*(MAX_SOUND_SLICE_TIME/1000)};
 
 	// Try all powers of two, not exceeding the limit.
 	for (int n{0};; ++n)
@@ -333,7 +333,7 @@ static void OPLTimer_CalculateEndTime(opl_timer_t* timer)
 	// If the timer is enabled, calculate the time when the timer will expire.
 	if (timer->enabled)
 	{
-		uint64_t tics{0x100u - static_cast<uint64_t>(timer->value)};
+		uint64_t tics{0x100 - static_cast<uint64_t>(timer->value)};
 		// TODO NOTE is timer->rate bigger than opl_second? we risk either rounding to zero or overflow from the multiplication
 		// if only floating point arithmetic was a thing...
 		timer->expire_time = current_time + (tics * OPL_SECOND)/timer->rate;

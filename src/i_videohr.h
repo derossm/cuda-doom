@@ -8,8 +8,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		SDL emulation of VGA 640x480x4 planar video mode,
-//		for Hexen startup loading screen.
+		SDL emulation of VGA 640x480x4 planar video mode, for Hexen startup loading screen.
 \**********************************************************************************************************************************************/
 #pragma once
 

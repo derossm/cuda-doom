@@ -89,13 +89,13 @@ bool OPL_Queue_Pop(opl_callback_queue_t* queue, opl_callback_t* callback, delay_
 	auto entry{&queue->entries[queue->num_entries]};
 
 	// Percolate down.
-	auto i{0};
-	for (;; i = next_i)
+	size_t i{0};
+	for (size_t next_i{0};; i = next_i)
 	{
-		auto child1{i * 2 + 1};
-		auto child2{i * 2 + 2};
+		size_t child1{i * 2 + 1};
+		size_t child2{i * 2 + 2};
 
-		int next_i{0};
+		next_i = 0;
 
 		if (child1 < queue->num_entries && queue->entries[child1].time < entry->time)
 		{
@@ -138,13 +138,13 @@ uint64_t OPL_Queue_Peek(opl_callback_queue_t* queue)
 	}
 	else
 	{
-		return 0ull;
+		return 0;
 	}
 }
 
 void OPL_Queue_AdjustCallbacks(opl_callback_queue_t* queue, size_t time, float factor)
 {
-	for (size_t i{0u}; i < queue->num_entries; ++i)
+	for (size_t i{0}; i < queue->num_entries; ++i)
 	{
 		size_t offset = queue->entries[i].time - time;
 		queue->entries[i].time = time + size_t(offset / factor);
@@ -153,16 +153,14 @@ void OPL_Queue_AdjustCallbacks(opl_callback_queue_t* queue, size_t time, float f
 
 #ifdef TEST
 
-static void PrintQueueNode(opl_callback_queue_t *queue, int node, int depth)
+static void PrintQueueNode(opl_callback_queue_t* queue, size_t node, size_t depth)
 {
-	int i;
-
 	if (node >= queue->num_entries)
 	{
 		return;
 	}
 
-	for (i=0; i<depth * 3; ++i)
+	for (size_t i{0}; i < depth * 3; ++i)
 	{
 		printf(" ");
 	}
@@ -173,27 +171,23 @@ static void PrintQueueNode(opl_callback_queue_t *queue, int node, int depth)
 	PrintQueueNode(queue, node * 2 + 2, depth + 1);
 }
 
-static void PrintQueue(opl_callback_queue_t *queue)
+static void PrintQueue(opl_callback_queue_t* queue)
 {
 	PrintQueueNode(queue, 0, 0);
 }
 
 int main()
 {
-	opl_callback_queue_t *queue;
-	int iteration;
+	auto queue{OPL_Queue_Create()};
 
-	queue = OPL_Queue_Create();
-
-	for (iteration=0; iteration<5000; ++iteration)
+	for (size_t iteration{0}; iteration < 5000; ++iteration)
 	{
 		opl_callback_t callback;
 		delay_data_t* data;
-		unsigned int time;
-		unsigned int newtime;
-		int i;
+		unsigned time;
+		unsigned newtime;
 
-		for (i=0; i<MAX_OPL_QUEUE; ++i)
+		for (size_t i{0}; i < MAX_OPL_QUEUE; ++i)
 		{
 			time = rand() % 0x10000;
 			OPL_Queue_Push(queue, NULL, NULL, time);
@@ -201,7 +195,7 @@ int main()
 
 		time = 0;
 
-		for (i=0; i<MAX_OPL_QUEUE; ++i)
+		for (size_t i{0}; i < MAX_OPL_QUEUE; ++i)
 		{
 			assert(!OPL_Queue_IsEmpty(queue));
 			newtime = OPL_Queue_Peek(queue);

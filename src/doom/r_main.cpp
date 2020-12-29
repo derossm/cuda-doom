@@ -836,7 +836,6 @@ void R_Init()
 	printf(".");
 
 	R_SetViewSize(screenblocks, detailLevel);
-	R_InitPlanes();
 	printf(".");
 	R_InitLightTables();
 	printf(".");

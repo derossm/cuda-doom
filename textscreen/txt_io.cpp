@@ -32,14 +32,11 @@ static void NewLine(unsigned char *screendata)
 	if (cur_y >= TXT_SCREEN_H)
 	{
 		// Scroll the screen up
-
 		cur_y = TXT_SCREEN_H - 1;
 
-		memmove(screendata, screendata + TXT_SCREEN_W * 2,
-				TXT_SCREEN_W * 2 * (TXT_SCREEN_H -1));
+		memmove(screendata, screendata + TXT_SCREEN_W * 2, TXT_SCREEN_W * 2 * (TXT_SCREEN_H -1));
 
 		// Clear the bottom line
-
 		p = screendata + (TXT_SCREEN_H - 1) * 2 * TXT_SCREEN_W;
 
 		for (i=0; i<TXT_SCREEN_W; ++i)

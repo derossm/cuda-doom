@@ -1,4 +1,6 @@
 /**********************************************************************************************************************************************\
+ 	filename: dstrings.h
+
 	Copyright(C) 1993-1996 Id Software, Inc.
 	Copyright(C) 1993-2008 Raven Software
 	Copyright(C) 2005-2014 Simon Howard
@@ -13,23 +15,16 @@
 
 #include "../../derma/common.h"
 
-
-// DStrings.h
-
 //---------------------------------------------------------------------------
-//
-// P_inter.c
-//
+// p_inter.cpp
 //---------------------------------------------------------------------------
 
 // Keys
-
 #define TXT_GOTBLUEKEY			"BLUE KEY"
 #define TXT_GOTYELLOWKEY		"YELLOW KEY"
 #define TXT_GOTGREENKEY			"GREEN KEY"
 
 // Artifacts
-
 #define TXT_ARTIHEALTH			"QUARTZ FLASK"
 #define TXT_ARTIFLY				"WINGS OF WRATH"
 #define TXT_ARTIINVULNERABILITY	"RING OF INVINCIBILITY"
@@ -42,7 +37,6 @@
 #define TXT_ARTITELEPORT		"CHAOS DEVICE"
 
 // Items
-
 #define TXT_ITEMHEALTH			"CRYSTAL VIAL"
 #define TXT_ITEMBAGOFHOLDING	"BAG OF HOLDING"
 #define TXT_ITEMSHIELD1			"SILVER SHIELD"
@@ -50,7 +44,6 @@
 #define TXT_ITEMSUPERMAP		"MAP SCROLL"
 
 // Ammo
-
 #define TXT_AMMOGOLDWAND1		"WAND CRYSTAL"
 #define TXT_AMMOGOLDWAND2		"CRYSTAL GEODE"
 #define TXT_AMMOMACE1			"MACE SPHERES"
@@ -65,7 +58,6 @@
 #define TXT_AMMOPHOENIXROD2		"INFERNO ORB"
 
 // Weapons
-
 #define TXT_WPNMACE				"FIREMACE"
 #define TXT_WPNCROSSBOW			"ETHEREAL CROSSBOW"
 #define TXT_WPNBLASTER			"DRAGON CLAW"
@@ -74,9 +66,7 @@
 #define TXT_WPNGAUNTLETS		"GAUNTLETS OF THE NECROMANCER"
 
 //---------------------------------------------------------------------------
-//
-// SB_bar.c
-//
+// sb_bar.cpp
 //---------------------------------------------------------------------------
 
 #define TXT_CHEATGODON			"GOD MODE ON"
@@ -109,9 +99,7 @@
 #define TXT_CHEATIDKFA			"CHEATER - YOU DON'T DESERVE WEAPONS"
 
 //---------------------------------------------------------------------------
-//
-// P_doors.c
-//
+// p_doors.cpp
 //---------------------------------------------------------------------------
 
 #define TXT_NEEDBLUEKEY			"YOU NEED A BLUE KEY TO OPEN THIS DOOR"
@@ -119,128 +107,59 @@
 #define TXT_NEEDYELLOWKEY		"YOU NEED A YELLOW KEY TO OPEN THIS DOOR"
 
 //---------------------------------------------------------------------------
-//
-// G_game.c
-//
+// g_game.cpp
 //---------------------------------------------------------------------------
 
 #define TXT_GAMESAVED			"GAME SAVED"
 
 //---------------------------------------------------------------------------
-//
-// AM_map.c
-//
+// am_map.cpp
 //---------------------------------------------------------------------------
 
-#define AMSTR_FOLLOWON		"FOLLOW MODE ON"
-#define AMSTR_FOLLOWOFF		"FOLLOW MODE OFF"
+#define AMSTR_FOLLOWON			"FOLLOW MODE ON"
+#define AMSTR_FOLLOWOFF			"FOLLOW MODE OFF"
 
-#define AMSTR_GRIDON		"Grid ON"
-#define AMSTR_GRIDOFF		"Grid OFF"
+#define AMSTR_GRIDON			"Grid ON"
+#define AMSTR_GRIDOFF			"Grid OFF"
 
-#define AMSTR_MARKEDSPOT	"Marked Spot"
-#define AMSTR_MARKSCLEARED	"All Marks Cleared"
+#define AMSTR_MARKEDSPOT		"Marked Spot"
+#define AMSTR_MARKSCLEARED		"All Marks Cleared"
 
 //---------------------------------------------------------------------------
-//
-// F_finale.c
-//
+// f_finale.cpp
 //---------------------------------------------------------------------------
 
-#define E1TEXT	"with the destruction of the iron\n"\
-					"liches and their minions, the last\n"\
-					"of the undead are cleared from this\n"\
-					"plane of existence.\n\n"\
-					"those creatures had to come from\n"\
-					"somewhere, though, and you have the\n"\
-					"sneaky suspicion that the fiery\n"\
-					"portal of hell's maw opens onto\n"\
-					"their home dimension.\n\n"\
-					"to make sure that more undead\n"\
-					"(or even worse things) don't come\n"\
-					"through, you'll have to seal hell's\n"\
-					"maw from the other side. of course\n"\
-					"this means you may get stuck in a\n"\
-					"very unfriendly world, but no one\n"\
-					"ever said being a Heretic was easy!"
+#define E1TEXT	"With the destruction of the iron\nliches and their minions, the last\nof the undead are cleared from this\n"						\
+				"plane of existence.\n\nThose creatures had to come from\nsomewhere, though, and you have the\nsneaky suspicion that the fiery\n"	\
+				"portal of hell's maw opens onto\ntheir home dimension.\n\nTo make sure that more undead\n(or even worse things) don't come\n"		\
+				"through, you'll have to seal hell's\nmaw from the other side. Of course\nthis means you may get stuck in a\n"						\
+				"very unfriendly world, but no one\never said being a Heretic was easy!"
 
-#define E2TEXT "the mighty maulotaurs have proved\n"\
-					"to be no match for you, and as\n"\
-					"their steaming corpses slide to the\n"\
-					"ground you feel a sense of grim\n"\
-					"satisfaction that they have been\n"\
-					"destroyed.\n\n"\
-					"the gateways which they guarded\n"\
-					"have opened, revealing what you\n"\
-					"hope is the way home. but as you\n"\
-					"step through, mocking laughter\n"\
-					"rings in your ears.\n\n"\
-					"was some other force controlling\n"\
-					"the maulotaurs? could there be even\n"\
-					"more horrific beings through this\n"\
-					"gate? the sweep of a crystal dome\n"\
-					"overhead where the sky should be is\n"\
-					"certainly not a good sign...."
+#define E2TEXT	"the mighty maulotaurs have proved\nto be no match for you, and as\ntheir steaming corpses slide to the\n"							\
+				"ground you feel a sense of grim\nsatisfaction that they have been\ndestroyed.\n\nthe gateways which they guarded\n"				\
+				"have opened, revealing what you\nhope is the way home. but as you\nstep through, mocking laughter\nrings in your ears.\n\n"		\
+				"was some other force controlling\nthe maulotaurs? could there be even\nmore horrific beings through this\n"						\
+				"gate? the sweep of a crystal dome\noverhead where the sky should be is\ncertainly not a good sign...."
 
-#define E3TEXT	"the death of d'sparil has loosed\n"\
-					"the magical bonds holding his\n"\
-					"creatures on this plane, their\n"\
-					"dying screams overwhelming his own\n"\
-					"cries of agony.\n\n"\
-					"your oath of vengeance fulfilled,\n"\
-					"you enter the portal to your own\n"\
-					"world, mere moments before the dome\n"\
-					"shatters into a million pieces.\n\n"\
-					"but if d'sparil's power is broken\n"\
-					"forever, why don't you feel safe?\n"\
-					"was it that last shout just before\n"\
-					"his death, the one that sounded\n"\
-					"like a curse? or a summoning? you\n"\
-					"can't really be sure, but it might\n"\
-					"just have been a scream.\n\n"\
-					"then again, what about the other\n"\
-					"serpent riders?"
+#define E3TEXT	"the death of d'sparil has loosed\nthe magical bonds holding his\ncreatures on this plane, their\n"									\
+				"dying screams overwhelming his own\ncries of agony.\n\nyour oath of vengeance fulfilled,\nyou enter the portal to your own\n"		\
+				"world, mere moments before the dome\nshatters into a million pieces.\n\nbut if d'sparil's power is broken\n"						\
+				"forever, why don't you feel safe?\nwas it that last shout just before\nhis death, the one that sounded\n"							\
+				"like a curse? or a summoning? you\ncan't really be sure, but it might\njust have been a scream.\n\n"								\
+				"then again, what about the other\nserpent riders?"
 
-#define E4TEXT		"you thought you would return to your\n"\
-					"own world after d'sparil died, but\n"\
-					"his final act banished you to his\n"\
-					"own plane. here you entered the\n"\
-					"shattered remnants of lands\n"\
-					"conquered by d'sparil. you defeated\n"\
-					"the last guardians of these lands,\n"\
-					"but now you stand before the gates\n"\
-					"to d'sparil's stronghold. until this\n"\
-					"moment you had no doubts about your\n"\
-					"ability to face anything you might\n"\
-					"encounter, but beyond this portal\n"\
-					"lies the very heart of the evil\n"\
-					"which invaded your world. d'sparil\n"\
-					"might be dead, but the pit where he\n"\
-					"was spawned remains. now you must\n"\
-					"enter that pit in the hopes of\n"\
-					"finding a way out. and somewhere,\n"\
-					"in the darkest corner of d'sparil's\n"\
-					"demesne, his personal bodyguards\n"\
-					"await your arrival ..."
+#define E4TEXT	"you thought you would return to your\nown world after d'sparil died, but\nhis final act banished you to his\n"						\
+				"own plane. here you entered the\nshattered remnants of lands\nconquered by d'sparil. you defeated\n"								\
+				"the last guardians of these lands,\nbut now you stand before the gates\nto d'sparil's stronghold. until this\n"					\
+				"moment you had no doubts about your\nability to face anything you might\nencounter, but beyond this portal\n"						\
+				"lies the very heart of the evil\nwhich invaded your world. d'sparil\nmight be dead, but the pit where he\n"						\
+				"was spawned remains. now you must\nenter that pit in the hopes of\nfinding a way out. and somewhere,\n"							\
+				"in the darkest corner of d'sparil's\ndemesne, his personal bodyguards\nawait your arrival ..."
 
-#define E5TEXT		"as the final maulotaur bellows his\n"\
-					"death-agony, you realize that you\n"\
-					"have never come so close to your own\n"\
-					"destruction. not even the fight with\n"\
-					"d'sparil and his disciples had been\n"\
-					"this desperate. grimly you stare at\n"\
-					"the gates which open before you,\n"\
-					"wondering if they lead home, or if\n"\
-					"they open onto some undreamed-of\n"\
-					"horror. you find yourself wondering\n"\
-					"if you have the strength to go on,\n"\
-					"if nothing but death and pain await\n"\
-					"you. but what else can you do, if\n"\
-					"the will to fight is gone? can you\n"\
-					"force yourself to continue in the\n"\
-					"face of such despair? do you have\n"\
-					"the courage? you find, in the end,\n"\
-					"that it is not within you to\n"\
-					"surrender without a fight. eyes\n"\
-					"wide, you go to meet your fate."
-
+#define E5TEXT	"as the final maulotaur bellows his\ndeath-agony, you realize that you\nhave never come so close to your own\n"						\
+				"destruction. not even the fight with\nd'sparil and his disciples had been\nthis desperate. grimly you stare at\n"					\
+				"the gates which open before you,\nwondering if they lead home, or if\nthey open onto some undreamed-of\n"							\
+				"horror. you find yourself wondering\nif you have the strength to go on,\nif nothing but death and pain await\n"					\
+				"you. but what else can you do, if\nthe will to fight is gone? can you\nforce yourself to continue in the\n"						\
+				"face of such despair? do you have\nthe courage? you find, in the end,\nthat it is not within you to\n"								\
+				"surrender without a fight. eyes\nwide, you go to meet your fate."

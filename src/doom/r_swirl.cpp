@@ -78,8 +78,8 @@ void R_InitDistortedFlats()
 
 char* R_DistortedFlat(int flatnum)
 {
-	static int swirltic = -1;
-	static int swirlflat = -1;
+	static int swirltic{-1};
+	static int swirlflat{-1};
 	static char distortedflat[FLATSIZE];
 
 	if (swirltic != leveltime)
@@ -94,7 +94,7 @@ char* R_DistortedFlat(int flatnum)
 	{
 		auto normalflat = (char*)W_CacheLumpNum(flatnum, pu_tags_t::PU_STATIC);
 
-		for (size_t i{0u}; i < FLATSIZE; ++i)
+		for (size_t i{0}; i < FLATSIZE; ++i)
 		{
 			distortedflat[i] = normalflat[offset[i]];
 		}

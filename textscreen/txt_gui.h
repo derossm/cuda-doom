@@ -7,18 +7,17 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+	DESCRIPTION:
 		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
+#include "txt_defines.h"
+
 namespace cudadoom::txt
 {
-
-#define TXT_INACTIVE_WINDOW_BACKGROUND		txt_color_t::TXT_COLOR_BLACK
-#define TXT_ACTIVE_WINDOW_BACKGROUND		txt_color_t::TXT_COLOR_BLUE
-#define TXT_HOVER_BACKGROUND				txt_color_t::TXT_COLOR_CYAN
 
 struct txt_cliparea_t
 {

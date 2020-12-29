@@ -64,7 +64,7 @@ txt_window_t* TXT_NewWindow(const char* title)
 
 	TXT_AddWidget(win, TXT_NewSeparator(nullptr));
 
-	for (auto i{0u}; i < 3u; ++i)
+	for (size_t i{0}; i < 3; ++i)
 	{
 		win->actions[i] = nullptr;
 	}
@@ -86,7 +86,7 @@ void TXT_CloseWindow(txt_window_t* window)
 	//free(window->title);
 
 	// Destroy all actions
-	for (auto i{0u}; i < 3u; ++i)
+	for (size_t i{0}; i < 3; ++i)
 	{
 		if (window->actions[i] != nullptr)
 		{
@@ -186,7 +186,7 @@ static void LayoutActionArea(txt_window_t* window)
 
 static void DrawActionArea(txt_window_t* window)
 {
-	for (auto i{0u}; i < 3u; ++i)
+	for (size_t i{0}; i < 3; ++i)
 	{
 		if (window->actions[i] != nullptr)
 		{
@@ -201,7 +201,7 @@ static void CalcActionAreaSize(txt_window_t* window, unsigned int* w, unsigned i
 	*h = 0;
 
 	// Calculate the width of all the action widgets and use this to create an overall min. width of the action area
-	for (auto i{0u}; i < 3u; ++i)
+	for (size_t i{0}; i < 3; ++i)
 	{
 		auto widget = (Widget*)window->actions[i];
 
@@ -351,7 +351,7 @@ static int MouseButtonPress(txt_window_t* window, int b)
 	}
 
 	// Was one of the action area buttons pressed?
-	for (auto i{0u}; i < 3u; ++i)
+	for (size_t i{0}; i < 3; ++i)
 	{
 		auto widget = window->actions[i];
 
@@ -372,7 +372,7 @@ static int MouseButtonPress(txt_window_t* window, int b)
 	return 0;
 }
 
-int TXT_WindowKeyPress(txt_window_t *window, int c)
+int TXT_WindowKeyPress(txt_window_t* window, int c)
 {
 	// Is this a mouse button ?
 	if (c >= TXT_MOUSE_BASE && c < TXT_MOUSE_BASE + TXT_MAX_MOUSE_BUTTONS)
@@ -397,7 +397,7 @@ int TXT_WindowKeyPress(txt_window_t *window, int c)
 	}
 
 	// Try all of the action buttons
-	for (auto i{0u}; i < 3u; ++i)
+	for (size_t i{0}; i < 3; ++i)
 	{
 		if (window->actions[i] != nullptr && TXT_WidgetKeyPress(window->actions[i], c))
 		{

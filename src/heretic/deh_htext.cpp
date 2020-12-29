@@ -521,7 +521,6 @@ static const hhe_string_t strings[] =
 };
 
 // String offsets that are valid but we don't support.
-
 static const int unsupported_strings_1_0[] =
 {
 		0,		4,	64,	104,	160,	200,	220,	236,
@@ -798,19 +797,14 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 		DEH_Error(context, "Unknown string offset: %i", orig_offset);
 	}
 
-	// Only allow string replacements that are possible in Vanilla Doom.
-	// Chocolate Doom is unforgiving!
-
-	else if (!deh_allow_long_strings
-			&& repl_len > MaxStringLength(strlen(orig_text)))
+	// Only allow string replacements that are possible in Vanilla Doom. Chocolate Doom is unforgiving!
+	else if (!deh_allow_long_strings && repl_len > MaxStringLength(strlen(orig_text)))
 	{
-		DEH_Error(context, "Replacement string is longer than the maximum "
-							"possible in heretic.exe");
+		DEH_Error(context, "Replacement string is longer than the maximum possible in heretic.exe");
 	}
 	else
 	{
 		// Success.
-
 		DEH_AddStringReplacement(orig_text, repl_text);
 	}
 
@@ -820,7 +814,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 	return NULL;
 }
 
-static void DEH_TextParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_TextParseLine(deh_context_t* context, char* line, void* tag)
 {
 	// not used
 }
@@ -834,4 +828,3 @@ deh_section_t deh_section_heretic_text =
 	NULL,
 	NULL,
 };
-

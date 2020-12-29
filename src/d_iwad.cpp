@@ -211,7 +211,7 @@ auto GetRegistryString(registry_value_t* reg_val)
 
 	// Open the key (directory where the value is stored)
 	// RegOpenKeyEx(HKEY, LPCSTR, DWORD, REGSAM, PHKEY)
-	if (RegOpenKeyEx(reg_val->root, reg_val->path, 0u, KEY_READ, &key) != ERROR_SUCCESS)
+	if (RegOpenKeyEx(reg_val->root, reg_val->path, 0, KEY_READ, &key) != ERROR_SUCCESS)
 	{
 		return std::unique_ptr<const char*>(nullptr);
 	}
@@ -673,7 +673,7 @@ auto D_FindIWAD(int mask, GameMission_t* /*OUT*/ mission)
 
 		BuildIWADDirList();
 
-		//for (size_t i{0u}; result == nullptr && i < num_iwad_dirs; ++i)
+		//for (size_t i{0}; result == nullptr && i < num_iwad_dirs; ++i)
 		for (auto& iter : iwad_dirs)
 		{
 			if ((result = SearchDirectoryForIWAD(*iter, mask, mission)) != nullptr)
@@ -689,10 +689,10 @@ auto D_FindIWAD(int mask, GameMission_t* /*OUT*/ mission)
 const iwad_t** D_FindAllIWADs(int mask)
 {
 	const iwad_t** result = static_cast<decltype(result)>(malloc(sizeof(iwad_t*) * (arrlen(iwads) + 1)));
-	auto result_len{0u};
+	auto result_len{0};
 
 	// Try to find all IWADs
-	for (size_t i{0u}; i < arrlen(iwads); ++i)
+	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
 		//if (((1 << iwads[i].mission) & mask) == 0)
 		//{
@@ -737,7 +737,7 @@ auto D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant)
 		return (const char*)"freedm.wad";
 	}
 
-	for (size_t i{0u}; i < arrlen(iwads); ++i)
+	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
 		if (gamemission == iwads[i].mission)
 		{
@@ -751,7 +751,7 @@ auto D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant)
 
 auto D_SuggestIWADName(GameMission_t mission, GameMode_t mode)
 {
-	for (size_t i{0u}; i < arrlen(iwads); ++i)
+	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
 		if (iwads[i].mission == mission && iwads[i].mode == mode)
 		{
@@ -764,7 +764,7 @@ auto D_SuggestIWADName(GameMission_t mission, GameMode_t mode)
 
 auto D_SuggestGameName(GameMission_t mission, GameMode_t mode)
 {
-	for (size_t i{0u}; i < arrlen(iwads); ++i)
+	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
 		if (iwads[i].mission == mission	&& (mode == GameMode_t::indetermined || iwads[i].mode == mode))
 		{

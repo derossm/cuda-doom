@@ -16,7 +16,7 @@
 
 #include "opl.h"
 
-#define MAX_OPL_QUEUE 64
+constexpr size_t MAX_OPL_QUEUE{64};
 
 struct opl_queue_entry_t
 {

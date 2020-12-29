@@ -39,7 +39,7 @@ static bool LoadLibraryPointers()
 	{
 		if (HMODULE dll{LoadLibraryW(L"advapi32.dll")}; dll != nullptr)
 		{
-			for (size_t i{0ull}, size{sizeof(dll_functions) / sizeof(*dll_functions)}; i < size; ++i)
+			for (size_t i{0}, size{sizeof(dll_functions) / sizeof(*dll_functions)}; i < size; ++i)
 			{
 				*dll_functions[i].fn = GetProcAddress(dll, dll_functions[i].name);
 

@@ -289,22 +289,22 @@ static Menu_t *Menus[] = {
 
 // [crispy] intermediate gamma levels
 static const char *GammaText[] = {
-	cudadoom::txt::TXT_GAMMA_LEVEL_OFF,
-	cudadoom::txt::TXT_GAMMA_LEVEL_05,
-	cudadoom::txt::TXT_GAMMA_LEVEL_1,
-	cudadoom::txt::TXT_GAMMA_LEVEL_15,
-	cudadoom::txt::TXT_GAMMA_LEVEL_2,
-	cudadoom::txt::TXT_GAMMA_LEVEL_25,
-	cudadoom::txt::TXT_GAMMA_LEVEL_3,
-	cudadoom::txt::TXT_GAMMA_LEVEL_35,
-	cudadoom::txt::TXT_GAMMA_LEVEL_4
+	TXT_GAMMA_LEVEL_OFF,
+	TXT_GAMMA_LEVEL_05,
+	TXT_GAMMA_LEVEL_1,
+	TXT_GAMMA_LEVEL_15,
+	TXT_GAMMA_LEVEL_2,
+	TXT_GAMMA_LEVEL_25,
+	TXT_GAMMA_LEVEL_3,
+	TXT_GAMMA_LEVEL_35,
+	TXT_GAMMA_LEVEL_4
 };
 
 void MN_Init()
 {
 	InitFonts();
 	MenuActive = false;
-//		messageson = true;				// Set by defaults in .CFG
+//	messageson = true;				// Set by defaults in .CFG
 	MauloBaseLump = W_GetNumForName("FBULA0"); // ("M_SKL00");
 }
 
@@ -316,10 +316,10 @@ static void InitFonts()
 }
 
 // Draw text using font A.
-void MN_DrTextA(const char *text, int x, int y)
+void MN_DrTextA(const char* text, int x, int y)
 {
 	char c;
-	patch_t *p;
+	patch_t* p;
 
 	while ((c = *(text++)) != 0)
 	{
@@ -329,17 +329,17 @@ void MN_DrTextA(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
+			p = static_cast<decltype(p)>(W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE));
 			V_DrawPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}
 	}
 }
 
-void MN_DrTextAYellow(const char *text, int x, int y)
+void MN_DrTextAYellow(const char* text, int x, int y)
 {
 	char c;
-	patch_t *p;
+	patch_t* p;
 
 	while ((c = *(text++)) != 0)
 	{
@@ -349,7 +349,7 @@ void MN_DrTextAYellow(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontAYellowBaseLump + c - 33, pu_tags_t::PU_CACHE);
+			p = static_cast<decltype(p)>(W_CacheLumpNum(FontAYellowBaseLump + c - 33, pu_tags_t::PU_CACHE));
 			V_DrawPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}
@@ -357,11 +357,11 @@ void MN_DrTextAYellow(const char *text, int x, int y)
 }
 
 // Returns the pixel width of a string using font A.
-int MN_TextAWidth(const char *text)
+int MN_TextAWidth(const char* text)
 {
 	char c;
 	int width;
-	patch_t *p;
+	patch_t* p;
 
 	width = 0;
 	while ((c = *(text++)) != 0)
@@ -372,7 +372,7 @@ int MN_TextAWidth(const char *text)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE);
+			p = static_cast<decltype(p)>(W_CacheLumpNum(FontABaseLump + c - 33, pu_tags_t::PU_CACHE));
 			width += SHORT(p->width) - 1;
 		}
 	}
@@ -380,10 +380,10 @@ int MN_TextAWidth(const char *text)
 }
 
 // Draw text using font B.
-void MN_DrTextB(const char *text, int x, int y)
+void MN_DrTextB(const char* text, int x, int y)
 {
 	char c;
-	patch_t *p;
+	patch_t* p;
 
 	while ((c = *(text++)) != 0)
 	{
@@ -393,7 +393,7 @@ void MN_DrTextB(const char *text, int x, int y)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontBBaseLump + c - 33, pu_tags_t::PU_CACHE);
+			p = static_cast<decltype(p)>(W_CacheLumpNum(FontBBaseLump + c - 33, pu_tags_t::PU_CACHE));
 			V_DrawPatch(x, y, p);
 			x += SHORT(p->width) - 1;
 		}
@@ -401,11 +401,11 @@ void MN_DrTextB(const char *text, int x, int y)
 }
 
 // Returns the pixel width of a string using font B.
-int MN_TextBWidth(const char *text)
+int MN_TextBWidth(const char* text)
 {
 	char c;
 	int width;
-	patch_t *p;
+	patch_t* p;
 
 	width = 0;
 	while ((c = *(text++)) != 0)
@@ -416,7 +416,7 @@ int MN_TextBWidth(const char *text)
 		}
 		else
 		{
-			p = W_CacheLumpNum(FontBBaseLump + c - 33, pu_tags_t::PU_CACHE);
+			p = static_cast<decltype(p)>(W_CacheLumpNum(FontBBaseLump + c - 33, pu_tags_t::PU_CACHE));
 			width += SHORT(p->width) - 1;
 		}
 	}
@@ -425,11 +425,11 @@ int MN_TextBWidth(const char *text)
 
 void MN_Ticker()
 {
-	if (MenuActive == false)
+	if (!MenuActive)
 	{
 		return;
 	}
-	MenuTime++;
+	++MenuTime;
 }
 
 const char *QuitEndMsg[] = {
@@ -445,28 +445,23 @@ void MN_Drawer()
 	int i;
 	int x;
 	int y;
-	MenuItem_t *item;
-	const char *selName;
+	MenuItem_t* item;
+	const char* selName;
 
-	if (MenuActive == false)
+	if (!MenuActive)
 	{
 		if (askforquit)
 		{
-			MN_DrTextA(QuitEndMsg[typeofask - 1], 160 -
-						MN_TextAWidth(QuitEndMsg[typeofask - 1]) / 2, 80);
+			MN_DrTextA(QuitEndMsg[typeofask - 1], 160 - MN_TextAWidth(QuitEndMsg[typeofask - 1]) / 2, 80);
 			if (typeofask == 3)
 			{
-				MN_DrTextA(SlotText[quicksave - 1], 160 -
-							MN_TextAWidth(SlotText[quicksave - 1]) / 2, 90);
-				MN_DrTextA("?", 160 +
-							MN_TextAWidth(SlotText[quicksave - 1]) / 2, 90);
+				MN_DrTextA(SlotText[quicksave - 1], 160 - MN_TextAWidth(SlotText[quicksave - 1]) / 2, 90);
+				MN_DrTextA("?", 160 + MN_TextAWidth(SlotText[quicksave - 1]) / 2, 90);
 			}
 			if (typeofask == 4)
 			{
-				MN_DrTextA(SlotText[quickload - 1], 160 -
-							MN_TextAWidth(SlotText[quickload - 1]) / 2, 90);
-				MN_DrTextA("?", 160 +
-							MN_TextAWidth(SlotText[quicksave - 1]) / 2, 90);
+				MN_DrTextA(SlotText[quickload - 1], 160 - MN_TextAWidth(SlotText[quickload - 1]) / 2, 90);
+				MN_DrTextA("?", 160 + MN_TextAWidth(SlotText[quicksave - 1]) / 2, 90);
 			}
 			UpdateState |= I_FULLSCRN;
 		}
@@ -491,14 +486,14 @@ void MN_Drawer()
 		x = CurrentMenu->x;
 		y = CurrentMenu->y;
 		item = CurrentMenu->items;
-		for (i = 0; i < CurrentMenu->itemCount; i++)
+		for (i = 0; i < CurrentMenu->itemCount; ++i)
 		{
 			if (item->type != ITT_EMPTY && item->text)
 			{
 				MN_DrTextB(item->text, x, y);
 			}
 			y += ITEM_HEIGHT;
-			item++;
+			++item;
 		}
 		y = CurrentMenu->y + (CurrentItPos * ITEM_HEIGHT) + SELECTOR_YOFFSET;
 		selName = MenuTime & 16 ? "M_SLCTR1" : "M_SLCTR2";
@@ -572,7 +567,7 @@ static void DrawSaveMenu()
 
 static bool ReadDescriptionForSlot(int slot, char *description)
 {
-	FILE *fp;
+	FILE* fp;
 	bool found;
 	char name[100];
 	char versionText[HXS_VERSION_TEXT_LENGTH];
@@ -625,7 +620,7 @@ static void DrawFileSlots(Menu_t * menu)
 
 	x = menu->x;
 	y = menu->y;
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < 6; ++i)
 	{
 		V_DrawPatch(x, y, W_CacheLumpName("M_FSLOT", pu_tags_t::PU_CACHE));
 		if (SlotStatus[i])
@@ -752,11 +747,12 @@ static void SCLoadGame(int option)
 
 static void SCSaveGame(int option)
 {
-	char *ptr;
+	char* ptr;
 
 	if (!FileMenuKeySteal)
 	{
-		int x, y;
+		int x;
+		int y;
 
 		FileMenuKeySteal = true;
 		// We need to activate the text input interface to type the save game name:
@@ -768,11 +764,11 @@ static void SCSaveGame(int option)
 		ptr = SlotText[option];
 		while (*ptr)
 		{
-			ptr++;
+			++ptr;
 		}
 		*ptr = '[';
 		*(ptr + 1) = 0;
-		SlotStatus[option]++;
+		++SlotStatus[option];
 		currentSlot = option;
 		slotptr = ptr - SlotText[option];
 		return;
@@ -882,12 +878,12 @@ static void SCMusicVolume(int option)
 	{
 		if (snd_MusicVolume < 15)
 		{
-			snd_MusicVolume++;
+			++snd_MusicVolume;
 		}
 	}
 	else if (snd_MusicVolume)
 	{
-		snd_MusicVolume--;
+		--snd_MusicVolume;
 	}
 	S_SetMusicVolume();
 }
@@ -898,12 +894,12 @@ static void SCScreenSize(int option)
 	{
 		if (screenblocks < 11)
 		{
-			screenblocks++;
+			++screenblocks;
 		}
 	}
 	else if (screenblocks > 3)
 	{
-		screenblocks--;
+		--screenblocks;
 	}
 	R_SetViewSize(screenblocks, detailLevel);
 }
@@ -918,7 +914,7 @@ static void SCInfo(int option)
 	}
 }
 
-bool MN_Responder(event_t * event)
+bool MN_Responder(event_t* event)
 {
 	int key;
 	int charTyped;
@@ -927,7 +923,7 @@ bool MN_Responder(event_t * event)
 	extern bool automapactive;
 	extern void H2_StartTitle();
 	extern void G_CheckDemoStatus();
-	char *textBuffer;
+	char* textBuffer;
 
 	// In testcontrols mode, none of the function keys should do anything- the only key is escape to quit.
 	if (testcontrols)
@@ -1038,15 +1034,13 @@ bool MN_Responder(event_t * event)
 					H2_StartTitle();	// go to intro/demo mode.
 					return false;
 				case 3:
-					P_SetMessage(&players[consoleplayer],
-									"QUICKSAVING....", false);
+					P_SetMessage(&players[consoleplayer], "QUICKSAVING....", false);
 					FileMenuKeySteal = true;
 					SCSaveGame(quicksave - 1);
 					BorderNeedRefresh = true;
 					break;
 				case 4:
-					P_SetMessage(&players[consoleplayer],
-									"QUICKLOADING....", false);
+					P_SetMessage(&players[consoleplayer], "QUICKLOADING....", false);
 					SCLoadGame(quickload - 1);
 					BorderNeedRefresh = true;
 					break;
@@ -1081,7 +1075,8 @@ bool MN_Responder(event_t * event)
 		if (key == key_menu_decscreen)
 		{
 			if (automapactive)
-			{				// Don't screen size in automap
+			{
+				// Don't screen size in automap
 				return (false);
 			}
 			SCScreenSize(LEFT_DIR);
@@ -1093,7 +1088,8 @@ bool MN_Responder(event_t * event)
 		else if (key == key_menu_incscreen)
 		{
 			if (automapactive)
-			{				// Don't screen size in automap
+			{
+				// Don't screen size in automap
 				return (false);
 			}
 			SCScreenSize(RIGHT_DIR);
@@ -1184,8 +1180,7 @@ bool MN_Responder(event_t * event)
 					S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 					slottextloaded = false; //reload the slot text
 					quicksave = -1;
-					P_SetMessage(&players[consoleplayer],
-									"CHOOSE A QUICKSAVE SLOT", true);
+					P_SetMessage(&players[consoleplayer], "CHOOSE A QUICKSAVE SLOT", true);
 				}
 				else
 				{
@@ -1235,8 +1230,7 @@ bool MN_Responder(event_t * event)
 					S_StartSound(NULL, sfxenum_t::SFX_DOOR_LIGHT_CLOSE);
 					slottextloaded = false; // reload the slot text
 					quickload = -1;
-					P_SetMessage(&players[consoleplayer],
-									"CHOOSE A QUICKLOAD SLOT", true);
+					P_SetMessage(&players[consoleplayer], "CHOOSE A QUICKLOAD SLOT", true);
 				}
 				else
 				{
@@ -1262,7 +1256,7 @@ bool MN_Responder(event_t * event)
 		}
 		else if (key == key_menu_gamma)			// F11 (gamma correction)
 		{
-			usegamma++;
+			++usegamma;
 			if (usegamma > 4+4) // [crispy] intermediate gamma levels
 			{
 				usegamma = 0;
@@ -1289,7 +1283,7 @@ bool MN_Responder(event_t * event)
 				nomonsters = true;
 			}
 			G_DeferedInitNew(gameskill, gameepisode, gamemap);
-			P_SetMessage(&players[consoleplayer], cudadoom::txt::TXT_CHEATWARP, false);
+			P_SetMessage(&players[consoleplayer], TXT_CHEATWARP, false);
 			return true;
 		}
 	}
@@ -1334,7 +1328,7 @@ bool MN_Responder(event_t * event)
 				}
 				else
 				{
-					CurrentItPos--;
+					--CurrentItPos;
 				}
 			}
 			while (CurrentMenu->items[CurrentItPos].type == ITT_EMPTY);
@@ -1405,12 +1399,11 @@ bool MN_Responder(event_t * event)
 		}
 		else if (charTyped != 0)
 		{
-			for (i = 0; i < CurrentMenu->itemCount; i++)
+			for (i = 0; i < CurrentMenu->itemCount; ++i)
 			{
 				if (CurrentMenu->items[i].text)
 				{
-					if (toupper(charTyped)
-						== toupper(CurrentMenu->items[i].text[0]))
+					if (toupper(charTyped) == toupper(CurrentMenu->items[i].text[0]))
 					{
 						CurrentItPos = i;
 						return (true);
@@ -1432,7 +1425,7 @@ bool MN_Responder(event_t * event)
 			if (slotptr)
 			{
 				*textBuffer = 0;
-				slotptr--;
+				--slotptr;
 				textBuffer = &SlotText[currentSlot][slotptr];
 				*textBuffer = ASCII_CURSOR;
 			}
@@ -1440,9 +1433,8 @@ bool MN_Responder(event_t * event)
 		}
 		if (key == KEY_ESCAPE)
 		{
-			M_StringCopy(SlotText[currentSlot], oldSlotText,
-							sizeof(SlotText[currentSlot]));
-			SlotStatus[currentSlot]--;
+			M_StringCopy(SlotText[currentSlot], oldSlotText, sizeof(SlotText[currentSlot]));
+			--SlotStatus[currentSlot];
 			MN_DeactivateMenu();
 			return (true);
 		}
@@ -1465,9 +1457,10 @@ bool MN_Responder(event_t * event)
 		{
 			if (isalpha(charTyped))
 			{
+				// FIXME does this assign to the current textBuffer, then advance ptr after the dereference?
 				*(textBuffer++) = toupper(charTyped);
 				*textBuffer = ASCII_CURSOR;
-				slotptr++;
+				++slotptr;
 				return (true);
 			}
 			if (isdigit(charTyped) || charTyped == ' '
@@ -1476,7 +1469,7 @@ bool MN_Responder(event_t * event)
 			{
 				*(textBuffer++) = charTyped;
 				*textBuffer = ASCII_CURSOR;
-				slotptr++;
+				++slotptr;
 				return (true);
 			}
 		}
@@ -1545,15 +1538,17 @@ static void SetMenu(MenuType_t menu)
 	CurrentItPos = CurrentMenu->oldItPos;
 }
 
-static void DrawSlider(Menu_t * menu, int item, int width, int slot)
+static void DrawSlider(Menu_t* menu, int item, int width, int slot)
 {
-	int x2;
-	int count;
+	int x{menu->x + 24};
+	int y{menu->y + 2 + (item * ITEM_HEIGHT)};
 
-	int x = menu->x + 24;
-	int y = menu->y + 2 + (item * ITEM_HEIGHT);
+	int x2{x};
 	V_DrawPatch(x - 32, y, W_CacheLumpName("M_SLDLT", pu_tags_t::PU_CACHE));
-	for (x2 = x, count = width; count--; x2 += 8)
+	// FIXME is count-- in the comparison here comparing the current value and then using the decr value inside the loop?
+	// I think the lifetime of the temp ends at the semi-colon, and the comparison happens after that?
+	// If the comparison happens against the OLD value, this loop counter is going to do count = 0 inside the body, otherwise count = 1 is the min
+	for (auto count{width}; count--; x2 += 8)
 	{
 		V_DrawPatch(x2, y, W_CacheLumpName(count & 1 ? "M_SLDMD1" : "M_SLDMD2", pu_tags_t::PU_CACHE));
 	}

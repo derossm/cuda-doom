@@ -26,8 +26,7 @@
 
 #include "opl_queue.h"
 
-//#define MAX_SOUND_SLICE_TIME 100 /* ms */
-constexpr uint64_t MAX_SOUND_SLICE_TIME = 100;
+constexpr uint64_t MAX_SOUND_SLICE_TIME = 100; /* ms */
 
 struct opl_timer_t
 {

@@ -18,7 +18,7 @@
 
 #include <doomtype.h>
 
-#define BUFFER_SIZE 1024
+constexpr size_t BUFFER_SIZE{1024};
 
 struct buffer_t
 {

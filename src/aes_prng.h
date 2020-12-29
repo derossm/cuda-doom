@@ -16,11 +16,10 @@
 
 #include "doomtype.h"
 
-// Nonce value used as random seed for secure demos.
-
-//typedef byte prng_seed_t[16];
 using prng_seed_t = byte[16];
 
-void PRNG_Start(prng_seed_t seed);
+// Initialize Pseudo-RNG using the specified 128-bit key.
+void PRNG_Start(prng_seed_t key);
 void PRNG_Stop();
-unsigned int PRNG_Random();
+// Read a random 32-bit integer from the PRNG.
+unsigned PRNG_Random();

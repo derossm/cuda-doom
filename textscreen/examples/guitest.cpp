@@ -120,7 +120,7 @@ void SetupWindow(void)
 	//cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewScrollPane(15, 4, table));
 	cudadoom::txt::TXT_AddWidget(window, table);
 
-	for (size_t i{0ull}; i<3; ++i)
+	for (size_t i{0}; i < 3; ++i)
 	{
 		cudadoom::txt::TXT_snprintf(buf, sizeof(buf), "Option %i in a table:", i + 1);
 		cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewLabel(buf));
@@ -188,8 +188,7 @@ void Window2(void)
 
 	cudadoom::txt::TXT_AddWidget(unselectable_table, cudadoom::txt::TXT_NewLabel("* Unselectable table *"));
 	cudadoom::txt::TXT_AddWidget(unselectable_table, cudadoom::txt::TXT_NewLabel(
-		"This is a UTF-8 string:\n\xc3\x80 bient\xc3\xb4t na\xc3\xaet "
-		"\xc3\xa9v\xc3\xaaque \xc3\xa0 l'\xc5\x93uvre p\xc3\xa8re."));
+		"This is a UTF-8 string:\n\xc3\x80 bient\xc3\xb4t na\xc3\xaet \xc3\xa9v\xc3\xaaque \xc3\xa0 l'\xc5\x93uvre p\xc3\xa8re."));
 
 	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewSeparator("Input boxes"));
 	table = cudadoom::txt::TXT_NewTable(2);
