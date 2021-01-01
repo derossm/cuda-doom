@@ -63,11 +63,13 @@
 		"functional": "cpp",
 		"list": "cpp",
 		"unordered_map": "cpp",
-		"xhash": "cpp"
+		"xhash": "cpp",
+		"*.ixx": "cpp"
 	},
 	"git.allowForcePush": true,
 	"editor.rulers": [
 	160,
 	144
-	]
+	],
+	"C_Cpp.errorSquiggles": "Enabled"
 }

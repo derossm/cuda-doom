@@ -6,44 +6,51 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "txt_widget.h"
+//#include "txt_defines.h"
+
+export module txt_gui;
+
+import std.core;
+
+import textscreen;
+
+export
+{
 
 namespace cudadoom::txt
 {
 
-/**
- * Scrollable pane widget.
- *
- * A scrollable pane widget is a widget that contains another widget
- * that is larger than it. Scroll bars appear on the side to allow
- * different areas of the contained widget to be seen.
- */
-struct txt_scrollpane_t
+struct txt_cliparea_t
 {
-	Widget widget;
-	int w;
-	int h;
-	int x;
-	int y;
-	int expand_w;
-	int expand_h;
-	Widget* child;
+	int x1;
+	int x2;
+	int y1;
+	int y2;
+	txt_cliparea_t* next;
 };
 
-/**
- * Create a new scroll pane widget.
- *
- * @param w				Width of the scroll pane, in characters.
- * @param h				Height of the scroll pane, in lines.
- * @param target			The target widget that the scroll pane will
- *						contain.
- * @return				Pointer to the new scroll pane widget.
- */
-txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target));
+void DrawDesktopBackground(const char* title);
+void DrawWindowFrame(const char* title, int x, int y, int w, int h);
+void DrawSeparator(int x, int y, int w);
+void DrawCodePageString(const char* s);
+void DrawString(const char* s);
+int CanDrawCharacter(unsigned c);
+
+void DrawHorizScrollbar(int x, int y, int w, int cursor, int range);
+void DrawVertScrollbar(int x, int y, int h, int cursor, int range);
+
+void InitClipArea();
+void PushClipArea(int x1, int x2, int y1, int y2);
+void PopClipArea();
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

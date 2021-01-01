@@ -7,16 +7,25 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "doomkeys.h"
+//#include "doomkeys.h"
 
-#include "txt_main.h"
-#include "txt_widget.h"
-#include "txt_window.h"
-#include "txt_io.h"
+export module txt_strut;
+
+import std.core;
+
+import textscreen;
+
+import txt_main;
+import txt_widget;
+import txt_window;
+import txt_io;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -91,3 +100,5 @@ struct txt_strut_t
 txt_strut_t* NewStrut(int width, int height);
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

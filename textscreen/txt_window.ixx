@@ -7,21 +7,30 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "doomkeys.h"
+//#include "doomkeys.h"
 
-#include "txt_main.h"
-#include "txt_widget.h"
-#include "txt_table.h"
-#include "txt_label.h"
-#include "txt_separator.h"
-#include "txt_window_action.h"
-#include "txt_desktop.h"
-#include "txt_io.h"
-#include "txt_gui.h"
+export module txt_window;
+
+import std.core;
+
+import textscreen;
+
+import txt_main;
+import txt_widget;
+import txt_table;
+import txt_label;
+import txt_separator;
+import txt_window_action;
+import txt_desktop;
+import txt_io;
+import txt_gui;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -446,12 +455,12 @@ public:
 		help_url(std::forward<std::string>(_help_url));
 	}
 
-	#ifdef _WIN32
+//#ifdef _WIN32
 	void OpenURL(std::string& url) noexcept
 	{
 		ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 	}
-	#else
+/* #else
 	void OpenURL(const char* url) noexcept
 	{
 		size_t cmd_len = strlen(url) + 30;
@@ -478,7 +487,7 @@ public:
 			fprintf(stderr, "OpenURL: error executing '%s'; return code %d\n", cmd, retval);
 		}
 	}
-	#endif /* #ifdef _WIN32 */
+#endif */ // #ifdef _WIN32
 
 	void OpenWindowHelpURL() noexcept
 	{
@@ -610,3 +619,5 @@ void SetWindowHelpURL(Window* window, const char* help_url);
 void OpenWindowHelpURL(Window* window);
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

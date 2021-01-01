@@ -7,23 +7,32 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "doomkeys.h"
+//#include "doomkeys.h"
 
-#include "txt_main.h"
-#include "txt_window.h"
-#include "txt_separator.h"
-#include "txt_io.h"
-#include "txt_gui.h"
+export module txt_desktop;
 
-#define HELP_KEY KEY_F1
-#define MAXWINDOWS 128
+import std.core;
+
+import textscreen;
+
+import txt_main;
+import txt_window;
+import txt_separator;
+import txt_io;
+import txt_gui.h;
+
+export
+{
 
 namespace cudadoom::txt
 {
+
+constexpr int HELP_KEY{KEY_F1};
+constexpr size_t MAXWINDOWS{128};
 
 typedef void (*TxtIdleCallback)(void* user_data);
 
@@ -429,3 +438,5 @@ void GUIMainLoop()
 }
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

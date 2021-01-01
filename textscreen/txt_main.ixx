@@ -10,12 +10,22 @@
 	DESCRIPTION:
 		Base interface that abstracts the text mode screen.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "txt_defines.h"
-#include "txt_sdl.h"
+//#include "txt_defines.h"
+
+export module txt_main;
+
+import std.core;
+
+import textscreen;
+
+import txt_sdl;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -151,3 +161,5 @@ int vsnprintf(char* buf, size_t buf_len, const char* s, va_list args);
 int snprintf(char* buf, size_t buf_len, const char* s, ...) PRINTF_ATTR(3, 4);
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

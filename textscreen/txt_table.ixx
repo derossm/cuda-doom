@@ -7,20 +7,30 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "doomkeys.h"
+//#include "doomkeys.h"
 
-#include "txt_defines.h"
-#include "txt_main.h"
-#include "txt_widget.h"
-#include "txt_desktop.h"
-#include "txt_separator.h"
-#include "txt_strut.h"
-#include "txt_io.h"
-#include "txt_gui.h"
+//#include "txt_defines.h"
+
+export module txt_table;
+
+import std.core;
+
+import textscreen;
+
+import txt_main;
+import txt_widget;
+import txt_desktop;
+import txt_separator;
+import txt_strut;
+import txt_io;
+import txt_gui;
+
+export
+{
 
 cudadoom::txt::Widget txt_table_overflow_right;
 cudadoom::txt::Widget txt_table_overflow_down;
@@ -1166,3 +1176,5 @@ std::unique_ptr<Table> MakeHorizontalTable(Widget* first_widget, ...)
 //int PageTable(UNCAST_ARG(table), int pagex, int pagey);
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

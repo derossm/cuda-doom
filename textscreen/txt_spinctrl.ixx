@@ -7,19 +7,28 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "doomkeys.h"
+//#include "doomkeys.h"
 
-#include "txt_enums.h"
-#include "txt_main.h"
-#include "txt_widget.h"
-#include "txt_window.h"
-#include "txt_utf8.h"
-#include "txt_io.h"
-#include "txt_gui.h"
+export module txt_spinctrl;
+
+import std.core;
+
+import textscreen;
+
+import txt_enums;
+import txt_main;
+import txt_widget;
+import txt_window;
+import txt_utf8;
+import txt_io;
+import txt_gui;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -376,3 +385,5 @@ public:
  * @return				Pointer to the new spin control widget.
  */
 //SpinControl* NewFloatSpinControl(float* value, float min, float max);
+
+}

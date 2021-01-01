@@ -7,15 +7,25 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "txt_enums.h"
-#include "txt_defines.h"
-#include "txt_desktop.h"
-#include "txt_io.h"
-#include "txt_gui.h"
+//#include "txt_defines.h"
+
+export module txt_widget;
+
+import std.core;
+
+import textscreen;
+
+import txt_enums;
+import txt_desktop;
+import txt_io;
+import txt_gui;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -440,3 +450,5 @@ public:
 //bool ContainsWidget(Widget&& needle);
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

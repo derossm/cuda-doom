@@ -7,7 +7,12 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
+
+export module txt_enums;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -27,3 +32,5 @@ enum class AlignHorizontal
 };
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

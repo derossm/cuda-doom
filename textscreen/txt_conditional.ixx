@@ -7,12 +7,21 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "txt_widget.h"
-#include "txt_strut.h"
+export module txt_conditional;
+
+import std.core;
+
+import textscreen;
+
+import txt_widget;
+import txt_strut;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -141,3 +150,5 @@ struct Conditional
 };
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

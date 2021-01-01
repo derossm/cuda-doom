@@ -10,36 +10,41 @@
 	DESCRIPTION:
 		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "txt_defines.h"
+//#include "SDL.h"
+
+export module txt_sdl;
+
+import std.core;
+
+import textscreen;
+
+export
+{
 
 namespace cudadoom::txt
 {
+// The textscreen API itself doesn't need SDL; however, SDL needs its headers included where main() is defined.
 
-struct txt_cliparea_t
+struct FontType
 {
-	int x1;
-	int x2;
-	int y1;
-	int y2;
-	txt_cliparea_t* next;
+	const char* name;
+	const uint8_t* data;
+	unsigned w;
+	unsigned h;
 };
 
-void DrawDesktopBackground(const char* title);
-void DrawWindowFrame(const char* title, int x, int y, int w, int h);
-void DrawSeparator(int x, int y, int w);
-void DrawCodePageString(const char* s);
-void DrawString(const char* s);
-int CanDrawCharacter(unsigned c);
+// Event callback function type: a function of this type can be used to intercept events in the textscreen event processing loop.
+// Returning 1 will cause the event to be eaten; the textscreen code will not see it.
+typedef int (*TxtSDLEventCallbackFunc)(SDL_Event* event, void* user_data);
 
-void DrawHorizScrollbar(int x, int y, int w, int cursor, int range);
-void DrawVertScrollbar(int x, int y, int h, int cursor, int range);
-
-void InitClipArea();
-void PushClipArea(int x1, int x2, int y1, int y2);
-void PopClipArea();
+// Set a callback function to call in the SDL event loop. Useful for intercepting events. Pass callback=NULL to clear an existing
+// callback function. user_data is a void pointer to be passed to the callback function.
+void SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data);
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

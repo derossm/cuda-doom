@@ -1,6 +1,6 @@
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-cmake_minimum_required(VERSION 3.7.2)
+cmake_minimum_required(VERSION 3.16)
 project("CUDA Doom" VERSION 0.0.1 LANGUAGES CXX)
 
 # Autotools variables
@@ -21,13 +21,16 @@ set(PACKAGE_LICENSE "Crsipy Doom released under the GNU General Public License, 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(magic.cmake)
+
 # Any settings that should apply to all targets in this directory and all subdirectories should go here. Use judiciously.
 if(MSVC)
 	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
 	add_compile_options(
 		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-"
 		"/Zc:__cplusplus" "/permissive-" "/Zc:preprocessor" "/experimental:module" "/MD"
-		"/W4" "/Od" "/arch:AVX2" #"/Zc:externConstexpr"
+		"/W4" "/Od" "/arch:AVX2"
+		#"/Zc:externConstexpr"
 		)
 	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX")
 else()

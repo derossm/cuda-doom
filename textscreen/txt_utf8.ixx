@@ -7,9 +7,18 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
+
+export module txt_utf8;
+
+import std.core;
+
+import textscreen;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -135,3 +144,5 @@ char* UTF8_SkipChars(const char* s, unsigned n)
 }
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

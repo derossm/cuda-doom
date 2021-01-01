@@ -10,11 +10,20 @@
 	DESCRIPTION:
 		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
 
-#include "txt_main.h"
+export module txt_io;
+
+import std.core;
+
+import textscreen;
+
+import txt_main;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -192,3 +201,5 @@ void ClearScreen()
 }
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

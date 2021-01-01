@@ -10,9 +10,18 @@
 	DESCRIPTION:
 		Routines for selecting files, and the txt_fileselect_t widget.
 \**********************************************************************************************************************************************/
-#pragma once
+//#pragma once
 
-#include "../derma/common.h"
+//#include "../derma/common.h"
+
+export module txt_fileselect;
+
+import std.core;
+
+import textscreen;
+
+export
+{
 
 namespace cudadoom::txt
 {
@@ -70,3 +79,5 @@ txt_fileselect_t* NewFileSelector(char** variable, int size, const char* prompt,
 extern const char* DIRECTORY[];
 
 } /* END NAMESPACE cudadoom::txt */
+
+}

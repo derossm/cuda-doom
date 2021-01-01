@@ -9,7 +9,7 @@ set(COMMON_SOURCE_FILES
 	i_main.cpp
 	i_system.cpp		i_system.h
 	m_argv.cpp			m_argv.h
-	m_misc.cpp			m_misc.h)
+						m_misc.h)
 
 # Dedicated server (chocolate-server):
 
@@ -30,7 +30,7 @@ set(DEDSERV_FILES
 	net_structrw.cpp	net_structrw.h
 	z_native.cpp		z_zone.h)
 
-add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
+magic_add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_include_directories("${PROGRAM_PREFIX}server" PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2main SDL2::net)
 
@@ -129,9 +129,9 @@ if(PNG_FOUND)
 endif()
 
 if(WIN32)
-	add_executable("${PROGRAM_PREFIX}doom" WIN32 ${SOURCE_FILES_WITH_DEH} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
+	magic_add_executable("${PROGRAM_PREFIX}doom" WIN32 ${SOURCE_FILES_WITH_DEH} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
 else()
-	add_executable("${PROGRAM_PREFIX}doom" ${SOURCE_FILES_WITH_DEH})
+	magic_add_executable("${PROGRAM_PREFIX}doom" ${SOURCE_FILES_WITH_DEH})
 endif()
 
 target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ${GAME_INCLUDE_DIRS})
@@ -197,9 +197,9 @@ set(SETUP_FILES
 	z_native.cpp		z_zone.h)
 
 if(WIN32)
-	add_executable("${PROGRAM_PREFIX}setup" WIN32 ${SETUP_FILES} ${COMMON_SOURCE_FILES} "${CMAKE_CURRENT_BINARY_DIR}/setup-res.rc")
+	magic_add_executable("${PROGRAM_PREFIX}setup" WIN32 ${SETUP_FILES} ${COMMON_SOURCE_FILES} "${CMAKE_CURRENT_BINARY_DIR}/setup-res.rc")
 else()
-	add_executable("${PROGRAM_PREFIX}setup" ${SETUP_FILES} ${COMMON_SOURCE_FILES})
+	magic_add_executable("${PROGRAM_PREFIX}setup" ${SETUP_FILES} ${COMMON_SOURCE_FILES})
 endif()
 
 target_include_directories("${PROGRAM_PREFIX}setup" PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
@@ -209,12 +209,12 @@ if(MSVC)
 	set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
 endif()
 
-add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
+magic_add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
 target_compile_definitions(midiread PRIVATE "-DTEST")
 target_include_directories(midiread PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(midiread SDL2::SDL2main SDL2::SDL2)
 
-add_executable(mus2mid mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
+magic_add_executable(mus2mid mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
 target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE")
 target_include_directories(mus2mid PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(mus2mid SDL2::SDL2main SDL2::SDL2)
