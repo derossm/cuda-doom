@@ -57,25 +57,24 @@ static int stereo_swing;
 #define NORM_PRIORITY 64
 #define NORM_SEP 128
 
-typedef struct
+struct channel_t
 {
 	// sound information (if null, channel avail.)
-	sfxinfo_t *sfxinfo;
+	sfxinfo_t* sfxinfo;
 
 	// origin of sound
-	mobj_t *origin;
+	MapObject* origin;
 
 	// handle of the sound being played
 	int handle;
 
 	int pitch;
-
-} channel_t;
+};
 
 // The set of channels available
 
-static channel_t *channels;
-static degenmobj_t *sobjs;
+static channel_t* channels;
+static degenmobj_t* sobjs;
 
 // Maximum volume of a sound effect.
 // Internal default is max out of 0-15.
@@ -96,7 +95,7 @@ static bool mus_paused;
 
 // Music currently being played
 
-static musicinfo_t *mus_playing = NULL;
+static musicinfo_t* mus_playing = NULL;
 
 // Number of channels to use
 
@@ -105,10 +104,11 @@ int snd_channels = 8;
 // [crispy] add support for alternative music tracks for Final Doom's
 // TNT and Plutonia as introduced in DoomMetalVol5.wad
 
-typedef struct {
-	const char *const from;
-	const char *const to;
-} altmusic_t;
+struct altmusic_t
+{
+	const char* const from;
+	const char* const to;
+};
 
 static const altmusic_t altmusic_tnt[] =
 {
@@ -190,7 +190,7 @@ static const altmusic_t altmusic_plut[] =
 
 static void S_RegisterAltMusic()
 {
-	const altmusic_t *altmusic_fromto, *altmusic;
+	const altmusic_t* altmusic_fromto, *altmusic;
 
 	if (gamemission == pack_tnt)
 	{
@@ -289,7 +289,7 @@ void S_Init(int sfxVolume, int musicVolume)
 	// [crispy] initialize dedicated music tracks for the 4th episode
 	for (i = mus_e4m1; i <= mus_e5m9; i++)
 	{
-		musicinfo_t *const music = &S_music[i];
+		musicinfo_t* const music = &S_music[i];
 		char namebuf[9];
 
 		M_snprintf(namebuf, sizeof(namebuf), "d_%s", DEH_String(music->name));
@@ -313,7 +313,7 @@ void S_Shutdown()
 static void S_StopChannel(int cnum)
 {
 	int i;
-	channel_t *c;
+	channel_t* c;
 
 	c = &channels[cnum];
 
@@ -370,7 +370,7 @@ void S_Start()
 	if (musicVolume) // [crispy] do not reset pause state at zero music volume
 	mus_paused = 0;
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		const int nmus[] =
 		{
@@ -446,7 +446,7 @@ void S_Start()
 	S_ChangeMusic(mnum, true);
 }
 
-void S_StopSound(mobj_t *origin)
+void S_StopSound(MapObject* origin)
 {
 	int cnum;
 
@@ -467,7 +467,7 @@ void S_StopSound(mobj_t *origin)
 // the corresponding map object has already disappeared.
 // Thanks to jeff-d and kb1 for discussing this feature and the former for the
 // original implementation idea: https://www.doomworld.com/vb/post/1585325
-void S_UnlinkSound(mobj_t *origin)
+void S_UnlinkSound(MapObject* origin)
 {
 	int cnum;
 
@@ -477,11 +477,11 @@ void S_UnlinkSound(mobj_t *origin)
 		{
 			if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
 			{
-				degenmobj_t *const sobj = &sobjs[cnum];
+				degenmobj_t* const sobj = &sobjs[cnum];
 				sobj->x = origin->x;
 				sobj->y = origin->y;
 				sobj->z = origin->z;
-				channels[cnum].origin = (mobj_t *) sobj;
+				channels[cnum].origin = (MapObject*) sobj;
 				break;
 			}
 		}
@@ -493,7 +493,7 @@ void S_UnlinkSound(mobj_t *origin)
 //	If none available, return -1. Otherwise channel #.
 //
 
-static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
+static int S_GetChannel(MapObject* origin, sfxinfo_t* sfxinfo)
 {
 	// channel number to use
 	int				cnum;
@@ -554,7 +554,7 @@ static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)
 // Otherwise, modifies parameters and returns 1.
 //
 
-static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
+static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
 								int *vol, int *sep)
 {
 	fixed_t		approx_dist;
@@ -563,7 +563,7 @@ static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
 	angle_t		angle;
 
 	// [crispy] proper sound clipping in Doom 2 MAP08 and The Ultimate Doom E4M8 / Sigil E5M8
-	const bool doom1map8 = (gamemap == 8 && ((gamemode != GameMode_t::commercial && gameepisode < 4) || !crispy->soundfix));
+	const bool doom1map8 = (gamemap == 8 && ((gamemode != GameMode::commercial && gameepisode < 4) || !crispy->soundfix));
 
 	// calculate the distance to sound origin
 	// and clip it if necessary
@@ -640,17 +640,17 @@ static int Clamp(int x)
 	return x;
 }
 
-void S_StartSound(void *origin_p, int sfx_id)
+void S_StartSound(void* origin_p, int sfx_id)
 {
-	sfxinfo_t *sfx;
-	mobj_t *origin;
+	sfxinfo_t* sfx;
+	MapObject* origin;
 	int rc;
 	int sep;
 	int pitch;
 	int cnum;
 	int volume;
 
-	origin = (mobj_t *) origin_p;
+	origin = (MapObject*) origin_p;
 	volume = snd_SfxVolume;
 
 	// [crispy] make non-fatal, consider zero volume
@@ -750,10 +750,10 @@ void S_StartSound(void *origin_p, int sfx_id)
 	channels[cnum].handle = I_StartSound(sfx, cnum, volume, sep, channels[cnum].pitch);
 }
 
-void S_StartSoundOnce (void *origin_p, int sfx_id)
+void S_StartSoundOnce (void* origin_p, int sfx_id)
 {
 	int cnum;
-	const sfxinfo_t *const sfx = &S_sfx[sfx_id];
+	const sfxinfo_t* const sfx = &S_sfx[sfx_id];
 
 	for (cnum = 0; cnum < snd_channels; cnum++)
 	{
@@ -793,7 +793,7 @@ void S_ResumeSound()
 // Updates music & sounds
 //
 
-void S_UpdateSounds(mobj_t *listener)
+void S_UpdateSounds(MapObject* listener)
 {
 	int				audible;
 	int				cnum;
@@ -903,9 +903,9 @@ void S_StartMusic(int m_id)
 
 void S_ChangeMusic(int musicnum, int looping)
 {
-	musicinfo_t *music = NULL;
+	musicinfo_t* music = NULL;
 	char namebuf[9];
-	void *handle;
+	void* handle;
 
 	if (gamestate != GameState_t::GS_LEVEL)
 	{
@@ -940,13 +940,13 @@ void S_ChangeMusic(int musicnum, int looping)
 	}
 
 	// [crispy] prevent music number under- and overflows
-	if (musicnum <= mus_None || (gamemode == GameMode_t::commercial && musicnum < mus_runnin) ||
-		musicnum >= NUMMUSIC || (gamemode != GameMode_t::commercial && musicnum >= mus_runnin) ||
+	if (musicnum <= mus_None || (gamemode == GameMode::commercial && musicnum < mus_runnin) ||
+		musicnum >= NUMMUSIC || (gamemode != GameMode::commercial && musicnum >= mus_runnin) ||
 		S_music[musicnum].lumpnum == -1)
 	{
-		const unsigned int umusicnum = (unsigned int) musicnum;
+		const unsigned umusicnum = (unsigned) musicnum;
 
-		if (gamemode == GameMode_t::commercial)
+		if (gamemode == GameMode::commercial)
 		{
 			musicnum = mus_runnin + (umusicnum % (NUMMUSIC - mus_runnin));
 		}
@@ -1009,7 +1009,7 @@ void S_ChangeMusic(int musicnum, int looping)
 
 void S_ChangeMusInfoMusic (int lumpnum, int looping)
 {
-	musicinfo_t *music;
+	musicinfo_t* music;
 
 	// [crispy] restarting the map plays the original music
 	prevmap = -1;

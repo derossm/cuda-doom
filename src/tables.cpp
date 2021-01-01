@@ -32,7 +32,7 @@
 // the y (<=x) is scaled and divided by x to get a tangent (slope) value
 // which is looked up in the tantoangle[] table. The +1 size is to handle
 // the case when x==y without additional checking.
-int SlopeDiv(unsigned int num, unsigned int den)
+int SlopeDiv(unsigned num, unsigned den)
 {
 	unsigned ans;
 
@@ -56,7 +56,7 @@ int SlopeDiv(unsigned int num, unsigned int den)
 }
 
 // [crispy] catch SlopeDiv overflows, only used in rendering
-int SlopeDivCrispy(unsigned int num, unsigned int den)
+int SlopeDivCrispy(unsigned num, unsigned den)
 {
 	if (den < 512)
 	{
@@ -1878,7 +1878,7 @@ const fixed_t finesine[10240] =
 	65534,65535,65535,65535,65535,65535,65535,65535
 };
 
-const fixed_t *finecosine = &finesine[FINEANGLES/4];
+const fixed_t* finecosine = &finesine[FINEANGLES/4];
 
 const angle_t tantoangle[2049] =
 {

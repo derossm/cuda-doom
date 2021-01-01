@@ -118,7 +118,7 @@ static bool UsingNativeMidi()
 //
 // Writes packet data to the subprocess' standard in.
 //
-static bool WritePipe(net_packet_t *packet)
+static bool WritePipe(net_packet_t* packet)
 {
 	DWORD bytes_written;
 	bool ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
@@ -134,7 +134,7 @@ static bool WritePipe(net_packet_t *packet)
 // response is unexpected, or doesn't arrive within a specific amuont of time,
 // assume the subprocess is in an unknown state.
 //
-static bool ExpectPipe(net_packet_t *packet)
+static bool ExpectPipe(net_packet_t* packet)
 {
 	int start;
 	bool ok;
@@ -195,7 +195,7 @@ static bool ExpectPipe(net_packet_t *packet)
 //
 void RemoveFileSpec(TCHAR *path, size_t size)
 {
-	TCHAR *fp = NULL;
+	TCHAR* fp = NULL;
 
 	fp = &path[size];
 	while (path <= fp && *fp != DIR_SEPARATOR)
@@ -208,7 +208,7 @@ void RemoveFileSpec(TCHAR *path, size_t size)
 static bool BlockForAck()
 {
 	bool ok;
-	net_packet_t *packet;
+	net_packet_t* packet;
 
 	packet = NET_NewPacket(2);
 	NET_WriteInt16(packet, cudadoom::midi::PacketType::ACK);
@@ -229,10 +229,10 @@ static bool BlockForAck()
 // Tells the MIDI subprocess to load a specific filename for playing. This
 // function blocks until there is an acknowledgement from the server.
 //
-bool I_MidiPipe_RegisterSong(char *filename)
+bool I_MidiPipe_RegisterSong(char* filename)
 {
 	bool ok;
-	net_packet_t *packet;
+	net_packet_t* packet;
 
 	packet = NET_NewPacket(64);
 	NET_WriteInt16(packet, cudadoom::midi::PacketType::REGISTER_SONG);
@@ -263,7 +263,7 @@ bool I_MidiPipe_RegisterSong(char *filename)
 void I_MidiPipe_UnregisterSong()
 {
 	bool ok;
-	net_packet_t *packet;
+	net_packet_t* packet;
 
 	packet = NET_NewPacket(64);
 	NET_WriteInt16(packet, cudadoom::midi::PacketType::SHUTDOWN);
@@ -290,7 +290,7 @@ void I_MidiPipe_UnregisterSong()
 void I_MidiPipe_SetVolume(int vol)
 {
 	bool ok;
-	net_packet_t *packet;
+	net_packet_t* packet;
 
 	packet = NET_NewPacket(6);
 	NET_WriteInt16(packet, cudadoom::midi::PacketType::SET_VOLUME);
@@ -316,7 +316,7 @@ void I_MidiPipe_SetVolume(int vol)
 void I_MidiPipe_PlaySong(int loops)
 {
 	bool ok;
-	net_packet_t *packet;
+	net_packet_t* packet;
 
 	packet = NET_NewPacket(6);
 	NET_WriteInt16(packet, cudadoom::midi::PacketType::PLAY_SONG);
@@ -342,7 +342,7 @@ void I_MidiPipe_PlaySong(int loops)
 void I_MidiPipe_StopSong()
 {
 	bool ok;
-	net_packet_t *packet;
+	net_packet_t* packet;
 
 	packet = NET_NewPacket(2);
 	NET_WriteInt16(packet, cudadoom::midi::PacketType::STOP_SONG);
@@ -367,7 +367,7 @@ void I_MidiPipe_StopSong()
 void I_MidiPipe_ShutdownServer()
 {
 	bool ok;
-	net_packet_t *packet;
+	net_packet_t* packet;
 
 	packet = NET_NewPacket(2);
 	NET_WriteInt16(packet, cudadoom::midi::PacketType::SHUTDOWN);
@@ -402,8 +402,8 @@ bool I_MidiPipe_InitServer()
 {
 	TCHAR dirname[MAX_PATH + 1];
 	DWORD dirname_len;
-	char *module = NULL;
-	char *cmdline = NULL;
+	char* module = NULL;
+	char* cmdline = NULL;
 	char params_buf[128];
 	SECURITY_ATTRIBUTES sec_attrs;
 	PROCESS_INFORMATION proc_info;

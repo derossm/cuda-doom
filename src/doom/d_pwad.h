@@ -10,19 +10,12 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Auto-loading of (semi-)official PWAD expansions, i.e.
-//	Sigil, No Rest for the Living and The Master Levels
+		Auto-loading of (semi-)official PWAD expansions, i.e. Sigil, No Rest for the Living and The Master Levels
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __D_PWAD__
-#define __D_PWAD__
-
 void D_LoadSigilWad();
 void D_LoadNerveWad();
 void D_LoadMasterlevelsWad();
-
-#endif
-

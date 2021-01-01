@@ -16,6 +16,7 @@
 #include "../derma/common.h"
 
 #include "doomtype.h"
+
 #include "w_file.h"
 #include "z_zone.h"
 
@@ -33,9 +34,8 @@ struct lumpinfo_t
 	lumpindex_t next;
 };
 
-
 extern lumpinfo_t** lumpinfo;
-extern unsigned int numlumps;
+extern unsigned numlumps;
 
 wad_file_t* W_AddFile(const char* filename);
 void W_Reload();
@@ -52,7 +52,7 @@ void* W_CacheLumpName(const char* name, pu_tags_t tag);
 
 void W_GenerateHashTable();
 
-extern unsigned int W_LumpNameHash(const char* s);
+extern unsigned W_LumpNameHash(const char* s);
 
 void W_ReleaseLumpNum(lumpindex_t lump);
 void W_ReleaseLumpName(const char* name);

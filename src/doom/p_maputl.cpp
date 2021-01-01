@@ -315,7 +315,7 @@ void P_LineOpening (line_t* linedef)
 // lookups maintaining lists ot things inside
 // these structures need to be updated.
 //
-void P_UnsetThingPosition (mobj_t* thing)
+void P_UnsetThingPosition (MapObject* thing)
 {
 	int		blockx;
 	int		blocky;
@@ -364,13 +364,13 @@ void P_UnsetThingPosition (mobj_t* thing)
 // Sets thing->subsector properly
 //
 void
-P_SetThingPosition (mobj_t* thing)
+P_SetThingPosition (MapObject* thing)
 {
 	subsector_t*	ss;
 	sector_t*		sec;
 	int			blockx;
 	int			blocky;
-	mobj_t**		link;
+	MapObject**		link;
 
 
 	// link into subsector
@@ -476,9 +476,9 @@ bool P_BlockLinesIterator(int x, int y, bool(*func)(line_t*) )
 //
 // P_BlockThingsIterator
 //
-bool P_BlockThingsIterator(int x, int y, bool(*func)(mobj_t*) )
+bool P_BlockThingsIterator(int x, int y, bool(*func)(MapObject*) )
 {
-	mobj_t*		mobj;
+	MapObject*		mobj;
 
 	if ( x<0
 		|| y<0
@@ -526,10 +526,10 @@ divline_t	trace;
 bool	earlyout;
 int		ptflags;
 
-static void InterceptsOverrun(int num_intercepts, intercept_t *intercept);
+static void InterceptsOverrun(int num_intercepts, intercept_t* intercept);
 
 // [crispy] show mapthing number in INTERCEPTS overflow warnings
-extern mobj_t* shootthing;
+extern MapObject* shootthing;
 
 //
 // PIT_AddLineIntercepts.
@@ -607,7 +607,7 @@ PIT_AddLineIntercepts (line_t* ld)
 //
 // PIT_AddThingIntercepts
 //
-bool PIT_AddThingIntercepts (mobj_t* thing)
+bool PIT_AddThingIntercepts (MapObject* thing)
 {
 	fixed_t		x1;
 	fixed_t		y1;
@@ -738,12 +738,12 @@ extern fixed_t bulletslope;
 // implementation of Intercepts Overrun emulation in PrBoom-plus
 // which this is based on.
 
-typedef struct
+struct intercepts_overrun_t
 {
 	int len;
-	void *addr;
+	void* addr;
 	bool int16_array;
-} intercepts_overrun_t;
+};
 
 // Intercepts memory table. This is where various variables are located
 // in memory in Vanilla Doom. When the intercepts table overflows, we
@@ -786,7 +786,7 @@ static void InterceptsMemoryOverrun(int location, int value)
 {
 	int i, offset;
 	int index;
-	void *addr;
+	void* addr;
 
 	i = 0;
 	offset = 0;
@@ -807,13 +807,13 @@ static void InterceptsMemoryOverrun(int location, int value)
 				if (intercepts_overrun[i].int16_array)
 				{
 					index = (location - offset) / 2;
-					((short *) addr)[index] = value & 0xffff;
-					((short *) addr)[index + 1] = (value >> 16) & 0xffff;
+					((short*) addr)[index] = value & 0xffff;
+					((short*) addr)[index + 1] = (value >> 16) & 0xffff;
 				}
 				else
 				{
 					index = (location - offset) / 4;
-					((int *) addr)[index] = value;
+					((int*) addr)[index] = value;
 				}
 			}
 
@@ -827,7 +827,7 @@ static void InterceptsMemoryOverrun(int location, int value)
 
 // Emulate overruns of the intercepts[] array.
 
-static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
+static void InterceptsOverrun(int num_intercepts, intercept_t* intercept)
 {
 	int location;
 
@@ -860,7 +860,7 @@ static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
 // Returns true if the traverser function returns true
 // for all lines.
 //
-bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, bool (*trav) (intercept_t *))
+bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, bool (*trav) (intercept_t*))
 {
 	fixed_t	xt1;
 	fixed_t	yt1;

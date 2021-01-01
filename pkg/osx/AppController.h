@@ -33,10 +33,10 @@
 
 - (void)awakeFromNib;
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotif;
+- (void)applicationDidFinishLaunching:(NSNotification*)aNotif;
 - (bool)applicationShouldTerminate:(id)sender;
-- (void)applicationWillTerminate:(NSNotification *)aNotif;
-- (bool)application:(NSApplication *)application openFile:(NSString *)fileName;
+- (void)applicationWillTerminate:(NSNotification*)aNotif;
+- (bool)application:(NSApplication*)application openFile:(NSString*)fileName;
 
 - (void)showPrefPanel:(id)sender;
 

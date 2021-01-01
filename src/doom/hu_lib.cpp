@@ -228,7 +228,7 @@ HUlib_addMessageToSText
 void HUlib_drawSText(hu_stext_t* s)
 {
 	int i, idx;
-	hu_textline_t *l;
+	hu_textline_t* l;
 
 	if (!*s->on)
 	return; // if not on, don't draw
@@ -321,7 +321,7 @@ bool HUlib_keyInIText(hu_itext_t* it, unsigned char ch )
 void HUlib_drawIText(hu_itext_t* it)
 {
 
-	hu_textline_t *l = &it->l;
+	hu_textline_t* l = &it->l;
 
 	if (!*it->on)
 	return;

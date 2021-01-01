@@ -12,7 +12,6 @@
 	Moving object handling. Spawn functions.
 \**********************************************************************************************************************************************/
 
-
 #include "i_system.h"
 #include "z_zone.h"
 #include "m_random.h"
@@ -31,10 +30,8 @@
 
 #include "doomstat.h"
 
-
 void G_PlayerReborn (int player);
-void P_SpawnMapThing (mapthing_t*	mthing);
-
+void P_SpawnMapThing (mapthing_t* mthing);
 
 //
 // P_SetMobjState
@@ -48,7 +45,7 @@ int test;
 
 #define MOBJ_CYCLE_LIMIT 1000000
 
-bool P_SetMobjState(mobj_t* mobj, statenum_t state)
+bool P_SetMobjState(MapObject* mobj, statenum_t state)
 {
 	state_t*	st;
 	int	cycle_counter = 0;
@@ -57,7 +54,7 @@ bool P_SetMobjState(mobj_t* mobj, statenum_t state)
 	{
 	if (state == S_NULL)
 	{
-		mobj->state = (state_t *) S_NULL;
+		mobj->state = (state_t*) S_NULL;
 		P_RemoveMobj (mobj);
 		return false;
 	}
@@ -121,7 +118,7 @@ static statenum_t P_LatestSafeState(statenum_t state)
 //
 // P_ExplodeMissile
 //
-static void P_ExplodeMissileSafe (mobj_t* mo, bool safe)
+static void P_ExplodeMissileSafe (MapObject* mo, bool safe)
 {
 	mo->momx = mo->momy = mo->momz = 0;
 
@@ -140,7 +137,7 @@ static void P_ExplodeMissileSafe (mobj_t* mo, bool safe)
 	S_StartSound (mo, mo->info->deathsound);
 }
 
-void P_ExplodeMissile (mobj_t* mo)
+void P_ExplodeMissile (MapObject* mo)
 {
 	return P_ExplodeMissileSafe(mo, false);
 }
@@ -151,11 +148,11 @@ void P_ExplodeMissile (mobj_t* mo)
 #define STOPSPEED		0x1000
 #define FRICTION		0xe800
 
-void P_XYMovement (mobj_t* mo)
+void P_XYMovement (MapObject* mo)
 {
 	fixed_t	ptryx;
 	fixed_t	ptryy;
-	player_t*	player;
+	Player*	player;
 	fixed_t	xmove;
 	fixed_t	ymove;
 
@@ -291,7 +288,7 @@ void P_XYMovement (mobj_t* mo)
 //
 // P_ZMovement
 //
-void P_ZMovement (mobj_t* mo)
+void P_ZMovement (MapObject* mo)
 {
 	fixed_t	dist;
 	fixed_t	delta;
@@ -449,13 +446,13 @@ void P_ZMovement (mobj_t* mo)
 // P_NightmareRespawn
 //
 void
-P_NightmareRespawn (mobj_t* mobj)
+P_NightmareRespawn (MapObject* mobj)
 {
 	fixed_t		x;
 	fixed_t		y;
 	fixed_t		z;
 	subsector_t*	ss;
-	mobj_t*		mo;
+	MapObject*		mo;
 	mapthing_t*		mthing;
 
 	x = mobj->spawnpoint.x << FRACBITS;
@@ -507,7 +504,7 @@ P_NightmareRespawn (mobj_t* mobj)
 }
 
 // [crispy] support MUSINFO lump (dynamic music changing)
-static inline void MusInfoThinker (mobj_t *thing)
+static inline void MusInfoThinker (MapObject* thing)
 {
 	if (musinfo.mapthing != thing &&
 		thing->subsector->sector == players[displayplayer].mo->subsector->sector)
@@ -521,7 +518,7 @@ static inline void MusInfoThinker (mobj_t *thing)
 //
 // P_MobjThinker
 //
-void P_MobjThinker (mobj_t* mobj)
+void P_MobjThinker (MapObject* mobj)
 {
 	// [crispy] support MUSINFO lump (dynamic music changing)
 	if (mobj->type == mobjtype_t::MT_MUSICSOURCE)
@@ -610,9 +607,9 @@ void P_MobjThinker (mobj_t* mobj)
 //
 // P_SpawnMobj
 //
-static mobj_t* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type, bool safe)
+static MapObject* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type, bool safe)
 {
-	mobj_t*	mobj;
+	MapObject*	mobj;
 	state_t*	st;
 	mobjinfo_t*	info;
 
@@ -629,7 +626,7 @@ static mobj_t* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type,
 	mobj->flags = info->flags;
 	mobj->health = info->spawnhealth;
 
-	if (gameskill != skill_t::sk_nightmare)
+	if (gameskill != SkillType::sk_nightmare)
 	mobj->reactiontime = info->reactiontime;
 
 	mobj->lastlook = safe ? Crispy_Random () % MAXPLAYERS : P_Random () % MAXPLAYERS;
@@ -673,7 +670,7 @@ static mobj_t* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type,
 	// [crispy] height of the spawnstate's first sprite in pixels
 	if (!info->actualheight)
 	{
-	const spritedef_t *const sprdef = &sprites[mobj->sprite];
+	const spritedef_t* const sprdef = &sprites[mobj->sprite];
 
 	if (!sprdef->numframes || !(mobj->flags & (MF_SOLID|MF_SHOOTABLE)))
 	{
@@ -681,9 +678,9 @@ static mobj_t* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type,
 	}
 	else
 	{
-		spriteframe_t *sprframe;
+		spriteframe_t* sprframe;
 		int lump;
-		patch_t *patch;
+		patch_t* patch;
 
 		sprframe = &sprdef->spriteframes[mobj->frame & FF_FRAMEMASK];
 		lump = sprframe->lump[0];
@@ -701,7 +698,7 @@ static mobj_t* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type,
 	return mobj;
 }
 
-mobj_t* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
+MapObject* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
 {
 	return P_SpawnMobjSafe(x, y, z, type, false);
 }
@@ -710,12 +707,12 @@ mobj_t* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
 // P_RemoveMobj
 //
 mapthing_t	itemrespawnque[ITEMQUESIZE];
-int		itemrespawntime[ITEMQUESIZE];
+TimeType itemrespawntime[ITEMQUESIZE];
 int		iquehead;
 int		iquetail;
 
 
-void P_RemoveMobj (mobj_t* mobj)
+void P_RemoveMobj (MapObject* mobj)
 {
 	if ((mobj->flags & MF_SPECIAL)
 	&& !(mobj->flags & MF_DROPPED)
@@ -762,7 +759,7 @@ void P_RespawnSpecials ()
 	fixed_t		z;
 
 	subsector_t*	ss;
-	mobj_t*		mo;
+	MapObject*		mo;
 	mapthing_t*		mthing;
 
 	int			i;
@@ -823,9 +820,9 @@ void P_RespawnSpecials ()
 // [crispy] weapon sound sources
 degenmobj_t muzzles[MAXPLAYERS];
 
-mobj_t *Crispy_PlayerSO (int p)
+MapObject* Crispy_PlayerSO (int p)
 {
-	return crispy->soundfull ? (mobj_t *) &muzzles[p] : players[p].mo;
+	return crispy->soundfull ? (MapObject*) &muzzles[p] : players[p].mo;
 }
 
 //
@@ -836,12 +833,12 @@ mobj_t *Crispy_PlayerSO (int p)
 //
 void P_SpawnPlayer (mapthing_t* mthing)
 {
-	player_t*		p;
+	Player*		p;
 	fixed_t		x;
 	fixed_t		y;
 	fixed_t		z;
 
-	mobj_t*		mobj;
+	MapObject*		mobj;
 
 	int			i;
 
@@ -912,7 +909,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 {
 	int			i;
 	int			bit;
-	mobj_t*		mobj;
+	MapObject*		mobj;
 	fixed_t		x;
 	fixed_t		y;
 	fixed_t		z;
@@ -953,9 +950,9 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	if (!netgame && (mthing->options & 16) )
 	return;
 
-	if (gameskill == skill_t::sk_baby)
+	if (gameskill == SkillType::sk_baby)
 	bit = 1;
-	else if (gameskill == skill_t::sk_nightmare)
+	else if (gameskill == SkillType::sk_nightmare)
 	bit = 4;
 	else
 	bit = 1<<(gameskill-1);
@@ -1074,7 +1071,7 @@ void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
 
 void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe)
 {
-	mobj_t*	th;
+	MapObject*	th;
 
 	z += safe ? (Crispy_SubRandom() << 10) : (P_SubRandom() << 10);
 
@@ -1095,9 +1092,9 @@ void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe)
 //
 // P_SpawnBlood
 //
-void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, mobj_t* target) // [crispy] pass thing type
+void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, MapObject* target) // [crispy] pass thing type
 {
-	mobj_t*	th;
+	MapObject*	th;
 
 	z += (P_SubRandom() << 10);
 	th = P_SpawnMobj (x,y,z, mobjtype_t::MT_BLOOD);
@@ -1127,7 +1124,7 @@ void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, mobj_t* target) /
 // Moves the missile forward a bit
 // and possibly explodes it right there.
 //
-void P_CheckMissileSpawn (mobj_t* th)
+void P_CheckMissileSpawn (MapObject* th)
 {
 	th->tics -= P_Random()&3;
 	if (th->tics < 1)
@@ -1143,17 +1140,17 @@ void P_CheckMissileSpawn (mobj_t* th)
 	P_ExplodeMissile (th);
 }
 
-// Certain functions assume that a mobj_t pointer is non-NULL,
+// Certain functions assume that a MapObject pointer is non-NULL,
 // causing a crash in some situations where it is NULL. Vanilla
 // Doom did not crash because of the lack of proper memory
 // protection. This function substitutes NULL pointers for
 // pointers to a dummy mobj, to avoid a crash.
 
-mobj_t *P_SubstNullMobj(mobj_t *mobj)
+MapObject* P_SubstNullMobj(MapObject* mobj)
 {
 	if (mobj == NULL)
 	{
-		static mobj_t dummy_mobj;
+		static MapObject dummy_mobj;
 
 		dummy_mobj.x = 0;
 		dummy_mobj.y = 0;
@@ -1169,9 +1166,9 @@ mobj_t *P_SubstNullMobj(mobj_t *mobj)
 //
 // P_SpawnMissile
 //
-mobj_t* P_SpawnMissile(mobj_t* source, mobj_t* dest, mobjtype_t type)
+MapObject* P_SpawnMissile(MapObject* source, MapObject* dest, mobjtype_t type)
 {
-	mobj_t*	th;
+	MapObject*	th;
 	angle_t	an;
 	int		dist;
 
@@ -1211,9 +1208,9 @@ mobj_t* P_SpawnMissile(mobj_t* source, mobj_t* dest, mobjtype_t type)
 // P_SpawnPlayerMissile
 // Tries to aim at a nearby monster
 //
-void P_SpawnPlayerMissile(mobj_t* source, mobjtype_t type)
+void P_SpawnPlayerMissile(MapObject* source, mobjtype_t type)
 {
-	mobj_t*	th;
+	MapObject*	th;
 	angle_t	an;
 
 	fixed_t	x;
@@ -1221,7 +1218,7 @@ void P_SpawnPlayerMissile(mobj_t* source, mobjtype_t type)
 	fixed_t	z;
 	fixed_t	slope;
 
-	extern void A_Recoil (player_t* player);
+	extern void A_Recoil (Player* player);
 
 	// see which target is to be aimed at
 	an = source->angle;

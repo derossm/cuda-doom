@@ -108,10 +108,11 @@ extern void A_PlaySound();
 extern void A_RandomJump();
 extern void A_LineEffect();
 
-typedef struct {
-	const char *mnemonic;
+struct bex_codeptr_t
+{
+	const char* mnemonic;
 	const actionf_t pointer;
-} bex_codeptr_t;
+};
 
 static const bex_codeptr_t bex_codeptrtable[] = {
 	{"Light0", {A_Light0}},
@@ -208,7 +209,7 @@ static const bex_codeptr_t bex_codeptrtable[] = {
 
 extern actionf_t codeptrs[NUMSTATES];
 
-static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
+static void* DEH_BEXPtrStart(deh_context_t* context, char* line)
 {
 	char s[10];
 
@@ -220,10 +221,10 @@ static void *DEH_BEXPtrStart(deh_context_t *context, char *line)
 	return NULL;
 }
 
-static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_BEXPtrParseLine(deh_context_t* context, char* line, void* tag)
 {
-	state_t *state;
-	char *variable_name, *value, frame_str[6];
+	state_t* state;
+	char* variable_name, *value, frame_str[6];
 	int frame_number, i;
 
 	// parse "FRAME nn = mnemonic", where
@@ -248,7 +249,7 @@ static void DEH_BEXPtrParseLine(deh_context_t *context, char *line, void *tag)
 	return;
 	}
 
-	state = (state_t *) &states[frame_number];
+	state = (state_t*) &states[frame_number];
 
 	for (i = 0; i < arrlen(bex_codeptrtable); i++)
 	{

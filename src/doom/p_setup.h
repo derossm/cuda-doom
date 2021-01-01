@@ -9,25 +9,20 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Setup a game, startup stuff.
+		Setup a game, startup stuff.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __P_SETUP__
-#define __P_SETUP__
-
 #include "w_wad.h"
 
-extern lumpinfo_t *maplumpinfo;
+extern lumpinfo_t* maplumpinfo;
 // [crispy] pointer to the map lump about to load
-extern lumpinfo_t *savemaplumpinfo;
+extern lumpinfo_t* savemaplumpinfo;
 
 // NOT called by W_Ticker. Fixme.
-void P_SetupLevel(int episode, int map, int playermask, skill_t skill);
+void P_SetupLevel(int episode, int map, int playermask, SkillType skill);
 
 // Called by startup code.
-void P_Init ();
-
-#endif
+void P_Init();

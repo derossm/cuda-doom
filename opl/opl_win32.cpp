@@ -21,13 +21,13 @@
 
 #include "ioperm_sys.h"
 
-static unsigned int opl_port_base;
+static unsigned opl_port_base;
 
 // MingW?
 
 #if defined(__GNUC__) && defined(__i386__)
 
-static unsigned int OPL_Win32_PortRead(opl_port_t port)
+static unsigned OPL_Win32_PortRead(opl_port_t port)
 {
 	unsigned char result;
 
@@ -43,7 +43,7 @@ static unsigned int OPL_Win32_PortRead(opl_port_t port)
 	return result;
 }
 
-static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
+static void OPL_Win32_PortWrite(opl_port_t port, unsigned value)
 {
 	__asm__ volatile (
 		"movl %0, %%edx\n"
@@ -58,7 +58,7 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 // haleyjd 20110417: MSVC version
 #elif defined(_MSC_VER) && defined(_M_IX86)
 
-static unsigned int OPL_Win32_PortRead(opl_port_t port)
+static unsigned OPL_Win32_PortRead(opl_port_t port)
 {
 	unsigned char result;
 	opl_port_t dst_port = opl_port_base + port;
@@ -73,7 +73,7 @@ static unsigned int OPL_Win32_PortRead(opl_port_t port)
 	return result;
 }
 
-static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
+static void OPL_Win32_PortWrite(opl_port_t port, unsigned value)
 {
 	opl_port_t dst_port = opl_port_base + port;
 
@@ -90,18 +90,18 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
 // Not x86, or don't know how to do port R/W on this compiler.
 #define NO_PORT_RW
 
-static unsigned int OPL_Win32_PortRead(opl_port_t port)
+static unsigned OPL_Win32_PortRead(opl_port_t port)
 {
 	return 0;
 }
 
-static void OPL_Win32_PortWrite(opl_port_t port, unsigned int value)
+static void OPL_Win32_PortWrite(opl_port_t port, unsigned value)
 {
 }
 
 #endif
 
-static int OPL_Win32_Init(unsigned int port_base)
+static int OPL_Win32_Init(unsigned port_base)
 {
 #ifndef NO_PORT_RW
 

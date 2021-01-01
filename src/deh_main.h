@@ -7,7 +7,8 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Dehacked entrypoint and common code
+	DESCRIPTION:
+		Dehacked entrypoint and common code
 \**********************************************************************************************************************************************/
 #pragma once
 
@@ -30,7 +31,7 @@ void DEH_ParseCommandLine();
 int DEH_LoadFile(const char* filename);
 void DEH_AutoLoadPatches(const char* path);
 int DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error);
-int DEH_LoadLumpByName(const char *name, bool allow_long, bool allow_error);
+int DEH_LoadLumpByName(const char* name, bool allow_long, bool allow_error);
 
 bool DEH_ParseAssignment(char* line, char** variable_name, char** value);
 

@@ -6,19 +6,17 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-	NOTE: MAJOR WORK IN PROGRESS, REQUIRES RE-WORKING MANY OTHER SYSTEMS FIRST BEFORE DESIGNING A NEW CLASS HERE
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#include "txt_widget.h"
-#include "txt_gui.h"
-#include "txt_io.h"
 #include "txt_main.h"
-#include "txt_utf8.h"
+#include "txt_widget.h"
 #include "txt_window.h"
+#include "txt_utf8.h"
+#include "txt_io.h"
+#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -56,14 +54,14 @@ class InputBox : public Widget
 
 	WidgetClass txt_inputbox_class
 	{
-		TXT_AlwaysSelectable,
-		TXT_InputBoxSizeCalc,
-		TXT_InputBoxDrawer,
-		TXT_InputBoxKeyPress,
-		TXT_InputBoxDestructor,
-		TXT_InputBoxMousePress,
+		AlwaysSelectable,
+		InputBoxSizeCalc,
+		InputBoxDrawer,
+		InputBoxKeyPress,
+		InputBoxDestructor,
+		InputBoxMousePress,
 		nullptr,
-		TXT_InputBoxFocused,
+		InputBoxFocused,
 	};
 
 public:
@@ -71,10 +69,10 @@ public:
 
 	InputBox(T _val = nullptr, size_t widthIn = 0) noexcept :	buffer{std::string(_val)};
 																widget_class{&txt_inputbox_class},
-																callback_table{TXT_NewCallbackTable()},
+																callback_table{NewCallbackTable()},
 																focused{false},
 																visible{true},
-																align{TXT_HORIZ_LEFT},
+																align{HORIZ_LEFT},
 																width{widthIn}
 	{
 	/* 	if (_val)
@@ -89,7 +87,7 @@ public:
 
 	void set(T _val) noexcept
 	{
-		if (_val != nullptr)
+		if (_val)
 		{
 			buffer = std::string(_val);
 		}
@@ -120,9 +118,9 @@ public:
 		_editing = false;
 	}
 
-	void inputBoxSizeCalc(TXT_UNCAST_ARG(inputbox)) noexcept
+	void inputBoxSizeCalc(UNCAST_ARG(inputbox)) noexcept
 	{
-		TXT_CAST_ARG(txt_inputbox_t, inputbox);
+		CAST_ARG(txt_inputbox_t, inputbox);
 
 		// Enough space for the box + cursor
 
@@ -130,9 +128,9 @@ public:
 		inputbox->widget.h = 1;
 	}
 
-	void inputBoxDrawer(TXT_UNCAST_ARG(inputbox)) noexcept
+	void inputBoxDrawer(UNCAST_ARG(inputbox)) noexcept
 	{
-		TXT_CAST_ARG(txt_inputbox_t, inputbox);
+		CAST_ARG(txt_inputbox_t, inputbox);
 
 		auto focused = inputbox->widget.focused();
 		auto w = inputbox->widget.width;
@@ -140,11 +138,11 @@ public:
 		// Select the background color based on whether we are currently editing, and if not, whether the widget is focused.
 		if (inputbox->editing() && focused)
 		{
-			TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, false);
+			BGColor(ColorType::black, false);
 		}
 		else
 		{
-			TXT_SetWidgetBG(inputbox);
+			SetWidgetBG(inputbox);
 		}
 
 		if (!inputbox->editing())
@@ -156,67 +154,67 @@ public:
 		// If string size exceeds the widget's width, show only the end.
 		auto chars{[&]()
 		{
-			if (TXT_UTF8_Strlen(inputbox->buffer) > w - 1)
+			if (UTF8_Strlen(inputbox->buffer) > w - 1)
 			{
-				auto len{TXT_UTF8_Strlen(inputbox->buffer)};
+				auto len{UTF8_Strlen(inputbox->buffer)};
 				static_assert(w > 0);
 				static_assert(len >= w);
-				TXT_DrawCodePageString("\xae");
-				TXT_DrawString(TXT_UTF8_SkipChars(inputbox->buffer, (len - w) + 2));
+				DrawCodePageString("\xae");
+				DrawString(UTF8_SkipChars(inputbox->buffer, (len - w) + 2));
 				return = w - 1;
 			}
 			else
 			{
-				TXT_DrawString(inputbox->buffer);
-				return TXT_UTF8_Strlen(inputbox->buffer);
+				DrawString(inputbox->buffer);
+				return UTF8_Strlen(inputbox->buffer);
 			}
 		}()};
 
 		if (chars < w && inputbox->editing && focused)
 		{
-			TXT_BGColor(txt_color_t::TXT_COLOR_BLACK, true);
-			TXT_DrawString("_");
+			BGColor(ColorType::black, true);
+			DrawString("_");
 			++chars;
 		}
 
 		for (auto i{chars}; i < w; ++i)
 		{
-			TXT_DrawString(" ");
+			DrawString(" ");
 		}
 	}
 
-	void backspace(txt_inputbox_t *inputbox) noexcept
+	void backspace(txt_inputbox_t* inputbox) noexcept
 	{
-		unsigned int len;
-		char *p;
+		unsigned len;
+		char* p;
 
-		len = TXT_UTF8_Strlen(inputbox->buffer);
+		len = UTF8_Strlen(inputbox->buffer);
 
 		if (len > 0)
 		{
-			p = TXT_UTF8_SkipChars(inputbox->buffer, len - 1);
+			p = UTF8_SkipChars(inputbox->buffer, len - 1);
 			*p = '\0';
 		}
 	}
 
-	void addCharacter(txt_inputbox_t *inputbox, int key) noexcept
+	void addCharacter(txt_inputbox_t* inputbox, int key) noexcept
 	{
-		char *end;
-		char *p;
+		char* end;
+		char* p;
 
-		if (TXT_UTF8_Strlen(inputbox->buffer) < inputbox->size)
+		if (UTF8_Strlen(inputbox->buffer) < inputbox->size)
 		{
 			// Add character to the buffer
 			end = inputbox->buffer + strlen(inputbox->buffer);
-			p = TXT_EncodeUTF8(end, key);
+			p = EncodeUTF8(end, key);
 			*p = '\0';
 		}
 	}
 
-	int keyPress(TXT_UNCAST_ARG(inputbox), int key) noexcept
+	int keyPress(UNCAST_ARG(inputbox), int key) noexcept
 	{
-		TXT_CAST_ARG(txt_inputbox_t, inputbox);
-		unsigned int c;
+		CAST_ARG(txt_inputbox_t, inputbox);
+		unsigned c;
 
 		if (!inputbox->editing)
 		{
@@ -251,10 +249,10 @@ public:
 			Backspace(inputbox);
 		}
 
-		c = TXT_KEY_TO_UNICODE(key);
+		c = KEY_TO_UNICODE(key);
 
 		// Add character to the buffer, but only if it's a printable character that we can represent on the screen.
-		if (isprint(c) || (c >= 128 && TXT_UnicodeCharacter(c) >= 0))
+		if (isprint(c) || (c >= 128 && UnicodeCharacter(c) >= 0))
 		{
 			AddCharacter(inputbox, c);
 		}
@@ -262,17 +260,17 @@ public:
 		return 1;
 	}
 
-	void mousePress(TXT_UNCAST_ARG(inputbox), int x, int y, int key) noexcept
+	void mousePress(UNCAST_ARG(inputbox), int x, int y, int key) noexcept
 	{
-		TXT_CAST_ARG(txt_inputbox_t, inputbox);
+		CAST_ARG(txt_inputbox_t, inputbox);
 
-		if (key == TXT_MOUSE_LEFT)
+		if (key == MOUSE_LEFT)
 		{
 			// Make mouse clicks start editing the box
 			if (!inputbox->editing)
 			{
 				// Send a simulated keypress to start editing
-				TXT_WidgetKeyPress(inputbox, KEY_ENTER);
+				WidgetKeyPress(inputbox, KEY_ENTER);
 			}
 		}
 	}
@@ -291,7 +289,7 @@ public:
  * @param width		Width of the input box, in characters.
  * @return			Pointer to the new input box widget.
  */
-auto TXT_NewInputBox(char** value, size_t width)
+auto NewInputBox(char** value, size_t width)
 {
 	return InputBox<char**>(value, width);
 }
@@ -303,7 +301,7 @@ auto TXT_NewInputBox(char** value, size_t width)
  * @param width		Width of the input box, in characters.
  * @return			Pointer to the new input box widget.
  */
-auto TXT_NewIntInputBox(int* value, size_t width)
+auto NewIntInputBox(int* value, size_t width)
 {
 	return InputBox<int*>(value, width);
 }

@@ -37,7 +37,7 @@ constexpr int GENMIDI_FLAG_2VOICE{0x0004};		/* double voice (OPL3) */
 
 constexpr size_t PERCUSSION_LOG_LEN{16};
 
-typedef PACKED_STRUCT (
+struct genmidi_op_t
 {
 	byte tremolo;
 	byte attack;
@@ -45,25 +45,25 @@ typedef PACKED_STRUCT (
 	byte waveform;
 	byte scale;
 	byte level;
-}) genmidi_op_t;
+};
 
-typedef PACKED_STRUCT (
+struct genmidi_voice_t
 {
 	genmidi_op_t modulator;
 	byte feedback;
 	genmidi_op_t carrier;
 	byte unused;
 	short base_note_offset;
-}) genmidi_voice_t;
+};
 
-typedef PACKED_STRUCT (
+struct genmidi_instr_t
 {
 	unsigned short flags;
 	byte fine_tuning;
 	byte fixed_note;
 
 	genmidi_voice_t voices[2];
-}) genmidi_instr_t;
+};
 
 // Data associated with a channel of a track that is currently playing.
 struct opl_channel_data_t
@@ -252,7 +252,7 @@ static const unsigned short frequency_curve[] = {
 };
 
 // Mapping from MIDI volume level to OPL level value.
-static const unsigned int volume_mapping_table[] = {
+static const unsigned volume_mapping_table[] = {
 	0, 1, 3, 5, 6, 8, 10, 11,
 	13, 14, 16, 17, 19, 20, 22, 23,
 	25, 26, 27, 29, 30, 32, 33, 34,
@@ -324,7 +324,7 @@ static bool LoadInstrumentTable()
 	byte* lump{W_CacheLumpName(DEH_String("genmidi"), pu_tags_t::PU_STATIC)};
 
 	// DMX does not check header
-	main_instrs = (genmidi_instr_t *) (lump + strlen(GENMIDI_HEADER));
+	main_instrs = (genmidi_instr_t*) (lump + strlen(GENMIDI_HEADER));
 	percussion_instrs = main_instrs + GENMIDI_NUM_INSTRS;
 	main_instr_names = (char (*)[32]) (percussion_instrs + GENMIDI_NUM_PERCUSSION);
 	percussion_names = main_instr_names + GENMIDI_NUM_INSTRS;
@@ -552,7 +552,7 @@ static void VoiceKeyOff(opl_voice_t* voice)
 	OPL_WriteRegister((OPL_REGS_FREQ_2 + voice->index) | voice->array, voice->freq >> 8);
 }
 
-static opl_channel_data_t* TrackChannelForEvent(opl_track_data_t* track, midi_event_t* event)
+static opl_channel_data_t* TrackChannelForEvent(opl_track_data_t* track, midi_EventType* event)
 {
 	unsigned channel_num{event->data.channel.channel};
 
@@ -571,7 +571,7 @@ static opl_channel_data_t* TrackChannelForEvent(opl_track_data_t* track, midi_ev
 }
 
 // Get the frequency that we should be using for a voice.
-static void KeyOffEvent(opl_track_data_t* track, midi_event_t* event)
+static void KeyOffEvent(opl_track_data_t* track, midi_EventType* event)
 {
 	//printf("note off: channel %i, %i, %i\n", event->data.channel.channel, event->data.channel.param1, event->data.channel.param2);
 
@@ -726,7 +726,7 @@ static void VoiceKeyOn(opl_channel_data_t* channel, genmidi_instr_t* instrument,
 	// Find a voice to use for this new note.
 	auto voice{GetFreeVoice()};
 
-	if (voice == nullptr)
+	if (!voice)
 	{
 		return;
 	}
@@ -757,7 +757,7 @@ static void VoiceKeyOn(opl_channel_data_t* channel, genmidi_instr_t* instrument,
 	UpdateVoiceFrequency(voice);
 }
 
-static void KeyOnEvent(opl_track_data_t* track, midi_event_t* event)
+static void KeyOnEvent(opl_track_data_t* track, midi_EventType* event)
 {
 	genmidi_instr_t* instrument;
 
@@ -803,7 +803,7 @@ static void KeyOnEvent(opl_track_data_t* track, midi_event_t* event)
 			auto voicenum{double_voice + 1};
 			if (!opl_opl3mode)
 			{
-				voicenum = 1;
+				voicenum class = 1;
 			}
 			while (voice_alloced_num > num_opl_voices - voicenum)
 			{
@@ -854,7 +854,7 @@ static void KeyOnEvent(opl_track_data_t* track, midi_event_t* event)
 	}
 }
 
-static void ProgramChangeEvent(opl_track_data_t* track, midi_event_t* event)
+static void ProgramChangeEvent(opl_track_data_t* track, midi_EventType* event)
 {
 	// Set the instrument used on this channel.
 	auto channel{TrackChannelForEvent(track, event)};
@@ -944,7 +944,7 @@ static void AllNotesOff(opl_channel_data_t* channel, unsigned param)
 	}
 }
 
-static void ControllerEvent(opl_track_data_t* track, midi_event_t* event)
+static void ControllerEvent(opl_track_data_t* track, midi_EventType* event)
 {
 	//printf("change controller: channel %i, %i, %i\n", event->data.channel.channel, event->data.channel.param1, event->data.channel.param2);
 
@@ -975,11 +975,11 @@ static void ControllerEvent(opl_track_data_t* track, midi_event_t* event)
 }
 
 // Process a pitch bend event.
-static void PitchBendEvent(opl_track_data_t* track, midi_event_t* event)
+static void PitchBendEvent(opl_track_data_t* track, midi_EventType* event)
 {
-	opl_voice_t *voice_updated_list[OPL_NUM_VOICES * 2];
+	opl_voice_t* voice_updated_list[OPL_NUM_VOICES * 2];
 	unsigned voice_updated_num = 0;
-	opl_voice_t *voice_not_updated_list[OPL_NUM_VOICES * 2];
+	opl_voice_t* voice_not_updated_list[OPL_NUM_VOICES * 2];
 	unsigned voice_not_updated_num = 0;
 
 	// Update the channel bend value. Only the MSB of the pitch bend value is considered: this is what Doom does.
@@ -1018,7 +1018,7 @@ static void MetaSetTempo(unsigned tempo)
 }
 
 // Process a meta event.
-static void MetaEvent(opl_track_data_t* track, midi_event_t* event)
+static void MetaEvent(opl_track_data_t* track, midi_EventType* event)
 {
 	auto data{event->data.meta.data};
 	auto data_len{event->data.meta.length};
@@ -1026,18 +1026,18 @@ static void MetaEvent(opl_track_data_t* track, midi_event_t* event)
 	switch (event->data.meta.type)
 	{
 		// Things we can just ignore.
-		case midi_meta_event_type_t::MIDI_META_SEQUENCE_NUMBER:
-		case midi_meta_event_type_t::MIDI_META_TEXT:
-		case midi_meta_event_type_t::MIDI_META_COPYRIGHT:
-		case midi_meta_event_type_t::MIDI_META_TRACK_NAME:
-		case midi_meta_event_type_t::MIDI_META_INSTR_NAME:
-		case midi_meta_event_type_t::MIDI_META_LYRICS:
-		case midi_meta_event_type_t::MIDI_META_MARKER:
-		case midi_meta_event_type_t::MIDI_META_CUE_POINT:
-		case midi_meta_event_type_t::MIDI_META_SEQUENCER_SPECIFIC:
+		case midi_meta_EventTypeype_t::MIDI_META_SEQUENCE_NUMBER:
+		case midi_meta_EventTypeype_t::MIDI_META_TEXT:
+		case midi_meta_EventTypeype_t::MIDI_META_COPYRIGHT:
+		case midi_meta_EventTypeype_t::MIDI_META_TRACK_NAME:
+		case midi_meta_EventTypeype_t::MIDI_META_INSTR_NAME:
+		case midi_meta_EventTypeype_t::MIDI_META_LYRICS:
+		case midi_meta_EventTypeype_t::MIDI_META_MARKER:
+		case midi_meta_EventTypeype_t::MIDI_META_CUE_POINT:
+		case midi_meta_EventTypeype_t::MIDI_META_SEQUENCER_SPECIFIC:
 			break;
 
-		case midi_meta_event_type_t::MIDI_META_SET_TEMPO:
+		case midi_meta_EventTypeype_t::MIDI_META_SET_TEMPO:
 			if (data_len == 3)
 			{
 				MetaSetTempo((data[0] << 16) | (data[1] << 8) | data[2]);
@@ -1045,7 +1045,7 @@ static void MetaEvent(opl_track_data_t* track, midi_event_t* event)
 			break;
 
 		// End of track - actually handled when we run out of events in the track, see below.
-		case midi_meta_event_type_t::MIDI_META_END_OF_TRACK:
+		case midi_meta_EventTypeype_t::MIDI_META_END_OF_TRACK:
 			break;
 
 		default:
@@ -1057,43 +1057,43 @@ static void MetaEvent(opl_track_data_t* track, midi_event_t* event)
 }
 
 // Process a MIDI event from a track.
-static void ProcessEvent(opl_track_data_t* track, midi_event_t* event)
+static void ProcessEvent(opl_track_data_t* track, midi_EventType* event)
 {
-	switch (event->event_type)
+	switch (event->EventTypeype)
 	{
-		case midi_event_type_t::MIDI_EVENT_NOTE_OFF:
+		case midi_EventTypeype_t::MIDI_EVENT_NOTE_OFF:
 			KeyOffEvent(track, event);
 			break;
 
-		case midi_event_type_t::MIDI_EVENT_NOTE_ON:
+		case midi_EventTypeype_t::MIDI_EVENT_NOTE_ON:
 			KeyOnEvent(track, event);
 			break;
 
-		case midi_event_type_t::MIDI_EVENT_CONTROLLER:
+		case midi_EventTypeype_t::MIDI_EVENT_CONTROLLER:
 			ControllerEvent(track, event);
 			break;
 
-		case midi_event_type_t::MIDI_EVENT_PROGRAM_CHANGE:
+		case midi_EventTypeype_t::MIDI_EVENT_PROGRAM_CHANGE:
 			ProgramChangeEvent(track, event);
 			break;
 
-		case midi_event_type_t::MIDI_EVENT_PITCH_BEND:
+		case midi_EventTypeype_t::MIDI_EVENT_PITCH_BEND:
 			PitchBendEvent(track, event);
 			break;
 
-		case midi_event_type_t::MIDI_EVENT_META:
+		case midi_EventTypeype_t::MIDI_EVENT_META:
 			MetaEvent(track, event);
 			break;
 
 		// SysEx events can be ignored.
 
-		case midi_event_type_t::MIDI_EVENT_SYSEX:
-		case midi_event_type_t::MIDI_EVENT_SYSEX_SPLIT:
+		case midi_EventTypeype_t::MIDI_EVENT_SYSEX:
+		case midi_EventTypeype_t::MIDI_EVENT_SYSEX_SPLIT:
 			break;
 
 		default:
 #ifdef OPL_MIDI_DEBUG
-			fprintf(stderr, "Unknown MIDI event type %i\n", event->event_type);
+			fprintf(stderr, "Unknown MIDI event type %i\n", event->EventTypeype);
 #endif
 			break;
 	}
@@ -1125,7 +1125,7 @@ static void RestartSong(void* unused)
 static void TrackTimerCallback(opl_track_data_t* arg)
 {
 	opl_track_data_t* track{arg};
-	midi_event_t* event;
+	midi_EventType* event;
 
 	// Get the next event and process it.
 	if (!MIDI_GetNextEvent(track->iter, &event))
@@ -1136,7 +1136,7 @@ static void TrackTimerCallback(opl_track_data_t* arg)
 	ProcessEvent(track, event);
 
 	// End of track?
-	if (event->event_type == midi_event_type_t::MIDI_EVENT_META && event->data.meta.type == midi_meta_event_type_t::MIDI_META_END_OF_TRACK)
+	if (event->EventTypeype == midi_EventTypeype_t::MIDI_EVENT_META && event->data.meta.type == midi_meta_EventTypeype_t::MIDI_META_END_OF_TRACK)
 	{
 		--running_tracks;
 
@@ -1194,7 +1194,7 @@ static void StartTrack(midi_file_t* file, unsigned track_num)
 // Start playing a mid
 static void I_OPL_PlaySong(midi_file_t* handle, bool looping)
 {
-	if (!music_initialized || handle == nullptr)
+	if (!music_initialized || !handle)
 	{
 		return;
 	}
@@ -1244,7 +1244,7 @@ static void I_OPL_PauseSong()
 	// Turn off all main instrument voices (not percussion). This is what Vanilla does.
 	for (size_t i{0}; i < num_opl_voices; ++i)
 	{
-		if (voices[i].channel != nullptr && voices[i].current_instr < percussion_instrs)
+		if (voices[i].channel && voices[i].current_instr < percussion_instrs)
 		{
 			VoiceKeyOff(&voices[i]);
 		}
@@ -1300,7 +1300,7 @@ static void I_OPL_UnRegisterSong(midi_file_t* handle)
 		return;
 	}
 
-	if (handle != nullptr)
+	if (handle)
 	{
 		MIDI_FreeFile(handle);
 	}
@@ -1358,7 +1358,7 @@ static midi_file_t* I_OPL_RegisterSong(byte* data, int len)
 
 	auto result{MIDI_LoadFile(*filename)};
 
-	if (result == nullptr)
+	if (!result)
 	{
 		fprintf(stderr, "I_OPL_RegisterSong: Failed to load MID.\n");
 	}
@@ -1409,7 +1409,7 @@ static bool I_OPL_InitMusic()
 
 	// The DMXOPTION variable must be set to enable OPL3 support. As an extension, we also allow it to be set from the config file.
 	const char* dmxoption = getenv("DMXOPTION");
-	if (dmxoption == nullptr)
+	if (!dmxoption)
 	{
 		dmxoption = snd_dmxoption != nullptr ? snd_dmxoption : "";
 	}
@@ -1492,7 +1492,7 @@ static int NumActiveChannels()
 	return 0;
 }
 
-static bool ChannelInUse(opl_channel_data_t *channel)
+static bool ChannelInUse(opl_channel_data_t* channel)
 {
 	for (size_t i{0}; i < voice_alloced_num; ++i)
 	{

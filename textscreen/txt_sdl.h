@@ -7,7 +7,8 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Text mode emulation in SDL
+	DESCRIPTION:
+		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
 #pragma once
 
@@ -19,12 +20,12 @@ namespace cudadoom::txt
 {
 // The textscreen API itself doesn't need SDL; however, SDL needs its headers included where main() is defined.
 
-struct txt_font_t
+struct FontType
 {
 	const char* name;
 	const uint8_t* data;
-	unsigned int w;
-	unsigned int h;
+	unsigned w;
+	unsigned h;
 };
 
 // Event callback function type: a function of this type can be used to intercept events in the textscreen event processing loop.
@@ -33,6 +34,6 @@ typedef int (*TxtSDLEventCallbackFunc)(SDL_Event* event, void* user_data);
 
 // Set a callback function to call in the SDL event loop. Useful for intercepting events. Pass callback=NULL to clear an existing
 // callback function. user_data is a void pointer to be passed to the callback function.
-void TXT_SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data);
+void SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data);
 
 } /* END NAMESPACE cudadoom::txt */

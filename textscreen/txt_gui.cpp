@@ -8,17 +8,17 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
-#include "txt_gui.h"
-#include "txt_io.h"
 #include "txt_main.h"
 #include "txt_utf8.h"
+#include "txt_io.h"
+#include "txt_gui.h"
 
 #define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)
 #define VALID_Y(y) ((y) >= cliparea->y1 && (y) < cliparea->y2)
 
 namespace cudadoom::txt
 {
+
 // Array of border characters for drawing windows. The array looks like this:
 //
 // +-++
@@ -33,71 +33,71 @@ static const int borders[4][4] =
 	{0xc0, 0xc4, 0xc1, 0xd9},
 };
 
-static txt_cliparea_t *cliparea = NULL;
+static txt_cliparea_t* cliparea = NULL;
 
-void TXT_DrawDesktopBackground(const char *title)
+void DrawDesktopBackground(const char* title)
 {
 	int i;
-	unsigned char *screendata;
-	unsigned char *p;
+	unsigned char* screendata;
+	unsigned char* p;
 
-	screendata = TXT_GetScreenData();
+	screendata = GetScreenData();
 
 	// Fill the screen with gradient characters
 
 	p = screendata;
 
-	for (i=0; i<TXT_SCREEN_W * TXT_SCREEN_H; ++i)
+	for (i=0; i<SCREEN_W * SCREEN_H; ++i)
 	{
 		*(p++) = 0xb1;
-		*(p++) = txt_color_t::TXT_COLOR_GREY | (txt_color_t::TXT_COLOR_BLUE << 4);
+		*(p++) = ColorType::grey | (ColorType::blue << 4);
 	}
 
 	// Draw the top and bottom banners
 
 	p = screendata;
 
-	for (i=0; i<TXT_SCREEN_W; ++i)
+	for (i=0; i<SCREEN_W; ++i)
 	{
 		*(p++) = ' ';
-		*(p++) = txt_color_t::TXT_COLOR_BLACK | (txt_color_t::TXT_COLOR_GREY << 4);
+		*(p++) = ColorType::black | (ColorType::grey << 4);
 	}
 
-	p = screendata + (TXT_SCREEN_H - 1) * TXT_SCREEN_W * 2;
+	p = screendata + (SCREEN_H - 1) * SCREEN_W * 2;
 
-	for (i=0; i<TXT_SCREEN_W; ++i)
+	for (i=0; i<SCREEN_W; ++i)
 	{
 		*(p++) = ' ';
-		*(p++) = txt_color_t::TXT_COLOR_BLACK | (txt_color_t::TXT_COLOR_GREY << 4);
+		*(p++) = ColorType::black | (ColorType::grey << 4);
 	}
 
 	// Print the title
 
-	TXT_GotoXY(0, 0);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BLACK);
-	TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
+	GotoXY(0, 0);
+	FGColor(ColorType::black);
+	BGColor(ColorType::grey, false);
 
-	TXT_DrawString(" ");
-	TXT_DrawString(title);
+	DrawString(" ");
+	DrawString(title);
 }
 
-void TXT_DrawShadow(int x, int y, int w, int h)
+void DrawShadow(int x, int y, int w, int h)
 {
-	unsigned char *screendata;
-	unsigned char *p;
+	unsigned char* screendata;
+	unsigned char* p;
 	int x1, y1;
 
-	screendata = TXT_GetScreenData();
+	screendata = GetScreenData();
 
 	for (y1=y; y1<y+h; ++y1)
 	{
-		p = screendata + (y1 * TXT_SCREEN_W + x) * 2;
+		p = screendata + (y1 * SCREEN_W + x) * 2;
 
 		for (x1=x; x1<x+w; ++x1)
 		{
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
-				p[1] = txt_color_t::TXT_COLOR_DARK_GREY;
+				p[1] = ColorType::dark_grey;
 			}
 
 			p += 2;
@@ -105,14 +105,14 @@ void TXT_DrawShadow(int x, int y, int w, int h)
 	}
 }
 
-void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
+void DrawWindowFrame(const char* title, int x, int y, int w, int h)
 {
-	txt_saved_colors_t colors;
+	SavedColors colors;
 	int x1, y1;
 	int bx, by;
 
-	TXT_SaveColors(&colors);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
+	SaveColors(&colors);
+	FGColor(ColorType::bright_cyan);
 
 	for (y1=y; y1<y+h; ++y1)
 	{
@@ -134,8 +134,8 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
 
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
-				TXT_GotoXY(x1, y1);
-				TXT_PutChar(borders[by][bx]);
+				GotoXY(x1, y1);
+				PutChar(borders[by][bx]);
 			}
 		}
 	}
@@ -144,49 +144,49 @@ void TXT_DrawWindowFrame(const char *title, int x, int y, int w, int h)
 
 	if (title != NULL)
 	{
-		TXT_GotoXY(x + 1, y + 1);
-		TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
-		TXT_FGColor(txt_color_t::TXT_COLOR_BLUE);
+		GotoXY(x + 1, y + 1);
+		BGColor(ColorType::grey, false);
+		FGColor(ColorType::blue);
 
 		for (x1=0; x1<w-2; ++x1)
 		{
-			TXT_DrawString(" ");
+			DrawString(" ");
 		}
 
-		TXT_GotoXY(x + (w - TXT_UTF8_Strlen(title)) / 2, y + 1);
-		TXT_DrawString(title);
+		GotoXY(x + (w - UTF8_Strlen(title)) / 2, y + 1);
+		DrawString(title);
 	}
 
 	// Draw the window's shadow.
 
-	TXT_DrawShadow(x + 2, y + h, w, 1);
-	TXT_DrawShadow(x + w, y + 1, 2, h);
+	DrawShadow(x + 2, y + h, w, 1);
+	DrawShadow(x + w, y + 1, 2, h);
 
-	TXT_RestoreColors(&colors);
+	RestoreColors(&colors);
 }
 
-void TXT_DrawSeparator(int x, int y, int w)
+void DrawSeparator(int x, int y, int w)
 {
-	txt_saved_colors_t colors;
-	unsigned char *data;
+	SavedColors colors;
+	unsigned char* data;
 	int x1;
 	int b;
 
-	data = TXT_GetScreenData();
+	data = GetScreenData();
 
-	TXT_SaveColors(&colors);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_CYAN);
+	SaveColors(&colors);
+	FGColor(ColorType::bright_cyan);
 
 	if (!VALID_Y(y))
 	{
 		return;
 	}
 
-	data += (y * TXT_SCREEN_W + x) * 2;
+	data += (y * SCREEN_W + x) * 2;
 
 	for (x1=x; x1<x+w; ++x1)
 	{
-		TXT_GotoXY(x1, y);
+		GotoXY(x1, y);
 
 		b = x1 == x ? 0 :
 			x1 == x + w - 1 ? 3 :
@@ -200,25 +200,25 @@ void TXT_DrawSeparator(int x, int y, int w)
 
 			if (*data == borders[1][b])
 			{
-				TXT_PutChar(borders[2][b]);
+				PutChar(borders[2][b]);
 			}
 		}
 
 		data += 2;
 	}
 
-	TXT_RestoreColors(&colors);
+	RestoreColors(&colors);
 }
 
-// Alternative to TXT_DrawString() where the argument is a "code page
+// Alternative to DrawString() where the argument is a "code page
 // string" - characters are in native code page format and not UTF-8.
-void TXT_DrawCodePageString(const char *s)
+void DrawCodePageString(const char* s)
 {
 	int x, y;
 	int x1;
-	const char *p;
+	const char* p;
 
-	TXT_GetXY(&x, &y);
+	GetXY(&x, &y);
 
 	if (VALID_Y(y))
 	{
@@ -228,52 +228,52 @@ void TXT_DrawCodePageString(const char *s)
 		{
 			if (VALID_X(x1))
 			{
-				TXT_GotoXY(x1, y);
-				TXT_PutChar(*p);
+				GotoXY(x1, y);
+				PutChar(*p);
 			}
 
 			x1 += 1;
 		}
 	}
 
-	TXT_GotoXY(x + strlen(s), y);
+	GotoXY(x + strlen(s), y);
 }
 
-static void PutUnicodeChar(unsigned int c)
+static void PutUnicodeChar(unsigned c)
 {
 	int d;
 
 	// Treat control characters specially.
 	if (c == '\n' || c == '\b')
 	{
-		TXT_PutChar(c);
+		PutChar(c);
 		return;
 	}
 
 	// Map Unicode character into the symbol used to represent it in this
 	// code page. For unrepresentable characters, print a fallback instead.
-	// Note that we use TXT_PutSymbol() here because we just want to do a
+	// Note that we use PutSymbol() here because we just want to do a
 	// raw write into the screen buffer.
-	d = TXT_UnicodeCharacter(c);
+	d = UnicodeCharacter(c);
 
 	if (d >= 0)
 	{
-		TXT_PutSymbol(d);
+		PutSymbol(d);
 	}
 	else
 	{
-		TXT_PutSymbol('\xa8');
+		PutSymbol('\xa8');
 	}
 }
 
-void TXT_DrawString(const char *s)
+void DrawString(const char* s)
 {
 	int x, y;
 	int x1;
-	const char *p;
-	unsigned int c;
+	const char* p;
+	unsigned c;
 
-	TXT_GetXY(&x, &y);
+	GetXY(&x, &y);
 
 	if (VALID_Y(y))
 	{
@@ -281,7 +281,7 @@ void TXT_DrawString(const char *s)
 
 		for (p = s; *p != '\0'; )
 		{
-			c = TXT_DecodeUTF8(&p);
+			c = DecodeUTF8(&p);
 
 			if (c == 0)
 			{
@@ -290,7 +290,7 @@ void TXT_DrawString(const char *s)
 
 			if (VALID_X(x1))
 			{
-				TXT_GotoXY(x1, y);
+				GotoXY(x1, y);
 				PutUnicodeChar(c);
 			}
 
@@ -298,12 +298,12 @@ void TXT_DrawString(const char *s)
 		}
 	}
 
-	TXT_GotoXY(x + TXT_UTF8_Strlen(s), y);
+	GotoXY(x + UTF8_Strlen(s), y);
 }
 
-void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
+void DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 {
-	txt_saved_colors_t colors;
+	SavedColors colors;
 	int x1;
 	int cursor_x;
 
@@ -312,12 +312,12 @@ void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 		return;
 	}
 
-	TXT_SaveColors(&colors);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BLACK);
-	TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
+	SaveColors(&colors);
+	FGColor(ColorType::black);
+	BGColor(ColorType::grey, false);
 
-	TXT_GotoXY(x, y);
-	TXT_PutChar('\x1b');
+	GotoXY(x, y);
+	PutChar('\x1b');
 
 	cursor_x = x + 1;
 
@@ -337,22 +337,22 @@ void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 		{
 			if (x1 == cursor_x)
 			{
-				TXT_PutChar('\xdb');
+				PutChar('\xdb');
 			}
 			else
 			{
-				TXT_PutChar('\xb1');
+				PutChar('\xb1');
 			}
 		}
 	}
 
-	TXT_PutChar('\x1a');
-	TXT_RestoreColors(&colors);
+	PutChar('\x1a');
+	RestoreColors(&colors);
 }
 
-void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range)
+void DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 {
-	txt_saved_colors_t colors;
+	SavedColors colors;
 	int y1;
 	int cursor_y;
 
@@ -361,12 +361,12 @@ void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 		return;
 	}
 
-	TXT_SaveColors(&colors);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BLACK);
-	TXT_BGColor(txt_color_t::TXT_COLOR_GREY, false);
+	SaveColors(&colors);
+	FGColor(ColorType::black);
+	BGColor(ColorType::grey, false);
 
-	TXT_GotoXY(x, y);
-	TXT_PutChar('\x18');
+	GotoXY(x, y);
+	PutChar('\x18');
 
 	cursor_y = y + 1;
 
@@ -384,40 +384,40 @@ void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 	{
 		if (VALID_Y(y1))
 		{
-			TXT_GotoXY(x, y1);
+			GotoXY(x, y1);
 
 			if (y1 == cursor_y)
 			{
-				TXT_PutChar('\xdb');
+				PutChar('\xdb');
 			}
 			else
 			{
-				TXT_PutChar('\xb1');
+				PutChar('\xb1');
 			}
 		}
 	}
 
-	TXT_GotoXY(x, y + h - 1);
-	TXT_PutChar('\x19');
-	TXT_RestoreColors(&colors);
+	GotoXY(x, y + h - 1);
+	PutChar('\x19');
+	RestoreColors(&colors);
 }
 
-void TXT_InitClipArea()
+void InitClipArea()
 {
 	if (cliparea == NULL)
 	{
 		cliparea = static_cast<decltype(cliparea)>(malloc(sizeof(txt_cliparea_t)));
 		cliparea->x1 = 0;
-		cliparea->x2 = TXT_SCREEN_W;
+		cliparea->x2 = SCREEN_W;
 		cliparea->y1 = 0;
-		cliparea->y2 = TXT_SCREEN_H;
+		cliparea->y2 = SCREEN_H;
 		cliparea->next = NULL;
 	}
 }
 
-void TXT_PushClipArea(int x1, int x2, int y1, int y2)
+void PushClipArea(int x1, int x2, int y1, int y2)
 {
-	txt_cliparea_t *newarea;
+	txt_cliparea_t* newarea;
 
 	newarea = static_cast<decltype(newarea)>(malloc(sizeof(txt_cliparea_t)));
 
@@ -448,9 +448,9 @@ void TXT_PushClipArea(int x1, int x2, int y1, int y2)
 	cliparea = newarea;
 }
 
-void TXT_PopClipArea()
+void PopClipArea()
 {
-	txt_cliparea_t *next_cliparea;
+	txt_cliparea_t* next_cliparea;
 
 	// Never pop the last entry
 

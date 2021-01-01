@@ -65,20 +65,20 @@ static const byte cr_red2green[256] =
 		224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,
 		240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255};
 
-byte *cr[] =
+byte* cr[] =
 {
-	(byte *) &cr_none,
-	(byte *) &cr_dark,
-	(byte *) &cr_gray,
-	(byte *) &cr_green,
-	(byte *) &cr_gold,
-	(byte *) &cr_red,
-	(byte *) &cr_blue,
-	(byte *) &cr_red2blue,
-	(byte *) &cr_red2green
+	(byte*) &cr_none,
+	(byte*) &cr_dark,
+	(byte*) &cr_gray,
+	(byte*) &cr_green,
+	(byte*) &cr_gold,
+	(byte*) &cr_red,
+	(byte*) &cr_blue,
+	(byte*) &cr_red2blue,
+	(byte*) &cr_red2green
 };
 
-char **crstr = 0;
+char**crstr = 0;
 
 /*
 Date: Sun, 26 Oct 2014 10:36:12 -0700
@@ -108,11 +108,12 @@ then, to also use this routine to convert colors *to* gray?
 
 #define CTOLERANCE		(0.0001)
 
-typedef struct vect {
+struct vect
+{
 	float x;
 	float y;
 	float z;
-} vect;
+};
 
 static void hsv_to_rgb(vect *hsv, vect *rgb)
 {
@@ -223,7 +224,7 @@ static void rgb_to_hsv(vect *rgb, vect *hsv)
 }
 
 // [crispy] copied over from i_video.c
-static int I_GetPaletteIndex2(byte *palette, int r, int g, int b)
+static int I_GetPaletteIndex2(byte* palette, int r, int g, int b)
 {
 	int best, best_diff, diff;
 	int i;
@@ -251,7 +252,7 @@ static int I_GetPaletteIndex2(byte *palette, int r, int g, int b)
 	return best;
 }
 
-byte V_Colorize (byte *playpal, int cr, byte source, bool keepgray109)
+byte V_Colorize (byte* playpal, int cr, byte source, bool keepgray109)
 {
 	vect rgb, hsv;
 

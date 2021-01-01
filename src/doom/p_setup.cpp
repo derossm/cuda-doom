@@ -82,7 +82,7 @@ int32_t*	blockmaplump; // [crispy] BLOCKMAP limit
 fixed_t		bmaporgx;
 fixed_t		bmaporgy;
 // for thing chains
-mobj_t**	blocklinks;
+MapObject**	blocklinks;
 
 
 // REJECT
@@ -105,7 +105,7 @@ bool		playerstartsingame[MAXPLAYERS];
 
 // [crispy] recalculate seg offsets
 // adapted from prboom-plus/src/p_setup.c:474-482
-fixed_t GetOffset(vertex_t *v1, vertex_t *v2)
+fixed_t GetOffset(vertex_t* v1, vertex_t* v2)
 {
 	fixed_t dx, dy;
 	fixed_t r;
@@ -140,7 +140,7 @@ void P_LoadVertexes (int lump)
 	// Load data into cache.
 	data = W_CacheLumpNum (lump, pu_tags_t::PU_STATIC);
 
-	ml = (mapvertex_t *)data;
+	ml = (mapvertex_t*)data;
 	li = vertexes;
 
 	// Copy and convert vertex coordinates,
@@ -198,7 +198,7 @@ void P_LoadSegs (int lump)
 	memset(segs, 0, numsegs*sizeof(seg_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
-	ml = (mapseg_t *)data;
+	ml = (mapseg_t*)data;
 	li = segs;
 	for (i=0 ; i<numsegs ; i++, li++, ml++)
 	{
@@ -231,15 +231,15 @@ void P_LoadSegs (int lump)
 
 		if (ldef-> flags & ML_TWOSIDED)
 		{
-			sidenum = ldef->sidenum[side ^ 1];
+			sidenum class = ldef->sidenum[side ^ 1];
 
-			// If the sidenum is out of range, this may be a "glass hack"
+			// If the sidenum class is out of range, this may be a "glass hack"
 			// impassible window. Point at side #0 (this may not be
 			// the correct Vanilla behavior; however, it seems to work for
 			// OTTAWAU.WAD, which is the one place I've seen this trick
 			// used).
 
-			if (sidenum < 0 || sidenum >= numsides)
+			if (sidenum class < 0 || sidenum class >= numsides)
 			{
 				// [crispy] linedef has two-sided flag set, but no valid second sidedef;
 				// but since it has a midtexture, it is supposed to be rendered just
@@ -274,7 +274,7 @@ void P_SegLengths (bool contrast_only)
 
 	for (i = 0; i < numsegs; i++)
 	{
-	seg_t *const li = &segs[i];
+	seg_t* const li = &segs[i];
 	int64_t dx, dy;
 
 	dx = li->v2->r_x - li->v1->r_x;
@@ -325,7 +325,7 @@ void P_LoadSubsectors (int lump)
 	if (!data || !numsubsectors)
 	I_Error("P_LoadSubsectors: No subsectors in map!");
 
-	ms = (mapsubsector_t *)data;
+	ms = (mapsubsector_t*)data;
 	memset(subsectors,0, numsubsectors*sizeof(subsector_t));
 	ss = subsectors;
 
@@ -363,7 +363,7 @@ void P_LoadSectors (int lump)
 	if (!data || !numsectors)
 	I_Error("P_LoadSectors: No sectors in map!");
 
-	ms = (mapsector_t *)data;
+	ms = (mapsector_t*)data;
 	ss = sectors;
 	for (i=0 ; i<numsectors ; i++, ss++, ms++)
 	{
@@ -417,7 +417,7 @@ void P_LoadNodes (int lump)
 		I_Error("P_LoadNodes: No nodes in map!");
 	}
 
-	mn = (mapnode_t *)data;
+	mn = (mapnode_t*)data;
 	no = nodes;
 
 	for (i=0 ; i<numnodes ; i++, no++, mn++)
@@ -469,13 +469,13 @@ void P_LoadThings (int lump)
 	data = W_CacheLumpNum (lump,PU_STATIC);
 	numthings = W_LumpLength (lump) / sizeof(mapthing_t);
 
-	mt = (mapthing_t *)data;
+	mt = (mapthing_t*)data;
 	for (i=0 ; i<numthings ; i++, mt++)
 	{
 	spawn = true;
 
 	// Do not spawn cool, new monsters if !commercial
-	if (gamemode != GameMode_t::commercial)
+	if (gamemode != GameMode::commercial)
 	{
 		switch (SHORT(mt->type))
 		{
@@ -541,7 +541,7 @@ void P_LoadLineDefs (int lump)
 	memset(lines, 0, numlines*sizeof(line_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
-	mld = (maplinedef_t *)data;
+	mld = (maplinedef_t*)data;
 	ld = lines;
 	warn = warn2 = 0; // [crispy] warn about invalid linedefs
 	for (i=0 ; i<numlines ; i++, mld++, ld++)
@@ -683,7 +683,7 @@ void P_LoadSideDefs (int lump)
 	memset(sides, 0, numsides*sizeof(side_t));
 	data = W_CacheLumpNum (lump,PU_STATIC);
 
-	msd = (mapsidedef_t *)data;
+	msd = (mapsidedef_t*)data;
 	sd = sides;
 	for (i=0 ; i<numsides ; i++, msd++, sd++)
 	{
@@ -803,7 +803,7 @@ void P_GroupLines ()
 	}
 
 	// build line tables for each sector
-	linebuffer = Z_Malloc<decltype(linebuffer)>(totallines*sizeof(line_t *), pu_tags_t::PU_LEVEL, 0);
+	linebuffer = Z_Malloc<decltype(linebuffer)>(totallines*sizeof(line_t*), pu_tags_t::PU_LEVEL, 0);
 
 	for (i=0; i<numsectors; ++i)
 	{
@@ -892,8 +892,8 @@ static void P_RemoveSlimeTrails()
 
 	for (i = 0; i < numsegs; i++)
 	{
-	const line_t *l = segs[i].linedef;
-	vertex_t *v = segs[i].v1;
+	const line_t* l = segs[i].linedef;
+	vertex_t* v = segs[i].v1;
 
 	// [crispy] ignore exactly vertical or horizontal linedefs
 	if (l->dx && l->dy)
@@ -936,16 +936,16 @@ static void P_RemoveSlimeTrails()
 // Pad the REJECT lump with extra data when the lump is too small,
 // to simulate a REJECT buffer overflow in Vanilla Doom.
 
-static void PadRejectArray(byte *array, unsigned int len)
+static void PadRejectArray(byte* array, unsigned len)
 {
-	unsigned int i;
-	unsigned int byte_num;
-	byte *dest;
-	unsigned int padvalue;
+	unsigned i;
+	unsigned byte_num;
+	byte* dest;
+	unsigned padvalue;
 
 	// Values to pad the REJECT array with:
 
-	unsigned int rejectpad[4] =
+	unsigned rejectpad[4] =
 	{
 		0,									// Size
 		0,									// Part of z_zone block header
@@ -1018,7 +1018,7 @@ static void P_LoadReject(int lumpnum)
 }
 
 // [crispy] log game skill in plain text
-const char *skilltable[] =
+const char* skilltable[] =
 {
 	"Nothing",
 	"Baby",
@@ -1034,7 +1034,7 @@ int P_GetNumForMap (int episode, int map, bool critical)
 	char lumpname[9];
 
 	// find map name
-	if ( gamemode == GameMode_t::commercial)
+	if ( gamemode == GameMode::commercial)
 	{
 	if (map<10)
 		DEH_snprintf(lumpname, 9, "map0%i", map);
@@ -1070,27 +1070,27 @@ int P_GetNumForMap (int episode, int map, bool critical)
 }
 
 // pointer to the current map lump info struct
-lumpinfo_t *maplumpinfo;
+lumpinfo_t* maplumpinfo;
 
 //
 // P_SetupLevel
 //
-void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
+void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 {
-	int		i;
-	char	lumpname[9];
-	int		lumpnum;
-	bool	crispy_validblockmap;
-	mapformat_t	crispy_mapformat;
+	char lumpname[9];
+	int lumpnum;
+	bool crispy_validblockmap;
+	mapformat_t crispy_mapformat;
 
 	totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
 	// [crispy] count spawned monsters
 	extrakills = 0;
 	wminfo.partime = 180;
-	for (i=0 ; i<MAXPLAYERS ; i++)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
-	players[i].killcount = players[i].secretcount
-		= players[i].itemcount = 0;
+		players[i].itemcount = 0;
+		players[i].secretcount = 0;
+		players[i].killcount = 0;
 	}
 
 	// [crispy] NRFTL / The Master Levels
@@ -1154,7 +1154,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 // [crispy] factor out map lump name and number finding into a separate function
 /*
 	// find map name
-	if ( gamemode == GameMode_t::commercial)
+	if ( gamemode == GameMode::commercial)
 	{
 	if (map<10)
 		DEH_snprintf(lumpname, 9, "map0%i", map);
@@ -1182,24 +1182,24 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 
 	// [crispy] better logging
 	{
-	extern int savedleveltime;
-	const int ltime = savedleveltime / TICRATE,
-				ttime = (totalleveltimes + savedleveltime) / TICRATE;
-	char *rfn_str;
+		extern TimeType savedleveltime;
+		const TimeType ltime = savedleveltime / TICRATE;
+		const TimeType ttime = (totalleveltimes + savedleveltime) / TICRATE;
+		char* rfn_str;
 
-	rfn_str = M_StringJoin(
-		respawnparm ? " -respawn" : "",
-		fastparm ? " -fast" : "",
-		nomonsters ? " -nomonsters" : "",
-		NULL);
+		rfn_str = M_StringJoin(
+			respawnparm ? " -respawn" : "",
+			fastparm ? " -fast" : "",
+			nomonsters ? " -nomonsters" : "",
+			NULL);
 
-	fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ",
-		maplumpinfo->name, W_WadNameForLump(maplumpinfo),
-		skilltable[BETWEEN(0,5,(int) skill+1)], rfn_str,
-		ltime/3600, (ltime%3600)/60, ltime%60,
-		ttime/3600, (ttime%3600)/60, ttime%60);
+		fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ",
+			maplumpinfo->name, W_WadNameForLump(maplumpinfo),
+			skilltable[BETWEEN(0,5,(int) skill+1)], rfn_str,
+			ltime/3600, (ltime%3600)/60, ltime%60,
+			ttime/3600, (ttime%3600)/60, ttime%60);
 
-	free(rfn_str);
+		free(rfn_str);
 	}
 	// [crispy] check and log map and nodes format
 	crispy_mapformat = P_CheckMapFormat(lumpnum);
@@ -1211,31 +1211,38 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 	P_LoadSideDefs (lumpnum+ML_SIDEDEFS);
 
 	if (crispy_mapformat & MFMT_HEXEN)
-	P_LoadLineDefs_Hexen (lumpnum+ML_LINEDEFS);
+	{
+		P_LoadLineDefs_Hexen (lumpnum+ML_LINEDEFS);
+	}
 	else
-	P_LoadLineDefs (lumpnum+ML_LINEDEFS);
+	{
+		P_LoadLineDefs (lumpnum+ML_LINEDEFS);
+	}
 	// [crispy] (re-)create BLOCKMAP if necessary
 	if (!crispy_validblockmap)
 	{
-	extern void P_CreateBlockMap ();
-	P_CreateBlockMap();
+		extern void P_CreateBlockMap ();
+		P_CreateBlockMap();
 	}
 	if (crispy_mapformat & (MFMT_ZDBSPX | MFMT_ZDBSPZ))
-	P_LoadNodes_ZDBSP (lumpnum+ML_NODES, crispy_mapformat & MFMT_ZDBSPZ);
-	else
-	if (crispy_mapformat & MFMT_DEEPBSP)
 	{
-	P_LoadSubsectors_DeePBSP (lumpnum+ML_SSECTORS);
-	P_LoadNodes_DeePBSP (lumpnum+ML_NODES);
-	P_LoadSegs_DeePBSP (lumpnum+ML_SEGS);
+		P_LoadNodes_ZDBSP (lumpnum+ML_NODES, crispy_mapformat & MFMT_ZDBSPZ);
 	}
 	else
 	{
-	P_LoadSubsectors (lumpnum+ML_SSECTORS);
-	P_LoadNodes (lumpnum+ML_NODES);
-	P_LoadSegs (lumpnum+ML_SEGS);
+		if (crispy_mapformat & MFMT_DEEPBSP)
+		{
+			P_LoadSubsectors_DeePBSP (lumpnum+ML_SSECTORS);
+			P_LoadNodes_DeePBSP (lumpnum+ML_NODES);
+			P_LoadSegs_DeePBSP (lumpnum+ML_SEGS);
+		}
+		else
+		{
+			P_LoadSubsectors (lumpnum+ML_SSECTORS);
+			P_LoadNodes (lumpnum+ML_NODES);
+			P_LoadSegs (lumpnum+ML_SEGS);
+		}
 	}
-
 	P_GroupLines ();
 	P_LoadReject (lumpnum+ML_REJECT);
 
@@ -1249,23 +1256,24 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 	bodyqueslot = 0;
 	deathmatch_p = deathmatchstarts;
 	if (crispy_mapformat & MFMT_HEXEN)
-	P_LoadThings_Hexen (lumpnum+ML_THINGS);
+		P_LoadThings_Hexen (lumpnum+ML_THINGS);
 	else
-	P_LoadThings (lumpnum+ML_THINGS);
+		P_LoadThings (lumpnum+ML_THINGS);
 
 	// if deathmatch, randomly spawn the active players
 	if (deathmatch)
 	{
-	for (i=0 ; i<MAXPLAYERS ; i++)
-		if (playeringame[i])
+		for (size_t i{0}; i < MAXPLAYERS; ++i)
 		{
-		players[i].mo = NULL;
-		G_DeathMatchSpawnPlayer (i);
+			if (playeringame[i])
+			{
+				players[i].mo = NULL;
+				G_DeathMatchSpawnPlayer (i);
+			}
 		}
-
 	}
 	// [crispy] support MUSINFO lump (dynamic music changing)
-	if (gamemode != GameMode_t::shareware)
+	if (gamemode != GameMode::shareware)
 	{
 	S_ParseMusInfo(lumpname);
 	}
@@ -1277,27 +1285,20 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill)
 	P_SpawnSpecials ();
 
 	// build subsector connect matrix
-	//	UNUSED P_ConnectSubsectors ();
+	//	UNUSED P_ConnectSubsectors();
 
 	// preload graphics
 	if (precache)
-	R_PrecacheLevel ();
+	{
+		R_PrecacheLevel();
+	}
 
 	//printf ("free memory: 0x%x\n", Z_FreeMemory());
-
 }
 
-
-
-//
-// P_Init
-//
 void P_Init ()
 {
-	P_InitSwitchList ();
-	P_InitPicAnims ();
-	R_InitSprites (sprnames);
+	P_InitSwitchList();
+	P_InitPicAnims();
+	R_InitSprites(sprnames);
 }
-
-
-

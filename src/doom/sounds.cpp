@@ -112,8 +112,8 @@ musicinfo_t S_music[] =
 };
 
 // Information about all the sfx
-#define SOUND(name, priority) { NULL, name, priority, NULL, -1, -1, 0, 0, -1, NULL }
-#define SOUND_LINK(name, priority, link_id, pitch, volume) { NULL, name, priority, &S_sfx[link_id], pitch, volume, 0, 0, -1, NULL }
+#define SOUND(name, priority) { nullptr, name, priority, nullptr, -1, -1, 0, 0, -1, nullptr }
+#define SOUND_LINK(name, priority, link_id, pitch, volume) { nullptr, name, priority, &S_sfx[link_id], pitch, volume, 0, 0, -1, nullptr }
 
 sfxinfo_t S_sfx[] =
 {
@@ -204,7 +204,7 @@ sfxinfo_t S_sfx[] =
 	SOUND("punch", 64),
 	SOUND("hoof",	70),
 	SOUND("metal", 70),
-	SOUND_LINK("chgun", 64, sfx_pistol, 150, 0),
+	SOUND_LINK("chgun", 64, (size_t)sfxenum_t::sfx_pistol, 150, 0),
 	SOUND("tink",	60),
 	SOUND("bdopn", 100),
 	SOUND("bdcls", 100),

@@ -59,6 +59,6 @@ struct DLLFunctions
 	SC_CallbackPtr fn;
 };
 
-bool IOperm_EnablePortRange(unsigned int from, unsigned int num, int turn_on);
+bool IOperm_EnablePortRange(unsigned from, unsigned num, int turn_on);
 bool IOperm_InstallDriver();
 bool IOperm_UninstallDriver();

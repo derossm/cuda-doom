@@ -7,7 +7,8 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Routines for selecting files, and the txt_fileselect_t widget.
+	DESCRIPTION:
+		Routines for selecting files, and the txt_fileselect_t widget.
 \**********************************************************************************************************************************************/
 #pragma once
 
@@ -15,6 +16,7 @@
 
 namespace cudadoom::txt
 {
+
 /**
  * File selection widget.
  *
@@ -34,7 +36,7 @@ struct txt_fileselect_t
  * Returns non-zero if a native file selector is available on this
  * platform.
  */
-int TXT_CanSelectFiles();
+int CanSelectFiles();
 
 /**
  * Open a native file selector to select a file.
@@ -42,29 +44,29 @@ int TXT_CanSelectFiles();
  * @param prompt		Pointer to a string containing a prompt to display
  *					in the window.
  * @param extensions NULL-terminated list of filename extensions for
- *					files that can be selected, or @ref TXT_DIRECTORY
+ *					files that can be selected, or @ref DIRECTORY
  *					to select directories.
  */
-char* TXT_SelectFile(const char* prompt, const char** extensions);
+char* SelectFile(const char* prompt, const char** extensions);
 
 /**
  * Create a new txt_fileselect_t widget.
  *
- * @param variable	Pointer to a char * variable in which the selected
+ * @param variable	Pointer to a char* variable in which the selected
  *					file should be stored (UTF-8 format).
  * @param size		Width of the file selector widget in characters.
  * @param prompt		Pointer to a string containing a prompt to display
  *					in the file selection window.
  * @param extensions NULL-terminated list of filename extensions that
- *					can be used for this widget, or @ref TXT_DIRECTORY
+ *					can be used for this widget, or @ref DIRECTORY
  *					to select directories.
  */
-txt_fileselect_t* TXT_NewFileSelector(char** variable, int size, const char* prompt, const char** extensions);
+txt_fileselect_t* NewFileSelector(char** variable, int size, const char* prompt, const char** extensions);
 
 /**
  * Special value to use for 'extensions' that selects a directory
  * instead of a file.
  */
-extern const char* TXT_DIRECTORY[];
+extern const char* DIRECTORY[];
 
 } /* END NAMESPACE cudadoom::txt */

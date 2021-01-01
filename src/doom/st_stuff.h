@@ -9,20 +9,15 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Status bar code.
-//	Does the face/direction indicator animatin.
-//	Does palette indicators as well (red pain/berserk, bright pickup)
+		Status bar code. Does the face/direction indicator animatin. Does palette indicators as well (red pain/berserk, bright pickup)
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __STSTUFF_H__
-#define __STSTUFF_H__
-
 #include "doomtype.h"
 #include "d_event.h"
-#include "m_cheat.h"
+//#include "m_cheat.h"
 
 // Size of statusbar.
 // Now sensitive for scaling.
@@ -33,63 +28,65 @@
 #define CRISPY_HUD 12
 
 // [crispy] Demo Timer widget
-extern void ST_DrawDemoTimer (const int time);
-extern int defdemotics, deftotaldemotics;
+extern void ST_DrawDemoTimer(const TimeType time);
+extern TimeType defdemotics;
+extern TimeType deftotaldemotics;
 
 //
 // STATUS BAR
 //
 
 // Called by main loop.
-bool ST_Responder (event_t* ev);
+bool ST_Responder(EventType* ev);
 
 // Called by main loop.
-void ST_Ticker ();
+void ST_Ticker();
 
 // Called by main loop.
-void ST_Drawer (bool fullscreen, bool refresh);
+void ST_Drawer(bool fullscreen, bool refresh);
 
 // Called when the console player is spawned on each level.
-void ST_Start ();
+void ST_Start();
 
 // Called by startup code.
-void ST_Init ();
+void ST_Init();
 
 // [crispy] forcefully initialize the status bar backing screen
 extern void ST_refreshBackground(bool force);
 
-
 // States for status bar code.
-typedef enum
+enum class st_stateenum_t
 {
 	AutomapState,
 	FirstPersonState
-
-} st_stateenum_t;
-
+};
 
 // States for the chat code.
-typedef enum
+enum class st_chatstateenum_t
 {
 	StartChatState,
 	WaitDestState,
 	GetChatState
+};
 
-} st_chatstateenum_t;
+enum class hudcolor_t
+{
+	hudcolor_ammo,
+	hudcolor_health,
+	hudcolor_frags,
+	hudcolor_armor
+};
 
+struct cheatseq_t;
 
-
-extern pixel_t *st_backing_screen;
+extern pixel_t* st_backing_screen;
 extern cheatseq_t cheat_mus;
 extern cheatseq_t cheat_god;
 extern cheatseq_t cheat_ammo;
 extern cheatseq_t cheat_ammonokey;
 extern cheatseq_t cheat_noclip;
 extern cheatseq_t cheat_commercial_noclip;
-extern cheatseq_t cheat_powerup[8]; // [crispy] idbehold0
+extern cheatseq_t cheat_powerup[8]; // idbehold0
 extern cheatseq_t cheat_choppers;
 extern cheatseq_t cheat_clev;
 extern cheatseq_t cheat_mypos;
-
-
-#endif

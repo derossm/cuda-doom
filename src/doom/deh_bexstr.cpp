@@ -19,10 +19,11 @@
 
 #include "dstrings.h"
 
-typedef struct {
-	const char *macro;
-	const char *string;
-} bex_string_t;
+struct bex_string_t
+{
+	const char* macro;
+	const char* string;
+};
 
 // mnemonic keys table
 static const bex_string_t bex_stringtable[] = {
@@ -327,7 +328,7 @@ static const bex_string_t bex_stringtable[] = {
 	{"BGCASTCALL", "BOSSBACK"},
 };
 
-static void *DEH_BEXStrStart(deh_context_t *context, char *line)
+static void* DEH_BEXStrStart(deh_context_t* context, char* line)
 {
 	char s[10];
 
@@ -339,9 +340,9 @@ static void *DEH_BEXStrStart(deh_context_t *context, char *line)
 	return NULL;
 }
 
-static void DEH_BEXStrParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_BEXStrParseLine(deh_context_t* context, char* line, void* tag)
 {
-	char *variable_name, *value;
+	char* variable_name, *value;
 	int i;
 
 	if (!DEH_ParseAssignment(line, &variable_name, &value))

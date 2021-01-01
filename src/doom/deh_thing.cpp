@@ -20,10 +20,11 @@
 #include "info.h"
 #include "p_mobj.h" // [crispy] MF_*
 
-typedef struct {
-	const char *flag;
+struct bex_thingbits_t
+{
+	const char* flag;
 	int bits;
-} bex_thingbits_t;
+};
 
 static const bex_thingbits_t bex_thingbitstable[] = {
 	{"SPECIAL", MF_SPECIAL},
@@ -156,10 +157,10 @@ static void DEH_InitThingProperties ()
 	}
 }
 
-static void *DEH_ThingStart(deh_context_t *context, char *line)
+static void* DEH_ThingStart(deh_context_t* context, char* line)
 {
 	int thing_number = 0;
-	mobjinfo_t *mobj;
+	mobjinfo_t* mobj;
 
 	if (sscanf(line, "Thing %i", &thing_number) != 1)
 	{
@@ -181,16 +182,16 @@ static void *DEH_ThingStart(deh_context_t *context, char *line)
 	return mobj;
 }
 
-static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_ThingParseLine(deh_context_t* context, char* line, void* tag)
 {
-	mobjinfo_t *mobj;
-	char *variable_name, *value;
+	mobjinfo_t* mobj;
+	char* variable_name, *value;
 	int ivalue;
 
 	if (tag == NULL)
 		return;
 
-	mobj = (mobjinfo_t *) tag;
+	mobj = (mobjinfo_t*) tag;
 
 	// Parse the assignment
 
@@ -233,7 +234,7 @@ static void DEH_ThingParseLine(deh_context_t *context, char *line, void *tag)
 	DEH_SetMapping(context, &thing_mapping, mobj, variable_name, ivalue);
 }
 
-static void DEH_ThingSHA1Sum(sha1_context_t *context)
+static void DEH_ThingSHA1Sum(sha1_context_t* context)
 {
 	int i;
 

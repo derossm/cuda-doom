@@ -29,11 +29,11 @@ static int sound_thread_running{0};
 static SDL_Thread *sound_thread_handle;
 static int sleep_adjust{0};
 
-static void AdjustedSleep(unsigned int ms)
+static void AdjustedSleep(unsigned ms)
 {
-	unsigned int start_time;
-	unsigned int end_time;
-	unsigned int actual_time;
+	unsigned TimeType start_time;
+	unsigned TimeType end_time;
+	unsigned TimeType actual_time;
 
 	// Adjust based on previous error to keep the tempo right
 	if (sleep_adjust > ms)
@@ -71,7 +71,7 @@ static void AdjustedSleep(unsigned int ms)
 	sleep_adjust = actual_time - ms;
 }
 
-static int SoundThread(void *unused)
+static int SoundThread(void* unused)
 {
 	int frequency;
 	int duration;

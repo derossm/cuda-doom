@@ -11,27 +11,17 @@
 
 #include "../../derma/common.h"
 
-#ifndef TXT_MOUSE_INPUT_H
-#define TXT_MOUSE_INPUT_H
-
-typedef struct txt_mouse_input_s txt_mouse_input_t;
-
 #include "txt_widget.h"
 
 //
-// A mouse input is like an input box. When selected, a box pops up
-// allowing a mouse to be selected.
+// A mouse input is like an input box. When selected, a box pops up allowing a mouse to be selected.
 //
 
-struct txt_mouse_input_s
+struct txt_mouse_input_t
 {
 	Widget widget;
 	int *variable;
 	int check_conflicts;
 };
 
-txt_mouse_input_t *TXT_NewMouseInput(int *variable);
-
-#endif /* #ifndef TXT_MOUSE_INPUT_H */
-
-
+txt_mouse_input_t* NewMouseInput(int *variable);

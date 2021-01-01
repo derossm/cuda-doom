@@ -17,11 +17,11 @@
 
 static int total_packet_memory = 0;
 
-net_packet_t *NET_NewPacket(int initial_size)
+net_packet_t* NET_NewPacket(int initial_size)
 {
-	net_packet_t *packet;
+	net_packet_t* packet;
 
-	packet = (net_packet_t *) Z_Malloc<net_packet_t>(sizeof(net_packet_t), pu_tags_t::PU_STATIC, 0);
+	packet = (net_packet_t*) Z_Malloc<net_packet_t>(sizeof(net_packet_t), pu_tags_t::PU_STATIC, 0);
 
 	if (initial_size == 0)
 		initial_size = 256;
@@ -41,9 +41,9 @@ net_packet_t *NET_NewPacket(int initial_size)
 
 // duplicates an existing packet
 
-net_packet_t *NET_PacketDup(net_packet_t *packet)
+net_packet_t* NET_PacketDup(net_packet_t* packet)
 {
-	net_packet_t *newpacket;
+	net_packet_t* newpacket;
 
 	newpacket = NET_NewPacket(packet->len);
 	memcpy(newpacket->data, packet->data, packet->len);
@@ -52,7 +52,7 @@ net_packet_t *NET_PacketDup(net_packet_t *packet)
 	return newpacket;
 }
 
-void NET_FreePacket(net_packet_t *packet)
+void NET_FreePacket(net_packet_t* packet)
 {
 	//printf("%p: destroyed\n", packet);
 
@@ -64,7 +64,7 @@ void NET_FreePacket(net_packet_t *packet)
 // Read a byte from the packet, returning true if read
 // successfully
 
-bool NET_ReadInt8(net_packet_t *packet, unsigned int *data)
+bool NET_ReadInt8(net_packet_t* packet, unsigned* data)
 {
 	if (packet->pos + 1 > packet->len)
 		return false;
@@ -79,9 +79,9 @@ bool NET_ReadInt8(net_packet_t *packet, unsigned int *data)
 // Read a 16-bit integer from the packet, returning true if read
 // successfully
 
-bool NET_ReadInt16(net_packet_t *packet, unsigned int *data)
+bool NET_ReadInt16(net_packet_t* packet, unsigned* data)
 {
-	byte *p;
+	byte* p;
 
 	if (packet->pos + 2 > packet->len)
 		return false;
@@ -97,9 +97,9 @@ bool NET_ReadInt16(net_packet_t *packet, unsigned int *data)
 // Read a 32-bit integer from the packet, returning true if read
 // successfully
 
-bool NET_ReadInt32(net_packet_t *packet, unsigned int *data)
+bool NET_ReadInt32(net_packet_t* packet, unsigned* data)
 {
-	byte *p;
+	byte* p;
 
 	if (packet->pos + 4 > packet->len)
 		return false;
@@ -114,9 +114,9 @@ bool NET_ReadInt32(net_packet_t *packet, unsigned int *data)
 
 // Signed read functions
 
-bool NET_ReadSInt8(net_packet_t *packet, signed int *data)
+bool NET_ReadSInt8(net_packet_t* packet, signed int *data)
 {
-	if (NET_ReadInt8(packet,(unsigned int *) data))
+	if (NET_ReadInt8(packet,(unsigned*) data))
 	{
 		if (*data & (1 << 7))
 		{
@@ -131,9 +131,9 @@ bool NET_ReadSInt8(net_packet_t *packet, signed int *data)
 	}
 }
 
-bool NET_ReadSInt16(net_packet_t *packet, signed int *data)
+bool NET_ReadSInt16(net_packet_t* packet, signed int *data)
 {
-	if (NET_ReadInt16(packet, (unsigned int *) data))
+	if (NET_ReadInt16(packet, (unsigned*) data))
 	{
 		if (*data & (1 << 15))
 		{
@@ -148,9 +148,9 @@ bool NET_ReadSInt16(net_packet_t *packet, signed int *data)
 	}
 }
 
-bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
+bool NET_ReadSInt32(net_packet_t* packet, signed int *data)
 {
-	if (NET_ReadInt32(packet, (unsigned int *) data))
+	if (NET_ReadInt32(packet, (unsigned*) data))
 	{
 		if (*data & (1U << 31))
 		{
@@ -168,11 +168,11 @@ bool NET_ReadSInt32(net_packet_t *packet, signed int *data)
 // Read a string from the packet. Returns NULL if a terminating
 // NUL character was not found before the end of the packet.
 
-char *NET_ReadString(net_packet_t *packet)
+char* NET_ReadString(net_packet_t* packet)
 {
-	char *start;
+	char* start;
 
-	start = (char *) packet->data + packet->pos;
+	start = (char*) packet->data + packet->pos;
 
 	// Search forward for a NUL character
 
@@ -200,9 +200,9 @@ char *NET_ReadString(net_packet_t *packet)
 // Read a string from the packet, but (potentially) modify it to strip
 // out any unprintable characters which could be malicious control codes.
 // Note that this may modify the original packet contents.
-char *NET_ReadSafeString(net_packet_t *packet)
+char* NET_ReadSafeString(net_packet_t* packet)
 {
-	char *r, *w, *result;
+	char* r, *w, *result;
 
 	result = NET_ReadString(packet);
 	if (result == NULL)
@@ -230,9 +230,9 @@ char *NET_ReadSafeString(net_packet_t *packet)
 
 // Dynamically increases the size of a packet
 
-static void NET_IncreasePacket(net_packet_t *packet)
+static void NET_IncreasePacket(net_packet_t* packet)
 {
-	byte *newdata;
+	byte* newdata;
 
 	total_packet_memory -= packet->alloced;
 
@@ -250,7 +250,7 @@ static void NET_IncreasePacket(net_packet_t *packet)
 
 // Write a single byte to the packet
 
-void NET_WriteInt8(net_packet_t *packet, unsigned int i)
+void NET_WriteInt8(net_packet_t* packet, unsigned i)
 {
 	if (packet->len + 1 > packet->alloced)
 		NET_IncreasePacket(packet);
@@ -261,9 +261,9 @@ void NET_WriteInt8(net_packet_t *packet, unsigned int i)
 
 // Write a 16-bit integer to the packet
 
-void NET_WriteInt16(net_packet_t *packet, unsigned int i)
+void NET_WriteInt16(net_packet_t* packet, unsigned i)
 {
-	byte *p;
+	byte* p;
 
 	if (packet->len + 2 > packet->alloced)
 		NET_IncreasePacket(packet);
@@ -279,9 +279,9 @@ void NET_WriteInt16(net_packet_t *packet, unsigned int i)
 
 // Write a single byte to the packet
 
-void NET_WriteInt32(net_packet_t *packet, unsigned int i)
+void NET_WriteInt32(net_packet_t* packet, unsigned i)
 {
-	byte *p;
+	byte* p;
 
 	if (packet->len + 4 > packet->alloced)
 		NET_IncreasePacket(packet);
@@ -296,9 +296,9 @@ void NET_WriteInt32(net_packet_t *packet, unsigned int i)
 	packet->len += 4;
 }
 
-void NET_WriteString(net_packet_t *packet, const char *string)
+void NET_WriteString(net_packet_t* packet, const char* string)
 {
-	byte *p;
+	byte* p;
 	size_t string_size;
 
 	string_size = strlen(string) + 1;
@@ -312,7 +312,7 @@ void NET_WriteString(net_packet_t *packet, const char *string)
 
 	p = packet->data + packet->len;
 
-	M_StringCopy((char *) p, string, string_size);
+	M_StringCopy((char*) p, string, string_size);
 
 	packet->len += string_size;
 }

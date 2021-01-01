@@ -9,15 +9,9 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-
-// Win32/SDL_mixer MIDI Server
-//
-// Uses pipes to communicate with Doom. This allows this separate process to
-// have its own independent volume control even under Windows Vista and up's
-// broken, stupid, completely useless mixer model that can't assign separate
-// volumes to different devices for the same process.
-//
-// Seriously, how did they screw up something so fundamental?
+		Win32/SDL_mixer MIDI Server
+		Uses pipes to communicate with Doom. This allows this separate process to have its own independent volume control even under
+		Windows Vista and later where the mixer model doesn't support separate volumes to different devices for the same process.
 \**********************************************************************************************************************************************/
 
 #ifdef _WIN32
@@ -40,15 +34,15 @@ static int snd_samplerate{0};
 // Currently playing music track.
 static Mix_Music* music{nullptr};
 
-// Write an unsigned integer into a simple CHAR buffer.
-static bool WriteInt16(CHAR* out, size_t osize, cudadoom::midi::PacketTypeAlias in)
+// Write an unsignedeger into a simple CHAR buffer.
+static bool WriteInt16(CHAR* out, size_t osize, cudadoom::midi::PacketType in)
 {
 	if (osize < 2)
 	{
 		return false;
 	}
 
-	// TODO replace shift math
+	// FIXME replace shift math
 	//out[0] = (in >> 8) & 0xff;
 	//out[1] = in & 0xff;
 
@@ -91,7 +85,7 @@ static void ShutdownSDL()
 
 //=============================================================================
 // SDL_mixer Interface
-static bool RegisterSong(const char *filename)
+static bool RegisterSong(const char* filename)
 {
 	music = Mix_LoadMUS(filename);
 
@@ -115,14 +109,9 @@ static void PlaySong(int loops)
 {
 	Mix_PlayMusic(music, loops);
 
-	// [AM] BUG: In my testing, setting the volume of a MIDI track while there
-	//		is no song playing appears to be a no-op. This can happen when
-	//		you're mixing midiproc with vanilla SDL_Mixer, such as when you
-	//		are alternating between a digital music pack (in the parent
-	//		process) and MIDI (in this process).
-	//
-	//		To work around this bug, we set the volume to itself after the MIDI
-	//		has started playing.
+	// BUG: In my testing, setting the volume of a MIDI track while there is no song playing appears to be a no-op. This can happen when you're
+	// mixing midiproc with vanilla SDL_Mixer, such as when you are alternating between a digital music pack (in the parent process) and MIDI
+	// (in this process). To work around this bug, we set the volume to itself after the MIDI has started playing.
 	Mix_VolumeMusic(Mix_VolumeMusic(-1));
 }
 
@@ -135,8 +124,8 @@ static void StopSong()
 // Pipe Server Interface
 bool MidiPipe_RegisterSong(buffer_reader_t* reader)
 {
-	char* filename = Reader_ReadString(reader);
-	if (filename == nullptr || *filename == '\0')
+	auto filename{Reader_ReadString(reader)};
+	if (!filename || *filename == '\0')
 	{
 		return false;
 	}
@@ -193,9 +182,9 @@ bool MidiPipe_Shutdown()
 // Server Implementation
 
 // Parses a command and directs to the proper read function.
-bool ParseCommand(buffer_reader_t *reader, uint16_t command)
+bool ParseCommand(buffer_reader_t* reader, cudadoom::midi::PacketType command)
 {
-	switch (static_cast<cudadoom::midi::PacketType>(command))
+	switch (command)
 	{
 	case cudadoom::midi::PacketType::REGISTER_SONG:
 		return MidiPipe_RegisterSong(reader);
@@ -224,7 +213,7 @@ bool ParseMessage(buffer_t* buf)
 	if (Reader_ReadInt16(reader.get(), &command))
 	{
 		// Attempt to parse a complete message.
-		if (ParseCommand(reader.get(), command))
+		if (ParseCommand(reader.get(), static_cast<cudadoom::midi::PacketType>(command)))
 		{
 			// We parsed a complete message! We can now safely shift the prior message off the front of the buffer.
 			Buffer_Shift(buf, Reader_BytesRead(reader.get()));
@@ -232,7 +221,7 @@ bool ParseMessage(buffer_t* buf)
 			CHAR buffer[2];
 			DWORD bytes_written;
 			// Send acknowledgement back that the command has completed.
-			if (WriteInt16(buffer, sizeof(buffer), _integral_value<unsigned int>(cudadoom::midi::PacketType::ACK)))
+			if (WriteInt16(buffer, sizeof(buffer), cudadoom::midi::PacketType::ACK))
 			{
 				DeleteReader(reader.get());
 				WriteFile(midi_process_out, buffer, sizeof(buffer), &bytes_written, NULL);
@@ -249,17 +238,14 @@ bool ParseMessage(buffer_t* buf)
 // The main pipe "listening" loop
 bool ListenForever()
 {
-	bool wok{false};
+	auto buffer{NewBuffer()};
+	DWORD pipe_buffer_read{0};
 	CHAR pipe_buffer[8192];
-	DWORD pipe_buffer_read = 0;
-
-	bool ok = false;
-	auto buffer = NewBuffer();
 
 	for (;;)
 	{
 		// Wait until we see some data on the pipe.
-		wok = PeekNamedPipe(midi_process_in, NULL, 0, NULL, &pipe_buffer_read, NULL);
+		bool wok{(bool)PeekNamedPipe(midi_process_in, NULL, 0, NULL, &pipe_buffer_read, NULL)};
 		if (!wok)
 		{
 			break;
@@ -277,7 +263,7 @@ bool ListenForever()
 			break;
 		}
 
-		ok = Buffer_Push(buffer.get(), pipe_buffer, pipe_buffer_read);
+		bool ok{Buffer_Push(buffer.get(), pipe_buffer, pipe_buffer_read)};
 		if (!ok)
 		{
 			break;
@@ -356,13 +342,13 @@ int main(int argc, char* argv[])
 	}
 
 	// Parse out our handle ids.
-	HANDLE in = (HANDLE)strtol(argv[3], NULL, 10);
+	HANDLE in{(HANDLE)strtol(argv[3], NULL, 10)};
 	if (in == 0)
 	{
 		return EXIT_FAILURE;
 	}
 
-	HANDLE out = (HANDLE)strtol(argv[4], NULL, 10);
+	HANDLE out{(HANDLE)strtol(argv[4], NULL, 10)};
 	if (out == 0)
 	{
 		return EXIT_FAILURE;

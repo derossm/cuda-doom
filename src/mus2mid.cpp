@@ -26,7 +26,7 @@
 #define MUS_PERCUSSION_CHAN 15
 
 // MUS event codes
-typedef enum
+enum class musevent
 {
 	mus_releasekey = 0x00,
 	mus_presskey = 0x10,
@@ -34,10 +34,10 @@ typedef enum
 	mus_systemevent = 0x30,
 	mus_changecontroller = 0x40,
 	mus_scoreend = 0x60
-} musevent;
+};
 
 // MIDI event codes
-typedef enum
+enum class midievent
 {
 	midi_releasekey = 0x80,
 	midi_presskey = 0x90,
@@ -46,10 +46,10 @@ typedef enum
 	midi_changepatch = 0xC0,
 	midi_aftertouchchannel = 0xD0,
 	midi_pitchwheel = 0xE0
-} midievent;
+};
 
 // Structure to hold MUS file header
-typedef PACKED_STRUCT (
+struct musheader
 {
 	byte id[4];
 	unsigned short scorelength;
@@ -57,7 +57,7 @@ typedef PACKED_STRUCT (
 	unsigned short primarychannels;
 	unsigned short secondarychannels;
 	unsigned short instrumentcount;
-}) musheader;
+};
 
 // Standard MIDI type 0 header + track header
 static const byte midiheader[] =
@@ -80,11 +80,11 @@ static byte channelvelocities[] =
 
 // Timestamps between sequences of MUS events
 
-static unsigned int queuedtime = 0;
+static TimeType queuedtime = 0;
 
 // Counter for the length of the track
 
-static unsigned int tracksize;
+static unsigned tracksize;
 
 static const byte controller_map[] =
 {
@@ -96,9 +96,9 @@ static int channel_map[NUM_CHANNELS];
 
 // Write timestamp to a MIDI file.
 
-static bool WriteTime(unsigned int time, MEMFILE *midioutput)
+static bool WriteTime(TimeType time, MEMFILE* midioutput)
 {
-	unsigned int buffer = time & 0x7F;
+	unsigned buffer = time & 0x7F;
 	byte writeval;
 
 	while ((time >>= 7) != 0)
@@ -132,7 +132,7 @@ static bool WriteTime(unsigned int time, MEMFILE *midioutput)
 
 
 // Write the end of track marker
-static bool WriteEndTrack(MEMFILE *midioutput)
+static bool WriteEndTrack(MEMFILE* midioutput)
 {
 	byte endtrack[] = {0xFF, 0x2F, 0x00};
 
@@ -152,7 +152,7 @@ static bool WriteEndTrack(MEMFILE *midioutput)
 
 // Write a key press event
 static bool WritePressKey(byte channel, byte key,
-								byte velocity, MEMFILE *midioutput)
+								byte velocity, MEMFILE* midioutput)
 {
 	byte working = midi_presskey | channel;
 
@@ -187,7 +187,7 @@ static bool WritePressKey(byte channel, byte key,
 
 // Write a key release event
 static bool WriteReleaseKey(byte channel, byte key,
-								MEMFILE *midioutput)
+								MEMFILE* midioutput)
 {
 	byte working = midi_releasekey | channel;
 
@@ -222,7 +222,7 @@ static bool WriteReleaseKey(byte channel, byte key,
 
 // Write a pitch wheel/bend event
 static bool WritePitchWheel(byte channel, short wheel,
-								MEMFILE *midioutput)
+								MEMFILE* midioutput)
 {
 	byte working = midi_pitchwheel | channel;
 
@@ -256,7 +256,7 @@ static bool WritePitchWheel(byte channel, short wheel,
 
 // Write a patch change event
 static bool WriteChangePatch(byte channel, byte patch,
-								MEMFILE *midioutput)
+								MEMFILE* midioutput)
 {
 	byte working = midi_changepatch | channel;
 
@@ -287,7 +287,7 @@ static bool WriteChangePatch(byte channel, byte patch,
 static bool WriteChangeController_Valued(byte channel,
 											byte control,
 											byte value,
-											MEMFILE *midioutput)
+											MEMFILE* midioutput)
 {
 	byte working = midi_changecontroller | channel;
 
@@ -334,7 +334,7 @@ static bool WriteChangeController_Valued(byte channel,
 // Write a valueless controller change event
 static bool WriteChangeController_Valueless(byte channel,
 												byte control,
-												MEMFILE *midioutput)
+												MEMFILE* midioutput)
 {
 	return WriteChangeController_Valued(channel, control, 0,
 												midioutput);
@@ -379,7 +379,7 @@ static int AllocateMIDIChannel()
 // Given a MUS channel number, get the MIDI channel number to use
 // in the outputted file.
 
-static int GetMIDIChannel(int mus_channel, MEMFILE *midioutput)
+static int GetMIDIChannel(int mus_channel, MEMFILE* midioutput)
 {
 	// Find the MIDI channel to use for this MUS channel.
 	// MUS channel 15 is the percusssion channel.
@@ -408,7 +408,7 @@ static int GetMIDIChannel(int mus_channel, MEMFILE *midioutput)
 	}
 }
 
-static bool ReadMusHeader(MEMFILE *file, musheader *header)
+static bool ReadMusHeader(MEMFILE* file, musheader *header)
 {
 	bool result;
 
@@ -437,7 +437,7 @@ static bool ReadMusHeader(MEMFILE *file, musheader *header)
 //
 // Returns 0 on success or 1 on failure.
 
-bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
+bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 {
 	// Header for the MUS file
 	musheader musfileheader;
@@ -462,7 +462,7 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
 	// Temp working byte
 	byte working;
 	// Used in building up time delays
-	unsigned int timedelay;
+	TimeType timedelay;
 
 	// Initialise channel map to mark all channels as unused.
 
@@ -693,12 +693,12 @@ bool mus2mid(MEMFILE *musinput, MEMFILE *midioutput)
 #include "m_misc.h"
 #include "z_zone.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	MEMFILE *src, *dst;
-	byte *infile;
+	MEMFILE* src, *dst;
+	byte* infile;
 	long infile_len;
-	void *outfile;
+	void* outfile;
 	size_t outfile_len;
 
 	if (argc != 3)

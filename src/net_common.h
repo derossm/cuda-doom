@@ -7,20 +7,26 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Common code shared between the client and server
+	DESCRIPTION:
+		Common code shared between the client and server
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef NET_COMMON_H
-#define NET_COMMON_H
-
+#include "doomtype.h"
 #include "d_mode.h"
+#include "i_system.h"
+#include "i_timer.h"
+#include "m_argv.h"
+
+#include "net_io.h"
+#include "net_packet.h"
+#include "net_structrw.h"
 #include "net_defs.h"
 #include "net_packet.h"
 
-typedef enum
+enum class net_connstate_t
 {
 	// Client has sent a SYN, is waiting for a SYN in response.
 	NET_CONN_STATE_CONNECTING,
@@ -40,11 +46,11 @@ typedef enum
 	// a valid connection for a few seconds until we are sure that
 	// the other end has successfully disconnected as well.
 	NET_CONN_STATE_DISCONNECTED_SLEEP
-} net_connstate_t;
+};
 
 // Reason a connection was terminated
 
-typedef enum
+enum class net_disconnect_reason_t
 {
 	// As the result of a local disconnect request
 	NET_DISCONNECT_LOCAL,
@@ -54,42 +60,52 @@ typedef enum
 
 	// Timeout (no data received in a long time)
 	NET_DISCONNECT_TIMEOUT
-} net_disconnect_reason_t;
+};
 
 #define MAX_RETRIES 5
 
-typedef struct net_reliable_packet_s net_reliable_packet_t;
+// connections time out after 30 seconds
+#define CONNECTION_TIMEOUT_LEN 30
 
-typedef struct
+// maximum time between sending packets
+#define KEEPALIVE_PERIOD 1
+
+// reliable packet that is guaranteed to reach its destination
+struct net_reliable_packet_t
+{
+	net_packet_t* packet;
+	TimeType last_send_time;
+	int seq;
+	net_reliable_packet_t* next;
+};
+
+struct net_connection_t
 {
 	net_connstate_t state;
 	net_disconnect_reason_t disconnect_reason;
 	net_addr_t* addr;
 	net_protocol_t protocol;
-	int last_send_time;
+	TimeType last_send_time;
 	int num_retries;
-	int keepalive_send_time;
-	int keepalive_recv_time;
+	TimeType keepalive_send_time;
+	TimeType keepalive_recv_time;
 	net_reliable_packet_t* reliable_packets;
 	int reliable_send_seq;
 	int reliable_recv_seq;
-} net_connection_t;
-
+};
 
 void NET_Conn_SendPacket(net_connection_t* conn, net_packet_t* packet);
 void NET_Conn_InitClient(net_connection_t* conn, net_addr_t* addr, net_protocol_t protocol);
 void NET_Conn_InitServer(net_connection_t* conn, net_addr_t* addr, net_protocol_t protocol);
-bool NET_Conn_Packet(net_connection_t* conn, net_packet_t* packet, unsigned int* packet_type);
+bool NET_Conn_Packet(net_connection_t* conn, net_packet_t* packet, unsigned* packet_type);
 void NET_Conn_Disconnect(net_connection_t* conn);
 void NET_Conn_Run(net_connection_t* conn);
-net_packet_t *NET_Conn_NewReliable(net_connection_t* conn, int packet_type);
+net_packet_t* NET_Conn_NewReliable(net_connection_t* conn, int packet_type);
 
 // Other miscellaneous common functions
-unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b);
-bool NET_ValidGameSettings(GameMode_t mode, GameMission_t mission, net_gamesettings_t* settings);
+unsigned NET_ExpandTicNum(unsigned relative, unsigned b);
+bool NET_ValidGameSettings(GameMode mode, GameMission_t mission, net_gamesettings_t* settings);
 
 void NET_OpenLog();
 void NET_Log(const char* fmt, ...);
 void NET_LogPacket(net_packet_t* packet);
-
-#endif /* #ifndef NET_COMMON_H */

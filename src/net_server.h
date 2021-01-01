@@ -7,14 +7,12 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Network server code
+	DESCRIPTION:
+		Network server code
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef NET_SERVER_H
-#define NET_SERVER_H
 
 // initialize server and wait for connections
 void NET_SV_Init();
@@ -31,5 +29,3 @@ void NET_SV_AddModule(net_module_t* module);	// TODO URGENT REFACTOR THIS NAME
 
 // Register server with master server.
 void NET_SV_RegisterWithMaster();
-
-#endif /* #ifndef NET_SERVER_H */

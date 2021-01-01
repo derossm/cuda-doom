@@ -42,9 +42,9 @@ void I_Error(const char* error, ...) NORETURN PRINTF_ATTR(1, 2);
 
 void I_Tactile(int on, int off, int total);
 
-void *I_Realloc(void* ptr, size_t size);
+void* I_Realloc(void* ptr, size_t size);
 
-bool I_GetMemoryValue(unsigned int offset, void* value, int size);
+bool I_GetMemoryValue(unsigned offset, void* value, int size);
 
 // Schedule a function to be called when the program exits.
 // If run_if_error is true, the function is called if the exit is due to an error (I_Error)

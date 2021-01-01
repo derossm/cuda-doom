@@ -24,20 +24,20 @@
 
 #define MAX_INSTRUMENTS 256
 
-typedef struct
+struct gus_config_t
 {
-	char *patch_names[MAX_INSTRUMENTS];
+	char* patch_names[MAX_INSTRUMENTS];
 	int used[MAX_INSTRUMENTS];
 	int mapping[MAX_INSTRUMENTS];
-	unsigned int count;
-} gus_config_t;
+	unsigned count;
+};
 
-char *gus_patch_path = "";
+char* gus_patch_path = "";
 int gus_ram_kb = 1024;
 
-static unsigned int MappingIndex()
+static unsigned MappingIndex()
 {
-	unsigned int result = gus_ram_kb / 256;
+	unsigned result = gus_ram_kb / 256;
 
 	if (result < 1)
 	{
@@ -53,10 +53,10 @@ static unsigned int MappingIndex()
 	}
 }
 
-static int SplitLine(char *line, char **fields, unsigned int max_fields)
+static int SplitLine(char* line, char** fields, unsigned max_fields)
 {
-	unsigned int num_fields;
-	char *p;
+	unsigned num_fields;
+	char* p;
 
 	fields[0] = line;
 	num_fields = 1;
@@ -100,12 +100,12 @@ static int SplitLine(char *line, char **fields, unsigned int max_fields)
 	return num_fields;
 }
 
-static void ParseLine(gus_config_t *config, char *line)
+static void ParseLine(gus_config_t* config, char* line)
 {
-	char *fields[6];
-	unsigned int i;
-	unsigned int num_fields;
-	unsigned int instr_id, mapped_id;
+	char* fields[6];
+	unsigned i;
+	unsigned num_fields;
+	unsigned instr_id, mapped_id;
 
 	num_fields = SplitLine(line, fields, 6);
 
@@ -144,10 +144,10 @@ static void ParseLine(gus_config_t *config, char *line)
 	config->mapping[instr_id] = i;
 }
 
-static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
+static void ParseDMXConfig(char* dmxconf, gus_config_t* config)
 {
-	char *p, *newline;
-	unsigned int i;
+	char* p, *newline;
+	unsigned i;
 
 	memset(config, 0, sizeof(gus_config_t));
 
@@ -183,9 +183,9 @@ static void ParseDMXConfig(char *dmxconf, gus_config_t *config)
 	}
 }
 
-static void FreeDMXConfig(gus_config_t *config)
+static void FreeDMXConfig(gus_config_t* config)
 {
-	unsigned int i;
+	unsigned i;
 
 	for (i = 0; i < MAX_INSTRUMENTS; ++i)
 	{
@@ -193,13 +193,13 @@ static void FreeDMXConfig(gus_config_t *config)
 	}
 }
 
-static char *ReadDMXConfig()
+static char* ReadDMXConfig()
 {
 	int lumpnum;
-	unsigned int len;
-	char *data;
+	unsigned len;
+	char* data;
 
-	// TODO: This should be chosen based on gamemode == GameMode_t::commercial:
+	// TODO: This should be chosen based on gamemode == GameMode::commercial:
 
 	lumpnum = W_CheckNumForName("DMXGUS");
 
@@ -216,10 +216,10 @@ static char *ReadDMXConfig()
 	return data;
 }
 
-static bool WriteTimidityConfig(char *path, gus_config_t *config)
+static bool WriteTimidityConfig(char* path, gus_config_t* config)
 {
-	FILE *fstream;
-	unsigned int i;
+	FILE* fstream;
+	unsigned i;
 
 	fstream = fopen(path, "w");
 
@@ -263,10 +263,10 @@ static bool WriteTimidityConfig(char *path, gus_config_t *config)
 	return true;
 }
 
-bool GUS_WriteConfig(char *path)
+bool GUS_WriteConfig(char* path)
 {
 	bool result;
-	char *dmxconf;
+	char* dmxconf;
 	gus_config_t config;
 
 	if (!strcmp(gus_patch_path, ""))

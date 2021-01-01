@@ -9,66 +9,55 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Main program, simply calls D_DoomMain high level loop.
+		Main program, simply calls D_DoomMain high level loop.
 \**********************************************************************************************************************************************/
 
 #include "config.h"
 #include "crispy.h"
-
 
 #include "SDL.h"
 
 #include "doomtype.h"
 #include "i_system.h"
 #include "m_argv.h"
-#include "m_misc.h" // [crispy] M_snprintf()
 
-//
-// D_DoomMain()
-// Not a globally visible function, just included for source reference,
-// calls all startup code, parses command line options.
-//
+// Not a globally visible function, just included for source reference, calls all startup code, parses command line options.
+void D_DoomMain();
 
-void D_DoomMain ();
-
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 	// save arguments
-
 	myargc = argc;
 	myargv = argv;
 
-	//!
 	// Print the program version and exit.
-	//
-	if (M_ParmExists("-version") || M_ParmExists("--version")) {
+	if (M_ParmExists("-version") || M_ParmExists("--version"))
+	{
 		puts(PACKAGE_STRING);
 		exit(0);
 	}
 
 	{
-		char buf[16];
-		SDL_version version;
-		SDL_GetVersion(&version);
-		M_snprintf(buf, sizeof(buf), "%d.%d.%d", version.major, version.minor, version.patch);
-		crispy->sdlversion = M_StringDuplicate(buf);
-		crispy->platform = SDL_GetPlatform();
+		crispy->sdlversion = [](){
+			SDL_version version;
+			SDL_GetVersion(&version);
+			return std::string(version.major + "." + version.minor + "." + version.patch);
+		}();
+		crispy->platform = std::string(SDL_GetPlatform());
 	}
 
 #if defined(_WIN32)
-	// compose a proper command line from loose file paths passed as arguments
-	// to allow for loading WADs and DEHACKED patches by drag-and-drop
+	// compose a proper command line from loose file paths passed as arguments to allow for loading WADs and DEHACKED patches by drag-and-drop
 	M_AddLooseFiles();
 #endif
 
 	M_FindResponseFile();
 
-	#ifdef SDL_HINT_NO_SIGNAL_HANDLERS
+#ifdef SDL_HINT_NO_SIGNAL_HANDLERS
 	SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
-	#endif
+#endif
 
 	// start doom
-
 	D_DoomMain();
 
 	return 0;

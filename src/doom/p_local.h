@@ -9,18 +9,15 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Play functions, animation, global header.
+		Play functions, animation, global header.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __P_LOCAL__
-#define __P_LOCAL__
-
-#ifndef __R_LOCAL__
 #include "r_local.h"
-#endif
+
+#include "p_spec.h"
 
 #define TOCENTER				-8
 #define AFLAG_JUMP				0x80
@@ -57,8 +54,6 @@
 // follow a player exlusively for 3 seconds
 #define BASETHRESHOLD			100
 
-
-
 //
 // P_TICK
 //
@@ -66,27 +61,23 @@
 // both the head and tail of the thinker list
 extern	thinker_t	thinkercap;
 
-
 void P_InitThinkers ();
 void P_AddThinker (thinker_t* thinker);
 void P_RemoveThinker (thinker_t* thinker);
 
-
 //
 // P_PSPR
 //
-void P_SetupPsprites (player_t* curplayer);
-void P_MovePsprites (player_t* curplayer);
-void P_DropWeapon (player_t* player);
-
+void P_SetupPsprites (Player* curplayer);
+void P_MovePsprites (Player* curplayer);
+void P_DropWeapon (Player* player);
 
 //
 // P_USER
 //
 #define MLOOKUNIT	8
 #define PLAYER_SLOPE(a)	((((a)->lookdir / MLOOKUNIT) << FRACBITS) / 173)
-void	P_PlayerThink (player_t* player);
-
+void	P_PlayerThink (Player* player);
 
 //
 // P_MOBJ
@@ -98,55 +89,55 @@ void	P_PlayerThink (player_t* player);
 #define ITEMQUESIZE		128
 
 extern mapthing_t	itemrespawnque[ITEMQUESIZE];
-extern int		itemrespawntime[ITEMQUESIZE];
+extern TimeType itemrespawntime[ITEMQUESIZE];
 extern int		iquehead;
 extern int		iquetail;
 
 
 void P_RespawnSpecials ();
 
-mobj_t* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type);
+MapObject* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type);
 
-void	P_RemoveMobj (mobj_t* th);
-mobj_t* P_SubstNullMobj (mobj_t* th);
-bool	P_SetMobjState (mobj_t* mobj, statenum_t state);
-void	P_MobjThinker (mobj_t* mobj);
-mobj_t *Crispy_PlayerSO (int p); // [crispy] weapon sound sources
+void	P_RemoveMobj (MapObject* th);
+MapObject* P_SubstNullMobj (MapObject* th);
+bool	P_SetMobjState (MapObject* mobj, statenum_t state);
+void	P_MobjThinker (MapObject* mobj);
+MapObject* Crispy_PlayerSO (int p); // [crispy] weapon sound sources
 
 void	P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);
-void	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage, mobj_t* target);
-mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);
-void	P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);
+void	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage, MapObject* target);
+MapObject* P_SpawnMissile (MapObject* source, MapObject* dest, mobjtype_t type);
+void	P_SpawnPlayerMissile (MapObject* source, mobjtype_t type);
 
 void	P_SpawnPuffSafe (fixed_t x, fixed_t y, fixed_t z, bool safe);
 
 //
 // P_ENEMY
 //
-void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);
+void P_NoiseAlert (MapObject* target, MapObject* emmiter);
 
 
 //
 // P_MAPUTL
 //
-typedef struct
+struct divline_t
 {
 	fixed_t	x;
 	fixed_t	y;
 	fixed_t	dx;
 	fixed_t	dy;
+};
 
-} divline_t;
-
-typedef struct
+struct intercept_t
 {
-	fixed_t	frac;		// along trace line
-	bool	isaline;
-	union {
-	mobj_t*	thing;
-	line_t*	line;
-	}			d;
-} intercept_t;
+	fixed_t frac;		// along trace line
+	bool isaline;
+	union
+	{
+		MapObject* thing;
+		line_t* line;
+	} d;
+};
 
 // Extended MAXINTERCEPTS, to allow for intercepts overrun emulation.
 
@@ -156,7 +147,7 @@ typedef struct
 //extern intercept_t	intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
 extern intercept_t*	intercept_p;
 
-typedef bool (*traverser_t) (intercept_t *in);
+typedef bool (*traverser_t) (intercept_t* in);
 
 fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);
 int	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
@@ -173,7 +164,7 @@ extern fixed_t		lowfloor;
 void	P_LineOpening (line_t* linedef);
 
 bool P_BlockLinesIterator (int x, int y, bool(*func)(line_t*) );
-bool P_BlockThingsIterator (int x, int y, bool(*func)(mobj_t*) );
+bool P_BlockThingsIterator (int x, int y, bool(*func)(MapObject*) );
 
 #define PT_ADDLINES		1
 #define PT_ADDTHINGS	2
@@ -181,10 +172,10 @@ bool P_BlockThingsIterator (int x, int y, bool(*func)(mobj_t*) );
 
 extern divline_t	trace;
 
-bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, bool (*trav) (intercept_t *));
+bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, bool (*trav) (intercept_t*));
 
-void P_UnsetThingPosition (mobj_t* thing);
-void P_SetThingPosition (mobj_t* thing);
+void P_UnsetThingPosition (MapObject* thing);
+void P_SetThingPosition (MapObject* thing);
 
 
 //
@@ -214,36 +205,34 @@ extern	line_t*		ceilingline;
 extern	line_t**	spechit; // [crispy] remove SPECHIT limit
 extern	int	numspechit;
 
-bool P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
-bool P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
-bool P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
-void	P_SlideMove (mobj_t* mo);
-bool P_CheckSight (mobj_t* t1, mobj_t* t2);
-void	P_UseLines (player_t* player);
+bool P_CheckPosition (MapObject* thing, fixed_t x, fixed_t y);
+bool P_TryMove (MapObject* thing, fixed_t x, fixed_t y);
+bool P_TeleportMove (MapObject* thing, fixed_t x, fixed_t y);
+void	P_SlideMove (MapObject* mo);
+bool P_CheckSight (MapObject* t1, MapObject* t2);
+void	P_UseLines (Player* player);
 
 bool P_ChangeSector (sector_t* sector, bool crunch);
 
-extern mobj_t*	linetarget;	// who got hit (or NULL)
+extern MapObject*	linetarget;	// who got hit (or NULL)
 
-fixed_t P_AimLineAttack(mobj_t* t1, angle_t angle, fixed_t distance);
+fixed_t P_AimLineAttack(MapObject* t1, angle_t angle, fixed_t distance);
 
-void P_LineAttack(mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope, int damage);
+void P_LineAttack(MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope, int damage);
 
-void P_RadiusAttack(mobj_t* spot, mobj_t* source, int damage);
-
-
+void P_RadiusAttack(MapObject* spot, MapObject* source, int damage);
 
 //
 // P_SETUP
 //
-extern byte*		rejectmatrix;	// for fast sight rejection
-extern int32_t*	blockmaplump;	// offsets in blockmap are from here // [crispy] BLOCKMAP limit
-extern int32_t*	blockmap; // [crispy] BLOCKMAP limit
-extern int		bmapwidth;
-extern int		bmapheight;	// in mapblocks
-extern fixed_t		bmaporgx;
-extern fixed_t		bmaporgy;	// origin of block map
-extern mobj_t**		blocklinks;	// for thing chains
+extern byte* rejectmatrix;	// for fast sight rejection
+extern int32_t* blockmaplump;	// offsets in blockmap are from here // [crispy] BLOCKMAP limit
+extern int32_t* blockmap; // [crispy] BLOCKMAP limit
+extern int bmapwidth;
+extern int bmapheight;	// in mapblocks
+extern fixed_t bmaporgx;
+extern fixed_t bmaporgy;	// origin of block map
+extern MapObject** blocklinks;	// for thing chains
 
 // [crispy] factor out map lump name and number finding into a separate function
 extern int P_GetNumForMap (int episode, int map, bool critical);
@@ -256,17 +245,9 @@ extern int st_keyorskull[3];
 //
 // P_INTER
 //
-extern int		maxammo[NUMAMMO];
-extern int		clipammo[NUMAMMO];
+extern int maxammo[NUMAMMO];
+extern int clipammo[NUMAMMO];
 
-void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher);
+void P_TouchSpecialThing(MapObject* special, MapObject* toucher);
 
-void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage);
-
-
-//
-// P_SPEC
-//
-#include "p_spec.h"
-
-#endif	// __P_LOCAL__
+void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, int damage);

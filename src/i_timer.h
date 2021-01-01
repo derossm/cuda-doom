@@ -15,7 +15,7 @@
 
 #include "../derma/common.h"
 
-#define TICRATE 35
+constexpr TimeType TICRATE{35};
 
 // Called by D_DoomLoop,
 // returns current time in tics.

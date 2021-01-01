@@ -20,9 +20,9 @@
 // Open a memory area for reading
 auto mem_fopen_read(BufferType_Void* buf, size_t buflen)
 {
-	MEMFILE* file = Z_Malloc<MEMFILE>(sizeof(MEMFILE), pu_tags_t::PU_STATIC, 0);
+	MEMFILE* file = Z_Malloc<MEMFILE*>(sizeof(MEMFILE), pu_tags_t::PU_STATIC, 0);
 
-	file->buf = (unsigned char *) buf;
+	file->buf = (unsigned char*) buf;
 	file->buflen = buflen;
 	file->position = 0;
 	file->mode = memfile_mode_t::MODE_READ;
@@ -79,7 +79,7 @@ auto mem_fwrite(const BufferType_Void* ptr, size_t size, size_t nmemb, MEMFILE* 
 
 	if (stream->mode != memfile_mode_t::MODE_WRITE)
 	{
-		return -1;
+		return (size_t)0;
 	}
 
 	// More bytes than can fit in the buffer? If so, reallocate bigger.
@@ -87,7 +87,7 @@ auto mem_fwrite(const BufferType_Void* ptr, size_t size, size_t nmemb, MEMFILE* 
 
 	while (bytes > stream->alloced - stream->position)
 	{
-		unsigned char *newbuf;
+		unsigned char* newbuf;
 
 		newbuf = Z_Malloc<decltype(newbuf)>(stream->alloced * 2, pu_tags_t::PU_STATIC, 0);
 		memcpy(newbuf, stream->buf, stream->alloced);

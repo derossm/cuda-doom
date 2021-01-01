@@ -33,29 +33,29 @@
 #include "m_misc.h"			// [crispy] M_StringDuplicate()
 #include "m_random.h"		// [crispy] Crispy_Random()
 
-typedef enum
+enum class finalestage_t
 {
 	F_STAGE_TEXT,
 	F_STAGE_ARTSCREEN,
 	F_STAGE_CAST
-} finalestage_t;
+};
 
 // Stage of animation:
 finalestage_t finalestage;
 
-unsigned int finalecount;
+unsigned finalecount;
 
 #define TEXTSPEED	3
 #define TEXTWAIT	250
 
-typedef struct
+struct textscreen_t
 {
 	GameMission_t mission;
 	int episode;
 	int level;
 	const char* background;
 	const char* text;
-} textscreen_t;
+};
 
 static textscreen_t textscreens[] =
 {
@@ -97,7 +97,7 @@ static char* finaletext_rw;
 
 void F_StartCast();
 void F_CastTicker();
-bool F_CastResponder(event_t *ev);
+bool F_CastResponder(EventType *ev);
 void F_CastDrawer();
 
 extern void A_RandomJump();
@@ -124,7 +124,7 @@ void F_StartFinale()
 
 	for (i=0; i<arrlen(textscreens); ++i)
 	{
-		textscreen_t *screen = &textscreens[i];
+		textscreen_t* screen = &textscreens[i];
 
 		// Hack for Chex Quest
 		if (gameversion == GameVersion_t::exe_chex && screen->mission == doom)
@@ -157,7 +157,7 @@ void F_StartFinale()
 
 }
 
-bool F_Responder (event_t *event)
+bool F_Responder (EventType *event)
 {
 	if (finalestage == F_STAGE_CAST)
 	return F_CastResponder (event);
@@ -170,7 +170,7 @@ void F_Ticker ()
 	size_t i;
 
 	// check for skipping
-	if ((gamemode == GameMode_t::commercial) && ( finalecount > 50))
+	if ((gamemode == GameMode::commercial) && ( finalecount > 50))
 	{
 		// go on to the next level
 		for (i=0 ; i < MAX_PLAYERS ; ++i)
@@ -205,7 +205,7 @@ void F_Ticker ()
 	return;
 	}
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	return;
 
 	if (finalestage == F_STAGE_TEXT
@@ -224,10 +224,10 @@ void F_Ticker ()
 //
 
 #include "hu_stuff.h"
-extern	patch_t *hu_font[HU_FONTSIZE];
+extern	patch_t* hu_font[HU_FONTSIZE];
 
 // [crispy] add line breaks for lines exceeding screenwidth
-static inline bool F_AddLineBreak (char *c)
+static inline bool F_AddLineBreak (char* c)
 {
 	while (c-- > finaletext_rw)
 	{
@@ -253,7 +253,7 @@ void F_TextWrite ()
 
 	int		x,y,w;
 	signed int	count;
-	char *ch; // [crispy] un-const
+	char* ch; // [crispy] un-const
 	int		c;
 	int		cx;
 	int		cy;
@@ -339,11 +339,11 @@ void F_TextWrite ()
 // Casting by id Software.
 //	in order of appearance
 //
-typedef struct
+struct castinfo_t
 {
 	const char	*name;
 	mobjtype_t	type;
-} castinfo_t;
+};
 
 castinfo_t	castorder[] = {
 	{CC_ZOMBIE, mobjtype_t::MT_POSSESSED},
@@ -368,7 +368,7 @@ castinfo_t	castorder[] = {
 };
 
 int		castnum;
-int		casttics;
+TimeType casttics;
 state_t*	caststate;
 bool		castdeath;
 int		castframes;
@@ -436,12 +436,12 @@ extern void A_SPosAttack();
 extern void A_TroopAttack();
 extern void A_VileTarget();
 
-typedef struct
+struct actionsound_t
 {
-	void *const action;
+	void* const action;
 	const int sound;
 	const bool early;
-} actionsound_t;
+};
 
 static const actionsound_t actionsounds[] =
 {
@@ -469,8 +469,8 @@ static const actionsound_t actionsounds[] =
 // [crispy] play attack sound based on state action function (instead of state number)
 static int F_SoundForState (int st)
 {
-	void *const castaction = (void *) caststate->action.acv;
-	void *const nextaction = (void *) (&states[caststate->nextstate])->action.acv;
+	void* const castaction = (void*) caststate->action.acv;
+	void* const nextaction = (void*) (&states[caststate->nextstate])->action.acv;
 
 	// [crispy] fix Doomguy in casting sequence
 	if (castaction == NULL)
@@ -486,7 +486,7 @@ static int F_SoundForState (int st)
 
 		for (i = 0; i < arrlen(actionsounds); i++)
 		{
-			const actionsound_t *const as = &actionsounds[i];
+			const actionsound_t* const as = &actionsounds[i];
 
 			if ((!as->early && castaction == as->action) ||
 				(as->early && nextaction == as->action))
@@ -676,7 +676,7 @@ void F_CastTicker ()
 // F_CastResponder
 //
 
-bool F_CastResponder (event_t* ev)
+bool F_CastResponder (EventType* ev)
 {
 	bool xdeath = false;
 
@@ -755,9 +755,9 @@ bool F_CastResponder (event_t* ev)
 }
 
 
-void F_CastPrint (const char *text)
+void F_CastPrint (const char* text)
 {
-	const char *ch;
+	const char* ch;
 	int		c;
 	int		cx;
 	int		w;
@@ -855,14 +855,14 @@ void F_DrawPatchCol(int x, patch_t* patch, int col)
 	pixel_t*	desttop;
 	int		count;
 
-	column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
+	column = (column_t*)((byte*)patch + LONG(patch->columnofs[col]));
 	desttop = I_VideoBuffer + x;
 
 	// step through the posts in a column
 	while (column->topdelta != 0xff )
 	{
 	int srccol = 0;
-	source = (byte *)column + 3;
+	source = (byte*)column + 3;
 	dest = desttop + ((column->topdelta * dy) >> FRACBITS)*SCREENWIDTH;
 	count = (column->length * dy) >> FRACBITS;
 
@@ -872,7 +872,7 @@ void F_DrawPatchCol(int x, patch_t* patch, int col)
 		srccol += dyi;
 		dest += SCREENWIDTH;
 	}
-	column = (column_t *)( (byte *)column + column->length + 4 );
+	column = (column_t*)( (byte*)column + column->length + 4 );
 	}
 }
 
@@ -973,7 +973,7 @@ void F_BunnyScroll ()
 
 static void F_ArtScreenDrawer()
 {
-	const char *lumpname;
+	const char* lumpname;
 
 	if (gameepisode == 3)
 	{

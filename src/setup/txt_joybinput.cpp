@@ -187,14 +187,14 @@ static void OpenErrorWindow()
 	TXT_MessageBox(NULL, "Please configure a controller first!");
 }
 
-static void OpenPromptWindow(txt_joystick_input_t *joystick_input)
+static void OpenPromptWindow(txt_joystick_input_t* joystick_input)
 {
-	txt_window_t *window;
+	Window* window;
 	SDL_Joystick *joystick;
 
 	// Silently update when the shift button is held down.
 
-	joystick_input->check_conflicts = !TXT_GetModifierState(TXT_MOD_SHIFT);
+	joystick_input->check_conflicts = !TXT_GetModifierState(ModifierType::shift);
 
 	if (SDL_Init(SDL_INIT_JOYSTICK) < 0)
 	{
@@ -232,7 +232,7 @@ static void TXT_JoystickInputSizeCalc(TXT_UNCAST_ARG(joystick_input))
 	joystick_input->widget.h = 1;
 }
 
-static void GetJoystickButtonDescription(int vbutton, char *buf,
+static void GetJoystickButtonDescription(int vbutton, char* buf,
 											size_t buf_len)
 {
 	M_snprintf(buf, buf_len, "BUTTON #%i",
@@ -256,7 +256,7 @@ static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
 	}
 
 	TXT_SetWidgetBG(joystick_input);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(ColorType::bright_white);
 
 	TXT_DrawString(buf);
 
@@ -277,7 +277,6 @@ static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
 	if (key == KEY_ENTER)
 	{
 		// Open a window to prompt for the new joystick press
-
 		OpenPromptWindow(joystick_input);
 
 		return 1;
@@ -291,13 +290,11 @@ static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
 	return 0;
 }
 
-static void TXT_JoystickInputMousePress(TXT_UNCAST_ARG(widget),
-										int x, int y, int b)
+static void TXT_JoystickInputMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
 {
 	TXT_CAST_ARG(txt_joystick_input_t, widget);
 
 	// Clicking is like pressing enter
-
 	if (b == TXT_MOUSE_LEFT)
 	{
 		TXT_JoystickInputKeyPress(widget, KEY_ENTER);
@@ -315,9 +312,9 @@ WidgetClass txt_joystick_input_class =
 	NULL,
 };
 
-txt_joystick_input_t *TXT_NewJoystickInput(int *variable)
+txt_joystick_input_t* TXT_NewJoystickInput(int *variable)
 {
-	txt_joystick_input_t *joystick_input;
+	txt_joystick_input_t* joystick_input;
 
 	joystick_input = static_cast<decltype(joystick_input)>(malloc(sizeof(txt_joystick_input_t)));
 
@@ -326,4 +323,3 @@ txt_joystick_input_t *TXT_NewJoystickInput(int *variable)
 
 	return joystick_input;
 }
-

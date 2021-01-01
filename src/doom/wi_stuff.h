@@ -7,39 +7,30 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-	DESCRIPTION:
- Intermission.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __WI_STUFF__
-#define __WI_STUFF__
-
 #include "doomdef.h"
 
 // States for the intermission
-
-typedef enum
+enum class stateenum_t
 {
 	NoState = -1,
 	StatCount,
 	ShowNextLoc,
-} stateenum_t;
+};
 
 // Called by main loop, animate the intermission.
-void WI_Ticker ();
+void WI_Ticker();
 
 // Called by main loop,
 // draws the intermission directly into the screen buffer.
-void WI_Drawer ();
+void WI_Drawer();
 
 // Setup for an intermission screen.
-void WI_Start(wbstartstruct_t*		wbstartstruct);
+void WI_Start(wbstartstruct_t* wbstartstruct);
 
 // Shut down the intermission screen
 void WI_End();
-
-#endif

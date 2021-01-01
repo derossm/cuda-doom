@@ -39,7 +39,7 @@ int snd_maxslicetime_ms = 28;
 
 // External command to invoke to play back music.
 
-char *snd_musiccmd = "";
+char* snd_musiccmd = "";
 
 // Whether to vary the pitch of sound effects
 // Each game will set the default differently
@@ -50,15 +50,15 @@ int snd_musicdevice = SNDDEVICE_SB;
 int snd_sfxdevice = SNDDEVICE_SB;
 
 // Low-level sound and music modules we are using
-static sound_module_t *sound_module;
-static music_module_t *music_module;
+static sound_module_t* sound_module;
+static music_module_t* music_module;
 
 // If true, the music pack module was successfully initialized.
 static bool music_packs_active = false;
 
 // This is either equal to music_module or &music_pack_module,
 // depending on whether the current track is substituted.
-static music_module_t *active_music_module;
+static music_module_t* active_music_module;
 
 // Sound modules
 
@@ -76,8 +76,8 @@ extern int opl_io_port;
 
 // For native music module:
 
-extern char *music_pack_path;
-extern char *timidity_cfg_path;
+extern char* music_pack_path;
+extern char* timidity_cfg_path;
 
 // DOS-specific options: These are unused but should be maintained
 // so that the config file can be shared between chocolate
@@ -90,7 +90,7 @@ static int snd_mport = 0;
 
 // Compiled-in sound modules:
 
-static sound_module_t *sound_modules[] =
+static sound_module_t* sound_modules[] =
 {
 	&sound_sdl_module,
 	&sound_pcsound_module,
@@ -99,7 +99,7 @@ static sound_module_t *sound_modules[] =
 
 // Compiled-in music modules:
 
-static music_module_t *music_modules[] =
+static music_module_t* music_modules[] =
 {
 	&music_sdl_module,
 	&music_opl_module,
@@ -108,7 +108,7 @@ static music_module_t *music_modules[] =
 
 // Check if a sound device is in the given list of devices
 
-static bool SndDeviceInList(snddevice_t device, snddevice_t *list,
+static bool SndDeviceInList(snddevice_t device, snddevice_t* list,
 								int len)
 {
 	int i;
@@ -259,7 +259,7 @@ void I_InitSound(bool use_sfx_prefix)
 	}
 	// [crispy] print the SDL audio backend
 	{
-	const char *driver_name = SDL_GetCurrentAudioDriver();
+	const char* driver_name = SDL_GetCurrentAudioDriver();
 
 	fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", driver_name ? driver_name : "none");
 	}
@@ -283,7 +283,7 @@ void I_ShutdownSound()
 	}
 }
 
-int I_GetSfxLumpNum(sfxinfo_t *sfxinfo)
+int I_GetSfxLumpNum(sfxinfo_t* sfxinfo)
 {
 	if (sound_module != NULL)
 	{
@@ -338,7 +338,7 @@ void I_UpdateSoundParams(int channel, int vol, int sep)
 	}
 }
 
-int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep, int pitch)
+int I_StartSound(sfxinfo_t* sfxinfo, int channel, int vol, int sep, int pitch)
 {
 	if (sound_module != NULL)
 	{
@@ -371,7 +371,7 @@ bool I_SoundIsPlaying(int channel)
 	}
 }
 
-void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)
+void I_PrecacheSounds(sfxinfo_t* sounds, int num_sounds)
 {
 	if (sound_module != NULL && sound_module->CacheSounds != NULL)
 	{
@@ -412,7 +412,7 @@ void I_ResumeSong()
 	}
 }
 
-void *I_RegisterSong(void *data, int len)
+void* I_RegisterSong(void* data, int len)
 {
 	// If the music pack module is active, check to see if there is a
 	// valid substitution for this track. If there is, we set the
@@ -420,7 +420,7 @@ void *I_RegisterSong(void *data, int len)
 	// duration of this particular track.
 	if (music_packs_active)
 	{
-		void *handle;
+		void* handle;
 
 		handle = music_pack_module.RegisterSong(data, len);
 		if (handle != NULL)
@@ -442,7 +442,7 @@ void *I_RegisterSong(void *data, int len)
 	}
 }
 
-void I_UnRegisterSong(void *handle)
+void I_UnRegisterSong(void* handle)
 {
 	if (active_music_module != NULL)
 	{
@@ -450,7 +450,7 @@ void I_UnRegisterSong(void *handle)
 	}
 }
 
-void I_PlaySong(void *handle, bool looping)
+void I_PlaySong(void* handle, bool looping)
 {
 	if (active_music_module != NULL)
 	{
@@ -480,7 +480,7 @@ bool I_MusicIsPlaying()
 
 void I_BindSoundVariables()
 {
-	extern char *snd_dmxoption;
+	extern char* snd_dmxoption;
 	extern int use_libsamplerate;
 	extern float libsamplerate_scale;
 

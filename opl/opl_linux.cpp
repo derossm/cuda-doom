@@ -19,9 +19,9 @@
 #include "opl_internal.h"
 #include "opl_timer.h"
 
-static unsigned int opl_port_base;
+static unsigned opl_port_base;
 
-static int OPL_Linux_Init(unsigned int port_base)
+static int OPL_Linux_Init(unsigned port_base)
 {
 	// Try to get permissions:
 	if (ioperm(port_base, 3, 1) < 0)
@@ -57,12 +57,12 @@ static void OPL_Linux_Shutdown()
 	ioperm(opl_port_base, 2, 0);
 }
 
-static unsigned int OPL_Linux_PortRead(opl_port_t port)
+static unsigned OPL_Linux_PortRead(opl_port_t port)
 {
 	return inb(opl_port_base + port);
 }
 
-static void OPL_Linux_PortWrite(opl_port_t port, unsigned int value)
+static void OPL_Linux_PortWrite(opl_port_t port, unsigned value)
 {
 	outb(value, opl_port_base + port);
 }

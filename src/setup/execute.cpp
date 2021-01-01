@@ -17,16 +17,16 @@
 #include "m_config.h"
 #include "m_misc.h"
 
-struct execute_context_s
+struct execute_context_t
 {
-	char *response_file;
-	FILE *stream;
+	char* response_file;
+	FILE* stream;
 };
 
 // Returns the path to a temporary file of the given name, stored inside the system temporary directory.
-static char *TempFile(const char *s)
+static char* TempFile(const char* s)
 {
-	const char *tempdir;
+	const char* tempdir;
 
 #ifdef _WIN32
 	// Check the TEMP environment variable to find the location.
@@ -46,9 +46,9 @@ static char *TempFile(const char *s)
 	return M_StringJoin(tempdir, DIR_SEPARATOR_S, s, NULL);
 }
 
-static int ArgumentNeedsEscape(const char *arg)
+static int ArgumentNeedsEscape(const char* arg)
 {
-	const char *p;
+	const char* p;
 
 	for (p = arg; *p != '\0'; ++p)
 	{
@@ -65,7 +65,7 @@ static int ArgumentNeedsEscape(const char *arg)
 // game when launching a game. Calling this adds all arguments from
 // myargv to the output context.
 
-void PassThroughArguments(execute_context_t *context)
+void PassThroughArguments(execute_context_t* context)
 {
 	int i;
 
@@ -82,9 +82,9 @@ void PassThroughArguments(execute_context_t *context)
 	}
 }
 
-execute_context_t *NewExecuteContext()
+execute_context_t* NewExecuteContext()
 {
-	execute_context_t *result;
+	execute_context_t* result;
 
 	result = static_cast<decltype(result)>(malloc(sizeof(execute_context_t)));
 
@@ -100,7 +100,7 @@ execute_context_t *NewExecuteContext()
 	return result;
 }
 
-void AddCmdLineParameter(execute_context_t *context, const char *s, ...)
+void AddCmdLineParameter(execute_context_t* context, const char* s, ...)
 {
 	va_list args;
 
@@ -114,14 +114,14 @@ void AddCmdLineParameter(execute_context_t *context, const char *s, ...)
 
 #if defined(_WIN32)
 
-bool OpenFolder(const char *path)
+bool OpenFolder(const char* path)
 {
 	// "If the function succeeds, it returns a value greater than 32."
 	return (int)ShellExecute(NULL, "open", path, NULL, NULL, SW_SHOWDEFAULT) > 32;
 }
 
 // Wait for the specified process to exit. Returns the exit code.
-static unsigned int WaitForProcessExit(HANDLE subprocess)
+static unsigned WaitForProcessExit(HANDLE subprocess)
 {
 	DWORD exit_code;
 
@@ -141,7 +141,7 @@ static unsigned int WaitForProcessExit(HANDLE subprocess)
 	}
 }
 
-static void ConcatWCString(wchar_t *buf, const char *value)
+static void ConcatWCString(wchar_t* buf, const char* value)
 {
 	MultiByteToWideChar(CP_OEMCP, 0,
 						value, strlen(value) + 1,
@@ -152,11 +152,11 @@ static void ConcatWCString(wchar_t *buf, const char *value)
 //
 // "program" "arg"
 
-static wchar_t *BuildCommandLine(const char *program, const char *arg)
+static wchar_t* BuildCommandLine(const char* program, const char* arg)
 {
 	wchar_t exe_path[MAX_PATH];
-	wchar_t *result;
-	wchar_t *sep;
+	wchar_t* result;
+	wchar_t* sep;
 
 	// Get the path to this .exe file.
 
@@ -195,11 +195,11 @@ static wchar_t *BuildCommandLine(const char *program, const char *arg)
 	return result;
 }
 
-static int ExecuteCommand(const char *program, const char *arg)
+static int ExecuteCommand(const char* program, const char* arg)
 {
 	STARTUPINFOW startup_info;
 	PROCESS_INFORMATION proc_info;
-	wchar_t *command;
+	wchar_t* command;
 	int result = 0;
 
 	command = BuildCommandLine(program, arg);
@@ -233,9 +233,9 @@ static int ExecuteCommand(const char *program, const char *arg)
 
 #else
 
-bool OpenFolder(const char *path)
+bool OpenFolder(const char* path)
 {
-	char *cmd;
+	char* cmd;
 	int result;
 
 #if defined(__MACOSX__)
@@ -252,12 +252,12 @@ bool OpenFolder(const char *path)
 // Given the specified program name, get the full path to the program,
 // assuming that it is in the same directory as this program is.
 
-static char *GetFullExePath(const char *program)
+static char* GetFullExePath(const char* program)
 {
-	char *result;
-	char *sep;
+	char* result;
+	char* sep;
 	size_t result_len;
-	unsigned int path_len;
+	unsigned path_len;
 
 	sep = strrchr(myargv[0], DIR_SEPARATOR);
 
@@ -280,11 +280,11 @@ static char *GetFullExePath(const char *program)
 	return result;
 }
 
-static int ExecuteCommand(const char *program, const char *arg)
+static int ExecuteCommand(const char* program, const char* arg)
 {
 	pid_t childpid;
 	int result;
-	const char *argv[3];
+	const char* argv[3];
 
 	childpid = fork();
 
@@ -296,7 +296,7 @@ static int ExecuteCommand(const char *program, const char *arg)
 		argv[1] = arg;
 		argv[2] = NULL;
 
-		execvp(argv[0], (char **) argv);
+		execvp(argv[0], (char**) argv);
 
 		exit(0x80);
 	}
@@ -320,9 +320,9 @@ static int ExecuteCommand(const char *program, const char *arg)
 
 #endif
 
-int ExecuteDoom(execute_context_t *context)
+int ExecuteDoom(execute_context_t* context)
 {
-	char *response_file_arg;
+	char* response_file_arg;
 	int result;
 
 	fclose(context->stream);
@@ -347,10 +347,10 @@ int ExecuteDoom(execute_context_t *context)
 
 static void TestCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(data))
 {
-	execute_context_t *exec;
-	char *main_cfg;
-	char *extra_cfg;
-	cudadoom::txt::txt_window_t *testwindow;
+	execute_context_t* exec;
+	char* main_cfg;
+	char* extra_cfg;
+	cudadoom::txt::Window* testwindow;
 
 	testwindow = cudadoom::txt::TXT_MessageBox("Starting Doom",
 								"Starting Doom to test the\n"
@@ -382,9 +382,9 @@ static void TestCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::T
 	free(extra_cfg);
 }
 
-txt_window_action_t *TestConfigAction()
+WindowAction* TestConfigAction()
 {
-	cudadoom::txt::txt_window_action_t *test_action;
+	cudadoom::txt::WindowAction* test_action;
 
 	test_action = cudadoom::txt::TXT_NewWindowAction('t', "Test");
 	cudadoom::txt::TXT_SignalConnect(test_action, "pressed", TestCallback, NULL);

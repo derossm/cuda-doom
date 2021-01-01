@@ -11,29 +11,18 @@
 
 #include "../../derma/common.h"
 
-#ifndef TXT_JOYB_INPUT_H
-#define TXT_JOYB_INPUT_H
-
-typedef struct txt_joystick_input_s txt_joystick_input_t;
-
 #include "txt_widget.h"
 #include "txt_window.h"
 
 //
-// A joystick input is like an input box. When selected, a box pops up
-// allowing a joystick button to be pressed to select it.
+// A joystick input is like an input box. When selected, a box pops up allowing a joystick button to be pressed to select it.
 //
-
-struct txt_joystick_input_s
+struct txt_joystick_input_t
 {
 	Widget widget;
 	int *variable;
-	txt_window_t *prompt_window;
+	Window* prompt_window;
 	int check_conflicts;
 };
 
-txt_joystick_input_t *TXT_NewJoystickInput(int *variable);
-
-#endif /* #ifndef TXT_JOYB_INPUT_H */
-
-
+txt_joystick_input_t* NewJoystickInput(int *variable);

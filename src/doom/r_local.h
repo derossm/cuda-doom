@@ -9,18 +9,16 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Refresh (R_*) module, global header.
-//	All the rendering/drawing stuff is here.
+		Refresh (R_*) module, global header. All the rendering/drawing stuff is here.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __R_LOCAL__
-#define __R_LOCAL__
+#include "doomdef.h"
 
 #include "tables.h"
-#include "doomdef.h"
+
 #include "r_data.h"
 #include "r_main.h"
 #include "r_bsp.h"
@@ -29,5 +27,3 @@
 #include "r_data.h"
 #include "r_things.h"
 #include "r_draw.h"
-
-#endif		// __R_LOCAL__

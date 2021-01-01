@@ -15,9 +15,6 @@
 
 #include "../../derma/common.h"
 
-#ifndef __DSTRINGS__
-#define __DSTRINGS__
-
 // All important printed strings.
 #include "d_englsh.h"
 
@@ -26,9 +23,7 @@
 
 // QuitDOOM messages
 // 8 per each game type
-#define NUM_QUITMESSAGES	8
+constexpr size_t NUM_QUITMESSAGES{8};
 
 extern const char* doom1_endmsg[];
 extern const char* doom2_endmsg[];
-
-#endif

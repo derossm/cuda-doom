@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	System specific interface stuff.
+		System specific interface stuff.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __R_MAIN__
-#define __R_MAIN__
 
 #include "d_player.h"
 #include "r_data.h"
@@ -42,7 +39,6 @@ extern int		validcount;
 extern int		linecount;
 extern int		loopcount;
 
-
 //
 // Lighting LUT.
 // Used for z-depth cuing per column/row,
@@ -67,7 +63,6 @@ extern lighttable_t***	zlight;
 extern int		extralight;
 extern lighttable_t*	fixedcolormap;
 
-
 // Number of diminishing brightness levels.
 // There a 0-31, i.e. 32 LUT in the COLORMAP lump.
 #define NUMCOLORMAPS		32
@@ -81,7 +76,6 @@ extern fixed_t			fractionaltic;
 // 0 = high, 1 = low
 extern	int		detailshift;
 
-
 //
 // Function pointers to switch refresh/drawing functions.
 // Used to select shadow mode etc.
@@ -93,7 +87,6 @@ extern void		(*fuzzcolfunc) ();
 extern void		(*tlcolfunc) ();
 // No shadow effects on floors.
 extern void		(*spanfunc) ();
-
 
 //
 // Utility functions.
@@ -109,8 +102,7 @@ angle_t R_PointToAngle2(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2);
 
 fixed_t R_PointToDist(fixed_t x, fixed_t y);
 
-
-fixed_t R_ScaleFromGlobalAngle (angle_t visangle);
+fixed_t R_ScaleFromGlobalAngle(angle_t visangle);
 
 subsector_t* R_PointInSubsector(fixed_t x, fixed_t y);
 
@@ -125,12 +117,10 @@ angle_t R_InterpolateAngle(angle_t oangle, angle_t nangle, fixed_t scale);
 //
 
 // Called by G_Drawer.
-void R_RenderPlayerView (player_t *player);
+void R_RenderPlayerView(Player* player);
 
 // Called by startup code.
-void R_Init ();
+void R_Init();
 
 // Called by M_Responder.
-void R_SetViewSize (int blocks, int detail);
-
-#endif
+void R_SetViewSize(int blocks, int detail);

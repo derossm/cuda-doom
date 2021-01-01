@@ -23,25 +23,25 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-typedef enum
+enum class section_t
 {
 	SECTION_NORMAL,
 	SECTION_FLATS,
 	SECTION_SPRITES,
-} section_t;
+};
 
-typedef struct
+struct searchlist_t
 {
-	lumpinfo_t **lumps;
+	lumpinfo_t**lumps;
 	int numlumps;
-} searchlist_t;
+};
 
-typedef struct
+struct sprite_frame_t
 {
 	char sprname[4];
 	char frame;
-	lumpinfo_t *angle_lumps[8];
-} sprite_frame_t;
+	lumpinfo_t* angle_lumps[8];
+};
 
 static searchlist_t iwad;
 static searchlist_t iwad_sprites;
@@ -52,7 +52,7 @@ static searchlist_t pwad_sprites;
 static searchlist_t pwad_flats;
 
 // lumps with these sprites must be replaced in the IWAD
-static sprite_frame_t *sprite_frames;
+static sprite_frame_t* sprite_frames;
 static int num_sprite_frames;
 static int sprite_frames_alloced;
 
@@ -61,7 +61,7 @@ static int sprite_frames_alloced;
 //
 // Returns -1 if not found
 
-static int FindInList(searchlist_t *list, const char *name)
+static int FindInList(searchlist_t* list, const char* name)
 {
 	int i;
 
@@ -74,9 +74,9 @@ static int FindInList(searchlist_t *list, const char *name)
 	return -1;
 }
 
-static bool SetupList(searchlist_t *list, searchlist_t *src_list,
-							const char *startname, const char *endname,
-							const char *startname2, const char *endname2)
+static bool SetupList(searchlist_t* list, searchlist_t* src_list,
+							const char* startname, const char* endname,
+							const char* startname2, const char* endname2)
 {
 	int startlump, endlump;
 
@@ -145,7 +145,7 @@ static void InitSpriteList()
 	num_sprite_frames = 0;
 }
 
-static bool ValidSpriteLumpName(char *name)
+static bool ValidSpriteLumpName(char* name)
 {
 	if (name[0] == '\0' || name[1] == '\0'
 		|| name[2] == '\0' || name[3] == '\0')
@@ -172,16 +172,16 @@ static bool ValidSpriteLumpName(char *name)
 
 // Find a sprite frame
 
-static sprite_frame_t *FindSpriteFrame(char *name, int frame)
+static sprite_frame_t* FindSpriteFrame(char* name, int frame)
 {
-	sprite_frame_t *result;
+	sprite_frame_t* result;
 	int i;
 
 	// Search the list and try to find the frame
 
 	for (i=0; i<num_sprite_frames; ++i)
 	{
-		sprite_frame_t *cur = &sprite_frames[i];
+		sprite_frame_t* cur = &sprite_frames[i];
 
 		if (!strncasecmp(cur->sprname, name, 4) && cur->frame == frame)
 		{
@@ -195,7 +195,7 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
 
 	if (num_sprite_frames >= sprite_frames_alloced)
 	{
-		sprite_frame_t *newframes;
+		sprite_frame_t* newframes;
 
 		newframes = Z_Malloc<decltype(newframes)>(sprite_frames_alloced * 2 * sizeof(*sprite_frames),
 								pu_tags_t::PU_STATIC, NULL);
@@ -222,9 +222,9 @@ static sprite_frame_t *FindSpriteFrame(char *name, int frame)
 
 // Check if sprite lump is needed in the new wad
 
-static bool SpriteLumpNeeded(lumpinfo_t *lump)
+static bool SpriteLumpNeeded(lumpinfo_t* lump)
 {
-	sprite_frame_t *sprite;
+	sprite_frame_t* sprite;
 	int angle_num;
 	int i;
 
@@ -286,9 +286,9 @@ static bool SpriteLumpNeeded(lumpinfo_t *lump)
 	return false;
 }
 
-static void AddSpriteLump(lumpinfo_t *lump)
+static void AddSpriteLump(lumpinfo_t* lump)
 {
-	sprite_frame_t *sprite;
+	sprite_frame_t* sprite;
 	int angle_num;
 	int i;
 
@@ -379,13 +379,13 @@ static void GenerateSpriteList()
 static void DoMerge()
 {
 	section_t current_section;
-	lumpinfo_t **newlumps;
+	lumpinfo_t**newlumps;
 	int num_newlumps;
 	int lumpindex;
 	int i, n;
 
 	// Can't ever have more lumps than we already have
-	newlumps = calloc(numlumps, sizeof(lumpinfo_t *));
+	newlumps = calloc(numlumps, sizeof(lumpinfo_t*));
 	num_newlumps = 0;
 
 	// Add IWAD lumps
@@ -393,7 +393,7 @@ static void DoMerge()
 
 	for (i=0; i<iwad.numlumps; ++i)
 	{
-		lumpinfo_t *lump = iwad.lumps[i];
+		lumpinfo_t* lump = iwad.lumps[i];
 
 		switch (current_section)
 		{
@@ -489,7 +489,7 @@ static void DoMerge()
 
 	for (i=0; i<pwad.numlumps; ++i)
 	{
-		lumpinfo_t *lump = pwad.lumps[i];
+		lumpinfo_t* lump = pwad.lumps[i];
 
 		switch (current_section)
 		{
@@ -547,7 +547,7 @@ static void DoMerge()
 
 void W_PrintDirectory()
 {
-	unsigned int i, n;
+	unsigned i, n;
 
 	// debug
 	for (i=0; i<numlumps; ++i)
@@ -560,7 +560,7 @@ void W_PrintDirectory()
 
 // Merge in a file by name
 
-void W_MergeFile(const char *filename)
+void W_MergeFile(const char* filename)
 {
 	int old_numlumps;
 
@@ -594,7 +594,7 @@ void W_MergeFile(const char *filename)
 
 // Replace lumps in the given list with lumps from the PWAD
 
-static void W_NWTAddLumps(searchlist_t *list)
+static void W_NWTAddLumps(searchlist_t* list)
 {
 	int i;
 
@@ -617,7 +617,7 @@ static void W_NWTAddLumps(searchlist_t *list)
 // Merge sprites and flats in the way NWT does with its -af and -as
 // command-line options.
 
-void W_NWTMergeFile(const char *filename, int flags)
+void W_NWTMergeFile(const char* filename, int flags)
 {
 	int old_numlumps;
 
@@ -663,9 +663,9 @@ void W_NWTMergeFile(const char *filename, int flags)
 // a PWAD, then search the IWAD sprites, removing any sprite lumps that also
 // exist in the PWAD.
 
-void W_NWTDashMerge(const char *filename)
+void W_NWTDashMerge(const char* filename)
 {
-	wad_file_t *wad_file;
+	wad_file_t* wad_file;
 	int old_numlumps;
 	int i;
 
@@ -714,19 +714,20 @@ void W_NWTDashMerge(const char *filename)
 }
 
 // [crispy] dump merged WAD data into a new IWAD file
-int W_MergeDump (const char *file)
+int W_MergeDump (const char* file)
 {
-	FILE *fp = NULL;
-	char *lump_p = NULL;
+	FILE* fp = NULL;
+	char* lump_p = NULL;
 	uint32_t i, dir_p;
 
 	// [crispy] WAD directory structure
-	typedef struct {
-	uint32_t pos;
-	uint32_t size;
-	char name[8];
-	} directory_t;
-	directory_t *dir = NULL;
+	struct directory_t
+	{
+		uint32_t pos;
+		uint32_t size;
+		char name[8];
+	};
+	directory_t* dir = NULL;
 
 	// [crispy] open file for writing
 	fp = fopen(file, "wb");

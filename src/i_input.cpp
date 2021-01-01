@@ -12,7 +12,6 @@
 		SDL implementation of system-specific input interface.
 \**********************************************************************************************************************************************/
 
-
 #include "SDL.h"
 #include "SDL_keycode.h"
 
@@ -72,7 +71,7 @@ static const char shiftxform[] =
 static bool text_input_enabled = true;
 
 // Bit mask of mouse button state.
-static unsigned int mouse_button_state = 0;
+static unsigned mouse_button_state = 0;
 
 // Disallow mouse and joystick movement to cause forward/backward
 // motion. Specified with the '-novert' command line parameter.
@@ -244,7 +243,7 @@ void I_HandleKeyboardEvent(SDL_Event *sdlevent)
 {
 	// XXX: passing pointers to event for access after this function
 	// has terminated is undefined behaviour
-	event_t event;
+	EventType event;
 
 	switch (sdlevent->type)
 	{
@@ -305,9 +304,9 @@ void I_StopTextInput()
 	}
 }
 
-static void UpdateMouseButtonState(unsigned int button, bool on)
+static void UpdateMouseButtonState(unsigned button, bool on)
 {
-	static event_t event;
+	static EventType event;
 
 	if (button < SDL_BUTTON_LEFT || button > MAX_MOUSE_BUTTONS)
 	{
@@ -362,7 +361,7 @@ static void MapMouseWheelToButtons(SDL_MouseWheelEvent *wheel)
 	// SDL2 distinguishes button events from mouse wheel events.
 	// We want to treat the mouse wheel as two buttons, as per
 	// SDL1
-	static event_t up, down;
+	static EventType up, down;
 	int button;
 
 	if (wheel->y <= 0)
@@ -449,7 +448,7 @@ static int AccelerateMouseY(int val)
 void I_ReadMouse()
 {
 	int x, y;
-	event_t ev;
+	EventType ev;
 
 	SDL_GetRelativeMouseState(&x, &y);
 

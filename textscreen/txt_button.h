@@ -11,47 +11,92 @@
 
 #include "../derma/common.h"
 
+#include "doomkeys.h"
+
+#include "txt_main.h"
 #include "txt_widget.h"
+#include "txt_window.h"
+#include "txt_utf8.h"
+#include "txt_io.h"
+#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
+
 /**
  * Button widget.
- *
  * A button is a widget that can be selected to perform some action.
  * When a button is pressed, it emits the "pressed" signal.
  */
-struct txt_button_t
+struct Button : Widget
 {
-	Widget widget;
-	char* label;
+	std::string label;
+
+	void SizeCalc()
+	{
+		width = label.length();
+		height = 1;
+	}
+
+	void Drawer()
+	{
+		SetWidgetBG();
+
+		DrawString(label);
+
+		for (size_t i{label.length()}; i < width; ++i)
+		{
+			DrawString(" ");
+		}
+	}
+
+	bool KeyPress(int key)
+	{
+		if (key == KEY_ENTER)
+		{
+			EmitSignal("pressed");
+			return true;
+		}
+
+		return false;
+	}
+
+	void MousePress(int x, int y, int b)
+	{
+		if (b == MOUSE_LEFT)
+		{
+			// Equivalent to pressing enter
+			KeyPress(KEY_ENTER);
+		}
+	}
+
+	WidgetClass ButtonClass =
+	{
+		AlwaysSelectable,
+		ButtonSizeCalc,
+		ButtonDrawer,
+		ButtonKeyPress,
+		ButtonDestructor,
+		ButtonMousePress,
+		NULL
+	};
+
+	void SetButtonLabel(std::string& _label)
+	{
+		label = std::string(_label);
+	}
+
+	Button(std::string& _label) : label(_label)
+	{
+	}
+
+	Button(std::string& _label, WidgetSignalFunc _handle, UserData _user)
+	{
+		SetButtonLabel(_label);
+		SignalConnect(std::string("pressed"), _handle, _user);
+
+		return button;
+	}
 };
-
-/**
- * Create a new button widget.
- *
- * @param label		The label to use on the new button (UTF-8 format).
- * @return			Pointer to the new button widget.
- */
-txt_button_t* TXT_NewButton(const char* label);
-
-/**
- * Create a new button widget, binding the "pressed" signal to a
- * specified callback function.
- *
- * @param label		The label to use on the new button (UTF-8 format).
- * @param func		The callback function to invoke.
- * @param user_data	User-specified pointer to pass to the callback.
- * @return			Pointer to the new button widget.
- */
-txt_button_t* TXT_NewButton2(const char* label, WidgetSignalFunc func, void* user_data);
-
-/**
- * Change the label used on a button.
- *
- * @param button	The button.
- * @param label		The new label (UTF-8 format).
- */
-void TXT_SetButtonLabel(txt_button_t* button, const char* label);
 
 } /* END NAMESPACE cudadoom::txt */

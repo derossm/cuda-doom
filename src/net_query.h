@@ -14,12 +14,9 @@
 
 #include "../derma/common.h"
 
-#ifndef NET_QUERY_H
-#define NET_QUERY_H
-
 #include "net_defs.h"
 
-typedef void (*net_query_callback_t)(net_addr_t* addr, net_querydata_t* querydata, unsigned int ping_time, void* user_data);
+typedef void (*net_query_callback_t)(net_addr_t* addr, net_querydata_t* querydata, TimeType ping_time, void* user_data);
 
 extern int NET_StartLANQuery();
 extern int NET_StartMasterQuery();
@@ -36,5 +33,3 @@ extern void NET_Query_AddToMaster(net_addr_t* master_addr);
 extern bool NET_Query_CheckAddedToMaster(bool* result);
 extern void NET_Query_AddResponse(net_packet_t* packet);
 extern void NET_RequestHolePunch(net_context_t* context, net_addr_t* addr);
-
-#endif /* #ifndef NET_QUERY_H */

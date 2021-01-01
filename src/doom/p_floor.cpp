@@ -237,7 +237,7 @@ void T_MoveFloor(floormove_t* floor)
 }
 
 // [crispy] easter egg: homage to an old friend (thinker)
-void T_MoveGoobers(floormove_t *floor)
+void T_MoveGoobers(floormove_t* floor)
 {
 	result_e res1;
 	result_e res2;

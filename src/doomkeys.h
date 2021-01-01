@@ -10,7 +10,6 @@
 
 	DESCRIPTION:
 		Key definitions
-//
 \**********************************************************************************************************************************************/
 #pragma once
 
@@ -170,7 +169,7 @@ enum class Keybinds
 #define KEYP_EQUALS		KEY_EQUALS
 #define KEYP_ENTER		KEY_ENTER
 
-#define SCANCODE_TO_KEYS_ARRAY {												\
+#define SCANCODE_TO_KEYS_ARRAY													\
 	0x0, 0x0, 0x0, 0x0, 'a',									/* 000-009 */	\
 	'b', 'c', 'd', 'e', 'f',													\
 	'g', 'h', 'i', 'j', 'k',									/* 010-019 */	\
@@ -192,11 +191,10 @@ enum class Keybinds
 	KEYP_MULTIPLY, KEYP_MINUS, KEYP_PLUS, KEYP_ENTER, KEYP_1,					\
 	KEYP_2, KEYP_3, KEYP_4, KEYP_5, KEYP_6,						/* 090-099 */	\
 	KEYP_7, KEYP_8, KEYP_9, KEYP_0, KEYP_PERIOD,								\
-	0x0, 0x0, 0x0, KEYP_EQUALS,									/* 100-103 */	\
-}
+	0x0, 0x0, 0x0, KEYP_EQUALS									/* 100-103 */
 
 // Default names for keys, to use in English or as fallback.
-#define KEY_NAMES_ARRAY {												\
+#define KEY_NAMES_ARRAY													\
 	{ KEY_BACKSPACE, 	"BACKSP" },	{ KEY_TAB,			"TAB" },		\
 	{ KEY_INS,			"INS" },	{ KEY_DEL,			"DEL" },		\
 	{ KEY_PGUP,			"PGUP" },	{ KEY_PGDN,			"PGDN" },		\
@@ -228,5 +226,4 @@ enum class Keybinds
 	{ '6', "6" },	{ '7', "7" },	{ '8', "8" },	{ '9', "9" },		\
 	{ '[', "[" },	{ ']', "]" },	{ ';', ";" },	{ '`', "`" },		\
 	{ ',', "," },	{ '.', "." },	{ '/', "/" },	{ '\\', "\\" },		\
-	{ '\'', "\'" },														\
-}
+	{ '\'', "\'" }

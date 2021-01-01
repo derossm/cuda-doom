@@ -11,37 +11,28 @@
 
 #include "../../derma/common.h"
 
-#ifndef TXT_JOY_AXIS_H
-#define TXT_JOY_AXIS_H
-
-typedef struct txt_joystick_axis_s txt_joystick_axis_t;
-
-typedef enum
-{
-	JOYSTICK_AXIS_HORIZONTAL,
-	JOYSTICK_AXIS_VERTICAL,
-} txt_joystick_axis_direction_t;
-
-typedef enum
-{
-	CONFIG_CENTER,		// "Center the joystick and press a button..."
-	CONFIG_STAGE1,		// "Top or left and press a button..."
-	CONFIG_STAGE2,		// [Optional] "Bottom or right and press a button..."
-} txt_joystick_axis_stage_t;
-
-// Callback invoked when calibration is completed.
-typedef void (*txt_joystick_axis_callback_t)();
-
 #include "txt_widget.h"
 #include "txt_window.h"
 
 #include "SDL.h"
 
-//
-// A joystick axis.
-//
+enum class txt_joystick_axis_direction_t
+{
+	JOYSTICK_AXIS_HORIZONTAL,
+	JOYSTICK_AXIS_VERTICAL
+};
 
-struct txt_joystick_axis_s
+enum class txt_joystick_axis_stage_t
+{
+	CONFIG_CENTER,		// "Center the joystick and press a button..."
+	CONFIG_STAGE1,		// "Top or left and press a button..."
+	CONFIG_STAGE2		// [Optional] "Bottom or right and press a button..."
+};
+
+// Callback invoked when calibration is completed.
+typedef void (*txt_joystick_axis_callback_t)();
+
+struct txt_joystick_axis_t
 {
 	Widget widget;
 	int *axis;
@@ -51,8 +42,8 @@ struct txt_joystick_axis_s
 	// Only used when configuring:
 
 	// Configuration prompt window and label.
-	txt_window_t *config_window;
-	txt_label_t *config_label;
+	Window* config_window;
+	txt_label_t* config_label;
 
 	// SDL joystick handle for reading joystick state.
 	SDL_Joystick *joystick;
@@ -75,16 +66,9 @@ struct txt_joystick_axis_s
 	txt_joystick_axis_callback_t callback;
 };
 
-txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert,
-											txt_joystick_axis_direction_t dir);
+txt_joystick_axis_t* NewJoystickAxis(int *axis, int *invert, txt_joystick_axis_direction_t dir);
 
 // Configure a joystick axis widget.
-//	axis: The axis widget to configure.
-//	using_button: If non-negative, use this joystick button as the button
-//		to expect from the user. Otherwise, ask.
-void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *axis, int using_button,
-								txt_joystick_axis_callback_t callback);
-
-#endif /* #ifndef TXT_JOY_AXIS_H */
-
-
+// axis: The axis widget to configure.
+// using_button: If non-negative, use this joystick button as the button to expect from the user. Otherwise, ask.
+void ConfigureJoystickAxis(txt_joystick_axis_t* axis, int using_button, txt_joystick_axis_callback_t callback);

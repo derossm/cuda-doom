@@ -85,14 +85,14 @@ GameState_t		oldgamestate;
 
 GameAction_t	gameaction;
 GameState_t		gamestate;
-skill_t			gameskill;
+SkillType			gameskill;
 bool		respawnmonsters;
 int				gameepisode;
-int				gamemap;
+TimeType gamemap;
 
 // If non-zero, exit the level after this number of minutes.
 
-int				timelimit;
+TimeType timelimit;
 
 bool			paused;
 bool			sendpause;					// send a pause event next tic
@@ -101,24 +101,24 @@ bool			usergame;				// ok to save / end game
 
 bool			timingdemo;				// if true, exit with report on completion
 bool			nodrawers;				// for comparative timing purposes
-int				starttime;				// for comparative timing purposes
+TimeType starttime;				// for comparative timing purposes
 
 bool			viewactive;
 
 int				deathmatch;				// only if started as net death
 bool			netgame;				// only true if packets are broadcast
 bool			playeringame[MAXPLAYERS];
-player_t		players[MAXPLAYERS];
+Player		players[MAXPLAYERS];
 
 bool			turbodetected[MAXPLAYERS];
 
 int				consoleplayer;			// player taking events and displaying
 int				displayplayer;			// view being displayed
-int				levelstarttic;			// gametic at level start
+TimeType levelstarttic;			// gametic at level start
 int				totalkills, totalitems, totalsecret;	// for intermission
 int				extrakills;				// [crispy] count spawned monsters
-int				totalleveltimes;		// [crispy] CPhipps - total time for all completed levels
-int				demostarttic;			// [crispy] fix revenant internal demo bug
+TimeType		totalleveltimes;		// [crispy] CPhipps - total time for all completed levels
+TimeType		demostarttic;			// [crispy] fix revenant internal demo bug
 
 char			*demoname;
 const char		*orig_demoname; // [crispy] the name originally chosen for the demo, i.e. without "-00000"
@@ -151,7 +151,7 @@ fixed_t			forwardmove[2] = {0x19, 0x32};
 fixed_t			sidemove[2] = {0x18, 0x28};
 fixed_t			angleturn[3] = {640, 1280, 320};	// + slow turn
 
-static int *weapon_keys[] = {
+static int* weapon_keys[] = {
 	&key_weapon1,
 	&key_weapon2,
 	&key_weapon3,
@@ -194,19 +194,19 @@ static int		turnheld;		// for accelerative turning
 static int		lookheld;		// [crispy] for accelerative looking
 
 static bool mousearray[MAX_MOUSE_BUTTONS + 1];
-static bool *mousebuttons = &mousearray[1]; // allow [-1]
+static bool* mousebuttons = &mousearray[1]; // allow [-1]
 
 // mouse values are used once
 int				mousex;
 int				mousex2;
 int				mousey;
 
-static int		dclicktime;
+static TimeType dclicktime;
 static bool dclickstate;
-static int		dclicks;
-static int		dclicktime2;
+static int dclicks;
+static TimeType dclicktime2;
 static bool dclickstate2;
-static int		dclicks2;
+static int dclicks2;
 
 // joystick values are repeated
 static int		joyxmove;
@@ -214,7 +214,7 @@ static int		joyymove;
 static int		joystrafemove;
 static int		joylook; // [crispy]
 static bool joyarray[MAX_JOY_BUTTONS + 1];
-static bool *joybuttons = &joyarray[1];		// allow [-1]
+static bool* joybuttons = &joyarray[1];		// allow [-1]
 
 static char		savename[256]; // [crispy] moved here, made static
 static int		savegameslot;
@@ -222,7 +222,7 @@ static char		savedescription[32];
 
 #define BODYQUESIZE	32
 
-mobj_t*		bodyque[BODYQUESIZE];
+MapObject*		bodyque[BODYQUESIZE];
 int		bodyqueslot;
 
 int				vanilla_savegame_limit = 1;
@@ -237,7 +237,7 @@ int G_CmdChecksum(ticcmd_t* cmd)
 	int		sum = 0;
 
 	for (i=0 ; i< sizeof(*cmd)/4 - 1 ; i++)
-	sum += ((int *)cmd)[i];
+	sum += ((int*)cmd)[i];
 
 	return sum;
 }
@@ -254,7 +254,7 @@ static bool WeaponSelectable(WeaponType_t weapon)
 	// These weapons aren't available in shareware.
 
 	if ((weapon == wp_plasma || weapon == wp_bfg)
-		&& gamemission == doom && gamemode == GameMode_t::shareware)
+		&& gamemission == doom && gamemode == GameMode::shareware)
 	{
 		return false;
 	}
@@ -328,7 +328,7 @@ bool speedkeydown()
 // or reads it from the demo buffer.
 // If recording a demo, write it out
 //
-void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
+void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 {
 	int		i;
 	bool	strafe;
@@ -339,7 +339,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
 	int		forward;
 	int		side;
 	int		look;
-	player_t *const player = &players[consoleplayer];
+	Player* const player = &players[consoleplayer];
 	static char playermessage[48];
 
 	memset(cmd, 0, sizeof(ticcmd_t));
@@ -526,7 +526,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
 	// [crispy] look up/down/center keys
 	if (crispy->freelook)
 	{
-		static unsigned int kbdlookctrl = 0;
+		static unsigned kbdlookctrl = 0;
 
 		if (gamekeydown[key_lookup] || joylook < 0)
 		{
@@ -682,7 +682,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, int maketic)
 	// [crispy] single click on mouse look button centers view
 	if (crispy->freelook)
 	{
-		static unsigned int mbmlookctrl = 0;
+		static unsigned mbmlookctrl = 0;
 
 		// [crispy] single click view centering
 		if (mousebuttons[mousebmouselook]) // [crispy] clicked
@@ -797,10 +797,10 @@ void G_DoLoadLevel()
 	// The "Sky never changes in Doom II" bug was fixed in
 	// the id Anthology version of doom2.exe for Final Doom.
 	// [crispy] correct "Sky never changes in Doom II" bug
-	if ((gamemode == GameMode_t::commercial)
+	if ((gamemode == GameMode::commercial)
 		&& (gameversion == GameVersion_t::exe_final2 || gameversion == GameVersion_t::exe_chex || true))
 	{
-		const char *skytexturename;
+		const char* skytexturename;
 
 		if (gamemap < 12)
 		{
@@ -893,7 +893,7 @@ void G_DoLoadLevel()
 	}
 }
 
-static void SetJoyButtons(unsigned int buttons_mask)
+static void SetJoyButtons(unsigned buttons_mask)
 {
 	int i;
 
@@ -921,13 +921,13 @@ static void SetJoyButtons(unsigned int buttons_mask)
 	}
 }
 
-static void SetMouseButtons(unsigned int buttons_mask)
+static void SetMouseButtons(unsigned buttons_mask)
 {
 	int i;
 
 	for (i=0; i<MAX_MOUSE_BUTTONS; ++i)
 	{
-		unsigned int button_on = (buttons_mask & (1 << i)) != 0;
+		unsigned button_on = (buttons_mask & (1 << i)) != 0;
 
 		// Detect button press:
 
@@ -949,7 +949,7 @@ static void SetMouseButtons(unsigned int buttons_mask)
 
 // G_Responder
 // Get info needed to make ticcmd_ts for the players.
-bool G_Responder (event_t* ev)
+bool G_Responder (EventType* ev)
 {
 	// allow spy mode changes even during the demo
 	if (gamestate == GameState_t::GS_LEVEL && ev->type == ev_keydown
@@ -1189,7 +1189,7 @@ void G_Ticker()
 			if ((gametic & 31) == 0 && ((gametic >> 5) % MAXPLAYERS) == i && turbodetected[i])
 			{
 				static char turbomessage[80];
-				extern char *player_names[4];
+				extern char* player_names[4];
 				M_snprintf(turbomessage, sizeof(turbomessage), "%s is turbo!", player_names[i]);
 				players[consoleplayer].message = turbomessage;
 				turbodetected[i] = false;
@@ -1320,7 +1320,7 @@ void G_InitPlayer(int player)
 //
 void G_PlayerFinishLevel(int player)
 {
-	player_t*	p;
+	Player*	p;
 
 	p = &players[player];
 
@@ -1349,7 +1349,7 @@ void G_PlayerFinishLevel(int player)
 //
 void G_PlayerReborn(int player)
 {
-	player_t*	p;
+	Player*	p;
 	int		i;
 	int		frags[MAXPLAYERS];
 	int		killcount;
@@ -1397,7 +1397,7 @@ bool G_CheckSpot(int playernum, mapthing_t* mthing)
 	fixed_t		x;
 	fixed_t		y;
 	subsector_t*	ss;
-	mobj_t*		mo;
+	MapObject*		mo;
 	int			i;
 
 	if (!players[playernum].mo)
@@ -1427,7 +1427,7 @@ bool G_CheckSpot(int playernum, mapthing_t* mthing)
 
 	// The code in the released source looks like this:
 	//
-	//	an = ( ANG45 * (((unsigned int) mthing->angle)/45) ) >> ANGLETOFINESHIFT;
+	//	an = ( ANG45 * (((unsigned) mthing->angle)/45) ) >> ANGLETOFINESHIFT;
 	//	mo = P_SpawnMobj (x+20*finecosine[an], y+20*finesine[an], ss->sector->floorheight, mobjtype_t::MT_TFOG);
 	//
 	// But 'an' can be a signed value in the DOS version. This means that
@@ -1634,7 +1634,7 @@ void G_ExitLevel()
 void G_SecretExitLevel()
 {
 	// IF NO WOLF3D LEVELS, NO SECRET EXIT!
-	if ( (gamemode == GameMode_t::commercial)
+	if ( (gamemode == GameMode::commercial)
 		&& (W_CheckNumForName("map31")<0))
 	secretexit = false;
 	else
@@ -1645,7 +1645,7 @@ void G_SecretExitLevel()
 
 // [crispy] format time for level statistics
 #define TIMESTRSIZE 16
-static void G_FormatLevelStatTime(char *str, int tics)
+static void G_FormatLevelStatTime(char* str, TimeType tics)
 {
 	int exitHours, exitMinutes;
 	float exitTime, exitSeconds;
@@ -1671,14 +1671,14 @@ static void G_FormatLevelStatTime(char *str, int tics)
 // [crispy] Write level statistics upon exit
 static void G_WriteLevelStat()
 {
-	static FILE *fstream = NULL;
+	static FILE* fstream = NULL;
 
 	int i, playerKills = 0, playerItems = 0, playerSecrets = 0;
 
 	char levelString[8];
 	char levelTimeString[TIMESTRSIZE];
 	char totalTimeString[TIMESTRSIZE];
-	char *decimal;
+	char* decimal;
 
 	if (fstream == NULL)
 	{
@@ -1691,7 +1691,7 @@ static void G_WriteLevelStat()
 		}
 	}
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		M_snprintf(levelString, sizeof(levelString), "MAP%02d", gamemap);
 	}
@@ -1746,7 +1746,7 @@ void G_DoCompleted ()
 	if (automapactive)
 	AM_Stop();
 
-	if (gamemode != GameMode_t::commercial)
+	if (gamemode != GameMode::commercial)
 	{
 		// Chex Quest ends after 5 levels, rather than 8.
 
@@ -1783,7 +1783,7 @@ void G_DoCompleted ()
 /*
 //#if 0 Hmmm - why?
 	if ( (gamemap == 8)
-		&& (gamemode != GameMode_t::commercial) )
+		&& (gamemode != GameMode::commercial) )
 	{
 	// victory
 	gameaction = ga_victory;
@@ -1791,7 +1791,7 @@ void G_DoCompleted ()
 	}
 
 	if ( (gamemap == 9)
-		&& (gamemode != GameMode_t::commercial) )
+		&& (gamemode != GameMode::commercial) )
 	{
 	// exit secret level
 	for (i=0 ; i<MAXPLAYERS ; i++)
@@ -1826,7 +1826,7 @@ void G_DoCompleted ()
 	wminfo.next = gamemap;
 	}
 	else
-	if ( gamemode == GameMode_t::commercial)
+	if ( gamemode == GameMode::commercial)
 	{
 	if (secretexit)
 		if (gamemap == 2 && critical->havemap33)
@@ -1891,7 +1891,7 @@ void G_DoCompleted ()
 
 	// Set par time. Exceptions are added for purposes of
 	// statcheck regression testing.
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		// map33 reads its par time from beyond the cpars[] array
 		if (gamemap == 33)
@@ -1963,7 +1963,7 @@ void G_DoCompleted ()
 	automapactive = false;
 
 	// [crispy] no statdump output for ExM8
-	if (gamemode == GameMode_t::commercial || gamemap != 8)
+	if (gamemode == GameMode::commercial || gamemap != 8)
 	{
 	StatCopy(&wminfo);
 	}
@@ -2008,7 +2008,7 @@ void G_WorldDone()
 	}
 	}
 	else
-	if ( gamemode == GameMode_t::commercial )
+	if ( gamemode == GameMode::commercial )
 	{
 	switch (gamemap)
 	{
@@ -2057,7 +2057,7 @@ void G_LoadGame(char* name)
 	gameaction = ga_loadgame;
 }
 
-int savedleveltime = 0; // [crispy] moved here for level time logging
+TimeType savedleveltime = 0; // [crispy] moved here for level time logging
 void G_DoLoadGame()
 {
 
@@ -2174,9 +2174,9 @@ void G_SaveGame(int slot, char* description)
 
 void G_DoSaveGame()
 {
-	char *savegame_file;
-	char *temp_savegame_file;
-	char *recovery_savegame_file;
+	char* savegame_file;
+	char* temp_savegame_file;
+	char* recovery_savegame_file;
 
 	recovery_savegame_file = NULL;
 	temp_savegame_file = P_TempSaveGameFile();
@@ -2207,9 +2207,9 @@ void G_DoSaveGame()
 
 	// [crispy] some logging when saving
 	{
-	const int ltime = leveltime / TICRATE,
-				ttime = (totalleveltimes + leveltime) / TICRATE;
-	extern const char *skilltable[];
+	const TimeType ltime = leveltime / TICRATE;
+	const TimeType ttime = (totalleveltimes + leveltime) / TICRATE;
+	extern const char* skilltable[];
 
 	fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n",
 			gameepisode, gamemap, skilltable[BETWEEN(0,5,(int) gameskill+1)],
@@ -2276,11 +2276,11 @@ void G_DoSaveGame()
 // Can be called by the startup code or the menu task,
 // consoleplayer, displayplayer, playeringame[] should be set.
 //
-skill_t	d_skill;
+SkillType	d_skill;
 int		d_episode;
 int		d_map;
 
-void G_DeferedInitNew(skill_t skill, int episode, int map)
+void G_DeferedInitNew(SkillType skill, int episode, int map)
 {
 	d_skill = skill;
 	d_episode = episode;
@@ -2323,9 +2323,9 @@ void G_DoNewGame()
 }
 
 
-void G_InitNew(skill_t skill, int episode, int map)
+void G_InitNew(SkillType skill, int episode, int map)
 {
-	const char *skytexturename;
+	const char* skytexturename;
 	int				i;
 	// [crispy] make sure "fast" parameters are really only applied once
 	static bool fast_applied;
@@ -2349,12 +2349,12 @@ void G_InitNew(skill_t skill, int episode, int map)
 	if (episode < 1)
 		episode = 1;
 
-	if ( gamemode == GameMode_t::retail )
+	if ( gamemode == GameMode::retail )
 	{
 		if (episode > 4)
 	episode = 4;
 	}
-	else if ( gamemode == GameMode_t::shareware )
+	else if ( gamemode == GameMode::shareware )
 	{
 		if (episode > 1)
 		episode = 1;	// only start episode 1 on shareware
@@ -2366,11 +2366,11 @@ void G_InitNew(skill_t skill, int episode, int map)
 	}
 	*/
 
-	if (skill > skill_t::sk_nightmare)
-	skill = skill_t::sk_nightmare;
+	if (skill > SkillType::sk_nightmare)
+	skill = SkillType::sk_nightmare;
 
  // [crispy] if NRFTL is not available, "episode 2" may mean The Master Levels ("episode 3")
- if (gamemode == GameMode_t::commercial)
+ if (gamemode == GameMode::commercial)
  {
 	if (episode < 1)
 		episode = 1;
@@ -2401,7 +2401,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 		}
 	}
 
-	if (episode > 1 && gamemode == GameMode_t::shareware)
+	if (episode > 1 && gamemode == GameMode::shareware)
 	{
 		episode = 1;
 	}
@@ -2410,7 +2410,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	map = 1;
 
 	if ( (map > 9)
-		&& ( gamemode != GameMode_t::commercial) )
+		&& ( gamemode != GameMode::commercial) )
 	{
 		// [crispy] support E1M10 "Sewers"
 		if (!crispy->havee1m10 || episode != 1)
@@ -2422,13 +2422,13 @@ void G_InitNew(skill_t skill, int episode, int map)
 
 	M_ClearRandom();
 
-	if (skill == skill_t::sk_nightmare || respawnparm )
+	if (skill == SkillType::sk_nightmare || respawnparm )
 	respawnmonsters = true;
 	else
 	respawnmonsters = false;
 
 	// [crispy] make sure "fast" parameters are really only applied once
-	if ((fastparm || skill == skill_t::sk_nightmare) && !fast_applied)
+	if ((fastparm || skill == SkillType::sk_nightmare) && !fast_applied)
 	{
 	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
 		// [crispy] Fix infinite loop caused by Demon speed bug
@@ -2441,7 +2441,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	mobjinfo[MT_TROOPSHOT].speed = 20*FRACUNIT;
 	fast_applied = true;
 	}
-	else if (!fastparm && skill != skill_t::sk_nightmare && fast_applied)
+	else if (!fastparm && skill != SkillType::sk_nightmare && fast_applied)
 	{
 	for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
 		states[i].tics <<= 1;
@@ -2479,7 +2479,7 @@ void G_InitNew(skill_t skill, int episode, int map)
 	// restore from a saved game. This was fixed before the Doom
 	// source release, but this IS the way Vanilla DOS Doom behaves.
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		skytexturename = DEH_String("SKY3");
 		skytexture = R_TextureNumForName(skytexturename);
@@ -2528,9 +2528,10 @@ void G_InitNew(skill_t skill, int episode, int map)
 #define DEMOMARKER		0x80
 
 // [crispy] demo progress bar and timer widget
-int defdemotics = 0, deftotaldemotics;
+TimeType defdemotics = 0;
+TimeType deftotaldemotics;
 // [crispy] moved here
-static const char *defdemoname;
+static const char* defdemoname;
 
 void G_ReadDemoTiccmd(ticcmd_t* cmd)
 {
@@ -2548,8 +2549,8 @@ void G_ReadDemoTiccmd(ticcmd_t* cmd)
 	// continue recording the demo under a different name
 	if (gamekeydown[key_demo_quit] && singledemo && !netgame)
 	{
-	byte *actualbuffer = demobuffer;
-	char *actualname = M_StringDuplicate(defdemoname);
+	byte* actualbuffer = demobuffer;
+	char* actualname = M_StringDuplicate(defdemoname);
 
 	gamekeydown[key_demo_quit] = false;
 
@@ -2596,8 +2597,8 @@ void G_ReadDemoTiccmd(ticcmd_t* cmd)
 static void IncreaseDemoBuffer()
 {
 	int current_length;
-	byte *new_demobuffer;
-	byte *new_demop;
+	byte* new_demobuffer;
+	byte* new_demop;
 	int new_length;
 
 	// Find the current size
@@ -2625,7 +2626,7 @@ static void IncreaseDemoBuffer()
 
 void G_WriteDemoTiccmd(ticcmd_t* cmd)
 {
-	byte *demo_start;
+	byte* demo_start;
 
 	if (gamekeydown[key_demo_quit])			// press q to end demo recording
 	G_CheckDemoStatus();
@@ -2680,15 +2681,15 @@ void G_WriteDemoTiccmd(ticcmd_t* cmd)
 //
 // G_RecordDemo
 //
-void G_RecordDemo(const char *name)
+void G_RecordDemo(const char* name)
 {
 	size_t demoname_size;
 	int i;
 	int maxsize;
 
 	// [crispy] demo file name suffix counter
-	static unsigned int j = 0;
-	FILE *fp = NULL;
+	static unsigned j = 0;
+	FILE* fp = NULL;
 
 	// [crispy] the name originally chosen for the demo, i.e. without "-00000"
 	if (!orig_demoname)
@@ -2793,7 +2794,7 @@ void G_BeginRecording()
 //
 
 
-void G_DeferedPlayDemo(const char *name)
+void G_DeferedPlayDemo(const char* name)
 {
 	defdemoname = name;
 	gameaction = ga_playdemo;
@@ -2809,7 +2810,7 @@ void G_DeferedPlayDemo(const char *name)
 
 // Generate a string describing a demo version
 
-static const char *DemoVersionDescription(int version)
+static const char* DemoVersionDescription(int version)
 {
 	static char resultbuf[16];
 
@@ -2850,7 +2851,7 @@ static const char *DemoVersionDescription(int version)
 
 void G_DoPlayDemo()
 {
-	skill_t skill;
+	SkillType skill;
 	int i, lumpnum, episode, map;
 	int demoversion;
 	bool olddemo = false;
@@ -2897,7 +2898,7 @@ void G_DoPlayDemo()
 	else if (demoversion != G_VanillaVersionCode() &&
 				!(gameversion <= GameVersion_t::exe_doom_1_2 && olddemo))
 	{
-		const char *message = "Demo is from a different game version!\n"
+		const char* message = "Demo is from a different game version!\n"
 								"(read %i, should be %i)\n"
 								"\n"
 								"*** You may need to upgrade your version "
@@ -2978,7 +2979,7 @@ void G_DoPlayDemo()
 	// [crispy] demo progress bar
 	{
 	int i, numplayersingame = 0;
-	byte *demo_ptr = demo_p;
+	byte* demo_ptr = demo_p;
 
 	for (i = 0; i < MAXPLAYERS; i++)
 	{
@@ -3032,7 +3033,7 @@ void G_TimeDemo(char* name)
 
 bool G_CheckDemoStatus()
 {
-	int				endtime;
+	TimeType endtime;
 
 	// [crispy] catch the last cmd to track joins
 	ticcmd_t* cmd = last_cmd;
@@ -3041,7 +3042,7 @@ bool G_CheckDemoStatus()
 	if (timingdemo)
 	{
 		float fps;
-		int realtics;
+		TimeType realtics;
 
 	endtime = I_GetTime();
 		realtics = endtime - starttime;

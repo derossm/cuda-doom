@@ -21,30 +21,29 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-static const iwad_t iwads[] =
-{
-	{ "doom2.wad",		GameMission_t::doom2,		GameMode_t::commercial,		"Doom II" },
-	{ "plutonia.wad",	GameMission_t::pack_plut,	GameMode_t::commercial,		"Final Doom: Plutonia Experiment" },
-	{ "tnt.wad",		GameMission_t::pack_tnt,	GameMode_t::commercial,		"Final Doom: TNT: Evilution" },
-	{ "doom.wad",		GameMission_t::doom,		GameMode_t::retail,			"Doom" },
-	{ "doom1.wad",		GameMission_t::doom,		GameMode_t::shareware,		"Doom Shareware" },
-	{ "chex.wad",		GameMission_t::pack_chex,	GameMode_t::retail,			"Chex Quest" },
-	{ "hacx.wad",		GameMission_t::pack_hacx,	GameMode_t::commercial,		"Hacx" },
-	{ "freedoom2.wad",	GameMission_t::doom2,		GameMode_t::commercial,		"Freedoom: Phase 2" },
-	{ "freedoom1.wad",	GameMission_t::doom,		GameMode_t::retail,			"Freedoom: Phase 1" },
-	{ "freedm.wad",		GameMission_t::doom2,		GameMode_t::commercial,		"FreeDM" },
-	{ "heretic.wad",	GameMission_t::heretic,		GameMode_t::retail,			"Heretic" },
-	{ "heretic1.wad",	GameMission_t::heretic,		GameMode_t::shareware,		"Heretic Shareware" },
-	{ "hexen.wad",		GameMission_t::hexen,		GameMode_t::commercial,		"Hexen" },
-	//{ "strife0.wad",	GameMission_t::strife,		GameMode_t::commercial,		"Strife" }, // haleyjd: STRIFE-FIXME
-	{ "strife1.wad",	GameMission_t::strife,		GameMode_t::commercial,		"Strife" },
+static const iwad_t iwads[]{
+	{ std::string("doom2.wad"),		GameMission_t::doom2,		GameMode::commercial,		std::string("Doom II") },
+	{ std::string("plutonia.wad"),	GameMission_t::pack_plut,	GameMode::commercial,		std::string("Final Doom: Plutonia Experiment") },
+	{ std::string("tnt.wad"),		GameMission_t::pack_tnt,	GameMode::commercial,		std::string("Final Doom: TNT: Evilution") },
+	{ std::string("doom.wad"),		GameMission_t::doom,		GameMode::retail,			std::string("Doom") },
+	{ std::string("doom1.wad"),		GameMission_t::doom,		GameMode::shareware,		std::string("Doom Shareware") },
+	{ std::string("chex.wad"),		GameMission_t::pack_chex,	GameMode::retail,			std::string("Chex Quest") },
+	{ std::string("hacx.wad"),		GameMission_t::pack_hacx,	GameMode::commercial,		std::string("Hacx") },
+	{ std::string("freedoom2.wad"),	GameMission_t::doom2,		GameMode::commercial,		std::string("Freedoom: Phase 2") },
+	{ std::string("freedoom1.wad"),	GameMission_t::doom,		GameMode::retail,			std::string("Freedoom: Phase 1") },
+	{ std::string("freedm.wad"),	GameMission_t::doom2,		GameMode::commercial,		std::string("FreeDM") },
+	{ std::string("heretic.wad"),	GameMission_t::heretic,		GameMode::retail,			std::string("Heretic") },
+	{ std::string("heretic1.wad"),	GameMission_t::heretic,		GameMode::shareware,		std::string("Heretic Shareware") },
+	{ std::string("hexen.wad"),		GameMission_t::hexen,		GameMode::commercial,		std::string("Hexen") },
+	//{ std::string("strife0.wad"),	GameMission_t::strife,		GameMode::commercial,		std::string("Strife") }, // haleyjd: STRIFE-FIXME
+	{ std::string("strife1.wad"),	GameMission_t::strife,		GameMode::commercial,		std::string("Strife") }
 };
 
-auto D_IsIWADName(const char* name)
+bool D_IsIWADName(std::string& name)
 {
 	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
-		if (!strcasecmp(name, iwads[i].name))
+		if (!strcasecmp(name.c_str(), iwads[i].name))
 		{
 			return true;
 		}
@@ -53,142 +52,125 @@ auto D_IsIWADName(const char* name)
 	return false;
 }
 
-// Array of locations to search for IWAD files; "128 IWAD search directories should be enough for anybody".
-//constexpr size_t MAX_IWAD_DIRS{128};
-
 static bool iwad_dirs_built{false};
-std::vector<std::unique_ptr<const char*>> iwad_dirs;
-//static int num_iwad_dirs{0};
+std::vector<std::string> iwad_dirs;
 
-void AddIWADDir(std::unique_ptr<const char*>&& directory)
+void AddIWADDir(std::string&& directory)
 {
-	//if (num_iwad_dirs < MAX_IWAD_DIRS)
-	//{
-		iwad_dirs.push_back(directory);
-		//++num_iwad_dirs;
-	//}
+	iwad_dirs.emplace_back(directory);
 }
 
-// This is Windows-specific code that automatically finds the location
-// of installed IWAD files. The registry is inspected to find special
-// keys installed by the Windows installers for various CD versions
-// of Doom. From these keys we can deduce where to find an IWAD.
-
+// This is Windows-specific code that automatically finds the location of installed IWAD files. The registry is inspected to find special
+// keys installed by the Windows installers for various CD versions of Doom. From these keys we can deduce where to find an IWAD.
 #if defined(_WIN32) && !defined(_WIN32_WCE)
-
 #define UNINSTALLER_STRING "\\uninstl.exe /S "
 
 // Keys installed by the various CD editions. These are actually the commands to invoke the uninstaller and look like this:
 //		C:\Program Files\Path\uninstl.exe /S C:\Program Files\Path
 // With some munging we can find where Doom was installed.
 
-// [AlexMax] From the persepctive of a 64-bit executable, 32-bit registry keys are located in a different spot.
+// From the persepctive of a 64-bit executable, 32-bit registry keys are located in a different spot.
 #if _WIN64
 #define SOFTWARE_KEY "Software\\Wow6432Node"
 #else
 #define SOFTWARE_KEY "Software"
 #endif
 
-static registry_value_t uninstall_values[] =
-{
+static registry_value_t uninstall_values[]{
 	// Ultimate Doom, CD version (Depths of Doom trilogy)
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Ultimate Doom for Windows 95",
-		"UninstallString",
+		"UninstallString"
 	},
 
 	// Doom II, CD version (Depths of Doom trilogy)
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Doom II for Windows 95",
-		"UninstallString",
+		"UninstallString"
 	},
 
 	// Final Doom
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Final Doom for Windows 95",
-		"UninstallString",
+		"UninstallString"
 	},
 
 	// Shareware version
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Doom Shareware for Windows 95",
-		"UninstallString",
-	},
+		"UninstallString"
+	}
 };
 
 // Values installed by the GOG.com and Collector's Edition versions
-static registry_value_t root_path_keys[] =
-{
+static registry_value_t root_path_keys[]{
 	// Doom Collector's Edition
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\Activision\\DOOM Collector's Edition\\v1.0",
-		"INSTALLPATH",
+		"INSTALLPATH"
 	},
 
 	// Doom II
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\GOG.com\\Games\\1435848814",
-		"PATH",
+		"PATH"
 	},
 
 	// Doom 3: BFG Edition
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\GOG.com\\Games\\1135892318",
-		"PATH",
+		"PATH"
 	},
 
 	// Final Doom
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\GOG.com\\Games\\1435848742",
-		"PATH",
+		"PATH"
 	},
 
 	// Ultimate Doom
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\GOG.com\\Games\\1435827232",
-		"PATH",
+		"PATH"
 	},
 
 	// Strife: Veteran Edition
 	{
 		HKEY_LOCAL_MACHINE,
 		SOFTWARE_KEY "\\GOG.com\\Games\\1432899949",
-		"PATH",
-	},
+		"PATH"
+	}
 };
 
 // Subdirectories of the above install path, where IWADs are installed.
-static const char* root_path_subdirs[] =
-{
+static const char* root_path_subdirs[]{
 	".",
 	"Doom2",
 	"Final Doom",
 	"Ultimate Doom",
 	"Plutonia",
 	"TNT",
-	"base\\wads",
+	"base\\wads"
 };
 
 // Location where Steam is installed
-static registry_value_t steam_install_location =
-{
+static registry_value_t steam_install_location{
 	HKEY_LOCAL_MACHINE,
 	SOFTWARE_KEY "\\Valve\\Steam",
-	"InstallPath",
+	"InstallPath"
 };
 
 // Subdirs of the steam install directory where IWADs are found
-static const char* steam_install_subdirs[] =
-{
+static const char* steam_install_subdirs[]{
 	"steamapps\\common\\doom 2\\base",
 	"steamapps\\common\\final doom\\base",
 	"steamapps\\common\\ultimate doom\\base",
@@ -200,12 +182,12 @@ static const char* steam_install_subdirs[] =
 	"steamapps\\common\\DOOM 3 BFG Edition\\base\\wads",
 
 	// From Strife: Veteran Edition:
-	"steamapps\\common\\Strife",
+	"steamapps\\common\\Strife"
 };
 
 #define STEAM_BFG_GUS_PATCHES "steamapps\\common\\DOOM 3 BFG Edition\\base\\classicmusic\\instruments"
 
-auto GetRegistryString(registry_value_t* reg_val)
+std::string GetRegistryString(registry_value_t* reg_val)
 {
 	HKEY key;
 
@@ -213,10 +195,10 @@ auto GetRegistryString(registry_value_t* reg_val)
 	// RegOpenKeyEx(HKEY, LPCSTR, DWORD, REGSAM, PHKEY)
 	if (RegOpenKeyEx(reg_val->root, reg_val->path, 0, KEY_READ, &key) != ERROR_SUCCESS)
 	{
-		return std::unique_ptr<const char*>(nullptr);
+		return std::string{};
 	}
 
-	std::unique_ptr<const char*> result{nullptr};
+	std::string result;
 
 	// Find the type and length of the string, and only accept strings.
 	if (DWORD len, valtype; RegQueryValueEx(key, reg_val->value, nullptr, &valtype, nullptr, &len) == ERROR_SUCCESS && valtype == REG_SZ)
@@ -234,8 +216,7 @@ auto GetRegistryString(registry_value_t* reg_val)
 			t_result[len] = '\0';
 		}
 
-		// science forbid we should use a std::string TODO use std::string eventually
-		result = std::make_unique<const char*>(std::move(t_result));
+		result = std::string(t_result.get());
 	}
 
 	// Close the key
@@ -251,22 +232,20 @@ void CheckUninstallStrings()
 	{
 		auto val{GetRegistryString(&uninstall_values[i])};
 
-		if (val == nullptr || *val == '\0')
+		if (!val || *val == '\0')
 		{
 			continue;
 		}
 
 		auto unstr{strstr(*val, UNINSTALLER_STRING)};
 
-		if (unstr == nullptr || *unstr == NULL)
+		if (!unstr || *unstr == NULL)
 		{
 			val.reset();
 		}
 		else
 		{
-			auto path{unstr + strlen(UNINSTALLER_STRING)};
-
-			AddIWADDir(std::make_unique<const char*>(path));
+			AddIWADDir(std::string(unstr + UNINSTALLER_STRING));
 		}
 	}
 }
@@ -278,15 +257,14 @@ void CheckInstallRootPaths()
 	{
 		auto install_path{GetRegistryString(&root_path_keys[i])};
 
-		if (install_path == nullptr)
+		if (!install_path)
 		{
 			continue;
 		}
 
 		for (size_t j{0}; j < arrlen(root_path_subdirs); ++j)
 		{
-			auto subpath{M_StringJoin(*install_path, DIR_SEPARATOR_S, root_path_subdirs[j])};
-			AddIWADDir(std::move(subpath));
+			AddIWADDir(std::string(*install_path + DIR_SEPARATOR_S + root_path_subdirs[j]));
 		}
 	}
 }
@@ -296,16 +274,14 @@ void CheckSteamEdition()
 {
 	auto install_path{GetRegistryString(&steam_install_location)};
 
-	if (install_path == nullptr)
+	if (!install_path)
 	{
 		return;
 	}
 
 	for (size_t i{0}; i < arrlen(steam_install_subdirs); ++i)
 	{
-		auto subpath{M_StringJoin(*install_path, DIR_SEPARATOR_S, steam_install_subdirs[i])};
-
-		AddIWADDir(std::move(subpath));
+		AddIWADDir(std::string(*install_path + DIR_SEPARATOR_S + steam_install_subdirs[i]));
 	}
 }
 
@@ -314,18 +290,18 @@ void CheckSteamGUSPatches()
 {
 	// Already configured? Don't stomp on the user's choices.
 	auto current_path{M_GetStringVariable("gus_patch_path")};
-	if (current_path != nullptr && strlen(current_path) > 0)
+	if (current_path && strlen(current_path) > 0)
 	{
 		return;
 	}
 
 	auto install_path{GetRegistryString(&steam_install_location)};
-	if (install_path == nullptr)
+	if (!install_path)
 	{
 		return;
 	}
 
-	auto patch_path{M_StringJoin(*install_path, "\\", STEAM_BFG_GUS_PATCHES)};
+	auto patch_path{std::string(*install_path + DIR_SEPARATOR_S + STEAM_BFG_GUS_PATCHES)};
 	auto test_patch_path{M_StringJoin(*patch_path, "\\ACBASS.PAT")};
 
 	// Does acbass.pat exist? If so, then set gus_patch_path.
@@ -339,37 +315,37 @@ void CheckSteamGUSPatches()
 void CheckDOSDefaults()
 {
 	// These are the default install directories used by the deice installer program:
-	AddIWADDir("\\doom2");				// Doom II
-	AddIWADDir("\\plutonia");			// Final Doom
-	AddIWADDir("\\tnt");
-	AddIWADDir("\\doom_se");			// Ultimate Doom
-	AddIWADDir("\\doom");				// Shareware / Registered Doom
-	AddIWADDir("\\dooms");				// Shareware versions
-	AddIWADDir("\\doomsw");
+	AddIWADDir(std::string("\\doom2"));				// Doom II
+	AddIWADDir(std::string("\\plutonia"));			// Final Doom
+	AddIWADDir(std::string("\\tnt"));
+	AddIWADDir(std::string("\\doom_se"));			// Ultimate Doom
+	AddIWADDir(std::string("\\doom"));				// Shareware / Registered Doom
+	AddIWADDir(std::string("\\dooms"));				// Shareware versions
+	AddIWADDir(std::string("\\doomsw"));
 
-	AddIWADDir("\\heretic");			// Heretic
-	AddIWADDir("\\hrtic_se");			// Heretic Shareware from Quake disc
+	AddIWADDir(std::string("\\heretic"));			// Heretic
+	AddIWADDir(std::string("\\hrtic_se"));			// Heretic Shareware from Quake disc
 
-	AddIWADDir("\\hexen");				// Hexen
-	AddIWADDir("\\hexendk");			// Hexen Deathkings of the Dark Citadel
+	AddIWADDir(std::string("\\hexen"));				// Hexen
+	AddIWADDir(std::string("\\hexendk"));			// Hexen Deathkings of the Dark Citadel
 
-	AddIWADDir("\\strife");				// Strife
+	AddIWADDir(std::string("\\strife"));			// Strife
 }
 
 #endif // defined(_WIN32) && !defined(_WIN32_WCE)
 
 // Returns true if the specified path is a path to a file of the specified name.
-auto DirIsFile(const char* path, const char* filename)
+bool DirIsFile(std::string& path, std::string& filename)
 {
 	return strchr(path, DIR_SEPARATOR) != NULL && !strcasecmp(M_BaseName(path), filename);
 }
 
 // Check if the specified directory contains the specified IWAD file, returning the full path to the IWAD if found, or NULL if not found.
-auto CheckDirectoryHasIWAD(const char* directory, const char* iwadname)
+std::string CheckDirectoryHasIWAD(std::string& directory, std::string& iwadname)
 {
 	// As a special case, the "directory" may refer directly to an IWAD file if the path comes from DOOMWADDIR or DOOMWADPATH.
 	auto probe{M_FileCaseExists(directory)};
-	if (DirIsFile(directory, iwadname) && probe != nullptr)
+	if (DirIsFile(directory, iwadname) && probe)
 	{
 		return probe;
 	}
@@ -378,27 +354,27 @@ auto CheckDirectoryHasIWAD(const char* directory, const char* iwadname)
 	auto filename{[&](){
 		if (!strcmp(directory, "."))
 		{
-			return M_StringDuplicate(iwadname);
+			return std::string(iwadname);
 		}
 		else
 		{
-			return M_StringJoin(directory, DIR_SEPARATOR_S, iwadname);
+			return std::string(directory + DIR_SEPARATOR_S + iwadname);
 		}
 	}()};
 
 	probe.reset();
 	probe = M_FileCaseExists(*filename);
 
-	if (probe != nullptr && *probe != '\0')
+	if (probe && *probe != '\0')
 	{
 		return probe;
 	}
 
-	return std::unique_ptr<const char*>(nullptr);
+	return std::string{};
 }
 
 // Search a directory to try to find an IWAD; returns the location of the IWAD if found, otherwise nullptr
-auto SearchDirectoryForIWAD(const char* directory, int mask, GameMission_t* mission)
+std::string SearchDirectoryForIWAD(std::string& directory, int mask, GameMission_t* mission)
 {
 	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
@@ -409,7 +385,7 @@ auto SearchDirectoryForIWAD(const char* directory, int mask, GameMission_t* miss
 
 		auto filename{CheckDirectoryHasIWAD(directory, DEH_String(iwads[i].name))};
 
-		if (filename != nullptr)
+		if (filename)
 		{
 			*mission = iwads[i].mission;
 
@@ -417,11 +393,11 @@ auto SearchDirectoryForIWAD(const char* directory, int mask, GameMission_t* miss
 		}
 	}
 
-	return nullptr;
+	return std::string{};
 }
 
 // When given an IWAD with the '-iwad' parameter, attempt to identify it by its name.
-auto IdentifyIWADByName(const char* name, int mask)
+auto IdentifyIWADByName(std::string& name, int mask)
 {
 	name = M_BaseName(name);
 	auto mission = GameMission_t::none;
@@ -449,31 +425,26 @@ auto IdentifyIWADByName(const char* name, int mask)
 
 // Add IWAD directories parsed from splitting a path string containing paths separated by PATH_SEPARATOR.
 // 'suffix' is a string to concatenate to the end of the paths before adding them.
-void AddIWADPath(const char* path, const char* suffix)
+void AddIWADPath(std::string&& path)
 {
-	auto dup_path{M_StringDuplicate(path)};
-
-	// Split into individual dirs within the list.
-	auto left{*dup_path};
-
-	for (;;)
-	{
-		auto p{strchr(left, PATH_SEPARATOR)};
-		if (p != nullptr)
-		{
+	//for (;;)
+	//{
+		//auto p{strchr(left, PATH_SEPARATOR)};
+		//if (p)
+		//{
 			// Break at the separator and use the left hand side as another iwad directory
-			// TODO what is this trying to do? modify a const char* for what purpose? INVESTIGATE
+			// TODO what is this trying to do? modify a std::string for what purpose? INVESTIGATE
 			//*p = '\0';
-			AddIWADDir(M_StringJoin(left, suffix));
-			left = p + 1;
-		}
-		else
-		{
-			break;
-		}
-	}
+			//AddIWADDir(M_StringJoin(left, suffix));
+			//left = p + 1;
+		//}
+		//else
+		//{
+			//break;
+		//}
+	//}
 
-	AddIWADDir(M_StringJoin(left, suffix));
+	AddIWADDir(path);
 }
 
 #ifndef _WIN32
@@ -486,29 +457,30 @@ void AddXdgDirs()
 	// $XDG_DATA_HOME defines the base directory relative to which user specific data files should be stored.
 	// If $XDG_DATA_HOME is either not set or empty, a default equal to $HOME/.local/share should be used.
 	//auto env{getenv("XDG_DATA_HOME")};
-	auto env{std::make_unique<const char*>(getenv("XDG_DATA_HOME"))};
+	auto env{getenv("XDG_DATA_HOME")};
+	std::string tstr;
 
-	if (env == nullptr || *env == '\0')
+	if (!env || *env == '\0')
 	{
-		const char* homedir{getenv("HOME")};
-		if (homedir == nullptr || *homedir == '\0')
+		auto homedir{getenv("HOME")};
+		if (!homedir || *homedir == '\0')
 		{
 			homedir = "/";
 		}
 
-		auto tmp_env{M_StringJoin(homedir, "/.local/share")};
-		env = std::make_unique<const char*>(std::move(tmp_env));
+		tstr = std::string(homedir + "/.local/share");
+		env = tstr.c_str();
 	}
 
 	// We support $XDG_DATA_HOME/games/doom (which will usually be ~/.local/share/games/doom)
 	// as a user-writeable extension to the usual /usr/share/games/doom location.
-	AddIWADDir(M_StringJoin(*env, "/games/doom"));
+	AddIWADDir(std::string(env + "/games/doom"));
 
 	// $XDG_DATA_DIRS defines the preference-ordered set of base directories to search for data files, in addition to the $XDG_DATA_HOME base directory.
 	// The directories in $XDG_DATA_DIRS should be seperated with a colon ':'.
 	// If $XDG_DATA_DIRS is either not set or empty, a value equal to /usr/local/share/:/usr/share/ should be used.
-	env = std::make_unique<const char*>(getenv("XDG_DATA_DIRS"));
-	if (env == nullptr || *env == '\0')
+	env = getenv("XDG_DATA_DIRS");
+	if (!env || *env == '\0')
 	{
 		// (Trailing / omitted from paths, as it is added below)
 		env = "/usr/local/share:/usr/share";
@@ -516,11 +488,11 @@ void AddXdgDirs()
 
 	// The "standard" location for IWADs on Unix that is supported by most source ports is /usr/share/games/doom 
 	// we support this through the XDG_DATA_DIRS mechanism, through which it can be overridden.
-	AddIWADPath(*env, "/games/doom");
-	AddIWADPath(*env, "/doom");
+	AddIWADPath(std::string(env + "/games/doom"));
+	AddIWADPath(std::string(env + "/doom"));
 
 	// The convention set by RBDOOM-3-BFG is to install Doom 3: BFG Edition into this directory, under which includes the Doom Classic WADs.
-	AddIWADPath(*env, "/games/doom3bfg/base/wads");
+	AddIWADPath(std::string(env + "/games/doom3bfg/base/wads"));
 }
 
 #ifndef __MACOSX__
@@ -529,21 +501,20 @@ void AddXdgDirs()
 void AddSteamDirs()
 {
 	auto homedir{getenv("HOME")};
-	if (homedir == NULL)
+	if (!homedir || *homedir == '\0')
 	{
 		homedir = "/";
 	}
-	auto steampath{M_StringJoin(homedir, "/.steam/root/steamapps/common")};
 
-	AddIWADPath(*steampath, "/Doom 2/base");
-	AddIWADPath(*steampath, "/Master Levels of Doom/doom2");
-	AddIWADPath(*steampath, "/Ultimate Doom/base");
-	AddIWADPath(*steampath, "/Final Doom/base");
-	AddIWADPath(*steampath, "/DOOM 3 BFG Edition/base/wads");
-	AddIWADPath(*steampath, "/Heretic Shadow of the Serpent Riders/base");
-	AddIWADPath(*steampath, "/Hexen/base");
-	AddIWADPath(*steampath, "/Hexen Deathkings of the Dark Citadel/base");
-	AddIWADPath(*steampath, "/Strife");
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Doom 2/base"));
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Master Levels of Doom/doom2"));
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Ultimate Doom/base"));
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Final Doom/base"));
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/DOOM 3 BFG Edition/base/wads"));
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Heretic Shadow of the Serpent Riders/base"));
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Hexen/base"));
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Hexen Deathkings of the Dark Citadel/base"));
+	AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Strife"));
 }
 #endif // __MACOSX__
 #endif // !_WIN32
@@ -557,23 +528,23 @@ void BuildIWADDirList()
 	}
 
 	// Look in the current directory. Doom always does this.
-	AddIWADDir(".");
+	AddIWADDir(std::string("."));
 
 	// Next check the directory where the executable is located. This might be different from the current directory.
 	AddIWADDir(M_DirName(myargv[0]));
 
 	// Add DOOMWADDIR if it is in the environment
-	char* env = getenv("DOOMWADDIR");
-	if (env != nullptr)
+	auto env{getenv("DOOMWADDIR")};
+	if (env)
 	{
-		AddIWADDir(env);
+		AddIWADDir(std::string(env));
 	}
 
 	// Add dirs from DOOMWADPATH:
 	env = getenv("DOOMWADPATH");
-	if (env != nullptr)
+	if (env)
 	{
-		AddIWADPath(env, "");
+		AddIWADPath(std::string(env));
 	}
 
 #ifdef _WIN32
@@ -597,11 +568,11 @@ void BuildIWADDirList()
 }
 
 // Searches WAD search paths for an WAD with a specific filename.
-auto D_FindWADByName(const char* name)
+std::string D_FindWADByName(std::string name)
 {
 	// Absolute path?
 	auto probe{M_FileCaseExists(name)};
-	if (probe != nullptr)
+	if (probe)
 	{
 		return probe;
 	}
@@ -613,17 +584,17 @@ auto D_FindWADByName(const char* name)
 	for (auto& iter: iwad_dirs)
 	{
 		// As a special case, if this is in DOOMWADDIR or DOOMWADPATH, the "directory" may actually refer directly to an IWAD file.
-		probe = M_FileCaseExists(*iter);
-		if (DirIsFile(*iter, name) && probe != nullptr)
+		probe = M_FileCaseExists(iter);
+		if (DirIsFile(iter, name) && probe)
 		{
 			return probe;
 		}
 
 		// Construct a string for the full path
-		auto path{M_StringJoin(*iter, DIR_SEPARATOR_S, name)};
+		auto path{std::string(iter + DIR_SEPARATOR_S + name))};
 
 		probe = M_FileCaseExists(*path);
-		if (probe != nullptr)
+		if (probe)
 		{
 			return probe;
 		}
@@ -634,11 +605,11 @@ auto D_FindWADByName(const char* name)
 }
 
 // Searches for a WAD by its filename, or returns a copy of the filename if not found.
-auto D_TryFindWADByName(const char* filename)
+std::string D_TryFindWADByName(std::string filename)
 {
 	auto result{D_FindWADByName(filename)};
 
-	if (result == nullptr || *result == '\0')
+	if (!result || *result == '\0')
 	{
 		result = M_StringDuplicate(filename);
 	}
@@ -647,36 +618,36 @@ auto D_TryFindWADByName(const char* filename)
 }
 
 // Checks availability of IWAD files by name, to determine whether registered/commercial features should be executed (notably loading PWADs).
-auto D_FindIWAD(int mask, GameMission_t* /*OUT*/ mission)
+std::string D_FindIWAD(int mask, GameMission_t* /*OUT*/ mission)
 {
-	std::unique_ptr<const char*> result;
+	std::string result;
 
 	// Check for the -iwad parameter
 	if (size_t iwadparm{static_cast<size_t>(M_CheckParmWithArgs("-iwad", 1))}; iwadparm)
 	{
 		// Search through IWAD dirs for an IWAD with the given name.
-		const char* iwadfile = myargv[iwadparm + 1];
+		std::string iwadfile{myargv[iwadparm + 1]};
 
 		result = D_FindWADByName(iwadfile);
 
-		if (result == nullptr)
+		if (!result)
 		{
 			I_Error("IWAD file '%s' not found!", iwadfile);
 		}
 
-		*mission = IdentifyIWADByName(*result, mask);
+		*mission = IdentifyIWADByName(result, mask);
 	}
 	else
 	{
 		// Search through the list and look for an IWAD
-		result = nullptr;
-
 		BuildIWADDirList();
 
 		//for (size_t i{0}; result == nullptr && i < num_iwad_dirs; ++i)
 		for (auto& iter : iwad_dirs)
 		{
-			if ((result = SearchDirectoryForIWAD(*iter, mask, mission)) != nullptr)
+			// FIXME
+			result = SearchDirectoryForIWAD(iter, mask, mission);
+			if (result != std::string{})
 			{
 				break;
 			}
@@ -703,7 +674,7 @@ const iwad_t** D_FindAllIWADs(int mask)
 
 		auto filename{D_FindWADByName(iwads[i].name)};
 
-		if (filename != nullptr && *filename != '\0')
+		if (filename && *filename != '\0')
 		{
 			result[result_len] = &iwads[i];
 			++result_len;
@@ -717,7 +688,7 @@ const iwad_t** D_FindAllIWADs(int mask)
 }
 
 // Get the IWAD name used for savegames.
-auto D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant)
+const char* D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant)
 {
 	// Determine the IWAD name to use for savegames. This determines the directory the savegame files get put into.
 	// Note that we match on gamemission rather than on IWAD name. This ensures that doom1.wad and doom.wad saves are stored in the same place.
@@ -749,7 +720,7 @@ auto D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant)
 	return (const char*)"unknown.wad";
 }
 
-auto D_SuggestIWADName(GameMission_t mission, GameMode_t mode)
+const char* D_SuggestIWADName(GameMission_t mission, GameMode mode)
 {
 	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
@@ -762,11 +733,11 @@ auto D_SuggestIWADName(GameMission_t mission, GameMode_t mode)
 	return (const char*)"unknown.wad";
 }
 
-auto D_SuggestGameName(GameMission_t mission, GameMode_t mode)
+const char* D_SuggestGameName(GameMission_t mission, GameMode mode)
 {
 	for (size_t i{0}; i < arrlen(iwads); ++i)
 	{
-		if (iwads[i].mission == mission	&& (mode == GameMode_t::indetermined || iwads[i].mode == mode))
+		if (iwads[i].mission == mission	&& (mode == GameMode::indetermined || iwads[i].mode == mode))
 		{
 			return iwads[i].description;
 		}

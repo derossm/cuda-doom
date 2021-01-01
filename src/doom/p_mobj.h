@@ -15,8 +15,8 @@
 
 #include "../../derma/common.h"
 
-#ifndef __P_MOBJ__
-#define __P_MOBJ__
+// We need the WAD data structure for Map things, from the THINGS lump.
+#include "doomdata.h"
 
 // Basics.
 #include "tables.h"
@@ -25,13 +25,10 @@
 // We need the thinker_t stuff.
 #include "d_think.h"
 
-// We need the WAD data structure for Map things, from the THINGS lump.
-#include "doomdata.h"
-
 // States are tied to finite states are tied to animation frames. Needs precompiled tables/data structures.
 #include "info.h"
 
-// NOTES: mobj_t
+// NOTES: MapObject
 //
 // mobj_ts are used to tell the refresh where to draw an image,
 // tell the world simulation when objects are contacted,
@@ -54,23 +51,23 @@
 // it is standing on.
 //
 // The sound code uses the x,y, and subsector fields
-// to do stereo positioning of any sound effited by the mobj_t.
+// to do stereo positioning of any sound effited by the MapObject.
 //
 // The play simulation uses the blocklinks, x,y,z, radius, height
 // to determine when mobj_ts are touching each other,
 // touching lines in the map, or hit by trace lines (gunshots,
 // lines of sight, etc).
-// The mobj_t->flags element has various bit flags
+// The MapObject->flags element has various bit flags
 // used by the simulation.
 //
-// Every mobj_t is linked into a single sector
+// Every MapObject is linked into a single sector
 // based on its origin coordinates.
 // The subsector_t is found with R_PointInSubsector(x,y),
 // and the sector_t can be found with subsector->sector.
 // The sector links are only used by the rendering code,
 // the play simulation does not care about them at all.
 //
-// Any mobj_t that needs to be acted upon by something else
+// Any MapObject that needs to be acted upon by something else
 // in the play world (block movement, be shot, etc) will also
 // need to be linked into the blockmap.
 // If the thing has the MF_NOBLOCK flag set, it will not use
@@ -79,9 +76,9 @@
 // things, but nothing can run into a missile).
 // Each block in the grid is 128*128 units, and knows about
 // every line_t that it contains a piece of, and every
-// interactable mobj_t that has its origin contained.
+// interactable MapObject that has its origin contained.
 //
-// A valid mobj_t is a mobj_t that has the proper subsector_t
+// A valid MapObject is a MapObject that has the proper subsector_t
 // filled in for its xy coordinates and is linked into the
 // sector from which the subsector was made, or has the
 // MF_NOSECTOR flag set (the subsector_t needs to be valid
@@ -187,36 +184,60 @@ enum class mobjflag_t
 	MF_TRANSLUCENT		= 0x80000000
 };
 
-struct mobj_t;
 struct subsector_t;
-struct player_t;
+class Player;
 
 // Map Object definition.
-struct mobj_t
+class MapObject
 {
-	// List: thinker links.
-	thinker_t thinker;
-
-	// Info for drawing: position.
-	fixed_t x;
-	fixed_t y;
-	fixed_t z;
-
+public:
 	// More list: links in sector (if needed)
-	mobj_t* snext;
-	mobj_t* sprev;
+	MapObject* sectorNext;
+	MapObject* sectorPrev;
 
-	//More drawing info: to determine current sprite.
-	angle_t angle;		// orientation
-	spritenum_t sprite;	// used to find patch_t and flip value
-	int frame;			// might be ORed with FF_FULLBRIGHT
+	// Interaction info, by BLOCKMAP. Links in blocks (if needed).
+	MapObject* blockNext;
+	MapObject* blockPrev;
 
-	// Interaction info, by BLOCKMAP.
-	// Links in blocks (if needed).
-	mobj_t* bnext;
-	mobj_t* bprev;
+	// Thing being chased/attacked (or NULL), also the originator for missiles.
+	MapObject* target;
+
+	// Thing being chased/attacked for tracers.
+	MapObject* tracer;
+
+	mobjinfo_t* info;	// &mobjinfo[mobj->type]
 
 	subsector_t* subsector;
+
+	state_t* state;
+
+	int frame;			// might be ORed with FF_FULLBRIGHT
+
+	// If == validcount, already checked.
+	int validcount;
+
+	int health;
+
+	// Movement direction, movement generation (zig-zagging).
+	int movedir;		// 0-7
+	int movecount;		// when 0, select a new dir
+
+	// If >0, the target will be chased no matter what (even if shot)
+	int threshold;
+
+	// Additional info record for player avatars only. Only valid if type == mobjtype_t::MT_PLAYER
+	//Player* player;
+
+	// Player number last looked for.
+	int lastlook;
+
+	// If true, ok to interpolate this tic.
+	int interp;
+
+	// Previous position of mobj before think. Used to interpolate between positions.
+	fixed_t oldx;
+	fixed_t oldy;
+	fixed_t oldz;
 
 	// The closest interval over all contacted Sectors.
 	fixed_t floorz;
@@ -231,55 +252,29 @@ struct mobj_t
 	fixed_t momy;
 	fixed_t momz;
 
-	// If == validcount, already checked.
-	int validcount;
+	// Info for drawing: position.
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
+
+	//More drawing info: to determine current sprite.
+	angle_t angle;			// orientation
+
+	angle_t oldangle;
+
+	TimeType tics;			// state tic counter
+	// Reaction time: if non 0, don't attack yet. Used by player to freeze a bit after teleporting.
+	TimeType reactiontime;
 
 	mobjtype_t type;
-	mobjinfo_t* info;	// &mobjinfo[mobj->type]
 
-	int tics;			// state tic counter
-	state_t* state;
+	spritenum_t sprite;		// used to find patch_t and flip value
+
 	mobjflag_t flags;
-	int health;
 
-	// Movement direction, movement generation (zig-zagging).
-	int movedir;		// 0-7
-	int movecount;		// when 0, select a new dir
-
-	// Thing being chased/attacked (or NULL),
-	// also the originator for missiles.
-	mobj_t* target;
-
-	// Reaction time: if non 0, don't attack yet.
-	// Used by player to freeze a bit after teleporting.
-	int reactiontime;
-
-	// If >0, the target will be chased
-	// no matter what (even if shot)
-	int threshold;
-
-	// Additional info record for player avatars only.
-	// Only valid if type == mobjtype_t::MT_PLAYER
-	player_t* player;
-
-	// Player number last looked for.
-	int lastlook;
+	// List: thinker links.
+	thinker_t thinker;
 
 	// For nightmare respawn.
 	mapthing_t spawnpoint;
-
-	// Thing being chased/attacked for tracers.
-	mobj_t* tracer;
-
-	// [AM] If true, ok to interpolate this tic.
-	int interp;
-
-	// [AM] Previous position of mobj before think.
-	// Used to interpolate between positions.
-	fixed_t oldx;
-	fixed_t oldy;
-	fixed_t oldz;
-	angle_t oldangle;
 };
-
-#endif

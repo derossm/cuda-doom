@@ -44,7 +44,7 @@ int clipammo[NUMAMMO] = {10, 4, 20, 1};
 
 // Num is the number of clip loads, not the individual count (0= 1/2 clip).
 // Returns false if the ammo can't be picked up at all.
-bool P_GiveAmmo(player_t* player, AmmoType_t ammo, int num, bool dropped ) // [NS] Dropped ammo/weapons give half as much.
+bool P_GiveAmmo(Player* player, AmmoType_t ammo, int num, bool dropped ) // [NS] Dropped ammo/weapons give half as much.
 {
 	int oldammo;
 
@@ -72,7 +72,7 @@ bool P_GiveAmmo(player_t* player, AmmoType_t ammo, int num, bool dropped ) // [N
 		num = clipammo[ammo]/2;
 	}
 
-	if (gameskill == skill_t::sk_baby || gameskill == skill_t::sk_nightmare)
+	if (gameskill == SkillType::sk_baby || gameskill == SkillType::sk_nightmare)
 	{
 		// give double ammo in trainer mode, you'll need in nightmare
 		num <<= 1;
@@ -158,7 +158,7 @@ bool P_GiveAmmo(player_t* player, AmmoType_t ammo, int num, bool dropped ) // [N
 }
 
 // [crispy] show weapon pickup messages in multiplayer games
-const char *const WeaponPickupMessages[NUMWEAPONS] =
+const char* const WeaponPickupMessages[NUMWEAPONS] =
 {
 	NULL, // wp_fist
 	NULL, // wp_pistol
@@ -172,7 +172,7 @@ const char *const WeaponPickupMessages[NUMWEAPONS] =
 };
 
 // The weapon name may have a MF_DROPPED flag ored in.
-bool P_GiveWeapon(player_t* player, WeaponType_t weapon, bool dropped)
+bool P_GiveWeapon(Player* player, WeaponType_t weapon, bool dropped)
 {
 	bool	gaveammo;
 	bool	gaveweapon;
@@ -235,7 +235,7 @@ bool P_GiveWeapon(player_t* player, WeaponType_t weapon, bool dropped)
 }
 
 // Returns false if the body isn't needed at all
-bool P_GiveBody(player_t* player, int num)
+bool P_GiveBody(Player* player, int num)
 {
 	if (player->health >= MAXHEALTH)
 	{
@@ -256,7 +256,7 @@ bool P_GiveBody(player_t* player, int num)
 }
 
 // Returns false if the armor is worse than the current armor.
-bool P_GiveArmor(player_t* player, int armortype)
+bool P_GiveArmor(Player* player, int armortype)
 {
 	int hits;
 
@@ -272,7 +272,7 @@ bool P_GiveArmor(player_t* player, int armortype)
 	return true;
 }
 
-void P_GiveCard(player_t* player, CardType_t card)
+void P_GiveCard(Player* player, CardType_t card)
 {
 	if (player->cards[card])
 	{
@@ -283,7 +283,7 @@ void P_GiveCard(player_t* player, CardType_t card)
 	player->cards[card] = 1;
 }
 
-bool P_GivePower(player_t* player, int /*PowerType_t*/ power)
+bool P_GivePower(Player* player, int /*PowerType_t*/ power)
 {
 	if (power == PowerType_t::pw_invulnerability)
 	{
@@ -326,9 +326,9 @@ bool P_GivePower(player_t* player, int /*PowerType_t*/ power)
 	return true;
 }
 
-void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
+void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 {
-	player_t*	player;
+	Player*	player;
 	int		i;
 	fixed_t	delta;
 	int		sound;
@@ -413,7 +413,7 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 			break;
 
 		case SPR_MEGA:
-			if (gamemode != GameMode_t::commercial)
+			if (gamemode != GameMode::commercial)
 			{
 				return;
 			}
@@ -786,10 +786,10 @@ void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher)
 //
 // KillMobj
 //
-void P_KillMobj( mobj_t* source, mobj_t* target)
+void P_KillMobj( MapObject* source, MapObject* target)
 {
 	mobjtype_t	item;
-	mobj_t*	mo;
+	MapObject*	mo;
 
 	target->flags &= ~(MF_SHOOTABLE|MF_FLOAT|MF_SKULLFLY);
 
@@ -909,11 +909,11 @@ void P_KillMobj( mobj_t* source, mobj_t* target)
 // Source and inflictor are the same for melee attacks.
 // Source can be NULL for slime, barrel explosions
 // and other environmental stuff.
-void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
+void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, int damage)
 {
 	unsigned	ang;
 	int		saved;
-	player_t*	player;
+	Player*	player;
 	fixed_t	thrust;
 	int		temp;
 
@@ -933,7 +933,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 	}
 
 	player = target->player;
-	if (player && gameskill == skill_t::sk_baby)
+	if (player && gameskill == SkillType::sk_baby)
 	{
 		damage >>= 1;	// take half damage in trainer mode
 	}

@@ -12,14 +12,11 @@
 
 #include "../../derma/common.h"
 
-#ifndef __F_FINALE__
-#define __F_FINALE__
-
 #include "doomtype.h"
 #include "d_event.h"
 
 // Called by main loop.
-bool F_Responder(event_t* ev);
+bool F_Responder(EventType* ev);
 
 // Called by main loop.
 void F_Ticker();
@@ -28,5 +25,3 @@ void F_Ticker();
 void F_Drawer();
 
 void F_StartFinale();
-
-#endif

@@ -31,21 +31,18 @@
 #define DEFAULT_RAM 16*2 /* MiB [crispy] */
 #define MIN_RAM		4*4 /* MiB [crispy] */
 
-
-typedef struct atexit_listentry_s atexit_listentry_t;
-
-struct atexit_listentry_s
+struct atexit_listentry_t
 {
 	atexit_func_t func;
 	bool run_on_error;
-	atexit_listentry_t *next;
+	atexit_listentry_t* next;
 };
 
-static atexit_listentry_t *exit_funcs = NULL;
+static atexit_listentry_t* exit_funcs = NULL;
 
 void I_AtExit(atexit_func_t func, bool run_on_error)
 {
-	atexit_listentry_t *entry;
+	atexit_listentry_t* entry;
 
 	entry = static_cast<decltype(entry)>(malloc(sizeof(*entry)));
 
@@ -65,9 +62,9 @@ void I_Tactile(int on, int off, int total)
 // by trying progressively smaller zone sizes until one is found that
 // works.
 
-static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
+static byte* AutoAllocMemory(int *size, int default_ram, int min_ram)
 {
-	byte *zonemem;
+	byte* zonemem;
 
 	// Allocate the zone memory. This loop tries progressively smaller
 	// zone sizes until a size is found that can be allocated.
@@ -147,7 +144,7 @@ byte* I_ZoneBase(int* size)
 	return zonemem;
 }
 
-void I_PrintBanner(const char *msg)
+void I_PrintBanner(const char* msg)
 {
 	int i;
 	int spaces = 35 - (strlen(msg) / 2);
@@ -170,7 +167,7 @@ void I_PrintDivider()
 	putchar('\n');
 }
 
-void I_PrintStartupBanner(const char *gamedescription)
+void I_PrintStartupBanner(const char* gamedescription)
 {
 	I_PrintDivider();
 	I_PrintBanner(gamedescription);
@@ -225,7 +222,7 @@ void I_BindVariables()
 
 void I_Quit ()
 {
-	atexit_listentry_t *entry;
+	atexit_listentry_t* entry;
 
 	// Run through all exit functions
 
@@ -250,11 +247,11 @@ void I_Quit ()
 
 static bool already_quitting = false;
 
-void I_Error(const char *error, ...)
+void I_Error(const char* error, ...)
 {
 	char msgbuf[512];
 	va_list argptr;
-	atexit_listentry_t *entry;
+	atexit_listentry_t* entry;
 	bool exit_gui_popup;
 
 	if (already_quitting)
@@ -323,9 +320,9 @@ void I_Error(const char *error, ...)
 // I_Realloc
 //
 
-void *I_Realloc(void *ptr, size_t size)
+void* I_Realloc(void* ptr, size_t size)
 {
-	void *new_ptr;
+	void* new_ptr;
 
 	new_ptr = realloc(ptr, size);
 
@@ -365,9 +362,9 @@ static const unsigned char mem_dump_dosbox[DOS_MEM_DUMP_SIZE] = {
  0x00, 0x00, 0x00, 0xF1, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00};
 static unsigned char mem_dump_custom[DOS_MEM_DUMP_SIZE];
 
-static const unsigned char *dos_mem_dump = mem_dump_dos622;
+static const unsigned char* dos_mem_dump = mem_dump_dos622;
 
-bool I_GetMemoryValue(unsigned int offset, void *value, int size)
+bool I_GetMemoryValue(unsigned offset, void* value, int size)
 {
 	static bool firsttime = true;
 
@@ -426,14 +423,14 @@ bool I_GetMemoryValue(unsigned int offset, void *value, int size)
 	switch (size)
 	{
 	case 1:
-		*((unsigned char *) value) = dos_mem_dump[offset];
+		*((unsigned char*) value) = dos_mem_dump[offset];
 		return true;
 	case 2:
-		*((unsigned short *) value) = dos_mem_dump[offset]
+		*((unsigned short*) value) = dos_mem_dump[offset]
 									| (dos_mem_dump[offset + 1] << 8);
 		return true;
 	case 4:
-		*((unsigned int *) value) = dos_mem_dump[offset]
+		*((unsigned*) value) = dos_mem_dump[offset]
 									| (dos_mem_dump[offset + 1] << 8)
 									| (dos_mem_dump[offset + 2] << 16)
 									| (dos_mem_dump[offset + 3] << 24);

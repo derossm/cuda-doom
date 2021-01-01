@@ -13,12 +13,9 @@
 
 	AES implementation taken from Linux kernel's AES implementation, found in crypto/aes_generic.c. It has been hacked to work independently.
 \**********************************************************************************************************************************************/
-
 /**********************************************************************************************************************************************\
  * Cryptographic API.
- *
  * AES Cipher Algorithm.
- *
  * Based on Brian Gladman's code.
  *
  * Linux developers:
@@ -27,39 +24,25 @@
  * Kyle McMartin <kyle@debian.org>
  * Adam J. Richter <adam@yggdrasil.com> (conversion to 2.5 API).
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the 
+ * Free Software Foundation; either version 2 of the License, or (at your option) any later version.
  * ---------------------------------------------------------------------------
  * Copyright (c) 2002, Dr Brian Gladman <brg@gladman.me.uk>, Worcester, UK.
  * All rights reserved.
  *
  * LICENSE TERMS
+ *	The free distribution and use of this software in both source and binary form is allowed (with or without changes) provided that:
+ *	1. distributions of this source code include the above copyright notice, this list of conditions and the following disclaimer;
+ *	2. distributions in binary form include the above copyright notice, this list of conditions and the following disclaimer in the
+ *		documentation and/or other associated materials;
+ *	3. the copyright holder's name is not used to endorse products built using this software without specific written permission.
  *
- * The free distribution and use of this software in both source and binary
- * form is allowed (with or without changes) provided that:
- *
- *	1. distributions of this source code include the above copyright
- *		notice, this list of conditions and the following disclaimer;
- *
- *	2. distributions in binary form include the above copyright
- *		notice, this list of conditions and the following disclaimer
- *		in the documentation and/or other associated materials;
- *
- *	3. the copyright holder's name is not used to endorse products
- *		built using this software without specific written permission.
- *
- * ALTERNATIVELY, provided that this notice is retained in full, this product
- * may be distributed under the terms of the GNU General Public License (GPL),
- * in which case the provisions of the GPL apply INSTEAD OF those given above.
+ * ALTERNATIVELY, provided that this notice is retained in full, this product may be distributed under the terms of the
+ *	GNU General Public License (GPL), in which case the provisions of the GPL apply INSTEAD OF those given above.
  *
  * DISCLAIMER
- *
- * This software is provided 'as is' with no explicit or implied warranties
- * in respect of its properties, including, but not limited to, correctness
- * and/or fitness for purpose.
+ *	This software is provided 'as is' with no explicit or implied warranties in respect of its properties, including, but not limited to,
+ *	correctness and/or fitness for purpose.
 \**********************************************************************************************************************************************/
 
 #include "aes_prng.h"
@@ -90,12 +73,12 @@ static inline uint8_t get_byte(const uint32_t x, const unsigned n)
 }
 
 // initialize the key schedule from the user supplied key
-static inline uint32_t aes_ror32(uint32_t word, unsigned shift)
+static inline uint32_t aes_ror32(const uint32_t word, const unsigned shift)
 {
 	return (word >> shift) | (word << (32 - shift));
 }
 
-static inline uint32_t star_x(uint32_t word)
+static inline uint32_t star_x(const uint32_t word)
 {
 	return ((word & 0x7f7f7f7f) << 1) ^ (((word & 0x80808080) >> 7) * 0x1b);
 }
@@ -169,16 +152,13 @@ static inline uint32_t star_x(uint32_t word)
  * @ctx:	The location where the computed key will be stored.
  * @in_key:		The supplied key.
  * @key_len:	The length of the supplied key.
- *
- * Returns 0 on success. The function fails only if an invalid key size (or
- * pointer) is supplied.
- * The expanded key size is 240 bytes (max of 14 rounds with a unique 16 bytes
- * key schedule plus a 16 bytes key which is used before the first round).
- * The decryption key is prepared for the "Equivalent Inverse Cipher" as
- * described in FIPS-197. The first slot (16 bytes) of each key (enc or dec) is
- * for the initial combination, the second slot for the first round and so on.
+ 
+	Returns 0 on success. The function fails only if an invalid key size (or pointer) is supplied. The expanded key size is 240 bytes (max of 14
+	rounds with a unique 16 bytes key schedule plus a 16 bytes key which is used before the first round). The decryption key is prepared for the
+	"Equivalent Inverse Cipher" as described in FIPS-197. The first slot (16 bytes) of each key (enc or dec) is for the initial combination, the
+	second slot for the first round and so on.
  */
-static int AES_ExpandKey(aes_context_t& ctx, const uint8_t* in_key, unsigned key_len)
+static int AES_ExpandKey(aes_context_t& ctx, const uint8_t* in_key, const unsigned key_len)
 {
 	const uint32_t* key{(const uint32_t*)in_key};
 
@@ -261,20 +241,11 @@ static int AES_ExpandKey(aes_context_t& ctx, const uint8_t* in_key, unsigned key
  * @ctx:		AES context struct.
  * @in_key:		The input key.
  * @key_len:	The size of the key.
- *
- * Returns 0 on success, on failure -1 is returned.
- * The function uses AES_ExpandKey() to expand the key.
+ 
+ 	Returns 0 on success, on failure -1 is returned. The function uses AES_ExpandKey() to expand the key.
  */
-static int AES_SetKey(aes_context_t& ctx, const uint8_t* in_key, unsigned key_len)
+static int AES_SetKey(aes_context_t& ctx, const uint8_t* in_key, const unsigned key_len)
 {
-	// int ret;
-
-	// ret = AES_ExpandKey(ctx, in_key, key_len);
-	// if (!ret)
-	// 	return 0;
-
-	// return -1;
-
 	return AES_ExpandKey(ctx, in_key, key_len);
 }
 
@@ -295,7 +266,7 @@ static void AES_Encrypt(aes_context_t& ctx, uint8_t* out, const uint8_t* in)
 	uint32_t b1[4];
 	
 	/* encrypt a block of text */
-	auto f_rn = [] (auto& bo, auto& bi, auto n, auto& k)
+	auto f_rn = [](auto& bo, auto& bi, auto n, auto& k)
 	{
 		bo[n] = crypto_ft_tab[0][get_byte(bi[n], 0)]
 			^crypto_ft_tab[1][get_byte(bi[(n + 1) & 3], 1)]
@@ -304,7 +275,7 @@ static void AES_Encrypt(aes_context_t& ctx, uint8_t* out, const uint8_t* in)
 			^ *(k + n);
 	};
 
-	auto f_nround = [&f_rn] (auto& bo, auto& bi, auto& k)
+	auto f_nround = [&f_rn](auto& bo, auto& bi, auto& k)
 	{
 		f_rn(bo, bi, 0, k);
 		f_rn(bo, bi, 1, k);
@@ -415,7 +386,7 @@ static void PRNG_Generate()
 }
 
 // Read a random 32-bit integer from the PRNG.
-unsigned int PRNG_Random()
+unsigned PRNG_Random()
 {
 	if (!prng_enabled)
 	{

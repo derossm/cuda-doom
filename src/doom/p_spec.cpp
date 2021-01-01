@@ -50,7 +50,7 @@
 // Animating textures and planes
 // There is another anim_t used in wi_stuff, unrelated.
 //
-typedef struct
+struct anim_t
 {
 	bool	istexture;
 	int		picnum;
@@ -58,20 +58,20 @@ typedef struct
 	int		numpics;
 	int		speed;
 
-} anim_t;
+};
 
 //
 //		source animation definition
 //
 // [crispy] change istexture type from int to char and
 // add PACKEDATTR for reading ANIMATED lumps from memory
-typedef PACKED_STRUCT (
+struct animdef_t
 {
 	signed char	istexture;	// if false, it is a flat
 	char	endname[9];
 	char	startname[9];
 	int		speed;
-}) animdef_t;
+};
 
 
 
@@ -150,7 +150,7 @@ void P_InitPicAnims ()
 	bool init_swirl = false;
 
 	// [crispy] add support for ANIMATED lumps
-	animdef_t *animdefs;
+	animdef_t* animdefs;
 	const bool from_lump = (W_CheckNumForName("ANIMATED") != -1);
 
 	if (from_lump)
@@ -166,7 +166,7 @@ void P_InitPicAnims ()
 	lastanim = anims;
 	for (i=0 ; animdefs[i].istexture != -1 ; i++)
 	{
-		const char *startname, *endname;
+		const char* startname, *endname;
 
 	// [crispy] remove MAXANIMS limit
 	if (lastanim >= anims + maxanims)
@@ -277,7 +277,7 @@ int twoSided(int sector, int line)
 
 //
 // getNextSector()
-// Return sector_t * of sector next to current.
+// Return sector_t* of sector next to current.
 // NULL if not two-sided line
 //
 sector_t* getNextSector(line_t* line, sector_t* sec)
@@ -324,7 +324,7 @@ fixed_t	P_FindLowestFloorSurrounding(sector_t* sec)
 // P_FindHighestFloorSurrounding()
 // FIND HIGHEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
-fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
+fixed_t	P_FindHighestFloorSurrounding(sector_t* sec)
 {
 	int			i;
 	line_t*		check;
@@ -365,7 +365,7 @@ fixed_t P_FindNextHighestFloor(sector_t* sec, int currentheight)
 	line_t*		check;
 	sector_t*	other;
 	fixed_t		height = currentheight;
-	static fixed_t *heightlist = NULL;
+	static fixed_t* heightlist = NULL;
 	static int heightlist_size = 0;
 
 	// [crispy] remove MAX_ADJOINING_SECTORS Vanilla limit
@@ -554,13 +554,13 @@ int P_FindMinSurroundingLight(sector_t* sector, int max)
 // Called every time a thing origin is about
 // to cross a line with a non 0 special.
 //
-void P_CrossSpecialLine(int linenum, int side, mobj_t* thing)
+void P_CrossSpecialLine(int linenum, int side, MapObject* thing)
 {
 	return P_CrossSpecialLinePtr(&lines[linenum], side, thing);
 }
 
 // [crispy] more MBF code pointers
-void P_CrossSpecialLinePtr(line_t* line, int side, mobj_t* thing)
+void P_CrossSpecialLinePtr(line_t* line, int side, MapObject* thing)
 {
 // line_t*	line;
 	int		ok;
@@ -1035,7 +1035,7 @@ void P_CrossSpecialLinePtr(line_t* line, int side, mobj_t* thing)
 // P_ShootSpecialLine - IMPACT SPECIALS
 // Called when a thing shoots a special line.
 //
-void P_ShootSpecialLine(mobj_t* thing, line_t* line)
+void P_ShootSpecialLine(MapObject* thing, line_t* line)
 {
 	int		ok;
 
@@ -1083,7 +1083,7 @@ void P_ShootSpecialLine(mobj_t* thing, line_t* line)
 // Called every tic frame
 // that the player origin is in a special sector
 //
-void P_PlayerInSpecialSector (player_t* player)
+void P_PlayerInSpecialSector (Player* player)
 {
 	sector_t*	sector;
 	extern int showMessages;
@@ -1297,8 +1297,8 @@ void R_InterpolateTextureOffsets ()
 
 		for (i = 0; i < numlinespecials; i++)
 		{
-			const line_t *const line = linespeciallist[i];
-			side_t *const side = &sides[line->sidenum[0]];
+			const line_t* const line = linespeciallist[i];
+			side_t* const side = &sides[line->sidenum[0]];
 
 			if (line->special == 48)
 			{
@@ -1323,7 +1323,7 @@ void R_InterpolateTextureOffsets ()
 #define DONUT_FLOORHEIGHT_DEFAULT 0x00000000
 #define DONUT_FLOORPIC_DEFAULT 0x16
 
-static void DonutOverrun(fixed_t *s3_floorheight, short *s3_floorpic, line_t *line, sector_t *pillar_sector)
+static void DonutOverrun(fixed_t* s3_floorheight, short *s3_floorpic, line_t* line, sector_t* pillar_sector)
 {
 	static int first = 1;
 	static int tmp_s3_floorheight;
@@ -1516,9 +1516,9 @@ int EV_DoDonut(line_t*	line)
 short		numlinespecials;
 line_t*		linespeciallist[MAXLINEANIMS];
 
-static unsigned int NumScrollers()
+static unsigned NumScrollers()
 {
-	unsigned int i, scrollers = 0;
+	unsigned i, scrollers = 0;
 
 	for (i = 0; i < numlines; i++)
 	{

@@ -17,18 +17,18 @@
 #include "w_file.h"
 #include "z_zone.h"
 
-typedef struct
+struct stdc_wad_file_t
 {
 	wad_file_t wad;
-	FILE *fstream;
-} stdc_wad_file_t;
+	FILE* fstream;
+};
 
 extern wad_file_class_t stdc_wad_file;
 
-static wad_file_t *W_StdC_OpenFile(const char *path)
+static wad_file_t* W_StdC_OpenFile(const char* path)
 {
-	stdc_wad_file_t *result;
-	FILE *fstream;
+	stdc_wad_file_t* result;
+	FILE* fstream;
 
 	fstream = fopen(path, "rb");
 
@@ -49,11 +49,11 @@ static wad_file_t *W_StdC_OpenFile(const char *path)
 	return &result->wad;
 }
 
-static void W_StdC_CloseFile(wad_file_t *wad)
+static void W_StdC_CloseFile(wad_file_t* wad)
 {
-	stdc_wad_file_t *stdc_wad;
+	stdc_wad_file_t* stdc_wad;
 
-	stdc_wad = (stdc_wad_file_t *) wad;
+	stdc_wad = (stdc_wad_file_t*) wad;
 
 	fclose(stdc_wad->fstream);
 	Z_Free(stdc_wad);
@@ -62,13 +62,13 @@ static void W_StdC_CloseFile(wad_file_t *wad)
 // Read data from the specified position in the file into the
 // provided buffer. Returns the number of bytes read.
 
-size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
-					void *buffer, size_t buffer_len)
+size_t W_StdC_Read(wad_file_t* wad, unsigned offset,
+					void* buffer, size_t buffer_len)
 {
-	stdc_wad_file_t *stdc_wad;
+	stdc_wad_file_t* stdc_wad;
 	size_t result;
 
-	stdc_wad = (stdc_wad_file_t *) wad;
+	stdc_wad = (stdc_wad_file_t*) wad;
 
 	// Jump to the specified position in the file.
 

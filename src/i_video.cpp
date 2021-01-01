@@ -9,7 +9,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	DOOM graphics stuff for SDL.
+		DOOM graphics stuff for SDL.
 \**********************************************************************************************************************************************/
 
 #include "SDL.h"
@@ -56,11 +56,11 @@ static const char* window_title = "";
 // is upscaled by an integer factor UPSCALE using "nearest" scaling and which
 // in turn is finally rendered to screen using "linear" scaling.
 #ifndef CRISPY_TRUECOLOR
-static SDL_Surface *screenbuffer = nullptr;
+static SDL_Surface* screenbuffer = nullptr;
 #endif
-static SDL_Surface *argbbuffer = nullptr;
-static SDL_Texture *texture = nullptr;
-static SDL_Texture *texture_upscaled = nullptr;
+static SDL_Surface* argbbuffer = nullptr;
+static SDL_Texture* texture = nullptr;
+static SDL_Texture* texture_upscaled = nullptr;
 
 #ifndef CRISPY_TRUECOLOR
 static SDL_Rect blit_rect = {
@@ -75,12 +75,12 @@ static uint32_t pixel_format;
 
 // palette
 #ifdef CRISPY_TRUECOLOR
-static SDL_Texture *curpane = nullptr;
-static SDL_Texture *redpane = nullptr;
-static SDL_Texture *yelpane = nullptr;
-static SDL_Texture *grnpane = nullptr;
+static SDL_Texture* curpane = nullptr;
+static SDL_Texture* redpane = nullptr;
+static SDL_Texture* yelpane = nullptr;
+static SDL_Texture* grnpane = nullptr;
 static int pane_alpha;
-static unsigned int rmask, gmask, bmask, amask; // [crispy] moved up here
+static unsigned rmask, gmask, bmask, amask; // [crispy] moved up here
 static const uint8_t blend_alpha = 0xa8;
 extern pixel_t* colormaps; // [crispy] evil hack to get FPS dots working as in Vanilla
 #else
@@ -141,7 +141,7 @@ static int grabmouse = true;
 static bool nograbmouse_override = false;
 
 // The screen buffer; this is modified to draw things to the screen
-pixel_t *I_VideoBuffer = nullptr;
+pixel_t* I_VideoBuffer = nullptr;
 
 // If true, game is running as a screensaver
 bool screensaver_mode = false;
@@ -165,14 +165,14 @@ static bool window_focused = true;
 
 // Window resize state.
 static bool need_resize = false;
-static unsigned int last_resize_time;
+static TimeType last_resize_time;
 #define RESIZE_DELAY 500
 
 // Gamma correction level to use
 int usegamma = 0;
 
 // Joystick/gamepad hysteresis
-unsigned int joywait = 0;
+unsigned joywait = 0;
 
 static bool MouseShouldBeGrabbed()
 {
@@ -208,7 +208,7 @@ static bool MouseShouldBeGrabbed()
 	}
 
 	// Invoke the grabmouse callback function to determine whether the mouse should be grabbed
-	if (grabmouse_callback != nullptr)
+	if (grabmouse_callback)
 	{
 		return grabmouse_callback();
 	}
@@ -349,7 +349,7 @@ static bool ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
 
 static void I_ToggleFullScreen()
 {
-	unsigned int flags = 0;
+	unsigned flags = 0;
 
 	// TODO: Consider implementing fullscreen toggle for SDL_WINDOW_FULLSCREEN
 	// (mode-changing) setup. This is hard because we have to shut down and restart again.
@@ -414,7 +414,7 @@ void I_GetEvent()
 				}
 				else
 				{
-					event_t event;
+					EventType event;
 					event.type = evtype_t::ev_quit;
 					D_PostEvent(&event);
 				}
@@ -535,7 +535,7 @@ static void LimitTextureSize(int *w_upscale, int *h_upscale)
 				max_scaling_buffer_pixels, SCREENWIDTH * SCREENHEIGHT);
 	}
 
-	while (*w_upscale * *h_upscale * SCREENWIDTH * SCREENHEIGHT > max_scaling_buffer_pixels)
+	while (*w_upscale **h_upscale * SCREENWIDTH * SCREENHEIGHT > max_scaling_buffer_pixels)
 	{
 		if (*w_upscale > *h_upscale)
 		{
@@ -622,7 +622,7 @@ static void CreateUpscaledTexture(bool force)
 	auto old_texture = texture_upscaled;
 	texture_upscaled = new_texture;
 
-	if (old_texture != nullptr)
+	if (old_texture)
 	{
 		SDL_DestroyTexture(old_texture);
 	}
@@ -680,7 +680,7 @@ void I_FinishUpdate()
 #endif
 
 	// draws little dots on the bottom of the screen
-	static int lasttic{0};
+	static TimeType lasttic{0};
 	if (display_fps_dots)
 	{
 		auto time = I_GetTime();
@@ -810,7 +810,7 @@ void I_SetGammaTable ()
 	// [crispy] 5 original gamma levels
 	for (auto i = 0; i < 5; ++i)
 	{
-		gamma2table[2*i] = (byte *)gammatable[i];
+		gamma2table[2*i] = (byte*)gammatable[i];
 	}
 
 	// [crispy] 4 intermediate gamma levels
@@ -826,7 +826,7 @@ void I_SetGammaTable ()
 }
 
 #ifndef CRISPY_TRUECOLOR
-void I_SetPalette (byte *doompalette)
+void I_SetPalette (byte* doompalette)
 {
 	// [crispy] intermediate gamma levels
 	if (!gamma2table)
@@ -920,15 +920,15 @@ void I_SetWindowTitle(const char* title)
 // Call the SDL function to set the window title, based on the title set with I_SetWindowTitle.
 void I_InitWindowTitle()
 {
-	auto buf = M_StringJoin(window_title, " - ", PACKAGE_STRING, NULL);
-	SDL_SetWindowTitle(screen, *buf);
+	auto buf = std::string(window_title + " - " + PACKAGE_STRING);
+	SDL_SetWindowTitle(screen, buf.c_str());
 	//free(buf);
 }
 
 // Set the application icon
 void I_InitWindowIcon()
 {
-	auto surface = SDL_CreateRGBSurfaceFrom((void *) icon_data, icon_w, icon_h,
+	auto surface = SDL_CreateRGBSurfaceFrom((void*) icon_data, icon_w, icon_h,
 										32, icon_w * 4, 0xff << 24, 0xff << 16, 0xff << 8, 0xff << 0);
 
 	SDL_SetWindowIcon(screen, surface);
@@ -1024,7 +1024,7 @@ void I_CheckIsScreensaver()
 {
 	auto env = getenv("XSCREENSAVER_WINDOW");
 
-	if (env != nullptr && *env != '\0')
+	if (env && *env != '\0')
 	{
 		screensaver_mode = true;
 	}
@@ -1035,8 +1035,8 @@ static void SetSDLVideoDriver()
 	// Allow a default value for the SDL video driver to be specified in the configuration file.
 	if (strcmp(video_driver, "") != 0)
 	{
-		auto env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver);
-		putenv(*env_string);
+		auto env_string = std::string("SDL_VIDEODRIVER=" + video_driver);
+		putenv(env_string.c_str());
 		//free(env_string);
 	}
 }
@@ -1091,7 +1091,7 @@ void I_GetWindowPosition(int *x, int *y, int w, int h)
 	{
 		// invalid format: revert to default
 		fprintf(stderr, "I_GetWindowPosition: invalid window_position setting\n");
-		*x = *y = SDL_WINDOWPOS_UNDEFINED;
+		*x =* y = SDL_WINDOWPOS_UNDEFINED;
 	}
 }
 
@@ -1100,10 +1100,10 @@ static void SetVideoMode()
 	int x;
 	int y;
 #ifndef CRISPY_TRUECOLOR
-	unsigned int rmask;
-	unsigned int gmask;
-	unsigned int bmask;
-	unsigned int amask;
+	unsigned rmask;
+	unsigned gmask;
+	unsigned bmask;
+	unsigned amask;
 #endif
 	int bpp;
 	int window_flags = 0;
@@ -1362,16 +1362,15 @@ void I_InitGraphics()
 #ifndef CRISPY_TRUECOLOR
 	byte* doompal;
 #endif
-	char* env;
 
 	// Pass through the XSCREENSAVER_WINDOW environment variable to
 	// SDL_WINDOWID, to embed the SDL window into the Xscreensaver window.
-	env = getenv("XSCREENSAVER_WINDOW");
+	char* env = getenv("XSCREENSAVER_WINDOW");
 
 	if (env != NULL)
 	{
 		char winenv[30];
-		unsigned int winid;
+		unsigned winid;
 
 		sscanf(env, "0x%x", &winid);
 		M_snprintf(winenv, sizeof(winenv), "SDL_WINDOWID=%u", winid);
@@ -1467,10 +1466,10 @@ void I_ReInitGraphics (int reinit)
 	// [crispy] re-set rendering resolution and re-create framebuffers
 	if (reinit & REINIT_FRAMEBUFFERS)
 	{
-		unsigned int rmask;
-		unsigned int gmask;
-		unsigned int bmask;
-		unsigned int amask;
+		unsigned rmask;
+		unsigned gmask;
+		unsigned bmask;
+		unsigned amask;
 		int unused_bpp;
 
 		I_GetScreenDimensions();
@@ -1576,7 +1575,7 @@ void I_RenderReadPixels(byte** data, int* w, int* h, int* p)
 	SDL_PixelFormat *format;
 	int temp;
 	uint32_t png_format;
-	byte *pixels;
+	byte* pixels;
 
 	// [crispy] adjust cropping rectangle if necessary
 	rect.x = 0;
@@ -1586,7 +1585,10 @@ void I_RenderReadPixels(byte** data, int* w, int* h, int* p)
 	{
 		if (integer_scaling)
 		{
-			int temp1, temp2, scale;
+			int temp1;
+			int temp2;
+			int scale;
+
 			temp1 = rect.w;
 			temp2 = rect.h;
 			scale = MIN(rect.w / SCREENWIDTH, rect.h / actualheight);

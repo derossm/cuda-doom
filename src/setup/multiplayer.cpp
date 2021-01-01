@@ -8,7 +8,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "doomtype.h"
 
 #include "textscreen.h"
@@ -36,11 +35,11 @@
 #define NUM_WADS 10
 #define NUM_EXTRA_PARAMS 10
 
-typedef enum
+enum class warptype_t
 {
 	WARP_ExMy,
 	WARP_MAPxy,
-} warptype_t;
+};
 
 // Fallback IWADs to use if no IWADs are detected.
 
@@ -53,8 +52,8 @@ static const iwad_t fallback_iwads[] = {
 
 // Array of IWADs found to be installed
 
-static const iwad_t **found_iwads;
-static const char **iwad_labels;
+static const iwad_t**found_iwads;
+static const char** iwad_labels;
 
 // Index of the currently selected IWAD
 
@@ -62,63 +61,63 @@ static int found_iwad_selected = -1;
 
 // Filename to pass to '-iwad'.
 
-static const char *iwadfile;
+static const char* iwadfile;
 
-static const char *wad_extensions[] = { "wad", "lmp", "deh", NULL };
+static const char* wad_extensions[] = { "wad", "lmp", "deh", NULL };
 
-static const char *doom_skills[] =
+static const char* doom_skills[] =
 {
 	"I'm too young to die.", "Hey, not too rough.", "Hurt me plenty.",
 	"Ultra-Violence.", "NIGHTMARE!",
 };
 
-static const char *chex_skills[] =
+static const char* chex_skills[] =
 {
 	"Easy does it", "Not so sticky", "Gobs of goo", "Extreme ooze",
 	"SUPER SLIMEY!"
 };
 
-static const char *heretic_skills[] =
+static const char* heretic_skills[] =
 {
 	"Thou needeth a wet-nurse", "Yellowbellies-R-us", "Bringest them oneth",
 	"Thou art a smite-meister", "Black plague possesses thee"
 };
 
-static const char *hexen_fighter_skills[] =
+static const char* hexen_fighter_skills[] =
 {
 	"Squire", "Knight", "Warrior", "Berserker", "Titan"
 };
 
-static const char *hexen_cleric_skills[] =
+static const char* hexen_cleric_skills[] =
 {
 	"Altar boy", "Acolyte", "Priest", "Cardinal", "Pope"
 };
 
-static const char *hexen_mage_skills[] =
+static const char* hexen_mage_skills[] =
 {
 	"Apprentice", "Enchanter", "Sorceror", "Warlock", "Archimage"
 };
 
-static const char *strife_skills[] =
+static const char* strife_skills[] =
 {
 	"Training", "Rookie", "Veteran", "Elite", "Bloodbath"
 };
 
-static const char *character_classes[] = { "Fighter", "Cleric", "Mage" };
+static const char* character_classes[] = { "Fighter", "Cleric", "Mage" };
 
-static const char *gamemodes[] = { "Co-operative", "Deathmatch", "Deathmatch 2.0", "Deathmatch 3.0" };
+static const char* gamemodes[] = { "Co-operative", "Deathmatch", "Deathmatch 2.0", "Deathmatch 3.0" };
 
-static const char *strife_gamemodes[] =
+static const char* strife_gamemodes[] =
 {
 	"Normal deathmatch",
 	"Items respawn", // (altdeath)
 };
 
-static char *net_player_name;
-static char *chat_macros[10];
+static char* net_player_name;
+static char* chat_macros[10];
 
-static char *wads[NUM_WADS];
-static char *extra_params[NUM_EXTRA_PARAMS];
+static char* wads[NUM_WADS];
+static char* extra_params[NUM_EXTRA_PARAMS];
 static int character_class = 0;
 static int skill = 2;
 static int nomonsters = 0;
@@ -127,37 +126,37 @@ static int strife_altdeath = 0;
 static int fast = 0;
 static int respawn = 0;
 static int udpport = 2342;
-static int timer = 0;
+static TimeType timer = 0;
 static int privateserver = 0;
 
-static cudadoom::txt::txt_dropdown_list_t *skillbutton;
-static cudadoom::txt::txt_button_t *warpbutton;
+static cudadoom::txt::txt_dropdown_list_t* skillbutton;
+static cudadoom::txt::Button* warpbutton;
 static warptype_t warptype = WARP_MAPxy;
 static int warpepisode = 1;
 static int warpmap = 1;
 
 // Address to connect to when joining a game
 
-static char *connect_address = NULL;
+static char* connect_address = NULL;
 
-static cudadoom::txt::txt_window_t *query_window;
+static cudadoom::txt::Window* query_window;
 static int query_servers_found;
 
 // Find an IWAD from its description
 
-static const iwad_t *GetCurrentIWAD()
+static const iwad_t* GetCurrentIWAD()
 {
 	return found_iwads[found_iwad_selected];
 }
 
 // Is the currently selected IWAD the Chex Quest chex.wad?
 
-static bool IsChexQuest(const iwad_t *iwad)
+static bool IsChexQuest(const iwad_t* iwad)
 {
 	return !strcmp(iwad->name, "chex.wad");
 }
 
-static void AddWADs(execute_context_t *exec)
+static void AddWADs(execute_context_t* exec)
 {
 	int have_wads = 0;
 	int i;
@@ -176,7 +175,7 @@ static void AddWADs(execute_context_t *exec)
 	}
 }
 
-static void AddExtraParameters(execute_context_t *exec)
+static void AddExtraParameters(execute_context_t* exec)
 {
 	int i;
 
@@ -189,7 +188,7 @@ static void AddExtraParameters(execute_context_t *exec)
 	}
 }
 
-static void AddIWADParameter(execute_context_t *exec)
+static void AddIWADParameter(execute_context_t* exec)
 {
 	if (iwadfile != NULL)
 	{
@@ -203,7 +202,7 @@ static void AddIWADParameter(execute_context_t *exec)
 
 static void StartGame(int multiplayer)
 {
-	execute_context_t *exec;
+	execute_context_t* exec;
 
 	exec = NewExecuteContext();
 
@@ -316,7 +315,7 @@ static void UpdateWarpButton()
 
 static void UpdateSkillButton()
 {
-	const iwad_t *iwad = GetCurrentIWAD();
+	const iwad_t* iwad = GetCurrentIWAD();
 
 	if (IsChexQuest(iwad))
 	{
@@ -354,7 +353,7 @@ static void UpdateSkillButton()
 	}
 }
 
-static void SetExMyWarp(cudadoom::txt::TXT_UNCAST_ARG(widget), void *val)
+static void SetExMyWarp(cudadoom::txt::TXT_UNCAST_ARG(widget), void* val)
 {
 	int l;
 
@@ -366,7 +365,7 @@ static void SetExMyWarp(cudadoom::txt::TXT_UNCAST_ARG(widget), void *val)
 	UpdateWarpButton();
 }
 
-static void SetMAPxyWarp(cudadoom::txt::TXT_UNCAST_ARG(widget), void *val)
+static void SetMAPxyWarp(cudadoom::txt::TXT_UNCAST_ARG(widget), void* val)
 {
 	int l;
 
@@ -379,16 +378,16 @@ static void SetMAPxyWarp(cudadoom::txt::TXT_UNCAST_ARG(widget), void *val)
 
 static void CloseLevelSelectDialog(cudadoom::txt::TXT_UNCAST_ARG(button), cudadoom::txt::TXT_UNCAST_ARG(window))
 {
-	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_window_t, window);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::Window, window);
 
 	cudadoom::txt::TXT_CloseWindow(window);
 }
 
 static void LevelSelectDialog(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(user_data))
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_button_t *button;
-	const iwad_t *iwad;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::Button* button;
+	const iwad_t* iwad;
 	char buf[10];
 	int episodes;
 	intptr_t x;
@@ -425,7 +424,7 @@ static void LevelSelectDialog(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::t
 							" E%" PRIiPTR "M%" PRIiPTR " ", x, y);
 				button = cudadoom::txt::TXT_NewButton(buf);
 				cudadoom::txt::TXT_SignalConnect(button, "pressed",
-									SetExMyWarp, (void *) (x * 10 + y));
+									SetExMyWarp, (void*) (x * 10 + y));
 				cudadoom::txt::TXT_SignalConnect(button, "pressed",
 									CloseLevelSelectDialog, window);
 				cudadoom::txt::TXT_AddWidget(window, button);
@@ -457,7 +456,7 @@ static void LevelSelectDialog(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::t
 			M_snprintf(buf, sizeof(buf), " MAP%02" PRIiPTR " ", l);
 			button = cudadoom::txt::TXT_NewButton(buf);
 			cudadoom::txt::TXT_SignalConnect(button, "pressed",
-								SetMAPxyWarp, (void *) l);
+								SetMAPxyWarp, (void*) l);
 			cudadoom::txt::TXT_SignalConnect(button, "pressed",
 								CloseLevelSelectDialog, window);
 			cudadoom::txt::TXT_AddWidget(window, button);
@@ -472,7 +471,7 @@ static void LevelSelectDialog(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::t
 
 static void IWADSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
-	const iwad_t *iwad;
+	const iwad_t* iwad;
 
 	// Find the iwad_t selected
 
@@ -488,7 +487,7 @@ static void IWADSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::T
 static void UpdateWarpType(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
 	warptype_t new_warptype;
-	const iwad_t *iwad;
+	const iwad_t* iwad;
 
 	// Get the selected IWAD
 
@@ -522,10 +521,10 @@ static void UpdateWarpType(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt:
 // Get an IWAD list with a default fallback IWAD that is appropriate
 // for the game we are configuring (matches gamemission global variable).
 
-static const iwad_t **GetFallbackIwadList()
+static const iwad_t**GetFallbackIwadList()
 {
-	static const iwad_t *fallback_iwad_list[2];
-	unsigned int i;
+	static const iwad_t* fallback_iwad_list[2];
+	unsigned i;
 
 	// Default to use if we don't find something better.
 
@@ -546,10 +545,10 @@ static const iwad_t **GetFallbackIwadList()
 
 static cudadoom::txt::Widget *IWADSelector()
 {
-	cudadoom::txt::txt_dropdown_list_t *dropdown;
+	cudadoom::txt::txt_dropdown_list_t* dropdown;
 	cudadoom::txt::Widget *result;
 	int num_iwads;
-	unsigned int i;
+	unsigned i;
 
 	// Find out what WADs are installed
 
@@ -586,7 +585,7 @@ static cudadoom::txt::Widget *IWADSelector()
 	{
 		// We have only one IWAD. Show as a label.
 
-		result = (cudadoom::txt::Widget *) cudadoom::txt::TXT_NewLabel(found_iwads[0]->description);
+		result = (cudadoom::txt::Widget*) cudadoom::txt::TXT_NewLabel(found_iwads[0]->description);
 	}
 	else
 	{
@@ -596,7 +595,7 @@ static cudadoom::txt::Widget *IWADSelector()
 
 		cudadoom::txt::TXT_SignalConnect(dropdown, "changed", IWADSelected, NULL);
 
-		result = (cudadoom::txt::Widget *) dropdown;
+		result = (cudadoom::txt::Widget*) dropdown;
 	}
 
 	// The first time the dialog is opened, found_iwad_selected=-1,
@@ -617,9 +616,9 @@ static cudadoom::txt::Widget *IWADSelector()
 // a different callback depending on whether to start a multiplayer
 // or single player game.
 
-static cudadoom::txt::txt_window_action_t *StartGameAction(int multiplayer)
+static cudadoom::txt::WindowAction* StartGameAction(int multiplayer)
 {
-	cudadoom::txt::txt_window_action_t *action;
+	cudadoom::txt::WindowAction* action;
 	cudadoom::txt::WidgetSignalFunc callback;
 
 	action = cudadoom::txt::TXT_NewWindowAction(KEY_F10, "Start");
@@ -640,7 +639,7 @@ static cudadoom::txt::txt_window_action_t *StartGameAction(int multiplayer)
 
 static void OpenWadsWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(user_data))
 {
-	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::Window* window;
 	int i;
 
 	window = cudadoom::txt::TXT_NewWindow("Add WADs");
@@ -653,7 +652,7 @@ static void OpenWadsWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt:
 
 static void OpenExtraParamsWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(user_data))
 {
-	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::Window* window;
 	int i;
 
 	window = cudadoom::txt::TXT_NewWindow("Extra command line parameters");
@@ -664,9 +663,9 @@ static void OpenExtraParamsWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoo
 	}
 }
 
-static cudadoom::txt::txt_window_action_t *WadWindowAction()
+static cudadoom::txt::WindowAction* WadWindowAction()
 {
-	cudadoom::txt::txt_window_action_t *action;
+	cudadoom::txt::WindowAction* action;
 
 	action = cudadoom::txt::TXT_NewWindowAction('w', "Add WADs");
 	cudadoom::txt::TXT_SignalConnect(action, "pressed", OpenWadsWindow, NULL);
@@ -674,7 +673,7 @@ static cudadoom::txt::txt_window_action_t *WadWindowAction()
 	return action;
 }
 
-static cudadoom::txt::txt_dropdown_list_t *GameTypeDropdown()
+static cudadoom::txt::txt_dropdown_list_t* GameTypeDropdown()
 {
 	switch (gamemission)
 	{
@@ -701,9 +700,9 @@ static cudadoom::txt::txt_dropdown_list_t *GameTypeDropdown()
 // and the single player warp menu. The parameters specify
 // the window title and whether to display multiplayer options.
 
-static void StartGameMenu(const char *window_title, int multiplayer)
+static void StartGameMenu(const char* window_title, int multiplayer)
 {
-	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::Window* window;
 	cudadoom::txt::Widget *iwad_selector;
 
 	window = cudadoom::txt::TXT_NewWindow(window_title);
@@ -726,7 +725,7 @@ static void StartGameMenu(const char *window_title, int multiplayer)
 
 	if (gamemission == hexen)
 	{
-		cudadoom::txt::txt_dropdown_list_t *cc_dropdown;
+		cudadoom::txt::txt_dropdown_list_t* cc_dropdown;
 		cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewLabel("Character class "), cc_dropdown = cudadoom::txt::TXT_NewDropdownList(&character_class, character_classes, 3), NULL);
 
 		// Update skill level dropdown when the character class is changed:
@@ -747,7 +746,7 @@ static void StartGameMenu(const char *window_title, int multiplayer)
 				cudadoom::txt::TXT_NewLabel("Game type"),
 				GameTypeDropdown(),
 				cudadoom::txt::TXT_NewLabel("Time limit"),
-				cudadoom::txt::TXT_NewHorizBox(cudadoom::txt::TXT_NewIntInputBox(&timer, 2),
+				cudadoom::txt::TXT_MakeHorizontalTable(cudadoom::txt::TXT_NewIntInputBox(&timer, 2),
 								cudadoom::txt::TXT_NewLabel("minutes"),
 								NULL),
 				NULL);
@@ -777,19 +776,19 @@ static void StartGameMenu(const char *window_title, int multiplayer)
 	UpdateWarpButton();
 }
 
-void StartMultiGame(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void StartMultiGame(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
 	StartGameMenu("Start multiplayer game", 1);
 }
 
-void WarpMenu(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void WarpMenu(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
 	StartGameMenu("Level Warp", 0);
 }
 
-static void DoJoinGame(void *unused1, void *unused2)
+static void DoJoinGame(void* unused1, void* unused2)
 {
-	execute_context_t *exec;
+	execute_context_t* exec;
 
 	if (connect_address == NULL || strlen(connect_address) <= 0)
 	{
@@ -825,9 +824,9 @@ static void DoJoinGame(void *unused1, void *unused2)
 	exit(0);
 }
 
-static cudadoom::txt::txt_window_action_t *JoinGameAction()
+static cudadoom::txt::WindowAction* JoinGameAction()
 {
-	cudadoom::txt::txt_window_action_t *action;
+	cudadoom::txt::WindowAction* action;
 
 	action = cudadoom::txt::TXT_NewWindowAction(KEY_F10, "Connect");
 	cudadoom::txt::TXT_SignalConnect(action, "pressed", DoJoinGame, NULL);
@@ -837,7 +836,7 @@ static cudadoom::txt::txt_window_action_t *JoinGameAction()
 
 static void SelectQueryAddress(cudadoom::txt::TXT_UNCAST_ARG(button), cudadoom::txt::TXT_UNCAST_ARG(querydata))
 {
-	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_button_t, button);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::Button, button);
 	cudadoom::txt::TXT_CAST_ARG(net_querydata_t, querydata);
 	int i;
 
@@ -880,7 +879,7 @@ static void SelectQueryAddress(cudadoom::txt::TXT_UNCAST_ARG(button), cudadoom::
 	cudadoom::txt::TXT_CloseWindow(query_window);
 }
 
-static void QueryResponseCallback(net_addr_t *addr, net_querydata_t *querydata, unsigned int ping_time, cudadoom::txt::TXT_UNCAST_ARG(results_table))
+static void QueryResponseCallback(net_addr_t* addr, net_querydata_t* querydata, TimeType ping_time, cudadoom::txt::TXT_UNCAST_ARG(results_table))
 {
 	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, results_table);
 	char ping_time_str[16];
@@ -938,14 +937,14 @@ static void QueryPeriodicCallback(cudadoom::txt::TXT_UNCAST_ARG(results_table))
 	}
 }
 
-static void QueryWindowClosed(cudadoom::txt::TXT_UNCAST_ARG(window), void *unused)
+static void QueryWindowClosed(cudadoom::txt::TXT_UNCAST_ARG(window), void* unused)
 {
 	cudadoom::txt::TXT_SetPeriodicCallback(NULL, NULL, 0);
 }
 
-static void ServerQueryWindow(const char *title)
+static void ServerQueryWindow(const char* title)
 {
-	cudadoom::txt::txt_table_t *results_table;
+	cudadoom::txt::txt_table_t* results_table;
 
 	query_servers_found = 0;
 
@@ -971,10 +970,10 @@ static void FindLANServer(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::
 	ServerQueryWindow("Find LAN server");
 }
 
-void JoinMultiGame(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void JoinMultiGame(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_inputbox_t *address_box;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::txt_inputbox_t* address_box;
 
 	window = cudadoom::txt::TXT_NewWindow("Join multiplayer game");
 	cudadoom::txt::TXT_SetTableColumns(window, 2);
@@ -1004,7 +1003,7 @@ void JoinMultiGame(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 void SetChatMacroDefaults()
 {
 	int i;
-	const char *const defaults[] =
+	const char* const defaults[] =
 	{
 		HUSTR_CHATMACRO0,
 		HUSTR_CHATMACRO1,
@@ -1036,18 +1035,18 @@ void SetPlayerNameDefault()
 	}
 }
 
-void MultiplayerConfig(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void MultiplayerConfig(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_label_t *label;
-	cudadoom::txt::txt_table_t *table;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::txt_label_t* label;
+	cudadoom::txt::txt_table_t* table;
 	char buf[10];
 	int i;
 
 	window = cudadoom::txt::TXT_NewWindow("Multiplayer Configuration");
 	cudadoom::txt::TXT_SetWindowHelpURL(window, MULTI_CONFIG_HELP_URL);
 
-	cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewStrut(0, 1), cudadoom::txt::TXT_NewHorizBox(cudadoom::txt::TXT_NewLabel("Player name: "), cudadoom::txt::TXT_NewInputBox(&net_player_name, 25), NULL),
+	cudadoom::txt::TXT_AddWidgets(window, cudadoom::txt::TXT_NewStrut(0, 1), cudadoom::txt::TXT_MakeHorizontalTable(cudadoom::txt::TXT_NewLabel("Player name: "), cudadoom::txt::TXT_NewInputBox(&net_player_name, 25), NULL),
 					cudadoom::txt::TXT_NewStrut(0, 1), cudadoom::txt::TXT_NewSeparator("Chat macros"), NULL);
 
 	table = cudadoom::txt::TXT_NewTable(2);
@@ -1057,7 +1056,7 @@ void MultiplayerConfig(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 		M_snprintf(buf, sizeof(buf), "#%i ", i + 1);
 
 		label = cudadoom::txt::TXT_NewLabel(buf);
-		cudadoom::txt::TXT_SetFGColor(label, cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_CYAN);
+		cudadoom::txt::TXT_SetFGColor(label, cudadoom::txt::ColorType::bright_cyan);
 
 		cudadoom::txt::TXT_AddWidgets(table, label, cudadoom::txt::TXT_NewInputBox(&chat_macros[(i + 1) % 10], 40), NULL);
 	}

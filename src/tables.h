@@ -10,27 +10,24 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Lookup tables.
-//	Do not try to look them up :-).
-//	In the order of appearance:
-//
-//	int finetangent[4096]	- Tangens LUT.
-//		Should work with BAM fairly well (12 of 16bit,
-//		effectively, by shifting).
-//
-//	int finesine[10240]		- Sine lookup.
-//		Guess what, serves as cosine, too.
-//		Remarkable thing is, how to use BAMs with this?
-//
-//	int tantoangle[2049]	- ArcTan LUT,
-//		maps tan(angle) to angle fast. Gotta search.
+		Lookup tables.
+		Do not try to look them up :-).
+		In the order of appearance:
+
+		int finetangent[4096]	- Tangens LUT.
+			Should work with BAM fairly well (12 of 16bit,
+			effectively, by shifting).
+
+		int finesine[10240]		- Sine lookup.
+			Guess what, serves as cosine, too.
+			Remarkable thing is, how to use BAMs with this?
+
+		int tantoangle[2049]	- ArcTan LUT,
+			maps tan(angle) to angle fast. Gotta search.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __TABLES__
-#define __TABLES__
 
 #include "doomtype.h"
 
@@ -65,24 +62,19 @@ extern const byte gammatable[5][256];
 #define ANG1			(ANG45 / 45)
 #define ANG60			(ANG180 / 3)
 
-// Heretic code uses this definition as though it represents one
-// degree, but it is not! This is actually ~1.40 degrees.
+// Heretic code uses this definition as though it represents one degree, but it is not! This is actually ~1.40 degrees.
 #define ANG1_X			0x01000000
 
 #define SLOPERANGE		2048
 #define SLOPEBITS		11
 #define DBITS			(FRACBITS-SLOPEBITS)
 
-typedef unsigned int angle_t;
+using angle_t = unsigned;
 
 // Effective size is 2049;
-// The +1 size is to handle the case when x==y
-// without additional checking.
+// The +1 size is to handle the case when x==y without additional checking.
 extern const angle_t tantoangle[SLOPERANGE+1];
 
-
 // Utility function, called by R_PointToAngle.
-int SlopeDiv(unsigned int num, unsigned int den);
-int SlopeDivCrispy(unsigned int num, unsigned int den);
-
-#endif
+int SlopeDiv(unsigned num, unsigned den);
+int SlopeDivCrispy(unsigned num, unsigned den);

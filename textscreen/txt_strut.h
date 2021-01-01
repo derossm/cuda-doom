@@ -11,10 +11,62 @@
 
 #include "../derma/common.h"
 
+#include "doomkeys.h"
+
+#include "txt_main.h"
 #include "txt_widget.h"
+#include "txt_window.h"
+#include "txt_io.h"
 
 namespace cudadoom::txt
 {
+
+static void StrutSizeCalc(UNCAST_ARG(strut))
+{
+	CAST_ARG(txt_strut_t, strut);
+
+	// Minimum width is the string length + two spaces for padding
+
+	strut->widget.w = strut->width;
+	strut->widget.h = strut->height;
+}
+
+static void StrutDrawer(UNCAST_ARG(strut))
+{
+	// Nothing is drawn for a strut.
+}
+
+static void StrutDestructor(UNCAST_ARG(strut))
+{
+}
+
+static int StrutKeyPress(UNCAST_ARG(strut), int key)
+{
+	return 0;
+}
+
+WidgetClass txt_strut_class =
+{
+	NeverSelectable,
+	StrutSizeCalc,
+	StrutDrawer,
+	StrutKeyPress,
+	StrutDestructor,
+	NULL,
+	NULL,
+};
+
+txt_strut_t* NewStrut(int width, int height)
+{
+	txt_strut_t* strut = static_cast<decltype(strut)>(malloc(sizeof(txt_strut_t)));
+
+	InitWidget(strut, &txt_strut_class);
+	strut->width = width;
+	strut->height = height;
+
+	return strut;
+}
+
 /**
  * Strut widget.
  *
@@ -36,6 +88,6 @@ struct txt_strut_t
  * @param width		Width of the strut, in characters.
  * @param height		Height of the strut, in characters.
  */
-txt_strut_t* TXT_NewStrut(int width, int height);
+txt_strut_t* NewStrut(int width, int height);
 
 } /* END NAMESPACE cudadoom::txt */

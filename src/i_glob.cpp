@@ -29,7 +29,7 @@
 // in POSIX.1. Other than Linux, the d_type field is available mainly
 // only on BSD systems. The remaining fields are available on many, but
 // not all systems.
-static bool IsDirectory(char *dir, struct dirent *de)
+static bool IsDirectory(char* dir, struct dirent *de)
 {
 #if defined(_DIRENT_HAVE_D_TYPE)
 	if (de->d_type != DT_UNKNOWN && de->d_type != DT_LNK)
@@ -39,7 +39,7 @@ static bool IsDirectory(char *dir, struct dirent *de)
 	else
 #endif
 	{
-		char *filename;
+		char* filename;
 		struct stat sb;
 		int result;
 
@@ -56,7 +56,7 @@ static bool IsDirectory(char *dir, struct dirent *de)
 	}
 }
 
-static void FreeStringList(char **globs, int num_globs)
+static void FreeStringList(char** globs, int num_globs)
 {
 	int i;
 	for (i = 0; i < num_globs; ++i)
@@ -66,14 +66,14 @@ static void FreeStringList(char **globs, int num_globs)
 	free(globs);
 }
 
-glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...)
+glob_t* I_StartMultiGlob(const char* directory, int flags, const char* glob, ...)
 {
-	char **globs;
+	char** globs;
 	int num_globs;
-	glob_t *result;
+	glob_t* result;
 	va_list args;
 
-	globs = static_cast<decltype(globs)>(malloc(sizeof(char *)));
+	globs = static_cast<decltype(globs)>(malloc(sizeof(char*)));
 	if (globs == NULL)
 	{
 		return NULL;
@@ -84,15 +84,15 @@ glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...
 	va_start(args, glob);
 	for (;;)
 	{
-		const char *arg = va_arg(args, const char *);
-		char **new_globs;
+		const char* arg = va_arg(args, const char*);
+		char** new_globs;
 
 		if (arg == NULL)
 		{
 			break;
 		}
 
-		new_globs = realloc(globs, sizeof(char *) * (num_globs + 1));
+		new_globs = realloc(globs, sizeof(char*) * (num_globs + 1));
 		if (new_globs == NULL)
 		{
 			FreeStringList(globs, num_globs);
@@ -129,12 +129,12 @@ glob_t *I_StartMultiGlob(const char *directory, int flags, const char *glob, ...
 	return result;
 }
 
-glob_t *I_StartGlob(const char *directory, const char *glob, int flags)
+glob_t* I_StartGlob(const char* directory, const char* glob, int flags)
 {
 	return I_StartMultiGlob(directory, flags, glob, NULL);
 }
 
-void I_EndGlob(glob_t *glob)
+void I_EndGlob(glob_t* glob)
 {
 	if (glob == NULL)
 	{
@@ -150,7 +150,7 @@ void I_EndGlob(glob_t *glob)
 	free(glob);
 }
 
-static bool MatchesGlob(const char *name, const char *glob, int flags)
+static bool MatchesGlob(const char* name, const char* glob, int flags)
 {
 	int n, g;
 
@@ -195,7 +195,7 @@ static bool MatchesGlob(const char *name, const char *glob, int flags)
 	return *name == '\0';
 }
 
-static bool MatchesAnyGlob(const char *name, glob_t *glob)
+static bool MatchesAnyGlob(const char* name, glob_t* glob)
 {
 	int i;
 
@@ -209,7 +209,7 @@ static bool MatchesAnyGlob(const char *name, glob_t *glob)
 	return false;
 }
 
-static char *NextGlob(glob_t *glob)
+static char* NextGlob(glob_t* glob)
 {
 	struct dirent *de;
 
@@ -227,9 +227,9 @@ static char *NextGlob(glob_t *glob)
 	return M_StringJoin(glob->directory, DIR_SEPARATOR_S, de->d_name, NULL);
 }
 
-static void ReadAllFilenames(glob_t *glob)
+static void ReadAllFilenames(glob_t* glob)
 {
-	char *name;
+	char* name;
 
 	glob->filenames = NULL;
 	glob->filenames_len = 0;
@@ -243,15 +243,15 @@ static void ReadAllFilenames(glob_t *glob)
 			break;
 		}
 		glob->filenames = realloc(glob->filenames,
-									(glob->filenames_len + 1) * sizeof(char *));
+									(glob->filenames_len + 1) * sizeof(char*));
 		glob->filenames[glob->filenames_len] = name;
 		++glob->filenames_len;
 	}
 }
 
-static void SortFilenames(char **filenames, int len, int flags)
+static void SortFilenames(char** filenames, int len, int flags)
 {
-	char *pivot, *tmp;
+	char* pivot, *tmp;
 	int i, left_len, cmp;
 
 	if (len <= 1)
@@ -286,9 +286,9 @@ static void SortFilenames(char **filenames, int len, int flags)
 	SortFilenames(&filenames[left_len + 1], len - left_len - 1, flags);
 }
 
-const char *I_NextGlob(glob_t *glob)
+const char* I_NextGlob(glob_t* glob)
 {
-	const char *result;
+	const char* result;
 
 	if (glob == NULL)
 	{
@@ -324,16 +324,16 @@ const char *I_NextGlob(glob_t *glob)
 
 #warning No native implementation of file globbing.
 
-glob_t *I_StartGlob(const char *directory, const char *glob, int flags)
+glob_t* I_StartGlob(const char* directory, const char* glob, int flags)
 {
 	return NULL;
 }
 
-void I_EndGlob(glob_t *glob)
+void I_EndGlob(glob_t* glob)
 {
 }
 
-const char *I_NextGlob(glob_t *glob)
+const char* I_NextGlob(glob_t* glob)
 {
 	return "";
 }

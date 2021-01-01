@@ -7,8 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Dehacked "mapping" code
-// Allows the fields in structures to be mapped out and accessed by name
+	DESCRIPTION:
+		Dehacked "mapping" code
+		Allows the fields in structures to be mapped out and accessed by name
 \**********************************************************************************************************************************************/
 #pragma once
 
@@ -45,17 +46,14 @@
 
 #define MAX_MAPPING_ENTRIES 32
 
-typedef struct deh_mapping_s deh_mapping_t;
-typedef struct deh_mapping_entry_s deh_mapping_entry_t;
-
-struct deh_mapping_entry_s
+struct deh_mapping_entry_t
 {
 	// field name
-	const char *name;
+	const char* name;
 
 	// location relative to the base in the deh_mapping_t struct
 	// If this is NULL, it is an unsupported mapping
-	void *location;
+	void* location;
 
 	// field size
 	int size;
@@ -64,12 +62,12 @@ struct deh_mapping_entry_s
 	bool is_string;
 };
 
-struct deh_mapping_s
+struct deh_mapping_t
 {
 	void* base;
 	deh_mapping_entry_t entries[MAX_MAPPING_ENTRIES];
 };
 
-bool DEH_SetMapping(deh_context_t *context, deh_mapping_t *mapping, void *structptr, char *name, int value);
-bool DEH_SetStringMapping(deh_context_t *context, deh_mapping_t *mapping, void *structptr, char *name, char *value);
-void DEH_StructSHA1Sum(sha1_context_t *context, deh_mapping_t *mapping, void *structptr);
+bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping, void* structptr, char* name, int value);
+bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping, void* structptr, char* name, char* value);
+void DEH_StructSHA1Sum(sha1_context_t* context, deh_mapping_t* mapping, void* structptr);

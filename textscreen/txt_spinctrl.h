@@ -11,10 +11,19 @@
 
 #include "../derma/common.h"
 
+#include "doomkeys.h"
+
+#include "txt_enums.h"
+#include "txt_main.h"
 #include "txt_widget.h"
+#include "txt_window.h"
+#include "txt_utf8.h"
+#include "txt_io.h"
+#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
+
 /**
  * Spin control widget.
  *
@@ -23,26 +32,329 @@ namespace cudadoom::txt
  * to be increased or decreased.
  */
 
-enum class txt_spincontrol_type_t
+class SpinControl : Widget
 {
-	TXT_SPINCONTROL_INT,
-	TXT_SPINCONTROL_FLOAT
-};
+public:
+	bool editing{false};
 
-struct txt_spincontrol_t
-{
-	Widget widget;
-	txt_spincontrol_type_t type;
-	union
+	std::variant<float, int>* value;
+	std::variant<float, int> min;
+	std::variant<float, int> max;
+	std::variant<float, int> step;
+
+	std::string buffer;
+
+	WidgetClass txt_spincontrol_class =
 	{
-		float f;
-		int i;
-	} min, max, *value, step;
+		AlwaysSelectable,
+		SpinControlSizeCalc,
+		SpinControlDrawer,
+		SpinControlKeyPress,
+		SpinControlDestructor,
+		SpinControlMousePress,
+		NULL,
+		SpinControlFocused,
+	};
 
-	int editing;
-	char* buffer;
-	size_t buffer_len;
+	SpinControl() : widget_class(&txt_spincontrol_class)
+	{
+	}
+
+	SpinControl(int* _value, int _min, int _max) : widget_class(&txt_spincontrol_class),
+														value{_value}, min{_min}, max{_max}, step{1}
+	{
+	}
+
+	SpinControl(float* _value, float _min, float _max) : widget_class(&txt_spincontrol_class),
+															value{_value}, min{_min}, max{_max}, step{0.1f}
+	{
+	}
+
+	// Generate the format string to be used for displaying floats
+	void FloatFormatString(float step, char* buf, size_t buf_len)
+	{
+		int precision;
+
+		precision = (int) ceil(-log(step) / log(10));
+
+		if (precision > 0)
+		{
+			snprintf(buf, buf_len, "%%.%if", precision);
+		}
+		else
+		{
+			StringCopy(buf, "%.1f", buf_len);
+		}
+	}
+
+	// Number of characters needed to represent a character
+	unsigned IntWidth(int val)
+	{
+		char buf[25];
+
+		snprintf(buf, sizeof(buf), "%i", val);
+
+		return strlen(buf);
+	}
+
+	unsigned FloatWidth(float val, float step)
+	{
+		// Calculate the width of the int value
+		unsigned result = IntWidth((int)val);
+
+		// Add a decimal part if the precision specifies it
+		unsigned precision = (unsigned)ceil(-log(step) / log(10));
+
+		if (precision > 0)
+		{
+			result += precision + 1;
+		}
+
+		return result;
+	}
+
+	// Returns the minimum width of the input box
+	unsigned Width()
+	{
+		unsigned minw;
+		unsigned maxw;
+
+		if (std::holds_alternative<float>(min))
+		{
+			minw = FloatWidth(std::get<float>(min), std::get<float>(step));
+			maxw = FloatWidth(std::get<float>(max), std::get<float>(step));
+		}
+		else if (std::holds_alternative<int>(min))
+		{
+			minw = IntWidth(std::get<int>(min));
+			maxw = IntWidth(std::get<int>(max));
+		}
+
+		// Choose the wider of the two values. Add one so that there is always space for the cursor when editing.
+		if (minw > maxw)
+		{
+			return minw;
+		}
+		else
+		{
+			return maxw;
+		}
+	}
+
+	void SizeCalc()
+	{
+		width = Width() + 5;
+		height = 1;
+	}
+
+	void SetBuffer()
+	{
+		char format[25];
+
+		if (std::holds_alternative<float>(min))
+		{
+			FloatFormatString(std::get<float>(step), format, sizeof(format));
+			snprintf(buffer.c_str(), buffer.length(), format, std::get<float>(value));
+		}
+		else if (std::holds_alternative<int>(min))
+		{
+			snprintf(buffer.c_str(), buffer.length(), "%i", std::get<int>(value));
+		}
+	}
+
+	void Drawer()
+	{
+		SavedColors colors;
+		SaveColors(&colors);
+
+		FGColor(ColorType::bright_cyan);
+		DrawCodePageString("\x1b ");
+
+		RestoreColors(&colors);
+
+		// Choose background color
+		if (focused && editing)
+		{
+			BGColor(ColorType::black, false);
+		}
+		else
+		{
+			SetWidgetBG();
+		}
+
+		if (!editing)
+		{
+			SetBuffer();
+		}
+
+		unsigned i{0};
+
+		int bw{buffer.length()};
+		unsigned padding{width - bw - 4};
+
+		while (i < padding)
+		{
+			DrawString(" ");
+			++i;
+		}
+
+		DrawString(buffer);
+		i += bw;
+
+		while (i < width - 4)
+		{
+			DrawString(" ");
+			++i;
+		}
+
+		RestoreColors(&colors);
+		FGColor(ColorType::bright_cyan);
+		DrawCodePageString(" \x1a");
+	}
+
+	void Destructor()
+	{
+	}
+
+	void AddCharacter(int key)
+	{
+		//if (UTF8_Strlen(buffer) < SpinControlWidth() && strlen(buffer) < buffer_len - 2)
+		//{
+			//buffer[strlen(buffer) + 1] = '\0';
+			//buffer[strlen(buffer)] = key;
+		//}
+		buffer = buffer + key;
+	}
+
+	void Backspace()
+	{
+		//if (UTF8_Strlen(spincontrol->buffer) > 0)
+		//{
+			//spincontrol->buffer[strlen(spincontrol->buffer) - 1] = '\0';
+		//}
+	}
+
+	void EnforceLimits()
+	{
+		if (std::holds_alternative<float>(min))
+		{
+			if (std::get<float>(*value) > std::get<float>(max))
+			{
+				*value = max;
+			}
+			else if (std::get<float>(*value) < std::get<float>(min))
+			{
+				*value = min;
+			}
+		}
+		else if (std::holds_alternative<int>(min))
+		{
+			if (std::get<int>(*value) > std::get<int>(max))
+			{
+				*value = max;
+			}
+			else if (std::get<int>(*value) < std::get<int>(min))
+			{
+				*value = min;
+			}
+		}
+	}
+
+	void FinishEditing()
+	{
+		if (std::holds_alternative<float>(min))
+		{
+			*value = (float)atof(buffer.c_str());
+		}
+		else if (std::holds_alternative<int>(min))
+		{
+			*value = atoi(buffer.c_str());
+		}
+
+		editing = false;
+		EnforceLimits();
+	}
+
+	bool KeyPress(), int key)
+	{
+		// Enter to enter edit mode
+		if (editing)
+		{
+			if (key == KEY_ENTER)
+			{
+				FinishEditing();
+				return true;
+			}
+
+			if (key == KEY_ESCAPE)
+			{
+				// Abort without saving value
+				editing = false;
+				return true;
+			}
+
+			if (isdigit(key) || key == '-' || key == '.')
+			{
+				AddCharacter(key);
+				return true;
+			}
+
+			if (key == KEY_BACKSPACE)
+			{
+				Backspace();
+				return true;
+			}
+		}
+		else
+		{
+			// Non-editing mode
+			if (key == KEY_ENTER)
+			{
+				editing = true;
+				StringCopy(buffer, "", buffer_len);
+				return true;
+			}
+			if (key == KEY_LEFTARROW)
+			{
+				*value -= step;
+				EnforceLimits(spincontrol);
+
+				return true;
+			}
+
+			if (key == KEY_RIGHTARROW)
+			{
+				*value += step;
+				EnforceLimits(spincontrol);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	void MousePress(int x, int y, int b)
+	{
+		unsigned rel_x{x - coordinates.x};
+
+		if (rel_x < 2)
+		{
+			KeyPress(KEY_LEFTARROW);
+		}
+		else if (rel_x >= width - 2)
+		{
+			KeyPress(KEY_RIGHTARROW);
+		}
+	}
+
+	void Focused()
+	{
+		FinishEditing();
+	}
 };
+
+} /* END NAMESPACE cudadoom::txt */
 
 /**
  * Create a new spin control widget tracking an integer value.
@@ -53,8 +365,7 @@ struct txt_spincontrol_t
  * @param max			Maximum value that may be set.
  * @return				Pointer to the new spin control widget.
  */
-txt_spincontrol_t* TXT_NewSpinControl(int* value, int min, int max);
-
+//SpinControl* NewSpinControl(int* value, int min, int max);
 /**
  * Create a new spin control widget tracking a float value.
  *
@@ -64,7 +375,4 @@ txt_spincontrol_t* TXT_NewSpinControl(int* value, int min, int max);
  * @param max			Maximum value that may be set.
  * @return				Pointer to the new spin control widget.
  */
-
-txt_spincontrol_t* TXT_NewFloatSpinControl(float* value, float min, float max);
-
-} /* END NAMESPACE cudadoom::txt */
+//SpinControl* NewFloatSpinControl(float* value, float min, float max);

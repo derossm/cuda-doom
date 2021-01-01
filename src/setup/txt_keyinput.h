@@ -11,25 +11,17 @@
 
 #include "../../derma/common.h"
 
-#ifndef TXT_KEY_INPUT_H
-#define TXT_KEY_INPUT_H
-
-typedef struct txt_key_input_s txt_key_input_t;
-
 #include "txt_widget.h"
 
 //
-// A key input is like an input box. When selected, a box pops up
-// allowing a key to be selected.
+// A key input is like an input box. When selected, a box pops up allowing a key to be selected.
 //
 
-struct txt_key_input_s
+struct txt_key_input_t
 {
 	Widget widget;
 	int *variable;
 	int check_conflicts;
 };
 
-txt_key_input_t *TXT_NewKeyInput(int *variable);
-
-#endif /* #ifndef TXT_KEY_INPUT_H */
+txt_key_input_t* NewKeyInput(int *variable);

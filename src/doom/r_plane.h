@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Refresh, visplane stuff (floor, ceilings).
+		Refresh, visplane stuff (floor, ceilings).
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __R_PLANE__
-#define __R_PLANE__
 
 #include "r_data.h"
 
@@ -37,25 +34,15 @@ extern fixed_t*	yslope;
 extern fixed_t		yslopes[LOOKDIRS][MAXHEIGHT];
 extern fixed_t		distscale[MAXWIDTH];
 
-void R_InitPlanes ();
-void R_ClearPlanes ();
+void R_InitPlanes();
+void R_ClearPlanes();
 
 void R_MapPlane(int y, int x1, int x2);
 
-void
-R_MakeSpans
-( int		x,
- unsigned int		t1, // [crispy] 32-bit integer math
- unsigned int		b1, // [crispy] 32-bit integer math
- unsigned int		t2, // [crispy] 32-bit integer math
- unsigned int		b2 ); // [crispy] 32-bit integer math
+void R_MakeSpans(int x, unsigned t1, unsigned b1, unsigned t2, unsigned b2);
 
-void R_DrawPlanes ();
+void R_DrawPlanes();
 
 visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel);
 
 visplane_t* R_CheckPlane(visplane_t* pl, int start, int stop);
-
-
-
-#endif

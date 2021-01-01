@@ -51,14 +51,14 @@
 // into the rectangular texture space using origin
 // and possibly other attributes.
 //
-typedef PACKED_STRUCT (
+struct mappatch_t
 {
 	short	originx;
 	short	originy;
 	short	patch;
 	short	stepdir;
 	short	colormap;
-}) mappatch_t;
+};
 
 
 //
@@ -66,7 +66,7 @@ typedef PACKED_STRUCT (
 // A DOOM wall texture is a list of patches
 // which are to be combined in a predefined order.
 //
-typedef PACKED_STRUCT (
+struct maptexture_t
 {
 	char		name[8];
 	int			masked;
@@ -75,13 +75,13 @@ typedef PACKED_STRUCT (
 	int					obsolete;
 	short		patchcount;
 	mappatch_t	patches[1];
-}) maptexture_t;
+};
 
 
 // A single patch from a texture definition,
 // basically a rectangular area within
 // the texture rectangle.
-typedef struct
+struct texpatch_t
 {
 	// Block origin (allways UL),
 	// which has allready accounted
@@ -89,16 +89,14 @@ typedef struct
 	short	originx;
 	short	originy;
 	int		patch;
-} texpatch_t;
+};
 
 
 // A maptexturedef_t describes a rectangular texture,
 // which is composed of one or more mappatch_t structures
 // that arrange graphic patches.
 
-typedef struct texture_s texture_t;
-
-struct texture_s
+struct texture_t
 {
 	// Keep name for switch changing, etc.
 	char	name[8];
@@ -111,7 +109,7 @@ struct texture_s
 
 	// Next in hash table chain
 
-	texture_t *next;
+	texture_t* next;
 
 	// All the patches[patchcount]
 	// are drawn back to front into the cached texture.
@@ -205,7 +203,7 @@ void R_DrawColumnInCache(column_t* patch, byte* cache, int originy, int cachehei
 	{
 		top = patch->topdelta;
 	}
-	source = (byte *)patch + 3;
+	source = (byte*)patch + 3;
 	count = patch->length;
 	position = originy + top;
 
@@ -229,7 +227,7 @@ void R_DrawColumnInCache(column_t* patch, byte* cache, int originy, int cachehei
 		memset(marks + position, 0xff, count);
 	}
 
-	patch = (column_t *)( (byte *)patch + patch->length + 4);
+	patch = (column_t*)( (byte*)patch + patch->length + 4);
 	}
 }
 
@@ -305,7 +303,7 @@ void R_GenerateComposite (int texnum)
 		continue;
 		*/
 
-		patchcol = (column_t *)((byte *)realpatch
+		patchcol = (column_t*)((byte*)realpatch
 					+ LONG(realpatch->columnofs[x-x1]));
 		R_DrawColumnInCache (patchcol,
 					block + colofs[x],
@@ -327,15 +325,15 @@ void R_GenerateComposite (int texnum)
 	// [crispy] generate composites for all columns
 //	if (collump[i] == -1) // process only multipatched columns
 	{
-		column_t *col = (column_t *)(block + colofs[i] - 3); // cached column
-		const byte *mark = marks + i * texture->height;
+		column_t* col = (column_t*)(block + colofs[i] - 3); // cached column
+		const byte* mark = marks + i * texture->height;
 		int j = 0;
 		// [crispy] absolut topdelta for first 254 pixels, then relative
 		int abstop, reltop = 0;
 		bool relative = false;
 
 		// save column in temporary so we can shuffle it around
-		memcpy(source, (byte *) col + 3, texture->height);
+		memcpy(source, (byte*) col + 3, texture->height);
 		// [crispy] copy composited columns to opaque texture
 		memcpy(block2 + colofs2[i], source, texture->height);
 
@@ -371,8 +369,8 @@ void R_GenerateComposite (int texnum)
 		col->length = len; // killough 12/98: intentionally truncate length
 
 		// copy opaque cells from the temporary back into the column
-		memcpy((byte *) col + 3, source + abstop, len);
-		col = (column_t *)((byte *) col + len + 4); // next post
+		memcpy((byte*) col + 3, source + abstop, len);
+		col = (column_t*)((byte*) col + len + 4); // next post
 		}
 	}
 	}
@@ -425,8 +423,8 @@ void R_GenerateLookup (int texnum)
 	// that are covered by more than one patch.
 	// Fill in the lump / offset, so columns
 	// with only a single patch are all done.
-	patchcount = (byte *) Z_Malloc(texture->width, pu_tags_t::PU_STATIC, &patchcount);
-	postcount = (byte *) Z_Malloc(texture->width, pu_tags_t::PU_STATIC, &postcount);
+	patchcount = (byte*) Z_Malloc(texture->width, pu_tags_t::PU_STATIC, &patchcount);
+	postcount = (byte*) Z_Malloc(texture->width, pu_tags_t::PU_STATIC, &postcount);
 	memset(patchcount, 0, texture->width);
 	memset(postcount, 0, texture->width);
 
@@ -474,9 +472,9 @@ void R_GenerateLookup (int texnum)
 	for (i = texture->patchcount, patch = texture->patches; --i >= 0; )
 	{
 		int pat = patch->patch;
-		const patch_t *realpatch = W_CacheLumpNum(pat, pu_tags_t::PU_CACHE);
+		const patch_t* realpatch = W_CacheLumpNum(pat, pu_tags_t::PU_CACHE);
 		int x, x1 = patch++->originx, x2 = x1 + SHORT(realpatch->width);
-		const int *cofs = realpatch->columnofs - x1;
+		const int* cofs = realpatch->columnofs - x1;
 
 		if (x2 > texture->width)
 		x2 = texture->width;
@@ -488,14 +486,14 @@ void R_GenerateLookup (int texnum)
 		// [crispy] generate composites for all columns
 //		if (patchcount[x] > 1) // Only multipatched columns
 		{
-			const column_t *col = (const column_t*)((const byte*) realpatch + LONG(cofs[x]));
-			const byte *base = (const byte *) col;
+			const column_t* col = (const column_t*)((const byte*) realpatch + LONG(cofs[x]));
+			const byte* base = (const byte*) col;
 
 			// count posts
 			for ( ; col->topdelta != 0xff; postcount[x]++)
 			{
-			if ((unsigned)((const byte *) col - base) <= limit)
-				col = (const column_t *)((const byte *) col + col->length + 4);
+			if ((unsigned)((const byte*) col - base) <= limit)
+				col = (const column_t*)((const byte*) col + col->length + 4);
 			else
 				break;
 			}
@@ -598,14 +596,14 @@ byte* R_GetColumnMod(int tex, int col)
 
 static void GenerateTextureHashTable()
 {
-	texture_t **rover;
+	texture_t**rover;
 	int i;
 	int key;
 
 	textures_hashtable
-			= Z_Malloc<texture_t>(sizeof(texture_t *) * numtextures, pu_tags_t::PU_STATIC, 0);
+			= Z_Malloc<texture_t>(sizeof(texture_t*) * numtextures, pu_tags_t::PU_STATIC, 0);
 
-	memset(textures_hashtable, 0, sizeof(texture_t *) * numtextures);
+	memset(textures_hashtable, 0, sizeof(texture_t*) * numtextures);
 
 	// Add all textures to hash table
 
@@ -672,16 +670,16 @@ void R_InitTextures ()
 	int			temp2;
 	int			temp3;
 
-	typedef struct
+	struct pnameslump_t
 	{
 	int lumpnum;
-	void *names;
+	void* names;
 	short nummappatches;
 	short summappatches;
-	char *name_p;
-	} pnameslump_t;
+	char* name_p;
+	};
 
-	typedef struct
+	struct texturelump_t
 	{
 	int lumpnum;
 	int *maptex;
@@ -689,7 +687,7 @@ void R_InitTextures ()
 	short numtextures;
 	short sumtextures;
 	short pnamesoffset;
-	} texturelump_t;
+	};
 
 	pnameslump_t	*pnameslumps = NULL;
 	texturelump_t	*texturelumps = NULL, *texturelump;
@@ -727,7 +725,7 @@ void R_InitTextures ()
 
 		pnameslumps[numpnameslumps].lumpnum = i;
 		pnameslumps[numpnameslumps].names = W_CacheLumpNum(pnameslumps[numpnameslumps].lumpnum, pu_tags_t::PU_STATIC);
-		pnameslumps[numpnameslumps].nummappatches = LONG(*((int *) pnameslumps[numpnameslumps].names));
+		pnameslumps[numpnameslumps].nummappatches = LONG(*((int*) pnameslumps[numpnameslumps].names));
 
 		// [crispy] accumulated number of patches in the lookup tables
 		// excluding the current one
@@ -886,7 +884,7 @@ void R_InitTextures ()
 	if (offset > maxoff)
 		I_Error("R_InitTextures: bad texture directory");
 
-	mtexture = (maptexture_t *) ( (byte *)maptex + offset);
+	mtexture = (maptexture_t*) ( (byte*)maptex + offset);
 
 	texture = textures[i] =
 		Z_Malloc<texture_t>(sizeof(texture_t)
@@ -1021,9 +1019,10 @@ void R_InitSpriteLumps ()
 // [crispy] initialize translucency filter map
 // based in parts on the implementation from boom202s/R_DATA.C:676-787
 
-enum {
+enum class rgb_t
+{
 	r, g, b
-} rgb_t;
+};
 
 static const int tran_filter_pct = 66;
 
@@ -1042,15 +1041,16 @@ static void R_InitTranMap()
 	else
 	{
 	// Compose a default transparent filter map based on PLAYPAL.
-	unsigned char *playpal = W_CacheLumpName("PLAYPAL", pu_tags_t::PU_STATIC);
-	FILE *cachefp;
-	char *fname = NULL;
-	extern char *configdir;
+	unsigned char* playpal = W_CacheLumpName("PLAYPAL", pu_tags_t::PU_STATIC);
+	FILE* cachefp;
+	char* fname = NULL;
+	extern char* configdir;
 
-	struct {
+	struct cache
+	{
 		unsigned char pct;
 		unsigned char playpal[256*3]; // [crispy] a palette has 768 bytes!
-	} cache;
+	};
 
 	tranmap = Z_Malloc<decltype(tranmap)>(256*256, pu_tags_t::PU_STATIC, 0);
 	fname = M_StringJoin(configdir, "tranmap.dat", NULL);
@@ -1072,7 +1072,7 @@ static void R_InitTranMap()
 	// [crispy] file not readable
 	else
 	{
-		byte *fg, *bg, blend[3], *tp = tranmap;
+		byte* fg, *bg, blend[3],* tp = tranmap;
 		int i, j, btmp;
 
 		I_SetPalette(playpal);
@@ -1152,10 +1152,10 @@ void R_InitColormaps ()
 	lump = W_GetNumForName(DEH_String("COLORMAP"));
 	colormaps = W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
 #else
-	byte *playpal;
+	byte* playpal;
 	int c, i, j = 0;
 	byte r, g, b;
-	extern byte **gamma2table;
+	extern byte** gamma2table;
 
 	// [crispy] intermediate gamma levels
 	if (!gamma2table)
@@ -1201,7 +1201,7 @@ void R_InitColormaps ()
 	}
 	else
 	{
-		byte *const colormap = W_CacheLumpName("COLORMAP", pu_tags_t::PU_STATIC);
+		byte* const colormap = W_CacheLumpName("COLORMAP", pu_tags_t::PU_STATIC);
 
 		for (c = 0; c <= NUMCOLORMAPS; c++)
 		{
@@ -1221,11 +1221,11 @@ void R_InitColormaps ()
 
 	// [crispy] initialize color translation and color strings tables
 	{
-	byte *playpal = W_CacheLumpName("PLAYPAL", pu_tags_t::PU_STATIC);
+	byte* playpal = W_CacheLumpName("PLAYPAL", pu_tags_t::PU_STATIC);
 	char c[3];
 	int i, j;
 	bool keepgray = false;
-	extern byte V_Colorize (byte *playpal, int cr, byte source, bool keepgray109);
+	extern byte V_Colorize (byte* playpal, int cr, byte source, bool keepgray109);
 
 	if (!crstr)
 		crstr = I_Realloc(NULL, CRMAX * sizeof(*crstr));
@@ -1285,7 +1285,7 @@ void R_InitData ()
 // R_FlatNumForName
 // Retrieval, get a flat number for a flat name.
 //
-int R_FlatNumForName(const char *name)
+int R_FlatNumForName(const char* name)
 {
 	int		i;
 	char	namet[9];
@@ -1313,9 +1313,9 @@ int R_FlatNumForName(const char *name)
 // Check whether texture is available.
 // Filter out NoTexture indicator.
 //
-int R_CheckTextureNumForName(const char *name)
+int R_CheckTextureNumForName(const char* name)
 {
-	texture_t *texture;
+	texture_t* texture;
 	int key;
 
 	// "NoTexture" marker.
@@ -1344,7 +1344,7 @@ int R_CheckTextureNumForName(const char *name)
 // Calls R_CheckTextureNumForName,
 // aborts with error message.
 //
-int R_TextureNumForName(const char *name)
+int R_TextureNumForName(const char* name)
 {
 	int		i;
 
@@ -1464,7 +1464,7 @@ void R_PrecacheLevel ()
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
 	{
 	if (th->function.acp1 == (actionf_p1)P_MobjThinker)
-		spritepresent[((mobj_t *)th)->sprite] = 1;
+		spritepresent[((MapObject* )th)->sprite] = 1;
 	}
 
 	spritememory = 0;

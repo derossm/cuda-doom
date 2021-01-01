@@ -521,7 +521,7 @@ static const uint8_t normal_font_data[] =
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-static const cudadoom::txt::txt_font_t normal_font =
+static const cudadoom::txt::FontType normal_font =
 {
 	"normal", normal_font_data, 8, 16,
 };

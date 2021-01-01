@@ -32,7 +32,7 @@
 
 extern opl_driver_t opl_sdl_driver;
 
-static opl_driver_t *drivers[] =
+static opl_driver_t* drivers[] =
 {
 #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
 	&opl_linux_driver,
@@ -85,7 +85,7 @@ static opl_init_result_t InitDriver(opl_driver_t* _driver, unsigned port_base)
 // Find a driver automatically by trying each in the list.
 static opl_init_result_t AutoSelectDriver(unsigned port_base)
 {
-	for (size_t i{0}; drivers[i] != nullptr; ++i)
+	for (size_t i{0}; drivers[i]; ++i)
 	{
 		auto result = InitDriver(drivers[i], port_base);
 		if (result != opl_init_result_t::OPL_INIT_NONE)
@@ -104,10 +104,10 @@ opl_init_result_t OPL_Init(unsigned port_base)
 {
 	const char* driver_name{std::getenv("OPL_DRIVER")};
 
-	if (driver_name != nullptr)
+	if (driver_name)
 	{
 		// Search the list until we find the driver with this name.
-		for (size_t i{0}; drivers[i] != nullptr; ++i)
+		for (size_t i{0}; drivers[i]; ++i)
 		{
 			if (!strcmp(driver_name, drivers[i]->name))
 			{
@@ -134,7 +134,7 @@ opl_init_result_t OPL_Init(unsigned port_base)
 // Shut down the OPL library.
 void OPL_Shutdown()
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 		driver->shutdown_func();
 		driver = nullptr;
@@ -149,7 +149,7 @@ void OPL_SetSampleRate(unsigned rate)
 
 void OPL_WritePort(opl_port_t port, unsigned value)
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 #ifdef OPL_DEBUG_TRACE
 		printf("OPL_write: %i, %x\n", port, value);
@@ -161,7 +161,7 @@ void OPL_WritePort(opl_port_t port, unsigned value)
 
 unsigned OPL_ReadPort(opl_port_t port)
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 #ifdef OPL_DEBUG_TRACE
 		printf("OPL_read: %i...\n", port);
@@ -346,9 +346,9 @@ void OPL_InitRegisters(unsigned opl3)
 
 // Timer functions.
 // FIXME FIND A COMMON TYPE FOR THIS VOID
-void OPL_SetCallback(uint64_t us, opl_callback_t callback, void* data)
+void OPL_SetCallback(uint64_t us, opl_callback_t callback, delay_data_t* data)
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 		driver->set_callback_func(us, callback, data);
 	}
@@ -356,7 +356,7 @@ void OPL_SetCallback(uint64_t us, opl_callback_t callback, void* data)
 
 void OPL_ClearCallbacks()
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 		driver->clear_callbacks_func();
 	}
@@ -364,7 +364,7 @@ void OPL_ClearCallbacks()
 
 void OPL_Lock()
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 		driver->lock_func();
 	}
@@ -372,7 +372,7 @@ void OPL_Lock()
 
 void OPL_Unlock()
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 		driver->unlock_func();
 	}
@@ -392,7 +392,7 @@ static void DelayCallback(delay_data_t* _delay_data)
 
 void OPL_Delay(uint64_t us)
 {
-	if (driver == nullptr)
+	if (driver)
 	{
 		return;
 	}
@@ -423,7 +423,7 @@ void OPL_Delay(uint64_t us)
 
 void OPL_SetPaused(bool paused)
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 		driver->set_paused_func(paused);
 	}
@@ -431,7 +431,7 @@ void OPL_SetPaused(bool paused)
 
 void OPL_AdjustCallbacks(float value)
 {
-	if (driver != nullptr)
+	if (driver)
 	{
 		driver->adjust_callbacks_func(value);
 	}

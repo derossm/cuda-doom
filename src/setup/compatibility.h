@@ -11,13 +11,8 @@
 
 #include "../../derma/common.h"
 
-#ifndef SETUP_COMPATIBILITY_H
-#define SETUP_COMPATIBILITY_H
-
-void CompatibilitySettings(void *widget, void *user_data);
+void CompatibilitySettings(void* widget, void* user_data);
 void BindCompatibilityVariables();
 
 extern int vanilla_savegame_limit;
 extern int vanilla_demo_limit;
-
-#endif /* #ifndef SETUP_COMPATIBILITY_H */

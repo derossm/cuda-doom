@@ -7,30 +7,14 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-//
-// Dehacked string replacements
+	DESCRIPTION:
+		Dehacked string replacements
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
 #include "doomtype.h"
-
-// Used to do dehacked text substitutions throughout the program
-const char *DEH_String(const char *s) PRINTF_ARG_ATTR(1);
-void DEH_printf(const char *fmt, ...) PRINTF_ATTR(1, 2);
-void DEH_fprintf(FILE *fstream, const char *fmt, ...) PRINTF_ATTR(2, 3);
-void DEH_snprintf(char *buffer, size_t len, const char *fmt, ...) PRINTF_ATTR(3, 4);
-void DEH_AddStringReplacement(const char *from_text, const char *to_text);
-bool DEH_HasStringReplacement(const char *s);
-
-#if 0
-// Static macro versions of the functions above
-	#define DEH_String(x) (x)
-	#define DEH_printf printf
-	#define DEH_fprintf fprintf
-	#define DEH_snprintf snprintf
-#endif
 
 struct deh_substitution_t
 {
@@ -48,3 +32,19 @@ enum class format_arg_t
 	FORMAT_ARG_PTR,
 	FORMAT_ARG_SAVE_POS
 };
+
+// Used to do dehacked text substitutions throughout the program
+const char* DEH_String(const char* s) PRINTF_ARG_ATTR(1);
+void DEH_printf(const char* fmt, ...) PRINTF_ATTR(1, 2);
+void DEH_fprintf(FILE* fstream, const char* fmt, ...) PRINTF_ATTR(2, 3);
+void DEH_snprintf(char* buffer, size_t len, const char* fmt, ...) PRINTF_ATTR(3, 4);
+void DEH_AddStringReplacement(const char* from_text, const char* to_text);
+bool DEH_HasStringReplacement(const char* s);
+
+#if 0
+// Static macro versions of the functions above
+	#define DEH_String(x) (x)
+	#define DEH_printf printf
+	#define DEH_fprintf fprintf
+	#define DEH_snprintf snprintf
+#endif

@@ -11,23 +11,136 @@
 
 #include "../derma/common.h"
 
+#include "txt_main.h"
 #include "txt_widget.h"
 #include "txt_window.h"
+#include "txt_utf8.h"
+#include "txt_io.h"
+#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
+
 /**
  * Window action widget.
  *
  * A window action is attached to a window and corresponds to a keyboard shortcut that is active within that window.
  * When the key is pressed, the action is triggered. When a window action is triggered, the "pressed" signal is emitted.
  */
-struct txt_window_action_t
+class WindowAction : Widget
 {
-	Widget widget;
-	char* label;
 	int key;
+	std::string label;
+
+public:
+	WidgetClass txt_window_action_class{
+		AlwaysSelectable,
+		WindowActionSizeCalc,
+		WindowActionDrawer,
+		WindowActionKeyPress,
+		WindowActionDestructor,
+		WindowActionMousePress,
+		NULL
+	};
+
+	WindowAction(int _key, std::string _label) : widget_class{&txt_window_action_class)}, key{_key}, label{std::string(_label)}
+	{
+	}
+
+	void SizeCalc()
+	{
+		char buf[10];
+
+		GetKeyDescription(key, buf, sizeof(buf));
+
+		// Width is label length, plus key description length, plus '=' and two surrounding spaces.
+		width = label.length() + UTF8_Strlen(buf) + 3;
+		height = 1;
+	}
+
+	void Drawer()
+	{
+		char buf[10];
+
+		GetKeyDescription(key, buf, sizeof(buf));
+
+		auto hovering{HoveringOverWidget()};
+		SetWidgetBG();
+
+		DrawString(" ");
+		FGColor(hovering ? ColorType::bright_white : ColorType::bright_green);
+		DrawString(buf);
+		FGColor(ColorType::bright_cyan);
+		DrawString("=");
+
+		FGColor(ColorType::bright_white);
+		DrawString(label);
+		DrawString(" ");
+	}
+
+	void Destructor()
+	{
+	}
+
+	auto KeyPress(int _key)
+	{
+		if (tolower(_key) == tolower(key))
+		{
+			EmitSignal("pressed");
+			return true;
+		}
+
+		return false;
+	}
+
+	void MousePress(int x, int y, int b)
+	{
+		// Simulate a press of the key
+		if (b == MOUSE_LEFT)
+		{
+			KeyPress(key);
+		}
+	}
+
+	// FIXME
+	void WindowCloseCallback(Window* window)
+	{
+		window->CloseWindow();
+	}
+
+	void WindowSelectCallback(Window* window)
+	{
+		window->WidgetKeyPress(KEY_ENTER);
+	}
 };
+
+// An action with the name "close" the closes the window
+WindowAction* NewWindowEscapeAction(Window* window)
+{
+	auto action{WindowAction(KEY_ESCAPE, "Close")};
+	SignalConnect(action, "pressed", WindowCloseCallback, window);
+
+	return action;
+}
+
+// Exactly the same as the above, but the button is named "abort"
+WindowAction* NewWindowAbortAction(Window* window)
+{
+	auto action{WindowAction(KEY_ESCAPE, "Abort")};
+	SignalConnect(action, "pressed", WindowCloseCallback, window);
+
+	return action;
+}
+
+WindowAction* NewWindowSelectAction(Window* window)
+{
+	auto action{WindowAction(KEY_ENTER, "Select")};
+	SignalConnect(action, "pressed", WindowSelectCallback, window);
+
+	return action;
+}
+
+} /* END NAMESPACE cudadoom::txt */
 
 /**
  * Create a new window action.
@@ -36,7 +149,7 @@ struct txt_window_action_t
  * @param label			Label to display for this action in the tray at the bottom of the window (UTF-8 format).
  * @return				Pointer to the new window action widget.
  */
-txt_window_action_t* TXT_NewWindowAction(int key, const char* label);
+//WindowAction* NewWindowAction(int key, const char* label);
 
 /**
  * Create a new window action that closes the window when the escape key is pressed. The label "Close" is used.
@@ -44,7 +157,7 @@ txt_window_action_t* TXT_NewWindowAction(int key, const char* label);
  * @param window		The window to close.
  * @return				Pointer to the new window action widget.
  */
-txt_window_action_t* TXT_NewWindowEscapeAction(txt_window_t* window);
+//WindowAction* NewWindowEscapeAction(Window* window);
 
 /**
  * Create a new window action that closes the window when the escape key is pressed. The label "Abort" is used.
@@ -52,7 +165,7 @@ txt_window_action_t* TXT_NewWindowEscapeAction(txt_window_t* window);
  * @param window		The window to close.
  * @return				Pointer to the new window action widget.
  */
-txt_window_action_t* TXT_NewWindowAbortAction(txt_window_t* window);
+//WindowAction* NewWindowAbortAction(Window* window);
 
 /**
  * Create a new "select" window action. This does not really do anything, but reminds the user that "enter" can be pressed to
@@ -61,6 +174,4 @@ txt_window_action_t* TXT_NewWindowAbortAction(txt_window_t* window);
  * @param window		The window.
  * @return				Pointer to the new window action widget.
  */
-txt_window_action_t* TXT_NewWindowSelectAction(txt_window_t* window);
-
-} /* END NAMESPACE cudadoom::txt */
+//WindowAction* NewWindowSelectAction(Window* window);

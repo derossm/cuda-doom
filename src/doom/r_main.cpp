@@ -61,7 +61,7 @@ angle_t			viewangle;
 fixed_t			viewcos;
 fixed_t			viewsin;
 
-player_t*		viewplayer;
+Player*		viewplayer;
 
 // 0 = high, 1 = low
 int			detailshift;
@@ -250,7 +250,7 @@ int R_PointOnSegSide(fixed_t x, fixed_t y, seg_t* line)
 
 // [crispy] turned into a general R_PointToAngle() flavor called with either
 // slope_div = SlopeDivCrispy() from R_PointToAngleCrispy() or slope_div = SlopeDiv() else
-angle_t R_PointToAngleSlope(fixed_t x, fixed_t y, int (*slope_div) (unsigned int num, unsigned int den))
+angle_t R_PointToAngleSlope(fixed_t x, fixed_t y, int (*slope_div) (unsigned num, unsigned den))
 {
 	x -= viewx;
 	y -= viewy;
@@ -856,19 +856,19 @@ subsector_t* R_PointInSubsector(fixed_t x, fixed_t y)
 	if (!numnodes)
 		return subsectors;
 
-	nodenum = numnodes-1;
+	nodenum class = numnodes-1;
 
-	while (! (nodenum & NF_SUBSECTOR) )
+	while (! (nodenum class & NF_SUBSECTOR) )
 	{
 		node = &nodes[nodenum];
 		side = R_PointOnSide(x, y, node);
-		nodenum = node->children[side];
+		nodenum class = node->children[side];
 	}
 
-	return &subsectors[nodenum & ~NF_SUBSECTOR];
+	return &subsectors[nodenum class & ~NF_SUBSECTOR];
 }
 
-void R_SetupFrame(player_t* player)
+void R_SetupFrame(Player* player)
 {
 	int i;
 	int tempCentery;
@@ -945,7 +945,7 @@ void R_SetupFrame(player_t* player)
 	++validcount;
 }
 
-void R_RenderPlayerView(player_t* player)
+void R_RenderPlayerView(Player* player)
 {
 	extern void V_DrawFilledBox(int x, int y, int w, int h, int c);
 	extern void R_InterpolateTextureOffsets();

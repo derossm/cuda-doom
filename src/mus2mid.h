@@ -9,20 +9,15 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-//
-// mus2mid.h - Ben Ryves 2006 - http://benryves.com - benryves@benryves.com
-// Use to convert a MUS file into a single track, type 0 MIDI file.
+	DESCRIPTION:
+		mus2mid.h - Ben Ryves 2006 - http://benryves.com - benryves@benryves.com
+		Use to convert a MUS file into a single track, type 0 MIDI file.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef MUS2MID_H
-#define MUS2MID_H
-
 #include "doomtype.h"
 #include "memio.h"
 
 bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput);
-
-#endif /* #ifndef MUS2MID_H */

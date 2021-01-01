@@ -14,9 +14,6 @@
 
 #include "../derma/common.h"
 
-#ifndef NET_IO_H
-#define NET_IO_H
-
 #include "net_defs.h"
 
 extern net_addr_t net_broadcast_addr;
@@ -41,7 +38,7 @@ bool NET_RecvPacket(net_context_t* context, net_addr_t** addr, net_packet_t** pa
 
 // Return a string representation of the given address. The result points to a
 // static buffer and will become invalid with the next call.
-char *NET_AddrToString(net_addr_t* addr);
+char* NET_AddrToString(net_addr_t* addr);
 
 // Add a reference to the given address.
 void NET_ReferenceAddress(net_addr_t* addr);
@@ -53,6 +50,4 @@ void NET_ReleaseAddress(net_addr_t* addr);
 // Resolve a string representation of an address. If successful, a net_addr_t
 // pointer is received with an implicit reference that must be freed by the
 // caller when it is no longer needed.
-net_addr_t *NET_ResolveAddress(net_context_t* context, const char* address);
-
-#endif /* #ifndef NET_IO_H */
+net_addr_t* NET_ResolveAddress(net_context_t* context, const char* address);

@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Sky rendering.
+		Sky rendering.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __R_SKY__
-#define __R_SKY__
 
 // SKY, store the number for name.
 #define SKYFLATNAME "F_SKY1"
@@ -31,6 +28,4 @@ extern int		skytexture;
 extern int		skytexturemid;
 
 // Called whenever the view size changes.
-void R_InitSkyMap ();
-
-#endif
+void R_InitSkyMap();

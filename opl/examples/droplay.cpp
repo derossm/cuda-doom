@@ -20,7 +20,7 @@
 #define HEADER_STRING "DBRAWOPL"
 #define ADLIB_PORT 0x388
 
-void WriteReg(unsigned int reg, unsigned int val)
+void WriteReg(unsigned reg, unsigned val)
 {
 	int i;
 
@@ -79,12 +79,12 @@ void Shutdown(void)
 struct timer_data
 {
 	int running;
-	FILE *fstream;
+	FILE* fstream;
 };
 
-void TimerCallback(void *data)
+void TimerCallback(void* data)
 {
-	struct timer_data *timer_data = data;
+	struct timer_data* timer_data = data;
 	int delay;
 
 	if (!timer_data->running)
@@ -133,7 +133,7 @@ void TimerCallback(void *data)
 	OPL_SetCallback(delay * OPL_MS, TimerCallback, timer_data);
 }
 
-void PlayFile(char *filename)
+void PlayFile(char* filename)
 {
 	struct timer_data timer_data;
 	int running;
@@ -180,7 +180,7 @@ void PlayFile(char *filename)
 	fclose(timer_data.fstream);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	if (argc < 2)
 	{

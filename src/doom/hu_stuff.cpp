@@ -67,9 +67,9 @@
 #define HU_COORDX	((ORIGWIDTH - 8 * hu_font['A'-HU_FONTSTART]->width) + WIDESCREENDELTA)
 
 
-char *chat_macros[10];
+char* chat_macros[10];
 
-const char *player_names[] =
+const char* player_names[] =
 {
 	HUSTR_PLRGREEN,
 	HUSTR_PLRINDIGO,
@@ -78,7 +78,7 @@ const char *player_names[] =
 };
 
 char			chat_char; // remove later.
-static player_t*	plr;
+static Player*	plr;
 patch_t*		hu_font[HU_FONTSIZE];
 static hu_textline_t	w_title;
 static hu_textline_t	w_map;
@@ -117,7 +117,7 @@ extern int		screenblocks; // [crispy]
 // The actual names can be found in DStrings.h.
 //
 
-const char *mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
+const char* mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
 {
 
 	HUSTR_E1M1,
@@ -182,7 +182,7 @@ const char *mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
 	"NEWLEVEL"
 };
 
-const char *mapnames_chex[] =	// Chex Quest names.
+const char* mapnames_chex[] =	// Chex Quest names.
 {
 
 	HUSTR_E1M1,
@@ -242,7 +242,7 @@ const char *mapnames_chex[] =	// Chex Quest names.
 // the layout in the Vanilla executable, where it is possible to
 // overflow the end of one array into the next.
 
-const char *mapnames_commercial[] =
+const char* mapnames_commercial[] =
 {
 	// DOOM 2 map names.
 
@@ -393,9 +393,9 @@ const char *mapnames_commercial[] =
 	MHUSTR_21
 };
 
-static void CrispyReplaceColor (const char *str, const int cr, const char *col)
+static void CrispyReplaceColor (const char* str, const int cr, const char* col)
 {
-	char *str_replace, col_replace[16];
+	char* str_replace, col_replace[16];
 
 	if (DEH_HasStringReplacement(str))
 	{
@@ -409,7 +409,7 @@ static void CrispyReplaceColor (const char *str, const int cr, const char *col)
 	free(str_replace);
 }
 
-static const char *cr_stat, *cr_stat2, *kills;
+static const char* cr_stat, *cr_stat2, *kills;
 
 void HU_Init()
 {
@@ -423,7 +423,7 @@ void HU_Init()
 	for (i=0;i<HU_FONTSIZE;i++)
 	{
 	DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
-	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, pu_tags_t::PU_STATIC);
+	hu_font[i] = (patch_t*) W_CacheLumpName(buffer, pu_tags_t::PU_STATIC);
 	}
 
 	if (gameversion == GameVersion_t::exe_chex)
@@ -449,7 +449,7 @@ void HU_Init()
 	// [crispy] initialize the crosshair types
 	for (i = 0; laserpatch[i].c; i++)
 	{
-	patch_t *patch = NULL;
+	patch_t* patch = NULL;
 
 	// [crispy] check for alternative crosshair patches from e.g. prboom-plus.wad first
 //	if ((laserpatch[i].l = W_CheckNumForName(laserpatch[i].a)) == -1)
@@ -511,14 +511,14 @@ void HU_Stop()
 // These are single, non-consecutive, (semi-)official levels
 // without their own music or par times and thus do not need
 // to be handled as distinct pack_* game missions.
-typedef struct
+struct speciallevel_t
 {
 	GameMission_t mission;
 	int episode;
 	int map;
-	const char *wad;
-	const char *name;
-} speciallevel_t;
+	const char* wad;
+	const char* name;
+};
 
 static const speciallevel_t speciallevels[] = {
 	// [crispy] ExM0
@@ -555,7 +555,7 @@ static const speciallevel_t speciallevels[] = {
 	{doom2, 0, 32, "teeth.wad", MHUSTR_21},
 };
 
-static void HU_SetSpecialLevelName (const char *wad, const char **name)
+static void HU_SetSpecialLevelName (const char* wad, const char** name)
 {
 	int i;
 
@@ -580,7 +580,7 @@ void HU_Start()
 {
 
 	int		i;
-	const char *s;
+	const char* s;
 	// [crispy] string buffers for map title and WAD file name
 	char	buf[8], *ptr;
 
@@ -714,7 +714,7 @@ void HU_Start()
 		!(crispy->havenerve && gamemission == pack_nerve) &&
 		!(crispy->havemaster && gamemission == pack_master)))
 	{
-	char *m;
+	char* m;
 
 	ptr = M_StringJoin(crstr[CR_GOLD], W_WadNameForLump(maplumpinfo), ": ", crstr[CR_GRAY], maplumpinfo->name, NULL);
 	m = ptr;
@@ -780,7 +780,7 @@ static void HU_DrawCrosshair ()
 {
 	static int		lump;
 	static patch_t*	patch;
-	extern byte *R_LaserspotColor ();
+	extern byte* R_LaserspotColor ();
 
 	if (weaponinfo[plr->readyweapon].ammo == am_noammo ||
 		plr->playerstate != PlayerState_t::PST_LIVE ||
@@ -945,7 +945,7 @@ void HU_Ticker()
 	// [crispy] display centered message
 	if (plr->centermessage)
 	{
-		extern int M_StringWidth(const char *string);
+		extern int M_StringWidth(const char* string);
 		w_secret.l[0].x = ORIGWIDTH/2 - M_StringWidth(plr->centermessage)/2;
 
 		HUlib_addMessageToSText(&w_secret, 0, plr->centermessage);
@@ -997,7 +997,7 @@ void HU_Ticker()
 				message_nottobefuckedwith = true;
 				message_on = true;
 				message_counter = HU_MSGTIMEOUT;
-				if ( gamemode == GameMode_t::commercial )
+				if ( gamemode == GameMode::commercial )
 					S_StartSound(0, sfx_radio);
 				else if (gameversion > exe_doom_1_2)
 					S_StartSound(0, sfx_tink);
@@ -1050,7 +1050,7 @@ void HU_Ticker()
 
 	if (crispy->leveltime == WIDGETS_ALWAYS || (automapactive && crispy->leveltime == WIDGETS_AUTOMAP))
 	{
-	const int time = leveltime / TICRATE;
+	const TimeType time = leveltime / TICRATE;
 
 	if (time >= 3600)
 		M_snprintf(str, sizeof(str), "%s%02d:%02d:%02d", crstr[CR_GRAY],
@@ -1165,7 +1165,7 @@ static void StopChatInput()
 	I_StopTextInput();
 }
 
-bool HU_Responder(event_t *ev)
+bool HU_Responder(EventType *ev)
 {
 
 	static char		lastmessage[HU_MAXLINELENGTH+1];

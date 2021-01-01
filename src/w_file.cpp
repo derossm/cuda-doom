@@ -30,7 +30,7 @@ extern wad_file_class_t win32_wad_file;
 extern wad_file_class_t posix_wad_file;
 #endif
 
-static wad_file_class_t *wad_file_classes[] =
+static wad_file_class_t* wad_file_classes[] =
 {
 #ifdef _WIN32
 	&win32_wad_file,
@@ -41,9 +41,9 @@ static wad_file_class_t *wad_file_classes[] =
 	&stdc_wad_file,
 };
 
-wad_file_t *W_OpenFile(const char *path)
+wad_file_t* W_OpenFile(const char* path)
 {
-	wad_file_t *result;
+	wad_file_t* result;
 	int i;
 
 	//!
@@ -75,13 +75,13 @@ wad_file_t *W_OpenFile(const char *path)
 	return result;
 }
 
-void W_CloseFile(wad_file_t *wad)
+void W_CloseFile(wad_file_t* wad)
 {
 	wad->file_class->CloseFile(wad);
 }
 
-size_t W_Read(wad_file_t *wad, unsigned int offset,
-				void *buffer, size_t buffer_len)
+size_t W_Read(wad_file_t* wad, unsigned offset,
+				void* buffer, size_t buffer_len)
 {
 	return wad->file_class->Read(wad, offset, buffer, buffer_len);
 }

@@ -23,16 +23,14 @@
 
 // #define ZONEID	0x1d4a11
 
-// typedef struct memblock_s memblock_t;
-
-// struct memblock_s
+// struct memblock_t
 // {
 // 	int id; // = ZONEID
 // 	pu_tags_t tag;
 // 	int size;
-// 	void **user;
-// 	memblock_t *prev;
-// 	memblock_t *next;
+// 	void** user;
+// 	memblock_t* prev;
+// 	memblock_t* next;
 // };
 
 // // Linked list of allocated blocks for each tag type
@@ -43,7 +41,7 @@
 
 // static int test_malloced = 0;
 
-// void *test_malloc(size_t size)
+// void* test_malloc(size_t size)
 // {
 // 	int *result;
 
@@ -61,11 +59,11 @@
 // 	return result + 1;
 // }
 
-// void test_free(void *data)
+// void test_free(void* data)
 // {
 // 	int *i;
 
-// 	i = ((int *) data) - 1;
+// 	i = ((int*) data) - 1;
 
 // 	test_malloced -= *i;
 
@@ -80,7 +78,7 @@
 
 // // Add a block into the linked list for its type.
 
-// static void Z_InsertBlock(memblock_t *block)
+// static void Z_InsertBlock(memblock_t* block)
 // {
 // 	block->prev = NULL;
 // 	block->next = allocated_blocks[_integral_value<size_t>(block->tag)];
@@ -94,7 +92,7 @@
 
 // // Remove a block from its linked list.
 
-// static void Z_RemoveBlock(memblock_t *block)
+// static void Z_RemoveBlock(memblock_t* block)
 // {
 // 	// Unlink from list
 
@@ -132,7 +130,7 @@
 // {
 // 	memblock_t*		block;
 
-// 	block = (memblock_t *) ((byte *)ptr - sizeof(memblock_t));
+// 	block = (memblock_t*) ((byte*)ptr - sizeof(memblock_t));
 
 // 	if (block->id != ZONEID)
 // 	{
@@ -160,8 +158,8 @@
 
 // static bool ClearCache(int size)
 // {
-// 	memblock_t *block;
-// 	memblock_t *next_block;
+// 	memblock_t* block;
+// 	memblock_t* next_block;
 // 	int remaining;
 
 // 	block = allocated_blocks[_integral_value<size_t>(pu_tags_t::PU_CACHE)];
@@ -222,7 +220,7 @@
 // // You can pass a NULL user if the tag is < pu_tags_t::PU_PURGELEVEL.
 // //
 
-// void *Z_Malloc(int size, pu_tags_t tag, void* user)
+// void* Z_Malloc(int size, pu_tags_t tag, void* user)
 // {
 // 	memblock_t* newblock;
 // 	unsigned char* data;
@@ -264,7 +262,7 @@
 
 // 	Z_InsertBlock(newblock);
 
-// 	data = (unsigned char *) newblock;
+// 	data = (unsigned char*) newblock;
 // 	result = data + sizeof(memblock_t);
 
 // 	if (user != NULL)
@@ -281,8 +279,8 @@
 
 // 	for (i=lowtag; i<= hightag; ++i)
 // 	{
-// 		memblock_t *block;
-// 		memblock_t *next;
+// 		memblock_t* block;
+// 		memblock_t* next;
 
 // 		// Free all in this chain
 // 		for (block=allocated_blocks[i]; block != NULL; )
@@ -330,7 +328,7 @@
 // 		break;
 // 	}
 
-// 	if ( (byte *)block + block->size != (byte *)block->next)
+// 	if ( (byte*)block + block->size != (byte*)block->next)
 // 		printf ("ERROR: block size does not touch the next block\n");
 
 // 	if ( block->next->prev != block)
@@ -342,7 +340,7 @@
 // #endif
 // }
 
-// void Z_FileDumpHeap(FILE *f)
+// void Z_FileDumpHeap(FILE* f)
 // {
 // 	// broken
 // #if 0
@@ -361,7 +359,7 @@
 // 		break;
 // 	}
 
-// 	if ( (byte *)block + block->size != (byte *)block->next)
+// 	if ( (byte*)block + block->size != (byte*)block->next)
 // 		fprintf (f,"ERROR: block size does not touch the next block\n");
 
 // 	if ( block->next->prev != block)
@@ -423,11 +421,11 @@
 // 	Z_InsertBlock(block);
 // }
 
-// void Z_ChangeUser(void *ptr, void **user)
+// void Z_ChangeUser(void* ptr, void** user)
 // {
 // 	memblock_t*	block;
 
-// 	block = (memblock_t *) ((byte *)ptr - sizeof(memblock_t));
+// 	block = (memblock_t*) ((byte*)ptr - sizeof(memblock_t));
 
 // 	if (block->id != ZONEID)
 // 	{
@@ -445,7 +443,7 @@
 // //	return -1;
 // //}
 
-// //unsigned int Z_ZoneSize()
+// //unsigned Z_ZoneSize()
 // //{
 // //	return 0;
 // //}

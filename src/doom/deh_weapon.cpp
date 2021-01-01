@@ -28,7 +28,7 @@ DEH_BEGIN_MAPPING(weapon_mapping, weaponinfo_t)
  DEH_MAPPING("Firing frame",		flashstate)
 DEH_END_MAPPING
 
-static void *DEH_WeaponStart(deh_context_t *context, char *line)
+static void* DEH_WeaponStart(deh_context_t* context, char* line)
 {
 	int weapon_number = 0;
 
@@ -47,16 +47,16 @@ static void *DEH_WeaponStart(deh_context_t *context, char *line)
 	return &weaponinfo[weapon_number];
 }
 
-static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_WeaponParseLine(deh_context_t* context, char* line, void* tag)
 {
-	char *variable_name, *value;
-	weaponinfo_t *weapon;
+	char* variable_name, *value;
+	weaponinfo_t* weapon;
 	int ivalue;
 
 	if (tag == NULL)
 		return;
 
-	weapon = (weaponinfo_t *) tag;
+	weapon = (weaponinfo_t*) tag;
 
 	if (!DEH_ParseAssignment(line, &variable_name, &value))
 	{
@@ -71,7 +71,7 @@ static void DEH_WeaponParseLine(deh_context_t *context, char *line, void *tag)
 	DEH_SetMapping(context, &weapon_mapping, weapon, variable_name, ivalue);
 }
 
-static void DEH_WeaponSHA1Sum(sha1_context_t *context)
+static void DEH_WeaponSHA1Sum(sha1_context_t* context)
 {
 	int i;
 

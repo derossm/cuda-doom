@@ -18,29 +18,29 @@
 static struct
 {
 	GameMission_t mission;
-	GameMode_t mode;
+	GameMode mode;
 	int episode;
 	int map;
 } valid_modes[] = {
-	{ GameMission_t::pack_chex,		GameMode_t::retail,		1, 5 },
-	{ GameMission_t::doom,			GameMode_t::shareware,	1, 9 },
-	{ GameMission_t::doom,			GameMode_t::registered,	3, 9 },
-	{ GameMission_t::doom,			GameMode_t::retail,		4, 9 },
-	{ GameMission_t::doom2,			GameMode_t::commercial,	1, 32 },
-	{ GameMission_t::pack_tnt,		GameMode_t::commercial,	1, 32 },
-	{ GameMission_t::pack_plut,		GameMode_t::commercial,	1, 32 },
-	{ GameMission_t::pack_hacx,		GameMode_t::commercial,	1, 32 },
-	{ GameMission_t::pack_nerve,	GameMode_t::commercial,	1, 9 },
-	{ GameMission_t::pack_master,	GameMode_t::commercial,	1, 21 },
-	{ GameMission_t::heretic,		GameMode_t::shareware,	1, 9 },
-	{ GameMission_t::heretic,		GameMode_t::registered,	3, 9 },
-	{ GameMission_t::heretic,		GameMode_t::retail,		5, 9 },
-	{ GameMission_t::hexen,			GameMode_t::commercial,	1, 60 },
-	{ GameMission_t::strife,		GameMode_t::commercial,	1, 34 },
+	{ GameMission_t::pack_chex,		GameMode::retail,		1, 5 },
+	{ GameMission_t::doom,			GameMode::shareware,	1, 9 },
+	{ GameMission_t::doom,			GameMode::registered,	3, 9 },
+	{ GameMission_t::doom,			GameMode::retail,		4, 9 },
+	{ GameMission_t::doom2,			GameMode::commercial,	1, 32 },
+	{ GameMission_t::pack_tnt,		GameMode::commercial,	1, 32 },
+	{ GameMission_t::pack_plut,		GameMode::commercial,	1, 32 },
+	{ GameMission_t::pack_hacx,		GameMode::commercial,	1, 32 },
+	{ GameMission_t::pack_nerve,	GameMode::commercial,	1, 9 },
+	{ GameMission_t::pack_master,	GameMode::commercial,	1, 21 },
+	{ GameMission_t::heretic,		GameMode::shareware,	1, 9 },
+	{ GameMission_t::heretic,		GameMode::registered,	3, 9 },
+	{ GameMission_t::heretic,		GameMode::retail,		5, 9 },
+	{ GameMission_t::hexen,			GameMode::commercial,	1, 60 },
+	{ GameMission_t::strife,		GameMode::commercial,	1, 34 },
 };
 
 // Check that a gamemode+gamemission received over the network is valid.
-bool D_ValidGameMode(GameMission_t mission, GameMode_t mode)
+bool D_ValidGameMode(GameMission_t mission, GameMode mode)
 {
 	for (size_t i{0}; i < arrlen(valid_modes); ++i)
 	{
@@ -53,16 +53,16 @@ bool D_ValidGameMode(GameMission_t mission, GameMode_t mode)
 	return false;
 }
 
-bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, int map)
+bool D_ValidEpisodeMap(GameMission_t mission, GameMode mode, int episode, int map)
 {
 	// Hacks for Heretic secret episodes
 	if (mission == GameMission_t::heretic)
 	{
-		if (mode == GameMode_t::retail && episode == 6)
+		if (mode == GameMode::retail && episode == 6)
 		{
 			return map >= 1 && map <= 3;
 		}
-		else if (mode == GameMode_t::registered && episode == 4)
+		else if (mode == GameMode::registered && episode == 4)
 		{
 			return map == 1;
 		}
@@ -82,7 +82,7 @@ bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, int 
 }
 
 // Get the number of valid episodes for the specified mission/mode.
-int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)
+int D_GetNumEpisodes(GameMission_t mission, GameMode mode)
 {
 	auto episode{1};
 
@@ -160,7 +160,7 @@ bool D_IsEpisodeMap(GameMission_t mission)
 	}
 }
 
-const char *D_GameMissionString(GameMission_t mission)
+const char* D_GameMissionString(GameMission_t mission)
 {
 	switch (mission)
 	{
@@ -188,19 +188,19 @@ const char *D_GameMissionString(GameMission_t mission)
 	}
 }
 
-const char *D_GameModeString(GameMode_t mode)
+const char* D_GameModeString(GameMode mode)
 {
 	switch (mode)
 	{
-		case GameMode_t::shareware:
+		case GameMode::shareware:
 			return "shareware";
-		case GameMode_t::registered:
+		case GameMode::registered:
 			return "registered";
-		case GameMode_t::commercial:
+		case GameMode::commercial:
 			return "commercial";
-		case GameMode_t::retail:
+		case GameMode::retail:
 			return "retail";
-		case GameMode_t::indetermined:
+		case GameMode::indetermined:
 		default:
 			return "unknown";
 	}

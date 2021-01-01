@@ -9,29 +9,25 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Created by the sound utility written by Dave Taylor.
-//	Kept as a sample, DOOM2 sounds. Frozen.
+		Created by the sound utility written by Dave Taylor. Kept as a sample, DOOM2 sounds. Frozen.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __SOUNDS__
-#define __SOUNDS__
-
 #include "i_sound.h"
 
 // the complete set of sound effects
-extern sfxinfo_t	S_sfx[];
+extern sfxinfo_t S_sfx[];
 
 // the complete set of music
-extern musicinfo_t	S_music[];
+extern musicinfo_t S_music[];
 
 //
 // Identifiers for all music in game.
 //
 
-typedef enum
+enum class musicenum_t
 {
 	mus_None,
 	mus_e1m1,
@@ -124,14 +120,14 @@ typedef enum
 	mus_dm2int,
 	NUMMUSIC,
 	mus_musinfo
-} musicenum_t;
+};
 
 
 //
 // Identifiers for all sfx in game.
 //
 
-typedef enum
+enum class sfxenum_t
 {
 	sfx_None,
 	sfx_pistol,
@@ -251,6 +247,4 @@ typedef enum
 	// [crispy] play DSSECRET if available
 	sfx_secret,
 	NUMSFX
-} sfxenum_t;
-
-#endif
+};

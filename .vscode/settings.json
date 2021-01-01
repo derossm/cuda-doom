@@ -59,7 +59,11 @@
 		"streambuf": "cpp",
 		"xfacet": "cpp",
 		"xlocinfo": "cpp",
-		"xlocnum": "cpp"
+		"xlocnum": "cpp",
+		"functional": "cpp",
+		"list": "cpp",
+		"unordered_map": "cpp",
+		"xhash": "cpp"
 	},
 	"git.allowForcePush": true,
 	"editor.rulers": [

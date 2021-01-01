@@ -36,7 +36,7 @@ static int grabmouse = 1;
 
 int novert = 1;
 
-static int *all_mouse_buttons[] = {
+static int* all_mouse_buttons[] = {
 	&mousebfire,
 	&mousebstrafe,
 	&mousebforward,
@@ -56,7 +56,7 @@ static int *all_mouse_buttons[] = {
 static void MouseSetCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(variable))
 {
 	cudadoom::txt::TXT_CAST_ARG(int, variable);
-	unsigned int i;
+	unsigned i;
 
 	// Check if the same mouse button is used for a different action
 	// If so, set the other action(s) to -1 (unset)
@@ -71,10 +71,10 @@ static void MouseSetCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::tx
 	}
 }
 
-static void AddMouseControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char *label, int *var)
+static void AddMouseControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char* label, int *var)
 {
 	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, table);
-	cudadoom::txt::txt_mouse_input_t *mouse_input;
+	cudadoom::txt::txt_mouse_input_t* mouse_input;
 
 	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewLabel(label));
 
@@ -86,8 +86,8 @@ static void AddMouseControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char *la
 
 static void ConfigExtraButtons(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_table_t *buttons_table;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::txt_table_t* buttons_table;
 
 	window = cudadoom::txt::TXT_NewWindow("Additional mouse buttons");
 
@@ -126,9 +126,9 @@ static void ConfigExtraButtons(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::
 	}
 }
 
-void ConfigMouse(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigMouse(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::Window* window;
 
 	window = cudadoom::txt::TXT_NewWindow("Mouse configuration");
 

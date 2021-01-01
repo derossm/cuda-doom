@@ -12,9 +12,6 @@
 
 #include "../../derma/common.h"
 
-#ifndef __HULIB__
-#define __HULIB__
-
 // We are referring to patches.
 #include "r_defs.h"
 
@@ -24,9 +21,8 @@
 #define HU_MAXLINES			4
 #define HU_MAXLINELENGTH	80
 
-// Text Line widget
-// (parent of Scrolling Text and Input Text widgets)
-typedef struct
+// Text Line widget (parent of Scrolling Text and Input Text widgets)
+struct hu_textline_t
 {
 	// left-justified position of scrolling text window
 	int x;
@@ -39,14 +35,11 @@ typedef struct
 
 	// whether this line needs to be udpated
 	int needsupdate;
-
-} hu_textline_t;
-
-
+};
 
 // Scrolling Text window widget
 // (child of Text Line widget)
-typedef struct
+struct hu_stext_t
 {
 	hu_textline_t l[HU_MAXLINES];	// text lines to draw
 	int h;							// height in lines
@@ -55,13 +48,10 @@ typedef struct
 	// pointer to bool stating whether to update window
 	bool* on;
 	bool laston;					// last value of *->on.
-} hu_stext_t;
+};
 
-
-
-// Input Text Line widget
-// (child of Text Line widget)
-typedef struct
+// Input Text Line widget (child of Text Line widget)
+struct hu_itext_t
 {
 	hu_textline_t l;	// text line to input on
 
@@ -71,7 +61,7 @@ typedef struct
 	// pointer to bool stating whether to update window
 	bool* on;
 	bool laston;		// last value of *->on;
-} hu_itext_t;
+};
 
 // initializes heads-up widget library
 void HUlib_init();
@@ -126,5 +116,3 @@ void HUlib_drawIText(hu_itext_t* it);
 
 // erases all itext lines
 void HUlib_eraseIText(hu_itext_t* it);
-
-#endif

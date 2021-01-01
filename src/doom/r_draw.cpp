@@ -284,7 +284,7 @@ void R_DrawColumnLow()
 		{
 			// [crispy] brightmaps
 			const byte source = dc_source[frac>>FRACBITS];
-			*dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
+			*dest2 =* dest = dc_colormap[dc_brightmap[source]][source];
 
 			dest += SCREENWIDTH;
 			dest2 += SCREENWIDTH;
@@ -302,7 +302,7 @@ void R_DrawColumnLow()
 			// Hack. Does not work corretly.
 			// [crispy] brightmaps
 			const byte source = dc_source[(frac>>FRACBITS)&heightmask];
-			*dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
+			*dest2 =* dest = dc_colormap[dc_brightmap[source]][source];
 			dest += SCREENWIDTH;
 			dest2 += SCREENWIDTH;
 
@@ -329,7 +329,7 @@ int	fuzzoffset[FUZZTABLE] =
 int	fuzzpos = 0;
 
 // [crispy] draw fuzz effect independent of rendering frame rate
-static int fuzzpos_tic;
+static TimeType fuzzpos_tic;
 
 void R_SetFuzzPosTic()
 {
@@ -773,11 +773,11 @@ int dscount;
 // Draws the actual span.
 void R_DrawSpan()
 {
-	// unsigned int position, step;
-	pixel_t *dest;
+	// unsigned position, step;
+	pixel_t* dest;
 	int count;
 	int spot;
-	unsigned int xtemp, ytemp;
+	unsigned xtemp, ytemp;
 
 #ifdef RANGECHECK
 	if (ds_x2 < ds_x1 || ds_x1<0 || ds_x2>=SCREENWIDTH || (unsigned)ds_y>SCREENHEIGHT)
@@ -908,7 +908,7 @@ void R_DrawSpanLow()
 #endif
 
 /*
-	// unsigned int position, step;
+	// unsigned position, step;
 	position = ((ds_xfrac << 10) & 0xffff0000)
 				| ((ds_yfrac >> 6) & 0x0000ffff);
 	step = ((ds_xstep << 10) & 0xffff0000)
@@ -926,8 +926,8 @@ void R_DrawSpanLow()
 	{
 		// Calculate current texture index in u,v.
 		// [crispy] fix flats getting more distorted the closer they are to the right
-		unsigned int ytemp{(ds_yfrac >> 10) & 0x0fc0};
-		unsigned int xtemp{(ds_xfrac >> 16) & 0x3f};
+		unsigned ytemp{(ds_yfrac >> 10) & 0x0fc0};
+		unsigned xtemp{(ds_xfrac >> 16) & 0x3f};
 		int spot{xtemp | ytemp};
 
 		// Lowres/blocky mode does it twice,
@@ -996,7 +996,7 @@ void R_FillBackScreen()
 	// and the background buffer can be freed if it was previously in use.
 	if (scaledviewwidth == SCREENWIDTH)
 	{
-		if (background_buffer != nullptr)
+		if (background_buffer)
 		{
 			Z_Free(background_buffer);
 			background_buffer = nullptr;
@@ -1006,7 +1006,7 @@ void R_FillBackScreen()
 	}
 
 	// Allocate the background buffer if necessary
-	if (background_buffer == nullptr)
+	if (!background_buffer)
 	{
 		background_buffer = Z_Malloc<decltype(background_buffer)>(
 										MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
@@ -1015,7 +1015,7 @@ void R_FillBackScreen()
 	}
 
 	const char* name;
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		name = name2;
 	}
@@ -1099,7 +1099,7 @@ void R_VideoErase(unsigned ofs, int count)
 	// LFB copy.
 	// This might not be a good idea if memcpy is not optiomal, e.g. byte by byte on
 	// a 32bit CPU, as GNU GCC/Linux libc did at one point.
-	if (background_buffer != nullptr)
+	if (background_buffer)
 	{
 		memcpy(I_VideoBuffer + ofs, background_buffer + ofs, count * sizeof(*I_VideoBuffer));
 	}

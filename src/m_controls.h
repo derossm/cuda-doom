@@ -184,6 +184,6 @@ void M_BindStrifeControls();
 void M_BindWeaponControls();
 void M_BindMapControls();
 void M_BindMenuControls();
-void M_BindChatControls(unsigned int num_players);
+void M_BindChatControls(unsigned num_players);
 
 void M_ApplyPlatformDefaults();

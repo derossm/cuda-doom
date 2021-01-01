@@ -16,20 +16,31 @@
 #include "../../derma/common.h"
 
 #include "doomtype.h"
+
 #include "i_timer.h"
 #include "d_mode.h"
 
+// Difficulty/skill settings/filters.
+
+// Skill flags.
+#define MTF_EASY		1
+#define MTF_NORMAL		2
+#define MTF_HARD		4
+
+// Deaf monsters/do not react to sound.
+#define MTF_AMBUSH		8
+
 // DOOM version
-#define DOOM_VERSION 109
+constexpr size_t DOOM_VERSION{109};
 
 // Version code for cph's longtics hack ("v1.91")
-#define DOOM_191_VERSION 111
+constexpr size_t DOOM_191_VERSION{111};
 
 // If rangecheck is undefined, most parameter validation debugging code will not be compiled
-#define RANGECHECK
+//#define RANGE_CHECK
 
 // The maximum number of players, multiplayer/networking.
-#define MAXPLAYERS 4
+constexpr size_t MAX_PLAYERS{4};
 
 // The current state of the game: whether we are playing, gazing at the intermission screen, the game final animation, or a demo.
 enum class GameState_t
@@ -53,16 +64,6 @@ enum class GameAction_t
 	ga_worlddone,
 	ga_screenshot
 };
-
-// Difficulty/skill settings/filters.
-
-// Skill flags.
-#define MTF_EASY		1
-#define MTF_NORMAL		2
-#define MTF_HARD		4
-
-// Deaf monsters/do not react to sound.
-#define MTF_AMBUSH		8
 
 // Key cards.
 enum class CardType_t

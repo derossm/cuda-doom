@@ -27,7 +27,7 @@ if(MSVC)
 	add_compile_options(
 		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-"
 		"/Zc:__cplusplus" "/permissive-" "/Zc:preprocessor" "/experimental:module" "/MD"
-		"/W4" "/Od" "/arch:AVX2"
+		"/W4" "/Od" "/arch:AVX2" #"/Zc:externConstexpr"
 		)
 	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX")
 else()
@@ -85,6 +85,6 @@ configure_file(src/resource.rc.in src/resource.rc)
 configure_file(src/setup-res.rc.in src/setup-res.rc)
 configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)
 
-foreach(SUBDIR textscreen midiproc opl pcsound src)
+foreach(SUBDIR derma textscreen midiproc opl pcsound src)
 	add_subdirectory("${SUBDIR}")
 endforeach()

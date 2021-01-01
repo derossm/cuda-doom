@@ -34,17 +34,17 @@
 #include "mode.h"
 
 GameMission_t gamemission;
-static const iwad_t **iwads;
+static const iwad_t**iwads;
 
 struct mission_config_t
 {
-	const char *label;
+	const char* label;
 	GameMission_t mission;
 	int mask;
-	const char *name;
-	const char *config_file;
-	const char *extra_config_file;
-	const char *executable;
+	const char* name;
+	const char* config_file;
+	const char* extra_config_file;
+	const char* executable;
 };
 
 // Default mission to fall back on, if no IWADs are found at all:
@@ -98,12 +98,12 @@ static GameSelectCallback game_selected_callback;
 static int showMessages = 1;
 static int screenblocks = 10;
 static int detailLevel = 0;
-static char *savedir = NULL;
-static char *executable = NULL;
-static const char *game_title = "Doom";
-static char *back_flat = "F_PAVE01";
+static char* savedir = NULL;
+static char* executable = NULL;
+static const char* game_title = "Doom";
+static char* back_flat = "F_PAVE01";
 static int comport = 0;
-static char *nickname = NULL;
+static char* nickname = NULL;
 
 static void BindMiscVariables()
 {
@@ -194,9 +194,9 @@ void InitBindings()
 
 // Set the name of the executable program to run the game:
 
-static void SetExecutable(mission_config_t *config)
+static void SetExecutable(mission_config_t* config)
 {
-	char *extension;
+	char* extension;
 
 	free(executable);
 
@@ -209,7 +209,7 @@ static void SetExecutable(mission_config_t *config)
 	executable = M_StringJoin(config->executable, extension, NULL);
 }
 
-static void SetMission(mission_config_t *config)
+static void SetMission(mission_config_t* config)
 {
 	iwads = D_FindAllIWADs(config->mask);
 	gamemission = config->mission;
@@ -218,7 +218,7 @@ static void SetMission(mission_config_t *config)
 	M_SetConfigFilenames(config->config_file, config->extra_config_file);
 }
 
-static mission_config_t *GetMissionForName(const char *name)
+static mission_config_t* GetMissionForName(const char* name)
 {
 	int i;
 
@@ -238,8 +238,8 @@ static mission_config_t *GetMissionForName(const char *name)
 
 static bool CheckExecutableName(GameSelectCallback callback)
 {
-	mission_config_t *config;
-	const char *exe_name;
+	mission_config_t* config;
+	const char* exe_name;
 	int i;
 
 	exe_name = M_GetExecutableName();
@@ -269,9 +269,9 @@ static void GameSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::T
 
 static void OpenGameSelectDialog(GameSelectCallback callback)
 {
-	mission_config_t *mission = NULL;
-	cudadoom::txt::txt_window_t *window;
-	const iwad_t **iwads;
+	mission_config_t* mission = NULL;
+	cudadoom::txt::Window* window;
+	const iwad_t**iwads;
 	int num_games;
 	int i;
 
@@ -328,8 +328,8 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 
 void SetupMission(GameSelectCallback callback)
 {
-	mission_config_t *config;
-	const char *mission_name;
+	mission_config_t* config;
+	const char* mission_name;
 	int p;
 
 	//!
@@ -361,17 +361,17 @@ void SetupMission(GameSelectCallback callback)
 	}
 }
 
-const char *GetExecutableName()
+const char* GetExecutableName()
 {
 	return executable;
 }
 
-const char *GetGameTitle()
+const char* GetGameTitle()
 {
 	return game_title;
 }
 
-const iwad_t **GetIwads()
+const iwad_t**GetIwads()
 {
 	return iwads;
 }

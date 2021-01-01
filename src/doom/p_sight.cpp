@@ -38,9 +38,9 @@ int		sightcounts[2];
 
 // PTR_SightTraverse() for Doom 1.2 sight calculations
 // taken from prboom-plus/src/p_sight.c:69-102
-bool PTR_SightTraverse(intercept_t *in)
+bool PTR_SightTraverse(intercept_t* in)
 {
-	line_t *li;
+	line_t* li;
 	fixed_t slope;
 
 	li = in->d.line;
@@ -298,7 +298,7 @@ bool P_CrossBSPNode (int bspnum)
 	bsp = &nodes[bspnum];
 
 	// decide which side the start point is on
-	side = P_DivlineSide (strace.x, strace.y, (divline_t *)bsp);
+	side = P_DivlineSide (strace.x, strace.y, (divline_t*)bsp);
 	if (side == 2)
 	side = 0;	// an "on" should cross both sides
 
@@ -307,7 +307,7 @@ bool P_CrossBSPNode (int bspnum)
 	return false;
 
 	// the partition plane is crossed here
-	if (side == P_DivlineSide (t2x, t2y,(divline_t *)bsp))
+	if (side == P_DivlineSide (t2x, t2y,(divline_t*)bsp))
 	{
 	// the line doesn't touch the other side
 	return true;
@@ -324,7 +324,7 @@ bool P_CrossBSPNode (int bspnum)
 // if a straight line between t1 and t2 is unobstructed.
 // Uses REJECT.
 //
-bool P_CheckSight(mobj_t* t1, mobj_t* t2)
+bool P_CheckSight(MapObject* t1, MapObject* t2)
 {
 	int		s1;
 	int		s2;
@@ -338,7 +338,7 @@ bool P_CheckSight(mobj_t* t1, mobj_t* t2)
 	s1 = (t1->subsector->sector - sectors);
 	s2 = (t2->subsector->sector - sectors);
 	pnum = s1*numsectors + s2;
-	bytenum = pnum>>3;
+	bytenum class = pnum>>3;
 	bitnum = 1 << (pnum&7);
 
 	// Check in REJECT table.

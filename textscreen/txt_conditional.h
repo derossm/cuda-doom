@@ -12,44 +12,132 @@
 #include "../derma/common.h"
 
 #include "txt_widget.h"
+#include "txt_strut.h"
 
 namespace cudadoom::txt
 {
+
 /**
  * Conditional widget.
  *
  * A conditional widget contains another widget, and conditionally
  * shows or hides it based on the value of a variable.
  */
-struct txt_conditional_t
+struct Conditional
 {
 	Widget widget;
 	int *var;
 	int expected_value;
-	Widget *child;
+	Widget* child;
+
+	int ConditionTrue()
+	{
+		return *var == expected_value;
+	}
+
+	int CondSelectable()
+	{
+		return ConditionTrue() && child->SelectableWidget();
+	}
+
+	void CondSizeCalc()
+	{
+		if (!ConditionTrue())
+		{
+			width = 0;
+			height = 0;
+		}
+		else
+		{
+			child->CalcWidgetSize();
+			width = child->width;
+			height = child->height;
+		}
+	}
+
+	void CondLayout()
+	{
+		if (ConditionTrue())
+		{
+			child->coordinates.x = coordinates.x;
+			child->coordinates.y = coordinates.y;
+			child->LayoutWidget();
+		}
+	}
+
+	void CondDrawer()
+	{
+		if (ConditionTrue())
+		{
+			child->DrawWidget();
+		}
+	}
+
+	void CondDestructor()
+	{
+		//DestroyWidget(child);
+	}
+
+	void CondFocused(int focused)
+	{
+		if (ConditionTrue())
+		{
+			child->SetWidgetFocus(focused);
+		}
+	}
+
+	int CondKeyPress(int key)
+	{
+		if (ConditionTrue())
+		{
+			return child->WidgetKeyPress(key);
+		}
+
+		return 0;
+	}
+
+	void CondMousePress(int x, int y, int b)
+	{
+		if (ConditionTrue())
+		{
+			child->WidgetMousePress(x, y, b);
+		}
+	}
+
+	WidgetClass txt_conditional_class =
+	{
+		CondSelectable,
+		CondSizeCalc,
+		CondDrawer,
+		CondKeyPress,
+		CondDestructor,
+		CondMousePress,
+		CondLayout,
+		CondFocused,
+	};
+
+	Conditional(int* _var, int _expected_value, Widget* _child) : var(_var), expected_value(_expected_value), child(_child)
+	{
+		child->parent = (Widget*)this;
+	}
+
+	// "Static" conditional that returns an empty strut if the given static value is false. Kind of like a conditional but we only evaluate it at creation time.
+	Widget* If(int conditional, Widget* child)
+	{
+		if (conditional)
+		{
+			return child;
+		}
+		else
+		{
+			//txt_strut_t* nullwidget;
+			//DestroyWidget(child);
+			//nullwidget = NewStrut(0, 0);
+			//return &nullwidget->widget;
+			// FIXME
+			return nullptr;
+		}
+	}
 };
-
-/**
- * Create a new conditional widget.
- *
- * @param var				The variable to check.
- * @param expected_value If the variable has this value, the widget is shown.
- * @param child			The inner widget to show or hide.
- * @return				Pointer to the new conditional widget.
- */
-txt_conditional_t* TXT_NewConditional(int* var, int expected_value, TXT_UNCAST_ARG(child));
-
-/**
- * Return the given child widget if the given bool condition is true.
- *
- * If the condition is not true, the child widget is destroyed and a dummy
- * "null" widget is returned that shows nothing.
- *
- * @param condition		Boolean condition - true or false value.
- * @param child			Widget to conditionally return.
- * @return					Either child (if condition is true) or a null
- *							widget.
- */
-Widget* TXT_If(int condition, TXT_UNCAST_ARG(child));
 
 } /* END NAMESPACE cudadoom::txt */

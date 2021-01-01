@@ -20,7 +20,7 @@
 
 actionf_t codeptrs[NUMSTATES]; // [crispy] share with deh_bexptr.c
 
-static int CodePointerIndex(actionf_t *ptr)
+static int CodePointerIndex(actionf_t* ptr)
 {
 	int i;
 
@@ -59,7 +59,7 @@ static void DEH_PointerInit()
 	}
 }
 
-static void *DEH_PointerStart(deh_context_t *context, char *line)
+static void* DEH_PointerStart(deh_context_t* context, char* line)
 {
 	int frame_number = 0;
 
@@ -81,16 +81,16 @@ static void *DEH_PointerStart(deh_context_t *context, char *line)
 	return &states[frame_number];
 }
 
-static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 {
-	state_t *state;
-	char *variable_name, *value;
+	state_t* state;
+	char* variable_name, *value;
 	int ivalue;
 
 	if (tag == NULL)
 		return;
 
-	state = (state_t *) tag;
+	state = (state_t*) tag;
 
 	// Parse the assignment
 
@@ -126,7 +126,7 @@ static void DEH_PointerParseLine(deh_context_t *context, char *line, void *tag)
 	}
 }
 
-static void DEH_PointerSHA1Sum(sha1_context_t *context)
+static void DEH_PointerSHA1Sum(sha1_context_t* context)
 {
 	int i;
 

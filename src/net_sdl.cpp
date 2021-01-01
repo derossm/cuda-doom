@@ -34,13 +34,13 @@ static int port = DEFAULT_PORT;
 static UDPsocket udpsocket;
 static UDPpacket *recvpacket;
 
-typedef struct
+struct addrpair_t
 {
 	net_addr_t net_addr;
 	IPaddress sdl_addr;
-} addrpair_t;
+};
 
-static addrpair_t **addr_table;
+static addrpair_t**addr_table;
 static int addr_table_size = -1;
 
 // Initializes the address table
@@ -49,9 +49,8 @@ static void NET_SDL_InitAddrTable()
 {
 	addr_table_size = 16;
 
-	addr_table = Z_Malloc<addrpair_t>(sizeof(addrpair_t *) * addr_table_size,
-							pu_tags_t::PU_STATIC, 0);
-	memset(addr_table, 0, sizeof(addrpair_t *) * addr_table_size);
+	addr_table = Z_Malloc<addrpair_t>(sizeof(addrpair_t*) * addr_table_size, pu_tags_t::PU_STATIC, 0);
+	memset(addr_table, 0, sizeof(addrpair_t*) * addr_table_size);
 }
 
 static bool AddressesEqual(IPaddress *a, IPaddress *b)
@@ -63,9 +62,9 @@ static bool AddressesEqual(IPaddress *a, IPaddress *b)
 // Finds an address by searching the table. If the address is not found,
 // it is added to the table.
 
-static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
+static net_addr_t* NET_SDL_FindAddress(IPaddress *addr)
 {
-	addrpair_t *new_entry;
+	addrpair_t* new_entry;
 	int empty_entry = -1;
 	int i;
 
@@ -92,7 +91,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 
 	if (empty_entry < 0)
 	{
-		addrpair_t **new_addr_table;
+		addrpair_t**new_addr_table;
 		int new_addr_table_size;
 
 		// after reallocing, we will add this in as the first entry
@@ -104,11 +103,11 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 		// the existing table in. replace the old table.
 
 		new_addr_table_size = addr_table_size * 2;
-		new_addr_table = Z_Malloc<addrpair_t>(sizeof(addrpair_t *) * new_addr_table_size,
+		new_addr_table = Z_Malloc<addrpair_t>(sizeof(addrpair_t*) * new_addr_table_size,
 									pu_tags_t::PU_STATIC, 0);
-		memset(new_addr_table, 0, sizeof(addrpair_t *) * new_addr_table_size);
+		memset(new_addr_table, 0, sizeof(addrpair_t*) * new_addr_table_size);
 		memcpy(new_addr_table, addr_table,
-				sizeof(addrpair_t *) * addr_table_size);
+				sizeof(addrpair_t*) * addr_table_size);
 		Z_Free(addr_table);
 		addr_table = new_addr_table;
 		addr_table_size = new_addr_table_size;
@@ -128,7 +127,7 @@ static net_addr_t *NET_SDL_FindAddress(IPaddress *addr)
 	return &new_entry->net_addr;
 }
 
-static void NET_SDL_FreeAddress(net_addr_t *addr)
+static void NET_SDL_FreeAddress(net_addr_t* addr)
 {
 	int i;
 
@@ -214,7 +213,7 @@ static bool NET_SDL_InitServer()
 	return true;
 }
 
-static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
+static void NET_SDL_SendPacket(net_addr_t* addr, net_packet_t* packet)
 {
 	UDPpacket sdl_packet;
 	IPaddress ip;
@@ -226,13 +225,13 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 	}
 	else
 	{
-		ip = *((IPaddress *) addr->handle);
+		ip = *((IPaddress*) addr->handle);
 	}
 
 #if 0
 	{
 		static int this_second_sent = 0;
-		static int lasttime;
+		static TimeType lasttime;
 
 		this_second_sent += packet->len + 64;
 
@@ -262,7 +261,7 @@ static void NET_SDL_SendPacket(net_addr_t *addr, net_packet_t *packet)
 	}
 }
 
-static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
+static bool NET_SDL_RecvPacket(net_addr_t**addr, net_packet_t**packet)
 {
 	int result;
 
@@ -292,13 +291,13 @@ static bool NET_SDL_RecvPacket(net_addr_t **addr, net_packet_t **packet)
 	return true;
 }
 
-void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
+void NET_SDL_AddrToString(net_addr_t* addr, char* buffer, int buffer_len)
 {
 	IPaddress *ip;
 	uint32_t host;
 	uint16_t port;
 
-	ip = (IPaddress *) addr->handle;
+	ip = (IPaddress*) addr->handle;
 	host = SDLNet_Read32(&ip->host);
 	port = SDLNet_Read16(&ip->port);
 
@@ -318,13 +317,13 @@ void NET_SDL_AddrToString(net_addr_t *addr, char *buffer, int buffer_len)
 	}
 }
 
-net_addr_t *NET_SDL_ResolveAddress(const char *address)
+net_addr_t* NET_SDL_ResolveAddress(const char* address)
 {
 	IPaddress ip;
-	char *addr_hostname;
+	char* addr_hostname;
 	int addr_port;
 	int result;
-	char *colon;
+	char* colon;
 
 	colon = strchr(address, ':');
 

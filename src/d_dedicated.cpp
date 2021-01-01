@@ -7,15 +7,14 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-	Code specific to the standalone dedicated server.
+	DESCRIPTION:
+		Code specific to the standalone dedicated server.
 \**********************************************************************************************************************************************/
-
 
 #include "config.h"
 
 #include "m_argv.h"
 #include "net_defs.h"
-
 #include "net_dedicated.h"
 #include "net_server.h"
 #include "z_zone.h"
@@ -23,9 +22,7 @@
 void NET_CL_Run()
 {
 	// No client present :-)
-	//
-	// This is here because the server code sometimes runs this
-	// to let the client do some processing if it needs to.
+	// This is here because the server code sometimes runs this to let the client do some processing if it needs to.
 	// In a standalone dedicated server, we don't have a client.
 }
 
@@ -37,4 +34,3 @@ void D_DoomMain()
 
 	NET_DedicatedServer();
 }
-

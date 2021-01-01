@@ -42,7 +42,7 @@
 
 
 
-typedef struct
+struct maskdraw_t
 {
 	int		x1;
 	int		x2;
@@ -50,12 +50,11 @@ typedef struct
 	int		column;
 	int		topclip;
 	int		bottomclip;
-
-} maskdraw_t;
+};
 
 
 static degenmobj_t laserspot_m = {{0}};
-degenmobj_t *laserspot = &laserspot_m;
+degenmobj_t* laserspot = &laserspot_m;
 
 // [crispy] extendable, but the last char element must be zero,
 // keep in sync with multiitem_t multiitem_crosshairtype[] in m_menu.c
@@ -65,7 +64,7 @@ static laserpatch_t laserpatch_m[] = {
 	{'.', "cross3", 0, 0, 0},
 	{0, "", 0, 0, 0},
 };
-laserpatch_t *laserpatch = laserpatch_m;
+laserpatch_t* laserpatch = laserpatch_m;
 
 //
 // Sprite rotation 0 is facing the viewer,
@@ -191,9 +190,9 @@ void R_InstallSpriteLump(int lump, unsigned frame, char rot, bool flipped)
 // letter/number appended.
 // The rotation character can be 0 to signify no rotations.
 //
-void R_InitSpriteDefs(const char **namelist)
+void R_InitSpriteDefs(const char** namelist)
 {
-	const char **check;
+	const char** check;
 	int		i;
 	int		l;
 	int		frame;
@@ -323,7 +322,7 @@ static int	numvissprites;
 // R_InitSprites
 // Called at program start.
 //
-void R_InitSprites(const char **namelist)
+void R_InitSprites(const char** namelist)
 {
 	int		i;
 
@@ -434,15 +433,15 @@ void R_DrawMaskedColumn (column_t* column)
 
 	if (dc_yl <= dc_yh)
 	{
-		dc_source = (byte *)column + 3;
+		dc_source = (byte*)column + 3;
 		dc_texturemid = basetexturemid - (top<<FRACBITS);
-		// dc_source = (byte *)column + 3 - top;
+		// dc_source = (byte*)column + 3 - top;
 
 		// Drawn by either R_DrawColumn
 		// or (SHADOW) R_DrawFuzzColumn.
 		colfunc ();
 	}
-	column = (column_t *)( (byte *)column + column->length + 4);
+	column = (column_t*)( (byte*)column + column->length + 4);
 	}
 
 	dc_texturemid = basetexturemid;
@@ -522,7 +521,7 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 		continue;
 	}
 #endif
-	column = (column_t *) ((byte *)patch +
+	column = (column_t*) ((byte*)patch +
 					LONG(patch->columnofs[texturecolumn]));
 	R_DrawMaskedColumn (column);
 	}
@@ -540,7 +539,7 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 // Generates a vissprite for a thing
 // if it might be visible.
 //
-void R_ProjectSprite (mobj_t* thing)
+void R_ProjectSprite (MapObject* thing)
 {
 	fixed_t		tr_x;
 	fixed_t		tr_y;
@@ -623,7 +622,7 @@ void R_ProjectSprite (mobj_t* thing)
 
 	// decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-	if ((unsigned int) thing->sprite >= (unsigned int) numsprites)
+	if ((unsigned) thing->sprite >= (unsigned) numsprites)
 	I_Error("R_ProjectSprite: invalid sprite number %i ",
 			thing->sprite);
 #endif
@@ -807,9 +806,9 @@ void R_ProjectSprite (mobj_t* thing)
 #endif
 }
 
-extern void P_LineLaser (mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope);
+extern void P_LineLaser (MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope);
 
-byte *R_LaserspotColor ()
+byte* R_LaserspotColor ()
 {
 	if (crispy->crosshairtarget)
 	{
@@ -923,7 +922,7 @@ static void R_DrawLSprite ()
 //
 void R_AddSprites (sector_t* sec)
 {
-	mobj_t*		thing;
+	MapObject*		thing;
 	int			lightnum;
 
 	// BSP is traversed by subsector.
@@ -968,7 +967,7 @@ void R_DrawPSprite (pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate 
 
 	// decide which patch to use
 #ifdef RANGECHECK
-	if ( (unsigned)psp->state->sprite >= (unsigned int) numsprites)
+	if ( (unsigned)psp->state->sprite >= (unsigned) numsprites)
 	I_Error("R_ProjectSprite: invalid sprite number %i ",
 			psp->state->sprite);
 #endif
@@ -1119,10 +1118,10 @@ void R_DrawPlayerSprites ()
 //
 #ifdef HAVE_QSORT
 // [crispy] use stdlib's qsort() function for sorting the vissprites[] array
-static inline int cmp_vissprites (const void *a, const void *b)
+static inline int cmp_vissprites (const void* a, const void* b)
 {
-	const vissprite_t *vsa = (const vissprite_t *) a;
-	const vissprite_t *vsb = (const vissprite_t *) b;
+	const vissprite_t* vsa = (const vissprite_t*) a;
+	const vissprite_t* vsb = (const vissprite_t*) b;
 
 	const int ret = vsa->scale - vsb->scale;
 
@@ -1132,7 +1131,7 @@ static inline int cmp_vissprites (const void *a, const void *b)
 void R_SortVisSprites ()
 {
 	int count;
-	vissprite_t *ds;
+	vissprite_t* ds;
 
 	count = vissprite_p - vissprites;
 

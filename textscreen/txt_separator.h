@@ -11,10 +11,16 @@
 
 #include "../derma/common.h"
 
+#include "txt_main.h"
 #include "txt_widget.h"
+#include "txt_window.h"
+#include "txt_utf8.h"
+#include "txt_io.h"
+#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
+
 /**
  * @file txt_separator.h
  *
@@ -29,29 +35,77 @@ namespace cudadoom::txt
  * allows the separator to be used as a section divider for grouping
  * related controls.
  */
-struct txt_separator_t
+struct Separator : Widget
 {
-	Widget widget;
-	char* label;
+	std::string label;
+
+	void SizeCalc()
+	{
+		if (label != "")
+		{
+			// Minimum width is the string length + two spaces for padding
+			width = label.size() + 2;
+		}
+		else
+		{
+			width = 0;
+		}
+
+		height = 1;
+	}
+
+	void Drawer()
+	{
+		int x;
+		int y;
+
+		GetXY(&x, &y);
+
+		// Draw separator. Go back one character and draw two extra
+		// to overlap the window borders.
+
+		DrawSeparator(x-2, y, width + 4);
+
+		if (label != "")
+		{
+			GotoXY(x, y);
+
+			FGColor(ColorType::bright_green);
+			DrawString(" ");
+			DrawString(separator->label);
+			DrawString(" ");
+		}
+	}
+
+	void Destructor()
+	{
+	}
+
+	void SetLabel(Separator* separator, std::string& _label)
+	{
+		if (label != "")
+		{
+			label = std::string(_label);
+		}
+		else
+		{
+			label = std::string{};
+		}
+	}
+
+	WidgetClass txt_separator_class{
+		NeverSelectable,
+		SeparatorSizeCalc,
+		SeparatorDrawer,
+		nullptr,
+		SeparatorDestructor,
+		nullptr,
+		nullptr
+	};
+
+	Separator(std::string& _label) : label(_label)
+	{
+	}
 };
-
-extern WidgetClass txt_separator_class;
-
-/**
- * Create a new horizontal separator widget.
- *
- * @param label			Label to display on the separator (UTF-8 format).
- *						If this is set to NULL, no label is displayed.
- * @return				The new separator widget.
- */
-txt_separator_t* TXT_NewSeparator(const char* label);
-
-/**
- * Change the label on a separator.
- *
- * @param separator		The separator.
- * @param label			The new label (UTF-8 format).
- */
-void TXT_SetSeparatorLabel(txt_separator_t* separator, const char* label);
 
 } /* END NAMESPACE cudadoom::txt */

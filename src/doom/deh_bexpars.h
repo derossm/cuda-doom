@@ -8,17 +8,12 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-//
-// Parses [PARS] sections in BEX files
+	DESCRIPTION:
+		Parses [PARS] sections in BEX files
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef DEH_BEXPARS_H
-#define DEH_BEXPARS_H
-
 extern int bex_pars[6][10];
 extern int bex_cpars[32];
-
-#endif /* #ifndef DEH_BEXPARS_H */

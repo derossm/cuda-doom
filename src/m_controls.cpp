@@ -432,10 +432,10 @@ void M_BindMenuControls()
 	M_BindIntVariable("key_menu_reloadlevel", &key_menu_reloadlevel); // [crispy]
 }
 
-void M_BindChatControls(unsigned int num_players)
+void M_BindChatControls(unsigned num_players)
 {
 	char name[32]; // haleyjd: 20 not large enough - Thank you, come again!
-	unsigned int i; // haleyjd: signedness conflict
+	unsigned i; // haleyjd: signedness conflict
 
 	M_BindIntVariable("key_multi_msg",		&key_multi_msg);
 

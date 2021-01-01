@@ -8,21 +8,22 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include "txt_scrollpane.h"
-#include "txt_gui.h"
-#include "txt_io.h"
-#include "txt_main.h"
-#include "txt_table.h"
-
 #include "doomkeys.h"
 
-#define SCROLLBAR_VERTICAL	(1 << 0)
+#include "txt_main.h"
+#include "txt_table.h"
+#include "txt_io.h"
+#include "txt_gui.h"
+
+#include "txt_scrollpane.h"
+
+#define SCROLLBAR_VERTICAL (1 << 0)
 #define SCROLLBAR_HORIZONTAL (1 << 1)
 
 namespace cudadoom::txt
 {
 
-static int FullWidth(txt_scrollpane_t *scrollpane)
+static int FullWidth(txt_scrollpane_t* scrollpane)
 {
 	if (scrollpane->child != NULL)
 	{
@@ -34,7 +35,7 @@ static int FullWidth(txt_scrollpane_t *scrollpane)
 	}
 }
 
-static int FullHeight(txt_scrollpane_t *scrollpane)
+static int FullHeight(txt_scrollpane_t* scrollpane)
 {
 	if (scrollpane->child != NULL)
 	{
@@ -48,7 +49,7 @@ static int FullHeight(txt_scrollpane_t *scrollpane)
 
 // Calculate which scroll bars the pane needs.
 
-static int NeedsScrollbars(txt_scrollpane_t *scrollpane)
+static int NeedsScrollbars(txt_scrollpane_t* scrollpane)
 {
 	int result;
 
@@ -68,7 +69,7 @@ static int NeedsScrollbars(txt_scrollpane_t *scrollpane)
 
 // If a scrollbar isn't needed, the scroll position is reset.
 
-static void SanityCheckScrollbars(txt_scrollpane_t *scrollpane)
+static void SanityCheckScrollbars(txt_scrollpane_t* scrollpane)
 {
 	int scrollbars;
 	int max_x, max_y;
@@ -106,14 +107,14 @@ static void SanityCheckScrollbars(txt_scrollpane_t *scrollpane)
 	}
 }
 
-static void TXT_ScrollPaneSizeCalc(TXT_UNCAST_ARG(scrollpane))
+static void ScrollPaneSizeCalc(UNCAST_ARG(scrollpane))
 {
-	TXT_CAST_ARG(txt_scrollpane_t, scrollpane);
+	CAST_ARG(txt_scrollpane_t, scrollpane);
 	int scrollbars;
 
 	if (scrollpane->child != NULL)
 	{
-		TXT_CalcWidgetSize(scrollpane->child);
+		CalcWidgetSize(scrollpane->child);
 	}
 
 	// Expand as necessary (to ensure that no scrollbars are needed)?
@@ -158,9 +159,9 @@ static void TXT_ScrollPaneSizeCalc(TXT_UNCAST_ARG(scrollpane))
 	}
 }
 
-static void TXT_ScrollPaneDrawer(TXT_UNCAST_ARG(scrollpane))
+static void ScrollPaneDrawer(UNCAST_ARG(scrollpane))
 {
-	TXT_CAST_ARG(txt_scrollpane_t, scrollpane);
+	CAST_ARG(txt_scrollpane_t, scrollpane);
 	int x1, y1, x2, y2;
 	int scrollbars;
 
@@ -175,7 +176,7 @@ static void TXT_ScrollPaneDrawer(TXT_UNCAST_ARG(scrollpane))
 
 	if (scrollbars & SCROLLBAR_HORIZONTAL)
 	{
-		TXT_DrawHorizScrollbar(x1,
+		DrawHorizScrollbar(x1,
 								y1 + scrollpane->h,
 								scrollpane->w,
 								scrollpane->x,
@@ -184,47 +185,47 @@ static void TXT_ScrollPaneDrawer(TXT_UNCAST_ARG(scrollpane))
 
 	if (scrollbars & SCROLLBAR_VERTICAL)
 	{
-		TXT_DrawVertScrollbar(x1 + scrollpane->w,
+		DrawVertScrollbar(x1 + scrollpane->w,
 								y1,
 								scrollpane->h,
 								scrollpane->y,
 								FullHeight(scrollpane) - scrollpane->h);
 	}
 
-	TXT_PushClipArea(x1, x2, y1, y2);
+	PushClipArea(x1, x2, y1, y2);
 
 	// Draw the child widget
 
 	if (scrollpane->child != NULL)
 	{
-		TXT_DrawWidget(scrollpane->child);
+		DrawWidget(scrollpane->child);
 	}
 
 	// Restore old clipping area.
 
-	TXT_PopClipArea();
+	PopClipArea();
 }
 
-static void TXT_ScrollPaneDestructor(TXT_UNCAST_ARG(scrollpane))
+static void ScrollPaneDestructor(UNCAST_ARG(scrollpane))
 {
-	TXT_CAST_ARG(txt_scrollpane_t, scrollpane);
+	CAST_ARG(txt_scrollpane_t, scrollpane);
 
 	if (scrollpane->child != NULL)
 	{
-		TXT_DestroyWidget(scrollpane->child);
+		DestroyWidget(scrollpane->child);
 	}
 }
 
-static void TXT_ScrollPaneFocused(TXT_UNCAST_ARG(scrollpane), int focused)
+static void ScrollPaneFocused(UNCAST_ARG(scrollpane), int focused)
 {
-	TXT_CAST_ARG(txt_scrollpane_t, scrollpane);
+	CAST_ARG(txt_scrollpane_t, scrollpane);
 
 	// Whether the child is focused depends only on whether the scroll pane
 	// itself is focused. Pass through focus to the child.
 
 	if (scrollpane->child != NULL)
 	{
-		TXT_SetWidgetFocus(scrollpane->child, focused);
+		SetWidgetFocus(scrollpane->child, focused);
 	}
 }
 
@@ -232,11 +233,11 @@ static void TXT_ScrollPaneFocused(TXT_UNCAST_ARG(scrollpane), int focused)
 // automatically scroll the window to show the newly-selected
 // item.
 
-static void ShowSelectedWidget(txt_scrollpane_t *scrollpane)
+static void ShowSelectedWidget(txt_scrollpane_t* scrollpane)
 {
 	Widget *selected;
 
-	selected = TXT_GetSelectedWidget(scrollpane->child);
+	selected = GetSelectedWidget(scrollpane->child);
 
 	// Scroll up or down?
 
@@ -275,7 +276,7 @@ static void ShowSelectedWidget(txt_scrollpane_t *scrollpane)
 // The other unfortunate effect of doing things this way is that page keys
 // have no effect on tables _not_ in scrollpanes: not even home/end.
 
-static int PageSelectedWidget(txt_scrollpane_t *scrollpane, int key)
+static int PageSelectedWidget(txt_scrollpane_t* scrollpane, int key)
 {
 	int pagex = 0; // No page left/right yet, but some keyboards have them
 	int pagey = 0;
@@ -300,7 +301,7 @@ static int PageSelectedWidget(txt_scrollpane_t *scrollpane, int key)
 
 	if (scrollpane->child->widget_class == &txt_table_class)
 	{
-		return TXT_PageTable(scrollpane->child, pagex, pagey);
+		return PageTable(scrollpane->child, pagex, pagey);
 	}
 
 	return 0;
@@ -308,7 +309,7 @@ static int PageSelectedWidget(txt_scrollpane_t *scrollpane, int key)
 
 // Interpret arrow key presses as scroll commands
 
-static int InterpretScrollKey(txt_scrollpane_t *scrollpane, int key)
+static int InterpretScrollKey(txt_scrollpane_t* scrollpane, int key)
 {
 	int maxy;
 
@@ -378,16 +379,16 @@ static int InterpretScrollKey(txt_scrollpane_t *scrollpane, int key)
 	return 0;
 }
 
-static int TXT_ScrollPaneKeyPress(TXT_UNCAST_ARG(scrollpane), int key)
+static int ScrollPaneKeyPress(UNCAST_ARG(scrollpane), int key)
 {
-	TXT_CAST_ARG(txt_scrollpane_t, scrollpane);
+	CAST_ARG(txt_scrollpane_t, scrollpane);
 	int result;
 
 	result = 0;
 
 	if (scrollpane->child != NULL)
 	{
-		result = TXT_WidgetKeyPress(scrollpane->child, key);
+		result = WidgetKeyPress(scrollpane->child, key);
 
 		// Gross hack - if we're scrolling in a menu with the keyboard,
 		// automatically move the scroll pane to show the new
@@ -419,16 +420,16 @@ static int TXT_ScrollPaneKeyPress(TXT_UNCAST_ARG(scrollpane), int key)
 	return result;
 }
 
-static void TXT_ScrollPaneMousePress(TXT_UNCAST_ARG(scrollpane),
+static void ScrollPaneMousePress(UNCAST_ARG(scrollpane),
 										int x, int y, int b)
 {
-	TXT_CAST_ARG(txt_scrollpane_t, scrollpane);
+	CAST_ARG(txt_scrollpane_t, scrollpane);
 	int scrollbars;
 	int rel_x, rel_y;
 
 	scrollbars = NeedsScrollbars(scrollpane);
 
-	if (b == TXT_MOUSE_SCROLLUP)
+	if (b == MOUSE_SCROLLUP)
 	{
 		if (scrollbars & SCROLLBAR_VERTICAL)
 		{
@@ -441,7 +442,7 @@ static void TXT_ScrollPaneMousePress(TXT_UNCAST_ARG(scrollpane),
 
 		return;
 	}
-	else if (b == TXT_MOUSE_SCROLLDOWN)
+	else if (b == MOUSE_SCROLLDOWN)
 	{
 		if (scrollbars & SCROLLBAR_VERTICAL)
 		{
@@ -504,13 +505,13 @@ static void TXT_ScrollPaneMousePress(TXT_UNCAST_ARG(scrollpane),
 
 	if (scrollpane->child != NULL)
 	{
-		TXT_WidgetMousePress(scrollpane->child, x, y, b);
+		WidgetMousePress(scrollpane->child, x, y, b);
 	}
 }
 
-static void TXT_ScrollPaneLayout(TXT_UNCAST_ARG(scrollpane))
+static void ScrollPaneLayout(UNCAST_ARG(scrollpane))
 {
-	TXT_CAST_ARG(txt_scrollpane_t, scrollpane);
+	CAST_ARG(txt_scrollpane_t, scrollpane);
 
 	SanityCheckScrollbars(scrollpane);
 
@@ -522,13 +523,13 @@ static void TXT_ScrollPaneLayout(TXT_UNCAST_ARG(scrollpane))
 		scrollpane->child->x = scrollpane->widget.x - scrollpane->x;
 		scrollpane->child->y = scrollpane->widget.y - scrollpane->y;
 
-		TXT_LayoutWidget(scrollpane->child);
+		LayoutWidget(scrollpane->child);
 	}
 }
 
-static int TXT_ScrollPaneSelectable(TXT_UNCAST_ARG(scrollpane))
+static int ScrollPaneSelectable(UNCAST_ARG(scrollpane))
 {
-	TXT_CAST_ARG(txt_scrollpane_t, scrollpane);
+	CAST_ARG(txt_scrollpane_t, scrollpane);
 
 	// If scroll bars are displayed, the scroll pane must be selectable
 	// so that we can use the arrow keys to scroll around.
@@ -540,28 +541,28 @@ static int TXT_ScrollPaneSelectable(TXT_UNCAST_ARG(scrollpane))
 
 	// Otherwise, whether this is selectable depends on the child widget.
 
-	return TXT_SelectableWidget(scrollpane->child);
+	return SelectableWidget(scrollpane->child);
 }
 
 WidgetClass txt_scrollpane_class =
 {
-	TXT_ScrollPaneSelectable,
-	TXT_ScrollPaneSizeCalc,
-	TXT_ScrollPaneDrawer,
-	TXT_ScrollPaneKeyPress,
-	TXT_ScrollPaneDestructor,
-	TXT_ScrollPaneMousePress,
-	TXT_ScrollPaneLayout,
-	TXT_ScrollPaneFocused,
+	ScrollPaneSelectable,
+	ScrollPaneSizeCalc,
+	ScrollPaneDrawer,
+	ScrollPaneKeyPress,
+	ScrollPaneDestructor,
+	ScrollPaneMousePress,
+	ScrollPaneLayout,
+	ScrollPaneFocused,
 };
 
-txt_scrollpane_t *TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target))
+txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target))
 {
-	TXT_CAST_ARG(Widget, target);
-	txt_scrollpane_t *scrollpane;
+	CAST_ARG(Widget, target);
+	txt_scrollpane_t* scrollpane;
 
 	scrollpane = static_cast<decltype(scrollpane)>(malloc(sizeof(txt_scrollpane_t)));
-	TXT_InitWidget(scrollpane, &txt_scrollpane_class);
+	InitWidget(scrollpane, &txt_scrollpane_class);
 	scrollpane->w = w;
 	scrollpane->h = h;
 	scrollpane->x = 0;

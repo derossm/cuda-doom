@@ -29,7 +29,7 @@ DEH_BEGIN_MAPPING(sound_mapping, sfxinfo_t)
 	DEH_MAPPING("Neg. One 2", lumpnum)
 DEH_END_MAPPING
 
-static void *DEH_SoundStart(deh_context_t *context, char *line)
+static void* DEH_SoundStart(deh_context_t* context, char* line)
 {
 	int sound_number = 0;
 
@@ -54,16 +54,16 @@ static void *DEH_SoundStart(deh_context_t *context, char *line)
 	return &S_sfx[sound_number];
 }
 
-static void DEH_SoundParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_SoundParseLine(deh_context_t* context, char* line, void* tag)
 {
-	sfxinfo_t *sfx;
-	char *variable_name, *value;
+	sfxinfo_t* sfx;
+	char* variable_name, *value;
 	int ivalue;
 
 	if (tag == NULL)
 		return;
 
-	sfx = (sfxinfo_t *) tag;
+	sfx = (sfxinfo_t*) tag;
 
 	// Parse the assignment
 

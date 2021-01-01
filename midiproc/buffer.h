@@ -123,7 +123,7 @@ void Buffer_Shift(buffer_t* buf, size_t len)
 // WARNING: This reader will invalidate if the underlying buffer changes. Use it, then delete it before you touch the underlying buffer again.
 auto NewReader(buffer_t* buffer)
 {
-	//buffer_reader_t *reader = static_cast<decltype(reader)>(malloc(sizeof(buffer_reader_t)));
+	//buffer_reader_t* reader = static_cast<decltype(reader)>(malloc(sizeof(buffer_reader_t)));
 	auto reader{std::make_unique<buffer_reader_t>()};
 
 	reader->buffer = buffer;

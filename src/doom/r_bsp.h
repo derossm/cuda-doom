@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Refresh module, BSP traversal and handling.
+		Refresh module, BSP traversal and handling.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __R_BSP__
-#define __R_BSP__
 
 extern seg_t*		curline;
 extern side_t*		sidedef;
@@ -43,16 +40,10 @@ extern lighttable_t**	hscalelight;
 extern lighttable_t**	vscalelight;
 extern lighttable_t**	dscalelight;
 
-
 typedef void (*drawfunc_t) (int start, int stop);
 
-
 // BSP?
-void R_ClearClipSegs ();
-void R_ClearDrawSegs ();
+void R_ClearClipSegs();
+void R_ClearDrawSegs();
 
-
-void R_RenderBSPNode (int bspnum);
-
-
-#endif
+void R_RenderBSPNode(int bspnum);

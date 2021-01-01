@@ -30,9 +30,9 @@ static bool pcs_initialized = false;
 static SDL_mutex *sound_lock;
 static bool use_sfx_prefix;
 
-static uint8_t *current_sound_lump = NULL;
-static uint8_t *current_sound_pos = NULL;
-static unsigned int current_sound_remaining = 0;
+static uint8_t* current_sound_lump = NULL;
+static uint8_t* current_sound_pos = NULL;
+static unsigned current_sound_remaining = 0;
 static int current_sound_handle = 0;
 static int current_sound_lump_num = -1;
 
@@ -58,7 +58,7 @@ static const uint16_t divisors[] = {
 
 static void PCSCallbackFunc(int *duration, int *freq)
 {
-	unsigned int tone;
+	unsigned tone;
 
 	*duration = 1000 / 140;
 
@@ -98,7 +98,7 @@ static void PCSCallbackFunc(int *duration, int *freq)
 	SDL_UnlockMutex(sound_lock);
 }
 
-static bool CachePCSLump(sfxinfo_t *sfxinfo)
+static bool CachePCSLump(sfxinfo_t* sfxinfo)
 {
 	int lumplen;
 	int headerlen;
@@ -143,10 +143,10 @@ static bool CachePCSLump(sfxinfo_t *sfxinfo)
 // Heretic source code, where there are remnants of this left over
 // from Doom.
 
-static bool IsDisabledSound(sfxinfo_t *sfxinfo)
+static bool IsDisabledSound(sfxinfo_t* sfxinfo)
 {
 	int i;
-	const char *disabled_sounds[] = {
+	const char* disabled_sounds[] = {
 		"posact",
 		"bgact",
 		"dmact",
@@ -166,7 +166,7 @@ static bool IsDisabledSound(sfxinfo_t *sfxinfo)
 	return false;
 }
 
-static int I_PCS_StartSound(sfxinfo_t *sfxinfo,
+static int I_PCS_StartSound(sfxinfo_t* sfxinfo,
 							int channel,
 							int vol,
 							int sep,

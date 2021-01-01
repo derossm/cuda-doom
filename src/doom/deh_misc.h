@@ -7,14 +7,12 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses "Misc" sections in dehacked files
+	DESCRIPTION:
+		Parses "Misc" sections in dehacked files
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef DEH_MISC_H
-#define DEH_MISC_H
 
 #define DEH_DEFAULT_INITIAL_HEALTH 100
 #define DEH_DEFAULT_INITIAL_BULLETS 50
@@ -72,5 +70,3 @@ extern int deh_species_infighting;
 #define deh_species_infighting DEH_DEFAULT_SPECIES_INFIGHTING
 
 #endif
-
-#endif /* #ifndef DEH_MISC_H */

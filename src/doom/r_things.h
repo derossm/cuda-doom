@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Rendering of moving objects, sprites.
+		Rendering of moving objects, sprites.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __R_THINGS__
-#define __R_THINGS__
 
 #define MAXVISSPRITES	128
 
@@ -38,20 +35,15 @@ extern int64_t		sprtopscreen; // [crispy] WiggleFix
 extern fixed_t		pspritescale;
 extern fixed_t		pspriteiscale;
 
+void R_DrawMaskedColumn(column_t* column);
 
-void R_DrawMaskedColumn (column_t* column);
+void R_SortVisSprites();
 
-
-void R_SortVisSprites ();
-
-void R_AddSprites (sector_t* sec);
-void R_AddPSprites ();
-void R_DrawSprites ();
-void R_InitSprites(const char **namelist);
-void R_ClearSprites ();
-void R_DrawMasked ();
+void R_AddSprites(sector_t* sec);
+void R_AddPSprites();
+void R_DrawSprites();
+void R_InitSprites(const char** namelist);
+void R_ClearSprites();
+void R_DrawMasked();
 
 void R_ClipVisSprite(vissprite_t* vis, int xl, int xh);
-
-
-#endif

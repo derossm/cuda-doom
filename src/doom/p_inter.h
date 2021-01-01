@@ -15,9 +15,4 @@
 
 #include "../../derma/common.h"
 
-#ifndef __P_INTER__
-#define __P_INTER__
-
-bool	P_GivePower(player_t*, int);
-
-#endif
+bool P_GivePower(Player*, int);

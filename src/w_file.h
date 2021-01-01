@@ -9,20 +9,18 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	WAD I/O functions.
+		WAD I/O functions.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef __W_FILE__
-#define __W_FILE__
-
 #include "doomtype.h"
 
-typedef struct _wad_file_s wad_file_t;
+// FIXME
+using wad_file_t = _wad_file_t;
 
-typedef struct
+struct wad_file_class_t
 {
 	// Open a file for reading.
 	wad_file_t* (*OpenFile)(const char* path);
@@ -32,10 +30,10 @@ typedef struct
 
 	// Read data from the specified position in the file into the
 	// provided buffer. Returns the number of bytes read.
-	size_t (*Read)(wad_file_t* file, unsigned int offset, void* buffer, size_t buffer_len);
-} wad_file_class_t;
+	size_t (*Read)(wad_file_t* file, unsigned offset, void* buffer, size_t buffer_len);
+};
 
-struct _wad_file_s
+struct _wad_file_t
 {
 	// Class of this file.
 	wad_file_class_t* file_class;
@@ -45,7 +43,7 @@ struct _wad_file_s
 	byte* mapped;
 
 	// Length of the file, in bytes.
-	unsigned int length;
+	unsigned length;
 
 	// File's location on disk.
 	char* path; // [crispy] un-const
@@ -61,6 +59,4 @@ void W_CloseFile(wad_file_t* wad);
 // Read data from the specified file into the provided buffer. The
 // data is read from the specified offset from the start of the file.
 // Returns the number of bytes read.
-size_t W_Read(wad_file_t* wad, unsigned int offset, void* buffer, size_t buffer_len);
-
-#endif /* #ifndef __W_FILE__ */
+size_t W_Read(wad_file_t* wad, unsigned offset, void* buffer, size_t buffer_len);

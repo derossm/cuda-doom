@@ -47,7 +47,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
 		{
-			char *filename;
+			char* filename;
 
 			modifiedgame = true;
 
@@ -76,7 +76,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
 		{
-			char *filename;
+			char* filename;
 
 			modifiedgame = true;
 
@@ -104,7 +104,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
 		{
-			char *filename;
+			char* filename;
 
 			modifiedgame = true;
 
@@ -130,7 +130,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
 		{
-			char *filename;
+			char* filename;
 
 			modifiedgame = true;
 			filename = D_TryFindWADByName(myargv[p]);
@@ -154,7 +154,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
 		{
-			char *filename;
+			char* filename;
 
 			modifiedgame = true;
 
@@ -181,7 +181,7 @@ bool W_ParseCommandLine()
 	modifiedgame = true;			// homebrew levels
 	while (++p != myargc && myargv[p][0] != '-')
 		{
-			char *filename;
+			char* filename;
 
 			filename = D_TryFindWADByName(myargv[p]);
 
@@ -198,10 +198,10 @@ bool W_ParseCommandLine()
 }
 
 // Load all WAD files from the given directory.
-void W_AutoLoadWADs(const char *path)
+void W_AutoLoadWADs(const char* path)
 {
-	glob_t *glob;
-	const char *filename;
+	glob_t* glob;
+	const char* filename;
 
 	glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE|GLOB_FLAG_SORTED,
 							"*.wad", "*.lmp", NULL);
@@ -225,7 +225,7 @@ void W_AutoLoadWADs(const char *path)
 static const struct
 {
 	GameMission_t mission;
-	const char *lumpname;
+	const char* lumpname;
 } unique_lumps[] = {
 	{ doom,	"POSSA1" },
 	{ heretic, "IMPXA1" },

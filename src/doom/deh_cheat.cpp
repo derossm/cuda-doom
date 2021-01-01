@@ -19,11 +19,11 @@
 #include "am_map.h"
 #include "st_stuff.h"
 
-typedef struct
+struct deh_cheat_t
 {
-	const char *name;
-	cheatseq_t *seq;
-} deh_cheat_t;
+	const char* name;
+	cheatseq_t* seq;
+};
 
 static deh_cheat_t allcheats[] =
 {
@@ -46,7 +46,7 @@ static deh_cheat_t allcheats[] =
 	{"Map cheat",			&cheat_amap },
 };
 
-static deh_cheat_t *FindCheatByName(char *name)
+static deh_cheat_t* FindCheatByName(char* name)
 {
 	size_t i;
 
@@ -59,18 +59,18 @@ static deh_cheat_t *FindCheatByName(char *name)
 	return NULL;
 }
 
-static void *DEH_CheatStart(deh_context_t *context, char *line)
+static void* DEH_CheatStart(deh_context_t* context, char* line)
 {
 	return NULL;
 }
 
-static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_CheatParseLine(deh_context_t* context, char* line, void* tag)
 {
-	deh_cheat_t *cheat;
-	char *variable_name;
-	char *value;
-	unsigned char *unsvalue;
-	unsigned int i;
+	deh_cheat_t* cheat;
+	char* variable_name;
+	char* value;
+	unsigned char* unsvalue;
+	unsigned i;
 
 	if (!DEH_ParseAssignment(line, &variable_name, &value))
 	{
@@ -80,7 +80,7 @@ static void DEH_CheatParseLine(deh_context_t *context, char *line, void *tag)
 		return;
 	}
 
-	unsvalue = (unsigned char *) value;
+	unsvalue = (unsigned char*) value;
 
 	cheat = FindCheatByName(variable_name);
 

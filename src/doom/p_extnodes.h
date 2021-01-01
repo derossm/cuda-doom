@@ -10,24 +10,20 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	[crispy] support maps with NODES in compressed or uncompressed ZDBSP
-//	format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
+		support maps with NODES in compressed or uncompressed ZDBSP format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __P_EXTNODES__
-#define __P_EXTNODES__
-
-typedef enum
+enum class mapformat_t
 {
 	MFMT_DOOMBSP = 0x000,
 	MFMT_DEEPBSP = 0x001,
 	MFMT_ZDBSPX = 0x002,
 	MFMT_ZDBSPZ = 0x004,
 	MFMT_HEXEN	= 0x100,
-} mapformat_t;
+};
 
 extern mapformat_t P_CheckMapFormat (int lumpnum);
 
@@ -37,5 +33,3 @@ extern void P_LoadNodes_DeePBSP (int lump);
 extern void P_LoadNodes_ZDBSP (int lump, bool compressed);
 extern void P_LoadThings_Hexen (int lump);
 extern void P_LoadLineDefs_Hexen (int lump);
-
-#endif

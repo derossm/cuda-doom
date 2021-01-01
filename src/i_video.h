@@ -9,13 +9,14 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	System specific interface stuff.
+		System specific interface stuff.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
 #include "doomtype.h"
+
 #include "crispy.h"
 
 // Screen width and height.
@@ -48,11 +49,11 @@ void I_ShutdownGraphics();
 
 // Takes full 8 bit values.
 #ifndef CRISPY_TRUECOLOR
-void I_SetPalette(byte* palette);
-int I_GetPaletteIndex(int r, int g, int b);
+	void I_SetPalette(byte* palette);
+	int I_GetPaletteIndex(int r, int g, int b);
 #else
-void I_SetPalette(int palette);
-extern const pixel_t I_MapRGB(const uint8_t r, const uint8_t g, const uint8_t b);
+	void I_SetPalette(int palette);
+	extern const pixel_t I_MapRGB(const uint8_t r, const uint8_t g, const uint8_t b);
 #endif
 
 void I_UpdateNoBlit();
@@ -62,7 +63,7 @@ void I_ReadScreen(pixel_t* scr);
 
 void I_BeginRead();
 
-void I_SetWindowTitle(const char *title);
+void I_SetWindowTitle(const char* title);
 
 void I_CheckIsScreensaver();
 void I_SetGrabMouseCallback(grabmouse_callback_t func);
@@ -104,4 +105,4 @@ extern char* window_position;
 void I_GetWindowPosition(int* x, int* y, int w, int h);
 
 // Joystic/gamepad hysteresis
-extern unsigned int joywait;
+extern unsigned joywait;

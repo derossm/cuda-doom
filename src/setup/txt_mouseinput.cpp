@@ -22,7 +22,7 @@
 // eg. "BUTTON #10"
 #define MOUSE_INPUT_WIDTH 10
 
-static int MousePressCallback(txt_window_t *window,
+static int MousePressCallback(Window* window,
 								int x, int y, int b,
 								TXT_UNCAST_ARG(mouse_input))
 {
@@ -42,12 +42,12 @@ static int MousePressCallback(txt_window_t *window,
 	return 1;
 }
 
-static void OpenPromptWindow(txt_mouse_input_t *mouse_input)
+static void OpenPromptWindow(txt_mouse_input_t* mouse_input)
 {
-	txt_window_t *window;
+	Window* window;
 
 	// Silently update when the shift key is held down.
-	mouse_input->check_conflicts = !TXT_GetModifierState(TXT_MOD_SHIFT);
+	mouse_input->check_conflicts = !TXT_GetModifierState(ModifierType::shift);
 
 	window = TXT_MessageBox(NULL, "Press the new mouse button...");
 
@@ -64,7 +64,7 @@ static void TXT_MouseInputSizeCalc(TXT_UNCAST_ARG(mouse_input))
 	mouse_input->widget.h = 1;
 }
 
-static void GetMouseButtonDescription(int button, char *buf, size_t buf_len)
+static void GetMouseButtonDescription(int button, char* buf, size_t buf_len)
 {
 	switch (button)
 	{
@@ -99,7 +99,7 @@ static void TXT_MouseInputDrawer(TXT_UNCAST_ARG(mouse_input))
 	}
 
 	TXT_SetWidgetBG(mouse_input);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(ColorType::bright_white);
 
 	TXT_DrawString(buf);
 
@@ -157,9 +157,9 @@ WidgetClass txt_mouse_input_class =
 	NULL,
 };
 
-txt_mouse_input_t *TXT_NewMouseInput(int *variable)
+txt_mouse_input_t* TXT_NewMouseInput(int *variable)
 {
-	txt_mouse_input_t *mouse_input;
+	txt_mouse_input_t* mouse_input;
 
 	mouse_input = static_cast<decltype(mouse_input)>(malloc(sizeof(txt_mouse_input_t)));
 

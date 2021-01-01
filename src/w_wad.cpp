@@ -21,27 +21,27 @@
 #include "w_wad.h"
 
 // TODO research PACKED_STRUCT nonsense
-typedef PACKED_STRUCT (
+struct wadinfo_t
 {
 	// Should be "IWAD" or "PWAD".
 	char		identification[4];
 	int			numlumps;
 	int			infotableofs;
-}) wadinfo_t;
+};
 
-typedef PACKED_STRUCT (
+struct filelump_t
 {
 	int			filepos;
 	int			size;
 	char		name[8];
-}) filelump_t;
+};
 
 // Location of each lump on disk.
 lumpinfo_t** lumpinfo;
-unsigned int numlumps = 0;
+unsigned numlumps = 0;
 
 // Hash table for fast lookups
-static lumpindex_t *lumphash;
+static lumpindex_t* lumphash;
 
 // Variables for the reload hack: filename of the PWAD to reload, and the
 // lumps from WADs before the reload file, so we can resent numlumps and
@@ -52,10 +52,10 @@ static char* reloadname = nullptr;
 static int reloadlump = -1;
 
 // Hash function used for lump names.
-unsigned int W_LumpNameHash(const char* s)
+unsigned W_LumpNameHash(const char* s)
 {
 	// This is the djb2 string hash function, modded to work on strings that have a maximum length of 8.
-	unsigned int result = 5381;
+	unsigned result = 5381;
 
 	for (size_t i{0}; i < 8 && s[i] != '\0'; ++i)
 	{
@@ -164,12 +164,12 @@ wad_file_t* W_AddFile (const char* filename)
 
 	startlump = numlumps;
 	numlumps += numfilelumps;
-	lumpinfo = static_cast<decltype(lumpinfo)>(I_Realloc(lumpinfo, numlumps * sizeof(lumpinfo_t *)));
+	lumpinfo = static_cast<decltype(lumpinfo)>(I_Realloc(lumpinfo, numlumps * sizeof(lumpinfo_t*)));
 	filerover = fileinfo;
 
 	for (i = startlump; i < numlumps; ++i)
 	{
-		lumpinfo_t *lump_p = &filelumps[i - startlump];
+		lumpinfo_t* lump_p = &filelumps[i - startlump];
 		lump_p->wad_file = wad_file;
 		lump_p->position = LONG(filerover->filepos);
 		lump_p->size = LONG(filerover->size);
@@ -353,7 +353,7 @@ void* W_CacheLumpName(const char* name, pu_tags_t tag)
 // complicated ...
 void W_ReleaseLumpNum(lumpindex_t lumpnum)
 {
-	lumpinfo_t *lump;
+	lumpinfo_t* lump;
 
 	if ((unsigned)lumpnum >= numlumps)
 	{
@@ -451,7 +451,7 @@ void W_Profile()
 void W_GenerateHashTable()
 {
 	// Free the old hash table, if there is one:
-	if (lumphash != nullptr)
+	if (lumphash)
 	{
 		Z_Free(lumphash);
 	}
@@ -487,7 +487,7 @@ void W_GenerateHashTable()
 // But: the reload feature is a fragile hack...
 void W_Reload()
 {
-	if (reloadname == nullptr)
+	if (!reloadname)
 	{
 		return;
 	}
@@ -495,7 +495,7 @@ void W_Reload()
 	// We must free any lumps being cached from the PWAD we're about to reload:
 	for (lumpindex_t i = reloadlump; i < numlumps; ++i)
 	{
-		if (lumpinfo[i]->cache != nullptr)
+		if (lumpinfo[i]->cache)
 		{
 			Z_Free(lumpinfo[i]->cache);
 		}

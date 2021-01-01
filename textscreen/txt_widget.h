@@ -11,81 +11,127 @@
 
 #include "../derma/common.h"
 
+#include "txt_enums.h"
 #include "txt_defines.h"
+#include "txt_desktop.h"
+#include "txt_io.h"
+#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
 
-enum class AlignVertical
-{
-	TXT_VERT_TOP,
-	TXT_VERT_CENTER,
-	TXT_VERT_BOTTOM
-};
-
-enum class AlignHorizontal
-{
-	TXT_HORIZ_LEFT,
-	TXT_HORIZ_CENTER,
-	TXT_HORIZ_RIGHT
-};
-
 /**
  * A GUI widget.
  *
- * A widget is an individual component of a GUI. Various different widget
- * types exist.
+ * A widget is an individual component of a GUI. Various different widget types exist.
  *
- * Widgets may emit signals. The types of signal emitted by a widget
- * depend on the type of the widget. It is possible to be notified
- * when a signal occurs using the @ref TXT_SignalConnect function.
+ * Widgets may emit signals. The types of signal emitted by a widget depend on the type of the widget.
+ * It is possible to be notified when a signal occurs using the @ref SignalConnect function.
  */
 
-typedef void (*WidgetSizeCalc)(TXT_UNCAST_ARG(widget));
-typedef void (*WidgetDrawer)(TXT_UNCAST_ARG(widget));
-typedef void (*WidgetDestroy)(TXT_UNCAST_ARG(widget));
-typedef int (*WidgetKeyPress)(TXT_UNCAST_ARG(widget), int key);
-typedef void (*WidgetSignalFunc)(TXT_UNCAST_ARG(widget), void* user_data);
-typedef void (*MousePressFunc)(TXT_UNCAST_ARG(widget), int x, int y, int b);
-typedef void (*WidgetLayoutFunc)(TXT_UNCAST_ARG(widget));
-typedef int (*WidgetSelectableFunc)(TXT_UNCAST_ARG(widget));
-typedef void (*WidgetFocusFunc)(TXT_UNCAST_ARG(widget), bool focused);
+using UserData = void*;
 
-struct CallbackEntry
+class CallbackEntry
 {
+private:
+	UserData user;
+	std::function<void(UserData)> handle;
+	std::string signal;
+
+	CallbackEntry() = delete;
+
+	// do not copy
+	CallbackEntry(const CallbackEntry& rhs) = delete;
+	CallbackEntry& operator=(const CallbackEntry& rhs) = delete;
+
 public:
-	char* signal_name{nullptr};
-	void* user_data{nullptr};
-	WidgetSignalFunc func{nullptr};
+	CallbackEntry(std::string _signal, std::function<void(UserData)> _handle, UserData _user) noexcept
+		: signal(std::move(_signal)), handle(std::move(_handle)), user(std::move(_user))
+	{
+	}
+
+	CallbackEntry(CallbackEntry&& rhs) noexcept : signal(std::move(rhs.signal)), handle(std::move(rhs.handle)), user(std::move(rhs.user))
+	{
+	}
+
+	std::function<void(UserData)> findByName(std::string& _signal)
+	{
+		if (signal.compare(_signal))
+		{
+			return handle;
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+
+	CallbackEntry& operator=(CallbackEntry&& rhs) noexcept
+	{
+		signal = std::move(rhs.signal);
+		handle = std::move(rhs.handle);
+		user = std::move(rhs.user);
+		return *this;
+	}
+
+	~CallbackEntry() = default;
+
 };
 
-struct CallbackTable
+class CallbackTable
 {
-public:
+private:
 	std::vector<CallbackEntry> callbacks;
-	size_t numCallbacks{0ull};
-	size_t refCount{0ull};
+
+	CallbackTable(CallbackTable&&) = delete;
+	CallbackTable& operator=(CallbackTable&&) = delete;
+
+	CallbackTable(const CallbackTable&) = delete;
+	CallbackTable& operator=(const CallbackTable&) = delete;
 
 public:
-	CallbackTable() noexcept : callbacks(20)
+	// reserve callbacks in contiguous memory
+	CallbackTable() noexcept : callbacks(32)
 	{
+	}
+
+	~CallbackTable() = default;
+
+	void connect(std::string&& signal, std::function<void(UserData)>&& handle, UserData&& user)
+	{
+		callbacks.emplace_back(CallbackEntry(std::move(signal), std::move(handle), std::move(user)));
+	}
+
+	std::function<void(UserData)> get(std::string& signal)
+	{
+		for(auto& iter: callbacks)
+		{
+			if (auto ptr = iter.findByName(signal); ptr)
+			{
+				return ptr;
+			}
+		}
+
+		return nullptr;
+	}
+
+	size_t size()
+	{
+		return callbacks.size();
 	}
 };
 
 class WidgetClass
 {
 public:
-	WidgetSelectableFunc selectable;
-	WidgetSizeCalc size_calc;
-	WidgetDrawer drawer;
-	WidgetKeyPress key_press;
-	WidgetDestroy destructor;
-	MousePressFunc mouse_press;
-	WidgetLayoutFunc layout;
-	WidgetFocusFunc focus_change;
-
-public:
-	//TxtWidgetClass(){};
+	std::function<int(void)> SelectableWidget{};
+	std::function<void(void)> CalcWidgetSize{};
+	std::function<void(void)> DrawWidget{};
+	std::function<int(int)> WidgetKeyPress{};
+	std::function<void(void)> DestroyWidget{};
+	std::function<int(int, int, int)> WidgetMousePress{};
+	std::function<void(void)> LayoutWidget{};
+	std::function<void(bool)> SetWidgetFocus{};
 };
 
 class Widget
@@ -94,18 +140,28 @@ class Widget
 public:
 	Widget* parent{nullptr};
 	WidgetClass* widget_class{nullptr};
-	CallbackTable* callback_table{nullptr};
 
 	// These are set automatically when the window is drawn and should not be set manually.
-	int64_t x{};
-	int64_t y{};
-	int64_t width{};
-	int64_t height{};
+	int64_t x{0};
+	int64_t y{0};
+	int64_t width{0};
+	int64_t height{0};
+
+	CallbackTable callback_table;
 
 	AlignHorizontal align{};
 
 	bool _visible{false};
 	bool _focused{false};
+
+	Widget()
+	{
+		
+	}
+
+	~Widget()
+	{
+	}
 
 public:
 	inline bool visible() const noexcept
@@ -183,60 +239,172 @@ public:
 		unsetFocus();
 	}
 
-	inline void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget))
+	inline void CalcWidgetSize()
 	{
-		TXT_CAST_ARG(Widget, widget);
-
-		widget->widget_class->size_calc(widget);
+		size_calc(widget);
 	}
 
-	void TXT_DrawWidget(TXT_UNCAST_ARG(widget));
-	void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char* signal_name);
-	int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key);
-	void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b);
-	void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
-	void TXT_LayoutWidget(TXT_UNCAST_ARG(widget));
-	bool TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
-	bool TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
-	void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), bool focused);
-	void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, WidgetSignalFunc func, void* user_data);
-	void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), AlignHorizontal horiz_align);
-	int TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
-	bool TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
-	void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
-	bool TXT_ContainsWidget(TXT_UNCAST_ARG(haystack), TXT_UNCAST_ARG(needle));
-};
+	void SignalConnect(std::string&& signal, std::function<void(void*)>&& handle, UserData&& user)
+	{
+		callback_table.connect(std::move(signal), std::move(handle), std::move(user));
+	}
 
-void TXT_InitWidget(TXT_UNCAST_ARG(widget), WidgetClass* widget_class);
-void TXT_CalcWidgetSize(TXT_UNCAST_ARG(widget));
-void TXT_DrawWidget(TXT_UNCAST_ARG(widget));
-void TXT_EmitSignal(TXT_UNCAST_ARG(widget), const char* signal_name);
-int TXT_WidgetKeyPress(TXT_UNCAST_ARG(widget), int key);
-void TXT_WidgetMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b);
-void TXT_DestroyWidget(TXT_UNCAST_ARG(widget));
-void TXT_LayoutWidget(TXT_UNCAST_ARG(widget));
-bool TXT_AlwaysSelectable(TXT_UNCAST_ARG(widget));
-bool TXT_NeverSelectable(TXT_UNCAST_ARG(widget));
-void TXT_SetWidgetFocus(TXT_UNCAST_ARG(widget), bool focused);
+	void EmitSignal(std::string& signal_name)
+	{
+		auto table{callback_table};
+
+		// Don't destroy the table while we're searching through it (one of the callbacks may destroy this window)
+		//RefCallbackTable(table);
+
+		// Search the table for all callbacks with this name and invoke the functions.
+		for (size_t i{0}; i < table.size(); ++i)
+		{
+			//if (!strcmp(table->callbacks[i].signal_name, signal_name))
+			//{
+				//table->callbacks[i].func(widget, table->callbacks[i].user_data);
+			//}
+		}
+
+		// Finished using the table
+		//UnrefCallbackTable(table);
+	}
+
+	void DrawWidget()
+	{
+		SavedColors colors;
+
+		// The drawing function might change the fg/bg colors, so make sure we restore them after it's done.
+		SaveColors(&colors);
+
+		// For convenience...
+		GotoXY(x, y);
+
+		// Call drawer method
+		//drawer();
+
+		RestoreColors(&colors);
+	}
+
+	void DestroyWidget()
+	{
+	}
+
+	int KeyPress(int key)
+	{
+		return 0;//key_press(widget, key);
+	}
+
+	void SetWidgetFocus(bool _focused)
+	{
+		if (!focused() && _focused)
+		{
+			setFocus();
+		}
+		else if(focused() && !_focused)
+		{
+			unsetFocus();
+		}
+	}
+
+	void SetWidgetAlign(AlignHorizontal horiz_align)
+	{
+		align = horiz_align;
+	}
+
+	void MousePress(int x, int y, int b)
+	{
+		//mouse_press(x, y, b);
+	}
+
+	void LayoutWidget()
+	{
+		//layout();
+	}
+
+	bool AlwaysSelectable()
+	{
+		return true;
+	}
+
+	bool NeverSelectable()
+	{
+		return false;
+	}
+
+	int SelectableWidget()
+	{
+		return 0;//selectable(widget);
+	}
+
+	bool ContainsWidget(Widget* needle)
+	{
+		while (needle)
+		{
+			if (needle == this)
+			{
+				return true;
+			}
+
+			needle = needle->parent;
+		}
+
+		return false;
+	}
+
+	bool HoveringOverWidget()
+	{
+		int _x;
+		int _y;
+
+		// We can only be hovering over widgets in the active window.
+		auto active_window = (Widget*)GetActiveWindow();
+
+		if (!active_window || !ContainsWidget(active_window))
+		{
+			return false;
+		}
+
+		// Is the mouse cursor within the bounds of the widget?
+		GetMousePosition(&_x, &_y);
+
+		return (_x >= x && _x < x + width && _y >= y && _y < y + height);
+	}
+
+	void SetWidgetBG()
+	{
+		if (focused())
+		{
+			BGColor(ColorType::grey, false);
+		}
+		else if (HoveringOverWidget())
+		{
+			BGColor(HOVER_BACKGROUND, false);
+		}
+		else
+		{
+			// Use normal window background.
+		}
+	}
+};
 
 /**
  * Set a callback function to be invoked when a signal occurs.
  *
  * @param widget		The widget to watch.
- * @param signal_name The signal to watch.
+ * @param signal_name	The signal to watch.
  * @param func			The callback function to invoke.
  * @param user_data	User-specified pointer to pass to the callback function.
  */
-void TXT_SignalConnect(TXT_UNCAST_ARG(widget), const char* signal_name, WidgetSignalFunc func, void* user_data);
+//void SignalConnect(const char* signal_name, WidgetSignalFunc func, void* user_data);
 
 /**
  * Set the policy for how a widget should be aligned within a table.
  * By default, widgets are aligned to the left of the column.
  *
  * @param widget		The widget.
- * @param horiz_align The alignment to use.
+ * @param horiz_align	The alignment to use.
  */
-void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), AlignHorizontal horiz_align);
+//void SetWidgetAlign(AlignHorizontal horiz_align);
 
 /**
  * Query whether a widget is selectable with the cursor.
@@ -244,7 +412,7 @@ void TXT_SetWidgetAlign(TXT_UNCAST_ARG(widget), AlignHorizontal horiz_align);
  * @param widget		The widget.
  * @return				Non-zero if the widget is selectable.
  */
-bool TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
+//bool SelectableWidget();
 
 /**
  * Query whether the mouse is hovering over the specified widget.
@@ -252,7 +420,7 @@ bool TXT_SelectableWidget(TXT_UNCAST_ARG(widget));
  * @param widget		The widget.
  * @return				Non-zero if the mouse cursor is over the widget.
  */
-bool TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
+//bool HoveringOverWidget();
 
 /**
  * Set the background to draw the specified widget, depending on
@@ -260,7 +428,7 @@ bool TXT_HoveringOverWidget(TXT_UNCAST_ARG(widget));
  *
  * @param widget		The widget.
  */
-void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
+//void SetWidgetBG();
 
 /**
  * Query whether the specified widget is contained within another
@@ -269,6 +437,6 @@ void TXT_SetWidgetBG(TXT_UNCAST_ARG(widget));
  * @param haystack		The widget that might contain needle.
  * @param needle		The widget being queried.
  */
-bool TXT_ContainsWidget(Widget&& haystack, Widget&& needle);
+//bool ContainsWidget(Widget&& needle);
 
 } /* END NAMESPACE cudadoom::txt */

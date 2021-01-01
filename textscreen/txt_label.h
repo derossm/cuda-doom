@@ -13,9 +13,14 @@
 
 #include "txt_main.h"
 #include "txt_widget.h"
+#include "txt_window.h"
+#include "txt_utf8.h"
+#include "txt_io.h"
+#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
+
 /**
  * Label widget.
  *
@@ -26,8 +31,8 @@ struct txt_label_t
 	Widget widget;
 	char* label;
 	char** lines;
-	unsigned int w;
-	unsigned int h;
+	unsigned w;
+	unsigned h;
 	int fgcolor;
 	int bgcolor;
 };
@@ -38,7 +43,7 @@ struct txt_label_t
  * @param label			String to display in the widget (UTF-8 format).
  * @return				Pointer to the new label widget.
  */
-txt_label_t *TXT_NewLabel(const char *label);
+txt_label_t* NewLabel(const char* label);
 
 /**
  * Set the string displayed in a label widget.
@@ -46,7 +51,7 @@ txt_label_t *TXT_NewLabel(const char *label);
  * @param label			The widget.
  * @param value			The string to display (UTF-8 format).
  */
-void TXT_SetLabel(txt_label_t* label, const char* value);
+void SetLabel(txt_label_t* label, const char* value);
 
 /**
  * Set the background color of a label widget.
@@ -55,7 +60,7 @@ void TXT_SetLabel(txt_label_t* label, const char* value);
  * @param color			The background color to use.
  */
 
-void TXT_SetBGColor(txt_label_t* label, txt_color_t color);
+void SetBGColor(txt_label_t* label, ColorType color);
 
 /**
  * Set the foreground color of a label widget.
@@ -63,6 +68,182 @@ void TXT_SetBGColor(txt_label_t* label, txt_color_t color);
  * @param label			The widget.
  * @param color			The foreground color to use.
  */
-void TXT_SetFGColor(txt_label_t* label, txt_color_t color);
+void SetFGColor(txt_label_t* label, ColorType color);
+
+static void LabelSizeCalc(UNCAST_ARG(label))
+{
+	CAST_ARG(txt_label_t, label);
+
+	label->widget.w = label->w;
+	label->widget.h = label->h;
+}
+
+static void LabelDrawer(UNCAST_ARG(label))
+{
+	CAST_ARG(txt_label_t, label);
+	unsigned x, y;
+	int origin_x, origin_y;
+	unsigned align_indent = 0;
+	unsigned w, sw;
+
+	w = label->widget.w;
+
+	if (label->bgcolor >= 0)
+	{
+		BGColor(label->bgcolor, false);
+	}
+	if (label->fgcolor >= 0)
+	{
+		FGColor(label->fgcolor);
+	}
+
+	GetXY(&origin_x, &origin_y);
+
+	for (y=0; y<label->h; ++y)
+	{
+		// Calculate the amount to indent this line due to the align
+		// setting
+		sw = UTF8_Strlen(label->lines[y]);
+		switch (label->widget.align)
+		{
+			case HORIZ_LEFT:
+				align_indent = 0;
+				break;
+			case HORIZ_CENTER:
+				align_indent = (label->w - sw) / 2;
+				break;
+			case HORIZ_RIGHT:
+				align_indent = label->w - sw;
+				break;
+		}
+
+		// Draw this line
+
+		GotoXY(origin_x, origin_y + y);
+
+		// Gap at the start
+
+		for (x=0; x<align_indent; ++x)
+		{
+			DrawString(" ");
+		}
+
+		// The string itself
+
+		DrawString(label->lines[y]);
+		x += sw;
+
+		// Gap at the end
+
+		for (; x<w; ++x)
+		{
+			DrawString(" ");
+		}
+	}
+}
+
+static void LabelDestructor(UNCAST_ARG(label))
+{
+	CAST_ARG(txt_label_t, label);
+
+	free(label->label);
+	free(label->lines);
+}
+
+WidgetClass txt_label_class =
+{
+	NeverSelectable,
+	LabelSizeCalc,
+	LabelDrawer,
+	NULL,
+	LabelDestructor,
+	NULL,
+	NULL,
+};
+
+void SetLabel(txt_label_t* label, const char* value)
+{
+	char* p;
+	unsigned y;
+
+	// Free back the old label
+
+	free(label->label);
+	free(label->lines);
+
+	// Set the new value
+
+	label->label = strdup(value);
+
+	// Work out how many lines in this label
+
+	label->h = 1;
+
+	for (p = label->label; *p != '\0'; ++p)
+	{
+		if (*p == '\n')
+		{
+			++label->h;
+		}
+	}
+
+	// Split into lines
+
+	label->lines = static_cast<decltype(label->lines)>(malloc(sizeof(char*) * label->h));
+	label->lines[0] = label->label;
+	y = 1;
+
+	for (p = label->label; *p != '\0'; ++p)
+	{
+		if (*p == '\n')
+		{
+			label->lines[y] = p + 1;
+			*p = '\0';
+			++y;
+		}
+	}
+
+	label->w = 0;
+
+	for (y=0; y<label->h; ++y)
+	{
+		unsigned line_len;
+
+		line_len = UTF8_Strlen(label->lines[y]);
+
+		if (line_len > label->w)
+			label->w = line_len;
+	}
+}
+
+txt_label_t* NewLabel(const char* text)
+{
+	txt_label_t* label;
+
+	label = static_cast<decltype(label)>(malloc(sizeof(txt_label_t)));
+
+	InitWidget(label, &txt_label_class);
+	label->label = NULL;
+	label->lines = NULL;
+
+	// Default colors
+
+	label->bgcolor = -1;
+	label->fgcolor = -1;
+
+	SetLabel(label, text);
+
+	return label;
+}
+
+void SetFGColor(txt_label_t* label, ColorType color)
+{
+	label->fgcolor = color;
+}
+
+void SetBGColor(txt_label_t* label, ColorType color)
+{
+	label->bgcolor = color;
+}
 
 } /* END NAMESPACE cudadoom::txt */

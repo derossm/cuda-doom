@@ -21,23 +21,23 @@
 #include "m_misc.h"
 #include "w_wad.h"
 
-extern char *iwadfile;
+extern char* iwadfile;
 
 // [crispy] auto-load SIGIL.WAD (and SIGIL_SHREDS.WAD) if available
 void D_LoadSigilWad ()
 {
 	int i, j;
-	char *sigil_wad = NULL, *sigil_shreds = NULL;
-	char *dirname;
+	char* sigil_wad = NULL,* sigil_shreds = NULL;
+	char* dirname;
 
-	const char *const sigil_wads[] = {
+	const char* const sigil_wads[] = {
 		"SIGIL_v1_21.wad",
 		"SIGIL_v1_2.wad",
 		"SIGIL.wad"
 	};
 
 	static const struct {
-		const char *name;
+		const char* name;
 		const char new_name[8];
 	} sigil_lumps [] = {
 		{"CREDIT",	"SIGCREDI"},
@@ -52,7 +52,7 @@ void D_LoadSigilWad ()
 		{"D_INTRO", "D_SIGTIT"},
 	};
 
-	const char *const texture_files[] = {
+	const char* const texture_files[] = {
 		"PNAMES",
 		"TEXTURE1",
 		"TEXTURE2",
@@ -193,7 +193,7 @@ static void CheckLoadNerve ()
 	int i, j;
 
 	static const struct {
-		const char *name;
+		const char* name;
 		const char new_name[8];
 	} nerve_lumps [] = {
 		{"TITLEPIC", "NERVEPIC"},
@@ -202,7 +202,7 @@ static void CheckLoadNerve ()
 
 	if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
 	{
-		char *dir;
+		char* dir;
 		dir = M_DirName(iwadfile);
 		crispy->havenerve = M_StringJoin(dir, DIR_SEPARATOR_S, "NERVE.WAD", NULL);
 		free(dir);
@@ -292,7 +292,7 @@ static bool CheckLoadMasterlevels ()
 
 	if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
 	{
-		char *dir;
+		char* dir;
 		dir = M_DirName(iwadfile);
 		crispy->havemaster = M_StringJoin(dir, DIR_SEPARATOR_S, "MASTERLEVELS.WAD", NULL);
 		free(dir);
@@ -330,7 +330,7 @@ static bool CheckLoadMasterlevels ()
 		else
 		{
 			// [crispy] indicate this is not the complete MASTERLEVELS.WAD
-			crispy->havemaster = (char *)-1;
+			crispy->havemaster = (char*)-1;
 		}
 
 
@@ -348,11 +348,11 @@ static bool CheckLoadMasterlevels ()
 // [crispy] check if the 20 individual separate Mater Levels PWADs are available
 
 static struct {
-	const char *wad_name;
+	const char* wad_name;
 	int pc_slot;
 	int psn_slot;
 	bool custom_sky;
-	char *file_path;
+	char* file_path;
 } masterlevels_wads [] = {
 	{"ATTACK.WAD",	1, 1},
 	{"CANYON.WAD",	1, 2},
@@ -380,13 +380,13 @@ static struct {
 static bool CheckMasterlevelsAvailable ()
 {
 	int i;
-	char *dir;
+	char* dir;
 
 	dir = M_DirName(iwadfile);
 
 	for (i = 0; masterlevels_wads[i].wad_name; i++)
 	{
-		char *havemaster;
+		char* havemaster;
 
 		if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
 		{
@@ -429,7 +429,7 @@ static void LoadMasterlevelsWads ()
 	int i, j;
 	char lumpname[9];
 
-	const char *const sky_lumps[] = {
+	const char* const sky_lumps[] = {
 		"RSKY1",
 		"PNAMES",
 		"TEXTURE1",
@@ -469,7 +469,7 @@ static void LoadMasterlevelsWads ()
 	}
 
 	// [crispy] indicate this is not the single MASTERLEVELS.WAD
-	crispy->havemaster = (char *)-1;
+	crispy->havemaster = (char*)-1;
 
 	// [crispy] regenerate the hashtable
 	W_GenerateHashTable();

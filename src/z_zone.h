@@ -16,6 +16,19 @@
 
 #include "../derma/common.h"
 
+#include "doomtype.h"
+#include "i_system.h"
+#include "m_argv.h"
+
+#include "z_zone.h"
+
+// This is used to get the local FILE:LINE info from CPP prior to really call the function in question.
+#define Z_ChangeTag(p,t)	Z_ChangeTag2((p), (t), __FILE__, __LINE__)
+// NOTE: YOU SHOULD NEVER NEED THE LINE NUMBER TO CALL A FUNCTION! MAKE SURE THIS HACK IS NEVER USED -- TODO
+
+#define MEM_ALIGN		sizeof(void*)
+#define ZONEID			0x1d4a11
+
 // ZONE MEMORY
 // PU - purge tags.
 enum class pu_tags_t
@@ -50,16 +63,6 @@ void Z_ChangeUser(void* ptr, void** user);
 auto Z_FreeMemory();
 auto Z_ZoneSize();
 
-// This is used to get the local FILE:LINE info from CPP prior to really call the function in question.
-#define Z_ChangeTag(p,t)	Z_ChangeTag2((p), (t), __FILE__, __LINE__)
-// NOTE: YOU SHOULD NEVER NEED THE LINE NUMBER TO CALL A FUNCTION! MAKE SURE THIS HACK IS NEVER USED -- TODO
-
-#include "doomtype.h"
-#include "i_system.h"
-#include "m_argv.h"
-
-#include "z_zone.h"
-
 // ZONE MEMORY ALLOCATION
 //
 // There is never any space between memblocks,
@@ -68,9 +71,6 @@ auto Z_ZoneSize();
 //
 // It is of no value to free a cachable block,
 // because it will get overwritten automatically if needed.
-
-#define MEM_ALIGN		sizeof(void*)
-#define ZONEID			0x1d4a11
 
 struct memblock_t
 {
@@ -190,7 +190,7 @@ void Z_Free(void* ptr)
 		I_Error("Z_Free: freed a pointer without ZONEID");
 	}
 
-	if (block->tag != pu_tags_t::PU_FREE && block->user != nullptr)
+	if (block->tag != pu_tags_t::PU_FREE && block->user)
 	{
 		// clear the user's mark
 		*block->user = 0;
@@ -242,7 +242,7 @@ void Z_Free(void* ptr)
 	}
 }
 
-#define MINFRAGMENT 64
+constexpr size_t MINFRAGMENT{64};
 // You can pass a NULL user if the tag is < PU_PURGELEVEL.
 template<typename T>
 T& Z_Malloc(size_t size, pu_tags_t tag, void* user)
@@ -322,7 +322,7 @@ T& Z_Malloc(size_t size, pu_tags_t tag, void* user)
 		base->size = size;
 	}
 
-	if (user == nullptr && tag >= pu_tags_t::PU_PURGELEVEL)
+	if (!user && tag >= pu_tags_t::PU_PURGELEVEL)
 	{
 		I_Error("Z_Malloc: an owner is required for purgable blocks");
 	}
@@ -348,7 +348,7 @@ T& Z_Malloc(size_t size, pu_tags_t tag, void* user)
 void Z_FreeTags(pu_tags_t lowtag, pu_tags_t hightag)
 {
 	// TODO nullptr check
-	for (auto block{mainzone->blocklist.next}, next{block->next}; block != nullptr && block != &mainzone->blocklist; block = next)
+	for (auto block{mainzone->blocklist.next}, next{block->next}; block && block != &mainzone->blocklist; block = next)
 	{
 		// get link before freeing
 		next = block->next;

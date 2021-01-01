@@ -144,7 +144,7 @@ static const struct
 	{ 128 * FRACUNIT, 9}
 };
 
-void R_FixWiggle (sector_t *sector)
+void R_FixWiggle (sector_t* sector)
 {
 	static int	lastheight = 0;
 	int		height = (sector->interpceilingheight - sector->interpfloorheight) >> FRACBITS;
@@ -286,8 +286,8 @@ void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 		dc_iscale = 0xffffffffu / (unsigned)spryscale;
 
 		// draw the texture
-		col = (column_t *)(
-		(byte *)R_GetColumnMod(texnum,maskedtexturecol[dc_x]) -3);
+		col = (column_t*)(
+		(byte*)R_GetColumnMod(texnum,maskedtexturecol[dc_x]) -3);
 
 		R_DrawMaskedColumn (col);
 		maskedtexturecol[dc_x] = INT_MAX; // [crispy] 32-bit integer math

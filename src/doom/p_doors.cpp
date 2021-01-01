@@ -188,9 +188,9 @@ void T_VerticalDoor(vldoor_t* door)
 // Move a locked door up/down
 //
 
-int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing)
+int EV_DoLockedDoor(line_t* line, vldoor_e type, MapObject* thing)
 {
-	player_t*	p;
+	Player*	p;
 
 	p = thing->player;
 
@@ -326,9 +326,9 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 }
 
 // EV_VerticalDoor : open a door manually, no tag value
-void EV_VerticalDoor(line_t* line, mobj_t* thing)
+void EV_VerticalDoor(line_t* line, MapObject* thing)
 {
-	player_t*	player;
+	Player*	player;
 	sector_t*	sec;
 	vldoor_t*	door;
 	int		side;
@@ -440,9 +440,9 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing)
 					// The direction field in vldoor_t corresponds to the wait
 					// field in plat_t. Let's set that to -1 instead.
 
-					plat_t *plat;
+					plat_t* plat;
 
-					plat = (plat_t *) door;
+					plat = (plat_t*) door;
 					plat->wait = -1;
 				}
 				else
@@ -590,7 +590,7 @@ void P_InitSlidingDoorFrames()
 	int		f4;
 
 	// DOOM II ONLY...
-	if ( gamemode != GameMode_t::commercial)
+	if ( gamemode != GameMode::commercial)
 	return;
 
 	for (i = 0;i < MAXSLIDEDOORS; i++)
@@ -722,13 +722,13 @@ void T_SlidingDoor(slidedoor_t* door)
 	}
 }
 
-void EV_SlidingDoor(line_t* line, mobj_t* thing)
+void EV_SlidingDoor(line_t* line, MapObject* thing)
 {
 	sector_t*		sec;
 	slidedoor_t*	door;
 
 	// DOOM II ONLY...
-	if (gamemode != GameMode_t::commercial)
+	if (gamemode != GameMode::commercial)
 	return;
 
 	// Make sure door isn't already being animated

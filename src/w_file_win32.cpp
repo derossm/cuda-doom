@@ -25,16 +25,16 @@
 #define INVALID_SET_FILE_POINTER 0xffffffff
 #endif
 
-typedef struct
+struct win32_wad_file_t
 {
 	wad_file_t wad;
 	HANDLE handle;
 	HANDLE handle_map;
-} win32_wad_file_t;
+};
 
 extern wad_file_class_t win32_wad_file;
 
-static void MapFile(win32_wad_file_t *wad, const char *filename)
+static void MapFile(win32_wad_file_t* wad, const char* filename)
 {
 	wad->handle_map = CreateFileMapping(wad->handle,
 										NULL,
@@ -61,7 +61,7 @@ static void MapFile(win32_wad_file_t *wad, const char *filename)
 	}
 }
 
-unsigned int GetFileLength(HANDLE handle)
+unsigned GetFileLength(HANDLE handle)
 {
 	DWORD result;
 
@@ -75,9 +75,9 @@ unsigned int GetFileLength(HANDLE handle)
 	return result;
 }
 
-static wad_file_t *W_Win32_OpenFile(const char *path)
+static wad_file_t* W_Win32_OpenFile(const char* path)
 {
-	win32_wad_file_t *result;
+	win32_wad_file_t* result;
 	wchar_t wpath[MAX_PATH + 1];
 	HANDLE handle;
 
@@ -115,11 +115,11 @@ static wad_file_t *W_Win32_OpenFile(const char *path)
 	return &result->wad;
 }
 
-static void W_Win32_CloseFile(wad_file_t *wad)
+static void W_Win32_CloseFile(wad_file_t* wad)
 {
-	win32_wad_file_t *win32_wad;
+	win32_wad_file_t* win32_wad;
 
-	win32_wad = (win32_wad_file_t *) wad;
+	win32_wad = (win32_wad_file_t*) wad;
 
 	// If mapped, unmap it.
 
@@ -146,14 +146,14 @@ static void W_Win32_CloseFile(wad_file_t *wad)
 // Read data from the specified position in the file into the
 // provided buffer. Returns the number of bytes read.
 
-size_t W_Win32_Read(wad_file_t *wad, unsigned int offset,
-					void *buffer, size_t buffer_len)
+size_t W_Win32_Read(wad_file_t* wad, unsigned offset,
+					void* buffer, size_t buffer_len)
 {
-	win32_wad_file_t *win32_wad;
+	win32_wad_file_t* win32_wad;
 	DWORD bytes_read;
 	DWORD result;
 
-	win32_wad = (win32_wad_file_t *) wad;
+	win32_wad = (win32_wad_file_t*) wad;
 
 	// Jump to the specified position in the file.
 

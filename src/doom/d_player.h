@@ -19,19 +19,19 @@
 
 #include "net_defs.h"
 
-enum class PlayerState_t
+enum class PlayerState
 {
 	// Playing or camping.
-	PST_LIVE,
+	live,
 	// Dead on the ground, view follows killer.
-	PST_DEAD,
+	dead,
 	// Ready to restart/respawn???
-	PST_REBORN
+	reborn
 
 };
 
 // Player internal flags, for cheats and debug.
-enum class cheat_t
+enum class CheatType
 {
 	// No clipping, walk through barriers.
 	CF_NOCLIP = 1,
@@ -44,42 +44,28 @@ enum class cheat_t
 
 };
 
-struct player_t
+class Player : public MapObject
 {
-	mobj_t* mo;
-	PlayerState_t playerstate;
-	ticcmd_t cmd;
+public:
 
-	// Determine POV, including viewpoint bobbing during movement. Focal origin above r.z
-	fixed_t viewz;
-	// Base height above floor for viewz.
-	fixed_t viewheight;
-	// Bob/squat speed.
-	fixed_t deltaviewheight;
-	// bounded/scaled total momentum.
-	fixed_t bob;
+	// Who did damage (NULL for floors/ceilings).
+	MapObject* attacker;
+	//std::weak_ptr<MapObject> attacker;
+
+	// weapon sound source
+	MapObject* so;
+
+	// For intermission stats.
+	int killcount{0};
+	int itemcount{0};
+	int secretcount{0};
 
 	// This is only used between levels, mo->health is used during levels.
 	int health;
 	int armorpoints;
+
 	// Armor type is 0-2.
 	int armortype;
-
-	// Power ups. invinc and invis are tic counters.
-	int powers[NUMPOWERS + 3]; // [crispy] showfps and mapcoords are now "powers"
-	bool cards[NUMCARDS];
-	bool backpack;
-
-	// Frags, kills of other players.
-	int frags[MAXPLAYERS];
-	WeaponType_t readyweapon;
-
-	// Is wp_nochange if not changing.
-	WeaponType_t pendingweapon;
-
-	int weaponowned[NUMWEAPONS];
-	int ammo[NUMAMMO];
-	int maxammo[NUMAMMO];
 
 	// True if button down last tic.
 	int attackdown;
@@ -92,20 +78,9 @@ struct player_t
 	// Refired shots are less accurate.
 	int refire;
 
-	// For intermission stats.
-	int killcount;
-	int itemcount;
-	int secretcount;
-
-	// Hint messages.
-	const char* message;
-
 	// For screen flashing (red or bright).
 	int damagecount;
 	int bonuscount;
-
-	// Who did damage (NULL for floors/ceilings).
-	mobj_t* attacker;
 
 	// So gun flashes light up areas.
 	int extralight;
@@ -116,73 +91,99 @@ struct player_t
 	// Player skin colorshift, 0-3 for which color to draw player.
 	int colormap;
 
+	// negative player health
+	int neghealth;
+
+	// "use" button timer
+	int btuse;
+
+	// free look / mouse look
+	int lookdir;
+	int oldlookdir;
+
+	// Determine POV, including viewpoint bobbing during movement. Focal origin above r.z
+	fixed_t viewz;
+	// Base height above floor for viewz.
+	fixed_t viewheight;
+	// Bob/squat speed.
+	fixed_t deltaviewheight;
+	// bounded/scaled total momentum.
+	fixed_t bob;
+
+	// weapon recoil pitch
+	fixed_t recoilpitch;
+	fixed_t oldrecoilpitch;
+
+	// squat down weapon sprite
+	fixed_t psp_dy_max;
+
+	// variable player view bob
+	fixed_t bob2;
+
+	// Previous position of viewz before think. Used to interpolate between camera positions.
+	angle_t oldviewz;
+
+	TimeType btuse_tics;
+	// jumping
+	TimeType jumpTics;
+
+	// Power ups. invinc and invis are tic counters.
+	std::array<int, size_t(PowerType_t::NUMPOWERS) + 3> powers; // [crispy] showfps and mapcoords are now "powers"
+	std::array<int, size_t(WeaponType_t::NUMWEAPONS)> weaponowned;
+	std::array<int, size_t(AmmoType_t::NUMAMMO)> ammo;
+	std::array<int, size_t(AmmoType_t::NUMAMMO)> maxammo;
+	// Frags, kills of other players.
+	std::array<int, MAX_PLAYERS> frags;
+
 	// Overlay view sprites (gun, etc).
-	pspdef_t psprites[NUMPSPRITES];
+	std::array<pspdef_t, size_t(psprnum_t::NUMPSPRITES)> psprites;
+
+	std::array<bool, size_t(CardType_t::NUMCARDS)> cards;
+
+	// Hint messages.
+	std::string message;
+
+	// how centered "Secret Revealed!" message
+	std::string centermessage;
+
+	ticcmd_t cmd;
 
 	// True if secret level has been done.
 	bool didsecret;
 
-	// [crispy] now follow Crispy Doom specific properties
-
-	// [AM] Previous position of viewz before think.
-	//		Used to interpolate between camera positions.
-	angle_t oldviewz;
-
-	// [crispy] show centered "Secret Revealed!" message
-	char* centermessage;
-
-	// [crispy] free look / mouse look
-	int	lookdir;
-	int oldlookdir;
+	// free look / mouse look
 	bool centering;
 
-	// [crispy] jumping
-	unsigned int jumpTics;
+	bool backpack;
 
-	// [crispy] weapon recoil pitch
-	fixed_t	recoilpitch;
-	fixed_t oldrecoilpitch;
+	// blinking key or skull in the status bar
+	bool tryopen[(size_t)CardType_t::NUMCARDS];
 
-	// [crispy] weapon sound source
-	mobj_t* so;
+	WeaponType_t readyweapon;
 
-	// [crispy] squat down weapon sprite
-	fixed_t psp_dy_max;
+	// Is wp_nochange if not changing.
+	WeaponType_t pendingweapon;
 
-	// [crispy] variable player view bob
-	fixed_t bob2;
-
-	// [crispy] blinking key or skull in the status bar
-	bool tryopen[NUMCARDS];
-
-	// [crispy] negative player health
-	int neghealth;
-
-	// [crispy] "use" button timer
-	int btuse;
-	int btuse_tics;
+	PlayerState playerstate;
 };
 
 struct wbplayerstruct_t
 {
-	bool	in;	// whether the player is in game
+	bool in;	// whether the player is in game
 
 	// Player stats, kills, collected items etc.
-	int		skills;
-	int		sitems;
-	int		ssecret;
-	int		stime;
-	int		frags[4];
-	int		score;	// current score on entry, modified on return
+	int skills;
+	int sitems;
+	int ssecret;
+	int frags[4];
+	int score;		// current score on entry, modified on return
 
+	TimeType stime;
 };
 
 struct wbstartstruct_t
 {
-	int epsd;	// episode # (0-2)
-
-	// if true, splash the secret level
-	bool didsecret;
+	int epsd;		// episode # (0-2)
 
 	// previous and next levels, origin 0
 	int last;
@@ -193,14 +194,16 @@ struct wbstartstruct_t
 	int maxsecret;
 	int maxfrags;
 
-	// the par time
-	int partime;
-
 	// index of this player in game
 	int pnum;
 
-	wbplayerstruct_t plyr[MAXPLAYERS];
+	// the par time
+	TimeType partime;
+	// total game time for completed levels so far
+	TimeType totaltimes;
 
-	// [crispy] CPhipps - total game time for completed levels so far
-	int totaltimes;
+	// if true, splash the secret level
+	bool didsecret;
+
+	wbplayerstruct_t plyr[MAX_PLAYERS];
 };

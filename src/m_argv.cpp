@@ -7,78 +7,52 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-	DESCRIPTION:
 \**********************************************************************************************************************************************/
-
-
 
 #include "SDL_stdinc.h"
 
 #include "doomtype.h"
+
 #include "d_iwad.h"
 #include "i_system.h"
 #include "m_misc.h"
 #include "m_argv.h" // haleyjd 20110212: warning fix
 
-int		myargc;
-char**		myargv;
+int myargc;
+char** myargv;
 
-
-
-
-//
-// M_CheckParm
-// Checks for the given parameter
-// in the program's command line arguments.
-// Returns the argument number (1 to argc-1)
-// or 0 if not present
-//
-
-int M_CheckParmWithArgs(const char *check, int num_args)
+// Checks for the given parameter in the program's command line arguments.
+// Returns the argument number (1 to argc-1) or 0 if not present
+int M_CheckParmWithArgs(const char* check, int num_args)
 {
-	int i;
-
-	for (i = 1; i < myargc - num_args; i++)
+	for (size_t i{1}; i < myargc - num_args; ++i)
 	{
-	if (!strcasecmp(check, myargv[i]))
-		return i;
+		if (!strcasecmp(check, myargv[i]))
+		{
+			return i;
+		}
 	}
 
 	return 0;
 }
 
-//
-// M_ParmExists
-//
-// Returns true if the given parameter exists in the program's command
-// line arguments, false if not.
-//
-
-bool M_ParmExists(const char *check)
+// Returns true if the given parameter exists in the program's command line arguments, false if not.
+bool M_ParmExists(const char* check)
 {
 	return M_CheckParm(check) != 0;
 }
 
-int M_CheckParm(const char *check)
+int M_CheckParm(const char* check)
 {
 	return M_CheckParmWithArgs(check, 0);
 }
 
-#define MAXARGVS		100
+constexpr size_t MAXARGVS{100};
 
-static void LoadResponseFile(int argv_index, const char *filename)
+static void LoadResponseFile(int argv_index, const char* filename)
 {
-	FILE *handle;
-	int size;
-	char *infile;
-	char *file;
-	char **newargv;
-	int newargc;
-	int i, k;
-
 	// Read the response file into memory
-	handle = fopen(filename, "rb");
+	FILE* handle = fopen(filename, "rb");
 
 	if (handle == NULL)
 	{
@@ -88,52 +62,35 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
 	printf("Found response file %s!\n", filename);
 
-	size = M_FileLength(handle);
+	auto size = M_FileLength(handle);
 
 	// Read in the entire file
-	// Allocate one byte extra - this is in case there is an argument
-	// at the end of the response file, in which case a '\0' will be
-	// needed.
+	// Allocate one byte extra - this is in case there is an argument at the end of the response file, in which case a '\0' will be needed.
+	char* file = static_cast<decltype(file)>(malloc(size + 1));
 
-	file = static_cast<decltype(file)>(malloc(size + 1));
-
-	i = 0;
-
-	while (i < size)
+	for (size_t i{0}, k; i < size; i += k)
 	{
-		k = fread(file + i, 1, size - i, handle);
-
-		if (k < 0)
-		{
-			I_Error("Failed to read full contents of '%s'", filename);
-		}
-
-		i += k;
+		k = fread(file + i, 1, size - i, handle);		
 	}
 
 	fclose(handle);
 
 	// Create new arguments list array
-
-	newargv = static_cast<decltype(newargv)>(malloc(sizeof(char *) * MAXARGVS));
-	newargc = 0;
-	memset(newargv, 0, sizeof(char *) * MAXARGVS);
+	char** newargv = static_cast<decltype(newargv)>(malloc(sizeof(char*) * MAXARGVS));
+	int newargc = 0;
+	memset(newargv, 0, sizeof(char*) * MAXARGVS);
 
 	// Copy all the arguments in the list up to the response file
-
-	for (i=0; i<argv_index; ++i)
+	for (size_t i{0}; i < argv_index; ++i)
 	{
 		newargv[i] = myargv[i];
 		++newargc;
 	}
 
-	infile = file;
-	k = 0;
-
-	while(k < size)
+	char* infile = file;
+	for(size_t k{0}; k < size;)
 	{
 		// Skip past space characters to the next argument
-
 		while(k < size && isspace(infile[k]))
 		{
 			++k;
@@ -144,10 +101,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 			break;
 		}
 
-		// If the next argument is enclosed in quote marks, treat
-		// the contents as a single argument. This allows long filenames
-		// to be specified.
-
+		// If the next argument is enclosed in quote marks, treat the contents as a single argument. This allows long filenames to be specified.
 		if (infile[k] == '\"')
 		{
 			// Skip the first character(")
@@ -156,7 +110,6 @@ static void LoadResponseFile(int argv_index, const char *filename)
 			newargv[newargc++] = &infile[k];
 
 			// Read all characters between quotes
-
 			while (k < size && infile[k] != '\"' && infile[k] != '\n')
 			{
 				++k;
@@ -164,19 +117,16 @@ static void LoadResponseFile(int argv_index, const char *filename)
 
 			if (k >= size || infile[k] == '\n')
 			{
-				I_Error("Quotes unclosed in response file '%s'",
-						filename);
+				I_Error("Quotes unclosed in response file '%s'", filename);
 			}
 
 			// Cut off the string at the closing quote
-
 			infile[k] = '\0';
 			++k;
 		}
 		else
 		{
 			// Read in the next argument until a space is reached
-
 			newargv[newargc++] = &infile[k];
 
 			while(k < size && !isspace(infile[k]))
@@ -193,8 +143,7 @@ static void LoadResponseFile(int argv_index, const char *filename)
 	}
 
 	// Add arguments following the response file argument
-
-	for (i=argv_index + 1; i<myargc; ++i)
+	for (size_t i{argv_index + 1}; i < myargc; ++i)
 	{
 		newargv[newargc] = myargv[i];
 		++newargc;
@@ -204,27 +153,19 @@ static void LoadResponseFile(int argv_index, const char *filename)
 	myargc = newargc;
 
 #if 0
-	// Disabled - Vanilla Doom does not do this.
-	// Display arguments
-
+	// Disabled - Vanilla Doom does not do this. Display arguments
 	printf("%d command-line args:\n", myargc);
 
-	for (k=1; k<myargc; k++)
+	for (size_t k{1}; k < myargc; ++k)
 	{
 		printf("'%s'\n", myargv[k]);
 	}
 #endif
 }
 
-//
-// Find a Response File
-//
-
 void M_FindResponseFile()
 {
-	int i;
-
-	for (i = 1; i < myargc; i++)
+	for (size_t i{1}; i < myargc; ++i)
 	{
 		if (myargv[i][0] == '@')
 		{
@@ -234,15 +175,11 @@ void M_FindResponseFile()
 
 	for (;;)
 	{
-		//!
-		// @arg <filename>
-		//
 		// Load extra command line arguments from the given response file.
 		// Arguments read from the file will be inserted into the command
 		// line replacing this argument. A response file can also be loaded
 		// using the abbreviated syntax '@filename.rsp'.
-		//
-		i = M_CheckParmWithArgs("-response", 1);
+		auto i = M_CheckParmWithArgs("-response", 1);
 		if (i <= 0)
 		{
 			break;
@@ -260,38 +197,34 @@ void M_FindResponseFile()
 enum
 {
 	FILETYPE_UNKNOWN = 0x0,
-	FILETYPE_IWAD =	0x2,
-	FILETYPE_PWAD =	0x4,
-	FILETYPE_DEH =		0x8,
+	FILETYPE_IWAD = 0x2,
+	FILETYPE_PWAD = 0x4,
+	FILETYPE_DEH = 0x8,
 };
 
-static int GuessFileType(const char *name)
+static int GuessFileType(const char* name)
 {
 	int ret = FILETYPE_UNKNOWN;
-	const char *base;
-	char *lower;
-	static bool iwad_found = false;
 
-	base = M_BaseName(name);
-	lower = M_StringDuplicate(base);
+	const char* base = M_BaseName(name);
+	char* lower = M_StringDuplicate(base);
 	M_ForceLowercase(lower);
 
+	static bool iwad_found{false};
 	// only ever add one argument to the -iwad parameter
-
 	if (iwad_found == false && D_IsIWADName(lower))
 	{
 		ret = FILETYPE_IWAD;
 		iwad_found = true;
 	}
-	else if (M_StringEndsWith(lower, ".wad") ||
-				M_StringEndsWith(lower, ".lmp"))
+	else if (M_StringEndsWith(lower, ".wad") || M_StringEndsWith(lower, ".lmp"))
 	{
 		ret = FILETYPE_PWAD;
 	}
-	else if (M_StringEndsWith(lower, ".deh") ||
-				M_StringEndsWith(lower, ".bex") || // [crispy] *.bex
-				M_StringEndsWith(lower, ".hhe") ||
-				M_StringEndsWith(lower, ".seh"))
+	else if (M_StringEndsWith(lower, ".deh")
+			|| M_StringEndsWith(lower, ".bex")
+			|| M_StringEndsWith(lower, ".hhe")
+			|| M_StringEndsWith(lower, ".seh"))
 	{
 		ret = FILETYPE_DEH;
 	}
@@ -301,16 +234,17 @@ static int GuessFileType(const char *name)
 	return ret;
 }
 
-typedef struct
+struct argument_t
 {
-	char *str;
-	int type, stable;
-} argument_t;
+	char* str;
+	int type;
+	int stable;
+};
 
-static int CompareByFileType(const void *a, const void *b)
+static int CompareByFileType(const void* a, const void* b)
 {
-	const argument_t *arg_a = (const argument_t *) a;
-	const argument_t *arg_b = (const argument_t *) b;
+	const argument_t* arg_a = (const argument_t*) a;
+	const argument_t* arg_b = (const argument_t*) b;
 
 	const int ret = arg_a->type - arg_b->type;
 
@@ -319,79 +253,65 @@ static int CompareByFileType(const void *a, const void *b)
 
 void M_AddLooseFiles()
 {
-	int i, types = 0;
-	char **newargv;
-	argument_t *arguments;
-
 	if (myargc < 2)
 	{
 		return;
 	}
 
 	// allocate space for up to three additional regular parameters
-
-	arguments = static_cast<decltype(arguments)>(malloc((myargc + 3) * sizeof(*arguments)));
+	argument_t* arguments = static_cast<decltype(arguments)>(malloc((myargc + 3) * sizeof(*arguments)));
 	memset(arguments, 0, (myargc + 3) * sizeof(*arguments));
 
-	// check the command line and make sure it does not already
-	// contain any regular parameters or response files
+	int types{0};
+	// check the command line and make sure it does not already contain any regular parameters or response files
 	// but only fully-qualified LFS or UNC file paths
-
-	for (i = 1; i < myargc; i++)
+	for (size_t i{1}; i < myargc; ++i)
 	{
-		char *arg = myargv[i];
-		int type;
+		char* arg = myargv[i];
 
-		if (strlen(arg) < 3 ||
-			arg[0] == '-' ||
-			arg[0] == '@' ||
-			((!isalpha(arg[0]) || arg[1] != ':' || arg[2] != '\\') &&
-			(arg[0] != '\\' || arg[1] != '\\')))
+		if (strlen(arg) < 3 || arg[0] == '-' || arg[0] == '@' || ((!isalpha(arg[0]) || arg[1] != ':' || arg[2] != '\\')
+			&& (arg[0] != '\\' || arg[1] != '\\')))
 		{
 			free(arguments);
 			return;
 		}
 
-		type = GuessFileType(arg);
+		auto type = GuessFileType(arg);
 		arguments[i].str = arg;
 		arguments[i].type = type;
 		arguments[i].stable = i;
 		types |= type;
 	}
 
-	// add space for one additional regular parameter
-	// for each discovered file type in the new argument list
+	// add space for one additional regular parameter for each discovered file type in the new argument list
 	// and sort parameters right before their corresponding file paths
-
 	if (types & FILETYPE_IWAD)
 	{
 		arguments[myargc].str = M_StringDuplicate("-iwad");
 		arguments[myargc].type = FILETYPE_IWAD - 1;
-		myargc++;
+		++myargc;
 	}
 	if (types & FILETYPE_PWAD)
 	{
 		arguments[myargc].str = M_StringDuplicate("-merge");
 		arguments[myargc].type = FILETYPE_PWAD - 1;
-		myargc++;
+		++myargc;
 	}
 	if (types & FILETYPE_DEH)
 	{
 		arguments[myargc].str = M_StringDuplicate("-deh");
 		arguments[myargc].type = FILETYPE_DEH - 1;
-		myargc++;
+		++myargc;
 	}
 
-	newargv = static_cast<decltype(newargv)>(malloc(myargc * sizeof(*newargv)));
+	char** newargv = static_cast<decltype(newargv)>(malloc(myargc * sizeof(*newargv)));
 
-	// sort the argument list by file type, except for the zeroth argument
-	// which is the executable invocation itself
-
+	// sort the argument list by file type, except for the zeroth argument which is the executable invocation itself
 	SDL_qsort(arguments + 1, myargc - 1, sizeof(*arguments), CompareByFileType);
 
 	newargv[0] = myargv[0];
 
-	for (i = 1; i < myargc; i++)
+	for (size_t i{1}; i < myargc; ++i)
 	{
 		newargv[i] = arguments[i].str;
 	}
@@ -403,9 +323,7 @@ void M_AddLooseFiles()
 #endif
 
 // Return the name of the executable used to start the program:
-
-const char *M_GetExecutableName()
+const char* M_GetExecutableName()
 {
 	return M_BaseName(myargv[0]);
 }
-

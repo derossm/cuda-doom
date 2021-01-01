@@ -8,11 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		SDL emulation of VGA 640x480x4 planar video mode,
-//		for Hexen startup loading screen.
+		SDL emulation of VGA 640x480x4 planar video mode, for Hexen startup loading screen.
 \**********************************************************************************************************************************************/
 
 #include "SDL.h"
+
 #include "string.h"
 
 #include "doomtype.h"
@@ -20,19 +20,19 @@
 #include "i_video.h"
 
 // Palette fade-in takes two seconds
-
 #define FADE_TIME 2000
 
 #define HR_SCREENWIDTH 640
 #define HR_SCREENHEIGHT 480
 
-static SDL_Window *hr_screen = NULL;
-static SDL_Surface *hr_surface = NULL;
-static const char *window_title = "";
+static SDL_Window* hr_screen = NULL;
+static SDL_Surface* hr_surface = NULL;
+static const char* window_title = "";
 
 bool I_SetVideoModeHR()
 {
-	int x, y;
+	int x;
+	int y;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -41,11 +41,8 @@ bool I_SetVideoModeHR()
 
 	I_GetWindowPosition(&x, &y, HR_SCREENWIDTH, HR_SCREENHEIGHT);
 
-	// Create screen surface at the native desktop pixel depth (bpp=0),
-	// as we cannot trust true 8-bit to reliably work nowadays.
-	hr_screen = SDL_CreateWindow(window_title, x, y,
-		HR_SCREENWIDTH, HR_SCREENHEIGHT,
-		0);
+	// Create screen surface at the native desktop pixel depth (bpp=0), as we cannot trust true 8-bit to reliably work nowadays.
+	hr_screen = SDL_CreateWindow(window_title, x, y, HR_SCREENWIDTH, HR_SCREENHEIGHT, 0);
 
 	if (hr_screen == NULL)
 	{
@@ -54,13 +51,12 @@ bool I_SetVideoModeHR()
 	}
 
 	// We do all actual drawing into an intermediate surface.
-	hr_surface = SDL_CreateRGBSurface(0, HR_SCREENWIDTH, HR_SCREENHEIGHT,
-										8, 0, 0, 0, 0);
+	hr_surface = SDL_CreateRGBSurface(0, HR_SCREENWIDTH, HR_SCREENHEIGHT, 8, 0, 0, 0, 0);
 
 	return true;
 }
 
-void I_SetWindowTitleHR(const char *title)
+void I_SetWindowTitleHR(const char* title)
 {
 	window_title = title;
 }
@@ -83,19 +79,18 @@ void I_ClearScreenHR()
 	SDL_FillRect(hr_surface, &area, 0);
 }
 
-void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
+void I_SlamBlockHR(int x, int y, int w, int h, const byte* src)
 {
 	SDL_Rect blit_rect;
-	const byte *srcptrs[4];
+	const byte* srcptrs[4];
 	byte srcbits[4];
-	byte *dest;
-	int x1, y1;
+	byte* dest;
+	int x1;
+	int y1;
 	int i;
 	int bit;
 
-	// Set up source pointers to read from source buffer - each 4-bit
-	// pixel has its bits split into four sub-buffers
-
+	// Set up source pointers to read from source buffer - each 4-bit pixel has its bits split into four sub-buffers
 	for (i=0; i<4; ++i)
 	{
 		srcptrs[i] = src + (i * w * h / 8);
@@ -107,33 +102,27 @@ void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
 	}
 
 	// Draw each pixel
-
 	bit = 0;
 
 	for (y1=y; y1<y+h; ++y1)
 	{
-		dest = ((byte *) hr_surface->pixels) + y1 * hr_surface->pitch + x;
+		dest = ((byte*) hr_surface->pixels) + y1 * hr_surface->pitch + x;
 
 		for (x1=x; x1<x+w; ++x1)
 		{
-			// Get the bits for this pixel
-			// For each bit, find the byte containing it, shift down
-			// and mask out the specific bit wanted.
-
+			// Get the bits for this pixel; For each bit, find the byte containing it, shift down and mask out the specific bit wanted.
 			for (i=0; i<4; ++i)
 			{
 				srcbits[i] = (srcptrs[i][bit / 8] >> (7 - (bit % 8))) & 0x1;
 			}
 
 			// Reassemble the pixel value
-
 			*dest = (srcbits[0] << 0)
 					| (srcbits[1] << 1)
 					| (srcbits[2] << 2)
 					| (srcbits[3] << 3);
 
 			// Next pixel!
-
 			++dest;
 			++bit;
 		}
@@ -146,12 +135,11 @@ void I_SlamBlockHR(int x, int y, int w, int h, const byte *src)
 	blit_rect.y = y;
 	blit_rect.w = w;
 	blit_rect.h = h;
-	SDL_BlitSurface(hr_surface, &blit_rect,
-					SDL_GetWindowSurface(hr_screen), &blit_rect);
+	SDL_BlitSurface(hr_surface, &blit_rect, SDL_GetWindowSurface(hr_screen), &blit_rect);
 	SDL_UpdateWindowSurfaceRects(hr_screen, &blit_rect, 1);
 }
 
-void I_SlamHR(const byte *buffer)
+void I_SlamHR(const byte* buffer)
 {
 	I_SlamBlockHR(0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT, buffer);
 }
@@ -161,9 +149,9 @@ void I_InitPaletteHR()
 	// ...
 }
 
-void I_SetPaletteHR(const byte *palette)
+void I_SetPaletteHR(const byte* palette)
 {
-	SDL_Rect screen_rect = {0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT};
+	SDL_Rect screen_rect{0, 0, HR_SCREENWIDTH, HR_SCREENHEIGHT};
 	SDL_Color sdlpal[16];
 	int i;
 
@@ -176,15 +164,14 @@ void I_SetPaletteHR(const byte *palette)
 
 	// After setting colors, update the screen.
 	SDL_SetPaletteColors(hr_surface->format->palette, sdlpal, 0, 16);
-	SDL_BlitSurface(hr_surface, &screen_rect,
-					SDL_GetWindowSurface(hr_screen), &screen_rect);
+	SDL_BlitSurface(hr_surface, &screen_rect, SDL_GetWindowSurface(hr_screen), &screen_rect);
 	SDL_UpdateWindowSurfaceRects(hr_screen, &screen_rect, 1);
 }
 
-void I_FadeToPaletteHR(const byte *palette)
+void I_FadeToPaletteHR(const byte* palette)
 {
 	byte tmppal[16 * 3];
-	int starttime;
+	TimeType starttime;
 	int elapsed;
 	int i;
 
@@ -200,7 +187,6 @@ void I_FadeToPaletteHR(const byte *palette)
 		}
 
 		// Generate the fake palette
-
 		for (i=0; i<16 * 3; ++i)
 		{
 			tmppal[i] = (palette[i] * elapsed) / FADE_TIME;
@@ -210,12 +196,10 @@ void I_FadeToPaletteHR(const byte *palette)
 		SDL_UpdateWindowSurface(hr_screen);
 
 		// Sleep a bit
-
 		I_Sleep(10);
 	}
 
 	// Set the final palette
-
 	I_SetPaletteHR(palette);
 }
 
@@ -232,7 +216,7 @@ void I_BlackPaletteHR()
 bool I_CheckAbortHR()
 {
 	SDL_Event ev;
-	bool result = false;
+	bool result{false};
 
 	// Not initialized?
 	if (hr_surface == NULL)
@@ -250,4 +234,3 @@ bool I_CheckAbortHR()
 
 	return result;
 }
-

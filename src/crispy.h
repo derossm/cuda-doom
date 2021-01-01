@@ -34,13 +34,20 @@
 
 struct crispy_t
 {
-	// [crispy] "crispness" config variables
+	char* havenerve{nullptr};
+	char* havemaster{nullptr};
+
+	void (*post_rendering_hook) ();
+
+	TimeType btusetimer{0};
+	TimeType demotimer{0};
+	TimeType leveltime{0};
+
 	int automapoverlay{0};
 	int automaprotate{0};
 	int automapstats{0};
 	int bobfactor{0};
 	int brightmaps{0};
-	int btusetimer{0};
 	int centerweapon{0};
 	int coloredblood{0};
 	int coloredhud{0};
@@ -48,7 +55,6 @@ struct crispy_t
 	int crosshairhealth{0};
 	int crosshairtarget{0};
 	int crosshairtype{0};
-	int demotimer{0};
 	int demotimerdir{0};
 	int demobar{0};
 	int extautomap{1};
@@ -58,7 +64,6 @@ struct crispy_t
 	int freelook{0};
 	int hires{1};
 	int jump{0};
-	int leveltime{0};
 	int mouselook{0};
 	int neghealth{0};
 	int overunder{0};
@@ -73,19 +78,18 @@ struct crispy_t
 	int soundfull{0};
 	int soundmono{0};
 	int translucency{0};
-#ifdef CRISPY_TRUECOLOR
-	int truecolor{1};
-#endif
 	int uncapped{0};
 	int vsync{1};
 	int weaponsquat{0};
 	int widescreen{0};
-
-	// [crispy] in-game switches and variables
 	int screenshotmsg{0};
 	int cleanscreenshot{0};
 	int demowarp{0};
 	int fps{0};
+
+#ifdef CRISPY_TRUECOLOR
+	int truecolor{1};
+#endif
 
 	bool flashinghom{false};
 	bool fliplevels{false};
@@ -98,18 +102,13 @@ struct crispy_t
 	bool singleplayer{true};
 	bool stretchsky{false};
 
-	char* havenerve{nullptr};
-	char* havemaster{nullptr};
-
-	const char* sdlversion{nullptr};
-	const char* platform{nullptr};
-
-	void (*post_rendering_hook) ();
+	std::string sdlversion{};
+	std::string platform{};
 };
 
 // [crispy] "regular" config variables
 static crispy_t crispy_s{};
-crispy_t *const crispy = &crispy_s;
+crispy_t* const crispy = &crispy_s;
 
 // [crispy] "critical" config variables
 static const crispy_t critical_s{0};

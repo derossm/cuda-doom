@@ -9,29 +9,118 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Items: key cards, artifacts, weapon, ammunition.
+		Items: key cards, artifacts, weapon, ammunition.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __D_ITEMS__
-#define __D_ITEMS__
-
 #include "doomdef.h"
 
+// We are referring to sprite numbers.
+#include "info.h"
+
 // Weapon info: sprite frames, ammunition use.
-typedef struct
+struct weaponinfo_t
 {
-	AmmoType_t	ammo;
-	int		upstate;
-	int		downstate;
-	int		readystate;
-	int		atkstate;
-	int		flashstate;
+	AmmoType_t ammo;
+	statenum_t upstate;
+	statenum_t downstate;
+	statenum_t readystate;
+	statenum_t atkstate;
+	statenum_t flashstate;
+};
 
-} weaponinfo_t;
-
-extern weaponinfo_t	weaponinfo[NUMWEAPONS];
-
-#endif
+// PSPRITE ACTIONS for waepons.
+// This struct controls the weapon animations.
+//
+// Each entry is:
+// ammo/amunition type
+// upstate
+// downstate
+// readystate
+// atkstate, i.e. attack/fire/hit frame
+// flashstate, muzzle flash
+weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
+	{
+	// fist
+	AmmoType_t::am_noammo,
+	statenum_t::S_PUNCHUP,
+	statenum_t::S_PUNCHDOWN,
+	statenum_t::S_PUNCH,
+	statenum_t::S_PUNCH1,
+	statenum_t::S_NULL
+	},
+	{
+	// pistol
+	AmmoType_t::am_clip,
+	statenum_t::S_PISTOLUP,
+	statenum_t::S_PISTOLDOWN,
+	statenum_t::S_PISTOL,
+	statenum_t::S_PISTOL1,
+	statenum_t::S_PISTOLFLASH
+	},
+	{
+	// shotgun
+	AmmoType_t::am_shell,
+	statenum_t::S_SGUNUP,
+	statenum_t::S_SGUNDOWN,
+	statenum_t::S_SGUN,
+	statenum_t::S_SGUN1,
+	statenum_t::S_SGUNFLASH1
+	},
+	{
+	// chaingun
+	AmmoType_t::am_clip,
+	statenum_t::S_CHAINUP,
+	statenum_t::S_CHAINDOWN,
+	statenum_t::S_CHAIN,
+	statenum_t::S_CHAIN1,
+	statenum_t::S_CHAINFLASH1
+	},
+	{
+	// missile launcher
+	AmmoType_t::am_misl,
+	statenum_t::S_MISSILEUP,
+	statenum_t::S_MISSILEDOWN,
+	statenum_t::S_MISSILE,
+	statenum_t::S_MISSILE1,
+	statenum_t::S_MISSILEFLASH1
+	},
+	{
+	// plasma rifle
+	AmmoType_t::am_cell,
+	statenum_t::S_PLASMAUP,
+	statenum_t::S_PLASMADOWN,
+	statenum_t::S_PLASMA,
+	statenum_t::S_PLASMA1,
+	statenum_t::S_PLASMAFLASH1
+	},
+	{
+	// bfg 9000
+	AmmoType_t::am_cell,
+	statenum_t::S_BFGUP,
+	statenum_t::S_BFGDOWN,
+	statenum_t::S_BFG,
+	statenum_t::S_BFG1,
+	statenum_t::S_BFGFLASH1
+	},
+	{
+	// chainsaw
+	AmmoType_t::am_noammo,
+	statenum_t::S_SAWUP,
+	statenum_t::S_SAWDOWN,
+	statenum_t::S_SAW,
+	statenum_t::S_SAW1,
+	statenum_t::S_NULL
+	},
+	{
+	// super shotgun
+	AmmoType_t::am_shell,
+	statenum_t::S_DSGUNUP,
+	statenum_t::S_DSGUNDOWN,
+	statenum_t::S_DSGUN,
+	statenum_t::S_DSGUN1,
+	statenum_t::S_DSGUNFLASH1
+	}
+};

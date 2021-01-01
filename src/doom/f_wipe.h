@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Mission start screen wipe/melt, special effects.
+		Mission start screen wipe/melt, special effects.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __F_WIPE_H__
-#define __F_WIPE_H__
 
 //
 //						SCREEN WIPE PACKAGE
@@ -39,6 +36,4 @@ int wipe_StartScreen(int x, int y, int width, int height);
 int wipe_EndScreen(int x, int y, int width, int height);
 
 
-int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height, int ticks);
-
-#endif
+int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height, TimeType ticks);

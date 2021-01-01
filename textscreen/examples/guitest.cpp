@@ -30,20 +30,20 @@ int radiobutton_value;
 char* file_path{nullptr};
 char* dir_path{nullptr};
 txt_label_t* value_label;
-txt_window_t* firstwin;
+Window* firstwin;
 int cheesy;
 
 void ClosePwnBox(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(window))
 {
-	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_window_t, window);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::Window, window);
 
 	cudadoom::txt::TXT_CloseWindow(window);
 }
 
 void PwnBox(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t* window;
-	cudadoom::txt::txt_window_action_t* close_button;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::WindowAction* close_button;
 
 	window = cudadoom::txt::TXT_NewWindow("Pwned!");
 	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel(" BOOM! HEADSHOT! "));
@@ -77,11 +77,11 @@ void CloseWindow(cudadoom::txt::TXT_UNCAST_ARG(button), void* user_data)
 
 void UnicodeWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	static const char *strings[] = {"lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"};
+	static const char* strings[] = {"lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"};
 
 	static int var1;
 	static int var2;
-	cudadoom::txt::txt_window_t* window = cudadoom::txt::TXT_NewWindow("Questo è in Italiano");
+	cudadoom::txt::Window* window = cudadoom::txt::TXT_NewWindow("Questo è in Italiano");
 
 	cudadoom::txt::TXT_AddWidgets(window,
 					cudadoom::txt::TXT_NewButton("Questo è un tasto"),
@@ -98,11 +98,11 @@ void UnicodeWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 
 void SetupWindow(void)
 {
-	cudadoom::txt::txt_window_t* window;
+	cudadoom::txt::Window* window;
 	cudadoom::txt::txt_table_t* table;
 	cudadoom::txt::txt_table_t* rightpane;
-	cudadoom::txt::txt_checkbox_t *cheesy_checkbox;
-	cudadoom::txt::txt_window_action_t* pwn;
+	cudadoom::txt::CheckBox* cheesy_checkbox;
+	cudadoom::txt::WindowAction* pwn;
 	cudadoom::txt::txt_label_t* toplabel;
 	char buf[100];
 
@@ -156,7 +156,7 @@ void SetupWindow(void)
 
 	for (size_t i{0}; i<3; ++i)
 	{
-		cudadoom::txt::txt_radiobutton_t* rbut;
+		cudadoom::txt::RadioButton* rbut;
 
 		rbut = cudadoom::txt::TXT_NewRadioButton(radio_values[i], &radiobutton_value, i);
 		cudadoom::txt::TXT_AddWidget(rightpane, rbut);
@@ -176,7 +176,7 @@ void SetupWindow(void)
 
 void Window2(void)
 {
-	cudadoom::txt::txt_window_t* window;
+	cudadoom::txt::Window* window;
 	cudadoom::txt::txt_table_t* table;
 	cudadoom::txt::txt_table_t* unselectable_table;
 	cudadoom::txt::txt_scrollpane_t* scrollpane;
@@ -218,9 +218,9 @@ void Window2(void)
 
 void ScrollingMenu(void)
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_button_t *button;
-	cudadoom::txt::txt_table_t *table;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::Button* button;
+	cudadoom::txt::txt_table_t* table;
 
 	window = cudadoom::txt::TXT_NewWindow("Scrollable menu");
 
@@ -245,7 +245,7 @@ void ScrollingMenu(void)
 	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewScrollPane(0, 6, table));
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	if (!cudadoom::txt::TXT_Init())
 	{

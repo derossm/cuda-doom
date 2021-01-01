@@ -10,17 +10,14 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	[crispy] Archiving: Extended SaveGame I/O.
+		rchiving: Extended SaveGame I/O.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __P_EXTSAVEG__
-#define __P_EXTSAVEG__
-
 /* p_extsaveg.c */
-extern char *savewadfilename;
+extern char* savewadfilename;
 
 extern void P_WriteExtendedSaveGameData();
 extern void P_ReadExtendedSaveGameData(int pass);
@@ -32,5 +29,3 @@ extern thinker_t* P_IndexToThinker(uint32_t index);
 /* m_menu.c */
 extern void M_ForceLoadGame();
 extern void M_ConfirmDeleteGame();
-
-#endif

@@ -40,7 +40,7 @@ static const int cheat_sequence[] =
 	'b', 'a', KEY_ENTER, 0
 };
 
-static unsigned int cheat_sequence_index = 0;
+static unsigned cheat_sequence_index = 0;
 
 // I think these are good "sensible" defaults:
 
@@ -88,7 +88,7 @@ static void SensibleDefaults()
 	png_screenshots = 1;
 }
 
-static int MainMenuKeyPress(cudadoom::txt::txt_window_t *window, int key, void *user_data)
+static int MainMenuKeyPress(cudadoom::txt::Window* window, int key, void* user_data)
 {
 	if (key == cheat_sequence[cheat_sequence_index])
 	{
@@ -112,7 +112,7 @@ static int MainMenuKeyPress(cudadoom::txt::txt_window_t *window, int key, void *
 	return 0;
 }
 
-static void DoQuit(void *widget, void *dosave)
+static void DoQuit(void* widget, void* dosave)
 {
 	if (dosave != NULL)
 	{
@@ -124,12 +124,12 @@ static void DoQuit(void *widget, void *dosave)
 	exit(0);
 }
 
-static void QuitConfirm(void *unused1, void *unused2)
+static void QuitConfirm(void* unused1, void* unused2)
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_label_t *label;
-	cudadoom::txt::txt_button_t *yes_button;
-	cudadoom::txt::txt_button_t *no_button;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::txt_label_t* label;
+	cudadoom::txt::Button* yes_button;
+	cudadoom::txt::Button* no_button;
 
 	window = cudadoom::txt::TXT_NewWindow(NULL);
 
@@ -151,9 +151,9 @@ static void QuitConfirm(void *unused1, void *unused2)
 	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_RIGHT, NULL);
 }
 
-static void LaunchDoom(void *unused1, void *unused2)
+static void LaunchDoom(void* unused1, void* unused2)
 {
-	execute_context_t *exec;
+	execute_context_t* exec;
 
 	// Save configuration first
 
@@ -172,9 +172,9 @@ static void LaunchDoom(void *unused1, void *unused2)
 	exit(0);
 }
 
-static cudadoom::txt::txt_button_t *GetLaunchButton()
+static cudadoom::txt::Button* GetLaunchButton()
 {
-	const char *label;
+	const char* label;
 
 	switch (gamemission)
 	{
@@ -200,9 +200,9 @@ static cudadoom::txt::txt_button_t *GetLaunchButton()
 
 void MainMenu()
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_window_action_t *quit_action;
-	cudadoom::txt::txt_window_action_t *warp_action;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::WindowAction* quit_action;
+	cudadoom::txt::WindowAction* warp_action;
 
 	window = cudadoom::txt::TXT_NewWindow("Main Menu");
 
@@ -259,7 +259,7 @@ static void SetIcon()
 	extern SDL_Window *cudadoom::txt::TXT_SDLWindow;
 	SDL_Surface *surface;
 
-	surface = SDL_CreateRGBSurfaceFrom((void *) setup_icon_data, setup_icon_w,
+	surface = SDL_CreateRGBSurfaceFrom((void*) setup_icon_data, setup_icon_w,
 										setup_icon_h, 32, setup_icon_w * 4,
 										0xff << 24, 0xff << 16,
 										0xff << 8, 0xff << 0);
@@ -270,7 +270,7 @@ static void SetIcon()
 
 static void SetWindowTitle()
 {
-	char *title;
+	char* title;
 
 	title = M_StringReplace(PACKAGE_NAME " Setup ver " PACKAGE_VERSION,
 							"Doom",
@@ -296,12 +296,12 @@ static void InitTextscreen()
 
 	// Set Romero's "funky blue" color:
 	// <https://doomwiki.org/wiki/Romero_Blue>
-	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BLUE, 0x04, 0x14, 0x40);
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::ColorType::blue, 0x04, 0x14, 0x40);
 
 	// [crispy] Crispy colors for Crispy Setup
-	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_GREEN, 249, 227, 0); // 0xF9, 0xE3, 0x00
-	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_CYAN, 220, 153, 0);			// 0xDC, 0x99, 0x00
-	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_CYAN, 76, 160, 223); // 0x4C, 0xA0, 0xDF
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::ColorType::bright_green, 249, 227, 0); // 0xF9, 0xE3, 0x00
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::ColorType::cyan, 220, 153, 0);			// 0xDC, 0x99, 0x00
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::ColorType::bright_cyan, 76, 160, 223); // 0x4C, 0xA0, 0xDF
 
 	SetIcon();
 	SetWindowTitle();

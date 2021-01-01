@@ -29,7 +29,7 @@ static int always_run = 0;
 
 // Keys within these groups cannot have the same value.
 
-static int *controls[] = { &key_left, &key_right, &key_up, &key_down,
+static int* controls[] = { &key_left, &key_right, &key_up, &key_down,
 							&key_alt_up, &key_alt_down,
 							&key_reverse, &key_toggleautorun, &key_togglenovert,
 							&key_strafeleft, &key_straferight, &key_fire,
@@ -54,11 +54,11 @@ static int *controls[] = { &key_left, &key_right, &key_up, &key_down,
 							&key_arti_invulnerability,
 							&key_prevweapon, &key_nextweapon, NULL };
 
-static int *menu_nav[] = { &key_menu_activate, &key_menu_up, &key_menu_down,
+static int* menu_nav[] = { &key_menu_activate, &key_menu_up, &key_menu_down,
 							&key_menu_left, &key_menu_right, &key_menu_back,
 							&key_menu_forward, &key_menu_del, NULL };
 
-static int *shortcuts[] = { &key_menu_help, &key_menu_save, &key_menu_load,
+static int* shortcuts[] = { &key_menu_help, &key_menu_save, &key_menu_load,
 							&key_menu_volume, &key_menu_detail, &key_menu_qsave,
 							&key_menu_endgame, &key_menu_messages, &key_spy,
 							&key_menu_qload, &key_menu_quit, &key_menu_gamma,
@@ -69,7 +69,7 @@ static int *shortcuts[] = { &key_menu_help, &key_menu_save, &key_menu_load,
 							&key_multi_msgplayer[0], &key_multi_msgplayer[1],
 							&key_multi_msgplayer[2], &key_multi_msgplayer[3] };
 
-static int *map_keys[] = { &key_map_north, &key_map_south, &key_map_east,
+static int* map_keys[] = { &key_map_north, &key_map_south, &key_map_east,
 							&key_map_west, &key_map_zoomin, &key_map_zoomout,
 							&key_map_toggle, &key_map_maxzoom, &key_map_follow,
 							&key_map_grid, &key_map_mark, &key_map_clearmark,
@@ -98,7 +98,7 @@ static void UpdateJoybSpeed(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt
 
 static int VarInGroup(int *variable, int **group)
 {
-	unsigned int i;
+	unsigned i;
 
 	for (i=0; group[i] != NULL; ++i)
 	{
@@ -113,7 +113,7 @@ static int VarInGroup(int *variable, int **group)
 
 static void CheckKeyGroup(int *variable, int **group)
 {
-	unsigned int i;
+	unsigned i;
 
 	// Don't check unless the variable is in this group.
 
@@ -151,10 +151,10 @@ static void KeySetCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt:
 
 // Add a label and keyboard input to the specified table.
 
-static void AddKeyControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char *name, int *var)
+static void AddKeyControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char* name, int *var)
 {
 	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, table);
-	cudadoom::txt::txt_key_input_t *key_input;
+	cudadoom::txt::txt_key_input_t* key_input;
 
 	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewLabel(name));
 	key_input = cudadoom::txt::TXT_NewKeyInput(var);
@@ -163,7 +163,7 @@ static void AddKeyControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char *name
 	cudadoom::txt::TXT_SignalConnect(key_input, "set", KeySetCallback, var);
 }
 
-static void AddSectionLabel(cudadoom::txt::TXT_UNCAST_ARG(table), const char *title,
+static void AddSectionLabel(cudadoom::txt::TXT_UNCAST_ARG(table), const char* title,
 							bool add_space)
 {
 	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, table);
@@ -186,9 +186,9 @@ static void AddSectionLabel(cudadoom::txt::TXT_UNCAST_ARG(table), const char *ti
 }
 static void ConfigExtraKeys(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_scrollpane_t *scrollpane;
-	cudadoom::txt::txt_table_t *table;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::txt_scrollpane_t* scrollpane;
+	cudadoom::txt::txt_table_t* table;
 	bool extra_keys = gamemission == heretic
 						|| gamemission == hexen
 						|| gamemission == strife;
@@ -338,9 +338,9 @@ static void ConfigExtraKeys(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt
 
 static void OtherKeysDialog(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_table_t *table;
-	cudadoom::txt::txt_scrollpane_t *scrollpane;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::txt_table_t* table;
+	cudadoom::txt::txt_scrollpane_t* scrollpane;
 
 	window = cudadoom::txt::TXT_NewWindow("Other keys");
 
@@ -426,10 +426,10 @@ static void OtherKeysDialog(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt
 	cudadoom::txt::TXT_AddWidget(window, scrollpane);
 }
 
-void ConfigKeyboard(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigKeyboard(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_checkbox_t *run_control;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::CheckBox* run_control;
 
 	always_run = joybspeed >= 20;
 

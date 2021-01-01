@@ -19,7 +19,7 @@
 int bex_pars[6][10] = {{0}};
 int bex_cpars[32] = {0};
 
-static void *DEH_BEXParsStart(deh_context_t *context, char *line)
+static void* DEH_BEXParsStart(deh_context_t* context, char* line)
 {
 	char s[7];
 
@@ -31,7 +31,7 @@ static void *DEH_BEXParsStart(deh_context_t *context, char *line)
 	return NULL;
 }
 
-static void DEH_BEXParsParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_BEXParsParseLine(deh_context_t* context, char* line, void* tag)
 {
 	int episode, map, partime;
 

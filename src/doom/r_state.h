@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Refresh/render internal state variables (global).
+		Refresh/render internal state variables (global).
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __R_STATE__
-#define __R_STATE__
 
 // Need data structure definitions.
 #include "d_player.h"
@@ -52,13 +49,10 @@ extern int		firstflat;
 extern int*		flattranslation;
 extern int*		texturetranslation;
 
-
 // Sprite....
 extern int		firstspritelump;
 extern int		lastspritelump;
 extern int		numspritelumps;
-
-
 
 //
 // Lookup tables for map data.
@@ -87,7 +81,6 @@ extern line_t*		lines;
 extern int		numsides;
 extern side_t*		sides;
 
-
 //
 // POV data.
 //
@@ -96,8 +89,7 @@ extern fixed_t		viewy;
 extern fixed_t		viewz;
 
 extern angle_t		viewangle;
-extern player_t*	viewplayer;
-
+extern Player*	viewplayer;
 
 // ?
 extern angle_t		clipangle;
@@ -109,8 +101,6 @@ extern angle_t		xtoviewangle[MAXWIDTH+1];
 extern fixed_t		rw_distance;
 extern angle_t		rw_normalangle;
 
-
-
 // angle to line origin
 extern int		rw_angle1;
 
@@ -119,6 +109,3 @@ extern int		sscount;
 
 extern visplane_t*	floorplane;
 extern visplane_t*	ceilingplane;
-
-
-#endif

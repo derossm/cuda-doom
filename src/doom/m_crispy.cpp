@@ -173,7 +173,7 @@ void M_CrispyToggleCenterweapon(int choice)
 
 void M_CrispyToggleColoredblood(int choice)
 {
-	thinker_t *th;
+	thinker_t* th;
 
 	if (gameversion == GameVersion_t::exe_chex)
 	{
@@ -188,7 +188,7 @@ void M_CrispyToggleColoredblood(int choice)
 	{
 	if (th->function.acp1 == (actionf_p1)P_MobjThinker)
 	{
-		mobj_t *mobj = (mobj_t *)th;
+		MapObject* mobj = (MapObject*)th;
 
 		if (mobj->type == mobjtype_t::MT_SKULL)
 		{

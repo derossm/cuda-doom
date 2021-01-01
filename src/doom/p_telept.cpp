@@ -19,7 +19,7 @@
 #include "sounds.h"
 #include "r_state.h"
 
-bool EV_Teleport(line_t* line, int side, mobj_t* thing)
+bool EV_Teleport(line_t* line, int side, MapObject* thing)
 {
 	// don't teleport missiles
 	if (thing->flags & mobjflag_t::MF_MISSILE)
@@ -46,7 +46,7 @@ bool EV_Teleport(line_t* line, int side, mobj_t* thing)
 					continue;
 				}
 
-				auto m{(mobj_t*)thinker};
+				auto m{(MapObject*)thinker};
 
 				// not a teleportman
 				if (m->type != mobjtype_t::MT_TELEPORTMAN)

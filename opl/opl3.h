@@ -23,8 +23,8 @@
 
 #include "../derma/common.h"
 
-#define OPL_WRITEBUF_SIZE	1024
-#define OPL_WRITEBUF_DELAY	2
+constexpr size_t OPL_WRITEBUF_SIZE{1024};
+constexpr size_t OPL_WRITEBUF_DELAY{2};
 
 using Bitu = uintptr_t;
 using Bits = intptr_t;
@@ -37,10 +37,23 @@ using Bit16s = int16_t;
 using Bit8u = uint8_t;
 using Bit8s = int8_t;
 
-struct opl3_slot;
 struct opl3_channel;
-struct opl3_writebuf;
 struct opl3_chip;
+
+enum class envelope_gen_num
+{
+	attack = 0,
+	decay = 1,
+	sustain = 2,
+	release = 3
+};
+
+struct opl3_writebuf
+{
+	Bit64u time;
+	Bit16u reg;
+	Bit8u data;
+};
 
 struct opl3_slot
 {
@@ -53,7 +66,7 @@ struct opl3_slot
 	Bit16s eg_rout;
 	Bit16s eg_out;
 	Bit8u eg_inc;
-	Bit8u eg_gen;
+	envelope_gen_num eg_gen;
 	Bit8u eg_rate;
 	Bit8u eg_ksl;
 	Bit8u* trem;
@@ -91,13 +104,6 @@ struct opl3_channel
 	Bit16u cha;
 	Bit16u chb;
 	Bit8u ch_num;
-};
-
-struct opl3_writebuf
-{
-	Bit64u time;
-	Bit16u reg;
-	Bit8u data;
 };
 
 struct opl3_chip

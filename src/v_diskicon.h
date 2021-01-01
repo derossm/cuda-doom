@@ -9,19 +9,15 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Disk load indicator.
+		Disk load indicator.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef __V_DISKICON__
-#define __V_DISKICON__
-
 #include "crispy.h"
 
 // Dimensions of the flashing "loading" disk icon
-
 #define LOADING_DISK_W (16 << crispy->hires)
 #define LOADING_DISK_H (16 << crispy->hires)
 
@@ -29,5 +25,3 @@ extern void V_EnableLoadingDisk(const char* lump_name, int xoffs, int yoffs);
 extern void V_BeginRead(size_t nbytes);
 extern void V_DrawDiskIcon();
 extern void V_RestoreDiskBackground();
-
-#endif

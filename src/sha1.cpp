@@ -174,7 +174,7 @@ static void Transform(sha1_context_t* hd, byte* data)
 /* Update the message digest with the contents
  * of INBUF with length INLEN.
  */
-void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)
+void SHA1_Update(sha1_context_t* hd, byte* inbuf, size_t inlen)
 {
 	if (hd->count == 64)
 	{
@@ -287,9 +287,9 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t* hd)
 
 	p = hd->buf;
 #ifdef SYS_BIG_ENDIAN
-#define X(a) do { *(uint32_t*)p = hd->h##a ; p += 4; } while(0)
+#define X(a) do {* (uint32_t*)p = hd->h##a ; p += 4; } while(0)
 #else /* little endian */
-#define X(a) do { *(p++) = hd->h##a >> 24; *(p++) = hd->h##a >> 16; *(p++) = hd->h##a >> 8; *(p++) = hd->h##a; } while(0)
+#define X(a) do {* (p++) = hd->h##a >> 24;* (p++) = hd->h##a >> 16;* (p++) = hd->h##a >> 8;* (p++) = hd->h##a; } while(0)
 #endif
 	X(0);
 	X(1);
@@ -301,7 +301,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t* hd)
 	memcpy(digest, hd->buf, sizeof(sha1_digest_t));
 }
 
-void SHA1_UpdateInt32(sha1_context_t* context, unsigned int val)
+void SHA1_UpdateInt32(sha1_context_t* context, unsigned val)
 {
 	byte buf[4];
 

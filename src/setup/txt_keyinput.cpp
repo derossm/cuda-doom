@@ -21,7 +21,7 @@
 
 #define KEY_INPUT_WIDTH 8
 
-static int KeyPressCallback(txt_window_t *window, int key,
+static int KeyPressCallback(Window* window, int key,
 							TXT_UNCAST_ARG(key_input))
 {
 	TXT_CAST_ARG(txt_key_input_t, key_input);
@@ -40,7 +40,7 @@ static int KeyPressCallback(txt_window_t *window, int key,
 		TXT_CloseWindow(window);
 
 		// Return to normal input mode now that we have the key.
-		TXT_SetInputMode(TXT_INPUT_NORMAL);
+		TXT_SetInputMode(TXT_InputType::normal);
 
 		return 1;
 	}
@@ -56,20 +56,20 @@ static void ReleaseGrab(TXT_UNCAST_ARG(window), TXT_UNCAST_ARG(unused))
 	// SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
 
-static void OpenPromptWindow(txt_key_input_t *key_input)
+static void OpenPromptWindow(txt_key_input_t* key_input)
 {
-	txt_window_t *window;
+	Window* window;
 
 	// Silently update when the shift button is held down.
 
-	key_input->check_conflicts = !TXT_GetModifierState(TXT_MOD_SHIFT);
+	key_input->check_conflicts = !TXT_GetModifierState(ModifierType::shift);
 
 	window = TXT_MessageBox(NULL, "Press the new key...");
 
 	TXT_SetKeyListener(window, KeyPressCallback, key_input);
 
 	// Switch to raw input mode while we're grabbing the key.
-	TXT_SetInputMode(TXT_INPUT_RAW);
+	TXT_SetInputMode(TXT_InputType::raw);
 
 	// Grab input while reading the key. On Windows Mobile
 	// handheld devices, the hardware keypresses are only
@@ -107,7 +107,7 @@ static void TXT_KeyInputDrawer(TXT_UNCAST_ARG(key_input))
 	}
 
 	TXT_SetWidgetBG(key_input);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(ColorType::bright_white);
 
 	TXT_DrawString(buf);
 

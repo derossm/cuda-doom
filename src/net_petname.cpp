@@ -14,7 +14,7 @@
 #include "doomtype.h"
 #include "m_misc.h"
 
-static const char * const adjectives [] = {
+static const char* const adjectives [] = {
 	"Grumpy",
 	"Ecstatic",
 	"Surly",
@@ -58,7 +58,7 @@ static const char * const adjectives [] = {
 	"Baby",
 };
 
-static const char * const nouns[] = {
+static const char* const nouns[] = {
 	"Frad",
 	// Doom
 	"Cacodemon",
@@ -97,12 +97,12 @@ static const char * const nouns[] = {
  */
 static void InitPetName()
 {
-	srand((unsigned int)time(NULL));
+	srand((unsigned)time(NULL));
 }
 
-char *NET_GetRandomPetName()
+char* NET_GetRandomPetName()
 {
-	const char *a, *n;
+	const char* a, *n;
 
 	InitPetName();
 	a = adjectives[rand() % arrlen(adjectives)];

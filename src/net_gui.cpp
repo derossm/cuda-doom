@@ -30,12 +30,12 @@
 
 #include "txt_textscreen.h"
 
-static cudadoom::txt::txt_window_t *window;
+static cudadoom::txt::Window* window;
 static int old_max_players;
-static cudadoom::txt::txt_label_t *player_labels[NET_MAXPLAYERS];
-static cudadoom::txt::txt_label_t *ip_labels[NET_MAXPLAYERS];
-static cudadoom::txt::txt_label_t *drone_label;
-static cudadoom::txt::txt_label_t *master_msg_label;
+static cudadoom::txt::txt_label_t* player_labels[NET_MAXPLAYERS];
+static cudadoom::txt::txt_label_t* ip_labels[NET_MAXPLAYERS];
+static cudadoom::txt::txt_label_t* drone_label;
+static cudadoom::txt::txt_label_t* master_msg_label;
 static bool had_warning;
 
 // Number of players we expect to be in the game. When the number is
@@ -43,7 +43,7 @@ static bool had_warning;
 // zero, do not autostart.
 static int expected_nodes;
 
-static void EscapePressed(cudadoom::txt::TXT_UNCAST_ARG(widget), void *unused)
+static void EscapePressed(cudadoom::txt::TXT_UNCAST_ARG(widget), void* unused)
 {
 	cudadoom::txt::TXT_Shutdown();
 	I_Quit();
@@ -56,7 +56,7 @@ static void StartGame(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_
 
 static void OpenWaitDialog()
 {
-	cudadoom::txt::txt_window_action_t *cancel;
+	cudadoom::txt::WindowAction* cancel;
 
 	cudadoom::txt::TXT_SetDesktopTitle(PACKAGE_STRING);
 
@@ -77,7 +77,7 @@ static void OpenWaitDialog()
 static void BuildWindow()
 {
 	char buf[50];
-	cudadoom::txt::txt_table_t *table;
+	cudadoom::txt::txt_table_t* table;
 	int i;
 
 	cudadoom::txt::TXT_ClearTable(window);
@@ -109,9 +109,9 @@ static void BuildWindow()
 
 static void UpdateGUI()
 {
-	cudadoom::txt::txt_window_action_t *startgame;
+	cudadoom::txt::WindowAction* startgame;
 	char buf[50];
-	unsigned int i;
+	unsigned i;
 
 	// If the value of max_players changes, we must rebuild the
 	// contents of the window. This includes when the first
@@ -131,11 +131,11 @@ static void UpdateGUI()
 
 	for (i = 0; i < net_client_wait_data.max_players; ++i)
 	{
-		cudadoom::txt::txt_color_t color = cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_WHITE;
+		cudadoom::txt::ColorType color = cudadoom::txt::ColorType::bright_white;
 
 		if ((signed) i == net_client_wait_data.consoleplayer)
 		{
-			color = cudadoom::txt::txt_color_t::TXT_COLOR_YELLOW;
+			color = cudadoom::txt::ColorType::yellow;
 		}
 
 		cudadoom::txt::TXT_SetFGColor(player_labels[i], color);
@@ -181,7 +181,7 @@ static void UpdateGUI()
 
 static void BuildMasterStatusWindow()
 {
-	cudadoom::txt::txt_window_t *master_window;
+	cudadoom::txt::Window* master_window;
 
 	master_window = cudadoom::txt::TXT_NewWindow(NULL);
 	master_msg_label = cudadoom::txt::TXT_NewLabel("");
@@ -228,9 +228,9 @@ static void CheckMasterStatus()
 	}
 }
 
-static void PrintSHA1Digest(const char *s, const byte *digest)
+static void PrintSHA1Digest(const char* s, const byte* digest)
 {
-	unsigned int i;
+	unsigned i;
 
 	printf("%s: ", s);
 
@@ -244,7 +244,7 @@ static void PrintSHA1Digest(const char *s, const byte *digest)
 
 static void CloseWindow(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(window))
 {
-	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_window_t, window);
+	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::Window, window);
 
 	cudadoom::txt::TXT_CloseWindow(window);
 }
@@ -253,8 +253,8 @@ static void CheckSHA1Sums()
 {
 	bool correct_wad, correct_deh;
 	bool same_freedoom;
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_window_action_t *cont_button;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::WindowAction* cont_button;
 
 	if (!net_client_received_wait_data || had_warning)
 	{
@@ -393,12 +393,12 @@ void NET_WaitForLaunch()
 		exit(-1);
 	}
 
-	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BLUE, 0x04, 0x14, 0x40); // Romero's "funky blue" color
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::ColorType::blue, 0x04, 0x14, 0x40); // Romero's "funky blue" color
 
 	// [crispy] Crispy colors for Crispy Network GUI
-	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_GREEN, 249, 227, 0); // 0xF9, 0xE3, 0x00
-	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_CYAN, 220, 153, 0);			// 0xDC, 0x99, 0x00
-	cudadoom::txt::TXT_SetColor(cudadoom::txt::txt_color_t::TXT_COLOR_BRIGHT_CYAN, 76, 160, 223); // 0x4C, 0xA0, 0xDF
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::ColorType::bright_green, 249, 227, 0); // 0xF9, 0xE3, 0x00
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::ColorType::cyan, 220, 153, 0);			// 0xDC, 0x99, 0x00
+	cudadoom::txt::TXT_SetColor(cudadoom::txt::ColorType::bright_cyan, 76, 160, 223); // 0x4C, 0xA0, 0xDF
 
 	I_InitWindowIcon();
 

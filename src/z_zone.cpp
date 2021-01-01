@@ -31,7 +31,7 @@
 // // because it will get overwritten automatically if needed.
 // //
 
-// #define MEM_ALIGN sizeof(void *)
+// #define MEM_ALIGN sizeof(void*)
 // #define ZONEID	0x1d4a11
 
 // //struct memblock_t
@@ -55,7 +55,7 @@
 // //	memblock_t* rover;
 // //};
 
-// static memzone_t *mainzone;
+// static memzone_t* mainzone;
 // static bool zero_on_free;
 // static bool scan_on_free;
 
@@ -122,10 +122,10 @@
 
 // // Scan the zone heap for pointers within the specified range, and warn about
 // // any remaining pointers.
-// static void ScanForBlock(void *start, void *end)
+// static void ScanForBlock(void* start, void* end)
 // {
-// 	memblock_t *block;
-// 	void **mem;
+// 	memblock_t* block;
+// 	void** mem;
 // 	int i, len;
 // 	pu_tags_t tag;
 
@@ -308,7 +308,7 @@
 // 	base->user = &user;
 // 	base->tag = tag;
 
-// 	result = (void *) ((byte *)base + sizeof(memblock_t));
+// 	result = (void*) ((byte*)base + sizeof(memblock_t));
 
 // 	if (base->user)
 // 	{
@@ -338,7 +338,7 @@
 // 			continue;
 
 // 		if (block->tag >= lowtag && block->tag <= hightag)
-// 			Z_Free( (byte *)block+sizeof(memblock_t));
+// 			Z_Free( (byte*)block+sizeof(memblock_t));
 // 	}
 // }
 
@@ -362,7 +362,7 @@
 // 			break;
 // 		}
 
-// 		if ( (byte *)block + block->size != (byte *)block->next)
+// 		if ( (byte*)block + block->size != (byte*)block->next)
 // 			printf ("ERROR: block size does not touch the next block\n");
 
 // 		if ( block->next->prev != block)
@@ -389,7 +389,7 @@
 // 			break;
 // 		}
 
-// 		if ( (byte *)block + block->size != (byte *)block->next)
+// 		if ( (byte*)block + block->size != (byte*)block->next)
 // 			fprintf (f,"ERROR: block size does not touch the next block\n");
 
 // 		if ( block->next->prev != block)
@@ -412,7 +412,7 @@
 // 			break;
 // 		}
 
-// 		if ( (byte *)block + block->size != (byte *)block->next)
+// 		if ( (byte*)block + block->size != (byte*)block->next)
 // 			I_Error("Z_CheckHeap: block size does not touch the next block\n");
 
 // 		if ( block->next->prev != block)
@@ -423,11 +423,11 @@
 // 	}
 // }
 
-// void Z_ChangeTag2(void *ptr, pu_tags_t tag, const char *file, int line)
+// void Z_ChangeTag2(void* ptr, pu_tags_t tag, const char* file, int line)
 // {
 // 	memblock_t*	block;
 
-// 	block = (memblock_t *) ((byte *)ptr - sizeof(memblock_t));
+// 	block = (memblock_t*) ((byte*)ptr - sizeof(memblock_t));
 
 // 	if (block->id != ZONEID)
 // 		I_Error("%s:%i: Z_ChangeTag: block without a ZONEID!", file, line);
@@ -438,11 +438,11 @@
 // 	block->tag = tag;
 // }
 
-// void Z_ChangeUser(void *ptr, void **user)
+// void Z_ChangeUser(void* ptr, void** user)
 // {
 // 	memblock_t*	block;
 
-// 	block = (memblock_t *) ((byte *)ptr - sizeof(memblock_t));
+// 	block = (memblock_t*) ((byte*)ptr - sizeof(memblock_t));
 
 // 	if (block->id != ZONEID)
 // 	{

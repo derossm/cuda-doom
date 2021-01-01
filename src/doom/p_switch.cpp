@@ -106,7 +106,7 @@ void P_InitSwitchList()
 	int i, slindex, episode;
 
 	// [crispy] add support for SWITCHES lumps
-	switchlist_t *alphSwitchList;
+	switchlist_t* alphSwitchList;
 	bool from_lump;
 
 	if ((from_lump = (W_CheckNumForName("SWITCHES") != -1)))
@@ -156,8 +156,8 @@ void P_InitSwitchList()
 	if (alphSwitchList_episode <= episode)
 	{
 		int texture1, texture2;
-		const char *name1 = DEH_String(alphSwitchList[i].name1);
-		const char *name2 = DEH_String(alphSwitchList[i].name2);
+		const char* name1 = DEH_String(alphSwitchList[i].name1);
+		const char* name2 = DEH_String(alphSwitchList[i].name2);
 
 		texture1 = R_CheckTextureNumForName(name1);
 		texture2 = R_CheckTextureNumForName(name2);
@@ -193,9 +193,9 @@ void P_InitSwitchList()
 //
 // Start a button counting down till it turns off.
 //
-void P_StartButton(line_t* line, bwhere_e w, int texture, int time)
+void P_StartButton(line_t* line, bwhere_e w, int texture, TimeType time)
 {
-	int		i;
+	int i;
 
 	// See if button is already pressed
 	for (i = 0;i < maxbuttons;i++)
@@ -330,7 +330,7 @@ void P_ChangeSwitchTexture(line_t* line, int useAgain)
 // Called when a thing uses a special line.
 // Only the front sides of lines are usable.
 //
-bool P_UseSpecialLine(mobj_t* thing, line_t* line, int side)
+bool P_UseSpecialLine(MapObject* thing, line_t* line, int side)
 {
 
 	// Err...

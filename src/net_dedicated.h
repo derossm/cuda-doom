@@ -7,16 +7,11 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-//
-// Dedicated server code.
+	DESCRIPTION:
+		Dedicated server code.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
 
-#ifndef NET_DEDICATED_H
-#define NET_DEDICATED_H
-
 void NET_DedicatedServer();
-
-#endif /* #ifndef NET_DEDICATED_H */

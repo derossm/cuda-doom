@@ -10,16 +10,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	[crispy] add support for SMMU swirling flats
+		add support for SMMU swirling flats
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __R_SWIRL__
-#define __R_SWIRL__
-
 void R_InitDistortedFlats();
-char *R_DistortedFlat(int flatnum);
-
-#endif
+char* R_DistortedFlat(int flatnum);

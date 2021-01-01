@@ -103,27 +103,27 @@
 
 
 
-typedef enum
+enum class animenum_t
 {
 	ANIM_ALWAYS,
 	ANIM_RANDOM,
 	ANIM_LEVEL
 
-} animenum_t;
+};
 
-typedef struct
+struct point_t
 {
 	int		x;
 	int		y;
 
-} point_t;
+};
 
 
 //
 // Animation.
 // There is another anim_t used in p_spec.
 //
-typedef struct
+struct anim_t
 {
 	animenum_t	type;
 
@@ -152,7 +152,7 @@ typedef struct
 	// following must be initialized to zero before use!
 
 	// next value of bcnt (used in conjunction with period)
-	int		nexttic;
+	TimeType nexttic;
 
 	// last drawn animation frame
 	int		lastdrawn;
@@ -163,7 +163,7 @@ typedef struct
 	// used by RANDOM and LEVEL when animating
 	int		state;
 
-} anim_t;
+};
 
 
 static point_t lnodes[NUMEPISODES][NUMMAPS] =
@@ -265,7 +265,7 @@ static int NUMANIMS[NUMEPISODES] =
 	arrlen(epsd2animinfo),
 };
 
-static anim_t *anims[NUMEPISODES] =
+static anim_t* anims[NUMEPISODES] =
 {
 	epsd0animinfo,
 	epsd1animinfo,
@@ -322,7 +322,7 @@ static int		firstrefresh;
 static int		cnt_kills[MAXPLAYERS];
 static int		cnt_items[MAXPLAYERS];
 static int		cnt_secret[MAXPLAYERS];
-static int		cnt_time;
+static TimeType cnt_time;
 static int		cnt_par;
 static int		cnt_pause;
 
@@ -388,10 +388,10 @@ static patch_t*		bp[MAXPLAYERS];
  // Name graphics of each level (centered)
 static patch_t**	lnames;
 // [crispy] prevent crashes with maps without map title graphics lump
-static unsigned int	num_lnames;
+static unsigned	num_lnames;
 
 // Buffer storing the backdrop
-static patch_t *background;
+static patch_t* background;
 
 //
 // CODE
@@ -405,7 +405,7 @@ void WI_slamBackground()
 
 // The ticker is used to detect keys
 // because of timing issues in netgames.
-bool WI_Responder(event_t* ev)
+bool WI_Responder(EventType* ev)
 {
 	return false;
 }
@@ -423,7 +423,7 @@ void WI_drawLF()
 		return;
 	}
 
-	if (gamemode != GameMode_t::commercial || wbs->last < NUMCMAPS)
+	if (gamemode != GameMode::commercial || wbs->last < NUMCMAPS)
 	{
 		// draw <LevelName>
 		V_DrawPatch((ORIGWIDTH - SHORT(lnames[wbs->last]->width))/2,
@@ -531,7 +531,7 @@ void WI_initAnimatedBack()
 	int		i;
 	anim_t*	a;
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -560,7 +560,7 @@ void WI_updateAnimatedBack()
 	int		i;
 	anim_t*	a;
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -611,7 +611,7 @@ void WI_drawAnimatedBack()
 	int			i;
 	anim_t*		a;
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	return;
 
 	if (wbs->epsd > 2)
@@ -782,7 +782,7 @@ static bool		snl_pointeron = false;
 void WI_initShowNextLoc()
 {
 	// [crispy] display tally screen after ExM8
-	if ((gamemode != GameMode_t::commercial && gamemap == 8) || (gameversion == GameVersion_t::exe_chex && gamemap == 5))
+	if ((gamemode != GameMode::commercial && gamemap == 8) || (gameversion == GameVersion_t::exe_chex && gamemap == 5))
 	{
 	G_WorldDone();
 	return;
@@ -817,7 +817,7 @@ void WI_drawShowNextLoc()
 	// draw animated background
 	WI_drawAnimatedBack();
 
-	if ( gamemode != GameMode_t::commercial)
+	if ( gamemode != GameMode::commercial)
 	{
 	if (wbs->epsd > 2)
 	{
@@ -852,7 +852,7 @@ void WI_drawShowNextLoc()
 		return;
 
 	// draws which level you are entering..
-	if ( (gamemode != GameMode_t::commercial)
+	if ( (gamemode != GameMode::commercial)
 		|| wbs->next != 30)
 	WI_drawEL();
 
@@ -1009,7 +1009,7 @@ void WI_updateDeathmatchStats()
 	{
 		S_StartSound(0, sfx_slop);
 
-		if ( gamemode == GameMode_t::commercial)
+		if ( gamemode == GameMode::commercial)
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1280,7 +1280,7 @@ void WI_updateNetgameStats()
 	if (acceleratestage)
 	{
 		S_StartSound(0, sfx_sgcock);
-		if ( gamemode == GameMode_t::commercial )
+		if ( gamemode == GameMode::commercial )
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1456,7 +1456,7 @@ void WI_updateStats()
 	{
 		S_StartSound(0, sfx_sgcock);
 
-		if (gamemode == GameMode_t::commercial)
+		if (gamemode == GameMode::commercial)
 		WI_initNoState();
 		else
 		WI_initShowNextLoc();
@@ -1476,7 +1476,7 @@ void WI_updateStats()
 // [crispy] conditionally draw par times on intermission screen
 static bool WI_drawParTime ()
 {
-	extern lumpinfo_t *maplumpinfo;
+	extern lumpinfo_t* maplumpinfo;
 
 	bool result = true;
 
@@ -1486,7 +1486,7 @@ static bool WI_drawParTime ()
 		result = false;
 	}
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		// [crispy] IWAD: Final Doom has no par times
 		if (gamemission == pack_tnt || gamemission == pack_plut)
@@ -1574,7 +1574,7 @@ void WI_drawStats()
 	// [crispy] draw total time after level time and par time
 	if (sp_state > 8)
 	{
-	const int ttime = wbs->totaltimes / TICRATE;
+	const TimeType ttime = wbs->totaltimes / TICRATE;
 	const bool wide = (ttime > 61*59) || (SP_TIMEX + SHORT(total->width) >= ORIGWIDTH/4);
 
 	V_DrawPatch(SP_TIMEX, SP_TIMEY + 16, total);
@@ -1583,7 +1583,7 @@ void WI_drawStats()
 	}
 
 	// [crispy] exit early from the tally screen after ExM8
-	if (sp_state == 10 && ((gamemode != GameMode_t::commercial && gamemap == 8) || (gameversion == GameVersion_t::exe_chex && gamemap == 5)))
+	if (sp_state == 10 && ((gamemode != GameMode::commercial && gamemap == 8) || (gameversion == GameVersion_t::exe_chex && gamemap == 5)))
 	{
 	acceleratestage = 1;
 	}
@@ -1607,7 +1607,7 @@ void WI_drawStats()
 void WI_checkForAccelerate()
 {
 	int	i;
-	player_t *player;
+	Player* player;
 
 	// check for button presses to skip delays
 	for (i=0, player = players ; i<MAXPLAYERS ; i++, player++)
@@ -1645,7 +1645,7 @@ void WI_Ticker()
 	if (bcnt == 1)
 	{
 	// intermission music
-	if ( gamemode == GameMode_t::commercial )
+	if ( gamemode == GameMode::commercial )
 		S_ChangeMusic(mus_dm2int, true);
 	// [crispy] Sigil
 	else if (crispy->haved1e5 && wbs->epsd == 4 && W_CheckNumForName(DEH_String("D_SIGINT")) != -1)
@@ -1675,7 +1675,7 @@ void WI_Ticker()
 
 }
 
-typedef void (*load_callback_t)(const char *lumpname, patch_t **variable);
+typedef void (*load_callback_t)(const char* lumpname, patch_t**variable);
 
 // Common load/unload function. Iterates over all the graphics
 // lumps to be loaded/unloaded into memory.
@@ -1684,9 +1684,9 @@ static void WI_loadUnloadData(load_callback_t callback)
 {
 	int i, j;
 	char name[9];
-	anim_t *a;
+	anim_t* a;
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 	for (i=0 ; i<NUMCMAPS ; i++)
 	{
@@ -1696,7 +1696,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 		{
 		name[0] = 'N';
 		}
-		if (crispy->havemaster && crispy->havemaster != (char *)-1 && wbs->epsd == 2 && i < 21) // [crispy] gamemission == pack_master
+		if (crispy->havemaster && crispy->havemaster != (char*)-1 && wbs->epsd == 2 && i < 21) // [crispy] gamemission == pack_master
 		{
 		name[0] = 'M';
 		}
@@ -1830,7 +1830,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 
 	// Background image
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		if (crispy->havenerve && wbs->epsd == 1 && W_CheckNumForName(DEH_String("NERVEINT")) != -1) // [crispy] gamemission == pack_nerve
 		{
@@ -1865,7 +1865,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 	callback(name, &background);
 }
 
-static void WI_loadCallback(const char *name, patch_t **variable)
+static void WI_loadCallback(const char* name, patch_t**variable)
 {
  // [crispy] prevent crashes with maps without map title graphics lump
  if (W_CheckNumForName(name) != -1)
@@ -1876,10 +1876,10 @@ static void WI_loadCallback(const char *name, patch_t **variable)
 
 void WI_loadData()
 {
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 	NUMCMAPS = (crispy->havemap33) ? 33 : 32;
-	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * NUMCMAPS,
+	lnames = (patch_t**) Z_Malloc<patch_t>(sizeof(patch_t*) * NUMCMAPS,
 						pu_tags_t::PU_STATIC, NULL);
 	num_lnames = NUMCMAPS;
 	}
@@ -1887,7 +1887,7 @@ void WI_loadData()
 	{
 	// [crispy] support E1M10 "Sewers"
 	int nummaps = crispy->havee1m10 ? NUMMAPS + 1 : NUMMAPS;
-	lnames = (patch_t **) Z_Malloc<patch_t>(sizeof(patch_t*) * nummaps,
+	lnames = (patch_t**) Z_Malloc<patch_t>(sizeof(patch_t*) * nummaps,
 						pu_tags_t::PU_STATIC, NULL);
 	num_lnames = nummaps;
 	}
@@ -1904,7 +1904,7 @@ void WI_loadData()
 	bstar = W_CacheLumpName(DEH_String("STFDEAD0"), pu_tags_t::PU_STATIC);
 }
 
-static void WI_unloadCallback(const char *name, patch_t **variable)
+static void WI_unloadCallback(const char* name, patch_t**variable)
 {
 	W_ReleaseLumpName(name);
 	*variable = NULL;
@@ -1951,7 +1951,7 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 	wbs = wbstartstruct;
 
 #ifdef RANGECHECKING
-	if (gamemode != GameMode_t::commercial)
+	if (gamemode != GameMode::commercial)
 	{
 		if (gameversion >= GameVersion_t::exe_ultimate)
 	RNGCHECK(wbs->epsd, 0, 3);

@@ -7,11 +7,7 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
+#pragma once
 
-#ifndef DOOM_STATDUMP_H
-#define DOOM_STATDUMP_H
-
-void StatCopy(const wbstartstruct_t *stats);
+void StatCopy(const wbstartstruct_t* stats);
 void StatDump();
-
-#endif /* #ifndef DOOM_STATDUMP_H */

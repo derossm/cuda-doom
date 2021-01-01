@@ -41,17 +41,17 @@
 
 - (void) closeConfigWindow: (id)sender;
 - (void) openConfigWindow: (id)sender;
-- (NSString *) getIWADLocation;
-- (NSString *) autoloadPath;
+- (NSString*) getIWADLocation;
+- (NSString*) autoloadPath;
 - (void) awakeFromNib;
 - (bool) setDropdownList;
 - (void) setDropdownSelection;
 - (void) saveConfig;
-- (char *) doomWadPath;
+- (char*) doomWadPath;
 - (void) setEnvironment;
-- (const char *) getGameName;
-- (bool) addIWADPath: (NSString *) path;
-- (bool) selectGameByName: (const char *) name;
+- (const char*) getGameName;
+- (bool) addIWADPath: (NSString*) path;
+- (bool) selectGameByName: (const char*) name;
 
 @end
 #endif /* APPKIT_EXISTS */

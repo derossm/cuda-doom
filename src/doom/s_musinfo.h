@@ -12,32 +12,27 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	[crispy] Support MUSINFO lump (dynamic music changing)
+		Support MUSINFO lump (dynamic music changing)
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __S_MUSINFO__
-#define __S_MUSINFO__
-
 #include "p_mobj.h"
 
 #define MAX_MUS_ENTRIES 65 // [crispy] 0 to 64 inclusive
 
-typedef struct musinfo_s
+struct musinfo_t
 {
-	mobj_t *mapthing;
-	mobj_t *lastmapthing;
-	int tics;
+	MapObject* mapthing;
+	MapObject* lastmapthing;
+	TimeType tics;
 	int current_item;
 	int items[MAX_MUS_ENTRIES];
 	bool from_savegame;
-} musinfo_t;
+};
 
 extern musinfo_t musinfo;
 
-extern void S_ParseMusInfo (const char *mapid);
-extern void T_MusInfo ();
-
-#endif
+extern void S_ParseMusInfo(const char* mapid);
+extern void T_MusInfo();

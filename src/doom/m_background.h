@@ -11,7 +11,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	[crispy] Crispness menu tiled background
+		[crispy] Crispness menu tiled background
 \**********************************************************************************************************************************************/
 #pragma once
 
@@ -25,9 +25,9 @@ been converted from a raw lump in Doom's flat format with the following
 code. The actual artwork has been created by Julia Nechaevskaya, thank
 you so incredibly much for this! - Fabian
 
-int main (int argc, char **argv)
+int main (int argc, char** argv)
 {
-	FILE *file;
+	FILE* file;
 	int c, i = 0;
 
 	if (argc < 2 || !(file = fopen(argv[1], "r")))

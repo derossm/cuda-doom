@@ -88,7 +88,7 @@ enum class snddevice_t
 	SNDDEVICE_GENMIDI = 8,
 	SNDDEVICE_AWE32 = 9,
 	SNDDEVICE_CD = 10
-} ;
+};
 
 // Interface for sound modules
 struct sound_module_t
@@ -159,13 +159,13 @@ struct music_module_t
 	void (*ResumeMusic)();
 
 	// Register a song handle from data. Returns a handle that can be used to play the song
-	void *(*RegisterSong)(void *data, int len);
+	void* (*RegisterSong)(void* data, int len);
 
 	// Un-register (free) song data
-	void (*UnRegisterSong)(void *handle);
+	void (*UnRegisterSong)(void* handle);
 
 	// Play the song
-	void (*PlaySong)(void *handle, bool looping);
+	void (*PlaySong)(void* handle, bool looping);
 
 	// Stop playing the current song.
 	void (*StopSong)();
@@ -182,9 +182,9 @@ void I_ShutdownMusic();
 void I_SetMusicVolume(int volume);
 void I_PauseSong();
 void I_ResumeSong();
-void* I_RegisterSong(void *data, int len);
-void I_UnRegisterSong(void *handle);
-void I_PlaySong(void *handle, bool looping);
+void* I_RegisterSong(void* data, int len);
+void I_UnRegisterSong(void* handle);
+void I_PlaySong(void* handle, bool looping);
 void I_StopSong();
 bool I_MusicIsPlaying();
 

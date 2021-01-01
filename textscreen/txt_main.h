@@ -19,6 +19,7 @@
 
 namespace cudadoom::txt
 {
+
 // For the moment, txt_sdl.cpp is the only implementation of the base text mode screen API:
 
 // textscreen key values:
@@ -32,122 +33,121 @@ namespace cudadoom::txt
 // >=512:	Unicode values greater than 127 are offset up into this range.
 
 // Special keypress values that correspond to mouse button clicks
-constexpr int TXT_MOUSE_BASE{256};
-constexpr int TXT_MOUSE_LEFT{TXT_MOUSE_BASE + 0};
-constexpr int TXT_MOUSE_RIGHT{TXT_MOUSE_BASE + 1};
-constexpr int TXT_MOUSE_MIDDLE{TXT_MOUSE_BASE + 2};
-constexpr int TXT_MOUSE_SCROLLUP{TXT_MOUSE_BASE + 3};
-constexpr int TXT_MOUSE_SCROLLDOWN{TXT_MOUSE_BASE + 4};
-constexpr int TXT_MAX_MOUSE_BUTTONS{32};
+constexpr int MOUSE_BASE{256};
+constexpr int MOUSE_LEFT{MOUSE_BASE + 0};
+constexpr int MOUSE_RIGHT{MOUSE_BASE + 1};
+constexpr int MOUSE_MIDDLE{MOUSE_BASE + 2};
+constexpr int MOUSE_SCROLLUP{MOUSE_BASE + 3};
+constexpr int MOUSE_SCROLLDOWN{MOUSE_BASE + 4};
+constexpr int MAX_MOUSE_BUTTONS{32};
 
-// Unicode offset. Unicode values from 128 onwards are offset up into this range, so TXT_UNICODE_BASE = Unicode character #128, and so on.
-constexpr int TXT_UNICODE_BASE{512};
+// Unicode offset. Unicode values from 128 onwards are offset up into this range, so UNICODE_BASE = Unicode character #128, and so on.
+constexpr int UNICODE_BASE{512};
 
 // Screen size
-constexpr int TXT_SCREEN_W{80};
-constexpr int TXT_SCREEN_H{25};
+constexpr int SCREEN_W{80};
+constexpr int SCREEN_H{25};
 
-constexpr int TXT_COLOR_BLINKING{8};
+constexpr int COLOR_BLINKING{8};
 
-enum class txt_color_t
+enum class ColorType
 {
-	TXT_COLOR_BLACK,
-	TXT_COLOR_BLUE,
-	TXT_COLOR_GREEN,
-	TXT_COLOR_CYAN,
-	TXT_COLOR_RED,
-	TXT_COLOR_MAGENTA,
-	TXT_COLOR_BROWN,
-	TXT_COLOR_GREY,
-	TXT_COLOR_DARK_GREY,
-	TXT_COLOR_BRIGHT_BLUE,
-	TXT_COLOR_BRIGHT_GREEN,
-	TXT_COLOR_BRIGHT_CYAN,
-	TXT_COLOR_BRIGHT_RED,
-	TXT_COLOR_BRIGHT_MAGENTA,
-	TXT_COLOR_YELLOW,
-	TXT_COLOR_BRIGHT_WHITE
+	black,
+	blue,
+	green,
+	cyan,
+	red,
+	magenta,
+	brown,
+	grey,
+	dark_grey,
+	bright_blue,
+	bright_green,
+	bright_cyan,
+	bright_red,
+	bright_magenta,
+	yellow,
+	bright_white
 };
 
 // Modifier keys.
-enum class txt_modifier_t
+enum class ModifierType
 {
-	TXT_MOD_SHIFT,
-	TXT_MOD_CTRL,
-	TXT_MOD_ALT,
-	TXT_NUM_MODIFIERS
+	shift,
+	ctrl,
+	alt
 };
 
 // Due to the way the SDL API works, we provide different ways of configuring how we read input events, each of which is useful in different scenarios.
-enum class txt_input_mode_t
+enum class InputType
 {
 	// "Localized" output that takes software keyboard layout into account, but key shifting has no effect.
-	TXT_INPUT_NORMAL,
+	normal,
 
 	// "Raw" input; the keys correspond to physical keyboard layout and software keyboard layout has no effect.
-	TXT_INPUT_RAW,
+	raw,
 
 	// Used for full text input. Events are fully shifted and localized. However, not all keyboard keys will generate input.
 	// Setting this mode may activate the on-screen keyboard, depending on device and OS.
-	TXT_INPUT_TEXT
+	text
 };
 
 // Initialize the screen. Returns 1 if successful, 0 if failed.
-int TXT_Init();
+int Init();
 
 // Shut down text mode emulation.
-void TXT_Shutdown();
+void Shutdown();
 
 // Get a pointer to the buffer containing the raw screen data.
-unsigned char* TXT_GetScreenData();
+unsigned char* GetScreenData();
 
 // Update an area of the screen.
-void TXT_UpdateScreenArea(int x, int y, int w, int h);
+void UpdateScreenArea(int x, int y, int w, int h);
 
 // Update the whole screen.
-void TXT_UpdateScreen();
+void UpdateScreen();
 
 // Set the RGB value for a particular entry in the color palette:
-void TXT_SetColor(txt_color_t color, int r, int g, int b);
+void SetColor(ColorType color, int r, int g, int b);
 
 // Read a character from the keyboard.
-int TXT_GetChar();
+int GetChar();
 
 // Given a Unicode character, get a character that can be used to represent it on the code page being displayed on the screen.
 // If the character cannot be represented, this returns -1.
-int TXT_UnicodeCharacter(unsigned int c);
+int UnicodeCharacter(unsigned c);
 
 // Read the current state of modifier keys that are held down.
-int TXT_GetModifierState(txt_modifier_t mod);
+int GetModifierState(ModifierType mod);
 
 // Provides a short description of a key code, placing into the provided buffer. Note that the key is assumed to represent a physical key on the
-// keyboard (like that returned by TXT_INPUT_RAW), and the resulting string takes keyboard layout into consideration.
-// For example, TXT_GetKeyDescription('q') on a French keyboard returns "A". The contents of the filled buffer will be in UTF-8 format,
+// keyboard (like that returned by InputType::raw), and the resulting string takes keyboard layout into consideration.
+// For example, GetKeyDescription('q') on a French keyboard returns "A". The contents of the filled buffer will be in UTF-8 format,
 // but will never contain characters which can't be shown on the screen.
-void TXT_GetKeyDescription(int key, char* buf, size_t buf_len);
+void GetKeyDescription(int key, char* buf, size_t buf_len);
 
 // Retrieve the current position of the mouse
-void TXT_GetMousePosition(int* x, int* y);
+void GetMousePosition(int* x, int* y);
 
 // Sleep until an event is received or the screen needs updating. Optional timeout in ms (timeout == 0 : sleep forever).
-void TXT_Sleep(int timeout);
+void Sleep(TimeType timeout);
 
 // Change mode for text input.
-void TXT_SetInputMode(txt_input_mode_t mode);
+void SetInputMode(InputType mode);
 
 // Set the window title of the window containing the text mode screen.
-void TXT_SetWindowTitle(const char* title);
+void SetWindowTitle(const char* title);
 
 // Safe string copy.
-void TXT_StringCopy(char* dest, const char* src, size_t dest_len);
+void StringCopy(char* dest, const char* src, size_t dest_len);
 
 // Safe string concatenate.
-void TXT_StringConcat(char* dest, const char* src, size_t dest_len);
+void StringConcat(char* dest, const char* src, size_t dest_len);
 
 // Safe version of vsnprintf().
-int TXT_vsnprintf(char* buf, size_t buf_len, const char* s, va_list args);
+int vsnprintf(char* buf, size_t buf_len, const char* s, va_list args);
 
 // Safe version of snprintf().
-int TXT_snprintf(char* buf, size_t buf_len, const char* s, ...) PRINTF_ATTR(3, 4);
+int snprintf(char* buf, size_t buf_len, const char* s, ...) PRINTF_ATTR(3, 4);
 
 } /* END NAMESPACE cudadoom::txt */

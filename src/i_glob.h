@@ -8,7 +8,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	System specific file globbing interface.
+		System specific file globbing interface.
 \**********************************************************************************************************************************************/
 #pragma once
 

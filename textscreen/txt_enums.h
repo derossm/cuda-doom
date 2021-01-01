@@ -1,5 +1,4 @@
 /**********************************************************************************************************************************************\
-	Copyright(C) 1993-1996 Id Software, Inc.
 	Copyright(C) 2005-2014 Simon Howard
 
 	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -7,17 +6,24 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-	DESCRIPTION:
-	Refresh module, drawing LineSegs from BSP.
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/common.h"
+namespace cudadoom::txt
+{
 
-#ifndef __R_SEGS__
-#define __R_SEGS__
+enum class AlignVertical
+{
+	top,
+	center,
+	bottom
+};
 
-void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2);
+enum class AlignHorizontal
+{
+	left,
+	center,
+	right
+};
 
-#endif
+} /* END NAMESPACE cudadoom::txt */

@@ -24,18 +24,18 @@
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-gamepad"
 
-typedef struct
+struct joystick_config_t
 {
-	const char *name; // Config file name
+	const char* name; // Config file name
 	int value;
-} joystick_config_t;
+};
 
-typedef struct
+struct known_joystick_t
 {
-	const char *name;
+	const char* name;
 	int axes, buttons, hats;
-	const joystick_config_t *configs;
-} known_joystick_t;
+	const joystick_config_t* configs;
+};
 
 // SDL joystick successfully initialized?
 
@@ -47,7 +47,7 @@ static int usejoystick = 0;
 
 // GUID and index of joystick to use.
 
-char *joystick_guid = "";
+char* joystick_guid = "";
 int joystick_index = -1;
 
 // Calibration button. This is the button the user pressed at the
@@ -83,16 +83,16 @@ int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 };
 
-static cudadoom::txt::txt_button_t *joystick_button;
-static cudadoom::txt::txt_joystick_axis_t *x_axis_widget;
-static cudadoom::txt::txt_joystick_axis_t *y_axis_widget;
+static cudadoom::txt::Button* joystick_button;
+static cudadoom::txt::txt_joystick_axis_t* x_axis_widget;
+static cudadoom::txt::txt_joystick_axis_t* y_axis_widget;
 
 //
 // Calibration
 //
 
-static cudadoom::txt::txt_window_t *calibration_window;
-static SDL_Joystick **all_joysticks = NULL;
+static cudadoom::txt::Window* calibration_window;
+static SDL_Joystick**all_joysticks = NULL;
 static int all_joysticks_len = 0;
 
 // Known controllers.
@@ -589,10 +589,10 @@ static const known_joystick_t known_joysticks[] =
 	},
 };
 
-static const known_joystick_t *GetJoystickType(int index)
+static const known_joystick_t* GetJoystickType(int index)
 {
 	SDL_Joystick *joystick;
-	const char *name;
+	const char* name;
 	int axes, buttons, hats;
 	int i;
 
@@ -644,9 +644,9 @@ static bool IsKnownJoystick(int index)
 }
 
 // Load a configuration set.
-static void LoadConfigurationSet(const joystick_config_t *configs)
+static void LoadConfigurationSet(const joystick_config_t* configs)
 {
-	const joystick_config_t *config;
+	const joystick_config_t* config;
 	char buf[10];
 	int button;
 	int i;
@@ -682,7 +682,7 @@ static void LoadConfigurationSet(const joystick_config_t *configs)
 // Load configuration for joystick_index based on known types.
 static void LoadKnownConfiguration()
 {
-	const known_joystick_t *jstype;
+	const known_joystick_t* jstype;
 
 	jstype = GetJoystickType(joystick_index);
 	if (jstype == NULL)
@@ -753,7 +753,7 @@ static void UpdateJoystickIndex()
 static void SetJoystickButtonLabel()
 {
 	SDL_JoystickGUID guid, dev_guid;
-	const char *name;
+	const char* name;
 
 	if (!usejoystick || !strcmp(joystick_guid, ""))
 	{
@@ -775,7 +775,7 @@ static void SetJoystickButtonLabel()
 		}
 	}
 
-	cudadoom::txt::TXT_SetButtonLabel(joystick_button, (char *) name);
+	cudadoom::txt::TXT_SetButtonLabel(joystick_button, (char*) name);
 }
 
 // Try to open all joysticks visible to SDL.
@@ -790,7 +790,7 @@ static int OpenAllJoysticks()
 	// SDL_JoystickOpen() all joysticks.
 
 	all_joysticks_len = SDL_NumJoysticks();
-	all_joysticks = calloc(all_joysticks_len, sizeof(SDL_Joystick *));
+	all_joysticks = calloc(all_joysticks_len, sizeof(SDL_Joystick*));
 
 	result = 0;
 
@@ -870,7 +870,7 @@ static bool SetJoystickGUID(SDL_JoystickID joy_id)
 	return false;
 }
 
-static int CalibrationEventCallback(SDL_Event *event, void *user_data)
+static int CalibrationEventCallback(SDL_Event *event, void* user_data)
 {
 	if (event->type != SDL_JOYBUTTONDOWN)
 	{
@@ -965,10 +965,10 @@ static void CalibrateJoystick(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::t
 // GUI
 //
 
-static void AddJoystickControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char *label, int *var)
+static void AddJoystickControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char* label, int *var)
 {
 	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, table);
-	cudadoom::txt::txt_joystick_input_t *joy_input;
+	cudadoom::txt::txt_joystick_input_t* joy_input;
 
 	joy_input = cudadoom::txt::TXT_NewJoystickInput(var);
 
@@ -979,9 +979,9 @@ static void AddJoystickControl(cudadoom::txt::TXT_UNCAST_ARG(table), const char 
 					NULL);
 }
 
-void ConfigJoystick(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigJoystick(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::Window* window;
 
 	window = cudadoom::txt::TXT_NewWindow("Gamepad/Joystick configuration");
 	cudadoom::txt::TXT_SetTableColumns(window, 6);

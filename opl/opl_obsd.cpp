@@ -33,9 +33,9 @@
 
 #ifndef NO_OBSD_DRIVER
 
-static unsigned int opl_port_base;
+static unsigned opl_port_base;
 
-static int OPL_OpenBSD_Init(unsigned int port_base)
+static int OPL_OpenBSD_Init(unsigned port_base)
 {
 	// Try to get permissions:
 	if (set_iopl(3) < 0)
@@ -65,12 +65,12 @@ static void OPL_OpenBSD_Shutdown()
 	set_iopl(0);
 }
 
-static unsigned int OPL_OpenBSD_PortRead(opl_port_t port)
+static unsigned OPL_OpenBSD_PortRead(opl_port_t port)
 {
 	return inb(opl_port_base + port);
 }
 
-static void OPL_OpenBSD_PortWrite(opl_port_t port, unsigned int value)
+static void OPL_OpenBSD_PortWrite(opl_port_t port, unsigned value)
 {
 	outb(opl_port_base + port, value);
 }

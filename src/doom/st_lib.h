@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	The status bar widget code.
+		The status bar widget code.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __STLIB__
-#define __STLIB__
 
 // We are referring to patches.
 #include "r_defs.h"
@@ -26,8 +23,7 @@
 //
 
 // Number widget
-
-typedef struct
+struct st_number_t
 {
 	// upper right-hand corner
 	// of the number (right-justified)
@@ -52,14 +48,10 @@ typedef struct
 
 	// user data
 	int data;
+};
 
-} st_number_t;
-
-
-
-// Percent widget ("child" of number widget,
-// or, more precisely, contains a number widget.)
-typedef struct
+// Percent widget ("child" of number widget, or, more precisely, contains a number widget.)
+struct st_percent_t
 {
 	// number information
 	st_number_t		n;
@@ -68,13 +60,11 @@ typedef struct
 	patch_t*		p;
 
 	// [crispy] remember previous colorization
-	byte *oldtranslation;
-} st_percent_t;
-
-
+	byte* oldtranslation;
+};
 
 // Multiple Icon widget
-typedef struct
+struct st_multicon_t
 {
 		// center-justified location of icons
 	int			x;
@@ -95,15 +85,10 @@ typedef struct
 
 	// user data
 	int			data;
-
-} st_multicon_t;
-
-
-
+};
 
 // Binary Icon widget
-
-typedef struct
+struct st_binicon_t
 {
 	// center-justified location of icon
 	int			x;
@@ -122,46 +107,31 @@ typedef struct
 
 	patch_t*		p;	// icon
 	int			data;	// user data
-
-} st_binicon_t;
-
-
+};
 
 //
 // Widget creation, access, and update routines
 //
 
-// Initializes widget library.
-// More precisely, initialize STMINUS,
-// everything else is done somewhere else.
-//
+// Initializes widget library. More precisely, initialize STMINUS, everything else is done somewhere else.
 void STlib_init();
-
-
 
 // Number widget routines
 void STlib_initNum(st_number_t* n, int x, int y, patch_t** pl, int* num, bool* on, int width);
 
 void STlib_updateNum(st_number_t* n, bool refresh);
 
-
 // Percent widget routines
 void STlib_initPercent(st_percent_t* p, int x, int y, patch_t** pl, int* num, bool* on, patch_t* percent);
 
-
 void STlib_updatePercent(st_percent_t* per, int refresh);
-
 
 // Multiple Icon widget routines
 void STlib_initMultIcon(st_multicon_t* mi, int x, int y, patch_t** il, int* inum, bool* on);
 
-
 void STlib_updateMultIcon(st_multicon_t* mi, bool refresh);
 
 // Binary Icon widget routines
-
 void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, bool* val, bool* on);
 
 void STlib_updateBinIcon(st_binicon_t* bi, bool refresh);
-
-#endif

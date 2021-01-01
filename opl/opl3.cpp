@@ -307,14 +307,6 @@ static const envelope_sinfunc envelope_sin[8] = {
 	OPL3_EnvelopeCalcSin7
 };
 
-enum envelope_gen_num
-{
-	envelope_gen_num_attack = 0,
-	envelope_gen_num_decay = 1,
-	envelope_gen_num_sustain = 2,
-	envelope_gen_num_release = 3
-};
-
 static void OPL3_EnvelopeUpdateKSL(opl3_slot* slot)
 {
 	Bit16s ksl = (kslrom[slot->channel->f_num >> 6] << 2) - ((0x08 - slot->channel->block) << 5);
@@ -340,7 +332,7 @@ static void OPL3_EnvelopeCalc(opl3_slot* slot)
 	Bit8u eg_off;
 	Bit8u reset{0};
 	slot->eg_out = slot->eg_rout + (slot->reg_tl << 2) + (slot->eg_ksl >> kslshift[slot->reg_ksl]) + *slot->trem;
-	if (slot->key && slot->eg_gen == envelope_gen_num_release)
+	if (slot->key && slot->eg_gen == envelope_gen_num::release)
 	{
 		reset = 1;
 		reg_rate = slot->reg_ar;
@@ -349,19 +341,19 @@ static void OPL3_EnvelopeCalc(opl3_slot* slot)
 	{
 		switch (slot->eg_gen)
 		{
-		case envelope_gen_num_attack:
+		case envelope_gen_num::attack:
 			reg_rate = slot->reg_ar;
 			break;
-		case envelope_gen_num_decay:
+		case envelope_gen_num::decay:
 			reg_rate = slot->reg_dr;
 			break;
-		case envelope_gen_num_sustain:
+		case envelope_gen_num::sustain:
 			if (!slot->reg_type)
 			{
 				reg_rate = slot->reg_rr;
 			}
 			break;
-		case envelope_gen_num_release:
+		case envelope_gen_num::release:
 			reg_rate = slot->reg_rr;
 			break;
 		}
@@ -426,34 +418,34 @@ static void OPL3_EnvelopeCalc(opl3_slot* slot)
 	{
 		eg_off = 1;
 	}
-	if (slot->eg_gen != envelope_gen_num_attack && !reset && eg_off)
+	if (slot->eg_gen != envelope_gen_num::attack && !reset && eg_off)
 	{
 		eg_rout = 0x1ff;
 	}
 	switch (slot->eg_gen)
 	{
-	case envelope_gen_num_attack:
+	case envelope_gen_num::attack:
 		if (!slot->eg_rout)
 		{
-			slot->eg_gen = envelope_gen_num_decay;
+			slot->eg_gen = envelope_gen_num::decay;
 		}
 		else if (slot->key && shift > 0 && rate_hi != 0x0f)
 		{
 			eg_inc = ((~slot->eg_rout) << shift) >> 4;
 		}
 		break;
-	case envelope_gen_num_decay:
+	case envelope_gen_num::decay:
 		if ((slot->eg_rout >> 4) == slot->reg_sl)
 		{
-			slot->eg_gen = envelope_gen_num_sustain;
+			slot->eg_gen = envelope_gen_num::sustain;
 		}
 		else if (!eg_off && !reset && shift > 0)
 		{
 			eg_inc = 1 << (shift - 1);
 		}
 		break;
-	case envelope_gen_num_sustain:
-	case envelope_gen_num_release:
+	case envelope_gen_num::sustain:
+	case envelope_gen_num::release:
 		if (!eg_off && !reset && shift > 0)
 		{
 			eg_inc = 1 << (shift - 1);
@@ -464,11 +456,11 @@ static void OPL3_EnvelopeCalc(opl3_slot* slot)
 	// Key off
 	if (reset)
 	{
-		slot->eg_gen = envelope_gen_num_attack;
+		slot->eg_gen = envelope_gen_num::attack;
 	}
 	if (!slot->key)
 	{
-		slot->eg_gen = envelope_gen_num_release;
+		slot->eg_gen = envelope_gen_num::release;
 	}
 }
 
@@ -1144,7 +1136,7 @@ void OPL3_Reset(opl3_chip *chip, Bit32u samplerate)
 		chip->slot[slotnum].mod = &chip->zeromod;
 		chip->slot[slotnum].eg_rout = 0x1ff;
 		chip->slot[slotnum].eg_out = 0x1ff;
-		chip->slot[slotnum].eg_gen = envelope_gen_num_release;
+		chip->slot[slotnum].eg_gen = envelope_gen_num::release;
 		chip->slot[slotnum].trem = (Bit8u*)&chip->zeromod;
 		chip->slot[slotnum].slot_num = slotnum;
 	}
@@ -1181,9 +1173,9 @@ void OPL3_Reset(opl3_chip *chip, Bit32u samplerate)
 
 void OPL3_WriteReg(opl3_chip* chip, Bit16u reg, Bit8u v)
 {
-	Bit8u high{(reg >> 8) & 0x01};
-	Bit8u regm{reg & 0xff};
-	switch (regm & 0xf0)
+	Bit8u high{(reg >> 8) & Bit8u(0x01)};
+	Bit8u regm{reg & Bit8u(0xff)};
+	switch (regm & Bit8u(0xf0))
 	{
 	case 0x00:
 		if (high)

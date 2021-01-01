@@ -12,18 +12,18 @@
 
 #include "..\textscreen.h"
 
-typedef enum
+enum class operator_t
 {
 	OP_NONE,
 	OP_PLUS,
 	OP_MINUS,
 	OP_MULT,
 	OP_DIV,
-} operator_t;
+};
 
 int starting_input = 0;
 int input_value = 0;
-txt_label_t *input_box;
+txt_label_t* input_box;
 int first_operand;
 operator_t operator = OP_NONE;
 
@@ -50,7 +50,7 @@ void InsertNumber(cudadoom::txt::TXT_UNCAST_ARG(button), cudadoom::txt::TXT_UNCA
 	UpdateInputBox();
 }
 
-void AddNumberButton(cudadoom::txt::txt_table_t *table, int value)
+void AddNumberButton(cudadoom::txt::txt_table_t* table, int value)
 {
 	int* val_copy = static_cast<decltype(val_copy)>(malloc(sizeof(int)));
 	*val_copy = value;
@@ -81,7 +81,7 @@ void AddOperatorButton(cudadoom::txt::txt_table_t* table, const char* label, ope
 	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewButton2(buf, Operator, op_copy));
 }
 
-void Calculate(cudadoom::txt::TXT_UNCAST_ARG(button), void *unused)
+void Calculate(cudadoom::txt::TXT_UNCAST_ARG(button), void* unused)
 {
 	switch (operator)
 	{
@@ -109,13 +109,13 @@ void Calculate(cudadoom::txt::TXT_UNCAST_ARG(button), void *unused)
 
 void BuildGUI()
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_table_t *table;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::txt_table_t* table;
 
 	window = cudadoom::txt::TXT_NewWindow("Calculator");
 
 	input_box = cudadoom::txt::TXT_NewLabel("asdf");
-	cudadoom::txt::TXT_SetBGColor(input_box, cudadoom::txt::txt_color_t::TXT_COLOR_BLACK);
+	cudadoom::txt::TXT_SetBGColor(input_box, cudadoom::txt::ColorType::black);
 	cudadoom::txt::TXT_AddWidget(window, input_box);
 	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewSeparator(NULL));
 	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewStrut(0, 1));
@@ -146,7 +146,7 @@ void BuildGUI()
 	UpdateInputBox();
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	if (!cudadoom::txt::TXT_Init())
 	{

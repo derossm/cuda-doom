@@ -9,20 +9,17 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Menu widget stuff, episode selection and such.
+		Menu widget stuff, episode selection and such.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __M_MENU__
-#define __M_MENU__
-
 #include "d_event.h"
 
 // Called by main loop, saves config file and calls I_Quit when user exits. Even when the menu is not displayed, this can resize
 // the view and change game parameters. Does all the real work of the menu interaction.
-bool M_Responder (event_t *ev);
+bool M_Responder (EventType *ev);
 
 // Called by main loop, only used for menu (skull cursor) animation.
 void M_Ticker();
@@ -38,5 +35,3 @@ void M_StartControlPanel();
 
 extern int detailLevel;
 extern int screenblocks;
-
-#endif

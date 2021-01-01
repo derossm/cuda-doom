@@ -14,15 +14,19 @@
 
 #include "../derma/common.h"
 
-#ifndef MIDIFILE_H
-#define MIDIFILE_H
+#include "doomtype.h"
 
-typedef struct midi_file_s midi_file_t;
-typedef struct midi_track_iter_s midi_track_iter_t;
+#include "i_swap.h"
+#include "i_system.h"
+#include "midifile.h"
+
+#define HEADER_CHUNK_ID "MThd"
+#define TRACK_CHUNK_ID "MTrk"
+#define MAX_BUFFER_SIZE 0x10000
 
 #define MIDI_CHANNELS_PER_TRACK 16
 
-typedef enum
+enum class midi_EventType_t
 {
 	MIDI_EVENT_NOTE_OFF			= 0x80,
 	MIDI_EVENT_NOTE_ON			= 0x90,
@@ -35,9 +39,9 @@ typedef enum
 	MIDI_EVENT_SYSEX			= 0xf0,
 	MIDI_EVENT_SYSEX_SPLIT		= 0xf7,
 	MIDI_EVENT_META				= 0xff,
-} midi_event_type_t;
+};
 
-typedef enum
+enum class midi_controller_t
 {
 	MIDI_CONTROLLER_BANK_SELECT		= 0x0,
 	MIDI_CONTROLLER_MODULATION		= 0x1,
@@ -50,9 +54,9 @@ typedef enum
 	MIDI_CONTROLLER_PAN				= 0xa,
 
 	MIDI_CONTROLLER_ALL_NOTES_OFF	= 0x7b,
-} midi_controller_t;
+};
 
-typedef enum
+enum class midi_meta_EventType_t
 {
 	MIDI_META_SEQUENCE_NUMBER		= 0x0,
 
@@ -72,44 +76,68 @@ typedef enum
 	MIDI_META_TIME_SIGNATURE		= 0x58,
 	MIDI_META_KEY_SIGNATURE			= 0x59,
 	MIDI_META_SEQUENCER_SPECIFIC	= 0x7f,
-} midi_meta_event_type_t;
+};
 
-typedef struct
+// haleyjd 09/09/10: packing required
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
+
+struct chunk_header_t
+{
+	byte chunk_id[4];
+	unsigned chunk_size;
+};
+
+struct midi_header_t
+{
+	chunk_header_t chunk_header;
+	unsigned short format_type;
+	unsigned short num_tracks;
+	unsigned short time_division;
+};
+
+// haleyjd 09/09/10: packing off.
+#ifdef _MSC_VER
+#pragma pack(pop)
+#endif
+
+struct midi_meta_event_data_t
 {
 	// Meta event type:
-	unsigned int type;
+	unsigned type;
 
-	unsigned int length;
+	unsigned length;
 
 	// Meta event data:
 	byte* data;
-} midi_meta_event_data_t;
+};
 
-typedef struct
+struct midi_sysex_event_data_t
 {
-	unsigned int length;
+	unsigned length;
 
 	// Event data:
 	byte* data;
-} midi_sysex_event_data_t;
+};
 
-typedef struct
+struct midi_channel_event_data_t
 {
 	// The channel number to which this applies:
-	unsigned int channel;
+	unsigned channel;
 
 	// Extra parameters:
-	unsigned int param1;
-	unsigned int param2;
-} midi_channel_event_data_t;
+	unsigned param1;
+	unsigned param2;
+};
 
-typedef struct
+struct midi_EventType
 {
 	// Time between the previous event and this event.
-	unsigned int delta_time;
+	TimeType delta_time;
 
 	// Type of event:
-	midi_event_type_t event_type;
+	midi_EventType_t eventType;
 
 	union
 	{
@@ -117,29 +145,56 @@ typedef struct
 		midi_meta_event_data_t meta;
 		midi_sysex_event_data_t sysex;
 	} data;
-} midi_event_t;
+};
 
-midi_file_t *MIDI_LoadFile(char *filename);
+struct midi_track_t
+{
+	// Length in bytes:
+	unsigned data_len;
 
-void MIDI_FreeFile(midi_file_t *file);
+	// Events in this track:
+	midi_EventType *events;
+	int num_events;
+};
+
+struct midi_track_iter_t
+{
+	midi_track_t* track;
+	unsigned position;
+};
+
+struct midi_file_t
+{
+	midi_header_t header;
+
+	// All tracks in this file:
+	midi_track_t* tracks;
+	unsigned num_tracks;
+
+	// Data buffer used to store data read for SysEx or meta events:
+	byte* buffer;
+	unsigned buffer_size;
+};
+
+midi_file_t* MIDI_LoadFile(char* filename);
+
+void MIDI_FreeFile(midi_file_t* file);
 
 // Get the time division value from the MIDI header.
-unsigned int MIDI_GetFileTimeDivision(midi_file_t *file);
+unsigned MIDI_GetFileTimeDivision(midi_file_t* file);
 
-unsigned int MIDI_NumTracks(midi_file_t *file);
+unsigned MIDI_NumTracks(midi_file_t* file);
 
 // Start iterating over the events in a track.
-midi_track_iter_t *MIDI_IterateTrack(midi_file_t *file, unsigned int track_num);
+midi_track_iter_t* MIDI_IterateTrack(midi_file_t* file, unsigned track_num);
 
-void MIDI_FreeIterator(midi_track_iter_t *iter);
+void MIDI_FreeIterator(midi_track_iter_t* iter);
 
 // Get the time until the next MIDI event in a track.
-unsigned int MIDI_GetDeltaTime(midi_track_iter_t *iter);
+unsigned MIDI_GetDeltaTime(midi_track_iter_t* iter);
 
 // Get a pointer to the next MIDI event.
-int MIDI_GetNextEvent(midi_track_iter_t *iter, midi_event_t **event);
+int MIDI_GetNextEvent(midi_track_iter_t* iter, midi_EventType** event);
 
 // Reset an iterator to the beginning of a track.
-void MIDI_RestartIterator(midi_track_iter_t *iter);
-
-#endif /* #ifndef MIDIFILE_H */
+void MIDI_RestartIterator(midi_track_iter_t* iter);

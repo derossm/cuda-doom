@@ -62,7 +62,7 @@ void PCSound_SetSampleRate(int rate)
 
 bool PCSound_Init(pcsound_callback_func callback_func)
 {
-	if (pcsound_driver != nullptr)
+	if (pcsound_driver)
 	{
 		return true;
 	}
@@ -70,9 +70,9 @@ bool PCSound_Init(pcsound_callback_func callback_func)
 	// Check if the environment variable is set
 	auto driver_name{getenv("PCSOUND_DRIVER")};
 
-	if (driver_name != nullptr)
+	if (driver_name)
 	{
-		for (size_t i{0}; drivers[i] != nullptr; ++i)
+		for (size_t i{0}; drivers[i]; ++i)
 		{
 			if (!strcmp(drivers[i]->name, driver_name))
 			{
@@ -92,7 +92,7 @@ bool PCSound_Init(pcsound_callback_func callback_func)
 	else
 	{
 		// Try all drivers until we find a working one
-		for (size_t i{0}; drivers[i] != nullptr; ++i)
+		for (size_t i{0}; drivers[i]; ++i)
 		{
 			if (drivers[i]->init_func(callback_func))
 			{
@@ -102,7 +102,7 @@ bool PCSound_Init(pcsound_callback_func callback_func)
 		}
 	}
 
-	if (pcsound_driver != nullptr)
+	if (pcsound_driver)
 	{
 		printf("Using PC sound driver: %s\n", pcsound_driver->name);
 		return true;

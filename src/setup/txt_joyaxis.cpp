@@ -25,7 +25,7 @@
 
 #define JOYSTICK_AXIS_WIDTH 20
 
-static const char *CalibrationLabel(txt_joystick_axis_t *joystick_axis)
+static const char* CalibrationLabel(txt_joystick_axis_t* joystick_axis)
 {
 	switch (joystick_axis->config_stage)
 	{
@@ -61,7 +61,7 @@ static const char *CalibrationLabel(txt_joystick_axis_t *joystick_axis)
 	return NULL;
 }
 
-static void SetCalibrationLabel(txt_joystick_axis_t *joystick_axis)
+static void SetCalibrationLabel(txt_joystick_axis_t* joystick_axis)
 {
 	TXT_SetLabel(joystick_axis->config_label, CalibrationLabel(joystick_axis));
 }
@@ -69,7 +69,7 @@ static void SetCalibrationLabel(txt_joystick_axis_t *joystick_axis)
 // Search all axes on joystick being configured; find a button that is
 // pressed (other than the calibrate button). Returns the button number.
 
-static int FindPressedAxisButton(txt_joystick_axis_t *joystick_axis)
+static int FindPressedAxisButton(txt_joystick_axis_t* joystick_axis)
 {
 	int i;
 
@@ -125,7 +125,7 @@ static int FindUncenteredHat(SDL_Joystick *joystick, int *axis_invert)
 	return -1;
 }
 
-static bool CalibrateAxis(txt_joystick_axis_t *joystick_axis)
+static bool CalibrateAxis(txt_joystick_axis_t* joystick_axis)
 {
 	int best_axis;
 	int best_value;
@@ -198,7 +198,7 @@ static bool CalibrateAxis(txt_joystick_axis_t *joystick_axis)
 	return false;
 }
 
-static bool SetButtonAxisPositive(txt_joystick_axis_t *joystick_axis)
+static bool SetButtonAxisPositive(txt_joystick_axis_t* joystick_axis)
 {
 	int button;
 
@@ -213,7 +213,7 @@ static bool SetButtonAxisPositive(txt_joystick_axis_t *joystick_axis)
 	return false;
 }
 
-static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis)
+static void IdentifyBadAxes(txt_joystick_axis_t* joystick_axis)
 {
 	int i, val;
 
@@ -238,7 +238,7 @@ static void IdentifyBadAxes(txt_joystick_axis_t *joystick_axis)
 	}
 }
 
-static int NextCalibrateStage(txt_joystick_axis_t *joystick_axis)
+static int NextCalibrateStage(txt_joystick_axis_t* joystick_axis)
 {
 	switch (joystick_axis->config_stage)
 	{
@@ -347,7 +347,7 @@ static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
 	TXT_SDL_SetEventCallback(NULL, NULL);
 }
 
-void TXT_ConfigureJoystickAxis(txt_joystick_axis_t *joystick_axis,
+void TXT_ConfigureJoystickAxis(txt_joystick_axis_t* joystick_axis,
 								int using_button,
 								txt_joystick_axis_callback_t callback)
 {
@@ -450,7 +450,7 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
 	}
 
 	TXT_SetWidgetBG(joystick_axis);
-	TXT_FGColor(txt_color_t::TXT_COLOR_BRIGHT_WHITE);
+	TXT_FGColor(ColorType::bright_white);
 
 	TXT_DrawString(buf);
 
@@ -506,10 +506,10 @@ WidgetClass txt_joystick_axis_class =
 	NULL,
 };
 
-txt_joystick_axis_t *TXT_NewJoystickAxis(int *axis, int *invert,
+txt_joystick_axis_t* TXT_NewJoystickAxis(int *axis, int *invert,
 											txt_joystick_axis_direction_t dir)
 {
-	txt_joystick_axis_t *joystick_axis;
+	txt_joystick_axis_t* joystick_axis;
 
 	joystick_axis = static_cast<decltype(joystick_axis)>(malloc(sizeof(txt_joystick_axis_t)));
 

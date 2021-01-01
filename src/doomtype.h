@@ -9,8 +9,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Simple basic typedefs, isolated here to make it easier
-//		separating modules.
+		Simple basic typedefs, isolated here to make it easier separating modules.
 \**********************************************************************************************************************************************/
 #pragma once
 

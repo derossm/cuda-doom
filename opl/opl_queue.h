@@ -28,7 +28,7 @@ struct opl_queue_entry_t
 struct opl_callback_queue_t
 {
 	opl_queue_entry_t entries[MAX_OPL_QUEUE];
-	unsigned int num_entries;
+	unsigned num_entries;
 };
 
 opl_callback_queue_t* OPL_Queue_Create();

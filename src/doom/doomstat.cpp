@@ -12,19 +12,13 @@
 	Put all global tate variables here.
 \**********************************************************************************************************************************************/
 
-
 #include "doomstat.h"
 
-
 // Game Mode - identify IWAD as shareware, retail etc.
-GameMode_t gamemode = GameMode_t::indetermined;
-GameMission_t	gamemission = doom;
-GameVersion_t	gameversion = GameVersion_t::exe_final2;
-GameVariant_t	gamevariant = vanilla;
+GameMode gamemode = GameMode::indetermined;
+GameMission_t gamemission = GameMission_t::doom;
+GameVersion_t gameversion = GameVersion_t::exe_final2;
+GameVariant_t gamevariant = GameVariant_t::vanilla;
 
 // Set if homebrew PWAD stuff has been added.
-bool	modifiedgame;
-
-
-
-
+bool modifiedgame;

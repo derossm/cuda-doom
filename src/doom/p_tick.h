@@ -7,20 +7,10 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-	DESCRIPTION:
-	?
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __P_TICK__
-#define __P_TICK__
-
-// Called by C_Ticker,
-// can call G_PlayerExited.
-// Carries out all thinking of monsters and players.
-void P_Ticker ();
-
-#endif
+// Called by C_Ticker, can call G_PlayerExited. Carries out all thinking of monsters and players.
+void P_Ticker();

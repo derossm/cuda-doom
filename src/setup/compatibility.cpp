@@ -22,9 +22,9 @@
 int vanilla_savegame_limit = 0;
 int vanilla_demo_limit = 0;
 
-void CompatibilitySettings(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void CompatibilitySettings(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t *window;
+	cudadoom::txt::Window* window;
 
 	// [crispy]
 	if (gamemission == doom)

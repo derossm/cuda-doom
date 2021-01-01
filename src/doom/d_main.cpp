@@ -93,7 +93,7 @@ bool fastparm;		// checkparm of -fast
 
 extern bool inhelpscreens;
 
-skill_t startskill;
+SkillType startskill;
 int startepisode;
 int startmap;
 bool autostart;
@@ -120,7 +120,7 @@ void D_CheckNetGame();
 // Send all the events of the given timestamp down the responder chain
 void D_ProcessEvents()
 {
-	event_t* ev;
+	EventType* ev;
 
 	// IF STORE DEMO, DO NOT ACCEPT INPUT
 	if (storedemo)
@@ -481,8 +481,8 @@ bool D_GrabMouseCallback()
 
 void D_RunFrame()
 {
-	int nowtime;
-	int tics;
+	TimeType nowtime;
+	TimeType tics;
 	static int wipestart;
 	static bool wipe;
 
@@ -577,7 +577,7 @@ void D_DoomLoop()
 
 // DEMO LOOP
 int demosequence;
-int pagetic;
+TimeType pagetic;
 const char* pagename;
 
 // Handles timing for warped projection
@@ -635,7 +635,7 @@ void D_DoAdvanceDemo()
 	switch (demosequence)
 	{
 	case 0:
-		if (gamemode == GameMode_t::commercial)
+		if (gamemode == GameMode::commercial)
 		{
 			pagetic = TICRATE * 11;
 		}
@@ -645,7 +645,7 @@ void D_DoAdvanceDemo()
 		}
 		gamestate = GameState_t::GS_DEMOSCREEN;
 		pagename = DEH_String("TITLEPIC");
-		if (gamemode == GameMode_t::commercial)
+		if (gamemode == GameMode::commercial)
 		{
 			S_StartMusic(mus_dm2ttl);
 		}
@@ -667,7 +667,7 @@ void D_DoAdvanceDemo()
 		break;
 	case 4:
 		gamestate = GameState_t::GS_DEMOSCREEN;
-		if (gamemode == GameMode_t::commercial)
+		if (gamemode == GameMode::commercial)
 		{
 			pagetic = TICRATE * 11;
 			pagename = DEH_String("TITLEPIC");
@@ -722,7 +722,7 @@ void D_StartTitle ()
 // These are from the original source: some of them are perhaps
 // not used in any dehacked patches
 
-static const char *banners[] =
+static const char* banners[] =
 {
 	// doom2.wad
 	"							"
@@ -767,13 +767,13 @@ static const char *banners[] =
 // Otherwise, use the name given
 //
 
-static char *GetGameName(const char *gamename)
+static char* GetGameName(const char* gamename)
 {
 	size_t i;
 
 	for (i=0; i<arrlen(banners); ++i)
 	{
-		const char *deh_sub;
+		const char* deh_sub;
 		// Has the banner been replaced?
 
 		deh_sub = DEH_String(banners[i]);
@@ -782,7 +782,7 @@ static char *GetGameName(const char *gamename)
 		{
 			size_t gamename_size;
 			int version;
-			char *deh_gamename;
+			char* deh_gamename;
 
 			// Has been replaced.
 			// We need to expand via printf to include the Doom version number
@@ -815,12 +815,12 @@ static char *GetGameName(const char *gamename)
 	return M_StringDuplicate(gamename);
 }
 
-static void SetMissionForPackName(const char *pack_name)
+static void SetMissionForPackName(const char* pack_name)
 {
 	int i;
 	static const struct
 	{
-		const char *name;
+		const char* name;
 		int mission;
 	} packs[] = {
 		{ "doom2",	doom2 },
@@ -861,7 +861,7 @@ void D_IdentifyVersion()
 
 	if (gamemission == none)
 	{
-		unsigned int i;
+		unsigned i;
 
 		for (i=0; i<numlumps; ++i)
 		{
@@ -895,15 +895,15 @@ void D_IdentifyVersion()
 		{
 			// Ultimate Doom
 
-			gamemode = GameMode_t::retail;
+			gamemode = GameMode::retail;
 		}
 		else if (W_CheckNumForName("E3M1") > 0)
 		{
-			gamemode = GameMode_t::registered;
+			gamemode = GameMode::registered;
 		}
 		else
 		{
-			gamemode = GameMode_t::shareware;
+			gamemode = GameMode::shareware;
 		}
 	}
 	else
@@ -911,7 +911,7 @@ void D_IdentifyVersion()
 		int p;
 
 		// Doom 2 of some kind.
-		gamemode = GameMode_t::commercial;
+		gamemode = GameMode::commercial;
 
 		// We can manually override the gamemission that we got from the
 		// IWAD detection code. This allows us to eg. play Plutonia 2
@@ -945,17 +945,17 @@ static void D_SetGameDescription()
 		{
 			gamedescription = GetGameName("Freedoom: Phase 1");
 		}
-		else if (gamemode == GameMode_t::retail)
+		else if (gamemode == GameMode::retail)
 		{
 			// Ultimate Doom
 
 			gamedescription = GetGameName("The Ultimate DOOM");
 		}
-		else if (gamemode == GameMode_t::registered)
+		else if (gamemode == GameMode::registered)
 		{
 			gamedescription = GetGameName("DOOM Registered");
 		}
-		else if (gamemode == GameMode_t::shareware)
+		else if (gamemode == GameMode::shareware)
 		{
 			gamedescription = GetGameName("DOOM Shareware");
 		}
@@ -1003,9 +1003,9 @@ static void D_SetGameDescription()
 //		print title for every printed line
 char			title[128];
 
-static bool D_AddFile(char *filename)
+static bool D_AddFile(char* filename)
 {
-	wad_file_t *handle;
+	wad_file_t* handle;
 
 	printf(" adding %s\n", filename);
 	handle = W_AddFile(filename);
@@ -1016,7 +1016,7 @@ static bool D_AddFile(char *filename)
 // Copyright message banners
 // Some dehacked mods replace these. These are only displayed if they are
 // replaced by dehacked.
-static const char *copyright_banners[] =
+static const char* copyright_banners[] =
 {
 	"===========================================================================\n"
 	"ATTENTION: This version of DOOM has been modified. If you would like to\n"
@@ -1042,7 +1042,7 @@ void PrintDehackedBanners()
 
 	for (i=0; i<arrlen(copyright_banners); ++i)
 	{
-		const char *deh_s;
+		const char* deh_s;
 
 		deh_s = DEH_String(copyright_banners[i]);
 
@@ -1063,8 +1063,8 @@ void PrintDehackedBanners()
 
 static struct
 {
-	const char *description;
-	const char *cmdline;
+	const char* description;
+	const char* cmdline;
 	GameVersion_t version;
 } gameversions[] = {
 	{"Doom 1.2",				"1.2",		exe_doom_1_2},
@@ -1084,7 +1084,7 @@ static struct
 
 static void InitGameVersion()
 {
-	byte *demolump;
+	byte* demolump;
 	char demolumpname[6];
 	int demoversion;
 	int p;
@@ -1142,8 +1142,8 @@ static void InitGameVersion()
 
 			gameversion = GameVersion_t::exe_hacx;
 		}
-		else if (gamemode == GameMode_t::shareware || gamemode == GameMode_t::registered
-				|| (gamemode == GameMode_t::commercial && gamemission == doom2))
+		else if (gamemode == GameMode::shareware || gamemode == GameMode::registered
+				|| (gamemode == GameMode::commercial && gamemission == doom2))
 		{
 			// original
 			gameversion = GameVersion_t::exe_doom_1_9;
@@ -1190,11 +1190,11 @@ static void InitGameVersion()
 				}
 			}
 		}
-		else if (gamemode == GameMode_t::retail)
+		else if (gamemode == GameMode::retail)
 		{
 			gameversion = GameVersion_t::exe_ultimate;
 		}
-		else if (gamemode == GameMode_t::commercial)
+		else if (gamemode == GameMode::commercial)
 		{
 			// Final Doom: tnt or plutonia
 			// Defaults to emulating the first Final Doom executable,
@@ -1214,14 +1214,14 @@ static void InitGameVersion()
 
 	// The original exe does not support retail - 4th episode not supported
 
-	if (gameversion < exe_ultimate && gamemode == GameMode_t::retail)
+	if (gameversion < exe_ultimate && gamemode == GameMode::retail)
 	{
-		gamemode = GameMode_t::registered;
+		gamemode = GameMode::registered;
 	}
 
 	// EXEs prior to the Final Doom exes do not support Final Doom.
 
-	if (gameversion < exe_final && gamemode == GameMode_t::commercial
+	if (gameversion < exe_final && gamemode == GameMode::commercial
 		&& (gamemission == pack_tnt || gamemission == pack_plut))
 	{
 		gamemission = doom2;
@@ -1247,7 +1247,7 @@ void PrintGameVersion()
 
 static void D_Endoom()
 {
-	byte *endoom;
+	byte* endoom;
 
 	// Don't show ENDOOM if we have it disabled, or we're running
 	// in screensaver or control test mode. Only show it once the
@@ -1290,8 +1290,8 @@ static void LoadIwadDeh()
 	// and installed next to the IWAD.
 	if (gameversion == GameVersion_t::exe_chex)
 	{
-		char *chex_deh = NULL;
-		char *dirname;
+		char* chex_deh = NULL;
+		char* dirname;
 
 		// Look for chex.deh in the same directory as the IWAD file.
 		dirname = M_DirName(iwadfile);
@@ -1660,9 +1660,9 @@ void D_DoomMain ()
 	//
 	// Disable auto-loading of .wad and .deh files.
 	//
-	if (!M_ParmExists("-noautoload") && gamemode != GameMode_t::shareware)
+	if (!M_ParmExists("-noautoload") && gamemode != GameMode::shareware)
 	{
-		char *autoload_dir;
+		char* autoload_dir;
 
 		// common auto-loaded files for all Doom flavors
 
@@ -1793,7 +1793,7 @@ void D_DoomMain ()
 
 	if (p)
 	{
-		char *uc_filename = strdup(myargv[p + 1]);
+		char* uc_filename = strdup(myargv[p + 1]);
 		M_ForceUppercase(uc_filename);
 
 		// With Vanilla you have to specify the file without extension,
@@ -1842,9 +1842,9 @@ void D_DoomMain ()
 	W_GenerateHashTable();
 
 	// [crispy] allow overriding of special-casing
-	if (!M_ParmExists("-noautoload") && gamemode != GameMode_t::shareware)
+	if (!M_ParmExists("-noautoload") && gamemode != GameMode::shareware)
 	{
-	if (gamemode == GameMode_t::retail &&
+	if (gamemode == GameMode::retail &&
 		gameversion == GameVersion_t::exe_ultimate &&
 		gamevariant != freedoom)
 	{
@@ -1903,13 +1903,13 @@ void D_DoomMain ()
 	};
 	int i;
 
-	if ( gamemode == GameMode_t::shareware)
+	if ( gamemode == GameMode::shareware)
 		I_Error(DEH_String("\nYou cannot -file with the shareware "
 					"version. Register!"));
 
 	// Check for fake IWAD with right name,
 	// but w/o all the lumps of the registered version.
-	if (gamemode == GameMode_t::registered)
+	if (gamemode == GameMode::registered)
 		for (i = 0;i < 23; i++)
 		if (W_CheckNumForName(name[i])<0)
 			I_Error(DEH_String("\nThis is not the registered version."));
@@ -1940,7 +1940,7 @@ void D_DoomMain ()
 	// [crispy] check for SSG resources
 	crispy->havessg =
 	(
-		gamemode == GameMode_t::commercial ||
+		gamemode == GameMode::commercial ||
 		(
 			W_CheckNumForName("sht2a0")			!= -1 && // [crispy] wielding/firing sprite sequence
 			I_GetSfxLumpNum(&S_sfx[sfx_dshtgn]) != -1 && // [crispy] firing sound
@@ -1957,12 +1957,12 @@ void D_DoomMain ()
 						(W_CheckNumForName("wilv40") != -1);
 
 	// [crispy] check for presence of E1M10
-	crispy->havee1m10 = (gamemode == GameMode_t::retail) &&
+	crispy->havee1m10 = (gamemode == GameMode::retail) &&
 						(W_CheckNumForName("e1m10") != -1) &&
 						(W_CheckNumForName("sewers") != -1);
 
 	// [crispy] check for presence of MAP33
-	crispy->havemap33 = (gamemode == GameMode_t::commercial) &&
+	crispy->havemap33 = (gamemode == GameMode::commercial) &&
 						(W_CheckNumForName("map33") != -1) &&
 						(W_CheckNumForName("cwilv32") != -1);
 
@@ -1979,7 +1979,7 @@ void D_DoomMain ()
 	D_ConnectNetGame();
 
 	// get skill / episode / map from parms
-	startskill = skill_t::sk_medium;
+	startskill = SkillType::sk_medium;
 	startepisode = 1;
 	startmap = 1;
 	autostart = false;
@@ -2062,7 +2062,7 @@ void D_DoomMain ()
 
 	if (p)
 	{
-		if (gamemode == GameMode_t::commercial)
+		if (gamemode == GameMode::commercial)
 			startmap = atoi(myargv[p+1]);
 		else
 		{
@@ -2101,7 +2101,7 @@ void D_DoomMain ()
 #ifdef ENABLE_APRIL_1ST_JOKE
 	{
 		time_t curtime = time(NULL);
-		struct tm *curtm = localtime(&curtime);
+		struct tm* curtm = localtime(&curtime);
 
 		if (curtm && curtm->tm_mon == 3 && curtm->tm_mday == 1)
 			crispy->fliplevels = true;
@@ -2174,7 +2174,7 @@ void D_DoomMain ()
 	// Moved this here so that MAP01 isn't constantly looked up
 	// in the main loop.
 
-	if (gamemode == GameMode_t::commercial && W_CheckNumForName("map01") < 0)
+	if (gamemode == GameMode::commercial && W_CheckNumForName("map01") < 0)
 		storedemo = true;
 
 	if (M_CheckParmWithArgs("-statdump", 1))

@@ -28,18 +28,18 @@ struct txt_cliparea_t
 	txt_cliparea_t* next;
 };
 
-void TXT_DrawDesktopBackground(const char* title);
-void TXT_DrawWindowFrame(const char* title, int x, int y, int w, int h);
-void TXT_DrawSeparator(int x, int y, int w);
-void TXT_DrawCodePageString(const char* s);
-void TXT_DrawString(const char* s);
-int TXT_CanDrawCharacter(unsigned int c);
+void DrawDesktopBackground(const char* title);
+void DrawWindowFrame(const char* title, int x, int y, int w, int h);
+void DrawSeparator(int x, int y, int w);
+void DrawCodePageString(const char* s);
+void DrawString(const char* s);
+int CanDrawCharacter(unsigned c);
 
-void TXT_DrawHorizScrollbar(int x, int y, int w, int cursor, int range);
-void TXT_DrawVertScrollbar(int x, int y, int h, int cursor, int range);
+void DrawHorizScrollbar(int x, int y, int w, int cursor, int range);
+void DrawVertScrollbar(int x, int y, int h, int cursor, int range);
 
-void TXT_InitClipArea();
-void TXT_PushClipArea(int x1, int x2, int y1, int y2);
-void TXT_PopClipArea();
+void InitClipArea();
+void PushClipArea(int x1, int x2, int y1, int y2);
+void PopClipArea();
 
 } /* END NAMESPACE cudadoom::txt */

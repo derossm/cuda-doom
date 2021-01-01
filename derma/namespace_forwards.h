@@ -73,7 +73,7 @@ namespace cudadoom
 namespace cudadoom::midi
 {
 	enum class PacketType;
-	using PacketTypeAlias = unsigned int;
+	using PacketTypeAlias = unsigned;
 }
 
 namespace cudadoom::txt

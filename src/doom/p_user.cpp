@@ -41,7 +41,7 @@ bool		onground;
 // P_Thrust
 // Moves the given origin along a given angle.
 //
-void P_Thrust(player_t* player, angle_t angle, fixed_t move)
+void P_Thrust(Player* player, angle_t angle, fixed_t move)
 {
 	angle >>= ANGLETOFINESHIFT;
 
@@ -56,7 +56,7 @@ void P_Thrust(player_t* player, angle_t angle, fixed_t move)
 // P_CalcHeight
 // Calculate the walking / running height adjustment
 //
-void P_CalcHeight (player_t* player)
+void P_CalcHeight (Player* player)
 {
 	int		angle;
 	fixed_t	bob;
@@ -131,7 +131,7 @@ void P_CalcHeight (player_t* player)
 //
 // P_MovePlayer
 //
-void P_MovePlayer (player_t* player)
+void P_MovePlayer (Player* player)
 {
 	ticcmd_t*		cmd;
 	int		look;
@@ -200,7 +200,7 @@ void P_MovePlayer (player_t* player)
 //
 #define ANG5		(ANG90/18)
 
-void P_DeathThink (player_t* player)
+void P_DeathThink (Player* player)
 {
 	angle_t		angle;
 	angle_t		delta;
@@ -254,7 +254,7 @@ void P_DeathThink (player_t* player)
 //
 // P_PlayerThink
 //
-void P_PlayerThink (player_t* player)
+void P_PlayerThink (Player* player)
 {
 	ticcmd_t*		cmd;
 	WeaponType_t	newweapon;
@@ -408,7 +408,7 @@ void P_PlayerThink (player_t* player)
 		// even if cheated.
 		if ((newweapon != wp_plasma
 			&& newweapon != wp_bfg)
-		|| (gamemode != GameMode_t::shareware) )
+		|| (gamemode != GameMode::shareware) )
 		{
 		player->pendingweapon = newweapon;
 		}

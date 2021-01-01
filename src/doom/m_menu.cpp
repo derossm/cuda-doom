@@ -129,7 +129,7 @@ extern bool speedkeydown ();
 //
 // MENU TYPEDEFS
 //
-typedef struct
+struct menuitem_t
 {
 	// 0 = no cursor here, 1 = ok, 2 = arrows ok
 	short status;
@@ -143,11 +143,11 @@ typedef struct
 	// hotkey in menu
 	char alphaKey;
 	const char* alttext;		// [crispy] alternative text for menu items
-} menuitem_t;
+};
 
 
 
-typedef struct menu_s
+struct menu_t
 {
 	short numitems;				// # of menu items
 	struct menu_s* prevMenu;	// previous menu
@@ -157,7 +157,7 @@ typedef struct menu_s
 	short y;
 	short lastOn;				// last item user was on in menu
 	short lumps_missing;		// [crispy] indicate missing menu graphics lumps
-} menu_t;
+};
 
 short itemOn;					// menu item skull is on
 short skullAnimCounter;			// skull animation counter
@@ -229,7 +229,7 @@ static void M_DrawCrispness2();
 static void M_DrawCrispness3();
 static void M_DrawCrispness4();
 
-enum
+enum class main_e
 {
 	newgame = 0,
 	options,
@@ -238,7 +238,7 @@ enum
 	readthis,
 	quitdoom,
 	main_end
-} main_e;
+};
 
 menuitem_t MainMenu[]=
 {
@@ -262,7 +262,7 @@ menu_t MainDef =
 	0
 };
 
-enum
+enum class episodes_e
 {
 	ep1,
 	ep2,
@@ -270,7 +270,7 @@ enum
 	ep4,
 	ep5, // [crispy] Sigil
 	ep_end
-} episodes_e;
+};
 
 menuitem_t EpisodeMenu[]=
 {
@@ -292,7 +292,7 @@ menu_t EpiDef =
 	ep1				// lastOn
 };
 
-enum
+enum class newgame_e
 {
 	killthings,
 	toorough,
@@ -300,7 +300,7 @@ enum
 	violence,
 	nightmare,
 	newg_end
-} newgame_e;
+};
 
 menuitem_t NewGameMenu[]=
 {
@@ -322,7 +322,7 @@ menu_t NewDef =
 	hurtme			// lastOn
 };
 
-enum
+enum class options_e
 {
 	endgame,
 	messages,
@@ -333,7 +333,7 @@ enum
 	soundvol,
 	crispness,												// [crispy] Crispness menu
 	opt_end
-} options_e;
+};
 
 menuitem_t OptionsMenu[]=
 {
@@ -359,7 +359,7 @@ menu_t OptionsDef =
 };
 
 // [crispy] mouse sensitivity menu
-enum
+enum class mouse_e
 {
 	mouse_horiz,
 	mouse_empty1,
@@ -369,7 +369,7 @@ enum
 	mouse_empty3,
 	mouse_invert,
 	mouse_end
-} mouse_e;
+};
 
 static menuitem_t MouseMenu[]=
 {
@@ -394,7 +394,7 @@ static menu_t MouseDef =
 };
 
 // [crispy] Crispness menu
-enum
+enum class crispness1_e
 {
 	crispness_sep_rendering,
 	crispness_hires,
@@ -416,7 +416,7 @@ enum
 	crispness1_next,
 	crispness1_prev,
 	crispness1_end
-} crispness1_e;
+};
 
 static menuitem_t Crispness1Menu[]=
 {
@@ -450,7 +450,7 @@ static menu_t Crispness1Def =
 	1
 };
 
-enum
+enum class crispness2_e
 {
 	crispness_sep_audible,
 	crispness_soundfull,
@@ -471,7 +471,7 @@ enum
 	crispness2_next,
 	crispness2_prev,
 	crispness2_end
-} crispness2_e;
+};
 
 static menuitem_t Crispness2Menu[]=
 {
@@ -504,7 +504,7 @@ static menu_t Crispness2Def =
 	1
 };
 
-enum
+enum class crispness3_e
 {
 	crispness_sep_tactical,
 	crispness_freelook,
@@ -526,7 +526,7 @@ enum
 	crispness3_next,
 	crispness3_prev,
 	crispness3_end
-} crispness3_e;
+};
 
 static menuitem_t Crispness3Menu[]=
 {
@@ -560,7 +560,7 @@ static menu_t Crispness3Def =
 	1
 };
 
-enum
+enum class crispness4_e
 {
 	crispness_sep_physical,
 	crispness_freeaim,
@@ -579,7 +579,7 @@ enum
 	crispness4_next,
 	crispness4_prev,
 	crispness4_end
-} crispness4_e;
+};
 
 static menuitem_t Crispness4Menu[]=
 {
@@ -610,7 +610,7 @@ static menu_t Crispness4Def =
 	1
 };
 
-static menu_t *CrispnessMenus[] =
+static menu_t* CrispnessMenus[] =
 {
 	&Crispness1Def,
 	&Crispness2Def,
@@ -621,11 +621,11 @@ static menu_t *CrispnessMenus[] =
 static int crispness_cur;
 
 // Read This! MENU 1 & 2
-enum
+enum class read_e
 {
 	rdthsempty1,
 	read1_end
-} read_e;
+};
 
 menuitem_t ReadMenu1[] =
 {
@@ -643,11 +643,11 @@ menu_t ReadDef1 =
 	0
 };
 
-enum
+enum class read_e2
 {
 	rdthsempty2,
 	read2_end
-} read_e2;
+};
 
 menuitem_t ReadMenu2[]=
 {
@@ -665,14 +665,14 @@ menu_t ReadDef2 =
 	0
 };
 
-enum
+enum class sound_e
 {
 	sfx_vol,
 	sfx_empty1,
 	music_vol,
 	sfx_empty2,
 	sound_end
-} sound_e;
+};
 
 menuitem_t SoundMenu[]=
 {
@@ -693,7 +693,7 @@ menu_t SoundDef =
 	0
 };
 
-enum
+enum class load_e
 {
 	load1,
 	load2,
@@ -704,7 +704,7 @@ enum
 	load7,						// [crispy] up to 8 savegames
 	load8,						// [crispy] up to 8 savegames
 	load_end
-} load_e;
+};
 
 menuitem_t LoadMenu[]=
 {
@@ -889,7 +889,7 @@ static void SetDefaultSaveName(int slot)
 		auto wadname{M_StringDuplicate(W_WadNameForLump(maplumpinfo))};
 		auto ext = strrchr(*wadname, '.');
 
-		if (ext != nullptr)
+		if (ext)
 		{
 			*ext = '\0';
 		}
@@ -1055,7 +1055,7 @@ void M_DrawReadThis2()
 	inhelpscreens = true;
 
 	// We only ever draw the second page if this is
-	// gameversion == GameVersion_t::exe_doom_1_9 and gamemode == GameMode_t::registered
+	// gameversion == GameVersion_t::exe_doom_1_9 and gamemode == GameMode::registered
 	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP1"), pu_tags_t::PU_CACHE), false);
 }
 
@@ -1150,7 +1150,7 @@ void M_NewGame(int choice)
 
 	// Chex Quest disabled the episode select screen, as did Doom II.
 
-	if ((gamemode == GameMode_t::commercial && !crispy->havenerve && !crispy->havemaster) || gameversion == GameVersion_t::exe_chex)
+	if ((gamemode == GameMode::commercial && !crispy->havenerve && !crispy->havemaster) || gameversion == GameVersion_t::exe_chex)
 	{
 		// [crispy] NRFTL / The Master Levels
 		M_SetupNextMenu(&NewDef);
@@ -1193,7 +1193,7 @@ void M_ChooseSkill(int choice)
 
 void M_Episode(int choice)
 {
-	if ((gamemode == GameMode_t::shareware) && choice)
+	if ((gamemode == GameMode::shareware) && choice)
 	{
 		M_StartMessage(DEH_String(SWSTRING), NULL, false);
 		M_SetupNextMenu(&ReadDef1);
@@ -1307,7 +1307,7 @@ static void M_DrawCrispnessSeparator(int y, const char* item)
 	M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessItem(int y, const char *item, int feat, bool cond)
+static void M_DrawCrispnessItem(int y, const char* item, int feat, bool cond)
 {
 	// FIXME WE HEARD YOU LIKED TERNERIES SO WE GOT YOU TERNERIES FOR YOUR TERNERIES
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
@@ -1317,7 +1317,7 @@ static void M_DrawCrispnessItem(int y, const char *item, int feat, bool cond)
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessMultiItem(int y, const char *item, multiitem_t *multiitem, int feat, bool cond)
+static void M_DrawCrispnessMultiItem(int y, const char* item, multiitem_t* multiitem, int feat, bool cond)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
 				"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
@@ -1326,7 +1326,7 @@ static void M_DrawCrispnessMultiItem(int y, const char *item, multiitem_t *multi
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessGoto(int y, const char *item)
+static void M_DrawCrispnessGoto(int y, const char* item)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[CR_GOLD], item);
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
@@ -1599,7 +1599,7 @@ void M_QuitResponse(int key)
 	// [crispy] play quit sound only if the ENDOOM screen is also shown
 	if (!netgame && show_endoom)
 	{
-		if (gamemode == GameMode_t::commercial)
+		if (gamemode == GameMode::commercial)
 		{
 			S_StartSound(NULL, quitsounds2[(gametic>>2)&7]);
 		}
@@ -1614,7 +1614,7 @@ void M_QuitResponse(int key)
 	I_Quit();
 }
 
-static const char *M_SelectEndMessage()
+static const char* M_SelectEndMessage()
 {
 	const char** endmsg;
 
@@ -1958,7 +1958,7 @@ static int G_GotoNextLevel()
 
  int changed = false;
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		if (crispy->havemap33)
 		{
@@ -1983,12 +1983,12 @@ static int G_GotoNextLevel()
 	}
 	else
 	{
-		if (gamemode == GameMode_t::shareware)
+		if (gamemode == GameMode::shareware)
 		{
 			doom_next[0][7] = 11;
 		}
 
-		if (gamemode == GameMode_t::registered)
+		if (gamemode == GameMode::registered)
 		{
 			doom_next[2][7] = 11;
 		}
@@ -2010,7 +2010,7 @@ static int G_GotoNextLevel()
 		int epsd;
 		int map;
 
-		if (gamemode == GameMode_t::commercial)
+		if (gamemode == GameMode::commercial)
 		{
 			epsd = gameepisode;
 			if (gamemission == pack_nerve)
@@ -2053,7 +2053,7 @@ static int G_GotoNextLevel()
 // CONTROL PANEL
 //
 
-bool M_Responder (event_t* ev)
+bool M_Responder (EventType* ev)
 {
 	int ch;
 	int key;
@@ -2703,9 +2703,9 @@ void M_StartControlPanel ()
 // Display OPL debug messages - hack for GENMIDI development.
 static void M_DrawOPLDev()
 {
-	extern void I_OPL_DevMessages(char *, size_t);
+	extern void I_OPL_DevMessages(char* , size_t);
 	char debug[1024];
-	char *curr, *p;
+	char* curr, *p;
 	int line;
 
 	I_OPL_DevMessages(debug, sizeof(debug));
@@ -2738,7 +2738,7 @@ void M_Drawer ()
 {
 	static short x;
 	static short y;
-	unsigned int max;
+	unsigned max;
 	char string[80];
 	const char* name;
 	int start;
@@ -2932,7 +2932,7 @@ void M_Init ()
 		ReadDef2.y -= 10;
 	}
 
-	if (gamemode == GameMode_t::commercial)
+	if (gamemode == GameMode::commercial)
 	{
 		MainMenu[readthis] = MainMenu[quitdoom];
 		--MainDef.numitems;

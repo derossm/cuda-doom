@@ -22,10 +22,10 @@ static int hash_table_entries;
 static int hash_table_length = -1;
 
 // This is the algorithm used by glib
-static unsigned int strhash(const char *s)
+unsigned strhash(const char* s)
 {
 	auto p = s;
-	unsigned int h = *p;
+	unsigned h = *p;
 
 	if (h)
 	{
@@ -38,7 +38,7 @@ static unsigned int strhash(const char *s)
 	return h;
 }
 
-static deh_substitution_t *SubstitutionForString(const char *s)
+deh_substitution_t* SubstitutionForString(const char* s)
 {
 	// Fallback if we have not initialized the hash table yet
 	if (hash_table_length < 0)
@@ -81,12 +81,12 @@ const char* DEH_String(const char* s)
 }
 
 // [crispy] returns true if a string has been substituted
-bool DEH_HasStringReplacement(const char *s)
+bool DEH_HasStringReplacement(const char* s)
 {
 	return DEH_String(s) != s;
 }
 
-static void InitHashTable()
+void InitHashTable()
 {
 	// init hash table
 	hash_table_entries = 0;
@@ -95,9 +95,9 @@ static void InitHashTable()
 	memset(hash_table, 0, sizeof(deh_substitution_t*) * hash_table_length);
 }
 
-static void DEH_AddToHashtable(deh_substitution_t* sub);
+void DEH_AddToHashtable(deh_substitution_t* sub);
 
-static void IncreaseHashtable()
+void IncreaseHashtable()
 {
 	// save the old table
 	auto old_table = hash_table;
@@ -105,8 +105,8 @@ static void IncreaseHashtable()
 
 	// double the size
 	hash_table_length *= 2;
-	hash_table = Z_Malloc<deh_substitution_t>(sizeof(deh_substitution_t *) * hash_table_length, pu_tags_t::PU_STATIC, NULL);
-	memset(hash_table, 0, sizeof(deh_substitution_t *) * hash_table_length);
+	hash_table = Z_Malloc<deh_substitution_t>(sizeof(deh_substitution_t*) * hash_table_length, pu_tags_t::PU_STATIC, NULL);
+	memset(hash_table, 0, sizeof(deh_substitution_t*) * hash_table_length);
 
 	// go through the old table and insert all the old entries
 	for (auto i{0}; i < old_table_length; ++i)
@@ -121,7 +121,7 @@ static void IncreaseHashtable()
 	Z_Free(old_table);
 }
 
-static void DEH_AddToHashtable(deh_substitution_t* sub)
+void DEH_AddToHashtable(deh_substitution_t* sub)
 {
 	// if the hash table is more than 60% full, increase its size
 	if ((hash_table_entries * 10) / hash_table_length > 6)
@@ -182,7 +182,7 @@ void DEH_AddStringReplacement(const char* from_text, const char* to_text)
 }
 
 // Get the type of a format argument. We can mix-and-match different format arguments as long as they are for the same data type.
-static format_arg_t FormatArgumentType(char c)
+format_arg_t FormatArgumentType(char c)
 {
 	switch (c)
 	{
@@ -211,7 +211,7 @@ static format_arg_t FormatArgumentType(char c)
 }
 
 // Given the specified string, get the type of the first format string encountered.
-static format_arg_t NextFormatArgument(const char** str)
+format_arg_t NextFormatArgument(const char** str)
 {
 	format_arg_t argtype;
 
@@ -258,7 +258,7 @@ static format_arg_t NextFormatArgument(const char** str)
 }
 
 // Check if the specified argument type is a valid replacement for the original.
-static bool ValidArgumentReplacement(format_arg_t original, format_arg_t replacement)
+bool ValidArgumentReplacement(format_arg_t original, format_arg_t replacement)
 {
 	// In general, the original and replacement types should be identical.
 	// However, there are some cases where the replacement is valid and the types don't match.
@@ -279,7 +279,7 @@ static bool ValidArgumentReplacement(format_arg_t original, format_arg_t replace
 }
 
 // Return true if the specified string contains no format arguments.
-static bool ValidFormatReplacement(const char* original, const char* replacement)
+bool ValidFormatReplacement(const char* original, const char* replacement)
 {
 	// Check each argument in turn and compare types.
 	auto rover1 = original;
@@ -311,7 +311,7 @@ static bool ValidFormatReplacement(const char* original, const char* replacement
 }
 
 // Get replacement format string, checking arguments.
-static const char* FormatStringReplacement(const char* s)
+const char* FormatStringReplacement(const char* s)
 {
 	auto repl = DEH_String(s);
 

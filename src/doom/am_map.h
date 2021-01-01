@@ -15,11 +15,9 @@
 
 #include "../../derma/common.h"
 
-#ifndef __AMMAP_H__
-#define __AMMAP_H__
-
 #include "d_event.h"
 #include "m_cheat.h"
+#include "m_fixed.h"
 
 // Used by ST StatusBar stuff.
 #define AM_MSGHEADER (('a'<<24)+('m'<<16))
@@ -27,7 +25,7 @@
 #define AM_MSGEXITED (AM_MSGHEADER | ('x'<<8))
 
 // Called by main loop.
-bool AM_Responder(event_t* ev);
+bool AM_Responder(EventType* ev);
 
 // Called by main loop.
 void AM_Ticker();
@@ -40,7 +38,7 @@ void AM_Drawer();
 // if the level is completed while it is up.
 void AM_Stop();
 
-extern cheatseq_t cheat_amap;
+cheatseq_t cheat_amap = CHEAT("iddt", 0);
 
 struct fpoint_t
 {
@@ -79,5 +77,3 @@ enum class keycolor_t
 	yellow_key,
 	blue_key
 };
-
-#endif

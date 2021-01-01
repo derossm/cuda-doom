@@ -31,7 +31,7 @@
 #endif
 
 void P_SpawnMapThing (mapthing_t*	mthing);
-fixed_t GetOffset(vertex_t *v1, vertex_t *v2);
+fixed_t GetOffset(vertex_t* v1, vertex_t* v2);
 sector_t* GetSectorAtNullAddress();
 
 // [crispy] support maps with NODES in compressed or uncompressed ZDBSP
@@ -39,7 +39,7 @@ sector_t* GetSectorAtNullAddress();
 mapformat_t P_CheckMapFormat (int lumpnum)
 {
 	mapformat_t format = 0;
-	byte *nodes = NULL;
+	byte* nodes = NULL;
 	int b;
 
 	if ((b = lumpnum+ML_BLOCKMAP+1) < numlumps &&
@@ -87,18 +87,18 @@ mapformat_t P_CheckMapFormat (int lumpnum)
 void P_LoadSegs_DeePBSP (int lump)
 {
 	int i;
-	mapseg_deepbsp_t *data;
+	mapseg_deepbsp_t* data;
 
 	numsegs = W_LumpLength(lump) / sizeof(mapseg_deepbsp_t);
 	segs = Z_Malloc<decltype(segs)>(numsegs * sizeof(seg_t), pu_tags_t::PU_LEVEL, 0);
-	data = (mapseg_deepbsp_t *)W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
+	data = (mapseg_deepbsp_t*)W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
 
 	for (i = 0; i < numsegs; i++)
 	{
-	seg_t *li = segs + i;
-	mapseg_deepbsp_t *ml = data + i;
+	seg_t* li = segs + i;
+	mapseg_deepbsp_t* ml = data + i;
 	int side, linedef;
-	line_t *ldef;
+	line_t* ldef;
 	int vn1, vn2;
 
 	// [MB] 2020-04-30: Fix endianess for DeePBSDP V4 nodes
@@ -135,9 +135,9 @@ void P_LoadSegs_DeePBSP (int lump)
 
 	if (ldef->flags & ML_TWOSIDED)
 	{
-		int sidenum = ldef->sidenum[side ^ 1];
+		int sidenum class = ldef->sidenum[side ^ 1];
 
-		if (sidenum < 0 || sidenum >= numsides)
+		if (sidenum class < 0 || sidenum class >= numsides)
 		{
 		if (li->sidedef->midtexture)
 		{
@@ -161,12 +161,12 @@ void P_LoadSegs_DeePBSP (int lump)
 // adapted from prboom-plus/src/p_setup.c:843-863
 void P_LoadSubsectors_DeePBSP (int lump)
 {
-	mapsubsector_deepbsp_t *data;
+	mapsubsector_deepbsp_t* data;
 	int i;
 
 	numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_deepbsp_t);
 	subsectors = Z_Malloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), pu_tags_t::PU_LEVEL, 0);
-	data = (mapsubsector_deepbsp_t *)W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
+	data = (mapsubsector_deepbsp_t*)W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
 
 	// [crispy] fail on missing subsectors
 	if (!data || !numsubsectors)
@@ -185,7 +185,7 @@ void P_LoadSubsectors_DeePBSP (int lump)
 // adapted from prboom-plus/src/p_setup.c:995-1038
 void P_LoadNodes_DeePBSP (int lump)
 {
-	const byte *data;
+	const byte* data;
 	int i;
 
 	numnodes = (W_LumpLength(lump) - 8) / sizeof(mapnode_deepbsp_t);
@@ -206,8 +206,8 @@ void P_LoadNodes_DeePBSP (int lump)
 
 	for (i = 0; i < numnodes; i++)
 	{
-	node_t *no = nodes + i;
-	const mapnode_deepbsp_t *mn = (const mapnode_deepbsp_t *) data + i;
+	node_t* no = nodes + i;
+	const mapnode_deepbsp_t* mn = (const mapnode_deepbsp_t*) data + i;
 	int j;
 
 	no->x = SHORT(mn->x)<<FRACBITS;
@@ -240,17 +240,17 @@ void P_LoadNodes_DeePBSP (int lump)
 // [MB] 2020-04-30: Fix endianess for ZDoom extended nodes
 void P_LoadNodes_ZDBSP(int lump, bool compressed)
 {
-	byte *data;
-	unsigned int i;
+	byte* data;
+	unsigned i;
 #ifdef HAVE_LIBZ
-	byte *output;
+	byte* output;
 #endif
 
-	unsigned int orgVerts, newVerts;
-	unsigned int numSubs, currSeg;
-	unsigned int numSegs;
-	unsigned int numNodes;
-	vertex_t *newvertarray = NULL;
+	unsigned orgVerts, newVerts;
+	unsigned numSubs, currSeg;
+	unsigned numSegs;
+	unsigned numNodes;
+	vertex_t* newvertarray = NULL;
 
 	data = W_CacheLumpNum(lump, pu_tags_t::PU_LEVEL);
 
@@ -315,13 +315,13 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	// 1. Load new vertices added during node building
 
-	orgVerts = LONG(*((unsigned int*)data));
+	orgVerts = LONG(*((unsigned*)data));
 	data += sizeof(orgVerts);
 
-	newVerts = LONG(*((unsigned int*)data));
+	newVerts = LONG(*((unsigned*)data));
 	data += sizeof(newVerts);
 
-	if (orgVerts + newVerts == (unsigned int)numvertexes)
+	if (orgVerts + newVerts == (unsigned)numvertexes)
 	{
 	newvertarray = vertexes;
 	}
@@ -335,17 +335,17 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 	for (i = 0; i < newVerts; i++)
 	{
 	newvertarray[i + orgVerts].r_x =
-	newvertarray[i + orgVerts].x = LONG(*((unsigned int*)data));
+	newvertarray[i + orgVerts].x = LONG(*((unsigned*)data));
 	data += sizeof(newvertarray[0].x);
 
 	newvertarray[i + orgVerts].r_y =
-	newvertarray[i + orgVerts].y = LONG(*((unsigned int*)data));
+	newvertarray[i + orgVerts].y = LONG(*((unsigned*)data));
 	data += sizeof(newvertarray[0].y);
 	}
 
 	if (vertexes != newvertarray)
 	{
-	for (i = 0; i < (unsigned int)numlines; i++)
+	for (i = 0; i < (unsigned)numlines; i++)
 	{
 		lines[i].v1 = lines[i].v1 - vertexes + newvertarray;
 		lines[i].v2 = lines[i].v2 - vertexes + newvertarray;
@@ -358,7 +358,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	// 2. Load subsectors
 
-	numSubs = LONG(*((unsigned int*)data));
+	numSubs = LONG(*((unsigned*)data));
 	data += sizeof(numSubs);
 
 	if (numSubs < 1)
@@ -369,7 +369,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	for (i = currSeg = 0; i < numsubsectors; i++)
 	{
-	mapsubsector_zdbsp_t *mseg = (mapsubsector_zdbsp_t*) data + i;
+	mapsubsector_zdbsp_t* mseg = (mapsubsector_zdbsp_t*) data + i;
 
 	subsectors[i].firstline = currSeg;
 	subsectors[i].numlines = LONG(mseg->numsegs);
@@ -380,7 +380,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	// 3. Load segs
 
-	numSegs = LONG(*((unsigned int*)data));
+	numSegs = LONG(*((unsigned*)data));
 	data += sizeof(numSegs);
 
 	// The number of stored segs should match the number of segs used by subsectors
@@ -394,12 +394,12 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	for (i = 0; i < numsegs; i++)
 	{
-	line_t *ldef;
-	unsigned int linedef;
+	line_t* ldef;
+	unsigned linedef;
 	unsigned char side;
-	seg_t *li = segs + i;
-	mapseg_zdbsp_t *ml = (mapseg_zdbsp_t *) data + i;
-	unsigned int v1, v2;
+	seg_t* li = segs + i;
+	mapseg_zdbsp_t* ml = (mapseg_zdbsp_t*) data + i;
+	unsigned v1, v2;
 
 	v1 = LONG(ml->v1);
 	v2 = LONG(ml->v2);
@@ -432,9 +432,9 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	if (ldef->flags & ML_TWOSIDED)
 	{
-		int sidenum = ldef->sidenum[side ^ 1];
+		int sidenum class = ldef->sidenum[side ^ 1];
 
-		if (sidenum < 0 || sidenum >= numsides)
+		if (sidenum class < 0 || sidenum class >= numsides)
 		{
 		if (li->sidedef->midtexture)
 		{
@@ -455,7 +455,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	// 4. Load nodes
 
-	numNodes = LONG(*((unsigned int*)data));
+	numNodes = LONG(*((unsigned*)data));
 	data += sizeof(numNodes);
 
 	numnodes = numNodes;
@@ -464,8 +464,8 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 	for (i = 0; i < numnodes; i++)
 	{
 	int j, k;
-	node_t *no = nodes + i;
-	mapnode_zdbsp_t *mn = (mapnode_zdbsp_t *) data + i;
+	node_t* no = nodes + i;
+	mapnode_zdbsp_t* mn = (mapnode_zdbsp_t*) data + i;
 
 	no->x = SHORT(mn->x)<<FRACBITS;
 	no->y = SHORT(mn->y)<<FRACBITS;
@@ -493,16 +493,16 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 // adapted from chocolate-doom/src/hexen/p_setup.c:348-400
 void P_LoadThings_Hexen(int lump)
 {
-	byte *data;
+	byte* data;
 	int i;
 	mapthing_t spawnthing;
-	mapthing_hexen_t *mt;
+	mapthing_hexen_t* mt;
 	int numthings;
 
 	data = W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
 	numthings = W_LumpLength(lump) / sizeof(mapthing_hexen_t);
 
-	mt = (mapthing_hexen_t *) data;
+	mt = (mapthing_hexen_t*) data;
 	for (i = 0; i < numthings; i++, mt++)
 	{
 //	spawnthing.tid = SHORT(mt->tid);
@@ -530,11 +530,11 @@ void P_LoadThings_Hexen(int lump)
 // adapted from chocolate-doom/src/hexen/p_setup.c:410-490
 void P_LoadLineDefs_Hexen(int lump)
 {
-	byte *data;
+	byte* data;
 	int i;
-	maplinedef_hexen_t *mld;
-	line_t *ld;
-	vertex_t *v1, *v2;
+	maplinedef_hexen_t* mld;
+	line_t* ld;
+	vertex_t* v1, *v2;
 	int warn; // [crispy] warn about unknown linedef types
 
 	numlines = W_LumpLength(lump) / sizeof(maplinedef_hexen_t);
@@ -542,7 +542,7 @@ void P_LoadLineDefs_Hexen(int lump)
 	memset(lines, 0, numlines * sizeof(line_t));
 	data = W_CacheLumpNum(lump, pu_tags_t::PU_STATIC);
 
-	mld = (maplinedef_hexen_t *) data;
+	mld = (maplinedef_hexen_t*) data;
 	ld = lines;
 	warn = 0; // [crispy] warn about unknown linedef types
 	for (i = 0; i < numlines; i++, mld++, ld++)

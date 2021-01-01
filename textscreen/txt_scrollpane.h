@@ -15,6 +15,7 @@
 
 namespace cudadoom::txt
 {
+
 /**
  * Scrollable pane widget.
  *
@@ -43,6 +44,6 @@ struct txt_scrollpane_t
  *						contain.
  * @return				Pointer to the new scroll pane widget.
  */
-txt_scrollpane_t* TXT_NewScrollPane(int w, int h, TXT_UNCAST_ARG(target));
+txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target));
 
 } /* END NAMESPACE cudadoom::txt */

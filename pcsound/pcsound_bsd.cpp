@@ -67,9 +67,9 @@ static int sound_server_pipe[2];
 
 static void AdjustedBeep(int speaker_handle, int ms, int freq)
 {
-	unsigned int start_time;
-	unsigned int end_time;
-	unsigned int actual_time;
+	TimeType start_time;
+	TimeType end_time;
+	TimeType actual_time;
 	tone_t tone;
 
 	// Adjust based on previous error to keep the tempo right
@@ -204,7 +204,7 @@ static void StopSoundServer()
 	waitpid(sound_server_pid, &status, 0);
 }
 
-static int SoundThread(void *unused)
+static int SoundThread(void* unused)
 {
 	tone_t tone;
 	int duration;

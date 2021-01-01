@@ -19,10 +19,10 @@
 #include "w_checksum.h"
 #include "w_wad.h"
 
-static wad_file_t **open_wadfiles = NULL;
+static wad_file_t**open_wadfiles = NULL;
 static int num_open_wadfiles = 0;
 
-static int GetFileNumber(wad_file_t *handle)
+static int GetFileNumber(wad_file_t* handle)
 {
 	int i;
 	int result;
@@ -39,7 +39,7 @@ static int GetFileNumber(wad_file_t *handle)
 	// Allocate another slot for this file.
 
 	open_wadfiles = I_Realloc(open_wadfiles,
-							sizeof(wad_file_t *) * (num_open_wadfiles + 1));
+							sizeof(wad_file_t*) * (num_open_wadfiles + 1));
 	open_wadfiles[num_open_wadfiles] = handle;
 
 	result = num_open_wadfiles;
@@ -48,7 +48,7 @@ static int GetFileNumber(wad_file_t *handle)
 	return result;
 }
 
-static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)
+static void ChecksumAddLump(sha1_context_t* sha1_context, lumpinfo_t* lump)
 {
 	char buf[9];
 
@@ -62,7 +62,7 @@ static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)
 void W_Checksum(sha1_digest_t digest)
 {
 	sha1_context_t sha1_context;
-	unsigned int i;
+	unsigned i;
 
 	SHA1_Init(&sha1_context);
 

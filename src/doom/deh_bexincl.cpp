@@ -20,9 +20,9 @@
 
 static bool bex_nested = false;
 
-static void *DEH_BEXInclStart(deh_context_t *context, char *line)
+static void* DEH_BEXInclStart(deh_context_t* context, char* line)
 {
-	char *deh_file, *inc_file, *try_path;
+	char* deh_file, *inc_file, *try_path;
 	extern bool bex_notext;
 
 	if (!DEH_FileName(context))
@@ -63,7 +63,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
 	if (!M_FileExists(try_path))
 	{
 	// second, try loading the file in the directory of the current file
-	char *dir;
+	char* dir;
 	dir = M_DirName(deh_file);
 	try_path = M_StringJoin(dir, DIR_SEPARATOR_S, inc_file, NULL);
 	free(dir);
@@ -86,7 +86,7 @@ static void *DEH_BEXInclStart(deh_context_t *context, char *line)
 	return NULL;
 }
 
-static void DEH_BEXInclParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_BEXInclParseLine(deh_context_t* context, char* line, void* tag)
 {
 	// not used
 }

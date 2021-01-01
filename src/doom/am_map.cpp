@@ -228,15 +228,13 @@ static fixed_t scale_mtof = (fixed_t)INITSCALEMTOF;
 // used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
 static fixed_t scale_ftom;
 
-static player_t *plr;	// the player represented by an arrow
+static Player* plr;	// the player represented by an arrow
 
-static patch_t *marknums[10];	// numbers used for marking by the automap
+static patch_t* marknums[10];	// numbers used for marking by the automap
 static mpoint_t markpoints[AM_NUMMARKPOINTS];	// where the points are
 static int markpointnum = 0;	// next point to be assigned
 
 static int followplayer = 1;	// specifies whether to follow the player around
-
-cheatseq_t cheat_amap = CHEAT("iddt", 0);
 
 static bool stopped = true;
 
@@ -318,8 +316,8 @@ void AM_restoreScaleAndLoc()
 	}
 	else
 	{
-		m_x = plr->mo->x - m_w/2;
-		m_y = plr->mo->y - m_h/2;
+		m_x = plr->x - m_w/2;
+		m_y = plr->y - m_h/2;
 	}
 	m_x2 = m_x + m_w;
 	m_y2 = m_y + m_h;
@@ -340,8 +338,8 @@ void AM_addMark()
 	}
 	else
 	{
-		markpoints[markpointnum].x = plr->mo->x;
-		markpoints[markpointnum].y = plr->mo->y;
+		markpoints[markpointnum].x = plr->x;
+		markpoints[markpointnum].y = plr->y;
 	}
 
 	markpointnum = (markpointnum + 1) % AM_NUMMARKPOINTS;
@@ -437,7 +435,7 @@ void AM_changeWindowLoc()
 
 void AM_initVariables()
 {
-	static event_t st_notify = { evtype_t::ev_keyup, AM_MSGENTERED, 0, 0 };
+	static EventType st_notify = { evtype_t::ev_keyup, AM_MSGENTERED, 0, 0 };
 
 	automapactive = true;
 // fb = I_VideoBuffer; // [crispy] simplify
@@ -462,7 +460,7 @@ void AM_initVariables()
 	{
 		plr = &players[0];
 
-		for (auto pnum{0}; pnum < MAXPLAYERS; ++pnum)
+		for (auto pnum{0}; pnum < MAX_PLAYERS; ++pnum)
 		{
 			if (playeringame[pnum])
 			{
@@ -472,8 +470,8 @@ void AM_initVariables()
 		}
 	}
 
-	m_x = plr->mo->x - m_w/2;
-	m_y = plr->mo->y - m_h/2;
+	m_x = plr->x - m_w/2;
+	m_y = plr->y - m_h/2;
 	AM_changeWindowLoc();
 
 	// for saving & restoring
@@ -493,7 +491,7 @@ void AM_loadPics()
 	for (auto i{0}; i < 10; ++i)
 	{
 		DEH_snprintf(namebuf, 9, "AMMNUM%d", i);
-		marknums[i] = W_CacheLumpName(namebuf, pu_tags_t::PU_STATIC);
+		marknums[i] = (patch_t*)W_CacheLumpName(namebuf, pu_tags_t::PU_STATIC);
 	}
 }
 
@@ -586,7 +584,7 @@ void AM_LevelInit(bool reinit)
 
 void AM_Stop()
 {
-	static event_t st_notify = { 0, evtype_t::ev_keyup, AM_MSGEXITED, 0 };
+	static EventType st_notify = { evtype_t::ev_keyup, AM_MSGEXITED, 0, 0 };
 
 	AM_unloadPics();
 	automapactive = false;
@@ -639,7 +637,7 @@ void AM_maxOutWindowScale()
 }
 
 // Handle events (user inputs) in automap mode
-bool AM_Responder(event_t* ev)
+bool AM_Responder(EventType* ev)
 {
 	static int bigstate = 0;
 	static char buffer[20];
@@ -941,7 +939,7 @@ void AM_doFollowPlayer()
 
 void AM_updateLightLev()
 {
-	static int nexttic = 0;
+	static TimeType nexttic = 0;
 	//static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
 	static int litelevels[] = { 0, 4, 7, 10, 12, 14, 15, 15 };
 	static int litelevelscnt = 0;
@@ -1335,7 +1333,7 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
 		/* Y-major line; calculate 16-bit fixed-point fractional part of a
 			pixel that X advances each time Y advances 1 pixel, truncating the
 			result so that we won't overrun the endpoint along the X axis */
-		ErrorAdj = ((unsigned int) DeltaX << 16) / (unsigned int) DeltaY;
+		ErrorAdj = ((unsigned) DeltaX << 16) / (unsigned) DeltaY;
 
 		/* Draw all pixels other than the first and last */
 		while (--DeltaY)
@@ -1367,7 +1365,7 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
 	/* It's an X-major line; calculate 16-bit fixed-point fractional part of a
 		pixel that Y advances each time X advances 1 pixel, truncating the
 		result to avoid overrunning the endpoint along the X axis */
-	ErrorAdj = ((unsigned int) DeltaY << 16) / (unsigned int) DeltaX;
+	ErrorAdj = ((unsigned) DeltaY << 16) / (unsigned) DeltaX;
 
 	/* Draw all pixels other than the first and last */
 	while (--DeltaX)
@@ -1755,10 +1753,10 @@ void AM_drawPlayers()
 		return;
 	}
 
-	for (auto i{0}; i < MAXPLAYERS; ++i)
+	for (auto i{0}; i < MAX_PLAYERS; ++i)
 	{
 		++their_color;
-		player_t* p = &players[i];
+		Player* p = &players[i];
 
 		if ((deathmatch && !singledemo) && p != plr)
 		{
@@ -1824,28 +1822,28 @@ void AM_drawThings(int colors, int colorrange)
 				{
 				case 38:
 				case 13:
-					key = keycolotr_t::red_key;
+					key = keycolor_t::red_key;
 					break;
 				case 39:
 				case 6:
-					key = keycolotr_t::yellow_key;
+					key = keycolor_t::yellow_key;
 					break;
 				case 40:
 				case 5:
-					key = keycolotr_t::blue_key;
+					key = keycolor_t::blue_key;
 					break;
 				default:
-					key = keycolotr_t::no_key;
+					key = keycolor_t::no_key;
 					break;
 				}
 
 				// [crispy] draw keys as crosses in their respective colors
-				if (key > keycolotr_t::no_key)
+				if (key > keycolor_t::no_key)
 				{
 					AM_drawLineCharacter(cross_mark, arrlen(cross_mark), 16<<FRACBITS, t->angle,
-										(key == keycolotr_t::red_key) ? REDS :
-										(key == keycolotr_t::yellow_key) ? YELLOWS :
-										(key == keycolotr_t::blue_key) ? BLUES :
+										(key == keycolor_t::red_key) ? REDS :
+										(key == keycolor_t::yellow_key) ? YELLOWS :
+										(key == keycolor_t::blue_key) ? BLUES :
 										colors + lightlev, pt.x, pt.y);
 				}
 				// [crispy] draw blood splats and puffs as small squares
@@ -1860,15 +1858,15 @@ void AM_drawThings(int colors, int colorrange)
 										// [crispy] triangle size represents actual thing size
 										t->radius, t->angle,
 										// [crispy] show countable kills in red ...
-										((t->flags & (MF_COUNTKILL | MF_CORPSE)) == MF_COUNTKILL) ? REDS :
+										((t->flags & ((int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_CORPSE)) == (int)mobjflag_t::MF_COUNTKILL) ? REDS :
 										// [crispy] ... show Lost Souls and missiles in orange ...
-											(t->flags & (MF_FLOAT | MF_MISSILE)) ? 216 :
+											(t->flags & ((int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_MISSILE)) ? 216 :
 										// [crispy] ... show other shootable items in dark gold ...
-										(t->flags & MF_SHOOTABLE) ? 164 :
+										(t->flags & (int)mobjflag_t::MF_SHOOTABLE) ? 164 :
 										// [crispy] ... corpses in gray ...
-										(t->flags & MF_CORPSE) ? GRAYS :
+										(t->flags & (int)mobjflag_t::MF_CORPSE) ? GRAYS :
 										// [crispy] ... and countable items in yellow
-										(t->flags & MF_COUNTITEM) ? YELLOWS :
+										(t->flags & (int)mobjflag_t::MF_COUNTITEM) ? YELLOWS :
 										colors+lightlev, pt.x, pt.y);
 				}
 			}

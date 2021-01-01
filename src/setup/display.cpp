@@ -20,10 +20,10 @@
 
 extern void RestartTextscreen();
 
-typedef struct
+struct window_size_t
 {
 	int w, h;
-} window_size_t;
+};
 
 // List of aspect ratio-uncorrected window sizes:
 static window_size_t window_sizes_unscaled[] =
@@ -56,8 +56,8 @@ static window_size_t window_sizes_scaled[] =
 	{ 0, 0},
 };
 
-static char *video_driver = "";
-static char *window_position = "";
+static char* video_driver = "";
+static char* window_position = "";
 static int aspect_ratio_correct = 1;
 static int integer_scaling = 0;
 static int vga_porch_flash = 0;
@@ -80,7 +80,7 @@ static int system_video_env_set;
 
 void SetDisplayDriver()
 {
-	static int first_time = 1;
+	static TimeType first_time = 1;
 
 	if (first_time)
 	{
@@ -100,7 +100,7 @@ void SetDisplayDriver()
 
 	if (strcmp(video_driver, "") != 0)
 	{
-		char *env_string;
+		char* env_string;
 
 		env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, NULL);
 		putenv(env_string);
@@ -116,10 +116,10 @@ static void WindowSizeSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::
 	window_height = size->h;
 }
 
-static cudadoom::txt::txt_radiobutton_t *SizeSelectButton(window_size_t *size)
+static cudadoom::txt::RadioButton* SizeSelectButton(window_size_t* size)
 {
 	char buf[15];
-	cudadoom::txt::txt_radiobutton_t *result;
+	cudadoom::txt::RadioButton* result;
 
 	M_snprintf(buf, sizeof(buf), "%ix%i", size->w, size->h);
 	result = cudadoom::txt::TXT_NewRadioButton(buf, &window_width, size->w);
@@ -132,7 +132,7 @@ static void GenerateSizesTable(cudadoom::txt::TXT_UNCAST_ARG(widget),
 								cudadoom::txt::TXT_UNCAST_ARG(sizes_table))
 {
 	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, sizes_table);
-	window_size_t *sizes;
+	window_size_t* sizes;
 	bool have_size;
 	int i;
 
@@ -177,8 +177,8 @@ static void AdvancedDisplayConfig(cudadoom::txt::TXT_UNCAST_ARG(widget),
 									cudadoom::txt::TXT_UNCAST_ARG(sizes_table))
 {
 	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, sizes_table);
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_checkbox_t *ar_checkbox;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::CheckBox* ar_checkbox;
 
 	window = cudadoom::txt::TXT_NewWindow("Advanced display options");
 
@@ -205,11 +205,11 @@ static void AdvancedDisplayConfig(cudadoom::txt::TXT_UNCAST_ARG(widget),
 	cudadoom::txt::TXT_SignalConnect(ar_checkbox, "changed", GenerateSizesTable, sizes_table);
 }
 
-void ConfigDisplay(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigDisplay(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_table_t *sizes_table;
-	cudadoom::txt::txt_window_action_t *advanced_button;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::txt_table_t* sizes_table;
+	cudadoom::txt::WindowAction* advanced_button;
 
 	// Open the window
 	window = cudadoom::txt::TXT_NewWindow("Display Configuration");

@@ -11,11 +11,20 @@
 
 #include "../derma/common.h"
 
+#include "doomkeys.h"
+
+#include "txt_main.h"
 #include "txt_widget.h"
+#include "txt_window.h"
+#include "txt_utf8.h"
+#include "txt_io.h"
+#include "txt_gui.h"
+
 namespace cudadoom::txt
 {
+
 /**
- * Checkbox widget.
+ * CheckBox widget.
  *
  * A checkbox is used to control bool values that may be either on
  * or off. The widget has a label that is displayed to the right of
@@ -26,35 +35,103 @@ namespace cudadoom::txt
  *
  * When a checkbox is changed, it emits the "changed" signal.
  */
-struct txt_checkbox_t
+struct CheckBox : Widget
 {
-	Widget widget;
-	char* label;
+	std::string label;
 	int* variable;
-	int inverted;
+	bool inverted;
+
+	void CheckBoxSizeCalc()
+	{
+		// Minimum width is the string length + right-side space for padding
+
+		width = label.size() + 5;
+		height = 1;
+	}
+
+	void CheckBoxDrawer()
+	{
+		SavedColors colors;
+
+		SaveColors(&colors);
+		FGColor(ColorType::bright_cyan);
+		DrawString("(");
+
+		FGColor(ColorType::bright_white);
+
+		if ((*variable != 0) ^ inverted)
+		{
+			DrawCodePageString("\x07");
+		}
+		else
+		{
+			DrawString(" ");
+		}
+
+		FGColor(ColorType::bright_cyan);
+
+		DrawString(") ");
+
+		RestoreColors(&colors);
+		SetWidgetBG();
+		DrawString(label);
+
+		for (size_t i{label.size()}; i < width-4; ++i)
+		{
+			DrawString(" ");
+		}
+	}
+
+	void Destructor()
+	{
+	}
+
+	bool KeyPress(int key)
+	{
+		if (key == KEY_ENTER || key == ' ')
+		{
+			*variable = !*variable;
+			EmitSignal("changed");
+			return true;
+		}
+
+		return false;
+	}
+
+	void MousePress(int x, int y, int b)
+	{
+		if (b == MOUSE_LEFT)
+		{
+			// Equivalent to pressing enter
+			KeyPress(KEY_ENTER);
+		}
+	}
+
+	WidgetClass txt_checkbox_class =
+	{
+		AlwaysSelectable,
+		CheckBoxSizeCalc,
+		CheckBoxDrawer,
+		CheckBoxKeyPress,
+		CheckBoxDestructor,
+		CheckBoxMousePress,
+		NULL,
+	};
+
+	CheckBox(std::string& _label, int* _variable)
+	{
+		label = std::string(_label);
+		variable = _variable;
+		inverted = false;
+	}
+
+	auto NewInvertedCheckBox(std::string& _label, int* _variable)
+	{
+		CheckBox result(_label, _variable);
+		result.inverted = true;
+
+		return std::move(result);
+	}
 };
-
-/**
- * Create a new checkbox.
- *
- * @param label			The label for the new checkbox (UTF-8 format).
- * @param variable		Pointer to the variable containing this checkbox's
- *						value.
- * @return				Pointer to the new checkbox.
- */
-txt_checkbox_t* TXT_NewCheckBox(const char* label, int* variable);
-
-/**
- * Create a new inverted checkbox.
- *
- * An inverted checkbox displays the opposite of a normal checkbox;
- * where it would be checked, it appears unchecked, and vice-versa.
- *
- * @param label			The label for the new checkbox (UTF-8 format).
- * @param variable		Pointer to the variable containing this checkbox's
- *						value.
- * @return				Pointer to the new checkbox.
- */
-txt_checkbox_t* TXT_NewInvertedCheckBox(const char* label, int* variable);
 
 } /* END NAMESPACE cudadoom::txt */

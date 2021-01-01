@@ -33,33 +33,34 @@
 // Location where all configuration data is stored -
 // default.cfg, savegames, etc.
 
-const char *configdir;
+const char* configdir;
 
-static char *autoload_path = "";
+static char* autoload_path = "";
 
 // Default filenames for configuration files.
 
-static const char *default_main_config;
-static const char *default_extra_config;
+static const char* default_main_config;
+static const char* default_extra_config;
 
-typedef enum
+enum class default_type_t
 {
 	DEFAULT_INT,
 	DEFAULT_INT_HEX,
 	DEFAULT_STRING,
 	DEFAULT_FLOAT,
 	DEFAULT_KEY,
-} default_type_t;
+};
 
-typedef struct
+struct default_t
 {
 	// Name of the variable
-	const char *name;
+	const char* name;
 
 	// Pointer to the location in memory of the variable
-	union {
+	union
+	{
 		int *i;
-		char **s;
+		char** s;
 		float *f;
 	} location;
 
@@ -80,14 +81,14 @@ typedef struct
 	// If true, this config variable has been bound to a variable
 	// and is being used.
 	bool bound;
-} default_t;
+};
 
-typedef struct
+struct default_collection_t
 {
-	default_t *defaults;
+	default_t* defaults;
 	int numdefaults;
-	const char *filename;
-} default_collection_t;
+	const char* filename;
+};
 
 #define CONFIG_VARIABLE_GENERIC(name, type) \
 	{ #name, {NULL}, type, 0, 0, false }
@@ -2233,7 +2234,7 @@ static default_collection_t extra_defaults =
 
 // Search a collection for a variable
 
-static default_t *SearchCollection(default_collection_t *collection, const char *name)
+static default_t* SearchCollection(default_collection_t* collection, const char* name)
 {
 	int i;
 
@@ -2279,11 +2280,11 @@ static const int scantokey[128] =
 };
 
 
-static void SaveDefaultCollection(default_collection_t *collection)
+static void SaveDefaultCollection(default_collection_t* collection)
 {
-	default_t *defaults;
+	default_t* defaults;
 	int i, v;
-	FILE *f;
+	FILE* f;
 
 	f = fopen (collection->filename, "w");
 	if (!f)
@@ -2384,19 +2385,19 @@ static void SaveDefaultCollection(default_collection_t *collection)
 
 // Parses integer values in the configuration file
 
-static int ParseIntParameter(const char *strparm)
+static int ParseIntParameter(const char* strparm)
 {
 	int parm;
 
 	if (strparm[0] == '0' && strparm[1] == 'x')
-		sscanf(strparm+2, "%x", (unsigned int *) &parm);
+		sscanf(strparm+2, "%x", (unsigned*) &parm);
 	else
 		sscanf(strparm, "%i", &parm);
 
 	return parm;
 }
 
-static void SetVariable(default_t *def, const char *value)
+static void SetVariable(default_t* def, const char* value)
 {
 	int intparm;
 
@@ -2439,10 +2440,10 @@ static void SetVariable(default_t *def, const char *value)
 	}
 }
 
-static void LoadDefaultCollection(default_collection_t *collection)
+static void LoadDefaultCollection(default_collection_t* collection)
 {
-	FILE *f;
-	default_t *def;
+	FILE* f;
+	default_t* def;
 	char defname[80];
 	char strparm[100];
 
@@ -2502,7 +2503,7 @@ static void LoadDefaultCollection(default_collection_t *collection)
 
 // Set the default filenames to use for configuration files.
 
-void M_SetConfigFilenames(const char *main_config, const char *extra_config)
+void M_SetConfigFilenames(const char* main_config, const char* extra_config)
 {
 	default_main_config = main_config;
 	default_extra_config = extra_config;
@@ -2522,10 +2523,10 @@ void M_SaveDefaults ()
 // Save defaults to alternate filenames
 //
 
-void M_SaveDefaultsAlternate(const char *main, const char *extra)
+void M_SaveDefaultsAlternate(const char* main, const char* extra)
 {
-	const char *orig_main;
-	const char *orig_extra;
+	const char* orig_main;
+	const char* orig_extra;
 
 	// Temporarily change the filenames
 
@@ -2606,9 +2607,9 @@ void M_LoadDefaults ()
 
 // Get a configuration file variable by its name
 
-static default_t *GetDefaultForName(const char *name)
+static default_t* GetDefaultForName(const char* name)
 {
-	default_t *result;
+	default_t* result;
 
 	// Try the main list and the extras
 
@@ -2633,9 +2634,9 @@ static default_t *GetDefaultForName(const char *name)
 // Bind a variable to a given configuration file variable, by name.
 //
 
-void M_BindIntVariable(const char *name, int *location)
+void M_BindIntVariable(const char* name, int *location)
 {
-	default_t *variable;
+	default_t* variable;
 
 	variable = GetDefaultForName(name);
 	assert(variable->type == DEFAULT_INT
@@ -2646,9 +2647,9 @@ void M_BindIntVariable(const char *name, int *location)
 	variable->bound = true;
 }
 
-void M_BindFloatVariable(const char *name, float *location)
+void M_BindFloatVariable(const char* name, float *location)
 {
-	default_t *variable;
+	default_t* variable;
 
 	variable = GetDefaultForName(name);
 	assert(variable->type == DEFAULT_FLOAT);
@@ -2657,9 +2658,9 @@ void M_BindFloatVariable(const char *name, float *location)
 	variable->bound = true;
 }
 
-void M_BindStringVariable(const char *name, char **location)
+void M_BindStringVariable(const char* name, const char** location)
 {
-	default_t *variable;
+	default_t* variable;
 
 	variable = GetDefaultForName(name);
 	assert(variable->type == DEFAULT_STRING);
@@ -2671,9 +2672,9 @@ void M_BindStringVariable(const char *name, char **location)
 // Set the value of a particular variable; an API function for other
 // parts of the program to assign values to config variables by name.
 
-bool M_SetVariable(const char *name, const char *value)
+bool M_SetVariable(const char* name, const char* value)
 {
-	default_t *variable;
+	default_t* variable;
 
 	variable = GetDefaultForName(name);
 
@@ -2689,9 +2690,9 @@ bool M_SetVariable(const char *name, const char *value)
 
 // Get the value of a variable.
 
-int M_GetIntVariable(const char *name)
+int M_GetIntVariable(const char* name)
 {
-	default_t *variable;
+	default_t* variable;
 
 	variable = GetDefaultForName(name);
 
@@ -2704,9 +2705,9 @@ int M_GetIntVariable(const char *name)
 	return *variable->location.i;
 }
 
-const char *M_GetStringVariable(const char *name)
+const char* M_GetStringVariable(const char* name)
 {
-	default_t *variable;
+	default_t* variable;
 
 	variable = GetDefaultForName(name);
 
@@ -2719,9 +2720,9 @@ const char *M_GetStringVariable(const char *name)
 	return *variable->location.s;
 }
 
-float M_GetFloatVariable(const char *name)
+float M_GetFloatVariable(const char* name)
 {
-	default_t *variable;
+	default_t* variable;
 
 	variable = GetDefaultForName(name);
 
@@ -2737,7 +2738,7 @@ float M_GetFloatVariable(const char *name)
 // Get the path to the default configuration dir to use, if NULL
 // is passed to M_SetConfigDir.
 
-static char *GetDefaultConfigDir()
+static char* GetDefaultConfigDir()
 {
 #if !defined(_WIN32) || defined(_WIN32_WCE)
 
@@ -2746,8 +2747,8 @@ static char *GetDefaultConfigDir()
 	// ~/.local/share/chocolate-doom. On Windows, we behave like
 	// Vanilla Doom and save in the current directory.
 
-	char *result;
-	char *copy;
+	char* result;
+	char* copy;
 
 	result = SDL_GetPrefPath("", PACKAGE_TARNAME);
 	if (result != NULL)
@@ -2767,7 +2768,7 @@ static char *GetDefaultConfigDir()
 // files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
 //
 
-void M_SetConfigDir(const char *dir)
+void M_SetConfigDir(const char* dir)
 {
 	// Use the directory that was passed, or find the default.
 
@@ -2801,8 +2802,8 @@ void M_SetConfigDir(const char *dir)
 // the directory if necessary.
 void M_SetMusicPackDir()
 {
-	const char *current_path;
-	char *prefdir, *music_pack_path, *readme_path;
+	const char* current_path;
+	char* prefdir, *music_pack_path, *readme_path;
 
 	current_path = M_GetStringVariable("music_pack_path");
 
@@ -2834,10 +2835,10 @@ void M_SetMusicPackDir()
 // Creates the directory as necessary.
 //
 
-char *M_GetSaveGameDir(const char *iwadname)
+char* M_GetSaveGameDir(const char* iwadname)
 {
-	char *savegamedir;
-	char *topdir;
+	char* savegamedir;
+	char* topdir;
 	int p;
 
 	//!
@@ -2900,13 +2901,13 @@ char *M_GetSaveGameDir(const char *iwadname)
 // Calculate the path to the directory for autoloaded WADs/DEHs.
 // Creates the directory as necessary.
 //
-char *M_GetAutoloadDir(const char *iwadname)
+char* M_GetAutoloadDir(const char* iwadname)
 {
-	char *result;
+	char* result;
 
 	if (autoload_path == NULL || strlen(autoload_path) == 0)
 	{
-		char *prefdir;
+		char* prefdir;
 		prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
 		autoload_path = M_StringJoin(prefdir, "autoload", NULL);
 		SDL_free(prefdir);

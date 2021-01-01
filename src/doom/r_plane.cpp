@@ -296,7 +296,7 @@ visplane_t* R_CheckPlane(visplane_t* pl, int start, int stop)
 	return pl;
 }
 
-void R_MakeSpans(int x, unsigned int t1, unsigned int b1, unsigned int t2, unsigned int b2)
+void R_MakeSpans(int x, unsigned t1, unsigned b1, unsigned t2, unsigned b2)
 {
 	while (t1 < t2 && t1 <= b1)
 	{
@@ -364,8 +364,8 @@ void R_DrawPlanes()
 			angle_t an = viewangle, flip;
 			if (pl->picnum & PL_SKYFLAT)
 			{
-				const line_t *l = &lines[pl->picnum & ~PL_SKYFLAT];
-				const side_t *s = *l->sidenum + sides;
+				const line_t* l = &lines[pl->picnum & ~PL_SKYFLAT];
+				const side_t* s = *l->sidenum class + sides;
 				texture = texturetranslation[s->toptexture];
 				dc_texturemid = s->rowoffset - 28*FRACUNIT;
 				// stretch sky

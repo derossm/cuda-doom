@@ -10,35 +10,11 @@
 		Common code shared between the client and server
 \**********************************************************************************************************************************************/
 
-#include "doomtype.h"
-#include "d_mode.h"
-#include "i_system.h"
-#include "i_timer.h"
-#include "m_argv.h"
-
 #include "net_common.h"
-#include "net_io.h"
-#include "net_packet.h"
-#include "net_structrw.h"
 
-// connections time out after 30 seconds
-#define CONNECTION_TIMEOUT_LEN 30
+static FILE* net_debug = NULL;
 
-// maximum time between sending packets
-#define KEEPALIVE_PERIOD 1
-
-// reliable packet that is guaranteed to reach its destination
-struct net_reliable_packet_s
-{
-	net_packet_t *packet;
-	int last_send_time;
-	int seq;
-	net_reliable_packet_t *next;
-};
-
-static FILE *net_debug = NULL;
-
-static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol)
+static void NET_Conn_Init(net_connection_t* conn, net_addr_t* addr, net_protocol_t protocol)
 {
 	conn->last_send_time = -1;
 	conn->num_retries = 0;
@@ -51,14 +27,14 @@ static void NET_Conn_Init(net_connection_t *conn, net_addr_t *addr, net_protocol
 }
 
 // Initialize as a client connection
-void NET_Conn_InitClient(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol)
+void NET_Conn_InitClient(net_connection_t* conn, net_addr_t* addr, net_protocol_t protocol)
 {
 	NET_Conn_Init(conn, addr, protocol);
 	conn->state = NET_CONN_STATE_CONNECTING;
 }
 
 // Initialize as a server connection
-void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr, net_protocol_t protocol)
+void NET_Conn_InitServer(net_connection_t* conn, net_addr_t* addr, net_protocol_t protocol)
 {
 	NET_Conn_Init(conn, addr, protocol);
 	conn->state = NET_CONN_STATE_CONNECTED;
@@ -66,15 +42,15 @@ void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr, net_protocol_
 
 // Send a packet to a connection
 // All packets should be sent through this interface, as it maintains the keepalive_send_time counter.
-void NET_Conn_SendPacket(net_connection_t *conn, net_packet_t *packet)
+void NET_Conn_SendPacket(net_connection_t* conn, net_packet_t* packet)
 {
 	conn->keepalive_send_time = I_GetTimeMS();
 	NET_SendPacket(conn->addr, packet);
 }
 
-static void NET_Conn_ParseDisconnect(net_connection_t *conn, net_packet_t *packet)
+static void NET_Conn_ParseDisconnect(net_connection_t* conn, net_packet_t* packet)
 {
-	net_packet_t *reply;
+	net_packet_t* reply;
 
 	// Other end wants to disconnect; Send a DISCONNECT_ACK reply.
 	reply = NET_NewPacket(10);
@@ -89,7 +65,7 @@ static void NET_Conn_ParseDisconnect(net_connection_t *conn, net_packet_t *packe
 }
 
 // Parse a DISCONNECT_ACK packet
-static void NET_Conn_ParseDisconnectACK(net_connection_t *conn, net_packet_t *packet)
+static void NET_Conn_ParseDisconnectACK(net_connection_t* conn, net_packet_t* packet)
 {
 
 	if (conn->state == NET_CONN_STATE_DISCONNECTING)
@@ -101,9 +77,9 @@ static void NET_Conn_ParseDisconnectACK(net_connection_t *conn, net_packet_t *pa
 	}
 }
 
-static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *packet)
+static void NET_Conn_ParseReliableACK(net_connection_t* conn, net_packet_t* packet)
 {
-	unsigned int seq;
+	unsigned seq;
 
 	if (!NET_ReadInt8(packet, &seq))
 	{
@@ -116,9 +92,9 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
 	}
 
 	// Is this an acknowledgement for the first packet in the list?
-	if (seq == (unsigned int)((conn->reliable_packets->seq + 1) & 0xff))
+	if (seq == (unsigned)((conn->reliable_packets->seq + 1) & 0xff))
 	{
-		net_reliable_packet_t *rp;
+		net_reliable_packet_t* rp;
 
 		// Discard it, then.
 		// Unlink from the list.
@@ -134,10 +110,10 @@ static void NET_Conn_ParseReliableACK(net_connection_t *conn, net_packet_t *pack
 // Process the header of a reliable packet
 //
 // Returns true if the packet should be discarded (incorrect sequence)
-static bool NET_Conn_ReliablePacket(net_connection_t *conn, net_packet_t *packet)
+static bool NET_Conn_ReliablePacket(net_connection_t* conn, net_packet_t* packet)
 {
-	unsigned int seq;
-	net_packet_t *reply;
+	unsigned seq;
+	net_packet_t* reply;
 	bool result;
 
 	// Read the sequence number
@@ -147,7 +123,7 @@ static bool NET_Conn_ReliablePacket(net_connection_t *conn, net_packet_t *packet
 		return true;
 	}
 
-	if (seq != (unsigned int)(conn->reliable_recv_seq & 0xff))
+	if (seq != (unsigned)(conn->reliable_recv_seq & 0xff))
 	{
 		// This is not the next expected packet in the sequence!
 		//
@@ -183,8 +159,8 @@ static bool NET_Conn_ReliablePacket(net_connection_t *conn, net_packet_t *packet
 // Process a packet received by the server
 //
 // Returns true if eaten by common code
-bool NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet,
-						unsigned int *packet_type)
+bool NET_Conn_Packet(net_connection_t* conn, net_packet_t* packet,
+						unsigned* packet_type)
 {
 	conn->keepalive_recv_time = I_GetTimeMS();
 
@@ -224,7 +200,7 @@ bool NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet,
 	return true;
 }
 
-void NET_Conn_Disconnect(net_connection_t *conn)
+void NET_Conn_Disconnect(net_connection_t* conn)
 {
 	if (conn->state != NET_CONN_STATE_DISCONNECTED
 		&& conn->state != NET_CONN_STATE_DISCONNECTING
@@ -237,10 +213,10 @@ void NET_Conn_Disconnect(net_connection_t *conn)
 	}
 }
 
-void NET_Conn_Run(net_connection_t *conn)
+void NET_Conn_Run(net_connection_t* conn)
 {
-	net_packet_t *packet;
-	unsigned int nowtime;
+	net_packet_t* packet;
+	TimeType nowtime;
 
 	nowtime = I_GetTimeMS();
 
@@ -314,11 +290,11 @@ void NET_Conn_Run(net_connection_t *conn)
 	}
 }
 
-net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
+net_packet_t* NET_Conn_NewReliable(net_connection_t* conn, int packet_type)
 {
-	net_packet_t *packet;
-	net_reliable_packet_t *rp;
-	net_reliable_packet_t **listend;
+	net_packet_t* packet;
+	net_reliable_packet_t* rp;
+	net_reliable_packet_t**listend;
 
 	// Generate a packet with the right header
 	packet = NET_NewPacket(100);
@@ -349,10 +325,10 @@ net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type)
 }
 
 // Used to expand the least significant byte of a tic number into the full tic number, from the current tic number
-unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b)
+unsigned NET_ExpandTicNum(unsigned relative, unsigned b)
 {
-	unsigned int l, h;
-	unsigned int result;
+	unsigned l, h;
+	unsigned result;
 
 	h = relative & ~0xff;
 	l = relative & 0xff;
@@ -368,7 +344,7 @@ unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b)
 }
 
 // Check that game settings are valid
-bool NET_ValidGameSettings(GameMode_t mode, GameMission_t mission, net_gamesettings_t *settings)
+bool NET_ValidGameSettings(GameMode mode, GameMission_t mission, net_gamesettings_t* settings)
 {
 	if (settings->ticdup <= 0)
 		return false;
@@ -379,7 +355,7 @@ bool NET_ValidGameSettings(GameMode_t mode, GameMission_t mission, net_gamesetti
 	if (settings->deathmatch < 0 || settings->deathmatch > 3)
 		return false;
 
-	if (settings->skill < skill_t::sk_noitems || settings->skill > skill_t::sk_nightmare)
+	if (settings->skill < SkillType::sk_noitems || settings->skill > SkillType::sk_nightmare)
 		return false;
 
 	if (!D_ValidGameVersion(mission, settings->gameversion))
@@ -416,7 +392,7 @@ void NET_OpenLog()
 	}
 }
 
-void NET_Log(const char *fmt, ...)
+void NET_Log(const char* fmt, ...)
 {
 	va_list args;
 
@@ -432,7 +408,7 @@ void NET_Log(const char *fmt, ...)
 	fprintf(net_debug, "\n");
 }
 
-void NET_LogPacket(net_packet_t *packet)
+void NET_LogPacket(net_packet_t* packet)
 {
 	int i, bytes;
 

@@ -37,7 +37,7 @@ enum class GameMission_t
 // The "mode" allows more accurate specification of the game mode we are
 // in: eg. shareware vs. registered. So doom1.wad and doom.wad are the
 // same mission, but a different mode.
-enum class GameMode_t
+enum class GameMode
 {
 	shareware,		// Doom/Heretic shareware
 	registered,		// Doom/Heretic registered
@@ -77,7 +77,7 @@ enum class GameVariant_t
 
 // Skill level.
 
-enum class skill_t
+enum class SkillType
 {
 	sk_noitems = -1,	// the "-skill 0" hack
 	sk_baby = 0,
@@ -87,10 +87,10 @@ enum class skill_t
 	sk_nightmare
 };
 
-bool D_ValidGameMode(GameMission_t mission, GameMode_t mode);
+bool D_ValidGameMode(GameMission_t mission, GameMode mode);
 bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version);
-bool D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode, int episode, int map);
-int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode);
+bool D_ValidEpisodeMap(GameMission_t mission, GameMode mode, int episode, int map);
+int D_GetNumEpisodes(GameMission_t mission, GameMode mode);
 bool D_IsEpisodeMap(GameMission_t mission);
-char* D_GameMissionString(GameMission_t mission);
-char* D_GameModeString(GameMode_t mode);
+const char* D_GameMissionString(GameMission_t mission);
+const char* D_GameModeString(GameMode mode);

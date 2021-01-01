@@ -10,22 +10,26 @@
 
 	DESCRIPTION:
 		All the global variables that store the internal state. Theoretically speaking, the internal state of the engine should be
-		found by looking at the variables collected here, and every relevant module will have to include this header file. In practice,
-		things are a bit messy.
+		found by looking at the variables collected here, and every relevant module will have to include this header file.
+		In practice, things are a bit messy.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __D_STATE__
-#define __D_STATE__
-
 #include "doomdata.h"
+
 #include "d_loop.h"
 #include "d_player.h"
 #include "d_mode.h"
 #include "net_defs.h"
 #include "crispy.h"
+
+// Convenience macro.
+// 'gamemission' can be equal to pack_chex or pack_hacx, but these are
+// just modified versions of doom and doom2, and should be interpreted
+// as the same most of the time.
+#define logical_gamemission (gamemission == pack_chex ? doom : gamemission == pack_hacx ? doom2 : gamemission)
 
 // Command line parameters.
 extern bool nomonsters;		// checkparm of -nomonsters
@@ -34,23 +38,17 @@ extern bool fastparm;		// checkparm of -fast
 extern bool devparm;		// DEBUG: launched with -devparm
 
 // Game Mode - identify IWAD as shareware, retail etc.
-extern GameMode_t gamemode;
+extern GameMode gamemode;
 extern GameMission_t gamemission;
 extern GameVersion_t gameversion;
 extern GameVariant_t gamevariant;
-
-// Convenience macro.
-// 'gamemission' can be equal to pack_chex or pack_hacx, but these are
-// just modified versions of doom and doom2, and should be interpreted
-// as the same most of the time.
-#define logical_gamemission (gamemission == pack_chex ? doom : gamemission == pack_hacx ? doom2 : gamemission)
 
 // Set if homebrew PWAD stuff has been added.
 extern bool modifiedgame;
 
 // Selected skill type, map etc.
 // Defaults for menu, methinks.
-extern skill_t startskill;
+extern SkillType startskill;
 extern int startepisode;
 extern int startmap;
 
@@ -60,12 +58,12 @@ extern int startloadgame;
 extern bool autostart;
 
 // Selected by user.
-extern skill_t gameskill;
+extern SkillType gameskill;
 extern int gameepisode;
 extern int gamemap;
 
 // If non-zero, exit the level after this number of minutes
-extern int timelimit;
+extern TimeType timelimit;
 
 // Nightmare mode flag, single player.
 extern bool respawnmonsters;
@@ -133,9 +131,9 @@ extern int totalsecret;
 extern int extrakills;		// [crispy] count spawned monsters
 
 // Timer, for scores.
-extern int levelstarttic;	// gametic at level start
-extern int leveltime;		// tics in game play for par
-extern int totalleveltimes;	// [crispy] CPhipps - total time for all completed levels
+extern TimeType levelstarttic;	// gametic at level start
+extern TimeType leveltime;		// tics in game play for par
+extern TimeType totalleveltimes;	// [crispy] CPhipps - total time for all completed levels
 
 // DEMO playback/recording related stuff.
 // No demo, there is a human player in charge?
@@ -162,20 +160,19 @@ extern GameState_t gamestate;
 // WAD, partly set at startup time.
 
 // Bookkeeping on players - state.
-extern player_t players[MAXPLAYERS];
+extern Player players[MAX_PLAYERS];
 
 // Alive? Disconnected?
-extern bool playeringame[MAXPLAYERS];
-
+extern bool playeringame[MAX_PLAYERS];
 
 // Player spawn spots for deathmatch.
-#define MAX_DM_STARTS 10
+constexpr size_t MAX_DM_STARTS{10};
 extern mapthing_t deathmatchstarts[MAX_DM_STARTS];
 extern mapthing_t* deathmatch_p;
 
 // Player spawn spots.
-extern mapthing_t playerstarts[MAXPLAYERS];
-extern bool playerstartsingame[MAXPLAYERS];
+extern mapthing_t playerstarts[MAX_PLAYERS];
+extern bool playerstartsingame[MAX_PLAYERS];
 // Intermission stats.
 // Parameters for world map / intermission.
 extern wbstartstruct_t wminfo;
@@ -188,9 +185,7 @@ extern char* savegamedir;
 // if true, load all graphics at level load
 extern bool precache;
 
-
-// wipegamestate can be set to -1
-// to force a wipe on the next draw
+// wipegamestate can be set to -1 to force a wipe on the next draw
 extern GameState_t wipegamestate;
 
 extern int mouseSensitivity;
@@ -200,14 +195,10 @@ extern int mouseSensitivity_y;
 extern int bodyqueslot;
 
 // Needed to store the number of the dummy sky flat.
-// Used for rendering,
-// as well as tracking projectiles etc.
+// Used for rendering, as well as tracking projectiles etc.
 extern int skyflatnum;
 
 // Netgame stuff (buffers and pointers, i.e. indices).
-
 extern int rndindex;
 
 extern ticcmd_t* netcmds;
-
-#endif

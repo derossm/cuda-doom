@@ -9,15 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
- Refresh module, data I/O, caching, retrieval of graphics
-// by name.
+		Refresh module, data I/O, caching, retrieval of graphics by name.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __R_DATA__
-#define __R_DATA__
 
 #include "r_defs.h"
 #include "r_state.h"
@@ -32,21 +28,14 @@ byte* R_GetColumn(int tex, int col);
 // [crispy] wrapping column getter function for composited translucent mid-textures on 1S walls
 byte* R_GetColumnMod(int tex, int col);
 
-
 // I/O, setting up the stuff.
-void R_InitData ();
-void R_PrecacheLevel ();
+void R_InitData();
+void R_PrecacheLevel();
+
+// Retrieval. Floor/ceiling opaque texture tiles, lookup by name. For animation?
+int R_FlatNumForName(const char* name);
 
 
-// Retrieval.
-// Floor/ceiling opaque texture tiles,
-// lookup by name. For animation?
-int R_FlatNumForName(const char *name);
-
-
-// Called by P_Ticker for switches and animations,
-// returns the texture number for the texture name.
-int R_TextureNumForName(const char *name);
-int R_CheckTextureNumForName(const char *name);
-
-#endif
+// Called by P_Ticker for switches and animations, returns the texture number for the texture name.
+int R_TextureNumForName(const char* name);
+int R_CheckTextureNumForName(const char* name);

@@ -30,9 +30,9 @@ constexpr uint64_t MAX_SOUND_SLICE_TIME = 100; /* ms */
 
 struct opl_timer_t
 {
-	unsigned int rate;			// Number of times the timer is advanced per sec.
-	unsigned int enabled;		// Non-zero if timer is enabled.
-	unsigned int value;			// Last value that was set.
+	unsigned rate;			// Number of times the timer is advanced per sec.
+	unsigned enabled;		// Non-zero if timer is enabled.
+	unsigned value;			// Last value that was set.
 	uint64_t expire_time;		// Calculated time that timer will expire.
 };
 
@@ -72,7 +72,7 @@ static int SDLIsInitialized()
 }
 
 // Advance time by the specified number of samples, invoking any callback functions as appropriate.
-static void AdvanceTime(unsigned int nsamples)
+static void AdvanceTime(unsigned nsamples)
 {
 	opl_callback_t callback;
 	delay_data_t* callback_data;
@@ -117,7 +117,7 @@ static void AdvanceTime(unsigned int nsamples)
 }
 
 // Call the OPL emulator code to fill the specified buffer.
-static void FillBuffer(uint8_t *buffer, unsigned int nsamples)
+static void FillBuffer(uint8_t* buffer, unsigned nsamples)
 {
 	// This seems like a reasonable assumption. mix_buffer is 1 second long,
 	// which should always be much longer than the SDL mix buffer.
@@ -131,8 +131,8 @@ static void FillBuffer(uint8_t *buffer, unsigned int nsamples)
 // Callback function to fill a new sound buffer:
 static void OPL_Mix_Callback(void* udata, Uint8* buffer, int len)
 {
-	unsigned int filled;
-	unsigned int buffer_samples;
+	unsigned filled;
+	unsigned buffer_samples;
 
 	// Repeatedly call the OPL emulator update function until the buffer is full.
 	filled = 0;
@@ -209,9 +209,9 @@ static void OPL_SDL_Shutdown()
 	}
 }
 
-static unsigned int GetSliceSize()
+static unsigned GetSliceSize()
 {
-	unsigned int limit{opl_sample_rate*(MAX_SOUND_SLICE_TIME/1000u)};
+	unsigned limit{opl_sample_rate*(MAX_SOUND_SLICE_TIME/1000u)};
 
 	// Try all powers of two, not exceeding the limit.
 	for (int n{0};; ++n)
@@ -228,7 +228,7 @@ static unsigned int GetSliceSize()
 	return 1024;
 }
 
-static int OPL_SDL_Init(unsigned int port_base)
+static int OPL_SDL_Init(unsigned port_base)
 {
 	// Check if SDL_mixer has been opened already; If not, we must initialize it now
 	if (!SDLIsInitialized())
@@ -294,9 +294,9 @@ static int OPL_SDL_Init(unsigned int port_base)
 	return 1;
 }
 
-static unsigned int OPL_SDL_PortRead(opl_port_t port)
+static unsigned OPL_SDL_PortRead(opl_port_t port)
 {
-	unsigned int result{0};
+	unsigned result{0};
 
 	if (port == opl_port_t::OPL_REGISTER_PORT_OPL3)
 	{
@@ -330,7 +330,7 @@ static void OPLTimer_CalculateEndTime(opl_timer_t* timer)
 	}
 }
 
-static void WriteRegister(unsigned int reg_num, unsigned int value)
+static void WriteRegister(unsigned reg_num, unsigned value)
 {
 	switch (reg_num)
 	{
@@ -376,7 +376,7 @@ static void WriteRegister(unsigned int reg_num, unsigned int value)
 	}
 }
 
-static void OPL_SDL_PortWrite(opl_port_t port, unsigned int value)
+static void OPL_SDL_PortWrite(opl_port_t port, unsigned value)
 {
 	if (port == opl_port_t::OPL_REGISTER_PORT)
 	{

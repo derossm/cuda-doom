@@ -10,24 +10,19 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Brightmaps for wall textures
+		Brightmaps for wall textures
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __R_BMAPS__
-#define __R_BMAPS__
-
 #include "doomtype.h"
 
-extern void R_InitBrightmaps ();
+extern void R_InitBrightmaps();
 
-extern byte *(*R_BrightmapForTexName) (const char *texname);
-extern byte *(*R_BrightmapForSprite) (const int type);
-extern byte *(*R_BrightmapForFlatNum) (const int num);
-extern byte *(*R_BrightmapForState) (const int state);
+extern byte* (*R_BrightmapForTexName) (const char* texname);
+extern byte* (*R_BrightmapForSprite) (const int type);
+extern byte* (*R_BrightmapForFlatNum) (const int num);
+extern byte* (*R_BrightmapForState) (const int state);
 
-extern byte **texturebrightmap;
-
-#endif
+extern byte** texturebrightmap;

@@ -73,26 +73,26 @@ constexpr uint64_t OPL_US{		1};
 // ======================================== //
 
 // Initialize the OPL subsystem.
-opl_init_result_t OPL_Init(unsigned int port_base);
+opl_init_result_t OPL_Init(unsigned port_base);
 
 // Shut down the OPL subsystem.
 void OPL_Shutdown();
 
 // Set the sample rate used for software emulation.
-void OPL_SetSampleRate(unsigned int rate);
+void OPL_SetSampleRate(unsigned rate);
 
 // Write to one of the OPL I/O ports:
-void OPL_WritePort(opl_port_t port, unsigned int value);
+void OPL_WritePort(opl_port_t port, unsigned value);
 
 // Read from one of the OPL I/O ports:
-unsigned int OPL_ReadPort(opl_port_t port);
+unsigned OPL_ReadPort(opl_port_t port);
 
 // ======================================== //
 // Higher-level functions.
 // ======================================== //
 
 // Read the cuurrent status byte of the OPL chip.
-unsigned int OPL_ReadStatus();
+unsigned OPL_ReadStatus();
 
 // Write to an OPL register.
 void OPL_WriteRegister(int reg, int value);

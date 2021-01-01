@@ -11,14 +11,9 @@
 
 #include "../../derma/common.h"
 
-#ifndef SETUP_SOUND_H
-#define SETUP_SOUND_H
-
 #include "i_sound.h"
 
-void ConfigSound(void *widget, void *user_data);
+void ConfigSound(void* widget, void* user_data);
 void BindSoundVariables();
 
-extern char *snd_dmxoption;
-
-#endif /* #ifndef SETUP_SOUND_H */
+extern char* snd_dmxoption;

@@ -12,9 +12,6 @@
 
 #include "../../derma/common.h"
 
-#ifndef __M_RANDOM__
-#define __M_RANDOM__
-
 #include "doomtype.h"
 
 // Returns a number from 0 to 255, from a lookup table.
@@ -32,5 +29,3 @@ void M_ClearRandom();
 // Defined version of P_Random() - P_Random()
 int P_SubRandom();
 int Crispy_SubRandom();
-
-#endif

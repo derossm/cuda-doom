@@ -1,4 +1,4 @@
-foreach(SUBDIR doom heretic hexen strife setup)
+foreach(SUBDIR doom setup) #heretic hexen strife setup)
 	add_subdirectory("${SUBDIR}")
 endforeach()
 
@@ -48,8 +48,8 @@ set(GAME_SOURCE_FILES
 						d_ticcmd.h
 	deh_str.cpp			deh_str.h
 	gusconf.cpp			gusconf.h
-	i_cdmus.cpp			i_cdmus.h
-	i_endoom.cpp		i_endoom.h
+						i_cdmus.h
+						i_endoom.h
 	i_glob.cpp			i_glob.h
 	i_input.cpp			i_input.h
 	i_joystick.cpp		i_joystick.h
@@ -66,7 +66,7 @@ set(GAME_SOURCE_FILES
 	i_videohr.cpp		i_videohr.h
 	midifile.cpp		midifile.h
 	mus2mid.cpp			mus2mid.h
-	m_bbox.cpp			m_bbox.h
+						m_bbox.h
 	m_cheat.cpp			m_cheat.h
 	m_config.cpp		m_config.h
 	m_controls.cpp		m_controls.h
@@ -141,47 +141,46 @@ if(MSVC)
 	set_target_properties("${PROGRAM_PREFIX}doom" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
 endif()
 
-if(WIN32)
-	add_executable("${PROGRAM_PREFIX}heretic" WIN32 ${SOURCE_FILES_WITH_DEH} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
-else()
-	add_executable("${PROGRAM_PREFIX}heretic" ${SOURCE_FILES_WITH_DEH})
-endif()
-
-target_include_directories("${PROGRAM_PREFIX}heretic" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}heretic" heretic ${EXTRA_LIBS})
-
-if(MSVC)
-	set_target_properties("${PROGRAM_PREFIX}heretic" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
-endif()
-
-if(WIN32)
-	add_executable("${PROGRAM_PREFIX}hexen" WIN32 ${SOURCE_FILES} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
-else()
-	add_executable("${PROGRAM_PREFIX}hexen" ${SOURCE_FILES})
-endif()
-
-target_include_directories("${PROGRAM_PREFIX}hexen" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}hexen" hexen ${EXTRA_LIBS})
-
-if(MSVC)
-	set_target_properties("${PROGRAM_PREFIX}hexen" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
-endif()
-
-if(WIN32)
-	add_executable("${PROGRAM_PREFIX}strife" WIN32 ${SOURCE_FILES_WITH_DEH} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
-else()
-	add_executable("${PROGRAM_PREFIX}strife" ${SOURCE_FILES_WITH_DEH})
-endif()
-
-target_include_directories("${PROGRAM_PREFIX}strife" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}strife" strife ${EXTRA_LIBS})
-
-if(MSVC)
-	set_target_properties("${PROGRAM_PREFIX}strife" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
-endif()
+#if(WIN32)
+#	add_executable("${PROGRAM_PREFIX}heretic" WIN32 ${SOURCE_FILES_WITH_DEH} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
+#else()
+#	add_executable("${PROGRAM_PREFIX}heretic" ${SOURCE_FILES_WITH_DEH})
+#endif()
+#
+#target_include_directories("${PROGRAM_PREFIX}heretic" PRIVATE ${GAME_INCLUDE_DIRS})
+#target_link_libraries("${PROGRAM_PREFIX}heretic" heretic ${EXTRA_LIBS})
+#
+#if(MSVC)
+#	set_target_properties("${PROGRAM_PREFIX}heretic" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
+#endif()
+#
+#if(WIN32)
+#	add_executable("${PROGRAM_PREFIX}hexen" WIN32 ${SOURCE_FILES} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
+#else()
+#	add_executable("${PROGRAM_PREFIX}hexen" ${SOURCE_FILES})
+#endif()
+#
+#target_include_directories("${PROGRAM_PREFIX}hexen" PRIVATE ${GAME_INCLUDE_DIRS})
+#target_link_libraries("${PROGRAM_PREFIX}hexen" hexen ${EXTRA_LIBS})
+#
+#if(MSVC)
+#	set_target_properties("${PROGRAM_PREFIX}hexen" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
+#endif()
+#
+#if(WIN32)
+#	add_executable("${PROGRAM_PREFIX}strife" WIN32 ${SOURCE_FILES_WITH_DEH} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
+#else()
+#	add_executable("${PROGRAM_PREFIX}strife" ${SOURCE_FILES_WITH_DEH})
+#endif()
+#
+#target_include_directories("${PROGRAM_PREFIX}strife" PRIVATE ${GAME_INCLUDE_DIRS})
+#target_link_libraries("${PROGRAM_PREFIX}strife" strife ${EXTRA_LIBS})
+#
+#if(MSVC)
+#	set_target_properties("${PROGRAM_PREFIX}strife" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
+#endif()
 
 # Source files needed for chocolate-setup:
-
 set(SETUP_FILES
 	deh_str.cpp			deh_str.h
 	d_mode.cpp			d_mode.h

@@ -18,7 +18,7 @@
 #include "deh_main.h"
 #include "p_local.h"
 
-static void *DEH_AmmoStart(deh_context_t *context, char *line)
+static void* DEH_AmmoStart(deh_context_t* context, char* line)
 {
 	int ammo_number = 0;
 
@@ -37,16 +37,16 @@ static void *DEH_AmmoStart(deh_context_t *context, char *line)
 	return &maxammo[ammo_number];
 }
 
-static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_AmmoParseLine(deh_context_t* context, char* line, void* tag)
 {
-	char *variable_name, *value;
+	char* variable_name, *value;
 	int ivalue;
 	int ammo_number;
 
 	if (tag == NULL)
 		return;
 
-	ammo_number = ((int *) tag) - maxammo;
+	ammo_number = ((int*) tag) - maxammo;
 
 	// Parse the assignment
 
@@ -72,7 +72,7 @@ static void DEH_AmmoParseLine(deh_context_t *context, char *line, void *tag)
 	}
 }
 
-static void DEH_AmmoSHA1Hash(sha1_context_t *context)
+static void DEH_AmmoSHA1Hash(sha1_context_t* context)
 {
 	int i;
 

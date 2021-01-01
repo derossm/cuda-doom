@@ -125,7 +125,7 @@ int deh_species_infighting = DEH_DEFAULT_SPECIES_INFIGHTING;
 
 static struct
 {
-	const char *deh_name;
+	const char* deh_name;
 	int *value;
 } misc_settings[] = {
 	{"Initial Health",		&deh_initial_health},
@@ -145,14 +145,14 @@ static struct
 	{"BFG Cells/Shot",		&deh_bfg_cells_per_shot},
 };
 
-static void *DEH_MiscStart(deh_context_t *context, char *line)
+static void* DEH_MiscStart(deh_context_t* context, char* line)
 {
 	return NULL;
 }
 
-static void DEH_MiscParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_MiscParseLine(deh_context_t* context, char* line, void* tag)
 {
-	char *variable_name, *value;
+	char* variable_name, *value;
 	int ivalue;
 	size_t i;
 
@@ -199,9 +199,9 @@ static void DEH_MiscParseLine(deh_context_t *context, char *line, void *tag)
 	DEH_Warning(context, "Unknown Misc variable '%s'", variable_name);
 }
 
-static void DEH_MiscSHA1Sum(sha1_context_t *context)
+static void DEH_MiscSHA1Sum(sha1_context_t* context)
 {
-	unsigned int i;
+	unsigned i;
 
 	for (i=0; i<arrlen(misc_settings); ++i)
 	{

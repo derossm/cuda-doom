@@ -2057,7 +2057,7 @@ static const uint8_t large_font_data[] =
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-static const cudadoom::txt::txt_font_t large_font =
+static const cudadoom::txt::FontType large_font =
 {
 	"large", large_font_data, 16, 32,
 };

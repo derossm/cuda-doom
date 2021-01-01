@@ -42,9 +42,9 @@ static int cudadoom::txt::TXT_MaxStringLength(int len)
 	return len - 1;
 }
 
-static void *DEH_TextStart(deh_context_t *context, char *line)
+static void* DEH_TextStart(deh_context_t* context, char* line)
 {
-	char *from_text, *to_text;
+	char* from_text, *to_text;
 	int fromlen, tolen;
 	int i;
 
@@ -93,7 +93,7 @@ static void *DEH_TextStart(deh_context_t *context, char *line)
 	return NULL;
 }
 
-static void DEH_TextParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_TextParseLine(deh_context_t* context, char* line, void* tag)
 {
 	// not used
 }

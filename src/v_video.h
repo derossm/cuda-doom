@@ -9,16 +9,13 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Gamma correction LUT.
-//	Functions to draw patches (by post) directly to screen.
-//	Functions to blit a block to the screen.
+		Gamma correction LUT.
+		Functions to draw patches (by post) directly to screen.
+		Functions to blit a block to the screen.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __V_VIDEO__
-#define __V_VIDEO__
 
 #include "doomtype.h"
 
@@ -88,5 +85,3 @@ void V_LoadTintTable();
 void V_LoadXlaTable();
 
 void V_DrawMouseSpeedBox(int speed);
-
-#endif

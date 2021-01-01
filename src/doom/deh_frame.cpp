@@ -30,10 +30,10 @@ DEH_BEGIN_MAPPING(state_mapping, state_t)
  DEH_UNSUPPORTED_MAPPING("Codep frame")
 DEH_END_MAPPING
 
-static void *DEH_FrameStart(deh_context_t *context, char *line)
+static void* DEH_FrameStart(deh_context_t* context, char* line)
 {
 	int frame_number = 0;
-	state_t *state;
+	state_t* state;
 
 	if (sscanf(line, "Frame %i", &frame_number) != 1)
 	{
@@ -66,7 +66,7 @@ static void *DEH_FrameStart(deh_context_t *context, char *line)
 // This is noticable in Batman Doom where it is impossible to switch weapons
 // away from the fist once selected.
 
-static void DEH_FrameOverflow(deh_context_t *context, char *varname, int value)
+static void DEH_FrameOverflow(deh_context_t* context, char* varname, int value)
 {
 	if (!strcasecmp(varname, "Duration"))
 	{
@@ -95,16 +95,16 @@ static void DEH_FrameOverflow(deh_context_t *context, char *varname, int value)
 	}
 }
 
-static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
+static void DEH_FrameParseLine(deh_context_t* context, char* line, void* tag)
 {
-	state_t *state;
-	char *variable_name, *value;
+	state_t* state;
+	char* variable_name, *value;
 	int ivalue;
 
 	if (tag == NULL)
 		return;
 
-	state = (state_t *) tag;
+	state = (state_t*) tag;
 
 	// Parse the assignment
 
@@ -133,7 +133,7 @@ static void DEH_FrameParseLine(deh_context_t *context, char *line, void *tag)
 	}
 }
 
-static void DEH_FrameSHA1Sum(sha1_context_t *context)
+static void DEH_FrameSHA1Sum(sha1_context_t* context)
 {
 	int i;
 

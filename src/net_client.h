@@ -7,14 +7,12 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Network client code
+	DESCRIPTION:
+		Network client code
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef NET_CLIENT_H
-#define NET_CLIENT_H
 
 #include "doomtype.h"
 #include "d_ticcmd.h"
@@ -27,7 +25,7 @@ void NET_CL_Run();
 void NET_CL_Init();
 void NET_CL_LaunchGame();
 void NET_CL_StartGame(net_gamesettings_t* settings);
-void NET_CL_SendTiccmd(ticcmd_t* ticcmd, int maketic);
+void NET_CL_SendTiccmd(ticcmd_t* ticcmd, TimeType maketic);
 bool NET_CL_GetSettings(net_gamesettings_t* _settings);
 void NET_Init();
 
@@ -42,11 +40,9 @@ extern char* net_player_name;
 
 extern sha1_digest_t net_server_wad_sha1sum;
 extern sha1_digest_t net_server_deh_sha1sum;
-extern unsigned int net_server_is_freedoom;
+extern unsigned net_server_is_freedoom;
 extern sha1_digest_t net_local_wad_sha1sum;
 extern sha1_digest_t net_local_deh_sha1sum;
-extern unsigned int net_local_is_freedoom;
+extern unsigned net_local_is_freedoom;
 
 extern bool drone;
-
-#endif /* #ifndef NET_CLIENT_H */

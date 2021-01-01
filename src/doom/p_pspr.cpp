@@ -53,8 +53,8 @@ static const int recoil_values[][2] = {
 
 // [crispy] add weapon recoil
 // adapted from prboom-plus/src/p_pspr.c:484-495 (A_FireSomething ())
-extern void P_Thrust (player_t* player, angle_t angle, fixed_t move);
-void A_Recoil (player_t* player)
+extern void P_Thrust (Player* player, angle_t angle, fixed_t move);
+void A_Recoil (Player* player)
 {
 	if (player)
 	{
@@ -75,7 +75,7 @@ void A_Recoil (player_t* player)
 //
 // P_SetPsprite
 //
-void P_SetPsprite(player_t* player, int position, statenum_t stnum)
+void P_SetPsprite(Player* player, int position, statenum_t stnum)
 {
 	pspdef_t*	psp;
 	state_t*	state;
@@ -128,7 +128,7 @@ void P_SetPsprite(player_t* player, int position, statenum_t stnum)
 fixed_t		swingx;
 fixed_t		swingy;
 
-void P_CalcSwing (player_t*	player)
+void P_CalcSwing (Player*	player)
 {
 	fixed_t	swing;
 	int		angle;
@@ -154,7 +154,7 @@ void P_CalcSwing (player_t*	player)
 // from the bottom of the screen.
 // Uses player
 //
-void P_BringUpWeapon (player_t* player)
+void P_BringUpWeapon (Player* player)
 {
 	statenum_t	newstate;
 
@@ -191,7 +191,7 @@ void P_BringUpWeapon (player_t* player)
 // Returns true if there is enough ammo to shoot.
 // If not, selects the next weapon to use.
 //
-bool P_CheckAmmo (player_t* player)
+bool P_CheckAmmo (Player* player)
 {
 	AmmoType_t		ammo;
 	int			count;
@@ -225,7 +225,7 @@ bool P_CheckAmmo (player_t* player)
 	{
 	if (player->weaponowned[wp_plasma]
 		&& player->ammo[am_cell]
-		&& (gamemode != GameMode_t::shareware) )
+		&& (gamemode != GameMode::shareware) )
 	{
 		player->pendingweapon = wp_plasma;
 	}
@@ -261,7 +261,7 @@ bool P_CheckAmmo (player_t* player)
 	}
 	else if (player->weaponowned[wp_bfg]
 			&& player->ammo[am_cell]>40
-			&& (gamemode != GameMode_t::shareware) )
+			&& (gamemode != GameMode::shareware) )
 	{
 		player->pendingweapon = wp_bfg;
 	}
@@ -285,7 +285,7 @@ bool P_CheckAmmo (player_t* player)
 //
 // P_FireWeapon.
 //
-void P_FireWeapon (player_t* player)
+void P_FireWeapon (Player* player)
 {
 	statenum_t	newstate;
 
@@ -304,7 +304,7 @@ void P_FireWeapon (player_t* player)
 // P_DropWeapon
 // Player died, so put the weapon away.
 //
-void P_DropWeapon (player_t* player)
+void P_DropWeapon (Player* player)
 {
 	P_SetPsprite (player,
 			ps_weapon,
@@ -320,7 +320,7 @@ void P_DropWeapon (player_t* player)
 // Follows after getting weapon up,
 // or after previous attack/fire sequence.
 //
-void A_WeaponReady(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_WeaponReady(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	statenum_t	newstate;
 	int		angle;
@@ -381,8 +381,8 @@ void A_WeaponReady(mobj_t* mobj, player_t* player, pspdef_t* psp)
 // without lowering it entirely.
 //
 void A_ReFire
-( mobj_t*	mobj,
- player_t*	player,
+( MapObject*	mobj,
+ Player*	player,
  pspdef_t*	psp )
 {
 
@@ -404,7 +404,7 @@ void A_ReFire
 }
 
 
-void A_CheckReload(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_CheckReload(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	P_CheckAmmo (player);
@@ -421,7 +421,7 @@ void A_CheckReload(mobj_t* mobj, player_t* player, pspdef_t* psp)
 // Lowers current weapon,
 // and changes weapon at bottom.
 //
-void A_Lower(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_Lower(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	psp->sy += LOWERSPEED;
@@ -457,7 +457,7 @@ void A_Lower(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_Raise
 //
-void A_Raise(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_Raise(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	statenum_t	newstate;
 
@@ -481,7 +481,7 @@ void A_Raise(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_GunFlash
 //
-void A_GunFlash(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_GunFlash(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	P_SetMobjState (player->mo, S_PLAY_ATK2);
@@ -498,7 +498,7 @@ void A_GunFlash(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_Punch
 //
-void A_Punch(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_Punch(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	angle_t	angle;
 	int		damage;
@@ -530,7 +530,7 @@ void A_Punch(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_Saw
 //
-void A_Saw(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_Saw(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	angle_t	angle;
 	int		damage;
@@ -580,7 +580,7 @@ void A_Saw(mobj_t* mobj, player_t* player, pspdef_t* psp)
 // example, it is possible to make a weapon that decreases the max
 // number of ammo for another weapon. Emulate this.
 
-static void DecreaseAmmo(player_t *player, int ammonum, int amount)
+static void DecreaseAmmo(Player* player, int ammonum, int amount)
 {
 	if (ammonum < NUMAMMO)
 	{
@@ -601,7 +601,7 @@ static void DecreaseAmmo(player_t *player, int ammonum, int amount)
 //
 // A_FireMissile
 //
-void A_FireMissile(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_FireMissile(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -612,7 +612,7 @@ void A_FireMissile(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_FireBFG
 //
-void A_FireBFG(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_FireBFG(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo,
@@ -625,7 +625,7 @@ void A_FireBFG(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_FirePlasma
 //
-void A_FirePlasma(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_FirePlasma(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	DecreaseAmmo(player, weaponinfo[player->readyweapon].ammo, 1);
@@ -647,7 +647,7 @@ void A_FirePlasma(mobj_t* mobj, player_t* player, pspdef_t* psp)
 fixed_t		bulletslope;
 
 
-void P_BulletSlope (mobj_t*	mo)
+void P_BulletSlope (MapObject*	mo)
 {
 	angle_t	an;
 
@@ -682,7 +682,7 @@ void P_BulletSlope (mobj_t*	mo)
 //
 // P_GunShot
 //
-void P_GunShot(mobj_t* mo, bool accurate)
+void P_GunShot(MapObject* mo, bool accurate)
 {
 	angle_t	angle;
 	int		damage;
@@ -700,7 +700,7 @@ void P_GunShot(mobj_t* mo, bool accurate)
 //
 // A_FirePistol
 //
-void A_FirePistol(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_FirePistol(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	S_StartSound (player->so, sfx_pistol); // [crispy] weapon sound source
@@ -722,7 +722,7 @@ void A_FirePistol(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_FireShotgun
 //
-void A_FireShotgun(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_FireShotgun(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	int		i;
 
@@ -749,7 +749,7 @@ void A_FireShotgun(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_FireShotgun2
 //
-void A_FireShotgun2(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_FireShotgun2(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	int		i;
 	angle_t	angle;
@@ -786,7 +786,7 @@ void A_FireShotgun2(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // A_FireCGun
 //
-void A_FireCGun(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_FireCGun(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	S_StartSound (player->so, sfx_pistol); // [crispy] weapon sound source
@@ -815,19 +815,19 @@ void A_FireCGun(mobj_t* mobj, player_t* player, pspdef_t* psp)
 //
 // ?
 //
-void A_Light0 (mobj_t *mobj, player_t *player, pspdef_t *psp)
+void A_Light0 (MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	player->extralight = 0;
 }
 
-void A_Light1 (mobj_t *mobj, player_t *player, pspdef_t *psp)
+void A_Light1 (MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	player->extralight = 1;
 }
 
-void A_Light2 (mobj_t *mobj, player_t *player, pspdef_t *psp)
+void A_Light2 (MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	player->extralight = 2;
@@ -838,7 +838,7 @@ void A_Light2 (mobj_t *mobj, player_t *player, pspdef_t *psp)
 // A_BFGSpray
 // Spawn a BFG explosion on every monster in view
 //
-void A_BFGSpray (mobj_t* mo)
+void A_BFGSpray (MapObject* mo)
 {
 	int			i;
 	int			j;
@@ -874,7 +874,7 @@ void A_BFGSpray (mobj_t* mo)
 //
 // A_BFGsound
 //
-void A_BFGsound(mobj_t* mobj, player_t* player, pspdef_t* psp)
+void A_BFGsound(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 	S_StartSound (player->mo, sfx_bfg); // [crispy] intentionally not weapon sound source
@@ -886,7 +886,7 @@ void A_BFGsound(mobj_t* mobj, player_t* player, pspdef_t* psp)
 // P_SetupPsprites
 // Called at start of level for each player.
 //
-void P_SetupPsprites (player_t* player)
+void P_SetupPsprites (Player* player)
 {
 	int	i;
 
@@ -906,7 +906,7 @@ void P_SetupPsprites (player_t* player)
 // P_MovePsprites
 // Called every tic by player thinking routine.
 //
-void P_MovePsprites (player_t* player)
+void P_MovePsprites (Player* player)
 {
 	int		i;
 	pspdef_t*	psp;

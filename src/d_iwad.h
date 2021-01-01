@@ -29,20 +29,20 @@
 
 struct iwad_t
 {
-	const char* name;
+	std::string name;
 	GameMission_t mission;
-	GameMode_t mode;
-	const char* description;
+	GameMode mode;
+	std::string description;
 };
 
-auto D_IsIWADName(const char* name);
-auto D_FindWADByName(const char* filename);
-auto D_TryFindWADByName(const char* filename);
-auto D_FindIWAD(int mask, GameMission_t* mission);
+bool D_IsIWADName(std::string name);
+std::string D_FindWADByName(std::string filename);
+std::string D_TryFindWADByName(std::string filename);
+std::string D_FindIWAD(int mask, GameMission_t* mission);
 const iwad_t** D_FindAllIWADs(int mask);
-auto D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant);
-auto D_SuggestIWADName(GameMission_t mission, GameMode_t mode);
-auto D_SuggestGameName(GameMission_t mission, GameMode_t mode);
+const char* D_SaveGameIWADName(GameMission_t gamemission, GameVariant_t gamevariant);
+const char* D_SuggestIWADName(GameMission_t mission, GameMode mode);
+const char* D_SuggestGameName(GameMission_t mission, GameMode mode);
 void D_CheckCorrectIWAD(GameMission_t mission);
 
 #if defined(_WIN32) && !defined(_WIN32_WCE)

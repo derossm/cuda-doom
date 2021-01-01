@@ -18,7 +18,7 @@
 
 #include "doomstat.h"
 
-int leveltime;
+TimeType leveltime;
 
 // THINKERS
 // All thinkers should be allocated by Z_Malloc so they can be operated on uniformly.

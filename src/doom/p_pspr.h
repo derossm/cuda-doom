@@ -15,11 +15,6 @@
 
 #include "../../derma/common.h"
 
-#ifndef __P_PSPR__
-#define __P_PSPR__
-
-// Basic data types.
-// Needs fixed point, and BAM angles.
 #include "m_fixed.h"
 #include "tables.h"
 
@@ -39,18 +34,17 @@
 // Overlay psprites are scaled shapes
 // drawn directly on the view screen,
 // coordinates are given for a 320*200 view screen.
-typedef enum
+enum class psprnum_t
 {
 	ps_weapon,
 	ps_flash,
 	NUMPSPRITES
+};
 
-} psprnum_t;
-
-typedef struct
+struct pspdef_t
 {
 	state_t* state;	// a NULL state means not active
-	int tics;
+	TimeType tics;
 	fixed_t sx;
 	fixed_t sy;
 
@@ -59,6 +53,4 @@ typedef struct
 	// [crispy] variable weapon sprite bob
 	fixed_t sx2;
 	fixed_t sy2;
-} pspdef_t;
-
-#endif
+};

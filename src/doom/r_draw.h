@@ -9,14 +9,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	System specific interface stuff.
+		System specific interface stuff.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
-
-#ifndef __R_DRAW__
-#define __R_DRAW__
 
 extern lighttable_t*	dc_colormap[2];
 extern int		dc_x;
@@ -30,28 +27,24 @@ extern byte*		dc_brightmap;
 // first pixel in a column
 extern byte*		dc_source;
 
-// The span blitting interface.
-// Hook in assembler or system specific BLT
-// here.
-void	R_DrawColumn ();
-void	R_DrawColumnLow ();
+// The span blitting interface. Hook in assembler or system specific BLT here.
+void	R_DrawColumn();
+void	R_DrawColumnLow();
 
 // The Spectre/Invisibility effect.
-void	R_DrawFuzzColumn ();
-void	R_DrawFuzzColumnLow ();
+void	R_DrawFuzzColumn();
+void	R_DrawFuzzColumnLow();
 
 // [crispy] draw fuzz effect independent of rendering frame rate
-void R_SetFuzzPosTic ();
-void R_SetFuzzPosDraw ();
+void R_SetFuzzPosTic();
+void R_SetFuzzPosDraw();
 
-// Draw with color translation tables,
-// for player sprite rendering,
-// Green/Red/Blue/Indigo shirts.
-void	R_DrawTranslatedColumn ();
-void	R_DrawTranslatedColumnLow ();
+// Draw with color translation tables, for player sprite rendering, Green/Red/Blue/Indigo shirts.
+void R_DrawTranslatedColumn();
+void R_DrawTranslatedColumnLow();
 
-void	R_DrawTLColumn ();
-void	R_DrawTLColumnLow ();
+void R_DrawTLColumn();
+void R_DrawTLColumnLow();
 
 void R_VideoErase(unsigned ofs, int count);
 
@@ -73,30 +66,19 @@ extern byte*		ds_source;
 extern byte*		translationtables;
 extern byte*		dc_translation;
 
-
-// Span blitting for rows, floor/ceiling.
-// No Sepctre effect needed.
-void	R_DrawSpan ();
+// Span blitting for rows, floor/ceiling. No Sepctre effect needed.
+void R_DrawSpan();
 
 // Low resolution mode, 160x200?
-void	R_DrawSpanLow ();
-
+void R_DrawSpanLow();
 
 void R_InitBuffer(int width, int height);
 
-
-// Initialize color translation tables,
-// for player rendering etc.
-void	R_InitTranslationTables ();
-
-
+// Initialize color translation tables, for player rendering etc.
+void R_InitTranslationTables();
 
 // Rendering function.
-void R_FillBackScreen ();
+void R_FillBackScreen();
 
 // If the view size is not full screen, draws a border around it.
-void R_DrawViewBorder ();
-
-
-
-#endif
+void R_DrawViewBorder();

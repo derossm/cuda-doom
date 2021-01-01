@@ -20,20 +20,20 @@
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-sound"
 
-typedef enum
+enum class oplmode_t
 {
 	OPLMODE_OPL2,
 	OPLMODE_OPL3,
 	NUM_OPLMODES,
-} oplmode_t;
+};
 
-static const char *opltype_strings[] =
+static const char* opltype_strings[] =
 {
 	"OPL2",
 	"OPL3"
 };
 
-static const char *cfg_extension[] = { "cfg", NULL };
+static const char* cfg_extension[] = { "cfg", NULL };
 
 // Config file variables:
 int snd_sfxdevice = SNDDEVICE_SB;
@@ -42,9 +42,9 @@ int snd_samplerate = 44100;
 int opl_io_port = 0x388;
 int snd_cachesize = 64 * 1024 * 1024;
 int snd_maxslicetime_ms = 28;
-char *snd_musiccmd = "";
+char* snd_musiccmd = "";
 int snd_pitchshift = 0;
-char *snd_dmxoption = "-opl3"; // [crispy] default to OPL3 emulation
+char* snd_dmxoption = "-opl3"; // [crispy] default to OPL3 emulation
 
 static int numChannels = 8;
 static int sfxVolume = 8;
@@ -57,9 +57,9 @@ static int show_talk = 0;
 static int use_libsamplerate = 1;
 static float libsamplerate_scale = 0.65;
 
-static char *music_pack_path = NULL;
-static char *timidity_cfg_path = NULL;
-static char *gus_patch_path = NULL;
+static char* music_pack_path = NULL;
+static char* timidity_cfg_path = NULL;
+static char* gus_patch_path = NULL;
 static int gus_ram_kb = 1024;
 
 // DOS specific variables: these are unused but should be maintained
@@ -87,9 +87,9 @@ static void UpdateSndDevices(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::tx
 	}
 }
 
-static cudadoom::txt::txt_dropdown_list_t *OPLTypeSelector()
+static cudadoom::txt::txt_dropdown_list_t* OPLTypeSelector()
 {
-	cudadoom::txt::txt_dropdown_list_t *result;
+	cudadoom::txt::txt_dropdown_list_t* result;
 
 	if (snd_dmxoption != NULL && strstr(snd_dmxoption, "-opl3") != NULL)
 	{
@@ -115,10 +115,10 @@ static void OpenMusicPackDir(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::tx
 	}
 }
 
-void ConfigSound(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
+void ConfigSound(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
 {
-	cudadoom::txt::txt_window_t *window;
-	cudadoom::txt::txt_window_action_t *music_action;
+	cudadoom::txt::Window* window;
+	cudadoom::txt::WindowAction* music_action;
 
 	// Build the window
 	window = cudadoom::txt::TXT_NewWindow("Sound configuration");
@@ -144,13 +144,13 @@ void ConfigSound(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 		cudadoom::txt::TXT_If(gamemission == doom || gamemission == heretic
 			|| gamemission == hexen,
 			cudadoom::txt::TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
-				cudadoom::txt::TXT_NewHorizBox(
+				cudadoom::txt::TXT_MakeHorizontalTable(
 					cudadoom::txt::TXT_NewStrut(4, 0),
 					cudadoom::txt::TXT_NewCheckBox("Pitch-shifted sounds", &snd_pitchshift),
 					NULL))),
 		cudadoom::txt::TXT_If(gamemission == strife,
 			cudadoom::txt::TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
-				cudadoom::txt::TXT_NewHorizBox(
+				cudadoom::txt::TXT_MakeHorizontalTable(
 					cudadoom::txt::TXT_NewStrut(4, 0),
 					cudadoom::txt::TXT_NewCheckBox("Show text with voices", &show_talk),
 					NULL))),
@@ -161,7 +161,7 @@ void ConfigSound(cudadoom::txt::TXT_UNCAST_ARG(widget), void *user_data)
 		cudadoom::txt::TXT_NewRadioButton("OPL (Adlib/Soundblaster)", &snd_musicdevice,
 							SNDDEVICE_SB),
 		cudadoom::txt::TXT_NewConditional(&snd_musicdevice, SNDDEVICE_SB,
-			cudadoom::txt::TXT_NewHorizBox(
+			cudadoom::txt::TXT_MakeHorizontalTable(
 				cudadoom::txt::TXT_NewStrut(4, 0),
 				cudadoom::txt::TXT_NewLabel("Chip type: "),
 				OPLTypeSelector(),

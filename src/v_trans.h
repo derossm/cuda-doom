@@ -11,23 +11,20 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-// 02111-1307, USA.
-//
-// DESCRIPTION:
-// Gamma correction LUT.
-// Color range translation support
-// Functions to draw patches (by post) directly to screen.
-// Functions to blit a block to the screen.
+	You should have received a copy of the GNU General Public License along with this program; if not, write to the
+		Free Software Foundation, Inc.
+		59 Temple Place - Suite 330, Boston, MA
+		02111-1307, USA
+
+	DESCRIPTION:
+		Gamma correction LUT.
+		Color range translation support
+		Functions to draw patches (by post) directly to screen.
+		Functions to blit a block to the screen.
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../derma/common.h"
-
-#ifndef __V_TRANS__
-#define __V_TRANS__
 
 #include "doomtype.h"
 
@@ -53,12 +50,10 @@ extern char** crstr;
 #define cr_esc '~'
 
 #ifndef CRISPY_TRUECOLOR
-extern byte* tranmap;
+	extern byte* tranmap;
 #else
-extern const pixel_t (*blendfunc) (const pixel_t fg, const pixel_t bg);
-extern const pixel_t I_BlendAdd (const pixel_t bg, const pixel_t fg);
-extern const pixel_t I_BlendDark (const pixel_t bg, const int d);
-extern const pixel_t I_BlendOver (const pixel_t bg, const pixel_t fg);
+	extern const pixel_t (*blendfunc) (const pixel_t fg, const pixel_t bg);
+	extern const pixel_t I_BlendAdd (const pixel_t bg, const pixel_t fg);
+	extern const pixel_t I_BlendDark (const pixel_t bg, const int d);
+	extern const pixel_t I_BlendOver (const pixel_t bg, const pixel_t fg);
 #endif
-
-#endif // __V_TRANS__

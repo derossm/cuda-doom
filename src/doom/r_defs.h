@@ -15,10 +15,8 @@
 
 #include "../../derma/common.h"
 
-#ifndef __R_DEFS__
-#define __R_DEFS__
-
 #include "doomdef.h"
+
 #include "m_fixed.h"
 #include "d_think.h"
 #include "p_mobj.h"
@@ -90,7 +88,7 @@ struct sector_t
 	int soundtraversed;
 
 	// thing that made a sound (or null)
-	mobj_t* soundtarget;
+	MapObject* soundtarget;
 
 	// mapblock bounding box for height changes
 	int blockbox[4];
@@ -102,7 +100,7 @@ struct sector_t
 	int validcount;
 
 	// list of mobjs in sector
-	mobj_t* thinglist;
+	MapObject* thinglist;
 
 	// thinker_t for reversable actions
 	void* specialdata;
@@ -127,7 +125,7 @@ struct sector_t
 	//		from storing old positions twice in a tic, and
 	//		prevents the renderer from attempting to interpolate
 	//		if old values were not updated recently.
-	int oldgametic;
+	TimeType oldgametic;
 
 	// [AM] Interpolated floor and ceiling height.
 	//		Calculated once per tic and used inside
@@ -346,7 +344,7 @@ struct vissprite_t
 	// maxbright frames as well
 	// [crispy] brightmaps for select sprites
 	lighttable_t* colormap[2];
-	byte *brightmap;
+	byte* brightmap;
 
 	int mobjflags;
 	// [crispy] color translation table for blood colored by monster class
@@ -401,17 +399,17 @@ struct visplane_t
 	int maxx;
 
 	// leave pads for [minx-1]/[maxx+1]
-	unsigned int pad1; // [crispy] hires / 32-bit integer math
+	unsigned pad1; // [crispy] hires / 32-bit integer math
 
 	// Here lies the rub for all
 	// dynamic resize/change of resolution.
-	unsigned int top[MAXWIDTH]; // [crispy] hires / 32-bit integer math
-	unsigned int pad2; // [crispy] hires / 32-bit integer math
-	unsigned int pad3; // [crispy] hires / 32-bit integer math
+	unsigned top[MAXWIDTH]; // [crispy] hires / 32-bit integer math
+	unsigned pad2; // [crispy] hires / 32-bit integer math
+	unsigned pad3; // [crispy] hires / 32-bit integer math
 
 	// See above.
-	unsigned int bottom[MAXWIDTH]; // [crispy] hires / 32-bit integer math
-	unsigned int pad4; // [crispy] hires / 32-bit integer math
+	unsigned bottom[MAXWIDTH]; // [crispy] hires / 32-bit integer math
+	unsigned pad4; // [crispy] hires / 32-bit integer math
 };
 
 struct laserpatch_t
@@ -423,6 +421,4 @@ struct laserpatch_t
 	int h;
 };
 
-extern laserpatch_t *laserpatch;
-
-#endif
+extern laserpatch_t* laserpatch;

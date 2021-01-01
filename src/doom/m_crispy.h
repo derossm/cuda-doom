@@ -10,20 +10,17 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	[crispy] Crispness menu
+		[crispy] Crispness menu
 \**********************************************************************************************************************************************/
 #pragma once
 
 #include "../../derma/common.h"
 
-#ifndef __M_CRISPY__
-#define __M_CRISPY__
-
-typedef struct
+struct multiitem_t
 {
 	int value;
-	const char *name;
-} multiitem_t;
+	const char* name;
+};
 
 extern multiitem_t multiitem_bobfactor[NUM_BOBFACTORS];
 extern multiitem_t multiitem_brightmaps[NUM_BRIGHTMAPS];
@@ -83,5 +80,3 @@ extern void M_CrispyToggleUncapped(int choice);
 extern void M_CrispyToggleVsync(int choice);
 extern void M_CrispyToggleWeaponSquat(int choice);
 extern void M_CrispyToggleWidescreen(int choice);
-
-#endif
