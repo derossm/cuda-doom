@@ -8,10 +8,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-//
-// Parses [STRINGS] sections in BEX files
+	DESCRIPTION:
+		Parses [STRINGS] sections in BEX files
 \**********************************************************************************************************************************************/
-
 
 #include "deh_defs.h"
 #include "deh_io.h"
@@ -334,7 +333,7 @@ static void* DEH_BEXStrStart(deh_context_t* context, std::string line)
 
 	if (sscanf(line, "%9s", s) == 0 || strcmp("[STRINGS]", s))
 	{
-	DEH_Warning(context, "Parse error on section start");
+		DEH_Warning(context, "Parse error on section start");
 	}
 
 	return nullptr;
@@ -348,16 +347,16 @@ static void DEH_BEXStrParseLine(deh_context_t* context, std::string line, void* 
 
 	if (!DEH_ParseAssignment(line, &variable_name, &value))
 	{
-	DEH_Warning(context, "Failed to parse assignment");
-	return;
+		DEH_Warning(context, "Failed to parse assignment");
+		return;
 	}
 
 	for (i = 0; i < arrlen(bex_stringtable); ++i)
 	{
-	if (!iequals(bex_stringtable[i].macro, variable_name))
-	{
-		DEH_AddStringReplacement(bex_stringtable[i].string, value);
-	}
+		if (!iequals(bex_stringtable[i].macro, variable_name))
+		{
+			DEH_AddStringReplacement(bex_stringtable[i].string, value);
+		}
 	}
 }
 

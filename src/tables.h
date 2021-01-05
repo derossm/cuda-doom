@@ -34,19 +34,19 @@
 #include "m_fixed.h"
 
 constexpr size_t FINEANGLES{8192};
-constexpr size_t FINEMASK{(FINEANGLES-1)};
+constexpr size_t FINEMASK{(FINEANGLES - 1)};
 
 // 0x100000000 to 0x2000
 constexpr size_t ANGLETOFINESHIFT{19};
 
 // Effective size is 10240.
-extern const fixed_t finesine[5*FINEANGLES/4];
+extern const fixed_t finesine[5 * FINEANGLES / 4];
 
 // Re-use data, is just PI/2 pahse shift.
 extern const fixed_t* finecosine;
 
 // Effective size is 4096.
-extern const fixed_t finetangent[FINEANGLES/2];
+extern const fixed_t finetangent[FINEANGLES / 2];
 
 // Gamma correction tables.
 extern const byte gammatable[5][256];
@@ -67,13 +67,13 @@ constexpr size_t ANG1_X{0x01000000};
 
 constexpr size_t SLOPERANGE{2048};
 constexpr size_t SLOPEBITS{11};
-constexpr size_t DBITS{(FRACBITS-SLOPEBITS)};
+constexpr size_t DBITS{(FRACBITS - SLOPEBITS)};
 
 using angle_t = unsigned;
 
 // Effective size is 2049;
 // The +1 size is to handle the case when x==y without additional checking.
-extern const angle_t tantoangle[SLOPERANGE+1];
+extern const angle_t tantoangle[SLOPERANGE + 1];
 
 // Utility function, called by R_PointToAngle.
 int SlopeDiv(unsigned num, unsigned den);

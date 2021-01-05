@@ -20,88 +20,88 @@
 // Most key data are simple ascii (uppercased).
 enum class Keybinds
 {
-	KEY_RIGHTARROW	= 0xae,
-	KEY_LEFTARROW	= 0xac,
-	KEY_UPARROW		= 0xad,
-	KEY_DOWNARROW	= 0xaf,
-	KEY_ESCAPE		= 27,
-	KEY_ENTER		= 13,
-	KEY_TAB			= 9,
-	KEY_F1			= (0x80+0x3b),
-	KEY_F2			= (0x80+0x3c),
-	KEY_F3			= (0x80+0x3d),
-	KEY_F4			= (0x80+0x3e),
-	KEY_F5			= (0x80+0x3f),
-	KEY_F6			= (0x80+0x40),
-	KEY_F7			= (0x80+0x41),
-	KEY_F8			= (0x80+0x42),
-	KEY_F9			= (0x80+0x43),
-	KEY_F10			= (0x80+0x44),
-	KEY_F11			= (0x80+0x57),
-	KEY_F12			= (0x80+0x58),
-	KEY_BACKSPACE	= 0x7f,
-	KEY_PAUSE		= 0xff,
-	KEY_EQUALS		= 0x3d,
-	KEY_MINUS		= 0x2d,
-	KEY_RSHIFT		= (0x80+0x36),
-	KEY_RCTRL		= (0x80+0x1d),
-	KEY_RALT		= (0x80+0x38),
-	KEY_LALT		= KEY_RALT,
+	KEY_RIGHTARROW = 0xae,
+	KEY_LEFTARROW = 0xac,
+	KEY_UPARROW = 0xad,
+	KEY_DOWNARROW = 0xaf,
+	KEY_ESCAPE = 27,
+	KEY_ENTER = 13,
+	KEY_TAB = 9,
+	KEY_F1 = (0x80 + 0x3b),
+	KEY_F2 = (0x80 + 0x3c),
+	KEY_F3 = (0x80 + 0x3d),
+	KEY_F4 = (0x80 + 0x3e),
+	KEY_F5 = (0x80 + 0x3f),
+	KEY_F6 = (0x80 + 0x40),
+	KEY_F7 = (0x80 + 0x41),
+	KEY_F8 = (0x80 + 0x42),
+	KEY_F9 = (0x80 + 0x43),
+	KEY_F10 = (0x80 + 0x44),
+	KEY_F11 = (0x80 + 0x57),
+	KEY_F12 = (0x80 + 0x58),
+	KEY_BACKSPACE = 0x7f,
+	KEY_PAUSE = 0xff,
+	KEY_EQUALS = 0x3d,
+	KEY_MINUS = 0x2d,
+	KEY_RSHIFT = (0x80 + 0x36),
+	KEY_RCTRL = (0x80 + 0x1d),
+	KEY_RALT = (0x80 + 0x38),
+	KEY_LALT = KEY_RALT,
 	// new keys:
-	KEY_CAPSLOCK	= (0x80+0x3a),
-	KEY_NUMLOCK		= (0x80+0x45),
-	KEY_SCRLCK		= (0x80+0x46),
-	KEY_PRTSCR		= (0x80+0x59),
-	KEY_HOME		= (0x80+0x47),
-	KEY_END			= (0x80+0x4f),
-	KEY_PGUP		= (0x80+0x49),
-	KEY_PGDN		= (0x80+0x51),
-	KEY_INS			= (0x80+0x52),
-	KEY_DEL			= (0x80+0x53),
-	KEYP_0			= KEY_INS,
-	KEYP_1			= KEY_END,
-	KEYP_2			= KEY_DOWNARROW,
-	KEYP_3			= KEY_PGDN,
-	KEYP_4			= KEY_LEFTARROW,
-	KEYP_5			= (0x80+0x4c),
-	KEYP_6			= KEY_RIGHTARROW,
-	KEYP_7			= KEY_HOME,
-	KEYP_8			= KEY_UPARROW,
-	KEYP_9			= KEY_PGUP,
-	KEYP_DIVIDE		= '/',
-	KEYP_PLUS		= '+',
-	KEYP_MINUS		= '-',
-	KEYP_MULTIPLY	= '*',
-	KEYP_PERIOD		= 0,
-	KEYP_EQUALS		= KEY_EQUALS,
-	KEYP_ENTER		= KEY_ENTER,
+	KEY_CAPSLOCK = (0x80 + 0x3a),
+	KEY_NUMLOCK = (0x80 + 0x45),
+	KEY_SCRLCK = (0x80 + 0x46),
+	KEY_PRTSCR = (0x80 + 0x59),
+	KEY_HOME = (0x80 + 0x47),
+	KEY_END = (0x80 + 0x4f),
+	KEY_PGUP = (0x80 + 0x49),
+	KEY_PGDN = (0x80 + 0x51),
+	KEY_INS = (0x80 + 0x52),
+	KEY_DEL = (0x80 + 0x53),
+	KEYP_0 = KEY_INS,
+	KEYP_1 = KEY_END,
+	KEYP_2 = KEY_DOWNARROW,
+	KEYP_3 = KEY_PGDN,
+	KEYP_4 = KEY_LEFTARROW,
+	KEYP_5 = (0x80 + 0x4c),
+	KEYP_6 = KEY_RIGHTARROW,
+	KEYP_7 = KEY_HOME,
+	KEYP_8 = KEY_UPARROW,
+	KEYP_9 = KEY_PGUP,
+	KEYP_DIVIDE = '/',
+	KEYP_PLUS = '+',
+	KEYP_MINUS = '-',
+	KEYP_MULTIPLY = '*',
+	KEYP_PERIOD = 0,
+	KEYP_EQUALS = KEY_EQUALS,
+	KEYP_ENTER = KEY_ENTER,
 	//
-	KEY_A			= 'a',
-	KEY_B			= 'b',
-	KEY_C			= 'c',
-	KEY_D			= 'd',
-	KEY_E			= 'e',
-	KEY_F			= 'f',
-	KEY_G			= 'g',
-	KEY_H			= 'h',
-	KEY_I			= 'i',
-	KEY_J			= 'j',
-	KEY_K			= 'k',
-	KEY_L			= 'l',
-	KEY_M			= 'm',
-	KEY_N			= 'n',
-	KEY_O			= 'o',
-	KEY_P			= 'p',
-	KEY_Q			= 'q',
-	KEY_R			= 'r',
-	KEY_S			= 's',
-	KEY_T			= 't',
-	KEY_U			= 'u',
-	KEY_V			= 'v',
-	KEY_W			= 'w',
-	KEY_X			= 'x',
-	KEY_Y			= 'y',
-	KEY_Z			= 'z'
+	KEY_A = 'a',
+	KEY_B = 'b',
+	KEY_C = 'c',
+	KEY_D = 'd',
+	KEY_E = 'e',
+	KEY_F = 'f',
+	KEY_G = 'g',
+	KEY_H = 'h',
+	KEY_I = 'i',
+	KEY_J = 'j',
+	KEY_K = 'k',
+	KEY_L = 'l',
+	KEY_M = 'm',
+	KEY_N = 'n',
+	KEY_O = 'o',
+	KEY_P = 'p',
+	KEY_Q = 'q',
+	KEY_R = 'r',
+	KEY_S = 's',
+	KEY_T = 't',
+	KEY_U = 'u',
+	KEY_V = 'v',
+	KEY_W = 'w',
+	KEY_X = 'x',
+	KEY_Y = 'y',
+	KEY_Z = 'z'
 };
 
 constexpr size_t KEY_RIGHTARROW{0xae};
@@ -111,18 +111,18 @@ constexpr size_t KEY_DOWNARROW{0xaf};
 constexpr size_t KEY_ESCAPE{27};
 constexpr size_t KEY_ENTER{13};
 constexpr size_t KEY_TAB{9};
-constexpr size_t KEY_F1{(0x80+0x3b)};
-constexpr size_t KEY_F2{(0x80+0x3c)};
-constexpr size_t KEY_F3{(0x80+0x3d)};
-constexpr size_t KEY_F4{(0x80+0x3e)};
-constexpr size_t KEY_F5{(0x80+0x3f)};
-constexpr size_t KEY_F6{(0x80+0x40)};
-constexpr size_t KEY_F7{(0x80+0x41)};
-constexpr size_t KEY_F8{(0x80+0x42)};
-constexpr size_t KEY_F9{(0x80+0x43)};
-constexpr size_t KEY_F10{(0x80+0x44)};
-constexpr size_t KEY_F11{(0x80+0x57)};
-constexpr size_t KEY_F12{(0x80+0x58)};
+constexpr size_t KEY_F1{(0x80 + 0x3b)};
+constexpr size_t KEY_F2{(0x80 + 0x3c)};
+constexpr size_t KEY_F3{(0x80 + 0x3d)};
+constexpr size_t KEY_F4{(0x80 + 0x3e)};
+constexpr size_t KEY_F5{(0x80 + 0x3f)};
+constexpr size_t KEY_F6{(0x80 + 0x40)};
+constexpr size_t KEY_F7{(0x80 + 0x41)};
+constexpr size_t KEY_F8{(0x80 + 0x42)};
+constexpr size_t KEY_F9{(0x80 + 0x43)};
+constexpr size_t KEY_F10{(0x80 + 0x44)};
+constexpr size_t KEY_F11{(0x80 + 0x57)};
+constexpr size_t KEY_F12{(0x80 + 0x58)};
 
 constexpr size_t KEY_BACKSPACE{0x7f};
 constexpr size_t KEY_PAUSE{0xff};
@@ -130,32 +130,32 @@ constexpr size_t KEY_PAUSE{0xff};
 constexpr size_t KEY_EQUALS{0x3d};
 constexpr size_t KEY_MINUS{0x2d};
 
-constexpr size_t KEY_RSHIFT{(0x80+0x36)};
-constexpr size_t KEY_RCTRL{(0x80+0x1d)};
-constexpr size_t KEY_RALT{(0x80+0x38)};
+constexpr size_t KEY_RSHIFT{(0x80 + 0x36)};
+constexpr size_t KEY_RCTRL{(0x80 + 0x1d)};
+constexpr size_t KEY_RALT{(0x80 + 0x38)};
 
 constexpr size_t KEY_LALT{KEY_RALT};
 
 // new keys:
 
-constexpr size_t KEY_CAPSLOCK{(0x80+0x3a)};
-constexpr size_t KEY_NUMLOCK{(0x80+0x45)};
-constexpr size_t KEY_SCRLCK{(0x80+0x46)};
-constexpr size_t KEY_PRTSCR{(0x80+0x59)};
+constexpr size_t KEY_CAPSLOCK{(0x80 + 0x3a)};
+constexpr size_t KEY_NUMLOCK{(0x80 + 0x45)};
+constexpr size_t KEY_SCRLCK{(0x80 + 0x46)};
+constexpr size_t KEY_PRTSCR{(0x80 + 0x59)};
 
-constexpr size_t KEY_HOME{(0x80+0x47)};
-constexpr size_t KEY_END{(0x80+0x4f)};
-constexpr size_t KEY_PGUP{(0x80+0x49)};
-constexpr size_t KEY_PGDN{(0x80+0x51)};
-constexpr size_t KEY_INS{(0x80+0x52)};
-constexpr size_t KEY_DEL{(0x80+0x53)};
+constexpr size_t KEY_HOME{(0x80 + 0x47)};
+constexpr size_t KEY_END{(0x80 + 0x4f)};
+constexpr size_t KEY_PGUP{(0x80 + 0x49)};
+constexpr size_t KEY_PGDN{(0x80 + 0x51)};
+constexpr size_t KEY_INS{(0x80 + 0x52)};
+constexpr size_t KEY_DEL{(0x80 + 0x53)};
 
 constexpr size_t KEYP_0{KEY_INS};
 constexpr size_t KEYP_1{KEY_END};
 constexpr size_t KEYP_2{KEY_DOWNARROW};
 constexpr size_t KEYP_3{KEY_PGDN};
 constexpr size_t KEYP_4{KEY_LEFTARROW};
-constexpr size_t KEYP_5{(0x80+0x4c)};
+constexpr size_t KEYP_5{(0x80 + 0x4c)};
 constexpr size_t KEYP_6{KEY_RIGHTARROW};
 constexpr size_t KEYP_7{KEY_HOME};
 constexpr size_t KEYP_8{KEY_UPARROW};

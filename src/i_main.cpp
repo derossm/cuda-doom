@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 	}
 
 	{
-		crispy->sdlversion = [](){
+		crispy->sdlversion = []() {
 			SDL_version version;
 			SDL_GetVersion(&version);
 			return std::string(version.major + "." + version.minor + "." + version.patch);

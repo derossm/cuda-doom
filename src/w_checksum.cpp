@@ -12,14 +12,13 @@
 		Generate a checksum of the WAD directory.
 \**********************************************************************************************************************************************/
 
-
 #include "i_system.h"
 #include "m_misc.h"
 #include "sha1.h"
 #include "w_checksum.h"
 #include "w_wad.h"
 
-static wad_file_t**open_wadfiles = NULL;
+static wad_file_t** open_wadfiles = NULL;
 static int num_open_wadfiles = 0;
 
 static int GetFileNumber(wad_file_t* handle)
@@ -39,7 +38,7 @@ static int GetFileNumber(wad_file_t* handle)
 	// Allocate another slot for this file.
 
 	open_wadfiles = I_Realloc(open_wadfiles,
-							sizeof(wad_file_t*) * (num_open_wadfiles + 1));
+		sizeof(wad_file_t*) * (num_open_wadfiles + 1));
 	open_wadfiles[num_open_wadfiles] = handle;
 
 	result = num_open_wadfiles;

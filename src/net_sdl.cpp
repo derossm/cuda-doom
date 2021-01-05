@@ -32,7 +32,7 @@ constexpr size_t DEFAULT_PORT{2342};
 static bool initted = false;
 static int port = DEFAULT_PORT;
 static UDPsocket udpsocket;
-static UDPpacket *recvpacket;
+static UDPpacket* recvpacket;
 
 struct addrpair_t
 {
@@ -40,7 +40,7 @@ struct addrpair_t
 	IPaddress sdl_addr;
 };
 
-static addrpair_t**addr_table;
+static addrpair_t** addr_table;
 static int addr_table_size = -1;
 
 // Initializes the address table
@@ -53,7 +53,7 @@ static void NET_SDL_InitAddrTable()
 	memset(addr_table, 0, sizeof(addrpair_t*) * addr_table_size);
 }
 
-static bool AddressesEqual(IPaddress *a, IPaddress *b)
+static bool AddressesEqual(IPaddress* a, IPaddress* b)
 {
 	return a->host == b->host
 		&& a->port == b->port;
@@ -62,7 +62,7 @@ static bool AddressesEqual(IPaddress *a, IPaddress *b)
 // Finds an address by searching the table. If the address is not found,
 // it is added to the table.
 
-static net_addr_t* NET_SDL_FindAddress(IPaddress *addr)
+static net_addr_t* NET_SDL_FindAddress(IPaddress* addr)
 {
 	addrpair_t* new_entry;
 	int empty_entry = -1;
@@ -73,7 +73,7 @@ static net_addr_t* NET_SDL_FindAddress(IPaddress *addr)
 		NET_SDL_InitAddrTable();
 	}
 
-	for (i=0; i<addr_table_size; ++i)
+	for (i = 0; i < addr_table_size; ++i)
 	{
 		if (addr_table[i] != NULL
 			&& AddressesEqual(addr, &addr_table[i]->sdl_addr))
@@ -91,7 +91,7 @@ static net_addr_t* NET_SDL_FindAddress(IPaddress *addr)
 
 	if (empty_entry < 0)
 	{
-		addrpair_t**new_addr_table;
+		addrpair_t** new_addr_table;
 		int new_addr_table_size;
 
 		// after reallocing, we will add this in as the first entry
@@ -104,10 +104,10 @@ static net_addr_t* NET_SDL_FindAddress(IPaddress *addr)
 
 		new_addr_table_size = addr_table_size * 2;
 		new_addr_table = Z_Malloc<addrpair_t>(sizeof(addrpair_t*) * new_addr_table_size,
-									pu_tags_t::PU_STATIC, 0);
+			pu_tags_t::PU_STATIC, 0);
 		memset(new_addr_table, 0, sizeof(addrpair_t*) * new_addr_table_size);
 		memcpy(new_addr_table, addr_table,
-				sizeof(addrpair_t*) * addr_table_size);
+			sizeof(addrpair_t*) * addr_table_size);
 		Z_Free(addr_table);
 		addr_table = new_addr_table;
 		addr_table_size = new_addr_table_size;
@@ -131,7 +131,7 @@ static void NET_SDL_FreeAddress(net_addr_t* addr)
 {
 	int i;
 
-	for (i=0; i<addr_table_size; ++i)
+	for (i = 0; i < addr_table_size; ++i)
 	{
 		if (addr == &addr_table[i]->net_addr)
 		{
@@ -161,7 +161,7 @@ static bool NET_SDL_InitClient()
 
 	p = M_CheckParmWithArgs("-port", 1);
 	if (p > 0)
-		port = atoi(myargv[p+1]);
+		port = atoi(myargv[p + 1]);
 
 	SDLNet_Init();
 
@@ -192,7 +192,7 @@ static bool NET_SDL_InitServer()
 
 	p = M_CheckParmWithArgs("-port", 1);
 	if (p > 0)
-		port = atoi(myargv[p+1]);
+		port = atoi(myargv[p + 1]);
 
 	SDLNet_Init();
 
@@ -225,7 +225,7 @@ static void NET_SDL_SendPacket(net_addr_t* addr, net_packet_t* packet)
 	}
 	else
 	{
-		ip = *((IPaddress*) addr->handle);
+		ip = *((IPaddress*)addr->handle);
 	}
 
 #if 0
@@ -257,11 +257,11 @@ static void NET_SDL_SendPacket(net_addr_t* addr, net_packet_t* packet)
 	if (!SDLNet_UDP_Send(udpsocket, -1, &sdl_packet))
 	{
 		I_Error("NET_SDL_SendPacket: Error transmitting packet: %s",
-				SDLNet_GetError());
+			SDLNet_GetError());
 	}
 }
 
-static bool NET_SDL_RecvPacket(net_addr_t**addr, net_packet_t**packet)
+static bool NET_SDL_RecvPacket(net_addr_t** addr, net_packet_t** packet)
 {
 	int result;
 
@@ -270,7 +270,7 @@ static bool NET_SDL_RecvPacket(net_addr_t**addr, net_packet_t**packet)
 	if (result < 0)
 	{
 		I_Error("NET_SDL_RecvPacket: Error receiving packet: %s",
-				SDLNet_GetError());
+			SDLNet_GetError());
 	}
 
 	// no packets received
@@ -293,17 +293,17 @@ static bool NET_SDL_RecvPacket(net_addr_t**addr, net_packet_t**packet)
 
 void NET_SDL_AddrToString(net_addr_t* addr, std::string buffer, int buffer_len)
 {
-	IPaddress *ip;
+	IPaddress* ip;
 	uint32_t host;
 	uint16_t port;
 
-	ip = (IPaddress*) addr->handle;
+	ip = (IPaddress*)addr->handle;
 	host = SDLNet_Read32(&ip->host);
 	port = SDLNet_Read16(&ip->port);
 
 	M_snprintf(buffer, buffer_len, "%i.%i.%i.%i",
-				(host >> 24) & 0xff, (host >> 16) & 0xff,
-				(host >> 8) & 0xff, host & 0xff);
+		(host >> 24) & 0xff, (host >> 16) & 0xff,
+		(host >> 8) & 0xff, host & 0xff);
 
 	// If we are using the default port we just need to show the IP address,
 	// but otherwise we need to include the port. This is important because
@@ -330,12 +330,12 @@ net_addr_t* NET_SDL_ResolveAddress(std::string address)
 	addr_hostname = std::string(address);
 	if (colon != NULL)
 	{
-	addr_hostname[colon - address] = '\0';
-	addr_port = atoi(colon + 1);
+		addr_hostname[colon - address] = '\0';
+		addr_port = atoi(colon + 1);
 	}
 	else
 	{
-	addr_port = port;
+		addr_port = port;
 	}
 
 	result = SDLNet_ResolveHost(&ip, addr_hostname, addr_port);

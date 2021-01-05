@@ -11,7 +11,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		[crispy] Crispness menu tiled background
+		Crispness menu tiled background
 \**********************************************************************************************************************************************/
 #pragma once
 

@@ -107,7 +107,7 @@ static int GetAdjustedTime()
 
 static bool BuildNewTic()
 {
-	auto gameticdiv{gametic/ticdup};
+	auto gameticdiv{gametic / ticdup};
 
 	I_StartTic();
 	loop_interface->ProcessEvents();
@@ -288,7 +288,7 @@ void D_StartNetGame(net_gamesettings* settings, netgame_startup_callback_t callb
 	// Send n extra tics in every packet as insurance against dropped packets.
 	if (auto i{M_CheckParmWithArgs("-extratics", 1)}; i > 0)
 	{
-		settings->extratics = atoi(myargv[i+1]);
+		settings->extratics = atoi(myargv[i + 1]);
 	}
 	else
 	{
@@ -298,7 +298,7 @@ void D_StartNetGame(net_gamesettings* settings, netgame_startup_callback_t callb
 	// Reduce the resolution of the game by a factor of n, reducing the amount of network bandwidth needed.
 	if (auto i{M_CheckParmWithArgs("-dup", 1)}; i > 0)
 	{
-		settings->ticdup = atoi(myargv[i+1]);
+		settings->ticdup = atoi(myargv[i + 1]);
 	}
 	else
 	{
@@ -383,12 +383,12 @@ bool D_InitNetGame(net_connect_data* connect_data)
 		if (auto i{M_CheckParmWithArgs("-connect", 1)}; i > 0)
 		{
 			net_sdl_module.InitClient();
-			addr = net_sdl_module.ResolveAddress(myargv[i+1]);
+			addr = net_sdl_module.ResolveAddress(myargv[i + 1]);
 			NET_ReferenceAddress(addr);
 
 			if (!addr)
 			{
-				I_Error("Unable to resolve '%s'\n", myargv[i+1]);
+				I_Error("Unable to resolve '%s'\n", myargv[i + 1]);
 			}
 		}
 	}
@@ -544,7 +544,7 @@ void TryRunTics()
 	// If we've uncapped the framerate and there are no tics to run, return early instead of waiting around.
 	// FIXME WHAT THE FUCK why would anyone macro this?
 	extern TimeType leveltime;
-	#define return_early (crispy->uncapped && counts == 0 && leveltime > oldleveltime && screenvisible)
+#define return_early (crispy->uncapped && counts == 0 && leveltime > oldleveltime && screenvisible)
 
 	// get real tics
 	auto entertic{I_GetTime() / ticdup};
@@ -562,7 +562,7 @@ void TryRunTics()
 	}
 
 	auto lowtic{GetLowTic()};
-	auto availabletics{lowtic - gametic/ticdup};
+	auto availabletics{lowtic - gametic / ticdup};
 
 	int counts;
 	// decide how many tics to run
@@ -579,9 +579,9 @@ void TryRunTics()
 	else
 	{
 		// decide how many tics to run
-		if (realtics < availabletics-1)
+		if (realtics < availabletics - 1)
 		{
-			counts = realtics+1;
+			counts = realtics + 1;
 		}
 		else if (realtics < availabletics)
 		{
@@ -615,19 +615,19 @@ void TryRunTics()
 	}
 
 	// wait for new tics if needed
-	while (!PlayersInGame() || lowtic < gametic/ticdup + counts)
+	while (!PlayersInGame() || lowtic < gametic / ticdup + counts)
 	{
 		NetUpdate();
 
 		lowtic = GetLowTic();
 
-		if (lowtic < gametic/ticdup)
+		if (lowtic < gametic / ticdup)
 		{
 			I_Error("TryRunTics: lowtic < gametic");
 		}
 
 		// Still no tics to run? Sleep until some are available.
-		if (lowtic < gametic/ticdup + counts)
+		if (lowtic < gametic / ticdup + counts)
 		{
 			// If we're in a netgame, we might spin forever waiting for new network data to be received.
 			// So don't stay in here forever - give the menu a chance to work.
@@ -658,7 +658,7 @@ void TryRunTics()
 
 		for (size_t i{0}; i < ticdup; ++i)
 		{
-			if (gametic/ticdup > lowtic)
+			if (gametic / ticdup > lowtic)
 			{
 				I_Error("gametic>lowtic");
 			}

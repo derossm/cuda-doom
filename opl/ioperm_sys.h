@@ -30,23 +30,23 @@ struct ioperm_data
 // Function pointers for advapi32.dll. This DLL does not exist on Windows 9x, so they are dynamically loaded from the DLL at runtime.
 
 // haleyjd 09/09/10: Moved calling conventions into ()'s
-static SC_HANDLE (WINAPI* MyOpenSCManagerW)(const wchar_t* lpMachineName, const wchar_t* lpDatabaseName, DWORD dwDesiredAccess){nullptr};
+static SC_HANDLE(WINAPI* MyOpenSCManagerW)(const wchar_t* lpMachineName, const wchar_t* lpDatabaseName, DWORD dwDesiredAccess) { nullptr };
 
-static SC_HANDLE (WINAPI* MyCreateServiceW)(SC_HANDLE hSCManager,
-											const wchar_t* lpServiceName,
-											const wchar_t* lpDisplayName,
-											DWORD dwDesiredAccess,
-											DWORD dwServiceType,
-											DWORD dwStartType,
-											DWORD dwErrorControl,
-											const wchar_t* lpBinaryPathName,
-											const wchar_t* lpLoadOrderGroup,
-											LPDWORD lpdwTagId,
-											const wchar_t* lpDependencies,
-											const wchar_t* lpServiceStartName,
-											const wchar_t* lpPassword);
+static SC_HANDLE(WINAPI* MyCreateServiceW)(SC_HANDLE hSCManager,
+	const wchar_t* lpServiceName,
+	const wchar_t* lpDisplayName,
+	DWORD dwDesiredAccess,
+	DWORD dwServiceType,
+	DWORD dwStartType,
+	DWORD dwErrorControl,
+	const wchar_t* lpBinaryPathName,
+	const wchar_t* lpLoadOrderGroup,
+	LPDWORD lpdwTagId,
+	const wchar_t* lpDependencies,
+	const wchar_t* lpServiceStartName,
+	const wchar_t* lpPassword);
 
-static SC_HANDLE (WINAPI* MyOpenServiceW)(SC_HANDLE hSCManager, const wchar_t* lpServiceName, DWORD dwDesiredAccess);
+static SC_HANDLE(WINAPI* MyOpenServiceW)(SC_HANDLE hSCManager, const wchar_t* lpServiceName, DWORD dwDesiredAccess);
 static bool (WINAPI* MyStartServiceW)(SC_HANDLE hService, DWORD dwNumServiceArgs, const wchar_t** lpServiceArgVectors);
 static bool (WINAPI* MyControlService)(SC_HANDLE hService, DWORD dwControl, LPSERVICE_STATUS lpServiceStatus);
 static bool (WINAPI* MyCloseServiceHandle)(SC_HANDLE hSCObject);

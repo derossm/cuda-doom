@@ -7,9 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-	Network client code
+	DESCRIPTION:
+		Network client code
 \**********************************************************************************************************************************************/
-
 
 #include "config.h"
 #include "doomtype.h"
@@ -34,7 +34,7 @@
 #include "w_checksum.h"
 #include "w_wad.h"
 
-extern void D_ReceiveTic(ticcmd_t* ticcmds, bool *playeringame);
+extern void D_ReceiveTic(ticcmd_t* ticcmds, bool* playeringame);
 
 enum class net_clientstate_t
 {
@@ -175,7 +175,7 @@ static void NET_CL_Disconnected()
 // data. This updates the clock synchronization variable (offsetms)
 // using a PID filter that keeps client clocks in sync.
 static void UpdateClockSync(unsigned seq,
-							unsigned remote_latency)
+	unsigned remote_latency)
 {
 	static int last_error, cumul_error;
 	int latency, error;
@@ -197,23 +197,23 @@ static void UpdateClockSync(unsigned seq,
 	}
 
 	// PID filter. These are manually trained parameters.
-constexpr double KP{0.1};
-constexpr double KI{0.01};
-constexpr double KD{0.02};
+	constexpr double KP{0.1};
+	constexpr double KI{0.01};
+	constexpr double KD{0.02};
 
 	// How does our latency compare to the worst other player?
 	error = latency - remote_latency;
 	cumul_error += error;
 
 	offsetms = KP * (FRACUNIT * error)
-				- KI * (FRACUNIT * cumul_error)
-				+ (KD * FRACUNIT) * (last_error - error);
+		- KI * (FRACUNIT * cumul_error)
+		+ (KD * FRACUNIT) * (last_error - error);
 
 	last_error = error;
 	last_latency = latency;
 
 	NET_Log("client: latency %d, remote %d -> offset=%dms, cumul_error=%d",
-			latency, remote_latency, offsetms / FRACUNIT, cumul_error);
+		latency, remote_latency, offsetms / FRACUNIT, cumul_error);
 }
 
 // Expand a net_full_ticcmd_t, applying the diffs in cmd->cmds as
@@ -222,13 +222,13 @@ constexpr double KD{0.02};
 // back into recvwindow_cmd_base.
 
 static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t* cmd, unsigned seq,
-									ticcmd_t* ticcmds)
+	ticcmd_t* ticcmds)
 {
 	int i;
 
 	// Expand tic diffs for all players
 
-	for (i=0; i<NET_MAXPLAYERS; ++i)
+	for (i = 0; i < NET_MAXPLAYERS; ++i)
 	{
 		if (i == settings.consoleplayer && !drone)
 		{
@@ -264,14 +264,14 @@ static void NET_CL_AdvanceWindow()
 		// Expand tic diff data into d_net.c structures
 
 		NET_CL_ExpandFullTiccmd(&recvwindow[0].cmd, recvwindow_start,
-								ticcmds);
+			ticcmds);
 		D_ReceiveTic(ticcmds, recvwindow[0].cmd.playeringame);
 
 		// Advance the window
 
 		memmove(recvwindow, recvwindow + 1,
-				sizeof(net_server_recv_t) * (BACKUPTICS - 1));
-		memset(&recvwindow[BACKUPTICS-1], 0, sizeof(net_server_recv_t));
+			sizeof(net_server_recv_t) * (BACKUPTICS - 1));
+		memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(net_server_recv_t));
 
 		++recvwindow_start;
 
@@ -309,7 +309,7 @@ void NET_CL_StartGame(net_gamesettings* settings)
 	// Send packet
 
 	packet = NET_Conn_NewReliable(&client_connection,
-									net_packet_type::GAMESTART);
+		net_packet_type::GAMESTART);
 
 	NET_WriteSettings(packet, settings);
 }
@@ -359,7 +359,7 @@ static void NET_CL_SendTics(int start, int end)
 
 	// Add the tics.
 
-	for (i=start; i<=end; ++i)
+	for (i = start; i <= end; ++i)
 	{
 		net_server_send_t* sendobj;
 
@@ -415,7 +415,7 @@ void NET_CL_SendTiccmd(ticcmd_t* ticcmd, TimeType maketic)
 		starttic = 0;
 
 	NET_Log("client: generated tic %d, sending %d-%d",
-			maketic, starttic, endtic);
+		maketic, starttic, endtic);
 	NET_CL_SendTics(starttic, endtic);
 }
 
@@ -454,8 +454,8 @@ static void NET_CL_ParseSYN(net_packet_t* packet)
 	if (strcmp(server_version, PACKAGE_STRING) != 0)
 	{
 		fprintf(stderr, "NET_CL_ParseSYN: This is '%s', but the server is "
-				"'%s'. It is possible that this mismatch may cause the game "
-				"to desync.\n", PACKAGE_STRING, server_version);
+			"'%s'. It is possible that this mismatch may cause the game "
+			"to desync.\n", PACKAGE_STRING, server_version);
 	}
 }
 
@@ -533,7 +533,7 @@ static void NET_CL_ParseLaunch(net_packet_t* packet)
 	if (client_state != CLIENT_STATE_WAITING_LAUNCH)
 	{
 		NET_Log("client: error: not in waiting launch state, client_state=%d",
-				client_state);
+			client_state);
 		return;
 	}
 
@@ -565,16 +565,16 @@ static void NET_CL_ParseGameStart(net_packet_t* packet)
 	if (client_state != CLIENT_STATE_WAITING_START)
 	{
 		NET_Log("client: error: not in waiting start state, client_state=%d",
-				client_state);
+			client_state);
 		return;
 	}
 
 	if (settings.num_players > NET_MAXPLAYERS
-		|| settings.consoleplayer >= (int) settings.num_players)
+		|| settings.consoleplayer >= (int)settings.num_players)
 	{
 		// insane values
 		NET_Log("client: error: bad settings, num_players=%d, consoleplayer=%d",
-				settings.num_players, settings.consoleplayer);
+			settings.num_players, settings.consoleplayer);
 		return;
 	}
 
@@ -584,7 +584,7 @@ static void NET_CL_ParseGameStart(net_packet_t* packet)
 		// Invalid player number: must be positive for real players,
 		// negative for drones
 		NET_Log("client: error: mismatch: drone=%d, consoleplayer=%d",
-				drone, settings.consoleplayer);
+			drone, settings.consoleplayer);
 		return;
 	}
 
@@ -621,7 +621,7 @@ static void NET_CL_SendResendRequest(int start, int end)
 
 	// Save the time we sent the resend request
 
-	for (i=start; i<=end; ++i)
+	for (i = start; i <= end; ++i)
 	{
 		int index;
 
@@ -650,7 +650,7 @@ static void NET_CL_CheckResends()
 	resend_start = -1;
 	resend_end = -1;
 
-	for (i=0; i<BACKUPTICS; ++i)
+	for (i = 0; i < BACKUPTICS; ++i)
 	{
 		net_server_recv_t* recvobj;
 		bool need_resend;
@@ -661,8 +661,8 @@ static void NET_CL_CheckResends()
 		// request (300ms timeout)
 
 		need_resend = !recvobj->active
-					&& recvobj->resend_time != 0
-					&& nowtime > recvobj->resend_time + 300;
+			&& recvobj->resend_time != 0
+			&& nowtime > recvobj->resend_time + 300;
 
 		// if no game data has been received in a long time, we may be in
 		// a deadlock scenario where tics from the server have been lost, so
@@ -690,11 +690,11 @@ static void NET_CL_CheckResends()
 		{
 			// End of a run of resend tics
 			NET_Log("client: resend request timed out for %d-%d (%d)",
-					recvwindow_start + resend_start,
-					recvwindow_start + resend_end,
-					recvwindow[resend_start].resend_time);
+				recvwindow_start + resend_start,
+				recvwindow_start + resend_end,
+				recvwindow[resend_start].resend_time);
 			NET_CL_SendResendRequest(recvwindow_start + resend_start,
-										recvwindow_start + resend_end);
+				recvwindow_start + resend_end);
 			resend_start = -1;
 		}
 	}
@@ -702,11 +702,11 @@ static void NET_CL_CheckResends()
 	if (resend_start >= 0)
 	{
 		NET_Log("client: resend request timed out for %d-%d (%d)",
-				recvwindow_start + resend_start,
-				recvwindow_start + resend_end,
-				recvwindow[resend_start].resend_time);
+			recvwindow_start + resend_start,
+			recvwindow_start + resend_end,
+			recvwindow[resend_start].resend_time);
 		NET_CL_SendResendRequest(recvwindow_start + resend_start,
-									recvwindow_start + resend_end);
+			recvwindow_start + resend_end);
 	}
 
 	// We have received some data from the server and not acknowledged
@@ -716,7 +716,7 @@ static void NET_CL_CheckResends()
 	if (need_to_acknowledge && nowtime - gamedata_recv_time > 200)
 	{
 		NET_Log("client: no game data received since %d: triggering ack",
-				gamedata_recv_time);
+			gamedata_recv_time);
 		NET_CL_SendGameDataACK();
 	}
 }
@@ -761,7 +761,7 @@ static void NET_CL_ParseGameData(net_packet_t* packet)
 	seq = NET_CL_ExpandTicNum(seq);
 	NET_Log("client: got game data, seq=%d, num_tics=%d", seq, num_tics);
 
-	for (i=0; i<num_tics; ++i)
+	for (i = 0; i < num_tics; ++i)
 	{
 		net_full_ticcmd_t cmd;
 
@@ -842,10 +842,10 @@ static void NET_CL_ParseGameData(net_packet_t* packet)
 	if (resend_start < resend_end)
 	{
 		NET_Log("client: request resend for %d-%d before %d",
-				recvwindow_start + resend_start,
-				recvwindow_start + resend_end - 1, seq);
+			recvwindow_start + resend_start,
+			recvwindow_start + resend_end - 1, seq);
 		NET_CL_SendResendRequest(recvwindow_start + resend_start,
-									recvwindow_start + resend_end - 1);
+			recvwindow_start + resend_end - 1);
 	}
 }
 
@@ -935,7 +935,7 @@ static void NET_CL_ParsePacket(net_packet_t* packet)
 	}
 
 	NET_Log("client: packet from server, type %d",
-			packet_type & ~NET_RELIABLE_PACKET);
+		packet_type & ~NET_RELIABLE_PACKET);
 	NET_LogPacket(packet);
 
 	if (NET_Conn_Packet(&client_connection, packet, &packet_type))
@@ -946,40 +946,40 @@ static void NET_CL_ParsePacket(net_packet_t* packet)
 	{
 		switch (packet_type)
 		{
-			case net_packet_type::SYN:
-				NET_CL_ParseSYN(packet);
-				break;
+		case net_packet_type::SYN:
+			NET_CL_ParseSYN(packet);
+			break;
 
-			case net_packet_type::REJECTED:
-				NET_CL_ParseReject(packet);
-				break;
+		case net_packet_type::REJECTED:
+			NET_CL_ParseReject(packet);
+			break;
 
-			case net_packet_type::WAITING_DATA:
-				NET_CL_ParseWaitingData(packet);
-				break;
+		case net_packet_type::WAITING_DATA:
+			NET_CL_ParseWaitingData(packet);
+			break;
 
-			case net_packet_type::LAUNCH:
-				NET_CL_ParseLaunch(packet);
-				break;
+		case net_packet_type::LAUNCH:
+			NET_CL_ParseLaunch(packet);
+			break;
 
-			case net_packet_type::GAMESTART:
-				NET_CL_ParseGameStart(packet);
-				break;
+		case net_packet_type::GAMESTART:
+			NET_CL_ParseGameStart(packet);
+			break;
 
-			case net_packet_type::GAMEDATA:
-				NET_CL_ParseGameData(packet);
-				break;
+		case net_packet_type::GAMEDATA:
+			NET_CL_ParseGameData(packet);
+			break;
 
-			case net_packet_type::GAMEDATA_RESEND:
-				NET_CL_ParseResendRequest(packet);
-				break;
+		case net_packet_type::GAMEDATA_RESEND:
+			NET_CL_ParseResendRequest(packet);
+			break;
 
-			case net_packet_type::CONSOLE_MESSAGE:
-				NET_CL_ParseConsoleMessage(packet);
-				break;
+		case net_packet_type::CONSOLE_MESSAGE:
+			NET_CL_ParseConsoleMessage(packet);
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 }
@@ -1023,8 +1023,8 @@ void NET_CL_Run()
 	}
 
 	net_waiting_for_launch =
-			client_connection.state == net_connstate_t::CONNECTED
-			&& client_state == CLIENT_STATE_WAITING_LAUNCH;
+		client_connection.state == net_connstate_t::CONNECTED
+		&& client_state == CLIENT_STATE_WAITING_LAUNCH;
 
 	if (client_state == CLIENT_STATE_IN_GAME)
 	{
@@ -1188,7 +1188,7 @@ void NET_CL_Disconnect()
 			client_state = CLIENT_STATE_WAITING_START;
 
 			fprintf(stderr, "NET_CL_Disconnect: Timeout while disconnecting "
-							"from server\n");
+				"from server\n");
 			break;
 		}
 

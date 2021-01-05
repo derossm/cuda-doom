@@ -35,24 +35,24 @@ static pixel_t* wipe_scr;
 
 void wipe_shittyColMajorXform(dpixel_t* array, int width, int height)
 {
-	dpixel_t* dest = Z_Malloc<dpixel_t*>(width*height*sizeof(*dest), pu_tags_t::PU_STATIC, 0);
+	dpixel_t* dest = Z_Malloc<dpixel_t*>(width * height * sizeof(*dest), pu_tags_t::PU_STATIC, 0);
 
-	for(size_t y=0; y < height; ++y)
+	for (size_t y = 0; y < height; ++y)
 	{
-		for(size_t x=0; x < width; ++x)
+		for (size_t x = 0; x < width; ++x)
 		{
-			dest[x*height+y] = array[y*width+x];
+			dest[x * height + y] = array[y * width + x];
 		}
 	}
 
-	memcpy(array, dest, width*height*sizeof(*dest));
+	memcpy(array, dest, width * height * sizeof(*dest));
 
 	Z_Free(dest);
 }
 
 int wipe_initColorXForm(int width, int height, TimeType ticks)
 {
-	memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
+	memcpy(wipe_scr, wipe_scr_start, width * height * sizeof(*wipe_scr));
 	return 0;
 }
 
@@ -67,31 +67,31 @@ int wipe_doColorXForm(int width, int height, TimeType ticks)
 	w = wipe_scr;
 	e = wipe_scr_end;
 
-	while (w!=wipe_scr+width*height)
+	while (w != wipe_scr + width * height)
 	{
-	if (*w != *e)
-	{
-		if (*w > *e)
+		if (*w != *e)
 		{
-		newval = *w - ticks;
-		if (newval < *e)
-			*w = *e;
-		else
-			*w = newval;
-		changed = true;
+			if (*w > *e)
+			{
+				newval = *w - ticks;
+				if (newval < *e)
+					*w = *e;
+				else
+					*w = newval;
+				changed = true;
+			}
+			else if (*w < *e)
+			{
+				newval = *w + ticks;
+				if (newval > *e)
+					*w = *e;
+				else
+					*w = newval;
+				changed = true;
+			}
 		}
-		else if (*w < *e)
-		{
-		newval = *w + ticks;
-		if (newval > *e)
-			*w = *e;
-		else
-			*w = newval;
-		changed = true;
-		}
-	}
-	++w;
-	++e;
+		++w;
+		++e;
 	}
 
 	return !changed;
@@ -109,19 +109,19 @@ static int* y;
 int wipe_initMelt(int width, int height, TimeType ticks)
 {
 	// copy start screen to main screen
-	memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
+	memcpy(wipe_scr, wipe_scr_start, width * height * sizeof(*wipe_scr));
 
 	// makes this wipe faster (in theory) to have stuff in column-major format
-	wipe_shittyColMajorXform((dpixel_t*)wipe_scr_start, width/2, height);
-	wipe_shittyColMajorXform((dpixel_t*)wipe_scr_end, width/2, height);
+	wipe_shittyColMajorXform((dpixel_t*)wipe_scr_start, width / 2, height);
+	wipe_shittyColMajorXform((dpixel_t*)wipe_scr_end, width / 2, height);
 
 	// setup initial column positions (y<0 => not ready to scroll yet)
-	y = Z_Malloc<int*>(width*sizeof(int), pu_tags_t::PU_STATIC, 0);
-	y[0] = -(M_Random()%16);
+	y = Z_Malloc<int*>(width * sizeof(int), pu_tags_t::PU_STATIC, 0);
+	y[0] = -(M_Random() % 16);
 	for (size_t i{1}; i < width; ++i)
 	{
-		int r = (M_Random()%3) - 1;
-		y[i] = y[i-1] + r;
+		int r = (M_Random() % 3) - 1;
+		y[i] = y[i - 1] + r;
 		if (y[i] > 0)
 		{
 			y[i] = 0;
@@ -145,21 +145,21 @@ int wipe_doMelt(int width, int height, TimeType ticks)
 	{
 		for (size_t i{0}; i < width; ++i)
 		{
-			if (y[i]<0)
+			if (y[i] < 0)
 			{
 				y[i]++;
 				done = false;
 			}
 			else if (y[i] < height)
 			{
-				int dy = (y[i] < 16) ? y[i]+1 : (8 << crispy->hires);
-				if (y[i]+dy >= height)
+				int dy = (y[i] < 16) ? y[i] + 1 : (8 << crispy->hires);
+				if (y[i] + dy >= height)
 				{
 					dy = height - y[i];
 				}
 
-				dpixel_t* s = &((dpixel_t*)wipe_scr_end)[i*height+y[i]];
-				dpixel_t* d = &((dpixel_t*)wipe_scr)[y[i]*width+i];
+				dpixel_t* s = &((dpixel_t*)wipe_scr_end)[i * height + y[i]];
+				dpixel_t* d = &((dpixel_t*)wipe_scr)[y[i] * width + i];
 
 				for (size_t j{dy}, idx{0}; j; --j)
 				{
@@ -168,10 +168,10 @@ int wipe_doMelt(int width, int height, TimeType ticks)
 				}
 
 				y[i] += dy;
-				s = &((dpixel_t*)wipe_scr_start)[i*height];
-				d = &((dpixel_t*)wipe_scr)[y[i]*width+i];
+				s = &((dpixel_t*)wipe_scr_start)[i * height];
+				d = &((dpixel_t*)wipe_scr)[y[i] * width + i];
 
-				for (size_t j{height-y[i]}, idx{0}; j; --j)
+				for (size_t j{height - y[i]}, idx{0}; j; --j)
 				{
 					d[idx] = *((s++));
 					idx += width;
@@ -221,19 +221,19 @@ int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height, TimeType ti
 		go = 1;
 		// wipe_scr = (pixel_t*) Z_Malloc(width*height, pu_tags_t::PU_STATIC, 0); // DEBUG
 		wipe_scr = I_VideoBuffer;
-		(*wipes[wipeno*3])(width, height, ticks);
+		(*wipes[wipeno * 3])(width, height, ticks);
 	}
 
 	// do a piece of wipe-in
 	V_MarkRect(0, 0, width, height);
-	int rc = (*wipes[wipeno*3+1])(width, height, ticks);
+	int rc = (*wipes[wipeno * 3 + 1])(width, height, ticks);
 	// V_DrawBlock(x, y, 0, width, height, wipe_scr); // DEBUG
 
 	// final stuff
 	if (rc)
 	{
 		go = 0;
-		(*wipes[wipeno*3+2])(width, height, ticks);
+		(*wipes[wipeno * 3 + 2])(width, height, ticks);
 	}
 
 	return !go;

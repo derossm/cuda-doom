@@ -26,7 +26,7 @@ if(MSVC)
 	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
 	add_compile_options(
 		"/Zc:__cplusplus"
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHs-" "/EHc-" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MD"
+		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MD"
 		"/permissive-" "/Zc:preprocessor"
 		"/W4" "/Od" "/arch:AVX2"
 		#"/experimental:module"

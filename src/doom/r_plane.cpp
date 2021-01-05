@@ -37,7 +37,7 @@ visplane_t* ceilingplane;
 static int numvisplanes;
 
 // ?
-constexpr size_t MAXOPENINGS{MAXWIDTH*64*4};
+constexpr size_t MAXOPENINGS{MAXWIDTH * 64 * 4};
 int openings[MAXOPENINGS];
 int* lastopening;
 
@@ -76,7 +76,7 @@ void R_MapPlane(int y, int x1, int x2)
 #ifdef RANGECHECK
 	if (x2 < x1 || x1 < 0 || x2 >= viewwidth || y > viewheight)
 	{
-		I_Error("R_MapPlane: %i, %i at %i",x1,x2,y);
+		I_Error("R_MapPlane: %i, %i at %i", x1, x2, y);
 	}
 #endif
 
@@ -116,11 +116,11 @@ void R_MapPlane(int y, int x1, int x2)
 
 		if (index >= MAXLIGHTZ)
 		{
-			index = MAXLIGHTZ-1;
+			index = MAXLIGHTZ - 1;
 		}
 
 		ds_colormap[0] = planezlight[index];
-		ds_colormap[1] = zlight[LIGHTLEVELS-1][MAXLIGHTZ-1];
+		ds_colormap[1] = zlight[LIGHTLEVELS - 1][MAXLIGHTZ - 1];
 	}
 
 	ds_y = y;
@@ -148,11 +148,11 @@ void R_ClearPlanes()
 	memset(cachedheight, 0, sizeof(cachedheight));
 
 	// left to right mapping
-	angle_t angle{(viewangle-ANG90)>>ANGLETOFINESHIFT};
+	angle_t angle{(viewangle - ANG90) >> ANGLETOFINESHIFT};
 
 	// scale will be unit scale at SCREENWIDTH/2 distance
-	basexscale = FixedDiv(finecosine[angle],centerxfrac);
-	baseyscale = -FixedDiv(finesine[angle],centerxfrac);
+	basexscale = FixedDiv(finecosine[angle], centerxfrac);
+	baseyscale = -FixedDiv(finesine[angle], centerxfrac);
 }
 
 // remove MAXVISPLANES Vanilla limit
@@ -195,7 +195,7 @@ visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel)
 		lightlevel = 0;
 	}
 
-	for (check=visplanes; check<lastvisplane; ++check)
+	for (check = visplanes; check < lastvisplane; ++check)
 	{
 		if (height == check->height && picnum == check->picnum && lightlevel == check->lightlevel)
 		{
@@ -220,7 +220,7 @@ visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel)
 	check->minx = SCREENWIDTH;
 	check->maxx = -1;
 
-	memset(check->top,0xff,sizeof(check->top));
+	memset(check->top, 0xff, sizeof(check->top));
 
 	return check;
 }
@@ -291,7 +291,7 @@ visplane_t* R_CheckPlane(visplane_t* pl, int start, int stop)
 	pl->minx = start;
 	pl->maxx = stop;
 
-	memset(pl->top,0xff,sizeof(pl->top));
+	memset(pl->top, 0xff, sizeof(pl->top));
 
 	return pl;
 }
@@ -300,12 +300,12 @@ void R_MakeSpans(int x, unsigned t1, unsigned b1, unsigned t2, unsigned b2)
 {
 	while (t1 < t2 && t1 <= b1)
 	{
-		R_MapPlane (t1, spanstart[t1], x-1);
+		R_MapPlane(t1, spanstart[t1], x - 1);
 		++t1;
 	}
 	while (b1 > b2 && b1 >= t1)
 	{
-		R_MapPlane (b1, spanstart[b1], x-1);
+		R_MapPlane(b1, spanstart[b1], x - 1);
 		--b1;
 	}
 
@@ -348,7 +348,7 @@ void R_DrawPlanes()
 	}
 #endif
 
-	for (pl = visplanes ; pl < lastvisplane ; ++pl)
+	for (pl = visplanes; pl < lastvisplane; ++pl)
 	{
 		bool swirling;
 
@@ -367,11 +367,11 @@ void R_DrawPlanes()
 				const line_t* l = &lines[pl->picnum & ~PL_SKYFLAT];
 				const side_t* s = *l->sidenum + sides;
 				texture = texturetranslation[s->toptexture];
-				dc_texturemid = s->rowoffset - 28*FRACUNIT;
+				dc_texturemid = s->rowoffset - 28 * FRACUNIT;
 				// stretch sky
 				if (crispy->stretchsky)
 				{
-					dc_texturemid = dc_texturemid * (textureheight[texture]>>FRACBITS) / SKYSTRETCH_HEIGHT;
+					dc_texturemid = dc_texturemid * (textureheight[texture] >> FRACBITS) / SKYSTRETCH_HEIGHT;
 				}
 				flip = (l->special == 272) ? 0u : ~0u;
 				an += s->textureoffset;
@@ -382,7 +382,7 @@ void R_DrawPlanes()
 				dc_texturemid = skytexturemid;
 				flip = 0;
 			}
-			dc_iscale = pspriteiscale>>detailshift;
+			dc_iscale = pspriteiscale >> detailshift;
 
 			// Sky is allways drawn full bright,
 			// i.e. colormaps[0] is used.
@@ -391,23 +391,23 @@ void R_DrawPlanes()
 			// [crispy] no brightmaps for sky
 			dc_colormap[0] = dc_colormap[1] = colormaps;
 			//dc_texturemid = skytexturemid;
-			dc_texheight = textureheight[texture]>>FRACBITS; // [crispy] Tutti-Frutti fix
+			dc_texheight = textureheight[texture] >> FRACBITS; // [crispy] Tutti-Frutti fix
 			// [crispy] stretch sky
 			if (crispy->stretchsky)
 			{
 				dc_iscale = dc_iscale * dc_texheight / SKYSTRETCH_HEIGHT;
 			}
-			for (x=pl->minx ; x <= pl->maxx ; ++x)
+			for (x = pl->minx; x <= pl->maxx; ++x)
 			{
 				dc_yl = pl->top[x];
 				dc_yh = pl->bottom[x];
 
-				if ((unsigned) dc_yl <= dc_yh) // [crispy] 32-bit integer math
+				if ((unsigned)dc_yl <= dc_yh) // [crispy] 32-bit integer math
 				{
-					angle = ((an + xtoviewangle[x])^flip)>>ANGLETOSKYSHIFT;
+					angle = ((an + xtoviewangle[x]) ^ flip) >> ANGLETOSKYSHIFT;
 					dc_x = x;
 					dc_source = R_GetColumn(texture, angle);
-					colfunc ();
+					colfunc();
 				}
 			}
 			continue;
@@ -418,14 +418,14 @@ void R_DrawPlanes()
 		lumpnum = firstflat + (swirling ? pl->picnum : flattranslation[pl->picnum]);
 		// [crispy] add support for SMMU swirling flats
 		ds_source = swirling ? R_DistortedFlat(lumpnum) : W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
-		ds_brightmap = R_BrightmapForFlatNum(lumpnum-firstflat);
+		ds_brightmap = R_BrightmapForFlatNum(lumpnum - firstflat);
 
-		planeheight = abs(pl->height-viewz);
-		light = (pl->lightlevel >> LIGHTSEGSHIFT)+(extralight * LIGHTBRIGHT);
+		planeheight = abs(pl->height - viewz);
+		light = (pl->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
 		if (light >= LIGHTLEVELS)
 		{
-			light = LIGHTLEVELS-1;
+			light = LIGHTLEVELS - 1;
 		}
 
 		if (light < 0)
@@ -435,15 +435,15 @@ void R_DrawPlanes()
 
 		planezlight = zlight[light];
 
-		pl->top[pl->maxx+1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
-		pl->top[pl->minx-1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
+		pl->top[pl->maxx + 1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
+		pl->top[pl->minx - 1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
 
 		stop = pl->maxx + 1;
 
-		for (x=pl->minx ; x<= stop ; ++x)
+		for (x = pl->minx; x <= stop; ++x)
 		{
-			R_MakeSpans(x,pl->top[x-1],
-				pl->bottom[x-1],
+			R_MakeSpans(x, pl->top[x - 1],
+				pl->bottom[x - 1],
 				pl->top[x],
 				pl->bottom[x]);
 		}

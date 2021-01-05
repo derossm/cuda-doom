@@ -43,8 +43,8 @@ bool DEH_HasStringReplacement(std::string s);
 
 #if 0
 // Static macro versions of the functions above
-	#define DEH_String(x) (x)
-	#define DEH_printf printf
-	#define DEH_fprintf fprintf
-	#define DEH_snprintf snprintf
+#define DEH_String(x) (x)
+#define DEH_printf printf
+#define DEH_fprintf fprintf
+#define DEH_snprintf snprintf
 #endif

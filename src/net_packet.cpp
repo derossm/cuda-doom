@@ -107,7 +107,7 @@ bool NET_ReadInt32(net_packet_t* packet, unsigned* data)
 // Signed read functions
 bool NET_ReadSInt8(net_packet_t* packet, int* data)
 {
-	if (NET_ReadInt8(packet,(unsigned*) data))
+	if (NET_ReadInt8(packet, (unsigned*)data))
 	{
 		if (*data & (1 << 7))
 		{

@@ -28,8 +28,8 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-constexpr size_t DEFAULT_RAM{16*2}; // MiB
-constexpr size_t MIN_RAM{4*4}; // MiB
+constexpr size_t DEFAULT_RAM{16 * 2}; // MiB
+constexpr size_t MIN_RAM{4 * 4}; // MiB
 
 struct atexit_listentry_t
 {
@@ -55,14 +55,13 @@ void I_AtExit(atexit_func_t func, bool run_on_error)
 // Tactile feedback function, probably used for the Logitech Cyberman
 
 void I_Tactile(int on, int off, int total)
-{
-}
+{}
 
 // Zone memory auto-allocation function that allocates the zone size
 // by trying progressively smaller zone sizes until one is found that
 // works.
 
-static byte* AutoAllocMemory(int *size, int default_ram, int min_ram)
+static byte* AutoAllocMemory(int* size, int default_ram, int min_ram)
 {
 	byte* zonemem;
 
@@ -118,7 +117,7 @@ byte* I_ZoneBase(int* size)
 
 	if (p > 0)
 	{
-		default_ram = atoi(myargv[p+1]);
+		default_ram = atoi(myargv[p + 1]);
 		min_ram = default_ram;
 	}
 	else
@@ -139,7 +138,7 @@ byte* I_ZoneBase(int* size)
 	i *= 2;
 
 	printf("zone memory: %p, %d MiB allocated for zone\n",
-			zonemem, *size >> 20); // [crispy] human-understandable zone heap size
+		zonemem, *size >> 20); // [crispy] human-understandable zone heap size
 
 	return zonemem;
 }
@@ -149,7 +148,7 @@ void I_PrintBanner(std::string msg)
 	int i;
 	int spaces = 35 - (strlen(msg) / 2);
 
-	for (i=0; i<spaces; ++i)
+	for (i = 0; i < spaces; ++i)
 		putchar(' ');
 
 	puts(msg);
@@ -159,7 +158,7 @@ void I_PrintDivider()
 {
 	int i;
 
-	for (i=0; i<75; ++i)
+	for (i = 0; i < 75; ++i)
 	{
 		putchar('=');
 	}
@@ -174,10 +173,10 @@ void I_PrintStartupBanner(std::string gamedescription)
 	I_PrintDivider();
 
 	printf(
-	" " PACKAGE_NAME " is free software, covered by the GNU General Public\n"
-	" License. There is NO warranty; not even for MERCHANTABILITY or FITNESS\n"
-	" FOR A PARTICULAR PURPOSE. You are welcome to change and distribute\n"
-	" copies under certain conditions. See the source for more information.\n");
+		" " PACKAGE_NAME " is free software, covered by the GNU General Public\n"
+		" License. There is NO warranty; not even for MERCHANTABILITY or FITNESS\n"
+		" FOR A PARTICULAR PURPOSE. You are welcome to change and distribute\n"
+		" copies under certain conditions. See the source for more information.\n");
 
 	I_PrintDivider();
 }
@@ -220,7 +219,7 @@ void I_BindVariables()
 // I_Quit
 //
 
-void I_Quit ()
+void I_Quit()
 {
 	atexit_listentry_t* entry;
 
@@ -306,7 +305,7 @@ void I_Error(std::string error, ...)
 	if (exit_gui_popup && !I_ConsoleStdout())
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
-									PACKAGE_STRING, msgbuf, NULL);
+			PACKAGE_STRING, msgbuf, NULL);
 	}
 
 	// abort();
@@ -412,7 +411,7 @@ bool I_GetMemoryValue(unsigned offset, void* value, int size)
 					}
 
 					M_StrToInt(myargv[p], &val);
-					mem_dump_custom[i++] = (unsigned char) val;
+					mem_dump_custom[i++] = (unsigned char)val;
 				}
 
 				dos_mem_dump = mem_dump_custom;
@@ -423,17 +422,17 @@ bool I_GetMemoryValue(unsigned offset, void* value, int size)
 	switch (size)
 	{
 	case 1:
-		*((unsigned char*) value) = dos_mem_dump[offset];
+		*((unsigned char*)value) = dos_mem_dump[offset];
 		return true;
 	case 2:
-		*((unsigned short*) value) = dos_mem_dump[offset]
-									| (dos_mem_dump[offset + 1] << 8);
+		*((unsigned short*)value) = dos_mem_dump[offset]
+			| (dos_mem_dump[offset + 1] << 8);
 		return true;
 	case 4:
-		*((unsigned*) value) = dos_mem_dump[offset]
-									| (dos_mem_dump[offset + 1] << 8)
-									| (dos_mem_dump[offset + 2] << 16)
-									| (dos_mem_dump[offset + 3] << 24);
+		*((unsigned*)value) = dos_mem_dump[offset]
+			| (dos_mem_dump[offset + 1] << 8)
+			| (dos_mem_dump[offset + 2] << 16)
+			| (dos_mem_dump[offset + 3] << 24);
 		return true;
 	}
 

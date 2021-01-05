@@ -29,15 +29,15 @@ namespace cudadoom::txt
  * Horizontal separator widget.
  */
 
-/**
- * Horizontal separator.
- *
- * A horizontal separator appears as a horizontal line divider across
- * the length of the window in which it is added. An optional label
- * allows the separator to be used as a section divider for grouping
- * related controls.
- */
-struct Separator : Widget
+ /**
+  * Horizontal separator.
+  *
+  * A horizontal separator appears as a horizontal line divider across
+  * the length of the window in which it is added. An optional label
+  * allows the separator to be used as a section divider for grouping
+  * related controls.
+  */
+struct Separator : public Widget<Separator>
 {
 	std::string label;
 
@@ -47,16 +47,15 @@ struct Separator : Widget
 	void SetFocus(bool _focus) override final = delete;
 
 public:
-	Separator() : widget_class{ Selectable, CalculateSize, Draw, nullptr, nullptr, nullptr, nullptr, Destroy }
-	{
-	}
+	Separator() : widget_class{Selectable, CalculateSize, Draw, nullptr, nullptr, nullptr, nullptr, Destroy}
+	{}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return false;
 	}
 
-	void CalculateSize() override final const noexcept
+	void CalculateSize() noexcept override final
 	{
 		if (label != "")
 		{
@@ -71,7 +70,7 @@ public:
 		height = 1;
 	}
 
-	void Draw() override final const noexcept
+	void Draw() noexcept override final
 	{
 		int x;
 		int y;
@@ -81,7 +80,7 @@ public:
 		// Draw separator. Go back one character and draw two extra
 		// to overlap the window borders.
 
-		DrawSeparator(x-2, y, width + 4);
+		DrawSeparator(x - 2, y, width + 4);
 
 		if (label != "")
 		{
@@ -94,9 +93,8 @@ public:
 		}
 	}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{}
 
 	void SetLabel(Separator* separator, std::string& _label)
 	{
@@ -111,8 +109,7 @@ public:
 	}
 
 	Separator(std::string& _label) : label(_label)
-	{
-	}
+	{}
 };
 
 } /* END NAMESPACE cudadoom::txt */

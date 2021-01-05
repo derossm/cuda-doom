@@ -53,7 +53,7 @@ static void DiscoverGamemode(const wbstartstruct_t* stats, int num_stats)
 		return;
 	}
 
-	for (i=0; i<num_stats; ++i)
+	for (i = 0; i < num_stats; ++i)
 	{
 		level = stats[i].last;
 
@@ -95,7 +95,7 @@ static int GetNumPlayers(const wbstartstruct_t* stats)
 {
 	int num_players{0};
 
-	for (size_t i{0}; i<MAX_PLAYERS; ++i)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
 		if (stats->plyr[i].in)
 		{
@@ -123,18 +123,18 @@ static void PrintPercentage(FILE* stream, int amount, int total)
 
 		// statdump.exe is a 16-bit program, so very occasionally an integer overflow can occur when doing this calculation with
 		// a large value. Therefore, cast to short to give the same output.
-		fprintf(stream, " (%i%%)", (short) (amount * 100) / total);
+		fprintf(stream, " (%i%%)", (short)(amount * 100) / total);
 	}
 }
 
 /* Display statistics for a single player. */
 static void PrintPlayerStats(FILE* stream, const wbstartstruct_t* stats,
-		int player_num)
+	int player_num)
 {
 	const wbplayerstruct_t* player = &stats->plyr[player_num];
 
 	fprintf(stream, "Player %i (%s):\n", player_num + 1,
-			player_colors[player_num]);
+		player_colors[player_num]);
 
 	/* Kills percentage */
 	fprintf(stream, "\tKills: ");
@@ -211,17 +211,17 @@ static void PrintLevelName(FILE* stream, int episode, int level)
 	switch (discovered_gamemission)
 	{
 
-		case GameMission::doom:
-			fprintf(stream, "E%iM%i\n", episode + 1, level + 1);
-			break;
-		case GameMission::doom2:
-			fprintf(stream, "MAP%02i\n", level + 1);
-			break;
-		default:
-		case GameMission::none:
-			fprintf(stream, "E%iM%i / MAP%02i\n",
-					episode + 1, level + 1, level + 1);
-			break;
+	case GameMission::doom:
+		fprintf(stream, "E%iM%i\n", episode + 1, level + 1);
+		break;
+	case GameMission::doom2:
+		fprintf(stream, "MAP%02i\n", level + 1);
+		break;
+	default:
+	case GameMission::none:
+		fprintf(stream, "E%iM%i / MAP%02i\n",
+			episode + 1, level + 1, level + 1);
+		break;
 	}
 
 	PrintBanner(stream);

@@ -80,7 +80,7 @@ int dccount;
 // [crispy] replace R_DrawColumn() with Lee Killough's implementation
 // found in MBF to fix Tutti-Frutti, taken from mbfsrc/R_DRAW.C:99-1979
 
-void R_DrawColumn ()
+void R_DrawColumn()
 {
 	int count;
 	pixel_t* dest;
@@ -111,7 +111,7 @@ void R_DrawColumn ()
 	// Determine scaling,
 	// which is the only mapping to be done.
 	fracstep = dc_iscale;
-	frac = dc_texturemid + (dc_yl-centery)*fracstep;
+	frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
 	// Inner loop that does the actual texture mapping,
 	// e.g. a DDA-lile scaling.
@@ -141,7 +141,7 @@ void R_DrawColumn ()
 		do
 		{
 			// [crispy] brightmaps
-			const byte source = dc_source[frac>>FRACBITS];
+			const byte source = dc_source[frac >> FRACBITS];
 			*dest = dc_colormap[dc_brightmap[source]][source];
 
 			dest += SCREENWIDTH;
@@ -158,7 +158,7 @@ void R_DrawColumn ()
 			// Re-map color indices from wall texture column
 			// using a lighting/special effects LUT.
 			// [crispy] brightmaps
-			const byte source = dc_source[(frac>>FRACBITS)&heightmask];
+			const byte source = dc_source[(frac >> FRACBITS) & heightmask];
 			*dest = dc_colormap[dc_brightmap[source]][source];
 
 			dest += SCREENWIDTH;
@@ -170,7 +170,7 @@ void R_DrawColumn ()
 // UNUSED.
 // Loop unrolled.
 #if 0
-void R_DrawColumn ()
+void R_DrawColumn()
 {
 	int count;
 	byte* source;
@@ -189,38 +189,38 @@ void R_DrawColumn ()
 	colormap = dc_colormap;
 	dest = ylookup[dc_yl] + columnofs[dc_x];
 
-	fracstep = dc_iscale<<9;
-	frac = (dc_texturemid + (dc_yl-centery)*dc_iscale)<<9;
+	fracstep = dc_iscale << 9;
+	frac = (dc_texturemid + (dc_yl - centery) * dc_iscale) << 9;
 
-	fracstep2 = fracstep+fracstep;
-	fracstep3 = fracstep2+fracstep;
-	fracstep4 = fracstep3+fracstep;
+	fracstep2 = fracstep + fracstep;
+	fracstep3 = fracstep2 + fracstep;
+	fracstep4 = fracstep3 + fracstep;
 
 	while (count >= 8)
 	{
-	dest[0] = colormap[source[frac>>25]];
-	dest[SCREENWIDTH] = colormap[source[(frac+fracstep)>>25]];
-	dest[SCREENWIDTH*2] = colormap[source[(frac+fracstep2)>>25]];
-	dest[SCREENWIDTH*3] = colormap[source[(frac+fracstep3)>>25]];
+		dest[0] = colormap[source[frac >> 25]];
+		dest[SCREENWIDTH] = colormap[source[(frac + fracstep) >> 25]];
+		dest[SCREENWIDTH * 2] = colormap[source[(frac + fracstep2) >> 25]];
+		dest[SCREENWIDTH * 3] = colormap[source[(frac + fracstep3) >> 25]];
 
-	frac += fracstep4;
+		frac += fracstep4;
 
-	dest[SCREENWIDTH*4] = colormap[source[frac>>25]];
-	dest[SCREENWIDTH*5] = colormap[source[(frac+fracstep)>>25]];
-	dest[SCREENWIDTH*6] = colormap[source[(frac+fracstep2)>>25]];
-	dest[SCREENWIDTH*7] = colormap[source[(frac+fracstep3)>>25]];
+		dest[SCREENWIDTH * 4] = colormap[source[frac >> 25]];
+		dest[SCREENWIDTH * 5] = colormap[source[(frac + fracstep) >> 25]];
+		dest[SCREENWIDTH * 6] = colormap[source[(frac + fracstep2) >> 25]];
+		dest[SCREENWIDTH * 7] = colormap[source[(frac + fracstep3) >> 25]];
 
-	frac += fracstep4;
-	dest += SCREENWIDTH*8;
-	count -= 8;
+		frac += fracstep4;
+		dest += SCREENWIDTH * 8;
+		count -= 8;
 	}
 
 	while (count > 0)
 	{
-	*dest = colormap[source[frac>>25]];
-	dest += SCREENWIDTH;
-	frac += fracstep;
-	--count;
+		*dest = colormap[source[frac >> 25]];
+		dest += SCREENWIDTH;
+		frac += fracstep;
+		--count;
 	}
 }
 #endif
@@ -254,10 +254,10 @@ void R_DrawColumnLow()
 	x = dc_x << 1;
 
 	dest = ylookup[dc_yl] + columnofs[flipviewwidth[x]];
-	dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x+1]];
+	dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x + 1]];
 
 	fracstep = dc_iscale;
-	frac = dc_texturemid + (dc_yl-centery)*fracstep;
+	frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
 	// heightmask is the Tutti-Frutti fix -- killough
 	if (dc_texheight & heightmask) // not a power of 2 -- killough
@@ -283,8 +283,8 @@ void R_DrawColumnLow()
 		do
 		{
 			// [crispy] brightmaps
-			const byte source = dc_source[frac>>FRACBITS];
-			*dest2 =* dest = dc_colormap[dc_brightmap[source]][source];
+			const byte source = dc_source[frac >> FRACBITS];
+			*dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
 
 			dest += SCREENWIDTH;
 			dest2 += SCREENWIDTH;
@@ -301,8 +301,8 @@ void R_DrawColumnLow()
 		{
 			// Hack. Does not work corretly.
 			// [crispy] brightmaps
-			const byte source = dc_source[(frac>>FRACBITS)&heightmask];
-			*dest2 =* dest = dc_colormap[dc_brightmap[source]][source];
+			const byte source = dc_source[(frac >> FRACBITS) & heightmask];
+			*dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
 			dest += SCREENWIDTH;
 			dest2 += SCREENWIDTH;
 
@@ -367,7 +367,7 @@ void R_DrawFuzzColumn()
 	}
 
 	// .. and high.
-	if (dc_yh == viewheight-1)
+	if (dc_yh == viewheight - 1)
 	{
 		dc_yh = viewheight - 2;
 		cutoff = true;
@@ -392,7 +392,7 @@ void R_DrawFuzzColumn()
 
 	// Looks familiar.
 	fracstep = dc_iscale;
-	frac = dc_texturemid + (dc_yl-centery)*fracstep;
+	frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
 	// Looks like an attempt at dithering,
 	// using the colormap #6 (of 0-31, a bit
@@ -404,12 +404,12 @@ void R_DrawFuzzColumn()
 		// left or right of the current one.
 		// Add index from colormap to index.
 #ifndef CRISPY_TRUECOLOR
-		*dest = colormaps[6*256+dest[SCREENWIDTH*fuzzoffset[fuzzpos]]];
+		* dest = colormaps[6 * 256 + dest[SCREENWIDTH * fuzzoffset[fuzzpos]]];
 #else
-		*dest = I_BlendDark(dest[SCREENWIDTH*fuzzoffset[fuzzpos]], 0xD3);
+		* dest = I_BlendDark(dest[SCREENWIDTH * fuzzoffset[fuzzpos]], 0xD3);
 #endif
 
-	// Clamp table lookup index.
+		// Clamp table lookup index.
 		if (++fuzzpos == FUZZTABLE)
 		{
 			fuzzpos = 0;
@@ -425,9 +425,9 @@ void R_DrawFuzzColumn()
 	if (cutoff)
 	{
 #ifndef CRISPY_TRUECOLOR
-		*dest = colormaps[6*256+dest[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2]];
+		* dest = colormaps[6 * 256 + dest[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
 #else
-		*dest = I_BlendDark(dest[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xD3);
+		* dest = I_BlendDark(dest[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2], 0xD3);
 #endif
 	}
 }
@@ -451,7 +451,7 @@ void R_DrawFuzzColumnLow()
 	}
 
 	// .. and high.
-	if (dc_yh == viewheight-1)
+	if (dc_yh == viewheight - 1)
 	{
 		dc_yh = viewheight - 2;
 		cutoff = true;
@@ -476,11 +476,11 @@ void R_DrawFuzzColumnLow()
 #endif
 
 	dest = ylookup[dc_yl] + columnofs[flipviewwidth[x]];
-	dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x+1]];
+	dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x + 1]];
 
 	// Looks familiar.
 	fracstep = dc_iscale;
-	frac = dc_texturemid + (dc_yl-centery)*fracstep;
+	frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
 	// Looks like an attempt at dithering,
 	// using the colormap #6 (of 0-31, a bit
@@ -492,14 +492,14 @@ void R_DrawFuzzColumnLow()
 		// left or right of the current one.
 		// Add index from colormap to index.
 #ifndef CRISPY_TRUECOLOR
-		*dest = colormaps[6*256+dest[SCREENWIDTH*fuzzoffset[fuzzpos]]];
-		*dest2 = colormaps[6*256+dest2[SCREENWIDTH*fuzzoffset[fuzzpos]]];
+		* dest = colormaps[6 * 256 + dest[SCREENWIDTH * fuzzoffset[fuzzpos]]];
+		*dest2 = colormaps[6 * 256 + dest2[SCREENWIDTH * fuzzoffset[fuzzpos]]];
 #else
-		*dest = I_BlendDark(dest[SCREENWIDTH*fuzzoffset[fuzzpos]], 0xD3);
-		*dest2 = I_BlendDark(dest2[SCREENWIDTH*fuzzoffset[fuzzpos]], 0xD3);
+		* dest = I_BlendDark(dest[SCREENWIDTH * fuzzoffset[fuzzpos]], 0xD3);
+		*dest2 = I_BlendDark(dest2[SCREENWIDTH * fuzzoffset[fuzzpos]], 0xD3);
 #endif
 
-	// Clamp table lookup index.
+		// Clamp table lookup index.
 		if (++fuzzpos == FUZZTABLE)
 		{
 			fuzzpos = 0;
@@ -516,11 +516,11 @@ void R_DrawFuzzColumnLow()
 	if (cutoff)
 	{
 #ifndef CRISPY_TRUECOLOR
-		*dest = colormaps[6*256+dest[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2]];
-		*dest2 = colormaps[6*256+dest2[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2]];
+		* dest = colormaps[6 * 256 + dest[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
+		*dest2 = colormaps[6 * 256 + dest2[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2]];
 #else
-		*dest = I_BlendDark(dest[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xD3);
-		*dest2 = I_BlendDark(dest2[SCREENWIDTH*(fuzzoffset[fuzzpos]-FUZZOFF)/2], 0xD3);
+		* dest = I_BlendDark(dest[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2], 0xD3);
+		*dest2 = I_BlendDark(dest2[SCREENWIDTH * (fuzzoffset[fuzzpos] - FUZZOFF) / 2], 0xD3);
 #endif
 	}
 }
@@ -560,7 +560,7 @@ void R_DrawTranslatedColumn()
 
 	// Looks familiar.
 	fracstep = dc_iscale;
-	frac = dc_texturemid + (dc_yl-centery)*fracstep;
+	frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
 	// Here we do an additional index re-mapping.
 	do
@@ -570,7 +570,7 @@ void R_DrawTranslatedColumn()
 		// used with PLAY sprites.
 		// Thus the "green" ramp of the player 0 sprite
 		// is mapped to gray, red, black/indigo.
-		*dest = dc_colormap[0][dc_translation[dc_source[frac>>FRACBITS]]];
+		*dest = dc_colormap[0][dc_translation[dc_source[frac >> FRACBITS]]];
 		dest += SCREENWIDTH;
 
 		frac += fracstep;
@@ -603,11 +603,11 @@ void R_DrawTranslatedColumnLow()
 #endif
 
 	dest = ylookup[dc_yl] + columnofs[flipviewwidth[x]];
-	dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x+1]];
+	dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x + 1]];
 
 	// Looks familiar.
 	fracstep = dc_iscale;
-	frac = dc_texturemid + (dc_yl-centery)*fracstep;
+	frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
 	// Here we do an additional index re-mapping.
 	do
@@ -617,8 +617,8 @@ void R_DrawTranslatedColumnLow()
 		// used with PLAY sprites.
 		// Thus the "green" ramp of the player 0 sprite
 		// is mapped to gray, red, black/indigo.
-		*dest = dc_colormap[0][dc_translation[dc_source[frac>>FRACBITS]]];
-		*dest2 = dc_colormap[0][dc_translation[dc_source[frac>>FRACBITS]]];
+		*dest = dc_colormap[0][dc_translation[dc_source[frac >> FRACBITS]]];
+		*dest2 = dc_colormap[0][dc_translation[dc_source[frac >> FRACBITS]]];
 		dest += SCREENWIDTH;
 		dest2 += SCREENWIDTH;
 
@@ -649,15 +649,15 @@ void R_DrawTLColumn()
 	dest = ylookup[dc_yl] + columnofs[flipviewwidth[dc_x]];
 
 	fracstep = dc_iscale;
-	frac = dc_texturemid + (dc_yl-centery)*fracstep;
+	frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
 	do
 	{
 #ifndef CRISPY_TRUECOLOR
 		// actual translucency map lookup taken from boom202s/R_DRAW.C:255
-		*dest = tranmap[(*dest<<8)+dc_colormap[0][dc_source[frac>>FRACBITS]]];
+		* dest = tranmap[(*dest << 8) + dc_colormap[0][dc_source[frac >> FRACBITS]]];
 #else
-		const pixel_t destrgb = dc_colormap[0][dc_source[frac>>FRACBITS]];
+		const pixel_t destrgb = dc_colormap[0][dc_source[frac >> FRACBITS]];
 		*dest = blendfunc(*dest, destrgb);
 #endif
 		dest += SCREENWIDTH;
@@ -691,18 +691,18 @@ void R_DrawTLColumnLow()
 #endif
 
 	dest = ylookup[dc_yl] + columnofs[flipviewwidth[x]];
-	dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x+1]];
+	dest2 = ylookup[dc_yl] + columnofs[flipviewwidth[x + 1]];
 
 	fracstep = dc_iscale;
-	frac = dc_texturemid + (dc_yl-centery)*fracstep;
+	frac = dc_texturemid + (dc_yl - centery) * fracstep;
 
 	do
 	{
 #ifndef CRISPY_TRUECOLOR
-		*dest = tranmap[(*dest<<8)+dc_colormap[0][dc_source[frac>>FRACBITS]]];
-		*dest2 = tranmap[(*dest2<<8)+dc_colormap[0][dc_source[frac>>FRACBITS]]];
+		* dest = tranmap[(*dest << 8) + dc_colormap[0][dc_source[frac >> FRACBITS]]];
+		*dest2 = tranmap[(*dest2 << 8) + dc_colormap[0][dc_source[frac >> FRACBITS]]];
 #else
-		const pixel_t destrgb = dc_colormap[0][dc_source[frac>>FRACBITS]];
+		const pixel_t destrgb = dc_colormap[0][dc_source[frac >> FRACBITS]];
 		*dest = blendfunc(*dest, destrgb);
 		*dest2 = blendfunc(*dest2, destrgb);
 #endif
@@ -722,22 +722,22 @@ void R_DrawTLColumnLow()
 //
 void R_InitTranslationTables()
 {
-	translationtables = Z_Malloc<decltype(translationtables)>(256*3, pu_tags_t::PU_STATIC, 0);
+	translationtables = Z_Malloc<decltype(translationtables)>(256 * 3, pu_tags_t::PU_STATIC, 0);
 
 	// translate just the 16 green colors
-	for (size_t i{0} ; i < 256 ; ++i)
+	for (size_t i{0}; i < 256; ++i)
 	{
-		if (i >= 0x70 && i<= 0x7f)
+		if (i >= 0x70 && i <= 0x7f)
 		{
 			// map green ramp to gray, brown, red
-			translationtables[i] = 0x60 + (i&0xf);
-			translationtables[i+256] = 0x40 + (i&0xf);
-			translationtables[i+512] = 0x20 + (i&0xf);
+			translationtables[i] = 0x60 + (i & 0xf);
+			translationtables[i + 256] = 0x40 + (i & 0xf);
+			translationtables[i + 512] = 0x20 + (i & 0xf);
 		}
 		else
 		{
 			// Keep all other colors as is.
-			translationtables[i] = translationtables[i+256] = translationtables[i+512] = i;
+			translationtables[i] = translationtables[i + 256] = translationtables[i + 512] = i;
 		}
 	}
 }
@@ -780,7 +780,7 @@ void R_DrawSpan()
 	unsigned xtemp, ytemp;
 
 #ifdef RANGECHECK
-	if (ds_x2 < ds_x1 || ds_x1<0 || ds_x2>=SCREENWIDTH || (unsigned)ds_y>SCREENHEIGHT)
+	if (ds_x2 < ds_x1 || ds_x1<0 || ds_x2 >= SCREENWIDTH || (unsigned)ds_y>SCREENHEIGHT)
 	{
 		I_Error("R_DrawSpan: %i to %i at %i", ds_x1, ds_x2, ds_y);
 	}
@@ -799,9 +799,9 @@ void R_DrawSpan()
 			| ((ds_ystep >> 6) & 0x0000ffff);
 */
 
-	// dest = ylookup[ds_y] + columnofs[ds_x1];
+// dest = ylookup[ds_y] + columnofs[ds_x1];
 
-	// We do not check for zero spans here?
+// We do not check for zero spans here?
 	count = ds_x2 - ds_x1;
 
 	do
@@ -843,8 +843,8 @@ void R_DrawSpan()
 	unsigned xtemp;
 	unsigned ytemp;
 
-	position = ((ds_xfrac<<10)&0xffff0000) | ((ds_yfrac>>6)&0xffff);
-	step = ((ds_xstep<<10)&0xffff0000) | ((ds_ystep>>6)&0xffff);
+	position = ((ds_xfrac << 10) & 0xffff0000) | ((ds_yfrac >> 6) & 0xffff);
+	step = ((ds_xstep << 10) & 0xffff0000) | ((ds_ystep >> 6) & 0xffff);
 
 	source = ds_source;
 	colormap = ds_colormap;
@@ -853,30 +853,30 @@ void R_DrawSpan()
 
 	while (count >= 4)
 	{
-		ytemp = position>>4;
+		ytemp = position >> 4;
 		ytemp = ytemp & 4032;
-		xtemp = position>>26;
+		xtemp = position >> 26;
 		spot = xtemp | ytemp;
 		position += step;
 		dest[0] = colormap[source[spot]];
 
-		ytemp = position>>4;
+		ytemp = position >> 4;
 		ytemp = ytemp & 4032;
-		xtemp = position>>26;
+		xtemp = position >> 26;
 		spot = xtemp | ytemp;
 		position += step;
 		dest[1] = colormap[source[spot]];
 
-		ytemp = position>>4;
+		ytemp = position >> 4;
 		ytemp = ytemp & 4032;
-		xtemp = position>>26;
+		xtemp = position >> 26;
 		spot = xtemp | ytemp;
 		position += step;
 		dest[2] = colormap[source[spot]];
 
-		ytemp = position>>4;
+		ytemp = position >> 4;
 		ytemp = ytemp & 4032;
-		xtemp = position>>26;
+		xtemp = position >> 26;
 		spot = xtemp | ytemp;
 		position += step;
 		dest[3] = colormap[source[spot]];
@@ -886,9 +886,9 @@ void R_DrawSpan()
 	}
 	while (count > 0)
 	{
-		ytemp = position>>4;
+		ytemp = position >> 4;
 		ytemp = ytemp & 4032;
-		xtemp = position>>26;
+		xtemp = position >> 26;
 		spot = xtemp | ytemp;
 		position += step;
 		*dest = colormap[source[spot]];
@@ -901,7 +901,7 @@ void R_DrawSpan()
 void R_DrawSpanLow()
 {
 #ifdef RANGECHECK
-	if (ds_x2 < ds_x1 || ds_x1<0 || ds_x2>=SCREENWIDTH || (unsigned)ds_y>SCREENHEIGHT)
+	if (ds_x2 < ds_x1 || ds_x1<0 || ds_x2 >= SCREENWIDTH || (unsigned)ds_y>SCREENHEIGHT)
 	{
 		I_Error("R_DrawSpan: %i to %i at %i", ds_x1, ds_x2, ds_y);
 	}
@@ -934,7 +934,7 @@ void R_DrawSpanLow()
 		// Lowres/blocky mode does it twice,
 		// while scale is adjusted appropriately.
 		byte source{ds_source[spot]};
-	
+
 		pixel_t* dest{ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]]};
 		*dest = ds_colormap[ds_brightmap[source]][source];
 		dest = ylookup[ds_y] + columnofs[flipviewwidth[ds_x1++]];
@@ -956,7 +956,7 @@ void R_InitBuffer(int width, int height)
 	// Handle resize,
 	// e.g. smaller view windows
 	// with border and/or status bar.
-	viewwindowx = (SCREENWIDTH-width) >> 1;
+	viewwindowx = (SCREENWIDTH - width) >> 1;
 
 	// Column offset. For windows.
 	for (size_t i{0}; i < width; ++i)
@@ -971,13 +971,13 @@ void R_InitBuffer(int width, int height)
 	}
 	else
 	{
-		viewwindowy = (SCREENHEIGHT-SBARHEIGHT-height) >> 1;
+		viewwindowy = (SCREENHEIGHT - SBARHEIGHT - height) >> 1;
 	}
 
 	// Preclaculate all row offsets.
 	for (size_t i{0}; i < height; ++i)
 	{
-		ylookup[i] = I_VideoBuffer + (i+viewwindowy)*SCREENWIDTH;
+		ylookup[i] = I_VideoBuffer + (i + viewwindowy) * SCREENWIDTH;
 	}
 }
 
@@ -1010,9 +1010,9 @@ void R_FillBackScreen()
 	if (!background_buffer)
 	{
 		background_buffer = Z_Malloc<decltype(background_buffer)>(
-										MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
-										pu_tags_t::PU_STATIC,
-										nullptr);
+			MAXWIDTH * (MAXHEIGHT - SBARHEIGHT) * sizeof(*background_buffer),
+			pu_tags_t::PU_STATIC,
+			nullptr);
 	}
 
 	std::string name;
@@ -1028,24 +1028,24 @@ void R_FillBackScreen()
 	byte* src = W_CacheLumpName<byte>(name, pu_tags_t::PU_CACHE);
 	pixel_t* dest = background_buffer;
 
-	for (auto y{0}; y < SCREENHEIGHT-SBARHEIGHT; ++y)
+	for (auto y{0}; y < SCREENHEIGHT - SBARHEIGHT; ++y)
 	{
 #ifndef CRISPY_TRUECOLOR
-		for (auto x{0}; x < SCREENWIDTH/64; ++x)
+		for (auto x{0}; x < SCREENWIDTH / 64; ++x)
 		{
-			memcpy(dest, src+((y&63)<<6), 64);
+			memcpy(dest, src + ((y & 63) << 6), 64);
 			dest += 64;
 		}
 
-		if (SCREENWIDTH&63)
+		if (SCREENWIDTH & 63)
 		{
-			memcpy(dest, src+((y&63)<<6), SCREENWIDTH&63);
-			dest += (SCREENWIDTH&63);
+			memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+			dest += (SCREENWIDTH & 63);
 		}
 #else
-		for (auto x{0}; x < SCREENWIDTH ; ++x)
+		for (auto x{0}; x < SCREENWIDTH; ++x)
 		{
-			*dest = colormaps[src[((y&63)<<6) + (x&63)]];
+			*dest = colormaps[src[((y & 63) << 6) + (x & 63)]];
 			++dest;
 		}
 #endif
@@ -1057,40 +1057,40 @@ void R_FillBackScreen()
 
 	for (auto x{0}; x < (scaledviewwidth >> crispy->hires); x += 8)
 	{
-		V_DrawPatch((viewwindowx >> crispy->hires)+x-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8, patch);
+		V_DrawPatch((viewwindowx >> crispy->hires) + x - WIDESCREENDELTA, (viewwindowy >> crispy->hires) - 8, patch);
 	}
 	patch = W_CacheLumpName<patch_t>(DEH_String("brdr_b"), pu_tags_t::PU_CACHE);
 
 	for (auto x{0}; x < (scaledviewwidth >> crispy->hires); x += 8)
 	{
-		V_DrawPatch((viewwindowx >> crispy->hires)+x-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires), patch);
+		V_DrawPatch((viewwindowx >> crispy->hires) + x - WIDESCREENDELTA, (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires), patch);
 	}
 	patch = W_CacheLumpName<patch_t>(DEH_String("brdr_l"), pu_tags_t::PU_CACHE);
 
 	for (auto y{0}; y < (viewheight >> crispy->hires); y += 8)
 	{
-		V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+y, patch);
+		V_DrawPatch((viewwindowx >> crispy->hires) - 8 - WIDESCREENDELTA, (viewwindowy >> crispy->hires) + y, patch);
 	}
 	patch = W_CacheLumpName<patch_t>(DEH_String("brdr_r"), pu_tags_t::PU_CACHE);
 
 	for (auto y{0}; y < (viewheight >> crispy->hires); y += 8)
 	{
-		V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+y, patch);
+		V_DrawPatch((viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - WIDESCREENDELTA, (viewwindowy >> crispy->hires) + y, patch);
 	}
 
 	// Draw beveled edge.
-	V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8,
-				W_CacheLumpName<patch_t>(DEH_String("brdr_tl"), pu_tags_t::PU_CACHE));
+	V_DrawPatch((viewwindowx >> crispy->hires) - 8 - WIDESCREENDELTA, (viewwindowy >> crispy->hires) - 8,
+		W_CacheLumpName<patch_t>(DEH_String("brdr_tl"), pu_tags_t::PU_CACHE));
 
-	V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8,
-				W_CacheLumpName<patch_t>(DEH_String("brdr_tr"), pu_tags_t::PU_CACHE));
+	V_DrawPatch((viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - WIDESCREENDELTA, (viewwindowy >> crispy->hires) - 8,
+		W_CacheLumpName<patch_t>(DEH_String("brdr_tr"), pu_tags_t::PU_CACHE));
 
-	V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
-				W_CacheLumpName<patch_t>(DEH_String("brdr_bl"), pu_tags_t::PU_CACHE));
+	V_DrawPatch((viewwindowx >> crispy->hires) - 8 - WIDESCREENDELTA, (viewwindowy >> crispy->hires) + (viewheight >> crispy->hires),
+		W_CacheLumpName<patch_t>(DEH_String("brdr_bl"), pu_tags_t::PU_CACHE));
 
-	V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA,
-				(viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
-				W_CacheLumpName<patch_t>(DEH_String("brdr_br"), pu_tags_t::PU_CACHE));
+	V_DrawPatch((viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - WIDESCREENDELTA,
+		(viewwindowy >> crispy->hires) + (viewheight >> crispy->hires),
+		W_CacheLumpName<patch_t>(DEH_String("brdr_br"), pu_tags_t::PU_CACHE));
 
 	V_RestoreBuffer();
 }
@@ -1116,18 +1116,18 @@ void R_DrawViewBorder()
 		return;
 	}
 
-	auto top{((SCREENHEIGHT-SBARHEIGHT)-viewheight)/2};
-	auto side{(SCREENWIDTH-scaledviewwidth)/2};
+	auto top{((SCREENHEIGHT - SBARHEIGHT) - viewheight) / 2};
+	auto side{(SCREENWIDTH - scaledviewwidth) / 2};
 
 	// copy top and one line of left side
-	R_VideoErase(0, top*SCREENWIDTH+side);
+	R_VideoErase(0, top * SCREENWIDTH + side);
 
 	// copy one line of right side and bottom
-	auto ofs{(viewheight+top)*SCREENWIDTH-side};
-	R_VideoErase(ofs, top*SCREENWIDTH+side);
+	auto ofs{(viewheight + top) * SCREENWIDTH - side};
+	R_VideoErase(ofs, top * SCREENWIDTH + side);
 
 	// copy sides using wraparound
-	ofs = top*SCREENWIDTH + SCREENWIDTH-side;
+	ofs = top * SCREENWIDTH + SCREENWIDTH - side;
 	side <<= 1;
 
 	for (size_t i{1}; i < viewheight; ++i)
@@ -1136,5 +1136,5 @@ void R_DrawViewBorder()
 		ofs += SCREENWIDTH;
 	}
 
-	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT-SBARHEIGHT);
+	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT - SBARHEIGHT);
 }

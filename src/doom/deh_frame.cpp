@@ -7,9 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses "Frame" sections in dehacked files
+	DESCRIPTION:
+		Parses "Frame" sections in dehacked files
 \**********************************************************************************************************************************************/
-
 
 #include "doomtype.h"
 #include "d_items.h"
@@ -21,13 +21,13 @@
 #include "deh_mapping.h"
 
 DEH_BEGIN_MAPPING(state_mapping, state_t)
- DEH_MAPPING("Sprite number",	sprite)
- DEH_MAPPING("Sprite subnumber", frame)
- DEH_MAPPING("Duration",			tics)
- DEH_MAPPING("Next frame",		nextstate)
- DEH_MAPPING("Unknown 1",		misc1)
- DEH_MAPPING("Unknown 2",		misc2)
- DEH_UNSUPPORTED_MAPPING("Codep frame")
+DEH_MAPPING("Sprite number", sprite)
+DEH_MAPPING("Sprite subnumber", frame)
+DEH_MAPPING("Duration", tics)
+DEH_MAPPING("Next frame", nextstate)
+DEH_MAPPING("Unknown 1", misc1)
+DEH_MAPPING("Unknown 2", misc2)
+DEH_UNSUPPORTED_MAPPING("Codep frame")
 DEH_END_MAPPING
 
 static void* DEH_FrameStart(deh_context_t* context, std::string line)
@@ -50,7 +50,7 @@ static void* DEH_FrameStart(deh_context_t* context, std::string line)
 	if (frame_number >= DEH_VANILLA_NUMSTATES)
 	{
 		DEH_Warning(context, "Attempt to modify frame %i: this will cause "
-								"problems in Vanilla dehacked.", frame_number);
+			"problems in Vanilla dehacked.", frame_number);
 	}
 
 	state = &states[frame_number];
@@ -91,20 +91,20 @@ static void DEH_FrameOverflow(deh_context_t* context, std::string varname, int v
 	else
 	{
 		DEH_Error(context, "Unable to simulate frame overflow: field '%s'",
-					varname);
+			varname);
 	}
 }
 
 static void DEH_FrameParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	state_t* state;
-	std::string variable_name, *value;
+	std::string variable_name, * value;
 	int ivalue;
 
 	if (tag == NULL)
 		return;
 
-	state = (state_t*) tag;
+	state = (state_t*)tag;
 
 	// Parse the assignment
 

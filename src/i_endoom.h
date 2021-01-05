@@ -43,11 +43,11 @@ void I_Endoom(byte* endoom_data)
 
 	indent = (ENDOOM_W - cudadoom::txt::SCREEN_W) / 2;
 
-	for (y=0; y<cudadoom::txt::SCREEN_H; ++y)
+	for (y = 0; y < cudadoom::txt::SCREEN_H; ++y)
 	{
 		memcpy(screendata + (y * cudadoom::txt::SCREEN_W * 2),
-				endoom_data + (y * ENDOOM_W + indent) * 2,
-				cudadoom::txt::SCREEN_W * 2);
+			endoom_data + (y * ENDOOM_W + indent) * 2,
+			cudadoom::txt::SCREEN_W * 2);
 	}
 
 	// Wait for a keypress

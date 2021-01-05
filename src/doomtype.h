@@ -18,36 +18,36 @@
 #include "config.h"
 
 #ifndef CRISPY_TRUECOLOR
-	using pixel_t = uint8_t;
-	using dpixel_t = int16_t;
+using pixel_t = uint8_t;
+using dpixel_t = int16_t;
 #else
-	using pixel_t = uint32_t;
-	using dpixel_t = int64_t;
+using pixel_t = uint32_t;
+using dpixel_t = int64_t;
 #endif
 
 #ifdef _WIN32
-	#define DIR_SEPARATOR '\\'
-	#define DIR_SEPARATOR_S "\\"
-	#define PATH_SEPARATOR ';'
+#define DIR_SEPARATOR '\\'
+#define DIR_SEPARATOR_S "\\"
+#define PATH_SEPARATOR ';'
 #else
-	#define DIR_SEPARATOR '/'
-	#define DIR_SEPARATOR_S "/"
-	#define PATH_SEPARATOR ':'
+#define DIR_SEPARATOR '/'
+#define DIR_SEPARATOR_S "/"
+#define PATH_SEPARATOR ':'
 #endif
 
 #define arrlen(array) (sizeof(array) / sizeof(*array))
 
 // #define macros to provide functions missing in Windows. Outside Windows, we use strings.h for str[n]casecmp.
 #if !HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP
-	#if !HAVE_DECL_STRCASECMP
-		//#define iequals stricmp
-	#endif
+#if !HAVE_DECL_STRCASECMP
+	//#define iequals stricmp
+#endif
 
-	#if !HAVE_DECL_STRNCASECMP
-		//#define strncasecmp strnicmp
-	#endif
+#if !HAVE_DECL_STRNCASECMP
+	//#define strncasecmp strnicmp
+#endif
 #else
-	#include <strings.h>
+#include <strings.h>
 #endif
 
 // The packed attribute forces structures to be packed into the minimum
@@ -58,33 +58,33 @@
 // to disk.
 
 #ifdef __GNUC__
-	#if defined(_WIN32) && !defined(__clang__)
-		#define PACKEDATTR __attribute__((packed,gcc_struct))
-	#else
-		#define PACKEDATTR __attribute__((packed))
-	#endif
-
-	#define PRINTF_ATTR(fmt, first) __attribute__((format(printf, fmt, first)))
-	#define PRINTF_ARG_ATTR(x) __attribute__((format_arg(x)))
-	#define NORETURN __attribute__((noreturn))
+#if defined(_WIN32) && !defined(__clang__)
+#define PACKEDATTR __attribute__((packed,gcc_struct))
 #else
-	#if defined(_MSC_VER)
-		#define PACKEDATTR __pragma(pack(pop))
-	#else
-		#define PACKEDATTR
-	#endif
+#define PACKEDATTR __attribute__((packed))
+#endif
 
-	#define PRINTF_ATTR(fmt, first)
-	#define PRINTF_ARG_ATTR(x)
-	#define NORETURN
+#define PRINTF_ATTR(fmt, first) __attribute__((format(printf, fmt, first)))
+#define PRINTF_ARG_ATTR(x) __attribute__((format_arg(x)))
+#define NORETURN __attribute__((noreturn))
+#else
+#if defined(_MSC_VER)
+#define PACKEDATTR __pragma(pack(pop))
+#else
+#define PACKEDATTR
+#endif
+
+#define PRINTF_ATTR(fmt, first)
+#define PRINTF_ARG_ATTR(x)
+#define NORETURN
 #endif
 
 #ifdef __WATCOMC__
-	#define PACKEDPREFIX _Packed
+#define PACKEDPREFIX _Packed
 #elif defined(_MSC_VER)
-	#define PACKEDPREFIX __pragma(pack(push,1))
+#define PACKEDPREFIX __pragma(pack(push,1))
 #else
-	#define PACKEDPREFIX
+#define PACKEDPREFIX
 #endif
 
 #define PACKED_STRUCT(...) PACKEDPREFIX struct __VA_ARGS__ PACKEDATTR

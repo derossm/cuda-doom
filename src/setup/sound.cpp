@@ -35,7 +35,7 @@ static std::string opltype_strings[] =
 	"OPL3"
 };
 
-static std::string cfg_extension[] = { "cfg", NULL };
+static std::string cfg_extension[] = {"cfg", NULL};
 
 // Config file variables:
 int snd_sfxdevice = snddevice_t::SB;
@@ -78,14 +78,14 @@ static void UpdateSndDevices(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::U
 {
 	switch (snd_oplmode)
 	{
-		default:
-		case OPLMODE_OPL2:
-			snd_dmxoption = "";
-			break;
+	default:
+	case OPLMODE_OPL2:
+		snd_dmxoption = "";
+		break;
 
-		case OPLMODE_OPL3:
-			snd_dmxoption = "-opl3";
-			break;
+	case OPLMODE_OPL3:
+		snd_dmxoption = "-opl3";
+		break;
 	}
 }
 
@@ -128,7 +128,7 @@ void ConfigSound(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 
 	cudadoom::txt::SetColumnWidths(window, 40);
 	cudadoom::txt::SetWindowPosition(window, cudadoom::txt::HORIZ_CENTER, cudadoom::txt::VERT_TOP,
-									cudadoom::txt::SCREEN_W / 2, 3);
+		cudadoom::txt::SCREEN_W / 2, 3);
 
 	music_action = cudadoom::txt::NewWindowAction('m', "Music Packs");
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_CENTER, music_action);
@@ -139,10 +139,10 @@ void ConfigSound(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 		cudadoom::txt::NewRadioButton("Disabled", &snd_sfxdevice, snddevice_t::NONE),
 		cudadoom::txt::If(gamemission == doom,
 			cudadoom::txt::NewRadioButton("PC speaker effects", &snd_sfxdevice,
-								snddevice_t::PCSPEAKER)),
+				snddevice_t::PCSPEAKER)),
 		cudadoom::txt::NewRadioButton("Digital sound effects",
-							&snd_sfxdevice,
-							snddevice_t::SB),
+			&snd_sfxdevice,
+			snddevice_t::SB),
 		cudadoom::txt::If(gamemission == doom || gamemission == heretic
 			|| gamemission == hexen,
 			cudadoom::txt::NewConditional(&snd_sfxdevice, snddevice_t::SB,
@@ -161,7 +161,7 @@ void ConfigSound(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 		cudadoom::txt::NewRadioButton("Disabled", &snd_musicdevice, snddevice_t::NONE),
 
 		cudadoom::txt::NewRadioButton("OPL (Adlib/Soundblaster)", &snd_musicdevice,
-							snddevice_t::SB),
+			snddevice_t::SB),
 		cudadoom::txt::NewConditional(&snd_musicdevice, snddevice_t::SB,
 			cudadoom::txt::MakeHorizontalTable(
 				cudadoom::txt::NewStrut(4, 0),
@@ -176,8 +176,8 @@ void ConfigSound(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 				cudadoom::txt::NewLabel("Path to patch files: "),
 				cudadoom::txt::NewStrut(4, 0),
 				cudadoom::txt::NewFileSelector(&gus_patch_path, 34,
-									"Select directory containing GUS patches",
-									cudadoom::txt::DIRECTORY),
+					"Select directory containing GUS patches",
+					cudadoom::txt::DIRECTORY),
 				NULL)),
 
 		cudadoom::txt::NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice, snddevice_t::GENMIDI), // [crispy] improve ambigious music backend name
@@ -187,46 +187,46 @@ void ConfigSound(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 				cudadoom::txt::NewLabel("Timidity configuration file: "),
 				cudadoom::txt::NewStrut(4, 0),
 				cudadoom::txt::NewFileSelector(&timidity_cfg_path, 34,
-									"Select Timidity config file",
-									cfg_extension),
+					"Select Timidity config file",
+					cfg_extension),
 				NULL)),
 		NULL);
 }
 
 void BindSoundVariables()
 {
-	M_BindIntVariable("snd_sfxdevice",			&snd_sfxdevice);
-	M_BindIntVariable("snd_musicdevice",			&snd_musicdevice);
-	M_BindIntVariable("snd_channels",				&numChannels);
-	M_BindIntVariable("snd_samplerate",			&snd_samplerate);
-	M_BindIntVariable("sfx_volume",				&sfxVolume);
-	M_BindIntVariable("music_volume",				&musicVolume);
+	M_BindIntVariable("snd_sfxdevice", &snd_sfxdevice);
+	M_BindIntVariable("snd_musicdevice", &snd_musicdevice);
+	M_BindIntVariable("snd_channels", &numChannels);
+	M_BindIntVariable("snd_samplerate", &snd_samplerate);
+	M_BindIntVariable("sfx_volume", &sfxVolume);
+	M_BindIntVariable("music_volume", &musicVolume);
 
-	M_BindIntVariable("use_libsamplerate",		&use_libsamplerate);
-	M_BindFloatVariable("libsamplerate_scale",	&libsamplerate_scale);
+	M_BindIntVariable("use_libsamplerate", &use_libsamplerate);
+	M_BindFloatVariable("libsamplerate_scale", &libsamplerate_scale);
 
-	M_BindIntVariable("gus_ram_kb",				&gus_ram_kb);
-	M_BindStringVariable("gus_patch_path",		&gus_patch_path);
-	M_BindStringVariable("music_pack_path",		&music_pack_path);
-	M_BindStringVariable("timidity_cfg_path",		&timidity_cfg_path);
+	M_BindIntVariable("gus_ram_kb", &gus_ram_kb);
+	M_BindStringVariable("gus_patch_path", &gus_patch_path);
+	M_BindStringVariable("music_pack_path", &music_pack_path);
+	M_BindStringVariable("timidity_cfg_path", &timidity_cfg_path);
 
-	M_BindIntVariable("snd_sbport",				&snd_sbport);
-	M_BindIntVariable("snd_sbirq",				&snd_sbirq);
-	M_BindIntVariable("snd_sbdma",				&snd_sbdma);
-	M_BindIntVariable("snd_mport",				&snd_mport);
-	M_BindIntVariable("snd_maxslicetime_ms",		&snd_maxslicetime_ms);
-	M_BindStringVariable("snd_musiccmd",			&snd_musiccmd);
-	M_BindStringVariable("snd_dmxoption",			&snd_dmxoption);
+	M_BindIntVariable("snd_sbport", &snd_sbport);
+	M_BindIntVariable("snd_sbirq", &snd_sbirq);
+	M_BindIntVariable("snd_sbdma", &snd_sbdma);
+	M_BindIntVariable("snd_mport", &snd_mport);
+	M_BindIntVariable("snd_maxslicetime_ms", &snd_maxslicetime_ms);
+	M_BindStringVariable("snd_musiccmd", &snd_musiccmd);
+	M_BindStringVariable("snd_dmxoption", &snd_dmxoption);
 
-	M_BindIntVariable("snd_cachesize",			&snd_cachesize);
-	M_BindIntVariable("opl_io_port",				&opl_io_port);
+	M_BindIntVariable("snd_cachesize", &snd_cachesize);
+	M_BindIntVariable("opl_io_port", &opl_io_port);
 
-	M_BindIntVariable("snd_pitchshift",			&snd_pitchshift);
+	M_BindIntVariable("snd_pitchshift", &snd_pitchshift);
 
 	if (gamemission == strife)
 	{
-		M_BindIntVariable("voice_volume",			&voiceVolume);
-		M_BindIntVariable("show_talk",			&show_talk);
+		M_BindIntVariable("voice_volume", &voiceVolume);
+		M_BindIntVariable("show_talk", &show_talk);
 	}
 
 	music_pack_path = std::string("");
@@ -240,16 +240,16 @@ void BindSoundVariables()
 	// Default sound volumes - different games use different values.
 	switch (gamemission)
 	{
-		case doom:
-		default:
-			sfxVolume = 8; musicVolume = 8;
-			break;
-		case heretic:
-		case hexen:
-			sfxVolume = 10; musicVolume = 10;
-			break;
-		case strife:
-			sfxVolume = 8; musicVolume = 13;
-			break;
+	case doom:
+	default:
+		sfxVolume = 8; musicVolume = 8;
+		break;
+	case heretic:
+	case hexen:
+		sfxVolume = 10; musicVolume = 10;
+		break;
+	case strife:
+		sfxVolume = 8; musicVolume = 13;
+		break;
 	}
 }

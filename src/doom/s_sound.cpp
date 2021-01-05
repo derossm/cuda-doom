@@ -7,10 +7,7 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-// DESCRIPTION: none
 \**********************************************************************************************************************************************/
-
 
 #include "i_sound.h"
 #include "i_system.h"
@@ -186,21 +183,21 @@ static const altmusic_t altmusic_plut[] =
 
 static void S_RegisterAltMusic()
 {
-	const altmusic_t* altmusic_fromto, *altmusic;
+	const altmusic_t* altmusic_fromto, * altmusic;
 
 	if (gamemission == GameMission::pack_tnt)
 	{
 		altmusic_fromto = altmusic_tnt;
 	}
 	else
-	if (gamemission == GameMission::pack_plut)
-	{
-		altmusic_fromto = altmusic_plut;
-	}
-	else
-	{
-		return;
-	}
+		if (gamemission == GameMission::pack_plut)
+		{
+			altmusic_fromto = altmusic_plut;
+		}
+		else
+		{
+			return;
+		}
 
 	// [crispy] chicken-out if only one lump is missing, something must be wrong
 	for (altmusic = altmusic_fromto; altmusic->from; ++altmusic)
@@ -256,11 +253,11 @@ void S_Init(int sfxVolume, int musicVolume)
 	// (the maximum numer of sounds rendered
 	// simultaneously) within zone memory.
 	// [crispy] variable number of sound channels
-	channels = I_Realloc(NULL, snd_channels*sizeof(channel_t));
-	sobjs = I_Realloc(NULL, snd_channels*sizeof(degenmobj_t));
+	channels = I_Realloc(NULL, snd_channels * sizeof(channel_t));
+	sobjs = I_Realloc(NULL, snd_channels * sizeof(degenmobj_t));
 
 	// Free all channels for use
-	for (i=0 ; i<snd_channels ; ++i)
+	for (i = 0; i < snd_channels; ++i)
 	{
 		channels[i].sfxinfo = 0;
 	}
@@ -269,7 +266,7 @@ void S_Init(int sfxVolume, int musicVolume)
 	mus_paused = 0;
 
 	// Note that sounds have not been cached (yet).
-	for (i=1 ; i< sfxenum_t::NUMSFX ; ++i)
+	for (i = 1; i < sfxenum_t::NUMSFX; ++i)
 	{
 		S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
 	}
@@ -324,7 +321,7 @@ static void S_StopChannel(int cnum)
 
 		// check to see if other channels are playing the sound
 
-		for (i=0; i<snd_channels; ++i)
+		for (i = 0; i < snd_channels; ++i)
 		{
 			if (cnum != i && c->sfxinfo == channels[i].sfxinfo)
 			{
@@ -386,11 +383,11 @@ void S_Start()
 			mnum = nmus[gamemap - 1];
 		}
 		else
-		mnum = musicenum_t::mus_runnin + gamemap - 1;
+			mnum = musicenum_t::mus_runnin + gamemap - 1;
 	}
 	else
 	{
-		int spmus[]=
+		int spmus[] =
 		{
 			// Song - Who? - Where?
 
@@ -407,11 +404,11 @@ void S_Start()
 
 		if (gameepisode < 4 || gameepisode == 5) // [crispy] Sigil
 		{
-			mnum = (int)musicenum_t::mus_e1m1 + (gameepisode-1)*9 + gamemap-1;
+			mnum = (int)musicenum_t::mus_e1m1 + (gameepisode - 1) * 9 + gamemap - 1;
 		}
 		else
 		{
-			mnum = spmus[gamemap-1];
+			mnum = spmus[gamemap - 1];
 
 			// [crispy] support dedicated music tracks for the 4th episode
 			{
@@ -447,7 +444,7 @@ void S_StopSound(MapObject* origin)
 {
 	int cnum;
 
-	for (cnum=0 ; cnum<snd_channels ; ++cnum)
+	for (cnum = 0; cnum < snd_channels; ++cnum)
 	{
 		if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
 		{
@@ -470,7 +467,7 @@ void S_UnlinkSound(MapObject* origin)
 
 	if (origin)
 	{
-		for (cnum=0 ; cnum<snd_channels ; ++cnum)
+		for (cnum = 0; cnum < snd_channels; ++cnum)
 		{
 			if (channels[cnum].sfxinfo && channels[cnum].origin == origin)
 			{
@@ -478,7 +475,7 @@ void S_UnlinkSound(MapObject* origin)
 				sobj->x = origin->x;
 				sobj->y = origin->y;
 				sobj->z = origin->z;
-				channels[cnum].origin = (MapObject*) sobj;
+				channels[cnum].origin = (MapObject*)sobj;
 				break;
 			}
 		}
@@ -498,7 +495,7 @@ static int S_GetChannel(MapObject* origin, sfxinfo_t* sfxinfo)
 	channel_t* c;
 
 	// Find an open channel
-	for (cnum=0 ; cnum<snd_channels ; ++cnum)
+	for (cnum = 0; cnum < snd_channels; ++cnum)
 	{
 		if (!channels[cnum].sfxinfo)
 		{
@@ -515,7 +512,7 @@ static int S_GetChannel(MapObject* origin, sfxinfo_t* sfxinfo)
 	if (cnum == snd_channels)
 	{
 		// Look for lower priority
-		for (cnum=0 ; cnum<snd_channels ; ++cnum)
+		for (cnum = 0; cnum < snd_channels; ++cnum)
 		{
 			if (channels[cnum].sfxinfo->priority >= sfxinfo->priority)
 			{
@@ -552,7 +549,7 @@ static int S_GetChannel(MapObject* origin, sfxinfo_t* sfxinfo)
 //
 
 static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
-								int *vol, int *sep)
+	int* vol, int* sep)
 {
 	fixed_t approx_dist;
 	fixed_t adx;
@@ -568,7 +565,7 @@ static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
 	ady = abs(listener->y - source->y);
 
 	// From _GG1_ p.428. Appox. eucledian distance fast.
-	approx_dist = adx + ady - ((adx < ady ? adx : ady)>>1);
+	approx_dist = adx + ady - ((adx < ady ? adx : ady) >> 1);
 
 	if (!doom1map8 && approx_dist > S_CLIPPING_DIST)
 	{
@@ -577,9 +574,9 @@ static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
 
 	// angle of source to listener
 	angle = R_PointToAngle2(listener->x,
-							listener->y,
-							source->x,
-							source->y);
+		listener->y,
+		source->x,
+		source->y);
 
 	if (angle > listener->angle)
 	{
@@ -607,15 +604,15 @@ static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
 			approx_dist = S_CLIPPING_DIST;
 		}
 
-		*vol = 15+ ((snd_SfxVolume-15)
-					*((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
+		*vol = 15 + ((snd_SfxVolume - 15)
+			* ((S_CLIPPING_DIST - approx_dist) >> FRACBITS))
 			/ S_ATTENUATOR;
 	}
 	else
 	{
 		// distance effect
 		*vol = (snd_SfxVolume
-				* ((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
+			* ((S_CLIPPING_DIST - approx_dist) >> FRACBITS))
 			/ S_ATTENUATOR;
 	}
 
@@ -647,7 +644,7 @@ void S_StartSound(void* origin_p, int sfx_id)
 	int cnum;
 	int volume;
 
-	origin = (MapObject*) origin_p;
+	origin = (MapObject*)origin_p;
 	volume = snd_SfxVolume;
 
 	// [crispy] make non-fatal, consider zero volume
@@ -687,9 +684,9 @@ void S_StartSound(void* origin_p, int sfx_id)
 	if (origin && origin != players[consoleplayer] && origin != players[consoleplayer].so) // [crispy] weapon sound source
 	{
 		rc = S_AdjustSoundParams(players[consoleplayer],
-									origin,
-									&volume,
-									&sep);
+			origin,
+			&volume,
+			&sep);
 
 		if (origin->x == players[consoleplayer]->x
 			&& origin->y == players[consoleplayer]->y)
@@ -710,18 +707,18 @@ void S_StartSound(void* origin_p, int sfx_id)
 	// hacks to vary the sfx pitches
 	if (sfx_id >= sfxenum_t::sfx_sawup && sfx_id <= sfxenum_t::sfx_sawhit)
 	{
-		pitch += 8 - (M_Random()&15);
+		pitch += 8 - (M_Random() & 15);
 	}
 	else if (sfx_id != sfxenum_t::sfx_itemup && sfx_id != sfxenum_t::sfx_tink)
 	{
-		pitch += 16 - (M_Random()&31);
+		pitch += 16 - (M_Random() & 31);
 	}
 	pitch = Clamp(pitch);
 
 	// kill old sound
 	if (!crispy->soundfull || origin || gamestate != GameState_t::GS_LEVEL)
 	{
-	S_StopSound(origin);
+		S_StopSound(origin);
 	}
 
 	// try to find a channel
@@ -747,7 +744,7 @@ void S_StartSound(void* origin_p, int sfx_id)
 	channels[cnum].handle = I_StartSound(sfx, cnum, volume, sep, channels[cnum].pitch);
 }
 
-void S_StartSoundOnce (void* origin_p, int sfx_id)
+void S_StartSoundOnce(void* origin_p, int sfx_id)
 {
 	int cnum;
 	const sfxinfo_t* const sfx = &S_sfx[sfx_id];
@@ -802,7 +799,7 @@ void S_UpdateSounds(MapObject* listener)
 
 	I_UpdateSound();
 
-	for (cnum=0; cnum<snd_channels; ++cnum)
+	for (cnum = 0; cnum < snd_channels; ++cnum)
 	{
 		c = &channels[cnum];
 		sfx = c->sfxinfo;
@@ -834,9 +831,9 @@ void S_UpdateSounds(MapObject* listener)
 				if (c->origin && listener != c->origin && c->origin != players[consoleplayer].so) // [crispy] weapon sound source
 				{
 					audible = S_AdjustSoundParams(listener,
-													c->origin,
-													&volume,
-													&sep);
+						c->origin,
+						&volume,
+						&sep);
 
 					if (!audible)
 					{
@@ -863,7 +860,7 @@ void S_SetMusicVolume(int volume)
 	if (volume < 0 || volume > 127)
 	{
 		I_Error("Attempt to set music volume at %d",
-				volume);
+			volume);
 	}
 
 	// [crispy] [JN] Fixed bug when music was hearable with zero volume
@@ -872,10 +869,10 @@ void S_SetMusicVolume(int volume)
 		S_PauseSound();
 	}
 	else
-	if (!paused)
-	{
-		S_ResumeSound();
-	}
+		if (!paused)
+		{
+			S_ResumeSound();
+		}
 
 	I_SetMusicVolume(volume);
 }
@@ -940,7 +937,7 @@ void S_ChangeMusic(int musicnum, int looping)
 		musicnum >= musicenum_t::NUMMUSIC || (gamemode != GameMode::commercial && musicnum >= musicenum_t::mus_runnin) ||
 		S_music[musicnum].lumpnum == -1)
 	{
-		const unsigned umusicnum = (unsigned) musicnum;
+		const unsigned umusicnum = (unsigned)musicnum;
 
 		if (gamemode == GameMode::commercial)
 		{
@@ -1109,12 +1106,12 @@ void S_UpdateStereoSeparation()
 		stereo_swing = 0;
 	}
 	else
-	if (crispy->fliplevels)
-	{
-		stereo_swing = -S_STEREO_SWING;
-	}
-	else
-	{
-		stereo_swing = S_STEREO_SWING;
-	}
+		if (crispy->fliplevels)
+		{
+			stereo_swing = -S_STEREO_SWING;
+		}
+		else
+		{
+			stereo_swing = S_STEREO_SWING;
+		}
 }

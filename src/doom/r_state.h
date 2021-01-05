@@ -41,7 +41,7 @@ extern int viewheight;
 
 // [crispy] lookup table for horizontal screen coordinates
 extern int flipscreenwidth[MAXWIDTH];
-extern int *flipviewwidth;
+extern int* flipviewwidth;
 
 extern int firstflat;
 
@@ -94,8 +94,8 @@ extern Player* viewplayer;
 // ?
 extern angle_t clipangle;
 
-extern int viewangletox[FINEANGLES/2];
-extern angle_t xtoviewangle[MAXWIDTH+1];
+extern int viewangletox[FINEANGLES / 2];
+extern angle_t xtoviewangle[MAXWIDTH + 1];
 //extern fixed_t finetangent[FINEANGLES/2];
 
 extern fixed_t rw_distance;

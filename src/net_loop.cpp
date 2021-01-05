@@ -11,7 +11,6 @@
 		Loopback network module for server compiled into the client
 \**********************************************************************************************************************************************/
 
-
 #include "doomtype.h"
 #include "i_system.h"
 #include "m_misc.h"
@@ -95,7 +94,7 @@ static void NET_CL_SendPacket(net_addr_t* addr, net_packet_t* packet)
 	QueuePush(&server_queue, NET_PacketDup(packet));
 }
 
-static bool NET_CL_RecvPacket(net_addr_t**addr, net_packet_t**packet)
+static bool NET_CL_RecvPacket(net_addr_t** addr, net_packet_t** packet)
 {
 	net_packet_t* popped;
 
@@ -119,8 +118,7 @@ static void NET_CL_AddrToString(net_addr_t* addr, std::string buffer, int buffer
 }
 
 static void NET_CL_FreeAddress(net_addr_t* addr)
-{
-}
+{}
 
 static net_addr_t* NET_CL_ResolveAddress(std::string address)
 {
@@ -171,7 +169,7 @@ static void NET_SV_SendPacket(net_addr_t* addr, net_packet_t* packet)
 	QueuePush(&client_queue, NET_PacketDup(packet));
 }
 
-static bool NET_SV_RecvPacket(net_addr_t**addr, net_packet_t**packet)
+static bool NET_SV_RecvPacket(net_addr_t** addr, net_packet_t** packet)
 {
 	net_packet_t* popped;
 
@@ -195,8 +193,7 @@ static void NET_SV_AddrToString(net_addr_t* addr, std::string buffer, int buffer
 }
 
 static void NET_SV_FreeAddress(net_addr_t* addr)
-{
-}
+{}
 
 static net_addr_t* NET_SV_ResolveAddress(std::string address)
 {

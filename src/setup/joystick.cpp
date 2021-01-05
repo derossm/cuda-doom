@@ -94,7 +94,7 @@ static cudadoom::txt::txt_joystick_axis_t* y_axis_widget;
 //
 
 static cudadoom::txt::Window* calibration_window;
-static SDL_Joystick**all_joysticks = NULL;
+static SDL_Joystick** all_joysticks = NULL;
 static int all_joysticks_len = 0;
 
 // Known controllers.
@@ -593,7 +593,7 @@ static const known_joystick_t known_joysticks[] =
 
 static const known_joystick_t* GetJoystickType(int index)
 {
-	SDL_Joystick *joystick;
+	SDL_Joystick* joystick;
 	std::string name;
 	int axes, buttons, hats;
 	int i;
@@ -611,7 +611,7 @@ static const known_joystick_t* GetJoystickType(int index)
 		if (M_StringEndsWith(known_joysticks[i].name, "*"))
 		{
 			if (strncmp(known_joysticks[i].name, name,
-						strlen(known_joysticks[i].name) - 1) != 0)
+				strlen(known_joysticks[i].name) - 1) != 0)
 			{
 				continue;
 			}
@@ -633,7 +633,7 @@ static const known_joystick_t* GetJoystickType(int index)
 	}
 
 	printf("Unknown joystick '%s' with %i axes, %i buttons, %i hats\n",
-			name, axes, buttons, hats);
+		name, axes, buttons, hats);
 	printf("Please consider sending in details about your gamepad!\n");
 
 	return nullptr;
@@ -777,7 +777,7 @@ static void SetJoystickButtonLabel()
 		}
 	}
 
-	cudadoom::txt::SetButtonLabel(joystick_button, (char*) name);
+	cudadoom::txt::SetButtonLabel(joystick_button, (char*)name);
 }
 
 // Try to open all joysticks visible to SDL.
@@ -872,7 +872,7 @@ static bool SetJoystickGUID(SDL_JoystickID joy_id)
 	return false;
 }
 
-static int CalibrationEventCallback(SDL_Event *event, void* user_data)
+static int CalibrationEventCallback(SDL_Event* event, void* user_data)
 {
 	if (event->type != SDL_JOYBUTTONDOWN)
 	{
@@ -904,7 +904,7 @@ static int CalibrationEventCallback(SDL_Event *event, void* user_data)
 		// Calibrate joystick axes: Y axis first, then X axis once
 		// completed.
 		cudadoom::txt::ConfigureJoystickAxis(y_axis_widget, calibrate_button,
-									CalibrateXAxis);
+			CalibrateXAxis);
 	}
 
 	return 1;
@@ -913,9 +913,9 @@ static int CalibrationEventCallback(SDL_Event *event, void* user_data)
 static void NoJoystick()
 {
 	cudadoom::txt::MessageBox(NULL, "No gamepads or joysticks could be found.\n\n"
-							"Try configuring your controller from within\n"
-							"your OS first. Maybe you need to install\n"
-							"some drivers or otherwise configure it.");
+		"Try configuring your controller from within\n"
+		"your OS first. Maybe you need to install\n"
+		"some drivers or otherwise configure it.");
 
 	usejoystick = 0;
 	joystick_index = -1;
@@ -943,15 +943,15 @@ static void CalibrateJoystick(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::
 	calibration_window = cudadoom::txt::NewWindow("Gamepad/Joystick calibration");
 
 	cudadoom::txt::AddWidgets(calibration_window,
-					cudadoom::txt::NewStrut(0, 1),
-					cudadoom::txt::NewLabel("Center the D-pad or joystick,\n"
-								"and press a button."),
-					cudadoom::txt::NewStrut(0, 1),
-					NULL);
+		cudadoom::txt::NewStrut(0, 1),
+		cudadoom::txt::NewLabel("Center the D-pad or joystick,\n"
+			"and press a button."),
+		cudadoom::txt::NewStrut(0, 1),
+		NULL);
 
 	cudadoom::txt::SetWindowAction(calibration_window, cudadoom::txt::HORIZ_LEFT, NULL);
 	cudadoom::txt::SetWindowAction(calibration_window, cudadoom::txt::HORIZ_CENTER,
-						cudadoom::txt::NewWindowAbortAction(calibration_window));
+		cudadoom::txt::NewWindowAbortAction(calibration_window));
 	cudadoom::txt::SetWindowAction(calibration_window, cudadoom::txt::HORIZ_RIGHT, NULL);
 
 	cudadoom::txt::SDL_SetEventCallback(CalibrationEventCallback, NULL);
@@ -967,7 +967,7 @@ static void CalibrateJoystick(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::
 // GUI
 //
 
-static void AddJoystickControl(cudadoom::txt::UNCAST_ARG(table), std::string label, int *var)
+static void AddJoystickControl(cudadoom::txt::UNCAST_ARG(table), std::string label, int* var)
 {
 	cudadoom::txt::CAST_ARG(cudadoom::txt::txt_table_t, table);
 	cudadoom::txt::txt_joystick_input_t* joy_input;
@@ -975,10 +975,10 @@ static void AddJoystickControl(cudadoom::txt::UNCAST_ARG(table), std::string lab
 	joy_input = cudadoom::txt::NewJoystickInput(var);
 
 	cudadoom::txt::AddWidgets(table,
-					cudadoom::txt::NewLabel(label),
-					joy_input,
-					cudadoom::txt::TABLE_EMPTY,
-					NULL);
+		cudadoom::txt::NewLabel(label),
+		joy_input,
+		cudadoom::txt::TABLE_EMPTY,
+		NULL);
 }
 
 void ConfigJoystick(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
@@ -991,52 +991,52 @@ void ConfigJoystick(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 	cudadoom::txt::SetWindowHelpURL(window, WINDOW_HELP_URL);
 
 	cudadoom::txt::AddWidgets(window,
-					cudadoom::txt::NewLabel("Controller"),
-					joystick_button = cudadoom::txt::NewButton("zzzz"),
-					cudadoom::txt::TABLE_EOL,
+		cudadoom::txt::NewLabel("Controller"),
+		joystick_button = cudadoom::txt::NewButton("zzzz"),
+		cudadoom::txt::TABLE_EOL,
 
-					cudadoom::txt::NewSeparator("Axes"),
-					cudadoom::txt::NewLabel("Forward/backward"),
-					y_axis_widget = cudadoom::txt::NewJoystickAxis(&joystick_y_axis,
-														&joystick_y_invert,
-														JOYSTICK_AXIS_VERTICAL),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_EMPTY,
-					cudadoom::txt::TABLE_EMPTY,
+		cudadoom::txt::NewSeparator("Axes"),
+		cudadoom::txt::NewLabel("Forward/backward"),
+		y_axis_widget = cudadoom::txt::NewJoystickAxis(&joystick_y_axis,
+			&joystick_y_invert,
+			JOYSTICK_AXIS_VERTICAL),
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::TABLE_EMPTY,
+		cudadoom::txt::TABLE_EMPTY,
 
-					cudadoom::txt::NewLabel("Turn left/right"),
-					x_axis_widget =
-						cudadoom::txt::NewJoystickAxis(&joystick_x_axis,
-											&joystick_x_invert,
-											JOYSTICK_AXIS_HORIZONTAL),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_EMPTY,
-					cudadoom::txt::TABLE_EMPTY,
+		cudadoom::txt::NewLabel("Turn left/right"),
+		x_axis_widget =
+		cudadoom::txt::NewJoystickAxis(&joystick_x_axis,
+			&joystick_x_invert,
+			JOYSTICK_AXIS_HORIZONTAL),
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::TABLE_EMPTY,
+		cudadoom::txt::TABLE_EMPTY,
 
-					cudadoom::txt::NewLabel("Strafe left/right"),
-					cudadoom::txt::NewJoystickAxis(&joystick_strafe_axis,
-										&joystick_strafe_invert,
-										JOYSTICK_AXIS_HORIZONTAL),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_EMPTY,
-					cudadoom::txt::TABLE_EMPTY,
-					NULL);
+		cudadoom::txt::NewLabel("Strafe left/right"),
+		cudadoom::txt::NewJoystickAxis(&joystick_strafe_axis,
+			&joystick_strafe_invert,
+			JOYSTICK_AXIS_HORIZONTAL),
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::TABLE_EMPTY,
+		cudadoom::txt::TABLE_EMPTY,
+		NULL);
 
 	if (gamemission == doom || gamemission == heretic || gamemission == hexen || gamemission == strife) // [crispy]
 	{
 		cudadoom::txt::AddWidgets(window,
-					cudadoom::txt::NewLabel("Look up/down"),
-					cudadoom::txt::NewJoystickAxis(&joystick_look_axis,
-										&joystick_look_invert,
-										JOYSTICK_AXIS_VERTICAL),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_EMPTY,
-					cudadoom::txt::TABLE_EMPTY,
-					NULL);
+			cudadoom::txt::NewLabel("Look up/down"),
+			cudadoom::txt::NewJoystickAxis(&joystick_look_axis,
+				&joystick_look_invert,
+				JOYSTICK_AXIS_VERTICAL),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+			cudadoom::txt::TABLE_EMPTY,
+			cudadoom::txt::TABLE_EMPTY,
+			NULL);
 	}
 
 	cudadoom::txt::AddWidget(window, cudadoom::txt::NewSeparator("Buttons"));
@@ -1083,16 +1083,16 @@ void BindJoystickVariables()
 {
 	int i;
 
-	M_BindIntVariable("use_joystick",			&usejoystick);
-	M_BindStringVariable("joystick_guid",		&joystick_guid);
-	M_BindIntVariable("joystick_index",			&joystick_index);
-	M_BindIntVariable("joystick_x_axis",		&joystick_x_axis);
-	M_BindIntVariable("joystick_y_axis",		&joystick_y_axis);
-	M_BindIntVariable("joystick_strafe_axis",	&joystick_strafe_axis);
-	M_BindIntVariable("joystick_x_invert",		&joystick_x_invert);
-	M_BindIntVariable("joystick_y_invert",		&joystick_y_invert);
+	M_BindIntVariable("use_joystick", &usejoystick);
+	M_BindStringVariable("joystick_guid", &joystick_guid);
+	M_BindIntVariable("joystick_index", &joystick_index);
+	M_BindIntVariable("joystick_x_axis", &joystick_x_axis);
+	M_BindIntVariable("joystick_y_axis", &joystick_y_axis);
+	M_BindIntVariable("joystick_strafe_axis", &joystick_strafe_axis);
+	M_BindIntVariable("joystick_x_invert", &joystick_x_invert);
+	M_BindIntVariable("joystick_y_invert", &joystick_y_invert);
 	M_BindIntVariable("joystick_strafe_invert", &joystick_strafe_invert);
-	M_BindIntVariable("joystick_look_axis",	&joystick_look_axis);
+	M_BindIntVariable("joystick_look_axis", &joystick_look_axis);
 	M_BindIntVariable("joystick_look_invert", &joystick_look_invert);
 
 	for (i = 0; i < NUM_VIRTUAL_BUTTONS; ++i)

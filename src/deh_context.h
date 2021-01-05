@@ -22,48 +22,37 @@ private:
 
 public:
 	Context() noexcept
-	{
-	}
+	{}
 
 	Context(const char* filename) noexcept
-	{
-	}
+	{}
 
 	Context(const std::string& filename) noexcept
-	{
-	}
+	{}
 
 	Context(const std::fstream& _stream) noexcept
-	{
-	}
+	{}
 
 	Context(std::fstream&& _stream) noexcept
-	{
-	}
+	{}
 
 	Context(const std::filesystem::path& _path) noexcept
-	{
-	}
+	{}
 
 	Context(std::filesystem::path&& _path) noexcept
-	{
-	}
+	{}
 
 	Context(Context&& rhs) noexcept
-	{
-	}
+	{}
 
 	Context& operator=(Context&& rhs) noexcept
-	{
-	}
+	{}
 
 	Context(const Context& rhs) noexcept
-	{
-	}
+	{}
 
 	Context& operator=(const Context& rhs) noexcept
-	{
-	}
+	{}
 
 	bool is_open() const noexcept
 	{
@@ -152,16 +141,13 @@ public:
 	}
 
 	void swap(std::fstream& other) noexcept
-	{
-	}
+	{}
 
 	void swap(std::filesystem::path& other) noexcept
-	{
-	}
+	{}
 
 	void swap(Context& other) noexcept
-	{
-	}
+	{}
 
 	std::filebuf* rdbuf() const noexcept
 	{
@@ -169,8 +155,7 @@ public:
 	}
 
 	auto get() noexcept
-	{
-	}
+	{}
 
 	/* auto peek() noexcept
 	{
@@ -226,12 +211,10 @@ public:
 	}
 
 	bool CheckSignatures() noexcept
-	{
-	}
+	{}
 
 	bool HadError() noexcept
-	{
-	}
+	{}
 
 	void Parse() noexcept
 	{
@@ -318,17 +301,17 @@ public:
 						//printf("started %s tag\n", section_name);
 					}
 					else
-					if (prev_section != NULL)
-					{
-						// [crispy] try this line again with the previous line parser
-						DEH_RestoreLineStart(context);
-						current_section = prev_section;
-						prev_section = NULL;
-					}
-					else
-					{
-						//printf("unknown section name %s\n", section_name);
-					}
+						if (prev_section != NULL)
+						{
+							// [crispy] try this line again with the previous line parser
+							DEH_RestoreLineStart(context);
+							current_section = prev_section;
+							prev_section = NULL;
+						}
+						else
+						{
+							//printf("unknown section name %s\n", section_name);
+						}
 				}
 			}
 		}

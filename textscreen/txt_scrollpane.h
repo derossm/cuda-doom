@@ -38,23 +38,20 @@ class ScrollPane : public Widget<ScrollPane>
 public:
 
 	ScrollPane() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{
-	}
+	{}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() override final const noexcept
-	{
-	}
+	void CalculateSize() noexcept override final
+	{}
 
-	void Draw() override final const noexcept
-	{
-	}
+	void Draw() noexcept override final
+	{}
 
-	bool KeyPress(Keytype key) override final const noexcept
+	bool KeyPress(Keytype key) noexcept override final
 	{
 		if (key == KEY_ENTER || key == ' ')
 		{
@@ -65,7 +62,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -76,17 +73,14 @@ public:
 		return false
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{}
 
-	void SetFocus(bool _focus) override final const noexcept
-	{
-	}
+	void SetFocus(bool _focus) noexcept override final
+	{}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{}
 };
 
 /**

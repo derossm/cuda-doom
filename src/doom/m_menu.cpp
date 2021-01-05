@@ -75,7 +75,7 @@ int screenSize;
 // -1 = no quicksave slot picked!
 int quickSaveSlot;
 
- // 1 = message to be printed
+// 1 = message to be printed
 int messageToPrint;
 // ...and here is the message string!
 std::string messageString;
@@ -91,7 +91,7 @@ bool messageNeedsInput;
 void (*messageRoutine)(int response);
 
 // [crispy] intermediate gamma levels
-char gammamsg[5+4][26+2] =
+char gammamsg[5 + 4][26 + 2] =
 {
 	GAMMALVL0,
 	GAMMALVL05,
@@ -165,7 +165,7 @@ short whichSkull;				// which skull to draw
 
 // graphic name of skulls
 // warning: initializer-string for array of chars is too long
-std::string skullName[2] = { "M_SKULL1", "M_SKULL2" };
+std::string skullName[2] = {"M_SKULL1", "M_SKULL2"};
 
 // current menudef
 menu_t* currentMenu;
@@ -211,14 +211,14 @@ static void M_DrawSound();
 static void M_DrawLoad();
 static void M_DrawSave();
 
-static void M_DrawSaveLoadBorder(int x,int y);
+static void M_DrawSaveLoadBorder(int x, int y);
 static void M_SetupNextMenu(menu_t* menudef);
-static void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
+static void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
 static void M_WriteText(int x, int y, std::string string);
 int M_StringWidth(std::string string);										// [crispy] un-static
 static int M_StringHeight(std::string string);
 static void M_StartMessage(std::string string, void* routine, bool input);
-static void M_ClearMenus ();
+static void M_ClearMenus();
 
 // [crispy] Crispness menu
 static void M_CrispnessCur(int choice);
@@ -240,7 +240,7 @@ enum class main_e
 	main_end
 };
 
-menuitem_t MainMenu[]=
+menuitem_t MainMenu[] =
 {
 	{1,"M_NGAME",M_NewGame,'n'},
 	{1,"M_OPTION",M_Options,'o'},
@@ -272,7 +272,7 @@ enum class episodes_e
 	ep_end
 };
 
-menuitem_t EpisodeMenu[]=
+menuitem_t EpisodeMenu[] =
 {
 	{1,"M_EPI1", M_Episode,'k'},
 	{1,"M_EPI2", M_Episode,'t'},
@@ -302,7 +302,7 @@ enum class newgame_e
 	newg_end
 };
 
-menuitem_t NewGameMenu[]=
+menuitem_t NewGameMenu[] =
 {
 	{1,"M_JKILL",	M_ChooseSkill, 'i', "I'm too young to die."},
 	{1,"M_ROUGH",	M_ChooseSkill, 'h', "Hey, not too rough!."},
@@ -335,7 +335,7 @@ enum class options_e
 	opt_end
 };
 
-menuitem_t OptionsMenu[]=
+menuitem_t OptionsMenu[] =
 {
 	{1,"M_ENDGAM",	M_EndGame,'e', "End Game"},
 	{1,"M_MESSG",	M_ChangeMessages,'m', "Messages: "},
@@ -371,7 +371,7 @@ enum class mouse_e
 	mouse_end
 };
 
-static menuitem_t MouseMenu[]=
+static menuitem_t MouseMenu[] =
 {
 	{2,"",	M_ChangeSensitivity,'h'},
 	{-1,"",0,'\0'},
@@ -418,7 +418,7 @@ enum class crispness1_e
 	crispness1_end
 };
 
-static menuitem_t Crispness1Menu[]=
+static menuitem_t Crispness1Menu[] =
 {
 	{-1,"",0,'\0'},
 	{1,"",	M_CrispyToggleHires,'h'},
@@ -473,7 +473,7 @@ enum class crispness2_e
 	crispness2_end
 };
 
-static menuitem_t Crispness2Menu[]=
+static menuitem_t Crispness2Menu[] =
 {
 	{-1,"",0,'\0'},
 	{1,"",	M_CrispyToggleFullsounds,'p'},
@@ -528,7 +528,7 @@ enum class crispness3_e
 	crispness3_end
 };
 
-static menuitem_t Crispness3Menu[]=
+static menuitem_t Crispness3Menu[] =
 {
 	{-1,"",0,'\0'},
 	{1,"",	M_CrispyToggleFreelook,'a'},
@@ -581,7 +581,7 @@ enum class crispness4_e
 	crispness4_end
 };
 
-static menuitem_t Crispness4Menu[]=
+static menuitem_t Crispness4Menu[] =
 {
 	{-1,"",0,'\0'},
 	{1,"",	M_CrispyToggleFreeaim,'v'},
@@ -649,7 +649,7 @@ enum class read_e2
 	read2_end
 };
 
-menuitem_t ReadMenu2[]=
+menuitem_t ReadMenu2[] =
 {
 	{1,"",M_FinishReadThis,0}
 };
@@ -674,7 +674,7 @@ enum class sound_e
 	sound_end
 };
 
-menuitem_t SoundMenu[]=
+menuitem_t SoundMenu[] =
 {
 	{2,"M_SFXVOL",M_SfxVol,'s'},
 	{-1,"",0,'\0'},
@@ -706,7 +706,7 @@ enum class load_e
 	load_end
 };
 
-menuitem_t LoadMenu[]=
+menuitem_t LoadMenu[] =
 {
 	{1,"", M_LoadSelect,'1'},
 	{1,"", M_LoadSelect,'2'},
@@ -729,7 +729,7 @@ menu_t LoadDef =
 	0
 };
 
-menuitem_t SaveMenu[]=
+menuitem_t SaveMenu[] =
 {
 	{1,"", M_SaveSelect,'1'},
 	{1,"", M_SaveSelect,'2'},
@@ -784,7 +784,7 @@ void M_DrawLoad()
 
 	for (size_t i{0}; i < load_e::load_end; ++i)
 	{
-		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
+		M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
 
 		// [crispy] shade empty savegame slots
 		if (!LoadMenu[i].status)
@@ -792,13 +792,13 @@ void M_DrawLoad()
 			dp_translation = cr[CR_DARK];
 		}
 
-		M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT*i, savegamestrings[i]);
+		M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT * i, savegamestrings[i]);
 
 		dp_translation = nullptr;
 	}
 }
 
-void M_DrawSaveLoadBorder(int x,int y)
+void M_DrawSaveLoadBorder(int x, int y)
 {
 	V_DrawPatchDirect(x - 8, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE));
 
@@ -850,22 +850,22 @@ void M_DrawSave()
 	V_DrawPatchDirect(SaveDef_x, SaveDef_y, W_CacheLumpName<patch_t>(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE));
 	for (size_t i{0}; i < load_e::load_end; ++i)
 	{
-		M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT*i);
-		M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT*i, savegamestrings[i]);
+		M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
+		M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT * i, savegamestrings[i]);
 	}
 
 	if (saveStringEnter)
 	{
 		auto width{M_StringWidth(savegamestrings[saveSlot])};
 		// NOTE: SHOULD WIDTH BE ALLOWED TO BE NEGATIVE? TODO INVESTIGATE
-		M_WriteText(LoadDef.x + width, LoadDef.y + LINEHEIGHT*saveSlot, "_");
+		M_WriteText(LoadDef.x + width, LoadDef.y + LINEHEIGHT * saveSlot, "_");
 	}
 }
 
 // M_Responder calls this when user is finished
 void M_DoSave(int slot)
 {
-	G_SaveGame(slot,savegamestrings[slot]);
+	G_SaveGame(slot, savegamestrings[slot]);
 	M_ClearMenus();
 
 	// PICK QUICKSAVE SLOT YET?
@@ -930,14 +930,14 @@ void M_SaveSelect(int choice)
 
 	// We need to turn on text input:
 	auto x{LoadDef.x - 11};
-	auto y{LoadDef.y + choice*LINEHEIGHT - 4};
+	auto y{LoadDef.y + choice * LINEHEIGHT - 4};
 	// NOTE: TODO INVESTIGATE 2*8 + 24*8 = 26*8 = 208, where does this value come from?
 	// maybe it makes sense as bits in a byte: 1*128 + 1*64 + 0*32 + 1*16 + 0*8 + 0*4 + 0*2 + 0*1 = 208 = 11010000
 	// ... but why write it out as 8 + 24*8 + 8?
-	I_StartTextInput(x, y, x + 8 + 24*8 + 8, y + LINEHEIGHT - 2);
+	I_StartTextInput(x, y, x + 8 + 24 * 8 + 8, y + LINEHEIGHT - 2);
 
 	saveSlot = choice;
-	M_StringCopy(saveOldString,savegamestrings[choice], SAVESTRINGSIZE);
+	M_StringCopy(saveOldString, savegamestrings[choice], SAVESTRINGSIZE);
 	// [crispy] override savegame name if it already starts with a map identifier
 	if (!strcmp(savegamestrings[choice], EMPTYSTRING) || StartsWithMapIdentifier(savegamestrings[choice]))
 	{
@@ -1021,7 +1021,7 @@ void M_QuickLoad()
 	// [crispy] allow quickloading game while multiplayer demo playback
 	if (netgame && !demoplayback)
 	{
-		M_StartMessage(DEH_String(QLOADNET),NULL,false);
+		M_StartMessage(DEH_String(QLOADNET), NULL, false);
 		return;
 	}
 
@@ -1071,9 +1071,9 @@ void M_DrawSound()
 {
 	V_DrawPatchDirect(60, 38, W_CacheLumpName<patch_t>(DEH_String("M_SVOL"), pu_tags_t::PU_CACHE));
 
-	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sound_e::sfx_vol+1), 16, sfxVolume);
+	M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (sound_e::sfx_vol + 1), 16, sfxVolume);
 
-	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sound_e::music_vol+1), 16, musicVolume);
+	M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT * (sound_e::music_vol + 1), 16, musicVolume);
 }
 
 void M_Sound(int choice)
@@ -1083,7 +1083,7 @@ void M_Sound(int choice)
 
 void M_SfxVol(int choice)
 {
-	switch(choice)
+	switch (choice)
 	{
 	case 0:
 		if (sfxVolume)
@@ -1104,7 +1104,7 @@ void M_SfxVol(int choice)
 
 void M_MusicVol(int choice)
 {
-	switch(choice)
+	switch (choice)
 	{
 	case 0:
 		if (musicVolume)
@@ -1144,7 +1144,7 @@ void M_NewGame(int choice)
 
 	if (netgame && !demoplayback)
 	{
-		M_StartMessage(DEH_String(NEWGAME),NULL,false);
+		M_StartMessage(DEH_String(NEWGAME), NULL, false);
 		return;
 	}
 
@@ -1175,7 +1175,7 @@ void M_VerifyNightmare(int key)
 		return;
 	}
 
-	G_DeferedInitNew(newgame_e::nightmare, epi+1, 1);
+	G_DeferedInitNew(newgame_e::nightmare, epi + 1, 1);
 	M_ClearMenus();
 }
 
@@ -1187,7 +1187,7 @@ void M_ChooseSkill(int choice)
 		return;
 	}
 
-	G_DeferedInitNew(choice,epi+1,1);
+	G_DeferedInitNew(choice, epi + 1, 1);
 	M_ClearMenus();
 }
 
@@ -1214,32 +1214,32 @@ void M_DrawOptions()
 	if (OptionsDef.lumps_missing == -1)
 	{
 		V_DrawPatchDirect(OptionsDef.x + 175, OptionsDef.y + LINEHEIGHT * options_e::detail,
-					W_CacheLumpName<patch_t>(DEH_String(detailNames[detailLevel]), pu_tags_t::PU_CACHE));
+			W_CacheLumpName<patch_t>(DEH_String(detailNames[detailLevel]), pu_tags_t::PU_CACHE));
 	}
 	else
-	if (OptionsDef.lumps_missing > 0)
-	{
-		M_WriteText(OptionsDef.x + M_StringWidth("Graphic Detail: "),
-					OptionsDef.y + LINEHEIGHT * options_e::detail + 8 - (M_StringHeight("HighLow")/2), detailLevel ? "Low" : "High");
-	}
+		if (OptionsDef.lumps_missing > 0)
+		{
+			M_WriteText(OptionsDef.x + M_StringWidth("Graphic Detail: "),
+				OptionsDef.y + LINEHEIGHT * options_e::detail + 8 - (M_StringHeight("HighLow") / 2), detailLevel ? "Low" : "High");
+		}
 
 	if (OptionsDef.lumps_missing == -1)
 	{
 		V_DrawPatchDirect(OptionsDef.x + 120, OptionsDef.y + LINEHEIGHT * options_e::messages,
-					W_CacheLumpName<patch_t>(DEH_String(msgNames[showMessages]), pu_tags_t::PU_CACHE));
+			W_CacheLumpName<patch_t>(DEH_String(msgNames[showMessages]), pu_tags_t::PU_CACHE));
 	}
 	else
-	if (OptionsDef.lumps_missing > 0)
-	{
-		M_WriteText(OptionsDef.x + M_StringWidth("Messages: "),
-					OptionsDef.y + LINEHEIGHT * options_e::messages + 8 - (M_StringHeight("OnOff")/2), showMessages ? "On" : "Off");
-	}
+		if (OptionsDef.lumps_missing > 0)
+		{
+			M_WriteText(OptionsDef.x + M_StringWidth("Messages: "),
+				OptionsDef.y + LINEHEIGHT * options_e::messages + 8 - (M_StringHeight("OnOff") / 2), showMessages ? "On" : "Off");
+		}
 
-// [crispy] mouse sensitivity menu
-/*
-	M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (mousesens + 1), 10, mouseSensitivity);
-*/
-	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(options_e::scrnsize+1), 9 + (crispy->widescreen ? 6 : 3),screenSize); // [crispy] Crispy HUD
+	// [crispy] mouse sensitivity menu
+	/*
+		M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (mousesens + 1), 10, mouseSensitivity);
+	*/
+	M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (options_e::scrnsize + 1), 9 + (crispy->widescreen ? 6 : 3), screenSize); // [crispy] Crispy HUD
 }
 
 // [crispy] mouse sensitivity menu
@@ -1262,7 +1262,7 @@ static void M_DrawMouse()
 	M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_empty3, 21, mouseSensitivity_y);
 
 	M_snprintf(mouse_menu_text, sizeof(mouse_menu_text), "%sInvert Vertical Axis: %s%s", crstr[CR_NONE],
-				mouse_y_invert ? crstr[CR_GREEN] : crstr[CR_DARK], mouse_y_invert ? "On" : "Off");
+		mouse_y_invert ? crstr[CR_GREEN] : crstr[CR_DARK], mouse_y_invert ? "On" : "Off");
 	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_invert + 6, mouse_menu_text);
 
 	dp_translation = nullptr;
@@ -1282,10 +1282,10 @@ static void M_DrawCrispnessBackground()
 		for (size_t x{0}; x < SCREENWIDTH; ++x)
 		{
 #ifndef CRISPY_TRUECOLOR
-			*dest = src[(y & 63) * 64 + (x & 63)];
+			* dest = src[(y & 63) * 64 + (x & 63)];
 			++dest;
 #else
-			*dest = colormaps[src[(y & 63) * 64 + (x & 63)]];
+			* dest = colormaps[src[(y & 63) * 64 + (x & 63)]];
 			++dest;
 #endif
 		}
@@ -1299,7 +1299,7 @@ static char crispy_menu_text[48];
 static void M_DrawCrispnessHeader(std::string item)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[CR_GOLD], item);
-	M_WriteText(ORIGWIDTH/2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
+	M_WriteText(ORIGWIDTH / 2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
 }
 
 static void M_DrawCrispnessSeparator(int y, std::string item)
@@ -1312,18 +1312,18 @@ static void M_DrawCrispnessItem(int y, std::string item, int feat, bool cond)
 {
 	// FIXME WE HEARD YOU LIKED TERNERIES SO WE GOT YOU TERNERIES FOR YOUR TERNERIES
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-				"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
-				cond ? (feat ? crstr[CR_GREEN] : crstr[CR_DARK]) : crstr[CR_DARK],
-				cond && feat ? "On" : "Off");
+		"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
+		cond ? (feat ? crstr[CR_GREEN] : crstr[CR_DARK]) : crstr[CR_DARK],
+		cond && feat ? "On" : "Off");
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
 static void M_DrawCrispnessMultiItem(int y, std::string item, multiitem_t* multiitem, int feat, bool cond)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
-				"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
-				cond ? (feat ? crstr[CR_GREEN] : crstr[CR_DARK]) : crstr[CR_DARK],
-				cond && feat ? multiitem[feat].name : multiitem[0].name);
+		"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
+		cond ? (feat ? crstr[CR_GREEN] : crstr[CR_DARK]) : crstr[CR_DARK],
+		cond && feat ? multiitem[feat].name : multiitem[0].name);
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
@@ -1401,7 +1401,7 @@ static void M_DrawCrispness3()
 	M_DrawCrispnessItem(crispness3_e::crispness_weaponsquat, "Squat weapon down on impact", crispy->weaponsquat, true);
 	M_DrawCrispnessItem(crispness3_e::crispness_pitch, "Weapon Recoil Pitch", crispy->pitch, true);
 	M_DrawCrispnessItem(crispness3_e::crispness_neghealth, "Negative Player Health", crispy->neghealth, true);
-// M_DrawCrispnessItem(crispness_extsaveg, "Extended Savegames", crispy->extsaveg, true);
+	// M_DrawCrispnessItem(crispness_extsaveg, "Extended Savegames", crispy->extsaveg, true);
 
 	M_DrawCrispnessSeparator(crispness3_e::crispness_sep_crosshair, "Crosshair");
 
@@ -1602,11 +1602,11 @@ void M_QuitResponse(int key)
 	{
 		if (gamemode == GameMode::commercial)
 		{
-			S_StartSound(nullptr, quitsounds2[(gametic>>2)&7]);
+			S_StartSound(nullptr, quitsounds2[(gametic >> 2) & 7]);
 		}
 		else
 		{
-			S_StartSound(nullptr, quitsounds[(gametic>>2)&7]);
+			S_StartSound(nullptr, quitsounds[(gametic >> 2) & 7]);
 		}
 
 		I_WaitVBL(105);
@@ -1643,12 +1643,12 @@ void M_QuitDOOM(int choice)
 
 	DEH_snprintf(endstring, sizeof(endstring), "%s\n\n" DOSY, DEH_String(M_SelectEndMessage()));
 
-	M_StartMessage(endstring,M_QuitResponse,true);
+	M_StartMessage(endstring, M_QuitResponse, true);
 }
 
 void M_ChangeSensitivity(int choice)
 {
-	switch(choice)
+	switch (choice)
 	{
 	case 0:
 		if (mouseSensitivity)
@@ -1667,7 +1667,7 @@ void M_ChangeSensitivity(int choice)
 
 void M_ChangeSensitivity_x2(int choice)
 {
-	switch(choice)
+	switch (choice)
 	{
 	case 0:
 		if (mouseSensitivity_x2)
@@ -1686,7 +1686,7 @@ void M_ChangeSensitivity_x2(int choice)
 
 static void M_ChangeSensitivity_y(int choice)
 {
-	switch(choice)
+	switch (choice)
 	{
 	case 0:
 		if (mouseSensitivity_y)
@@ -1728,7 +1728,7 @@ void M_ChangeDetail(int choice)
 
 void M_SizeDisplay(int choice)
 {
-	switch(choice)
+	switch (choice)
 	{
 	case 0:
 		if (screenSize > 0)
@@ -1819,7 +1819,7 @@ int M_StringWidth(std::string string)
 		// correctly center colorized strings
 		if (string[i] == cr_esc)
 		{
-			if (string[i+1] >= '0' && string[i+1] <= '0' + CRMAX - 1)
+			if (string[i + 1] >= '0' && string[i + 1] <= '0' + CRMAX - 1)
 			{
 				++i;
 				continue;
@@ -1833,7 +1833,7 @@ int M_StringWidth(std::string string)
 		}
 		else
 		{
-			width += SHORT (hu_font[c]->width);
+			width += SHORT(hu_font[c]->width);
 		}
 	}
 
@@ -1867,7 +1867,7 @@ void M_WriteText(int x, int y, std::string string)
 	auto cx = x;
 	auto cy = y;
 
-	while(1)
+	while (1)
 	{
 		c = *ch;
 		++ch;
@@ -1890,19 +1890,19 @@ void M_WriteText(int x, int y, std::string string)
 			{
 				c = *ch;
 				++ch;
-				dp_translation = cr[(int) (c - '0')];
+				dp_translation = cr[(int)(c - '0')];
 				continue;
 			}
 		}
 
 		c = toupper(c) - HU_FONTSTART;
-		if (c < 0 || c>= HU_FONTSIZE)
+		if (c < 0 || c >= HU_FONTSIZE)
 		{
 			cx += 4;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width);
+		w = SHORT(hu_font[c]->width);
 
 		if (cx + w > ORIGWIDTH)
 		{
@@ -1942,24 +1942,24 @@ static int G_ReloadLevel()
 
 static int G_GotoNextLevel()
 {
- byte doom_next[5][9] = {
-	{12, 13, 19, 15, 16, 17, 18, 21, 14},
-	{22, 23, 24, 25, 29, 27, 28, 31, 26},
-	{32, 33, 34, 35, 36, 39, 38, 41, 37},
-	{42, 49, 44, 45, 46, 47, 48, 51, 43},
-	{52, 53, 54, 55, 56, 59, 58, 11, 57},
- };
- byte doom2_next[33] = {
-	2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-	12, 13, 14, 15, 31, 17, 18, 19, 20, 21,
-	22, 23, 24, 25, 26, 27, 28, 29, 30, 1,
-	32, 16, 3
- };
- byte nerve_next[9] = {
-	2, 3, 4, 9, 6, 7, 8, 1, 5
- };
+	byte doom_next[5][9] = {
+	   {12, 13, 19, 15, 16, 17, 18, 21, 14},
+	   {22, 23, 24, 25, 29, 27, 28, 31, 26},
+	   {32, 33, 34, 35, 36, 39, 38, 41, 37},
+	   {42, 49, 44, 45, 46, 47, 48, 51, 43},
+	   {52, 53, 54, 55, 56, 59, 58, 11, 57},
+	};
+	byte doom2_next[33] = {
+	   2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+	   12, 13, 14, 15, 31, 17, 18, 19, 20, 21,
+	   22, 23, 24, 25, 26, 27, 28, 29, 30, 1,
+	   32, 16, 3
+	};
+	byte nerve_next[9] = {
+	   2, 3, 4, 9, 6, 7, 8, 1, 5
+	};
 
- int changed = false;
+	int changed = false;
 
 	if (gamemode == GameMode::commercial)
 	{
@@ -2018,17 +2018,17 @@ static int G_GotoNextLevel()
 			epsd = gameepisode;
 			if (gamemission == GameMission::pack_nerve)
 			{
-				map = nerve_next[gamemap-1];
+				map = nerve_next[gamemap - 1];
 			}
 			else
 			{
-				map = doom2_next[gamemap-1];
+				map = doom2_next[gamemap - 1];
 			}
 		}
 		else
 		{
-			epsd = doom_next[gameepisode-1][gamemap-1] / 10;
-			map = doom_next[gameepisode-1][gamemap-1] % 10;
+			epsd = doom_next[gameepisode - 1][gamemap - 1] / 10;
+			map = doom_next[gameepisode - 1][gamemap - 1] % 10;
 		}
 
 		// [crispy] special-casing for E1M10 "Sewers" support
@@ -2186,13 +2186,13 @@ bool M_Responder(EventType* ev)
 			{
 				mousey += ev->data3;
 			}
-			if (mousey < lasty-30)
+			if (mousey < lasty - 30)
 			{
 				key = key_menu_down;
 				mousewait = I_GetTime() + 5;
 				mousey = lasty -= 30;
 			}
-			else if (mousey > lasty+30)
+			else if (mousey > lasty + 30)
 			{
 				key = key_menu_up;
 				mousewait = I_GetTime() + 5;
@@ -2200,26 +2200,26 @@ bool M_Responder(EventType* ev)
 			}
 
 			mousex += ev->data2;
-			if (mousex < lastx-30)
+			if (mousex < lastx - 30)
 			{
 				key = key_menu_left;
 				mousewait = I_GetTime() + 5;
 				mousex = lastx -= 30;
 			}
-			else if (mousex > lastx+30)
+			else if (mousex > lastx + 30)
 			{
 				key = key_menu_right;
 				mousewait = I_GetTime() + 5;
 				mousex = lastx += 30;
 			}
 
-			if (ev->data1&1)
+			if (ev->data1 & 1)
 			{
 				key = key_menu_forward;
 				mousewait = I_GetTime() + 15;
 			}
 
-			if (ev->data1&2)
+			if (ev->data1 & 2)
 			{
 				key = key_menu_back;
 				mousewait = I_GetTime() + 15;
@@ -2255,7 +2255,7 @@ bool M_Responder(EventType* ev)
 	// Save Game string input
 	if (saveStringEnter)
 	{
-		switch(key)
+		switch (key)
 		{
 		case KEY_BACKSPACE:
 			if (saveCharIndex > 0)
@@ -2309,7 +2309,7 @@ bool M_Responder(EventType* ev)
 				break;
 			}
 
-			if (ch >= 32 && ch <= 127 && saveCharIndex < SAVESTRINGSIZE-1 && M_StringWidth(savegamestrings[saveSlot]) < (SAVESTRINGSIZE-2)*8)
+			if (ch >= 32 && ch <= 127 && saveCharIndex < SAVESTRINGSIZE - 1 && M_StringWidth(savegamestrings[saveSlot]) < (SAVESTRINGSIZE - 2) * 8)
 			{
 				savegamestrings[saveSlot][saveCharIndex++] = ch;
 				savegamestrings[saveSlot][saveCharIndex] = 0;
@@ -2464,7 +2464,7 @@ bool M_Responder(EventType* ev)
 		else if (key == key_menu_gamma)	// gamma toggle
 		{
 			++usegamma;
-			if (usegamma > 4+4) // intermediate gamma levels
+			if (usegamma > 4 + 4) // intermediate gamma levels
 			{
 				usegamma = 0;
 			}
@@ -2481,8 +2481,8 @@ bool M_Responder(EventType* ev)
 				viewactive = false;
 			}
 #endif
-		return true;
-	}
+			return true;
+		}
 		// those two can be considered as shortcuts for the IDCLEV cheat and should be treated as such, i.e. add "if (!netgame)"
 		else if (!netgame && key != 0 && key == key_menu_reloadlevel)
 		{
@@ -2507,7 +2507,7 @@ bool M_Responder(EventType* ev)
 		if (key == key_menu_activate)
 		{
 			M_StartControlPanel();
-			S_StartSound(nullptr,sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			return true;
 		}
 		return false;
@@ -2519,7 +2519,7 @@ bool M_Responder(EventType* ev)
 		// Move down to next item
 		do
 		{
-			if (itemOn+1 > currentMenu->numitems-1)
+			if (itemOn + 1 > currentMenu->numitems - 1)
 			{
 				itemOn = 0;
 			}
@@ -2528,7 +2528,7 @@ bool M_Responder(EventType* ev)
 				++itemOn;
 			}
 			S_StartSound(nullptr, sfxenum_t::sfx_pstop);
-		} while(currentMenu->menuitems[itemOn].status==-1);
+		} while (currentMenu->menuitems[itemOn].status == -1);
 
 		return true;
 	}
@@ -2539,16 +2539,16 @@ bool M_Responder(EventType* ev)
 		{
 			if (!itemOn)
 			{
-				itemOn = currentMenu->numitems-1;
+				itemOn = currentMenu->numitems - 1;
 			}
 			else
 			{
 				--itemOn;
 			}
 			S_StartSound(nullptr, sfxenum_t::sfx_pstop);
-		} while(currentMenu->menuitems[itemOn].status==-1);
+		} while (currentMenu->menuitems[itemOn].status == -1);
 
-	return true;
+		return true;
 	}
 	else if (key == key_menu_left)
 	{
@@ -2655,7 +2655,7 @@ bool M_Responder(EventType* ev)
 
 	else if (ch != 0 || IsNullKey(key))
 	{
-		for (size_t i{itemOn+1};i < currentMenu->numitems; ++i)
+		for (size_t i{itemOn + 1};i < currentMenu->numitems; ++i)
 		{
 			if (currentMenu->menuitems[i].alphaKey == ch)
 			{
@@ -2706,7 +2706,7 @@ void M_StartControlPanel()
 // Display OPL debug messages - hack for GENMIDI development.
 static void M_DrawOPLDev()
 {
-	extern void I_OPL_DevMessages(std::string , size_t);
+	extern void I_OPL_DevMessages(std::string, size_t);
 	char debug[1024];
 	std::string curr, p;
 	int line;
@@ -2758,34 +2758,34 @@ void M_Drawer()
 		}
 
 		start = 0;
-		y = ORIGHEIGHT/2 - M_StringHeight(messageString) / 2;
+		y = ORIGHEIGHT / 2 - M_StringHeight(messageString) / 2;
 		while (messageString[start] != '\0')
 		{
 			bool foundnewline = false;
 
-				for (size_t i{0}; messageString[start + i] != '\0'; ++i)
-				{
-					if (messageString[start + i] == '\n')
-					{
-						M_StringCopy(string, messageString + start, sizeof(string));
-						if (i < sizeof(string))
-						{
-							string[i] = '\0';
-						}
-
-						foundnewline = true;
-						start += i + 1;
-						break;
-					}
-				}
-
-				if (!foundnewline)
+			for (size_t i{0}; messageString[start + i] != '\0'; ++i)
+			{
+				if (messageString[start + i] == '\n')
 				{
 					M_StringCopy(string, messageString + start, sizeof(string));
-					start += strlen(string);
-				}
+					if (i < sizeof(string))
+					{
+						string[i] = '\0';
+					}
 
-			x = ORIGWIDTH/2 - M_StringWidth(string) / 2;
+					foundnewline = true;
+					start += i + 1;
+					break;
+				}
+			}
+
+			if (!foundnewline)
+			{
+				M_StringCopy(string, messageString + start, sizeof(string));
+				start += strlen(string);
+			}
+
+			x = ORIGWIDTH / 2 - M_StringWidth(string) / 2;
 			M_WriteText(x > 0 ? x : 0, y, string); // [crispy] prevent negative x-coords
 			y += SHORT(hu_font[0]->height);
 		}
@@ -2856,7 +2856,7 @@ void M_Drawer()
 			}
 			else if (!alttext.empty())
 			{
-				M_WriteText(x, y+8-(M_StringHeight(alttext)/2), alttext);
+				M_WriteText(x, y + 8 - (M_StringHeight(alttext) / 2), alttext);
 			}
 
 			dp_translation = nullptr;
@@ -2874,7 +2874,7 @@ void M_Drawer()
 	}
 	else
 	{
-		V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn*LINEHEIGHT, W_CacheLumpName<patch_t>(DEH_String(skullName[whichSkull]), pu_tags_t::PU_CACHE));
+		V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, W_CacheLumpName<patch_t>(DEH_String(skullName[whichSkull]), pu_tags_t::PU_CACHE));
 	}
 }
 
@@ -2904,8 +2904,8 @@ void M_Ticker()
 {
 	if (--skullAnimCounter <= 0)
 	{
-	whichSkull ^= 1;
-	skullAnimCounter = 8;
+		whichSkull ^= 1;
+		skullAnimCounter = 8;
 	}
 }
 
@@ -3091,18 +3091,18 @@ static void M_ForceLoadGameResponse(int key)
 void M_ForceLoadGame()
 {
 	savegwarning =
-	savemaplumpinfo ?
-	std::string("This savegame requires the file\n"
-					+ crstr[CR_GOLD] + savewadfilename + crstr[CR_NONE] + "\n"
-					+ "to restore " + crstr[CR_GOLD] + savemaplumpinfo->name + crstr[CR_NONE] + " .\n\n"
-					+"Continue to restore from\n"
-					+ crstr[CR_GOLD] + W_WadNameForLump(savemaplumpinfo) + crstr[CR_NONE] + " ?\n\n"
-					+ PRESSYN) :
-	std::string("This savegame requires the file\n"
-					+ crstr[CR_GOLD] + savewadfilename + crstr[CR_NONE] + "\n"
-					+ "to restore a map that is\n"
-					+ "currently not available!\n\n"
-					+ PRESSKEY);
+		savemaplumpinfo ?
+		std::string("This savegame requires the file\n"
+			+ crstr[CR_GOLD] + savewadfilename + crstr[CR_NONE] + "\n"
+			+ "to restore " + crstr[CR_GOLD] + savemaplumpinfo->name + crstr[CR_NONE] + " .\n\n"
+			+ "Continue to restore from\n"
+			+ crstr[CR_GOLD] + W_WadNameForLump(savemaplumpinfo) + crstr[CR_NONE] + " ?\n\n"
+			+ PRESSYN) :
+		std::string("This savegame requires the file\n"
+			+ crstr[CR_GOLD] + savewadfilename + crstr[CR_NONE] + "\n"
+			+ "to restore a map that is\n"
+			+ "currently not available!\n\n"
+			+ PRESSKEY);
 
 	M_StartMessage(savegwarning, M_ForceLoadGameResponse, savemaplumpinfo != NULL);
 	messageToPrint = 2;

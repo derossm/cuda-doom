@@ -110,13 +110,13 @@ int DEH_GetChar(deh_context_t* context)
 	{
 		switch (context->type)
 		{
-			case deh_input_type_t::DEH_INPUT_FILE:
-				result = DEH_GetCharFile(context);
-				break;
+		case deh_input_type_t::DEH_INPUT_FILE:
+			result = DEH_GetCharFile(context);
+			break;
 
-			case deh_input_type_t::DEH_INPUT_LUMP:
-				result = DEH_GetCharLump(context);
-				break;
+		case deh_input_type_t::DEH_INPUT_LUMP:
+			result = DEH_GetCharLump(context);
+			break;
 		}
 	} while (result == '\r');
 
@@ -133,8 +133,7 @@ int DEH_GetChar(deh_context_t* context)
 
 // Increase the read buffer size
 static void IncreaseReadBuffer(deh_context_t* context)
-{
-}
+{}
 
 // Save pointer to start of current line ...
 void DEH_SaveLineStart(deh_context_t* context)

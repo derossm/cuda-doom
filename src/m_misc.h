@@ -112,7 +112,7 @@ auto M_ReadFile(std::string name, byte** buffer)
 	//byte* buf = Z_Malloc<decltype(//byte* buf)>(length + 1, pu_tags_t::PU_STATIC, NULL);
 	auto buf{std::make_unique<byte*>(length + 1)};
 	auto count{fread(*buf, 1, length, handle)};
-	fclose (handle);
+	fclose(handle);
 
 	if (count < length)
 	{
@@ -186,23 +186,23 @@ std::string M_BaseName(std::string path)
 // Case-insensitive version of strstr()
 std::string M_StrCaseStr(std::string haystack, std::string needle)
 {
-/* 	auto haystack_len{strlen(haystack)};
-	auto needle_len{strlen(needle)};
+	/* 	auto haystack_len{strlen(haystack)};
+		auto needle_len{strlen(needle)};
 
-	if (haystack_len < needle_len)
-	{
-		return nullptr;
-	}
-
-	auto len{haystack_len - needle_len};
-
-	for (auto i{0}; i <= len; ++i)
-	{
-		if (!strncasecmp(haystack + i, needle, needle_len))
+		if (haystack_len < needle_len)
 		{
-			return haystack + i;
+			return nullptr;
 		}
-	} */
+
+		auto len{haystack_len - needle_len};
+
+		for (auto i{0}; i <= len; ++i)
+		{
+			if (!strncasecmp(haystack + i, needle, needle_len))
+			{
+				return haystack + i;
+			}
+		} */
 
 	return std::string{};
 }
@@ -211,64 +211,64 @@ std::string M_StrCaseStr(std::string haystack, std::string needle)
 // Returns a newly allocated string that the caller is responsible for freeing.
 std::string M_FileCaseExists(std::string path)
 {
-/* 	auto path_dup{std::string(path)};
+	/* 	auto path_dup{std::string(path)};
 
-	// 0: actual path
-	if (M_FileExists(path_dup))
-	{
-		return path_dup;
-	}
+		// 0: actual path
+		if (M_FileExists(path_dup))
+		{
+			return path_dup;
+		}
 
-	auto filename = strrchr(path_dup.c_str(), DIR_SEPARATOR);
-	if (filename != NULL)
-	{
-		++filename;
-	}
-	else
-	{
-		filename = path_dup.c_str();
-	}
+		auto filename = strrchr(path_dup.c_str(), DIR_SEPARATOR);
+		if (filename != NULL)
+		{
+			++filename;
+		}
+		else
+		{
+			filename = path_dup.c_str();
+		}
 
-	// 1: lowercase filename, e.g. doom2.wad
-	//M_ForceLowercase(filename);
-
-	if (M_FileExists(path_dup))
-	{
-		return path_dup;
-	}
-
-	// 2: uppercase filename, e.g. DOOM2.WAD
-	//M_ForceUppercase(filename);
-
-	if (M_FileExists(path_dup))
-	{
-		return path_dup;
-	}
-
-	// 3. uppercase basename with lowercase extension, e.g. DOOM2.wad
-	auto ext = strrchr(path_dup.c_str(), '.');
-	if (ext != NULL && ext > filename)
-	{
-		//M_ForceLowercase(ext + 1);
+		// 1: lowercase filename, e.g. doom2.wad
+		//M_ForceLowercase(filename);
 
 		if (M_FileExists(path_dup))
 		{
 			return path_dup;
 		}
-	}
 
-	// 4. lowercase filename with uppercase first letter, e.g. Doom2.wad
-	if (strlen(filename) > 1)
-	{
-		//M_ForceLowercase(filename + 1);
+		// 2: uppercase filename, e.g. DOOM2.WAD
+		//M_ForceUppercase(filename);
 
 		if (M_FileExists(path_dup))
 		{
 			return path_dup;
 		}
-	} */
 
-	// 5. no luck
+		// 3. uppercase basename with lowercase extension, e.g. DOOM2.wad
+		auto ext = strrchr(path_dup.c_str(), '.');
+		if (ext != NULL && ext > filename)
+		{
+			//M_ForceLowercase(ext + 1);
+
+			if (M_FileExists(path_dup))
+			{
+				return path_dup;
+			}
+		}
+
+		// 4. lowercase filename with uppercase first letter, e.g. Doom2.wad
+		if (strlen(filename) > 1)
+		{
+			//M_ForceLowercase(filename + 1);
+
+			if (M_FileExists(path_dup))
+			{
+				return path_dup;
+			}
+		} */
+
+		// 5. no luck
 	return std::string{};
 }
 
@@ -410,23 +410,23 @@ std::string M_StringJoin(std::string s, ...)
 #ifdef _WIN32
 std::string M_OEMToUTF8(std::string oem)
 {
-/* 	auto size{strlen(oem)};
-	if (size == std::numeric_limits<size_t>::max())
-	{
-		// oem is too big to convert
-		return nullptr;
-	}
+	/* 	auto size{strlen(oem)};
+		if (size == std::numeric_limits<size_t>::max())
+		{
+			// oem is too big to convert
+			return nullptr;
+		}
 
-	auto len{size + 1};
+		auto len{size + 1};
 
-	//wchar_t* tmp = static_cast<decltype(tmp)>(malloc(len * sizeof(wchar_t)));
-	auto tmp{std::make_unique<wchar_t*>(len)};
-	MultiByteToWideChar(CP_OEMCP, 0, oem, len, *tmp, len);
-	//char* result = static_cast<decltype(result)>(malloc(len * 4));
-	auto result{std::make_unique<char*>(len)};
-	WideCharToMultiByte(CP_UTF8, 0, *tmp, len, *result, len * 4, NULL, NULL);
+		//wchar_t* tmp = static_cast<decltype(tmp)>(malloc(len * sizeof(wchar_t)));
+		auto tmp{std::make_unique<wchar_t*>(len)};
+		MultiByteToWideChar(CP_OEMCP, 0, oem, len, *tmp, len);
+		//char* result = static_cast<decltype(result)>(malloc(len * 4));
+		auto result{std::make_unique<char*>(len)};
+		WideCharToMultiByte(CP_UTF8, 0, *tmp, len, *result, len * 4, NULL, NULL);
 
-	return result; */
+		return result; */
 	return std::string{};
 }
 #endif	// _WIN32
@@ -442,58 +442,58 @@ void M_MakeDirectory(std::string path)
 
 void M_ExtractFileBase(std::string path, std::string dest)
 {
-/* 	auto size{strlen(path)};
-	if (size == 0)
-	{
-		return;
-	}
-
-	auto src{path + size - 1};
-
-	// back up until a \ or the start
-	while (src != path && *(src - 1) != DIR_SEPARATOR)
-	{
-		--src;
-	}
-
-	auto filename{src};
-
-	// Copy up to eight characters
-	// Note: Vanilla Doom exits with an error if a filename is specified
-	// with a base of more than eight characters. To remove the 8.3
-	// filename limit, instead we simply truncate the name.
-
-	size_t length{0};
-	memset(dest, 0, 8);
-
-	while (*src != '\0' && *src != '.')
-	{
-		if (length >= 8)
+	/* 	auto size{strlen(path)};
+		if (size == 0)
 		{
-			printf("Warning: Truncated '%s' lump name to '%.8s'.\n", filename, dest);
-			break;
+			return;
 		}
 
-		dest[length] = toupper((int)*src);
-		++length;
-		++src;
-	} */
+		auto src{path + size - 1};
+
+		// back up until a \ or the start
+		while (src != path && *(src - 1) != DIR_SEPARATOR)
+		{
+			--src;
+		}
+
+		auto filename{src};
+
+		// Copy up to eight characters
+		// Note: Vanilla Doom exits with an error if a filename is specified
+		// with a base of more than eight characters. To remove the 8.3
+		// filename limit, instead we simply truncate the name.
+
+		size_t length{0};
+		memset(dest, 0, 8);
+
+		while (*src != '\0' && *src != '.')
+		{
+			if (length >= 8)
+			{
+				printf("Warning: Truncated '%s' lump name to '%.8s'.\n", filename, dest);
+				break;
+			}
+
+			dest[length] = toupper((int)*src);
+			++length;
+			++src;
+		} */
 }
 
 void M_ForceUppercase(std::string text)
 {
-/* 	for (auto p{text}; *p != '\0'; ++p)
-	{
-		*p = toupper(*p);
-	} */
+	/* 	for (auto p{text}; *p != '\0'; ++p)
+		{
+			*p = toupper(*p);
+		} */
 }
 
 void M_ForceLowercase(std::string text)
 {
-/* 	for (auto p{text}; *p != '\0'; ++p)
-	{
-		*p = tolower(*p);
-	} */
+	/* 	for (auto p{text}; *p != '\0'; ++p)
+		{
+			*p = tolower(*p);
+		} */
 }
 
 // M_NormalizeSlashes
@@ -508,59 +508,59 @@ void M_ForceLowercase(std::string text)
 // BOOM.
 void M_NormalizeSlashes(std::string str)
 {
-/* 	auto size{strlen(str)};
-	if (size == 0)
-	{
-		return;
-	}
-
-	// Convert all slashes/backslashes to DIR_SEPARATOR
-	if constexpr (DIR_SEPARATOR == '/')
-	{
-		for (auto i{0}; i < size; ++i)
+	/* 	auto size{strlen(str)};
+		if (size == 0)
 		{
-			if (str[i] == '\\')
-			{
-				str[i] = DIR_SEPARATOR;
-			}
+			return;
 		}
-	}
-	else
-	{
-		for (auto i{0}; i < size; ++i)
+
+		// Convert all slashes/backslashes to DIR_SEPARATOR
+		if constexpr (DIR_SEPARATOR == '/')
 		{
-			if (str[i] == '/')
+			for (auto i{0}; i < size; ++i)
 			{
-				str[i] = DIR_SEPARATOR;
-			}
-		}
-	}
-
-	if (size == 1)
-	{
-		return;
-	}
-
-	// Remove trailing slashes
-	for (auto i{size-1}; i > 0 && str[i] == DIR_SEPARATOR; --i)
-	{
-		str[i] = '\0';
-	}
-
-	// Collapse multiple slashes
-	for (auto p{str};* (str++) = *p; )
-	{
-		if (*p == DIR_SEPARATOR)
-		{
-			++p;
-			while (*p == DIR_SEPARATOR)
-			{
-				++p;
+				if (str[i] == '\\')
+				{
+					str[i] = DIR_SEPARATOR;
+				}
 			}
 		}
 		else
 		{
-			++p;
+			for (auto i{0}; i < size; ++i)
+			{
+				if (str[i] == '/')
+				{
+					str[i] = DIR_SEPARATOR;
+				}
+			}
 		}
-	} */
+
+		if (size == 1)
+		{
+			return;
+		}
+
+		// Remove trailing slashes
+		for (auto i{size-1}; i > 0 && str[i] == DIR_SEPARATOR; --i)
+		{
+			str[i] = '\0';
+		}
+
+		// Collapse multiple slashes
+		for (auto p{str};* (str++) = *p; )
+		{
+			if (*p == DIR_SEPARATOR)
+			{
+				++p;
+				while (*p == DIR_SEPARATOR)
+				{
+					++p;
+				}
+			}
+			else
+			{
+				++p;
+			}
+		} */
 }

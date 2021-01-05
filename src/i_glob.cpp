@@ -23,7 +23,7 @@
 // not all systems.
 bool IsDirectory(std::string dir)
 {
-		return std::filesystem::directory_iterator{std::filesystem::path{dir}}->is_directory();
+	return std::filesystem::directory_iterator{std::filesystem::path{dir}}->is_directory();
 }
 
 // CALLED EXTERN
@@ -116,7 +116,7 @@ void I_EndGlob(glob_t* glob)
 // CALLED EXTERN
 std::string NextGlob(glob_t* glob)
 {
-	dirent *de;
+	dirent* de;
 
 	do
 	{
@@ -126,7 +126,7 @@ std::string NextGlob(glob_t* glob)
 			return nullptr;
 		}
 	} while (IsDirectory(glob->directory, de)
-			|| !MatchesAnyGlob(de->d_name, glob));
+		|| !MatchesAnyGlob(de->d_name, glob));
 
 	// Return the fully-qualified path, not just the bare filename.
 	return std::string(glob->directory + DIR_SEPARATOR_S + de->d_name);
@@ -241,7 +241,7 @@ static void ReadAllFilenames(glob_t* glob)
 		{
 			break;
 		}
-		glob->filenames = realloc(glob->filenames,(glob->filenames_len + 1) * sizeof(char*));
+		glob->filenames = realloc(glob->filenames, (glob->filenames_len + 1) * sizeof(char*));
 		glob->filenames[glob->filenames_len] = name;
 		++glob->filenames_len;
 	}
@@ -259,7 +259,7 @@ static void SortFilenames(char** filenames, int len, int flags)
 	}
 	pivot = filenames[len - 1];
 	left_len = 0;
-	for (i = 0; i < len-1; ++i)
+	for (i = 0; i < len - 1; ++i)
 	{
 		if ((flags & GLOB_FLAG_NOCASE) != 0)
 		{

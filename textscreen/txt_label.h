@@ -42,23 +42,20 @@ class Label : public Widget<Label>
 public:
 
 	Label() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{
-	}
+	{	}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() override final const noexcept
-	{
-	}
+	void CalculateSize() noexcept override final
+	{	}
 
-	void Draw() override final const noexcept
-	{
-	}
+	void Draw() noexcept override final
+	{	}
 
-	bool KeyPress(Keytype key) override final const noexcept
+	bool KeyPress(Keytype key) noexcept override final
 	{
 		if (key == KEY_ENTER || key == ' ')
 		{
@@ -69,7 +66,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -80,17 +77,14 @@ public:
 		return false
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{	}
 
-	void SetFocus(bool _focus) override final const noexcept
-	{
-	}
+	void SetFocus(bool _focus) noexcept override final
+	{	}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{	}
 };
 
 /**
@@ -155,22 +149,22 @@ static void LabelDrawer(UNCAST_ARG(label))
 
 	GetXY(&origin_x, &origin_y);
 
-	for (y=0; y<label->h; ++y)
+	for (y = 0; y < label->h; ++y)
 	{
 		// Calculate the amount to indent this line due to the align
 		// setting
 		sw = UTF8_Strlen(label->lines[y]);
 		switch (label->widget.align)
 		{
-			case HORIZ_LEFT:
-				align_indent = 0;
-				break;
-			case HORIZ_CENTER:
-				align_indent = (label->w - sw) / 2;
-				break;
-			case HORIZ_RIGHT:
-				align_indent = label->w - sw;
-				break;
+		case HORIZ_LEFT:
+			align_indent = 0;
+			break;
+		case HORIZ_CENTER:
+			align_indent = (label->w - sw) / 2;
+			break;
+		case HORIZ_RIGHT:
+			align_indent = label->w - sw;
+			break;
 		}
 
 		// Draw this line
@@ -179,7 +173,7 @@ static void LabelDrawer(UNCAST_ARG(label))
 
 		// Gap at the start
 
-		for (x=0; x<align_indent; ++x)
+		for (x = 0; x < align_indent; ++x)
 		{
 			DrawString(" ");
 		}
@@ -191,7 +185,7 @@ static void LabelDrawer(UNCAST_ARG(label))
 
 		// Gap at the end
 
-		for (; x<w; ++x)
+		for (; x < w; ++x)
 		{
 			DrawString(" ");
 		}
@@ -261,7 +255,7 @@ void SetLabel(txt_label_t* label, std::string value)
 
 	label->w = 0;
 
-	for (y=0; y<label->h; ++y)
+	for (y = 0; y < label->h; ++y)
 	{
 		unsigned line_len;
 

@@ -34,12 +34,12 @@ extern wad_file_class_t posix_wad_file;
 static wad_file_class_t* wad_file_classes[] =
 {
 #ifdef _WIN32
-	&win32_wad_file,
+	& win32_wad_file,
 #endif
 #ifdef HAVE_MMAP
-	&posix_wad_file,
+	& posix_wad_file,
 #endif
-	&stdc_wad_file,
+	& stdc_wad_file,
 };
 
 wad_file_t* W_OpenFile(std::string path)
@@ -63,7 +63,7 @@ wad_file_t* W_OpenFile(std::string path)
 
 	result = NULL;
 
-	for (i=0; i<arrlen(wad_file_classes); ++i)
+	for (i = 0; i < arrlen(wad_file_classes); ++i)
 	{
 		result = wad_file_classes[i]->OpenFile(path);
 
@@ -82,7 +82,7 @@ void W_CloseFile(wad_file_t* wad)
 }
 
 size_t W_Read(wad_file_t* wad, unsigned offset,
-				void* buffer, size_t buffer_len)
+	void* buffer, size_t buffer_len)
 {
 	return wad->file_class->Read(wad, offset, buffer, buffer_len);
 }

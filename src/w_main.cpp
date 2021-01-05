@@ -45,7 +45,7 @@ bool W_ParseCommandLine()
 
 	if (p > 0)
 	{
-		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
+		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
 			std::string filename;
 
@@ -74,7 +74,7 @@ bool W_ParseCommandLine()
 
 	if (p > 0)
 	{
-		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
+		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
 			std::string filename;
 
@@ -102,7 +102,7 @@ bool W_ParseCommandLine()
 
 	if (p > 0)
 	{
-		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
+		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
 			std::string filename;
 
@@ -128,7 +128,7 @@ bool W_ParseCommandLine()
 
 	if (p > 0)
 	{
-		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
+		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
 			std::string filename;
 
@@ -152,7 +152,7 @@ bool W_ParseCommandLine()
 
 	if (p > 0)
 	{
-		for (p = p + 1; p<myargc && myargv[p][0] != '-'; ++p)
+		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
 			std::string filename;
 
@@ -176,10 +176,10 @@ bool W_ParseCommandLine()
 	p = M_CheckParmWithArgs("-file", 1);
 	if (p)
 	{
-	// the parms after p are wadfile/lump names,
-	// until end of parms or another - preceded parm
-	modifiedgame = true;			// homebrew levels
-	while (++p != myargc && myargv[p][0] != '-')
+		// the parms after p are wadfile/lump names,
+		// until end of parms or another - preceded parm
+		modifiedgame = true;			// homebrew levels
+		while (++p != myargc && myargv[p][0] != '-')
 		{
 			std::string filename;
 
@@ -187,7 +187,7 @@ bool W_ParseCommandLine()
 
 			// [crispy] always merge arguments of "-file" parameter
 			printf(" merging %s !\n", filename);
-		W_MergeFile(filename);
+			W_MergeFile(filename);
 			free(filename);
 		}
 	}
@@ -202,7 +202,7 @@ void W_AutoLoadWADs(std::string path)
 	glob_t* glob;
 	std::string filename;
 
-	glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE|GLOB_FLAG_SORTED, "*.wad", "*.lmp", NULL);
+	glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.wad", "*.lmp", NULL);
 	for (;;)
 	{
 		filename = I_NextGlob(glob);
@@ -234,27 +234,27 @@ std::array<lump_t, 4> unique_lumps{
 
 void W_CheckCorrectIWAD(GameMission mission)
 {
-	auto result = std::ranges::find_first_of(unique_lumps, 
-					[&mission](auto iter){ return iter.mission == mission || D_SuggestGameName(iter, GameMode::indetermined) });
+	auto result = std::ranges::find_first_of(unique_lumps,
+		[&mission](auto iter) { return iter.mission == mission || D_SuggestGameName(iter, GameMode::indetermined) });
 
-/* 
-	for (auto iter : unique_lumps)
-	{
-		if (mission != iter.mission)
+	/*
+		for (auto iter : unique_lumps)
 		{
-			lumpindex_t lumpnum = W_CheckNumForName(iter.lumpname);
-
-			if (lumpnum >= 0)
+			if (mission != iter.mission)
 			{
-				I_Error("\nYou are trying to use a %s IWAD file with the %s%s binary.\nThis isn't going to work.\n"
-						"You probably want to use the %s%s binary.",
-						D_SuggestGameName(iter.mission, GameMode::indetermined),
-						PROGRAM_PREFIX,
-						D_GameMissionString(mission),
-						PROGRAM_PREFIX,
-						D_GameMissionString(iter.mission));
+				lumpindex_t lumpnum = W_CheckNumForName(iter.lumpname);
+
+				if (lumpnum >= 0)
+				{
+					I_Error("\nYou are trying to use a %s IWAD file with the %s%s binary.\nThis isn't going to work.\n"
+							"You probably want to use the %s%s binary.",
+							D_SuggestGameName(iter.mission, GameMode::indetermined),
+							PROGRAM_PREFIX,
+							D_GameMissionString(mission),
+							PROGRAM_PREFIX,
+							D_GameMissionString(iter.mission));
+				}
 			}
 		}
-	}
-*/
+	*/
 }

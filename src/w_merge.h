@@ -8,7 +8,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
- 		Handles merging of PWADs, similar to deutex's -merge option
+		Handles merging of PWADs, similar to deutex's -merge option
 		Ideally this should work exactly the same as in deutex, but trying to read the deutex source code made my brain hurt.
 \**********************************************************************************************************************************************/
 #pragma once

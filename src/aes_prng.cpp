@@ -24,7 +24,7 @@
  * Kyle McMartin <kyle@debian.org>
  * Adam J. Richter <adam@yggdrasil.com> (conversion to 2.5 API).
  *
- * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 2 of the License, or (at your option) any later version.
  * ---------------------------------------------------------------------------
  * Copyright (c) 2002, Dr Brian Gladman <brg@gladman.me.uk>, Worcester, UK.
@@ -152,7 +152,7 @@ static inline uint32_t star_x(const uint32_t word)
  * @ctx:	The location where the computed key will be stored.
  * @in_key:		The supplied key.
  * @key_len:	The length of the supplied key.
- 
+
 	Returns 0 on success. The function fails only if an invalid key size (or pointer) is supplied. The expanded key size is 240 bytes (max of 14
 	rounds with a unique 16 bytes key schedule plus a 16 bytes key which is used before the first round). The decryption key is prepared for the
 	"Equivalent Inverse Cipher" as described in FIPS-197. The first slot (16 bytes) of each key (enc or dec) is for the initial combination, the
@@ -177,42 +177,42 @@ static int AES_ExpandKey(aes_context_t& ctx, const uint8_t* in_key, const unsign
 	switch (key_len)
 	{
 	case AES_KEYSIZE_128:
+	{
+		uint32_t t{ctx.key_enc[3]};
+		for (uint32_t i{0}; i < 10; ++i)
 		{
-			uint32_t t{ctx.key_enc[3]};
-			for (uint32_t i{0}; i < 10; ++i)
-			{
-				loop4(i);
-			}
+			loop4(i);
 		}
-		break;
+	}
+	break;
 
 	case AES_KEYSIZE_192:
+	{
+		ctx.key_enc[4] = le32_to_cpu(key[4]);
+		uint32_t t{ctx.key_enc[5] = le32_to_cpu(key[5])};
+		for (uint32_t i{0}; i < 8; ++i)
 		{
-			ctx.key_enc[4] = le32_to_cpu(key[4]);
-			uint32_t t{ctx.key_enc[5] = le32_to_cpu(key[5])};
-			for (uint32_t i{0}; i < 8; ++i)
-			{
-				loop6(i);
-			}
+			loop6(i);
 		}
-		break;
+	}
+	break;
 
 	case AES_KEYSIZE_256:
+	{
+		ctx.key_enc[4] = le32_to_cpu(key[4]);
+		ctx.key_enc[5] = le32_to_cpu(key[5]);
+		ctx.key_enc[6] = le32_to_cpu(key[6]);
+		uint32_t t{ctx.key_enc[7] = le32_to_cpu(key[7])};
 		{
-			ctx.key_enc[4] = le32_to_cpu(key[4]);
-			ctx.key_enc[5] = le32_to_cpu(key[5]);
-			ctx.key_enc[6] = le32_to_cpu(key[6]);
-			uint32_t t{ctx.key_enc[7] = le32_to_cpu(key[7])};
+			uint32_t i{0};
+			for (; i < 6; ++i)
 			{
-				uint32_t i{0};
-				for (; i < 6; ++i)
-				{
-					loop8(i);
-				}
-				loop8tophalf(i);
+				loop8(i);
 			}
+			loop8tophalf(i);
 		}
-		break;
+	}
+	break;
 	}
 
 	ctx.key_dec[0] = ctx.key_enc[key_len + 24];
@@ -241,8 +241,8 @@ static int AES_ExpandKey(aes_context_t& ctx, const uint8_t* in_key, const unsign
  * @ctx:		AES context struct.
  * @in_key:		The input key.
  * @key_len:	The size of the key.
- 
- 	Returns 0 on success, on failure -1 is returned. The function uses AES_ExpandKey() to expand the key.
+
+	Returns 0 on success, on failure -1 is returned. The function uses AES_ExpandKey() to expand the key.
  */
 static int AES_SetKey(aes_context_t& ctx, const uint8_t* in_key, const unsigned key_len)
 {
@@ -264,14 +264,14 @@ static void AES_Encrypt(aes_context_t& ctx, uint8_t* out, const uint8_t* in)
 	b0[3] = le32_to_cpu(src[3]) ^ ctx.key_enc[3];
 
 	uint32_t b1[4];
-	
+
 	/* encrypt a block of text */
 	auto f_rn = [](auto& bo, auto& bi, auto n, auto& k)
 	{
 		bo[n] = crypto_ft_tab[0][get_byte(bi[n], 0)]
-			^crypto_ft_tab[1][get_byte(bi[(n + 1) & 3], 1)]
-			^crypto_ft_tab[2][get_byte(bi[(n + 2) & 3], 2)]
-			^crypto_ft_tab[3][get_byte(bi[(n + 3) & 3], 3)]
+			^ crypto_ft_tab[1][get_byte(bi[(n + 1) & 3], 1)]
+			^ crypto_ft_tab[2][get_byte(bi[(n + 2) & 3], 2)]
+			^ crypto_ft_tab[3][get_byte(bi[(n + 3) & 3], 3)]
 			^ *(k + n);
 	};
 
@@ -306,31 +306,31 @@ static void AES_Encrypt(aes_context_t& ctx, uint8_t* out, const uint8_t* in)
 	f_nround(b0, b1, kp);
 	f_nround(b1, b0, kp);
 
-/*
-#define f_rl(bo, bi, n, k)	do {	\
-	bo[n] = crypto_fl_tab[0][get_byte(bi[n], 0)] ^	\
-		crypto_fl_tab[1][get_byte(bi[(n + 1) & 3], 1)] ^	\
-		crypto_fl_tab[2][get_byte(bi[(n + 2) & 3], 2)] ^	\
-		crypto_fl_tab[3][get_byte(bi[(n + 3) & 3], 3)] ^ *(k + n);	\
-} while (0)
+	/*
+	#define f_rl(bo, bi, n, k)	do {	\
+		bo[n] = crypto_fl_tab[0][get_byte(bi[n], 0)] ^	\
+			crypto_fl_tab[1][get_byte(bi[(n + 1) & 3], 1)] ^	\
+			crypto_fl_tab[2][get_byte(bi[(n + 2) & 3], 2)] ^	\
+			crypto_fl_tab[3][get_byte(bi[(n + 3) & 3], 3)] ^ *(k + n);	\
+	} while (0)
 
-#define f_lround(bo, bi, k)	do {	\
-	f_rl(bo, bi, 0, k);	\
-	f_rl(bo, bi, 1, k);	\
-	f_rl(bo, bi, 2, k);	\
-	f_rl(bo, bi, 3, k);	\
-} while (0)
+	#define f_lround(bo, bi, k)	do {	\
+		f_rl(bo, bi, 0, k);	\
+		f_rl(bo, bi, 1, k);	\
+		f_rl(bo, bi, 2, k);	\
+		f_rl(bo, bi, 3, k);	\
+	} while (0)
 
-FIXME
-DOES k change? otherwise this simplifies to the following FOR loop
-*/
+	FIXME
+	DOES k change? otherwise this simplifies to the following FOR loop
+	*/
 	for (uint32_t n; n < 4; ++n)
 	{
 		b0[n] = crypto_fl_tab[0][get_byte(b1[n], 0)]
-				^ crypto_fl_tab[1][get_byte(b1[(n + 1) & 3], 1)]
-				^ crypto_fl_tab[2][get_byte(b1[(n + 2) & 3], 2)]
-				^ crypto_fl_tab[3][get_byte(b1[(n + 3) & 3], 3)]
-				^ *(kp + n);
+			^ crypto_fl_tab[1][get_byte(b1[(n + 1) & 3], 1)]
+			^ crypto_fl_tab[2][get_byte(b1[(n + 2) & 3], 2)]
+			^ crypto_fl_tab[3][get_byte(b1[(n + 3) & 3], 3)]
+			^ *(kp + n);
 	}
 
 	dst[0] = cpu_to_le32(b0[0]);
@@ -368,10 +368,10 @@ static void PRNG_Generate()
 	// Input for the cipher is a consecutively increasing 32-bit counter.
 	for (size_t i{0}; i < 4; ++i)
 	{
-		input[4*i] = prng_input_counter & 0xff;
-		input[4*i + 1] = (prng_input_counter >> 8) & 0xff;
-		input[4*i + 2] = (prng_input_counter >> 16) & 0xff;
-		input[4*i + 3] = (prng_input_counter >> 24) & 0xff;
+		input[4 * i] = prng_input_counter & 0xff;
+		input[4 * i + 1] = (prng_input_counter >> 8) & 0xff;
+		input[4 * i + 2] = (prng_input_counter >> 16) & 0xff;
+		input[4 * i + 3] = (prng_input_counter >> 24) & 0xff;
 		++prng_input_counter;
 	}
 
@@ -379,7 +379,7 @@ static void PRNG_Generate()
 
 	for (size_t i{0}; i < 4; ++i)
 	{
-		prng_values[i] = output[4*i] | (output[4*i + 1] << 8) | (output[4*i + 2] << 16) | (output[4*i + 3] << 24);
+		prng_values[i] = output[4 * i] | (output[4 * i + 1] << 8) | (output[4 * i + 2] << 16) | (output[4 * i + 3] << 24);
 	}
 
 	prng_value_index = 0;

@@ -313,10 +313,10 @@ bool D_Display()
 		}
 		else
 		{
-			y = (viewwindowy >> crispy->hires)+4;
+			y = (viewwindowy >> crispy->hires) + 4;
 		}
 		V_DrawPatchDirect((viewwindowx >> crispy->hires) + ((scaledviewwidth >> crispy->hires) - 68) / 2 - WIDESCREENDELTA, y,
-							W_CacheLumpName<patch_t>(DEH_String("M_PAUSE"), pu_tags_t::PU_CACHE));
+			W_CacheLumpName<patch_t>(DEH_String("M_PAUSE"), pu_tags_t::PU_CACHE));
 	}
 
 	// menus go directly to the screen
@@ -382,20 +382,20 @@ void D_BindVariables()
 
 	NET_BindVariables();
 
-	M_BindIntVariable("mouse_sensitivity",		&mouseSensitivity);
-	M_BindIntVariable("mouse_sensitivity_x2",	&mouseSensitivity_x2); // [crispy]
-	M_BindIntVariable("mouse_sensitivity_y",	&mouseSensitivity_y); // [crispy]
-	M_BindIntVariable("sfx_volume",				&sfxVolume);
-	M_BindIntVariable("music_volume",			&musicVolume);
-	M_BindIntVariable("show_messages",			&showMessages);
-	M_BindIntVariable("screenblocks",			&screenblocks);
-	M_BindIntVariable("detaillevel",			&detailLevel);
-	M_BindIntVariable("snd_channels",			&snd_channels);
+	M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
+	M_BindIntVariable("mouse_sensitivity_x2", &mouseSensitivity_x2); // [crispy]
+	M_BindIntVariable("mouse_sensitivity_y", &mouseSensitivity_y); // [crispy]
+	M_BindIntVariable("sfx_volume", &sfxVolume);
+	M_BindIntVariable("music_volume", &musicVolume);
+	M_BindIntVariable("show_messages", &showMessages);
+	M_BindIntVariable("screenblocks", &screenblocks);
+	M_BindIntVariable("detaillevel", &detailLevel);
+	M_BindIntVariable("snd_channels", &snd_channels);
 	// [crispy] unconditionally disable savegame and demo limits
 	//M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
 	//M_BindIntVariable("vanilla_demo_limit",		&vanilla_demo_limit);
-	M_BindIntVariable("show_endoom",			&show_endoom);
-	M_BindIntVariable("show_diskicon",			&show_diskicon);
+	M_BindIntVariable("show_endoom", &show_endoom);
+	M_BindIntVariable("show_diskicon", &show_diskicon);
 
 	// Multiplayer chat macros
 
@@ -409,51 +409,51 @@ void D_BindVariables()
 	}
 
 	// [crispy] bind "crispness" config variables
-	M_BindIntVariable("crispy_automapoverlay",	&crispy->automapoverlay);
-	M_BindIntVariable("crispy_automaprotate",	&crispy->automaprotate);
-	M_BindIntVariable("crispy_automapstats",	&crispy->automapstats);
-	M_BindIntVariable("crispy_bobfactor",		&crispy->bobfactor);
-	M_BindIntVariable("crispy_btusetimer",		&crispy->btusetimer);
-	M_BindIntVariable("crispy_brightmaps",		&crispy->brightmaps);
-	M_BindIntVariable("crispy_centerweapon",	&crispy->centerweapon);
-	M_BindIntVariable("crispy_coloredblood",	&crispy->coloredblood);
-	M_BindIntVariable("crispy_coloredhud",		&crispy->coloredhud);
-	M_BindIntVariable("crispy_crosshair",		&crispy->crosshair);
-	M_BindIntVariable("crispy_crosshairhealth",	&crispy->crosshairhealth);
-	M_BindIntVariable("crispy_crosshairtarget",	&crispy->crosshairtarget);
-	M_BindIntVariable("crispy_crosshairtype",	&crispy->crosshairtype);
-	M_BindIntVariable("crispy_demobar",			&crispy->demobar);
-	M_BindIntVariable("crispy_demotimer",		&crispy->demotimer);
-	M_BindIntVariable("crispy_demotimerdir",	&crispy->demotimerdir);
-	M_BindIntVariable("crispy_extautomap",		&crispy->extautomap);
-	M_BindIntVariable("crispy_extsaveg",		&crispy->extsaveg);
-	M_BindIntVariable("crispy_flipcorpses",		&crispy->flipcorpses);
-	M_BindIntVariable("crispy_freeaim",			&crispy->freeaim);
-	M_BindIntVariable("crispy_freelook",		&crispy->freelook);
-	M_BindIntVariable("crispy_hires",			&crispy->hires);
-	M_BindIntVariable("crispy_jump",			&crispy->jump);
-	M_BindIntVariable("crispy_leveltime",		&crispy->leveltime);
-	M_BindIntVariable("crispy_mouselook",		&crispy->mouselook);
-	M_BindIntVariable("crispy_neghealth",		&crispy->neghealth);
-	M_BindIntVariable("crispy_overunder",		&crispy->overunder);
-	M_BindIntVariable("crispy_pitch",			&crispy->pitch);
-	M_BindIntVariable("crispy_playercoords",	&crispy->playercoords);
-	M_BindIntVariable("crispy_recoil",			&crispy->recoil);
-	M_BindIntVariable("crispy_secretmessage",	&crispy->secretmessage);
-	M_BindIntVariable("crispy_smoothlight",		&crispy->smoothlight);
-	M_BindIntVariable("crispy_smoothmap",		&crispy->smoothmap);
-	M_BindIntVariable("crispy_smoothscaling",	&crispy->smoothscaling);
-	M_BindIntVariable("crispy_soundfix",		&crispy->soundfix);
-	M_BindIntVariable("crispy_soundfull",		&crispy->soundfull);
-	M_BindIntVariable("crispy_soundmono",		&crispy->soundmono);
-	M_BindIntVariable("crispy_translucency",	&crispy->translucency);
+	M_BindIntVariable("crispy_automapoverlay", &crispy->automapoverlay);
+	M_BindIntVariable("crispy_automaprotate", &crispy->automaprotate);
+	M_BindIntVariable("crispy_automapstats", &crispy->automapstats);
+	M_BindIntVariable("crispy_bobfactor", &crispy->bobfactor);
+	M_BindIntVariable("crispy_btusetimer", &crispy->btusetimer);
+	M_BindIntVariable("crispy_brightmaps", &crispy->brightmaps);
+	M_BindIntVariable("crispy_centerweapon", &crispy->centerweapon);
+	M_BindIntVariable("crispy_coloredblood", &crispy->coloredblood);
+	M_BindIntVariable("crispy_coloredhud", &crispy->coloredhud);
+	M_BindIntVariable("crispy_crosshair", &crispy->crosshair);
+	M_BindIntVariable("crispy_crosshairhealth", &crispy->crosshairhealth);
+	M_BindIntVariable("crispy_crosshairtarget", &crispy->crosshairtarget);
+	M_BindIntVariable("crispy_crosshairtype", &crispy->crosshairtype);
+	M_BindIntVariable("crispy_demobar", &crispy->demobar);
+	M_BindIntVariable("crispy_demotimer", &crispy->demotimer);
+	M_BindIntVariable("crispy_demotimerdir", &crispy->demotimerdir);
+	M_BindIntVariable("crispy_extautomap", &crispy->extautomap);
+	M_BindIntVariable("crispy_extsaveg", &crispy->extsaveg);
+	M_BindIntVariable("crispy_flipcorpses", &crispy->flipcorpses);
+	M_BindIntVariable("crispy_freeaim", &crispy->freeaim);
+	M_BindIntVariable("crispy_freelook", &crispy->freelook);
+	M_BindIntVariable("crispy_hires", &crispy->hires);
+	M_BindIntVariable("crispy_jump", &crispy->jump);
+	M_BindIntVariable("crispy_leveltime", &crispy->leveltime);
+	M_BindIntVariable("crispy_mouselook", &crispy->mouselook);
+	M_BindIntVariable("crispy_neghealth", &crispy->neghealth);
+	M_BindIntVariable("crispy_overunder", &crispy->overunder);
+	M_BindIntVariable("crispy_pitch", &crispy->pitch);
+	M_BindIntVariable("crispy_playercoords", &crispy->playercoords);
+	M_BindIntVariable("crispy_recoil", &crispy->recoil);
+	M_BindIntVariable("crispy_secretmessage", &crispy->secretmessage);
+	M_BindIntVariable("crispy_smoothlight", &crispy->smoothlight);
+	M_BindIntVariable("crispy_smoothmap", &crispy->smoothmap);
+	M_BindIntVariable("crispy_smoothscaling", &crispy->smoothscaling);
+	M_BindIntVariable("crispy_soundfix", &crispy->soundfix);
+	M_BindIntVariable("crispy_soundfull", &crispy->soundfull);
+	M_BindIntVariable("crispy_soundmono", &crispy->soundmono);
+	M_BindIntVariable("crispy_translucency", &crispy->translucency);
 #ifdef CRISPY_TRUECOLOR
-	M_BindIntVariable("crispy_truecolor",		&crispy->truecolor);
+	M_BindIntVariable("crispy_truecolor", &crispy->truecolor);
 #endif
-	M_BindIntVariable("crispy_uncapped",		&crispy->uncapped);
-	M_BindIntVariable("crispy_vsync",			&crispy->vsync);
-	M_BindIntVariable("crispy_weaponsquat",		&crispy->weaponsquat);
-	M_BindIntVariable("crispy_widescreen",		&crispy->widescreen);
+	M_BindIntVariable("crispy_uncapped", &crispy->uncapped);
+	M_BindIntVariable("crispy_vsync", &crispy->vsync);
+	M_BindIntVariable("crispy_weaponsquat", &crispy->weaponsquat);
+	M_BindIntVariable("crispy_widescreen", &crispy->widescreen);
 }
 
 // Called to determine whether to grab the mouse pointer
@@ -516,7 +516,9 @@ void D_RunFrame()
 			wipe_EndScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
 			wipestart = I_GetTime() - 1;
-		} else {
+		}
+		else
+		{
 			// normal update
 			I_FinishUpdate();				// page flip or blit buffer
 		}
@@ -537,7 +539,7 @@ void D_DoomLoop()
 	if (gamevariant == GameVariant::bfgedition && (demorecording || (gameaction == GameAction_t::ga_playdemo) || netgame))
 	{
 		printf(" WARNING: You are playing using one of the Doom Classic\n IWAD files shipped with the Doom 3: BFG Edition. These are\n"
-				" known to be incompatible with the regular IWAD files and\n may cause demos and network games to get out of sync.\n");
+			" known to be incompatible with the regular IWAD files and\n may cause demos and network games to get out of sync.\n");
 	}
 
 	// [crispy] no need to write a demo header in demo continue mode
@@ -622,11 +624,11 @@ void D_DoAdvanceDemo()
 	*/
 	if (W_CheckNumForName(DEH_String("demo4")) >= 0)
 	{
-		demosequence = (demosequence+1)%7;
+		demosequence = (demosequence + 1) % 7;
 	}
 	else
 	{
-		demosequence = (demosequence+1)%6;
+		demosequence = (demosequence + 1) % 6;
 	}
 
 	switch (demosequence)
@@ -702,7 +704,7 @@ void D_DoAdvanceDemo()
 	}
 }
 
-void D_StartTitle ()
+void D_StartTitle()
 {
 	gameaction = GameAction_t::ga_nothing;
 	demosequence = -1;
@@ -757,7 +759,7 @@ std::string GetGameName(std::string gamename)
 {
 	size_t i;
 
-	for (i=0; i<arrlen(banners); ++i)
+	for (i = 0; i < arrlen(banners); ++i)
 	{
 		std::string deh_sub;
 		// Has the banner been replaced?
@@ -788,7 +790,7 @@ std::string GetGameName(std::string gamename)
 				memmove(deh_gamename, deh_gamename + 1, gamename_size - 1);
 			}
 
-			while (deh_gamename[0] != '\0' && isspace(deh_gamename[strlen(deh_gamename)-1]))
+			while (deh_gamename[0] != '\0' && isspace(deh_gamename[strlen(deh_gamename) - 1]))
 			{
 				deh_gamename[strlen(deh_gamename) - 1] = '\0';
 			}
@@ -842,7 +844,7 @@ void D_IdentifyVersion()
 	{
 		unsigned i;
 
-		for (i=0; i<numlumps; ++i)
+		for (i = 0; i < numlumps; ++i)
 		{
 			if (!strncasecmp(lumpinfo[i]->name, "MAP01", 8))
 			{
@@ -1018,7 +1020,7 @@ void PrintDehackedBanners()
 {
 	size_t i;
 
-	for (i=0; i<arrlen(copyright_banners); ++i)
+	for (i = 0; i < arrlen(copyright_banners); ++i)
 	{
 		std::string deh_s;
 
@@ -1082,9 +1084,9 @@ static void InitGameVersion()
 
 	if (p)
 	{
-		for (i=0; gameversions[i].description != NULL; ++i)
+		for (i = 0; gameversions[i].description != NULL; ++i)
 		{
-			if (!strcmp(myargv[p+1], gameversions[i].cmdline))
+			if (!strcmp(myargv[p + 1], gameversions[i].cmdline))
 			{
 				gameversion = gameversions[i].version;
 				break;
@@ -1095,13 +1097,13 @@ static void InitGameVersion()
 		{
 			printf("Supported game versions:\n");
 
-			for (i=0; gameversions[i].description != NULL; ++i)
+			for (i = 0; gameversions[i].description != NULL; ++i)
 			{
 				printf("\t%s (%s)\n", gameversions[i].cmdline,
-						gameversions[i].description);
+					gameversions[i].description);
 			}
 
-			I_Error("Unknown game version '%s'", myargv[p+1]);
+			I_Error("Unknown game version '%s'", myargv[p + 1]);
 		}
 	}
 	else
@@ -1121,7 +1123,7 @@ static void InitGameVersion()
 			gameversion = GameVersion::exe_hacx;
 		}
 		else if (gamemode == GameMode::shareware || gamemode == GameMode::registered
-				|| (gamemode == GameMode::commercial && gamemission == GameMission::doom2))
+			|| (gamemode == GameMode::commercial && gamemission == GameMission::doom2))
 		{
 			// original
 			gameversion = GameVersion::exe_doom_1_9;
@@ -1138,28 +1140,28 @@ static void InitGameVersion()
 					status = true;
 					switch (demoversion)
 					{
-						case 0:
-						case 1:
-						case 2:
-						case 3:
-						case 4:
-							gameversion = GameVersion::exe_doom_1_2;
-							break;
-						case 106:
-							gameversion = GameVersion::exe_doom_1_666;
-							break;
-						case 107:
-							gameversion = GameVersion::exe_doom_1_7;
-							break;
-						case 108:
-							gameversion = GameVersion::exe_doom_1_8;
-							break;
-						case 109:
-							gameversion = GameVersion::exe_doom_1_9;
-							break;
-						default:
-							status = false;
-							break;
+					case 0:
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+						gameversion = GameVersion::exe_doom_1_2;
+						break;
+					case 106:
+						gameversion = GameVersion::exe_doom_1_666;
+						break;
+					case 107:
+						gameversion = GameVersion::exe_doom_1_7;
+						break;
+					case 108:
+						gameversion = GameVersion::exe_doom_1_8;
+						break;
+					case 109:
+						gameversion = GameVersion::exe_doom_1_9;
+						break;
+					default:
+						status = false;
+						break;
 					}
 					if (status)
 					{
@@ -1210,12 +1212,12 @@ void PrintGameVersion()
 {
 	int i;
 
-	for (i=0; gameversions[i].description != NULL; ++i)
+	for (i = 0; gameversions[i].description != NULL; ++i)
 	{
 		if (gameversions[i].version == gameversion)
 		{
 			printf("Emulating the behavior of the "
-					"'%s' executable.\n", gameversions[i].description);
+				"'%s' executable.\n", gameversions[i].description);
 			break;
 		}
 	}
@@ -1260,7 +1262,7 @@ static void LoadIwadDeh()
 		if (!DEH_LoadLumpByName("DEHACKED", true, false))
 		{
 			I_Error("DEHACKED lump not found. Please check that this is the "
-					"Hacx v1.2 IWAD.");
+				"Hacx v1.2 IWAD.");
 		}
 	}
 
@@ -1286,10 +1288,10 @@ static void LoadIwadDeh()
 		if (chex_deh.empty())
 		{
 			I_Error("Unable to find Chex Quest dehacked file (chex.deh).\n"
-					"The dehacked file is required in order to emulate\n"
-					"chex.exe correctly. It can be found in your nearest\n"
-					"/idgames repository mirror at:\n\n"
-					"	utils/exe_edit/patches/chexdeh.zip");
+				"The dehacked file is required in order to emulate\n"
+				"chex.exe correctly. It can be found in your nearest\n"
+				"/idgames repository mirror at:\n\n"
+				"	utils/exe_edit/patches/chexdeh.zip");
 		}
 
 		if (!DEH_LoadFile(chex_deh))
@@ -1363,7 +1365,7 @@ void D_DoomMain()
 
 	if (p)
 	{
-		NET_QueryAddress(myargv[p+1]);
+		NET_QueryAddress(myargv[p + 1]);
 		exit(0);
 	}
 
@@ -1424,8 +1426,8 @@ void D_DoomMain()
 	// Start a deathmatch game.
 	//
 
-	if (M_CheckParm ("-deathmatch"))
-	deathmatch = 1;
+	if (M_CheckParm("-deathmatch"))
+		deathmatch = 1;
 
 	//!
 	// @category net
@@ -1435,8 +1437,8 @@ void D_DoomMain()
 	// all items respawn after 30 seconds.
 	//
 
-	if (M_CheckParm ("-altdeath"))
-	deathmatch = 2;
+	if (M_CheckParm("-altdeath"))
+		deathmatch = 2;
 
 	//!
 	// @category net
@@ -1446,11 +1448,11 @@ void D_DoomMain()
 	// all items respawn after 30 seconds.
 	//
 
-	if (M_CheckParm ("-dm3"))
-	deathmatch = 3;
+	if (M_CheckParm("-dm3"))
+		deathmatch = 3;
 
 	if (devparm)
-	DEH_printf(D_DEVSTR);
+		DEH_printf(D_DEVSTR);
 
 	// find which dir to use for config files
 
@@ -1488,23 +1490,23 @@ void D_DoomMain()
 	// x defaults to 200. Values are rounded up to 10 and down to 400.
 	//
 
-	if ( (p=M_CheckParm ("-turbo")) )
+	if ((p = M_CheckParm("-turbo")))
 	{
-	int scale = 200;
-	extern int forwardmove[2];
-	extern int sidemove[2];
+		int scale = 200;
+		extern int forwardmove[2];
+		extern int sidemove[2];
 
-	if (p<myargc-1)
-		scale = atoi(myargv[p+1]);
-	if (scale < 10)
-		scale = 10;
-	if (scale > 400)
-		scale = 400;
+		if (p < myargc - 1)
+			scale = atoi(myargv[p + 1]);
+		if (scale < 10)
+			scale = 10;
+		if (scale > 400)
+			scale = 400;
 		DEH_printf("turbo scale: %i%%\n", scale);
-	forwardmove[0] = forwardmove[0]*scale/100;
-	forwardmove[1] = forwardmove[1]*scale/100;
-	sidemove[0] = sidemove[0]*scale/100;
-	sidemove[1] = sidemove[1]*scale/100;
+		forwardmove[0] = forwardmove[0] * scale / 100;
+		forwardmove[1] = forwardmove[1] * scale / 100;
+		sidemove[0] = sidemove[0] * scale / 100;
+		sidemove[1] = sidemove[1] * scale / 100;
 	}
 
 	// init subsystems
@@ -1528,7 +1530,7 @@ void D_DoomMain()
 	if (iwadfile.empty())
 	{
 		I_Error("Game mode indeterminate. No IWAD file was found. Try\n"
-				"specifying one with the '-iwad' command line parameter.\n");
+			"specifying one with the '-iwad' command line parameter.\n");
 	}
 
 	modifiedgame = false;
@@ -1677,28 +1679,28 @@ void D_DoomMain()
 
 	if (p)
 	{
-	p = M_CheckParmWithArgs("-mergedump", 1);
+		p = M_CheckParmWithArgs("-mergedump", 1);
 
-	if (p)
-	{
-		int merged;
-
-		if (M_StringEndsWith(myargv[p+1], ".wad"))
+		if (p)
 		{
-		M_StringCopy(file, myargv[p+1], sizeof(file));
+			int merged;
+
+			if (M_StringEndsWith(myargv[p + 1], ".wad"))
+			{
+				M_StringCopy(file, myargv[p + 1], sizeof(file));
+			}
+			else
+			{
+				DEH_snprintf(file, sizeof(file), "%s.wad", myargv[p + 1]);
+			}
+
+			merged = W_MergeDump(file);
+			I_Error("W_MergeDump: Merged %d lumps into file '%s'.", merged, file);
 		}
 		else
 		{
-		DEH_snprintf(file, sizeof(file), "%s.wad", myargv[p+1]);
+			I_Error("W_MergeDump: The '-mergedump' parameter requires an argument.");
 		}
-
-		merged = W_MergeDump(file);
-		I_Error("W_MergeDump: Merged %d lumps into file '%s'.", merged, file);
-	}
-	else
-	{
-		I_Error("W_MergeDump: The '-mergedump' parameter requires an argument.");
-	}
 	}
 
 	//!
@@ -1712,29 +1714,29 @@ void D_DoomMain()
 
 	if (p)
 	{
-	p = M_CheckParmWithArgs("-lumpdump", 1);
+		p = M_CheckParmWithArgs("-lumpdump", 1);
 
-	if (p)
-	{
-		int dumped;
-
-		M_StringCopy(file, myargv[p+1], sizeof(file));
-
-		dumped = W_LumpDump(file);
-
-		if (dumped < 0)
+		if (p)
 		{
-		I_Error("W_LumpDump: Failed to write lump '%s'.", file);
+			int dumped;
+
+			M_StringCopy(file, myargv[p + 1], sizeof(file));
+
+			dumped = W_LumpDump(file);
+
+			if (dumped < 0)
+			{
+				I_Error("W_LumpDump: Failed to write lump '%s'.", file);
+			}
+			else
+			{
+				I_Error("W_LumpDump: Dumped lump into file '%s.lmp'.", file);
+			}
 		}
 		else
 		{
-		I_Error("W_LumpDump: Dumped lump into file '%s.lmp'.", file);
+			I_Error("W_LumpDump: The '-lumpdump' parameter requires an argument.");
 		}
-	}
-	else
-	{
-		I_Error("W_LumpDump: The '-lumpdump' parameter requires an argument.");
-	}
 	}
 
 	// Debug:
@@ -1760,7 +1762,7 @@ void D_DoomMain()
 		// Play back the demo named demo.lmp, determining the framerate
 		// of the screen.
 		//
-	p = M_CheckParmWithArgs("-timedemo", 1);
+		p = M_CheckParmWithArgs("-timedemo", 1);
 
 	}
 
@@ -1777,22 +1779,22 @@ void D_DoomMain()
 		}
 		else
 		{
-			DEH_snprintf(file, sizeof(file), "%s.lmp", myargv[p+1]);
+			DEH_snprintf(file, sizeof(file), "%s.lmp", myargv[p + 1]);
 		}
 
 		free(uc_filename);
 
 		if (D_AddFile(file))
 		{
-		int i;
-		// [crispy] check if the demo file name gets truncated to a lump name that is already present
-		if ((i = W_CheckNumForNameFromTo(lumpinfo[numlumps - 1]->name, numlumps - 2, 0)) != -1)
-		{
-		printf("Demo lump name collision detected with lump \'%.8s\' from %s.\n",
-				lumpinfo[i]->name, W_WadNameForLump(lumpinfo[i]));
-		// [FG] the DEMO1 lump is almost certainly always a demo lump
-		M_StringCopy(lumpinfo[numlumps - 1]->name, "DEMO1", 6);
-		}
+			int i;
+			// [crispy] check if the demo file name gets truncated to a lump name that is already present
+			if ((i = W_CheckNumForNameFromTo(lumpinfo[numlumps - 1]->name, numlumps - 2, 0)) != -1)
+			{
+				printf("Demo lump name collision detected with lump \'%.8s\' from %s.\n",
+					lumpinfo[i]->name, W_WadNameForLump(lumpinfo[i]));
+				// [FG] the DEMO1 lump is almost certainly always a demo lump
+				M_StringCopy(lumpinfo[numlumps - 1]->name, "DEMO1", 6);
+			}
 
 			M_StringCopy(demolumpname, lumpinfo[numlumps - 1]->name, sizeof(demolumpname));
 		}
@@ -1816,16 +1818,16 @@ void D_DoomMain()
 	// [crispy] allow overriding of special-casing
 	if (!M_ParmExists("-noautoload") && gamemode != GameMode::shareware)
 	{
-	if (gamemode == GameMode::retail && gameversion == GameVersion::exe_ultimate && gamevariant != GameVariant::freedoom)
-	{
-		D_LoadSigilWad();
-	}
+		if (gamemode == GameMode::retail && gameversion == GameVersion::exe_ultimate && gamevariant != GameVariant::freedoom)
+		{
+			D_LoadSigilWad();
+		}
 
-	if (gamemission == GameMission::doom2)
-	{
-		D_LoadNerveWad();
-		D_LoadMasterlevelsWad();
-	}
+		if (gamemission == GameMission::doom2)
+		{
+			D_LoadNerveWad();
+			D_LoadMasterlevelsWad();
+		}
 	}
 
 	// Load DEHACKED lumps from WAD files - but only if we give the right
@@ -1863,37 +1865,37 @@ void D_DoomMain()
 	// Check for -file in shareware
 	if (modifiedgame && (gamevariant != GameVariant::freedoom))
 	{
-	// These are the lumps that will be checked in IWAD,
-	// if any one is not present, execution will be aborted.
-	char name[23][8]=
-	{
-		"e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
-		"e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
-		"dphoof","bfgga0","heada1","cybra1","spida1d1"
-	};
-	int i;
+		// These are the lumps that will be checked in IWAD,
+		// if any one is not present, execution will be aborted.
+		char name[23][8] =
+		{
+			"e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
+			"e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
+			"dphoof","bfgga0","heada1","cybra1","spida1d1"
+		};
+		int i;
 
-	if ( gamemode == GameMode::shareware)
-		I_Error(DEH_String("\nYou cannot -file with the shareware "
-					"version. Register!"));
+		if (gamemode == GameMode::shareware)
+			I_Error(DEH_String("\nYou cannot -file with the shareware "
+				"version. Register!"));
 
-	// Check for fake IWAD with right name,
-	// but w/o all the lumps of the registered version.
-	if (gamemode == GameMode::registered)
-		for (i = 0;i < 23; ++i)
-		if (W_CheckNumForName(name[i])<0)
-			I_Error(DEH_String("\nThis is not the registered version."));
+		// Check for fake IWAD with right name,
+		// but w/o all the lumps of the registered version.
+		if (gamemode == GameMode::registered)
+			for (i = 0;i < 23; ++i)
+				if (W_CheckNumForName(name[i]) < 0)
+					I_Error(DEH_String("\nThis is not the registered version."));
 	}
 
-// [crispy] disable meaningless warning, we always use "-merge" anyway
+	// [crispy] disable meaningless warning, we always use "-merge" anyway
 #if 0
 	if (W_CheckNumForName("SS_START") >= 0
 		|| W_CheckNumForName("FF_END") >= 0)
 	{
 		I_PrintDivider();
 		printf(" WARNING: The loaded WAD file contains modified sprites or\n"
-				" floor textures. You may want to use the '-merge' command\n"
-				" line option instead of '-file'.\n");
+			" floor textures. You may want to use the '-merge' command\n"
+			" line option instead of '-file'.\n");
 	}
 #endif
 
@@ -1909,32 +1911,32 @@ void D_DoomMain()
 
 	// [crispy] check for SSG resources
 	crispy->havessg =
-	(
-		gamemode == GameMode::commercial ||
 		(
-			W_CheckNumForName("sht2a0")			!= -1 && // [crispy] wielding/firing sprite sequence
-			I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dshtgn)]) != -1 && // [crispy] firing sound
-			I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbopn)]) != -1 && // [crispy] opening sound
-			I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbload)]) != -1 && // [crispy] reloading sound
-			I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbcls)]) != -1	// [crispy] closing sound
-		)
-	);
+			gamemode == GameMode::commercial ||
+			(
+				W_CheckNumForName("sht2a0") != -1 && // [crispy] wielding/firing sprite sequence
+				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dshtgn)]) != -1 && // [crispy] firing sound
+				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbopn)]) != -1 && // [crispy] opening sound
+				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbload)]) != -1 && // [crispy] reloading sound
+				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbcls)]) != -1	// [crispy] closing sound
+				)
+			);
 
 	// [crispy] check for presence of a 5th episode
 	crispy->haved1e5 = (gameversion == GameVersion::exe_ultimate) &&
-						(W_CheckNumForName("m_epi5") != -1) &&
-						(W_CheckNumForName("e5m1") != -1) &&
-						(W_CheckNumForName("wilv40") != -1);
+		(W_CheckNumForName("m_epi5") != -1) &&
+		(W_CheckNumForName("e5m1") != -1) &&
+		(W_CheckNumForName("wilv40") != -1);
 
 	// [crispy] check for presence of E1M10
 	crispy->havee1m10 = (gamemode == GameMode::retail) &&
-						(W_CheckNumForName("e1m10") != -1) &&
-						(W_CheckNumForName("sewers") != -1);
+		(W_CheckNumForName("e1m10") != -1) &&
+		(W_CheckNumForName("sewers") != -1);
 
 	// [crispy] check for presence of MAP33
 	crispy->havemap33 = (gamemode == GameMode::commercial) &&
-						(W_CheckNumForName("map33") != -1) &&
-						(W_CheckNumForName("cwilv32") != -1);
+		(W_CheckNumForName("map33") != -1) &&
+		(W_CheckNumForName("cwilv32") != -1);
 
 	// [crispy] change level name for MAP33 if not already changed
 	if (crispy->havemap33 && !DEH_HasStringReplacement(PHUSTR_1))
@@ -1942,7 +1944,7 @@ void D_DoomMain()
 		DEH_AddStringReplacement(PHUSTR_1, "level 33: betray");
 	}
 
-	printf ("NET_Init: Init network subsystem.\n");
+	printf("NET_Init: Init network subsystem.\n");
 	NET_Init();
 
 	// Initial netgame startup. Connect to server etc.
@@ -1967,8 +1969,8 @@ void D_DoomMain()
 
 	if (p)
 	{
-	startskill = myargv[p+1][0]-'1';
-	autostart = true;
+		startskill = myargv[p + 1][0] - '1';
+		autostart = true;
 	}
 
 	//!
@@ -1983,9 +1985,9 @@ void D_DoomMain()
 
 	if (p)
 	{
-	startepisode = myargv[p+1][0]-'0';
-	startmap = 1;
-	autostart = true;
+		startepisode = myargv[p + 1][0] - '0';
+		startmap = 1;
+		autostart = true;
 	}
 
 	timelimit = 0;
@@ -2002,7 +2004,7 @@ void D_DoomMain()
 
 	if (p)
 	{
-	timelimit = atoi(myargv[p+1]);
+		timelimit = atoi(myargv[p + 1]);
 	}
 
 	//!
@@ -2016,7 +2018,7 @@ void D_DoomMain()
 
 	if (p)
 	{
-	timelimit = 20;
+		timelimit = 20;
 	}
 
 	//!
@@ -2033,20 +2035,20 @@ void D_DoomMain()
 	if (p)
 	{
 		if (gamemode == GameMode::commercial)
-			startmap = atoi(myargv[p+1]);
+			startmap = atoi(myargv[p + 1]);
 		else
 		{
-			startepisode = myargv[p+1][0]-'0';
+			startepisode = myargv[p + 1][0] - '0';
 
 			// [crispy] only if second argument is not another option
-			if (p + 2 < myargc && myargv[p+2][0] != '-')
+			if (p + 2 < myargc && myargv[p + 2][0] != '-')
 			{
-				startmap = myargv[p+2][0]-'0';
+				startmap = myargv[p + 2][0] - '0';
 			}
 			else
 			{
 				// [crispy] allow second digit without space in between for Doom 1
-				startmap = myargv[p+1][1]-'0';
+				startmap = myargv[p + 1][1] - '0';
 			}
 		}
 		autostart = true;
@@ -2109,7 +2111,7 @@ void D_DoomMain()
 
 	if (p)
 	{
-		startloadgame = atoi(myargv[p+1]);
+		startloadgame = atoi(myargv[p + 1]);
 	}
 	else
 	{
@@ -2165,38 +2167,38 @@ void D_DoomMain()
 
 	if (p)
 	{
-	G_RecordDemo (myargv[p+1]);
-	autostart = true;
+		G_RecordDemo(myargv[p + 1]);
+		autostart = true;
 	}
 
 	p = M_CheckParmWithArgs("-playdemo", 1);
 	if (p)
 	{
-	singledemo = true;				// quit after one demo
-	G_DeferedPlayDemo(demolumpname);
-	D_DoomLoop(); // never returns
+		singledemo = true;				// quit after one demo
+		G_DeferedPlayDemo(demolumpname);
+		D_DoomLoop(); // never returns
 	}
 	crispy->demowarp = 0; // [crispy] we don't play a demo, so don't skip maps
 
 	p = M_CheckParmWithArgs("-timedemo", 1);
 	if (p)
 	{
-	G_TimeDemo(demolumpname);
-	D_DoomLoop(); // never returns
+		G_TimeDemo(demolumpname);
+		D_DoomLoop(); // never returns
 	}
 
 	if (startloadgame >= 0)
 	{
 		M_StringCopy(file, P_SaveGameFile(startloadgame), sizeof(file));
-	G_LoadGame(file);
+		G_LoadGame(file);
 	}
 
-	if (gameaction != GameAction_t::ga_loadgame )
+	if (gameaction != GameAction_t::ga_loadgame)
 	{
-	if (autostart || netgame)
-		G_InitNew(startskill, startepisode, startmap);
-	else
-		D_StartTitle();				// start up intro loop
+		if (autostart || netgame)
+			G_InitNew(startskill, startepisode, startmap);
+		else
+			D_StartTitle();				// start up intro loop
 	}
 
 	D_DoomLoop(); // never returns

@@ -413,7 +413,7 @@ void HU_Init()
 
 	// load the heads-up font
 	j = HU_FONTSTART;
-	for (i=0; i < HU_FONTSIZE; ++i)
+	for (i = 0; i < HU_FONTSIZE; ++i)
 	{
 		DEH_snprintf(buffer, 9, "STCFN%.3d", j++);
 		hu_font[i] = W_CacheLumpName<patch_t>(buffer, pu_tags_t::PU_STATIC);
@@ -458,7 +458,7 @@ void HU_Init()
 			// special-case the chevron crosshair type
 			if (toupper(laserpatch[i].c) == '^')
 			{
-				laserpatch[i].h -= SHORT(patch->height)/2;
+				laserpatch[i].h -= SHORT(patch->height) / 2;
 			}
 		}
 
@@ -467,31 +467,31 @@ void HU_Init()
 			patch = W_CacheLumpNum<patch_t>(laserpatch[i].l, pu_tags_t::PU_STATIC);
 		}
 
-		laserpatch[i].w += SHORT(patch->width)/2;
-		laserpatch[i].h += SHORT(patch->height)/2;
+		laserpatch[i].w += SHORT(patch->width) / 2;
+		laserpatch[i].h += SHORT(patch->height) / 2;
 	}
 
 	if (!M_ParmExists("-nodeh"))
 	{
 		// colorize keycard and skull key messages
-		CrispyReplaceColor(GOTBLUECARD, 	CR_BLUE,	" blue ");
-		CrispyReplaceColor(GOTBLUESKUL,		CR_BLUE,	" blue ");
-		CrispyReplaceColor(PD_BLUEO,		CR_BLUE,	" blue ");
-		CrispyReplaceColor(PD_BLUEK,		CR_BLUE,	" blue ");
-		CrispyReplaceColor(GOTREDCARD,		CR_RED,		" red ");
-		CrispyReplaceColor(GOTREDSKULL,		CR_RED,		" red ");
-		CrispyReplaceColor(PD_REDO,			CR_RED,		" red ");
-		CrispyReplaceColor(PD_REDK,			CR_RED,		" red ");
-		CrispyReplaceColor(GOTYELWCARD,		CR_GOLD,	" yellow ");
-		CrispyReplaceColor(GOTYELWSKUL,		CR_GOLD,	" yellow ");
-		CrispyReplaceColor(PD_YELLOWO,		CR_GOLD,	" yellow ");
-		CrispyReplaceColor(PD_YELLOWK,		CR_GOLD,	" yellow ");
+		CrispyReplaceColor(GOTBLUECARD, CR_BLUE, " blue ");
+		CrispyReplaceColor(GOTBLUESKUL, CR_BLUE, " blue ");
+		CrispyReplaceColor(PD_BLUEO, CR_BLUE, " blue ");
+		CrispyReplaceColor(PD_BLUEK, CR_BLUE, " blue ");
+		CrispyReplaceColor(GOTREDCARD, CR_RED, " red ");
+		CrispyReplaceColor(GOTREDSKULL, CR_RED, " red ");
+		CrispyReplaceColor(PD_REDO, CR_RED, " red ");
+		CrispyReplaceColor(PD_REDK, CR_RED, " red ");
+		CrispyReplaceColor(GOTYELWCARD, CR_GOLD, " yellow ");
+		CrispyReplaceColor(GOTYELWSKUL, CR_GOLD, " yellow ");
+		CrispyReplaceColor(PD_YELLOWO, CR_GOLD, " yellow ");
+		CrispyReplaceColor(PD_YELLOWK, CR_GOLD, " yellow ");
 
 		// colorize multi-player messages
-		CrispyReplaceColor(HUSTR_PLRGREEN,	CR_GREEN,	"Green: ");
-		CrispyReplaceColor(HUSTR_PLRINDIGO,	CR_GRAY,	"Indigo: ");
-		CrispyReplaceColor(HUSTR_PLRBROWN,	CR_GOLD,	"Brown: ");
-		CrispyReplaceColor(HUSTR_PLRRED,	CR_RED,		"Red: ");
+		CrispyReplaceColor(HUSTR_PLRGREEN, CR_GREEN, "Green: ");
+		CrispyReplaceColor(HUSTR_PLRINDIGO, CR_GRAY, "Indigo: ");
+		CrispyReplaceColor(HUSTR_PLRBROWN, CR_GOLD, "Brown: ");
+		CrispyReplaceColor(HUSTR_PLRRED, CR_RED, "Red: ");
 	}
 }
 
@@ -609,7 +609,7 @@ void HU_Start()
 	HUlib_initTextLine(&w_coorda, HU_COORDX, HU_MSGY + 3 * 8, hu_font, HU_FONTSTART);
 	HUlib_initTextLine(&w_fps, HU_COORDX, HU_MSGY, hu_font, HU_FONTSTART);
 
-	switch ( logical_gamemission )
+	switch (logical_gamemission)
 	{
 	case GameMission::doom:
 		s = HU_TITLE;
@@ -700,7 +700,7 @@ void HU_Start()
 	HUlib_initIText(&w_chat, HU_INPUTX, HU_INPUTY, hu_font, HU_FONTSTART, &chat_on);
 
 	// create the inputbuffer widgets
-	for (i=0; i < MAX_PLAYERS; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
 		HUlib_initIText(&w_inputbuffer[i], 0, 0, 0, 0, &always_off);
 	}
@@ -714,14 +714,14 @@ void HU_DemoProgressBar()
 	const int i = SCREENWIDTH * defdemotics / deftotaldemotics;
 
 #ifndef CRISPY_TRUECOLOR
-// V_DrawHorizLine(0, SCREENHEIGHT - 3, i, 4); // [crispy] white
+	// V_DrawHorizLine(0, SCREENHEIGHT - 3, i, 4); // [crispy] white
 	V_DrawHorizLine(0, SCREENHEIGHT - 2, i, 0); // [crispy] black
 	V_DrawHorizLine(0, SCREENHEIGHT - 1, i, 4); // [crispy] white
 
 // V_DrawHorizLine(0, SCREENHEIGHT - 2, 1, 4); // [crispy] white start
 // V_DrawHorizLine(i - 1, SCREENHEIGHT - 2, 1, 4); // [crispy] white end
 #else
-// V_DrawHorizLine(0, SCREENHEIGHT - 3, i, colormaps[4]); // [crispy] white
+	// V_DrawHorizLine(0, SCREENHEIGHT - 3, i, colormaps[4]); // [crispy] white
 	V_DrawHorizLine(0, SCREENHEIGHT - 2, i, colormaps[0]); // [crispy] black
 	V_DrawHorizLine(0, SCREENHEIGHT - 1, i, colormaps[4]); // [crispy] white
 
@@ -738,8 +738,8 @@ static void HU_DrawCrosshair()
 	extern byte* R_LaserspotColor();
 
 	if (weaponinfo[std::size_t(plr->readyweapon)].ammo == AmmoType::am_noammo
-			|| plr->playerstate != PlayerState::live
-			|| automapactive || menuactive || paused || secret_on)
+		|| plr->playerstate != PlayerState::live
+		|| automapactive || menuactive || paused || secret_on)
 	{
 		return;
 	}
@@ -753,10 +753,10 @@ static void HU_DrawCrosshair()
 	dp_translucent = true;
 	dp_translation = R_LaserspotColor();
 
-	V_DrawPatch(ORIGWIDTH/2 - laserpatch[crispy->crosshairtype].w,
-				((screenblocks <= 10) ? (ORIGHEIGHT-ST_HEIGHT)/2 : ORIGHEIGHT/2) - laserpatch[crispy->crosshairtype].h, patch);
+	V_DrawPatch(ORIGWIDTH / 2 - laserpatch[crispy->crosshairtype].w,
+		((screenblocks <= 10) ? (ORIGHEIGHT - ST_HEIGHT) / 2 : ORIGHEIGHT / 2) - laserpatch[crispy->crosshairtype].h, patch);
 
-// V_DrawHorizLine(0, (screenblocks <= 10) ? (SCREENHEIGHT/2-ST_HEIGHT) : (SCREENHEIGHT/2), SCREENWIDTH, 128);
+	// V_DrawHorizLine(0, (screenblocks <= 10) ? (SCREENHEIGHT/2-ST_HEIGHT) : (SCREENHEIGHT/2), SCREENWIDTH, 128);
 }
 
 void HU_Drawer()
@@ -906,12 +906,12 @@ void HU_Ticker()
 		{
 			// FIXME what is this?
 			extern int M_StringWidth(std::string string);
-			w_secret.l[0].x = ORIGWIDTH/2 - M_StringWidth(plr->centermessage)/2;
+			w_secret.l[0].x = ORIGWIDTH / 2 - M_StringWidth(plr->centermessage) / 2;
 
 			HUlib_addMessageToSText(&w_secret, 0, plr->centermessage);
 			//plr->centermessage = 0;
 			secret_on = true;
-			secret_counter = 5*TICRATE/2; // 2.5 seconds
+			secret_counter = 5 * TICRATE / 2; // 2.5 seconds
 		}
 
 		// display message if necessary
@@ -925,7 +925,7 @@ void HU_Ticker()
 			message_dontfuckwithme = 0;
 			crispy->screenshotmsg >>= 1;
 		}
-	} 
+	}
 	//else
 	//{
 		//message_on = false;
@@ -934,7 +934,7 @@ void HU_Ticker()
 	// check for incoming chat characters
 	if (netgame)
 	{
-		for (i=0; i < MAX_PLAYERS; ++i)
+		for (i = 0; i < MAX_PLAYERS; ++i)
 		{
 			if (!playeringame[i])
 			{
@@ -951,14 +951,14 @@ void HU_Ticker()
 					rc = HUlib_keyInIText(&w_inputbuffer[i], c);
 					if (rc && c == KEY_ENTER)
 					{
-						if (w_inputbuffer[i].l.len && (chat_dest[i] == consoleplayer+1 || chat_dest[i] == HU_BROADCAST))
+						if (w_inputbuffer[i].l.len && (chat_dest[i] == consoleplayer + 1 || chat_dest[i] == HU_BROADCAST))
 						{
 							HUlib_addMessageToSText(&w_message, DEH_String(player_names[i]), w_inputbuffer[i].l.l);
 
 							message_nottobefuckedwith = true;
 							message_on = true;
 							message_counter = HU_MSGTIMEOUT;
-							if ( gamemode == GameMode::commercial )
+							if (gamemode == GameMode::commercial)
 							{
 								S_StartSound(0, sfxenum_t::sfx_radio);
 							}
@@ -1029,11 +1029,11 @@ void HU_Ticker()
 
 		if (time >= 3600)
 		{
-			M_snprintf(str, sizeof(str), "%s%02d:%02d:%02d", crstr[CR_GRAY], time/3600, (time%3600)/60, time%60);
+			M_snprintf(str, sizeof(str), "%s%02d:%02d:%02d", crstr[CR_GRAY], time / 3600, (time % 3600) / 60, time % 60);
 		}
 		else
 		{
-			M_snprintf(str, sizeof(str), "%s%02d:%02d", crstr[CR_GRAY], time/60, time%60);
+			M_snprintf(str, sizeof(str), "%s%02d:%02d", crstr[CR_GRAY], time / 60, time % 60);
 		}
 		HUlib_clearTextLine(&w_ltime);
 		s = str;
@@ -1062,7 +1062,7 @@ void HU_Ticker()
 
 	if (crispy->playercoords == WIDGETS_ALWAYS || (automapactive && crispy->playercoords == WIDGETS_AUTOMAP))
 	{
-		M_snprintf(str, sizeof(str), "%sX %s%-5d", cr_stat2, crstr[CR_GRAY], (plr->x)>>FRACBITS);
+		M_snprintf(str, sizeof(str), "%sX %s%-5d", cr_stat2, crstr[CR_GRAY], (plr->x) >> FRACBITS);
 		HUlib_clearTextLine(&w_coordx);
 		s = str;
 		while (*s)
@@ -1070,7 +1070,7 @@ void HU_Ticker()
 			HUlib_addCharToTextLine(&w_coordx, *((s++)));
 		}
 
-		M_snprintf(str, sizeof(str), "%sY %s%-5d", cr_stat2, crstr[CR_GRAY], (plr->y)>>FRACBITS);
+		M_snprintf(str, sizeof(str), "%sY %s%-5d", cr_stat2, crstr[CR_GRAY], (plr->y) >> FRACBITS);
 		HUlib_clearTextLine(&w_coordy);
 		s = str;
 		while (*s)
@@ -1078,7 +1078,7 @@ void HU_Ticker()
 			HUlib_addCharToTextLine(&w_coordy, *((s++)));
 		}
 
-		M_snprintf(str, sizeof(str), "%sA %s%-5d", cr_stat2, crstr[CR_GRAY], (plr->angle)/ANG1);
+		M_snprintf(str, sizeof(str), "%sA %s%-5d", cr_stat2, crstr[CR_GRAY], (plr->angle) / ANG1);
 		HUlib_clearTextLine(&w_coorda);
 		s = str;
 		while (*s)
@@ -1108,14 +1108,14 @@ static int tail = 0;
 
 void HU_queueChatChar(char c)
 {
-	if (((head + 1) & (QUEUESIZE-1)) == tail)
+	if (((head + 1) & (QUEUESIZE - 1)) == tail)
 	{
 		plr->message = DEH_String(HUSTR_MSGU);
 	}
 	else
 	{
 		chatchars[head] = c;
-		head = (head + 1) & (QUEUESIZE-1);
+		head = (head + 1) & (QUEUESIZE - 1);
 	}
 }
 
@@ -1126,7 +1126,7 @@ char HU_dequeueChatChar()
 	if (head != tail)
 	{
 		c = chatchars[tail];
-		tail = (tail + 1) & (QUEUESIZE-1);
+		tail = (tail + 1) & (QUEUESIZE - 1);
 	}
 	else
 	{
@@ -1151,10 +1151,10 @@ static void StopChatInput()
 	I_StopTextInput();
 }
 
-bool HU_Responder(EventType *ev)
+bool HU_Responder(EventType* ev)
 {
-	static char lastmessage[HU_MAXLINELENGTH+1];
-	const char *macromessage;
+	static char lastmessage[HU_MAXLINELENGTH + 1];
+	const char* macromessage;
 	bool eatkey = false;
 	static bool altdown = false;
 	unsigned char c;
@@ -1164,7 +1164,7 @@ bool HU_Responder(EventType *ev)
 	static int num_nobrainers = 0;
 
 	numplayers = 0;
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
 		numplayers += playeringame[i];
 	}
@@ -1199,11 +1199,11 @@ bool HU_Responder(EventType *ev)
 		}
 		else if (netgame && numplayers > 2)
 		{
-			for (i=0; i < MAX_PLAYERS; ++i)
+			for (i = 0; i < MAX_PLAYERS; ++i)
 			{
 				if (ev->data2 == key_multi_msgplayer[i])
 				{
-					if (playeringame[i] && i!=consoleplayer)
+					if (playeringame[i] && i != consoleplayer)
 					{
 						eatkey = true;
 						StartChatInput(i + 1);
@@ -1291,7 +1291,7 @@ bool HU_Responder(EventType *ev)
 			}
 			else if (c == KEY_ESCAPE)
 			{
-					StopChatInput();
+				StopChatInput();
 			}
 		}
 	}

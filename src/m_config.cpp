@@ -59,9 +59,9 @@ struct default_t
 	// Pointer to the location in memory of the variable
 	union
 	{
-		int *i;
+		int* i;
 		std::string* s;
-		float *f;
+		float* f;
 	} location;
 
 	// Type of the variable
@@ -2173,7 +2173,7 @@ default_t* SearchCollection(default_collection_t* collection, std::string name)
 {
 	int i;
 
-	for (i=0; i<collection->numdefaults; ++i)
+	for (i = 0; i < collection->numdefaults; ++i)
 	{
 		if (!name.compare(collection->defaults[i].name))
 		{
@@ -2228,7 +2228,7 @@ void SaveDefaultCollection(default_collection_t* collection)
 	}
 	defaults = collection->defaults;
 
-	for (i=0 ; i<collection->numdefaults ; ++i)
+	for (i = 0; i < collection->numdefaults; ++i)
 	{
 		int chars_written;
 
@@ -2273,7 +2273,7 @@ void SaveDefaultCollection(default_collection_t* collection)
 			{
 				// search for a reverse mapping back to a scancode in the scantokey table
 				int s;
-				for (s=0; s<128; ++s)
+				for (s = 0; s < 128; ++s)
 				{
 					if (scantokey[s] == v)
 					{
@@ -2299,7 +2299,7 @@ void SaveDefaultCollection(default_collection_t* collection)
 			break;
 
 		case default_type_t::STRING:
-			fprintf(f,"\"%s\"", *defaults[i].location.s);
+			fprintf(f, "\"%s\"", *defaults[i].location.s);
 			break;
 		}
 
@@ -2402,9 +2402,9 @@ void LoadDefaultCollection(default_collection_t* collection)
 		}
 
 		// Strip off trailing non-printable characters (\r characters from DOS text files)
-		while (strlen(strparm) > 0 && !isprint(strparm[strlen(strparm)-1]))
+		while (strlen(strparm) > 0 && !isprint(strparm[strlen(strparm) - 1]))
 		{
-			strparm[strlen(strparm)-1] = '\0';
+			strparm[strlen(strparm) - 1] = '\0';
 		}
 
 		// Surrounded by quotes? If so, remove them.
@@ -2465,8 +2465,8 @@ void M_LoadDefaults()
 
 	if (i)
 	{
-		doom_defaults.filename = myargv[i+1];
-		printf ("\tdefault file: %s\n", doom_defaults.filename);
+		doom_defaults.filename = myargv[i + 1];
+		printf("\tdefault file: %s\n", doom_defaults.filename);
 	}
 	else
 	{
@@ -2480,7 +2480,7 @@ void M_LoadDefaults()
 
 	if (i)
 	{
-		extra_defaults.filename = myargv[i+1];
+		extra_defaults.filename = myargv[i + 1];
 		printf("\t\textra configuration file: %s\n", extra_defaults.filename);
 	}
 	else

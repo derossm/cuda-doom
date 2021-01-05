@@ -31,7 +31,7 @@ static int always_run = 0;
 
 // Keys within these groups cannot have the same value.
 
-static int* controls[] = { &key_left, &key_right, &key_up, &key_down,
+static int* controls[] = {&key_left, &key_right, &key_up, &key_down,
 							&key_alt_up, &key_alt_down,
 							&key_reverse, &key_toggleautorun, &key_togglenovert,
 							&key_strafeleft, &key_straferight, &key_fire,
@@ -54,13 +54,13 @@ static int* controls[] = { &key_left, &key_right, &key_up, &key_down,
 							&key_arti_blastradius, &key_arti_teleport,
 							&key_arti_teleportother, &key_arti_egg,
 							&key_arti_invulnerability,
-							&key_prevweapon, &key_nextweapon, NULL };
+							&key_prevweapon, &key_nextweapon, NULL};
 
-static int* menu_nav[] = { &key_menu_activate, &key_menu_up, &key_menu_down,
+static int* menu_nav[] = {&key_menu_activate, &key_menu_up, &key_menu_down,
 							&key_menu_left, &key_menu_right, &key_menu_back,
-							&key_menu_forward, &key_menu_del, NULL };
+							&key_menu_forward, &key_menu_del, NULL};
 
-static int* shortcuts[] = { &key_menu_help, &key_menu_save, &key_menu_load,
+static int* shortcuts[] = {&key_menu_help, &key_menu_save, &key_menu_load,
 							&key_menu_volume, &key_menu_detail, &key_menu_qsave,
 							&key_menu_endgame, &key_menu_messages, &key_spy,
 							&key_menu_qload, &key_menu_quit, &key_menu_gamma,
@@ -69,14 +69,14 @@ static int* shortcuts[] = { &key_menu_help, &key_menu_save, &key_menu_load,
 							&key_menu_screenshot, &key_menu_cleanscreenshot,
 							&key_message_refresh, &key_multi_msg,
 							&key_multi_msgplayer[0], &key_multi_msgplayer[1],
-							&key_multi_msgplayer[2], &key_multi_msgplayer[3] };
+							&key_multi_msgplayer[2], &key_multi_msgplayer[3]};
 
-static int* map_keys[] = { &key_map_north, &key_map_south, &key_map_east,
+static int* map_keys[] = {&key_map_north, &key_map_south, &key_map_east,
 							&key_map_west, &key_map_zoomin, &key_map_zoomout,
 							&key_map_toggle, &key_map_maxzoom, &key_map_follow,
 							&key_map_grid, &key_map_mark, &key_map_clearmark,
 							&key_map_overlay, &key_map_rotate,
-							NULL };
+							NULL};
 
 static void UpdateJoybSpeed()
 {
@@ -98,11 +98,11 @@ static void UpdateJoybSpeed()
 	}
 }
 
-static int VarInGroup(int *variable, int **group)
+static int VarInGroup(int* variable, int** group)
 {
 	unsigned i;
 
-	for (i=0; group[i] != NULL; ++i)
+	for (i = 0; group[i] != NULL; ++i)
 	{
 		if (group[i] == variable)
 		{
@@ -113,7 +113,7 @@ static int VarInGroup(int *variable, int **group)
 	return 0;
 }
 
-static void CheckKeyGroup(int *variable, int **group)
+static void CheckKeyGroup(int* variable, int** group)
 {
 	unsigned i;
 
@@ -126,7 +126,7 @@ static void CheckKeyGroup(int *variable, int **group)
 
 	// If another variable has the same value as the new value, reset it.
 
-	for (i=0; group[i] != NULL; ++i)
+	for (i = 0; group[i] != NULL; ++i)
 	{
 		if (*variable == *group[i] && group[i] != variable)
 		{
@@ -153,7 +153,7 @@ static void KeySetCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNC
 
 // Add a label and keyboard input to the specified table.
 
-static void AddKeyControl(cudadoom::txt::Table* table, std::string name, int *var)
+static void AddKeyControl(cudadoom::txt::Table* table, std::string name, int* var)
 {
 	table->AddWidget(std::make_unique<cudadoom::txt::Label>(name));
 	table->AddWidget(std::make_unique<cudadoom::txt::txt_key_input_t>(var));
@@ -162,7 +162,7 @@ static void AddKeyControl(cudadoom::txt::Table* table, std::string name, int *va
 }
 
 static void AddSectionLabel(cudadoom::txt::UNCAST_ARG(table), std::string title,
-							bool add_space)
+	bool add_space)
 {
 	cudadoom::txt::CAST_ARG(cudadoom::txt::txt_table_t, table);
 	char buf[64];
@@ -170,17 +170,17 @@ static void AddSectionLabel(cudadoom::txt::UNCAST_ARG(table), std::string title,
 	if (add_space)
 	{
 		cudadoom::txt::AddWidgets(table,
-						cudadoom::txt::NewStrut(0, 1),
-						cudadoom::txt::TABLE_EOL,
-						NULL);
+			cudadoom::txt::NewStrut(0, 1),
+			cudadoom::txt::TABLE_EOL,
+			NULL);
 	}
 
 	M_snprintf(buf, sizeof(buf), " - %s - ", title);
 
 	cudadoom::txt::AddWidgets(table,
-					cudadoom::txt::NewLabel(buf),
-					cudadoom::txt::TABLE_EOL,
-					NULL);
+		cudadoom::txt::NewLabel(buf),
+		cudadoom::txt::TABLE_EOL,
+		NULL);
 }
 static void ConfigExtraKeys(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAST_ARG(unused))
 {
@@ -188,8 +188,8 @@ static void ConfigExtraKeys(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 	cudadoom::txt::txt_scrollpane_t* scrollpane;
 	cudadoom::txt::txt_table_t* table;
 	bool extra_keys = gamemission == GameMission::heretic
-						|| gamemission == GameMission::hexen
-						|| gamemission == GameMission::strife;
+		|| gamemission == GameMission::hexen
+		|| gamemission == GameMission::strife;
 
 	window = cudadoom::txt::NewWindow("Extra keyboard controls");
 
@@ -209,44 +209,44 @@ static void ConfigExtraKeys(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 
 		if (gamemission == GameMission::doom)
 		{
-		table->AddSectionLabel("View", false);
+			table->AddSectionLabel("View", false);
 
-		table->AddKeyControl("Look up [*]", &key_lookup);
-		table->AddKeyControl("Look down [*]", &key_lookdown);
-		table->AddKeyControl("Center view [*]", &key_lookcenter);
+			table->AddKeyControl("Look up [*]", &key_lookup);
+			table->AddKeyControl("Look down [*]", &key_lookdown);
+			table->AddKeyControl("Center view [*]", &key_lookcenter);
 
-		table->AddSectionLabel("Movement", false);
-		table->AddKeyControl("Move Forward (alt.)", &key_alt_up);
-		table->AddKeyControl("Move Backward (alt.)", &key_alt_down);
-		table->AddKeyControl("Strafe Left (alt.)", &key_alt_strafeleft);
-		table->AddKeyControl("Strafe Right (alt.)", &key_alt_straferight);
-		table->AddKeyControl("Toggle always run", &key_toggleautorun);
-		table->AddKeyControl("Toggle vert. mouse", &key_togglenovert);
-		table->AddKeyControl("Quick Reverse", &key_reverse);
+			table->AddSectionLabel("Movement", false);
+			table->AddKeyControl("Move Forward (alt.)", &key_alt_up);
+			table->AddKeyControl("Move Backward (alt.)", &key_alt_down);
+			table->AddKeyControl("Strafe Left (alt.)", &key_alt_strafeleft);
+			table->AddKeyControl("Strafe Right (alt.)", &key_alt_straferight);
+			table->AddKeyControl("Toggle always run", &key_toggleautorun);
+			table->AddKeyControl("Toggle vert. mouse", &key_togglenovert);
+			table->AddKeyControl("Quick Reverse", &key_reverse);
 		}
 		else if (gamemission == GameMission::heretic)
 		{
-		table->AddSectionLabel("View", false);
+			table->AddSectionLabel("View", false);
 
-		table->AddKeyControl("Look up", &key_lookup);
-		table->AddKeyControl("Look down", &key_lookdown);
-		table->AddKeyControl("Center view", &key_lookcenter);
+			table->AddKeyControl("Look up", &key_lookup);
+			table->AddKeyControl("Look down", &key_lookdown);
+			table->AddKeyControl("Center view", &key_lookcenter);
 
-		table->AddSectionLabel("Movement", false);
-		table->AddKeyControl("Move Forward (alt.)", &key_alt_up);
-		table->AddKeyControl("Move Backward (alt.)", &key_alt_down);
-		table->AddKeyControl("Strafe Left (alt.)", &key_alt_strafeleft);
-		table->AddKeyControl("Strafe Right (alt.)", &key_alt_straferight);
-		table->AddKeyControl("Toggle always run", &key_toggleautorun);
-		table->AddKeyControl("Toggle vert. mouse", &key_togglenovert);
+			table->AddSectionLabel("Movement", false);
+			table->AddKeyControl("Move Forward (alt.)", &key_alt_up);
+			table->AddKeyControl("Move Backward (alt.)", &key_alt_down);
+			table->AddKeyControl("Strafe Left (alt.)", &key_alt_strafeleft);
+			table->AddKeyControl("Strafe Right (alt.)", &key_alt_straferight);
+			table->AddKeyControl("Toggle always run", &key_toggleautorun);
+			table->AddKeyControl("Toggle vert. mouse", &key_togglenovert);
 		}
 		else
 		{
-		table->AddSectionLabel("View", false);
+			table->AddSectionLabel("View", false);
 
-		table->AddKeyControl("Look up", &key_lookup);
-		table->AddKeyControl("Look down", &key_lookdown);
-		table->AddKeyControl("Center view", &key_lookcenter);
+			table->AddKeyControl("Look up", &key_lookup);
+			table->AddKeyControl("Look down", &key_lookdown);
+			table->AddKeyControl("Center view", &key_lookcenter);
 		}
 
 		if (gamemission == GameMission::heretic || gamemission == GameMission::hexen)
@@ -260,10 +260,10 @@ static void ConfigExtraKeys(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 
 		if (gamemission != GameMission::doom)
 		{
-		table->AddSectionLabel("Inventory", true);
+			table->AddSectionLabel("Inventory", true);
 
-		table->AddKeyControl("Inventory left", &key_invleft);
-		table->AddKeyControl("Inventory right", &key_invright);
+			table->AddKeyControl("Inventory left", &key_invleft);
+			table->AddKeyControl("Inventory right", &key_invright);
 		}
 
 		if (gamemission == GameMission::strife)
@@ -279,10 +279,10 @@ static void ConfigExtraKeys(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 			table->AddKeyControl("Use health", &key_usehealth);
 		}
 		else
-		if (gamemission == GameMission::heretic || gamemission == GameMission::hexen)
-		{
-			table->AddKeyControl("Use artifact", &key_useartifact);
-		}
+			if (gamemission == GameMission::heretic || gamemission == GameMission::hexen)
+			{
+				table->AddKeyControl("Use artifact", &key_useartifact);
+			}
 
 		if (gamemission == GameMission::heretic)
 		{
@@ -312,7 +312,7 @@ static void ConfigExtraKeys(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 			table->AddKeyControl("Banishment Device", &key_arti_teleportother);
 			table->AddKeyControl("Porkalator", &key_arti_egg);
 			table->AddKeyControl("Icon of the Defender",
-							&key_arti_invulnerability);
+				&key_arti_invulnerability);
 		}
 	}
 	else
@@ -345,73 +345,73 @@ static void OtherKeysDialog(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 
 	table->AddSectionLabel("Menu navigation", false);
 
-	table->AddKeyControl("Activate menu",			&key_menu_activate);
-	table->AddKeyControl("Move cursor up",		&key_menu_up);
-	table->AddKeyControl("Move cursor down",		&key_menu_down);
-	table->AddKeyControl("Move slider left",		&key_menu_left);
-	table->AddKeyControl("Move slider right",		&key_menu_right);
-	table->AddKeyControl("Go to previous menu",	&key_menu_back);
-	table->AddKeyControl("Activate menu item",	&key_menu_forward);
-	table->AddKeyControl("Confirm action",		&key_menu_confirm);
-	table->AddKeyControl("Cancel action",			&key_menu_abort);
-	table->AddKeyControl("Delete savegame",		&key_menu_del);
+	table->AddKeyControl("Activate menu", &key_menu_activate);
+	table->AddKeyControl("Move cursor up", &key_menu_up);
+	table->AddKeyControl("Move cursor down", &key_menu_down);
+	table->AddKeyControl("Move slider left", &key_menu_left);
+	table->AddKeyControl("Move slider right", &key_menu_right);
+	table->AddKeyControl("Go to previous menu", &key_menu_back);
+	table->AddKeyControl("Activate menu item", &key_menu_forward);
+	table->AddKeyControl("Confirm action", &key_menu_confirm);
+	table->AddKeyControl("Cancel action", &key_menu_abort);
+	table->AddKeyControl("Delete savegame", &key_menu_del);
 
 	table->AddSectionLabel("Shortcut keys", true);
 
-	table->AddKeyControl("Pause game",			&key_pause);
-	table->AddKeyControl("Help screen",			&key_menu_help);
-	table->AddKeyControl("Save game",				&key_menu_save);
-	table->AddKeyControl("Load game",				&key_menu_load);
-	table->AddKeyControl("Sound volume",			&key_menu_volume);
-	table->AddKeyControl("Toggle detail",			&key_menu_detail);
-	table->AddKeyControl("Quick save",			&key_menu_qsave);
-	table->AddKeyControl("End game",				&key_menu_endgame);
-	table->AddKeyControl("Toggle messages",		&key_menu_messages);
-	table->AddKeyControl("Quick load",			&key_menu_qload);
-	table->AddKeyControl("Quit game",				&key_menu_quit);
-	table->AddKeyControl("Toggle gamma",			&key_menu_gamma);
-	table->AddKeyControl("Multiplayer spy",		&key_spy);
-	table->AddKeyControl("Go to next level",		&key_menu_nextlevel);
-	table->AddKeyControl("Restart level/demo",	&key_menu_reloadlevel);
+	table->AddKeyControl("Pause game", &key_pause);
+	table->AddKeyControl("Help screen", &key_menu_help);
+	table->AddKeyControl("Save game", &key_menu_save);
+	table->AddKeyControl("Load game", &key_menu_load);
+	table->AddKeyControl("Sound volume", &key_menu_volume);
+	table->AddKeyControl("Toggle detail", &key_menu_detail);
+	table->AddKeyControl("Quick save", &key_menu_qsave);
+	table->AddKeyControl("End game", &key_menu_endgame);
+	table->AddKeyControl("Toggle messages", &key_menu_messages);
+	table->AddKeyControl("Quick load", &key_menu_qload);
+	table->AddKeyControl("Quit game", &key_menu_quit);
+	table->AddKeyControl("Toggle gamma", &key_menu_gamma);
+	table->AddKeyControl("Multiplayer spy", &key_spy);
+	table->AddKeyControl("Go to next level", &key_menu_nextlevel);
+	table->AddKeyControl("Restart level/demo", &key_menu_reloadlevel);
 
 	table->AddKeyControl("Increase screen size", &key_menu_incscreen);
 	table->AddKeyControl("Decrease screen size", &key_menu_decscreen);
-	table->AddKeyControl("Save a screenshot",		&key_menu_screenshot);
-	table->AddKeyControl("Save a clean screenshot",&key_menu_cleanscreenshot);
+	table->AddKeyControl("Save a screenshot", &key_menu_screenshot);
+	table->AddKeyControl("Save a clean screenshot", &key_menu_cleanscreenshot);
 
 	table->AddKeyControl("Display last message", &key_message_refresh);
 	table->AddKeyControl("Finish recording demo", &key_demo_quit);
 
 	table->AddSectionLabel("Map", true);
-	table->AddKeyControl("Toggle map",			&key_map_toggle);
-	table->AddKeyControl("Zoom in",				&key_map_zoomin);
-	table->AddKeyControl("Zoom out",				&key_map_zoomout);
-	table->AddKeyControl("Maximum zoom out",		&key_map_maxzoom);
-	table->AddKeyControl("Follow mode",			&key_map_follow);
-	table->AddKeyControl("Pan north",				&key_map_north);
-	table->AddKeyControl("Pan south",				&key_map_south);
-	table->AddKeyControl("Pan east",				&key_map_east);
-	table->AddKeyControl("Pan west",				&key_map_west);
-	table->AddKeyControl("Toggle grid",			&key_map_grid);
-	table->AddKeyControl("Mark location",			&key_map_mark);
-	table->AddKeyControl("Clear all marks",		&key_map_clearmark);
-	table->AddKeyControl("Overlay mode",			&key_map_overlay);
-	table->AddKeyControl("Rotate mode",			&key_map_rotate);
+	table->AddKeyControl("Toggle map", &key_map_toggle);
+	table->AddKeyControl("Zoom in", &key_map_zoomin);
+	table->AddKeyControl("Zoom out", &key_map_zoomout);
+	table->AddKeyControl("Maximum zoom out", &key_map_maxzoom);
+	table->AddKeyControl("Follow mode", &key_map_follow);
+	table->AddKeyControl("Pan north", &key_map_north);
+	table->AddKeyControl("Pan south", &key_map_south);
+	table->AddKeyControl("Pan east", &key_map_east);
+	table->AddKeyControl("Pan west", &key_map_west);
+	table->AddKeyControl("Toggle grid", &key_map_grid);
+	table->AddKeyControl("Mark location", &key_map_mark);
+	table->AddKeyControl("Clear all marks", &key_map_clearmark);
+	table->AddKeyControl("Overlay mode", &key_map_overlay);
+	table->AddKeyControl("Rotate mode", &key_map_rotate);
 
 	table->AddSectionLabel("Multiplayer", true);
 
-	table->AddKeyControl("Send message",			&key_multi_msg);
-	table->AddKeyControl("- to player 1",			&key_multi_msgplayer[0]);
-	table->AddKeyControl("- to player 2",			&key_multi_msgplayer[1]);
-	table->AddKeyControl("- to player 3",			&key_multi_msgplayer[2]);
-	table->AddKeyControl("- to player 4",			&key_multi_msgplayer[3]);
+	table->AddKeyControl("Send message", &key_multi_msg);
+	table->AddKeyControl("- to player 1", &key_multi_msgplayer[0]);
+	table->AddKeyControl("- to player 2", &key_multi_msgplayer[1]);
+	table->AddKeyControl("- to player 3", &key_multi_msgplayer[2]);
+	table->AddKeyControl("- to player 4", &key_multi_msgplayer[3]);
 
 	if (gamemission == GameMission::hexen || gamemission == GameMission::strife)
 	{
-		table->AddKeyControl("- to player 5",		&key_multi_msgplayer[4]);
-		table->AddKeyControl("- to player 6",		&key_multi_msgplayer[5]);
-		table->AddKeyControl("- to player 7",		&key_multi_msgplayer[6]);
-		table->AddKeyControl("- to player 8",		&key_multi_msgplayer[7]);
+		table->AddKeyControl("- to player 5", &key_multi_msgplayer[4]);
+		table->AddKeyControl("- to player 6", &key_multi_msgplayer[5]);
+		table->AddKeyControl("- to player 7", &key_multi_msgplayer[6]);
+		table->AddKeyControl("- to player 8", &key_multi_msgplayer[7]);
 	}
 
 	table->AddWidget(std::make_unique<cudadoom::txt::txt_scrollpane_t>(0, 13, table));
@@ -457,10 +457,10 @@ void ConfigKeyboard(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 		window->AddKeyControl("Jump", &key_jump);
 	}
 	else
-	if (gamemission == doom) // Crispy
-	{
-		window->AddKeyControl("Jump [*]", &key_jump);
-	}
+		if (gamemission == doom) // Crispy
+		{
+			window->AddKeyControl("Jump [*]", &key_jump);
+		}
 
 	window->AddWidget(cudadoom::txt::NewSeparator("Action"));
 	window->AddKeyControl("Fire/Attack", &key_fire);
@@ -468,18 +468,18 @@ void ConfigKeyboard(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 	window->AddKeyControl("Use", &key_use);
 
 	window.AddWidgets(
-					cudadoom::txt::NewButton2("More controls...", ConfigExtraKeys, NULL),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::TABLE_EMPTY,
-					cudadoom::txt::NewButton2("Other keys...", OtherKeysDialog, NULL),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::NewButton2("More controls...", ConfigExtraKeys, NULL),
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::TABLE_EMPTY,
+		cudadoom::txt::NewButton2("Other keys...", OtherKeysDialog, NULL),
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
 
-					cudadoom::txt::NewSeparator("Misc."),
-					run_control = cudadoom::txt::NewCheckBox("Always run", &always_run),
-					cudadoom::txt::TABLE_EOL,
-					cudadoom::txt::NewInvertedCheckBox("Use native keyboard mapping", &vanilla_keyboard_mapping),
-					cudadoom::txt::TABLE_EOL,
-					NULL);
+		cudadoom::txt::NewSeparator("Misc."),
+		run_control = cudadoom::txt::NewCheckBox("Always run", &always_run),
+		cudadoom::txt::TABLE_EOL,
+		cudadoom::txt::NewInvertedCheckBox("Use native keyboard mapping", &vanilla_keyboard_mapping),
+		cudadoom::txt::TABLE_EOL,
+		NULL);
 
 	run_control->SignalConnect("changed", UpdateJoybSpeed, NULL);
 	window->SetWindowAction(cudadoom::txt::HORIZ_CENTER, TestConfigAction());

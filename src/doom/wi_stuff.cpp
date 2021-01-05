@@ -9,10 +9,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Intermission screens.
+		Intermission screens.
 \**********************************************************************************************************************************************/
-
-
 
 #include "z_zone.h"
 
@@ -77,7 +75,7 @@ constexpr size_t SP_STATSX{50};
 constexpr size_t SP_STATSY{50};
 
 constexpr size_t SP_TIMEX{16};
-constexpr size_t SP_TIMEY{ORIGHEIGHT-32};
+constexpr size_t SP_TIMEY{ORIGHEIGHT - 32};
 
 
 // NET GAME STUFF
@@ -222,39 +220,39 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 
 static anim_t epsd0animinfo[] =
 {
-	ANIM(animenum_t::always, TICRATE/3, 3, 224, 104, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 184, 160, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 112, 136, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 72, 112, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 88, 96, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 64, 48, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 192, 40, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 136, 16, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 80, 16, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 64, 24, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 224, 104, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 184, 160, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 112, 136, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 72, 112, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 88, 96, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 64, 48, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 192, 40, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 136, 16, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 80, 16, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 64, 24, 0),
 };
 
 static anim_t epsd1animinfo[] =
 {
-	ANIM(animenum_t::level, TICRATE/3, 1, 128, 136, 1),
-	ANIM(animenum_t::level, TICRATE/3, 1, 128, 136, 2),
-	ANIM(animenum_t::level, TICRATE/3, 1, 128, 136, 3),
-	ANIM(animenum_t::level, TICRATE/3, 1, 128, 136, 4),
-	ANIM(animenum_t::level, TICRATE/3, 1, 128, 136, 5),
-	ANIM(animenum_t::level, TICRATE/3, 1, 128, 136, 6),
-	ANIM(animenum_t::level, TICRATE/3, 1, 128, 136, 7),
-	ANIM(animenum_t::level, TICRATE/3, 3, 192, 144, 8),
-	ANIM(animenum_t::level, TICRATE/3, 1, 128, 136, 8),
+	ANIM(animenum_t::level, TICRATE / 3, 1, 128, 136, 1),
+	ANIM(animenum_t::level, TICRATE / 3, 1, 128, 136, 2),
+	ANIM(animenum_t::level, TICRATE / 3, 1, 128, 136, 3),
+	ANIM(animenum_t::level, TICRATE / 3, 1, 128, 136, 4),
+	ANIM(animenum_t::level, TICRATE / 3, 1, 128, 136, 5),
+	ANIM(animenum_t::level, TICRATE / 3, 1, 128, 136, 6),
+	ANIM(animenum_t::level, TICRATE / 3, 1, 128, 136, 7),
+	ANIM(animenum_t::level, TICRATE / 3, 3, 192, 144, 8),
+	ANIM(animenum_t::level, TICRATE / 3, 1, 128, 136, 8),
 };
 
 static anim_t epsd2animinfo[] =
 {
-	ANIM(animenum_t::always, TICRATE/3, 3, 104, 168, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 40, 136, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 160, 96, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 104, 80, 0),
-	ANIM(animenum_t::always, TICRATE/3, 3, 120, 32, 0),
-	ANIM(animenum_t::always, TICRATE/4, 3, 40, 0, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 104, 168, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 40, 136, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 160, 96, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 104, 80, 0),
+	ANIM(animenum_t::always, TICRATE / 3, 3, 120, 32, 0),
+	ANIM(animenum_t::always, TICRATE / 4, 3, 40, 0, 0),
 };
 
 static int NUMANIMS[NUMEPISODES] =
@@ -301,7 +299,7 @@ static int acceleratestage;
 // wbs->pnum
 static int me;
 
- // specifies current state
+// specifies current state
 static stateenum_t state;
 
 // contains information passed into intermission
@@ -334,10 +332,10 @@ static int NUMCMAPS = 32;
 //
 
 // You Are Here graphic
-static patch_t* yah[3] = { NULL, NULL, NULL };
+static patch_t* yah[3] = {NULL, NULL, NULL};
 
 // splat
-static patch_t* splat[2] = { NULL, NULL };
+static patch_t* splat[2] = {NULL, NULL};
 
 // %, : graphics
 static patch_t* percent;
@@ -358,7 +356,7 @@ static patch_t* entering;
 // "secret"
 static patch_t* sp_secret;
 
- // "Kills", "Scrt", "Items", "Frags"
+// "Kills", "Scrt", "Items", "Frags"
 static patch_t* kills;
 static patch_t* secret;
 static patch_t* items;
@@ -384,7 +382,7 @@ static patch_t* p[MAX_PLAYERS];
 // "gray P[1..MAX_PLAYERS]"
 static patch_t* bp[MAX_PLAYERS];
 
- // Name graphics of each level (centered)
+// Name graphics of each level (centered)
 static patch_t** lnames;
 // [crispy] prevent crashes with maps without map title graphics lump
 static unsigned num_lnames;
@@ -425,11 +423,11 @@ void WI_drawLF()
 	if (gamemode != GameMode::commercial || wbs->last < NUMCMAPS)
 	{
 		// draw <LevelName>
-		V_DrawPatch((ORIGWIDTH - SHORT(lnames[wbs->last]->width))/2,
-					y, lnames[wbs->last]);
+		V_DrawPatch((ORIGWIDTH - SHORT(lnames[wbs->last]->width)) / 2,
+			y, lnames[wbs->last]);
 
 		// draw "Finished!"
-		y += (5*SHORT(lnames[wbs->last]->height))/4;
+		y += (5 * SHORT(lnames[wbs->last]->height)) / 4;
 
 		V_DrawPatch((ORIGWIDTH - SHORT(finished->width)) / 2, y, finished);
 	}
@@ -445,8 +443,8 @@ void WI_drawLF()
 		// bits of memory at this point, but let's try to be accurate
 		// anyway. This deliberately triggers a V_DrawPatch error.
 
-		patch_t tmp = { ORIGWIDTH, ORIGHEIGHT, 1, 1,
-						{ 0, 0, 0, 0, 0, 0, 0, 0 } };
+		patch_t tmp = {ORIGWIDTH, ORIGHEIGHT, 1, 1,
+						{ 0, 0, 0, 0, 0, 0, 0, 0 }};
 
 		V_DrawPatch(0, y, &tmp);
 	}
@@ -466,16 +464,16 @@ void WI_drawEL()
 	}
 
 	// draw "Entering"
-	V_DrawPatch((ORIGWIDTH - SHORT(entering->width))/2,
+	V_DrawPatch((ORIGWIDTH - SHORT(entering->width)) / 2,
 		y,
-				entering);
+		entering);
 
 	// draw level
-	y += (5*SHORT(lnames[wbs->next]->height))/4;
+	y += (5 * SHORT(lnames[wbs->next]->height)) / 4;
 
-	V_DrawPatch((ORIGWIDTH - SHORT(lnames[wbs->next]->width))/2,
+	V_DrawPatch((ORIGWIDTH - SHORT(lnames[wbs->next]->width)) / 2,
 		y,
-				lnames[wbs->next]);
+		lnames[wbs->next]);
 
 }
 
@@ -492,34 +490,34 @@ void WI_drawOnLnode(int n, patch_t* c[])
 	i = 0;
 	do
 	{
-	left = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset);
-	top = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset);
-	right = left + SHORT(c[i]->width);
-	bottom = top + SHORT(c[i]->height);
+		left = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset);
+		top = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset);
+		right = left + SHORT(c[i]->width);
+		bottom = top + SHORT(c[i]->height);
 
-	if (left >= 0
-		&& right < ORIGWIDTH
-		&& top >= 0
-		&& bottom < ORIGHEIGHT)
-	{
-		fits = true;
-	}
-	else
-	{
-		++i;
-	}
-	} while (!fits && i!=2 && c[i] != NULL);
+		if (left >= 0
+			&& right < ORIGWIDTH
+			&& top >= 0
+			&& bottom < ORIGHEIGHT)
+		{
+			fits = true;
+		}
+		else
+		{
+			++i;
+		}
+	} while (!fits && i != 2 && c[i] != NULL);
 
-	if (fits && i<2)
+	if (fits && i < 2)
 	{
-	V_DrawPatch(lnodes[wbs->epsd][n].x,
-					lnodes[wbs->epsd][n].y,
+		V_DrawPatch(lnodes[wbs->epsd][n].x,
+			lnodes[wbs->epsd][n].y,
 			c[i]);
 	}
 	else
 	{
-	// DEBUG
-	printf("Could not place patch on level %d", n+1);
+		// DEBUG
+		printf("Could not place patch on level %d", n + 1);
 	}
 }
 
@@ -531,25 +529,25 @@ void WI_initAnimatedBack()
 	anim_t* a;
 
 	if (gamemode == GameMode::commercial)
-	return;
+		return;
 
 	if (wbs->epsd > 2)
-	return;
+		return;
 
-	for (i=0;i<NUMANIMS[wbs->epsd]; ++i)
+	for (i = 0;i < NUMANIMS[wbs->epsd]; ++i)
 	{
-	a = &anims[wbs->epsd][i];
+		a = &anims[wbs->epsd][i];
 
-	// init variables
-	a->ctr = -1;
+		// init variables
+		a->ctr = -1;
 
-	// specify the next time to draw it
-	if (a->type == animenum_t::always)
-		a->nexttic = bcnt + 1 + (M_Random()%a->period);
-	else if (a->type == animenum_t::random)
-		a->nexttic = bcnt + 1 + a->data2+(M_Random()%a->data1);
-	else if (a->type == animenum_t::level)
-		a->nexttic = bcnt + 1;
+		// specify the next time to draw it
+		if (a->type == animenum_t::always)
+			a->nexttic = bcnt + 1 + (M_Random() % a->period);
+		else if (a->type == animenum_t::random)
+			a->nexttic = bcnt + 1 + a->data2 + (M_Random() % a->data1);
+		else if (a->type == animenum_t::level)
+			a->nexttic = bcnt + 1;
 	}
 
 }
@@ -560,45 +558,45 @@ void WI_updateAnimatedBack()
 	anim_t* a;
 
 	if (gamemode == GameMode::commercial)
-	return;
+		return;
 
 	if (wbs->epsd > 2)
-	return;
+		return;
 
-	for (i=0;i<NUMANIMS[wbs->epsd]; ++i)
+	for (i = 0;i < NUMANIMS[wbs->epsd]; ++i)
 	{
-	a = &anims[wbs->epsd][i];
+		a = &anims[wbs->epsd][i];
 
-	if (bcnt == a->nexttic)
-	{
-		switch (a->type)
+		if (bcnt == a->nexttic)
 		{
+			switch (a->type)
+			{
 			case animenum_t::always:
-		if (++a->ctr >= a->nanims) a->ctr = 0;
-		a->nexttic = bcnt + a->period;
-		break;
+				if (++a->ctr >= a->nanims) a->ctr = 0;
+				a->nexttic = bcnt + a->period;
+				break;
 
 			case animenum_t::random:
-		a->ctr++;
-		if (a->ctr == a->nanims)
-		{
-			a->ctr = -1;
-			a->nexttic = bcnt+a->data2+(M_Random()%a->data1);
-		}
-		else a->nexttic = bcnt + a->period;
-		break;
+				a->ctr++;
+				if (a->ctr == a->nanims)
+				{
+					a->ctr = -1;
+					a->nexttic = bcnt + a->data2 + (M_Random() % a->data1);
+				}
+				else a->nexttic = bcnt + a->period;
+				break;
 
 			case animenum_t::level:
-		// gawd-awful hack for level anims
-		if (!(state == stateenum_t::StatCount && i == 7) && wbs->next == a->data1)
-		{
-			a->ctr++;
-			if (a->ctr == a->nanims) a->ctr--;
-			a->nexttic = bcnt + a->period;
+				// gawd-awful hack for level anims
+				if (!(state == stateenum_t::StatCount && i == 7) && wbs->next == a->data1)
+				{
+					a->ctr++;
+					if (a->ctr == a->nanims) a->ctr--;
+					a->nexttic = bcnt + a->period;
+				}
+				break;
+			}
 		}
-		break;
-		}
-	}
 
 	}
 
@@ -610,25 +608,25 @@ void WI_drawAnimatedBack()
 	anim_t* a;
 
 	if (gamemode == GameMode::commercial)
-	return;
+		return;
 
 	if (wbs->epsd > 2)
-	return;
+		return;
 
-	for (i=0 ; i<NUMANIMS[wbs->epsd] ; ++i)
+	for (i = 0; i < NUMANIMS[wbs->epsd]; ++i)
 	{
-	a = &anims[wbs->epsd][i];
+		a = &anims[wbs->epsd][i];
 
-	if (a->ctr >= 0)
-		V_DrawPatch(a->loc.x, a->loc.y, a->p[a->ctr]);
+		if (a->ctr >= 0)
+			V_DrawPatch(a->loc.x, a->loc.y, a->p[a->ctr]);
 	}
 
 	// [crispy] show Fortress of Mystery if it has been completed
 	if (wbs->epsd == 1 && wbs->didsecret)
 	{
-	a = &anims[wbs->epsd][7];
+		a = &anims[wbs->epsd][7];
 
-	V_DrawPatch(a->loc.x, a->loc.y, a->p[a->nanims - 1]);
+		V_DrawPatch(a->loc.x, a->loc.y, a->p[a->nanims - 1]);
 	}
 }
 
@@ -648,44 +646,44 @@ int WI_drawNum(int x, int y, int n, int digits)
 
 	if (digits < 0)
 	{
-	if (!n)
-	{
-		// make variable-length zeros 1 digit long
-		digits = 1;
-	}
-	else
-	{
-		// figure out # of digits in #
-		digits = 0;
-		temp = n;
-
-		while (temp)
+		if (!n)
 		{
-		temp /= 10;
-		++digits;
+			// make variable-length zeros 1 digit long
+			digits = 1;
 		}
-	}
+		else
+		{
+			// figure out # of digits in #
+			digits = 0;
+			temp = n;
+
+			while (temp)
+			{
+				temp /= 10;
+				++digits;
+			}
+		}
 	}
 
 	neg = n < 0;
 	if (neg)
-	n = -n;
+		n = -n;
 
 	// if non-number, do not draw it
 	if (n == 1994)
-	return 0;
+		return 0;
 
 	// draw the new number
 	while (digits--)
 	{
-	x -= fontwidth;
-	V_DrawPatch(x, y, num[ n % 10 ]);
-	n /= 10;
+		x -= fontwidth;
+		V_DrawPatch(x, y, num[n % 10]);
+		n /= 10;
 	}
 
 	// draw a minus sign if necessary
 	if (neg && wiminus)
-	V_DrawPatch(x-=8, y, wiminus);
+		V_DrawPatch(x -= 8, y, wiminus);
 
 	return x;
 
@@ -694,7 +692,7 @@ int WI_drawNum(int x, int y, int n, int digits)
 void WI_drawPercent(int x, int y, int p)
 {
 	if (p < 0)
-	return;
+		return;
 
 	V_DrawPatch(x, y, percent);
 	WI_drawNum(x, y, p, -1);
@@ -712,35 +710,35 @@ void WI_drawTime(int x, int y, int t, bool suck)
 	int div;
 	int n;
 
-	if (t<0)
-	return;
+	if (t < 0)
+		return;
 
-	if (t <= 61*59 || !suck)
+	if (t <= 61 * 59 || !suck)
 	{
-	div = 1;
+		div = 1;
 
-	do
-	{
-		n = (t / div) % 60;
-		x = WI_drawNum(x, y, n, 2) - SHORT(colon->width);
-		div *= 60;
+		do
+		{
+			n = (t / div) % 60;
+			x = WI_drawNum(x, y, n, 2) - SHORT(colon->width);
+			div *= 60;
 
-		// draw
-		if (div==60 || t / div)
-		V_DrawPatch(x, y, colon);
+			// draw
+			if (div == 60 || t / div)
+				V_DrawPatch(x, y, colon);
 
-	} while (t / div && div < 3600);
+		} while (t / div && div < 3600);
 
-	// [crispy] print at most in hhhh:mm:ss format
-	if ((n = (t / div)))
-	{
-		x = WI_drawNum(x, y, n, -1);
-	}
+		// [crispy] print at most in hhhh:mm:ss format
+		if ((n = (t / div)))
+		{
+			x = WI_drawNum(x, y, n, -1);
+		}
 	}
 	else
 	{
-	// "sucks"
-	V_DrawPatch(x - SHORT(sucks->width), y, sucks);
+		// "sucks"
+		V_DrawPatch(x - SHORT(sucks->width), y, sucks);
 	}
 }
 
@@ -758,7 +756,8 @@ void WI_initNoState()
 	cnt = 10;
 }
 
-void WI_updateNoState() {
+void WI_updateNoState()
+{
 
 	WI_updateAnimatedBack();
 
@@ -769,7 +768,7 @@ void WI_updateNoState() {
 		// run until that happens. If we do that after WI_End
 		// (which unloads all the graphics), we're in trouble.
 	//WI_End();
-	G_WorldDone();
+		G_WorldDone();
 	}
 
 }
@@ -782,8 +781,8 @@ void WI_initShowNextLoc()
 	// [crispy] display tally screen after ExM8
 	if ((gamemode != GameMode::commercial && gamemap == 8) || (gameversion == GameVersion::exe_chex && gamemap == 5))
 	{
-	G_WorldDone();
-	return;
+		G_WorldDone();
+		return;
 	}
 
 	state = stateenum_t::ShowNextLoc;
@@ -798,9 +797,9 @@ void WI_updateShowNextLoc()
 	WI_updateAnimatedBack();
 
 	if (!--cnt || acceleratestage)
-	WI_initNoState();
+		WI_initNoState();
 	else
-	snl_pointeron = (cnt & 31) < 20;
+		snl_pointeron = (cnt & 31) < 20;
 }
 
 void WI_drawShowNextLoc()
@@ -815,33 +814,33 @@ void WI_drawShowNextLoc()
 	// draw animated background
 	WI_drawAnimatedBack();
 
-	if ( gamemode != GameMode::commercial)
+	if (gamemode != GameMode::commercial)
 	{
-	if (wbs->epsd > 2)
-	{
-		WI_drawEL();
-		return;
-	}
+		if (wbs->epsd > 2)
+		{
+			WI_drawEL();
+			return;
+		}
 
-	last = (wbs->last == 8 || wbs->last == 9) ? wbs->next - 1 : wbs->last; // [crispy] support E1M10 "Sewers"
+		last = (wbs->last == 8 || wbs->last == 9) ? wbs->next - 1 : wbs->last; // [crispy] support E1M10 "Sewers"
 
-	// draw a splat on taken cities.
-	for (i=0 ; i<=last ; ++i)
-		WI_drawOnLnode(i, splat);
+		// draw a splat on taken cities.
+		for (i = 0; i <= last; ++i)
+			WI_drawOnLnode(i, splat);
 
-	// splat the secret level?
-	if (wbs->didsecret)
-		WI_drawOnLnode(8, splat);
+		// splat the secret level?
+		if (wbs->didsecret)
+			WI_drawOnLnode(8, splat);
 
-	// [crispy] the splat for E1M10 "Sewers" is drawn only once,
-	// i.e. now, when returning from the level
-	// (and this is not going to change)
-	if (crispy->havee1m10 && wbs->epsd == 0 && wbs->last == 9)
-		WI_drawOnLnode(9, splat);
+		// [crispy] the splat for E1M10 "Sewers" is drawn only once,
+		// i.e. now, when returning from the level
+		// (and this is not going to change)
+		if (crispy->havee1m10 && wbs->epsd == 0 && wbs->last == 9)
+			WI_drawOnLnode(9, splat);
 
-	// draw flashing ptr
-	if (snl_pointeron)
-		WI_drawOnLnode(wbs->next, yah);
+		// draw flashing ptr
+		if (snl_pointeron)
+			WI_drawOnLnode(wbs->next, yah);
 	}
 
 	if ((gamemission == GameMission::pack_nerve && wbs->last == 7) ||
@@ -850,9 +849,9 @@ void WI_drawShowNextLoc()
 		return;
 
 	// draws which level you are entering..
-	if ( (gamemode != GameMode::commercial)
+	if ((gamemode != GameMode::commercial)
 		|| wbs->next != 30)
-	WI_drawEL();
+		WI_drawEL();
 
 }
 
@@ -867,13 +866,13 @@ int WI_fragSum(int playernum)
 	int i;
 	int frags = 0;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
-	if (playeringame[i]
-		&& i!=playernum)
-	{
-		frags += plrs[playernum].frags[i];
-	}
+		if (playeringame[i]
+			&& i != playernum)
+		{
+			frags += plrs[playernum].frags[i];
+		}
 	}
 
 
@@ -905,16 +904,16 @@ void WI_initDeathmatchStats()
 
 	cnt_pause = TICRATE;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
-	if (playeringame[i])
-	{
-		for (j=0 ; j<MAX_PLAYERS ; ++j)
-		if (playeringame[j])
-			dm_frags[i][j] = 0;
+		if (playeringame[i])
+		{
+			for (j = 0; j < MAX_PLAYERS; ++j)
+				if (playeringame[j])
+					dm_frags[i][j] = 0;
 
-		dm_totals[i] = 0;
-	}
+			dm_totals[i] = 0;
+		}
 	}
 
 	WI_initAnimatedBack();
@@ -934,92 +933,92 @@ void WI_updateDeathmatchStats()
 
 	if (acceleratestage && dm_state != 4)
 	{
-	acceleratestage = 0;
+		acceleratestage = 0;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
-	{
-		if (playeringame[i])
+		for (i = 0; i < MAX_PLAYERS; ++i)
 		{
-		for (j=0 ; j<MAX_PLAYERS ; ++j)
-			if (playeringame[j])
-			dm_frags[i][j] = plrs[i].frags[j];
+			if (playeringame[i])
+			{
+				for (j = 0; j < MAX_PLAYERS; ++j)
+					if (playeringame[j])
+						dm_frags[i][j] = plrs[i].frags[j];
 
-		dm_totals[i] = WI_fragSum(i);
+				dm_totals[i] = WI_fragSum(i);
+			}
 		}
-	}
 
 
-	S_StartSound(0, sfxenum_t::sfx_barexp);
-	dm_state = 4;
+		S_StartSound(0, sfxenum_t::sfx_barexp);
+		dm_state = 4;
 	}
 
 
 	if (dm_state == 2)
 	{
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	stillticking = false;
+		stillticking = false;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
-	{
-		if (playeringame[i])
+		for (i = 0; i < MAX_PLAYERS; ++i)
 		{
-		for (j=0 ; j<MAX_PLAYERS ; ++j)
-		{
-			if (playeringame[j]
-			&& dm_frags[i][j] != plrs[i].frags[j])
+			if (playeringame[i])
 			{
-			if (plrs[i].frags[j] < 0)
-				dm_frags[i][j]--;
-			else
-				dm_frags[i][j]++;
+				for (j = 0; j < MAX_PLAYERS; ++j)
+				{
+					if (playeringame[j]
+						&& dm_frags[i][j] != plrs[i].frags[j])
+					{
+						if (plrs[i].frags[j] < 0)
+							dm_frags[i][j]--;
+						else
+							dm_frags[i][j]++;
 
-			if (dm_frags[i][j] > 99)
-				dm_frags[i][j] = 99;
+						if (dm_frags[i][j] > 99)
+							dm_frags[i][j] = 99;
 
-			if (dm_frags[i][j] < -99)
-				dm_frags[i][j] = -99;
+						if (dm_frags[i][j] < -99)
+							dm_frags[i][j] = -99;
 
-			stillticking = true;
+						stillticking = true;
+					}
+				}
+				dm_totals[i] = WI_fragSum(i);
+
+				if (dm_totals[i] > 99)
+					dm_totals[i] = 99;
+
+				if (dm_totals[i] < -99)
+					dm_totals[i] = -99;
 			}
+
 		}
-		dm_totals[i] = WI_fragSum(i);
-
-		if (dm_totals[i] > 99)
-			dm_totals[i] = 99;
-
-		if (dm_totals[i] < -99)
-			dm_totals[i] = -99;
+		if (!stillticking)
+		{
+			S_StartSound(0, sfxenum_t::sfx_barexp);
+			++dm_state;
 		}
-
-	}
-	if (!stillticking)
-	{
-		S_StartSound(0, sfxenum_t::sfx_barexp);
-		++dm_state;
-	}
 
 	}
 	else if (dm_state == 4)
 	{
-	if (acceleratestage)
-	{
-		S_StartSound(0, sfxenum_t::sfx_slop);
+		if (acceleratestage)
+		{
+			S_StartSound(0, sfxenum_t::sfx_slop);
 
-		if ( gamemode == GameMode::commercial)
-		WI_initNoState();
-		else
-		WI_initShowNextLoc();
-	}
+			if (gamemode == GameMode::commercial)
+				WI_initNoState();
+			else
+				WI_initShowNextLoc();
+		}
 	}
 	else if (dm_state & 1)
 	{
-	if (!--cnt_pause)
-	{
-		++dm_state;
-		cnt_pause = TICRATE;
-	}
+		if (!--cnt_pause)
+		{
+			++dm_state;
+			cnt_pause = TICRATE;
+		}
 	}
 }
 
@@ -1041,8 +1040,8 @@ void WI_drawDeathmatchStats()
 	WI_drawLF();
 
 	// draw stat titles (top line)
-	V_DrawPatch(DM_TOTALSX-SHORT(total->width)/2,
-		DM_MATRIXY-WI_SPACINGY+10,
+	V_DrawPatch(DM_TOTALSX - SHORT(total->width) / 2,
+		DM_MATRIXY - WI_SPACINGY + 10,
 		total);
 
 	V_DrawPatch(DM_KILLERSX, DM_KILLERSY, killers);
@@ -1052,60 +1051,60 @@ void WI_drawDeathmatchStats()
 	x = DM_MATRIXX + DM_SPACINGX;
 	y = DM_MATRIXY;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
-	if (playeringame[i])
-	{
-		V_DrawPatch(x-SHORT(p[i]->width)/2,
-			DM_MATRIXY - WI_SPACINGY,
-			p[i]);
-
-		V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)/2,
-			y,
-			p[i]);
-
-		if (i == me)
+		if (playeringame[i])
 		{
-		V_DrawPatch(x-SHORT(p[i]->width)/2,
+			V_DrawPatch(x - SHORT(p[i]->width) / 2,
 				DM_MATRIXY - WI_SPACINGY,
-				bstar);
+				p[i]);
 
-		V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)/2,
+			V_DrawPatch(DM_MATRIXX - SHORT(p[i]->width) / 2,
 				y,
-				star);
+				p[i]);
+
+			if (i == me)
+			{
+				V_DrawPatch(x - SHORT(p[i]->width) / 2,
+					DM_MATRIXY - WI_SPACINGY,
+					bstar);
+
+				V_DrawPatch(DM_MATRIXX - SHORT(p[i]->width) / 2,
+					y,
+					star);
+			}
 		}
-	}
-	else
-	{
-		// V_DrawPatch(x-SHORT(bp[i]->width)/2,
-		//	DM_MATRIXY - WI_SPACINGY, bp[i]);
-		// V_DrawPatch(DM_MATRIXX-SHORT(bp[i]->width)/2,
-		//	y, bp[i]);
-	}
-	x += DM_SPACINGX;
-	y += WI_SPACINGY;
+		else
+		{
+			// V_DrawPatch(x-SHORT(bp[i]->width)/2,
+			//	DM_MATRIXY - WI_SPACINGY, bp[i]);
+			// V_DrawPatch(DM_MATRIXX-SHORT(bp[i]->width)/2,
+			//	y, bp[i]);
+		}
+		x += DM_SPACINGX;
+		y += WI_SPACINGY;
 	}
 
 	// draw stats
-	y = DM_MATRIXY+10;
+	y = DM_MATRIXY + 10;
 	w = SHORT(num[0]->width);
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
-	x = DM_MATRIXX + DM_SPACINGX;
+		x = DM_MATRIXX + DM_SPACINGX;
 
-	if (playeringame[i])
-	{
-		for (j=0 ; j<MAX_PLAYERS ; ++j)
+		if (playeringame[i])
 		{
-		if (playeringame[j])
-			WI_drawNum(x+w, y, dm_frags[i][j], 2);
+			for (j = 0; j < MAX_PLAYERS; ++j)
+			{
+				if (playeringame[j])
+					WI_drawNum(x + w, y, dm_frags[i][j], 2);
 
-		x += DM_SPACINGX;
+				x += DM_SPACINGX;
+			}
+			WI_drawNum(DM_TOTALSX + w, y, dm_totals[i], 2);
 		}
-		WI_drawNum(DM_TOTALSX+w, y, dm_totals[i], 2);
-	}
-	y += WI_SPACINGY;
+		y += WI_SPACINGY;
 	}
 }
 
@@ -1124,14 +1123,14 @@ void WI_initNetgameStats()
 
 	cnt_pause = TICRATE;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
-	if (!playeringame[i])
-		continue;
+		if (!playeringame[i])
+			continue;
 
-	cnt_kills[i] = cnt_items[i] = cnt_secret[i] = cnt_frags[i] = 0;
+		cnt_kills[i] = cnt_items[i] = cnt_secret[i] = cnt_frags[i] = 0;
 
-	dofrags += WI_fragSum(i);
+		dofrags += WI_fragSum(i);
 	}
 
 	dofrags = !!dofrags;
@@ -1153,144 +1152,144 @@ void WI_updateNetgameStats()
 
 	if (acceleratestage && ng_state != 10)
 	{
-	acceleratestage = 0;
+		acceleratestage = 0;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
-	{
-		if (!playeringame[i])
-		continue;
+		for (i = 0; i < MAX_PLAYERS; ++i)
+		{
+			if (!playeringame[i])
+				continue;
 
-		cnt_kills[i] = (plrs[i].skills * 100) / wbs->maxkills;
-		cnt_items[i] = (plrs[i].sitems * 100) / wbs->maxitems;
-		cnt_secret[i] = (plrs[i].ssecret * 100) / wbs->maxsecret;
+			cnt_kills[i] = (plrs[i].skills * 100) / wbs->maxkills;
+			cnt_items[i] = (plrs[i].sitems * 100) / wbs->maxitems;
+			cnt_secret[i] = (plrs[i].ssecret * 100) / wbs->maxsecret;
 
-		if (dofrags)
-		cnt_frags[i] = WI_fragSum(i);
-	}
-	S_StartSound(0, sfxenum_t::sfx_barexp);
-	ng_state = 10;
+			if (dofrags)
+				cnt_frags[i] = WI_fragSum(i);
+		}
+		S_StartSound(0, sfxenum_t::sfx_barexp);
+		ng_state = 10;
 	}
 
 	if (ng_state == 2)
 	{
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	stillticking = false;
+		stillticking = false;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
-	{
-		if (!playeringame[i])
-		continue;
+		for (i = 0; i < MAX_PLAYERS; ++i)
+		{
+			if (!playeringame[i])
+				continue;
 
-		cnt_kills[i] += 2;
+			cnt_kills[i] += 2;
 
-		if (cnt_kills[i] >= (plrs[i].skills * 100) / wbs->maxkills)
-		cnt_kills[i] = (plrs[i].skills * 100) / wbs->maxkills;
-		else
-		stillticking = true;
-	}
+			if (cnt_kills[i] >= (plrs[i].skills * 100) / wbs->maxkills)
+				cnt_kills[i] = (plrs[i].skills * 100) / wbs->maxkills;
+			else
+				stillticking = true;
+		}
 
-	if (!stillticking)
-	{
-		S_StartSound(0, sfxenum_t::sfx_barexp);
-		++ng_state;
-	}
+		if (!stillticking)
+		{
+			S_StartSound(0, sfxenum_t::sfx_barexp);
+			++ng_state;
+		}
 	}
 	else if (ng_state == 4)
 	{
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	stillticking = false;
+		stillticking = false;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
-	{
-		if (!playeringame[i])
-		continue;
+		for (i = 0; i < MAX_PLAYERS; ++i)
+		{
+			if (!playeringame[i])
+				continue;
 
-		cnt_items[i] += 2;
-		if (cnt_items[i] >= (plrs[i].sitems * 100) / wbs->maxitems)
-		cnt_items[i] = (plrs[i].sitems * 100) / wbs->maxitems;
-		else
-		stillticking = true;
-	}
-	if (!stillticking)
-	{
-		S_StartSound(0, sfxenum_t::sfx_barexp);
-		++ng_state;
-	}
+			cnt_items[i] += 2;
+			if (cnt_items[i] >= (plrs[i].sitems * 100) / wbs->maxitems)
+				cnt_items[i] = (plrs[i].sitems * 100) / wbs->maxitems;
+			else
+				stillticking = true;
+		}
+		if (!stillticking)
+		{
+			S_StartSound(0, sfxenum_t::sfx_barexp);
+			++ng_state;
+		}
 	}
 	else if (ng_state == 6)
 	{
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	stillticking = false;
+		stillticking = false;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
-	{
-		if (!playeringame[i])
-		continue;
+		for (i = 0; i < MAX_PLAYERS; ++i)
+		{
+			if (!playeringame[i])
+				continue;
 
-		cnt_secret[i] += 2;
+			cnt_secret[i] += 2;
 
-		if (cnt_secret[i] >= (plrs[i].ssecret * 100) / wbs->maxsecret)
-		cnt_secret[i] = (plrs[i].ssecret * 100) / wbs->maxsecret;
-		else
-		stillticking = true;
-	}
+			if (cnt_secret[i] >= (plrs[i].ssecret * 100) / wbs->maxsecret)
+				cnt_secret[i] = (plrs[i].ssecret * 100) / wbs->maxsecret;
+			else
+				stillticking = true;
+		}
 
-	if (!stillticking)
-	{
-		S_StartSound(0, sfxenum_t::sfx_barexp);
-		ng_state += 1 + 2*!dofrags;
-	}
+		if (!stillticking)
+		{
+			S_StartSound(0, sfxenum_t::sfx_barexp);
+			ng_state += 1 + 2 * !dofrags;
+		}
 	}
 	else if (ng_state == 8)
 	{
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	stillticking = false;
+		stillticking = false;
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
-	{
-		if (!playeringame[i])
-		continue;
+		for (i = 0; i < MAX_PLAYERS; ++i)
+		{
+			if (!playeringame[i])
+				continue;
 
-		cnt_frags[i] += 1;
+			cnt_frags[i] += 1;
 
-		if (cnt_frags[i] >= (fsum = WI_fragSum(i)))
-		cnt_frags[i] = fsum;
-		else
-		stillticking = true;
-	}
+			if (cnt_frags[i] >= (fsum = WI_fragSum(i)))
+				cnt_frags[i] = fsum;
+			else
+				stillticking = true;
+		}
 
-	if (!stillticking)
-	{
-		S_StartSound(0, sfxenum_t::sfx_pldeth);
-		++ng_state;
-	}
+		if (!stillticking)
+		{
+			S_StartSound(0, sfxenum_t::sfx_pldeth);
+			++ng_state;
+		}
 	}
 	else if (ng_state == 10)
 	{
-	if (acceleratestage)
-	{
-		S_StartSound(0, sfxenum_t::sfx_sgcock);
-		if ( gamemode == GameMode::commercial )
-		WI_initNoState();
-		else
-		WI_initShowNextLoc();
-	}
+		if (acceleratestage)
+		{
+			S_StartSound(0, sfxenum_t::sfx_sgcock);
+			if (gamemode == GameMode::commercial)
+				WI_initNoState();
+			else
+				WI_initShowNextLoc();
+		}
 	}
 	else if (ng_state & 1)
 	{
-	if (!--cnt_pause)
-	{
-		++ng_state;
-		cnt_pause = TICRATE;
-	}
+		if (!--cnt_pause)
+		{
+			++ng_state;
+			cnt_pause = TICRATE;
+		}
 	}
 }
 
@@ -1311,42 +1310,42 @@ void WI_drawNetgameStats()
 	WI_drawLF();
 
 	// draw stat titles (top line)
-	V_DrawPatch(NG_STATSX+NG_SPACINGX-SHORT(kills->width),
+	V_DrawPatch(NG_STATSX + NG_SPACINGX - SHORT(kills->width),
 		NG_STATSY, kills);
 
-	V_DrawPatch(NG_STATSX+2*NG_SPACINGX-SHORT(items->width),
+	V_DrawPatch(NG_STATSX + 2 * NG_SPACINGX - SHORT(items->width),
 		NG_STATSY, items);
 
-	V_DrawPatch(NG_STATSX+3*NG_SPACINGX-SHORT(secret->width),
+	V_DrawPatch(NG_STATSX + 3 * NG_SPACINGX - SHORT(secret->width),
 		NG_STATSY, secret);
 
 	if (dofrags)
-	V_DrawPatch(NG_STATSX+4*NG_SPACINGX-SHORT(frags->width),
+		V_DrawPatch(NG_STATSX + 4 * NG_SPACINGX - SHORT(frags->width),
 			NG_STATSY, frags);
 
 	// draw stats
 	y = NG_STATSY + SHORT(kills->height);
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
-	if (!playeringame[i])
-		continue;
+		if (!playeringame[i])
+			continue;
 
-	x = NG_STATSX;
-	V_DrawPatch(x-SHORT(p[i]->width), y, p[i]);
+		x = NG_STATSX;
+		V_DrawPatch(x - SHORT(p[i]->width), y, p[i]);
 
-	if (i == me)
-		V_DrawPatch(x-SHORT(p[i]->width), y, star);
+		if (i == me)
+			V_DrawPatch(x - SHORT(p[i]->width), y, star);
 
-	x += NG_SPACINGX;
-	WI_drawPercent(x-pwidth, y+10, cnt_kills[i]);	x += NG_SPACINGX;
-	WI_drawPercent(x-pwidth, y+10, cnt_items[i]);	x += NG_SPACINGX;
-	WI_drawPercent(x-pwidth, y+10, cnt_secret[i]);	x += NG_SPACINGX;
+		x += NG_SPACINGX;
+		WI_drawPercent(x - pwidth, y + 10, cnt_kills[i]);	x += NG_SPACINGX;
+		WI_drawPercent(x - pwidth, y + 10, cnt_items[i]);	x += NG_SPACINGX;
+		WI_drawPercent(x - pwidth, y + 10, cnt_secret[i]);	x += NG_SPACINGX;
 
-	if (dofrags)
-		WI_drawNum(x, y+10, cnt_frags[i], -1);
+		if (dofrags)
+			WI_drawNum(x, y + 10, cnt_frags[i], -1);
 
-	y += WI_SPACINGY;
+		y += WI_SPACINGY;
 	}
 
 }
@@ -1372,107 +1371,107 @@ void WI_updateStats()
 
 	if (acceleratestage && sp_state != 10)
 	{
-	acceleratestage = 0;
-	cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
-	cnt_items[0] = (plrs[me].sitems * 100) / wbs->maxitems;
-	cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
-	cnt_time = plrs[me].stime / TICRATE;
-	cnt_par = wbs->partime / TICRATE;
-	S_StartSound(0, sfxenum_t::sfx_barexp);
-	sp_state = 10;
+		acceleratestage = 0;
+		cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
+		cnt_items[0] = (plrs[me].sitems * 100) / wbs->maxitems;
+		cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
+		cnt_time = plrs[me].stime / TICRATE;
+		cnt_par = wbs->partime / TICRATE;
+		S_StartSound(0, sfxenum_t::sfx_barexp);
+		sp_state = 10;
 	}
 
 	if (sp_state == 2)
 	{
-	cnt_kills[0] += 2;
+		cnt_kills[0] += 2;
 
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	if (cnt_kills[0] >= (plrs[me].skills * 100) / wbs->maxkills)
-	{
-		cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
-		S_StartSound(0, sfxenum_t::sfx_barexp);
-		++sp_state;
-	}
+		if (cnt_kills[0] >= (plrs[me].skills * 100) / wbs->maxkills)
+		{
+			cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
+			S_StartSound(0, sfxenum_t::sfx_barexp);
+			++sp_state;
+		}
 	}
 	else if (sp_state == 4)
 	{
-	cnt_items[0] += 2;
+		cnt_items[0] += 2;
 
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	if (cnt_items[0] >= (plrs[me].sitems * 100) / wbs->maxitems)
-	{
-		cnt_items[0] = (plrs[me].sitems * 100) / wbs->maxitems;
-		S_StartSound(0, sfxenum_t::sfx_barexp);
-		++sp_state;
-	}
+		if (cnt_items[0] >= (plrs[me].sitems * 100) / wbs->maxitems)
+		{
+			cnt_items[0] = (plrs[me].sitems * 100) / wbs->maxitems;
+			S_StartSound(0, sfxenum_t::sfx_barexp);
+			++sp_state;
+		}
 	}
 	else if (sp_state == 6)
 	{
-	cnt_secret[0] += 2;
+		cnt_secret[0] += 2;
 
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	if (cnt_secret[0] >= (plrs[me].ssecret * 100) / wbs->maxsecret)
-	{
-		cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
-		S_StartSound(0, sfxenum_t::sfx_barexp);
-		++sp_state;
-	}
+		if (cnt_secret[0] >= (plrs[me].ssecret * 100) / wbs->maxsecret)
+		{
+			cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
+			S_StartSound(0, sfxenum_t::sfx_barexp);
+			++sp_state;
+		}
 	}
 
 	else if (sp_state == 8)
 	{
-	if (!(bcnt&3))
-		S_StartSound(0, sfxenum_t::sfx_pistol);
+		if (!(bcnt & 3))
+			S_StartSound(0, sfxenum_t::sfx_pistol);
 
-	cnt_time += 3;
-
-	if (cnt_time >= plrs[me].stime / TICRATE)
-		cnt_time = plrs[me].stime / TICRATE;
-
-	cnt_par += 3;
-
-	if (cnt_par >= wbs->partime / TICRATE)
-	{
-		cnt_par = wbs->partime / TICRATE;
+		cnt_time += 3;
 
 		if (cnt_time >= plrs[me].stime / TICRATE)
+			cnt_time = plrs[me].stime / TICRATE;
+
+		cnt_par += 3;
+
+		if (cnt_par >= wbs->partime / TICRATE)
 		{
-		S_StartSound(0, sfxenum_t::sfx_barexp);
-		++sp_state;
+			cnt_par = wbs->partime / TICRATE;
+
+			if (cnt_time >= plrs[me].stime / TICRATE)
+			{
+				S_StartSound(0, sfxenum_t::sfx_barexp);
+				++sp_state;
+			}
 		}
-	}
 	}
 	else if (sp_state == 10)
 	{
-	if (acceleratestage)
-	{
-		S_StartSound(0, sfxenum_t::sfx_sgcock);
+		if (acceleratestage)
+		{
+			S_StartSound(0, sfxenum_t::sfx_sgcock);
 
-		if (gamemode == GameMode::commercial)
-		WI_initNoState();
-		else
-		WI_initShowNextLoc();
-	}
+			if (gamemode == GameMode::commercial)
+				WI_initNoState();
+			else
+				WI_initShowNextLoc();
+		}
 	}
 	else if (sp_state & 1)
 	{
-	if (!--cnt_pause)
-	{
-		++sp_state;
-		cnt_pause = TICRATE;
-	}
+		if (!--cnt_pause)
+		{
+			++sp_state;
+			cnt_pause = TICRATE;
+		}
 	}
 
 }
 
 // [crispy] conditionally draw par times on intermission screen
-static bool WI_drawParTime ()
+static bool WI_drawParTime()
 {
 	extern lumpinfo_t* maplumpinfo;
 
@@ -1541,7 +1540,7 @@ void WI_drawStats()
 	// line height
 	int lh;
 
-	lh = (3*SHORT(num[0]->height))/2;
+	lh = (3 * SHORT(num[0]->height)) / 2;
 
 	WI_slamBackground();
 
@@ -1553,52 +1552,52 @@ void WI_drawStats()
 	V_DrawPatch(SP_STATSX, SP_STATSY, kills);
 	WI_drawPercent(ORIGWIDTH - SP_STATSX, SP_STATSY, cnt_kills[0]);
 
-	V_DrawPatch(SP_STATSX, SP_STATSY+lh, items);
-	WI_drawPercent(ORIGWIDTH - SP_STATSX, SP_STATSY+lh, cnt_items[0]);
+	V_DrawPatch(SP_STATSX, SP_STATSY + lh, items);
+	WI_drawPercent(ORIGWIDTH - SP_STATSX, SP_STATSY + lh, cnt_items[0]);
 
-	V_DrawPatch(SP_STATSX, SP_STATSY+2*lh, sp_secret);
-	WI_drawPercent(ORIGWIDTH - SP_STATSX, SP_STATSY+2*lh, cnt_secret[0]);
+	V_DrawPatch(SP_STATSX, SP_STATSY + 2 * lh, sp_secret);
+	WI_drawPercent(ORIGWIDTH - SP_STATSX, SP_STATSY + 2 * lh, cnt_secret[0]);
 
 	V_DrawPatch(SP_TIMEX, SP_TIMEY, timepatch);
-	WI_drawTime(ORIGWIDTH/2 - SP_TIMEX, SP_TIMEY, cnt_time, true);
+	WI_drawTime(ORIGWIDTH / 2 - SP_TIMEX, SP_TIMEY, cnt_time, true);
 
 	// [crispy] conditionally draw par times on intermission screen
 	if (WI_drawParTime())
 	{
-		V_DrawPatch(ORIGWIDTH/2 + SP_TIMEX, SP_TIMEY, par);
+		V_DrawPatch(ORIGWIDTH / 2 + SP_TIMEX, SP_TIMEY, par);
 		WI_drawTime(ORIGWIDTH - SP_TIMEX, SP_TIMEY, cnt_par, true);
 	}
 
 	// [crispy] draw total time after level time and par time
 	if (sp_state > 8)
 	{
-	const TimeType ttime = wbs->totaltimes / TICRATE;
-	const bool wide = (ttime > 61*59) || (SP_TIMEX + SHORT(total->width) >= ORIGWIDTH/4);
+		const TimeType ttime = wbs->totaltimes / TICRATE;
+		const bool wide = (ttime > 61 * 59) || (SP_TIMEX + SHORT(total->width) >= ORIGWIDTH / 4);
 
-	V_DrawPatch(SP_TIMEX, SP_TIMEY + 16, total);
-	// [crispy] choose x-position depending on width of time string
-	WI_drawTime((wide ? ORIGWIDTH : ORIGWIDTH/2) - SP_TIMEX, SP_TIMEY + 16, ttime, false);
+		V_DrawPatch(SP_TIMEX, SP_TIMEY + 16, total);
+		// [crispy] choose x-position depending on width of time string
+		WI_drawTime((wide ? ORIGWIDTH : ORIGWIDTH / 2) - SP_TIMEX, SP_TIMEY + 16, ttime, false);
 	}
 
 	// [crispy] exit early from the tally screen after ExM8
 	if (sp_state == 10 && ((gamemode != GameMode::commercial && gamemap == 8) || (gameversion == GameVersion::exe_chex && gamemap == 5)))
 	{
-	acceleratestage = 1;
+		acceleratestage = 1;
 	}
 
 	// [crispy] demo timer widget
 	if ((demoplayback && (crispy->demotimer & DEMOTIMER_PLAYBACK)) ||
 		(demorecording && (crispy->demotimer & DEMOTIMER_RECORD)))
 	{
-	ST_DrawDemoTimer(leveltime);
+		ST_DrawDemoTimer(leveltime);
 	}
 
 	// [crispy] demo progress bar
 	if (demoplayback && crispy->demobar)
 	{
-	extern void HU_DemoProgressBar ();
+		extern void HU_DemoProgressBar();
 
-	HU_DemoProgressBar();
+		HU_DemoProgressBar();
 	}
 }
 
@@ -1608,27 +1607,27 @@ void WI_checkForAccelerate()
 	Player* player;
 
 	// check for button presses to skip delays
-	for (i=0, player = players ; i<MAX_PLAYERS ; ++i, ++player)
+	for (i = 0, player = players; i < MAX_PLAYERS; ++i, ++player)
 	{
-	if (playeringame[i])
-	{
-		if (player->cmd.buttons & buttoncode::BT_ATTACK)
+		if (playeringame[i])
 		{
-		if (!player->attackdown)
-			acceleratestage = 1;
-		player->attackdown = true;
+			if (player->cmd.buttons & buttoncode::BT_ATTACK)
+			{
+				if (!player->attackdown)
+					acceleratestage = 1;
+				player->attackdown = true;
+			}
+			else
+				player->attackdown = false;
+			if (player->cmd.buttons & buttoncode::BT_USE)
+			{
+				if (!player->usedown)
+					acceleratestage = 1;
+				player->usedown = true;
+			}
+			else
+				player->usedown = false;
 		}
-		else
-		player->attackdown = false;
-		if (player->cmd.buttons & buttoncode::BT_USE)
-		{
-		if (!player->usedown)
-			acceleratestage = 1;
-		player->usedown = true;
-		}
-		else
-		player->usedown = false;
-	}
 	}
 }
 
@@ -1642,38 +1641,38 @@ void WI_Ticker()
 
 	if (bcnt == 1)
 	{
-	// intermission music
-	if ( gamemode == GameMode::commercial )
-		S_ChangeMusic(musicenum_t::mus_dm2int, true);
-	// [crispy] Sigil
-	else if (crispy->haved1e5 && wbs->epsd == 4 && W_CheckNumForName(DEH_String("D_SIGINT")) != -1)
-		S_ChangeMusic(musicenum_t::mus_sigint, true);
-	else
-		S_ChangeMusic(musicenum_t::mus_inter, true);
+		// intermission music
+		if (gamemode == GameMode::commercial)
+			S_ChangeMusic(musicenum_t::mus_dm2int, true);
+		// [crispy] Sigil
+		else if (crispy->haved1e5 && wbs->epsd == 4 && W_CheckNumForName(DEH_String("D_SIGINT")) != -1)
+			S_ChangeMusic(musicenum_t::mus_sigint, true);
+		else
+			S_ChangeMusic(musicenum_t::mus_inter, true);
 	}
 
 	WI_checkForAccelerate();
 
 	switch (state)
 	{
-		case stateenum_t::StatCount:
-	if (deathmatch) WI_updateDeathmatchStats();
-	else if (netgame) WI_updateNetgameStats();
-	else WI_updateStats();
-	break;
+	case stateenum_t::StatCount:
+		if (deathmatch) WI_updateDeathmatchStats();
+		else if (netgame) WI_updateNetgameStats();
+		else WI_updateStats();
+		break;
 
-		case stateenum_t::ShowNextLoc:
-	WI_updateShowNextLoc();
-	break;
+	case stateenum_t::ShowNextLoc:
+		WI_updateShowNextLoc();
+		break;
 
-		case stateenum_t::NoState:
-	WI_updateNoState();
-	break;
+	case stateenum_t::NoState:
+		WI_updateNoState();
+		break;
 	}
 
 }
 
-typedef void (*load_callback_t)(std::string lumpname, patch_t**variable);
+typedef void (*load_callback_t)(std::string lumpname, patch_t** variable);
 
 // Common load/unload function. Iterates over all the graphics
 // lumps to be loaded/unloaded into memory.
@@ -1686,66 +1685,66 @@ static void WI_loadUnloadData(load_callback_t callback)
 
 	if (gamemode == GameMode::commercial)
 	{
-	for (i=0 ; i<NUMCMAPS ; ++i)
-	{
-		DEH_snprintf(name, 9, "CWILV%2.2d", i);
-		// [crispy] NRFTL / The Master Levels
-		if (crispy->havenerve && wbs->epsd == 1 && i < 9) // [crispy] gamemission == pack_nerve
+		for (i = 0; i < NUMCMAPS; ++i)
 		{
-		name[0] = 'N';
-		}
-		if (crispy->havemaster && crispy->havemaster != (char*)-1 && wbs->epsd == 2 && i < 21) // [crispy] gamemission == pack_master
-		{
-		name[0] = 'M';
-		}
+			DEH_snprintf(name, 9, "CWILV%2.2d", i);
+			// [crispy] NRFTL / The Master Levels
+			if (crispy->havenerve && wbs->epsd == 1 && i < 9) // [crispy] gamemission == pack_nerve
+			{
+				name[0] = 'N';
+			}
+			if (crispy->havemaster && crispy->havemaster != (char*)-1 && wbs->epsd == 2 && i < 21) // [crispy] gamemission == pack_master
+			{
+				name[0] = 'M';
+			}
 			callback(name, &lnames[i]);
-	}
+		}
 	}
 	else
 	{
-	for (i=0 ; i<NUMMAPS ; ++i)
-	{
-		DEH_snprintf(name, 9, "WILV%d%d", wbs->epsd, i);
+		for (i = 0; i < NUMMAPS; ++i)
+		{
+			DEH_snprintf(name, 9, "WILV%d%d", wbs->epsd, i);
 			callback(name, &lnames[i]);
-	}
-	// [crispy] special-casing for E1M10 "Sewers" support
-	if (crispy->havee1m10)
-	{
-		DEH_snprintf(name, 9, "SEWERS");
-		callback(name, &lnames[i]);
-	}
+		}
+		// [crispy] special-casing for E1M10 "Sewers" support
+		if (crispy->havee1m10)
+		{
+			DEH_snprintf(name, 9, "SEWERS");
+			callback(name, &lnames[i]);
+		}
 
-	// you are here
+		// you are here
 		callback(DEH_String("WIURH0"), &yah[0]);
 
-	// you are here (alt.)
+		// you are here (alt.)
 		callback(DEH_String("WIURH1"), &yah[1]);
 
-	// splat
+		// splat
 		callback(DEH_String("WISPLAT"), &splat[0]);
 
-	if (wbs->epsd < 3)
-	{
-		for (j=0;j<NUMANIMS[wbs->epsd]; ++j)
+		if (wbs->epsd < 3)
 		{
-		a = &anims[wbs->epsd][j];
-		for (i=0;i<a->nanims; ++i)
-		{
-			// MONDO HACK!
-			if (wbs->epsd != 1 || j != 8)
+			for (j = 0;j < NUMANIMS[wbs->epsd]; ++j)
 			{
-			// animations
-			DEH_snprintf(name, 9, "WIA%d%.2d%.2d", wbs->epsd, j, i);
+				a = &anims[wbs->epsd][j];
+				for (i = 0;i < a->nanims; ++i)
+				{
+					// MONDO HACK!
+					if (wbs->epsd != 1 || j != 8)
+					{
+						// animations
+						DEH_snprintf(name, 9, "WIA%d%.2d%.2d", wbs->epsd, j, i);
 						callback(name, &a->p[i]);
-			}
-			else
-			{
-			// HACK ALERT!
-			a->p[i] = anims[1][4].p[i];
+					}
+					else
+					{
+						// HACK ALERT!
+						a->p[i] = anims[1][4].p[i];
+					}
+				}
 			}
 		}
-		}
-	}
 	}
 
 	// More hacks on minus sign.
@@ -1754,10 +1753,10 @@ static void WI_loadUnloadData(load_callback_t callback)
 	else
 		wiminus = NULL;
 
-	for (i=0;i<10; ++i)
+	for (i = 0;i < 10; ++i)
 	{
 		// numbers 0-9
-	DEH_snprintf(name, 9, "WINUM%d", i);
+		DEH_snprintf(name, 9, "WINUM%d", i);
 		callback(name, &num[i]);
 	}
 
@@ -1776,7 +1775,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 	// "scrt"
 	callback(DEH_String("WIOSTS"), &secret);
 
-		// "secret"
+	// "secret"
 	callback(DEH_String("WISCRT2"), &sp_secret);
 
 	// french wad uses WIOBJ (?)
@@ -1787,7 +1786,9 @@ static void WI_loadUnloadData(load_callback_t callback)
 			callback(DEH_String("WIOBJ"), &items);
 		else
 			callback(DEH_String("WIOSTI"), &items);
-	} else {
+	}
+	else
+	{
 		callback(DEH_String("WIOSTI"), &items);
 	}
 
@@ -1815,14 +1816,14 @@ static void WI_loadUnloadData(load_callback_t callback)
 	// "total"
 	callback(DEH_String("WIMSTT"), &total);
 
-	for (i=0 ; i<MAX_PLAYERS ; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
-	// "1,2,3,4"
-	DEH_snprintf(name, 9, "STPB%d", i);
+		// "1,2,3,4"
+		DEH_snprintf(name, 9, "STPB%d", i);
 		callback(name, &p[i]);
 
-	// "1,2,3,4"
-	DEH_snprintf(name, 9, "WIBP%d", i+1);
+		// "1,2,3,4"
+		DEH_snprintf(name, 9, "WIBP%d", i + 1);
 		callback(name, &bp[i]);
 	}
 
@@ -1836,7 +1837,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 		}
 		else
 		{
-		M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
+			M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
 		}
 	}
 	else if (gameversion >= GameVersion::exe_ultimate && wbs->epsd == 3)
@@ -1849,7 +1850,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 	}
 	else
 	{
-	DEH_snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
+		DEH_snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
 	}
 
 	// [crispy] if still in doubt, use INTERPIC
@@ -1863,13 +1864,13 @@ static void WI_loadUnloadData(load_callback_t callback)
 	callback(name, &background);
 }
 
-static void WI_loadCallback(std::string name, patch_t**variable)
+static void WI_loadCallback(std::string name, patch_t** variable)
 {
- // [crispy] prevent crashes with maps without map title graphics lump
- if (W_CheckNumForName(name) != -1)
-	*variable = W_CacheLumpName<patch_t>(name, pu_tags_t::PU_STATIC);
- else
-	*variable = NULL;
+	// [crispy] prevent crashes with maps without map title graphics lump
+	if (W_CheckNumForName(name) != -1)
+		*variable = W_CacheLumpName<patch_t>(name, pu_tags_t::PU_STATIC);
+	else
+		*variable = NULL;
 }
 
 void WI_loadData()
@@ -1900,7 +1901,7 @@ void WI_loadData()
 	bstar = W_CacheLumpName<patch_t>(DEH_String("STFDEAD0"), pu_tags_t::PU_STATIC);
 }
 
-static void WI_unloadCallback(std::string name, patch_t**variable)
+static void WI_unloadCallback(std::string name, patch_t** variable)
 {
 	W_ReleaseLumpName(name);
 	*variable = NULL;
@@ -1917,26 +1918,26 @@ void WI_unloadData()
 	// W_ReleaseLumpName("STFDEAD0");
 }
 
-void WI_Drawer ()
+void WI_Drawer()
 {
 	switch (state)
 	{
-		case stateenum_t::StatCount:
-	if (deathmatch)
-		WI_drawDeathmatchStats();
-	else if (netgame)
-		WI_drawNetgameStats();
-	else
-		WI_drawStats();
-	break;
+	case stateenum_t::StatCount:
+		if (deathmatch)
+			WI_drawDeathmatchStats();
+		else if (netgame)
+			WI_drawNetgameStats();
+		else
+			WI_drawStats();
+		break;
 
-		case stateenum_t::ShowNextLoc:
-	WI_drawShowNextLoc();
-	break;
+	case stateenum_t::ShowNextLoc:
+		WI_drawShowNextLoc();
+		break;
 
-		case stateenum_t::NoState:
-	WI_drawNoState();
-	break;
+	case stateenum_t::NoState:
+		WI_drawNoState();
+		break;
 	}
 }
 
@@ -1950,14 +1951,14 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 	if (gamemode != GameMode::commercial)
 	{
 		if (gameversion >= GameVersion::exe_ultimate)
-	RNGCHECK(wbs->epsd, 0, 3);
+			RNGCHECK(wbs->epsd, 0, 3);
 		else
-	RNGCHECK(wbs->epsd, 0, 2);
+			RNGCHECK(wbs->epsd, 0, 2);
 	}
 	else
 	{
-	RNGCHECK(wbs->last, 0, 8);
-	RNGCHECK(wbs->next, 0, 8);
+		RNGCHECK(wbs->last, 0, 8);
+		RNGCHECK(wbs->next, 0, 8);
 	}
 	RNGCHECK(wbs->pnum, 0, MAX_PLAYERS);
 	RNGCHECK(wbs->pnum, 0, MAX_PLAYERS);
@@ -1970,17 +1971,17 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 	plrs = wbs->plyr;
 
 	if (!wbs->maxkills)
-	wbs->maxkills = 1;
+		wbs->maxkills = 1;
 
 	if (!wbs->maxitems)
-	wbs->maxitems = 1;
+		wbs->maxitems = 1;
 
 	if (!wbs->maxsecret)
-	wbs->maxsecret = 1;
+		wbs->maxsecret = 1;
 
-	if ( gameversion < GameVersion::exe_ultimate )
+	if (gameversion < GameVersion::exe_ultimate)
 		if (wbs->epsd > 2)
-	wbs->epsd -= 3;
+			wbs->epsd -= 3;
 }
 
 void WI_Start(wbstartstruct_t* wbstartstruct)
@@ -1989,9 +1990,9 @@ void WI_Start(wbstartstruct_t* wbstartstruct)
 	WI_loadData();
 
 	if (deathmatch)
-	WI_initDeathmatchStats();
+		WI_initDeathmatchStats();
 	else if (netgame)
-	WI_initNetgameStats();
+		WI_initNetgameStats();
 	else
-	WI_initStats();
+		WI_initStats();
 }

@@ -7,9 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses "Thing" sections in dehacked files
+	DESCRIPTION:
+		Parses "Thing" sections in dehacked files
 \**********************************************************************************************************************************************/
-
 
 #include "doomtype.h"
 
@@ -66,39 +66,39 @@ static const bex_thingbits_t bex_thingbitstable[] = {
 };
 
 DEH_BEGIN_MAPPING(thing_mapping, mobjinfo_t)
-	DEH_MAPPING("ID #",							doomednum)
-	DEH_MAPPING("Initial frame",				spawnstate)
-	DEH_MAPPING("Hit points",					spawnhealth)
-	DEH_MAPPING("First moving frame",			seestate)
-	DEH_MAPPING("Alert sound",					seesound)
-	DEH_MAPPING("Reaction time",				reactiontime)
-	DEH_MAPPING("Attack sound",					attacksound)
-	DEH_MAPPING("Injury frame",					painstate)
-	DEH_MAPPING("Pain chance",					painchance)
-	DEH_MAPPING("Pain sound",					painsound)
-	DEH_MAPPING("Close attack frame",			meleestate)
-	DEH_MAPPING("Far attack frame",				missilestate)
-	DEH_MAPPING("Death frame",					deathstate)
-	DEH_MAPPING("Exploding frame",				xdeathstate)
-	DEH_MAPPING("Death sound",					deathsound)
-	DEH_MAPPING("Speed",						speed)
-	DEH_MAPPING("Width",						radius)
-	DEH_MAPPING("Height",						height)
-	DEH_MAPPING("Mass",							mass)
-	DEH_MAPPING("Missile damage",				damage)
-	DEH_MAPPING("Action sound",					activesound)
-	DEH_MAPPING("Bits",							flags)
-	DEH_MAPPING("Respawn frame",				raisestate)
-	// [crispy] Thing id to drop after death
-	DEH_MAPPING("Dropped item",					droppeditem)
-	// [crispy] Distance to switch from missile to melee attack
-	DEH_MAPPING("Melee threshold",				meleethreshold)
-	// [crispy] Maximum distance range to start shooting (zero for unlimited)
-	DEH_MAPPING("Max target range",				maxattackrange)
-	// [crispy] Minimum chance for firing a missile
-	DEH_MAPPING("Min missile chance",			minmissilechance)
-	// [crispy] Multiplies the chance of firing a missile (65536 = normal chance)
-	DEH_MAPPING("Missile chance multiplier",	missilechancemult)
+DEH_MAPPING("ID #", doomednum)
+DEH_MAPPING("Initial frame", spawnstate)
+DEH_MAPPING("Hit points", spawnhealth)
+DEH_MAPPING("First moving frame", seestate)
+DEH_MAPPING("Alert sound", seesound)
+DEH_MAPPING("Reaction time", reactiontime)
+DEH_MAPPING("Attack sound", attacksound)
+DEH_MAPPING("Injury frame", painstate)
+DEH_MAPPING("Pain chance", painchance)
+DEH_MAPPING("Pain sound", painsound)
+DEH_MAPPING("Close attack frame", meleestate)
+DEH_MAPPING("Far attack frame", missilestate)
+DEH_MAPPING("Death frame", deathstate)
+DEH_MAPPING("Exploding frame", xdeathstate)
+DEH_MAPPING("Death sound", deathsound)
+DEH_MAPPING("Speed", speed)
+DEH_MAPPING("Width", radius)
+DEH_MAPPING("Height", height)
+DEH_MAPPING("Mass", mass)
+DEH_MAPPING("Missile damage", damage)
+DEH_MAPPING("Action sound", activesound)
+DEH_MAPPING("Bits", flags)
+DEH_MAPPING("Respawn frame", raisestate)
+// [crispy] Thing id to drop after death
+DEH_MAPPING("Dropped item", droppeditem)
+// [crispy] Distance to switch from missile to melee attack
+DEH_MAPPING("Melee threshold", meleethreshold)
+// [crispy] Maximum distance range to start shooting (zero for unlimited)
+DEH_MAPPING("Max target range", maxattackrange)
+// [crispy] Minimum chance for firing a missile
+DEH_MAPPING("Min missile chance", minmissilechance)
+// [crispy] Multiplies the chance of firing a missile (65536 = normal chance)
+DEH_MAPPING("Missile chance multiplier", missilechancemult)
 DEH_END_MAPPING
 
 // initialize Thing extra properties (keeping vanilla props in info.c)
@@ -140,7 +140,7 @@ static void DEH_InitThingProperties()
 		// maximum distance range to start shooting (generaliz. for Arch Vile)
 		if (k == mobjtype_t::MT_VILE)
 		{
-			mobjinfo[i].maxattackrange = 14*64;
+			mobjinfo[i].maxattackrange = 14 * 64;
 		}
 		else
 		{
@@ -163,7 +163,7 @@ static void DEH_InitThingProperties()
 			|| k == mobjtype_t::MT_UNDEAD
 			|| k == mobjtype_t::MT_SKULL)
 		{
-			mobjinfo[i].missilechancemult = FRACUNIT/2;
+			mobjinfo[i].missilechancemult = FRACUNIT / 2;
 		}
 		else
 		{
@@ -200,7 +200,7 @@ static void* DEH_ThingStart(deh_context_t* context, std::string line)
 static void DEH_ThingParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	mobjinfo_t* mobj;
-	std::string variable_name, *value;
+	std::string variable_name, * value;
 	int ivalue;
 
 	if (!tag)
@@ -228,7 +228,7 @@ static void DEH_ThingParseLine(deh_context_t* context, std::string line, void* t
 	if (!ivalue && !variable_name.compare("bits"))
 	{
 		// FIXME what does strtok do
-		for ( ; !(value = std::string(strtok(value.c_str(), ",+| \t\f\r"))).compare("0"); value = NULL)
+		for (; !(value = std::string(strtok(value.c_str(), ",+| \t\f\r"))).compare("0"); value = NULL)
 		{
 			for (size_t i{0}; i < arrlen(bex_thingbitstable); ++i)
 			{

@@ -56,8 +56,8 @@ class OPLManager
 	Uint16_t mixing_format{0};
 
 	// Timers; DBOPL does not do timer stuff itself.
-	static opl_timer_t timer1{ 12500, 0, 0, 0 };
-	static opl_timer_t timer2{ 3125, 0, 0, 0 };
+	static opl_timer_t timer1{12500, 0, 0, 0};
+	static opl_timer_t timer2{3125, 0, 0, 0};
 
 	static opl3_chip opl_chip;								// OPL software emulator structure.
 }
@@ -81,7 +81,7 @@ static void AdvanceTime(unsigned nsamples)
 	SDL_LockMutex(callback_queue_mutex);
 
 	// Advance time.
-	us = ((uint64_t) nsamples * OPL_SECOND) / mixing_freq;
+	us = ((uint64_t)nsamples * OPL_SECOND) / mixing_freq;
 	current_time += us;
 
 	if (opl_sdl_paused)
@@ -211,7 +211,7 @@ static void OPL_SDL_Shutdown()
 
 static unsigned GetSliceSize()
 {
-	unsigned limit{opl_sample_rate*(MAX_SOUND_SLICE_TIME/1000u)};
+	unsigned limit{opl_sample_rate * (MAX_SOUND_SLICE_TIME / 1000u)};
 
 	// Try all powers of two, not exceeding the limit.
 	for (int n{0};; ++n)
@@ -326,7 +326,7 @@ static void OPLTimer_CalculateEndTime(opl_timer_t* timer)
 		uint64_t tics{0x100u - static_cast<uint64_t>(timer->value)};
 		// TODO NOTE is timer->rate bigger than opl_second? we risk either rounding to zero or overflow from the multiplication
 		// if only floating point arithmetic was a thing...
-		timer->expire_time = current_time + (tics * OPL_SECOND)/timer->rate;
+		timer->expire_time = current_time + (tics * OPL_SECOND) / timer->rate;
 	}
 }
 
@@ -334,45 +334,45 @@ static void WriteRegister(unsigned reg_num, unsigned value)
 {
 	switch (reg_num)
 	{
-		case OPL_REG_TIMER1:
-			timer1.value = value;
-			OPLTimer_CalculateEndTime(&timer1);
-			break;
+	case OPL_REG_TIMER1:
+		timer1.value = value;
+		OPLTimer_CalculateEndTime(&timer1);
+		break;
 
-		case OPL_REG_TIMER2:
-			timer2.value = value;
-			OPLTimer_CalculateEndTime(&timer2);
-			break;
+	case OPL_REG_TIMER2:
+		timer2.value = value;
+		OPLTimer_CalculateEndTime(&timer2);
+		break;
 
-		case OPL_REG_TIMER_CTRL:
-			if (value & 0x80)
+	case OPL_REG_TIMER_CTRL:
+		if (value & 0x80)
+		{
+			timer1.enabled = 0;
+			timer2.enabled = 0;
+		}
+		else
+		{
+			if ((value & 0x40) == 0)
 			{
-				timer1.enabled = 0;
-				timer2.enabled = 0;
-			}
-			else
-			{
-				if ((value & 0x40) == 0)
-				{
-					timer1.enabled = (value & 0x01) != 0;
-					OPLTimer_CalculateEndTime(&timer1);
-				}
-
-				if ((value & 0x20) == 0)
-				{
-					timer1.enabled = (value & 0x02) != 0;
-					OPLTimer_CalculateEndTime(&timer2);
-				}
+				timer1.enabled = (value & 0x01) != 0;
+				OPLTimer_CalculateEndTime(&timer1);
 			}
 
-			break;
+			if ((value & 0x20) == 0)
+			{
+				timer1.enabled = (value & 0x02) != 0;
+				OPLTimer_CalculateEndTime(&timer2);
+			}
+		}
 
-		case OPL_REG_NEW:
-			opl_opl3mode = value & 0x01;
+		break;
 
-		default:
-			OPL3_WriteRegBuffered(&opl_chip, reg_num, value);
-			break;
+	case OPL_REG_NEW:
+		opl_opl3mode = value & 0x01;
+
+	default:
+		OPL3_WriteRegBuffered(&opl_chip, reg_num, value);
+		break;
 	}
 }
 

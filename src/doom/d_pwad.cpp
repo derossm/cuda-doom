@@ -10,10 +10,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Auto-loading of (semi-)official PWAD expansions, i.e.
-//	Sigil, No Rest for the Living and The Master Levels
+		Auto-loading of (semi-)official PWAD expansions, i.e. Sigil, No Rest for the Living and The Master Levels
 \**********************************************************************************************************************************************/
-
 
 #include "doomstat.h"
 #include "deh_str.h"
@@ -24,10 +22,10 @@
 extern std::string iwadfile;
 
 // [crispy] auto-load SIGIL.WAD (and SIGIL_SHREDS.WAD) if available
-void D_LoadSigilWad ()
+void D_LoadSigilWad()
 {
 	int i, j;
-	std::string sigil_wad = NULL,* sigil_shreds = NULL;
+	std::string sigil_wad = NULL, * sigil_shreds = NULL;
 	std::string dirname;
 
 	std::string const sigil_wads[] = {
@@ -36,10 +34,11 @@ void D_LoadSigilWad ()
 		"SIGIL.wad"
 	};
 
-	static const struct {
+	static const struct
+	{
 		std::string name;
 		const char new_name[8];
-	} sigil_lumps [] = {
+	} sigil_lumps[] = {
 		{"CREDIT",	"SIGCREDI"},
 		{"HELP1",	"SIGHELP1"},
 		{"TITLEPIC", "SIGTITLE"},
@@ -163,7 +162,7 @@ void D_LoadSigilWad ()
 }
 
 // [crispy] check if NERVE.WAD is already loaded as a PWAD
-static bool CheckNerveLoaded ()
+static bool CheckNerveLoaded()
 {
 	int i, j;
 
@@ -178,7 +177,7 @@ static bool CheckNerveLoaded ()
 		j = W_GetNumForName("TITLEPIC");
 		if (iequals(W_WadNameForLump(lumpinfo[j]), "NERVE.WAD"))
 		{
-			DEH_AddStringReplacement ("TITLEPIC", "INTERPIC");
+			DEH_AddStringReplacement("TITLEPIC", "INTERPIC");
 		}
 
 		return true;
@@ -192,10 +191,11 @@ static void CheckLoadNerve()
 {
 	int i, j;
 
-	static const struct {
+	static const struct
+	{
 		std::string name;
 		const char new_name[8];
-	} nerve_lumps [] = {
+	} nerve_lumps[] = {
 		{"TITLEPIC", "NERVEPIC"},
 		{"INTERPIC", "NERVEINT"},
 	};
@@ -231,11 +231,11 @@ static void CheckLoadNerve()
 	{
 		char lumpname[9];
 
-		M_snprintf (lumpname, 9, "CWILV%2.2d", i);
+		M_snprintf(lumpname, 9, "CWILV%2.2d", i);
 		j = W_GetNumForName(lumpname);
 		lumpinfo[j]->name[0] = 'N';
 
-		M_snprintf (lumpname, 9, "MAP%02d", i + 1);
+		M_snprintf(lumpname, 9, "MAP%02d", i + 1);
 		j = W_GetNumForName(lumpname);
 		strcat(lumpinfo[j]->name, "N");
 	}
@@ -257,7 +257,7 @@ static void CheckLoadNerve()
 	return;
 }
 
-void D_LoadNerveWad ()
+void D_LoadNerveWad()
 {
 	// [crispy] check if NERVE.WAD is already loaded as a PWAD
 	if (!CheckNerveLoaded())
@@ -268,7 +268,7 @@ void D_LoadNerveWad ()
 }
 
 // [crispy] check if the single MASTERLEVELS.WAD is already loaded as a PWAD
-static bool CheckMasterlevelsLoaded ()
+static bool CheckMasterlevelsLoaded()
 {
 	int i, j;
 
@@ -286,7 +286,7 @@ static bool CheckMasterlevelsLoaded ()
 }
 
 // [crispy] auto-load the single MASTERLEVELS.WAD if available
-static bool CheckLoadMasterlevels ()
+static bool CheckLoadMasterlevels()
 {
 	int i, j;
 
@@ -347,13 +347,14 @@ static bool CheckLoadMasterlevels ()
 
 // [crispy] check if the 20 individual separate Mater Levels PWADs are available
 
-static struct {
+static struct
+{
 	std::string wad_name;
 	int pc_slot;
 	int psn_slot;
 	bool custom_sky;
 	std::string file_path;
-} masterlevels_wads [] = {
+} masterlevels_wads[] = {
 	{"ATTACK.WAD",	1, 1},
 	{"CANYON.WAD",	1, 2},
 	{"CATWALK.WAD",	1, 3},
@@ -377,7 +378,7 @@ static struct {
 	{NULL,			32, 21}, // [crispy] TEETH.WAD
 };
 
-static bool CheckMasterlevelsAvailable ()
+static bool CheckMasterlevelsAvailable()
 {
 	int i;
 	std::string dir;
@@ -424,7 +425,7 @@ static bool CheckMasterlevelsAvailable ()
 }
 
 // [crispy] auto-load the 20 individual separate Mater Levels PWADs as if the were the single MASTERLEVELS.WAD
-static void LoadMasterlevelsWads ()
+static void LoadMasterlevelsWads()
 {
 	int i, j;
 	char lumpname[9];
@@ -440,7 +441,7 @@ static void LoadMasterlevelsWads ()
 		// [crispy] add TEETH.WAD only once
 		if (masterlevels_wads[i].wad_name)
 		{
-			printf(" [The Master Levels %02d] adding %s\n", i+1, masterlevels_wads[i].file_path);
+			printf(" [The Master Levels %02d] adding %s\n", i + 1, masterlevels_wads[i].file_path);
 			W_AddFile(masterlevels_wads[i].file_path);
 			free(masterlevels_wads[i].file_path);
 
@@ -476,7 +477,7 @@ static void LoadMasterlevelsWads ()
 	return;
 }
 
-void D_LoadMasterlevelsWad ()
+void D_LoadMasterlevelsWad()
 {
 	// [crispy] check if the single MASTERLEVELS.WAD is already loaded as a PWAD
 	if (!CheckMasterlevelsLoaded())

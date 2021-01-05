@@ -7,9 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses Action Pointer entries in dehacked files
+	DESCRIPTION:
+		Parses Action Pointer entries in dehacked files
 \**********************************************************************************************************************************************/
-
 
 #include "doomtype.h"
 #include "info.h"
@@ -39,7 +39,7 @@ static void DEH_PointerInit()
 
 	// Initialize list of dehacked pointers
 
-	for (i=0; i < std::size_t(statenum_t::EXTRASTATES); ++i)
+	for (i = 0; i < std::size_t(statenum_t::EXTRASTATES); ++i)
 	{
 		codeptrs[i] = states[i].action;
 	}
@@ -50,7 +50,7 @@ static void DEH_PointerInit()
 		states[i].sprite = spritenum_t::SPR_TNT1;
 		states[i].frame = 0;
 		states[i].tics = -1;
-		states[i].action.acv = (actionf_v) NULL;
+		states[i].action.acv = (actionf_v)NULL;
 		states[i].nextstate = i;
 		states[i].misc1 = 0;
 		states[i].misc2 = 0;
@@ -84,13 +84,13 @@ static void* DEH_PointerStart(deh_context_t* context, char* line)
 static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 {
 	state_t* state;
-	std::string variable_name, *value;
+	std::string variable_name, * value;
 	int ivalue;
 
 	if (tag == NULL)
 		return;
 
-	state = (state_t*) tag;
+	state = (state_t*)tag;
 
 	// Parse the assignment
 
@@ -101,9 +101,9 @@ static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 		return;
 	}
 
-//	printf("Set %s to %s for state\n", variable_name, value);
+	//	printf("Set %s to %s for state\n", variable_name, value);
 
-	// all values are integers
+		// all values are integers
 
 	ivalue = atoi(value);
 

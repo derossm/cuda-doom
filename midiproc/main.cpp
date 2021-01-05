@@ -316,7 +316,7 @@ int main(int argc, char* argv[])
 	if (argc < 5)
 	{
 		MessageBox(NULL, TEXT("This program is tasked with playing Native MIDI music, and is intended to be launched by ")
-						TEXT(PACKAGE_NAME) TEXT("."), TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
+			TEXT(PACKAGE_NAME) TEXT("."), TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
 
 		return EXIT_FAILURE;
 	}

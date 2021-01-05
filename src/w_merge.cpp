@@ -8,10 +8,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
- Handles merging of PWADs, similar to deutex's -merge option
-//
-// Ideally this should work exactly the same as in deutex, but trying to
-// read the deutex source code made my brain hurt.
+		Handles merging of PWADs, similar to deutex's -merge option
+		Ideally this should work exactly the same as in deutex, but trying to read the deutex source code made my brain hurt.
 \**********************************************************************************************************************************************/
 
 
@@ -32,7 +30,7 @@ enum class section_t
 
 struct searchlist_t
 {
-	lumpinfo_t**lumps;
+	lumpinfo_t** lumps;
 	int numlumps;
 };
 
@@ -65,7 +63,7 @@ static int FindInList(searchlist_t* list, std::string name)
 {
 	int i;
 
-	for (i=0; i<list->numlumps; ++i)
+	for (i = 0; i < list->numlumps; ++i)
 	{
 		if (!strncasecmp(list->lumps[i]->name, name, 8))
 			return i;
@@ -75,8 +73,8 @@ static int FindInList(searchlist_t* list, std::string name)
 }
 
 static bool SetupList(searchlist_t* list, searchlist_t* src_list,
-							std::string startname, std::string endname,
-							std::string startname2, std::string endname2)
+	std::string startname, std::string endname,
+	std::string startname2, std::string endname2)
 {
 	int startlump, endlump;
 
@@ -139,7 +137,7 @@ static void InitSpriteList()
 	{
 		sprite_frames_alloced = 128;
 		sprite_frames = Z_Malloc<decltype(*sprite_frames)>(sizeof(*sprite_frames) * sprite_frames_alloced,
-									pu_tags_t::PU_STATIC, NULL);
+			pu_tags_t::PU_STATIC, NULL);
 	}
 
 	num_sprite_frames = 0;
@@ -179,7 +177,7 @@ static sprite_frame_t* FindSpriteFrame(std::string name, int frame)
 
 	// Search the list and try to find the frame
 
-	for (i=0; i<num_sprite_frames; ++i)
+	for (i = 0; i < num_sprite_frames; ++i)
 	{
 		sprite_frame_t* cur = &sprite_frames[i];
 
@@ -198,9 +196,9 @@ static sprite_frame_t* FindSpriteFrame(std::string name, int frame)
 		sprite_frame_t* newframes;
 
 		newframes = Z_Malloc<decltype(newframes)>(sprite_frames_alloced * 2 * sizeof(*sprite_frames),
-								pu_tags_t::PU_STATIC, NULL);
+			pu_tags_t::PU_STATIC, NULL);
 		memcpy(newframes, sprite_frames,
-				sprite_frames_alloced * sizeof(*sprite_frames));
+			sprite_frames_alloced * sizeof(*sprite_frames));
 		Z_Free(sprite_frames);
 		sprite_frames_alloced *= 2;
 		sprite_frames = newframes;
@@ -212,7 +210,7 @@ static sprite_frame_t* FindSpriteFrame(std::string name, int frame)
 	memcpy(result->sprname, name, 4);
 	result->frame = frame;
 
-	for (i=0; i<8; ++i)
+	for (i = 0; i < 8; ++i)
 		result->angle_lumps[i] = NULL;
 
 	++num_sprite_frames;
@@ -242,7 +240,7 @@ static bool SpriteLumpNeeded(lumpinfo_t* lump)
 	{
 		// must check all frames
 
-		for (i=0; i<8; ++i)
+		for (i = 0; i < 8; ++i)
 		{
 			if (sprite->angle_lumps[i] == lump)
 				return true;
@@ -269,7 +267,7 @@ static bool SpriteLumpNeeded(lumpinfo_t* lump)
 	{
 		// must check all frames
 
-		for (i=0; i<8; ++i)
+		for (i = 0; i < 8; ++i)
 		{
 			if (sprite->angle_lumps[i] == lump)
 				return true;
@@ -304,7 +302,7 @@ static void AddSpriteLump(lumpinfo_t* lump)
 
 	if (angle_num == 0)
 	{
-		for (i=0; i<8; ++i)
+		for (i = 0; i < 8; ++i)
 			sprite->angle_lumps[i] = lump;
 	}
 	else
@@ -324,7 +322,7 @@ static void AddSpriteLump(lumpinfo_t* lump)
 
 	if (angle_num == 0)
 	{
-		for (i=0; i<8; ++i)
+		for (i = 0; i < 8; ++i)
 			sprite->angle_lumps[i] = lump;
 	}
 	else
@@ -343,7 +341,7 @@ static void GenerateSpriteList()
 
 	// Add all sprites from the IWAD
 
-	for (i=0; i<iwad_sprites.numlumps; ++i)
+	for (i = 0; i < iwad_sprites.numlumps; ++i)
 	{
 		AddSpriteLump(iwad_sprites.lumps[i]);
 	}
@@ -351,7 +349,7 @@ static void GenerateSpriteList()
 	// Add all sprites from the PWAD
 	// (replaces IWAD sprites)
 
-	for (i=0; i<pwad_sprites.numlumps; ++i)
+	for (i = 0; i < pwad_sprites.numlumps; ++i)
 	{
 		AddSpriteLump(pwad_sprites.lumps[i]);
 	}
@@ -379,7 +377,7 @@ static void GenerateSpriteList()
 static void DoMerge()
 {
 	section_t current_section;
-	lumpinfo_t**newlumps;
+	lumpinfo_t** newlumps;
 	int num_newlumps;
 	int lumpindex;
 	int i, n;
@@ -391,150 +389,150 @@ static void DoMerge()
 	// Add IWAD lumps
 	current_section = SECTION_NORMAL;
 
-	for (i=0; i<iwad.numlumps; ++i)
+	for (i = 0; i < iwad.numlumps; ++i)
 	{
 		lumpinfo_t* lump = iwad.lumps[i];
 
 		switch (current_section)
 		{
-			case SECTION_NORMAL:
-				if (!strncasecmp(lump->name, "F_START", 8))
+		case SECTION_NORMAL:
+			if (!strncasecmp(lump->name, "F_START", 8))
+			{
+				current_section = SECTION_FLATS;
+			}
+			else if (!strncasecmp(lump->name, "S_START", 8))
+			{
+				current_section = SECTION_SPRITES;
+			}
+
+			newlumps[num_newlumps++] = lump;
+
+			break;
+
+		case SECTION_FLATS:
+
+			// Have we reached the end of the section?
+
+			if (!strncasecmp(lump->name, "F_END", 8))
+			{
+				// Add all new flats from the PWAD to the end
+				// of the section
+
+				for (n = 0; n < pwad_flats.numlumps; ++n)
 				{
-					current_section = SECTION_FLATS;
-				}
-				else if (!strncasecmp(lump->name, "S_START", 8))
-				{
-					current_section = SECTION_SPRITES;
+					newlumps[num_newlumps++] = pwad_flats.lumps[n];
 				}
 
 				newlumps[num_newlumps++] = lump;
 
-				break;
+				// back to normal reading
+				current_section = SECTION_NORMAL;
+			}
+			else
+			{
+				// If there is a flat in the PWAD with the same name,
+				// do not add it now. All PWAD flats are added to the
+				// end of the section. Otherwise, if it is only in the
+				// IWAD, add it now
 
-			case SECTION_FLATS:
+				lumpindex = FindInList(&pwad_flats, lump->name);
 
-				// Have we reached the end of the section?
-
-				if (!strncasecmp(lump->name, "F_END", 8))
+				if (lumpindex < 0)
 				{
-					// Add all new flats from the PWAD to the end
-					// of the section
-
-					for (n=0; n<pwad_flats.numlumps; ++n)
-					{
-						newlumps[num_newlumps++] = pwad_flats.lumps[n];
-					}
-
 					newlumps[num_newlumps++] = lump;
-
-					// back to normal reading
-					current_section = SECTION_NORMAL;
 				}
-				else
+			}
+
+			break;
+
+		case SECTION_SPRITES:
+
+			// Have we reached the end of the section?
+
+			if (!strncasecmp(lump->name, "S_END", 8))
+			{
+				// add all the PWAD sprites
+
+				for (n = 0; n < pwad_sprites.numlumps; ++n)
 				{
-					// If there is a flat in the PWAD with the same name,
-					// do not add it now. All PWAD flats are added to the
-					// end of the section. Otherwise, if it is only in the
-					// IWAD, add it now
-
-					lumpindex = FindInList(&pwad_flats, lump->name);
-
-					if (lumpindex < 0)
+					if (SpriteLumpNeeded(pwad_sprites.lumps[n]))
 					{
-						newlumps[num_newlumps++] = lump;
+						newlumps[num_newlumps++] = pwad_sprites.lumps[n];
 					}
 				}
 
-				break;
+				// copy the ending
+				newlumps[num_newlumps++] = lump;
 
-			case SECTION_SPRITES:
+				// back to normal reading
+				current_section = SECTION_NORMAL;
+			}
+			else
+			{
+				// Is this lump holding a sprite to be replaced in the
+				// PWAD? If so, wait until the end to add it.
 
-				// Have we reached the end of the section?
-
-				if (!strncasecmp(lump->name, "S_END", 8))
+				if (SpriteLumpNeeded(lump))
 				{
-					// add all the PWAD sprites
-
-					for (n=0; n<pwad_sprites.numlumps; ++n)
-					{
-						if (SpriteLumpNeeded(pwad_sprites.lumps[n]))
-						{
-							newlumps[num_newlumps++] = pwad_sprites.lumps[n];
-						}
-					}
-
-					// copy the ending
 					newlumps[num_newlumps++] = lump;
-
-					// back to normal reading
-					current_section = SECTION_NORMAL;
 				}
-				else
-				{
-					// Is this lump holding a sprite to be replaced in the
-					// PWAD? If so, wait until the end to add it.
+			}
 
-					if (SpriteLumpNeeded(lump))
-					{
-						newlumps[num_newlumps++] = lump;
-					}
-				}
-
-				break;
+			break;
 		}
 	}
 
 	// Add PWAD lumps
 	current_section = SECTION_NORMAL;
 
-	for (i=0; i<pwad.numlumps; ++i)
+	for (i = 0; i < pwad.numlumps; ++i)
 	{
 		lumpinfo_t* lump = pwad.lumps[i];
 
 		switch (current_section)
 		{
-			case SECTION_NORMAL:
-				if (!strncasecmp(lump->name, "F_START", 8)
-					|| !strncasecmp(lump->name, "FF_START", 8))
-				{
-					current_section = SECTION_FLATS;
-				}
-				else if (!strncasecmp(lump->name, "S_START", 8)
-						|| !strncasecmp(lump->name, "SS_START", 8))
-				{
-					current_section = SECTION_SPRITES;
-				}
-				else
-				{
-					// Don't include the headers of sections
+		case SECTION_NORMAL:
+			if (!strncasecmp(lump->name, "F_START", 8)
+				|| !strncasecmp(lump->name, "FF_START", 8))
+			{
+				current_section = SECTION_FLATS;
+			}
+			else if (!strncasecmp(lump->name, "S_START", 8)
+				|| !strncasecmp(lump->name, "SS_START", 8))
+			{
+				current_section = SECTION_SPRITES;
+			}
+			else
+			{
+				// Don't include the headers of sections
 
-					newlumps[num_newlumps++] = lump;
-				}
-				break;
+				newlumps[num_newlumps++] = lump;
+			}
+			break;
 
-			case SECTION_FLATS:
+		case SECTION_FLATS:
 
-				// PWAD flats are ignored (already merged)
+			// PWAD flats are ignored (already merged)
 
-				if (!strncasecmp(lump->name, "FF_END", 8)
-					|| !strncasecmp(lump->name, "F_END", 8))
-				{
-					// end of section
-					current_section = SECTION_NORMAL;
-				}
-				break;
+			if (!strncasecmp(lump->name, "FF_END", 8)
+				|| !strncasecmp(lump->name, "F_END", 8))
+			{
+				// end of section
+				current_section = SECTION_NORMAL;
+			}
+			break;
 
-			case SECTION_SPRITES:
+		case SECTION_SPRITES:
 
-				// PWAD sprites are ignored (already merged)
+			// PWAD sprites are ignored (already merged)
 
-				if (!strncasecmp(lump->name, "SS_END", 8)
-					|| !strncasecmp(lump->name, "S_END", 8))
-				{
-					// end of section
-					current_section = SECTION_NORMAL;
-				}
-				break;
+			if (!strncasecmp(lump->name, "SS_END", 8)
+				|| !strncasecmp(lump->name, "S_END", 8))
+			{
+				// end of section
+				current_section = SECTION_NORMAL;
+			}
+			break;
 		}
 	}
 
@@ -550,9 +548,9 @@ void W_PrintDirectory()
 	unsigned i, n;
 
 	// debug
-	for (i=0; i<numlumps; ++i)
+	for (i = 0; i < numlumps; ++i)
 	{
-		for (n=0; n<8 && lumpinfo[i]->name[n] != '\0'; ++n)
+		for (n = 0; n < 8 && lumpinfo[i]->name[n] != '\0'; ++n)
 			putchar(lumpinfo[i]->name[n]);
 		putchar('\n');
 	}
@@ -600,7 +598,7 @@ static void W_NWTAddLumps(searchlist_t* list)
 
 	// Go through the IWAD list given, replacing lumps with lumps of
 	// the same name from the PWAD
-	for (i=0; i<list->numlumps; ++i)
+	for (i = 0; i < list->numlumps; ++i)
 	{
 		int index;
 
@@ -609,7 +607,7 @@ static void W_NWTAddLumps(searchlist_t* list)
 		if (index > 0)
 		{
 			memcpy(list->lumps[i], pwad.lumps[index],
-					sizeof(lumpinfo_t));
+				sizeof(lumpinfo_t));
 		}
 	}
 }
@@ -694,7 +692,7 @@ void W_NWTDashMerge(std::string filename)
 
 	// Search through the IWAD sprites list.
 
-	for (i=0; i<iwad_sprites.numlumps; ++i)
+	for (i = 0; i < iwad_sprites.numlumps; ++i)
 	{
 		if (FindInList(&pwad, iwad_sprites.lumps[i]->name) >= 0)
 		{
@@ -714,7 +712,7 @@ void W_NWTDashMerge(std::string filename)
 }
 
 // [crispy] dump merged WAD data into a new IWAD file
-int W_MergeDump (std::string file)
+int W_MergeDump(std::string file)
 {
 	FILE* fp = NULL;
 	std::string lump_p = NULL;
@@ -733,30 +731,30 @@ int W_MergeDump (std::string file)
 	fp = fopen(file, "wb");
 	if (!fp)
 	{
-	I_Error("W_MergeDump: Failed writing to file '%s'!", file);
+		I_Error("W_MergeDump: Failed writing to file '%s'!", file);
 	}
 
 	// [crispy] prepare directory
 	dir = calloc(numlumps, sizeof(*dir));
 	if (!dir)
 	{
-	I_Error("W_MergeDump: Error allocating memory!");
+		I_Error("W_MergeDump: Error allocating memory!");
 	}
 
 	// [crispy] write lumps to file, starting at offset 12
 	fseek(fp, 12, SEEK_SET);
 	for (i = 0; i < numlumps; ++i)
 	{
-	dir[i].pos = LONG(ftell(fp));
-	dir[i].size = LONG(lumpinfo[i]->size);
-	// [crispy] lump names are zero-byte padded
-	memset(dir[i].name, 0, 8);
-	strncpy(dir[i].name, lumpinfo[i]->name, 8);
+		dir[i].pos = LONG(ftell(fp));
+		dir[i].size = LONG(lumpinfo[i]->size);
+		// [crispy] lump names are zero-byte padded
+		memset(dir[i].name, 0, 8);
+		strncpy(dir[i].name, lumpinfo[i]->name, 8);
 
-	// [crispy] avoid flooding Doom's Zone Memory
-	lump_p = I_Realloc(lump_p, lumpinfo[i]->size);
-	W_ReadLump(i, lump_p);
-	fwrite(lump_p, 1, lumpinfo[i]->size, fp);
+		// [crispy] avoid flooding Doom's Zone Memory
+		lump_p = I_Realloc(lump_p, lumpinfo[i]->size);
+		W_ReadLump(i, lump_p);
+		fwrite(lump_p, 1, lumpinfo[i]->size, fp);
 	}
 	free(lump_p);
 

@@ -91,7 +91,7 @@ void STlib_drawNum(st_number_t* n, bool refresh)
 	}
 
 	// clear the area
-	auto x{n->x - numdigits*w};
+	auto x{n->x - numdigits * w};
 
 	if (n->y - ST_Y < 0)
 	{
@@ -100,7 +100,7 @@ void STlib_drawNum(st_number_t* n, bool refresh)
 
 	if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay))
 	{
-		V_CopyRect(x + WIDESCREENDELTA, n->y - ST_Y, st_backing_screen, w*numdigits, h, x + WIDESCREENDELTA, n->y);
+		V_CopyRect(x + WIDESCREENDELTA, n->y - ST_Y, st_backing_screen, w * numdigits, h, x + WIDESCREENDELTA, n->y);
 	}
 
 	// if non-number, do not draw it
@@ -114,14 +114,14 @@ void STlib_drawNum(st_number_t* n, bool refresh)
 	// in the special case of 0, you draw 0
 	if (!num)
 	{
-		V_DrawPatch(x - w, n->y, n->p[ 0 ]);
+		V_DrawPatch(x - w, n->y, n->p[0]);
 	}
 
 	// draw the new number
 	while (num && numdigits--)
 	{
 		x -= w;
-		V_DrawPatch(x, n->y, n->p[ num % 10 ]);
+		V_DrawPatch(x, n->y, n->p[num % 10]);
 		num /= 10;
 	}
 
@@ -185,7 +185,7 @@ void STlib_initMultIcon(st_multicon_t* i, int x, int y, patch_t** il, int* inum,
 
 void STlib_updateMultIcon(st_multicon_t* mi, bool refresh)
 {
-	if (*mi->on && (mi->oldinum != *mi->inum || refresh) && (*mi->inum!=-1))
+	if (*mi->on && (mi->oldinum != *mi->inum || refresh) && (*mi->inum != -1))
 	{
 		if (mi->oldinum != -1)
 		{
@@ -201,7 +201,7 @@ void STlib_updateMultIcon(st_multicon_t* mi, bool refresh)
 
 			if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay))
 			{
-				V_CopyRect(x + WIDESCREENDELTA, y-ST_Y, st_backing_screen, w, h, x + WIDESCREENDELTA, y);
+				V_CopyRect(x + WIDESCREENDELTA, y - ST_Y, st_backing_screen, w, h, x + WIDESCREENDELTA, y);
 			}
 		}
 
@@ -240,7 +240,7 @@ void STlib_updateBinIcon(st_binicon_t* bi, bool refresh)
 		}
 		else if (screenblocks < CRISPY_HUD || (automapactive && !crispy->automapoverlay))
 		{
-			V_CopyRect(x + WIDESCREENDELTA, y-ST_Y, st_backing_screen, w, h, x + WIDESCREENDELTA, y);
+			V_CopyRect(x + WIDESCREENDELTA, y - ST_Y, st_backing_screen, w, h, x + WIDESCREENDELTA, y);
 		}
 
 		bi->oldval = *bi->val;

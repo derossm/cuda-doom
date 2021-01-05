@@ -24,7 +24,7 @@
  * Kyle McMartin <kyle@debian.org>
  * Adam J. Richter <adam@yggdrasil.com> (conversion to 2.5 API).
  *
- * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the 
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 2 of the License, or (at your option) any later version.
  * ---------------------------------------------------------------------------
  * Copyright (c) 2002, Dr Brian Gladman <brg@gladman.me.uk>, Worcester, UK.
@@ -48,7 +48,7 @@
 
 #include "aes_prng.h"
 
-static const uint32_t rco_tab[10]{ 1, 2, 4, 8, 16, 32, 64, 128, 27, 54 };
+static const uint32_t rco_tab[10]{1, 2, 4, 8, 16, 32, 64, 128, 27, 54};
 
 static const uint32_t crypto_ft_tab[4][256]{
 	{

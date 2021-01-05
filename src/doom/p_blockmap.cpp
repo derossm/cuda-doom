@@ -11,8 +11,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		Create Blockmap
-			taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
+		Create Blockmap taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
 \**********************************************************************************************************************************************/
 
 #include "i_system.h"
@@ -68,8 +67,8 @@ void P_CreateBlockMap()
 	// Save blockmap parameters
 	bmaporgx = minx << FRACBITS;
 	bmaporgy = miny << FRACBITS;
-	bmapwidth = ((maxx-minx) >> MAPBTOFRAC) + 1;
-	bmapheight = ((maxy-miny) >> MAPBTOFRAC) + 1;
+	bmapwidth = ((maxx - minx) >> MAPBTOFRAC) + 1;
+	bmapheight = ((maxy - miny) >> MAPBTOFRAC) + 1;
 
 	// Compute blockmap, which is stored as a 2d array of variable-sized lists.
 	//
@@ -92,7 +91,7 @@ void P_CreateBlockMap()
 	{
 
 		unsigned tot = bmapwidth * bmapheight;						// size of blockmap
-		Blocklist* blockmap = (Blocklist*)calloc(sizeof *blockmap, tot);			// array of blocklists
+		Blocklist* blockmap = (Blocklist*)calloc(sizeof * blockmap, tot);			// array of blocklists
 		//int x, y, adx, ady, bend;
 
 		for (size_t i{0}; i < numlines; ++i)
@@ -111,11 +110,11 @@ void P_CreateBlockMap()
 
 			// difference in preferring to move across y (>0) instead of x (<0)
 			int diff = !adx ? 1 : !ady ? -1 :
-				(((x >> MAPBTOFRAC) << MAPBTOFRAC) + (dx > 0 ? MAPBLOCKUNITS-1 : 0) - x) * (ady = abs(ady)) * dx
-				- (((y >> MAPBTOFRAC) << MAPBTOFRAC) + (dy > 0 ? MAPBLOCKUNITS-1 : 0) - y) * (adx = abs(adx)) * dy;
+				(((x >> MAPBTOFRAC) << MAPBTOFRAC) + (dx > 0 ? MAPBLOCKUNITS - 1 : 0) - x) * (ady = abs(ady)) * dx
+				- (((y >> MAPBTOFRAC) << MAPBTOFRAC) + (dy > 0 ? MAPBLOCKUNITS - 1 : 0) - y) * (adx = abs(adx)) * dy;
 
 			// starting block, and pointer to its blocklist structure
-			int b = (y >> MAPBTOFRAC)*bmapwidth + (x >> MAPBTOFRAC);
+			int b = (y >> MAPBTOFRAC) * bmapwidth + (x >> MAPBTOFRAC);
 
 			// ending block
 			int bend = (((lines[i].v2->y >> FRACBITS) - miny) >> MAPBTOFRAC) * bmapwidth + (((lines[i].v2->x >> FRACBITS) - minx) >> MAPBTOFRAC);
@@ -128,12 +127,12 @@ void P_CreateBlockMap()
 			ady <<= MAPBTOFRAC;
 
 			// Now we simply iterate block-by-block until we reach the end block.
-			while ((unsigned) b < tot)	// failsafe -- should ALWAYS be true
+			while ((unsigned)b < tot)	// failsafe -- should ALWAYS be true
 			{
 				// Increase size of allocated list if necessary
 				if (blockmap[b].n >= blockmap[b].nalloc)
 				{
-					blockmap[b].list = (int*)I_Realloc(blockmap[b].list, (blockmap[b].nalloc = blockmap[b].nalloc ? blockmap[b].nalloc*2 : 8)*sizeof*blockmap->list);
+					blockmap[b].list = (int*)I_Realloc(blockmap[b].list, (blockmap[b].nalloc = blockmap[b].nalloc ? blockmap[b].nalloc * 2 : 8) * sizeof * blockmap->list);
 				}
 
 				// Add linedef to end of list
@@ -164,7 +163,7 @@ void P_CreateBlockMap()
 		//
 		// 4 words, unused if this routine is called, are reserved at the start.
 		{
-			int count = tot+6; // we need at least 1 word per block, plus reserved's
+			int count = tot + 6; // we need at least 1 word per block, plus reserved's
 
 			for (size_t i{0}; i < tot; ++i)
 			{
@@ -215,7 +214,7 @@ void P_CreateBlockMap()
 		int count = sizeof(*blocklinks) * bmapwidth * bmapheight;
 		blocklinks = Z_Malloc<decltype(blocklinks)>(count, pu_tags_t::PU_LEVEL, 0);
 		memset(blocklinks, 0, count);
-		blockmap = blockmaplump+4;
+		blockmap = blockmaplump + 4;
 	}
 
 	fprintf(stderr, "+BLOCKMAP)\n");

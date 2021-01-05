@@ -51,8 +51,7 @@ void P_RemoveThinker(thinker_t* thinker)
 
 // Allocates memory and adds a new thinker at the end of the list.
 void P_AllocateThinker(thinker_t* thinker)
-{
-}
+{}
 
 void P_RunThinkers()
 {
@@ -73,7 +72,7 @@ void P_RunThinkers()
 		{
 			if (currentthinker->function.acp1)
 			{
-				currentthinker->function.acp1 (currentthinker);
+				currentthinker->function.acp1(currentthinker);
 			}
 			nextthinker = currentthinker->next;
 		}

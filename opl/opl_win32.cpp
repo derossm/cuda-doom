@@ -37,9 +37,9 @@ static unsigned OPL_Win32_PortRead(opl_port_t port)
 		"inb %%dx, %%al\n"
 		"movb %%al, %0"
 		:	"=m" (result)
-		:	"r" (opl_port_base + port)
-		:	"edx", "al", "memory"
-	);
+		: "r" (opl_port_base + port)
+		: "edx", "al", "memory"
+		);
 
 	return result;
 }
@@ -51,9 +51,9 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned value)
 		"movb %1, %%al\n"
 		"outb %%al, %%dx"
 		:
-		:	"r" (opl_port_base + port), "r" ((unsigned char) value)
-		:	"edx", "al"
-	);
+	: "r" (opl_port_base + port), "r" ((unsigned char)value)
+		: "edx", "al"
+		);
 }
 
 // haleyjd 20110417: MSVC version
@@ -66,9 +66,9 @@ static unsigned OPL_Win32_PortRead(opl_port_t port)
 
 	__asm
 	{
-		mov edx, dword ptr [dst_port]
+		mov edx, dword ptr[dst_port]
 		in al, dx
-		mov byte ptr [result], al
+		mov byte ptr[result], al
 	}
 
 	return result;
@@ -80,8 +80,8 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned value)
 
 	__asm
 	{
-		mov edx, dword ptr [dst_port]
-		mov al, byte ptr [value]
+		mov edx, dword ptr[dst_port]
+		mov al, byte ptr[value]
 		out dx, al
 	}
 }
@@ -97,8 +97,7 @@ static unsigned OPL_Win32_PortRead(opl_port_t port)
 }
 
 static void OPL_Win32_PortWrite(opl_port_t port, unsigned value)
-{
-}
+{}
 
 #endif
 

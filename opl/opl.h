@@ -64,9 +64,9 @@ constexpr size_t OPL_REGS_FREQ_2{0xB0};
 constexpr size_t OPL_REGS_FEEDBACK{0xC0};
 
 // Times
-constexpr uint64_t OPL_SECOND{	1'000'000};
-constexpr uint64_t OPL_MS{		1'000};
-constexpr uint64_t OPL_US{		1};
+constexpr uint64_t OPL_SECOND{1'000'000};
+constexpr uint64_t OPL_MS{1'000};
+constexpr uint64_t OPL_US{1};
 
 // ======================================== //
 // Low-level functions.

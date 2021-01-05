@@ -17,13 +17,13 @@
 #include "ioperm_sys.h"
 
 inline static DLLFunctions dll_functions[] = {
-	{ "OpenSCManagerW",		(SC_CallbackPtr) &MyOpenSCManagerW },
-	{ "CreateServiceW",		(SC_CallbackPtr) &MyCreateServiceW },
-	{ "OpenServiceW",		(SC_CallbackPtr) &MyOpenServiceW },
-	{ "StartServiceW",		(SC_CallbackPtr) &MyStartServiceW },
-	{ "ControlService",		(SC_CallbackPtr) &MyControlService },
-	{ "CloseServiceHandle",	(SC_CallbackPtr) &MyCloseServiceHandle },
-	{ "DeleteService",		(SC_CallbackPtr) &MyDeleteService },
+	{ "OpenSCManagerW",		(SC_CallbackPtr)&MyOpenSCManagerW },
+	{ "CreateServiceW",		(SC_CallbackPtr)&MyCreateServiceW },
+	{ "OpenServiceW",		(SC_CallbackPtr)&MyOpenServiceW },
+	{ "StartServiceW",		(SC_CallbackPtr)&MyStartServiceW },
+	{ "ControlService",		(SC_CallbackPtr)&MyControlService },
+	{ "CloseServiceHandle",	(SC_CallbackPtr)&MyCloseServiceHandle },
+	{ "DeleteService",		(SC_CallbackPtr)&MyDeleteService },
 };
 
 // Globals
@@ -113,8 +113,8 @@ bool IOperm_InstallDriver()
 
 	// Create the service.
 	svc = MyCreateServiceW(scm, L"ioperm", L"ioperm support for Cygwin driver",
-							SERVICE_ALL_ACCESS, SERVICE_KERNEL_DRIVER, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL,
-							driver_path, nullptr, nullptr, nullptr, nullptr, nullptr);
+		SERVICE_ALL_ACCESS, SERVICE_KERNEL_DRIVER, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL,
+		driver_path, nullptr, nullptr, nullptr, nullptr, nullptr);
 
 	if (!svc)
 	{

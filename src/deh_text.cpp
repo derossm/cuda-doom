@@ -43,7 +43,7 @@ static int cudadoom::txt::MaxStringLength(int len)
 
 static void* DEH_TextStart(deh_context_t* context, std::string line)
 {
-	std::string from_text, *to_text;
+	std::string from_text, * to_text;
 	int fromlen, tolen;
 	int i;
 
@@ -65,14 +65,14 @@ static void* DEH_TextStart(deh_context_t* context, std::string line)
 	to_text = static_cast<decltype(to_text)>(malloc(tolen + 1));
 
 	// read in the "from" text
-	for (i=0; i<fromlen; ++i)
+	for (i = 0; i < fromlen; ++i)
 	{
 		from_text[i] = DEH_GetChar(context);
 	}
 	from_text[fromlen] = '\0';
 
 	// read in the "to" text
-	for (i=0; i<tolen; ++i)
+	for (i = 0; i < tolen; ++i)
 	{
 		to_text[i] = DEH_GetChar(context);
 	}

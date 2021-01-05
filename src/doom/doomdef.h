@@ -126,8 +126,8 @@ enum class PowerType_t
 // Power up durations, how many seconds till expiration, assuming TICRATE is 35 ticks/second.
 enum class PowerDuration_t
 {
-	INVULNTICS	= (30*TICRATE),
-	INVISTICS	= (60*TICRATE),
-	INFRATICS	= (120*TICRATE),
-	IRONTICS	= (60*TICRATE)
+	INVULNTICS = (30 * TICRATE),
+	INVISTICS = (60 * TICRATE),
+	INFRATICS = (120 * TICRATE),
+	IRONTICS = (60 * TICRATE)
 };

@@ -10,7 +10,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	[crispy] Crispness menu
+		Crispness menu
 \**********************************************************************************************************************************************/
 
 #include "doomstat.h"
@@ -140,12 +140,12 @@ multiitem_t multiitem_widescreen[NUM_RATIOS] =
 	{RATIO_21_9, "21:9"},
 };
 
-extern void AM_LevelInit (bool reinit);
-extern void EnableLoadingDisk ();
-extern void P_SegLengths (bool contrast_only);
-extern void R_ExecuteSetViewSize ();
-extern void R_InitLightTables ();
-extern void I_ReInitGraphics (int reinit);
+extern void AM_LevelInit(bool reinit);
+extern void EnableLoadingDisk();
+extern void P_SegLengths(bool contrast_only);
+extern void R_ExecuteSetViewSize();
+extern void R_InitLightTables();
+extern void I_ReInitGraphics(int reinit);
 
 void M_CrispyToggleAutomapstats(int choice)
 {
@@ -177,7 +177,7 @@ void M_CrispyToggleColoredblood(int choice)
 
 	if (gameversion == GameVersion::exe_chex)
 	{
-	return;
+		return;
 	}
 
 	choice = 0;
@@ -186,22 +186,22 @@ void M_CrispyToggleColoredblood(int choice)
 	// [crispy] switch NOBLOOD flag for Lost Souls
 	for (th = thinkercap.next; th && th != &thinkercap; th = th->next)
 	{
-	if (th->function.acp1 == (actionf_p1)P_MobjThinker)
-	{
-		MapObject* mobj = (MapObject*)th;
-
-		if (mobj->type == mobjtype_t::MT_SKULL)
+		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
 		{
-			if (crispy->coloredblood)
+			MapObject* mobj = (MapObject*)th;
+
+			if (mobj->type == mobjtype_t::MT_SKULL)
 			{
-				mobj->flags |= mobjflag_t::MF_NOBLOOD;
-			}
-			else
-			{
-				mobj->flags &= ~mobjflag_t::MF_NOBLOOD;
+				if (crispy->coloredblood)
+				{
+					mobj->flags |= mobjflag_t::MF_NOBLOOD;
+				}
+				else
+				{
+					mobj->flags &= ~mobjflag_t::MF_NOBLOOD;
+				}
 			}
 		}
-	}
 	}
 }
 
@@ -233,7 +233,7 @@ void M_CrispyToggleCrosshairtype(int choice)
 {
 	if (!crispy->crosshair)
 	{
-	return;
+		return;
 	}
 
 	choice = 0;
@@ -241,7 +241,7 @@ void M_CrispyToggleCrosshairtype(int choice)
 
 	if (!laserpatch[crispy->crosshairtype].c)
 	{
-	crispy->crosshairtype = 0;
+		crispy->crosshairtype = 0;
 	}
 }
 
@@ -261,7 +261,7 @@ void M_CrispyToggleDemoTimerDir(int choice)
 {
 	if (!(crispy->demotimer & DEMOTIMER_PLAYBACK))
 	{
-	return;
+		return;
 	}
 
 	choice = 0;
@@ -290,7 +290,7 @@ void M_CrispyToggleFlipcorpses(int choice)
 {
 	if (gameversion == GameVersion::exe_chex)
 	{
-	return;
+		return;
 	}
 
 	choice = 0;
@@ -301,7 +301,7 @@ void M_CrispyToggleFreeaim(int choice)
 {
 	if (!crispy->singleplayer)
 	{
-	return;
+		return;
 	}
 
 	choice = 0;
@@ -311,7 +311,7 @@ void M_CrispyToggleFreeaim(int choice)
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 }
 
-static void M_CrispyToggleSkyHook ()
+static void M_CrispyToggleSkyHook()
 {
 	players[consoleplayer].lookdir = 0;
 	R_InitSkyMap();
@@ -335,14 +335,14 @@ void M_CrispyToggleFullsounds(int choice)
 	// [crispy] weapon sound sources
 	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
-	if (playeringame[i])
-	{
-		players[i].so = Crispy_PlayerSO(i);
-	}
+		if (playeringame[i])
+		{
+			players[i].so = Crispy_PlayerSO(i);
+		}
 	}
 }
 
-static void M_CrispyToggleHiresHook ()
+static void M_CrispyToggleHiresHook()
 {
 	crispy->hires = !crispy->hires;
 
@@ -369,7 +369,7 @@ void M_CrispyToggleJumping(int choice)
 {
 	if (!crispy->singleplayer)
 	{
-	return;
+		return;
 	}
 
 	choice = 0;
@@ -403,7 +403,7 @@ void M_CrispyToggleOverunder(int choice)
 {
 	if (!crispy->singleplayer)
 	{
-	return;
+		return;
 	}
 
 	choice = 0;
@@ -431,7 +431,7 @@ void M_CrispyToggleRecoil(int choice)
 {
 	if (!crispy->singleplayer)
 	{
-	return;
+		return;
 	}
 
 	choice = 0;
@@ -453,7 +453,7 @@ void M_CrispyToggleSmoothScaling(int choice)
 	crispy->smoothscaling = !crispy->smoothscaling;
 }
 
-static void M_CrispyToggleSmoothLightingHook ()
+static void M_CrispyToggleSmoothLightingHook()
 {
 	crispy->smoothlight = !crispy->smoothlight;
 
@@ -515,7 +515,7 @@ void M_CrispyToggleUncapped(int choice)
 	crispy->uncapped = !crispy->uncapped;
 }
 
-void M_CrispyToggleVsyncHook ()
+void M_CrispyToggleVsyncHook()
 {
 	crispy->vsync = !crispy->vsync;
 
@@ -528,7 +528,7 @@ void M_CrispyToggleVsync(int choice)
 
 	if (force_software_renderer)
 	{
-	return;
+		return;
 	}
 
 	crispy->post_rendering_hook = M_CrispyToggleVsyncHook;
@@ -540,22 +540,22 @@ void M_CrispyToggleWeaponSquat(int choice)
 	crispy->weaponsquat = !crispy->weaponsquat;
 }
 
-static void M_CrispyToggleWidescreenHook ()
+static void M_CrispyToggleWidescreenHook()
 {
 	crispy->widescreen = (crispy->widescreen + 1) % NUM_RATIOS;
 
 	// [crispy] no need to re-init when switching from wide to compact
 	{
-	// [crispy] re-initialize framebuffers, textures and renderer
-	I_ReInitGraphics(REINIT_FRAMEBUFFERS | REINIT_TEXTURES | REINIT_ASPECTRATIO);
-	// [crispy] re-calculate framebuffer coordinates
-	R_ExecuteSetViewSize();
-	// [crispy] re-draw bezel
-	R_FillBackScreen();
-	// [crispy] re-calculate disk icon coordinates
-	EnableLoadingDisk();
-	// [crispy] re-calculate automap coordinates
-	AM_LevelInit(true);
+		// [crispy] re-initialize framebuffers, textures and renderer
+		I_ReInitGraphics(REINIT_FRAMEBUFFERS | REINIT_TEXTURES | REINIT_ASPECTRATIO);
+		// [crispy] re-calculate framebuffer coordinates
+		R_ExecuteSetViewSize();
+		// [crispy] re-draw bezel
+		R_FillBackScreen();
+		// [crispy] re-calculate disk icon coordinates
+		EnableLoadingDisk();
+		// [crispy] re-calculate automap coordinates
+		AM_LevelInit(true);
 	}
 }
 

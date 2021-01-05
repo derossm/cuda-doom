@@ -8,10 +8,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Emulates the IO functions in C stdio.h reading and writing to
-// memory.
+	DESCRIPTION:
+		Emulates the IO functions in C stdio.h reading and writing to memory.
 \**********************************************************************************************************************************************/
-
 
 #include "memio.h"
 
@@ -22,7 +21,7 @@ auto mem_fopen_read(BufferType_Void* buf, size_t buflen)
 {
 	MEMFILE* file = Z_Malloc<MEMFILE*>(sizeof(MEMFILE), pu_tags_t::PU_STATIC, 0);
 
-	file->buf = (unsigned char*) buf;
+	file->buf = (unsigned char*)buf;
 	file->buflen = buflen;
 	file->position = 0;
 	file->mode = memfile_mode_t::MODE_READ;
@@ -133,20 +132,20 @@ auto mem_fseek(MEMFILE* stream, size_t position, mem_rel_t whence)
 
 	switch (whence)
 	{
-		case mem_rel_t::MEM_SEEK_SET:
-			newpos = position;
-			break;
+	case mem_rel_t::MEM_SEEK_SET:
+		newpos = position;
+		break;
 
-		case mem_rel_t::MEM_SEEK_CUR:
-			newpos = stream->position + position;
-			break;
+	case mem_rel_t::MEM_SEEK_CUR:
+		newpos = stream->position + position;
+		break;
 
-		case mem_rel_t::MEM_SEEK_END:
-			newpos = stream->buflen + position;
-			break;
+	case mem_rel_t::MEM_SEEK_END:
+		newpos = stream->buflen + position;
+		break;
 
-		default:
-			return false;
+	default:
+		return false;
 	}
 
 	if (newpos < stream->buflen)

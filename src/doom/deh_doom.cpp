@@ -7,7 +7,8 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Top-level dehacked definitions for Doom dehacked.
+	DESCRIPTION:
+		Top-level dehacked definitions for Doom dehacked.
 \**********************************************************************************************************************************************/
 
 #include "deh_defs.h"

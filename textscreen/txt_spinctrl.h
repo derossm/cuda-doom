@@ -35,7 +35,7 @@ namespace cudadoom::txt
  * to be increased or decreased.
  */
 
-class SpinControl : Widget<SpinControl>
+class SpinControl : public Widget<SpinControl>
 {
 public:
 	bool editing{false};
@@ -50,33 +50,30 @@ public:
 public:
 
 	SpinControl() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{
-	}
+	{}
 
 	SpinControl(int* _value, int _min, int _max) : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
-														value{_value}, min{_min}, max{_max}, step{1}
+		value{_value}, min{_min}, max{_max}, step{1}
 	{
 	}
 
 	SpinControl(float* _value, float _min, float _max) : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
-															value{_value}, min{_min}, max{_max}, step{0.1f}
+		value{_value}, min{_min}, max{_max}, step{0.1f}
 	{
 	}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() override final const noexcept
-	{
-	}
+	void CalculateSize() noexcept override final
+	{}
 
-	void Draw() override final const noexcept
-	{
-	}
+	void Draw() noexcept override final
+	{}
 
-	bool KeyPress(Keytype key) override final const noexcept
+	bool KeyPress(Keytype key) noexcept override final
 	{
 		if (key == KEY_ENTER || key == ' ')
 		{
@@ -87,7 +84,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -98,24 +95,21 @@ public:
 		return false
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{}
 
-	void SetFocus(bool _focus) override final const noexcept
-	{
-	}
+	void SetFocus(bool _focus) noexcept override final
+	{}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{}
 
 	// Generate the format string to be used for displaying floats
 	void FloatFormatString(float step, std::string buf, size_t buf_len)
 	{
 		int precision;
 
-		precision = (int) ceil(-log(step) / log(10));
+		precision = (int)ceil(-log(step) / log(10));
 
 		if (precision > 0)
 		{
@@ -253,8 +247,7 @@ public:
 	}
 
 	void Destructor()
-	{
-	}
+	{}
 
 	void AddCharacter(int key)
 	{
@@ -315,7 +308,7 @@ public:
 		EnforceLimits();
 	}
 
-	bool KeyPress(), int key)
+	bool KeyPress(int key)
 	{
 		// Enter to enter edit mode
 		if (editing)
@@ -405,14 +398,14 @@ public:
  * @param max			Maximum value that may be set.
  * @return				Pointer to the new spin control widget.
  */
-//SpinControl* NewSpinControl(int* value, int min, int max);
-/**
- * Create a new spin control widget tracking a float value.
- *
- * @param value		Pointer to the variable containing the value
- *						displayed in the widget.
- * @param min			Minimum value that may be set.
- * @param max			Maximum value that may be set.
- * @return				Pointer to the new spin control widget.
- */
-//SpinControl* NewFloatSpinControl(float* value, float min, float max);
+ //SpinControl* NewSpinControl(int* value, int min, int max);
+ /**
+  * Create a new spin control widget tracking a float value.
+  *
+  * @param value		Pointer to the variable containing the value
+  *						displayed in the widget.
+  * @param min			Minimum value that may be set.
+  * @param max			Maximum value that may be set.
+  * @return				Pointer to the new spin control widget.
+  */
+  //SpinControl* NewFloatSpinControl(float* value, float min, float max);

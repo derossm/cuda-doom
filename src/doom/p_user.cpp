@@ -39,8 +39,8 @@ void P_Thrust(Player* player, angle_t angle, fixed_t move)
 {
 	angle >>= ANGLETOFINESHIFT;
 
-	player->momx += FixedMul(move,finecosine[angle]);
-	player->momy += FixedMul(move,finesine[angle]);
+	player->momx += FixedMul(move, finecosine[angle]);
+	player->momy += FixedMul(move, finesine[angle]);
 }
 
 // Calculate the walking / running height adjustment
@@ -51,11 +51,11 @@ void P_CalcHeight(Player* player)
 
 	// Regular movement bobbing (needs to be calculated for gun swing even if not on ground)
 	// OPTIMIZE: tablify angle Note: a LUT allows for effects like a ramp with low health.
-	player->bob = FixedMul(player->momx, player->momx) + FixedMul(player->momy,player->momy);
+	player->bob = FixedMul(player->momx, player->momx) + FixedMul(player->momy, player->momy);
 
 	player->bob >>= 2;
 
-	if (player->bob>MAXBOB)
+	if (player->bob > MAXBOB)
 	{
 		player->bob = MAXBOB;
 	}
@@ -67,9 +67,9 @@ void P_CalcHeight(Player* player)
 	{
 		player->viewz = player->z + VIEWHEIGHT;
 
-		if (player->viewz > player->ceilingz-4*FRACUNIT)
+		if (player->viewz > player->ceilingz - 4 * FRACUNIT)
 		{
-			player->viewz = player->ceilingz-4*FRACUNIT;
+			player->viewz = player->ceilingz - 4 * FRACUNIT;
 		}
 
 		// fix player viewheight in NOMOMENTUM mode
@@ -77,8 +77,8 @@ void P_CalcHeight(Player* player)
 		return;
 	}
 
-	angle = (FINEANGLES/20*leveltime)&FINEMASK;
-	bob = FixedMul(player->bob2/2, finesine[angle]); // variable player view bob
+	angle = (FINEANGLES / 20 * leveltime) & FINEMASK;
+	bob = FixedMul(player->bob2 / 2, finesine[angle]); // variable player view bob
 
 	// move viewheight
 	if (player->playerstate == PlayerState::live)
@@ -91,9 +91,9 @@ void P_CalcHeight(Player* player)
 			player->deltaviewheight = 0;
 		}
 
-		if (player->viewheight < VIEWHEIGHT/2)
+		if (player->viewheight < VIEWHEIGHT / 2)
 		{
-			player->viewheight = VIEWHEIGHT/2;
+			player->viewheight = VIEWHEIGHT / 2;
 			if (player->deltaviewheight <= 0)
 			{
 				player->deltaviewheight = 1;
@@ -102,7 +102,7 @@ void P_CalcHeight(Player* player)
 
 		if (player->deltaviewheight)
 		{
-			player->deltaviewheight += FRACUNIT/4;
+			player->deltaviewheight += FRACUNIT / 4;
 			if (!player->deltaviewheight)
 			{
 				player->deltaviewheight = 1;
@@ -111,9 +111,9 @@ void P_CalcHeight(Player* player)
 	}
 	player->viewz = player->z + player->viewheight + bob;
 
-	if (player->viewz > player->ceilingz-4*FRACUNIT)
+	if (player->viewz > player->ceilingz - 4 * FRACUNIT)
 	{
-		player->viewz = player->ceilingz-4*FRACUNIT;
+		player->viewz = player->ceilingz - 4 * FRACUNIT;
 	}
 }
 
@@ -124,7 +124,7 @@ void P_MovePlayer(Player* player)
 
 	cmd = &player->cmd;
 
-	player->angle += (cmd->angleturn<<FRACBITS);
+	player->angle += (cmd->angleturn << FRACBITS);
 
 	// Do not let the player control movement if not onground.
 	onground = (player->z <= player->floorz);
@@ -133,17 +133,17 @@ void P_MovePlayer(Player* player)
 
 	if (cmd->forwardmove && onground)
 	{
-		P_Thrust (player, player->angle, cmd->forwardmove*2048);
+		P_Thrust(player, player->angle, cmd->forwardmove * 2048);
 	}
 	else if (cmd->forwardmove && critical->jump)
 	{
 		// in-air movement is only possible with jumping enabled
-		P_Thrust (player, player->angle, FRACUNIT >> 8);
+		P_Thrust(player, player->angle, FRACUNIT >> 8);
 	}
 
 	if (cmd->sidemove && onground)
 	{
-		P_Thrust (player, player->angle-ANG90, cmd->sidemove*2048);
+		P_Thrust(player, player->angle - ANG90, cmd->sidemove * 2048);
 	}
 	else if (cmd->sidemove && critical->jump)
 	{
@@ -151,9 +151,9 @@ void P_MovePlayer(Player* player)
 		P_Thrust(player, player->angle, FRACUNIT >> 8);
 	}
 
-	if ( (cmd->forwardmove || cmd->sidemove) && player->state == &states[std::size_t(statenum_t::S_PLAY)] )
+	if ((cmd->forwardmove || cmd->sidemove) && player->state == &states[std::size_t(statenum_t::S_PLAY)])
 	{
-		P_SetMobjState (player, statenum_t::S_PLAY_RUN1);
+		P_SetMobjState(player, statenum_t::S_PLAY_RUN1);
 	}
 
 	// apply lookdir delta
@@ -180,37 +180,37 @@ void P_MovePlayer(Player* player)
 }
 
 // Fall on your face when dying. Decrease POV height to floor height.
-constexpr size_t ANG5{(ANG90/18)};
+constexpr size_t ANG5{(ANG90 / 18)};
 
 void P_DeathThink(Player* player)
 {
 	angle_t angle;
 	angle_t delta;
 
-	P_MovePsprites (player);
+	P_MovePsprites(player);
 
 	// fall to the ground
-	if (player->viewheight > 6*FRACUNIT)
+	if (player->viewheight > 6 * FRACUNIT)
 	{
 		player->viewheight -= FRACUNIT;
 	}
 
-	if (player->viewheight < 6*FRACUNIT)
+	if (player->viewheight < 6 * FRACUNIT)
 	{
-		player->viewheight = 6*FRACUNIT;
+		player->viewheight = 6 * FRACUNIT;
 	}
 
 	player->deltaviewheight = 0;
 	onground = (player->z <= player->floorz);
-	P_CalcHeight (player);
+	P_CalcHeight(player);
 
 	if (player->attacker && player->attacker != player)
 	{
-		angle = R_PointToAngle2 (player->x, player->y, player->attacker->x, player->attacker->y);
+		angle = R_PointToAngle2(player->x, player->y, player->attacker->x, player->attacker->y);
 
 		delta = angle - player->angle;
 
-		if (delta < ANG5 || delta > (unsigned)-ANG5)
+		if (delta < ANG5 || delta >(unsigned) - ANG5)
 		{
 			// Looking at killer, so fade damage flash down.
 			player->angle = angle;
@@ -240,7 +240,7 @@ void P_DeathThink(Player* player)
 	}
 }
 
-void P_PlayerThink (Player* player)
+void P_PlayerThink(Player* player)
 {
 	ticcmd_t* cmd;
 	WeaponType newweapon;
@@ -278,7 +278,7 @@ void P_PlayerThink (Player* player)
 	if (player->flags & mobjflag_t::MF_JUSTATTACKED)
 	{
 		cmd->angleturn = 0;
-		cmd->forwardmove = 0xc800/512;
+		cmd->forwardmove = 0xc800 / 512;
 		cmd->sidemove = 0;
 		player->flags &= ~mobjflag_t::MF_JUSTATTACKED;
 	}
@@ -319,7 +319,7 @@ void P_PlayerThink (Player* player)
 
 	if (player->playerstate == PlayerState::dead)
 	{
-		P_DeathThink (player);
+		P_DeathThink(player);
 		return;
 	}
 
@@ -339,13 +339,13 @@ void P_PlayerThink (Player* player)
 	}
 	else
 	{
-		P_MovePlayer (player);
+		P_MovePlayer(player);
 	}
 
-	P_CalcHeight (player);
+	P_CalcHeight(player);
 
 	if (player->subsector->sector->special)
-	P_PlayerInSpecialSector (player);
+		P_PlayerInSpecialSector(player);
 
 	// jumping: apply vertical momentum
 	if (cmd->arti)
@@ -358,7 +358,7 @@ void P_PlayerThink (Player* player)
 			// squat down weapon sprite a bit
 			if (crispy->weaponsquat)
 			{
-				player->psp_dy_max = -player->momz>>2;
+				player->psp_dy_max = -player->momz >> 2;
 			}
 		}
 	}
@@ -374,7 +374,7 @@ void P_PlayerThink (Player* player)
 	if (cmd->buttons & buttoncode::BT_CHANGE)
 	{
 		// The actual changing of the weapon is done when the weapon psprite can do it (read: not in the middle of an attack).
-		newweapon = (cmd->buttons& buttoncode::BT_WEAPONMASK)>> buttoncode::BT_WEAPONSHIFT;
+		newweapon = (cmd->buttons & buttoncode::BT_WEAPONMASK) >> buttoncode::BT_WEAPONSHIFT;
 
 		if (newweapon == WeaponType::wp_fist && player->weaponowned[std::size_t(WeaponType::wp_chainsaw)]
 			&& !(player->readyweapon == WeaponType::wp_chainsaw && player->powers[std::size_t(PowerType_t::pw_strength)]))
@@ -382,7 +382,7 @@ void P_PlayerThink (Player* player)
 			newweapon = WeaponType::wp_chainsaw;
 		}
 
-		if ( (crispy->havessg) && newweapon == WeaponType::wp_shotgun
+		if ((crispy->havessg) && newweapon == WeaponType::wp_shotgun
 			&& player->weaponowned[std::size_t(WeaponType::wp_supershotgun)] && player->readyweapon != WeaponType::wp_supershotgun)
 		{
 			newweapon = WeaponType::wp_supershotgun;
@@ -392,7 +392,7 @@ void P_PlayerThink (Player* player)
 		if (player->weaponowned[std::size_t(newweapon)] && newweapon != player->readyweapon)
 		{
 			// Do not go to plasma or BFG in shareware, even if cheated.
-			if ((newweapon != WeaponType::wp_plasma && newweapon != WeaponType::wp_bfg) || (gamemode != GameMode::shareware) )
+			if ((newweapon != WeaponType::wp_plasma && newweapon != WeaponType::wp_bfg) || (gamemode != GameMode::shareware))
 			{
 				player->pendingweapon = newweapon;
 			}
@@ -404,13 +404,13 @@ void P_PlayerThink (Player* player)
 	{
 		if (!player->usedown)
 		{
-			P_UseLines (player);
+			P_UseLines(player);
 			player->usedown = true;
 			// "use" button timer
 			if (crispy->btusetimer)
 			{
 				player->btuse = leveltime;
-				player->btuse_tics = 5*TICRATE/2; // 2.5 seconds
+				player->btuse_tics = 5 * TICRATE / 2; // 2.5 seconds
 			}
 		}
 	}
@@ -420,7 +420,7 @@ void P_PlayerThink (Player* player)
 	}
 
 	// cycle psprites
-	P_MovePsprites (player);
+	P_MovePsprites(player);
 
 	// Counters, time dependend power ups.
 
@@ -437,7 +437,7 @@ void P_PlayerThink (Player* player)
 
 	if (player->powers[std::size_t(PowerType_t::pw_invisibility)])
 	{
-		if (! --player->powers[std::size_t(PowerType_t::pw_invisibility)] )
+		if (!--player->powers[std::size_t(PowerType_t::pw_invisibility)])
 		{
 			player->flags &= ~mobjflag_t::MF_SHADOW;
 		}
@@ -466,7 +466,7 @@ void P_PlayerThink (Player* player)
 	// Handling colormaps.
 	if (player->powers[std::size_t(PowerType_t::pw_invulnerability)])
 	{
-		if (player->powers[std::size_t(PowerType_t::pw_invulnerability)] > 4*32 || (player->powers[std::size_t(PowerType_t::pw_invulnerability)]&8) )
+		if (player->powers[std::size_t(PowerType_t::pw_invulnerability)] > 4 * 32 || (player->powers[std::size_t(PowerType_t::pw_invulnerability)] & 8))
 		{
 			player->fixedcolormap = INVERSECOLORMAP;
 		}
@@ -478,17 +478,17 @@ void P_PlayerThink (Player* player)
 	}
 	else if (player->powers[std::size_t(PowerType_t::pw_infrared)])
 	{
-		if (player->powers[std::size_t(PowerType_t::pw_infrared)] > 4*32 || (player->powers[std::size_t(PowerType_t::pw_infrared)]&8) )
+		if (player->powers[std::size_t(PowerType_t::pw_infrared)] > 4 * 32 || (player->powers[std::size_t(PowerType_t::pw_infrared)] & 8))
 		{
 			// almost full bright
 			player->fixedcolormap = 1;
 		}
 		else
 			player->fixedcolormap = 0;
-		}
 	}
+}
 	else
 	{
-		player->fixedcolormap = 0;
+	player->fixedcolormap = 0;
 	}
 }

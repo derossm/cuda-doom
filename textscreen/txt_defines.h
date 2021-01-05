@@ -23,20 +23,20 @@
 #define UNICODE_TO_KEY(u) ( (u) < 128 ? (u) : ((u) - 128 + UNICODE_BASE) )
 
 #ifdef __GNUC__
-	#define PRINTF_ATTR(fmt, first) __attribute__((format(printf, fmt, first)))
+#define PRINTF_ATTR(fmt, first) __attribute__((format(printf, fmt, first)))
 #else // __GNUC__
-	#define PRINTF_ATTR(fmt, first)
+#define PRINTF_ATTR(fmt, first)
 #endif // __GNUC__
 
 //---------------------------------------------------------------------------
 // txt_widget.h
 //---------------------------------------------------------------------------
 #ifndef DOXYGEN
-	#define UNCAST_ARG_NAME(name) uncast_ ## name
-	#define UNCAST_ARG(name) void* UNCAST_ARG_NAME(name)
-	#define CAST_ARG(type, name) type* name = (type*) uncast_ ## name
+#define UNCAST_ARG_NAME(name) uncast_ ## name
+#define UNCAST_ARG(name) void* UNCAST_ARG_NAME(name)
+#define CAST_ARG(type, name) type* name = (type*) uncast_ ## name
 #else
-	#define UNCAST_ARG(name) cudadoom::txt::Widget *name
+#define UNCAST_ARG(name) cudadoom::txt::Widget *name
 #endif
 
 //---------------------------------------------------------------------------

@@ -25,7 +25,6 @@ constexpr int TOCENTER{-8};
 constexpr size_t AFLAG_JUMP{0x80};
 constexpr size_t FLOATSPEED{(FRACUNIT*4)};
 
-
 constexpr size_t MAXHEALTH{100};
 constexpr size_t VIEWHEIGHT{(41*FRACUNIT)};
 

@@ -98,7 +98,7 @@ std::string finaletext_rw;
 
 void F_StartCast();
 void F_CastTicker();
-bool F_CastResponder(EventType *ev);
+bool F_CastResponder(EventType* ev);
 void F_CastDrawer();
 
 extern void A_RandomJump();
@@ -132,7 +132,7 @@ void F_StartFinale()
 		}
 
 		if (logical_gamemission == screen->mission && (logical_gamemission != GameMission::doom || gameepisode == screen->episode)
-				&& gamemap == screen->level)
+			&& gamemap == screen->level)
 		{
 			finaletext = screen->text;
 			finaleflat = screen->background;
@@ -150,7 +150,7 @@ void F_StartFinale()
 	finalecount = 0;
 }
 
-bool F_Responder(EventType *event)
+bool F_Responder(EventType* event)
 {
 	if (finalestage == finalestage_t::F_STAGE_CAST)
 	{
@@ -163,10 +163,10 @@ bool F_Responder(EventType *event)
 void F_Ticker()
 {
 	// check for skipping
-	if (size_t i; (gamemode == GameMode::commercial) && ( finalecount > 50))
+	if (size_t i; (gamemode == GameMode::commercial) && (finalecount > 50))
 	{
 		// go on to the next level
-		for (i=0; i < MAX_PLAYERS; ++i)
+		for (i = 0; i < MAX_PLAYERS; ++i)
 		{
 			if ((bool)players[i].cmd.buttons)
 			{
@@ -214,7 +214,7 @@ void F_Ticker()
 		finalecount = 0;
 		finalestage = finalestage_t::F_STAGE_ARTSCREEN;
 		wipegamestate = (GameState_t)-1;		// force a wipe
-		
+
 		if (gameepisode == 3)
 		{
 			S_StartMusic(musicenum_t::mus_bunny);
@@ -225,119 +225,119 @@ void F_Ticker()
 // add line breaks for lines exceeding screenwidth
 static inline bool F_AddLineBreak(std::string c)
 {
-/*
-	while (c-- > finaletext_rw)
-	{
-		if (*c == '\n')
+	/*
+		while (c-- > finaletext_rw)
 		{
-			return false;
+			if (*c == '\n')
+			{
+				return false;
+			}
+			else if (*c == ' ')
+			{
+				*c = '\n';
+				return true;
+			}
 		}
-		else if (*c == ' ')
-		{
-			*c = '\n';
-			return true;
-		}
-	}
 
-	return false;
-*/
+		return false;
+	*/
 }
 
 void F_TextWrite()
 {
-/*
-	byte* src;
-	pixel_t* dest;
+	/*
+		byte* src;
+		pixel_t* dest;
 
-	int x,y,w;
-	int count;
-	std::string ch; // [crispy] un-const
-	int c;
-	int cx;
-	int cy;
+		int x,y,w;
+		int count;
+		std::string ch; // [crispy] un-const
+		int c;
+		int cx;
+		int cy;
 
-	// erase the entire screen to a tiled background
-	src = W_CacheLumpName<byte>(finaleflat, pu_tags_t::PU_CACHE);
-	dest = I_VideoBuffer;
+		// erase the entire screen to a tiled background
+		src = W_CacheLumpName<byte>(finaleflat, pu_tags_t::PU_CACHE);
+		dest = I_VideoBuffer;
 
-	for (y=0; y<SCREENHEIGHT ; ++y)
-	{
-#ifndef CRISPY_TRUECOLOR
-		for (x=0; x < SCREENWIDTH/64; ++x)
+		for (y=0; y<SCREENHEIGHT ; ++y)
 		{
-			memcpy(dest, src+((y&63)<<6), 64);
-			dest += 64;
-		}
-		if (SCREENWIDTH&63)
-		{
-			memcpy(dest, src+((y&63)<<6), SCREENWIDTH&63);
-			dest += (SCREENWIDTH&63);
-		}
-#else
-		for (x=0; x < SCREENWIDTH; ++x)
-		{
-			*dest = colormaps[src[((y&63)<<6) + (x&63)]];
-			++dest;
-		}
-#endif
-	}
-
-	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
-
-	// draw some of the text onto the screen
-	cx = 10;
-	cy = 10;
-	ch = finaletext_rw;
-
-	count = ((int)finalecount - 10) / TEXTSPEED;
-	if (count < 0)
-	{
-		count = 0;
-	}
-
-	for ( ; count; --count)
-	{
-		c = *ch;
-		++ch;
-		if (!c)
-		{
-			break;
-		}
-
-		if (c == '\n')
-		{
-			cx = 10;
-			cy += 11;
-			continue;
-		}
-
-		c = toupper(c) - HU_FONTSTART;
-		if (c < 0 || c> HU_FONTSIZE)
-		{
-			cx += 4;
-			continue;
-		}
-
-		w = SHORT (hu_font[c]->width);
-		if (cx+w > ORIGWIDTH)
-		{
-			// [crispy] add line breaks for lines exceeding screenwidth
-			if (F_AddLineBreak(ch))
+	#ifndef CRISPY_TRUECOLOR
+			for (x=0; x < SCREENWIDTH/64; ++x)
 			{
+				memcpy(dest, src+((y&63)<<6), 64);
+				dest += 64;
+			}
+			if (SCREENWIDTH&63)
+			{
+				memcpy(dest, src+((y&63)<<6), SCREENWIDTH&63);
+				dest += (SCREENWIDTH&63);
+			}
+	#else
+			for (x=0; x < SCREENWIDTH; ++x)
+			{
+				*dest = colormaps[src[((y&63)<<6) + (x&63)]];
+				++dest;
+			}
+	#endif
+		}
+
+		V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
+
+		// draw some of the text onto the screen
+		cx = 10;
+		cy = 10;
+		ch = finaletext_rw;
+
+		count = ((int)finalecount - 10) / TEXTSPEED;
+		if (count < 0)
+		{
+			count = 0;
+		}
+
+		for ( ; count; --count)
+		{
+			c = *ch;
+			++ch;
+			if (!c)
+			{
+				break;
+			}
+
+			if (c == '\n')
+			{
+				cx = 10;
+				cy += 11;
 				continue;
 			}
-			else
-			break;
+
+			c = toupper(c) - HU_FONTSTART;
+			if (c < 0 || c> HU_FONTSIZE)
+			{
+				cx += 4;
+				continue;
+			}
+
+			w = SHORT (hu_font[c]->width);
+			if (cx+w > ORIGWIDTH)
+			{
+				// [crispy] add line breaks for lines exceeding screenwidth
+				if (F_AddLineBreak(ch))
+				{
+					continue;
+				}
+				else
+				break;
+			}
+			// prevent text from being drawn off-screen vertically
+			if (cy + SHORT(hu_font[c]->height) > ORIGHEIGHT)
+			{
+				break;
+			}
+			V_DrawPatch(cx, cy, hu_font[c]);
+			cx+=w;
 		}
-		// prevent text from being drawn off-screen vertically
-		if (cy + SHORT(hu_font[c]->height) > ORIGHEIGHT)
-		{
-			break;
-		}
-		V_DrawPatch(cx, cy, hu_font[c]);
-		cx+=w;
-	}
-*/
+	*/
 }
 
 // Final DOOM 2 animation
@@ -390,28 +390,28 @@ static sfxenum_t F_RandomizeSound(sfxenum_t sound)
 
 	switch (sound)
 	{
-	// actor->info->seesound, from p_enemy.c:A_Look()
+		// actor->info->seesound, from p_enemy.c:A_Look()
 	case sfxenum_t::sfx_posit1:
 	case sfxenum_t::sfx_posit2:
 	case sfxenum_t::sfx_posit3:
-		return sfxenum_t((int)sfxenum_t::sfx_posit1 + Crispy_Random()%3);
+		return sfxenum_t((int)sfxenum_t::sfx_posit1 + Crispy_Random() % 3);
 		break;
 
 	case sfxenum_t::sfx_bgsit1:
 	case sfxenum_t::sfx_bgsit2:
-		return sfxenum_t((int)sfxenum_t::sfx_bgsit1 + Crispy_Random()%2);
+		return sfxenum_t((int)sfxenum_t::sfx_bgsit1 + Crispy_Random() % 2);
 		break;
 
-	// actor->info->deathsound, from p_enemy.c:A_Scream()
+		// actor->info->deathsound, from p_enemy.c:A_Scream()
 	case sfxenum_t::sfx_podth1:
 	case sfxenum_t::sfx_podth2:
 	case sfxenum_t::sfx_podth3:
-		return sfxenum_t((int)sfxenum_t::sfx_podth1 + Crispy_Random()%3);
+		return sfxenum_t((int)sfxenum_t::sfx_podth1 + Crispy_Random() % 3);
 		break;
 
 	case sfxenum_t::sfx_bgdth1:
 	case sfxenum_t::sfx_bgdth2:
-		return sfxenum_t((int)sfxenum_t::sfx_bgdth1 + Crispy_Random()%2);
+		return sfxenum_t((int)sfxenum_t::sfx_bgdth1 + Crispy_Random() % 2);
 		break;
 
 	default:
@@ -442,7 +442,7 @@ extern void A_VileTarget();
 
 struct actionsound_t
 {
-	const void *const action;
+	const void* const action;
 	const sfxenum_t sound;
 	const bool early;
 };
@@ -590,39 +590,39 @@ void F_CastTicker()
 		++castframes;
 
 		sfx = F_SoundForState(st);
-/*
-		// sound hacks....
-		switch (st)
-		{
-			case statenum_t::S_PLAY_ATK2: sfx = sfxenum_t::sfx_dshtgn; break; // [crispy] fix Doomguy in casting sequence
-			case statenum_t::S_POSS_ATK2: sfx = sfxenum_t::sfx_pistol; break;
-			case statenum_t::S_SPOS_ATK2: sfx = sfxenum_t::sfx_shotgn; break;
-			case statenum_t::S_VILE_ATK2: sfx = sfxenum_t::sfx_vilatk; break;
-			case statenum_t::S_SKEL_FIST2: sfx = sfxenum_t::sfx_skeswg; break;
-			case statenum_t::S_SKEL_FIST4: sfx = sfxenum_t::sfx_skepch; break;
-			case statenum_t::S_SKEL_MISS2: sfx = sfxenum_t::sfx_skeatk; break;
-			case statenum_t::S_FATT_ATK8:
-			case statenum_t::S_FATT_ATK5:
-			case statenum_t::S_FATT_ATK2: sfx = sfxenum_t::sfx_firsht; break;
-			case statenum_t::S_CPOS_ATK2:
-			case statenum_t::S_CPOS_ATK3:
-			case statenum_t::S_CPOS_ATK4: sfx = sfxenum_t::sfx_shotgn; break;
-			case statenum_t::S_TROO_ATK3: sfx = sfxenum_t::sfx_claw; break;
-			case statenum_t::S_SARG_ATK2: sfx = sfxenum_t::sfx_sgtatk; break;
-			case statenum_t::S_BOSS_ATK2:
-			case statenum_t::S_BOS2_ATK2:
-			case statenum_t::S_HEAD_ATK2: sfx = sfxenum_t::sfx_firsht; break;
-			case statenum_t::S_SKULL_ATK2: sfx = sfxenum_t::sfx_sklatk; break;
-			case statenum_t::S_SPID_ATK2:
-			case statenum_t::S_SPID_ATK3: sfx = sfxenum_t::sfx_shotgn; break;
-			case statenum_t::S_BSPI_ATK2: sfx = sfxenum_t::sfx_plasma; break;
-			case statenum_t::S_CYBER_ATK2:
-			case statenum_t::S_CYBER_ATK4:
-			case statenum_t::S_CYBER_ATK6: sfx = sfxenum_t::sfx_rlaunc; break;
-			case statenum_t::S_PAIN_ATK3: sfx = sfxenum_t::sfx_sklatk; break;
-			default: sfx = 0; break;
-		}
-*/
+		/*
+				// sound hacks....
+				switch (st)
+				{
+					case statenum_t::S_PLAY_ATK2: sfx = sfxenum_t::sfx_dshtgn; break; // [crispy] fix Doomguy in casting sequence
+					case statenum_t::S_POSS_ATK2: sfx = sfxenum_t::sfx_pistol; break;
+					case statenum_t::S_SPOS_ATK2: sfx = sfxenum_t::sfx_shotgn; break;
+					case statenum_t::S_VILE_ATK2: sfx = sfxenum_t::sfx_vilatk; break;
+					case statenum_t::S_SKEL_FIST2: sfx = sfxenum_t::sfx_skeswg; break;
+					case statenum_t::S_SKEL_FIST4: sfx = sfxenum_t::sfx_skepch; break;
+					case statenum_t::S_SKEL_MISS2: sfx = sfxenum_t::sfx_skeatk; break;
+					case statenum_t::S_FATT_ATK8:
+					case statenum_t::S_FATT_ATK5:
+					case statenum_t::S_FATT_ATK2: sfx = sfxenum_t::sfx_firsht; break;
+					case statenum_t::S_CPOS_ATK2:
+					case statenum_t::S_CPOS_ATK3:
+					case statenum_t::S_CPOS_ATK4: sfx = sfxenum_t::sfx_shotgn; break;
+					case statenum_t::S_TROO_ATK3: sfx = sfxenum_t::sfx_claw; break;
+					case statenum_t::S_SARG_ATK2: sfx = sfxenum_t::sfx_sgtatk; break;
+					case statenum_t::S_BOSS_ATK2:
+					case statenum_t::S_BOS2_ATK2:
+					case statenum_t::S_HEAD_ATK2: sfx = sfxenum_t::sfx_firsht; break;
+					case statenum_t::S_SKULL_ATK2: sfx = sfxenum_t::sfx_sklatk; break;
+					case statenum_t::S_SPID_ATK2:
+					case statenum_t::S_SPID_ATK3: sfx = sfxenum_t::sfx_shotgn; break;
+					case statenum_t::S_BSPI_ATK2: sfx = sfxenum_t::sfx_plasma; break;
+					case statenum_t::S_CYBER_ATK2:
+					case statenum_t::S_CYBER_ATK4:
+					case statenum_t::S_CYBER_ATK6: sfx = sfxenum_t::sfx_rlaunc; break;
+					case statenum_t::S_PAIN_ATK3: sfx = sfxenum_t::sfx_sklatk; break;
+					default: sfx = 0; break;
+				}
+		*/
 		if ((bool)sfx)
 		{
 			S_StartSound(nullptr, sfx);
@@ -659,7 +659,7 @@ void F_CastTicker()
 	{
 		if (castframes == 24 || caststate == &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)])
 		{
-			stopattack:
+		stopattack:
 			castattacking = false;
 			castframes = 0;
 			caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)];
@@ -715,12 +715,12 @@ bool F_CastResponder(EventType* ev)
 		{
 			castangle = 7;
 		}
-	return false;
+		return false;
 	}
 	// ... and allow to skip through them ..
 	else if (ev->data1 == key_strafeleft || ev->data1 == key_alt_strafeleft)
 	{
-		castskip = castnum ? -1 : arrlen(castorder)-2;
+		castskip = castnum ? -1 : arrlen(castorder) - 2;
 		return false;
 	}
 	else if (ev->data1 == key_straferight || ev->data1 == key_alt_straferight)
@@ -776,66 +776,66 @@ bool F_CastResponder(EventType* ev)
 
 	// flippable death sequence
 	castflip = crispy->flipcorpses && castdeath
-				&& ((int)mobjinfo[std::size_t(castorder[castnum].type)].flags & (int)mobjflag_t::MF_FLIPPABLE) && (Crispy_Random() & 1);
+		&& ((int)mobjinfo[std::size_t(castorder[castnum].type)].flags & (int)mobjflag_t::MF_FLIPPABLE) && (Crispy_Random() & 1);
 
 	return true;
 }
 
 void F_CastPrint(std::string text)
 {
-/*
-	std::string ch;
-	int c;
-	int cx;
-	int w;
-	int width;
+	/*
+		std::string ch;
+		int c;
+		int cx;
+		int w;
+		int width;
 
-	// find width
-	ch = text;
-	width = 0;
+		// find width
+		ch = text;
+		width = 0;
 
-	while (ch)
-	{
-		c = *ch;
-		++ch;
-		if (!c)
+		while (ch)
 		{
-			break;
-		}
-		c = toupper(c) - HU_FONTSTART;
-		if (c < 0 || c> HU_FONTSIZE)
-		{
-			width += 4;
-			continue;
-		}
+			c = *ch;
+			++ch;
+			if (!c)
+			{
+				break;
+			}
+			c = toupper(c) - HU_FONTSTART;
+			if (c < 0 || c> HU_FONTSIZE)
+			{
+				width += 4;
+				continue;
+			}
 
-		w = SHORT (hu_font[c]->width);
-		width += w;
-	}
-
-	// draw it
-	cx = ORIGWIDTH/2-width/2;
-	ch = text;
-	while (ch)
-	{
-		c = *ch;
-		++ch;
-		if (!c)
-		{
-			break;
-		}
-		c = toupper(c) - HU_FONTSTART;
-		if (c < 0 || c> HU_FONTSIZE)
-		{
-			cx += 4;
-			continue;
+			w = SHORT (hu_font[c]->width);
+			width += w;
 		}
 
-		w = SHORT (hu_font[c]->width);
-		V_DrawPatch(cx, 180, hu_font[c]);
-		cx+=w;
-	}
-*/
+		// draw it
+		cx = ORIGWIDTH/2-width/2;
+		ch = text;
+		while (ch)
+		{
+			c = *ch;
+			++ch;
+			if (!c)
+			{
+				break;
+			}
+			c = toupper(c) - HU_FONTSTART;
+			if (c < 0 || c> HU_FONTSIZE)
+			{
+				cx += 4;
+				continue;
+			}
+
+			w = SHORT (hu_font[c]->width);
+			V_DrawPatch(cx, 180, hu_font[c]);
+			cx+=w;
+		}
+	*/
 }
 
 void F_CastDrawer()
@@ -856,14 +856,14 @@ void F_CastDrawer()
 	int lump = sprframe->lump[castangle]; // turnable cast
 	bool flip = (bool)sprframe->flip[castangle] ^ castflip; // turnable cast, flippable death sequence
 
-	patch_t* patch = W_CacheLumpNum<patch_t>(lump+firstspritelump, pu_tags_t::PU_CACHE);
+	patch_t* patch = W_CacheLumpNum<patch_t>(lump + firstspritelump, pu_tags_t::PU_CACHE);
 	if (flip)
 	{
-		V_DrawPatchFlipped(ORIGWIDTH/2, 170, patch);
+		V_DrawPatchFlipped(ORIGWIDTH / 2, 170, patch);
 	}
 	else
 	{
-		V_DrawPatch(ORIGWIDTH/2, 170, patch);
+		V_DrawPatch(ORIGWIDTH / 2, 170, patch);
 	}
 }
 
@@ -883,11 +883,11 @@ void F_DrawPatchCol(int x, patch_t* patch, int col)
 	desttop = I_VideoBuffer + x;
 
 	// step through the posts in a column
-	while (column->topdelta != 0xff )
+	while (column->topdelta != 0xff)
 	{
 		int srccol = 0;
 		source = (byte*)column + 3;
-		dest = desttop + ((column->topdelta * dy) >> FRACBITS)*SCREENWIDTH;
+		dest = desttop + ((column->topdelta * dy) >> FRACBITS) * SCREENWIDTH;
 		count = (column->length * dy) >> FRACBITS;
 
 		while (count--)
@@ -896,7 +896,7 @@ void F_DrawPatchCol(int x, patch_t* patch, int col)
 			srccol += dyi;
 			dest += SCREENWIDTH;
 		}
-		column = (column_t*)( (byte*)column + column->length + 4 );
+		column = (column_t*)((byte*)column + column->length + 4);
 	}
 }
 
@@ -949,7 +949,7 @@ void F_BunnyScroll()
 
 	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
-	scrolled = (ORIGWIDTH - ((int)finalecount-230)/2);
+	scrolled = (ORIGWIDTH - ((int)finalecount - 230) / 2);
 	if (scrolled > ORIGWIDTH)
 	{
 		scrolled = ORIGWIDTH;
@@ -980,13 +980,13 @@ void F_BunnyScroll()
 	if (finalecount < 1180)
 	{
 		V_DrawPatch((ORIGWIDTH - 13 * 8) / 2,
-					(ORIGHEIGHT - 8 * 8) / 2,
-					W_CacheLumpName<patch_t>(DEH_String("END0"), pu_tags_t::PU_CACHE));
+			(ORIGHEIGHT - 8 * 8) / 2,
+			W_CacheLumpName<patch_t>(DEH_String("END0"), pu_tags_t::PU_CACHE));
 		laststage = 0;
 		return;
 	}
 
-	stage = (finalecount-1180) / 5;
+	stage = (finalecount - 1180) / 5;
 	if (stage > 6)
 	{
 		stage = 6;
@@ -999,8 +999,8 @@ void F_BunnyScroll()
 
 	DEH_snprintf(name, 10, "END%i", stage);
 	V_DrawPatch((ORIGWIDTH - 13 * 8) / 2,
-				(ORIGHEIGHT - 8 * 8) / 2,
-				W_CacheLumpName<patch_t>(name, pu_tags_t::PU_CACHE));
+		(ORIGHEIGHT - 8 * 8) / 2,
+		W_CacheLumpName<patch_t>(name, pu_tags_t::PU_CACHE));
 }
 
 static void F_ArtScreenDrawer()

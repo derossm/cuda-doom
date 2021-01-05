@@ -47,15 +47,14 @@ class CheckBox : public Widget<CheckBox>
 public:
 
 	CheckBox() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{
-	}
+	{}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() override final const noexcept
+	void CalculateSize() noexcept override final
 	{
 		// Minimum width is the string length + right-side space for padding
 
@@ -63,7 +62,7 @@ public:
 		height = 1;
 	}
 
-	void Draw() override final const noexcept
+	void Draw() noexcept override final
 	{
 		SavedColors colors;
 
@@ -90,13 +89,13 @@ public:
 		SetWidgetBG();
 		DrawString(label);
 
-		for (size_t i{label.size()}; i < width-4; ++i)
+		for (size_t i{label.size()}; i < width - 4; ++i)
 		{
 			DrawString(" ");
 		}
 	}
 
-	bool KeyPress(Keytype key) override final const noexcept
+	bool KeyPress(Keytype key) noexcept override final
 	{
 		if (key == KEY_ENTER || key == ' ')
 		{
@@ -107,7 +106,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -118,17 +117,14 @@ public:
 		return false;
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{}
 
-	void SetFocus(bool _focus) override final const noexcept
-	{
-	}
+	void SetFocus(bool _focus) noexcept override final
+	{}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{}
 
 	WidgetClass txt_checkbox_class =
 	{
@@ -142,7 +138,7 @@ public:
 	};
 
 	CheckBox(std::string& _label, int* _variable) :
-							widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 		label = std::string(_label);
 		variable = _variable;

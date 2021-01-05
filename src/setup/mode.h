@@ -21,4 +21,4 @@ void SetupMission(GameSelectCallback callback);
 void InitBindings();
 std::string GetExecutableName();
 std::string GetGameTitle();
-const iwad_t**GetIwads();
+const iwad_t** GetIwads();

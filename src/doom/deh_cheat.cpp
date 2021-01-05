@@ -7,9 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses "Cheat" sections in dehacked files
+	DESCRIPTION:
+		Parses "Cheat" sections in dehacked files
 \**********************************************************************************************************************************************/
-
 
 #include "doomtype.h"
 
@@ -50,7 +50,7 @@ static deh_cheat_t* FindCheatByName(std::string name)
 {
 	size_t i;
 
-	for (i=0; i<arrlen(allcheats); ++i)
+	for (i = 0; i < arrlen(allcheats); ++i)
 	{
 		if (!iequals(allcheats[i].name, name))
 			return &allcheats[i];
@@ -80,7 +80,7 @@ static void DEH_CheatParseLine(deh_context_t* context, std::string line, void* t
 		return;
 	}
 
-	unsvalue = (unsigned char*) value;
+	unsvalue = (unsigned char*)value;
 
 	cheat = FindCheatByName(variable_name);
 
@@ -102,14 +102,14 @@ static void DEH_CheatParseLine(deh_context_t* context, std::string line, void* t
 		if (!deh_allow_long_cheats && i >= cheat->seq->sequence_len)
 		{
 			DEH_Warning(context, "Cheat sequence longer than supported by "
-									"Vanilla dehacked");
+				"Vanilla dehacked");
 			break;
 		}
 
-	if (deh_apply_cheats)
-	{
-		cheat->seq->sequence[i] = unsvalue[i];
-	}
+		if (deh_apply_cheats)
+		{
+			cheat->seq->sequence[i] = unsvalue[i];
+		}
 		++i;
 
 		// Absolute limit - don't exceed

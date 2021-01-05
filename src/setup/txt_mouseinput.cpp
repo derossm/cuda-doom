@@ -66,18 +66,18 @@ static void GetMouseButtonDescription(int button, std::string buf, size_t buf_le
 {
 	switch (button)
 	{
-		case 0:
-			M_StringCopy(buf, "LEFT", buf_len);
-			break;
-		case 1:
-			M_StringCopy(buf, "RIGHT", buf_len);
-			break;
-		case 2:
-			M_StringCopy(buf, "MID", buf_len);
-			break;
-		default:
-			M_snprintf(buf, buf_len, "BUTTON #%i", button + 1);
-			break;
+	case 0:
+		M_StringCopy(buf, "LEFT", buf_len);
+		break;
+	case 1:
+		M_StringCopy(buf, "RIGHT", buf_len);
+		break;
+	case 2:
+		M_StringCopy(buf, "MID", buf_len);
+		break;
+	default:
+		M_snprintf(buf, buf_len, "BUTTON #%i", button + 1);
+		break;
 	}
 }
 
@@ -108,8 +108,7 @@ static void TXT_MouseInputDrawer(TXT_UNCAST_ARG(mouse_input))
 }
 
 static void TXT_MouseInputDestructor(TXT_UNCAST_ARG(mouse_input))
-{
-}
+{}
 
 static int TXT_MouseInputKeyPress(TXT_UNCAST_ARG(mouse_input), int key)
 {
@@ -155,7 +154,7 @@ WidgetClass txt_mouse_input_class =
 	NULL,
 };
 
-txt_mouse_input_t* TXT_NewMouseInput(int *variable)
+txt_mouse_input_t* TXT_NewMouseInput(int* variable)
 {
 	txt_mouse_input_t* mouse_input;
 

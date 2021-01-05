@@ -31,12 +31,12 @@
 namespace cudadoom
 {
 
-constexpr size_t IWAD_MASK_DOOM{( (1 << (int)GameMission::doom)
+constexpr size_t IWAD_MASK_DOOM{((1 << (int)GameMission::doom)
 								| (1 << (int)GameMission::doom2)
 								| (1 << (int)GameMission::pack_tnt)
 								| (1 << (int)GameMission::pack_plut)
 								| (1 << (int)GameMission::pack_chex)
-								| (1 << (int)GameMission::pack_hacx) )};
+								| (1 << (int)GameMission::pack_hacx))};
 
 constexpr size_t IWAD_MASK_HERETIC{(1 << (int)GameMission::heretic)};
 constexpr size_t IWAD_MASK_HEXEN{(1 << (int)GameMission::hexen)};
@@ -62,7 +62,7 @@ struct registry_value_t
 class IWAD
 {
 	std::array<iwad_t, 14> iwads =
-	{ 
+	{
 		iwad_t{ std::string("doom2.wad"),		GameMission::doom2,		GameMode::commercial,		std::string("Doom II") },
 		iwad_t{ std::string("plutonia.wad"),	GameMission::pack_plut,	GameMode::commercial,		std::string("Final Doom: Plutonia Experiment") },
 		iwad_t{ std::string("tnt.wad"),			GameMission::pack_tnt,	GameMode::commercial,		std::string("Final Doom: TNT: Evilution") },
@@ -78,7 +78,7 @@ class IWAD
 		iwad_t{ std::string("hexen.wad"),		GameMission::hexen,		GameMode::commercial,		std::string("Hexen") },
 		iwad_t{ std::string("strife1.wad"),		GameMission::strife,		GameMode::commercial,		std::string("Strife") }
 	};
-		//{ std::string("strife0.wad"),	GameMission::strife,		GameMode::commercial,		std::string("Strife") }, // haleyjd: STRIFE-FIXME
+	//{ std::string("strife0.wad"),	GameMission::strife,		GameMode::commercial,		std::string("Strife") }, // haleyjd: STRIFE-FIXME
 
 	bool iwad_dirs_built{false};
 	std::vector<std::string> iwad_dirs;
@@ -127,9 +127,9 @@ class IWAD
 		CheckSteamGUSPatches();
 #else
 		AddXdgDirs();
-	#ifndef __MACOSX__
-			AddSteamDirs();
-	#endif
+#ifndef __MACOSX__
+		AddSteamDirs();
+#endif
 #endif
 
 		// Don't run this function again.
@@ -146,11 +146,11 @@ class IWAD
 	// With some munging we can find where Doom was installed.
 
 	// From the persepctive of a 64-bit executable, 32-bit registry keys are located in a different spot.
-	#if _WIN64
-		std::string SOFTWARE_KEY{"Software\\Wow6432Node"};
-	#else
-		std::string SOFTWARE_KEY{"Software"};
-	#endif
+#if _WIN64
+	std::string SOFTWARE_KEY{"Software\\Wow6432Node"};
+#else
+	std::string SOFTWARE_KEY{"Software"};
+#endif
 
 	std::array<registry_value_t, 4> uninstall_values{
 		// Ultimate Doom, CD version (Depths of Doom trilogy)
@@ -453,7 +453,7 @@ class IWAD
 		AddIWADPath(std::string(env + "/games/doom3bfg/base/wads"));
 	}
 
-	#ifndef __MACOSX__
+#ifndef __MACOSX__
 	// Steam on Linux allows installing some select Windows games, including the classic Doom series (running DOSBox via Wine). We could
 	// parse *.vdf files to more accurately detect installation locations, but the defaults are likely to be good enough for just about everyone.
 	void AddSteamDirs()
@@ -474,7 +474,7 @@ class IWAD
 		AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Hexen Deathkings of the Dark Citadel/base"));
 		AddIWADPath(std::string(homedir + "/.steam/root/steamapps/common" + "/Strife"));
 	}
-	#endif // __MACOSX__
+#endif // __MACOSX__
 #endif // !_WIN32
 
 	// Add IWAD directories parsed from splitting a path string containing paths separated by PATH_SEPARATOR.
@@ -519,7 +519,7 @@ class IWAD
 		}
 
 		// Construct the full path to the IWAD if it is located in this directory, and check if it exists.
-		auto filename{[&](){
+		auto filename{[&]() {
 			if (!directory.compare("."))
 			{
 				return std::string(iwadname);
@@ -620,7 +620,7 @@ public:
 
 		// Search through all IWAD paths for a file with the given name.
 		//for (size_t i{0}; i < num_iwad_dirs; ++i)
-		for (auto& iter: iwad_dirs)
+		for (auto& iter : iwad_dirs)
 		{
 			// As a special case, if this is in DOOMWADDIR or DOOMWADPATH, the "directory" may actually refer directly to an IWAD file.
 			probe = M_FileCaseExists(iter);
@@ -776,7 +776,7 @@ public:
 	{
 		for (size_t i{0}; i < iwads.size(); ++i)
 		{
-			if (iwads[i].mission == mission	&& (mode == GameMode::indetermined || iwads[i].mode == mode))
+			if (iwads[i].mission == mission && (mode == GameMode::indetermined || iwads[i].mode == mode))
 			{
 				return iwads[i].description;
 			}

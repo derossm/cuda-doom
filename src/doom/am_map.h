@@ -20,9 +20,9 @@
 #include "m_fixed.h"
 
 // Used by ST StatusBar stuff.
-constexpr size_t AM_MSGHEADER{(('a'<<24)+('m'<<16))};
-constexpr size_t AM_MSGENTERED{(AM_MSGHEADER | ('e'<<8))};
-constexpr size_t AM_MSGEXITED{(AM_MSGHEADER | ('x'<<8))};
+constexpr size_t AM_MSGHEADER{(('a' << 24) + ('m' << 16))};
+constexpr size_t AM_MSGENTERED{(AM_MSGHEADER | ('e' << 8))};
+constexpr size_t AM_MSGEXITED{(AM_MSGHEADER | ('x' << 8))};
 
 // Called by main loop.
 bool AM_Responder(EventType* ev);

@@ -44,37 +44,35 @@ public:
 	using type = T;
 
 	InputBox(T _val = nullptr, int _width = 0) noexcept : buffer{std::string(_val)},
-					widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
-																callback_table{NewCallbackTable()},
-																focused{false},
-																visible{true},
-																align{AlignHorizontal::left},
-																width{_width}
+		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
+		callback_table{NewCallbackTable()},
+		focused{false},
+		visible{true},
+		align{AlignHorizontal::left},
+		width{_width}
 	{
-	/* 	if (_val)
-		{
-			buffer = std::string(valueIn);
-		}
-		else
-		{
-			buffer = std::string("");
-		} */
+		/* 	if (_val)
+			{
+				buffer = std::string(valueIn);
+			}
+			else
+			{
+				buffer = std::string("");
+			} */
 	}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() override final const noexcept
-	{
-	}
+	void CalculateSize() noexcept override final
+	{	}
 
-	void Draw() override final const noexcept
-	{
-	}
+	void Draw() noexcept override final
+	{	}
 
-	bool KeyPress(Keytype key) override final const noexcept
+	bool KeyPress(Keytype key) noexcept override final
 	{
 		if (key == KEY_ENTER || key == ' ')
 		{
@@ -85,7 +83,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -96,17 +94,14 @@ public:
 		return false
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{	}
 
-	void SetFocus(bool _focus) override final const noexcept
-	{
-	}
+	void SetFocus(bool _focus) noexcept override final
+	{	}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{	}
 
 	void set(T _val) noexcept
 	{
@@ -173,21 +168,21 @@ public:
 		// If string size exceeds the widget's width, show only the end.
 		auto chars{[&]()
 		{
-			//if (UTF8_Strlen(buffer) > w - 1)
-			//{
-				//auto len{UTF8_Strlen(buffer)};
-				//static_assert(w > 0);
-				//static_assert(len >= w);
-				//DrawCodePageString("\xae");
-				//DrawString(UTF8_SkipChars(buffer, (len - w) + 2));
-				//return = w - 1;
-			//}
-			//else
-			//{
-				//DrawString(buffer);
-				//return UTF8_Strlen(buffer);
-			//}
-		}()};
+				//if (UTF8_Strlen(buffer) > w - 1)
+				//{
+					//auto len{UTF8_Strlen(buffer)};
+					//static_assert(w > 0);
+					//static_assert(len >= w);
+					//DrawCodePageString("\xae");
+					//DrawString(UTF8_SkipChars(buffer, (len - w) + 2));
+					//return = w - 1;
+				//}
+				//else
+				//{
+					//DrawString(buffer);
+					//return UTF8_Strlen(buffer);
+				//}
+			}()};
 
 		//if (chars < w && editing && focused)
 		//{

@@ -16,8 +16,6 @@
 //		DMXGUS lump into an equivalent Timidity configuration file.
 \**********************************************************************************************************************************************/
 
-
-
 #include "m_misc.h"
 #include "w_wad.h"
 #include "z_zone.h"
@@ -146,7 +144,7 @@ static void ParseLine(gus_config_t* config, std::string line)
 
 static void ParseDMXConfig(std::string dmxconf, gus_config_t* config)
 {
-	CHAR_PTR p, *newline;
+	CHAR_PTR p, * newline;
 	unsigned i;
 
 	memset(config, 0, sizeof(gus_config_t));
@@ -240,7 +238,7 @@ static bool WriteTimidityConfig(std::string path, gus_config_t* config)
 			&& config->patch_names[config->mapping[i]] != NULL)
 		{
 			fprintf(fstream, "%u %s\n",
-					i, config->patch_names[config->mapping[i]]);
+				i, config->patch_names[config->mapping[i]]);
 		}
 	}
 
@@ -252,7 +250,7 @@ static bool WriteTimidityConfig(std::string path, gus_config_t* config)
 			&& config->patch_names[config->mapping[i]] != NULL)
 		{
 			fprintf(fstream, "%u %s\n",
-					i - 128, config->patch_names[config->mapping[i]]);
+				i - 128, config->patch_names[config->mapping[i]]);
 		}
 	}
 
@@ -273,9 +271,9 @@ bool GUS_WriteConfig(std::string path)
 	{
 		printf("You haven't configured gus_patch_path.\n");
 		printf("gus_patch_path needs to point to the location of "
-				"your GUS patch set.\n"
-				"To get a copy of the \"standard\" GUS patches, "
-				"download a copy of dgguspat.zip.\n");
+			"your GUS patch set.\n"
+			"To get a copy of the \"standard\" GUS patches, "
+			"download a copy of dgguspat.zip.\n");
 
 		return false;
 	}

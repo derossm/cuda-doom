@@ -41,8 +41,8 @@ static void CheckForClientOptions()
 		if (M_CheckParm(not_dedicated_options[i]) > 0)
 		{
 			I_Error("The command line parameter '%s' was specified to a dedicated server.\nGame parameters should be specified "
-					"to the first player to join a server, \nnot to the server itself. ",
-					not_dedicated_options[i]);
+				"to the first player to join a server, \nnot to the server itself. ",
+				not_dedicated_options[i]);
 		}
 	}
 }

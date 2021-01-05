@@ -11,7 +11,6 @@
 		Querying servers to find their current status.
 \**********************************************************************************************************************************************/
 
-
 #include "i_system.h"
 #include "i_timer.h"
 #include "m_misc.h"
@@ -135,13 +134,13 @@ void NET_Query_AddResponse(net_packet_t* packet)
 		// Always show rejections.
 
 		printf("Failed to register with master server at %s\n",
-				MASTER_SERVER_ADDRESS);
+			MASTER_SERVER_ADDRESS);
 	}
 
 	got_master_response = true;
 }
 
-bool NET_Query_CheckAddedToMaster(bool *result)
+bool NET_Query_CheckAddedToMaster(bool* result)
 {
 	// Got response from master yet?
 
@@ -203,7 +202,7 @@ static query_target_t* GetTargetForAddr(net_addr_t* addr, bool create)
 	query_target_t* target;
 	int i;
 
-	for (i=0; i<num_targets; ++i)
+	for (i = 0; i < num_targets; ++i)
 	{
 		if (targets[i].addr == addr)
 		{
@@ -405,7 +404,7 @@ static void SendOneQuery()
 	{
 		// Not queried yet? Or last query timed out without a response?
 		if (targets[i].state == query_target_state_t::QUEUED
-				|| (targets[i].state == query_target_state_t::QUERIED
+			|| (targets[i].state == query_target_state_t::QUERIED
 				&& now - targets[i].query_time > QUERY_TIMEOUT_SECS * 1000))
 		{
 			break;
@@ -420,17 +419,17 @@ static void SendOneQuery()
 	// Found a target to query. Send a query; how to do this depends on the target type.
 	switch (targets[i].type)
 	{
-		case query_target_type_t::SERVER:
-			NET_Query_SendQuery(targets[i].addr);
-			break;
+	case query_target_type_t::SERVER:
+		NET_Query_SendQuery(targets[i].addr);
+		break;
 
-		case query_target_type_t::BROADCAST:
-			NET_Query_SendQuery(NULL);
-			break;
+	case query_target_type_t::BROADCAST:
+		NET_Query_SendQuery(NULL);
+		break;
 
-		case query_target_type_t::MASTER:
-			NET_Query_SendMasterQuery(targets[i].addr);
-			break;
+	case query_target_type_t::MASTER:
+		NET_Query_SendMasterQuery(targets[i].addr);
+		break;
 	}
 
 	//printf("Queried %s\n", NET_AddrToString(targets[i].addr));
@@ -462,8 +461,8 @@ static void CheckTargetTimeouts()
 		// multiple query packets to it (QUERY_MAX_ATTEMPTS) and
 		// received no response to any of them.
 		if (targets[i].state == query_target_state_t::QUERIED
-				&& targets[i].query_attempts >= QUERY_MAX_ATTEMPTS
-				&& now - targets[i].query_time > QUERY_TIMEOUT_SECS * 1000)
+			&& targets[i].query_attempts >= QUERY_MAX_ATTEMPTS
+			&& now - targets[i].query_time > QUERY_TIMEOUT_SECS * 1000)
 		{
 			targets[i].state = query_target_state_t::NO_RESPONSE;
 
@@ -647,50 +646,50 @@ static std::string GameDescription(GameMode mode, GameMission mission)
 {
 	switch (mission)
 	{
-		case GameMission::doom:
-			if (mode == GameMode::shareware)
-			{
-				return "swdoom";
-			}
-			else if (mode == GameMode::registered)
-			{
-				return "regdoom";
-			}
-			else if (mode == GameMode::retail)
-			{
-				return "ultdoom";
-			}
-			else
-			{
-				return "doom";
-			}
+	case GameMission::doom:
+		if (mode == GameMode::shareware)
+		{
+			return "swdoom";
+		}
+		else if (mode == GameMode::registered)
+		{
+			return "regdoom";
+		}
+		else if (mode == GameMode::retail)
+		{
+			return "ultdoom";
+		}
+		else
+		{
+			return "doom";
+		}
 
-		case GameMission::doom2:
-			return "doom2";
+	case GameMission::doom2:
+		return "doom2";
 
-		case GameMission::pack_tnt:
-			return "tnt";
+	case GameMission::pack_tnt:
+		return "tnt";
 
-		case GameMission::pack_plut:
-			return "plutonia";
+	case GameMission::pack_plut:
+		return "plutonia";
 
-		case GameMission::pack_chex:
-			return "chex";
+	case GameMission::pack_chex:
+		return "chex";
 
-		case GameMission::pack_hacx:
-			return "hacx";
+	case GameMission::pack_hacx:
+		return "hacx";
 
-		case GameMission::heretic:
-			return "heretic";
+	case GameMission::heretic:
+		return "heretic";
 
-		case GameMission::hexen:
-			return "hexen";
+	case GameMission::hexen:
+		return "hexen";
 
-		case GameMission::strife:
-			return "strife";
+	case GameMission::strife:
+		return "strife";
 
-		default:
-			return "?";
+	default:
+		return "?";
 	}
 }
 
@@ -704,7 +703,7 @@ static void PrintHeader()
 	formatted_printf(8, "Players");
 	puts("Description");
 
-	for (i=0; i<70; ++i)
+	for (i = 0; i < 70; ++i)
 		putchar('=');
 	putchar('\n');
 }
@@ -724,12 +723,12 @@ static void NET_QueryPrintCallback(net_addr_t* addr, net_querydata_t* data, unsi
 	formatted_printf(5, "%4i", ping_time);
 	formatted_printf(22, "%s", NET_AddrToString(addr));
 	formatted_printf(4, "%i/%i ", data->num_players,
-									data->max_players);
+		data->max_players);
 
 	if (data->gamemode != GameMode::indetermined)
 	{
 		printf("(%s) ", GameDescription(data->gamemode,
-										data->gamemission));
+			data->gamemission));
 	}
 
 	if (data->server_state)
@@ -879,7 +878,7 @@ static net_packet_t* BlockForPacket(net_addr_t* addr, unsigned packet_type, Time
 
 bool NET_StartSecureDemo(prng_seed_t seed)
 {
-	net_packet_t* request, *response;
+	net_packet_t* request, * response;
 	net_addr_t* master_addr;
 	std::string signature;
 	bool result;
@@ -898,8 +897,8 @@ bool NET_StartSecureDemo(prng_seed_t seed)
 	// The signed start message will be saved for later.
 
 	response = BlockForPacket(master_addr,
-								net_master_packet_type::SIGN_START_RESPONSE,
-								SIGNATURE_TIMEOUT_SECS * 1000);
+		net_master_packet_type::SIGN_START_RESPONSE,
+		SIGNATURE_TIMEOUT_SECS * 1000);
 
 	result = false;
 
@@ -926,7 +925,7 @@ bool NET_StartSecureDemo(prng_seed_t seed)
 
 std::string NET_EndSecureDemo(sha1_digest_t demo_hash)
 {
-	net_packet_t* request, *response;
+	net_packet_t* request, * response;
 	net_addr_t* master_addr;
 	std::string signature;
 
@@ -945,8 +944,8 @@ std::string NET_EndSecureDemo(sha1_digest_t demo_hash)
 	// with the ASCII signature.
 
 	response = BlockForPacket(master_addr,
-								net_master_packet_type::SIGN_END_RESPONSE,
-								SIGNATURE_TIMEOUT_SECS * 1000);
+		net_master_packet_type::SIGN_END_RESPONSE,
+		SIGNATURE_TIMEOUT_SECS * 1000);
 
 	if (response == NULL)
 	{

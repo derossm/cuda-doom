@@ -29,7 +29,7 @@ struct wad_file_class_t
 
 	// Read data from the specified position in the file into the
 	// provided buffer. Returns the number of bytes read.
-	size_t (*Read)(wad_file_t* file, unsigned offset, void* buffer, size_t buffer_len);
+	size_t(*Read)(wad_file_t* file, unsigned offset, void* buffer, size_t buffer_len);
 };
 
 struct wad_file_t

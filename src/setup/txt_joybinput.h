@@ -20,9 +20,9 @@
 struct txt_joystick_input_t
 {
 	Widget widget;
-	int *variable;
+	int* variable;
 	Window* prompt_window;
 	int check_conflicts;
 };
 
-txt_joystick_input_t* NewJoystickInput(int *variable);
+txt_joystick_input_t* NewJoystickInput(int* variable);

@@ -84,7 +84,7 @@ T* W_CacheLumpNum(lumpindex_t lumpnum, pu_tags_t tag)
 	{
 		// Not yet loaded, so load it now
 		lump->cache = Z_Malloc<decltype(lump->cache)>(W_LumpLength(lumpnum), tag, &lump->cache);
-		W_ReadLump (lumpnum, lump->cache);
+		W_ReadLump(lumpnum, lump->cache);
 		result = static_cast<T*>(lump->cache);
 	}
 

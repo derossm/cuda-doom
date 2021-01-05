@@ -48,7 +48,7 @@ void DrawDesktopBackground(std::string title)
 
 	p = screendata;
 
-	for (i=0; i<SCREEN_W * SCREEN_H; ++i)
+	for (i = 0; i < SCREEN_W * SCREEN_H; ++i)
 	{
 		*p = 0xb1;
 		++p;
@@ -60,7 +60,7 @@ void DrawDesktopBackground(std::string title)
 
 	p = screendata;
 
-	for (i=0; i<SCREEN_W; ++i)
+	for (i = 0; i < SCREEN_W; ++i)
 	{
 		*p = ' ';
 		++p;
@@ -70,7 +70,7 @@ void DrawDesktopBackground(std::string title)
 
 	p = screendata + (SCREEN_H - 1) * SCREEN_W * 2;
 
-	for (i=0; i<SCREEN_W; ++i)
+	for (i = 0; i < SCREEN_W; ++i)
 	{
 		*p = ' ';
 		++p;
@@ -96,11 +96,11 @@ void DrawShadow(int x, int y, int w, int h)
 
 	screendata = GetScreenData();
 
-	for (y1=y; y1<y+h; ++y1)
+	for (y1 = y; y1 < y + h; ++y1)
 	{
 		p = screendata + (y1 * SCREEN_W + x) * 2;
 
-		for (x1=x; x1<x+w; ++x1)
+		for (x1 = x; x1 < x + w; ++x1)
 		{
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
@@ -121,7 +121,7 @@ void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 	SaveColors(&colors);
 	FGColor(ColorType::bright_cyan);
 
-	for (y1=y; y1<y+h; ++y1)
+	for (y1 = y; y1 < y + h; ++y1)
 	{
 		// Select the appropriate row and column in the borders
 		// array to pick the appropriate character to draw at
@@ -131,13 +131,13 @@ void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 		// draw a box around the title.
 
 		by = y1 == y ? 0 :
-				y1 == y + 2 && title != NULL ? 2 :
-				y1 == y + h - 1 ? 3 : 1;
+			y1 == y + 2 && title != NULL ? 2 :
+			y1 == y + h - 1 ? 3 : 1;
 
-		for (x1=x; x1<x+w; ++x1)
+		for (x1 = x; x1 < x + w; ++x1)
 		{
 			bx = x1 == x ? 0 :
-					x1 == x + w - 1 ? 3 : 1;
+				x1 == x + w - 1 ? 3 : 1;
 
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
@@ -155,7 +155,7 @@ void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 		BGColor(ColorType::grey, false);
 		FGColor(ColorType::blue);
 
-		for (x1=0; x1<w-2; ++x1)
+		for (x1 = 0; x1 < w - 2; ++x1)
 		{
 			DrawString(" ");
 		}
@@ -191,7 +191,7 @@ void DrawSeparator(int x, int y, int w)
 
 	data += (y * SCREEN_W + x) * 2;
 
-	for (x1=x; x1<x+w; ++x1)
+	for (x1 = x; x1 < x + w; ++x1)
 	{
 		GotoXY(x1, y);
 
@@ -339,7 +339,7 @@ void DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 		cursor_x = x + w - 2;
 	}
 
-	for (x1=x+1; x1<x+w-1; ++x1)
+	for (x1 = x + 1; x1 < x + w - 1; ++x1)
 	{
 		if (VALID_X(x1))
 		{
@@ -388,7 +388,7 @@ void DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 		cursor_y += (cursor * (h - 3)) / range;
 	}
 
-	for (y1=y+1; y1<y+h-1; ++y1)
+	for (y1 = y + 1; y1 < y + h - 1; ++y1)
 	{
 		if (VALID_Y(y1))
 		{

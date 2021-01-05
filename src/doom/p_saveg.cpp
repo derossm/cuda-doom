@@ -9,7 +9,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Archiving: SaveGame I/O.
+		Archiving: SaveGame I/O.
 \**********************************************************************************************************************************************/
 
 #include "dstrings.h"
@@ -143,12 +143,12 @@ static void saveg_write_pad()
 
 static void* saveg_readp()
 {
-	return (void*) (intptr_t) saveg_read32();
+	return (void*)(intptr_t)saveg_read32();
 }
 
 static void saveg_writep(const void* p)
 {
-	saveg_write32((intptr_t) p);
+	saveg_write32((intptr_t)p);
 }
 
 // Enum values are 32-bit integers.
@@ -256,7 +256,7 @@ static void saveg_read_mobj_t(MapObject* str)
 }
 
 // enumerate all thinker pointers
-uint32_t P_ThinkerToIndex (thinker_t* thinker)
+uint32_t P_ThinkerToIndex(thinker_t* thinker)
 {
 	if (!thinker)
 	{
@@ -266,7 +266,7 @@ uint32_t P_ThinkerToIndex (thinker_t* thinker)
 	size_t i{0};
 	for (auto th{thinkercap.next}; th != &thinkercap; th = th->next)
 	{
-		if (th->function.acp1 == (actionf_p1) P_MobjThinker)
+		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
 		{
 			++i;
 			if (th == thinker)
@@ -280,7 +280,7 @@ uint32_t P_ThinkerToIndex (thinker_t* thinker)
 }
 
 // replace indizes with corresponding pointers
-thinker_t* P_IndexToThinker (uint32_t index)
+thinker_t* P_IndexToThinker(uint32_t index)
 {
 	if (!index)
 	{
@@ -336,7 +336,7 @@ static void saveg_write_mobj_t(MapObject* str)
 	saveg_write32(str->movedir);
 	saveg_write32(str->movecount);
 	// instead of the actual pointer, store the corresponding index in the mobj->target field
-	saveg_writep((void*)(uintptr_t) P_ThinkerToIndex((thinker_t*) str->target));
+	saveg_writep((void*)(uintptr_t)P_ThinkerToIndex((thinker_t*)str->target));
 	saveg_write32(str->reactiontime);
 	saveg_write32(str->threshold);
 
@@ -352,7 +352,7 @@ static void saveg_write_mobj_t(MapObject* str)
 	saveg_write32(str->lastlook);
 	saveg_write_mapthing_t(&str->spawnpoint);
 	// instead of the actual pointer, store the corresponding index in the mobj->tracers field
-	saveg_writep((void*)(uintptr_t) P_ThinkerToIndex((thinker_t*) str->tracer));
+	saveg_writep((void*)(uintptr_t)P_ThinkerToIndex((thinker_t*)str->tracer));
 }
 
 static void saveg_read_ticcmd_t(ticcmd_t* str)
@@ -440,7 +440,7 @@ static void saveg_read_Player(Player* str)
 
 	str->backpack = saveg_read32();
 
-	for (size_t i{0}; i<MAX_PLAYERS; ++i)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
 		str->frags[i] = saveg_read32();
 	}
@@ -515,7 +515,7 @@ static void saveg_write_Player(Player* str)
 
 	saveg_write32(str->backpack);
 
-	for (size_t i{0}; i<MAX_PLAYERS; ++i)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
 		saveg_write32(str->frags[i]);
 	}
@@ -832,7 +832,7 @@ bool P_ReadSaveGameHeader()
 	auto a{saveg_read8()};
 	auto b{saveg_read8()};
 	auto c{saveg_read8()};
-	leveltime = (a<<16) + (b<<8) + c;
+	leveltime = (a << 16) + (b << 8) + c;
 
 	return true;
 }
@@ -849,7 +849,7 @@ void P_WriteSaveGameEOF()
 
 void P_ArchivePlayers()
 {
-	for (size_t i{0}; i < MAX_PLAYERS ; ++i)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
 		if (!playeringame[i])
 		{
@@ -885,7 +885,7 @@ void P_ArchiveWorld()
 {
 	// do sectors
 	auto sec{sectors};
-	for (size_t i{0}; i < numsectors ; ++i, ++sec)
+	for (size_t i{0}; i < numsectors; ++i, ++sec)
 	{
 		saveg_write16(sec->floorheight >> FRACBITS);
 		saveg_write16(sec->ceilingheight >> FRACBITS);
@@ -1049,17 +1049,17 @@ void P_UnArchiveThinkers()
 			// restore mobj->target and mobj->tracer fields
 			//mobj->target = NULL;
 			//mobj->tracer = NULL;
-			P_SetThingPosition (mobj);
+			P_SetThingPosition(mobj);
 			mobj->info = &mobjinfo[std::size_t(mobj->type)];
 			// Fix for falling down into a wall after savegame loaded
 			//mobj->floorz = mobj->subsector->sector->floorheight;
 			//mobj->ceilingz = mobj->subsector->sector->ceilingheight;
 			mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
-			P_AddThinker (&mobj->thinker);
+			P_AddThinker(&mobj->thinker);
 			break;
 
 		default:
-			I_Error("Unknown tclass %i in savegame",tclass);
+			I_Error("Unknown tclass %i in savegame", tclass);
 		}
 
 	}
@@ -1072,17 +1072,17 @@ void P_RestoreTargets()
 {
 	for (auto th{thinkercap.next}; th != &thinkercap; th = th->next)
 	{
-		if (th->function.acp1 == (actionf_p1) P_MobjThinker)
+		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
 		{
 			auto mo = (MapObject*)th;
-			mo->target = (MapObject*)P_IndexToThinker((uintptr_t) mo->target);
-			mo->tracer = (MapObject*)P_IndexToThinker((uintptr_t) mo->tracer);
+			mo->target = (MapObject*)P_IndexToThinker((uintptr_t)mo->target);
+			mo->tracer = (MapObject*)P_IndexToThinker((uintptr_t)mo->tracer);
 		}
 	}
 
 	if (restoretargets_fail)
 	{
-		fprintf (stderr, "P_RestoreTargets: Failed to restore %d target pointers.\n", restoretargets_fail);
+		fprintf(stderr, "P_RestoreTargets: Failed to restore %d target pointers.\n", restoretargets_fail);
 		restoretargets_fail = 0;
 	}
 }
@@ -1115,7 +1115,7 @@ void P_ArchiveSpecials()
 	int i;
 
 	// save off the current thinkers
-	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
+	for (th = thinkercap.next; th != &thinkercap; th = th->next)
 	{
 		if (th->function.acv == (actionf_v)NULL)
 		{
@@ -1131,7 +1131,7 @@ void P_ArchiveSpecials()
 			{
 				saveg_write8(specials_e::tc_ceiling);
 				saveg_write_pad();
-				saveg_write_ceiling_t((ceiling_t*) th);
+				saveg_write_ceiling_t((ceiling_t*)th);
 			}
 			// [crispy] save plats in statis
 			for (i = 0; i < MAXPLATS; ++i)
@@ -1155,7 +1155,7 @@ void P_ArchiveSpecials()
 		{
 			saveg_write8(specials_e::tc_ceiling);
 			saveg_write_pad();
-			saveg_write_ceiling_t((ceiling_t*) th);
+			saveg_write_ceiling_t((ceiling_t*)th);
 			continue;
 		}
 
@@ -1163,7 +1163,7 @@ void P_ArchiveSpecials()
 		{
 			saveg_write8(specials_e::tc_door);
 			saveg_write_pad();
-			saveg_write_vldoor_t((vldoor_t*) th);
+			saveg_write_vldoor_t((vldoor_t*)th);
 			continue;
 		}
 
@@ -1171,7 +1171,7 @@ void P_ArchiveSpecials()
 		{
 			saveg_write8(specials_e::tc_floor);
 			saveg_write_pad();
-			saveg_write_floormove_t((floormove_t*) th);
+			saveg_write_floormove_t((floormove_t*)th);
 			continue;
 		}
 
@@ -1179,7 +1179,7 @@ void P_ArchiveSpecials()
 		{
 			saveg_write8(specials_e::tc_plat);
 			saveg_write_pad();
-			saveg_write_plat_t((plat_t*) th);
+			saveg_write_plat_t((plat_t*)th);
 			continue;
 		}
 
@@ -1187,7 +1187,7 @@ void P_ArchiveSpecials()
 		{
 			saveg_write8(specials_e::tc_flash);
 			saveg_write_pad();
-			saveg_write_lightflash_t((lightflash_t*) th);
+			saveg_write_lightflash_t((lightflash_t*)th);
 			continue;
 		}
 
@@ -1195,7 +1195,7 @@ void P_ArchiveSpecials()
 		{
 			saveg_write8(specials_e::tc_strobe);
 			saveg_write_pad();
-			saveg_write_strobe_t((strobe_t*) th);
+			saveg_write_strobe_t((strobe_t*)th);
 			continue;
 		}
 
@@ -1203,7 +1203,7 @@ void P_ArchiveSpecials()
 		{
 			saveg_write8(specials_e::tc_glow);
 			saveg_write_pad();
-			saveg_write_glow_t((glow_t*) th);
+			saveg_write_glow_t((glow_t*)th);
 			continue;
 		}
 	}
@@ -1244,7 +1244,7 @@ void P_UnArchiveSpecials()
 				ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;
 			}
 
-			P_AddThinker (&ceiling->thinker);
+			P_AddThinker(&ceiling->thinker);
 			P_AddActiveCeiling(ceiling);
 			break;
 
@@ -1254,7 +1254,7 @@ void P_UnArchiveSpecials()
 			saveg_read_vldoor_t(door);
 			door->sector->specialdata = door;
 			door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
-			P_AddThinker (&door->thinker);
+			P_AddThinker(&door->thinker);
 			break;
 
 		case specials_e::tc_floor:
@@ -1263,13 +1263,13 @@ void P_UnArchiveSpecials()
 			saveg_read_floormove_t(floor);
 			floor->sector->specialdata = floor;
 			floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
-			P_AddThinker (&floor->thinker);
+			P_AddThinker(&floor->thinker);
 			break;
 
 		case specials_e::tc_plat:
 			saveg_read_pad();
 			plat = Z_Malloc<decltype(*plat)>(sizeof(*plat), pu_tags_t::PU_LEVEL, NULL);
-				saveg_read_plat_t(plat);
+			saveg_read_plat_t(plat);
 			plat->sector->specialdata = plat;
 
 			if (plat->thinker.function.acp1)
@@ -1277,7 +1277,7 @@ void P_UnArchiveSpecials()
 				plat->thinker.function.acp1 = (actionf_p1)T_PlatRaise;
 			}
 
-			P_AddThinker (&plat->thinker);
+			P_AddThinker(&plat->thinker);
 			P_AddActivePlat(plat);
 			break;
 
@@ -1286,7 +1286,7 @@ void P_UnArchiveSpecials()
 			flash = Z_Malloc<decltype(*flash)>(sizeof(*flash), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_lightflash_t(flash);
 			flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
-			P_AddThinker (&flash->thinker);
+			P_AddThinker(&flash->thinker);
 			break;
 
 		case specials_e::tc_strobe:
@@ -1294,7 +1294,7 @@ void P_UnArchiveSpecials()
 			strobe = Z_Malloc<decltype(*strobe)>(sizeof(*strobe), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_strobe_t(strobe);
 			strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
-			P_AddThinker (&strobe->thinker);
+			P_AddThinker(&strobe->thinker);
 			break;
 
 		case specials_e::tc_glow:
@@ -1302,11 +1302,11 @@ void P_UnArchiveSpecials()
 			glow = Z_Malloc<decltype(*glow)>(sizeof(*glow), pu_tags_t::PU_LEVEL, NULL);
 			saveg_read_glow_t(glow);
 			glow->thinker.function.acp1 = (actionf_p1)T_Glow;
-			P_AddThinker (&glow->thinker);
+			P_AddThinker(&glow->thinker);
 			break;
 
 		default:
-			I_Error("P_UnarchiveSpecials:Unknown tclass %i in savegame",tclass);
+			I_Error("P_UnarchiveSpecials:Unknown tclass %i in savegame", tclass);
 		}
 	}
 

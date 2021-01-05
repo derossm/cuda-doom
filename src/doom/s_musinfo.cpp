@@ -106,7 +106,7 @@ static void OpenScript(std::string name, int type)
 	else if (type == FILE_ZONE_SCRIPT)
 	{							// File script - zone
 		ScriptLumpNum = -1;
-		ScriptSize = M_ReadFile(name, (byte**) & ScriptBuffer);
+		ScriptSize = M_ReadFile(name, (byte**)&ScriptBuffer);
 		M_ExtractFileBase(name, ScriptName);
 	}
 	ScriptPtr = ScriptBuffer;
@@ -279,89 +279,89 @@ musinfo_t musinfo = {0};
 // Parses MUSINFO lump.
 //
 
-void S_ParseMusInfo (std::string mapid)
+void S_ParseMusInfo(std::string mapid)
 {
- if (W_CheckNumForName("MUSINFO") != -1)
- {
-	int num, lumpnum;
-	int inMap = false;
-
-	SC_OpenLump("MUSINFO");
-
-	while (SC_GetString())
+	if (W_CheckNumForName("MUSINFO") != -1)
 	{
-		if (inMap || SC_Compare(mapid))
+		int num, lumpnum;
+		int inMap = false;
+
+		SC_OpenLump("MUSINFO");
+
+		while (SC_GetString())
 		{
-		if (!inMap)
-		{
-			SC_GetString();
-			inMap = true;
+			if (inMap || SC_Compare(mapid))
+			{
+				if (!inMap)
+				{
+					SC_GetString();
+					inMap = true;
+				}
+
+				if (sc_String[0] == 'E' || sc_String[0] == 'e' ||
+					sc_String[0] == 'M' || sc_String[0] == 'm')
+				{
+					break;
+				}
+
+				// Check number in range
+				if (M_StrToInt(sc_String, &num) && num > 0 && num < MAX_MUS_ENTRIES)
+				{
+					if (SC_GetString())
+					{
+						lumpnum = W_CheckNumForName(sc_String);
+
+						if (lumpnum > 0)
+						{
+							musinfo.items[num] = lumpnum;
+							//			printf("S_ParseMusInfo: (%d) %s\n", num, sc_String);
+						}
+						else
+						{
+							fprintf(stderr, "S_ParseMusInfo: Unknown MUS lump %s\n", sc_String);
+						}
+					}
+				}
+				else
+				{
+					fprintf(stderr, "S_ParseMusInfo: Number not in range 1 to %d\n", MAX_MUS_ENTRIES - 1);
+				}
+			}
 		}
 
-		if (sc_String[0] == 'E' || sc_String[0] == 'e' ||
-			sc_String[0] == 'M' || sc_String[0] == 'm')
-		{
-			break;
-		}
-
-		// Check number in range
-		if (M_StrToInt(sc_String, &num) && num > 0 && num < MAX_MUS_ENTRIES)
-		{
-			if (SC_GetString())
-			{
-			lumpnum = W_CheckNumForName(sc_String);
-
-			if (lumpnum > 0)
-			{
-				musinfo.items[num] = lumpnum;
-//			printf("S_ParseMusInfo: (%d) %s\n", num, sc_String);
-			}
-			else
-			{
-				fprintf(stderr, "S_ParseMusInfo: Unknown MUS lump %s\n", sc_String);
-			}
-			}
-		}
-		else
-		{
-			fprintf(stderr, "S_ParseMusInfo: Number not in range 1 to %d\n", MAX_MUS_ENTRIES - 1);
-		}
-		}
+		SC_Close();
 	}
-
-	SC_Close();
- }
 }
 
-void T_MusInfo ()
+void T_MusInfo()
 {
- if (musinfo.tics < 0 || !musinfo.mapthing)
- {
-	return;
- }
-
- if (musinfo.tics > 0)
- {
-	musinfo.tics--;
- }
- else
- {
-	if (!musinfo.tics && musinfo.lastmapthing != musinfo.mapthing)
+	if (musinfo.tics < 0 || !musinfo.mapthing)
 	{
-		// [crispy] encode music lump number in mapthing health
-		int arraypt = musinfo.mapthing->health - 1000;
-
-		if (arraypt >= 0 && arraypt < MAX_MUS_ENTRIES)
-		{
-		int lumpnum = musinfo.items[arraypt];
-
-		if (lumpnum > 0 && lumpnum < numlumps)
-		{
-			S_ChangeMusInfoMusic(lumpnum, true);
-		}
-		}
-
-		musinfo.tics = -1;
+		return;
 	}
- }
+
+	if (musinfo.tics > 0)
+	{
+		musinfo.tics--;
+	}
+	else
+	{
+		if (!musinfo.tics && musinfo.lastmapthing != musinfo.mapthing)
+		{
+			// [crispy] encode music lump number in mapthing health
+			int arraypt = musinfo.mapthing->health - 1000;
+
+			if (arraypt >= 0 && arraypt < MAX_MUS_ENTRIES)
+			{
+				int lumpnum = musinfo.items[arraypt];
+
+				if (lumpnum > 0 && lumpnum < numlumps)
+				{
+					S_ChangeMusInfoMusic(lumpnum, true);
+				}
+			}
+
+			musinfo.tics = -1;
+		}
+	}
 }

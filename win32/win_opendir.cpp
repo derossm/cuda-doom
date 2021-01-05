@@ -45,13 +45,13 @@ DIR* opendir(const _TCHAR* szPath)
 
 	errno = 0;
 
-	if(!szPath)
+	if (!szPath)
 	{
 		errno = EFAULT;
 		return (DIR*)0;
 	}
 
-	if(szPath[0] == _T('\0'))
+	if (szPath[0] == _T('\0'))
 	{
 		errno = ENOTDIR;
 		return (DIR*)0;
@@ -59,13 +59,13 @@ DIR* opendir(const _TCHAR* szPath)
 
 	// Attempt to determine if the given path really is a directory.
 	rc = GetFileAttributes(szPath);
-	if(rc == (unsigned)-1)
+	if (rc == (unsigned)-1)
 	{
 		// call GetLastError for more error info
 		errno = ENOENT;
 		return (DIR*)0;
 	}
-	if(!(rc & FILE_ATTRIBUTE_DIRECTORY))
+	if (!(rc & FILE_ATTRIBUTE_DIRECTORY))
 	{
 		// Error, entry exists but not a directory.
 		errno = ENOTDIR;
@@ -78,7 +78,7 @@ DIR* opendir(const _TCHAR* szPath)
 	// Allocate enough space to store DIR structure and the complete directory path given.
 	nd = (DIR*)(malloc(sizeof(DIR) + (_tcslen(szFullPath) + _tcslen(SLASH) + _tcslen(SUFFIX) + 1) * sizeof(_TCHAR)));
 
-	if(!nd)
+	if (!nd)
 	{
 		// Error, out of memory.
 		errno = ENOMEM;
@@ -89,11 +89,11 @@ DIR* opendir(const _TCHAR* szPath)
 	_tcscpy(nd->dd_name, szFullPath);
 
 	// Add on a slash if the path does not end with one.
-	if(nd->dd_name[0] != _T('\0')
+	if (nd->dd_name[0] != _T('\0')
 		&& _tcsrchr(nd->dd_name, _T('/')) != nd->dd_name
-						+ _tcslen(nd->dd_name) - 1
+		+ _tcslen(nd->dd_name) - 1
 		&& _tcsrchr(nd->dd_name, _T('\\')) != nd->dd_name
-								+ _tcslen(nd->dd_name) - 1)
+		+ _tcslen(nd->dd_name) - 1)
 	{
 		_tcscat(nd->dd_name, SLASH);
 	}
@@ -122,7 +122,7 @@ dirent* readdir(DIR* dirp)
 	errno = 0;
 
 	// Check for valid DIR struct.
-	if(!dirp)
+	if (!dirp)
 	{
 		errno = EFAULT;
 		return (dirent*)0;
@@ -138,7 +138,7 @@ dirent* readdir(DIR* dirp)
 		// We haven't started the search yet. Start the search
 		dirp->dd_handle = _tfindfirst(dirp->dd_name, &(dirp->dd_dta));
 
-		if(dirp->dd_handle == -1)
+		if (dirp->dd_handle == -1)
 		{
 			// Whoops! Seems there are no files in that directory.
 			dirp->dd_stat = -1;
@@ -151,12 +151,12 @@ dirent* readdir(DIR* dirp)
 	else
 	{
 		// Get the next search entry.
-		if(_tfindnext(dirp->dd_handle, &(dirp->dd_dta)))
+		if (_tfindnext(dirp->dd_handle, &(dirp->dd_dta)))
 		{
 			// We are off the end or otherwise error. _findnext sets errno to ENOENT if no more file Undo this.
 			DWORD winerr = GetLastError();
-			if(winerr == ERROR_NO_MORE_FILES)
-			errno = 0;
+			if (winerr == ERROR_NO_MORE_FILES)
+				errno = 0;
 			_findclose(dirp->dd_handle);
 			dirp->dd_handle = -1;
 			dirp->dd_stat = -1;
@@ -187,13 +187,13 @@ int closedir(DIR* dirp)
 	errno = 0;
 	rc = 0;
 
-	if(!dirp)
+	if (!dirp)
 	{
 		errno = EFAULT;
 		return -1;
 	}
 
-	if(dirp->dd_handle != -1)
+	if (dirp->dd_handle != -1)
 	{
 		rc = _findclose(dirp->dd_handle);
 	}
@@ -209,13 +209,13 @@ void rewinddir(DIR* dirp)
 {
 	errno = 0;
 
-	if(!dirp)
+	if (!dirp)
 	{
 		errno = EFAULT;
 		return;
 	}
 
-	if(dirp->dd_handle != -1)
+	if (dirp->dd_handle != -1)
 	{
 		_findclose(dirp->dd_handle);
 	}
@@ -229,7 +229,7 @@ long telldir(DIR* dirp)
 {
 	errno = 0;
 
-	if(!dirp)
+	if (!dirp)
 	{
 		errno = EFAULT;
 		return -1;
@@ -244,22 +244,22 @@ void seekdir(DIR* dirp, long lPos)
 {
 	errno = 0;
 
-	if(!dirp)
+	if (!dirp)
 	{
 		errno = EFAULT;
 		return;
 	}
 
-	if(lPos < -1)
+	if (lPos < -1)
 	{
 		// Seeking to an invalid position.
 		errno = EINVAL;
 		return;
 	}
-	else if(lPos == -1)
+	else if (lPos == -1)
 	{
 		// Seek past end.
-		if(dirp->dd_handle != -1)
+		if (dirp->dd_handle != -1)
 		{
 			_findclose(dirp->dd_handle);
 		}
@@ -271,7 +271,7 @@ void seekdir(DIR* dirp, long lPos)
 		// Rewind and read forward to the appropriate index.
 		rewinddir(dirp);
 
-		while((dirp->dd_stat < lPos) && readdir(dirp))
+		while ((dirp->dd_stat < lPos) && readdir(dirp))
 		{
 			// do-nothing loop
 		}

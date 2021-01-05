@@ -30,7 +30,7 @@ struct hu_textline_t
 
 	patch_t** f;				// font
 	int sc;						// start character
-	char l[HU_MAXLINELENGTH+1];	// line of text
+	char l[HU_MAXLINELENGTH + 1];	// line of text
 	int len;					// current line length
 
 	// whether this line needs to be udpated

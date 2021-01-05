@@ -94,27 +94,27 @@ constexpr size_t ST_NUMSTRAIGHTFACES{3};
 constexpr size_t ST_NUMTURNFACES{2};
 constexpr size_t ST_NUMSPECIALFACES{3};
 
-constexpr size_t ST_FACESTRIDE{(ST_NUMSTRAIGHTFACES+ST_NUMTURNFACES+ST_NUMSPECIALFACES)};
+constexpr size_t ST_FACESTRIDE{(ST_NUMSTRAIGHTFACES + ST_NUMTURNFACES + ST_NUMSPECIALFACES)};
 
 constexpr size_t ST_NUMEXTRAFACES{2};
 
-constexpr size_t ST_NUMFACES{(ST_FACESTRIDE*ST_NUMPAINFACES+ST_NUMEXTRAFACES)};
+constexpr size_t ST_NUMFACES{(ST_FACESTRIDE * ST_NUMPAINFACES + ST_NUMEXTRAFACES)};
 
 constexpr size_t ST_TURNOFFSET{(ST_NUMSTRAIGHTFACES)};
 constexpr size_t ST_OUCHOFFSET{(ST_TURNOFFSET + ST_NUMTURNFACES)};
 constexpr size_t ST_EVILGRINOFFSET{(ST_OUCHOFFSET + 1)};
 constexpr size_t ST_RAMPAGEOFFSET{(ST_EVILGRINOFFSET + 1)};
-constexpr size_t ST_GODFACE{(ST_NUMPAINFACES*ST_FACESTRIDE)};
-constexpr size_t ST_DEADFACE{(ST_GODFACE+1)};
+constexpr size_t ST_GODFACE{(ST_NUMPAINFACES * ST_FACESTRIDE)};
+constexpr size_t ST_DEADFACE{(ST_GODFACE + 1)};
 
 constexpr size_t ST_FACESX{143};
 constexpr size_t ST_FACESY{168};
 
-constexpr size_t ST_EVILGRINCOUNT{(2*TICRATE)};
-constexpr size_t ST_STRAIGHTFACECOUNT{(TICRATE/2)};
-constexpr size_t ST_TURNCOUNT{(1*TICRATE)};
-constexpr size_t ST_OUCHCOUNT{(1*TICRATE)};
-constexpr size_t ST_RAMPAGEDELAY{(2*TICRATE)};
+constexpr size_t ST_EVILGRINCOUNT{(2 * TICRATE)};
+constexpr size_t ST_STRAIGHTFACECOUNT{(TICRATE / 2)};
+constexpr size_t ST_TURNCOUNT{(1 * TICRATE)};
+constexpr size_t ST_OUCHCOUNT{(1 * TICRATE)};
+constexpr size_t ST_RAMPAGEDELAY{(2 * TICRATE)};
 
 constexpr size_t ST_MUCHPAIN{20};
 
@@ -221,7 +221,7 @@ constexpr size_t ST_WEAPON3Y{181};
 constexpr size_t ST_WEAPON4X{122};
 constexpr size_t ST_WEAPON4Y{181};
 
- // bfg
+// bfg
 constexpr size_t ST_WEAPON5X{134};
 constexpr size_t ST_WEAPON5Y{181};
 
@@ -229,7 +229,7 @@ constexpr size_t ST_WEAPON5Y{181};
 constexpr size_t ST_WPNSX{109};
 constexpr size_t ST_WPNSY{191};
 
- // DETH title
+// DETH title
 constexpr size_t ST_DETHX{109};
 constexpr size_t ST_DETHY{191};
 
@@ -249,7 +249,7 @@ constexpr size_t ST_OUTTEXTY{6};
 
 // Width, in characters again.
 constexpr size_t ST_OUTWIDTH{52};
- // Height, in lines.
+// Height, in lines.
 constexpr size_t ST_OUTHEIGHT{1};
 
 #define ST_MAPTITLEX (ORIGWIDTH - ST_MAPWIDTH * ST_CHATFONTWIDTH)
@@ -257,10 +257,10 @@ constexpr size_t ST_OUTHEIGHT{1};
 constexpr size_t ST_MAPTITLEY{0};
 constexpr size_t ST_MAPHEIGHT{1};
 
-typedef void (*load_callback_t)(std::string lumpname, patch_t**variable);
+typedef void (*load_callback_t)(std::string lumpname, patch_t** variable);
 
 // graphics are drawn to a backing screen and blitted to the real screen
-pixel_t *st_backing_screen;
+pixel_t* st_backing_screen;
 
 // main player in game
 static Player* plyr;
@@ -275,7 +275,7 @@ static int lu_palette;
 static unsigned st_clock;
 
 // used for making messages go away
-static int st_msgcounter=0;
+static int st_msgcounter = 0;
 
 // used when in chat
 static st_chatstateenum_t st_chatstate;
@@ -325,7 +325,7 @@ static patch_t* tallpercent;
 static patch_t* shortnum[10];
 
 // 3 key-cards, 3 skulls
-static patch_t* keys[std::size_t(CardType::NUMCARDS)+3]; // [crispy] support combined card and skull keys
+static patch_t* keys[std::size_t(CardType::NUMCARDS) + 3]; // [crispy] support combined card and skull keys
 
 // face status patches
 static patch_t* faces[ST_NUMFACES];
@@ -333,7 +333,7 @@ static patch_t* faces[ST_NUMFACES];
 // face background
 static patch_t* faceback;
 
- // main bar right
+// main bar right
 static patch_t* armsbg;
 
 // weapon ownership patches
@@ -342,7 +342,7 @@ static patch_t* arms[6][2];
 // ready-weapon widget
 static st_number_t w_ready;
 
- // in deathmatch only, summary of frags stats
+// in deathmatch only, summary of frags stats
 static st_number_t w_frags;
 
 // health widget
@@ -372,7 +372,7 @@ static st_number_t w_ammo[4];
 static st_number_t w_maxammo[4];
 
 
- // number of frags so far in deathmatch
+// number of frags so far in deathmatch
 static int st_fragscount;
 
 // used to use appopriately pained face
@@ -381,7 +381,7 @@ static int st_oldhealth = -1;
 // used for evil grin
 static bool oldweaponsowned[std::size_t(WeaponType::NUMWEAPONS)];
 
- // count until face changes
+// count until face changes
 static int st_facecount = 0;
 
 // current face index, used by w_faces
@@ -440,7 +440,7 @@ cheatseq_t cheat_skill = CHEAT("skill", 0);
 static char msg[ST_MSGWIDTH];
 
 // [crispy] restrict cheat usage
-static inline int cht_CheckCheatSP (cheatseq_t* cht, char key)
+static inline int cht_CheckCheatSP(cheatseq_t* cht, char key)
 {
 	if (!cht_CheckCheat(cht, key))
 	{
@@ -479,15 +479,15 @@ void ST_refreshBackground(bool force)
 			src = W_CacheLumpName<patch_t>(name, pu_tags_t::PU_CACHE);
 			dest = st_backing_screen;
 
-			for (y = SCREENHEIGHT-(ST_HEIGHT<<crispy->hires); y < SCREENHEIGHT; ++y)
+			for (y = SCREENHEIGHT - (ST_HEIGHT << crispy->hires); y < SCREENHEIGHT; ++y)
 			{
 				for (x = 0; x < SCREENWIDTH; ++x)
 				{
 #ifndef CRISPY_TRUECOLOR
-					*dest = src[((y&63)<<6) + (x&63)];
+					* dest = src[((y & 63) << 6) + (x & 63)];
 					++dest;
 #else
-					*dest = colormaps[src[((y&63)<<6) + (x&63)]];
+					* dest = colormaps[src[((y & 63) << 6) + (x & 63)]];
 					++dest;
 #endif
 				}
@@ -651,17 +651,23 @@ static int ST_cheat_spechits()
 	}
 	else
 	{
-		if (gameepisode == 1){
+		if (gameepisode == 1)
+		{
 			// Barons of Hell
-			speciallines += EV_DoFloor(&dummy, floor_e::lowerFloorToLowest);}
+			speciallines += EV_DoFloor(&dummy, floor_e::lowerFloorToLowest);
+		}
 		else if (gameepisode == 4)
 		{
-			if (gamemap == 6){
+			if (gamemap == 6)
+			{
 				// Cyberdemons
-				speciallines += EV_DoDoor(&dummy, vldoor_e::vld_blazeOpen);}
-			else if (gamemap == 8){
+				speciallines += EV_DoDoor(&dummy, vldoor_e::vld_blazeOpen);
+			}
+			else if (gamemap == 8)
+			{
 				// Spider Masterminds
-				speciallines += EV_DoFloor(&dummy, floor_e::lowerFloorToLowest);}
+				speciallines += EV_DoFloor(&dummy, floor_e::lowerFloorToLowest);
+			}
 		}
 	}
 	// Keens (no matter which level they are on)
@@ -673,22 +679,28 @@ static int ST_cheat_spechits()
 }
 
 // [crispy] only give available weapons
-static bool WeaponAvailable (int w)
+static bool WeaponAvailable(int w)
 {
-	if (w < 0 || w >= (int)WeaponType::NUMWEAPONS){
-		return false;}
+	if (w < 0 || w >= (int)WeaponType::NUMWEAPONS)
+	{
+		return false;
+	}
 
-	if (w == (int)WeaponType::wp_supershotgun && !crispy->havessg){
-		return false;}
+	if (w == (int)WeaponType::wp_supershotgun && !crispy->havessg)
+	{
+		return false;
+	}
 
-	if ((w == (int)WeaponType::wp_bfg || w == (int)WeaponType::wp_plasma) && gamemode == GameMode::shareware){
-		return false;}
+	if ((w == (int)WeaponType::wp_bfg || w == (int)WeaponType::wp_plasma) && gamemode == GameMode::shareware)
+	{
+		return false;
+	}
 
 	return true;
 }
 
 // [crispy] give or take backpack
-static void GiveBackpack (bool give)
+static void GiveBackpack(bool give)
 {
 	if (give && !plyr->backpack)
 	{
@@ -715,7 +727,7 @@ bool ST_Responder(EventType* ev)
 	// Filter automap on/off.
 	if (ev->type == evtype_t::ev_keyup && ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
 	{
-		switch(ev->data1)
+		switch (ev->data1)
 		{
 		case AM_MSGENTERED:
 			st_gamestate = st_stateenum_t::AutomapState;
@@ -741,17 +753,17 @@ bool ST_Responder(EventType* ev)
 				if (plyr->playerstate == PlayerState::dead)
 				{
 					int an;
-					extern void P_SpawnPlayer (mapthing_t* mthing);
+					extern void P_SpawnPlayer(mapthing_t * mthing);
 
 					mt.x = plyr->x >> FRACBITS;
 					mt.y = plyr->y >> FRACBITS;
-					mt.angle = (plyr->angle + ANG45/2)*(uint64_t)45/ANG45;
+					mt.angle = (plyr->angle + ANG45 / 2) * (uint64_t)45 / ANG45;
 					mt.type = consoleplayer + 1;
 					P_SpawnPlayer(&mt);
 
 					// [crispy] spawn a teleport fog
 					an = plyr->angle >> ANGLETOFINESHIFT;
-					P_SpawnMobj(plyr->x+20*finecosine[an], plyr->y+20*finesine[an], plyr->z, mobjtype_t::MT_TFOG);
+					P_SpawnMobj(plyr->x + 20 * finecosine[an], plyr->y + 20 * finesine[an], plyr->z, mobjtype_t::MT_TFOG);
 					S_StartSound(plyr, (int)sfxenum_t::sfx_slop);
 				}
 
@@ -858,48 +870,48 @@ bool ST_Responder(EventType* ev)
 					return true;
 				}
 				else
-				// [JN] Fixed: using a proper IDMUS selection for shareware
-				// and registered game versions.
-				if (gamemode == GameMode::commercial /* || gameversion < exe_ultimate */ )
-				{
-					musnum = (int)musicenum_t::mus_runnin + (buf[0]-'0')*10 + buf[1]-'0' - 1;
-
-					/*
-					if (((buf[0]-'0')*10 + buf[1]-'0') > 35
-					&& gameversion >= GameVersion::exe_doom_1_8)
-					*/
-					// prevent crash with IDMUS00
-					if (musnum < (int)musicenum_t::mus_runnin || musnum >= (int)musicenum_t::NUMMUSIC)
+					// [JN] Fixed: using a proper IDMUS selection for shareware
+					// and registered game versions.
+					if (gamemode == GameMode::commercial /* || gameversion < exe_ultimate */)
 					{
-						plyr->message = DEH_String(STSTR_NOMUS);
+						musnum = (int)musicenum_t::mus_runnin + (buf[0] - '0') * 10 + buf[1] - '0' - 1;
+
+						/*
+						if (((buf[0]-'0')*10 + buf[1]-'0') > 35
+						&& gameversion >= GameVersion::exe_doom_1_8)
+						*/
+						// prevent crash with IDMUS00
+						if (musnum < (int)musicenum_t::mus_runnin || musnum >= (int)musicenum_t::NUMMUSIC)
+						{
+							plyr->message = DEH_String(STSTR_NOMUS);
+						}
+						else
+						{
+							S_ChangeMusic(musnum, 1);
+							// eat key press, i.e. don't change weapon upon music change
+							return true;
+						}
 					}
 					else
 					{
-						S_ChangeMusic(musnum, 1);
-						// eat key press, i.e. don't change weapon upon music change
-						return true;
-					}
-				}
-				else
-				{
-					musnum = (int)musicenum_t::mus_e1m1 + (buf[0]-'1')*9 + (buf[1]-'1');
+						musnum = (int)musicenum_t::mus_e1m1 + (buf[0] - '1') * 9 + (buf[1] - '1');
 
-					/*
-					if (((buf[0]-'1')*9 + buf[1]-'1') > 31)
-					*/
-					// prevent crash with IDMUS0x or IDMUSx0
-					// support dedicated music tracks for the 4th episode
-					if (musnum < (int)musicenum_t::mus_e1m1 || musnum >= (int)musicenum_t::mus_runnin || S_music[musnum].lumpnum == -1)
-					{
-						plyr->message = DEH_String(STSTR_NOMUS);
+						/*
+						if (((buf[0]-'1')*9 + buf[1]-'1') > 31)
+						*/
+						// prevent crash with IDMUS0x or IDMUSx0
+						// support dedicated music tracks for the 4th episode
+						if (musnum < (int)musicenum_t::mus_e1m1 || musnum >= (int)musicenum_t::mus_runnin || S_music[musnum].lumpnum == -1)
+						{
+							plyr->message = DEH_String(STSTR_NOMUS);
+						}
+						else
+						{
+							S_ChangeMusic(musnum, 1);
+							// eat key press, i.e. don't change weapon upon music change
+							return true;
+						}
 					}
-					else
-					{
-						S_ChangeMusic(musnum, 1);
-						// eat key press, i.e. don't change weapon upon music change
-						return true;
-					}
-				}
 			}
 			// eat up the first digit typed after a cheat expecting two parameters
 			else if (cht_CheckCheat(&cheat_mus1, ev->data2))
@@ -935,7 +947,7 @@ bool ST_Responder(EventType* ev)
 				{
 					if (!plyr->powers[i])
 					{
-						P_GivePower( plyr, i);
+						P_GivePower(plyr, i);
 					}
 					else if (i != (int)PowerType_t::pw_strength && i != (int)PowerType_t::pw_allmap) // disable full Automap
 					{
@@ -983,14 +995,14 @@ bool ST_Responder(EventType* ev)
 				plyr->message = buf;
 				*/
 				// extra high precision IDMYPOS variant, updates for 10 seconds
-				plyr->powers[std::size_t(PowerType_t::pw_mapcoords)] = 10*TICRATE;
+				plyr->powers[std::size_t(PowerType_t::pw_mapcoords)] = 10 * TICRATE;
 			}
 
-				// now follow "critical" Crispy Doom specific cheats
-				// implement Boom's "tntem" cheat
+			// now follow "critical" Crispy Doom specific cheats
+			// implement Boom's "tntem" cheat
 			else if (cht_CheckCheatSP(&cheat_massacre, ev->data2)
-					|| cht_CheckCheatSP(&cheat_massacre2, ev->data2)
-					|| cht_CheckCheatSP(&cheat_massacre3, ev->data2))
+				|| cht_CheckCheatSP(&cheat_massacre2, ev->data2)
+				|| cht_CheckCheatSP(&cheat_massacre3, ev->data2))
 			{
 				int killcount = ST_cheat_massacre();
 				std::string const monster = (gameversion == GameVersion::exe_chex) ? "Flemoid" : "Monster";
@@ -1035,12 +1047,12 @@ bool ST_Responder(EventType* ev)
 							{
 								mo->tracer = nullptr;
 							} */
+							//}
 						//}
-					//}
-					// let sectors forget their soundtarget
+						// let sectors forget their soundtarget
 					for (size_t i{0}; i < numsectors; ++i)
 					{
-						sector_t *const sector = &sectors[i];
+						sector_t* const sector = &sectors[i];
 
 						sector->soundtarget = nullptr;
 					}
@@ -1062,7 +1074,7 @@ bool ST_Responder(EventType* ev)
 			// [crispy] implement Crispy Doom's "goobers" cheat, ne easter egg
 			else if (cht_CheckCheatSP(&cheat_goobers, ev->data2))
 			{
-				extern void EV_DoGoobers ();
+				extern void EV_DoGoobers();
 
 				EV_DoGoobers();
 
@@ -1086,7 +1098,7 @@ bool ST_Responder(EventType* ev)
 
 					for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
 					{
-					oldweaponsowned[i] = plyr->weaponowned[i] = false;
+						oldweaponsowned[i] = plyr->weaponowned[i] = false;
 					}
 					oldweaponsowned[std::size_t(WeaponType::wp_fist)] = plyr->weaponowned[std::size_t(WeaponType::wp_fist)] = true;
 					oldweaponsowned[std::size_t(WeaponType::wp_pistol)] = plyr->weaponowned[std::size_t(WeaponType::wp_pistol)] = true;
@@ -1132,7 +1144,7 @@ bool ST_Responder(EventType* ev)
 				{
 					if (!plyr->weaponowned[w])
 					{
-						extern bool P_GiveWeapon (Player* player, WeaponType weapon, bool dropped);
+						extern bool P_GiveWeapon(Player * player, WeaponType weapon, bool dropped);
 						extern std::string const WeaponPickupMessages[std::size_t(WeaponType::NUMWEAPONS)];
 
 						P_GiveWeapon(plyr, (WeaponType)w, false);
@@ -1154,19 +1166,19 @@ bool ST_Responder(EventType* ev)
 						// [crispy] removed current weapon, select another one
 						if (w == (int)plyr->readyweapon)
 						{
-							extern bool P_CheckAmmo (Player* player);
+							extern bool P_CheckAmmo(Player * player);
 
 							P_CheckAmmo(plyr);
 						}
 					}
 				}
 
-			/*  if (!plyr->message)
-				{
-					M_snprintf(msg, sizeof(msg), "Weapon %s%d%s %s", crstr[CR_GOLD], w + 1, crstr[CR_NONE],
-								plyr->weaponowned[w] ? "added" : "removed");
-					plyr->message = msg;
-				} */
+				/*  if (!plyr->message)
+					{
+						M_snprintf(msg, sizeof(msg), "Weapon %s%d%s %s", crstr[CR_GOLD], w + 1, crstr[CR_NONE],
+									plyr->weaponowned[w] ? "added" : "removed");
+						plyr->message = msg;
+					} */
 			}
 		}
 
@@ -1187,17 +1199,17 @@ bool ST_Responder(EventType* ev)
 		// Show engine version, build date and SDL version
 		else if (cht_CheckCheat(&cheat_version, ev->data2))
 		{
-		#ifndef BUILD_DATE
-		#define BUILD_DATE __DATE__
-		#endif
-				/* M_snprintf(msg, sizeof(msg), "%s (%s) x%ld SDL%s",
-							PACKAGE_STRING,
-							BUILD_DATE,
-							(long) sizeof(void*) * CHAR_BIT,
-							crispy->sdlversion); */
-		#undef BUILD_DATE
-				plyr->message = msg;
-				fprintf(stderr, "%s\n", msg);
+#ifndef BUILD_DATE
+#define BUILD_DATE __DATE__
+#endif
+			/* M_snprintf(msg, sizeof(msg), "%s (%s) x%ld SDL%s",
+						PACKAGE_STRING,
+						BUILD_DATE,
+						(long) sizeof(void*) * CHAR_BIT,
+						crispy->sdlversion); */
+#undef BUILD_DATE
+			plyr->message = msg;
+			fprintf(stderr, "%s\n", msg);
 		}
 		// Show skill level
 		else if (cht_CheckCheat(&cheat_skill, ev->data2))
@@ -1231,7 +1243,7 @@ bool ST_Responder(EventType* ev)
 				{
 					epsd = 0;
 				}
-				map = (buf[0] - '0')*10 + buf[1] - '0';
+				map = (buf[0] - '0') * 10 + buf[1] - '0';
 			}
 			else
 			{
@@ -1296,7 +1308,7 @@ bool ST_Responder(EventType* ev)
 					{
 						// support E1M10 "Sewers"
 						if (!(crispy->havee1m10 && epsd == 1 && map == 10))
-						return false;
+							return false;
 					}
 				}
 				else
@@ -1490,7 +1502,7 @@ void ST_updateFaceWidget()
 				else
 				{
 					// turn face left
-					faceindex = ST_TURNOFFSET+1;
+					faceindex = ST_TURNOFFSET + 1;
 				}
 			}
 		}
@@ -1522,7 +1534,7 @@ void ST_updateFaceWidget()
 		// rapid firing
 		if (plyr->attackdown)
 		{
-			if (lastattackdown==-1)
+			if (lastattackdown == -1)
 			{
 				lastattackdown = ST_RAMPAGEDELAY;
 			}
@@ -1604,22 +1616,22 @@ void ST_updateWidgets()
 	{
 		keyboxes[i] = plyr->cards[i] ? i : -1;
 
-		if (plyr->cards[i+3])
+		if (plyr->cards[i + 3])
 		{
-			keyboxes[i] = (keyboxes[i] == -1) ? i+3 : i+6; // [crispy] support combined card and skull keys
+			keyboxes[i] = (keyboxes[i] == -1) ? i + 3 : i + 6; // [crispy] support combined card and skull keys
 		}
 
 		// blinking key or skull in the status bar
 		if (plyr->tryopen[i])
 		{
 #if defined(CRISPY_KEYBLINK_WITH_SOUND)
-			if (!(plyr->tryopen[i] & (2*KEYBLINKMASK-1)))
+			if (!(plyr->tryopen[i] & (2 * KEYBLINKMASK - 1)))
 			{
 				S_StartSound(NULL, sfxenum_t::sfx_itemup);
 			}
 #endif
 #if defined(CRISPY_KEYBLINK_IN_CLASSIC_HUD)
-			if (st_classicstatusbar && !(plyr->tryopen[i] & (KEYBLINKMASK-1)))
+			if (st_classicstatusbar && !(plyr->tryopen[i] & (KEYBLINKMASK - 1)))
 			{
 				st_firsttime = true;
 			}
@@ -1653,7 +1665,7 @@ void ST_updateWidgets()
 	st_fragson = deathmatch && st_statusbaron;
 	st_fragscount = 0;
 
-	for (size_t i{0}; i<MAX_PLAYERS; ++i)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
 		if (i != consoleplayer)
 		{
@@ -1697,7 +1709,7 @@ void ST_doPaletteStuff()
 	if (plyr->powers[std::size_t(PowerType_t::pw_strength)])
 	{
 		// slowly fade the berzerk out
-		bzc = 12 - (plyr->powers[std::size_t(PowerType_t::pw_strength)]>>6);
+		bzc = 12 - (plyr->powers[std::size_t(PowerType_t::pw_strength)] >> 6);
 
 		if (bzc > cnt)
 		{
@@ -1707,11 +1719,11 @@ void ST_doPaletteStuff()
 
 	if (cnt)
 	{
-		palette = (cnt+7)>>3;
+		palette = (cnt + 7) >> 3;
 
 		if (palette >= NUMREDPALS)
 		{
-			palette = NUMREDPALS-1;
+			palette = NUMREDPALS - 1;
 		}
 
 		// tune down a bit so the menu remains legible
@@ -1724,16 +1736,16 @@ void ST_doPaletteStuff()
 	}
 	else if (plyr->bonuscount && plyr->health > 0) // never show the yellow bonus palette for a dead player
 	{
-		palette = (plyr->bonuscount+7)>>3;
+		palette = (plyr->bonuscount + 7) >> 3;
 
 		if (palette >= NUMBONUSPALS)
 		{
-			palette = NUMBONUSPALS-1;
+			palette = NUMBONUSPALS - 1;
 		}
 
 		palette += STARTBONUSPALS;
 	}
-	else if (plyr->powers[std::size_t(PowerType_t::pw_ironfeet)] > 4*32 || plyr->powers[std::size_t(PowerType_t::pw_ironfeet)]&8)
+	else if (plyr->powers[std::size_t(PowerType_t::pw_ironfeet)] > 4 * 32 || plyr->powers[std::size_t(PowerType_t::pw_ironfeet)] & 8)
 	{
 		palette = RADIATIONPAL;
 	}
@@ -1761,10 +1773,10 @@ void ST_doPaletteStuff()
 	{
 		st_palette = palette;
 #ifndef CRISPY_TRUECOLOR
-		pal = W_CacheLumpNum<byte>(lu_palette, pu_tags_t::PU_CACHE)+palette*768;
-		I_SetPalette (pal);
+		pal = W_CacheLumpNum<byte>(lu_palette, pu_tags_t::PU_CACHE) + palette * 768;
+		I_SetPalette(pal);
 #else
-		I_SetPalette (palette);
+		I_SetPalette(palette);
 #endif
 	}
 }
@@ -1779,54 +1791,26 @@ static byte* ST_WidgetColor(int i)
 
 	switch ((hudcolor_t)i)
 	{
-		case hudcolor_t::hudcolor_ammo:
+	case hudcolor_t::hudcolor_ammo:
+	{
+		if (weaponinfo[std::size_t(plyr->readyweapon)].ammo == AmmoType::am_noammo)
 		{
-			if (weaponinfo[std::size_t(plyr->readyweapon)].ammo == AmmoType::am_noammo)
-			{
-				return nullptr;
-			}
-			else
-			{
-				int ammo = plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
-				int fullammo = maxammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
-
-				if (ammo < fullammo/4)
-				{
-					return cr[CR_RED];
-				}
-				else if (ammo < fullammo/2)
-				{
-					return cr[CR_GOLD];
-				}
-				else if (ammo <= fullammo)
-				{
-					return cr[CR_GREEN];
-				}
-				else
-				{
-					return cr[CR_BLUE];
-				}
-			}
-			break;
+			return nullptr;
 		}
-		case hudcolor_t::hudcolor_health:
+		else
 		{
-			int health = plyr->health;
+			int ammo = plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
+			int fullammo = maxammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
 
-			// [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
-			if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)])
-			{
-				return cr[CR_GRAY];
-			}
-			else if (health < 25)
+			if (ammo < fullammo / 4)
 			{
 				return cr[CR_RED];
 			}
-			else if (health < 50)
+			else if (ammo < fullammo / 2)
 			{
 				return cr[CR_GOLD];
 			}
-			else if (health <= 100)
+			else if (ammo <= fullammo)
 			{
 				return cr[CR_GREEN];
 			}
@@ -1834,78 +1818,106 @@ static byte* ST_WidgetColor(int i)
 			{
 				return cr[CR_BLUE];
 			}
-
-			break;
 		}
-		case hudcolor_t::hudcolor_frags:
+		break;
+	}
+	case hudcolor_t::hudcolor_health:
+	{
+		int health = plyr->health;
+
+		// [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
+		if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)])
 		{
-			int frags = st_fragscount;
-
-			if (frags < 0)
-			{
-				return cr[CR_RED];
-			}
-			else if (frags == 0)
-			{
-				return cr[CR_GOLD];
-			}
-			else
-			{
-				return cr[CR_GREEN];
-			}
-
-			break;
+			return cr[CR_GRAY];
 		}
-		case hudcolor_t::hudcolor_armor:
+		else if (health < 25)
 		{
-			// Invulnerability powerup and God Mode cheat turn Armor values gray
-			if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)])
-			{
-				return cr[CR_GRAY];
-			}
-			// color by armor type
-			else if (plyr->armortype >= 2)
-			{
-				return cr[CR_BLUE];
-			}
-			else if (plyr->armortype == 1)
-			{
-				return cr[CR_GREEN];
-			}
-			else if (plyr->armortype == 0)
-			{
-				return cr[CR_RED];
-			}
-/*
-			// alternatively, color by armor points
-			int armor = plyr->armorpoints;
-
-			if (armor < 25)
-			{
-				return cr[CR_RED];
-			}
-			else if (armor < 50)
-			{
-				return cr[CR_GOLD];
-			}
-			else if (armor <= 100)
-			{
-				return cr[CR_GREEN];
-			}
-			else
-			{
-				return cr[CR_BLUE];
-			}
-*/
-			break;
+			return cr[CR_RED];
 		}
+		else if (health < 50)
+		{
+			return cr[CR_GOLD];
+		}
+		else if (health <= 100)
+		{
+			return cr[CR_GREEN];
+		}
+		else
+		{
+			return cr[CR_BLUE];
+		}
+
+		break;
+	}
+	case hudcolor_t::hudcolor_frags:
+	{
+		int frags = st_fragscount;
+
+		if (frags < 0)
+		{
+			return cr[CR_RED];
+		}
+		else if (frags == 0)
+		{
+			return cr[CR_GOLD];
+		}
+		else
+		{
+			return cr[CR_GREEN];
+		}
+
+		break;
+	}
+	case hudcolor_t::hudcolor_armor:
+	{
+		// Invulnerability powerup and God Mode cheat turn Armor values gray
+		if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)])
+		{
+			return cr[CR_GRAY];
+		}
+		// color by armor type
+		else if (plyr->armortype >= 2)
+		{
+			return cr[CR_BLUE];
+		}
+		else if (plyr->armortype == 1)
+		{
+			return cr[CR_GREEN];
+		}
+		else if (plyr->armortype == 0)
+		{
+			return cr[CR_RED];
+		}
+		/*
+					// alternatively, color by armor points
+					int armor = plyr->armorpoints;
+
+					if (armor < 25)
+					{
+						return cr[CR_RED];
+					}
+					else if (armor < 50)
+					{
+						return cr[CR_GOLD];
+					}
+					else if (armor <= 100)
+					{
+						return cr[CR_GREEN];
+					}
+					else
+					{
+						return cr[CR_BLUE];
+					}
+		*/
+		break;
+	}
 	}
 
 	return nullptr;
 }
 
 // draw the gibbed death state frames in the Health widget in sync with the actual player sprite
-static inline void ST_DrawGibbedPlayerSprites ()
+static inline void ST_DrawGibbedPlayerSprites()
 {
 	state_t const* state = plyr->state;
 	spritedef_t* sprdef;
@@ -1969,8 +1981,8 @@ void ST_drawWidgets(bool refresh)
 			patch = W_CacheLumpNum<patch_t>(lump, pu_tags_t::PU_CACHE);
 
 			// (23,179) is the center of the Ammo widget
-			V_DrawPatch(ST_AMMOX - 21 - SHORT(patch->width)/2 + SHORT(patch->leftoffset),
-						179 - SHORT(patch->height)/2 + SHORT(patch->topoffset), patch);
+			V_DrawPatch(ST_AMMOX - 21 - SHORT(patch->width) / 2 + SHORT(patch->leftoffset),
+				179 - SHORT(patch->height) / 2 + SHORT(patch->topoffset), patch);
 
 		}
 
@@ -1982,7 +1994,7 @@ void ST_drawWidgets(bool refresh)
 		}
 	}
 
-	for (i=0;i<4; ++i)
+	for (i = 0;i < 4; ++i)
 	{
 		STlib_updateNum(&w_ammo[i], refresh);
 		STlib_updateNum(&w_maxammo[i], refresh);
@@ -2004,7 +2016,7 @@ void ST_drawWidgets(bool refresh)
 	// [crispy] show SSG availability in the Shotgun slot of the arms widget
 	st_shotguns = plyr->weaponowned[std::size_t(WeaponType::wp_shotgun)] | plyr->weaponowned[std::size_t(WeaponType::wp_supershotgun)];
 
-	for (i=0;i<6; ++i)
+	for (i = 0;i < 6; ++i)
 	{
 		STlib_updateMultIcon(&w_arms[i], refresh);
 	}
@@ -2017,7 +2029,7 @@ void ST_drawWidgets(bool refresh)
 
 	STlib_updateMultIcon(&w_faces, refresh);
 
-	for (i=0;i<3; ++i)
+	for (i = 0;i < 3; ++i)
 	{
 		STlib_updateMultIcon(&w_keyboxes[i], refresh);
 	}
@@ -2127,13 +2139,13 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 	// arms ownership widgets
 	for (size_t i{0}; i < 6; ++i)
 	{
-		DEH_snprintf(namebuf, 9, "STGNUM%d", i+2);
+		DEH_snprintf(namebuf, 9, "STGNUM%d", i + 2);
 
 		// gray #
 		callback(namebuf, &arms[i][0]);
 
 		// yellow #
-		arms[i][1] = shortnum[i+2];
+		arms[i][1] = shortnum[i + 2];
 	}
 
 	// face backgrounds for different color players
@@ -2159,24 +2171,24 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 		for (size_t j{0}; j < ST_NUMSTRAIGHTFACES; ++j)
 		{
 			DEH_snprintf(namebuf, 9, "STFST%d%d", i, j);
-				callback(namebuf, &faces[facenum]);
-				++facenum;
+			callback(namebuf, &faces[facenum]);
+			++facenum;
 		}
 		DEH_snprintf(namebuf, 9, "STFTR%d0", i);	// turn right
-			callback(namebuf, &faces[facenum]);
-			++facenum;
+		callback(namebuf, &faces[facenum]);
+		++facenum;
 		DEH_snprintf(namebuf, 9, "STFTL%d0", i);	// turn left
-			callback(namebuf, &faces[facenum]);
-			++facenum;
+		callback(namebuf, &faces[facenum]);
+		++facenum;
 		DEH_snprintf(namebuf, 9, "STFOUCH%d", i);	// ouch!
-			callback(namebuf, &faces[facenum]);
-			++facenum;
+		callback(namebuf, &faces[facenum]);
+		++facenum;
 		DEH_snprintf(namebuf, 9, "STFEVL%d", i);	// evil grin ;)
-			callback(namebuf, &faces[facenum]);
-			++facenum;
+		callback(namebuf, &faces[facenum]);
+		++facenum;
 		DEH_snprintf(namebuf, 9, "STFKILL%d", i);	// pissed off
-			callback(namebuf, &faces[facenum]);
-			++facenum;
+		callback(namebuf, &faces[facenum]);
+		++facenum;
 	}
 
 	callback(DEH_String("STFGOD0"), &faces[facenum]);
@@ -2185,7 +2197,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 	++facenum;
 }
 
-static void ST_loadCallback(std::string lumpname, patch_t**variable)
+static void ST_loadCallback(std::string lumpname, patch_t** variable)
 {
 	*variable = W_CacheLumpName<patch_t>(lumpname, pu_tags_t::PU_STATIC);
 }
@@ -2197,11 +2209,11 @@ void ST_loadGraphics()
 
 void ST_loadData()
 {
-	lu_palette = W_GetNumForName (DEH_String("PLAYPAL"));
+	lu_palette = W_GetNumForName(DEH_String("PLAYPAL"));
 	ST_loadGraphics();
 
 	// support combined card and skull keys (if provided by PWAD) i.e. only for display in the status bar
-	for (size_t i{std::size_t(CardType::NUMCARDS)}; i < std::size_t(CardType::NUMCARDS)+3; ++i)
+	for (size_t i{std::size_t(CardType::NUMCARDS)}; i < std::size_t(CardType::NUMCARDS) + 3; ++i)
 	{
 		char lumpname[9];
 		int lumpnum;
@@ -2209,11 +2221,11 @@ void ST_loadData()
 		DEH_snprintf(lumpname, 9, "STKEYS%d", i);
 		lumpnum = W_CheckNumForName(lumpname);
 
-		keys[i] = (lumpnum != -1) ? W_CacheLumpNum<patch_t>(lumpnum, pu_tags_t::PU_STATIC) : (patch_t*)keys[i-3];
+		keys[i] = (lumpnum != -1) ? W_CacheLumpNum<patch_t>(lumpnum, pu_tags_t::PU_STATIC) : (patch_t*)keys[i - 3];
 	}
 }
 
-static void ST_unloadCallback(std::string lumpname, patch_t**variable)
+static void ST_unloadCallback(std::string lumpname, patch_t** variable)
 {
 	W_ReleaseLumpName(lumpname);
 	*variable = NULL;
@@ -2271,158 +2283,158 @@ void ST_createWidgets()
 
 	// ready weapon ammo
 	STlib_initNum(&w_ready,
-			ST_AMMOX,
-			ST_AMMOY,
-			tallnum,
-			&plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)],
-			&st_statusbaron,
-			ST_AMMOWIDTH );
+		ST_AMMOX,
+		ST_AMMOY,
+		tallnum,
+		&plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)],
+		&st_statusbaron,
+		ST_AMMOWIDTH);
 
 	// the last weapon type
 	w_ready.data = (int)plyr->readyweapon;
 
 	// health percentage
 	STlib_initPercent(&w_health,
-				ST_HEALTHX,
-				ST_HEALTHY,
-				tallnum,
-				&plyr->health,
-				&st_statusbaron,
-				tallpercent);
+		ST_HEALTHX,
+		ST_HEALTHY,
+		tallnum,
+		&plyr->health,
+		&st_statusbaron,
+		tallpercent);
 
 	// arms background
 	STlib_initBinIcon(&w_armsbg,
-				ST_ARMSBGX,
-				ST_ARMSBGY,
-				armsbg,
-				&st_notdeathmatch,
-				&st_classicstatusbar);
+		ST_ARMSBGX,
+		ST_ARMSBGY,
+		armsbg,
+		&st_notdeathmatch,
+		&st_classicstatusbar);
 
 	// weapons owned
-	for(i=0;i<6; ++i)
+	for (i = 0;i < 6; ++i)
 	{
 		STlib_initMultIcon(&w_arms[i],
-							ST_ARMSX+(i%3)*ST_ARMSXSPACE,
-							ST_ARMSY+(i/3)*ST_ARMSYSPACE,
-							arms[i],
-							&plyr->weaponowned[i+1],
-							&st_armson);
+			ST_ARMSX + (i % 3) * ST_ARMSXSPACE,
+			ST_ARMSY + (i / 3) * ST_ARMSYSPACE,
+			arms[i],
+			&plyr->weaponowned[i + 1],
+			&st_armson);
 	}
 	// [crispy] show SSG availability in the Shotgun slot of the arms widget
 	w_arms[1].inum = &st_shotguns;
 
 	// frags sum
 	STlib_initNum(&w_frags,
-			ST_FRAGSX,
-			ST_FRAGSY,
-			tallnum,
-			&st_fragscount,
-			&st_fragson,
-			ST_FRAGSWIDTH);
+		ST_FRAGSX,
+		ST_FRAGSY,
+		tallnum,
+		&st_fragscount,
+		&st_fragson,
+		ST_FRAGSWIDTH);
 
 	// faces
 	STlib_initMultIcon(&w_faces,
-				ST_FACESX,
-				ST_FACESY,
-				faces,
-				&st_faceindex,
-				&st_statusbarface);
+		ST_FACESX,
+		ST_FACESY,
+		faces,
+		&st_faceindex,
+		&st_statusbarface);
 
 	// armor percentage - should be colored later
 	STlib_initPercent(&w_armor,
-				ST_ARMORX,
-				ST_ARMORY,
-				tallnum,
-				&plyr->armorpoints,
-				&st_statusbaron, tallpercent);
+		ST_ARMORX,
+		ST_ARMORY,
+		tallnum,
+		&plyr->armorpoints,
+		&st_statusbaron, tallpercent);
 
 	// keyboxes 0-2
 	STlib_initMultIcon(&w_keyboxes[0],
-				ST_KEY0X,
-				ST_KEY0Y,
-				keys,
-				&keyboxes[0],
-				&st_statusbaron);
+		ST_KEY0X,
+		ST_KEY0Y,
+		keys,
+		&keyboxes[0],
+		&st_statusbaron);
 
 	STlib_initMultIcon(&w_keyboxes[1],
-				ST_KEY1X,
-				ST_KEY1Y,
-				keys,
-				&keyboxes[1],
-				&st_statusbaron);
+		ST_KEY1X,
+		ST_KEY1Y,
+		keys,
+		&keyboxes[1],
+		&st_statusbaron);
 
 	STlib_initMultIcon(&w_keyboxes[2],
-				ST_KEY2X,
-				ST_KEY2Y,
-				keys,
-				&keyboxes[2],
-				&st_statusbaron);
+		ST_KEY2X,
+		ST_KEY2Y,
+		keys,
+		&keyboxes[2],
+		&st_statusbaron);
 
 	// ammo count (all four kinds)
 	STlib_initNum(&w_ammo[0],
-			ST_AMMO0X,
-			ST_AMMO0Y,
-			shortnum,
-			&plyr->ammo[0],
-			&st_statusbaron,
-			ST_AMMO0WIDTH);
+		ST_AMMO0X,
+		ST_AMMO0Y,
+		shortnum,
+		&plyr->ammo[0],
+		&st_statusbaron,
+		ST_AMMO0WIDTH);
 
 	STlib_initNum(&w_ammo[1],
-			ST_AMMO1X,
-			ST_AMMO1Y,
-			shortnum,
-			&plyr->ammo[1],
-			&st_statusbaron,
-			ST_AMMO1WIDTH);
+		ST_AMMO1X,
+		ST_AMMO1Y,
+		shortnum,
+		&plyr->ammo[1],
+		&st_statusbaron,
+		ST_AMMO1WIDTH);
 
 	STlib_initNum(&w_ammo[2],
-			ST_AMMO2X,
-			ST_AMMO2Y,
-			shortnum,
-			&plyr->ammo[2],
-			&st_statusbaron,
-			ST_AMMO2WIDTH);
+		ST_AMMO2X,
+		ST_AMMO2Y,
+		shortnum,
+		&plyr->ammo[2],
+		&st_statusbaron,
+		ST_AMMO2WIDTH);
 
 	STlib_initNum(&w_ammo[3],
-			ST_AMMO3X,
-			ST_AMMO3Y,
-			shortnum,
-			&plyr->ammo[3],
-			&st_statusbaron,
-			ST_AMMO3WIDTH);
+		ST_AMMO3X,
+		ST_AMMO3Y,
+		shortnum,
+		&plyr->ammo[3],
+		&st_statusbaron,
+		ST_AMMO3WIDTH);
 
 	// max ammo count (all four kinds)
 	STlib_initNum(&w_maxammo[0],
-			ST_MAXAMMO0X,
-			ST_MAXAMMO0Y,
-			shortnum,
-			&plyr->maxammo[0],
-			&st_statusbaron,
-			ST_MAXAMMO0WIDTH);
+		ST_MAXAMMO0X,
+		ST_MAXAMMO0Y,
+		shortnum,
+		&plyr->maxammo[0],
+		&st_statusbaron,
+		ST_MAXAMMO0WIDTH);
 
 	STlib_initNum(&w_maxammo[1],
-			ST_MAXAMMO1X,
-			ST_MAXAMMO1Y,
-			shortnum,
-			&plyr->maxammo[1],
-			&st_statusbaron,
-			ST_MAXAMMO1WIDTH);
+		ST_MAXAMMO1X,
+		ST_MAXAMMO1Y,
+		shortnum,
+		&plyr->maxammo[1],
+		&st_statusbaron,
+		ST_MAXAMMO1WIDTH);
 
 	STlib_initNum(&w_maxammo[2],
-			ST_MAXAMMO2X,
-			ST_MAXAMMO2Y,
-			shortnum,
-			&plyr->maxammo[2],
-			&st_statusbaron,
-			ST_MAXAMMO2WIDTH);
+		ST_MAXAMMO2X,
+		ST_MAXAMMO2Y,
+		shortnum,
+		&plyr->maxammo[2],
+		&st_statusbaron,
+		ST_MAXAMMO2WIDTH);
 
 	STlib_initNum(&w_maxammo[3],
-			ST_MAXAMMO3X,
-			ST_MAXAMMO3Y,
-			shortnum,
-			&plyr->maxammo[3],
-			&st_statusbaron,
-			ST_MAXAMMO3WIDTH);
+		ST_MAXAMMO3X,
+		ST_MAXAMMO3Y,
+		shortnum,
+		&plyr->maxammo[3],
+		&st_statusbaron,
+		ST_MAXAMMO3WIDTH);
 
 }
 
@@ -2432,7 +2444,7 @@ static bool st_stopped = true;
 void ST_Start()
 {
 	if (!st_stopped)
-	ST_Stop();
+		ST_Stop();
 
 	ST_initData();
 	ST_createWidgets();
@@ -2442,22 +2454,22 @@ void ST_Start()
 	// demos recorded by another player than player 1
 	if (netgame && consoleplayer)
 	{
-	char namebuf[8];
+		char namebuf[8];
 
-	DEH_snprintf(namebuf, 7, "STFB%d", consoleplayer);
-	faceback = W_CacheLumpName<patch_t>(namebuf, pu_tags_t::PU_STATIC);
+		DEH_snprintf(namebuf, 7, "STFB%d", consoleplayer);
+		faceback = W_CacheLumpName<patch_t>(namebuf, pu_tags_t::PU_STATIC);
 	}
 }
 
 void ST_Stop()
 {
 	if (st_stopped)
-	return;
+		return;
 
 #ifndef CRISPY_TRUECOLOR
 	I_SetPalette(W_CacheLumpNum<byte>(lu_palette, pu_tags_t::PU_CACHE));
 #else
-	I_SetPalette (0);
+	I_SetPalette(0);
 #endif
 
 	st_stopped = true;
@@ -2487,7 +2499,7 @@ void ST_Init()
 }
 
 // Demo Timer widget
-void ST_DrawDemoTime (const TimeType time)
+void ST_DrawDemoTime(const TimeType time)
 {
 	char buffer[16];
 	const TimeType mins = time / (60 * TICRATE);

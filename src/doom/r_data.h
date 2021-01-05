@@ -20,7 +20,7 @@
 
 constexpr size_t LOOKDIRMIN{110}; // [crispy] -110, actually
 constexpr size_t LOOKDIRMAX{90};
-constexpr size_t LOOKDIRS{(LOOKDIRMIN+1+LOOKDIRMAX)}; // [crispy] lookdir range: -110..0..90
+constexpr size_t LOOKDIRS{(LOOKDIRMIN + 1 + LOOKDIRMAX)}; // [crispy] lookdir range: -110..0..90
 
 // Retrieve column data for span blitting.
 byte* R_GetColumn(int tex, int col);

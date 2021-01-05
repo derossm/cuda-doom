@@ -163,7 +163,7 @@ static void ScanForBlock(void* start, void* end)
 		if (tag == pu_tags_t::PU_STATIC || tag == pu_tags_t::PU_LEVEL || tag == pu_tags_t::PU_LEVSPEC)
 		{
 			// Scan for pointers on the assumption that pointers are aligned on word boundaries (word size depending on pointer size):
-			auto mem{(void**)((byte*) block + sizeof(memblock_t))};
+			auto mem{(void**)((byte*)block + sizeof(memblock_t))};
 			auto len{(block->size - sizeof(memblock_t)) / sizeof(void*)};
 
 			for (size_t i{0}; i < len; ++i)

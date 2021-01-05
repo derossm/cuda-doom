@@ -7,10 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-	Graphical stuff related to the networking code:
-//
-// * The client waiting screen when we are waiting for the server to
-//	start the game.
+	DESCRIPTION:
+		Graphical stuff related to the networking code:
+		The client waiting screen when we are waiting for the server to start the game.
 \**********************************************************************************************************************************************/
 
 
@@ -69,7 +68,7 @@ static void OpenWaitDialog()
 
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_LEFT, cancel);
 	cudadoom::txt::SetWindowPosition(window, cudadoom::txt::HORIZ_CENTER, cudadoom::txt::VERT_BOTTOM,
-									cudadoom::txt::SCREEN_W / 2, cudadoom::txt::SCREEN_H - 9);
+		cudadoom::txt::SCREEN_W / 2, cudadoom::txt::SCREEN_H - 9);
 
 	old_max_players = 0;
 }
@@ -133,7 +132,7 @@ static void UpdateGUI()
 	{
 		cudadoom::txt::ColorType color = cudadoom::txt::ColorType::bright_white;
 
-		if ((int) i == net_client_wait_data.consoleplayer)
+		if ((int)i == net_client_wait_data.consoleplayer)
 		{
 			color = cudadoom::txt::ColorType::yellow;
 		}
@@ -189,7 +188,7 @@ static void BuildMasterStatusWindow()
 
 	cudadoom::txt::LowerWindow(master_window);
 	cudadoom::txt::SetWindowPosition(master_window, cudadoom::txt::HORIZ_CENTER, cudadoom::txt::VERT_CENTER,
-											cudadoom::txt::SCREEN_W / 2, cudadoom::txt::SCREEN_H - 4);
+		cudadoom::txt::SCREEN_W / 2, cudadoom::txt::SCREEN_H - 4);
 	cudadoom::txt::SetWindowAction(master_window, cudadoom::txt::HORIZ_LEFT, NULL);
 	cudadoom::txt::SetWindowAction(master_window, cudadoom::txt::HORIZ_CENTER, NULL);
 	cudadoom::txt::SetWindowAction(master_window, cudadoom::txt::HORIZ_RIGHT, NULL);
@@ -231,7 +230,7 @@ static void PrintSHA1Digest(std::string s, const byte* digest)
 
 	printf("%s: ", s);
 
-	for (i=0; i<sizeof(sha1_digest_t); ++i)
+	for (i = 0; i < sizeof(sha1_digest_t); ++i)
 	{
 		printf("%02x", digest[i]);
 	}
@@ -259,11 +258,11 @@ static void CheckSHA1Sums()
 	}
 
 	correct_wad = memcmp(net_local_wad_sha1sum,
-							net_client_wait_data.wad_sha1sum,
-							sizeof(sha1_digest_t)) == 0;
+		net_client_wait_data.wad_sha1sum,
+		sizeof(sha1_digest_t)) == 0;
 	correct_deh = memcmp(net_local_deh_sha1sum,
-							net_client_wait_data.deh_sha1sum,
-							sizeof(sha1_digest_t)) == 0;
+		net_client_wait_data.deh_sha1sum,
+		sizeof(sha1_digest_t)) == 0;
 	same_freedoom = net_client_wait_data.is_freedoom == net_local_is_freedoom;
 
 	if (correct_wad && correct_deh && same_freedoom)
@@ -282,8 +281,8 @@ static void CheckSHA1Sums()
 	{
 		printf("Warning: Mixing Freedoom with non-Freedoom\n");
 		printf("Local: %u Server: %i\n",
-				net_local_is_freedoom,
-				net_client_wait_data.is_freedoom);
+			net_local_is_freedoom,
+			net_client_wait_data.is_freedoom);
 	}
 
 	if (!correct_deh)
@@ -326,21 +325,21 @@ static void CheckSHA1Sums()
 	else if (!correct_wad)
 	{
 		cudadoom::txt::AddWidget(window, cudadoom::txt::NewLabel
-			("Your WAD directory does not match other players in the game.\n"
-				"Check that you have loaded the exact same WAD files as other\n"
-				"players.\n"));
+		("Your WAD directory does not match other players in the game.\n"
+			"Check that you have loaded the exact same WAD files as other\n"
+			"players.\n"));
 	}
 
 	if (!correct_deh)
 	{
 		cudadoom::txt::AddWidget(window, cudadoom::txt::NewLabel
-			("Your dehacked signature does not match other players in the\n"
-				"game. Check that you have loaded the same dehacked patches\n"
-				"as other players.\n"));
+		("Your dehacked signature does not match other players in the\n"
+			"game. Check that you have loaded the same dehacked patches\n"
+			"as other players.\n"));
 	}
 
 	cudadoom::txt::AddWidget(window, cudadoom::txt::NewLabel
-			("If you continue, this may cause your game to desync."));
+	("If you continue, this may cause your game to desync."));
 
 	had_warning = true;
 }
@@ -372,7 +371,7 @@ static void CheckAutoLaunch()
 		&& expected_nodes > 0)
 	{
 		nodes = net_client_wait_data.num_players
-				+ net_client_wait_data.num_drones;
+			+ net_client_wait_data.num_drones;
 
 		if (nodes >= expected_nodes)
 		{

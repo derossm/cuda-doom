@@ -7,6 +7,7 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+	DESCRIPTION:
 		Main dehacked code
 \**********************************************************************************************************************************************/
 
@@ -45,7 +46,7 @@ void DEH_Checksum(sha1_digest_t digest)
 
 	SHA1_Init(&sha1_context);
 
-	for (i=0; deh_section_types[i] != NULL; ++i)
+	for (i = 0; deh_section_types[i] != NULL; ++i)
 	{
 		if (deh_section_types[i]->sha1_hash != NULL)
 		{
@@ -61,7 +62,7 @@ static void InitializeSections()
 {
 	unsigned i;
 
-	for (i=0; deh_section_types[i] != NULL; ++i)
+	for (i = 0; deh_section_types[i] != NULL; ++i)
 	{
 		if (deh_section_types[i]->init != NULL)
 		{
@@ -80,7 +81,7 @@ void DEH_Init() // [crispy] un-static
 
 	if (M_CheckParm("-nocheats") > 0)
 	{
-	deh_apply_cheats = false;
+		deh_apply_cheats = false;
 	}
 
 	// Call init functions for all the section definitions.
@@ -100,7 +101,7 @@ static deh_section_t* GetSectionByName(std::string name)
 		return nullptr;
 	}
 
-	for (i=0; deh_section_types[i] != NULL; ++i)
+	for (i = 0; deh_section_types[i] != NULL; ++i)
 	{
 		if (!iequals(deh_section_types[i]->name, name))
 		{
@@ -171,13 +172,13 @@ bool DEH_ParseAssignment(std::string line, char** variable_name, char** value)
 	*variable_name = CleanString(line);
 
 	// value immediately follows the '='
-	*value = CleanString(p+1);
+	*value = CleanString(p + 1);
 
 	return true;
 }
 
-extern void DEH_SaveLineStart (deh_context_t* context);
-extern void DEH_RestoreLineStart (deh_context_t* context);
+extern void DEH_SaveLineStart(deh_context_t* context);
+extern void DEH_RestoreLineStart(deh_context_t* context);
 
 static bool CheckSignatures(deh_context_t* context)
 {
@@ -196,7 +197,7 @@ static bool CheckSignatures(deh_context_t* context)
 	}
 
 	// Check all signatures to see if one matches
-	for (i=0; deh_signatures[i] != NULL; ++i)
+	for (i = 0; deh_signatures[i] != NULL; ++i)
 	{
 		if (!strcmp(deh_signatures[i], line))
 		{
@@ -285,7 +286,7 @@ static void DEH_ParseContext(deh_context_t* context)
 		// Read the next line. We only allow the special extended parsing
 		// for the BEX [STRINGS] section.
 		extended = current_section != NULL
-				&& !iequals(current_section->name, "[STRINGS]");
+			&& !iequals(current_section->name, "[STRINGS]");
 		// [crispy] save pointer to start of line, just in case
 		DEH_SaveLineStart(context);
 		line = DEH_ReadLine(context, extended);
@@ -356,17 +357,17 @@ static void DEH_ParseContext(deh_context_t* context)
 					//printf("started %s tag\n", section_name);
 				}
 				else
-				if (prev_section != NULL)
-				{
-					// [crispy] try this line again with the previous line parser
-					DEH_RestoreLineStart(context);
-					current_section = prev_section;
-					prev_section = NULL;
-				}
-				else
-				{
-					//printf("unknown section name %s\n", section_name);
-				}
+					if (prev_section != NULL)
+					{
+						// [crispy] try this line again with the previous line parser
+						DEH_RestoreLineStart(context);
+						current_section = prev_section;
+						prev_section = NULL;
+					}
+					else
+					{
+						//printf("unknown section name %s\n", section_name);
+					}
 			}
 		}
 	}
@@ -421,8 +422,8 @@ void DEH_AutoLoadPatches(std::string path)
 	std::string filename;
 	glob_t* glob;
 
-	glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE|GLOB_FLAG_SORTED,
-							"*.deh", "*.bex", "*.hhe", "*.seh", NULL); // [crispy] *.bex
+	glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
+		"*.deh", "*.bex", "*.hhe", "*.seh", NULL); // [crispy] *.bex
 	for (;;)
 	{
 		filename = I_NextGlob(glob);

@@ -62,7 +62,7 @@ static void MouseSetCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::U
 	// Check if the same mouse button is used for a different action
 	// If so, set the other action(s) to -1 (unset)
 
-	for (i=0; i<arrlen(all_mouse_buttons); ++i)
+	for (i = 0; i < arrlen(all_mouse_buttons); ++i)
 	{
 		if (*all_mouse_buttons[i] == *variable
 			&& all_mouse_buttons[i] != variable)
@@ -72,7 +72,7 @@ static void MouseSetCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::U
 	}
 }
 
-static void AddMouseControl(cudadoom::txt::UNCAST_ARG(table), std::string label, int *var)
+static void AddMouseControl(cudadoom::txt::UNCAST_ARG(table), std::string label, int* var)
 {
 	cudadoom::txt::CAST_ARG(cudadoom::txt::txt_table_t, table);
 	cudadoom::txt::txt_mouse_input_t* mouse_input;
@@ -95,8 +95,8 @@ static void ConfigExtraButtons(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt:
 	cudadoom::txt::SetWindowHelpURL(window, WINDOW_HELP_URL);
 
 	cudadoom::txt::AddWidgets(window,
-					buttons_table = cudadoom::txt::NewTable(4),
-					NULL);
+		buttons_table = cudadoom::txt::NewTable(4),
+		NULL);
 
 	cudadoom::txt::SetColumnWidths(buttons_table, 16, 11, 14, 10);
 
@@ -140,86 +140,86 @@ void ConfigMouse(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 
 	if (gamemission == doom) // [crispy]
 	{
-	cudadoom::txt::AddWidgets(window,
-					cudadoom::txt::NewCheckBox("Enable mouse", &usemouse),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::NewInvertedCheckBox("Allow vertical mouse movement",
-											&novert),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::NewCheckBox("Grab mouse in windowed mode",
-									&grabmouse),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::NewCheckBox("Double click acts as \"use\"",
-									&dclick_use),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::AddWidgets(window,
+			cudadoom::txt::NewCheckBox("Enable mouse", &usemouse),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+			cudadoom::txt::NewInvertedCheckBox("Allow vertical mouse movement",
+				&novert),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+			cudadoom::txt::NewCheckBox("Grab mouse in windowed mode",
+				&grabmouse),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+			cudadoom::txt::NewCheckBox("Double click acts as \"use\"",
+				&dclick_use),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
 
-					cudadoom::txt::NewSeparator("Mouse motion"),
-					cudadoom::txt::NewLabel("Speed (h/turn)"),
-					cudadoom::txt::NewSpinControl(&mouseSensitivity, 0, 255), // [crispy] extended range
-					cudadoom::txt::NewLabel("Speed (h/strafe)"),
-					cudadoom::txt::NewSpinControl(&mouseSensitivity_x2, 0, 255), // [crispy] extended range
-					cudadoom::txt::NewLabel("Acceleration (h)"),
-					cudadoom::txt::NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
-					cudadoom::txt::NewLabel("Acceleration threshold (h)"),
-					cudadoom::txt::NewSpinControl(&mouse_threshold, 0, 32),
-					cudadoom::txt::NewLabel("Speed (v)"),
-					cudadoom::txt::NewSpinControl(&mouseSensitivity_y, 0, 255), // [crispy] extended range
-					cudadoom::txt::NewLabel("Acceleration (v)"),
-					cudadoom::txt::NewFloatSpinControl(&mouse_acceleration_y, 1.0, 5.0),
-					cudadoom::txt::NewLabel("Acceleration threshold (v)"),
-					cudadoom::txt::NewSpinControl(&mouse_threshold_y, 0, 32),
+			cudadoom::txt::NewSeparator("Mouse motion"),
+			cudadoom::txt::NewLabel("Speed (h/turn)"),
+			cudadoom::txt::NewSpinControl(&mouseSensitivity, 0, 255), // [crispy] extended range
+			cudadoom::txt::NewLabel("Speed (h/strafe)"),
+			cudadoom::txt::NewSpinControl(&mouseSensitivity_x2, 0, 255), // [crispy] extended range
+			cudadoom::txt::NewLabel("Acceleration (h)"),
+			cudadoom::txt::NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
+			cudadoom::txt::NewLabel("Acceleration threshold (h)"),
+			cudadoom::txt::NewSpinControl(&mouse_threshold, 0, 32),
+			cudadoom::txt::NewLabel("Speed (v)"),
+			cudadoom::txt::NewSpinControl(&mouseSensitivity_y, 0, 255), // [crispy] extended range
+			cudadoom::txt::NewLabel("Acceleration (v)"),
+			cudadoom::txt::NewFloatSpinControl(&mouse_acceleration_y, 1.0, 5.0),
+			cudadoom::txt::NewLabel("Acceleration threshold (v)"),
+			cudadoom::txt::NewSpinControl(&mouse_threshold_y, 0, 32),
 
-					cudadoom::txt::NewSeparator("Buttons"),
-					NULL);
+			cudadoom::txt::NewSeparator("Buttons"),
+			NULL);
 	}
 	else
 	{
-	cudadoom::txt::AddWidgets(window,
-					cudadoom::txt::NewCheckBox("Enable mouse", &usemouse),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::NewInvertedCheckBox("Allow vertical mouse movement",
-											&novert),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::NewCheckBox("Grab mouse in windowed mode",
-									&grabmouse),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::NewCheckBox("Double click acts as \"use\"",
-									&dclick_use),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::AddWidgets(window,
+			cudadoom::txt::NewCheckBox("Enable mouse", &usemouse),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+			cudadoom::txt::NewInvertedCheckBox("Allow vertical mouse movement",
+				&novert),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+			cudadoom::txt::NewCheckBox("Grab mouse in windowed mode",
+				&grabmouse),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+			cudadoom::txt::NewCheckBox("Double click acts as \"use\"",
+				&dclick_use),
+			cudadoom::txt::TABLE_OVERFLOW_RIGHT,
 
-					cudadoom::txt::NewSeparator("Mouse motion"),
-					cudadoom::txt::NewLabel("Speed"),
-					cudadoom::txt::NewSpinControl(&mouseSensitivity, 1, 256),
-					cudadoom::txt::NewLabel("Acceleration"),
-					cudadoom::txt::NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
-					cudadoom::txt::NewLabel("Acceleration threshold"),
-					cudadoom::txt::NewSpinControl(&mouse_threshold, 0, 32),
+			cudadoom::txt::NewSeparator("Mouse motion"),
+			cudadoom::txt::NewLabel("Speed"),
+			cudadoom::txt::NewSpinControl(&mouseSensitivity, 1, 256),
+			cudadoom::txt::NewLabel("Acceleration"),
+			cudadoom::txt::NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
+			cudadoom::txt::NewLabel("Acceleration threshold"),
+			cudadoom::txt::NewSpinControl(&mouse_threshold, 0, 32),
 
-					cudadoom::txt::NewSeparator("Buttons"),
-					NULL);
+			cudadoom::txt::NewSeparator("Buttons"),
+			NULL);
 	}
 
 	AddMouseControl(window, "Fire/Attack", &mousebfire);
 	AddMouseControl(window, "Use", &mousebuse);
 
 	cudadoom::txt::AddWidget(window,
-					cudadoom::txt::NewButton2("More controls...", ConfigExtraButtons, NULL));
+		cudadoom::txt::NewButton2("More controls...", ConfigExtraButtons, NULL));
 }
 
 void BindMouseVariables()
 {
-	M_BindIntVariable("use_mouse",				&usemouse);
-	M_BindIntVariable("novert",					&novert);
-	M_BindIntVariable("grabmouse",				&grabmouse);
-	M_BindIntVariable("mouse_sensitivity",		&mouseSensitivity);
-	M_BindIntVariable("mouse_threshold",			&mouse_threshold);
-	M_BindFloatVariable("mouse_acceleration",	&mouse_acceleration);
+	M_BindIntVariable("use_mouse", &usemouse);
+	M_BindIntVariable("novert", &novert);
+	M_BindIntVariable("grabmouse", &grabmouse);
+	M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
+	M_BindIntVariable("mouse_threshold", &mouse_threshold);
+	M_BindFloatVariable("mouse_acceleration", &mouse_acceleration);
 	if (gamemission == doom) // [crispy]
 	{
-	M_BindIntVariable("mouse_sensitivity_x2",	&mouseSensitivity_x2);
-	M_BindIntVariable("mouse_sensitivity_y",		&mouseSensitivity_y);
-	M_BindIntVariable("mouse_threshold_y",		&mouse_threshold_y);
-	M_BindFloatVariable("mouse_acceleration_y", &mouse_acceleration_y);
-	M_BindIntVariable("crispy_mouselook",		&crispy->mouselook);
+		M_BindIntVariable("mouse_sensitivity_x2", &mouseSensitivity_x2);
+		M_BindIntVariable("mouse_sensitivity_y", &mouseSensitivity_y);
+		M_BindIntVariable("mouse_threshold_y", &mouse_threshold_y);
+		M_BindFloatVariable("mouse_acceleration_y", &mouse_acceleration_y);
+		M_BindIntVariable("crispy_mouselook", &crispy->mouselook);
 	}
 }

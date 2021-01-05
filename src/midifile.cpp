@@ -18,12 +18,12 @@ static bool CheckChunkHeader(chunk_header_t* chunk, std::string expected_id)
 {
 	bool result;
 
-	result = (memcmp((char*) chunk->chunk_id, expected_id, 4) == 0);
+	result = (memcmp((char*)chunk->chunk_id, expected_id, 4) == 0);
 
 	if (!result)
 	{
 		fprintf(stderr, "CheckChunkHeader: Expected '%s' chunk header, got '%c%c%c%c'\n",
-						expected_id, chunk->chunk_id[0], chunk->chunk_id[1], chunk->chunk_id[2], chunk->chunk_id[3]);
+			expected_id, chunk->chunk_id[0], chunk->chunk_id[1], chunk->chunk_id[2], chunk->chunk_id[3]);
 	}
 
 	return result;
@@ -39,7 +39,7 @@ static bool ReadByte(byte* result, FILE* stream)
 	}
 	else
 	{
-		*result = (byte) c;
+		*result = (byte)c;
 
 		return true;
 	}
@@ -88,7 +88,7 @@ static void* ReadByteSequence(unsigned num_bytes, FILE* stream)
 	}
 
 	// Read the data:
-	for (size_t i{0}; i<num_bytes; ++i)
+	for (size_t i{0}; i < num_bytes; ++i)
 	{
 		if (!ReadByte(&result[i], stream))
 		{
@@ -136,7 +136,7 @@ static bool ReadChannelEvent(midi_EventType* event, byte eventType, bool two_par
 }
 
 // Read sysex event:
-static bool ReadSysExEvent(midi_EventType *event, midi_EventType_t eventType, FILE* stream)
+static bool ReadSysExEvent(midi_EventType* event, midi_EventType_t eventType, FILE* stream)
 {
 	event->eventType = eventType;
 
@@ -159,7 +159,7 @@ static bool ReadSysExEvent(midi_EventType *event, midi_EventType_t eventType, FI
 }
 
 // Read meta event:
-static bool ReadMetaEvent(midi_EventType *event, FILE* stream)
+static bool ReadMetaEvent(midi_EventType* event, FILE* stream)
 {
 	byte b = 0;
 
@@ -193,7 +193,7 @@ static bool ReadMetaEvent(midi_EventType *event, FILE* stream)
 	return true;
 }
 
-static bool ReadEvent(midi_EventType *event, unsigned* last_EventType, FILE* stream)
+static bool ReadEvent(midi_EventType* event, unsigned* last_EventType, FILE* stream)
 {
 	byte eventType = 0;
 
@@ -232,34 +232,34 @@ static bool ReadEvent(midi_EventType *event, unsigned* last_EventType, FILE* str
 	switch (eventType & 0xf0)
 	{
 		// Two parameter channel events:
-		case midi_EventType_t::MIDI_EVENT_NOTE_OFF:
-		case midi_EventType_t::MIDI_EVENT_NOTE_ON:
-		case midi_EventType_t::MIDI_EVENT_AFTERTOUCH:
-		case midi_EventType_t::MIDI_EVENT_CONTROLLER:
-		case midi_EventType_t::MIDI_EVENT_PITCH_BEND:
-			return ReadChannelEvent(event, eventType, true, stream);
+	case midi_EventType_t::MIDI_EVENT_NOTE_OFF:
+	case midi_EventType_t::MIDI_EVENT_NOTE_ON:
+	case midi_EventType_t::MIDI_EVENT_AFTERTOUCH:
+	case midi_EventType_t::MIDI_EVENT_CONTROLLER:
+	case midi_EventType_t::MIDI_EVENT_PITCH_BEND:
+		return ReadChannelEvent(event, eventType, true, stream);
 
 		// Single parameter channel events:
-		case midi_EventType_t::MIDI_EVENT_PROGRAM_CHANGE:
-		case midi_EventType_t::MIDI_EVENT_CHAN_AFTERTOUCH:
-			return ReadChannelEvent(event, eventType, false, stream);
+	case midi_EventType_t::MIDI_EVENT_PROGRAM_CHANGE:
+	case midi_EventType_t::MIDI_EVENT_CHAN_AFTERTOUCH:
+		return ReadChannelEvent(event, eventType, false, stream);
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	// Specific value?
 	switch (eventType)
 	{
-		case midi_EventType_t::MIDI_EVENT_SYSEX:
-		case midi_EventType_t::MIDI_EVENT_SYSEX_SPLIT:
-			return ReadSysExEvent(event, static_cast<midi_EventType_t>(eventType), stream);
+	case midi_EventType_t::MIDI_EVENT_SYSEX:
+	case midi_EventType_t::MIDI_EVENT_SYSEX_SPLIT:
+		return ReadSysExEvent(event, static_cast<midi_EventType_t>(eventType), stream);
 
-		case midi_EventType_t::MIDI_EVENT_META:
-			return ReadMetaEvent(event, stream);
+	case midi_EventType_t::MIDI_EVENT_META:
+		return ReadMetaEvent(event, stream);
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	fprintf(stderr, "ReadEvent: Unknown MIDI event type: 0x%x\n", eventType);
@@ -267,23 +267,23 @@ static bool ReadEvent(midi_EventType *event, unsigned* last_EventType, FILE* str
 }
 
 // Free an event:
-static void FreeEvent(midi_EventType *event)
+static void FreeEvent(midi_EventType* event)
 {
 	// Some event types have dynamically allocated buffers assigned to them that must be freed.
 	switch (event->eventType)
 	{
-		case midi_EventType_t::MIDI_EVENT_SYSEX:
-		case midi_EventType_t::MIDI_EVENT_SYSEX_SPLIT:
-			free(event->data.sysex.data);
-			break;
+	case midi_EventType_t::MIDI_EVENT_SYSEX:
+	case midi_EventType_t::MIDI_EVENT_SYSEX_SPLIT:
+		free(event->data.sysex.data);
+		break;
 
-		case midi_EventType_t::MIDI_EVENT_META:
-			free(event->data.meta.data);
-			break;
+	case midi_EventType_t::MIDI_EVENT_META:
+		free(event->data.meta.data);
+		break;
 
-		default:
-			// Nothing to do.
-			break;
+	default:
+		// Nothing to do.
+		break;
 	}
 }
 
@@ -372,7 +372,7 @@ static bool ReadAllTracks(midi_file_t* file, FILE* stream)
 	memset(file->tracks, 0, sizeof(midi_track_t) * file->num_tracks);
 
 	// Read each track:
-	for (size_t i{0}; i<file->num_tracks; ++i)
+	for (size_t i{0}; i < file->num_tracks; ++i)
 	{
 		if (!ReadTrack(&file->tracks[i], stream))
 		{
@@ -417,7 +417,7 @@ void MIDI_FreeFile(midi_file_t* file)
 
 	if (file->tracks != nullptr)
 	{
-		for (i=0; i<file->num_tracks; ++i)
+		for (i = 0; i < file->num_tracks; ++i)
 		{
 			FreeTrack(&file->tracks[i]);
 		}
@@ -504,7 +504,7 @@ unsigned MIDI_GetDeltaTime(midi_track_iter_t* iter)
 {
 	if (iter->position < iter->track->num_events)
 	{
-		midi_EventType *next_event;
+		midi_EventType* next_event;
 
 		next_event = &iter->track->events[iter->position];
 
@@ -539,7 +539,7 @@ unsigned MIDI_GetFileTimeDivision(midi_file_t* file)
 	// Negative time division indicates SMPTE time and must be handled differently.
 	if (result < 0)
 	{
-		return (int)(-(result/256)) * (int)(result & 0xFF);
+		return (int)(-(result / 256)) * (int)(result & 0xFF);
 	}
 	else
 	{
@@ -558,35 +558,35 @@ std::string MIDI_EventTypeToString(midi_EventType_t eventType)
 {
 	switch (eventType)
 	{
-		case midi_EventType_t::MIDI_EVENT_NOTE_OFF:
-			return "MIDI_EVENT_NOTE_OFF";
-		case midi_EventType_t::MIDI_EVENT_NOTE_ON:
-			return "MIDI_EVENT_NOTE_ON";
-		case midi_EventType_t::MIDI_EVENT_AFTERTOUCH:
-			return "MIDI_EVENT_AFTERTOUCH";
-		case midi_EventType_t::MIDI_EVENT_CONTROLLER:
-			return "MIDI_EVENT_CONTROLLER";
-		case midi_EventType_t::MIDI_EVENT_PROGRAM_CHANGE:
-			return "MIDI_EVENT_PROGRAM_CHANGE";
-		case midi_EventType_t::MIDI_EVENT_CHAN_AFTERTOUCH:
-			return "MIDI_EVENT_CHAN_AFTERTOUCH";
-		case midi_EventType_t::MIDI_EVENT_PITCH_BEND:
-			return "MIDI_EVENT_PITCH_BEND";
-		case midi_EventType_t::MIDI_EVENT_SYSEX:
-			return "MIDI_EVENT_SYSEX";
-		case midi_EventType_t::MIDI_EVENT_SYSEX_SPLIT:
-			return "MIDI_EVENT_SYSEX_SPLIT";
-		case midi_EventType_t::MIDI_EVENT_META:
-			return "MIDI_EVENT_META";
+	case midi_EventType_t::MIDI_EVENT_NOTE_OFF:
+		return "MIDI_EVENT_NOTE_OFF";
+	case midi_EventType_t::MIDI_EVENT_NOTE_ON:
+		return "MIDI_EVENT_NOTE_ON";
+	case midi_EventType_t::MIDI_EVENT_AFTERTOUCH:
+		return "MIDI_EVENT_AFTERTOUCH";
+	case midi_EventType_t::MIDI_EVENT_CONTROLLER:
+		return "MIDI_EVENT_CONTROLLER";
+	case midi_EventType_t::MIDI_EVENT_PROGRAM_CHANGE:
+		return "MIDI_EVENT_PROGRAM_CHANGE";
+	case midi_EventType_t::MIDI_EVENT_CHAN_AFTERTOUCH:
+		return "MIDI_EVENT_CHAN_AFTERTOUCH";
+	case midi_EventType_t::MIDI_EVENT_PITCH_BEND:
+		return "MIDI_EVENT_PITCH_BEND";
+	case midi_EventType_t::MIDI_EVENT_SYSEX:
+		return "MIDI_EVENT_SYSEX";
+	case midi_EventType_t::MIDI_EVENT_SYSEX_SPLIT:
+		return "MIDI_EVENT_SYSEX_SPLIT";
+	case midi_EventType_t::MIDI_EVENT_META:
+		return "MIDI_EVENT_META";
 
-		default:
-			return "(unknown)";
+	default:
+		return "(unknown)";
 	}
 }
 
 void PrintTrack(midi_track_t* track)
 {
-	for (size_t i{0}; i<track->num_events; ++i)
+	for (size_t i{0}; i < track->num_events; ++i)
 	{
 		midi_EventType* event = &track->events[i];
 
@@ -597,29 +597,29 @@ void PrintTrack(midi_track_t* track)
 
 		printf("Event type: %s (%i)\n", MIDI_EventTypeToString(event->eventType), event->eventType);
 
-		switch(event->eventType)
+		switch (event->eventType)
 		{
-			case midi_EventType_t::MIDI_EVENT_NOTE_OFF:
-			case midi_EventType_t::MIDI_EVENT_NOTE_ON:
-			case midi_EventType_t::MIDI_EVENT_AFTERTOUCH:
-			case midi_EventType_t::MIDI_EVENT_CONTROLLER:
-			case midi_EventType_t::MIDI_EVENT_PROGRAM_CHANGE:
-			case midi_EventType_t::MIDI_EVENT_CHAN_AFTERTOUCH:
-			case midi_EventType_t::MIDI_EVENT_PITCH_BEND:
-				printf("\tChannel: %u\n", event->data.channel.channel);
-				printf("\tParameter 1: %u\n", event->data.channel.param1);
-				printf("\tParameter 2: %u\n", event->data.channel.param2);
-				break;
+		case midi_EventType_t::MIDI_EVENT_NOTE_OFF:
+		case midi_EventType_t::MIDI_EVENT_NOTE_ON:
+		case midi_EventType_t::MIDI_EVENT_AFTERTOUCH:
+		case midi_EventType_t::MIDI_EVENT_CONTROLLER:
+		case midi_EventType_t::MIDI_EVENT_PROGRAM_CHANGE:
+		case midi_EventType_t::MIDI_EVENT_CHAN_AFTERTOUCH:
+		case midi_EventType_t::MIDI_EVENT_PITCH_BEND:
+			printf("\tChannel: %u\n", event->data.channel.channel);
+			printf("\tParameter 1: %u\n", event->data.channel.param1);
+			printf("\tParameter 2: %u\n", event->data.channel.param2);
+			break;
 
-			case midi_EventType_t::MIDI_EVENT_SYSEX:
-			case midi_EventType_t::MIDI_EVENT_SYSEX_SPLIT:
-				printf("\tLength: %u\n", event->data.sysex.length);
-				break;
+		case midi_EventType_t::MIDI_EVENT_SYSEX:
+		case midi_EventType_t::MIDI_EVENT_SYSEX_SPLIT:
+			printf("\tLength: %u\n", event->data.sysex.length);
+			break;
 
-			case midi_EventType_t::MIDI_EVENT_META:
-				printf("\tMeta type: %u\n", event->data.meta.type);
-				printf("\tLength: %u\n", event->data.meta.length);
-				break;
+		case midi_EventType_t::MIDI_EVENT_META:
+			printf("\tMeta type: %u\n", event->data.meta.type);
+			printf("\tLength: %u\n", event->data.meta.length);
+			break;
 		}
 	}
 }

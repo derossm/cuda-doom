@@ -8,10 +8,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		Network packet I/O. Base layer for sending/receiving packets,
-//		through the network module system
+		Network packet I/O. Base layer for sending/receiving packets, through the network module system
 \**********************************************************************************************************************************************/
-
 
 #include "i_system.h"
 #include "net_defs.h"
@@ -44,7 +42,7 @@ net_addr_t* NET_ResolveAddress(net_context* context, std::string addr)
 	int i;
 	net_addr_t* result;
 
-	for (i=0; i<context->num_modules; ++i)
+	for (i = 0; i < context->num_modules; ++i)
 	{
 		result = context->mods[i]->ResolveAddress(addr);
 
@@ -67,21 +65,21 @@ void NET_SendBroadcast(net_context* context, net_packet_t* packet)
 {
 	int i;
 
-	for (i=0; i<context->num_modules; ++i)
+	for (i = 0; i < context->num_modules; ++i)
 	{
 		context->mods[i]->SendPacket(&net_broadcast_addr, packet);
 	}
 }
 
 bool NET_RecvPacket(net_context* context,
-						net_addr_t**addr,
-						net_packet_t**packet)
+	net_addr_t** addr,
+	net_packet_t** packet)
 {
 	int i;
 
 	// check all modules for new packets
 
-	for (i=0; i<context->num_modules; ++i)
+	for (i = 0; i < context->num_modules; ++i)
 	{
 		if (context->mods[i]->RecvPacket(addr, packet))
 		{

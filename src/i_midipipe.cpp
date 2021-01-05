@@ -122,7 +122,7 @@ static bool WritePipe(net_packet_t* packet)
 {
 	DWORD bytes_written;
 	bool ok = WriteFile(midi_process_in_writer, packet->data, packet->len,
-						&bytes_written, NULL);
+		&bytes_written, NULL);
 
 	return ok;
 }
@@ -154,7 +154,7 @@ static bool ExpectPipe(net_packet_t* packet)
 	{
 		// Wait until we see exactly the amount of data we expect on the pipe.
 		ok = PeekNamedPipe(midi_process_out_reader, NULL, 0, NULL,
-							&pipe_buffer_read, NULL);
+			&pipe_buffer_read, NULL);
 		if (!ok)
 		{
 			break;
@@ -167,7 +167,7 @@ static bool ExpectPipe(net_packet_t* packet)
 
 		// Read precisely the number of bytes we're expecting, and no more.
 		ok = ReadFile(midi_process_out_reader, pipe_buffer, packet->len,
-						&pipe_buffer_read, NULL);
+			&pipe_buffer_read, NULL);
 		if (!ok || pipe_buffer_read != packet->len)
 		{
 			break;
@@ -193,7 +193,7 @@ static bool ExpectPipe(net_packet_t* packet)
 //
 // A reimplementation of PathRemoveFileSpec that doesn't bring in Shlwapi
 //
-void RemoveFileSpec(TCHAR *path, size_t size)
+void RemoveFileSpec(TCHAR* path, size_t size)
 {
 	TCHAR* fp = NULL;
 
@@ -460,7 +460,7 @@ bool I_MidiPipe_InitServer()
 	}
 
 	// Define the command line. Version, Sample Rate, and handles follow the executable name.
-	M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu", snd_samplerate, (size_t) midi_process_in_reader, (size_t) midi_process_out_writer);
+	M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu", snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
 	cmdline = std::string(mod + " \"" + PACKAGE_STRING + "\" " + params_buf);
 
 	// Launch the subprocess

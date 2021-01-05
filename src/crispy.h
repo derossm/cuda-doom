@@ -25,11 +25,11 @@
 #endif
 #ifndef MAX
 	//#define MAX(a,b) (((a)>(b))?(a):(b))
-	#define MAX(a,b) [](auto x, auto y){return std::max(x, y);}(a, b)
+#define MAX(a,b) [](auto x, auto y){return std::max(x, y);}(a, b)
 #endif
 #ifndef BETWEEN
 	//#define BETWEEN(l,u,x) (((l)>(x))?(l):((x)>(u))?(u):(x))
-	#define BETWEEN(l,u,x) [](auto v, auto lo, auto hi){return std::clamp(v, lo, hi);}(x, l, u)
+#define BETWEEN(l,u,x) [](auto v, auto lo, auto hi){return std::clamp(v, lo, hi);}(x, l, u)
 #endif
 
 struct crispy_t
@@ -129,10 +129,10 @@ void CheckCrispySingleplayer(bool singleplayer)
 
 enum
 {
-	REINIT_FRAMEBUFFERS		= 1,
-	REINIT_RENDERER			= 2,
-	REINIT_TEXTURES			= 4,
-	REINIT_ASPECTRATIO		= 8
+	REINIT_FRAMEBUFFERS = 1,
+	REINIT_RENDERER = 2,
+	REINIT_TEXTURES = 4,
+	REINIT_ASPECTRATIO = 8
 };
 
 enum

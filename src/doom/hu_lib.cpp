@@ -8,10 +8,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// DESCRIPTION: heads-up text and input code
+	DESCRIPTION:
+		heads-up text and input code
 \**********************************************************************************************************************************************/
-
-
 
 #include "doomdef.h"
 #include "doomkeys.h"
@@ -30,8 +29,7 @@
 extern bool automapactive;	// in AM_map.c
 
 void HUlib_init()
-{
-}
+{}
 
 void HUlib_clearTextLine(hu_textline_t* t)
 {
@@ -53,13 +51,13 @@ bool HUlib_addCharToTextLine(hu_textline_t* t, char ch)
 {
 
 	if (t->len == HU_MAXLINELENGTH)
-	return false;
+		return false;
 	else
 	{
-	t->l[t->len++] = ch;
-	t->l[t->len] = 0;
-	t->needsupdate = 4;
-	return true;
+		t->l[t->len++] = ch;
+		t->l[t->len] = 0;
+		t->needsupdate = 4;
+		return true;
 	}
 
 }
@@ -70,9 +68,9 @@ bool HUlib_delCharFromTextLine(hu_textline_t* t)
 	if (!t->len) return false;
 	else
 	{
-	t->l[--t->len] = 0;
-	t->needsupdate = 4;
-	return true;
+		t->l[--t->len] = 0;
+		t->needsupdate = 4;
+		return true;
 	}
 
 }
@@ -89,49 +87,49 @@ void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor)
 	// draw the new stuff
 	x = l->x;
 	y = l->y; // [crispy] support line breaks
-	for (i=0;i<l->len; ++i)
+	for (i = 0;i < l->len; ++i)
 	{
-	c = toupper(l->l[i]);
-	// [crispy] support multi-colored text lines
-	if (c == cr_esc)
-	{
-		if (l->l[i+1] >= '0' && l->l[i+1] <= '0' + CRMAX - 1)
+		c = toupper(l->l[i]);
+		// [crispy] support multi-colored text lines
+		if (c == cr_esc)
 		{
-			++i;
-			dp_translation = (crispy->coloredhud & COLOREDHUD_TEXT) ? cr[(int) (l->l[i] - '0')] : NULL;
+			if (l->l[i + 1] >= '0' && l->l[i + 1] <= '0' + CRMAX - 1)
+			{
+				++i;
+				dp_translation = (crispy->coloredhud & COLOREDHUD_TEXT) ? cr[(int)(l->l[i] - '0')] : NULL;
+			}
 		}
-	}
-	else
-	// [crispy] support line breaks
-	if (c == '\n')
-	{
-		x = l->x;
-		y += SHORT(l->f[0]->height) + 1;
-	}
-	else
-	if (c != ' '
-		&& c >= l->sc
-		&& c <= '_')
-	{
-		w = SHORT(l->f[c - l->sc]->width);
-		if (x+w > ORIGWIDTH + WIDESCREENDELTA)
-		break;
-		V_DrawPatchDirect(x, y, l->f[c - l->sc]);
-		x += w;
-	}
-	else
-	{
-		x += 4;
-		if (x >= ORIGWIDTH + WIDESCREENDELTA)
-		break;
-	}
+		else
+			// [crispy] support line breaks
+			if (c == '\n')
+			{
+				x = l->x;
+				y += SHORT(l->f[0]->height) + 1;
+			}
+			else
+				if (c != ' '
+					&& c >= l->sc
+					&& c <= '_')
+				{
+					w = SHORT(l->f[c - l->sc]->width);
+					if (x + w > ORIGWIDTH + WIDESCREENDELTA)
+						break;
+					V_DrawPatchDirect(x, y, l->f[c - l->sc]);
+					x += w;
+				}
+				else
+				{
+					x += 4;
+					if (x >= ORIGWIDTH + WIDESCREENDELTA)
+						break;
+				}
 	}
 
 	// draw the cursor if requested
 	if (drawcursor
-	&& x + SHORT(l->f['_' - l->sc]->width) <= ORIGWIDTH + WIDESCREENDELTA)
+		&& x + SHORT(l->f['_' - l->sc]->width) <= ORIGWIDTH + WIDESCREENDELTA)
 	{
-	V_DrawPatchDirect(x, y, l->f['_' - l->sc]);
+		V_DrawPatchDirect(x, y, l->f['_' - l->sc]);
 	}
 }
 
@@ -148,30 +146,30 @@ void HUlib_eraseTextLine(hu_textline_t* l)
 	// (because of a recent change back from the automap)
 
 	if (!automapactive &&
-	viewwindowx && (l->needsupdate || crispy->cleanscreenshot || crispy->screenshotmsg == 4))
+		viewwindowx && (l->needsupdate || crispy->cleanscreenshot || crispy->screenshotmsg == 4))
 	{
-	lh = (SHORT(l->f[0]->height) + 1) << crispy->hires;
-	// [crispy] support line breaks
-	yoffset = 1;
-	for (y = 0; y < l->len; ++y)
-	{
-		if (l->l[y] == '\n')
+		lh = (SHORT(l->f[0]->height) + 1) << crispy->hires;
+		// [crispy] support line breaks
+		yoffset = 1;
+		for (y = 0; y < l->len; ++y)
 		{
-			++yoffset;
+			if (l->l[y] == '\n')
+			{
+				++yoffset;
+			}
 		}
-	}
-	lh *= yoffset;
-	for (y=(l->y << crispy->hires),yoffset=y*SCREENWIDTH ; y<(l->y << crispy->hires)+lh ; ++y, yoffset+=SCREENWIDTH)
-	{
-		if (y < viewwindowy || y >= viewwindowy + viewheight)
-		R_VideoErase(yoffset, SCREENWIDTH); // erase entire line
-		else
+		lh *= yoffset;
+		for (y = (l->y << crispy->hires), yoffset = y * SCREENWIDTH; y < (l->y << crispy->hires) + lh; ++y, yoffset += SCREENWIDTH)
 		{
-		R_VideoErase(yoffset, viewwindowx); // erase left border
-		R_VideoErase(yoffset + viewwindowx + scaledviewwidth, viewwindowx);
-		// erase right border
+			if (y < viewwindowy || y >= viewwindowy + viewheight)
+				R_VideoErase(yoffset, SCREENWIDTH); // erase entire line
+			else
+			{
+				R_VideoErase(yoffset, viewwindowx); // erase left border
+				R_VideoErase(yoffset + viewwindowx + scaledviewwidth, viewwindowx);
+				// erase right border
+			}
 		}
-	}
 	}
 
 	if (l->needsupdate) l->needsupdate--;
@@ -187,10 +185,10 @@ void HUlib_initSText(hu_stext_t* s, int x, int y, int h, patch_t** font, int sta
 	s->on = on;
 	s->laston = true;
 	s->cl = 0;
-	for (i=0;i<h; ++i)
-	HUlib_initTextLine(&s->l[i],
-				x, y - i*(SHORT(font[0]->height)+1),
-				font, startchar);
+	for (i = 0;i < h; ++i)
+		HUlib_initTextLine(&s->l[i],
+			x, y - i * (SHORT(font[0]->height) + 1),
+			font, startchar);
 
 }
 
@@ -201,12 +199,12 @@ void HUlib_addLineToSText(hu_stext_t* s)
 
 	// add a clear line
 	if (++s->cl == s->h)
-	s->cl = 0;
+		s->cl = 0;
 	HUlib_clearTextLine(&s->l[s->cl]);
 
 	// everything needs updating
-	for (i=0 ; i<s->h ; ++i)
-	s->l[i].needsupdate = 4;
+	for (i = 0; i < s->h; ++i)
+		s->l[i].needsupdate = 4;
 
 }
 
@@ -239,7 +237,7 @@ void HUlib_drawSText(hu_stext_t* s)
 	}
 
 	// draw everything
-	for (i=0 ; i<s->h ; ++i)
+	for (i = 0; i < s->h; ++i)
 	{
 		idx = s->cl - i;
 		if (idx < 0)
@@ -259,7 +257,7 @@ void HUlib_eraseSText(hu_stext_t* s)
 {
 	int i;
 
-	for (i=0 ; i<s->h ; ++i)
+	for (i = 0; i < s->h; ++i)
 	{
 		if (s->laston && !*s->on)
 		{
@@ -283,13 +281,13 @@ void HUlib_initIText(hu_itext_t* it, int x, int y, patch_t** font, int startchar
 void HUlib_delCharFromIText(hu_itext_t* it)
 {
 	if (it->l.len != it->lm)
-	HUlib_delCharFromTextLine(&it->l);
+		HUlib_delCharFromTextLine(&it->l);
 }
 
 void HUlib_eraseLineFromIText(hu_itext_t* it)
 {
 	while (it->lm != it->l.len)
-	HUlib_delCharFromTextLine(&it->l);
+		HUlib_delCharFromTextLine(&it->l);
 }
 
 // Resets left margin as well
@@ -302,24 +300,24 @@ void HUlib_resetIText(hu_itext_t* it)
 void HUlib_addPrefixToIText(hu_itext_t* it, std::string str)
 {
 	while (*str)
-	HUlib_addCharToTextLine(&it->l, *((str++)));
+		HUlib_addCharToTextLine(&it->l, *((str++)));
 	it->lm = it->l.len;
 }
 
 // wrapper function for handling general keyed input.
 // returns true if it ate the key
-bool HUlib_keyInIText(hu_itext_t* it, unsigned char ch )
+bool HUlib_keyInIText(hu_itext_t* it, unsigned char ch)
 {
 	ch = toupper(ch);
 
 	if (ch >= ' ' && ch <= '_')
-	HUlib_addCharToTextLine(&it->l, (char) ch);
+		HUlib_addCharToTextLine(&it->l, (char)ch);
 	else
-	if (ch == KEY_BACKSPACE)
-		HUlib_delCharFromIText(it);
-	else
-		if (ch != KEY_ENTER)
-		return false; // did not eat key
+		if (ch == KEY_BACKSPACE)
+			HUlib_delCharFromIText(it);
+		else
+			if (ch != KEY_ENTER)
+				return false; // did not eat key
 
 	return true; // ate the key
 
@@ -331,7 +329,7 @@ void HUlib_drawIText(hu_itext_t* it)
 	hu_textline_t* l = &it->l;
 
 	if (!*it->on)
-	return;
+		return;
 	HUlib_drawTextLine(l, true); // draw the line w/ cursor
 
 }
@@ -339,7 +337,7 @@ void HUlib_drawIText(hu_itext_t* it)
 void HUlib_eraseIText(hu_itext_t* it)
 {
 	if (it->laston && !*it->on)
-	it->l.needsupdate = 4;
+		it->l.needsupdate = 4;
 	HUlib_eraseTextLine(&it->l);
 	it->laston = *it->on;
 }

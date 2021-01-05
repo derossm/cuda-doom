@@ -100,42 +100,42 @@ int mouse_threshold_y = 0;
 int mouse_y_invert = 0;
 
 // Translates the SDL key to a value of the type found in doomkeys.h
-static int TranslateKey(SDL_Keysym *sym)
+static int TranslateKey(SDL_Keysym* sym)
 {
 	int scancode = sym->scancode;
 
 	switch (scancode)
 	{
-		case SDL_SCANCODE_LCTRL:
-		case SDL_SCANCODE_RCTRL:
-			return KEY_RCTRL;
+	case SDL_SCANCODE_LCTRL:
+	case SDL_SCANCODE_RCTRL:
+		return KEY_RCTRL;
 
-		case SDL_SCANCODE_LSHIFT:
-		case SDL_SCANCODE_RSHIFT:
-			return KEY_RSHIFT;
+	case SDL_SCANCODE_LSHIFT:
+	case SDL_SCANCODE_RSHIFT:
+		return KEY_RSHIFT;
 
-		case SDL_SCANCODE_LALT:
-			return KEY_LALT;
+	case SDL_SCANCODE_LALT:
+		return KEY_LALT;
 
-		case SDL_SCANCODE_RALT:
-			return KEY_RALT;
+	case SDL_SCANCODE_RALT:
+		return KEY_RALT;
 
-		default:
-			if (scancode >= 0 && scancode < arrlen(scancode_translate_table))
-			{
-				return scancode_translate_table[scancode];
-			}
-			else
-			{
-				return 0;
-			}
+	default:
+		if (scancode >= 0 && scancode < arrlen(scancode_translate_table))
+		{
+			return scancode_translate_table[scancode];
+		}
+		else
+		{
+			return 0;
+		}
 	}
 }
 
 // Get the localized version of the key press. This takes into account the
 // keyboard layout, but does not apply any changes due to modifiers, (eg.
 // shift-, alt-, etc.)
-static int GetLocalizedKey(SDL_Keysym *sym)
+static int GetLocalizedKey(SDL_Keysym* sym)
 {
 	// When using Vanilla mapping, we just base everything off the scancode
 	// and always pretend the user is using a US layout keyboard.
@@ -157,7 +157,7 @@ static int GetLocalizedKey(SDL_Keysym *sym)
 }
 
 // Get the equivalent ASCII (Unicode?) character for a keypress.
-static int GetTypedChar(SDL_Keysym *sym)
+static int GetTypedChar(SDL_Keysym* sym)
 {
 	// We only return typed characters when entering text, after
 	// I_StartTextInput() has been called. Otherwise we return nothing.
@@ -190,10 +190,10 @@ static int GetTypedChar(SDL_Keysym *sym)
 		// Special cases, where we always return a fixed value.
 		switch (sym->sym)
 		{
-			case SDLK_BACKSPACE: return KEY_BACKSPACE;
-			case SDLK_RETURN:	return KEY_ENTER;
-			default:
-				break;
+		case SDLK_BACKSPACE: return KEY_BACKSPACE;
+		case SDLK_RETURN:	return KEY_ENTER;
+		default:
+			break;
 		}
 
 		// The following is a gross hack, but I don't see an easier way
@@ -219,7 +219,7 @@ static int GetTypedChar(SDL_Keysym *sym)
 		// So we're stuck with this as a rather fragile alternative.
 
 		if (SDL_PeepEvents(&next_event, 1, SDL_PEEKEVENT,
-							SDL_FIRSTEVENT, SDL_LASTEVENT) == 1
+			SDL_FIRSTEVENT, SDL_LASTEVENT) == 1
 			&& next_event.type == SDL_TEXTINPUT)
 		{
 			// If an SDL_TEXTINPUT event is found, we always assume it
@@ -239,7 +239,7 @@ static int GetTypedChar(SDL_Keysym *sym)
 	}
 }
 
-void I_HandleKeyboardEvent(SDL_Event *sdlevent)
+void I_HandleKeyboardEvent(SDL_Event* sdlevent)
 {
 	// XXX: passing pointers to event for access after this function
 	// has terminated is undefined behaviour
@@ -247,39 +247,39 @@ void I_HandleKeyboardEvent(SDL_Event *sdlevent)
 
 	switch (sdlevent->type)
 	{
-		case SDL_KEYDOWN:
-			event.type = ev_keydown;
-			event.data1 = TranslateKey(&sdlevent->key.keysym);
-			event.data2 = GetLocalizedKey(&sdlevent->key.keysym);
-			event.data3 = GetTypedChar(&sdlevent->key.keysym);
+	case SDL_KEYDOWN:
+		event.type = ev_keydown;
+		event.data1 = TranslateKey(&sdlevent->key.keysym);
+		event.data2 = GetLocalizedKey(&sdlevent->key.keysym);
+		event.data3 = GetTypedChar(&sdlevent->key.keysym);
 
-			if (event.data1 != 0)
-			{
-				D_PostEvent(&event);
-			}
-			break;
+		if (event.data1 != 0)
+		{
+			D_PostEvent(&event);
+		}
+		break;
 
-		case SDL_KEYUP:
-			event.type = ev_keyup;
-			event.data1 = TranslateKey(&sdlevent->key.keysym);
+	case SDL_KEYUP:
+		event.type = ev_keyup;
+		event.data1 = TranslateKey(&sdlevent->key.keysym);
 
-			// data2/data3 are initialized to zero for ev_keyup.
-			// For ev_keydown it's the shifted Unicode character
-			// that was typed, but if something wants to detect
-			// key releases it should do so based on data1
-			// (key ID), not the printable char.
+		// data2/data3 are initialized to zero for ev_keyup.
+		// For ev_keydown it's the shifted Unicode character
+		// that was typed, but if something wants to detect
+		// key releases it should do so based on data1
+		// (key ID), not the printable char.
 
-			event.data2 = 0;
-			event.data3 = 0;
+		event.data2 = 0;
+		event.data3 = 0;
 
-			if (event.data1 != 0)
-			{
-				D_PostEvent(&event);
-			}
-			break;
+		if (event.data1 != 0)
+		{
+			D_PostEvent(&event);
+		}
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -319,22 +319,22 @@ static void UpdateMouseButtonState(unsigned button, bool on)
 
 	switch (button)
 	{
-		case SDL_BUTTON_LEFT:
-			button = 0;
-			break;
+	case SDL_BUTTON_LEFT:
+		button = 0;
+		break;
 
-		case SDL_BUTTON_RIGHT:
-			button = 1;
-			break;
+	case SDL_BUTTON_RIGHT:
+		button = 1;
+		break;
 
-		case SDL_BUTTON_MIDDLE:
-			button = 2;
-			break;
+	case SDL_BUTTON_MIDDLE:
+		button = 2;
+		break;
 
-		default:
-			// SDL buttons are indexed from 1.
-			--button;
-			break;
+	default:
+		// SDL buttons are indexed from 1.
+		--button;
+		break;
 	}
 
 	// Turn bit representing this button on or off.
@@ -356,7 +356,7 @@ static void UpdateMouseButtonState(unsigned button, bool on)
 	D_PostEvent(&event);
 }
 
-static void MapMouseWheelToButtons(SDL_MouseWheelEvent *wheel)
+static void MapMouseWheelToButtons(SDL_MouseWheelEvent* wheel)
 {
 	// SDL2 distinguishes button events from mouse wheel events.
 	// We want to treat the mouse wheel as two buttons, as per
@@ -388,24 +388,24 @@ static void MapMouseWheelToButtons(SDL_MouseWheelEvent *wheel)
 	D_PostEvent(&up);
 }
 
-void I_HandleMouseEvent(SDL_Event *sdlevent)
+void I_HandleMouseEvent(SDL_Event* sdlevent)
 {
 	switch (sdlevent->type)
 	{
-		case SDL_MOUSEBUTTONDOWN:
-			UpdateMouseButtonState(sdlevent->button.button, true);
-			break;
+	case SDL_MOUSEBUTTONDOWN:
+		UpdateMouseButtonState(sdlevent->button.button, true);
+		break;
 
-		case SDL_MOUSEBUTTONUP:
-			UpdateMouseButtonState(sdlevent->button.button, false);
-			break;
+	case SDL_MOUSEBUTTONUP:
+		UpdateMouseButtonState(sdlevent->button.button, false);
+		break;
 
-		case SDL_MOUSEWHEEL:
-			MapMouseWheelToButtons(&(sdlevent->wheel));
-			break;
+	case SDL_MOUSEWHEEL:
+		MapMouseWheelToButtons(&(sdlevent->wheel));
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
@@ -476,11 +476,11 @@ void I_ReadMouse()
 // Bind all variables controlling input options.
 void I_BindInputVariables()
 {
-	M_BindFloatVariable("mouse_acceleration",		&mouse_acceleration);
-	M_BindIntVariable("mouse_threshold",			&mouse_threshold);
+	M_BindFloatVariable("mouse_acceleration", &mouse_acceleration);
+	M_BindIntVariable("mouse_threshold", &mouse_threshold);
 	M_BindIntVariable("vanilla_keyboard_mapping", &vanilla_keyboard_mapping);
-	M_BindIntVariable("novert",					&novert);
-	M_BindFloatVariable("mouse_acceleration_y",	&mouse_acceleration_y); // [crispy]
-	M_BindIntVariable("mouse_threshold_y",			&mouse_threshold_y); // [crispy]
-	M_BindIntVariable("mouse_y_invert",			&mouse_y_invert); // [crispy]
+	M_BindIntVariable("novert", &novert);
+	M_BindFloatVariable("mouse_acceleration_y", &mouse_acceleration_y); // [crispy]
+	M_BindIntVariable("mouse_threshold_y", &mouse_threshold_y); // [crispy]
+	M_BindIntVariable("mouse_y_invert", &mouse_y_invert); // [crispy]
 }

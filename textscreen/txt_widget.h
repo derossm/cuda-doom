@@ -34,8 +34,7 @@ class WidgetBase
 {
 public:
 	virtual ~WidgetBase()
-	{
-	}
+	{}
 };
 
 template<typename T = WidgetBase>
@@ -60,14 +59,13 @@ public:
 	bool _visible{false};
 	bool _focused{false};
 
-	Widget() : widget_class{ Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy }
+	Widget() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
-		
+
 	}
 
 	virtual ~Widget()
-	{
-	}
+	{}
 
 public:
 	using Type = T;
@@ -193,8 +191,7 @@ public:
 	}
 
 	virtual inline void Destroy() noexcept
-	{
-	}
+	{}
 
 	virtual inline bool KeyPress(KeyType key) noexcept
 	{
@@ -308,48 +305,48 @@ public:
  * @param func			The callback function to invoke.
  * @param user_data	User-specified pointer to pass to the callback function.
  */
-//void SignalConnect(std::string signal_name, WidgetSignalFunc func, void* user_data);
+ //void SignalConnect(std::string signal_name, WidgetSignalFunc func, void* user_data);
 
-/**
- * Set the policy for how a widget should be aligned within a table.
- * By default, widgets are aligned to the left of the column.
- *
- * @param widget		The widget.
- * @param horiz_align	The alignment to use.
- */
-//void SetWidgetAlign(AlignHorizontal horiz_align);
+ /**
+  * Set the policy for how a widget should be aligned within a table.
+  * By default, widgets are aligned to the left of the column.
+  *
+  * @param widget		The widget.
+  * @param horiz_align	The alignment to use.
+  */
+  //void SetWidgetAlign(AlignHorizontal horiz_align);
 
-/**
- * Query whether a widget is selectable with the cursor.
- *
- * @param widget		The widget.
- * @return				Non-zero if the widget is selectable.
- */
-//bool SelectableWidget();
+  /**
+   * Query whether a widget is selectable with the cursor.
+   *
+   * @param widget		The widget.
+   * @return				Non-zero if the widget is selectable.
+   */
+   //bool SelectableWidget();
 
-/**
- * Query whether the mouse is hovering over the specified widget.
- *
- * @param widget		The widget.
- * @return				Non-zero if the mouse cursor is over the widget.
- */
-//bool HoveringOverWidget();
+   /**
+	* Query whether the mouse is hovering over the specified widget.
+	*
+	* @param widget		The widget.
+	* @return				Non-zero if the mouse cursor is over the widget.
+	*/
+	//bool HoveringOverWidget();
 
-/**
- * Set the background to draw the specified widget, depending on
- * whether it is selected and the mouse is hovering over it.
- *
- * @param widget		The widget.
- */
-//void SetWidgetBG();
+	/**
+	 * Set the background to draw the specified widget, depending on
+	 * whether it is selected and the mouse is hovering over it.
+	 *
+	 * @param widget		The widget.
+	 */
+	 //void SetWidgetBG();
 
-/**
- * Query whether the specified widget is contained within another
- * widget.
- *
- * @param haystack		The widget that might contain needle.
- * @param needle		The widget being queried.
- */
-//bool ContainsWidget(Widget&& needle);
+	 /**
+	  * Query whether the specified widget is contained within another
+	  * widget.
+	  *
+	  * @param haystack		The widget that might contain needle.
+	  * @param needle		The widget being queried.
+	  */
+	  //bool ContainsWidget(Widget&& needle);
 
 } /* END NAMESPACE cudadoom::txt */

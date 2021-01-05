@@ -10,7 +10,7 @@
 
 	DESCRIPTION:
 		MapObj data. Map Objects or mobjs are actors, entities, thinker, take-your-pick...
-			anything that moves, acts, or suffers state changes of more or less violent nature.
+		anything that moves, acts, or suffers state changes of more or less violent nature.
 \**********************************************************************************************************************************************/
 #pragma once
 
@@ -24,10 +24,10 @@ typedef void (*actionf_p3)(void*, void*, void*); // [crispy] let pspr action poi
 
 union actionf_t
 {
- actionf_v acv;
- actionf_p1 acp1;
- actionf_p2 acp2;
- actionf_p3 acp3; // [crispy] let pspr action pointers get called from mobj states
+	actionf_v acv;
+	actionf_p1 acp1;
+	actionf_p2 acp2;
+	actionf_p3 acp3; // [crispy] let pspr action pointers get called from mobj states
 };
 
 // Historically, "think_t" is yet another function pointer to a routine to handle an actor.

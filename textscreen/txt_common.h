@@ -90,12 +90,11 @@ public:
 	//T get() { return value; }
 };
 
-struct KeyType{};
+struct KeyType {};
 using Key = StrongType<int, KeyType>;
 
 class DepType
-{
-};
+{};
 
 
 class CallbackEntry
@@ -114,12 +113,10 @@ private:
 public:
 	CallbackEntry(std::string _signal, std::function<void(UserData)> _handle, UserData _user) noexcept
 		: signal(std::move(_signal)), handle(std::move(_handle)), user(std::move(_user))
-	{
-	}
+	{}
 
 	CallbackEntry(CallbackEntry&& rhs) noexcept : signal(std::move(rhs.signal)), handle(std::move(rhs.handle)), user(std::move(rhs.user))
-	{
-	}
+	{}
 
 	std::function<void(UserData)> findByName(std::string& _signal)
 	{
@@ -159,8 +156,7 @@ private:
 public:
 	// reserve callbacks in contiguous memory
 	CallbackTable() noexcept : callbacks(32)
-	{
-	}
+	{}
 
 	~CallbackTable() = default;
 
@@ -171,7 +167,7 @@ public:
 
 	std::function<void(UserData)> get(std::string& signal)
 	{
-		for(auto& iter: callbacks)
+		for (auto& iter : callbacks)
 		{
 			if (auto ptr = iter.findByName(signal); ptr)
 			{

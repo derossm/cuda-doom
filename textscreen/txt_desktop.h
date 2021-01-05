@@ -225,7 +225,7 @@ static void DrawDesktopBackground(std::string title)
 	// Draw the top and bottom banners
 	p = screendata;
 
-	for (size_t i{0}; i<SCREEN_W; ++i)
+	for (size_t i{0}; i < SCREEN_W; ++i)
 	{
 		*p = ' ';
 		++p;
@@ -235,7 +235,7 @@ static void DrawDesktopBackground(std::string title)
 
 	p = screendata + (SCREEN_H - 1) * SCREEN_W * 2;
 
-	for (size_t i{0}; i<SCREEN_W; ++i)
+	for (size_t i{0}; i < SCREEN_W; ++i)
 	{
 		*p = ' ';
 		++p;
@@ -331,26 +331,26 @@ static void DesktopInputEvent(int c)
 
 	switch (c)
 	{
-		case MOUSE_LEFT:
-			GetMousePosition(&x, &y);
+	case MOUSE_LEFT:
+		GetMousePosition(&x, &y);
 
-			// Clicking the top-right of the screen is equivalent to pressing the help key.
-			if (y == 0 && x >= SCREEN_W - 9)
-			{
-				DesktopInputEvent(HELP_KEY);
-			}
-			break;
+		// Clicking the top-right of the screen is equivalent to pressing the help key.
+		if (y == 0 && x >= SCREEN_W - 9)
+		{
+			DesktopInputEvent(HELP_KEY);
+		}
+		break;
 
-		case HELP_KEY:
-			auto active_window{GetActiveWindow()};
-			if (active_window)
-			{
-				OpenWindowHelpURL(active_window);
-			}
-			break;
+	case HELP_KEY:
+		auto active_window{GetActiveWindow()};
+		if (active_window)
+		{
+			OpenWindowHelpURL(active_window);
+		}
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 

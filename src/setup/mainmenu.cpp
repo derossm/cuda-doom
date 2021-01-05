@@ -134,11 +134,11 @@ static void QuitConfirm(void* unused1, void* unused2)
 	window = cudadoom::txt::NewWindow(NULL);
 
 	cudadoom::txt::AddWidgets(window,
-					label = cudadoom::txt::NewLabel("Exiting setup.\nSave settings?"),
-					cudadoom::txt::NewStrut(24, 0),
-					yes_button = cudadoom::txt::NewButton2(" Yes ", DoQuit, DoQuit),
-					no_button = cudadoom::txt::NewButton2(" No	", DoQuit, NULL),
-					NULL);
+		label = cudadoom::txt::NewLabel("Exiting setup.\nSave settings?"),
+		cudadoom::txt::NewStrut(24, 0),
+		yes_button = cudadoom::txt::NewButton2(" Yes ", DoQuit, DoQuit),
+		no_button = cudadoom::txt::NewButton2(" No	", DoQuit, NULL),
+		NULL);
 
 	cudadoom::txt::SetWidgetAlign(label, cudadoom::txt::HORIZ_CENTER);
 	cudadoom::txt::SetWidgetAlign(yes_button, cudadoom::txt::HORIZ_CENTER);
@@ -147,7 +147,7 @@ static void QuitConfirm(void* unused1, void* unused2)
 	// Only an "abort" button in the middle.
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_LEFT, NULL);
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_CENTER,
-						cudadoom::txt::NewWindowAbortAction(window));
+		cudadoom::txt::NewWindowAbortAction(window));
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_RIGHT, NULL);
 }
 
@@ -178,21 +178,21 @@ static cudadoom::txt::Button* GetLaunchButton()
 
 	switch (gamemission)
 	{
-		case doom:
-			label = "Save parameters and launch DOOM";
-			break;
-		case heretic:
-			label = "Save parameters and launch Heretic";
-			break;
-		case hexen:
-			label = "Save parameters and launch Hexen";
-			break;
-		case strife:
-			label = "Save parameters and launch STRIFE!";
-			break;
-		default:
-			label = "Save parameters and launch game";
-			break;
+	case doom:
+		label = "Save parameters and launch DOOM";
+		break;
+	case heretic:
+		label = "Save parameters and launch Heretic";
+		break;
+	case hexen:
+		label = "Save parameters and launch Hexen";
+		break;
+	case strife:
+		label = "Save parameters and launch STRIFE!";
+		break;
+	default:
+		label = "Save parameters and launch game";
+		break;
 	}
 
 	return cudadoom::txt::NewButton2(label, LaunchDoom, NULL);
@@ -209,22 +209,22 @@ void MainMenu()
 	cudadoom::txt::SetWindowHelpURL(window, WINDOW_HELP_URL);
 
 	cudadoom::txt::AddWidgets(window,
-		cudadoom::txt::NewButton2("Configure Display", (cudadoom::txt::WidgetSignalFunc) ConfigDisplay, NULL),
-		cudadoom::txt::NewButton2("Configure Sound", (cudadoom::txt::WidgetSignalFunc) ConfigSound, NULL),
-		cudadoom::txt::NewButton2("Configure Keyboard", (cudadoom::txt::WidgetSignalFunc) ConfigKeyboard, NULL),
-		cudadoom::txt::NewButton2("Configure Mouse", (cudadoom::txt::WidgetSignalFunc) ConfigMouse, NULL),
-		cudadoom::txt::NewButton2("Configure Gamepad/Joystick", (cudadoom::txt::WidgetSignalFunc) ConfigJoystick, NULL),
-		cudadoom::txt::NewButton2(gamemission == GameMission::doom ? "Crispness" : "Compatibility", (cudadoom::txt::WidgetSignalFunc) CompatibilitySettings, NULL),
+		cudadoom::txt::NewButton2("Configure Display", (cudadoom::txt::WidgetSignalFunc)ConfigDisplay, NULL),
+		cudadoom::txt::NewButton2("Configure Sound", (cudadoom::txt::WidgetSignalFunc)ConfigSound, NULL),
+		cudadoom::txt::NewButton2("Configure Keyboard", (cudadoom::txt::WidgetSignalFunc)ConfigKeyboard, NULL),
+		cudadoom::txt::NewButton2("Configure Mouse", (cudadoom::txt::WidgetSignalFunc)ConfigMouse, NULL),
+		cudadoom::txt::NewButton2("Configure Gamepad/Joystick", (cudadoom::txt::WidgetSignalFunc)ConfigJoystick, NULL),
+		cudadoom::txt::NewButton2(gamemission == GameMission::doom ? "Crispness" : "Compatibility", (cudadoom::txt::WidgetSignalFunc)CompatibilitySettings, NULL),
 		GetLaunchButton(), cudadoom::txt::NewStrut(0, 1),
-		cudadoom::txt::NewButton2("Start a Network Game", (cudadoom::txt::WidgetSignalFunc) StartMultiGame, NULL),
-		cudadoom::txt::NewButton2("Join a Network Game", (cudadoom::txt::WidgetSignalFunc) JoinMultiGame, NULL),
-		cudadoom::txt::NewButton2("Multiplayer Configuration", (cudadoom::txt::WidgetSignalFunc) MultiplayerConfig, NULL),
+		cudadoom::txt::NewButton2("Start a Network Game", (cudadoom::txt::WidgetSignalFunc)StartMultiGame, NULL),
+		cudadoom::txt::NewButton2("Join a Network Game", (cudadoom::txt::WidgetSignalFunc)JoinMultiGame, NULL),
+		cudadoom::txt::NewButton2("Multiplayer Configuration", (cudadoom::txt::WidgetSignalFunc)MultiplayerConfig, NULL),
 		NULL);
 
 	quit_action = cudadoom::txt::NewWindowAction(KEY_ESCAPE, "Quit");
 	warp_action = cudadoom::txt::NewWindowAction(KEY_F2, "Warp");
 	cudadoom::txt::SignalConnect(quit_action, "pressed", QuitConfirm, NULL);
-	cudadoom::txt::SignalConnect(warp_action, "pressed", (cudadoom::txt::WidgetSignalFunc) WarpMenu, NULL);
+	cudadoom::txt::SignalConnect(warp_action, "pressed", (cudadoom::txt::WidgetSignalFunc)WarpMenu, NULL);
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt:AlignHorizontal::cudadoom::txt::HORIZ_LEFT, quit_action);
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt:AlignHorizontal::cudadoom::txt::HORIZ_CENTER, warp_action);
 
@@ -256,13 +256,13 @@ static void InitConfig()
 
 static void SetIcon()
 {
-	extern SDL_Window *cudadoom::txt::SDLWindow;
-	SDL_Surface *surface;
+	extern SDL_Window* cudadoom::txt::SDLWindow;
+	SDL_Surface* surface;
 
-	surface = SDL_CreateRGBSurfaceFrom((void*) setup_icon_data, setup_icon_w,
-										setup_icon_h, 32, setup_icon_w * 4,
-										0xff << 24, 0xff << 16,
-										0xff << 8, 0xff << 0);
+	surface = SDL_CreateRGBSurfaceFrom((void*)setup_icon_data, setup_icon_w,
+		setup_icon_h, 32, setup_icon_w * 4,
+		0xff << 24, 0xff << 16,
+		0xff << 8, 0xff << 0);
 
 	SDL_SetWindowIcon(cudadoom::txt::SDLWindow, surface);
 	SDL_FreeSurface(surface);
@@ -273,8 +273,8 @@ static void SetWindowTitle()
 	std::string title;
 
 	title = M_StringReplace(PACKAGE_NAME " Setup ver " PACKAGE_VERSION,
-							"Doom",
-							GetGameTitle());
+		"Doom",
+		GetGameTitle());
 
 
 	cudadoom::txt::SetDesktopTitle(title);

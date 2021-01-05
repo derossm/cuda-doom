@@ -21,8 +21,8 @@ enum
 };
 
 // also put some crazy extensions to test the escape function. a"b"c"""dd
-std::string extensions[] = { "wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", NULL };
-std::string radio_values[] = { "Badger", "Mushroom", "Snake" };
+std::string extensions[] = {"wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", NULL};
+std::string radio_values[] = {"Badger", "Mushroom", "Snake"};
 std::string textbox_value;
 int numbox_value{0};
 int radiobutton_value;
@@ -83,13 +83,13 @@ void UnicodeWindow(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 	cudadoom::txt::Window* window = cudadoom::txt::NewWindow("Questo è in Italiano");
 
 	cudadoom::txt::AddWidgets(window,
-					cudadoom::txt::NewButton("Questo è un tasto"),
-					cudadoom::txt::NewCheckBox("Questo è un checkbox", &var1),
-					cudadoom::txt::NewDropdownList(&var2, strings, 7),
-					cudadoom::txt::NewSeparator("Questo è un separatore"),
-					cudadoom::txt::NewLabel("Leggi questo, è pieno di\ninformazioni interessanti"),
-					cudadoom::txt::NewRadioButton("Ma questo non è un radio??", &var1, 0),
-					NULL);
+		cudadoom::txt::NewButton("Questo è un tasto"),
+		cudadoom::txt::NewCheckBox("Questo è un checkbox", &var1),
+		cudadoom::txt::NewDropdownList(&var2, strings, 7),
+		cudadoom::txt::NewSeparator("Questo è un separatore"),
+		cudadoom::txt::NewLabel("Leggi questo, è pieno di\ninformazioni interessanti"),
+		cudadoom::txt::NewRadioButton("Ma questo non è un radio??", &var1, 0),
+		NULL);
 
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_RIGHT, cudadoom::txt::NewWindowAction(KEY_ENTER, "Nullità"));
 
@@ -130,13 +130,13 @@ void SetupWindow(void)
 	}
 
 	cudadoom::txt::AddWidgets(table,
-					cudadoom::txt::NewLabel("Still the same table, but:\nThis label magically overflows\nacross multiple cells! Cool, huh?"),
-					cudadoom::txt::TABLE_OVERFLOW_RIGHT,
-					cudadoom::txt::NewButton("Do nothing"),
-					cudadoom::txt::TABLE_OVERFLOW_DOWN,
-					cudadoom::txt::TABLE_OVERFLOW_DOWN,
-					cudadoom::txt::NewButton2("Qualcosa?", UnicodeWindow, NULL),
-					NULL);
+		cudadoom::txt::NewLabel("Still the same table, but:\nThis label magically overflows\nacross multiple cells! Cool, huh?"),
+		cudadoom::txt::TABLE_OVERFLOW_RIGHT,
+		cudadoom::txt::NewButton("Do nothing"),
+		cudadoom::txt::TABLE_OVERFLOW_DOWN,
+		cudadoom::txt::TABLE_OVERFLOW_DOWN,
+		cudadoom::txt::NewButton2("Qualcosa?", UnicodeWindow, NULL),
+		NULL);
 
 	cudadoom::txt::AddWidget(window, cudadoom::txt::NewStrut(0, 1));
 	value_label = cudadoom::txt::NewLabel("");
@@ -153,7 +153,7 @@ void SetupWindow(void)
 	rightpane = cudadoom::txt::NewTable(1);
 	cudadoom::txt::AddWidget(table, rightpane);
 
-	for (size_t i{0}; i<3; ++i)
+	for (size_t i{0}; i < 3; ++i)
 	{
 		cudadoom::txt::RadioButton* rbut;
 
@@ -193,17 +193,17 @@ void Window2(void)
 	table = cudadoom::txt::NewTable(2);
 	cudadoom::txt::AddWidget(window, table);
 	cudadoom::txt::AddWidgets(table,
-					cudadoom::txt::NewLabel("String: "),
-					cudadoom::txt::NewInputBox(&textbox_value, 20),
-					cudadoom::txt::NewLabel("Int: "),
-					cudadoom::txt::NewIntInputBox(&numbox_value, 10),
-					cudadoom::txt::NewLabel("Spin control:"),
-					cudadoom::txt::NewSpinControl(&numbox_value, 0, 15),
-					cudadoom::txt::NewLabel("File:"),
-					cudadoom::txt::NewFileSelector(&file_path, 28, "Select file:", extensions),
-					cudadoom::txt::NewLabel("Directory:"),
-					cudadoom::txt::NewFileSelector(&dir_path, 28, "Select directory:", cudadoom::txt::DIRECTORY),
-					NULL);
+		cudadoom::txt::NewLabel("String: "),
+		cudadoom::txt::NewInputBox(&textbox_value, 20),
+		cudadoom::txt::NewLabel("Int: "),
+		cudadoom::txt::NewIntInputBox(&numbox_value, 10),
+		cudadoom::txt::NewLabel("Spin control:"),
+		cudadoom::txt::NewSpinControl(&numbox_value, 0, 15),
+		cudadoom::txt::NewLabel("File:"),
+		cudadoom::txt::NewFileSelector(&file_path, 28, "Select file:", extensions),
+		cudadoom::txt::NewLabel("Directory:"),
+		cudadoom::txt::NewFileSelector(&dir_path, 28, "Select directory:", cudadoom::txt::DIRECTORY),
+		NULL);
 
 	cudadoom::txt::AddWidget(window, cudadoom::txt::NewSeparator("Scroll pane test"));
 	scrollpane = cudadoom::txt::NewScrollPane(40, 5, cudadoom::txt::NewLabel(
@@ -226,18 +226,18 @@ void ScrollingMenu(void)
 	table = cudadoom::txt::NewTable(1);
 
 	cudadoom::txt::AddWidgets(table,
-					cudadoom::txt::NewButton("Configure display"),
-					cudadoom::txt::NewButton("Configure joystick"),
-					cudadoom::txt::NewButton("Configure keyboard"),
-					cudadoom::txt::NewButton("Configure mouse"),
-					cudadoom::txt::NewButton("Configure sound"),
-					cudadoom::txt::NewStrut(0, 1),
-					button = cudadoom::txt::NewButton("Save Parameters and launch DOOM"),
-					cudadoom::txt::NewStrut(0, 1),
-					cudadoom::txt::NewButton("Start a network game"),
-					cudadoom::txt::NewButton("Join a network game"),
-					cudadoom::txt::NewButton("Multiplayer configuration"),
-					NULL);
+		cudadoom::txt::NewButton("Configure display"),
+		cudadoom::txt::NewButton("Configure joystick"),
+		cudadoom::txt::NewButton("Configure keyboard"),
+		cudadoom::txt::NewButton("Configure mouse"),
+		cudadoom::txt::NewButton("Configure sound"),
+		cudadoom::txt::NewStrut(0, 1),
+		button = cudadoom::txt::NewButton("Save Parameters and launch DOOM"),
+		cudadoom::txt::NewStrut(0, 1),
+		cudadoom::txt::NewButton("Start a network game"),
+		cudadoom::txt::NewButton("Join a network game"),
+		cudadoom::txt::NewButton("Multiplayer configuration"),
+		NULL);
 
 	cudadoom::txt::SignalConnect(button, "pressed", PwnBox, NULL);
 

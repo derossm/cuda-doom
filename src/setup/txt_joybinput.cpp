@@ -39,7 +39,7 @@ extern int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS];
 // button that the user wants to use for firing. We do this so that
 // the menus work (the game code is hard coded to interpret
 // button #0 = select menu item, button #1 = go back to previous menu).
-static int *all_joystick_buttons[NUM_VIRTUAL_BUTTONS] =
+static int* all_joystick_buttons[NUM_VIRTUAL_BUTTONS] =
 {
 	&joybfire,
 	&joybuse,
@@ -68,7 +68,7 @@ static int PhysicalForVirtualButton(int vbutton)
 
 // Get the virtual button number for the given variable, ie. the
 // variable's index in all_joystick_buttons[NUM_VIRTUAL_BUTTONS].
-static int VirtualButtonForVariable(int *variable)
+static int VirtualButtonForVariable(int* variable)
 {
 	int i;
 
@@ -137,7 +137,7 @@ static void ClearVariablesUsingButton(int physbutton)
 
 // Called in response to SDL events when the prompt window is open:
 
-static int EventCallback(SDL_Event *event, TXT_UNCAST_ARG(joystick_input))
+static int EventCallback(SDL_Event* event, TXT_UNCAST_ARG(joystick_input))
 {
 	TXT_CAST_ARG(txt_joystick_input_t, joystick_input);
 
@@ -191,7 +191,7 @@ static void OpenErrorWindow()
 static void OpenPromptWindow(txt_joystick_input_t* joystick_input)
 {
 	Window* window;
-	SDL_Joystick *joystick;
+	SDL_Joystick* joystick;
 
 	// Silently update when the shift button is held down.
 
@@ -234,10 +234,10 @@ static void TXT_JoystickInputSizeCalc(TXT_UNCAST_ARG(joystick_input))
 }
 
 static void GetJoystickButtonDescription(int vbutton, std::string buf,
-											size_t buf_len)
+	size_t buf_len)
 {
 	M_snprintf(buf, buf_len, "BUTTON #%i",
-				PhysicalForVirtualButton(vbutton) + 1);
+		PhysicalForVirtualButton(vbutton) + 1);
 }
 
 static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
@@ -253,7 +253,7 @@ static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
 	else
 	{
 		GetJoystickButtonDescription(*joystick_input->variable,
-										buf, sizeof(buf));
+			buf, sizeof(buf));
 	}
 
 	TXT_SetWidgetBG(joystick_input);
@@ -268,8 +268,7 @@ static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
 }
 
 static void TXT_JoystickInputDestructor(TXT_UNCAST_ARG(joystick_input))
-{
-}
+{}
 
 static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
 {
@@ -313,7 +312,7 @@ WidgetClass txt_joystick_input_class =
 	NULL,
 };
 
-txt_joystick_input_t* TXT_NewJoystickInput(int *variable)
+txt_joystick_input_t* TXT_NewJoystickInput(int* variable)
 {
 	txt_joystick_input_t* joystick_input;
 

@@ -58,12 +58,12 @@ static void NewLine(unsigned char* screendata)
 		// Scroll the screen up
 		cur_y = SCREEN_H - 1;
 
-		memmove(screendata, screendata + SCREEN_W * 2, SCREEN_W * 2 * (SCREEN_H -1));
+		memmove(screendata, screendata + SCREEN_W * 2, SCREEN_W * 2 * (SCREEN_H - 1));
 
 		// Clear the bottom line
 		p = screendata + (SCREEN_H - 1) * 2 * SCREEN_W;
 
-		for (i=0; i<SCREEN_W; ++i)
+		for (i = 0; i < SCREEN_W; ++i)
 		{
 			*p = ' ';
 			++p;
@@ -103,20 +103,20 @@ static void PutChar(unsigned char* screendata, int c)
 {
 	switch (c)
 	{
-		case '\n':
-			NewLine(screendata);
-			break;
+	case '\n':
+		NewLine(screendata);
+		break;
 
-		case '\b':
-			// backspace
-			--cur_x;
-			if (cur_x < 0)
-				cur_x = 0;
-			break;
+	case '\b':
+		// backspace
+		--cur_x;
+		if (cur_x < 0)
+			cur_x = 0;
+		break;
 
-		default:
-			PutSymbol(screendata, c);
-			break;
+	default:
+		PutSymbol(screendata, c);
+		break;
 	}
 }
 
@@ -132,7 +132,7 @@ void Puts(std::string s)
 
 	screen = GetScreenData();
 
-	for (p=s; *p != '\0'; ++p)
+	for (p = s; *p != '\0'; ++p)
 	{
 		PutChar(screen, *p);
 	}
@@ -146,7 +146,7 @@ void GotoXY(int x, int y)
 	cur_y = y;
 }
 
-void GetXY(int *x, int *y)
+void GetXY(int* x, int* y)
 {
 	*x = cur_x;
 	*y = cur_y;

@@ -43,7 +43,7 @@ namespace cudadoom::txt
  *
  * When a radio button is selected, the "selected" signal is emitted.
  */
-class RadioButton : Widget<RadioButton>
+class RadioButton : public Widget<RadioButton>
 {
 	std::string label;
 	int* variable;
@@ -52,23 +52,20 @@ class RadioButton : Widget<RadioButton>
 public:
 
 	RadioButton() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{
-	}
+	{}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() override final const noexcept
-	{
-	}
+	void CalculateSize() noexcept override final
+	{}
 
-	void Draw() override final const noexcept
-	{
-	}
+	void Draw() noexcept override final
+	{}
 
-	bool KeyPress(Keytype key) override final const noexcept
+	bool KeyPress(Keytype key) noexcept override final
 	{
 		if (key == KEY_ENTER || key == ' ')
 		{
@@ -79,7 +76,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -90,17 +87,14 @@ public:
 		return false
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{}
 
-	void SetFocus(bool _focus) override final const noexcept
-	{
-	}
+	void SetFocus(bool _focus) noexcept override final
+	{}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{}
 
 	static void RadioButtonSizeCalc(UNCAST_ARG(radiobutton))
 	{
@@ -145,7 +139,7 @@ public:
 
 		DrawString(radiobutton->label);
 
-		for (i=UTF8_Strlen(radiobutton->label); i < w-5; ++i)
+		for (i = UTF8_Strlen(radiobutton->label); i < w - 5; ++i)
 		{
 			DrawString(" ");
 		}
@@ -176,7 +170,7 @@ public:
 	}
 
 	static void RadioButtonMousePress(UNCAST_ARG(radiobutton),
-											int x, int y, int b)
+		int x, int y, int b)
 	{
 		CAST_ARG(RadioButton, radiobutton);
 
@@ -198,7 +192,7 @@ public:
 		NULL
 	};
 
-	RadioButton(std::string& _label, int *variable, int value) : label{std::string(_label)}, variable{variable}, value{value}
+	RadioButton(std::string& _label, int* variable, int value) : label{std::string(_label)}, variable{variable}, value{value}
 	{
 	}
 

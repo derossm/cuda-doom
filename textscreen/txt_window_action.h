@@ -30,7 +30,7 @@ namespace cudadoom::txt
  * A window action is attached to a window and corresponds to a keyboard shortcut that is active within that window.
  * When the key is pressed, the action is triggered. When a window action is triggered, the "pressed" signal is emitted.
  */
-class WindowAction : Widget<WindowAction>
+class WindowAction : public Widget<WindowAction>
 {
 	int key;
 	std::string label;
@@ -38,11 +38,11 @@ class WindowAction : Widget<WindowAction>
 public:
 
 	WindowAction(int _key, std::string _label) : widget_class<WindowAction>{}, key{_key}, label{std::string(_label)},
-											widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 	}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return false;
 	}
@@ -58,7 +58,7 @@ public:
 		height = 1;
 	}
 
-	void Draw() override final const noexcept
+	void Draw() noexcept override final
 	{
 		char buf[10];
 
@@ -78,7 +78,7 @@ public:
 		DrawString(" ");
 	}
 
-	bool KeyPress(KeyType _key) override final const noexcept
+	bool KeyPress(KeyType _key) noexcept override final
 	{
 		if (tolower(_key) == tolower(key))
 		{
@@ -89,7 +89,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		// Simulate a press of the key
 		if (evt.button == MOUSE_LEFT)
@@ -100,17 +100,14 @@ public:
 		return false;
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{}
 
-	void SetFocus(bool _focus) override final const noexcept
-	{
-	}
+	void SetFocus(bool _focus) noexcept override final
+	{}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{}
 
 	// FIXME
 	void WindowCloseCallback(Window* window)
@@ -159,29 +156,29 @@ WindowAction* NewWindowSelectAction(Window* window)
  * @param label			Label to display for this action in the tray at the bottom of the window (UTF-8 format).
  * @return				Pointer to the new window action widget.
  */
-//WindowAction* NewWindowAction(int key, std::string label);
+ //WindowAction* NewWindowAction(int key, std::string label);
 
-/**
- * Create a new window action that closes the window when the escape key is pressed. The label "Close" is used.
- *
- * @param window		The window to close.
- * @return				Pointer to the new window action widget.
- */
-//WindowAction* NewWindowEscapeAction(Window* window);
+ /**
+  * Create a new window action that closes the window when the escape key is pressed. The label "Close" is used.
+  *
+  * @param window		The window to close.
+  * @return				Pointer to the new window action widget.
+  */
+  //WindowAction* NewWindowEscapeAction(Window* window);
 
-/**
- * Create a new window action that closes the window when the escape key is pressed. The label "Abort" is used.
- *
- * @param window		The window to close.
- * @return				Pointer to the new window action widget.
- */
-//WindowAction* NewWindowAbortAction(Window* window);
+  /**
+   * Create a new window action that closes the window when the escape key is pressed. The label "Abort" is used.
+   *
+   * @param window		The window to close.
+   * @return				Pointer to the new window action widget.
+   */
+   //WindowAction* NewWindowAbortAction(Window* window);
 
-/**
- * Create a new "select" window action. This does not really do anything, but reminds the user that "enter" can be pressed to
- * activate the currently-selected widget.
- *
- * @param window		The window.
- * @return				Pointer to the new window action widget.
- */
-//WindowAction* NewWindowSelectAction(Window* window);
+   /**
+	* Create a new "select" window action. This does not really do anything, but reminds the user that "enter" can be pressed to
+	* activate the currently-selected widget.
+	*
+	* @param window		The window.
+	* @return				Pointer to the new window action widget.
+	*/
+	//WindowAction* NewWindowSelectAction(Window* window);

@@ -145,8 +145,8 @@ static unsigned WaitForProcessExit(HANDLE subprocess)
 static void ConcatWCString(wchar_t* buf, std::string value)
 {
 	MultiByteToWideChar(CP_OEMCP, 0,
-						value, strlen(value) + 1,
-						buf + wcslen(buf), strlen(value) + 1);
+		value, strlen(value) + 1,
+		buf + wcslen(buf), strlen(value) + 1);
 }
 
 // Build the command line string, a wide character string of the form:
@@ -166,7 +166,7 @@ static wchar_t* BuildCommandLine(std::string program, std::string arg)
 	// Allocate buffer to contain result string.
 
 	result = calloc(wcslen(exe_path) + strlen(program) + strlen(arg) + 6,
-					sizeof(wchar_t));
+		sizeof(wchar_t));
 
 	wcscpy(result, L"\"");
 
@@ -212,8 +212,8 @@ static int ExecuteCommand(std::string program, std::string arg)
 	startup_info.cb = sizeof(startup_info);
 
 	if (!CreateProcessW(NULL, command,
-						NULL, NULL, false, 0, NULL, NULL,
-						&startup_info, &proc_info))
+		NULL, NULL, false, 0, NULL, NULL,
+		&startup_info, &proc_info))
 	{
 		result = -1;
 	}
@@ -297,7 +297,7 @@ static int ExecuteCommand(std::string program, std::string arg)
 		argv[1] = arg;
 		argv[2] = NULL;
 
-		execvp(argv[0], (char**) argv);
+		execvp(argv[0], (char**)argv);
 
 		exit(0x80);
 	}
@@ -354,8 +354,8 @@ static void TestCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAS
 	cudadoom::txt::Window* testwindow;
 
 	testwindow = cudadoom::txt::MessageBox("Starting Doom",
-								"Starting Doom to test the\n"
-								"settings. Please wait.");
+		"Starting Doom to test the\n"
+		"settings. Please wait.");
 	cudadoom::txt::DrawDesktop();
 
 	// Save temporary configuration files with the current configuration

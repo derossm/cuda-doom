@@ -9,7 +9,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Teleportation.
+		Teleportation.
 \**********************************************************************************************************************************************/
 
 #include "doomdef.h"
@@ -56,7 +56,7 @@ bool EV_Teleport(line_t* line, int side, MapObject* thing)
 
 				auto sector{m->subsector->sector};
 				// wrong sector
-				if (sector-sectors != i)
+				if (sector - sectors != i)
 				{
 					continue;
 				}
@@ -65,7 +65,7 @@ bool EV_Teleport(line_t* line, int side, MapObject* thing)
 				auto oldy{thing->y};
 				auto oldz{thing->z};
 
-				if (!P_TeleportMove (thing, m->x, m->y))
+				if (!P_TeleportMove(thing, m->x, m->y))
 				{
 					return false;
 				}
@@ -82,7 +82,7 @@ bool EV_Teleport(line_t* line, int side, MapObject* thing)
 
 				if (thing->player)
 				{
-					thing->player->viewz = thing->z+thing->player->viewheight;
+					thing->player->viewz = thing->z + thing->player->viewheight;
 					// [crispy] center view after teleporting
 					thing->player->centering = true;
 				}
@@ -91,7 +91,7 @@ bool EV_Teleport(line_t* line, int side, MapObject* thing)
 				auto fog{P_SpawnMobj(oldx, oldy, oldz, mobjtype_t::MT_TFOG)};
 				S_StartSound(fog, sfxenum_t::sfx_telept);
 				auto an{m->angle >> ANGLETOFINESHIFT};
-				fog = P_SpawnMobj(m->x+20*finecosine[an], m->y+20*finesine[an], thing->z, mobjtype_t::MT_TFOG);
+				fog = P_SpawnMobj(m->x + 20 * finecosine[an], m->y + 20 * finesine[an], thing->z, mobjtype_t::MT_TFOG);
 
 				// emit sound, where?
 				S_StartSound(fog, sfxenum_t::sfx_telept);

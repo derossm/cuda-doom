@@ -9,9 +9,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	WAD I/O functions.
+		WAD I/O functions.
 \**********************************************************************************************************************************************/
-
 
 #include "m_misc.h"
 #include "w_file.h"
@@ -53,7 +52,7 @@ static void W_StdC_CloseFile(wad_file_t* wad)
 {
 	stdc_wad_file_t* stdc_wad;
 
-	stdc_wad = (stdc_wad_file_t*) wad;
+	stdc_wad = (stdc_wad_file_t*)wad;
 
 	fclose(stdc_wad->fstream);
 	Z_Free(stdc_wad);
@@ -63,12 +62,12 @@ static void W_StdC_CloseFile(wad_file_t* wad)
 // provided buffer. Returns the number of bytes read.
 
 size_t W_StdC_Read(wad_file_t* wad, unsigned offset,
-					void* buffer, size_t buffer_len)
+	void* buffer, size_t buffer_len)
 {
 	stdc_wad_file_t* stdc_wad;
 	size_t result;
 
-	stdc_wad = (stdc_wad_file_t*) wad;
+	stdc_wad = (stdc_wad_file_t*)wad;
 
 	// Jump to the specified position in the file.
 

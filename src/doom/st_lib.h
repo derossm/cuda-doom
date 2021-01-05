@@ -66,7 +66,7 @@ struct st_percent_t
 // Multiple Icon widget
 struct st_multicon_t
 {
-		// center-justified location of icons
+	// center-justified location of icons
 	int x;
 	int y;
 

@@ -449,7 +449,7 @@ static int TranslateScancode(SDL_Scancode scancode)
 	}
 }
 
-static int TranslateKeysym(const SDL_Keysym *sym)
+static int TranslateKeysym(const SDL_Keysym* sym)
 {
 	// We cheat here and make use of TranslateScancode. The range of keys associated with printable characters is pretty contiguous,
 	// so if it's inside that range we want the localized version of the key instead.
@@ -552,7 +552,7 @@ int GetChar()
 				return TranslateKeysym(&ev.key.keysym);
 			case InputType::text:
 				// We ignore key inputs in this mode, except for a few special cases needed during text input:
-				if (ev.key.keysym.sym == SDL_KeyCode::SDLK_ESCAPE 
+				if (ev.key.keysym.sym == SDL_KeyCode::SDLK_ESCAPE
 					|| ev.key.keysym.sym == SDL_KeyCode::SDLK_BACKSPACE
 					|| ev.key.keysym.sym == SDL_KeyCode::SDLK_RETURN)
 				{
@@ -599,14 +599,14 @@ int GetModifierState(ModifierType mod)
 
 	switch (mod)
 	{
-		case ModifierType::shift:
-			return (state & KMOD_SHIFT) != 0;
-		case ModifierType::ctrl:
-			return (state & KMOD_CTRL) != 0;
-		case ModifierType::alt:
-			return (state & KMOD_ALT) != 0;
-		default:
-			return 0;
+	case ModifierType::shift:
+		return (state & KMOD_SHIFT) != 0;
+	case ModifierType::ctrl:
+		return (state & KMOD_CTRL) != 0;
+	case ModifierType::alt:
+		return (state & KMOD_ALT) != 0;
+	default:
+		return 0;
 	}
 }
 
@@ -645,10 +645,10 @@ static std::string NameForKey(int key)
 	// Overrides purely for aesthetical reasons, so that default window accelerator keys match those of setup.exe.
 	switch (key)
 	{
-		case KEY_ESCAPE: return "ESC";
-		case KEY_ENTER: return "ENTER";
-		default:
-			break;
+	case KEY_ESCAPE: return "ESC";
+	case KEY_ENTER: return "ENTER";
+	default:
+		break;
 	}
 
 	// This key presumably maps to a scan code that is listed in the
@@ -704,9 +704,9 @@ void GetKeyDescription(int key, std::string buf, size_t buf_len)
 bool ScreenHasBlinkingChars()
 {
 	// Check all characters in screen buffer
-	for (size_t y{0}; y<SCREEN_H; ++y)
+	for (size_t y{0}; y < SCREEN_H; ++y)
 	{
-		for (size_t x{0}; x<SCREEN_W; ++x)
+		for (size_t x{0}; x < SCREEN_W; ++x)
 		{
 			unsigned char* p{&screendata[(y * SCREEN_W + x) * 2]};
 

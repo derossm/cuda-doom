@@ -7,6 +7,7 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
+	DESCRIPTION:
 		Common code shared between the client and server
 \**********************************************************************************************************************************************/
 
@@ -178,21 +179,21 @@ bool NET_Conn_Packet(net_connection_t* conn, net_packet_t* packet, unsigned* pac
 
 	switch ((net_packet_type)*packet_type)
 	{
-		case net_packet_type::DISCONNECT:
-			NET_Conn_ParseDisconnect(conn, packet);
-			break;
-		case net_packet_type::DISCONNECT_ACK:
-			NET_Conn_ParseDisconnectACK(conn, packet);
-			break;
-		case net_packet_type::KEEPALIVE:
-			// No special action needed.
-			break;
-		case net_packet_type::RELIABLE_ACK:
-			NET_Conn_ParseReliableACK(conn, packet);
-			break;
-		default:
-			// Not a common packet
-			return false;
+	case net_packet_type::DISCONNECT:
+		NET_Conn_ParseDisconnect(conn, packet);
+		break;
+	case net_packet_type::DISCONNECT_ACK:
+		NET_Conn_ParseDisconnectACK(conn, packet);
+		break;
+	case net_packet_type::KEEPALIVE:
+		// No special action needed.
+		break;
+	case net_packet_type::RELIABLE_ACK:
+		NET_Conn_ParseReliableACK(conn, packet);
+		break;
+	default:
+		// Not a common packet
+		return false;
 	}
 
 	// We found a packet that we found interesting, and ate it.
@@ -244,7 +245,7 @@ void NET_Conn_Run(net_connection_t* conn)
 		// NB. This is braindead, we have a fixed time of one second.
 		if (conn->reliable_packets != NULL
 			&& (conn->reliable_packets->last_send_time < 0
-			|| nowtime - conn->reliable_packets->last_send_time > 1000))
+				|| nowtime - conn->reliable_packets->last_send_time > 1000))
 		{
 			// Packet timed out, time to resend
 			NET_Conn_SendPacket(conn, conn->reliable_packets->packet);
@@ -293,7 +294,7 @@ net_packet_t* NET_Conn_NewReliable(net_connection_t* conn, int packet_type)
 {
 	net_packet_t* packet;
 	net_reliable_packet_t* rp;
-	net_reliable_packet_t**listend;
+	net_reliable_packet_t** listend;
 
 	// Generate a packet with the right header
 	packet = NET_NewPacket(100);
@@ -311,8 +312,8 @@ net_packet_t* NET_Conn_NewReliable(net_connection_t* conn, int packet_type)
 	rp->last_send_time = -1;
 
 	for (listend = &conn->reliable_packets;
-			*listend != NULL;
-			listend = &((*listend)->next));
+		*listend != NULL;
+		listend = &((*listend)->next));
 
 	*listend = rp;
 

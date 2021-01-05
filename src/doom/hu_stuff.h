@@ -31,7 +31,7 @@ constexpr size_t HU_MSGY{0};
 constexpr size_t HU_MSGWIDTH{64}; // in characters
 constexpr size_t HU_MSGHEIGHT{1}; // in lines
 
-constexpr size_t HU_MSGTIMEOUT{(4*TICRATE)};
+constexpr size_t HU_MSGTIMEOUT{(4 * TICRATE)};
 
 // HEADS UP TEXT
 void HU_Init();

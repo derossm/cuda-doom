@@ -26,94 +26,94 @@
 enum class mobjflag_t
 {
 	// Call P_SpecialThing when touched.
-	MF_SPECIAL			= 1ull,
+	MF_SPECIAL = 1ull,
 	// Blocks.
-	MF_SOLID			= 2,
+	MF_SOLID = 2,
 	// Can be hit.
-	MF_SHOOTABLE		= 4,
+	MF_SHOOTABLE = 4,
 	// Don't use the sector links (invisible but touchable).
-	MF_NOSECTOR			= 8,
+	MF_NOSECTOR = 8,
 	// Don't use the blocklinks (inert but displayable)
-	MF_NOBLOCKMAP		= 16,
+	MF_NOBLOCKMAP = 16,
 
 	// Not to be activated by sound, deaf monster.
-	MF_AMBUSH			= 32,
+	MF_AMBUSH = 32,
 	// Will try to attack right back.
-	MF_JUSTHIT			= 64,
+	MF_JUSTHIT = 64,
 	// Will take at least one step before attacking.
-	MF_JUSTATTACKED		= 128,
+	MF_JUSTATTACKED = 128,
 	// On level spawning (initial position),
 	// hang from ceiling instead of stand on floor.
-	MF_SPAWNCEILING		= 256,
+	MF_SPAWNCEILING = 256,
 	// Don't apply gravity (every tic),
 	// that is, object will float, keeping current height
 	// or changing it actively.
-	MF_NOGRAVITY		= 512,
+	MF_NOGRAVITY = 512,
 
 	// Movement flags.
 	// This allows jumps from high places.
-	MF_DROPOFF			= 0x400,
+	MF_DROPOFF = 0x400,
 	// For players, will pick up items.
-	MF_PICKUP			= 0x800,
+	MF_PICKUP = 0x800,
 	// Player cheat. ???
-	MF_NOCLIP			= 0x1000,
+	MF_NOCLIP = 0x1000,
 	// Player: keep info about sliding along walls.
-	MF_SLIDE			= 0x2000,
+	MF_SLIDE = 0x2000,
 	// Allow moves to any height, no gravity.
 	// For active floaters, e.g. cacodemons, pain elementals.
-	MF_FLOAT			= 0x4000,
+	MF_FLOAT = 0x4000,
 	// Don't cross lines
 	// ??? or look at heights on teleport.
-	MF_TELEPORT			= 0x8000,
+	MF_TELEPORT = 0x8000,
 	// Don't hit same species, explode on block.
 	// Player missiles as well as fireballs of various kinds.
-	MF_MISSILE			= 0x10000,
+	MF_MISSILE = 0x10000,
 	// Dropped by a demon, not level spawned.
 	// E.g. ammo clips dropped by dying former humans.
-	MF_DROPPED			= 0x20000,
+	MF_DROPPED = 0x20000,
 	// Use fuzzy draw (shadow demons or spectres),
 	// temporary player invisibility powerup.
-	MF_SHADOW			= 0x40000,
+	MF_SHADOW = 0x40000,
 	// Flag: don't bleed when shot (use puff),
 	// barrels and shootable furniture shall not bleed.
-	MF_NOBLOOD			= 0x80000,
+	MF_NOBLOOD = 0x80000,
 	// Don't stop moving halfway off a step,
 	// that is, have dead bodies slide down all the way.
-	MF_CORPSE			= 0x100000,
+	MF_CORPSE = 0x100000,
 	// Floating to a height for a move, ???
 	// don't auto float to target's height.
-	MF_INFLOAT			= 0x200000,
+	MF_INFLOAT = 0x200000,
 
 	// On kill, count this enemy object
 	// towards intermission kill total.
 	// Happy gathering.
-	MF_COUNTKILL		= 0x400000,
+	MF_COUNTKILL = 0x400000,
 
 	// On picking up, count this item object
 	// towards intermission item total.
-	MF_COUNTITEM		= 0x800000,
+	MF_COUNTITEM = 0x800000,
 
 	// Special handling: skull in flight.
 	// Neither a cacodemon nor a missile.
-	MF_SKULLFLY			= 0x1000000,
+	MF_SKULLFLY = 0x1000000,
 
 	// Don't spawn this object
 	// in death match mode (e.g. key cards).
-	MF_NOTDMATCH		= 0x2000000,
+	MF_NOTDMATCH = 0x2000000,
 
 	// Player sprites in multiplayer modes are modified
 	// using an internal color lookup table for re-indexing.
 	// If 0x4 0x8 or 0xc,
 	// use a translation table for player colormaps
-	MF_TRANSLATION		= 0xc000000,
+	MF_TRANSLATION = 0xc000000,
 	// Hmm ???.
-	MF_TRANSSHIFT		= 26,
+	MF_TRANSSHIFT = 26,
 
 	// [crispy] randomly flip corpse, blood and death animation sprites
-	MF_FLIPPABLE		= 0x40000000,
+	MF_FLIPPABLE = 0x40000000,
 
 	// [crispy] translucent sprite
-	MF_TRANSLUCENT		= 0x80000000
+	MF_TRANSLUCENT = 0x80000000
 };
 
 enum class spritenum_t
@@ -1719,7 +1719,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_SHT2,0,1,{A_Raise},statenum_t::S_DSGUNUP,0,0},	// S_DSGUNUP
 	{spritenum_t::SPR_SHT2,0,3,{nullptr},statenum_t::S_DSGUN2,0,0},	// S_DSGUN1
 	// [crispy] killough 9/5/98: make SSG lighting flash more uniform along super shotgun
-	{spritenum_t::SPR_SHT2,0|0x8000,7,{A_FireShotgun2},statenum_t::S_DSGUN3,0,0},	// S_DSGUN2
+	{spritenum_t::SPR_SHT2,0 | 0x8000,7,{A_FireShotgun2},statenum_t::S_DSGUN3,0,0},	// S_DSGUN2
 	{spritenum_t::SPR_SHT2,1,7,{nullptr},statenum_t::S_DSGUN4,0,0},	// S_DSGUN3
 	{spritenum_t::SPR_SHT2,2,7,{A_CheckReload},statenum_t::S_DSGUN5,0,0},	// S_DSGUN4
 	{spritenum_t::SPR_SHT2,3,7,{A_OpenShotgun2},statenum_t::S_DSGUN6,0,0},	// S_DSGUN5
@@ -1871,7 +1871,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_POSS,3,4,{A_Chase},statenum_t::S_POSS_RUN1,0,0},	// S_POSS_RUN8
 	{spritenum_t::SPR_POSS,4,10,{A_FaceTarget},statenum_t::S_POSS_ATK2,0,0},	// S_POSS_ATK1
 	// [crispy] render Zombiman's firing frames full-bright
-	{spritenum_t::SPR_POSS,5|0x8000,8,{A_PosAttack},statenum_t::S_POSS_ATK3,0,0},	// S_POSS_ATK2
+	{spritenum_t::SPR_POSS,5 | 0x8000,8,{A_PosAttack},statenum_t::S_POSS_ATK3,0,0},	// S_POSS_ATK2
 	{spritenum_t::SPR_POSS,4,8,{nullptr},statenum_t::S_POSS_RUN1,0,0},	// S_POSS_ATK3
 	{spritenum_t::SPR_POSS,6,3,{nullptr},statenum_t::S_POSS_PAIN2,0,0},	// S_POSS_PAIN
 	{spritenum_t::SPR_POSS,6,3,{A_Pain},statenum_t::S_POSS_RUN1,0,0},	// S_POSS_PAIN2
@@ -2106,7 +2106,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_CPOS,32773,4,{A_CPosAttack},statenum_t::S_CPOS_ATK3,0,0},	// S_CPOS_ATK2
 	{spritenum_t::SPR_CPOS,32772,4,{A_CPosAttack},statenum_t::S_CPOS_ATK4,0,0},	// S_CPOS_ATK3
 	// [crispy] render Minigun zombie's firing frames full-bright
-	{spritenum_t::SPR_CPOS,5|0x8000,1,{A_CPosRefire},statenum_t::S_CPOS_ATK2,0,0},	// S_CPOS_ATK4
+	{spritenum_t::SPR_CPOS,5 | 0x8000,1,{A_CPosRefire},statenum_t::S_CPOS_ATK2,0,0},	// S_CPOS_ATK4
 	{spritenum_t::SPR_CPOS,6,3,{nullptr},statenum_t::S_CPOS_PAIN2,0,0},	// S_CPOS_PAIN
 	{spritenum_t::SPR_CPOS,6,3,{A_Pain},statenum_t::S_CPOS_RUN1,0,0},	// S_CPOS_PAIN2
 	{spritenum_t::SPR_CPOS,7,5,{nullptr},statenum_t::S_CPOS_DIE2,0,0},	// S_CPOS_DIE1
@@ -2373,11 +2373,11 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_CYBR,3,3,{A_Chase},statenum_t::S_CYBER_RUN1,0,0},	// S_CYBER_RUN8
 	{spritenum_t::SPR_CYBR,4,6,{A_FaceTarget},statenum_t::S_CYBER_ATK2,0,0},	// S_CYBER_ATK1
 	// [crispy] render Cyberdemon's firing frames full-bright
-	{spritenum_t::SPR_CYBR,5|0x8000,12,{A_CyberAttack},statenum_t::S_CYBER_ATK3,0,0},	// S_CYBER_ATK2
+	{spritenum_t::SPR_CYBR,5 | 0x8000,12,{A_CyberAttack},statenum_t::S_CYBER_ATK3,0,0},	// S_CYBER_ATK2
 	{spritenum_t::SPR_CYBR,4,12,{A_FaceTarget},statenum_t::S_CYBER_ATK4,0,0},	// S_CYBER_ATK3
-	{spritenum_t::SPR_CYBR,5|0x8000,12,{A_CyberAttack},statenum_t::S_CYBER_ATK5,0,0},	// S_CYBER_ATK4
+	{spritenum_t::SPR_CYBR,5 | 0x8000,12,{A_CyberAttack},statenum_t::S_CYBER_ATK5,0,0},	// S_CYBER_ATK4
 	{spritenum_t::SPR_CYBR,4,12,{A_FaceTarget},statenum_t::S_CYBER_ATK6,0,0},	// S_CYBER_ATK5
-	{spritenum_t::SPR_CYBR,5|0x8000,12,{A_CyberAttack},statenum_t::S_CYBER_RUN1,0,0},	// S_CYBER_ATK6
+	{spritenum_t::SPR_CYBR,5 | 0x8000,12,{A_CyberAttack},statenum_t::S_CYBER_RUN1,0,0},	// S_CYBER_ATK6
 	{spritenum_t::SPR_CYBR,6,10,{A_Pain},statenum_t::S_CYBER_RUN1,0,0},	// S_CYBER_PAIN
 	{spritenum_t::SPR_CYBR,7,10,{nullptr},statenum_t::S_CYBER_DIE2,0,0},	// S_CYBER_DIE1
 	{spritenum_t::SPR_CYBR,8,10,{A_Scream},statenum_t::S_CYBER_DIE3,0,0},	// S_CYBER_DIE2
@@ -2688,48 +2688,50 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_DOGS,10,5,{nullptr},statenum_t::S_DOGS_RAISE5,0,0},	// S_DOGS_RAISE4
 	{spritenum_t::SPR_DOGS,9,5,{nullptr},statenum_t::S_DOGS_RAISE6,0,0},	// S_DOGS_RAISE5
 	{spritenum_t::SPR_DOGS,8,5,{nullptr},statenum_t::S_DOGS_RUN1,0,0},	// S_DOGS_RAISE6
-	{spritenum_t::SPR_BFGG,0,10,{A_BFGsound},static_cast<statenum_t>(static_cast<int>(statenum_t::S_OLDBFG1)+1),0,0},	// S_OLDBFG1
+	{spritenum_t::SPR_BFGG,0,10,{A_BFGsound},static_cast<statenum_t>(static_cast<int>(statenum_t::S_OLDBFG1) + 1),0,0},	// S_OLDBFG1
 	OLDBFG_8FRAMES(0)
 	OLDBFG_8FRAMES(8)
 	OLDBFG_8FRAMES(16)
 	OLDBFG_8FRAMES(24)
 	OLDBFG_8FRAMES(32)
-	{spritenum_t::SPR_BFGG,1,0,{A_Light0},statenum_t::S_OLDBFG43,0,0},	// S_OLDBFG42
-	{spritenum_t::SPR_BFGG,1,20,{A_ReFire},statenum_t::S_BFG,0,0},	// S_OLDBFG43
-	{spritenum_t::SPR_PLS1,32768,6,{nullptr},statenum_t::S_PLS1BALL2,0,0},	// S_PLS1BALL
-	{spritenum_t::SPR_PLS1,32769,6,{nullptr},statenum_t::S_PLS1BALL,0,0},	// S_PLS1BALL2
-	{spritenum_t::SPR_PLS1,32770,4,{nullptr},statenum_t::S_PLS1EXP2,0,0},	// S_PLS1EXP
-	{spritenum_t::SPR_PLS1,32771,4,{nullptr},statenum_t::S_PLS1EXP3,0,0},	// S_PLS1EXP2
-	{spritenum_t::SPR_PLS1,32772,4,{nullptr},statenum_t::S_PLS1EXP4,0,0},	// S_PLS1EXP3
-	{spritenum_t::SPR_PLS1,32773,4,{nullptr},statenum_t::S_PLS1EXP5,0,0},	// S_PLS1EXP4
-	{spritenum_t::SPR_PLS1,32774,4,{nullptr},statenum_t::S_NULL,0,0},	// S_PLS1EXP5
-	{spritenum_t::SPR_PLS2,32768,4,{nullptr},statenum_t::S_PLS2BALL2,0,0},	// S_PLS2BALL
-	{spritenum_t::SPR_PLS2,32769,4,{nullptr},statenum_t::S_PLS2BALL,0,0},	// S_PLS2BALL2
-	{spritenum_t::SPR_PLS2,32770,6,{nullptr},statenum_t::S_PLS2BALLX2,0,0},	// S_PLS2BALLX1
-	{spritenum_t::SPR_PLS2,32771,6,{nullptr},statenum_t::S_PLS2BALLX3,0,0},	// S_PLS2BALLX2
-	{spritenum_t::SPR_PLS2,32772,6,{nullptr},statenum_t::S_NULL,0,0},	// S_PLS2BALLX3
-	{spritenum_t::SPR_BON3,0,6,{nullptr},statenum_t::S_BON3,0,0},	// S_BON3
-	{spritenum_t::SPR_BON4,0,6,{nullptr},statenum_t::S_BON4,0,0},	// S_BON4
-	{spritenum_t::SPR_SKUL,0,10,{A_Look},statenum_t::S_BSKUL_STND,0,0},	// S_BSKUL_STND
-	{spritenum_t::SPR_SKUL,1,5,{A_Chase},statenum_t::S_BSKUL_RUN2,0,0},	// S_BSKUL_RUN1
-	{spritenum_t::SPR_SKUL,2,5,{A_Chase},statenum_t::S_BSKUL_RUN3,0,0},	// S_BSKUL_RUN2
-	{spritenum_t::SPR_SKUL,3,5,{A_Chase},statenum_t::S_BSKUL_RUN4,0,0},	// S_BSKUL_RUN3
-	{spritenum_t::SPR_SKUL,0,5,{A_Chase},statenum_t::S_BSKUL_RUN1,0,0},	// S_BSKUL_RUN4
-	{spritenum_t::SPR_SKUL,4,4,{A_FaceTarget},statenum_t::S_BSKUL_ATK2,0,0},	// S_BSKUL_ATK1
-	{spritenum_t::SPR_SKUL,5,5,{A_BetaSkullAttack},statenum_t::S_BSKUL_ATK3,0,0},	// S_BSKUL_ATK2
-	{spritenum_t::SPR_SKUL,5,4,{nullptr},statenum_t::S_BSKUL_RUN1,0,0},	// S_BSKUL_ATK3
-	{spritenum_t::SPR_SKUL,6,4,{nullptr},statenum_t::S_BSKUL_PAIN2,0,0},	// S_BSKUL_PAIN1
-	{spritenum_t::SPR_SKUL,7,2,{A_Pain},statenum_t::S_BSKUL_RUN1,0,0},	// S_BSKUL_PAIN2
-	{spritenum_t::SPR_SKUL,8,4,{nullptr},statenum_t::S_BSKUL_RUN1,0,0},	// S_BSKUL_PAIN3
-	{spritenum_t::SPR_SKUL, 9,5,{nullptr},statenum_t::S_BSKUL_DIE2,0,0},	// S_BSKUL_DIE1
-	{spritenum_t::SPR_SKUL,10,5,{nullptr},statenum_t::S_BSKUL_DIE3,0,0},	// S_BSKUL_DIE2
-	{spritenum_t::SPR_SKUL,11,5,{nullptr},statenum_t::S_BSKUL_DIE4,0,0},	// S_BSKUL_DIE3
-	{spritenum_t::SPR_SKUL,12,5,{nullptr},statenum_t::S_BSKUL_DIE5,0,0},	// S_BSKUL_DIE4
-	{spritenum_t::SPR_SKUL,13,5,{A_Scream},statenum_t::S_BSKUL_DIE6,0,0},	// S_BSKUL_DIE5
-	{spritenum_t::SPR_SKUL,14,5,{nullptr},statenum_t::S_BSKUL_DIE7,0,0},	// S_BSKUL_DIE6
-	{spritenum_t::SPR_SKUL,15,5,{A_Fall},statenum_t::S_BSKUL_DIE8,0,0},	// S_BSKUL_DIE7
-	{spritenum_t::SPR_SKUL,16,5,{A_Stop},statenum_t::S_BSKUL_DIE8,0,0},	// S_BSKUL_DIE8
-	{spritenum_t::SPR_MISL,32769,8,{A_Mushroom},statenum_t::S_EXPLODE2,0,0},	// S_MUSHROOM
+	{
+spritenum_t::SPR_BFGG,1,0,{A_Light0},statenum_t::S_OLDBFG43,0,0
+},	// S_OLDBFG42
+{spritenum_t::SPR_BFGG,1,20,{A_ReFire},statenum_t::S_BFG,0,0},	// S_OLDBFG43
+{spritenum_t::SPR_PLS1,32768,6,{nullptr},statenum_t::S_PLS1BALL2,0,0},	// S_PLS1BALL
+{spritenum_t::SPR_PLS1,32769,6,{nullptr},statenum_t::S_PLS1BALL,0,0},	// S_PLS1BALL2
+{spritenum_t::SPR_PLS1,32770,4,{nullptr},statenum_t::S_PLS1EXP2,0,0},	// S_PLS1EXP
+{spritenum_t::SPR_PLS1,32771,4,{nullptr},statenum_t::S_PLS1EXP3,0,0},	// S_PLS1EXP2
+{spritenum_t::SPR_PLS1,32772,4,{nullptr},statenum_t::S_PLS1EXP4,0,0},	// S_PLS1EXP3
+{spritenum_t::SPR_PLS1,32773,4,{nullptr},statenum_t::S_PLS1EXP5,0,0},	// S_PLS1EXP4
+{spritenum_t::SPR_PLS1,32774,4,{nullptr},statenum_t::S_NULL,0,0},	// S_PLS1EXP5
+{spritenum_t::SPR_PLS2,32768,4,{nullptr},statenum_t::S_PLS2BALL2,0,0},	// S_PLS2BALL
+{spritenum_t::SPR_PLS2,32769,4,{nullptr},statenum_t::S_PLS2BALL,0,0},	// S_PLS2BALL2
+{spritenum_t::SPR_PLS2,32770,6,{nullptr},statenum_t::S_PLS2BALLX2,0,0},	// S_PLS2BALLX1
+{spritenum_t::SPR_PLS2,32771,6,{nullptr},statenum_t::S_PLS2BALLX3,0,0},	// S_PLS2BALLX2
+{spritenum_t::SPR_PLS2,32772,6,{nullptr},statenum_t::S_NULL,0,0},	// S_PLS2BALLX3
+{spritenum_t::SPR_BON3,0,6,{nullptr},statenum_t::S_BON3,0,0},	// S_BON3
+{spritenum_t::SPR_BON4,0,6,{nullptr},statenum_t::S_BON4,0,0},	// S_BON4
+{spritenum_t::SPR_SKUL,0,10,{A_Look},statenum_t::S_BSKUL_STND,0,0},	// S_BSKUL_STND
+{spritenum_t::SPR_SKUL,1,5,{A_Chase},statenum_t::S_BSKUL_RUN2,0,0},	// S_BSKUL_RUN1
+{spritenum_t::SPR_SKUL,2,5,{A_Chase},statenum_t::S_BSKUL_RUN3,0,0},	// S_BSKUL_RUN2
+{spritenum_t::SPR_SKUL,3,5,{A_Chase},statenum_t::S_BSKUL_RUN4,0,0},	// S_BSKUL_RUN3
+{spritenum_t::SPR_SKUL,0,5,{A_Chase},statenum_t::S_BSKUL_RUN1,0,0},	// S_BSKUL_RUN4
+{spritenum_t::SPR_SKUL,4,4,{A_FaceTarget},statenum_t::S_BSKUL_ATK2,0,0},	// S_BSKUL_ATK1
+{spritenum_t::SPR_SKUL,5,5,{A_BetaSkullAttack},statenum_t::S_BSKUL_ATK3,0,0},	// S_BSKUL_ATK2
+{spritenum_t::SPR_SKUL,5,4,{nullptr},statenum_t::S_BSKUL_RUN1,0,0},	// S_BSKUL_ATK3
+{spritenum_t::SPR_SKUL,6,4,{nullptr},statenum_t::S_BSKUL_PAIN2,0,0},	// S_BSKUL_PAIN1
+{spritenum_t::SPR_SKUL,7,2,{A_Pain},statenum_t::S_BSKUL_RUN1,0,0},	// S_BSKUL_PAIN2
+{spritenum_t::SPR_SKUL,8,4,{nullptr},statenum_t::S_BSKUL_RUN1,0,0},	// S_BSKUL_PAIN3
+{spritenum_t::SPR_SKUL, 9,5,{nullptr},statenum_t::S_BSKUL_DIE2,0,0},	// S_BSKUL_DIE1
+{spritenum_t::SPR_SKUL,10,5,{nullptr},statenum_t::S_BSKUL_DIE3,0,0},	// S_BSKUL_DIE2
+{spritenum_t::SPR_SKUL,11,5,{nullptr},statenum_t::S_BSKUL_DIE4,0,0},	// S_BSKUL_DIE3
+{spritenum_t::SPR_SKUL,12,5,{nullptr},statenum_t::S_BSKUL_DIE5,0,0},	// S_BSKUL_DIE4
+{spritenum_t::SPR_SKUL,13,5,{A_Scream},statenum_t::S_BSKUL_DIE6,0,0},	// S_BSKUL_DIE5
+{spritenum_t::SPR_SKUL,14,5,{nullptr},statenum_t::S_BSKUL_DIE7,0,0},	// S_BSKUL_DIE6
+{spritenum_t::SPR_SKUL,15,5,{A_Fall},statenum_t::S_BSKUL_DIE8,0,0},	// S_BSKUL_DIE7
+{spritenum_t::SPR_SKUL,16,5,{A_Stop},statenum_t::S_BSKUL_DIE8,0,0},	// S_BSKUL_DIE8
+{spritenum_t::SPR_MISL,32769,8,{A_Mushroom},statenum_t::S_EXPLODE2,0,0},	// S_MUSHROOM
 };
 
 static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
@@ -2751,12 +2753,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_PLAY_XDIE1,	// xdeathstate
 		sfxenum_t::sfx_pldeth,		// deathsound
 		0,							// speed
-		16*FRACUNIT,				// radius
-		56*FRACUNIT,				// height
+		16 * FRACUNIT,				// radius
+		56 * FRACUNIT,				// height
 		100,						// mass
 		0,							// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_PICKUP|(int)mobjflag_t::MF_NOTDMATCH|(int)mobjflag_t::MF_FLIPPABLE,	// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_PICKUP | (int)mobjflag_t::MF_NOTDMATCH | (int)mobjflag_t::MF_FLIPPABLE,	// flags
 		statenum_t::S_NULL			// raisestate
 	},
 	{
@@ -2777,12 +2779,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_POSS_XDIE1,		// xdeathstate
 		sfxenum_t::sfx_podth1,		// deathsound
 		8,		// speed
-		20*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_POSS_RAISE1		// raisestate
 	},
 	{
@@ -2803,12 +2805,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_SPOS_XDIE1,		// xdeathstate
 		sfxenum_t::sfx_podth2,		// deathsound
 		8,		// speed
-		20*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_SPOS_RAISE1		// raisestate
 	},
 	{
@@ -2829,12 +2831,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_vildth,		// deathsound
 		15,		// speed
-		20*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		500,		// mass
 		0,		// damage
 		sfxenum_t::sfx_vilact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -2855,12 +2857,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -2881,12 +2883,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_skedth,		// deathsound
 		10,		// speed
-		20*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		500,		// mass
 		0,		// damage
 		sfxenum_t::sfx_skeact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_SKEL_RAISE1		// raisestate
 	},
 	{
@@ -2906,13 +2908,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_TRACEEXP1,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_barexp,		// deathsound
-		10*FRACUNIT,		// speed
-		11*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		10 * FRACUNIT,		// speed
+		11 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		10,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -2933,12 +2935,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -2959,12 +2961,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_mandth,		// deathsound
 		8,		// speed
-		48*FRACUNIT,		// radius
-		64*FRACUNIT,		// height
+		48 * FRACUNIT,		// radius
+		64 * FRACUNIT,		// height
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_FATT_RAISE1		// raisestate
 	},
 	{
@@ -2984,13 +2986,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_FATSHOTX1,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		20*FRACUNIT,		// speed
-		6*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		20 * FRACUNIT,		// speed
+		6 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		8,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3011,12 +3013,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_CPOS_XDIE1,		// xdeathstate
 		sfxenum_t::sfx_podth2,		// deathsound
 		8,		// speed
-		20*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_CPOS_RAISE1		// raisestate
 	},
 	{
@@ -3037,12 +3039,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_TROO_XDIE1,		// xdeathstate
 		sfxenum_t::sfx_bgdth1,		// deathsound
 		8,		// speed
-		20*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_bgact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_TROO_RAISE1		// raisestate
 	},
 	{
@@ -3063,12 +3065,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_sgtdth,		// deathsound
 		10,		// speed
-		30*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		30 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		400,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_SARG_RAISE1		// raisestate
 	},
 	{
@@ -3089,12 +3091,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_sgtdth,		// deathsound
 		10,		// speed
-		30*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		30 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		400,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_SHADOW|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_SHADOW | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_SARG_RAISE1		// raisestate
 	},
 	{
@@ -3115,12 +3117,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_cacdth,		// deathsound
 		8,		// speed
-		31*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		31 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		400,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_FLOAT|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_HEAD_RAISE1		// raisestate
 	},
 	{
@@ -3141,12 +3143,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_brsdth,		// deathsound
 		8,		// speed
-		24*FRACUNIT,		// radius
-		64*FRACUNIT,		// height
+		24 * FRACUNIT,		// radius
+		64 * FRACUNIT,		// height
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_BOSS_RAISE1		// raisestate
 	},
 	{
@@ -3166,13 +3168,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_BRBALLX1,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		15*FRACUNIT,		// speed
-		6*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		15 * FRACUNIT,		// speed
+		6 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		8,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3193,12 +3195,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_kntdth,		// deathsound
 		8,		// speed
-		24*FRACUNIT,		// radius
-		64*FRACUNIT,		// height
+		24 * FRACUNIT,		// radius
+		64 * FRACUNIT,		// height
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_BOS2_RAISE1		// raisestate
 	},
 	{
@@ -3219,12 +3221,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
 		8,		// speed
-		16*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		50,		// mass
 		3,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_FLOAT|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3245,12 +3247,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_spidth,		// deathsound
 		12,		// speed
-		128*FRACUNIT,		// radius
-		100*FRACUNIT,		// height
+		128 * FRACUNIT,		// radius
+		100 * FRACUNIT,		// height
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3271,12 +3273,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_bspdth,		// deathsound
 		12,		// speed
-		64*FRACUNIT,		// radius
-		64*FRACUNIT,		// height
+		64 * FRACUNIT,		// radius
+		64 * FRACUNIT,		// height
 		600,		// mass
 		0,		// damage
 		sfxenum_t::sfx_bspact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_BSPI_RAISE1		// raisestate
 	},
 	{
@@ -3297,12 +3299,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_cybdth,		// deathsound
 		16,		// speed
-		40*FRACUNIT,		// radius
-		110*FRACUNIT,		// height
+		40 * FRACUNIT,		// radius
+		110 * FRACUNIT,		// height
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3323,12 +3325,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_pedth,		// deathsound
 		8,		// speed
-		31*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		31 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		400,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_FLOAT|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_PAIN_RAISE1		// raisestate
 	},
 	{
@@ -3349,12 +3351,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_SSWV_XDIE1,		// xdeathstate
 		sfxenum_t::sfx_ssdth,		// deathsound
 		8,		// speed
-		20*FRACUNIT,		// radius
-		56*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		56 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_SSWV_RAISE1		// raisestate
 	},
 	{
@@ -3375,12 +3377,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_keendt,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		72*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		72 * FRACUNIT,		// height
 		10000000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3401,12 +3403,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_bosdth,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		10000000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3427,12 +3429,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		32*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		32 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOSECTOR,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOSECTOR,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3453,12 +3455,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		32*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		32 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOSECTOR,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOSECTOR,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3478,13 +3480,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		10*FRACUNIT,		// speed
-		6*FRACUNIT,		// radius
-		32*FRACUNIT,		// height
+		10 * FRACUNIT,		// speed
+		6 * FRACUNIT,		// radius
+		32 * FRACUNIT,		// height
 		100,		// mass
 		3,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_NOCLIP,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_NOCLIP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3505,12 +3507,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3531,12 +3533,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_barexp,		// deathsound
 		0,		// speed
-		10*FRACUNIT,		// radius
-		42*FRACUNIT,		// height
+		10 * FRACUNIT,		// radius
+		42 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_NOBLOOD,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_NOBLOOD,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3556,13 +3558,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_TBALLX1,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		10*FRACUNIT,		// speed
-		6*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		10 * FRACUNIT,		// speed
+		6 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		3,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3582,13 +3584,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_RBALLX1,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		10*FRACUNIT,		// speed
-		6*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		10 * FRACUNIT,		// speed
+		6 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		5,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3608,13 +3610,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_EXPLODE1,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_barexp,		// deathsound
-		20*FRACUNIT,		// speed
-		11*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		20 * FRACUNIT,		// speed
+		11 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		20,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3634,13 +3636,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_PLASEXP,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		25*FRACUNIT,		// speed
-		13*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		25 * FRACUNIT,		// speed
+		13 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		5,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3660,13 +3662,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_BFGLAND,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_rxplod,		// deathsound
-		25*FRACUNIT,		// speed
-		13*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		25 * FRACUNIT,		// speed
+		13 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		100,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3686,13 +3688,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_ARACH_PLEX,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		25*FRACUNIT,		// speed
-		13*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		25 * FRACUNIT,		// speed
+		13 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		5,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3713,12 +3715,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_FLIPPABLE|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_FLIPPABLE | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3739,12 +3741,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3765,12 +3767,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3791,12 +3793,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3817,12 +3819,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOSECTOR,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOSECTOR,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3843,12 +3845,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_NOGRAVITY|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3869,8 +3871,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -3895,8 +3897,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -3921,12 +3923,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3947,12 +3949,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3973,12 +3975,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3999,12 +4001,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4025,12 +4027,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4051,12 +4053,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4077,12 +4079,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4103,12 +4105,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4129,8 +4131,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4155,8 +4157,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4181,12 +4183,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4207,12 +4209,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4233,12 +4235,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4259,12 +4261,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4285,8 +4287,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4311,12 +4313,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4337,12 +4339,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4363,12 +4365,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM|(int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4389,8 +4391,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4415,8 +4417,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4441,8 +4443,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4467,8 +4469,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4493,8 +4495,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4519,8 +4521,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4545,8 +4547,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4571,8 +4573,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4597,8 +4599,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4623,8 +4625,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4649,8 +4651,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4675,8 +4677,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4701,8 +4703,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4727,8 +4729,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4753,8 +4755,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4779,8 +4781,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4805,8 +4807,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4831,8 +4833,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4857,8 +4859,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4883,8 +4885,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4909,8 +4911,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4935,8 +4937,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4961,8 +4963,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -4987,8 +4989,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5013,8 +5015,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5039,8 +5041,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5065,8 +5067,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5091,8 +5093,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5117,8 +5119,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5143,8 +5145,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5169,8 +5171,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5195,8 +5197,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5221,8 +5223,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5247,8 +5249,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5273,8 +5275,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5299,8 +5301,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5325,8 +5327,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5351,8 +5353,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5377,12 +5379,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		68*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		68 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5403,12 +5405,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		84*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		84 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5429,12 +5431,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		84*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		84 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5455,12 +5457,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		68*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		68 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5481,12 +5483,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		52*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		52 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5507,12 +5509,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		84*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		84 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5533,12 +5535,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		68*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		68 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5559,12 +5561,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		52*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		52 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5585,12 +5587,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		52*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		52 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5611,12 +5613,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		68*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		68 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5637,12 +5639,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5663,12 +5665,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5689,12 +5691,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5715,12 +5717,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5741,12 +5743,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5767,12 +5769,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5793,12 +5795,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5819,12 +5821,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5845,12 +5847,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5871,8 +5873,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5897,8 +5899,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5923,8 +5925,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5949,8 +5951,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -5975,8 +5977,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -6001,8 +6003,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -6027,8 +6029,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		32*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		32 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -6053,8 +6055,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -6079,12 +6081,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		88*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		88 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6105,12 +6107,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		88*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		88 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6131,12 +6133,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		64*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		64 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6157,12 +6159,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		64*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		64 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6183,12 +6185,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		64*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		64 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6209,12 +6211,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		16*FRACUNIT,		// radius
-		64*FRACUNIT,		// height
+		16 * FRACUNIT,		// radius
+		64 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SPAWNCEILING|(int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6235,8 +6237,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -6261,8 +6263,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -6287,8 +6289,8 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
@@ -6366,12 +6368,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_dgdth,		// deathsound
 		10,		// speed
-		12*FRACUNIT,		// radius
-		28*FRACUNIT,		// height
+		12 * FRACUNIT,		// radius
+		28 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dgact,		// activesound
-		(int)mobjflag_t::MF_SOLID|(int)mobjflag_t::MF_SHOOTABLE|(int)mobjflag_t::MF_COUNTKILL|(int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
 		statenum_t::S_DOGS_RAISE1		// raisestate
 	},
 	{
@@ -6391,13 +6393,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_PLS1EXP,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		25*FRACUNIT,		// speed
-		13*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		25 * FRACUNIT,		// speed
+		13 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		4,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY /* |(int)mobjflag_t::MF_BOUNCES */,
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY /* |(int)mobjflag_t::MF_BOUNCES */,
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6417,13 +6419,13 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_PLS2BALLX1,		// deathstate
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_firxpl,		// deathsound
-		25*FRACUNIT,		// speed
-		6*FRACUNIT,		// radius
-		8*FRACUNIT,		// height
+		25 * FRACUNIT,		// speed
+		6 * FRACUNIT,		// radius
+		8 * FRACUNIT,		// height
 		100,		// mass
 		4,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP|(int)mobjflag_t::MF_MISSILE|(int)mobjflag_t::MF_DROPOFF|(int)mobjflag_t::MF_NOGRAVITY /* |(int)mobjflag_t::MF_BOUNCES */,
+		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY /* |(int)mobjflag_t::MF_BOUNCES */,
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6444,12 +6446,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		10*FRACUNIT,		// radius
-		16*FRACUNIT,		// height
+		10 * FRACUNIT,		// radius
+		16 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL|(int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6470,12 +6472,12 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		statenum_t::S_NULL,		// xdeathstate
 		sfxenum_t::sfx_None,		// deathsound
 		0,		// speed
-		20*FRACUNIT,		// radius
-		10*FRACUNIT,		// height
+		20 * FRACUNIT,		// radius
+		10 * FRACUNIT,		// height
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		int(mobjflag_t::MF_SPECIAL)|int(mobjflag_t::MF_COUNTITEM),		// flags
+		int(mobjflag_t::MF_SPECIAL) | int(mobjflag_t::MF_COUNTITEM),		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	// [crispy] support MUSINFO lump (dynamic music changing)

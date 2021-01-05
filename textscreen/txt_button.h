@@ -38,28 +38,27 @@ class Button : public Widget<Button>
 public:
 
 	Button(std::string& _label) : label(_label),
-							 widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 	}
 
 	Button(std::string& _label, WidgetSignalFunc _handle, UserData _user) :
-							widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 		SetButtonLabel(_label);
 		SignalConnect(std::string("pressed"), _handle, _user);
 	}
 
-	bool Selectable() override final const noexcept
-	{
-	}
+	bool Selectable() noexcept override final
+	{}
 
-	void CalculateSize() override final const noexcept
+	void CalculateSize() noexcept override final
 	{
 		width = label.length();
 		height = 1;
 	}
 
-	void Draw() override final const noexcept
+	void Draw() noexcept override final
 	{
 		SetWidgetBG();
 
@@ -71,7 +70,7 @@ public:
 		}
 	}
 
-	bool KeyPress(KeyType key) override final const noexcept
+	bool KeyPress(KeyType key) noexcept override final
 	{
 		if (key == KEY_ENTER)
 		{
@@ -82,7 +81,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -93,17 +92,14 @@ public:
 		return false;
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{}
 
-	void SetFocus() override final const noexcept
-	{
-	}
+	void SetFocus() noexcept override final
+	{}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{}
 
 	void SetButtonLabel(std::string& _label)
 	{

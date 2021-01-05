@@ -37,7 +37,7 @@ namespace cudadoom::txt
  * is emitted.
  */
 
-// Drop-down list box.
+ // Drop-down list box.
 class DropDownList : public Widget<DropDownList>
 {
 	Widget widget;
@@ -48,23 +48,20 @@ class DropDownList : public Widget<DropDownList>
 public:
 
 	DropDownList() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{
-	}
+	{	}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() override final const noexcept
-	{
-	}
+	void CalculateSize() noexcept override final
+	{	}
 
-	void Draw() override final const noexcept
-	{
-	}
+	void Draw() noexcept override final
+	{	}
 
-	bool KeyPress(Keytype key) override final const noexcept
+	bool KeyPress(Keytype key) noexcept override final
 	{
 		if (key == KEY_ENTER || key == ' ')
 		{
@@ -75,7 +72,7 @@ public:
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) override final const noexcept
+	bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -86,17 +83,14 @@ public:
 		return false
 	}
 
-	void SetLayout() override final const noexcept
-	{
-	}
+	void SetLayout() noexcept override final
+	{	}
 
-	void SetFocus(bool _focus) override final const noexcept
-	{
-	}
+	void SetFocus(bool _focus) noexcept override final
+	{	}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{	}
 };
 
 struct callback_data_t
@@ -171,7 +165,7 @@ static void ItemSelected(UNCAST_ARG(button), UNCAST_ARG(callback_data))
 
 // Free callback data when the window is closed
 static void FreeCallbackData(UNCAST_ARG(list),
-								UNCAST_ARG(callback_data))
+	UNCAST_ARG(callback_data))
 {
 	CAST_ARG(callback_data_t, callback_data);
 
@@ -192,9 +186,9 @@ static int SelectorWindowListener(Window* window, int key, void* user_data)
 
 static int SelectorMouseListener(Window* window, int x, int y, int b, void* unused)
 {
-	Widget *win;
+	Widget* win;
 
-	win = (Widget*) window;
+	win = (Widget*)window;
 
 	if (x < win->x || x > win->x + win->w || y < win->y || y > win->y + win->h)
 	{
@@ -220,10 +214,10 @@ static void OpenSelectorWindow(txt_dropdown_list_t* list)
 
 	// Position the window so that the currently selected item appears over the top of the list widget.
 	SetWindowPosition(window, HORIZ_LEFT, VERT_TOP,
-							list->widget.x - 2, SelectorWindowY(list));
+		list->widget.x - 2, SelectorWindowY(list));
 
 	// Add a button to the window for each option in the list.
-	for (i=0; i<list->num_values; ++i)
+	for (i = 0; i < list->num_values; ++i)
 	{
 		Button* button;
 		callback_data_t* data;
@@ -265,7 +259,7 @@ static int DropdownListWidth(txt_dropdown_list_t* list)
 	// Find the maximum string width
 	result = 0;
 
-	for (i=0; i<list->num_values; ++i)
+	for (i = 0; i < list->num_values; ++i)
 	{
 		int w = UTF8_Strlen(list->values[i]);
 		if (w > result)
@@ -315,8 +309,7 @@ static void DropdownListDrawer(UNCAST_ARG(list))
 }
 
 static void DropdownListDestructor(UNCAST_ARG(list))
-{
-}
+{}
 
 static int DropdownListKeyPress(UNCAST_ARG(list), int key)
 {
@@ -353,7 +346,7 @@ WidgetClass txt_dropdown_list_class =
 	NULL,
 };
 
-txt_dropdown_list_t* NewDropdownList(int *variable, CHAR_PTR* values, int num_values)
+txt_dropdown_list_t* NewDropdownList(int* variable, CHAR_PTR* values, int num_values)
 {
 	txt_dropdown_list_t* list;
 

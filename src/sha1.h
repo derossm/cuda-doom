@@ -20,7 +20,7 @@ using sha1_digest_t = byte[20];
 
 struct sha1_context_t
 {
-	uint32_t h0,h1,h2,h3,h4;
+	uint32_t h0, h1, h2, h3, h4;
 	uint32_t nblocks;
 	byte buf[64];
 	int count;

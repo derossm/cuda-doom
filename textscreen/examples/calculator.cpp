@@ -85,20 +85,20 @@ void Calculate(cudadoom::txt::UNCAST_ARG(button), void* unused)
 {
 	switch (operator)
 	{
-		case OP_PLUS:
-			input_value = first_operand + input_value;
-			break;
-		case OP_MINUS:
-			input_value = first_operand - input_value;
-			break;
-		case OP_MULT:
-			input_value = first_operand * input_value;
-			break;
-		case OP_DIV:
-			input_value = first_operand / input_value;
-			break;
-		case OP_NONE:
-			break;
+	case OP_PLUS:
+		input_value = first_operand + input_value;
+		break;
+	case OP_MINUS:
+		input_value = first_operand - input_value;
+		break;
+	case OP_MULT:
+		input_value = first_operand * input_value;
+		break;
+	case OP_DIV:
+		input_value = first_operand / input_value;
+		break;
+	case OP_NONE:
+		break;
 	}
 
 	UpdateInputBox();

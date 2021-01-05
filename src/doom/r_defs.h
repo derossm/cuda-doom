@@ -23,8 +23,7 @@
 #include "i_video.h"
 #include "v_patch.h"
 
-// Silhouette, needed for clipping Segs (mainly)
-// and sprites representing things.
+// Silhouette, needed for clipping Segs (mainly) and sprites representing things.
 constexpr size_t SIL_NONE{0};
 constexpr size_t SIL_BOTTOM{1};
 constexpr size_t SIL_TOP{2};
@@ -45,10 +44,10 @@ struct vertex_t
 	fixed_t x;
 	fixed_t y;
 
-// [crispy] remove slime trails
-// vertex coordinates *only* used in rendering that have been
-// moved towards the linedef associated with their seg by projecting them
-// using the law of cosines in p_setup.c:P_RemoveSlimeTrails();
+	// [crispy] remove slime trails
+	// vertex coordinates *only* used in rendering that have been
+	// moved towards the linedef associated with their seg by projecting them
+	// using the law of cosines in p_setup.c:P_RemoveSlimeTrails();
 	fixed_t r_x;
 	fixed_t r_y;
 	bool moved;

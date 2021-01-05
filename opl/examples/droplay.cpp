@@ -31,14 +31,14 @@ void WriteReg(unsigned reg, unsigned val)
 
 	OPL_WritePort(OPL_REGISTER_PORT, reg);
 
-	for (i=0; i<6; ++i)
+	for (i = 0; i < 6; ++i)
 	{
 		OPL_ReadPort(OPL_REGISTER_PORT);
 	}
 
 	OPL_WritePort(OPL_DATA_PORT, val);
 
-	for (i=0; i<35; ++i)
+	for (i = 0; i < 35; ++i)
 	{
 		OPL_ReadPort(OPL_REGISTER_PORT);
 	}
@@ -48,9 +48,9 @@ void ClearAllRegs(void)
 {
 	int i;
 
-	for (i=0; i<=0xff; ++i)
+	for (i = 0; i <= 0xff; ++i)
 	{
-	WriteReg(i, 0x00);
+		WriteReg(i, 0x00);
 	}
 }
 

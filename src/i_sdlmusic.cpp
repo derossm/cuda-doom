@@ -180,7 +180,7 @@ static bool I_SDL_InitMusic()
 		else if (Mix_OpenAudioDevice(snd_samplerate, AUDIO_S16SYS, 2, 1024, NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0)
 		{
 			fprintf(stderr, "Error initializing SDL_mixer: %s\n",
-					Mix_GetError());
+				Mix_GetError());
 			SDL_QuitSubSystem(SDL_INIT_AUDIO);
 		}
 		else
@@ -287,7 +287,7 @@ static void I_SDL_PlaySong(void* handle, bool looping)
 	else
 #endif
 	{
-		Mix_PlayMusic((Mix_Music*) handle, loops);
+		Mix_PlayMusic((Mix_Music*)handle, loops);
 	}
 }
 
@@ -336,7 +336,7 @@ static void I_SDL_StopSong()
 
 static void I_SDL_UnRegisterSong(void* handle)
 {
-	Mix_Music* music = (Mix_Music*) handle;
+	Mix_Music* music = (Mix_Music*)handle;
 
 	if (!music_initialized)
 	{
@@ -397,7 +397,7 @@ static bool ConvertMus(byte* musdata, int len, std::string filename)
 static void* I_SDL_RegisterSong(void* data, int len)
 {
 	std::string filename;
-	Mix_Music *music;
+	Mix_Music* music;
 
 	if (!music_initialized)
 	{
@@ -421,7 +421,7 @@ static void* I_SDL_RegisterSong(void* data, int len)
 	}
 	else
 	{
-	// Assume a MUS file and try to convert
+		// Assume a MUS file and try to convert
 
 		ConvertMus(data, len, filename);
 	}

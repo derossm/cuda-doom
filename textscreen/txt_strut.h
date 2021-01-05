@@ -52,23 +52,22 @@ class Strut : public Widget<Strut>
 	void SetFocus(bool _focus) override final = delete;
 public:
 	Strut(int _width, int _height, Widget& _parent) : width{_width}, height{_height}, parent{&_parent},
-											widget_class{Selectable, CalculateSize, nullptr, nullptr, nullptr, nullptr, nullptr, Destroy}
+		widget_class{Selectable, CalculateSize, nullptr, nullptr, nullptr, nullptr, nullptr, Destroy}
 	{
 	}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return false;
 	}
 
-	void CalculateSize() override final const noexcept
+	void CalculateSize() noexcept override final
 	{
 		// Minimum width is the string length + two spaces for padding
 	}
 
-	void Destroy() override final const noexcept
-	{
-	}
+	void Destroy() noexcept override final
+	{}
 
 };
 

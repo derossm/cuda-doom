@@ -11,8 +11,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Brightmaps for wall textures
-//	Adapted from doomretro/src/r_data.c:97-209
+		Brightmaps for wall textures
+		Adapted from doomretro/src/r_data.c:97-209
 \**********************************************************************************************************************************************/
 
 #include "doomtype.h"
@@ -388,142 +388,142 @@ static const fullbright_t fullbright_doom[] = {
 	{"WOOD4",	DOOM1AND2, redonly},
 	{"WOODGARG", DOOM1AND2, redonly},
 	{"WOODSKUL", DOOM1AND2, redonly},
-//	{"ZELDOOR", DOOM1AND2, redonly},
-	{"LITEBLU1", DOOM1AND2, notgray},
-	{"LITEBLU2", DOOM1AND2, notgray},
-	{"SPCDOOR3", DOOM2ONLY, greenonly1},
-	{"PIPEWAL1", DOOM2ONLY, greenonly1},
-	{"TEKLITE2", DOOM2ONLY, greenonly1},
-	{"TEKBRON2", DOOM2ONLY, yellowonly},
-//	{"SW2SKULL", DOOM2ONLY, greenonly2},
-	{"SW2SATYR", DOOM1AND2, brighttan},
-	{"SW2LION", DOOM1AND2, brighttan},
-	{"SW2GARG", DOOM1AND2, brighttan},
-	// [crispy] Final Doom textures
-	// TNT - Evilution exclusive
-	{"PNK4EXIT", DOOM2ONLY, redonly},
-	{"SLAD2",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD3",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD4",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD5",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD6",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD7",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD8",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD9",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD10",	DOOM2ONLY, notgrayorbrown},
-	{"SLAD11",	DOOM2ONLY, notgrayorbrown},
-	{"SLADRIP1", DOOM2ONLY, notgrayorbrown},
-	{"SLADRIP3", DOOM2ONLY, notgrayorbrown},
-	{"M_TEC",	DOOM2ONLY, greenonly2},
-	{"LITERED2", DOOM2ONLY, redonly},
-	{"BTNTMETL", DOOM2ONLY, notgrayorbrown},
-	{"BTNTSLVR", DOOM2ONLY, notgrayorbrown},
-	{"LITEYEL2", DOOM2ONLY, yellowonly},
-	{"LITEYEL3", DOOM2ONLY, yellowonly},
-	{"YELMETAL", DOOM2ONLY, yellowonly},
-	// Plutonia exclusive
-//	{"SW2SKULL", DOOM2ONLY, redonly},
+	//	{"ZELDOOR", DOOM1AND2, redonly},
+		{"LITEBLU1", DOOM1AND2, notgray},
+		{"LITEBLU2", DOOM1AND2, notgray},
+		{"SPCDOOR3", DOOM2ONLY, greenonly1},
+		{"PIPEWAL1", DOOM2ONLY, greenonly1},
+		{"TEKLITE2", DOOM2ONLY, greenonly1},
+		{"TEKBRON2", DOOM2ONLY, yellowonly},
+		//	{"SW2SKULL", DOOM2ONLY, greenonly2},
+			{"SW2SATYR", DOOM1AND2, brighttan},
+			{"SW2LION", DOOM1AND2, brighttan},
+			{"SW2GARG", DOOM1AND2, brighttan},
+			// [crispy] Final Doom textures
+			// TNT - Evilution exclusive
+			{"PNK4EXIT", DOOM2ONLY, redonly},
+			{"SLAD2",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD3",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD4",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD5",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD6",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD7",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD8",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD9",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD10",	DOOM2ONLY, notgrayorbrown},
+			{"SLAD11",	DOOM2ONLY, notgrayorbrown},
+			{"SLADRIP1", DOOM2ONLY, notgrayorbrown},
+			{"SLADRIP3", DOOM2ONLY, notgrayorbrown},
+			{"M_TEC",	DOOM2ONLY, greenonly2},
+			{"LITERED2", DOOM2ONLY, redonly},
+			{"BTNTMETL", DOOM2ONLY, notgrayorbrown},
+			{"BTNTSLVR", DOOM2ONLY, notgrayorbrown},
+			{"LITEYEL2", DOOM2ONLY, yellowonly},
+			{"LITEYEL3", DOOM2ONLY, yellowonly},
+			{"YELMETAL", DOOM2ONLY, yellowonly},
+			// Plutonia exclusive
+		//	{"SW2SKULL", DOOM2ONLY, redonly},
 };
 
 static const fullbright_t fullbright_chex[] = {
 	{"BIGDOOR1", DOOM1AND2, greenonly3},
-//	{"BIGDOOR4", DOOM1AND2, greenonly3}, // C1: some stray green pixels, C2: many stray green pixels
-//	{"BRNBIGL", DOOM1AND2, greenonly3},
-//	{"BRNBIGR", DOOM1AND2, greenonly3}, // C1, C2: one stray green pixel
-//	{"BRNSMAL2", DOOM1AND2, greenonly3}, // C1, C2: many stray green pixels
-	{"COMP2",	DOOM1AND2, notgray},
-//	{"COMPTALL", DOOM1ONLY, notgray},
-//	{"COMPTALL", DOOM2ONLY, greenonly3}, // C2: many stray green pixels
-	{"COMPUTE2", DOOM1AND2, notgray},
-	{"LITE5",	DOOM1ONLY, greenonly2},
-	{"STARTAN3", DOOM1AND2, greenonly2},
-	{"SW1BRCOM", DOOM1AND2, chexred},
-	{"SW1BRN1", DOOM1AND2, chexgreen},
-	{"SW1BRN2", DOOM1AND2, chexred},
-	{"SW1BRNGN", DOOM1AND2, chexred},
-	{"SW1BROWN", DOOM1AND2, chexred},
-	{"SW1COMM", DOOM1AND2, chexred},
-	{"SW1COMP", DOOM1AND2, chexred},
-	{"SW1DIRT", DOOM1AND2, chexgreen},
-	{"SW1METAL", DOOM1AND2, chexredgreen},
-	{"SW1PIPE", DOOM1AND2, chexgreen},
-	{"SW1STARG", DOOM1AND2, chexred},
-	{"SW1STON1", DOOM1AND2, chexred},
-	{"SW1STRTN", DOOM1AND2, chexred},
-	{"SW2BRCOM", DOOM1AND2, chexgreen},
-	{"SW2BRN1", DOOM1AND2, chexred},
-	{"SW2BRN2", DOOM1AND2, chexgreen},
-	{"SW2BRNGN", DOOM1AND2, chexgreen},
-	{"SW2BROWN", DOOM1AND2, chexgreen},
-	{"SW2COMM", DOOM1AND2, chexgreen},
-	{"SW2COMP", DOOM1AND2, chexgreen},
-	{"SW2DIRT", DOOM1AND2, chexred},
-	{"SW2METAL", DOOM1AND2, chexredgreen},
-	{"SW2PIPE", DOOM1AND2, chexred},
-	{"SW2STARG", DOOM1AND2, chexgreen},
-	{"SW2STON1", DOOM1AND2, chexgreen},
-	{"SW2STONE", DOOM1AND2, chexgreen},
-	{"SW2STRTN", DOOM1AND2, chexgreen},
-//	{"BIGDOOR5", DOOM1AND2, greenonly1}, // C1, C2: some stray green pixels
-//	{"BIGDOOR6", DOOM1AND2, greenonly1}, // C1, C2: some stray green pixels
-	{"CEMENT3", DOOM1AND2, greenonly3},
-	{"SKINFACE", DOOM1AND2, greenonly1},
-	{"SKINTEK1", DOOM1ONLY, greenonly1},
-	{"SKSPINE2", DOOM1AND2, greenonly3},
-	{"SW1BLUE", DOOM1AND2, chexgreen},
-	{"SW1HOT",	DOOM1AND2, chexgreen},
-	{"SW1SKIN", DOOM1AND2, chexgreen},
-	{"SW1VINE", DOOM1ONLY, chexgreen}, // C1: some stray green pixels in the vines
-	{"SW1WOOD", DOOM1AND2, chexgreen},
-	{"SW2BLUE", DOOM1AND2, chexred},
-	{"SW2CMT",	DOOM1AND2, chexgreen},
-	{"SW2GSTON", DOOM1AND2, chexred},
-	{"SW2HOT",	DOOM1AND2, chexred},
-	{"SW2SKIN", DOOM1AND2, chexred},
-	{"SW2VINE", DOOM1ONLY, chexred},
-	{"SW2WOOD", DOOM1AND2, chexred},
-	{"WOOD4",	DOOM1AND2, chexredgreen},
-	{"WOODGARG", DOOM1AND2, chexred},
-	{"WOODSKUL", DOOM1AND2, chexredgreen},
+	//	{"BIGDOOR4", DOOM1AND2, greenonly3}, // C1: some stray green pixels, C2: many stray green pixels
+	//	{"BRNBIGL", DOOM1AND2, greenonly3},
+	//	{"BRNBIGR", DOOM1AND2, greenonly3}, // C1, C2: one stray green pixel
+	//	{"BRNSMAL2", DOOM1AND2, greenonly3}, // C1, C2: many stray green pixels
+		{"COMP2",	DOOM1AND2, notgray},
+		//	{"COMPTALL", DOOM1ONLY, notgray},
+		//	{"COMPTALL", DOOM2ONLY, greenonly3}, // C2: many stray green pixels
+			{"COMPUTE2", DOOM1AND2, notgray},
+			{"LITE5",	DOOM1ONLY, greenonly2},
+			{"STARTAN3", DOOM1AND2, greenonly2},
+			{"SW1BRCOM", DOOM1AND2, chexred},
+			{"SW1BRN1", DOOM1AND2, chexgreen},
+			{"SW1BRN2", DOOM1AND2, chexred},
+			{"SW1BRNGN", DOOM1AND2, chexred},
+			{"SW1BROWN", DOOM1AND2, chexred},
+			{"SW1COMM", DOOM1AND2, chexred},
+			{"SW1COMP", DOOM1AND2, chexred},
+			{"SW1DIRT", DOOM1AND2, chexgreen},
+			{"SW1METAL", DOOM1AND2, chexredgreen},
+			{"SW1PIPE", DOOM1AND2, chexgreen},
+			{"SW1STARG", DOOM1AND2, chexred},
+			{"SW1STON1", DOOM1AND2, chexred},
+			{"SW1STRTN", DOOM1AND2, chexred},
+			{"SW2BRCOM", DOOM1AND2, chexgreen},
+			{"SW2BRN1", DOOM1AND2, chexred},
+			{"SW2BRN2", DOOM1AND2, chexgreen},
+			{"SW2BRNGN", DOOM1AND2, chexgreen},
+			{"SW2BROWN", DOOM1AND2, chexgreen},
+			{"SW2COMM", DOOM1AND2, chexgreen},
+			{"SW2COMP", DOOM1AND2, chexgreen},
+			{"SW2DIRT", DOOM1AND2, chexred},
+			{"SW2METAL", DOOM1AND2, chexredgreen},
+			{"SW2PIPE", DOOM1AND2, chexred},
+			{"SW2STARG", DOOM1AND2, chexgreen},
+			{"SW2STON1", DOOM1AND2, chexgreen},
+			{"SW2STONE", DOOM1AND2, chexgreen},
+			{"SW2STRTN", DOOM1AND2, chexgreen},
+			//	{"BIGDOOR5", DOOM1AND2, greenonly1}, // C1, C2: some stray green pixels
+			//	{"BIGDOOR6", DOOM1AND2, greenonly1}, // C1, C2: some stray green pixels
+				{"CEMENT3", DOOM1AND2, greenonly3},
+				{"SKINFACE", DOOM1AND2, greenonly1},
+				{"SKINTEK1", DOOM1ONLY, greenonly1},
+				{"SKSPINE2", DOOM1AND2, greenonly3},
+				{"SW1BLUE", DOOM1AND2, chexgreen},
+				{"SW1HOT",	DOOM1AND2, chexgreen},
+				{"SW1SKIN", DOOM1AND2, chexgreen},
+				{"SW1VINE", DOOM1ONLY, chexgreen}, // C1: some stray green pixels in the vines
+				{"SW1WOOD", DOOM1AND2, chexgreen},
+				{"SW2BLUE", DOOM1AND2, chexred},
+				{"SW2CMT",	DOOM1AND2, chexgreen},
+				{"SW2GSTON", DOOM1AND2, chexred},
+				{"SW2HOT",	DOOM1AND2, chexred},
+				{"SW2SKIN", DOOM1AND2, chexred},
+				{"SW2VINE", DOOM1ONLY, chexred},
+				{"SW2WOOD", DOOM1AND2, chexred},
+				{"WOOD4",	DOOM1AND2, chexredgreen},
+				{"WOODGARG", DOOM1AND2, chexred},
+				{"WOODSKUL", DOOM1AND2, chexredgreen},
 };
 
 static const fullbright_t fullbright_hacx[] = {
-//	{"BFALL1",	DOOM2ONLY, redandgreen},
-//	{"BFALL2",	DOOM2ONLY, redandgreen},
-//	{"BFALL3",	DOOM2ONLY, redandgreen},
-//	{"BFALL4",	DOOM2ONLY, redandgreen},
-	{"BRNSMALR", DOOM2ONLY, greenonly1},
-	{"DOORRED", DOOM2ONLY, redandgreen},
-	{"SLADWALL", DOOM2ONLY, chexred},
-//	{"SW1BRCOM", DOOM2ONLY, redonly},
-//	{"SW1BRN1", DOOM2ONLY, redandgreen},
-	{"SW1BRN2", DOOM2ONLY, notgrayorbrown},
-	{"SW1BRNGN", DOOM2ONLY, notgrayorbrown},
-//	{"SW1BROWN", DOOM2ONLY, notgrayorbrown},
-//	{"SW2BRCOM", DOOM2ONLY, greenonly1},
-//	{"SW2BRN1", DOOM2ONLY, redandgreen},
-	{"SW2BRN2", DOOM2ONLY, notgrayorbrown},
-//	{"SW2BROWN", DOOM2ONLY, notgrayorbrown},
-	{"COMPSPAN", DOOM2ONLY, greenonly1},
-	{"COMPSTA1", DOOM2ONLY, notgrayorbrown},
-//	{"COMPSTA2", DOOM2ONLY, notgrayorbrown},
-	{"HD5",		DOOM2ONLY, redandgreen},
-//	{"HD8",		DOOM2ONLY, redandgreen},
-//	{"HD9",		DOOM2ONLY, redandgreen},
-	{"BLAKWAL2", DOOM2ONLY, redandgreen},
-	{"CEMENT7", DOOM2ONLY, greenonly1},
-	{"ROCK4",	DOOM2ONLY, redonly},
-//	{"SLOPPY1", DOOM2ONLY, notgrayorbrown},
-//	{"SPCDOOR4", DOOM2ONLY, notgrayorbrown},
-	{"ZZZFACE1", DOOM2ONLY, greenonly1},
-	{"ZZZFACE2", DOOM2ONLY, redandgreen},
-	{"HW166",	DOOM2ONLY, redandgreen},
-	{"HW510",	DOOM2ONLY, notgrayorbrown},
-	{"HW511",	DOOM2ONLY, notgrayorbrown},
-	{"HW512",	DOOM2ONLY, notgrayorbrown},
+	//	{"BFALL1",	DOOM2ONLY, redandgreen},
+	//	{"BFALL2",	DOOM2ONLY, redandgreen},
+	//	{"BFALL3",	DOOM2ONLY, redandgreen},
+	//	{"BFALL4",	DOOM2ONLY, redandgreen},
+		{"BRNSMALR", DOOM2ONLY, greenonly1},
+		{"DOORRED", DOOM2ONLY, redandgreen},
+		{"SLADWALL", DOOM2ONLY, chexred},
+		//	{"SW1BRCOM", DOOM2ONLY, redonly},
+		//	{"SW1BRN1", DOOM2ONLY, redandgreen},
+			{"SW1BRN2", DOOM2ONLY, notgrayorbrown},
+			{"SW1BRNGN", DOOM2ONLY, notgrayorbrown},
+			//	{"SW1BROWN", DOOM2ONLY, notgrayorbrown},
+			//	{"SW2BRCOM", DOOM2ONLY, greenonly1},
+			//	{"SW2BRN1", DOOM2ONLY, redandgreen},
+				{"SW2BRN2", DOOM2ONLY, notgrayorbrown},
+				//	{"SW2BROWN", DOOM2ONLY, notgrayorbrown},
+					{"COMPSPAN", DOOM2ONLY, greenonly1},
+					{"COMPSTA1", DOOM2ONLY, notgrayorbrown},
+					//	{"COMPSTA2", DOOM2ONLY, notgrayorbrown},
+						{"HD5",		DOOM2ONLY, redandgreen},
+						//	{"HD8",		DOOM2ONLY, redandgreen},
+						//	{"HD9",		DOOM2ONLY, redandgreen},
+							{"BLAKWAL2", DOOM2ONLY, redandgreen},
+							{"CEMENT7", DOOM2ONLY, greenonly1},
+							{"ROCK4",	DOOM2ONLY, redonly},
+							//	{"SLOPPY1", DOOM2ONLY, notgrayorbrown},
+							//	{"SPCDOOR4", DOOM2ONLY, notgrayorbrown},
+								{"ZZZFACE1", DOOM2ONLY, greenonly1},
+								{"ZZZFACE2", DOOM2ONLY, redandgreen},
+								{"HW166",	DOOM2ONLY, redandgreen},
+								{"HW510",	DOOM2ONLY, notgrayorbrown},
+								{"HW511",	DOOM2ONLY, notgrayorbrown},
+								{"HW512",	DOOM2ONLY, notgrayorbrown},
 };
 
-static byte* R_BrightmapForTexName_Doom (std::string texname)
+static byte* R_BrightmapForTexName_Doom(std::string texname)
 {
 	int i;
 
@@ -548,7 +548,7 @@ static byte* R_BrightmapForTexName_Doom (std::string texname)
 
 static bool chex2 = false;
 
-static byte* R_BrightmapForTexName_Chex (std::string texname)
+static byte* R_BrightmapForTexName_Chex(std::string texname)
 {
 	int i;
 
@@ -571,7 +571,7 @@ static byte* R_BrightmapForTexName_Chex (std::string texname)
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForTexName_Hacx (std::string texname)
+static byte* R_BrightmapForTexName_Hacx(std::string texname)
 {
 	int i;
 
@@ -591,47 +591,47 @@ static byte* R_BrightmapForTexName_Hacx (std::string texname)
 // [crispy] brightmaps for sprites
 
 // [crispy] adapted from russian-doom/src/doom/r_things.c:617-639
-static byte* R_BrightmapForSprite_Doom (const int type)
+static byte* R_BrightmapForSprite_Doom(const int type)
 {
 	if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
 	{
 		switch (type)
 		{
 			// Armor Bonus
-			case spritenum_t::SPR_BON2:
+		case spritenum_t::SPR_BON2:
 			// Cell Charge
-			case spritenum_t::SPR_CELL:
-			{
-				return greenonly1;
-				break;
-			}
-			// Barrel
-			case spritenum_t::SPR_BAR1:
-			{
-				return greenonly3;
-				break;
-			}
-			// Cell Charge Pack
-			case spritenum_t::SPR_CELP:
-			{
-				return yellowonly;
-				break;
-			}
-			// BFG9000
-			case spritenum_t::SPR_BFUG:
+		case spritenum_t::SPR_CELL:
+		{
+			return greenonly1;
+			break;
+		}
+		// Barrel
+		case spritenum_t::SPR_BAR1:
+		{
+			return greenonly3;
+			break;
+		}
+		// Cell Charge Pack
+		case spritenum_t::SPR_CELP:
+		{
+			return yellowonly;
+			break;
+		}
+		// BFG9000
+		case spritenum_t::SPR_BFUG:
 			// Plasmagun
-			case spritenum_t::SPR_PLAS:
-			{
-				return redonly;
-				break;
-			}
+		case spritenum_t::SPR_PLAS:
+		{
+			return redonly;
+			break;
+		}
 		}
 	}
 
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForSprite_Chex (const int type)
+static byte* R_BrightmapForSprite_Chex(const int type)
 {
 	// [crispy] TODO
 	/*
@@ -661,48 +661,48 @@ static byte* R_BrightmapForSprite_Chex (const int type)
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForSprite_Hacx (const int type)
+static byte* R_BrightmapForSprite_Hacx(const int type)
 {
 	if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
 	{
 		switch (type)
 		{
 			// Chainsaw
-			case spritenum_t::SPR_CSAW:
+		case spritenum_t::SPR_CSAW:
 			// Plasmagun
-			case spritenum_t::SPR_PLAS:
+		case spritenum_t::SPR_PLAS:
 			// Cell Charge
-			case spritenum_t::SPR_CELL:
+		case spritenum_t::SPR_CELL:
 			// Cell Charge Pack
-			case spritenum_t::SPR_CELP:
-			{
-				return redonly;
-				break;
-			}
-			// Rocket launcher
-			case spritenum_t::SPR_LAUN:
+		case spritenum_t::SPR_CELP:
+		{
+			return redonly;
+			break;
+		}
+		// Rocket launcher
+		case spritenum_t::SPR_LAUN:
 			// Medikit
-			case spritenum_t::SPR_MEDI:
-			{
-				return redandgreen;
-				break;
-			}
-			// Rocket
-			case spritenum_t::SPR_ROCK:
+		case spritenum_t::SPR_MEDI:
+		{
+			return redandgreen;
+			break;
+		}
+		// Rocket
+		case spritenum_t::SPR_ROCK:
 			// Box of rockets
-			case spritenum_t::SPR_BROK:
-			{
-				return greenonly1;
-				break;
-			}
-			// Health Bonus
-			case spritenum_t::SPR_BON1:
+		case spritenum_t::SPR_BROK:
+		{
+			return greenonly1;
+			break;
+		}
+		// Health Bonus
+		case spritenum_t::SPR_BON1:
 			// Stimpack
-			case spritenum_t::SPR_STIM:
-			{
-				return notgrayorbrown;
-				break;
-			}
+		case spritenum_t::SPR_STIM:
+		{
+			return notgrayorbrown;
+			break;
+		}
 		}
 	}
 
@@ -713,7 +713,7 @@ static byte* R_BrightmapForSprite_Hacx (const int type)
 
 static int bmapflatnum[12];
 
-static byte* R_BrightmapForFlatNum_Doom (const int num)
+static byte* R_BrightmapForFlatNum_Doom(const int num)
 {
 	if (crispy->brightmaps & BRIGHTMAPS_TEXTURES)
 	{
@@ -728,7 +728,7 @@ static byte* R_BrightmapForFlatNum_Doom (const int num)
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForFlatNum_Hacx (const int num)
+static byte* R_BrightmapForFlatNum_Hacx(const int num)
 {
 	if (crispy->brightmaps & BRIGHTMAPS_TEXTURES)
 	{
@@ -756,65 +756,65 @@ static byte* R_BrightmapForFlatNum_Hacx (const int num)
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForFlatNum_None (const int num)
+static byte* R_BrightmapForFlatNum_None(const int num)
 {
 	return nobrightmap;
 }
 
 // [crispy] brightmaps for states
 
-static byte* R_BrightmapForState_Doom (const int state)
+static byte* R_BrightmapForState_Doom(const int state)
 {
 	if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
 	{
 		switch (state)
 		{
-			case statenum_t::S_BFG1:
-			case statenum_t::S_BFG2:
-			case statenum_t::S_BFG3:
-			case statenum_t::S_BFG4:
-			{
-				return redonly;
-				break;
-			}
+		case statenum_t::S_BFG1:
+		case statenum_t::S_BFG2:
+		case statenum_t::S_BFG3:
+		case statenum_t::S_BFG4:
+		{
+			return redonly;
+			break;
+		}
 		}
 	}
 
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForState_Hacx (const int state)
+static byte* R_BrightmapForState_Hacx(const int state)
 {
 	if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
 	{
 		switch (state)
 		{
-			case statenum_t::S_SAW2:
-			case statenum_t::S_SAW3:
-			{
-				return hacxlightning;
-				break;
-			}
-			case statenum_t::S_MISSILE:
-			{
-				return redandgreen;
-				break;
-			}
-			case statenum_t::S_SAW:
-			case statenum_t::S_SAWB:
-			case statenum_t::S_PLASMA:
-			case statenum_t::S_PLASMA2:
-			{
-				return redonly;
-				break;
-			}
+		case statenum_t::S_SAW2:
+		case statenum_t::S_SAW3:
+		{
+			return hacxlightning;
+			break;
+		}
+		case statenum_t::S_MISSILE:
+		{
+			return redandgreen;
+			break;
+		}
+		case statenum_t::S_SAW:
+		case statenum_t::S_SAWB:
+		case statenum_t::S_PLASMA:
+		case statenum_t::S_PLASMA2:
+		{
+			return redonly;
+			break;
+		}
 		}
 	}
 
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForState_None (const int state)
+static byte* R_BrightmapForState_None(const int state)
 {
 	return nobrightmap;
 }
@@ -826,7 +826,7 @@ byte* (*R_BrightmapForSprite) (const int type);
 byte* (*R_BrightmapForFlatNum) (const int num);
 byte* (*R_BrightmapForState) (const int state);
 
-void R_InitBrightmaps ()
+void R_InitBrightmaps()
 {
 	if (gameversion == GameVersion::exe_hacx)
 	{
@@ -849,32 +849,32 @@ void R_InitBrightmaps ()
 		R_BrightmapForState = R_BrightmapForState_Hacx;
 	}
 	else
-	if (gameversion == GameVersion::exe_chex)
-	{
-		int lump;
-
-		// [crispy] detect Chex Quest 2
-		lump = W_CheckNumForName("INTERPIC");
-		if (!iequals(W_WadNameForLump(lumpinfo[lump]), "chex2.wad"))
+		if (gameversion == GameVersion::exe_chex)
 		{
-			chex2 = true;
+			int lump;
+
+			// [crispy] detect Chex Quest 2
+			lump = W_CheckNumForName("INTERPIC");
+			if (!iequals(W_WadNameForLump(lumpinfo[lump]), "chex2.wad"))
+			{
+				chex2 = true;
+			}
+
+			R_BrightmapForTexName = R_BrightmapForTexName_Chex;
+			R_BrightmapForSprite = R_BrightmapForSprite_Chex;
+			R_BrightmapForFlatNum = R_BrightmapForFlatNum_None;
+			R_BrightmapForState = R_BrightmapForState_None;
 		}
+		else
+		{
+			// [crispy] only three select brightmapped flats
+			bmapflatnum[0] = R_FlatNumForName("CONS1_1");
+			bmapflatnum[1] = R_FlatNumForName("CONS1_5");
+			bmapflatnum[2] = R_FlatNumForName("CONS1_7");
 
-		R_BrightmapForTexName = R_BrightmapForTexName_Chex;
-		R_BrightmapForSprite = R_BrightmapForSprite_Chex;
-		R_BrightmapForFlatNum = R_BrightmapForFlatNum_None;
-		R_BrightmapForState = R_BrightmapForState_None;
-	}
-	else
-	{
-		// [crispy] only three select brightmapped flats
-		bmapflatnum[0] = R_FlatNumForName("CONS1_1");
-		bmapflatnum[1] = R_FlatNumForName("CONS1_5");
-		bmapflatnum[2] = R_FlatNumForName("CONS1_7");
-
-		R_BrightmapForTexName = R_BrightmapForTexName_Doom;
-		R_BrightmapForSprite = R_BrightmapForSprite_Doom;
-		R_BrightmapForFlatNum = R_BrightmapForFlatNum_Doom;
-		R_BrightmapForState = R_BrightmapForState_Doom;
-	}
+			R_BrightmapForTexName = R_BrightmapForTexName_Doom;
+			R_BrightmapForSprite = R_BrightmapForSprite_Doom;
+			R_BrightmapForFlatNum = R_BrightmapForFlatNum_Doom;
+			R_BrightmapForState = R_BrightmapForState_Doom;
+		}
 }

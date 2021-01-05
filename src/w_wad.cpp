@@ -59,7 +59,7 @@ unsigned W_LumpNameHash(std::string s)
 
 	for (size_t i{0}; i < 8 && s[i] != '\0'; ++i)
 	{
-		result = ((result << 5) ^ result ) ^ toupper(s[i]);
+		result = ((result << 5) ^ result) ^ toupper(s[i]);
 	}
 
 	return result;
@@ -68,7 +68,7 @@ unsigned W_LumpNameHash(std::string s)
 // All files are optional, but at least one file must be found (PWAD, if all required lumps are present).
 // Files with a .wad extension are wadlink files with multiple lumps.
 // Other files are single lumps with the base filename for the lump name.
-wad_file_t* W_AddFile (std::string filename)
+wad_file_t* W_AddFile(std::string filename)
 {
 	wadinfo_t header;
 	lumpindex_t i;
@@ -85,8 +85,8 @@ wad_file_t* W_AddFile (std::string filename)
 		if (reloadname != NULL)
 		{
 			I_Error("Prefixing a WAD filename with '~' indicates that the WAD should be reloaded\n"
-					"on each level restart, for use by level authors for rapid development. You\n"
-					"can only reload one WAD file, and it must be the last file in the -file list.");
+				"on each level restart, for use by level authors for rapid development. You\n"
+				"can only reload one WAD file, and it must be the last file in the -file list.");
 		}
 
 		reloadname = strdup(filename);
@@ -99,11 +99,11 @@ wad_file_t* W_AddFile (std::string filename)
 
 	if (wad_file == NULL)
 	{
-		printf (" couldn't open %s\n", filename);
+		printf(" couldn't open %s\n", filename);
 		return nullptr;
 	}
 
-	if (iequals(filename+strlen(filename)-3, "wad"))
+	if (iequals(filename + strlen(filename) - 3, "wad"))
 	{
 		// single lump file
 
@@ -124,10 +124,10 @@ wad_file_t* W_AddFile (std::string filename)
 		// WAD file
 		W_Read(wad_file, 0, &header, sizeof(header));
 
-		if (strncmp(header.identification,"IWAD",4))
+		if (strncmp(header.identification, "IWAD", 4))
 		{
 			// Homebrew levels?
-			if (strncmp(header.identification,"PWAD",4))
+			if (strncmp(header.identification, "PWAD", 4))
 			{
 				W_CloseFile(wad_file);
 				I_Error("Wad file %s doesn't have IWAD or PWAD id\n", filename);
@@ -140,14 +140,14 @@ wad_file_t* W_AddFile (std::string filename)
 		// Vanilla Doom doesn't like WADs with more than 4046 lumps
 		// https://www.doomworld.com/vb/post/1010985
 		// [crispy] disable PWAD lump number limit
-		if (!strncmp(header.identification,"PWAD",4) && header.numlumps > 4046 && false)
+		if (!strncmp(header.identification, "PWAD", 4) && header.numlumps > 4046 && false)
 		{
-				W_CloseFile(wad_file);
-				I_Error("Error: Vanilla limit for lumps in a WAD is 4046, PWAD %s has %d", filename, header.numlumps);
+			W_CloseFile(wad_file);
+			I_Error("Error: Vanilla limit for lumps in a WAD is 4046, PWAD %s has %d", filename, header.numlumps);
 		}
 
 		header.infotableofs = LONG(header.infotableofs);
-		length = header.numlumps*sizeof(filelump_t);
+		length = header.numlumps * sizeof(filelump_t);
 		fileinfo = Z_Malloc<decltype(fileinfo)>(length, pu_tags_t::PU_STATIC, 0);
 
 		W_Read(wad_file, header.infotableofs, fileinfo, length);
@@ -309,7 +309,7 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum)
 
 	if ((unsigned)lumpnum >= numlumps)
 	{
-	I_Error("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
+		I_Error("W_ReleaseLumpNum: %i >= numlumps", lumpnum);
 	}
 
 	lump = lumpinfo[lumpnum];
@@ -348,7 +348,7 @@ void W_Profile()
 		}
 		else
 		{
-			auto block = (memblock_t*) ((byte*)ptr - sizeof(memblock_t));
+			auto block = (memblock_t*)((byte*)ptr - sizeof(memblock_t));
 			if (block->tag < pu_tags_t::PU_PURGELEVEL)
 			{
 				ch = 'S';
@@ -483,7 +483,7 @@ bool W_IsIWADLump(const lumpinfo_t* lump)
 }
 
 // [crispy] dump lump data into a new LMP file
-lumpindex_t W_LumpDump (std::string lumpname)
+lumpindex_t W_LumpDump(std::string lumpname)
 {
 	auto i = W_CheckNumForName(lumpname);
 

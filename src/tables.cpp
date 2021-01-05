@@ -60,20 +60,20 @@ int SlopeDivCrispy(unsigned num, unsigned den)
 {
 	if (den < 512)
 	{
-	return SLOPERANGE;
-	}
-	else
-	{
-	uint64_t ans = ((uint64_t) num << 3) / (den >> 8);
-
-	if (ans <= SLOPERANGE)
-	{
-		return (int) ans;
-	}
-	else
-	{
 		return SLOPERANGE;
 	}
+	else
+	{
+		uint64_t ans = ((uint64_t)num << 3) / (den >> 8);
+
+		if (ans <= SLOPERANGE)
+		{
+			return (int)ans;
+		}
+		else
+		{
+			return SLOPERANGE;
+		}
 	}
 }
 
@@ -1878,7 +1878,7 @@ const fixed_t finesine[10240] =
 	65534,65535,65535,65535,65535,65535,65535,65535
 };
 
-const fixed_t* finecosine = &finesine[FINEANGLES/4];
+const fixed_t* finecosine = &finesine[FINEANGLES / 4];
 
 const angle_t tantoangle[2049] =
 {

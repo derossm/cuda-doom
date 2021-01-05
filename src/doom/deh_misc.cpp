@@ -7,9 +7,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses "Misc" sections in dehacked files
+	DESCRIPTION:
+		Parses "Misc" sections in dehacked files
 \**********************************************************************************************************************************************/
-
 
 #include "doomtype.h"
 #include "deh_defs.h"
@@ -126,7 +126,7 @@ int deh_species_infighting = DEH_DEFAULT_SPECIES_INFIGHTING;
 static struct
 {
 	std::string deh_name;
-	int *value;
+	int* value;
 } misc_settings[] = {
 	{"Initial Health",		&deh_initial_health},
 	{"Initial Bullets",		&deh_initial_bullets},
@@ -152,7 +152,7 @@ static void* DEH_MiscStart(deh_context_t* context, std::string line)
 
 static void DEH_MiscParseLine(deh_context_t* context, std::string line, void* tag)
 {
-	std::string variable_name, *value;
+	std::string variable_name, * value;
 	int ivalue;
 	size_t i;
 
@@ -181,13 +181,13 @@ static void DEH_MiscParseLine(deh_context_t* context, std::string line, void* ta
 		else
 		{
 			DEH_Warning(context,
-						"Invalid value for 'Monsters Infight': %i", ivalue);
+				"Invalid value for 'Monsters Infight': %i", ivalue);
 		}
 
 		return;
 	}
 
-	for (i=0; i<arrlen(misc_settings); ++i)
+	for (i = 0; i < arrlen(misc_settings); ++i)
 	{
 		if (!iequals(variable_name, misc_settings[i].deh_name))
 		{
@@ -203,7 +203,7 @@ static void DEH_MiscSHA1Sum(sha1_context_t* context)
 {
 	unsigned i;
 
-	for (i=0; i<arrlen(misc_settings); ++i)
+	for (i = 0; i < arrlen(misc_settings); ++i)
 	{
 		SHA1_UpdateInt32(context, *misc_settings[i].value);
 	}

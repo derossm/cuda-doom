@@ -24,10 +24,10 @@
 // swirl factors determine the number of waves per flat width
 
 // 1 cycle per 64 units
-constexpr size_t swirlfactor{(8192/64)};
+constexpr size_t swirlfactor{(8192 / 64)};
 
 // 1 cycle per 32 units (2 in 64)
-constexpr size_t swirlfactor2{(8192/32)};
+constexpr size_t swirlfactor2{(8192 / 32)};
 
 constexpr size_t SEQUENCE{1024};
 constexpr size_t FLATSIZE{(64 * 64)};

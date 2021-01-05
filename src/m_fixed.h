@@ -17,7 +17,7 @@
 
 // Fixed point, 32bit as 16.16.
 constexpr size_t FRACBITS{16};
-constexpr size_t FRACUNIT{(1<<FRACBITS)};
+constexpr size_t FRACUNIT{(1 << FRACBITS)};
 
 #define FIXED2DOUBLE(x) (x / (double)FRACUNIT)
 

@@ -169,28 +169,28 @@ static void ScrollPaneDrawer(UNCAST_ARG(scrollpane))
 	// We set a clipping area of the scroll pane.
 
 	x1 = scrollpane->widget.x,
-	y1 = scrollpane->widget.y,
-	x2 = x1 + scrollpane->w,
-	y2 = y1 + scrollpane->h;
+		y1 = scrollpane->widget.y,
+		x2 = x1 + scrollpane->w,
+		y2 = y1 + scrollpane->h;
 
 	scrollbars = NeedsScrollbars(scrollpane);
 
 	if (scrollbars & SCROLLBAR_HORIZONTAL)
 	{
 		DrawHorizScrollbar(x1,
-								y1 + scrollpane->h,
-								scrollpane->w,
-								scrollpane->x,
-								FullWidth(scrollpane) - scrollpane->w);
+			y1 + scrollpane->h,
+			scrollpane->w,
+			scrollpane->x,
+			FullWidth(scrollpane) - scrollpane->w);
 	}
 
 	if (scrollbars & SCROLLBAR_VERTICAL)
 	{
 		DrawVertScrollbar(x1 + scrollpane->w,
-								y1,
-								scrollpane->h,
-								scrollpane->y,
-								FullHeight(scrollpane) - scrollpane->h);
+			y1,
+			scrollpane->h,
+			scrollpane->y,
+			FullHeight(scrollpane) - scrollpane->h);
 	}
 
 	PushClipArea(x1, x2, y1, y2);
@@ -236,7 +236,7 @@ static void ScrollPaneFocused(UNCAST_ARG(scrollpane), int focused)
 
 static void ShowSelectedWidget(txt_scrollpane_t* scrollpane)
 {
-	Widget *selected;
+	Widget* selected;
 
 	selected = GetSelectedWidget(scrollpane->child);
 
@@ -246,11 +246,11 @@ static void ShowSelectedWidget(txt_scrollpane_t* scrollpane)
 	{
 		scrollpane->y -= scrollpane->widget.y - selected->y;
 	}
-	else if ((int) (selected->y + selected->h) >
-				(int) (scrollpane->widget.y + scrollpane->h))
+	else if ((int)(selected->y + selected->h) >
+		(int)(scrollpane->widget.y + scrollpane->h))
 	{
 		scrollpane->y += (selected->y + selected->h)
-						- (scrollpane->widget.y + scrollpane->h);
+			- (scrollpane->widget.y + scrollpane->h);
 	}
 
 	// Scroll left or right?
@@ -259,11 +259,11 @@ static void ShowSelectedWidget(txt_scrollpane_t* scrollpane)
 	{
 		scrollpane->x -= scrollpane->widget.x - selected->x;
 	}
-	else if ((int) (selected->x + selected->w) >
-				(int) (scrollpane->widget.x + scrollpane->w))
+	else if ((int)(selected->x + selected->w) >
+		(int)(scrollpane->widget.x + scrollpane->w))
 	{
 		scrollpane->x += (selected->x + selected->w)
-						- (scrollpane->widget.x + scrollpane->w);
+			- (scrollpane->widget.x + scrollpane->w);
 	}
 }
 
@@ -288,16 +288,16 @@ static int PageSelectedWidget(txt_scrollpane_t* scrollpane, int key)
 
 	switch (key)
 	{
-		case KEY_PGUP:
-			pagey = 1 - scrollpane->h;
-			break;
+	case KEY_PGUP:
+		pagey = 1 - scrollpane->h;
+		break;
 
-		case KEY_PGDN:
-			pagey = scrollpane->h - 1;
-			break;
+	case KEY_PGDN:
+		pagey = scrollpane->h - 1;
+		break;
 
-		default: // We shouldn't even be in this function
-			return 0;
+	default: // We shouldn't even be in this function
+		return 0;
 	}
 
 	if (scrollpane->child->widget_class == &txt_table_class)
@@ -316,65 +316,65 @@ static int InterpretScrollKey(txt_scrollpane_t* scrollpane, int key)
 
 	switch (key)
 	{
-		case KEY_UPARROW:
-			if (scrollpane->y > 0)
-			{
-				--scrollpane->y;
-				return 1;
-			}
-			break;
+	case KEY_UPARROW:
+		if (scrollpane->y > 0)
+		{
+			--scrollpane->y;
+			return 1;
+		}
+		break;
 
-		case KEY_DOWNARROW:
-			if (scrollpane->y < FullHeight(scrollpane) - scrollpane->h)
-			{
-				++scrollpane->y;
-				return 1;
-			}
-			break;
+	case KEY_DOWNARROW:
+		if (scrollpane->y < FullHeight(scrollpane) - scrollpane->h)
+		{
+			++scrollpane->y;
+			return 1;
+		}
+		break;
 
-		case KEY_LEFTARROW:
-			if (scrollpane->x > 0)
-			{
-				--scrollpane->x;
-				return 1;
-			}
-			break;
+	case KEY_LEFTARROW:
+		if (scrollpane->x > 0)
+		{
+			--scrollpane->x;
+			return 1;
+		}
+		break;
 
-		case KEY_RIGHTARROW:
-			if (scrollpane->x < FullWidth(scrollpane) - scrollpane->w)
-			{
-				++scrollpane->x;
-				return 1;
-			}
-			break;
+	case KEY_RIGHTARROW:
+		if (scrollpane->x < FullWidth(scrollpane) - scrollpane->w)
+		{
+			++scrollpane->x;
+			return 1;
+		}
+		break;
 
-		case KEY_PGUP:
-			if (scrollpane->y > 0)
+	case KEY_PGUP:
+		if (scrollpane->y > 0)
+		{
+			scrollpane->y -= scrollpane->h;
+			if (scrollpane->y < 0)
 			{
-				scrollpane->y -= scrollpane->h;
-				if (scrollpane->y < 0)
-				{
-					scrollpane->y = 0;
-				}
-				return 1;
+				scrollpane->y = 0;
 			}
-			break;
+			return 1;
+		}
+		break;
 
-		case KEY_PGDN:
-			maxy = FullHeight(scrollpane) - scrollpane->h;
-			if (scrollpane->y < maxy)
+	case KEY_PGDN:
+		maxy = FullHeight(scrollpane) - scrollpane->h;
+		if (scrollpane->y < maxy)
+		{
+			scrollpane->y += scrollpane->h;
+			if (scrollpane->y > maxy)
 			{
-				scrollpane->y += scrollpane->h;
-				if (scrollpane->y > maxy)
-				{
-					scrollpane->y = maxy;
-				}
-				return 1;
+				scrollpane->y = maxy;
 			}
-			break;
+			return 1;
+		}
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	return 0;
@@ -422,7 +422,7 @@ static int ScrollPaneKeyPress(UNCAST_ARG(scrollpane), int key)
 }
 
 static void ScrollPaneMousePress(UNCAST_ARG(scrollpane),
-										int x, int y, int b)
+	int x, int y, int b)
 {
 	CAST_ARG(txt_scrollpane_t, scrollpane);
 	int scrollbars;

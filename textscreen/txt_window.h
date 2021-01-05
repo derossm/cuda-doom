@@ -42,7 +42,7 @@ namespace cudadoom::txt
  * action to activate the currently-selected widget.
  */
 
-// Callback function for window key presses
+ // Callback function for window key presses
 typedef int (*WindowKeyPress)(int key, void* user_data);
 typedef int (*WindowMousePress)(int x, int y, int b, void* user_data);
 
@@ -77,9 +77,9 @@ public:
 	// URL of a webpage with help about this window. If set, a help key indicator is shown while this window is active.
 	std::string help_url;
 
-	Window(std::string& _title) noexcept :	title{_title}, coordinates{.x{SCREEN_W/2}, .y{SCREEN_H/2}},
-											verticalAlign{AlignVertical::center}, horizontalAlign{AlignHorizontal::center},
-											widget_class{ Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy }
+	Window(std::string& _title) noexcept : title{_title}, coordinates{.x{SCREEN_W / 2}, .y{SCREEN_H / 2}},
+		verticalAlign{AlignVertical::center}, horizontalAlign{AlignHorizontal::center},
+		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 		AddWidget(Separator(nullptr));
 
@@ -90,14 +90,13 @@ public:
 		SetWindowAction(AlignHorizontal::right, NewWindowSelectAction(this));
 	}
 
-	bool Selectable() override final const noexcept
+	bool Selectable() noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() override final const noexcept
-	{
-	}
+	void CalculateSize() noexcept override final
+	{}
 
 	void SetWindowAction(AlignHorizontal position, Widget& action) noexcept
 	{
@@ -123,28 +122,28 @@ public:
 	{
 		switch (horizontalAlign)
 		{
-			case AlignHorizontal::left:
-				window_x = coordinates.x;
-				break;
-			case AlignHorizontal::center:
-				window_x = coordinates.x - (window_w / 2);
-				break;
-			case AlignHorizontal::right:
-				window_x = coordinates.x - (window_w - 1);
-				break;
+		case AlignHorizontal::left:
+			window_x = coordinates.x;
+			break;
+		case AlignHorizontal::center:
+			window_x = coordinates.x - (window_w / 2);
+			break;
+		case AlignHorizontal::right:
+			window_x = coordinates.x - (window_w - 1);
+			break;
 		}
 
 		switch (verticalAlign)
 		{
-			case AlignVertical::top:
-				window_y = coordinates.y;
-				break;
-			case AlignVertical::center:
-				window_y = coordinates.y - (window_h / 2);
-				break;
-			case AlignVertical::bottom:
-				window_y = coordinates.y - (window_h - 1);
-				break;
+		case AlignVertical::top:
+			window_y = coordinates.y;
+			break;
+		case AlignVertical::center:
+			window_y = coordinates.y - (window_h / 2);
+			break;
+		case AlignVertical::bottom:
+			window_y = coordinates.y - (window_h - 1);
+			break;
 		}
 	}
 
@@ -240,7 +239,7 @@ public:
 	}
 
 	// Sets size and position of all widgets in a window
-	void SetLayout() override final const noexcept
+	void SetLayout() noexcept override final
 	{
 		auto widget = (Widget*)window;
 
@@ -297,7 +296,7 @@ public:
 		//SetLayout();
 	}
 
-	void Draw() override final const noexcept
+	void Draw() noexcept override final
 	{
 		LayoutWindow();
 
@@ -363,7 +362,7 @@ public:
 			// Is it within the table range?
 			auto widget = (Widget*)window;
 
-			if (x >= widget->x && x < (int) (widget->x + widget->width) && y >= widget->y && y < (int) (widget->y + widget->height))
+			if (x >= widget->x && x < (int)(widget->x + widget->width) && y >= widget->y && y < (int)(widget->y + widget->height))
 			{
 				WidgetMousePress(window, x, y, b);
 				return 1;
@@ -375,7 +374,7 @@ public:
 		{
 			auto widget = actions[i];
 
-			if (widget && x >= widget->x && x < (int) (widget->x + widget->width) && y >= widget->y && y < (int) (widget->y + widget->height))
+			if (widget && x >= widget->x && x < (int)(widget->x + widget->width) && y >= widget->y && y < (int)(widget->y + widget->height))
 			{
 				// Main table temporarily loses focus when action area button is clicked. This way, any active input boxes that depend
 				// on having focus will save their values before the action is performed.
@@ -440,7 +439,7 @@ public:
 		mouse_listener_data = _user_data;
 	}
 
-	void SetFocus(bool _focus) override final const noexcept
+	void SetFocus(bool _focus) noexcept override final
 	{
 		SetWidgetFocus(focused);
 	}
@@ -450,20 +449,20 @@ public:
 		help_url(std::forward<std::string>(_help_url));
 	}
 
-	#ifdef _WIN32
+#ifdef _WIN32
 	void OpenURL(std::string& url) noexcept
 	{
 		ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 	}
-	#else
+#else
 	void OpenURL(std::string url) noexcept
 	{
 		size_t cmd_len = strlen(url) + 30;
 		std::string cmd = static_cast<decltype(cmd)>(malloc(cmd_len));
 
-	#if defined(__MACOSX__)
+#if defined(__MACOSX__)
 		snprintf(cmd, cmd_len, "open \"%s\"", url);
-	#else
+#else
 		// The Unix situation sucks as usual, but the closest thing to a standard that exists is the xdg-utils package.
 		if (system("xdg-open --version 2>/dev/null") != 0)
 		{
@@ -473,7 +472,7 @@ public:
 		}
 
 		snprintf(cmd, cmd_len, "xdg-open \"%s\"", url);
-	#endif
+#endif
 
 		auto retval = system(cmd);
 		free(cmd);
@@ -482,7 +481,7 @@ public:
 			fprintf(stderr, "OpenURL: error executing '%s'; return code %d\n", cmd, retval);
 		}
 	}
-	#endif /* #ifdef _WIN32 */
+#endif /* #ifdef _WIN32 */
 
 	void OpenWindowHelpURL() noexcept
 	{

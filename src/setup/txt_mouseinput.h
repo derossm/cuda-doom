@@ -17,8 +17,8 @@
 struct txt_mouse_input_t
 {
 	cudadoom::txt::Widget widget;
-	int *variable;
+	int* variable;
 	int check_conflicts;
 };
 
-txt_mouse_input_t* NewMouseInput(int *variable);
+txt_mouse_input_t* NewMouseInput(int* variable);

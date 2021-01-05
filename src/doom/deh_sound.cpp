@@ -7,7 +7,8 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses "Sound" sections in dehacked files
+	DESCRIPTION:
+		Parses "Sound" sections in dehacked files
 \**********************************************************************************************************************************************/
 
 #include "doomtype.h"
@@ -17,15 +18,15 @@
 #include "sounds.h"
 
 DEH_BEGIN_MAPPING(sound_mapping, sfxinfo_t)
-	DEH_UNSUPPORTED_MAPPING("Offset")
-	DEH_UNSUPPORTED_MAPPING("Zero/One")
-	DEH_MAPPING("Value", priority)
-	DEH_MAPPING("Zero 1", link)
-	DEH_MAPPING("Zero 2", pitch)
-	DEH_MAPPING("Zero 3", volume)
-	DEH_UNSUPPORTED_MAPPING("Zero 4")
-	DEH_MAPPING("Neg. One 1", usefulness)
-	DEH_MAPPING("Neg. One 2", lumpnum)
+DEH_UNSUPPORTED_MAPPING("Offset")
+DEH_UNSUPPORTED_MAPPING("Zero/One")
+DEH_MAPPING("Value", priority)
+DEH_MAPPING("Zero 1", link)
+DEH_MAPPING("Zero 2", pitch)
+DEH_MAPPING("Zero 3", volume)
+DEH_UNSUPPORTED_MAPPING("Zero 4")
+DEH_MAPPING("Neg. One 1", usefulness)
+DEH_MAPPING("Neg. One 2", lumpnum)
 DEH_END_MAPPING
 
 static void* DEH_SoundStart(deh_context_t* context, std::string line)
@@ -55,7 +56,7 @@ static void* DEH_SoundStart(deh_context_t* context, std::string line)
 static void DEH_SoundParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	sfxinfo_t* sfx;
-	std::string variable_name, *value;
+	std::string variable_name, * value;
 	int ivalue;
 
 	if (tag == NULL)
@@ -63,7 +64,7 @@ static void DEH_SoundParseLine(deh_context_t* context, std::string line, void* t
 		return;
 	}
 
-	sfx = (sfxinfo_t*) tag;
+	sfx = (sfxinfo_t*)tag;
 
 	// Parse the assignment
 

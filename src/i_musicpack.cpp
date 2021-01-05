@@ -330,13 +330,13 @@ static const subst_music_t known_filenames[] = {
 // the time (in # samples since start of track) it represents.
 static unsigned ParseVorbisTime(unsigned samplerate_hz, std::string value)
 {
-	CHAR_PTR num_start, *p;
+	CHAR_PTR num_start, * p;
 	unsigned result = 0;
 	char c;
 
 	if (strchr(value, ':') == NULL)
 	{
-	return atoi(value);
+		return atoi(value);
 	}
 
 	result = 0;
@@ -346,7 +346,7 @@ static unsigned ParseVorbisTime(unsigned samplerate_hz, std::string value)
 	{
 		if (*p == '.' || *p == ':')
 		{
-			c = *p;* p = '\0';
+			c = *p;*p = '\0';
 			result = result * 60 + atoi(num_start);
 			num_start = p + 1;
 			*p = c;
@@ -355,7 +355,7 @@ static unsigned ParseVorbisTime(unsigned samplerate_hz, std::string value)
 		if (*p == '.')
 		{
 			return result * samplerate_hz
-				+ (unsigned) (atof(p) * samplerate_hz);
+				+ (unsigned)(atof(p) * samplerate_hz);
 		}
 	}
 
@@ -366,7 +366,7 @@ static unsigned ParseVorbisTime(unsigned samplerate_hz, std::string value)
 // in the metadata structure as appropriate.
 static void ParseVorbisComment(file_metadata_t* metadata, std::string comment)
 {
-	CHAR_PTR eq, *key, *value;
+	CHAR_PTR eq, * key, * value;
 
 	eq = strchr(comment, '=');
 
@@ -399,7 +399,7 @@ static void ParseVorbisComments(file_metadata_t* metadata, FILE* fs)
 	// We must have read the sample rate already from an earlier header.
 	if (metadata->samplerate_hz == 0)
 	{
-	return;
+		return;
 	}
 
 	// Skip the starting part we don't care about.
@@ -409,7 +409,7 @@ static void ParseVorbisComments(file_metadata_t* metadata, FILE* fs)
 	}
 	if (fseek(fs, LONG(buf), SEEK_CUR) != 0)
 	{
-	return;
+		return;
 	}
 
 	// Read count field for number of comments.
@@ -424,9 +424,9 @@ static void ParseVorbisComments(file_metadata_t* metadata, FILE* fs)
 	{
 		// Read length of comment.
 		if (fread(&buf, 4, 1, fs) < 1)
-	{
+		{
 			return;
-	}
+		}
 
 		comment_len = LONG(buf);
 
@@ -457,7 +457,7 @@ static void ParseFlacStreaminfo(file_metadata_t* metadata, FILE* fs)
 
 	// We only care about sample rate and song length.
 	metadata->samplerate_hz = (buf[10] << 12) | (buf[11] << 4)
-							| (buf[12] >> 4);
+		| (buf[12] >> 4);
 	// Song length is actually a 36 bit field, but 32 bits should be
 	// enough for everybody.
 	//metadata->song_length = (buf[14] << 24) | (buf[15] << 16)
@@ -523,7 +523,7 @@ static void ParseOggIdHeader(file_metadata_t* metadata, FILE* fs)
 	}
 
 	metadata->samplerate_hz = (buf[8] << 24) | (buf[7] << 16)
-							| (buf[6] << 8) | buf[5];
+		| (buf[6] << 8) | buf[5];
 }
 
 static void ParseOggFile(file_metadata_t* metadata, FILE* fs)
@@ -537,9 +537,9 @@ static void ParseOggFile(file_metadata_t* metadata, FILE* fs)
 
 	for (offset = 0; offset < 100 * 1024; ++offset)
 	{
-	// buf[] is used as a sliding window. Each iteration, we
-	// move the buffer one byte to the left and read an extra
-	// byte onto the end.
+		// buf[] is used as a sliding window. Each iteration, we
+		// move the buffer one byte to the left and read an extra
+		// byte onto the end.
 		memmove(buf, buf + 1, sizeof(buf) - 1);
 
 		if (fread(&buf[6], 1, 1, fs) < 1)
@@ -551,14 +551,14 @@ static void ParseOggFile(file_metadata_t* metadata, FILE* fs)
 		{
 			switch (buf[0])
 			{
-				case OGG_ID_HEADER:
-					ParseOggIdHeader(metadata, fs);
-					break;
-				case OGG_COMMENT_HEADER:
-			ParseVorbisComments(metadata, fs);
-					break;
-				default:
-					break;
+			case OGG_ID_HEADER:
+				ParseOggIdHeader(metadata, fs);
+				break;
+			case OGG_COMMENT_HEADER:
+				ParseVorbisComments(metadata, fs);
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -637,7 +637,7 @@ static std::string GetSubstituteMusicFile(void* data, size_t data_len)
 	for (i = 0; i < sizeof(sha1_digest_t); ++i)
 	{
 		M_snprintf(hash_str + i * 2, sizeof(hash_str) - i * 2,
-					"%02x", hash[i]);
+			"%02x", hash[i]);
 	}
 
 	// Look for a hash that matches.
@@ -707,7 +707,7 @@ std::string GetFullPath(std::string musicdir, std::string path)
 std::string ExpandFileExtension(std::string musicdir, std::string filename)
 {
 	static std::string extns[] = {".flac", ".ogg", ".mp3"};
-	CHAR_PTR replaced, *result;
+	CHAR_PTR replaced, * result;
 	int i;
 
 	if (!M_StringEndsWith(filename, ".{ext}"))
@@ -732,7 +732,7 @@ std::string ExpandFileExtension(std::string musicdir, std::string filename)
 
 // Add a substitute music file to the lookup list.
 static void AddSubstituteMusic(std::string musicdir, std::string hash_prefix,
-								std::string filename)
+	std::string filename)
 {
 	subst_music_t* s;
 	CHAR_PTR path;
@@ -870,7 +870,7 @@ static bool ReadSubstituteConfig(std::string musicdir, std::string filename)
 		return false;
 	}
 
-	M_ReadFile(filename, (byte**) &buffer);
+	M_ReadFile(filename, (byte**)&buffer);
 
 	line = buffer;
 
@@ -936,7 +936,7 @@ static void LoadSubstituteConfigs()
 	}
 
 	// Load all music packs, by searching for .cfg files.
-	glob = I_StartGlob(musicdir, "*.cfg", GLOB_FLAG_SORTED|GLOB_FLAG_NOCASE);
+	glob = I_StartGlob(musicdir, "*.cfg", GLOB_FLAG_SORTED | GLOB_FLAG_NOCASE);
 	for (;;)
 	{
 		path = I_NextGlob(glob);
@@ -951,7 +951,7 @@ static void LoadSubstituteConfigs()
 	if (subst_music_len > 0)
 	{
 		printf("Loaded %u music substitutions from config files.\n",
-				subst_music_len);
+			subst_music_len);
 	}
 
 	old_music_len = subst_music_len;
@@ -961,13 +961,13 @@ static void LoadSubstituteConfigs()
 	for (i = 0; i < arrlen(known_filenames); ++i)
 	{
 		AddSubstituteMusic(musicdir, known_filenames[i].hash_prefix,
-							known_filenames[i].filename);
+			known_filenames[i].filename);
 	}
 
 	if (subst_music_len > old_music_len)
 	{
 		printf("Configured %u music substitutions based on filename.\n",
-				subst_music_len - old_music_len);
+			subst_music_len - old_music_len);
 	}
 
 	free(musicdir);
@@ -991,7 +991,7 @@ static bool IsMusicLump(int lumpnum)
 	data = W_CacheLumpNum<byte>(lumpnum, pu_tags_t::PU_STATIC);
 
 	result = memcmp(data, MUS_HEADER_MAGIC, 4) == 0
-			|| memcmp(data, MID_HEADER_MAGIC, 4) == 0;
+		|| memcmp(data, MID_HEADER_MAGIC, 4) == 0;
 
 	W_ReleaseLumpNum(lumpnum);
 
@@ -1130,7 +1130,7 @@ static bool I_MP_InitMusic()
 	else if (Mix_OpenAudioDevice(snd_samplerate, AUDIO_S16SYS, 2, 1024, NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0)
 	{
 		fprintf(stderr, "Error initializing SDL_mixer: %s\n",
-				Mix_GetError());
+			Mix_GetError());
 		SDL_QuitSubSystem(SDL_INIT_AUDIO);
 	}
 	else
@@ -1173,7 +1173,7 @@ static void I_MP_PlaySong(void* handle, bool looping)
 		return;
 	}
 
-	current_track_music = (Mix_Music*) handle;
+	current_track_music = (Mix_Music*)handle;
 	current_track_loop = looping;
 
 	if (looping)
@@ -1198,7 +1198,7 @@ static void I_MP_PlaySong(void* handle, bool looping)
 	if (Mix_PlayMusic(current_track_music, loops) == -1)
 	{
 		fprintf(stderr, "I_MP_PlaySong: Error starting track: %s\n",
-				Mix_GetError());
+			Mix_GetError());
 	}
 }
 
@@ -1235,7 +1235,7 @@ static void I_MP_StopSong()
 
 static void I_MP_UnRegisterSong(void* handle)
 {
-	Mix_Music* music = (Mix_Music*) handle;
+	Mix_Music* music = (Mix_Music*)handle;
 
 	if (!music_initialized)
 	{
@@ -1253,7 +1253,7 @@ static void I_MP_UnRegisterSong(void* handle)
 static void* I_MP_RegisterSong(void* data, int len)
 {
 	std::string filename;
-	Mix_Music *music;
+	Mix_Music* music;
 
 	if (!music_initialized)
 	{
@@ -1273,7 +1273,7 @@ static void* I_MP_RegisterSong(void* data, int len)
 		// Fall through and play MIDI normally, but print an error
 		// message.
 		fprintf(stderr, "Failed to load substitute music file: %s: %s\n",
-				filename, Mix_GetError());
+			filename, Mix_GetError());
 		return nullptr;
 	}
 
@@ -1306,13 +1306,13 @@ static double GetMusicPosition()
 	music_pos = current_track_pos;
 	SDL_UnlockAudio();
 
-	return (double) music_pos / freq;
+	return (double)music_pos / freq;
 }
 
 static void RestartCurrentTrack()
 {
-	double start = (double) file_metadata.start_time
-					/ file_metadata.samplerate_hz;
+	double start = (double)file_metadata.start_time
+		/ file_metadata.samplerate_hz;
 
 	// If the track finished we need to restart it.
 	if (current_track_music != NULL)
@@ -1335,8 +1335,8 @@ static void I_MP_PollMusic()
 	// tags ignored.
 	if (current_track_loop && file_metadata.valid)
 	{
-		double end = (double) file_metadata.end_time
-					/ file_metadata.samplerate_hz;
+		double end = (double)file_metadata.end_time
+			/ file_metadata.samplerate_hz;
 
 		// If we have reached the loop end point then we have to take action.
 		if (file_metadata.end_time >= 0 && GetMusicPosition() >= end)

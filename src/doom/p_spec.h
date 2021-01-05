@@ -25,13 +25,13 @@ extern int levelTimeCount;
 constexpr size_t MO_TELEPORTMAN{14};
 
 // at game start
-void P_InitPicAnims ();
+void P_InitPicAnims();
 
 // at map load
-void P_SpawnSpecials ();
+void P_SpawnSpecials();
 
 // every tic
-void P_UpdateSpecials ();
+void P_UpdateSpecials();
 
 // when needed
 bool P_UseSpecialLine(MapObject* thing, line_t* line, int side);
@@ -43,7 +43,7 @@ void P_CrossSpecialLine(int linenum, int side, MapObject* thing);
 // [crispy] more MBF code pointers
 void P_CrossSpecialLinePtr(line_t* line, int side, MapObject* thing);
 
-void P_PlayerInSpecialSector (Player* player);
+void P_PlayerInSpecialSector(Player* player);
 
 int twoSided(int sector, int line);
 
@@ -91,7 +91,7 @@ struct lightflash_t
 	int minlight;
 	TimeType maxtime;
 	TimeType mintime;
-} ;
+};
 
 struct strobe_t
 {
@@ -119,10 +119,10 @@ constexpr size_t STROBEBRIGHT{5};
 constexpr size_t FASTDARK{15};
 constexpr size_t SLOWDARK{35};
 
-void P_SpawnFireFlicker (sector_t* sector);
-void T_LightFlash (lightflash_t* flash);
-void P_SpawnLightFlash (sector_t* sector);
-void T_StrobeFlash (strobe_t* flash);
+void P_SpawnFireFlicker(sector_t* sector);
+void T_LightFlash(lightflash_t* flash);
+void P_SpawnLightFlash(sector_t* sector);
+void T_StrobeFlash(strobe_t* flash);
 
 void P_SpawnStrobeFlash(sector_t* sector, int fastOrSlow, int inSync);
 
@@ -164,16 +164,16 @@ struct button_t
 
 };
 
- // max # of wall switches in a level
+// max # of wall switches in a level
 constexpr size_t MAXSWITCHES{50};
 
- // 4 players, 4 buttons each at once, max.
+// 4 players, 4 buttons each at once, max.
 constexpr size_t MAXBUTTONS{16};
 
- // 1 second, in ticks.
+// 1 second, in ticks.
 constexpr size_t BUTTONTIME{35};
 
-extern button_t *buttonlist;
+extern button_t* buttonlist;
 extern int maxbuttons;
 
 void P_ChangeSwitchTexture(line_t* line, int useAgain);
@@ -218,7 +218,7 @@ struct plat_t
 
 constexpr size_t PLATWAIT{3};
 constexpr size_t PLATSPEED{FRACUNIT};
-constexpr size_t MAXPLATS{30*256};
+constexpr size_t MAXPLATS{30 * 256};
 
 extern plat_t* activeplats[MAXPLATS];
 
@@ -264,7 +264,7 @@ struct vldoor_t
 	int topcountdown;
 };
 
-constexpr size_t VDOORSPEED{FRACUNIT*2};
+constexpr size_t VDOORSPEED{FRACUNIT * 2};
 constexpr size_t VDOORWAIT{150};
 
 void EV_VerticalDoor(line_t* line, MapObject* thing);
@@ -273,8 +273,8 @@ int EV_DoDoor(line_t* line, vldoor_e type);
 
 int EV_DoLockedDoor(line_t* line, vldoor_e type, MapObject* thing);
 
-void T_VerticalDoor (vldoor_t* door);
-void P_SpawnDoorCloseIn30 (sector_t* sec);
+void T_VerticalDoor(vldoor_t* door);
+void P_SpawnDoorCloseIn30(sector_t* sec);
 
 void P_SpawnDoorRaiseIn5Mins(sector_t* sec, int secnum);
 
@@ -330,7 +330,7 @@ struct slideframe_t
 // how many frames of animation
 constexpr size_t SNUMFRAMES{4};
 
-constexpr size_t SDOORWAIT{35*3};
+constexpr size_t SDOORWAIT{35 * 3};
 constexpr size_t SWAITTICS{4};
 
 // how many diff. types of anims
@@ -381,7 +381,7 @@ extern ceiling_t* activeceilings[MAXCEILINGS];
 
 int EV_DoCeiling(line_t* line, ceiling_e type);
 
-void T_MoveCeiling (ceiling_t* ceiling);
+void T_MoveCeiling(ceiling_t* ceiling);
 void P_AddActiveCeiling(ceiling_t* c);
 void P_RemoveActiveCeiling(ceiling_t* c);
 int EV_CeilingCrushStop(line_t* line);
@@ -459,7 +459,7 @@ int EV_BuildStairs(line_t* line, stair_e type);
 
 int EV_DoFloor(line_t* line, floor_e floortype);
 
-void T_MoveFloor( floormove_t* floor);
+void T_MoveFloor(floormove_t* floor);
 
 //
 // P_TELEPT
