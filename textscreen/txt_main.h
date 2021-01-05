@@ -70,6 +70,13 @@ enum class ColorType
 	bright_white
 };
 
+//---------------------------------------------------------------------------
+// txt_gui.h
+//---------------------------------------------------------------------------
+constexpr ColorType INACTIVE_WINDOW_BACKGROUND{ColorType::black};
+constexpr ColorType ACTIVE_WINDOW_BACKGROUND{ColorType::blue};
+constexpr ColorType HOVER_BACKGROUND{ColorType::cyan};
+
 // Modifier keys.
 enum class ModifierType
 {
@@ -124,7 +131,7 @@ int GetModifierState(ModifierType mod);
 // keyboard (like that returned by InputType::raw), and the resulting string takes keyboard layout into consideration.
 // For example, GetKeyDescription('q') on a French keyboard returns "A". The contents of the filled buffer will be in UTF-8 format,
 // but will never contain characters which can't be shown on the screen.
-void GetKeyDescription(int key, char* buf, size_t buf_len);
+void GetKeyDescription(int key, std::string buf, size_t buf_len);
 
 // Retrieve the current position of the mouse
 void GetMousePosition(int* x, int* y);
@@ -136,18 +143,18 @@ void Sleep(TimeType timeout);
 void SetInputMode(InputType mode);
 
 // Set the window title of the window containing the text mode screen.
-void SetWindowTitle(const char* title);
+void SetWindowTitle(std::string title);
 
 // Safe string copy.
-void StringCopy(char* dest, const char* src, size_t dest_len);
+void StringCopy(std::string dest, std::string src, size_t dest_len);
 
 // Safe string concatenate.
-void StringConcat(char* dest, const char* src, size_t dest_len);
+void StringConcat(std::string dest, std::string src, size_t dest_len);
 
 // Safe version of vsnprintf().
-int vsnprintf(char* buf, size_t buf_len, const char* s, va_list args);
+int vsnprintf(std::string buf, size_t buf_len, std::string s, va_list args);
 
 // Safe version of snprintf().
-int snprintf(char* buf, size_t buf_len, const char* s, ...) PRINTF_ATTR(3, 4);
+int snprintf(std::string buf, size_t buf_len, std::string s, ...) PRINTF_ATTR(3, 4);
 
 } /* END NAMESPACE cudadoom::txt */

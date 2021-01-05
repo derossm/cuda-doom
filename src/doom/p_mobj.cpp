@@ -24,9 +24,9 @@
 #include "hu_stuff.h"
 
 #include "s_sound.h"
-#include "s_musinfo.h" // [crispy] S_ParseMusInfo()
-#include "i_swap.h" // [crispy] SHORT()
-#include "w_wad.h" // [crispy] W_CacheLumpNum()
+#include "s_musinfo.h" // statenum_t::S_ParseMusInfo()
+#include "i_swap.h" // SHORT()
+#include "w_wad.h" // W_CacheLumpNum()
 
 #include "doomstat.h"
 
@@ -43,23 +43,23 @@ int test;
 // of times the loop in P_SetMobjState() executes and exit with an error once
 // an arbitrary very large limit is reached.
 
-#define MOBJ_CYCLE_LIMIT 1000000
+constexpr size_t MOBJ_CYCLE_LIMIT{1000000};
 
 bool P_SetMobjState(MapObject* mobj, statenum_t state)
 {
-	state_t*	st;
-	int	cycle_counter = 0;
+	state_t* st;
+	int cycle_counter = 0;
 
 	do
 	{
-	if (state == S_NULL)
+	if (state == statenum_t::S_NULL)
 	{
-		mobj->state = (state_t*) S_NULL;
+		mobj->state = (state_t*) statenum_t::S_NULL;
 		P_RemoveMobj (mobj);
 		return false;
 	}
 
-	st = &states[state];
+	st = &states[std::size_t(state)];
 	mobj->state = st;
 	mobj->tics = st->tics;
 	mobj->sprite = st->sprite;
@@ -85,7 +85,7 @@ bool P_SetMobjState(MapObject* mobj, statenum_t state)
 // so that no action pointer is ever called
 static statenum_t P_LatestSafeState(statenum_t state)
 {
-	statenum_t safestate = S_NULL;
+	statenum_t safestate = statenum_t::S_NULL;
 	static statenum_t laststate, lastsafestate;
 
 	if (state == laststate)
@@ -93,20 +93,20 @@ static statenum_t P_LatestSafeState(statenum_t state)
 	return lastsafestate;
 	}
 
-	for (laststate = state; state != S_NULL; state = states[state].nextstate)
+	for (laststate = state; state != statenum_t::S_NULL; state = states[std::size_t(state)].nextstate)
 	{
-	if (safestate == S_NULL)
+	if (safestate == statenum_t::S_NULL)
 	{
 		safestate = state;
 	}
 
-	if (states[state].action.acp1)
+	if (states[std::size_t(state)].action.acp1)
 	{
-		safestate = S_NULL;
+		safestate = statenum_t::S_NULL;
 	}
 
 	// [crispy] a state with -1 tics never changes
-	if (states[state].tics == -1 || state == states[state].nextstate)
+	if (states[std::size_t(state)].tics == -1 || state == states[std::size_t(state)].nextstate)
 	{
 		break;
 	}
@@ -122,16 +122,16 @@ static void P_ExplodeMissileSafe (MapObject* mo, bool safe)
 {
 	mo->momx = mo->momy = mo->momz = 0;
 
-	P_SetMobjState (mo, safe ? P_LatestSafeState(mobjinfo[mo->type].deathstate) : mobjinfo[mo->type].deathstate);
+	P_SetMobjState (mo, safe ? P_LatestSafeState(mobjinfo[std::size_t(mo->type)].deathstate) : mobjinfo[std::size_t(mo->type)].deathstate);
 
 	mo->tics -= safe ? Crispy_Random()&3 : P_Random()&3;
 
 	if (mo->tics < 1)
 	mo->tics = 1;
 
-	mo->flags &= ~MF_MISSILE;
+	mo->flags &= ~mobjflag_t::MF_MISSILE;
 	// [crispy] missile explosions are translucent
-	mo->flags |= MF_TRANSLUCENT;
+	mo->flags |= mobjflag_t::MF_TRANSLUCENT;
 
 	if (mo->info->deathsound)
 	S_StartSound (mo, mo->info->deathsound);
@@ -145,23 +145,23 @@ void P_ExplodeMissile (MapObject* mo)
 //
 // P_XYMovement
 //
-#define STOPSPEED		0x1000
-#define FRICTION		0xe800
+constexpr size_t STOPSPEED{0x1000};
+constexpr size_t FRICTION{0xe800};
 
 void P_XYMovement (MapObject* mo)
 {
-	fixed_t	ptryx;
-	fixed_t	ptryy;
-	Player*	player;
-	fixed_t	xmove;
-	fixed_t	ymove;
+	fixed_t ptryx;
+	fixed_t ptryy;
+	Player* player;
+	fixed_t xmove;
+	fixed_t ymove;
 
 	if (!mo->momx && !mo->momy)
 	{
-	if (mo->flags & MF_SKULLFLY)
+	if (mo->flags & mobjflag_t::MF_SKULLFLY)
 	{
 		// the skull slammed into something
-		mo->flags &= ~MF_SKULLFLY;
+		mo->flags &= ~mobjflag_t::MF_SKULLFLY;
 		mo->momx = mo->momy = mo->momz = 0;
 
 		P_SetMobjState (mo, mo->info->spawnstate);
@@ -207,7 +207,7 @@ void P_XYMovement (MapObject* mo)
 		{	// try to slide along it
 		P_SlideMove (mo);
 		}
-		else if (mo->flags & MF_MISSILE)
+		else if (mo->flags & mobjflag_t::MF_MISSILE)
 		{
 		bool safe = false;
 		// explode a missile
@@ -236,20 +236,20 @@ void P_XYMovement (MapObject* mo)
 	} while (xmove || ymove);
 
 	// slow down
-	if (player && player->cheats & CF_NOMOMENTUM)
+	if (player && player->cheats & CheatType::CF_NOMOMENTUM)
 	{
 	// debug option for no sliding at all
 	mo->momx = mo->momy = 0;
 	return;
 	}
 
-	if (mo->flags & (MF_MISSILE | MF_SKULLFLY) )
+	if (mo->flags & (mobjflag_t::MF_MISSILE | mobjflag_t::MF_SKULLFLY) )
 	return;	// no friction for missiles ever
 
 	if (mo->z > mo->floorz)
 	return;		// no friction when airborne
 
-	if (mo->flags & MF_CORPSE)
+	if (mo->flags & mobjflag_t::MF_CORPSE)
 	{
 	// do not stop sliding
 	// if halfway off a step with some momentum
@@ -272,8 +272,8 @@ void P_XYMovement (MapObject* mo)
 		&& player->cmd.sidemove == 0 ) ) )
 	{
 	// if in a walking frame, stop moving
-	if ( player&&(unsigned)((player->mo->state - states)- S_PLAY_RUN1) < 4)
-		P_SetMobjState (player->mo, S_PLAY);
+	if ( player&&(unsigned)((player->state - states)- statenum_t::S_PLAY_RUN1) < 4)
+		P_SetMobjState (player, statenum_t::S_PLAY);
 
 	mo->momx = 0;
 	mo->momy = 0;
@@ -290,8 +290,8 @@ void P_XYMovement (MapObject* mo)
 //
 void P_ZMovement (MapObject* mo)
 {
-	fixed_t	dist;
-	fixed_t	delta;
+	fixed_t dist;
+	fixed_t delta;
 
 	// check for smooth step up
 	if (mo->player && mo->z < mo->floorz)
@@ -305,12 +305,12 @@ void P_ZMovement (MapObject* mo)
 	// adjust height
 	mo->z += mo->momz;
 
-	if ( mo->flags & MF_FLOAT
+	if ( mo->flags & mobjflag_t::MF_FLOAT
 		&& mo->target)
 	{
 	// float down towards target if too close
-	if ( !(mo->flags & MF_SKULLFLY)
-			&& !(mo->flags & MF_INFLOAT) )
+	if ( !(mo->flags & mobjflag_t::MF_SKULLFLY)
+			&& !(mo->flags & mobjflag_t::MF_INFLOAT) )
 	{
 		dist = P_AproxDistance (mo->x - mo->target->x,
 					mo->y - mo->target->y);
@@ -353,9 +353,9 @@ void P_ZMovement (MapObject* mo)
 		// So we need to check that this is either retail or commercial
 		// (but not doom2)
 
-	int correct_lost_soul_bounce = gameversion >= GameVersion_t::exe_ultimate;
+	int correct_lost_soul_bounce = gameversion >= GameVersion::exe_ultimate;
 
-	if (correct_lost_soul_bounce && mo->flags & MF_SKULLFLY)
+	if (correct_lost_soul_bounce && mo->flags & mobjflag_t::MF_SKULLFLY)
 	{
 		// the skull slammed into something
 		mo->momz = -mo->momz;
@@ -385,7 +385,7 @@ void P_ZMovement (MapObject* mo)
 		// [crispy] dead men don't say "oof"
 		if (mo->health > 0 || !crispy->soundfix)
 		{
-		S_StartSound (mo, sfx_oof);
+		S_StartSound (mo, sfxenum_t::sfx_oof);
 		}
 		}
 		mo->momz = 0;
@@ -399,17 +399,17 @@ void P_ZMovement (MapObject* mo)
 	// hit by a raising floor this incorrectly reverses its Y momentum.
 	//
 
-		if (!correct_lost_soul_bounce && mo->flags & MF_SKULLFLY)
+		if (!correct_lost_soul_bounce && mo->flags & mobjflag_t::MF_SKULLFLY)
 			mo->momz = -mo->momz;
 
-	if ( (mo->flags & MF_MISSILE)
-			&& !(mo->flags & MF_NOCLIP) )
+	if ( (mo->flags & mobjflag_t::MF_MISSILE)
+			&& !(mo->flags & mobjflag_t::MF_NOCLIP) )
 	{
 		P_ExplodeMissile (mo);
 		return;
 	}
 	}
-	else if (! (mo->flags & MF_NOGRAVITY) )
+	else if (! (mo->flags & mobjflag_t::MF_NOGRAVITY) )
 	{
 	if (mo->momz == 0)
 		mo->momz = -GRAVITY*2;
@@ -426,13 +426,13 @@ void P_ZMovement (MapObject* mo)
 		mo->z = mo->ceilingz - mo->height;
 	}
 
-	if (mo->flags & MF_SKULLFLY)
+	if (mo->flags & mobjflag_t::MF_SKULLFLY)
 	{	// the skull slammed into something
 		mo->momz = -mo->momz;
 	}
 
-	if ( (mo->flags & MF_MISSILE)
-			&& !(mo->flags & MF_NOCLIP) )
+	if ( (mo->flags & mobjflag_t::MF_MISSILE)
+			&& !(mo->flags & mobjflag_t::MF_NOCLIP) )
 	{
 		P_ExplodeMissile (mo);
 		return;
@@ -448,12 +448,12 @@ void P_ZMovement (MapObject* mo)
 void
 P_NightmareRespawn (MapObject* mobj)
 {
-	fixed_t		x;
-	fixed_t		y;
-	fixed_t		z;
-	subsector_t*	ss;
-	MapObject*		mo;
-	mapthing_t*		mthing;
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
+	subsector_t* ss;
+	MapObject* mo;
+	mapthing_t* mthing;
 
 	x = mobj->spawnpoint.x << FRACBITS;
 	y = mobj->spawnpoint.y << FRACBITS;
@@ -468,20 +468,20 @@ P_NightmareRespawn (MapObject* mobj)
 				mobj->y,
 				mobj->subsector->sector->floorheight, mobjtype_t::MT_TFOG);
 	// initiate teleport sound
-	S_StartSound (mo, sfx_telept);
+	S_StartSound (mo, sfxenum_t::sfx_telept);
 
 	// spawn a teleport fog at the new spot
 	ss = R_PointInSubsector (x,y);
 
 	mo = P_SpawnMobj (x, y, ss->sector->floorheight, mobjtype_t::MT_TFOG);
 
-	S_StartSound (mo, sfx_telept);
+	S_StartSound (mo, sfxenum_t::sfx_telept);
 
 	// spawn the new monster
 	mthing = &mobj->spawnpoint;
 
 	// spawn it
-	if (mobj->info->flags & MF_SPAWNCEILING)
+	if (mobj->info->flags & mobjflag_t::MF_SPAWNCEILING)
 	z = ONCEILINGZ;
 	else
 	z = ONFLOORZ;
@@ -492,10 +492,10 @@ P_NightmareRespawn (MapObject* mobj)
 	mo->angle = ANG45 * (mthing->angle/45);
 
 	// [crispy] count respawned monsters
-	extrakills++;
+	++extrakills;
 
 	if (mthing->options & MTF_AMBUSH)
-	mo->flags |= MF_AMBUSH;
+	mo->flags |= mobjflag_t::MF_AMBUSH;
 
 	mo->reactiontime = 18;
 
@@ -532,7 +532,7 @@ void P_MobjThinker (MapObject* mobj)
 	}
 	else
 	// [AM] Handle interpolation unless we're an active player.
-	if (!(mobj->player != NULL && mobj == mobj->player->mo))
+	if (!(mobj->player != NULL && mobj == mobj->player))
 	{
 		// Assume we can interpolate at the beginning
 		// of the tic.
@@ -548,7 +548,7 @@ void P_MobjThinker (MapObject* mobj)
 	// momentum movement
 	if (mobj->momx
 	|| mobj->momy
-	|| (mobj->flags&MF_SKULLFLY) )
+	|| (mobj->flags&mobjflag_t::MF_SKULLFLY) )
 	{
 	P_XYMovement (mobj);
 
@@ -581,7 +581,7 @@ void P_MobjThinker (MapObject* mobj)
 	else
 	{
 	// check for nightmare respawn
-	if (! (mobj->flags & MF_COUNTKILL) )
+	if (! (mobj->flags & mobjflag_t::MF_COUNTKILL) )
 		return;
 
 	if (!respawnmonsters)
@@ -609,13 +609,13 @@ void P_MobjThinker (MapObject* mobj)
 //
 static MapObject* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type, bool safe)
 {
-	MapObject*	mobj;
-	state_t*	st;
-	mobjinfo_t*	info;
+	MapObject* mobj;
+	state_t* st;
+	mobjinfo_t* info;
 
 	mobj = Z_Malloc<decltype(*mobj)>(sizeof(*mobj), pu_tags_t::PU_LEVEL, NULL);
 	memset(mobj, 0, sizeof (*mobj));
-	info = &mobjinfo[type];
+	info = &mobjinfo[std::size_t(type)];
 
 	mobj->type = type;
 	mobj->info = info;
@@ -629,10 +629,10 @@ static MapObject* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t ty
 	if (gameskill != SkillType::sk_nightmare)
 	mobj->reactiontime = info->reactiontime;
 
-	mobj->lastlook = safe ? Crispy_Random () % MAXPLAYERS : P_Random () % MAXPLAYERS;
+	mobj->lastlook = safe ? Crispy_Random () % MAX_PLAYERS : P_Random () % MAX_PLAYERS;
 	// do not set the state with P_SetMobjState,
 	// because action routines can not be called yet
-	st = &states[safe ? P_LatestSafeState(info->spawnstate) : info->spawnstate];
+	st = &states[std::size_t(safe ? P_LatestSafeState(info->spawnstate) : info->spawnstate)];
 
 	mobj->state = st;
 	mobj->tics = st->tics;
@@ -653,7 +653,7 @@ static MapObject* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t ty
 	mobj->z = z;
 
 	// [crispy] randomly flip corpse, blood and death animation sprites
-	if (mobj->flags & MF_FLIPPABLE && !(mobj->flags & MF_SHOOTABLE))
+	if (mobj->flags & mobjflag_t::MF_FLIPPABLE && !(mobj->flags & mobjflag_t::MF_SHOOTABLE))
 	{
 	mobj->health = (mobj->health & (int)~1) - (Crispy_Random() & 1);
 	}
@@ -672,7 +672,7 @@ static MapObject* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t ty
 	{
 	const spritedef_t* const sprdef = &sprites[mobj->sprite];
 
-	if (!sprdef->numframes || !(mobj->flags & (MF_SOLID|MF_SHOOTABLE)))
+	if (!sprdef->numframes || !(mobj->flags & (mobjflag_t::MF_SOLID|mobjflag_t::MF_SHOOTABLE)))
 	{
 		info->actualheight = info->height;
 	}
@@ -684,7 +684,7 @@ static MapObject* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t ty
 
 		sprframe = &sprdef->spriteframes[mobj->frame & FF_FRAMEMASK];
 		lump = sprframe->lump[0];
-		patch = W_CacheLumpNum(lump + firstspritelump, pu_tags_t::PU_CACHE);
+		patch = W_CacheLumpNum<patch_t>(lump + firstspritelump, pu_tags_t::PU_CACHE);
 
 		// [crispy] round up to the next integer multiple of 8
 		info->actualheight = ((SHORT(patch->height) + 7) >> 3) << (FRACBITS + 3);
@@ -706,16 +706,16 @@ MapObject* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
 //
 // P_RemoveMobj
 //
-mapthing_t	itemrespawnque[ITEMQUESIZE];
+mapthing_t itemrespawnque[ITEMQUESIZE];
 TimeType itemrespawntime[ITEMQUESIZE];
-int		iquehead;
-int		iquetail;
+int iquehead;
+int iquetail;
 
 
 void P_RemoveMobj (MapObject* mobj)
 {
-	if ((mobj->flags & MF_SPECIAL)
-	&& !(mobj->flags & MF_DROPPED)
+	if ((mobj->flags & mobjflag_t::MF_SPECIAL)
+	&& !(mobj->flags & mobjflag_t::MF_DROPPED)
 	&& (mobj->type != mobjtype_t::MT_INV)
 	&& (mobj->type != mobjtype_t::MT_INS))
 	{
@@ -754,15 +754,15 @@ void P_RemoveMobj (MapObject* mobj)
 //
 void P_RespawnSpecials ()
 {
-	fixed_t		x;
-	fixed_t		y;
-	fixed_t		z;
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
 
-	subsector_t*	ss;
-	MapObject*		mo;
-	mapthing_t*		mthing;
+	subsector_t* ss;
+	MapObject* mo;
+	mapthing_t* mthing;
 
-	int			i;
+	int i;
 
 	// only respawn items in deathmatch
 	// AX: deathmatch 3 is a Crispy-specific change
@@ -785,10 +785,10 @@ void P_RespawnSpecials ()
 	// spawn a teleport fog at the new spot
 	ss = R_PointInSubsector (x,y);
 	mo = P_SpawnMobj (x, y, ss->sector->floorheight, mobjtype_t::MT_IFOG);
-	S_StartSound (mo, sfx_itmbk);
+	S_StartSound (mo, sfxenum_t::sfx_itmbk);
 
 	// find which type to spawn
-	for (i=0 ; i< NUMMOBJTYPES ; i++)
+	for (i=0 ; i< NUMMOBJTYPES ; ++i)
 	{
 	if (mthing->type == mobjinfo[i].doomednum)
 		break;
@@ -802,7 +802,7 @@ void P_RespawnSpecials ()
 	}
 
 	// spawn it
-	if (mobjinfo[i].flags & MF_SPAWNCEILING)
+	if (mobjinfo[i].flags & mobjflag_t::MF_SPAWNCEILING)
 	z = ONCEILINGZ;
 	else
 	z = ONFLOORZ;
@@ -818,7 +818,7 @@ void P_RespawnSpecials ()
 
 
 // [crispy] weapon sound sources
-degenmobj_t muzzles[MAXPLAYERS];
+degenmobj_t muzzles[MAX_PLAYERS];
 
 MapObject* Crispy_PlayerSO (int p)
 {
@@ -833,14 +833,14 @@ MapObject* Crispy_PlayerSO (int p)
 //
 void P_SpawnPlayer (mapthing_t* mthing)
 {
-	Player*		p;
-	fixed_t		x;
-	fixed_t		y;
-	fixed_t		z;
+	Player* p;
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
 
-	MapObject*		mobj;
+	MapObject* mobj;
 
-	int			i;
+	int i;
 
 	if (mthing->type == 0)
 	{
@@ -863,13 +863,13 @@ void P_SpawnPlayer (mapthing_t* mthing)
 
 	// set color translations for player sprites
 	if (mthing->type > 1)
-	mobj->flags |= (mthing->type-1)<<MF_TRANSSHIFT;
+	mobj->flags |= (mthing->type-1)<<mobjflag_t::MF_TRANSSHIFT;
 
 	mobj->angle	= ANG45 * (mthing->angle/45);
 	mobj->player = p;
 	mobj->health = p->health;
 
-	p->mo = mobj;
+	p = mobj;
 	p->playerstate = PlayerState_t::PST_LIVE;
 	p->refire = 0;
 	p->message = NULL;
@@ -887,7 +887,7 @@ void P_SpawnPlayer (mapthing_t* mthing)
 
 	// give all cards in death match mode
 	if (deathmatch)
-	for (i=0 ; i<NUMCARDS ; i++)
+	for (i=0 ; i<NUMCARDS ; ++i)
 		p->cards[i] = true;
 
 	if (mthing->type-1 == consoleplayer)
@@ -907,13 +907,13 @@ void P_SpawnPlayer (mapthing_t* mthing)
 //
 void P_SpawnMapThing (mapthing_t* mthing)
 {
-	int			i;
-	int			bit;
-	MapObject*		mobj;
-	fixed_t		x;
-	fixed_t		y;
-	fixed_t		z;
-	int			musid = 0;
+	int i;
+	int bit;
+	MapObject* mobj;
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
+	int musid = 0;
 
 	// count deathmatch start positions
 	if (mthing->type == 11)
@@ -921,7 +921,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	if (deathmatch_p < &deathmatchstarts[10])
 	{
 		memcpy(deathmatch_p, mthing, sizeof(*mthing));
-		deathmatch_p++;
+		++deathmatch_p;
 	}
 	return;
 	}
@@ -971,11 +971,11 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	if (mthing->type >= 14100 && mthing->type <= 14164)
 	{
 	musid = mthing->type - 14100;
-	mthing->type = mobjinfo[MT_MUSICSOURCE].doomednum;
+	mthing->type = mobjinfo[std::size_t(mobjtype_t::MT_MUSICSOURCE)].doomednum;
 	}
 
 	// find which type to spawn
-	for (i=0 ; i< NUMMOBJTYPES ; i++)
+	for (i=0 ; i< NUMMOBJTYPES ; ++i)
 	if (mthing->type == mobjinfo[i].doomednum)
 		break;
 
@@ -989,13 +989,13 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	}
 
 	// don't spawn keycards and players in deathmatch
-	if (deathmatch && mobjinfo[i].flags & MF_NOTDMATCH)
+	if (deathmatch && mobjinfo[i].flags & mobjflag_t::MF_NOTDMATCH)
 	return;
 
 	// don't spawn any monsters if -nomonsters
 	if (nomonsters
 	&& ( i == mobjtype_t::MT_SKULL
-			|| (mobjinfo[i].flags & MF_COUNTKILL)) )
+			|| (mobjinfo[i].flags & mobjflag_t::MF_COUNTKILL)) )
 	{
 	return;
 	}
@@ -1004,7 +1004,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	x = mthing->x << FRACBITS;
 	y = mthing->y << FRACBITS;
 
-	if (mobjinfo[i].flags & MF_SPAWNCEILING)
+	if (mobjinfo[i].flags & mobjflag_t::MF_SPAWNCEILING)
 	z = ONCEILINGZ;
 	else
 	z = ONFLOORZ;
@@ -1014,14 +1014,14 @@ void P_SpawnMapThing (mapthing_t* mthing)
 
 	if (mobj->tics > 0)
 	mobj->tics = 1 + (P_Random () % mobj->tics);
-	if (mobj->flags & MF_COUNTKILL)
-	totalkills++;
-	if (mobj->flags & MF_COUNTITEM)
-	totalitems++;
+	if (mobj->flags & mobjflag_t::MF_COUNTKILL)
+	++totalkills;
+	if (mobj->flags & mobjflag_t::MF_COUNTITEM)
+	++totalitems;
 
 	mobj->angle = ANG45 * (mthing->angle/45);
 	if (mthing->options & MTF_AMBUSH)
-	mobj->flags |= MF_AMBUSH;
+	mobj->flags |= mobjflag_t::MF_AMBUSH;
 
 	// [crispy] support MUSINFO lump (dynamic music changing)
 	if (i == mobjtype_t::MT_MUSICSOURCE)
@@ -1031,14 +1031,14 @@ void P_SpawnMapThing (mapthing_t* mthing)
 
 	// [crispy] Lost Souls bleed Puffs
 	if (crispy->coloredblood && i == mobjtype_t::MT_SKULL)
-		mobj->flags |= MF_NOBLOOD;
+		mobj->flags |= mobjflag_t::MF_NOBLOOD;
 
 	// [crispy] randomly colorize space marine corpse objects
 	if (!netgame && crispy->coloredblood &&
-		(mobj->info->spawnstate == S_PLAY_DIE7 ||
-		mobj->info->spawnstate == S_PLAY_XDIE9))
+		(mobj->info->spawnstate == statenum_t::S_PLAY_DIE7 ||
+		mobj->info->spawnstate == statenum_t::S_PLAY_XDIE9))
 	{
-	mobj->flags |= (Crispy_Random() & 3) << MF_TRANSSHIFT;
+	mobj->flags |= (Crispy_Random() & 3) << mobjflag_t::MF_TRANSSHIFT;
 	}
 
 	// [crispy] blinking key or skull in the status bar
@@ -1071,7 +1071,7 @@ void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z)
 
 void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe)
 {
-	MapObject*	th;
+	MapObject* th;
 
 	z += safe ? (Crispy_SubRandom() << 10) : (P_SubRandom() << 10);
 
@@ -1084,7 +1084,7 @@ void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe)
 
 	// don't make punches spark on the wall
 	if (attackrange == MELEERANGE)
-	P_SetMobjState (th, safe ? P_LatestSafeState(S_PUFF3) : S_PUFF3);
+	P_SetMobjState(th, safe ? P_LatestSafeState(statenum_t::S_PUFF3) : statenum_t::S_PUFF3);
 }
 
 
@@ -1094,7 +1094,7 @@ void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe)
 //
 void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, MapObject* target) // [crispy] pass thing type
 {
-	MapObject*	th;
+	MapObject* th;
 
 	z += (P_SubRandom() << 10);
 	th = P_SpawnMobj (x,y,z, mobjtype_t::MT_BLOOD);
@@ -1105,16 +1105,16 @@ void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, MapObject* target
 	th->tics = 1;
 
 	if (damage <= 12 && damage >= 9)
-	P_SetMobjState (th,S_BLOOD2);
+	P_SetMobjState (th, statenum_t::S_BLOOD2);
 	else if (damage < 9)
-	P_SetMobjState (th,S_BLOOD3);
+	P_SetMobjState (th, statenum_t::S_BLOOD3);
 
 	// [crispy] connect blood object with the monster that bleeds it
 	th->target = target;
 
 	// [crispy] Spectres bleed spectre blood
 	if (crispy->coloredblood)
-	th->flags |= (target->flags & MF_SHADOW);
+	th->flags |= (target->flags & mobjtype_t::mobjflag_t::MF_SHADOW);
 }
 
 
@@ -1168,9 +1168,9 @@ MapObject* P_SubstNullMobj(MapObject* mobj)
 //
 MapObject* P_SpawnMissile(MapObject* source, MapObject* dest, mobjtype_t type)
 {
-	MapObject*	th;
-	angle_t	an;
-	int		dist;
+	MapObject* th;
+	angle_t an;
+	int dist;
 
 	th = P_SpawnMobj (source->x,
 				source->y,
@@ -1183,7 +1183,7 @@ MapObject* P_SpawnMissile(MapObject* source, MapObject* dest, mobjtype_t type)
 	an = R_PointToAngle2 (source->x, source->y, dest->x, dest->y);
 
 	// fuzzy player
-	if (dest->flags & MF_SHADOW)
+	if (dest->flags & mobjtype_t::mobjflag_t::MF_SHADOW)
 	an += P_SubRandom() << 20;
 
 	th->angle = an;
@@ -1210,13 +1210,13 @@ MapObject* P_SpawnMissile(MapObject* source, MapObject* dest, mobjtype_t type)
 //
 void P_SpawnPlayerMissile(MapObject* source, mobjtype_t type)
 {
-	MapObject*	th;
-	angle_t	an;
+	MapObject* th;
+	angle_t an;
 
-	fixed_t	x;
-	fixed_t	y;
-	fixed_t	z;
-	fixed_t	slope;
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
+	fixed_t slope;
 
 	extern void A_Recoil (Player* player);
 

@@ -42,10 +42,8 @@ enum
 	CRMAX
 };
 
-#define CR_GREY CR_GRAY
-
 extern byte* cr[CRMAX];
-extern char** crstr;
+extern CHAR_PTR* crstr;
 
 #define cr_esc '~'
 

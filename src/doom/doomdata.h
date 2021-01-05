@@ -94,13 +94,13 @@ struct maplinedef_hexen_t
 //
 
 // Solid, is an obstacle.
-#define ML_BLOCKING			1
+constexpr size_t ML_BLOCKING{1};
 
 // Blocks monsters only.
-#define ML_BLOCKMONSTERS	2
+constexpr size_t ML_BLOCKMONSTERS{2};
 
 // Backside will not be present at all if not two sided.
-#define ML_TWOSIDED			4
+constexpr size_t ML_TWOSIDED{4};
 
 // If a texture is pegged, the texture will have
 // the end exposed to air held constant at the
@@ -112,22 +112,22 @@ struct maplinedef_hexen_t
 // top and bottom textures (use next to windows).
 
 // upper texture unpegged
-#define ML_DONTPEGTOP		8
+constexpr size_t ML_DONTPEGTOP{8};
 
 // lower texture unpegged
-#define ML_DONTPEGBOTTOM	16
+constexpr size_t ML_DONTPEGBOTTOM{16};
 
 // In AutoMap: don't map as two sided: IT'S A SECRET!
-#define ML_SECRET			32
+constexpr size_t ML_SECRET{32};
 
 // Sound rendering: don't let sound cross two of these.
-#define ML_SOUNDBLOCK		64
+constexpr size_t ML_SOUNDBLOCK{64};
 
 // Don't draw on the automap at all.
-#define ML_DONTDRAW			128
+constexpr size_t ML_DONTDRAW{128};
 
 // Set if already seen, thus drawn in automap.
-#define ML_MAPPED			256
+constexpr size_t ML_MAPPED{256};
 
 // Sector definition, from editing.
 struct mapsector_t
@@ -195,8 +195,8 @@ struct mapseg_zdbsp_t
 // BSP node structure.
 
 // Indicate a leaf.
-#define NF_SUBSECTOR	0x80000000 // [crispy] extended nodes
-#define NO_INDEX		((unsigned short)-1) // [crispy] extended nodes
+constexpr size_t NF_SUBSECTOR{0x80000000}; // extended nodes
+constexpr unsigned short NO_INDEX{((unsigned short)-1)}; // extended nodes
 
 struct mapnode_t
 {
@@ -214,8 +214,7 @@ struct mapnode_t
 
 };
 
-// [crispy] allow loading of maps with DeePBSP nodes
-// taken from prboom-plus/src/doomdata.h:216-225
+// allow loading of maps with DeePBSP nodes taken from prboom-plus/src/doomdata.h:216-225
 struct mapnode_deepbsp_t
 {
 	short x;
@@ -226,8 +225,7 @@ struct mapnode_deepbsp_t
 	int children[2];
 };
 
-// [crispy] allow loading of maps with ZDBSP nodes
-// taken from prboom-plus/src/doomdata.h:227-136
+// allow loading of maps with ZDBSP nodes taken from prboom-plus/src/doomdata.h:227-136
 struct mapnode_zdbsp_t
 {
 	short x;
@@ -238,8 +236,7 @@ struct mapnode_zdbsp_t
 	int children[2];
 };
 
-// Thing definition, position, orientation and type,
-// plus skill/visibility flags and attributes.
+// Thing definition, position, orientation and type, plus skill/visibility flags and attributes.
 struct mapthing_t
 {
 	short x;
@@ -249,8 +246,7 @@ struct mapthing_t
 	short options;
 };
 
-// [crispy] allow loading of Hexen-format maps
-// taken from chocolate-doom/src/hexen/xddefs.h:134-149
+// allow loading of Hexen-format maps taken from chocolate-doom/src/hexen/xddefs.h:134-149
 struct mapthing_hexen_t
 {
 	short tid;

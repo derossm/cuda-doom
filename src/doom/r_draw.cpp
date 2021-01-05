@@ -22,11 +22,11 @@
 #include "v_trans.h"
 #include "doomstat.h"
 
-//#define MAXWIDTH		1120
-//#define MAXHEIGHT		832
+//constexpr size_t MAXWIDTH{1120};
+//constexpr size_t MAXHEIGHT{832};
 
 // status bar height at bottom of screen
-#define SBARHEIGHT		(32 << crispy->hires)
+#define SBARHEIGHT (32 << crispy->hires)
 
 // All drawing to the view buffer is accomplished in this file.
 // The other refresh files only know about ccordinates,
@@ -172,16 +172,16 @@ void R_DrawColumn ()
 #if 0
 void R_DrawColumn ()
 {
-	int			count;
-	byte*		source;
-	byte*		dest;
-	byte*		colormap;
+	int count;
+	byte* source;
+	byte* dest;
+	byte* colormap;
 
-	unsigned		frac;
-	unsigned		fracstep;
-	unsigned		fracstep2;
-	unsigned		fracstep3;
-	unsigned		fracstep4;
+	unsigned frac;
+	unsigned fracstep;
+	unsigned fracstep2;
+	unsigned fracstep3;
+	unsigned fracstep4;
 
 	count = dc_yh - dc_yl + 1;
 
@@ -220,7 +220,7 @@ void R_DrawColumn ()
 	*dest = colormap[source[frac>>25]];
 	dest += SCREENWIDTH;
 	frac += fracstep;
-	count--;
+	--count;
 	}
 }
 #endif
@@ -248,7 +248,7 @@ void R_DrawColumnLow()
 	{
 		I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
 	}
-	//	dccount++;
+	//++dccount;
 #endif
 	// Blocky mode, need to multiply by 2.
 	x = dc_x << 1;
@@ -312,10 +312,10 @@ void R_DrawColumnLow()
 }
 
 // Spectre/Invisibility.
-#define FUZZTABLE	50
-#define FUZZOFF		(1)
+constexpr size_t FUZZTABLE{50};
+constexpr size_t FUZZOFF{1};
 
-int	fuzzoffset[FUZZTABLE] =
+int fuzzoffset[FUZZTABLE] =
 {
 	FUZZOFF,-FUZZOFF,FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,
 	FUZZOFF,FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,
@@ -326,7 +326,7 @@ int	fuzzoffset[FUZZTABLE] =
 	FUZZOFF,FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,FUZZOFF
 };
 
-int	fuzzpos = 0;
+int fuzzpos = 0;
 
 // [crispy] draw fuzz effect independent of rendering frame rate
 static TimeType fuzzpos_tic;
@@ -830,18 +830,18 @@ void R_DrawSpan()
 #if 0
 void R_DrawSpan()
 {
-	unsigned	position, step;
+	unsigned position, step;
 
-	byte*	source;
-	byte*	colormap;
-	pixel_t*	dest;
+	byte* source;
+	byte* colormap;
+	pixel_t* dest;
 
-	unsigned	count;
-	usingned	spot;
-	unsigned	value;
-	unsigned	temp;
-	unsigned	xtemp;
-	unsigned	ytemp;
+	unsigned count;
+	usingned spot;
+	unsigned value;
+	unsigned temp;
+	unsigned xtemp;
+	unsigned ytemp;
 
 	position = ((ds_xfrac<<10)&0xffff0000) | ((ds_yfrac>>6)&0xffff);
 	step = ((ds_xstep<<10)&0xffff0000) | ((ds_ystep>>6)&0xffff);
@@ -853,46 +853,47 @@ void R_DrawSpan()
 
 	while (count >= 4)
 	{
-	ytemp = position>>4;
-	ytemp = ytemp & 4032;
-	xtemp = position>>26;
-	spot = xtemp | ytemp;
-	position += step;
-	dest[0] = colormap[source[spot]];
+		ytemp = position>>4;
+		ytemp = ytemp & 4032;
+		xtemp = position>>26;
+		spot = xtemp | ytemp;
+		position += step;
+		dest[0] = colormap[source[spot]];
 
-	ytemp = position>>4;
-	ytemp = ytemp & 4032;
-	xtemp = position>>26;
-	spot = xtemp | ytemp;
-	position += step;
-	dest[1] = colormap[source[spot]];
+		ytemp = position>>4;
+		ytemp = ytemp & 4032;
+		xtemp = position>>26;
+		spot = xtemp | ytemp;
+		position += step;
+		dest[1] = colormap[source[spot]];
 
-	ytemp = position>>4;
-	ytemp = ytemp & 4032;
-	xtemp = position>>26;
-	spot = xtemp | ytemp;
-	position += step;
-	dest[2] = colormap[source[spot]];
+		ytemp = position>>4;
+		ytemp = ytemp & 4032;
+		xtemp = position>>26;
+		spot = xtemp | ytemp;
+		position += step;
+		dest[2] = colormap[source[spot]];
 
-	ytemp = position>>4;
-	ytemp = ytemp & 4032;
-	xtemp = position>>26;
-	spot = xtemp | ytemp;
-	position += step;
-	dest[3] = colormap[source[spot]];
+		ytemp = position>>4;
+		ytemp = ytemp & 4032;
+		xtemp = position>>26;
+		spot = xtemp | ytemp;
+		position += step;
+		dest[3] = colormap[source[spot]];
 
-	count -= 4;
-	dest += 4;
+		count -= 4;
+		dest += 4;
 	}
 	while (count > 0)
 	{
-	ytemp = position>>4;
-	ytemp = ytemp & 4032;
-	xtemp = position>>26;
-	spot = xtemp | ytemp;
-	position += step;
-	*(dest++) = colormap[source[spot]];
-	count--;
+		ytemp = position>>4;
+		ytemp = ytemp & 4032;
+		xtemp = position>>26;
+		spot = xtemp | ytemp;
+		position += step;
+		*dest = colormap[source[spot]];
+		++dest;
+		--count;
 	}
 }
 #endif
@@ -987,10 +988,10 @@ void R_InitBuffer(int width, int height)
 void R_FillBackScreen()
 {
 	// DOOM border patch.
-	const char* name1 = DEH_String("FLOOR7_2");
+	std::string name1 = DEH_String("FLOOR7_2");
 
 	// DOOM II border patch.
-	const char* name2 = DEH_String("GRNROCK");
+	std::string name2 = DEH_String("GRNROCK");
 
 	// If we are running full screen, there is no need to do any of this,
 	// and the background buffer can be freed if it was previously in use.
@@ -1014,7 +1015,7 @@ void R_FillBackScreen()
 										nullptr);
 	}
 
-	const char* name;
+	std::string name;
 	if (gamemode == GameMode::commercial)
 	{
 		name = name2;
@@ -1024,7 +1025,7 @@ void R_FillBackScreen()
 		name = name1;
 	}
 
-	byte* src = W_CacheLumpName(name, pu_tags_t::PU_CACHE);
+	byte* src = W_CacheLumpName<byte>(name, pu_tags_t::PU_CACHE);
 	pixel_t* dest = background_buffer;
 
 	for (auto y{0}; y < SCREENHEIGHT-SBARHEIGHT; ++y)
@@ -1044,32 +1045,33 @@ void R_FillBackScreen()
 #else
 		for (auto x{0}; x < SCREENWIDTH ; ++x)
 		{
-			*(dest++) = colormaps[src[((y&63)<<6) + (x&63)]];
+			*dest = colormaps[src[((y&63)<<6) + (x&63)]];
+			++dest;
 		}
 #endif
 	}
 
 	// Draw screen and bezel; this is done to a separate screen buffer.
 	V_UseBuffer(background_buffer);
-	patch_t* patch = W_CacheLumpName(DEH_String("brdr_t"), pu_tags_t::PU_CACHE);
+	patch_t* patch = W_CacheLumpName<patch_t>(DEH_String("brdr_t"), pu_tags_t::PU_CACHE);
 
 	for (auto x{0}; x < (scaledviewwidth >> crispy->hires); x += 8)
 	{
 		V_DrawPatch((viewwindowx >> crispy->hires)+x-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8, patch);
 	}
-	patch = W_CacheLumpName(DEH_String("brdr_b"), pu_tags_t::PU_CACHE);
+	patch = W_CacheLumpName<patch_t>(DEH_String("brdr_b"), pu_tags_t::PU_CACHE);
 
 	for (auto x{0}; x < (scaledviewwidth >> crispy->hires); x += 8)
 	{
 		V_DrawPatch((viewwindowx >> crispy->hires)+x-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires), patch);
 	}
-	patch = W_CacheLumpName(DEH_String("brdr_l"), pu_tags_t::PU_CACHE);
+	patch = W_CacheLumpName<patch_t>(DEH_String("brdr_l"), pu_tags_t::PU_CACHE);
 
 	for (auto y{0}; y < (viewheight >> crispy->hires); y += 8)
 	{
 		V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+y, patch);
 	}
-	patch = W_CacheLumpName(DEH_String("brdr_r"), pu_tags_t::PU_CACHE);
+	patch = W_CacheLumpName<patch_t>(DEH_String("brdr_r"), pu_tags_t::PU_CACHE);
 
 	for (auto y{0}; y < (viewheight >> crispy->hires); y += 8)
 	{
@@ -1078,17 +1080,17 @@ void R_FillBackScreen()
 
 	// Draw beveled edge.
 	V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8,
-				W_CacheLumpName(DEH_String("brdr_tl"), pu_tags_t::PU_CACHE));
+				W_CacheLumpName<patch_t>(DEH_String("brdr_tl"), pu_tags_t::PU_CACHE));
 
 	V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA, (viewwindowy >> crispy->hires)-8,
-				W_CacheLumpName(DEH_String("brdr_tr"), pu_tags_t::PU_CACHE));
+				W_CacheLumpName<patch_t>(DEH_String("brdr_tr"), pu_tags_t::PU_CACHE));
 
 	V_DrawPatch((viewwindowx >> crispy->hires)-8-WIDESCREENDELTA, (viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
-				W_CacheLumpName(DEH_String("brdr_bl"), pu_tags_t::PU_CACHE));
+				W_CacheLumpName<patch_t>(DEH_String("brdr_bl"), pu_tags_t::PU_CACHE));
 
 	V_DrawPatch((viewwindowx >> crispy->hires)+(scaledviewwidth >> crispy->hires)-WIDESCREENDELTA,
 				(viewwindowy >> crispy->hires)+(viewheight >> crispy->hires),
-				W_CacheLumpName(DEH_String("brdr_br"), pu_tags_t::PU_CACHE));
+				W_CacheLumpName<patch_t>(DEH_String("brdr_br"), pu_tags_t::PU_CACHE));
 
 	V_RestoreBuffer();
 }

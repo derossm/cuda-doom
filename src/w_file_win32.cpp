@@ -13,6 +13,7 @@
 \**********************************************************************************************************************************************/
 
 #include "config.h"
+#include "../derma/d_native.h"
 
 #include "i_system.h"
 #include "m_misc.h"
@@ -22,7 +23,7 @@
 // This constant doesn't exist in VC6:
 
 #ifndef INVALID_SET_FILE_POINTER
-#define INVALID_SET_FILE_POINTER 0xffffffff
+constexpr size_t INVALID_SET_FILE_POINTER{0xffffffff};
 #endif
 
 struct win32_wad_file_t
@@ -34,7 +35,7 @@ struct win32_wad_file_t
 
 extern wad_file_class_t win32_wad_file;
 
-static void MapFile(win32_wad_file_t* wad, const char* filename)
+static void MapFile(win32_wad_file_t* wad, std::string filename)
 {
 	wad->handle_map = CreateFileMapping(wad->handle,
 										NULL,
@@ -75,7 +76,7 @@ unsigned GetFileLength(HANDLE handle)
 	return result;
 }
 
-static wad_file_t* W_Win32_OpenFile(const char* path)
+static wad_file_t* W_Win32_OpenFile(std::string path)
 {
 	win32_wad_file_t* result;
 	wchar_t wpath[MAX_PATH + 1];
@@ -97,7 +98,7 @@ static wad_file_t* W_Win32_OpenFile(const char* path)
 
 	if (handle == INVALID_HANDLE_VALUE)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	// Create a new win32_wad_file_t to hold the file handle.
@@ -105,7 +106,7 @@ static wad_file_t* W_Win32_OpenFile(const char* path)
 	result = Z_Malloc<win>(sizeof(win32_wad_file_t), pu_tags_t::PU_STATIC, 0);
 	result->wad.file_class = &win32_wad_file;
 	result->wad.length = GetFileLength(handle);
-	result->wad.path = M_StringDuplicate(path);
+	result->wad.path = std::string(path);
 	result->handle = handle;
 
 	// Try to map the file into memory with mmap:

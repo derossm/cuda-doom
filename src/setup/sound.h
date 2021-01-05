@@ -16,4 +16,4 @@
 void ConfigSound(void* widget, void* user_data);
 void BindSoundVariables();
 
-extern char* snd_dmxoption;
+extern std::string snd_dmxoption;

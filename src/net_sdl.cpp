@@ -27,7 +27,7 @@
 
 #include <SDL_net.h>
 
-#define DEFAULT_PORT 2342
+constexpr size_t DEFAULT_PORT{2342};
 
 static bool initted = false;
 static int port = DEFAULT_PORT;
@@ -120,7 +120,7 @@ static net_addr_t* NET_SDL_FindAddress(IPaddress *addr)
 	new_entry->sdl_addr = *addr;
 	new_entry->net_addr.refcount = 0;
 	new_entry->net_addr.handle = &new_entry->sdl_addr;
-	new_entry->net_addr.module = &net_sdl_module;
+	new_entry->net_addr.mod = &net_sdl_module;
 
 	addr_table[empty_entry] = new_entry;
 
@@ -291,7 +291,7 @@ static bool NET_SDL_RecvPacket(net_addr_t**addr, net_packet_t**packet)
 	return true;
 }
 
-void NET_SDL_AddrToString(net_addr_t* addr, char* buffer, int buffer_len)
+void NET_SDL_AddrToString(net_addr_t* addr, std::string buffer, int buffer_len)
 {
 	IPaddress *ip;
 	uint32_t host;
@@ -317,17 +317,17 @@ void NET_SDL_AddrToString(net_addr_t* addr, char* buffer, int buffer_len)
 	}
 }
 
-net_addr_t* NET_SDL_ResolveAddress(const char* address)
+net_addr_t* NET_SDL_ResolveAddress(std::string address)
 {
 	IPaddress ip;
-	char* addr_hostname;
+	std::string addr_hostname;
 	int addr_port;
 	int result;
-	char* colon;
+	std::string colon;
 
 	colon = strchr(address, ':');
 
-	addr_hostname = M_StringDuplicate(address);
+	addr_hostname = std::string(address);
 	if (colon != NULL)
 	{
 	addr_hostname[colon - address] = '\0';
@@ -346,7 +346,7 @@ net_addr_t* NET_SDL_ResolveAddress(const char* address)
 	{
 		// unable to resolve
 
-		return NULL;
+		return nullptr;
 	}
 	else
 	{

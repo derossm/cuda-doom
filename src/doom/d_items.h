@@ -23,7 +23,7 @@
 // Weapon info: sprite frames, ammunition use.
 struct weaponinfo_t
 {
-	AmmoType_t ammo;
+	AmmoType ammo;
 	statenum_t upstate;
 	statenum_t downstate;
 	statenum_t readystate;
@@ -41,10 +41,10 @@ struct weaponinfo_t
 // readystate
 // atkstate, i.e. attack/fire/hit frame
 // flashstate, muzzle flash
-weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
+weaponinfo_t weaponinfo[std::size_t(WeaponType::NUMWEAPONS)]{
 	{
 	// fist
-	AmmoType_t::am_noammo,
+	AmmoType::am_noammo,
 	statenum_t::S_PUNCHUP,
 	statenum_t::S_PUNCHDOWN,
 	statenum_t::S_PUNCH,
@@ -53,7 +53,7 @@ weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
 	},
 	{
 	// pistol
-	AmmoType_t::am_clip,
+	AmmoType::am_clip,
 	statenum_t::S_PISTOLUP,
 	statenum_t::S_PISTOLDOWN,
 	statenum_t::S_PISTOL,
@@ -62,7 +62,7 @@ weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
 	},
 	{
 	// shotgun
-	AmmoType_t::am_shell,
+	AmmoType::am_shell,
 	statenum_t::S_SGUNUP,
 	statenum_t::S_SGUNDOWN,
 	statenum_t::S_SGUN,
@@ -71,7 +71,7 @@ weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
 	},
 	{
 	// chaingun
-	AmmoType_t::am_clip,
+	AmmoType::am_clip,
 	statenum_t::S_CHAINUP,
 	statenum_t::S_CHAINDOWN,
 	statenum_t::S_CHAIN,
@@ -80,7 +80,7 @@ weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
 	},
 	{
 	// missile launcher
-	AmmoType_t::am_misl,
+	AmmoType::am_misl,
 	statenum_t::S_MISSILEUP,
 	statenum_t::S_MISSILEDOWN,
 	statenum_t::S_MISSILE,
@@ -89,7 +89,7 @@ weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
 	},
 	{
 	// plasma rifle
-	AmmoType_t::am_cell,
+	AmmoType::am_cell,
 	statenum_t::S_PLASMAUP,
 	statenum_t::S_PLASMADOWN,
 	statenum_t::S_PLASMA,
@@ -98,7 +98,7 @@ weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
 	},
 	{
 	// bfg 9000
-	AmmoType_t::am_cell,
+	AmmoType::am_cell,
 	statenum_t::S_BFGUP,
 	statenum_t::S_BFGDOWN,
 	statenum_t::S_BFG,
@@ -107,7 +107,7 @@ weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
 	},
 	{
 	// chainsaw
-	AmmoType_t::am_noammo,
+	AmmoType::am_noammo,
 	statenum_t::S_SAWUP,
 	statenum_t::S_SAWDOWN,
 	statenum_t::S_SAW,
@@ -116,7 +116,7 @@ weaponinfo_t weaponinfo[(size_t)WeaponType_t::NUMWEAPONS]{
 	},
 	{
 	// super shotgun
-	AmmoType_t::am_shell,
+	AmmoType::am_shell,
 	statenum_t::S_DSGUNUP,
 	statenum_t::S_DSGUNDOWN,
 	statenum_t::S_DSGUN,

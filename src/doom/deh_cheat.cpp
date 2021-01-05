@@ -21,7 +21,7 @@
 
 struct deh_cheat_t
 {
-	const char* name;
+	std::string name;
 	cheatseq_t* seq;
 };
 
@@ -46,29 +46,29 @@ static deh_cheat_t allcheats[] =
 	{"Map cheat",			&cheat_amap },
 };
 
-static deh_cheat_t* FindCheatByName(char* name)
+static deh_cheat_t* FindCheatByName(std::string name)
 {
 	size_t i;
 
 	for (i=0; i<arrlen(allcheats); ++i)
 	{
-		if (!strcasecmp(allcheats[i].name, name))
+		if (!iequals(allcheats[i].name, name))
 			return &allcheats[i];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
-static void* DEH_CheatStart(deh_context_t* context, char* line)
+static void* DEH_CheatStart(deh_context_t* context, std::string line)
 {
-	return NULL;
+	return nullptr;
 }
 
-static void DEH_CheatParseLine(deh_context_t* context, char* line, void* tag)
+static void DEH_CheatParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	deh_cheat_t* cheat;
-	char* variable_name;
-	char* value;
+	std::string variable_name;
+	std::string value;
 	unsigned char* unsvalue;
 	unsigned i;
 

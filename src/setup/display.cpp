@@ -8,12 +8,15 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include "textscreen.h"
+#include "display.h"
+
+#include "../../textscreen/textscreen.h"
+#include "../../textscreen/txt_widget.h"
+
 #include "m_config.h"
 #include "m_misc.h"
 #include "mode.h"
 
-#include "display.h"
 #include "config.h"
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-display"
@@ -56,8 +59,8 @@ static window_size_t window_sizes_scaled[] =
 	{ 0, 0},
 };
 
-static char* video_driver = "";
-static char* window_position = "";
+std::string video_driver = "";
+std::string window_position = "";
 static int aspect_ratio_correct = 1;
 static int integer_scaling = 0;
 static int vga_porch_flash = 0;
@@ -90,28 +93,21 @@ void SetDisplayDriver()
 	}
 
 	// Don't override the command line environment, if it has been set.
-
 	if (system_video_env_set)
 	{
 		return;
 	}
 
 	// Use the value from the configuration file, if it has been set.
-
-	if (strcmp(video_driver, "") != 0)
+	if (video_driver.compare(""))
 	{
-		char* env_string;
-
-		env_string = M_StringJoin("SDL_VIDEODRIVER=", video_driver, NULL);
-		putenv(env_string);
-		free(env_string);
+		std::string env_string("SDL_VIDEODRIVER=" + video_driver);
+		putenv(env_string.c_str());
 	}
 }
 
-static void WindowSizeSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(size))
+static void WindowSizeSelected(cudadoom::txt::Widget* widget, window_size_t* size)
 {
-	cudadoom::txt::TXT_CAST_ARG(window_size_t, size);
-
 	window_width = size->w;
 	window_height = size->h;
 }
@@ -122,16 +118,14 @@ static cudadoom::txt::RadioButton* SizeSelectButton(window_size_t* size)
 	cudadoom::txt::RadioButton* result;
 
 	M_snprintf(buf, sizeof(buf), "%ix%i", size->w, size->h);
-	result = cudadoom::txt::TXT_NewRadioButton(buf, &window_width, size->w);
-	cudadoom::txt::TXT_SignalConnect(result, "selected", WindowSizeSelected, size);
+	result = cudadoom::txt::NewRadioButton(buf, &window_width, size->w);
+	cudadoom::txt::SignalConnect(result, "selected", WindowSizeSelected, size);
 
 	return result;
 }
 
-static void GenerateSizesTable(cudadoom::txt::TXT_UNCAST_ARG(widget),
-								cudadoom::txt::TXT_UNCAST_ARG(sizes_table))
+static void GenerateSizesTable(cudadoom::txt::Widget* widget, cudadoom::txt::Table* sizes_table)
 {
-	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, sizes_table);
 	window_size_t* sizes;
 	bool have_size;
 	int i;
@@ -147,16 +141,16 @@ static void GenerateSizesTable(cudadoom::txt::TXT_UNCAST_ARG(widget),
 	}
 
 	// Build the table
-	cudadoom::txt::TXT_ClearTable(sizes_table);
-	cudadoom::txt::TXT_SetColumnWidths(sizes_table, 14, 14, 14);
+	cudadoom::txt::ClearTable(sizes_table);
+	cudadoom::txt::SetColumnWidths(sizes_table, 14, 14, 14);
 
-	cudadoom::txt::TXT_AddWidget(sizes_table, cudadoom::txt::TXT_NewSeparator("Window size"));
+	cudadoom::txt::AddWidget(sizes_table, cudadoom::txt::NewSeparator("Window size"));
 
 	have_size = false;
 
 	for (i = 0; sizes[i].w != 0; ++i)
 	{
-		cudadoom::txt::TXT_AddWidget(sizes_table, SizeSelectButton(&sizes[i]));
+		cudadoom::txt::AddWidget(sizes_table, SizeSelectButton(&sizes[i]));
 		have_size = have_size || window_width == sizes[i].w;
 	}
 
@@ -169,76 +163,76 @@ static void GenerateSizesTable(cudadoom::txt::TXT_UNCAST_ARG(widget),
 		static window_size_t current_size;
 		current_size.w = window_width;
 		current_size.h = window_height;
-		cudadoom::txt::TXT_AddWidget(sizes_table, SizeSelectButton(&current_size));
+		cudadoom::txt::AddWidget(sizes_table, SizeSelectButton(&current_size));
 	}
 }
 
-static void AdvancedDisplayConfig(cudadoom::txt::TXT_UNCAST_ARG(widget),
-									cudadoom::txt::TXT_UNCAST_ARG(sizes_table))
+static void AdvancedDisplayConfig(cudadoom::txt::UNCAST_ARG(widget),
+									cudadoom::txt::UNCAST_ARG(sizes_table))
 {
-	cudadoom::txt::TXT_CAST_ARG(cudadoom::txt::txt_table_t, sizes_table);
+	cudadoom::txt::CAST_ARG(cudadoom::txt::txt_table_t, sizes_table);
 	cudadoom::txt::Window* window;
 	cudadoom::txt::CheckBox* ar_checkbox;
 
-	window = cudadoom::txt::TXT_NewWindow("Advanced display options");
+	window = cudadoom::txt::NewWindow("Advanced display options");
 
-	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	cudadoom::txt::SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-	cudadoom::txt::TXT_SetColumnWidths(window, 40);
+	cudadoom::txt::SetColumnWidths(window, 40);
 
-	cudadoom::txt::TXT_AddWidgets(window,
-		ar_checkbox = cudadoom::txt::TXT_NewCheckBox("Force correct aspect ratio",
+	cudadoom::txt::AddWidgets(window,
+		ar_checkbox = cudadoom::txt::NewCheckBox("Force correct aspect ratio",
 										&aspect_ratio_correct),
-		cudadoom::txt::TXT_If(gamemission == heretic || gamemission == hexen
+		cudadoom::txt::If(gamemission == heretic || gamemission == hexen
 			|| gamemission == strife,
-			cudadoom::txt::TXT_NewCheckBox("Graphical startup", &graphical_startup)),
-		cudadoom::txt::TXT_If(gamemission == doom || gamemission == heretic
+			cudadoom::txt::NewCheckBox("Graphical startup", &graphical_startup)),
+		cudadoom::txt::If(gamemission == doom || gamemission == heretic
 			|| gamemission == strife,
-			cudadoom::txt::TXT_NewCheckBox("Show ENDOOM screen on exit",
+			cudadoom::txt::NewCheckBox("Show ENDOOM screen on exit",
 							&show_endoom)),
 #ifdef HAVE_LIBPNG
-		cudadoom::txt::TXT_NewCheckBox("Save screenshots in PNG format",
+		cudadoom::txt::NewCheckBox("Save screenshots in PNG format",
 						&png_screenshots),
 #endif
 		NULL);
 
-	cudadoom::txt::TXT_SignalConnect(ar_checkbox, "changed", GenerateSizesTable, sizes_table);
+	cudadoom::txt::SignalConnect(ar_checkbox, "changed", GenerateSizesTable, sizes_table);
 }
 
-void ConfigDisplay(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
+void ConfigDisplay(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 {
 	cudadoom::txt::Window* window;
 	cudadoom::txt::txt_table_t* sizes_table;
 	cudadoom::txt::WindowAction* advanced_button;
 
 	// Open the window
-	window = cudadoom::txt::TXT_NewWindow("Display Configuration");
-	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	window = cudadoom::txt::NewWindow("Display Configuration");
+	cudadoom::txt::SetWindowHelpURL(window, WINDOW_HELP_URL);
 
 	// Build window:
-	cudadoom::txt::TXT_AddWidgets(window,
-		cudadoom::txt::TXT_NewCheckBox("Full screen", &fullscreen),
-		cudadoom::txt::TXT_NewConditional(&fullscreen, 0,
-			sizes_table = cudadoom::txt::TXT_NewTable(3)),
+	cudadoom::txt::AddWidgets(window,
+		cudadoom::txt::NewCheckBox("Full screen", &fullscreen),
+		cudadoom::txt::NewConditional(&fullscreen, 0,
+			sizes_table = cudadoom::txt::NewTable(3)),
 		NULL);
 
-	cudadoom::txt::TXT_SetColumnWidths(window, 42);
+	cudadoom::txt::SetColumnWidths(window, 42);
 
 	// The window is set at a fixed vertical position. This keeps
 	// the top of the window stationary when switching between
 	// fullscreen and windowed mode (which causes the window's
 	// height to change).
-	cudadoom::txt::TXT_SetWindowPosition(window, cudadoom::txt::TXT_HORIZ_CENTER, cudadoom::txt::TXT_VERT_TOP,
-									cudadoom::txt::TXT_SCREEN_W / 2, 6);
+	cudadoom::txt::SetWindowPosition(window, cudadoom::txt::HORIZ_CENTER, cudadoom::txt::VERT_TOP,
+									cudadoom::txt::SCREEN_W / 2, 6);
 
 	GenerateSizesTable(NULL, sizes_table);
 
 	// Button to open "advanced" window.
 	// Need to pass a pointer to the window sizes table, as some of the options
 	// in there trigger a rebuild of it.
-	advanced_button = cudadoom::txt::TXT_NewWindowAction('a', "Advanced");
-	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_CENTER, advanced_button);
-	cudadoom::txt::TXT_SignalConnect(advanced_button, "pressed",
+	advanced_button = cudadoom::txt::NewWindowAction('a', "Advanced");
+	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_CENTER, advanced_button);
+	cudadoom::txt::SignalConnect(advanced_button, "pressed",
 						AdvancedDisplayConfig, sizes_table);
 }
 

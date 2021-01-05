@@ -16,10 +16,10 @@
 #include "r_defs.h"
 
 // font stuff
-#define HU_CHARERASE		KEY_BACKSPACE
+constexpr size_t HU_CHARERASE{KEY_BACKSPACE};
 
-#define HU_MAXLINES			4
-#define HU_MAXLINELENGTH	80
+constexpr size_t HU_MAXLINES{4};
+constexpr size_t HU_MAXLINELENGTH{80};
 
 // Text Line widget (parent of Scrolling Text and Input Text widgets)
 struct hu_textline_t
@@ -87,7 +87,7 @@ void HUlib_initSText(hu_stext_t* s, int x, int y, int h, patch_t** font, int sta
 void HUlib_addLineToSText(hu_stext_t* s);
 
 // ?
-void HUlib_addMessageToSText(hu_stext_t* s, const char* prefix, const char* msg);
+void HUlib_addMessageToSText(hu_stext_t* s, std::string prefix, std::string msg);
 
 void HUlib_drawSText(hu_stext_t* s);
 
@@ -107,7 +107,7 @@ void HUlib_eraseLineFromIText(hu_itext_t* it);
 void HUlib_resetIText(hu_itext_t* it);
 
 // left of left-margin
-void HUlib_addPrefixToIText(hu_itext_t* it, char* str);
+void HUlib_addPrefixToIText(hu_itext_t* it, std::string str);
 
 // whether eaten
 bool HUlib_keyInIText(hu_itext_t* it, unsigned char ch);

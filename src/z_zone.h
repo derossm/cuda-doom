@@ -20,14 +20,12 @@
 #include "i_system.h"
 #include "m_argv.h"
 
-#include "z_zone.h"
-
 // This is used to get the local FILE:LINE info from CPP prior to really call the function in question.
-#define Z_ChangeTag(p,t)	Z_ChangeTag2((p), (t), __FILE__, __LINE__)
+#define Z_ChangeTag(p,t) Z_ChangeTag2((p), (t), __FILE__, __LINE__)
 // NOTE: YOU SHOULD NEVER NEED THE LINE NUMBER TO CALL A FUNCTION! MAKE SURE THIS HACK IS NEVER USED -- TODO
 
-#define MEM_ALIGN		sizeof(void*)
-#define ZONEID			0x1d4a11
+constexpr size_t MEM_ALIGN{sizeof(void*)};
+constexpr size_t ZONEID{0x1d4a11};
 
 // ZONE MEMORY
 // PU - purge tags.
@@ -58,7 +56,7 @@ void Z_FreeTags(pu_tags_t lowtag, pu_tags_t hightag);
 void Z_DumpHeap(pu_tags_t lowtag, pu_tags_t hightag);
 void Z_FileDumpHeap(FILE* f);
 void Z_CheckHeap();
-void Z_ChangeTag2(void* ptr, pu_tags_t tag, const char* file, size_t line);
+void Z_ChangeTag2(void* ptr, pu_tags_t tag, std::string file, size_t line);
 void Z_ChangeUser(void* ptr, void** user);
 auto Z_FreeMemory();
 auto Z_ZoneSize();
@@ -330,7 +328,7 @@ T& Z_Malloc(size_t size, pu_tags_t tag, void* user)
 	base->user = user;
 	base->tag = tag;
 
-	auto result{static_cast<T>((byte*)base + sizeof(memblock_t))};
+	T result{static_cast<T>((byte*)base + sizeof(memblock_t))};
 
 	if (base->user)
 	{
@@ -461,7 +459,7 @@ void Z_CheckHeap()
 	}
 }
 
-void Z_ChangeTag2(void* ptr, pu_tags_t tag, const char* file, size_t line)
+void Z_ChangeTag2(void* ptr, pu_tags_t tag, std::string file, size_t line)
 {
 	auto block{(memblock_t*)((byte*)ptr - sizeof(memblock_t))};
 

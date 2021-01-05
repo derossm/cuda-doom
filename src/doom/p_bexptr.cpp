@@ -66,7 +66,7 @@ void A_Mushroom(MapObject* actor)
 	mo->momx = FixedMul(mo->momx, misc2);
 	mo->momy = FixedMul(mo->momy, misc2);				// Slow down a bit
 	mo->momz = FixedMul(mo->momz, misc2);
-	mo->flags &= ~MF_NOGRAVITY;	// Make debris fall under gravity
+	mo->flags &= ~mobjflag_t::MF_NOGRAVITY;	// Make debris fall under gravity
 		}
 }
 
@@ -77,13 +77,13 @@ void A_Mushroom(MapObject* actor)
 
 void A_BetaSkullAttack(MapObject* actor)
 {
- int damage;
- if (!actor->target || actor->target->type == mobjtype_t::MT_SKULL)
-	return;
- S_StartSound(actor, actor->info->attacksound);
- A_FaceTarget(actor);
- damage = (P_Random(/* pr_skullfly */)%8+1)*actor->info->damage;
- P_DamageMobj(actor->target, actor, actor, damage);
+	int damage;
+	if (!actor->target || actor->target->type == mobjtype_t::MT_SKULL)
+		return;
+	S_StartSound(actor, actor->info->attacksound);
+	A_FaceTarget(actor);
+	damage = (P_Random(/* pr_skullfly */)%8+1)*actor->info->damage;
+	P_DamageMobj(actor->target, actor, actor, damage);
 }
 
 void A_Stop(MapObject* actor)
@@ -106,7 +106,7 @@ void A_Spawn(MapObject* mo)
 /*	MapObject* newmobj = */ P_SpawnMobj(mo->x, mo->y,
 					(mo->state->misc2 << FRACBITS) + mo->z,
 					mo->state->misc1 - 1);
-//	newmobj->flags = (newmobj->flags & ~MF_FRIEND) | (mo->flags & MF_FRIEND);
+//	newmobj->flags = (newmobj->flags & ~mobjflag_t::MF_FRIEND) | (mo->flags & mobjflag_t::MF_FRIEND);
 
 	}
 }
@@ -130,7 +130,7 @@ void A_Scratch(MapObject* mo)
 
 void A_PlaySound(MapObject* mo)
 {
- S_StartSound(mo->state->misc2 ? NULL : mo, mo->state->misc1);
+	S_StartSound(mo->state->misc2 ? NULL : mo, mo->state->misc1);
 }
 
 // [crispy] this is pretty much the only action pointer that makes sense for both mobj and pspr states
@@ -197,17 +197,17 @@ void A_FireOldBFG(MapObject* mobj, Player* player, pspdef_t* psp)
 
  if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 
- if (crispy->recoil && !(player->mo->flags & MF_NOCLIP))
-	P_Thrust(player, ANG180 + player->mo->angle,
+ if (crispy->recoil && !(player->flags & mobjflag_t::MF_NOCLIP))
+	P_Thrust(player, ANG180 + player->angle,
 			512*20);//recoil_values[wp_plasma][0]);
 
- player->ammo[weaponinfo[player->readyweapon].ammo]--;
+ player->ammo[std::size_t(weaponinfo[std::size_t(player->readyweapon)].ammo)]--;
 
  player->extralight = 2;
 
  do
 	{
-		MapObject* th,* mo = player->mo;
+		MapObject* th,* mo = player;
 		angle_t an = mo->angle;
 		angle_t an1 = ((P_Random(/* pr_bfg */)&127) - 64) * (ANG90/768) + an;
 		angle_t an2 = ((P_Random(/* pr_bfg */)&127) - 64) * (ANG90/640) + ANG90;
@@ -216,7 +216,7 @@ void A_FireOldBFG(MapObject* mobj, Player* player, pspdef_t* psp)
 //	if (autoaim || !beta_emulation)
 	{
 		// killough 8/2/98: make autoaiming prefer enemies
-		int mask = 0;//MF_FRIEND;
+		int mask = 0;//mobjflag_t::MF_FRIEND;
 		fixed_t slope;
 		if (critical->freeaim == FREEAIM_DIRECT)
 		slope = PLAYER_SLOPE(player);
@@ -241,7 +241,7 @@ void A_FireOldBFG(MapObject* mobj, Player* player, pspdef_t* psp)
 	}
 
 		th = P_SpawnMobj(mo->x, mo->y,
-				mo->z + 62*FRACUNIT - player->psprites[ps_weapon].sy,
+				mo->z + 62*FRACUNIT - player->psprites[std::size_t(psprnum_t::ps_weapon)].sy,
 				type);
 		th->target = mo; // P_SetTarget(&th->target, mo);
 		th->angle = an1;

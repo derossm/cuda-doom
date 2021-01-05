@@ -16,10 +16,10 @@
 #include "../derma/common.h"
 
 // declaring a cheat
-#define CHEAT(value, parameters)	{ value, sizeof(value) - 1, parameters, 0, 0, "" }
+#define CHEAT(value, parameters) { value, sizeof(value) - 1, parameters, 0, 0, "" }
 
-#define MAX_CHEAT_LEN				25
-#define MAX_CHEAT_PARAMS			5
+constexpr size_t MAX_CHEAT_LEN{25};
+constexpr size_t MAX_CHEAT_PARAMS{5};
 
 struct cheatseq_t
 {
@@ -35,4 +35,4 @@ struct cheatseq_t
 };
 
 int cht_CheckCheat(cheatseq_t* cht, char key);
-void cht_GetParam(cheatseq_t* cht, char* buffer);
+void cht_GetParam(cheatseq_t* cht, std::string buffer);

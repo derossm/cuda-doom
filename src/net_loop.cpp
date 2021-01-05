@@ -19,7 +19,7 @@
 #include "net_loop.h"
 #include "net_packet.h"
 
-#define MAX_QUEUE_SIZE 16
+constexpr size_t MAX_QUEUE_SIZE{16};
 
 struct packet_queue_t
 {
@@ -62,7 +62,7 @@ static net_packet_t* QueuePop(packet_queue_t* queue)
 	{
 		// queue empty
 
-		return NULL;
+		return nullptr;
 	}
 
 	packet = queue->packets[queue->head];
@@ -105,7 +105,7 @@ static bool NET_CL_RecvPacket(net_addr_t**addr, net_packet_t**packet)
 	{
 		*packet = popped;
 		*addr = &client_addr;
-		client_addr.module = &net_loop_client_module;
+		client_addr.mod = &net_loop_client_module;
 
 		return true;
 	}
@@ -113,7 +113,7 @@ static bool NET_CL_RecvPacket(net_addr_t**addr, net_packet_t**packet)
 	return false;
 }
 
-static void NET_CL_AddrToString(net_addr_t* addr, char* buffer, int buffer_len)
+static void NET_CL_AddrToString(net_addr_t* addr, std::string buffer, int buffer_len)
 {
 	M_snprintf(buffer, buffer_len, "local server");
 }
@@ -122,17 +122,17 @@ static void NET_CL_FreeAddress(net_addr_t* addr)
 {
 }
 
-static net_addr_t* NET_CL_ResolveAddress(const char* address)
+static net_addr_t* NET_CL_ResolveAddress(std::string address)
 {
 	if (address == NULL)
 	{
-		client_addr.module = &net_loop_client_module;
+		client_addr.mod = &net_loop_client_module;
 
 		return &client_addr;
 	}
 	else
 	{
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -181,7 +181,7 @@ static bool NET_SV_RecvPacket(net_addr_t**addr, net_packet_t**packet)
 	{
 		*packet = popped;
 		*addr = &server_addr;
-		server_addr.module = &net_loop_server_module;
+		server_addr.mod = &net_loop_server_module;
 
 		return true;
 	}
@@ -189,7 +189,7 @@ static bool NET_SV_RecvPacket(net_addr_t**addr, net_packet_t**packet)
 	return false;
 }
 
-static void NET_SV_AddrToString(net_addr_t* addr, char* buffer, int buffer_len)
+static void NET_SV_AddrToString(net_addr_t* addr, std::string buffer, int buffer_len)
 {
 	M_snprintf(buffer, buffer_len, "local client");
 }
@@ -198,16 +198,16 @@ static void NET_SV_FreeAddress(net_addr_t* addr)
 {
 }
 
-static net_addr_t* NET_SV_ResolveAddress(const char* address)
+static net_addr_t* NET_SV_ResolveAddress(std::string address)
 {
 	if (address == NULL)
 	{
-		server_addr.module = &net_loop_server_module;
+		server_addr.mod = &net_loop_server_module;
 		return &server_addr;
 	}
 	else
 	{
-		return NULL;
+		return nullptr;
 	}
 }
 

@@ -8,8 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "SDL_joystick.h"
+
+#include "txt_joybinput.h"
+
+#include "../../textscreen/txt_window.h"
 
 #include "doomkeys.h"
 #include "joystick.h"
@@ -18,15 +21,13 @@
 #include "m_controls.h"
 #include "m_misc.h"
 
-#include "txt_joybinput.h"
-#include "txt_gui.h"
-#include "txt_io.h"
-#include "txt_label.h"
-#include "txt_sdl.h"
-#include "txt_utf8.h"
-#include "txt_window.h"
+#include "../../textscreen/txt_gui.h"
+#include "../../textscreen/txt_io.h"
+#include "../../textscreen/txt_label.h"
+#include "../../textscreen/txt_sdl.h"
+#include "../../textscreen/txt_utf8.h"
 
-#define JOYSTICK_INPUT_WIDTH 10
+constexpr size_t JOYSTICK_INPUT_WIDTH{10};
 
 extern int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS];
 
@@ -232,7 +233,7 @@ static void TXT_JoystickInputSizeCalc(TXT_UNCAST_ARG(joystick_input))
 	joystick_input->widget.h = 1;
 }
 
-static void GetJoystickButtonDescription(int vbutton, char* buf,
+static void GetJoystickButtonDescription(int vbutton, std::string buf,
 											size_t buf_len)
 {
 	M_snprintf(buf, buf_len, "BUTTON #%i",

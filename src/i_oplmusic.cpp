@@ -31,9 +31,9 @@ constexpr size_t MAXMIDLENGTH{96 * 1024};
 constexpr size_t GENMIDI_NUM_INSTRS{128};
 constexpr size_t GENMIDI_NUM_PERCUSSION{47};
 
-#define GENMIDI_HEADER			"#OPL_II#"
-constexpr int GENMIDI_FLAG_FIXED{0x0001};		/* fixed pitch */
-constexpr int GENMIDI_FLAG_2VOICE{0x0004};		/* double voice (OPL3) */
+#define GENMIDI_HEADER "#OPL_II#"
+constexpr int GENMIDI_FLAG_FIXED{0x0001}; // fixed pitch
+constexpr int GENMIDI_FLAG_2VOICE{0x0004}; // double voice (OPL3)
 
 constexpr size_t PERCUSSION_LOG_LEN{16};
 
@@ -311,7 +311,7 @@ static uint8_t last_perc[PERCUSSION_LOG_LEN];
 static unsigned last_perc_count;
 
 // Configuration file variable, containing the port number for the adlib chip.
-const char* snd_dmxoption{"-opl3"}; // [crispy] default to OPL3 emulation
+std::string snd_dmxoption{"-opl3"}; // [crispy] default to OPL3 emulation
 int opl_io_port{0x388};
 
 // If true, OPL sound channels are reversed to their correct arrangement
@@ -321,7 +321,7 @@ static bool opl_stereo_correct{false};
 // Load instrument table from GENMIDI lump:
 static bool LoadInstrumentTable()
 {
-	byte* lump{W_CacheLumpName(DEH_String("genmidi"), pu_tags_t::PU_STATIC)};
+	byte* lump{W_CacheLumpName<byte>(DEH_String("genmidi"), pu_tags_t::PU_STATIC)};
 
 	// DMX does not check header
 	main_instrs = (genmidi_instr_t*) (lump + strlen(GENMIDI_HEADER));
@@ -649,10 +649,10 @@ static unsigned FrequencyForVoice(opl_voice_t* voice)
 	// Apply note offset. Don't apply offset if the instrument is a fixed note instrument.
 	auto gm_voice{&voice->current_instr->voices[voice->current_instr_voice]};
 
-	signed int note{voice->note};
+	int note{voice->note};
 	if ((SHORT(voice->current_instr->flags) & GENMIDI_FLAG_FIXED) == 0)
 	{
-		note += (signed short) SHORT(gm_voice->base_note_offset);
+		note += (short) SHORT(gm_voice->base_note_offset);
 	}
 
 	// Avoid possible overflow due to base note offset:
@@ -666,7 +666,7 @@ static unsigned FrequencyForVoice(opl_voice_t* voice)
 		note -= 12;
 	}
 
-	signed int freq_index{64 + 32 * note + voice->channel->bend};
+	int freq_index{64 + 32 * note + voice->channel->bend};
 
 	// If this is the second voice of a double voice instrument, the frequency index can be adjusted by the fine tuning field.
 	if (voice->current_instr_voice != 0)
@@ -803,7 +803,7 @@ static void KeyOnEvent(opl_track_data_t* track, midi_EventType* event)
 			auto voicenum{double_voice + 1};
 			if (!opl_opl3mode)
 			{
-				voicenum class = 1;
+				voicenum = 1;
 			}
 			while (voice_alloced_num > num_opl_voices - voicenum)
 			{
@@ -1312,7 +1312,7 @@ static bool IsMid(byte* mem, int len)
 	return len > 4 && !memcmp(mem, "MThd", 4);
 }
 
-static bool ConvertMus(byte* musdata, int len, char* filename)
+static bool ConvertMus(byte* musdata, int len, std::string filename)
 {
 	auto instream{mem_fopen_read(musdata, len)};
 	auto outstream{mem_fopen_write()};
@@ -1408,7 +1408,7 @@ static bool I_OPL_InitMusic()
 	}
 
 	// The DMXOPTION variable must be set to enable OPL3 support. As an extension, we also allow it to be set from the config file.
-	const char* dmxoption = getenv("DMXOPTION");
+	std::string dmxoption = getenv("DMXOPTION");
 	if (!dmxoption)
 	{
 		dmxoption = snd_dmxoption != nullptr ? snd_dmxoption : "";
@@ -1449,8 +1449,8 @@ static bool I_OPL_InitMusic()
 
 static snddevice_t music_opl_devices[] =
 {
-	snddevice_t::SNDDEVICE_ADLIB,
-	snddevice_t::SNDDEVICE_SB
+	snddevice_t::ADLIB,
+	snddevice_t::SB
 };
 
 music_module_t music_opl_module =
@@ -1505,7 +1505,7 @@ static bool ChannelInUse(opl_channel_data_t* channel)
 	return false;
 }
 
-void I_OPL_DevMessages(char* result, size_t result_len)
+void I_OPL_DevMessages(std::string result, size_t result_len)
 {
 	if (num_tracks == 0)
 	{

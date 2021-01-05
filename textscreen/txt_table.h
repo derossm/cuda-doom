@@ -10,17 +10,20 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "doomkeys.h"
 
+#include "txt_widget.h"
+
 #include "txt_defines.h"
 #include "txt_main.h"
-#include "txt_widget.h"
+#include "txt_io.h"
+#include "txt_gui.h"
+
 #include "txt_desktop.h"
 #include "txt_separator.h"
 #include "txt_strut.h"
-#include "txt_io.h"
-#include "txt_gui.h"
 
 cudadoom::txt::Widget txt_table_overflow_right;
 cudadoom::txt::Widget txt_table_overflow_down;
@@ -39,7 +42,9 @@ namespace cudadoom::txt
 	To create a new table, use @ref NewTable. It is also possible to use @ref MakeHorizontalTable to create a table, specifying
 	widgets to place inside a horizontal list. A vertical list is possible simply by creating a table containing a single column.
  */
-class Table : Widget
+
+template<typename T>
+class Table : Widget<T>
 {
 public:
 	// Widgets in this table
@@ -54,18 +59,8 @@ public:
 
 public:
 
-	WidgetClass txt_table_class{
-		TableSelectable,
-		CalcTableSize,
-		TableDrawer,
-		TableKeyPress,
-		TableDestructor,
-		TableMousePress,
-		TableLayout,
-		TableFocused
-	};
-
-	Table(int _columns = 1) : widget_class(&txt_table_class), columns(_columns)
+	Table(int _columns = 1) : widget_class<Table>{}, columns{_columns},
+											widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 		// Add a strut for each column at the start of the table. These are used by the SetColumnWidths function below:
 		// the struts are created with widths of 0 each, but this function changes them.
@@ -73,6 +68,10 @@ public:
 		{
 			AddWidget(NewStrut(0, 0));
 		}
+	}
+
+	virtual ~Table()
+	{
 	}
 
 	// Returns true if the given widget in the table's widgets[] array refers to an actual widget - not NULL, or one of the special overflow pointers.
@@ -95,7 +94,7 @@ public:
 		}
 	}
 
-	void Destructor()
+	void Destroy() override noexcept
 	{
 		ClearTable();
 	}
@@ -262,7 +261,7 @@ public:
 		}
 	}
 
-	void CalcTableSize()
+	void CalculateSize() override noexcept
 	{
 		auto rows = Rows();
 
@@ -300,11 +299,12 @@ public:
 	void AddWidget(std::unique_ptr<Widget> widget)
 	{
 		// Convenience alias for NULL:
-		if (widget == &txt_table_empty)
+		// FIXME these are impossible conditions now
+		if (widget.get() == &txt_table_empty)
 		{
 			widget = nullptr;
 		}
-		else if (widget == &txt_table_eol)
+		else if (widget.get() == &txt_table_eol)
 		{
 			FillRowToEnd();
 			return;
@@ -336,7 +336,7 @@ public:
 		// Separators begin on a new line.
 		if (is_separator)
 		{
-			FillRowToEnd(table);
+			FillRowToEnd();
 		}
 
 		//widgets = realloc(widgets, sizeof(Widget*) * (widgets.size() + 1));
@@ -361,11 +361,12 @@ public:
 	void AddWidgets(Table* table, ...)
 	{
 		va_list args;
-		va_start(args, UNCAST_ARG_NAME(table));
+		va_start(args,table);
 
 		// Keep adding widgets until a NULL is reached.
 		for (;;)
 		{
+			// FIXME
 			std::unique_ptr<Widget> widget = va_arg(args, std::unique_ptr<Widget>);
 
 			if (widget == nullptr)
@@ -388,7 +389,7 @@ public:
 
 		if (auto i{y * columns + x}; i >= 0 && i < widgets.size())
 		{
-			auto widget = widgets[i];
+			auto widget = widgets[i].get();
 			return widget->IsActualWidget() && widget->SelectableWidget() && widget->visible();
 		}
 
@@ -450,7 +451,7 @@ public:
 		}
 	}
 
-	bool KeyPress(int key)
+	bool KeyPress(KeyType key) override noexcept
 	{
 		auto rows{Rows(table)};
 
@@ -577,11 +578,11 @@ public:
 		// Adjust x position based on alignment property
 		switch (align)
 		{
-			case HORIZ_LEFT:
+			case AlignHorizontal::left:
 				width = col_width;
 				break;
 
-			case HORIZ_CENTER:
+			case AlignHorizontal::center:
 				CalcWidgetSize();
 
 				// Separators are always drawn left-aligned.
@@ -592,7 +593,7 @@ public:
 
 				break;
 
-			case HORIZ_RIGHT:
+			case AlignHorizontal::right:
 				CalcWidgetSize();
 
 				if (widget_class != &txt_separator_class)
@@ -610,7 +611,7 @@ public:
 		LayoutWidget();
 	}
 
-	void TableLayout()
+	void SetLayout() override noexcept
 	{
 		// Work out the column widths and row heights
 		auto rows{Rows()};
@@ -660,19 +661,16 @@ public:
 		free(column_widths);
 	}
 
-	void TableDrawer(UNCAST_ARG(table))
+	void Draw() override noexcept
 	{
-		CAST_ARG(txt_table_t, table);
 		Widget *widget;
 		int i;
 
-		// Check the table's current selection points at something valid before
-		// drawing.
+		// Check the table's current selection points at something valid before drawing.
 
 		CheckValidSelection(table);
 
 		// Draw all cells
-
 		for (i=0; i<table->num_widgets; ++i)
 		{
 			widget = table->widgets[i];
@@ -686,16 +684,17 @@ public:
 	}
 
 	// Responds to mouse presses
-	void MousePress(int x, int y, int b)
+	bool MousePress(MouseEvent evt) override noexcept
 	{
-		for (auto i=0; i<table->num_widgets; ++i)
+		auto [button, x, y] = evt;
+		for (size_t i{0}; i<table->num_widgets; ++i)
 		{
 			auto widget = table->widgets[i];
 
 			// NULL widgets are spacers
 			if (IsActualWidget(widget))
 			{
-				if (x >= widget->x && x < (signed) (widget->x + widget->width) && y >= widget->y && y < (signed) (widget->y + widget->height))
+				if (x >= widget->x && x < (int) (widget->x + widget->width) && y >= widget->y && y < (int) (widget->y + widget->height))
 				{
 					// This is the widget that was clicked!
 
@@ -706,7 +705,7 @@ public:
 					}
 
 					// Propagate click
-					WidgetMousePress(widget, x, y, b);
+					Widget::MousePress(evt);
 
 					break;
 				}
@@ -715,7 +714,7 @@ public:
 	}
 
 	// Determine whether the table is selectable.
-	bool Selectable()
+	bool Selectable() override noexcept
 	{
 		// Is the currently-selected cell selectable?
 		if (SelectableCell(selected_x, selected_y))
@@ -735,6 +734,11 @@ public:
 
 		// No selectable widgets exist within the table.
 		return false;
+	}
+
+	void SetFocus(bool state) override noexcept
+	{
+
 	}
 
 	// Need to pass through focus changes to the selected child widget.

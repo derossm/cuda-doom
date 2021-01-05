@@ -22,14 +22,14 @@ static int hash_table_entries;
 static int hash_table_length = -1;
 
 // This is the algorithm used by glib
-unsigned strhash(const char* s)
+unsigned strhash(std::string s)
 {
-	auto p = s;
+	auto p = s.c_str();
 	unsigned h = *p;
 
 	if (h)
 	{
-		for (p += 1; *p; p++)
+		for (p += 1; *p; ++p)
 		{
 			h = (h << 5) - h + *p;
 		}
@@ -38,7 +38,7 @@ unsigned strhash(const char* s)
 	return h;
 }
 
-deh_substitution_t* SubstitutionForString(const char* s)
+deh_substitution_t* SubstitutionForString(std::string s)
 {
 	// Fallback if we have not initialized the hash table yet
 	if (hash_table_length < 0)
@@ -48,9 +48,9 @@ deh_substitution_t* SubstitutionForString(const char* s)
 
 	auto entry = strhash(s) % hash_table_length;
 
-	while (hash_table[entry] != NULL)
+	while (hash_table[entry])
 	{
-		if (!strcmp(hash_table[entry]->from_text, s))
+		if (!s.compare(hash_table[entry]->from_text))
 		{
 			// substitution found!
 			return hash_table[entry];
@@ -64,13 +64,11 @@ deh_substitution_t* SubstitutionForString(const char* s)
 }
 
 // Look up a string to see if it has been replaced with something else, this will be used throughout the program to substitute text
-const char* DEH_String(const char* s)
+std::string DEH_String(std::string s)
 {
-	deh_substitution_t* subst;
+	deh_substitution_t* subst = SubstitutionForString(s);
 
-	subst = SubstitutionForString(s);
-
-	if (subst != NULL)
+	if (subst)
 	{
 		return subst->to_text;
 	}
@@ -81,7 +79,7 @@ const char* DEH_String(const char* s)
 }
 
 // [crispy] returns true if a string has been substituted
-bool DEH_HasStringReplacement(const char* s)
+bool DEH_HasStringReplacement(std::string s)
 {
 	return DEH_String(s) != s;
 }
@@ -91,7 +89,7 @@ void InitHashTable()
 	// init hash table
 	hash_table_entries = 0;
 	hash_table_length = 16;
-	hash_table = Z_Malloc<deh_substitution_t>(sizeof(deh_substitution_t*) * hash_table_length, pu_tags_t::PU_STATIC, NULL);
+	hash_table = Z_Malloc<deh_substitution_t**>(sizeof(deh_substitution_t*) * hash_table_length, pu_tags_t::PU_STATIC, nullptr);
 	memset(hash_table, 0, sizeof(deh_substitution_t*) * hash_table_length);
 }
 
@@ -105,7 +103,7 @@ void IncreaseHashtable()
 
 	// double the size
 	hash_table_length *= 2;
-	hash_table = Z_Malloc<deh_substitution_t>(sizeof(deh_substitution_t*) * hash_table_length, pu_tags_t::PU_STATIC, NULL);
+	hash_table = Z_Malloc<deh_substitution_t**>(sizeof(deh_substitution_t*) * hash_table_length, pu_tags_t::PU_STATIC, nullptr);
 	memset(hash_table, 0, sizeof(deh_substitution_t*) * hash_table_length);
 
 	// go through the old table and insert all the old entries
@@ -141,7 +139,7 @@ void DEH_AddToHashtable(deh_substitution_t* sub)
 	++hash_table_entries;
 }
 
-void DEH_AddStringReplacement(const char* from_text, const char* to_text)
+void DEH_AddStringReplacement(std::string from_text, std::string to_text)
 {
 	deh_substitution_t* sub;
 	size_t len;
@@ -154,13 +152,14 @@ void DEH_AddStringReplacement(const char* from_text, const char* to_text)
 
 	// Check to see if there is an existing substitution already in place.
 	sub = SubstitutionForString(from_text);
-
-	if (sub != NULL)
+	// FIXME
+/*
+	if (sub != nullptr)
 	{
 		Z_Free(sub->to_text);
 
 		len = strlen(to_text) + 1;
-		sub->to_text = Z_Malloc<decltype(sub->to_text)>(len, pu_tags_t::PU_STATIC, NULL);
+		sub->to_text = Z_Malloc<decltype(sub->to_text)>(len, pu_tags_t::PU_STATIC, nullptr);
 		memcpy(sub->to_text, to_text, len);
 	}
 	else
@@ -170,7 +169,7 @@ void DEH_AddStringReplacement(const char* from_text, const char* to_text)
 
 		// We need to create our own duplicates of the provided strings.
 		len = strlen(from_text) + 1;
-		sub->from_text = Z_Malloc<decltype(sub->from_text)>(len, pu_tags_t::PU_STATIC, NULL);
+		sub->from_text = Z_Malloc<decltype(sub->from_text)>(len, pu_tags_t::PU_STATIC, nullptr);
 		memcpy(sub->from_text, from_text, len);
 
 		len = strlen(to_text) + 1;
@@ -179,6 +178,7 @@ void DEH_AddStringReplacement(const char* from_text, const char* to_text)
 
 		DEH_AddToHashtable(sub);
 	}
+*/
 }
 
 // Get the type of a format argument. We can mix-and-match different format arguments as long as they are for the same data type.
@@ -211,10 +211,11 @@ format_arg_t FormatArgumentType(char c)
 }
 
 // Given the specified string, get the type of the first format string encountered.
-format_arg_t NextFormatArgument(const char** str)
+format_arg_t NextFormatArgument(std::string str)
 {
 	format_arg_t argtype;
-
+	// FIXME
+/* 
 	// Search for the '%' starting the next string.
 	while (**str != '\0')
 	{
@@ -253,7 +254,7 @@ format_arg_t NextFormatArgument(const char** str)
 
 	// Stop searching, we have reached the end.
 	*str = nullptr;
-
+ */
 	return format_arg_t::FORMAT_ARG_INVALID;
 }
 
@@ -279,16 +280,16 @@ bool ValidArgumentReplacement(format_arg_t original, format_arg_t replacement)
 }
 
 // Return true if the specified string contains no format arguments.
-bool ValidFormatReplacement(const char* original, const char* replacement)
+bool ValidFormatReplacement(std::string original, std::string replacement)
 {
 	// Check each argument in turn and compare types.
-	auto rover1 = original;
-	auto rover2 = replacement;
+	//auto rover1 = original;
+	//auto rover2 = replacement;
 
 	for (;;)
 	{
-		auto argtype1 = NextFormatArgument(&rover1);
-		auto argtype2 = NextFormatArgument(&rover2);
+		auto argtype1 = NextFormatArgument(original);
+		auto argtype2 = NextFormatArgument(replacement);
 
 		if (argtype2 == format_arg_t::FORMAT_ARG_INVALID)
 		{
@@ -311,13 +312,13 @@ bool ValidFormatReplacement(const char* original, const char* replacement)
 }
 
 // Get replacement format string, checking arguments.
-const char* FormatStringReplacement(const char* s)
+std::string FormatStringReplacement(std::string s)
 {
 	auto repl = DEH_String(s);
 
 	if (!ValidFormatReplacement(s, repl))
 	{
-		printf("WARNING: Unsafe dehacked replacement provided for printf format string: %s\n", s);
+		printf("WARNING: Unsafe dehacked replacement provided for printf format string: %s\n", s.c_str());
 
 		return s;
 	}
@@ -326,46 +327,47 @@ const char* FormatStringReplacement(const char* s)
 }
 
 // printf(), performing a replacement on the format string.
-void DEH_printf(const char* fmt, ...)
+void DEH_printf(std::string fmt, ...)
 {
 	va_list args;
-	const char* repl;
+	std::string repl;
 
 	repl = FormatStringReplacement(fmt);
 
 	va_start(args, fmt);
 
-	vprintf(repl, args);
+	vprintf(repl.c_str(), args);
 
 	va_end(args);
 }
 
 // fprintf(), performing a replacement on the format string.
-void DEH_fprintf(FILE* fstream, const char* fmt, ...)
+void DEH_fprintf(FILE* fstream, std::string fmt, ...)
 {
 	va_list args;
-	const char* repl;
+	std::string repl;
 
 	repl = FormatStringReplacement(fmt);
 
 	va_start(args, fmt);
 
-	vfprintf(fstream, repl, args);
+	vfprintf(fstream, repl.c_str(), args);
 
 	va_end(args);
 }
 
 // snprintf(), performing a replacement on the format string.
-void DEH_snprintf(char* buffer, size_t len, const char* fmt, ...)
+void DEH_snprintf(std::string buffer, size_t len, std::string fmt, ...)
 {
 	va_list args;
-	const char* repl;
+	std::string repl;
 
 	repl = FormatStringReplacement(fmt);
 
 	va_start(args, fmt);
 
-	M_vsnprintf(buffer, len, repl, args);
+	// FIXME
+	//M_vsnprintf(buffer, len, repl, args);
 
 	va_end(args);
 }

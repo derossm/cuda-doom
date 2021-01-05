@@ -18,13 +18,11 @@
 #include "deh_io.h"
 #include "deh_main.h"
 
-actionf_t codeptrs[NUMSTATES]; // [crispy] share with deh_bexptr.c
+actionf_t codeptrs[std::size_t(statenum_t::NUMSTATES)]; // [crispy] share with deh_bexptr.c
 
 static int CodePointerIndex(actionf_t* ptr)
 {
-	int i;
-
-	for (i=0; i<NUMSTATES; ++i)
+	for (size_t i{0}; i < std::size_t(statenum_t::NUMSTATES); ++i)
 	{
 		if (!memcmp(&codeptrs[i], ptr, sizeof(actionf_t)))
 		{
@@ -37,25 +35,27 @@ static int CodePointerIndex(actionf_t* ptr)
 
 static void DEH_PointerInit()
 {
-	int i;
+	size_t i;
 
 	// Initialize list of dehacked pointers
 
-	for (i=0; i<EXTRASTATES; ++i)
+	for (i=0; i < std::size_t(statenum_t::EXTRASTATES); ++i)
+	{
 		codeptrs[i] = states[i].action;
+	}
 
 	// [BH] Initialize extra dehacked states
-	for (; i < NUMSTATES; i++)
+	for (; i < std::size_t(statenum_t::NUMSTATES); ++i)
 	{
-	states[i].sprite = SPR_TNT1;
-	states[i].frame = 0;
-	states[i].tics = -1;
-	states[i].action.acv = (actionf_v) NULL;
-	states[i].nextstate = i;
-	states[i].misc1 = 0;
-	states[i].misc2 = 0;
-//	states[i].dehacked = false;
-	codeptrs[i] = states[i].action;
+		states[i].sprite = spritenum_t::SPR_TNT1;
+		states[i].frame = 0;
+		states[i].tics = -1;
+		states[i].action.acv = (actionf_v) NULL;
+		states[i].nextstate = i;
+		states[i].misc1 = 0;
+		states[i].misc2 = 0;
+		//states[i].dehacked = false;
+		codeptrs[i] = states[i].action;
 	}
 }
 
@@ -69,13 +69,13 @@ static void* DEH_PointerStart(deh_context_t* context, char* line)
 	if (sscanf(line, "Pointer %*i (%*s %i)", &frame_number) != 1)
 	{
 		DEH_Warning(context, "Parse error on section start");
-		return NULL;
+		return nullptr;
 	}
 
-	if (frame_number < 0 || frame_number >= NUMSTATES)
+	if (frame_number < 0 || frame_number >= (int)statenum_t::NUMSTATES)
 	{
 		DEH_Warning(context, "Invalid frame number: %i", frame_number);
-		return NULL;
+		return nullptr;
 	}
 
 	return &states[frame_number];
@@ -84,7 +84,7 @@ static void* DEH_PointerStart(deh_context_t* context, char* line)
 static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 {
 	state_t* state;
-	char* variable_name, *value;
+	std::string variable_name, *value;
 	int ivalue;
 
 	if (tag == NULL)
@@ -109,9 +109,9 @@ static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 
 	// set the appropriate field
 
-	if (!strcasecmp(variable_name, "Codep frame"))
+	if (!iequals(variable_name, "Codep frame"))
 	{
-		if (ivalue < 0 || ivalue >= NUMSTATES)
+		if (ivalue < 0 || ivalue >= (int)statenum_t::NUMSTATES)
 		{
 			DEH_Warning(context, "Invalid state '%i'", ivalue);
 		}
@@ -128,21 +128,17 @@ static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 
 static void DEH_PointerSHA1Sum(sha1_context_t* context)
 {
-	int i;
-
-	for (i=0; i<NUMSTATES; ++i)
+	for (size_t i{0}; i < std::size_t(statenum_t::NUMSTATES); ++i)
 	{
 		SHA1_UpdateInt32(context, CodePointerIndex(&states[i].action));
 	}
 }
 
-deh_section_t deh_section_pointer =
-{
+deh_section_t deh_section_pointer{
 	"Pointer",
 	DEH_PointerInit,
 	DEH_PointerStart,
 	DEH_PointerParseLine,
 	NULL,
-	DEH_PointerSHA1Sum,
+	DEH_PointerSHA1Sum
 };
-

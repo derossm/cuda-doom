@@ -15,25 +15,25 @@
 
 #include "../../derma/common.h"
 
-#define SAVEGAME_EOF 0x1d
-#define VERSIONSIZE 16
+constexpr size_t SAVEGAME_EOF{0x1d};
+constexpr size_t VERSIONSIZE{16};
 
 // maximum size of a savegame description
 
-#define SAVESTRINGSIZE 24
+constexpr size_t SAVESTRINGSIZE{24};
 
 // temporary filename to use while saving.
 
-char* P_TempSaveGameFile();
+std::string P_TempSaveGameFile();
 
 // filename to use for a savegame slot
 
-char* P_SaveGameFile(int slot);
+std::string P_SaveGameFile(int slot);
 
 // Savegame file header read/write functions
 
 bool P_ReadSaveGameHeader();
-void P_WriteSaveGameHeader(char* description);
+void P_WriteSaveGameHeader(std::string description);
 
 // Savegame end-of-file read/write functions
 

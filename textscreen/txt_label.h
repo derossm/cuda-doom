@@ -10,13 +10,16 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
+
+#include "txt_widget.h"
 
 #include "txt_main.h"
-#include "txt_widget.h"
-#include "txt_window.h"
 #include "txt_utf8.h"
 #include "txt_io.h"
 #include "txt_gui.h"
+
+//#include "txt_window.h"
 
 namespace cudadoom::txt
 {
@@ -26,15 +29,68 @@ namespace cudadoom::txt
  *
  * A label widget does nothing except show a text label.
  */
-struct txt_label_t
+class Label : public Widget<Label>
 {
 	Widget widget;
-	char* label;
+	std::string label;
 	char** lines;
 	unsigned w;
 	unsigned h;
 	int fgcolor;
 	int bgcolor;
+
+public:
+
+	Label() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	{
+	}
+
+	bool Selectable() override final const noexcept
+	{
+		return true;
+	}
+
+	void CalculateSize() override final const noexcept
+	{
+	}
+
+	void Draw() override final const noexcept
+	{
+	}
+
+	bool KeyPress(Keytype key) override final const noexcept
+	{
+		if (key == KEY_ENTER || key == ' ')
+		{
+			EmitSignal("changed");
+			return true;
+		}
+
+		return false;
+	}
+
+	bool MousePress(MouseEvent evt) override final const noexcept
+	{
+		if (evt.button == MOUSE_LEFT)
+		{
+			// Equivalent to pressing enter
+			return KeyPress(KEY_ENTER);
+		}
+
+		return false
+	}
+
+	void SetLayout() override final const noexcept
+	{
+	}
+
+	void SetFocus(bool _focus) override final const noexcept
+	{
+	}
+
+	void Destroy() override final const noexcept
+	{
+	}
 };
 
 /**
@@ -43,7 +99,7 @@ struct txt_label_t
  * @param label			String to display in the widget (UTF-8 format).
  * @return				Pointer to the new label widget.
  */
-txt_label_t* NewLabel(const char* label);
+txt_label_t* NewLabel(std::string label);
 
 /**
  * Set the string displayed in a label widget.
@@ -51,7 +107,7 @@ txt_label_t* NewLabel(const char* label);
  * @param label			The widget.
  * @param value			The string to display (UTF-8 format).
  */
-void SetLabel(txt_label_t* label, const char* value);
+void SetLabel(txt_label_t* label, std::string value);
 
 /**
  * Set the background color of a label widget.
@@ -161,9 +217,9 @@ WidgetClass txt_label_class =
 	NULL,
 };
 
-void SetLabel(txt_label_t* label, const char* value)
+void SetLabel(txt_label_t* label, std::string value)
 {
-	char* p;
+	std::string p;
 	unsigned y;
 
 	// Free back the old label
@@ -216,7 +272,7 @@ void SetLabel(txt_label_t* label, const char* value)
 	}
 }
 
-txt_label_t* NewLabel(const char* text)
+txt_label_t* NewLabel(std::string text)
 {
 	txt_label_t* label;
 

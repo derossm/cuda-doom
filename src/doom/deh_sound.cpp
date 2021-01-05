@@ -10,7 +10,6 @@
 // Parses "Sound" sections in dehacked files
 \**********************************************************************************************************************************************/
 
-
 #include "doomtype.h"
 #include "deh_defs.h"
 #include "deh_main.h"
@@ -29,39 +28,40 @@ DEH_BEGIN_MAPPING(sound_mapping, sfxinfo_t)
 	DEH_MAPPING("Neg. One 2", lumpnum)
 DEH_END_MAPPING
 
-static void* DEH_SoundStart(deh_context_t* context, char* line)
+static void* DEH_SoundStart(deh_context_t* context, std::string line)
 {
 	int sound_number = 0;
 
 	if (sscanf(line, "Sound %i", &sound_number) != 1)
 	{
 		DEH_Warning(context, "Parse error on section start");
-		return NULL;
+		return nullptr;
 	}
 
-	if (sound_number < 0 || sound_number >= NUMSFX)
+	if (sound_number < 0 || sound_number >= (int)sfxenum_t::NUMSFX)
 	{
 		DEH_Warning(context, "Invalid sound number: %i", sound_number);
-		return NULL;
+		return nullptr;
 	}
 
 	if (sound_number >= DEH_VANILLA_NUMSFX)
 	{
-		DEH_Warning(context, "Attempt to modify SFX %i. This will cause "
-								"problems in Vanilla dehacked.", sound_number);
+		DEH_Warning(context, "Attempt to modify SFX %i. This will cause problems in Vanilla dehacked.", sound_number);
 	}
 
 	return &S_sfx[sound_number];
 }
 
-static void DEH_SoundParseLine(deh_context_t* context, char* line, void* tag)
+static void DEH_SoundParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	sfxinfo_t* sfx;
-	char* variable_name, *value;
+	std::string variable_name, *value;
 	int ivalue;
 
 	if (tag == NULL)
+	{
 		return;
+	}
 
 	sfx = (sfxinfo_t*) tag;
 

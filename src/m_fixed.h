@@ -16,9 +16,10 @@
 #include "../derma/common.h"
 
 // Fixed point, 32bit as 16.16.
-#define FRACBITS			16
-#define FRACUNIT			(1<<FRACBITS)
-#define FIXED2DOUBLE(x)		(x / (double)FRACUNIT)
+constexpr size_t FRACBITS{16};
+constexpr size_t FRACUNIT{(1<<FRACBITS)};
+
+#define FIXED2DOUBLE(x) (x / (double)FRACUNIT)
 
 using fixed_t = int;
 // TODO FIX THE DISGUSTING USE OF SHIFTS TO SIMULATE FLOATING POINT AND INSTEAD USE FLOATING POINT; this isn't the 1990's

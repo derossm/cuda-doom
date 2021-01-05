@@ -27,16 +27,16 @@ static const int doom2_par_times[]{
 };
 
 /* Player colors. */
-static const char* player_colors[]{
+static std::string player_colors[]{
 	"Green", "Indigo", "Brown", "Red"
 };
 
 // Array of end-of-level statistics that have been captured.
-#define MAX_CAPTURES 32
+constexpr size_t MAX_CAPTURES{32};
 static wbstartstruct_t captured_stats[MAX_CAPTURES];
 static int num_captured_stats = 0;
 
-static GameMission_t discovered_gamemission = GameMission_t::none;
+static GameMission discovered_gamemission = GameMission::none;
 
 /* Try to work out whether this is a Doom 1 or Doom 2 game, by looking
  * at the episode and map, and the par times. This is used to decide
@@ -48,7 +48,7 @@ static void DiscoverGamemode(const wbstartstruct_t* stats, int num_stats)
 	int level;
 	int i;
 
-	if (discovered_gamemission != GameMission_t::none)
+	if (discovered_gamemission != GameMission::none)
 	{
 		return;
 	}
@@ -60,14 +60,14 @@ static void DiscoverGamemode(const wbstartstruct_t* stats, int num_stats)
 		/* If episode 2, 3 or 4, this is Doom 1. */
 		if (stats[i].epsd > 0)
 		{
-			discovered_gamemission = GameMission_t::doom;
+			discovered_gamemission = GameMission::doom;
 			return;
 		}
 
 		/* This is episode 1. If this is level 10 or higher, it must be Doom 2. */
 		if (level >= 9)
 		{
-			discovered_gamemission = GameMission_t::doom2;
+			discovered_gamemission = GameMission::doom2;
 			return;
 		}
 
@@ -77,14 +77,14 @@ static void DiscoverGamemode(const wbstartstruct_t* stats, int num_stats)
 		if (partime == doom1_par_times[level] * TICRATE
 			&& partime != doom2_par_times[level] * TICRATE)
 		{
-			discovered_gamemission = GameMission_t::doom;
+			discovered_gamemission = GameMission::doom;
 			return;
 		}
 
 		if (partime != doom1_par_times[level] * TICRATE
 			&& partime == doom2_par_times[level] * TICRATE)
 		{
-			discovered_gamemission = GameMission_t::doom2;
+			discovered_gamemission = GameMission::doom2;
 			return;
 		}
 	}
@@ -200,7 +200,7 @@ static void PrintFragsTable(FILE* stream, const wbstartstruct_t* stats)
 	}
 
 	fprintf(stream, "\t\t|\n");
-	fprintf(stream, "\t		KILLERS\n");
+	fprintf(stream, "\t\t\tKILLERS\n");
 }
 
 /* Displays the level name: MAPxy or ExMy, depending on game mode. */
@@ -211,14 +211,14 @@ static void PrintLevelName(FILE* stream, int episode, int level)
 	switch (discovered_gamemission)
 	{
 
-		case doom:
+		case GameMission::doom:
 			fprintf(stream, "E%iM%i\n", episode + 1, level + 1);
 			break;
-		case doom2:
+		case GameMission::doom2:
 			fprintf(stream, "MAP%02i\n", level + 1);
 			break;
 		default:
-		case none:
+		case GameMission::none:
 			fprintf(stream, "E%iM%i / MAP%02i\n",
 					episode + 1, level + 1, level + 1);
 			break;

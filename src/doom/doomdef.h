@@ -23,12 +23,12 @@
 // Difficulty/skill settings/filters.
 
 // Skill flags.
-#define MTF_EASY		1
-#define MTF_NORMAL		2
-#define MTF_HARD		4
+constexpr size_t MTF_EASY{1};
+constexpr size_t MTF_NORMAL{2};
+constexpr size_t MTF_HARD{4};
 
 // Deaf monsters/do not react to sound.
-#define MTF_AMBUSH		8
+constexpr size_t MTF_AMBUSH{8};
 
 // DOOM version
 constexpr size_t DOOM_VERSION{109};
@@ -66,7 +66,7 @@ enum class GameAction_t
 };
 
 // Key cards.
-enum class CardType_t
+enum class CardType
 {
 	it_bluecard,
 	it_yellowcard,
@@ -79,7 +79,7 @@ enum class CardType_t
 };
 
 // The defined weapons, including a marker indicating user has not changed weapon.
-enum class WeaponType_t
+enum class WeaponType
 {
 	wp_fist,
 	wp_pistol,
@@ -98,7 +98,7 @@ enum class WeaponType_t
 };
 
 // Ammunition types defined.
-enum class AmmoType_t
+enum class AmmoType
 {
 	am_clip,	// Pistol / chaingun ammo.
 	am_shell,	// Shotgun / double barreled shotgun.

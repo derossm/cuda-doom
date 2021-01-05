@@ -24,16 +24,16 @@
 struct wadinfo_t
 {
 	// Should be "IWAD" or "PWAD".
-	char		identification[4];
-	int			numlumps;
-	int			infotableofs;
+	char identification[4];
+	int numlumps;
+	int infotableofs;
 };
 
 struct filelump_t
 {
-	int			filepos;
-	int			size;
-	char		name[8];
+	int filepos;
+	int size;
+	char name[8];
 };
 
 // Location of each lump on disk.
@@ -48,11 +48,11 @@ static lumpindex_t* lumphash;
 // load the file again.
 static wad_file_t* reloadhandle = nullptr;
 static lumpinfo_t* reloadlumps = nullptr;
-static char* reloadname = nullptr;
+std::string reloadname = nullptr;
 static int reloadlump = -1;
 
 // Hash function used for lump names.
-unsigned W_LumpNameHash(const char* s)
+unsigned W_LumpNameHash(std::string s)
 {
 	// This is the djb2 string hash function, modded to work on strings that have a maximum length of 8.
 	unsigned result = 5381;
@@ -68,7 +68,7 @@ unsigned W_LumpNameHash(const char* s)
 // All files are optional, but at least one file must be found (PWAD, if all required lumps are present).
 // Files with a .wad extension are wadlink files with multiple lumps.
 // Other files are single lumps with the base filename for the lump name.
-wad_file_t* W_AddFile (const char* filename)
+wad_file_t* W_AddFile (std::string filename)
 {
 	wadinfo_t header;
 	lumpindex_t i;
@@ -103,7 +103,7 @@ wad_file_t* W_AddFile (const char* filename)
 		return nullptr;
 	}
 
-	if (strcasecmp(filename+strlen(filename)-3, "wad"))
+	if (iequals(filename+strlen(filename)-3, "wad"))
 	{
 		// single lump file
 
@@ -111,12 +111,12 @@ wad_file_t* W_AddFile (const char* filename)
 		// parsing code expects a little-endian directory, so will swap
 		// them back. Effectively we're constructing a "fake WAD directory"
 		// here, as it would appear on disk.
-		fileinfo = Z_Malloc<filelump_t>(sizeof(filelump_t), pu_tags_t::PU_STATIC, 0);
+		fileinfo = Z_Malloc<filelump_t*>(sizeof(filelump_t), pu_tags_t::PU_STATIC, 0);
 		fileinfo->filepos = LONG(0);
 		fileinfo->size = LONG(wad_file->length);
 
 		// Name the lump after the base of the filename (without the extension).
-		M_ExtractFileBase (filename, fileinfo->name);
+		M_ExtractFileBase(filename, fileinfo->name);
 		numfilelumps = 1;
 	}
 	else
@@ -205,7 +205,7 @@ int W_NumLumps()
 }
 
 // Returns -1 if name not found.
-lumpindex_t W_CheckNumForName(const char* name)
+lumpindex_t W_CheckNumForName(std::string name)
 {
 	// Do we have a hash table yet?
 	if (lumphash != NULL)
@@ -240,7 +240,7 @@ lumpindex_t W_CheckNumForName(const char* name)
 }
 
 // Calls W_CheckNumForName, but bombs out if not found.
-lumpindex_t W_GetNumForName(const char* name)
+lumpindex_t W_GetNumForName(std::string name)
 {
 	lumpindex_t i = W_CheckNumForName(name);
 
@@ -252,7 +252,7 @@ lumpindex_t W_GetNumForName(const char* name)
 	return i;
 }
 
-lumpindex_t W_CheckNumForNameFromTo(const char* name, int from, int to)
+lumpindex_t W_CheckNumForNameFromTo(std::string name, int from, int to)
 {
 	for (lumpindex_t i = from; i >= to; --i)
 	{
@@ -296,54 +296,6 @@ void W_ReadLump(lumpindex_t lump, void* dest)
 	}
 }
 
-// Load a lump into memory and return a pointer to a buffer containing
-// the lump data.
-//
-// 'tag' is the type of zone memory buffer to allocate for the lump
-// (usually pu_tags_t::PU_STATIC or pu_tags_t::PU_CACHE). If the lump is loaded as
-// pu_tags_t::PU_STATIC, it should be released back using W_ReleaseLumpNum
-// when no longer needed (do not use Z_ChangeTag).
-void* W_CacheLumpNum(lumpindex_t lumpnum, pu_tags_t tag)
-{
-	if ((unsigned)lumpnum >= numlumps)
-	{
-		I_Error("W_CacheLumpNum: %i >= numlumps", lumpnum);
-	}
-
-	auto lump = lumpinfo[lumpnum];
-
-	byte* result;
-	// Get the pointer to return. If the lump is in a memory-mapped
-	// file, we can just return a pointer to within the memory-mapped
-	// region. If the lump is in an ordinary file, we may already
-	// have it cached; otherwise, load it into memory.
-	if (lump->wad_file->mapped != NULL)
-	{
-		// Memory mapped file, return from the mmapped region.
-		result = static_cast<decltype(result)>(lump->wad_file->mapped + lump->position);
-	}
-	else if (lump->cache != NULL)
-	{
-		// Already cached, so just switch the zone tag.
-		result = static_cast<decltype(result)>(lump->cache);
-		Z_ChangeTag(lump->cache, tag);
-	}
-	else
-	{
-		// Not yet loaded, so load it now
-		lump->cache = Z_Malloc<decltype(lump->cache)>(W_LumpLength(lumpnum), tag, &lump->cache);
-		W_ReadLump (lumpnum, lump->cache);
-		result = static_cast<decltype(result)>(lump->cache);
-	}
-
-	return result;
-}
-
-void* W_CacheLumpName(const char* name, pu_tags_t tag)
-{
-	return W_CacheLumpNum(W_GetNumForName(name), tag);
-}
-
 // Release a lump back to the cache, so that it can be reused later
 // without having to read from disk again, or alternatively, discarded
 // if we run out of memory.
@@ -372,7 +324,7 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum)
 	}
 }
 
-void W_ReleaseLumpName(const char* name)
+void W_ReleaseLumpName(std::string name)
 {
 	W_ReleaseLumpNum(W_GetNumForName(name));
 }
@@ -520,7 +472,7 @@ void W_Reload()
 	W_GenerateHashTable();
 }
 
-const char* W_WadNameForLump(const lumpinfo_t* lump)
+std::string W_WadNameForLump(const lumpinfo_t* lump)
 {
 	return M_BaseName(lump->wad_file->path);
 }
@@ -531,7 +483,7 @@ bool W_IsIWADLump(const lumpinfo_t* lump)
 }
 
 // [crispy] dump lump data into a new LMP file
-lumpindex_t W_LumpDump (const char* lumpname)
+lumpindex_t W_LumpDump (std::string lumpname)
 {
 	auto i = W_CheckNumForName(lumpname);
 
@@ -541,12 +493,12 @@ lumpindex_t W_LumpDump (const char* lumpname)
 	}
 
 	// [crispy] open file for writing
-	auto filename = M_StringJoin(lumpname, ".lmp", NULL);
+	auto filename = std::string(lumpname + ".lmp");
 	//M_ForceLowercase(filename); TODO workaround
-	auto fp = fopen(*filename, "wb");
+	auto fp = fopen(filename, "wb");
 	if (!fp)
 	{
-		I_Error("W_LumpDump: Failed writing to file '%s'!", *filename);
+		I_Error("W_LumpDump: Failed writing to file '%s'!", filename);
 	}
 
 	auto lump_p = (char*)malloc(lumpinfo[i]->size);

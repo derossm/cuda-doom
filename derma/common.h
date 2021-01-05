@@ -15,7 +15,7 @@
 #include "cpp_headers.h"
 #include "namespace_forwards.h"
 #include "deprecating_tools.h"
-#include "d_windows.h"
+//#include "d_windows.h"
 
 class DepType;
 using txt_inputbox_t = cudadoom::txt::InputBox<DepType>;
@@ -23,3 +23,14 @@ using txt_inputbox_t = cudadoom::txt::InputBox<DepType>;
 using byte = uint8_t;
 
 using TimeType = uint64_t;
+
+using CHAR_PTR = const char*;
+
+bool iequals(const std::string& lhs, const std::string& rhs)
+{
+	return std::equal(lhs.begin(), lhs.end(), rhs.begin(),
+		[](char l, char r)
+		{
+			return tolower(l) == tolower(r);
+		});
+}

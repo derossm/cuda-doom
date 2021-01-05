@@ -28,11 +28,11 @@ struct txt_cliparea_t
 	txt_cliparea_t* next;
 };
 
-void DrawDesktopBackground(const char* title);
-void DrawWindowFrame(const char* title, int x, int y, int w, int h);
+void DrawDesktopBackground(std::string title);
+void DrawWindowFrame(std::string title, int x, int y, int w, int h);
 void DrawSeparator(int x, int y, int w);
-void DrawCodePageString(const char* s);
-void DrawString(const char* s);
+void DrawCodePageString(std::string s);
+void DrawString(std::string s);
 int CanDrawCharacter(unsigned c);
 
 void DrawHorizScrollbar(int x, int y, int w, int cursor, int range);

@@ -20,10 +20,10 @@
 #include "memio.h"
 #include "mus2mid.h"
 
-#define NUM_CHANNELS 16
+constexpr size_t NUM_CHANNELS{16};
 
-#define MIDI_PERCUSSION_CHAN 9
-#define MUS_PERCUSSION_CHAN 15
+constexpr size_t MIDI_PERCUSSION_CHAN{9};
+constexpr size_t MUS_PERCUSSION_CHAN{15};
 
 // MUS event codes
 enum class musevent
@@ -151,10 +151,9 @@ static bool WriteEndTrack(MEMFILE* midioutput)
 }
 
 // Write a key press event
-static bool WritePressKey(byte channel, byte key,
-								byte velocity, MEMFILE* midioutput)
+static bool WritePressKey(byte channel, byte key, byte velocity, MEMFILE* midioutput)
 {
-	byte working = midi_presskey | channel;
+	byte working = (int)midievent::midi_presskey | channel;
 
 	if (WriteTime(queuedtime, midioutput))
 	{
@@ -186,10 +185,9 @@ static bool WritePressKey(byte channel, byte key,
 }
 
 // Write a key release event
-static bool WriteReleaseKey(byte channel, byte key,
-								MEMFILE* midioutput)
+static bool WriteReleaseKey(byte channel, byte key, MEMFILE* midioutput)
 {
-	byte working = midi_releasekey | channel;
+	byte working = (int)midievent::midi_releasekey | channel;
 
 	if (WriteTime(queuedtime, midioutput))
 	{
@@ -221,10 +219,9 @@ static bool WriteReleaseKey(byte channel, byte key,
 }
 
 // Write a pitch wheel/bend event
-static bool WritePitchWheel(byte channel, short wheel,
-								MEMFILE* midioutput)
+static bool WritePitchWheel(byte channel, short wheel, MEMFILE* midioutput)
 {
-	byte working = midi_pitchwheel | channel;
+	byte working = (int)midievent::midi_pitchwheel | channel;
 
 	if (WriteTime(queuedtime, midioutput))
 	{
@@ -255,10 +252,9 @@ static bool WritePitchWheel(byte channel, short wheel,
 }
 
 // Write a patch change event
-static bool WriteChangePatch(byte channel, byte patch,
-								MEMFILE* midioutput)
+static bool WriteChangePatch(byte channel, byte patch, MEMFILE* midioutput)
 {
-	byte working = midi_changepatch | channel;
+	byte working = (int)midievent::midi_changepatch | channel;
 
 	if (WriteTime(queuedtime, midioutput))
 	{
@@ -284,12 +280,9 @@ static bool WriteChangePatch(byte channel, byte patch,
 
 // Write a valued controller change event
 
-static bool WriteChangeController_Valued(byte channel,
-											byte control,
-											byte value,
-											MEMFILE* midioutput)
+static bool WriteChangeController_Valued(byte channel, byte control, byte value, MEMFILE* midioutput)
 {
-	byte working = midi_changecontroller | channel;
+	byte working = (int)midievent::midi_changecontroller | channel;
 
 	if (WriteTime(queuedtime, midioutput))
 	{
@@ -332,16 +325,12 @@ static bool WriteChangeController_Valued(byte channel,
 }
 
 // Write a valueless controller change event
-static bool WriteChangeController_Valueless(byte channel,
-												byte control,
-												MEMFILE* midioutput)
+static bool WriteChangeController_Valueless(byte channel, byte control, MEMFILE* midioutput)
 {
-	return WriteChangeController_Valued(channel, control, 0,
-												midioutput);
+	return WriteChangeController_Valued(channel, control, 0, midioutput);
 }
 
 // Allocate a free MIDI channel.
-
 static int AllocateMIDIChannel()
 {
 	int result;
@@ -349,10 +338,9 @@ static int AllocateMIDIChannel()
 	int i;
 
 	// Find the current highest-allocated channel.
-
 	max = -1;
 
-	for (i=0; i<NUM_CHANNELS; ++i)
+	for (i=0; i < NUM_CHANNELS; ++i)
 	{
 		if (channel_map[i] > max)
 		{
@@ -376,23 +364,17 @@ static int AllocateMIDIChannel()
 	return result;
 }
 
-// Given a MUS channel number, get the MIDI channel number to use
-// in the outputted file.
-
-static int GetMIDIChannel(int mus_channel, MEMFILE* midioutput)
+// Given a MUS channel number, get the MIDI channel number to use in the outputted file.
+static int GetMIDIChannel(int musicenum_t::mus_channel, MEMFILE* midioutput)
 {
-	// Find the MIDI channel to use for this MUS channel.
-	// MUS channel 15 is the percusssion channel.
-
+	// Find the MIDI channel to use for this MUS channel. MUS channel 15 is the percusssion channel.
 	if (mus_channel == MUS_PERCUSSION_CHAN)
 	{
 		return MIDI_PERCUSSION_CHAN;
 	}
 	else
 	{
-		// If a MIDI channel hasn't been allocated for this MUS channel
-		// yet, allocate the next free MIDI channel.
-
+		// If a MIDI channel hasn't been allocated for this MUS channel yet, allocate the next free MIDI channel.
 		if (channel_map[mus_channel] == -1)
 		{
 			channel_map[mus_channel] = AllocateMIDIChannel();
@@ -400,8 +382,7 @@ static int GetMIDIChannel(int mus_channel, MEMFILE* midioutput)
 			// First time using the channel, send an "all notes off"
 			// event. This fixes "The D_DDTBLU disease" described here:
 			// https://www.doomworld.com/vb/source-ports/66802-the
-			WriteChangeController_Valueless(channel_map[mus_channel], 0x7b,
-											midioutput);
+			WriteChangeController_Valueless(channel_map[mus_channel], 0x7b, midioutput);
 		}
 
 		return channel_map[mus_channel];
@@ -431,12 +412,8 @@ static bool ReadMusHeader(MEMFILE* file, musheader *header)
 	return result;
 }
 
-
-// Read a MUS file from a stream (musinput) and output a MIDI file to
-// a stream (midioutput).
-//
+// Read a MUS file from a stream (musinput) and output a MIDI file to a stream (midioutput).
 // Returns 0 on success or 1 on failure.
-
 bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 {
 	// Header for the MUS file
@@ -466,7 +443,7 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 
 	// Initialise channel map to mark all channels as unused.
 
-	for (channel=0; channel<NUM_CHANNELS; ++channel)
+	for (channel=0; channel < NUM_CHANNELS; ++channel)
 	{
 		channel_map[channel] = -1;
 	}
@@ -492,15 +469,12 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 #endif
 
 	// Seek to where the data is held
-	if (mem_fseek(musinput, (long)musfileheader.scorestart,
-					MEM_SEEK_SET) != 0)
+	if (mem_fseek(musinput, (long)musfileheader.scorestart, mem_rel_t::MEM_SEEK_SET) != 0)
 	{
 		return true;
 	}
 
-	// So, we can assume the MUS file is faintly legit. Let's start
-	// writing MIDI data...
-
+	// So, we can assume the MUS file is faintly legit. Let's start writing MIDI data...
 	mem_fwrite(midiheader, 1, sizeof(midiheader), midioutput);
 	tracksize = 0;
 
@@ -508,22 +482,20 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 	while (!hitscoreend)
 	{
 		// Handle a block of events:
-
 		while (!hitscoreend)
 		{
 			// Fetch channel number and event code:
-
 			if (mem_fread(&eventdescriptor, 1, 1, musinput) != 1)
 			{
 				return true;
 			}
 
 			channel = GetMIDIChannel(eventdescriptor & 0x0F, midioutput);
-			event = eventdescriptor & 0x70;
+			event = musevent(eventdescriptor & 0x70);
 
 			switch (event)
 			{
-				case mus_releasekey:
+				case musevent::mus_releasekey:
 					if (mem_fread(&key, 1, 1, musinput) != 1)
 					{
 						return true;
@@ -536,7 +508,7 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 
 					break;
 
-				case mus_presskey:
+				case musevent::mus_presskey:
 					if (mem_fread(&key, 1, 1, musinput) != 1)
 					{
 						return true;
@@ -552,15 +524,14 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 						channelvelocities[channel] &= 0x7F;
 					}
 
-					if (WritePressKey(channel, key,
-										channelvelocities[channel], midioutput))
+					if (WritePressKey(channel, key, channelvelocities[channel], midioutput))
 					{
 						return true;
 					}
 
 					break;
 
-				case mus_pitchwheel:
+				case musevent::mus_pitchwheel:
 					if (mem_fread(&key, 1, 1, musinput) != 1)
 					{
 						break;
@@ -572,7 +543,7 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 
 					break;
 
-				case mus_systemevent:
+				case musevent::mus_systemevent:
 					if (mem_fread(&controllernumber, 1, 1, musinput) != 1)
 					{
 						return true;
@@ -591,7 +562,7 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 
 					break;
 
-				case mus_changecontroller:
+				case musevent::mus_changecontroller:
 					if (mem_fread(&controllernumber, 1, 1, musinput) != 1)
 					{
 						return true;
@@ -604,8 +575,7 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 
 					if (controllernumber == 0)
 					{
-						if (WriteChangePatch(channel, controllervalue,
-												midioutput))
+						if (WriteChangePatch(channel, controllervalue, midioutput))
 						{
 							return true;
 						}
@@ -628,7 +598,7 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 
 					break;
 
-				case mus_scoreend:
+				case musevent::mus_scoreend:
 					hitscoreend = 1;
 					break;
 
@@ -670,7 +640,7 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 	}
 
 	// Write the track size into the stream
-	if (mem_fseek(midioutput, 18, MEM_SEEK_SET))
+	if (mem_fseek(midioutput, 18, mem_rel_t::MEM_SEEK_SET))
 	{
 		return true;
 	}
@@ -730,4 +700,3 @@ int main(int argc, char* argv[])
 }
 
 #endif
-

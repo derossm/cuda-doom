@@ -9,9 +9,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Player related stuff.
-//	Bobbing POV/weapon, movement.
-//	Pending weapon.
+		Player related stuff. Bobbing POV/weapon, movement. Pending weapon.
 \**********************************************************************************************************************************************/
 
 #include "doomdef.h"
@@ -22,151 +20,143 @@
 #include "doomstat.h"
 
 // Index of the special effects (INVUL inverse) map.
-#define INVERSECOLORMAP		32
+constexpr size_t INVERSECOLORMAP{32};
 
 //
 // Movement.
 //
 
 // 16 pixels of bob
-#define MAXBOB	0x100000
+constexpr size_t MAXBOB{0x100000};
 
-// [crispy] variable player view bob
+// variable player view bob
 static const fixed_t crispy_bobfactor[3] = {4, 3, 0};
 
-bool		onground;
+bool onground;
 
-
-//
-// P_Thrust
 // Moves the given origin along a given angle.
-//
 void P_Thrust(Player* player, angle_t angle, fixed_t move)
 {
 	angle >>= ANGLETOFINESHIFT;
 
-	player->mo->momx += FixedMul(move,finecosine[angle]);
-	player->mo->momy += FixedMul(move,finesine[angle]);
+	player->momx += FixedMul(move,finecosine[angle]);
+	player->momy += FixedMul(move,finesine[angle]);
 }
 
-
-
-
-//
-// P_CalcHeight
 // Calculate the walking / running height adjustment
-//
-void P_CalcHeight (Player* player)
+void P_CalcHeight(Player* player)
 {
-	int		angle;
-	fixed_t	bob;
+	int angle;
+	fixed_t bob;
 
-	// Regular movement bobbing
-	// (needs to be calculated for gun swing
-	// even if not on ground)
-	// OPTIMIZE: tablify angle
-	// Note: a LUT allows for effects
-	// like a ramp with low health.
-	player->bob =
-	FixedMul(player->mo->momx, player->mo->momx)
-	+ FixedMul(player->mo->momy,player->mo->momy);
+	// Regular movement bobbing (needs to be calculated for gun swing even if not on ground)
+	// OPTIMIZE: tablify angle Note: a LUT allows for effects like a ramp with low health.
+	player->bob = FixedMul(player->momx, player->momx) + FixedMul(player->momy,player->momy);
 
 	player->bob >>= 2;
 
 	if (player->bob>MAXBOB)
-	player->bob = MAXBOB;
+	{
+		player->bob = MAXBOB;
+	}
 
-	// [crispy] variable player view bob
+	// variable player view bob
 	player->bob2 = crispy_bobfactor[crispy->bobfactor] * player->bob / 4;
 
-	if ((player->cheats & CF_NOMOMENTUM) || !onground)
+	if ((player->cheats & CheatType::CF_NOMOMENTUM) || !onground)
 	{
-	player->viewz = player->mo->z + VIEWHEIGHT;
+		player->viewz = player->z + VIEWHEIGHT;
 
-	if (player->viewz > player->mo->ceilingz-4*FRACUNIT)
-		player->viewz = player->mo->ceilingz-4*FRACUNIT;
+		if (player->viewz > player->ceilingz-4*FRACUNIT)
+		{
+			player->viewz = player->ceilingz-4*FRACUNIT;
+		}
 
-	// [crispy] fix player viewheight in NOMOMENTUM mode
-	//player->viewz = player->mo->z + player->viewheight;
-	return;
+		// fix player viewheight in NOMOMENTUM mode
+		//player->viewz = player->z + player->viewheight;
+		return;
 	}
 
 	angle = (FINEANGLES/20*leveltime)&FINEMASK;
-	bob = FixedMul( player->bob2/2, finesine[angle]); // [crispy] variable player view bob
-
+	bob = FixedMul(player->bob2/2, finesine[angle]); // variable player view bob
 
 	// move viewheight
-	if (player->playerstate == PST_LIVE)
+	if (player->playerstate == PlayerState::live)
 	{
-	player->viewheight += player->deltaviewheight;
+		player->viewheight += player->deltaviewheight;
 
-	if (player->viewheight > VIEWHEIGHT)
+		if (player->viewheight > VIEWHEIGHT)
+		{
+			player->viewheight = VIEWHEIGHT;
+			player->deltaviewheight = 0;
+		}
+
+		if (player->viewheight < VIEWHEIGHT/2)
+		{
+			player->viewheight = VIEWHEIGHT/2;
+			if (player->deltaviewheight <= 0)
+			{
+				player->deltaviewheight = 1;
+			}
+		}
+
+		if (player->deltaviewheight)
+		{
+			player->deltaviewheight += FRACUNIT/4;
+			if (!player->deltaviewheight)
+			{
+				player->deltaviewheight = 1;
+			}
+		}
+	}
+	player->viewz = player->z + player->viewheight + bob;
+
+	if (player->viewz > player->ceilingz-4*FRACUNIT)
 	{
-		player->viewheight = VIEWHEIGHT;
-		player->deltaviewheight = 0;
+		player->viewz = player->ceilingz-4*FRACUNIT;
 	}
-
-	if (player->viewheight < VIEWHEIGHT/2)
-	{
-		player->viewheight = VIEWHEIGHT/2;
-		if (player->deltaviewheight <= 0)
-		player->deltaviewheight = 1;
-	}
-
-	if (player->deltaviewheight)
-	{
-		player->deltaviewheight += FRACUNIT/4;
-		if (!player->deltaviewheight)
-		player->deltaviewheight = 1;
-	}
-	}
-	player->viewz = player->mo->z + player->viewheight + bob;
-
-	if (player->viewz > player->mo->ceilingz-4*FRACUNIT)
-	player->viewz = player->mo->ceilingz-4*FRACUNIT;
 }
 
-
-
-//
-// P_MovePlayer
-//
-void P_MovePlayer (Player* player)
+void P_MovePlayer(Player* player)
 {
-	ticcmd_t*		cmd;
-	int		look;
+	ticcmd_t* cmd;
+	int look;
 
 	cmd = &player->cmd;
 
-	player->mo->angle += (cmd->angleturn<<FRACBITS);
+	player->angle += (cmd->angleturn<<FRACBITS);
 
-	// Do not let the player control movement
-	// if not onground.
-	onground = (player->mo->z <= player->mo->floorz);
-	// [crispy] give full control in no-clipping mode
-	onground |= (player->mo->flags & MF_NOCLIP);
+	// Do not let the player control movement if not onground.
+	onground = (player->z <= player->floorz);
+	// give full control in no-clipping mode
+	onground |= (player->flags & mobjflag_t::MF_NOCLIP);
 
 	if (cmd->forwardmove && onground)
-	P_Thrust (player, player->mo->angle, cmd->forwardmove*2048);
-	else
-	// [crispy] in-air movement is only possible with jumping enabled
-	if (cmd->forwardmove && critical->jump)
-		P_Thrust (player, player->mo->angle, FRACUNIT >> 8);
-
-	if (cmd->sidemove && onground)
-	P_Thrust (player, player->mo->angle-ANG90, cmd->sidemove*2048);
-	else
-	// [crispy] in-air movement is only possible with jumping enabled
-	if (cmd->sidemove && critical->jump)
-			P_Thrust(player, player->mo->angle, FRACUNIT >> 8);
-
-	if ( (cmd->forwardmove || cmd->sidemove)
-		&& player->mo->state == &states[S_PLAY] )
 	{
-	P_SetMobjState (player->mo, S_PLAY_RUN1);
+		P_Thrust (player, player->angle, cmd->forwardmove*2048);
+	}
+	else if (cmd->forwardmove && critical->jump)
+	{
+		// in-air movement is only possible with jumping enabled
+		P_Thrust (player, player->angle, FRACUNIT >> 8);
 	}
 
-	// [crispy] apply lookdir delta
+	if (cmd->sidemove && onground)
+	{
+		P_Thrust (player, player->angle-ANG90, cmd->sidemove*2048);
+	}
+	else if (cmd->sidemove && critical->jump)
+	{
+		// in-air movement is only possible with jumping enabled
+		P_Thrust(player, player->angle, FRACUNIT >> 8);
+	}
+
+	if ( (cmd->forwardmove || cmd->sidemove) && player->state == &states[std::size_t(statenum_t::S_PLAY)] )
+	{
+		P_SetMobjState (player, statenum_t::S_PLAY_RUN1);
+	}
+
+	// apply lookdir delta
 	look = cmd->lookfly & 15;
 	if (look > 7)
 	{
@@ -185,117 +175,116 @@ void P_MovePlayer (Player* player)
 	}
 	if (!menuactive && !demoplayback)
 	{
-	player->lookdir = BETWEEN(-LOOKDIRMIN * MLOOKUNIT,
-								LOOKDIRMAX * MLOOKUNIT,
-								player->lookdir + cmd->lookdir);
+		player->lookdir = BETWEEN(-LOOKDIRMIN * MLOOKUNIT, LOOKDIRMAX * MLOOKUNIT, player->lookdir + cmd->lookdir);
 	}
 }
 
+// Fall on your face when dying. Decrease POV height to floor height.
+constexpr size_t ANG5{(ANG90/18)};
 
-
-//
-// P_DeathThink
-// Fall on your face when dying.
-// Decrease POV height to floor height.
-//
-#define ANG5		(ANG90/18)
-
-void P_DeathThink (Player* player)
+void P_DeathThink(Player* player)
 {
-	angle_t		angle;
-	angle_t		delta;
+	angle_t angle;
+	angle_t delta;
 
 	P_MovePsprites (player);
 
 	// fall to the ground
 	if (player->viewheight > 6*FRACUNIT)
-	player->viewheight -= FRACUNIT;
+	{
+		player->viewheight -= FRACUNIT;
+	}
 
 	if (player->viewheight < 6*FRACUNIT)
-	player->viewheight = 6*FRACUNIT;
+	{
+		player->viewheight = 6*FRACUNIT;
+	}
 
 	player->deltaviewheight = 0;
-	onground = (player->mo->z <= player->mo->floorz);
+	onground = (player->z <= player->floorz);
 	P_CalcHeight (player);
 
-	if (player->attacker && player->attacker != player->mo)
+	if (player->attacker && player->attacker != player)
 	{
-	angle = R_PointToAngle2 (player->mo->x,
-					player->mo->y,
-					player->attacker->x,
-					player->attacker->y);
+		angle = R_PointToAngle2 (player->x, player->y, player->attacker->x, player->attacker->y);
 
-	delta = angle - player->mo->angle;
+		delta = angle - player->angle;
 
-	if (delta < ANG5 || delta > (unsigned)-ANG5)
-	{
-		// Looking at killer,
-		// so fade damage flash down.
-		player->mo->angle = angle;
+		if (delta < ANG5 || delta > (unsigned)-ANG5)
+		{
+			// Looking at killer, so fade damage flash down.
+			player->angle = angle;
 
-		if (player->damagecount)
-		player->damagecount--;
-	}
-	else if (delta < ANG180)
-		player->mo->angle += ANG5;
-	else
-		player->mo->angle -= ANG5;
+			if (player->damagecount)
+			{
+				player->damagecount--;
+			}
+		}
+		else if (delta < ANG180)
+		{
+			player->angle += ANG5;
+		}
+		else
+		{
+			player->angle -= ANG5;
+		}
 	}
 	else if (player->damagecount)
-	player->damagecount--;
+	{
+		player->damagecount--;
+	}
 
-
-	if (player->cmd.buttons & BT_USE)
-	player->playerstate = PST_REBORN;
+	if (player->cmd.buttons & buttoncode::BT_USE)
+	{
+		player->playerstate = PlayerState::reborn;
+	}
 }
 
-
-
-//
-// P_PlayerThink
-//
 void P_PlayerThink (Player* player)
 {
-	ticcmd_t*		cmd;
-	WeaponType_t	newweapon;
+	ticcmd_t* cmd;
+	WeaponType newweapon;
 
-	// [AM] Assume we can interpolate at the beginning
-	//		of the tic.
-	player->mo->interp = true;
+	// Assume we can interpolate at the beginning of the tic.
+	player->interp = true;
 
-	// [AM] Store starting position for player interpolation.
-	player->mo->oldx = player->mo->x;
-	player->mo->oldy = player->mo->y;
-	player->mo->oldz = player->mo->z;
-	player->mo->oldangle = player->mo->angle;
+	// Store starting position for player interpolation.
+	player->oldx = player->x;
+	player->oldy = player->y;
+	player->oldz = player->z;
+	player->oldangle = player->angle;
 	player->oldviewz = player->viewz;
 	player->oldlookdir = player->lookdir;
 	player->oldrecoilpitch = player->recoilpitch;
 
-	// [crispy] update weapon sound source coordinates
-	if (player->so != player->mo)
+	// update weapon sound source coordinates
+	if (player->so != player)
 	{
-	memcpy(player->so, player->mo, sizeof(degenmobj_t));
+		memcpy(player->so, player, sizeof(degenmobj_t));
 	}
 
 	// fixme: do this in the cheat code
-	if (player->cheats & CF_NOCLIP)
-	player->mo->flags |= MF_NOCLIP;
+	if (player->cheats & CheatType::CF_NOCLIP)
+	{
+		player->flags |= mobjflag_t::MF_NOCLIP;
+	}
 	else
-	player->mo->flags &= ~MF_NOCLIP;
+	{
+		player->flags &= ~mobjflag_t::MF_NOCLIP;
+	}
 
 	// chain saw run forward
 	cmd = &player->cmd;
-	if (player->mo->flags & MF_JUSTATTACKED)
+	if (player->flags & mobjflag_t::MF_JUSTATTACKED)
 	{
-	cmd->angleturn = 0;
-	cmd->forwardmove = 0xc800/512;
-	cmd->sidemove = 0;
-	player->mo->flags &= ~MF_JUSTATTACKED;
+		cmd->angleturn = 0;
+		cmd->forwardmove = 0xc800/512;
+		cmd->sidemove = 0;
+		player->flags &= ~mobjflag_t::MF_JUSTATTACKED;
 	}
 
 
-	// [crispy] center view
+	// center view
 	// e.g. after teleporting, dying, jumping and on demand
 	if (player->centering)
 	{
@@ -307,6 +296,7 @@ void P_PlayerThink (Player* player)
 		{
 			player->lookdir += 8 * MLOOKUNIT;
 		}
+
 		if (abs(player->lookdir) < 8 * MLOOKUNIT)
 		{
 			player->lookdir = 0;
@@ -314,7 +304,7 @@ void P_PlayerThink (Player* player)
 		}
 	}
 
-	// [crispy] weapon recoil pitch
+	// weapon recoil pitch
 	if (player->recoilpitch)
 	{
 		if (player->recoilpitch > 0)
@@ -327,46 +317,48 @@ void P_PlayerThink (Player* player)
 		}
 	}
 
-	if (player->playerstate == PST_DEAD)
+	if (player->playerstate == PlayerState::dead)
 	{
-	P_DeathThink (player);
-	return;
+		P_DeathThink (player);
+		return;
 	}
 
-	// [crispy] negative player health
+	// negative player health
 	player->neghealth = player->health;
 
-	// [crispy] delay next possible jump
+	// delay next possible jump
 	if (player->jumpTics)
 	{
 		player->jumpTics--;
 	}
 
-	// Move around.
-	// Reactiontime is used to prevent movement
-	// for a bit after a teleport.
-	if (player->mo->reactiontime)
-	player->mo->reactiontime--;
+	// Move around. Reactiontime is used to prevent movement for a bit after a teleport.
+	if (player->reactiontime)
+	{
+		player->reactiontime--;
+	}
 	else
-	P_MovePlayer (player);
+	{
+		P_MovePlayer (player);
+	}
 
 	P_CalcHeight (player);
 
-	if (player->mo->subsector->sector->special)
+	if (player->subsector->sector->special)
 	P_PlayerInSpecialSector (player);
 
-	// [crispy] jumping: apply vertical momentum
+	// jumping: apply vertical momentum
 	if (cmd->arti)
 	{
 		if ((cmd->arti & AFLAG_JUMP) && onground && !player->jumpTics)
 		{
-			// [crispy] Hexen sets 9; Strife adds 8
-			player->mo->momz = (7 + crispy->jump) * FRACUNIT;
+			// Hexen sets 9; Strife adds 8
+			player->momz = (7 + crispy->jump) * FRACUNIT;
 			player->jumpTics = 18;
-			// [crispy] squat down weapon sprite a bit
+			// squat down weapon sprite a bit
 			if (crispy->weaponsquat)
 			{
-				player->psp_dy_max = -player->mo->momz>>2;
+				player->psp_dy_max = -player->momz>>2;
 			}
 		}
 	}
@@ -374,64 +366,58 @@ void P_PlayerThink (Player* player)
 	// Check for weapon change.
 
 	// A special event has no other buttons.
-	if (cmd->buttons & BT_SPECIAL)
-	cmd->buttons = 0;
-
-	if (cmd->buttons & BT_CHANGE)
+	if (cmd->buttons & buttoncode::BT_SPECIAL)
 	{
-	// The actual changing of the weapon is done
-	// when the weapon psprite can do it
-	// (read: not in the middle of an attack).
-	newweapon = (cmd->buttons&BT_WEAPONMASK)>>BT_WEAPONSHIFT;
-
-	if (newweapon == wp_fist
-		&& player->weaponowned[wp_chainsaw]
-		&& !(player->readyweapon == wp_chainsaw
-			&& player->powers[PowerType_t::pw_strength]))
-	{
-		newweapon = wp_chainsaw;
+		cmd->buttons = 0;
 	}
 
-	if ( (crispy->havessg)
-		&& newweapon == wp_shotgun
-		&& player->weaponowned[wp_supershotgun]
-		&& player->readyweapon != wp_supershotgun)
+	if (cmd->buttons & buttoncode::BT_CHANGE)
 	{
-		newweapon = wp_supershotgun;
-	}
+		// The actual changing of the weapon is done when the weapon psprite can do it (read: not in the middle of an attack).
+		newweapon = (cmd->buttons& buttoncode::BT_WEAPONMASK)>> buttoncode::BT_WEAPONSHIFT;
 
-
-	if (player->weaponowned[newweapon]
-		&& newweapon != player->readyweapon)
-	{
-		// Do not go to plasma or BFG in shareware,
-		// even if cheated.
-		if ((newweapon != wp_plasma
-			&& newweapon != wp_bfg)
-		|| (gamemode != GameMode::shareware) )
+		if (newweapon == WeaponType::wp_fist && player->weaponowned[std::size_t(WeaponType::wp_chainsaw)]
+			&& !(player->readyweapon == WeaponType::wp_chainsaw && player->powers[std::size_t(PowerType_t::pw_strength)]))
 		{
-		player->pendingweapon = newweapon;
+			newweapon = WeaponType::wp_chainsaw;
 		}
-	}
+
+		if ( (crispy->havessg) && newweapon == WeaponType::wp_shotgun
+			&& player->weaponowned[std::size_t(WeaponType::wp_supershotgun)] && player->readyweapon != WeaponType::wp_supershotgun)
+		{
+			newweapon = WeaponType::wp_supershotgun;
+		}
+
+
+		if (player->weaponowned[std::size_t(newweapon)] && newweapon != player->readyweapon)
+		{
+			// Do not go to plasma or BFG in shareware, even if cheated.
+			if ((newweapon != WeaponType::wp_plasma && newweapon != WeaponType::wp_bfg) || (gamemode != GameMode::shareware) )
+			{
+				player->pendingweapon = newweapon;
+			}
+		}
 	}
 
 	// check for use
-	if (cmd->buttons & BT_USE)
+	if (cmd->buttons & buttoncode::BT_USE)
 	{
-	if (!player->usedown)
-	{
-		P_UseLines (player);
-		player->usedown = true;
-		// [crispy] "use" button timer
-		if (crispy->btusetimer)
+		if (!player->usedown)
 		{
-		player->btuse = leveltime;
-		player->btuse_tics = 5*TICRATE/2; // [crispy] 2.5 seconds
+			P_UseLines (player);
+			player->usedown = true;
+			// "use" button timer
+			if (crispy->btusetimer)
+			{
+				player->btuse = leveltime;
+				player->btuse_tics = 5*TICRATE/2; // 2.5 seconds
+			}
 		}
 	}
-	}
 	else
-	player->usedown = false;
+	{
+		player->usedown = false;
+	}
 
 	// cycle psprites
 	P_MovePsprites (player);
@@ -439,52 +425,70 @@ void P_PlayerThink (Player* player)
 	// Counters, time dependend power ups.
 
 	// Strength counts up to diminish fade.
-	if (player->powers[PowerType_t::pw_strength])
-	player->powers[PowerType_t::pw_strength]++;
+	if (player->powers[std::size_t(PowerType_t::pw_strength)])
+	{
+		player->powers[std::size_t(PowerType_t::pw_strength)]++;
+	}
 
-	if (player->powers[PowerType_t::pw_invulnerability])
-	player->powers[PowerType_t::pw_invulnerability]--;
+	if (player->powers[std::size_t(PowerType_t::pw_invulnerability)])
+	{
+		player->powers[std::size_t(PowerType_t::pw_invulnerability)]--;
+	}
 
-	if (player->powers[PowerType_t::pw_invisibility])
-	if (! --player->powers[PowerType_t::pw_invisibility] )
-		player->mo->flags &= ~MF_SHADOW;
+	if (player->powers[std::size_t(PowerType_t::pw_invisibility)])
+	{
+		if (! --player->powers[std::size_t(PowerType_t::pw_invisibility)] )
+		{
+			player->flags &= ~mobjflag_t::MF_SHADOW;
+		}
+	}
 
-	if (player->powers[PowerType_t::pw_infrared])
-	player->powers[PowerType_t::pw_infrared]--;
+	if (player->powers[std::size_t(PowerType_t::pw_infrared)])
+	{
+		player->powers[std::size_t(PowerType_t::pw_infrared)]--;
+	}
 
-	if (player->powers[PowerType_t::pw_ironfeet])
-	player->powers[PowerType_t::pw_ironfeet]--;
+	if (player->powers[std::size_t(PowerType_t::pw_ironfeet)])
+	{
+		player->powers[std::size_t(PowerType_t::pw_ironfeet)]--;
+	}
 
 	if (player->damagecount)
-	player->damagecount--;
+	{
+		player->damagecount--;
+	}
 
 	if (player->bonuscount)
-	player->bonuscount--;
-
+	{
+		player->bonuscount--;
+	}
 
 	// Handling colormaps.
-	if (player->powers[PowerType_t::pw_invulnerability])
+	if (player->powers[std::size_t(PowerType_t::pw_invulnerability)])
 	{
-	if (player->powers[PowerType_t::pw_invulnerability] > 4*32
-		|| (player->powers[PowerType_t::pw_invulnerability]&8) )
-		player->fixedcolormap = INVERSECOLORMAP;
-	else
-		// [crispy] Visor effect when Invulnerability is fading out
-		player->fixedcolormap = player->powers[PowerType_t::pw_infrared] ? 1 : 0;
+		if (player->powers[std::size_t(PowerType_t::pw_invulnerability)] > 4*32 || (player->powers[std::size_t(PowerType_t::pw_invulnerability)]&8) )
+		{
+			player->fixedcolormap = INVERSECOLORMAP;
+		}
+		else
+		{
+			// [crispy] Visor effect when Invulnerability is fading out
+			player->fixedcolormap = player->powers[std::size_t(PowerType_t::pw_infrared)] ? 1 : 0;
+		}
 	}
-	else if (player->powers[PowerType_t::pw_infrared])
+	else if (player->powers[std::size_t(PowerType_t::pw_infrared)])
 	{
-	if (player->powers[PowerType_t::pw_infrared] > 4*32
-		|| (player->powers[PowerType_t::pw_infrared]&8) )
-	{
-		// almost full bright
-		player->fixedcolormap = 1;
+		if (player->powers[std::size_t(PowerType_t::pw_infrared)] > 4*32 || (player->powers[std::size_t(PowerType_t::pw_infrared)]&8) )
+		{
+			// almost full bright
+			player->fixedcolormap = 1;
+		}
+		else
+			player->fixedcolormap = 0;
+		}
 	}
 	else
+	{
 		player->fixedcolormap = 0;
 	}
-	else
-	player->fixedcolormap = 0;
 }
-
-

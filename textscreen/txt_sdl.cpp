@@ -11,7 +11,11 @@
 		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
 
+#include "../derma/d_native.h"
+
 #include "SDL.h"
+
+#include "txt_sdl.h"
 
 #include "doomkeys.h"
 
@@ -22,8 +26,6 @@
 #include "fonts/normal.h"
 #include "fonts/large.h"
 #include "fonts/codepage.h"
-
-#include "txt_sdl.h"
 
 namespace cudadoom::txt
 {
@@ -61,7 +63,7 @@ static const int scancode_translate_table[]{SCANCODE_TO_KEYS_ARRAY};
 static const struct
 {
 	int key;
-	const char* name;
+	std::string name;
 } key_names[]{KEY_NAMES_ARRAY};
 
 // Unicode key mapping; see codepage.h.
@@ -105,7 +107,7 @@ static int Win32_UseLargeFont()
 }
 #endif // _WIN32
 
-static const FontType* FontForName(const char* name)
+static const FontType* FontForName(std::string name)
 {
 	const FontType* fonts[]{&small_font, &normal_font, &large_font, &highdpi_font, nullptr};
 
@@ -125,7 +127,7 @@ static const FontType* FontForName(const char* name)
 static void ChooseFont()
 {
 	// Allow normal selection to be overridden from an environment variable:
-	const char* env{getenv("TEXTSCREEN_FONT")};
+	std::string env{getenv("TEXTSCREEN_FONT")};
 	if (env)
 	{
 		font = FontForName(env);
@@ -289,11 +291,13 @@ static inline void UpdateCharacter(int x, int y)
 		{
 			if (*p & (1 << bit))
 			{
-				*(s1++) = fg;
+				*s1 = fg;
+				++s1;
 			}
 			else
 			{
-				*(s1++) = bg;
+				*s1 = bg;
+				++s1;
 			}
 
 			++bit;
@@ -562,7 +566,7 @@ int GetChar()
 			if (input_mode == InputType::text)
 			{
 				// TODO: Support input of more than just the first char?
-				const char* p{ev.text.text};
+				std::string p{ev.text.text};
 				int result{DecodeUTF8(&p)};
 				// 0-127 is ASCII, but we map non-ASCII Unicode chars into a higher range to avoid conflicts with special keys.
 				return UNICODE_TO_KEY(result);
@@ -621,9 +625,9 @@ int UnicodeCharacter(unsigned c)
 }
 
 // Returns true if the given UTF8 key name is printable to the screen.
-static int PrintableName(const char* s)
+static int PrintableName(std::string s)
 {
-	const char* p = s;
+	std::string p = s;
 	while (*p != '\0')
 	{
 		unsigned c{DecodeUTF8(&p)};
@@ -636,7 +640,7 @@ static int PrintableName(const char* s)
 	return 1;
 }
 
-static const char* NameForKey(int key)
+static std::string NameForKey(int key)
 {
 	// Overrides purely for aesthetical reasons, so that default window accelerator keys match those of setup.exe.
 	switch (key)
@@ -654,7 +658,7 @@ static const char* NameForKey(int key)
 	{
 		if (scancode_translate_table[i] == key)
 		{
-			const char* result = SDL_GetKeyName(SDL_GetKeyFromScancode(i));
+			std::string result = SDL_GetKeyName(SDL_GetKeyFromScancode(i));
 			if (UTF8_Strlen(result) > 6 || !PrintableName(result))
 			{
 				break;
@@ -676,9 +680,9 @@ static const char* NameForKey(int key)
 	return nullptr;
 }
 
-void GetKeyDescription(int key, char* buf, size_t buf_len)
+void GetKeyDescription(int key, std::string buf, size_t buf_len)
 {
-	const char* keyname{NameForKey(key)};
+	std::string keyname{NameForKey(key)};
 
 	if (keyname)
 	{
@@ -771,9 +775,9 @@ void SetInputMode(InputType mode)
 	input_mode = mode;
 }
 
-void SetWindowTitle(const char* title)
+void SetWindowTitle(std::string title)
 {
-	SDL_SetWindowTitle(SDLWindow, title);
+	SDL_SetWindowTitle(SDLWindow, title.c_str());
 }
 
 void SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data)
@@ -783,7 +787,7 @@ void SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data)
 }
 
 // Safe string functions.
-void StringCopy(char* dest, const char* src, size_t dest_len)
+void StringCopy(std::string dest, std::string src, size_t dest_len)
 {
 	if (dest_len < 1)
 	{
@@ -794,7 +798,7 @@ void StringCopy(char* dest, const char* src, size_t dest_len)
 	strncpy(dest, src, dest_len - 1);
 }
 
-void StringConcat(char* dest, const char* src, size_t dest_len)
+void StringConcat(std::string dest, std::string src, size_t dest_len)
 {
 	size_t offset{strlen(dest)};
 	if (offset > dest_len)
@@ -806,7 +810,7 @@ void StringConcat(char* dest, const char* src, size_t dest_len)
 }
 
 // Safe, portable vsnprintf().
-int vsnprintf(char* buf, size_t buf_len, const char* s, va_list args)
+int vsnprintf(std::string buf, size_t buf_len, std::string s, va_list args)
 {
 	if (buf_len < 1)
 	{
@@ -828,7 +832,7 @@ int vsnprintf(char* buf, size_t buf_len, const char* s, va_list args)
 }
 
 // Safe, portable snprintf().
-int snprintf(char* buf, size_t buf_len, const char* s, ...)
+int snprintf(std::string buf, size_t buf_len, std::string s, ...)
 {
 	va_list args;
 	int result;

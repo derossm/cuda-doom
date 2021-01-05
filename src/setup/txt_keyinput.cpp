@@ -8,21 +8,20 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
+#include "txt_keyinput.h"
 
 #include "doomkeys.h"
 #include "m_misc.h"
 
-#include "txt_keyinput.h"
-#include "txt_gui.h"
-#include "txt_io.h"
-#include "txt_label.h"
-#include "txt_utf8.h"
-#include "txt_window.h"
+#include "../../textscreen/txt_window.h"
+#include "../../textscreen/txt_gui.h"
+#include "../../textscreen/txt_io.h"
+#include "../../textscreen/txt_label.h"
+#include "../../textscreen/txt_utf8.h"
 
-#define KEY_INPUT_WIDTH 8
+constexpr size_t KEY_INPUT_WIDTH{8};
 
-static int KeyPressCallback(Window* window, int key,
-							TXT_UNCAST_ARG(key_input))
+static int KeyPressCallback(Window* window, int key, TXT_UNCAST_ARG(key_input))
 {
 	TXT_CAST_ARG(txt_key_input_t, key_input);
 

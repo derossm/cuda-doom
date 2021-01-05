@@ -252,7 +252,7 @@ void D_StartGameLoop()
 }
 
 // Block until the game start message is received from the server.
-static void BlockUntilStart(net_gamesettings_t* settings, netgame_startup_callback_t callback)
+static void BlockUntilStart(net_gamesettings* settings, netgame_startup_callback_t callback)
 {
 	while (!NET_CL_GetSettings(settings))
 	{
@@ -273,7 +273,7 @@ static void BlockUntilStart(net_gamesettings_t* settings, netgame_startup_callba
 	}
 }
 
-void D_StartNetGame(net_gamesettings_t* settings, netgame_startup_callback_t callback)
+void D_StartNetGame(net_gamesettings* settings, netgame_startup_callback_t callback)
 {
 	offsetms = 0;
 	recvtic = 0;
@@ -344,7 +344,7 @@ void D_StartNetGame(net_gamesettings_t* settings, netgame_startup_callback_t cal
 	//}
 }
 
-bool D_InitNetGame(net_connect_data_t* connect_data)
+bool D_InitNetGame(net_connect_data* connect_data)
 {
 	bool result{false};
 	net_addr_t* addr = nullptr;
@@ -518,9 +518,9 @@ static void TicdupSquash(ticcmd_set_t* set)
 	{
 		auto& cmd{set->cmds[i]};
 		cmd.chatchar = 0;
-		if (_underlying_value(cmd.buttons) & _underlying_value(buttoncode_t::BT_SPECIAL))
+		if (_underlying_value(cmd.buttons) & _underlying_value(buttoncode::BT_SPECIAL))
 		{
-			cmd.buttons = buttoncode_t::BT_NONE;
+			cmd.buttons = buttoncode::BT_NONE;
 		}
 	}
 }
@@ -564,7 +564,7 @@ void TryRunTics()
 	auto lowtic{GetLowTic()};
 	auto availabletics{lowtic - gametic/ticdup};
 
-	int	counts;
+	int counts;
 	// decide how many tics to run
 	if (new_sync)
 	{
@@ -691,7 +691,7 @@ static bool StrictDemos()
 // If the provided conditional value is true, we're trying to record a demo file that will include a non-vanilla extension. The function
 // will return true if the conditional is true and it's allowed to use this extension (no extensions are allowed if -strictdemos is given
 // on the command line). A warning is shown on the console using the provided string describing the non-vanilla expansion.
-bool D_NonVanillaRecord(bool conditional, const char* feature)
+bool D_NonVanillaRecord(bool conditional, std::string feature)
 {
 	if (!conditional || StrictDemos())
 	{
@@ -706,7 +706,7 @@ bool D_NonVanillaRecord(bool conditional, const char* feature)
 // Returns true if the given lump number corresponds to data from a .lmp file, as opposed to a WAD.
 static bool IsDemoFile(int lumpnum)
 {
-	auto lower{M_StringDuplicate(lumpinfo[lumpnum]->wad_file->path)};
+	auto lower{std::string(lumpinfo[lumpnum]->wad_file->path)};
 	// FIXME
 	//M_ForceLowercase(lower);
 
@@ -718,7 +718,7 @@ static bool IsDemoFile(int lumpnum)
 // - The -strictdemos command line argument is not provided.
 // - The given lumpnum identifying the demo to play back identifies a demo that comes from a .lmp file, not a .wad file.
 // - Before proceeding, a warning is shown to the user on the console.
-bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char* feature)
+bool D_NonVanillaPlayback(bool conditional, int lumpnum, std::string feature)
 {
 	if (!conditional || StrictDemos())
 	{

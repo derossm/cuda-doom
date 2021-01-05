@@ -16,7 +16,7 @@
 
 #include "doomtype.h"
 
-extern char* gus_patch_path;
+extern std::string gus_patch_path;
 extern int gus_ram_kb;
 
-bool GUS_WriteConfig(char* path);
+bool GUS_WriteConfig(std::string path);

@@ -10,16 +10,19 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "doomkeys.h"
 
-#include "txt_main.h"
 #include "txt_widget.h"
-#include "txt_window.h"
-#include "txt_button.h"
+
+#include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_io.h"
 #include "txt_gui.h"
+
+//#include "txt_window.h"
+#include "txt_button.h"
 
 namespace cudadoom::txt
 {
@@ -35,12 +38,65 @@ namespace cudadoom::txt
  */
 
 // Drop-down list box.
-struct txt_dropdown_list_t
+class DropDownList : public Widget<DropDownList>
 {
 	Widget widget;
 	int* variable;
-	const char** values;
+	CHAR_PTR* values;
 	int num_values;
+
+public:
+
+	DropDownList() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	{
+	}
+
+	bool Selectable() override final const noexcept
+	{
+		return true;
+	}
+
+	void CalculateSize() override final const noexcept
+	{
+	}
+
+	void Draw() override final const noexcept
+	{
+	}
+
+	bool KeyPress(Keytype key) override final const noexcept
+	{
+		if (key == KEY_ENTER || key == ' ')
+		{
+			EmitSignal("changed");
+			return true;
+		}
+
+		return false;
+	}
+
+	bool MousePress(MouseEvent evt) override final const noexcept
+	{
+		if (evt.button == MOUSE_LEFT)
+		{
+			// Equivalent to pressing enter
+			return KeyPress(KEY_ENTER);
+		}
+
+		return false
+	}
+
+	void SetLayout() override final const noexcept
+	{
+	}
+
+	void SetFocus(bool _focus) override final const noexcept
+	{
+	}
+
+	void Destroy() override final const noexcept
+	{
+	}
 };
 
 struct callback_data_t
@@ -63,7 +119,7 @@ struct callback_data_t
  *						the labels to use for the list (UTF-8 format).
  * @param num_values		The number of variables in the list.
  */
-txt_dropdown_list_t* NewDropdownList(int* variable, const char** values, int num_values);
+txt_dropdown_list_t* NewDropdownList(int* variable, CHAR_PTR* values, int num_values);
 
 // Check if the selected value for a list is valid
 static int ValidSelection(txt_dropdown_list_t* list)
@@ -233,7 +289,7 @@ static void DropdownListDrawer(UNCAST_ARG(list))
 {
 	CAST_ARG(txt_dropdown_list_t, list);
 	unsigned i;
-	const char* str;
+	std::string str;
 
 	// Set bg/fg text colors.
 
@@ -297,7 +353,7 @@ WidgetClass txt_dropdown_list_class =
 	NULL,
 };
 
-txt_dropdown_list_t* NewDropdownList(int *variable, const char** values, int num_values)
+txt_dropdown_list_t* NewDropdownList(int *variable, CHAR_PTR* values, int num_values)
 {
 	txt_dropdown_list_t* list;
 

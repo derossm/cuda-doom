@@ -34,7 +34,7 @@
 //
 void T_FireFlicker (fireflicker_t* flick)
 {
-	int	amount;
+	int amount;
 
 	if (--flick->count)
 	return;
@@ -54,9 +54,9 @@ void T_FireFlicker (fireflicker_t* flick)
 //
 // P_SpawnFireFlicker
 //
-void P_SpawnFireFlicker (sector_t*	sector)
+void P_SpawnFireFlicker (sector_t* sector)
 {
-	fireflicker_t*	flick;
+	fireflicker_t* flick;
 
 	// Note that we are resetting sector attributes.
 	// Nothing special about it during gameplay.
@@ -110,9 +110,9 @@ void T_LightFlash (lightflash_t* flash)
 // After the map has been loaded, scan each sector
 // for specials that spawn thinkers
 //
-void P_SpawnLightFlash (sector_t*	sector)
+void P_SpawnLightFlash (sector_t* sector)
 {
-	lightflash_t*	flash;
+	lightflash_t* flash;
 
 	// nothing special about it during gameplay
 	sector->special = 0;
@@ -141,7 +141,7 @@ void P_SpawnLightFlash (sector_t*	sector)
 //
 // T_StrobeFlash
 //
-void T_StrobeFlash (strobe_t*		flash)
+void T_StrobeFlash (strobe_t* flash)
 {
 	if (--flash->count)
 	return;
@@ -168,7 +168,7 @@ void T_StrobeFlash (strobe_t*		flash)
 //
 void P_SpawnStrobeFlash(sector_t* sector, int fastOrSlow, int inSync)
 {
-	strobe_t*	flash;
+	strobe_t* flash;
 
 	flash = Z_Malloc<decltype(flash)>( sizeof(*flash), pu_tags_t::PU_LEVSPEC, 0);
 
@@ -197,10 +197,10 @@ void P_SpawnStrobeFlash(sector_t* sector, int fastOrSlow, int inSync)
 //
 // Start strobing lights (usually from a trigger)
 //
-void EV_StartLightStrobing(line_t*	line)
+void EV_StartLightStrobing(line_t* line)
 {
-	int		secnum;
-	sector_t*	sec;
+	int secnum;
+	sector_t* sec;
 
 	secnum = -1;
 	while ((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
@@ -220,21 +220,21 @@ void EV_StartLightStrobing(line_t*	line)
 //
 void EV_TurnTagLightsOff(line_t* line)
 {
-	int			i;
-	int			j;
-	int			min;
-	sector_t*		sector;
-	sector_t*		tsec;
-	line_t*		templine;
+	int i;
+	int j;
+	int min;
+	sector_t* sector;
+	sector_t* tsec;
+	line_t* templine;
 
 	sector = sectors;
 
-	for (j = 0;j < numsectors; j++, sector++)
+	for (j = 0;j < numsectors; ++j, ++sector)
 	{
 	if (sector->tag == line->tag)
 	{
 		min = sector->lightlevel;
-		for (i = 0;i < sector->linecount; i++)
+		for (i = 0;i < sector->linecount; ++i)
 		{
 		templine = sector->lines[i];
 		tsec = getNextSector(templine,sector);
@@ -254,15 +254,15 @@ void EV_TurnTagLightsOff(line_t* line)
 //
 void EV_LightTurnOn(line_t* line, int bright)
 {
-	int		i;
-	int		j;
-	sector_t*	sector;
-	sector_t*	temp;
-	line_t*	templine;
+	int i;
+	int j;
+	sector_t* sector;
+	sector_t* temp;
+	line_t* templine;
 
 	sector = sectors;
 
-	for (i=0;i<numsectors;i++, sector++)
+	for (i=0;i<numsectors;++i, ++sector)
 	{
 	if (sector->tag == line->tag)
 	{
@@ -271,7 +271,7 @@ void EV_LightTurnOn(line_t* line, int bright)
 		// surrounding sector
 		if (!bright)
 		{
-		for (j = 0;j < sector->linecount; j++)
+		for (j = 0;j < sector->linecount; ++j)
 		{
 			templine = sector->lines[j];
 			temp = getNextSector(templine,sector);
@@ -293,7 +293,7 @@ void EV_LightTurnOn(line_t* line, int bright)
 // Spawn glowing light
 //
 
-void T_Glow(glow_t*	g)
+void T_Glow(glow_t* g)
 {
 	switch(g->direction)
 	{
@@ -320,9 +320,9 @@ void T_Glow(glow_t*	g)
 }
 
 
-void P_SpawnGlowingLight(sector_t*	sector)
+void P_SpawnGlowingLight(sector_t* sector)
 {
-	glow_t*	g;
+	glow_t* g;
 
 	g = Z_Malloc<decltype(g)>( sizeof(*g), pu_tags_t::PU_LEVSPEC, 0);
 

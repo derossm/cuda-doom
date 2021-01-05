@@ -29,23 +29,23 @@
 enum class net_connstate_t
 {
 	// Client has sent a SYN, is waiting for a SYN in response.
-	NET_CONN_STATE_CONNECTING,
+	CONNECTING,
 
 	// Successfully connected.
-	NET_CONN_STATE_CONNECTED,
+	CONNECTED,
 
 	// Sent a DISCONNECT packet, waiting for a DISCONNECT_ACK reply
-	NET_CONN_STATE_DISCONNECTING,
+	DISCONNECTING,
 
 	// Client successfully disconnected
-	NET_CONN_STATE_DISCONNECTED,
+	DISCONNECTED,
 
 	// We are disconnected, but in a sleep state, waiting for several
 	// seconds. This is in case the DISCONNECT_ACK we sent failed
 	// to arrive, and we need to send another one. We keep this as
 	// a valid connection for a few seconds until we are sure that
 	// the other end has successfully disconnected as well.
-	NET_CONN_STATE_DISCONNECTED_SLEEP
+	DISCONNECTED_SLEEP
 };
 
 // Reason a connection was terminated
@@ -53,22 +53,22 @@ enum class net_connstate_t
 enum class net_disconnect_reason_t
 {
 	// As the result of a local disconnect request
-	NET_DISCONNECT_LOCAL,
+	LOCAL,
 
 	// As the result of a remote disconnect request
-	NET_DISCONNECT_REMOTE,
+	REMOTE,
 
 	// Timeout (no data received in a long time)
-	NET_DISCONNECT_TIMEOUT
+	TIMEOUT
 };
 
-#define MAX_RETRIES 5
+constexpr size_t MAX_RETRIES{5};
 
 // connections time out after 30 seconds
-#define CONNECTION_TIMEOUT_LEN 30
+constexpr size_t CONNECTION_TIMEOUT_LEN{30};
 
 // maximum time between sending packets
-#define KEEPALIVE_PERIOD 1
+constexpr size_t KEEPALIVE_PERIOD{1};
 
 // reliable packet that is guaranteed to reach its destination
 struct net_reliable_packet_t
@@ -104,8 +104,8 @@ net_packet_t* NET_Conn_NewReliable(net_connection_t* conn, int packet_type);
 
 // Other miscellaneous common functions
 unsigned NET_ExpandTicNum(unsigned relative, unsigned b);
-bool NET_ValidGameSettings(GameMode mode, GameMission_t mission, net_gamesettings_t* settings);
+bool NET_ValidGameSettings(GameMode mode, GameMission mission, net_gamesettings* settings);
 
 void NET_OpenLog();
-void NET_Log(const char* fmt, ...);
+void NET_Log(std::string fmt, ...);
 void NET_LogPacket(net_packet_t* packet);

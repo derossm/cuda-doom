@@ -24,20 +24,20 @@
 // swirl factors determine the number of waves per flat width
 
 // 1 cycle per 64 units
-#define swirlfactor (8192/64)
+constexpr size_t swirlfactor{(8192/64)};
 
 // 1 cycle per 32 units (2 in 64)
-#define swirlfactor2 (8192/32)
+constexpr size_t swirlfactor2{(8192/32)};
 
-#define SEQUENCE 1024
-#define FLATSIZE (64 * 64)
+constexpr size_t SEQUENCE{1024};
+constexpr size_t FLATSIZE{(64 * 64)};
 
 static int* offsets;
 static int* offset;
 
-#define AMP 2
-#define AMP2 2
-#define SPEED 40
+constexpr size_t AMP{2};
+constexpr size_t AMP2{2};
+constexpr size_t SPEED{40};
 
 void R_InitDistortedFlats()
 {
@@ -76,7 +76,7 @@ void R_InitDistortedFlats()
 	}
 }
 
-char* R_DistortedFlat(int flatnum)
+std::string R_DistortedFlat(int flatnum)
 {
 	static int swirltic{-1};
 	static int swirlflat{-1};
@@ -92,7 +92,7 @@ char* R_DistortedFlat(int flatnum)
 
 	if (swirlflat != flatnum)
 	{
-		auto normalflat = (char*)W_CacheLumpNum(flatnum, pu_tags_t::PU_STATIC);
+		auto normalflat = W_CacheLumpNum<char>(flatnum, pu_tags_t::PU_STATIC);
 
 		for (size_t i{0}; i < FLATSIZE; ++i)
 		{

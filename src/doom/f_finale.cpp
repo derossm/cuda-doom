@@ -9,9 +9,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	Game completion, final screen animation.
+		Game completion, final screen animation.
 \**********************************************************************************************************************************************/
-
 
 // Functions.
 #include "deh_main.h"
@@ -29,9 +28,12 @@
 
 #include "doomstat.h"
 #include "r_state.h"
-#include "m_controls.h"		// [crispy] key_*
-#include "m_misc.h"			// [crispy] M_StringDuplicate()
-#include "m_random.h"		// [crispy] Crispy_Random()
+#include "m_controls.h"		// key_*
+#include "m_random.h"		// Crispy_Random()
+
+#include "hu_stuff.h"
+
+extern patch_t* hu_font[HU_FONTSIZE];
 
 enum class finalestage_t
 {
@@ -45,55 +47,54 @@ finalestage_t finalestage;
 
 unsigned finalecount;
 
-#define TEXTSPEED	3
-#define TEXTWAIT	250
+constexpr int TEXTSPEED{3};
+constexpr int TEXTWAIT{250};
 
 struct textscreen_t
 {
-	GameMission_t mission;
+	GameMission mission;
 	int episode;
 	int level;
-	const char* background;
-	const char* text;
+	std::string background;
+	std::string text;
 };
 
-static textscreen_t textscreens[] =
-{
-	{ doom,			1, 8,	"FLOOR4_8",	E1TEXT},
-	{ doom,			2, 8,	"SFLR6_1",	E2TEXT},
-	{ doom,			3, 8,	"MFLR8_4",	E3TEXT},
-	{ doom,			4, 8,	"MFLR8_3",	E4TEXT},
-	{ doom,			5, 8,	"FLOOR7_2",	E5TEXT}, // [crispy] Sigil
+static textscreen_t textscreens[]{
+	{ GameMission::doom,			1, 8,	"FLOOR4_8",	E1TEXT },
+	{ GameMission::doom,			2, 8,	"SFLR6_1",	E2TEXT },
+	{ GameMission::doom,			3, 8,	"MFLR8_4",	E3TEXT },
+	{ GameMission::doom,			4, 8,	"MFLR8_3",	E4TEXT },
+	{ GameMission::doom,			5, 8,	"FLOOR7_2",	E5TEXT }, // Sigil
 
-	{ doom2,		1, 6,	"SLIME16",	C1TEXT},
-	{ doom2,		1, 11,	"RROCK14",	C2TEXT},
-	{ doom2,		1, 20,	"RROCK07",	C3TEXT},
-	{ doom2,		1, 30,	"RROCK17",	C4TEXT},
-	{ doom2,		1, 15,	"RROCK13",	C5TEXT},
-	{ doom2,		1, 31,	"RROCK19",	C6TEXT},
+	{ GameMission::doom2,			1, 6,	"SLIME16",	C1TEXT },
+	{ GameMission::doom2,			1, 11,	"RROCK14",	C2TEXT },
+	{ GameMission::doom2,			1, 20,	"RROCK07",	C3TEXT },
+	{ GameMission::doom2,			1, 30,	"RROCK17",	C4TEXT },
+	{ GameMission::doom2,			1, 15,	"RROCK13",	C5TEXT },
+	{ GameMission::doom2,			1, 31,	"RROCK19",	C6TEXT },
 
-	{ pack_tnt,		1, 6,	"SLIME16",	T1TEXT},
-	{ pack_tnt,		1, 11,	"RROCK14",	T2TEXT},
-	{ pack_tnt,		1, 20,	"RROCK07",	T3TEXT},
-	{ pack_tnt,		1, 30,	"RROCK17",	T4TEXT},
-	{ pack_tnt,		1, 15,	"RROCK13",	T5TEXT},
-	{ pack_tnt,		1, 31,	"RROCK19",	T6TEXT},
+	{ GameMission::pack_tnt,		1, 6,	"SLIME16",	T1TEXT },
+	{ GameMission::pack_tnt,		1, 11,	"RROCK14",	T2TEXT },
+	{ GameMission::pack_tnt,		1, 20,	"RROCK07",	T3TEXT },
+	{ GameMission::pack_tnt,		1, 30,	"RROCK17",	T4TEXT },
+	{ GameMission::pack_tnt,		1, 15,	"RROCK13",	T5TEXT },
+	{ GameMission::pack_tnt,		1, 31,	"RROCK19",	T6TEXT },
 
-	{ pack_plut,	1, 6,	"SLIME16",	P1TEXT},
-	{ pack_plut,	1, 11,	"RROCK14",	P2TEXT},
-	{ pack_plut,	1, 20,	"RROCK07",	P3TEXT},
-	{ pack_plut,	1, 30,	"RROCK17",	P4TEXT},
-	{ pack_plut,	1, 15,	"RROCK13",	P5TEXT},
-	{ pack_plut,	1, 31,	"RROCK19",	P6TEXT},
+	{ GameMission::pack_plut,		1, 6,	"SLIME16",	P1TEXT },
+	{ GameMission::pack_plut,		1, 11,	"RROCK14",	P2TEXT },
+	{ GameMission::pack_plut,		1, 20,	"RROCK07",	P3TEXT },
+	{ GameMission::pack_plut,		1, 30,	"RROCK17",	P4TEXT },
+	{ GameMission::pack_plut,		1, 15,	"RROCK13",	P5TEXT },
+	{ GameMission::pack_plut,		1, 31,	"RROCK19",	P6TEXT },
 
-	{ pack_nerve,	1, 8,	"SLIME16",	N1TEXT},
-	{ pack_master,	1, 20,	"SLIME16",	M1TEXT},
-	{ pack_master,	1, 21,	"SLIME16",	M2TEXT},
+	{ GameMission::pack_nerve,	1, 8,	"SLIME16",	N1TEXT },
+	{ GameMission::pack_master,	1, 20,	"SLIME16",	M1TEXT },
+	{ GameMission::pack_master,	1, 21,	"SLIME16",	M2TEXT }
 };
 
-const char* finaletext;
-const char* finaleflat;
-static char* finaletext_rw;
+std::string finaletext;
+std::string finaleflat;
+std::string finaletext_rw;
 
 void F_StartCast();
 void F_CastTicker();
@@ -104,36 +105,34 @@ extern void A_RandomJump();
 
 void F_StartFinale()
 {
-	size_t i;
-
-	gameaction = ga_nothing;
+	gameaction = GameAction_t::ga_nothing;
 	gamestate = GameState_t::GS_FINALE;
 	viewactive = false;
 	automapactive = false;
 
-	if (logical_gamemission == doom)
+	if (logical_gamemission == GameMission::doom)
 	{
-		S_ChangeMusic(mus_victor, true);
+		S_ChangeMusic(musicenum_t::mus_victor, true);
 	}
 	else
 	{
-		S_ChangeMusic(mus_read_m, true);
+		S_ChangeMusic(musicenum_t::mus_read_m, true);
 	}
 
 	// Find the right screen and set the text and background
 
-	for (i=0; i<arrlen(textscreens); ++i)
+	for (size_t i{0}; i < arrlen(textscreens); ++i)
 	{
 		textscreen_t* screen = &textscreens[i];
 
 		// Hack for Chex Quest
-		if (gameversion == GameVersion_t::exe_chex && screen->mission == doom)
+		if (gameversion == GameVersion::exe_chex && screen->mission == GameMission::doom)
 		{
 			screen->level = 5;
 		}
 
-		if (logical_gamemission == screen->mission && (logical_gamemission != doom || gameepisode == screen->episode)
-			&& gamemap == screen->level)
+		if (logical_gamemission == screen->mission && (logical_gamemission != GameMission::doom || gameepisode == screen->episode)
+				&& gamemap == screen->level)
 		{
 			finaletext = screen->text;
 			finaleflat = screen->background;
@@ -141,145 +140,145 @@ void F_StartFinale()
 	}
 
 	// Do dehacked substitutions of strings
-
 	finaletext = DEH_String(finaletext);
 	finaleflat = DEH_String(finaleflat);
-	// [crispy] do the "char* vs. const char*" dance
-	if (finaletext_rw)
-	{
-	free(finaletext_rw);
-	finaletext_rw = NULL;
-	}
-	finaletext_rw = M_StringDuplicate(finaletext);
 
-	finalestage = F_STAGE_TEXT;
+
+	finaletext_rw = std::string(finaletext);
+
+	finalestage = finalestage_t::F_STAGE_TEXT;
 	finalecount = 0;
-
 }
 
-bool F_Responder (EventType *event)
+bool F_Responder(EventType *event)
 {
-	if (finalestage == F_STAGE_CAST)
-	return F_CastResponder (event);
+	if (finalestage == finalestage_t::F_STAGE_CAST)
+	{
+		return F_CastResponder(event);
+	}
 
 	return false;
 }
 
-void F_Ticker ()
+void F_Ticker()
 {
-	size_t i;
-
 	// check for skipping
-	if ((gamemode == GameMode::commercial) && ( finalecount > 50))
+	if (size_t i; (gamemode == GameMode::commercial) && ( finalecount > 50))
 	{
 		// go on to the next level
-		for (i=0 ; i < MAX_PLAYERS ; ++i)
+		for (i=0; i < MAX_PLAYERS; ++i)
 		{
-			if (players[i].cmd.buttons)
+			if ((bool)players[i].cmd.buttons)
 			{
 				break;
 			}
 		}
 
-		if (i < MAXPLAYERS)
+		if (i < MAX_PLAYERS)
 		{
-			if (gamemission == pack_nerve && gamemap == 8)
+			if (gamemission == GameMission::pack_nerve && gamemap == 8)
+			{
 				F_StartCast();
-			else
-			if (gamemission == pack_master && (gamemap == 20 || gamemap == 21))
+			}
+			else if (gamemission == GameMission::pack_master && (gamemap == 20 || gamemap == 21))
+			{
 				F_StartCast();
-			else
-			if (gamemap == 30)
+			}
+			else if (gamemap == 30)
+			{
 				F_StartCast();
+			}
 			else
-				gameaction = ga_worlddone;
+			{
+				gameaction = GameAction_t::ga_worlddone;
+			}
 		}
 	}
 
 	// advance animation
-	finalecount++;
+	++finalecount;
 
-	if (finalestage == F_STAGE_CAST)
+	if (finalestage == finalestage_t::F_STAGE_CAST)
 	{
-	F_CastTicker();
-	return;
+		F_CastTicker();
+		return;
 	}
 
 	if (gamemode == GameMode::commercial)
-	return;
-
-	if (finalestage == F_STAGE_TEXT
-		&& finalecount>strlen(finaletext)*TEXTSPEED + TEXTWAIT)
 	{
-	finalecount = 0;
-	finalestage = F_STAGE_ARTSCREEN;
-	wipegamestate = -1;		// force a wipe
-	if (gameepisode == 3)
-		S_StartMusic(mus_bunny);
+		return;
+	}
+
+	if (finalestage == finalestage_t::F_STAGE_TEXT && finalecount > finaletext.length() * TEXTSPEED + TEXTWAIT)
+	{
+		finalecount = 0;
+		finalestage = finalestage_t::F_STAGE_ARTSCREEN;
+		wipegamestate = (GameState_t)-1;		// force a wipe
+		
+		if (gameepisode == 3)
+		{
+			S_StartMusic(musicenum_t::mus_bunny);
+		}
 	}
 }
 
-//
-// F_TextWrite
-//
-
-#include "hu_stuff.h"
-extern	patch_t* hu_font[HU_FONTSIZE];
-
-// [crispy] add line breaks for lines exceeding screenwidth
-static inline bool F_AddLineBreak (char* c)
+// add line breaks for lines exceeding screenwidth
+static inline bool F_AddLineBreak(std::string c)
 {
+/*
 	while (c-- > finaletext_rw)
 	{
-	if (*c == '\n')
-	{
-		return false;
-	}
-	else
-	if (*c == ' ')
-	{
-		*c = '\n';
-		return true;
-	}
+		if (*c == '\n')
+		{
+			return false;
+		}
+		else if (*c == ' ')
+		{
+			*c = '\n';
+			return true;
+		}
 	}
 
 	return false;
+*/
 }
 
-void F_TextWrite ()
+void F_TextWrite()
 {
-	byte*	src;
-	pixel_t*	dest;
+/*
+	byte* src;
+	pixel_t* dest;
 
-	int		x,y,w;
-	signed int	count;
-	char* ch; // [crispy] un-const
-	int		c;
-	int		cx;
-	int		cy;
+	int x,y,w;
+	int count;
+	std::string ch; // [crispy] un-const
+	int c;
+	int cx;
+	int cy;
 
 	// erase the entire screen to a tiled background
-	src = W_CacheLumpName( finaleflat, pu_tags_t::PU_CACHE);
+	src = W_CacheLumpName<byte>(finaleflat, pu_tags_t::PU_CACHE);
 	dest = I_VideoBuffer;
 
-	for (y=0 ; y<SCREENHEIGHT ; y++)
+	for (y=0; y<SCREENHEIGHT ; ++y)
 	{
 #ifndef CRISPY_TRUECOLOR
-	for (x=0 ; x<SCREENWIDTH/64 ; x++)
-	{
-		memcpy(dest, src+((y&63)<<6), 64);
-		dest += 64;
-	}
-	if (SCREENWIDTH&63)
-	{
-		memcpy(dest, src+((y&63)<<6), SCREENWIDTH&63);
-		dest += (SCREENWIDTH&63);
-	}
+		for (x=0; x < SCREENWIDTH/64; ++x)
+		{
+			memcpy(dest, src+((y&63)<<6), 64);
+			dest += 64;
+		}
+		if (SCREENWIDTH&63)
+		{
+			memcpy(dest, src+((y&63)<<6), SCREENWIDTH&63);
+			dest += (SCREENWIDTH&63);
+		}
 #else
-	for (x=0 ; x<SCREENWIDTH ; x++)
-	{
-		*(dest++) = colormaps[src[((y&63)<<6) + (x&63)]];
-	}
+		for (x=0; x < SCREENWIDTH; ++x)
+		{
+			*dest = colormaps[src[((y&63)<<6) + (x&63)]];
+			++dest;
+		}
 #endif
 	}
 
@@ -290,129 +289,134 @@ void F_TextWrite ()
 	cy = 10;
 	ch = finaletext_rw;
 
-	count = ((signed int) finalecount - 10) / TEXTSPEED;
+	count = ((int)finalecount - 10) / TEXTSPEED;
 	if (count < 0)
-	count = 0;
-	for ( ; count ; count-- )
 	{
-	c = *(ch++);
-	if (!c)
-		break;
-	if (c == '\n')
-	{
-		cx = 10;
-		cy += 11;
-		continue;
+		count = 0;
 	}
 
-	c = toupper(c) - HU_FONTSTART;
-	if (c < 0 || c> HU_FONTSIZE)
+	for ( ; count; --count)
 	{
-		cx += 4;
-		continue;
-	}
-
-	w = SHORT (hu_font[c]->width);
-	if (cx+w > ORIGWIDTH)
-	{
-		// [crispy] add line breaks for lines exceeding screenwidth
-		if (F_AddLineBreak(ch))
+		c = *ch;
+		++ch;
+		if (!c)
 		{
-		continue;
+			break;
 		}
-		else
-		break;
-	}
-	// [cispy] prevent text from being drawn off-screen vertically
-	if (cy + SHORT(hu_font[c]->height) > ORIGHEIGHT)
-	{
-		break;
-	}
-	V_DrawPatch(cx, cy, hu_font[c]);
-	cx+=w;
-	}
 
+		if (c == '\n')
+		{
+			cx = 10;
+			cy += 11;
+			continue;
+		}
+
+		c = toupper(c) - HU_FONTSTART;
+		if (c < 0 || c> HU_FONTSIZE)
+		{
+			cx += 4;
+			continue;
+		}
+
+		w = SHORT (hu_font[c]->width);
+		if (cx+w > ORIGWIDTH)
+		{
+			// [crispy] add line breaks for lines exceeding screenwidth
+			if (F_AddLineBreak(ch))
+			{
+				continue;
+			}
+			else
+			break;
+		}
+		// prevent text from being drawn off-screen vertically
+		if (cy + SHORT(hu_font[c]->height) > ORIGHEIGHT)
+		{
+			break;
+		}
+		V_DrawPatch(cx, cy, hu_font[c]);
+		cx+=w;
+	}
+*/
 }
 
-//
 // Final DOOM 2 animation
-// Casting by id Software.
-//	in order of appearance
-//
+// Casting by id Software in order of appearance
 struct castinfo_t
 {
-	const char	*name;
-	mobjtype_t	type;
+	const char* name;
+	mobjtype_t type;
 };
 
-castinfo_t	castorder[] = {
-	{CC_ZOMBIE, mobjtype_t::MT_POSSESSED},
-	{CC_SHOTGUN, mobjtype_t::MT_SHOTGUY},
-	{CC_HEAVY, mobjtype_t::MT_CHAINGUY},
-	{CC_IMP, mobjtype_t::MT_TROOP},
-	{CC_DEMON, mobjtype_t::MT_SERGEANT},
-	{CC_LOST, mobjtype_t::MT_SKULL},
-	{CC_CACO, mobjtype_t::MT_HEAD},
-	{CC_HELL, mobjtype_t::MT_KNIGHT},
-	{CC_BARON, mobjtype_t::MT_BRUISER},
-	{CC_ARACH, mobjtype_t::MT_BABY},
-	{CC_PAIN, mobjtype_t::MT_PAIN},
-	{CC_REVEN, mobjtype_t::MT_UNDEAD},
-	{CC_MANCU, mobjtype_t::MT_FATSO},
-	{CC_ARCH, mobjtype_t::MT_VILE},
-	{CC_SPIDER, mobjtype_t::MT_SPIDER},
-	{CC_CYBER, mobjtype_t::MT_CYBORG},
-	{CC_HERO, mobjtype_t::MT_PLAYER},
-
-	{NULL,0}
+castinfo_t castorder[]{
+	{ CC_ZOMBIE, mobjtype_t::MT_POSSESSED },
+	{ CC_SHOTGUN, mobjtype_t::MT_SHOTGUY },
+	{ CC_HEAVY, mobjtype_t::MT_CHAINGUY },
+	{ CC_IMP, mobjtype_t::MT_TROOP },
+	{ CC_DEMON, mobjtype_t::MT_SERGEANT },
+	{ CC_LOST, mobjtype_t::MT_SKULL },
+	{ CC_CACO, mobjtype_t::MT_HEAD },
+	{ CC_HELL, mobjtype_t::MT_KNIGHT },
+	{ CC_BARON, mobjtype_t::MT_BRUISER },
+	{ CC_ARACH, mobjtype_t::MT_BABY },
+	{ CC_PAIN, mobjtype_t::MT_PAIN },
+	{ CC_REVEN, mobjtype_t::MT_UNDEAD },
+	{ CC_MANCU, mobjtype_t::MT_FATSO },
+	{ CC_ARCH, mobjtype_t::MT_VILE },
+	{ CC_SPIDER, mobjtype_t::MT_SPIDER },
+	{ CC_CYBER, mobjtype_t::MT_CYBORG },
+	{ CC_HERO, mobjtype_t::MT_PLAYER },
+	{ nullptr, mobjtype_t::MT_NULL }
 };
 
-int		castnum;
+int castnum;
 TimeType casttics;
-state_t*	caststate;
-bool		castdeath;
-int		castframes;
-int		castonmelee;
-bool		castattacking;
-static signed char	castangle; // [crispy] turnable cast
-static signed char	castskip; // [crispy] skippable cast
-static bool	castflip; // [crispy] flippable death sequence
+const state_t* caststate;
+bool castdeath;
+int castframes;
+int castonmelee;
+bool castattacking;
+static char castangle; // turnable cast
+static char castskip; // skippable cast
+static bool castflip; // flippable death sequence
 
-// [crispy] randomize seestate and deathstate sounds in the cast
-static int F_RandomizeSound (int sound)
+// randomize seestate and deathstate sounds in the cast
+static sfxenum_t F_RandomizeSound(sfxenum_t sound)
 {
 	if (!crispy->soundfix)
+	{
 		return sound;
+	}
 
 	switch (sound)
 	{
-		// [crispy] actor->info->seesound, from p_enemy.c:A_Look()
-		case sfx_posit1:
-		case sfx_posit2:
-		case sfx_posit3:
-			return sfx_posit1 + Crispy_Random()%3;
-			break;
+	// actor->info->seesound, from p_enemy.c:A_Look()
+	case sfxenum_t::sfx_posit1:
+	case sfxenum_t::sfx_posit2:
+	case sfxenum_t::sfx_posit3:
+		return sfxenum_t((int)sfxenum_t::sfx_posit1 + Crispy_Random()%3);
+		break;
 
-		case sfx_bgsit1:
-		case sfx_bgsit2:
-			return sfx_bgsit1 + Crispy_Random()%2;
-			break;
+	case sfxenum_t::sfx_bgsit1:
+	case sfxenum_t::sfx_bgsit2:
+		return sfxenum_t((int)sfxenum_t::sfx_bgsit1 + Crispy_Random()%2);
+		break;
 
-		// [crispy] actor->info->deathsound, from p_enemy.c:A_Scream()
-		case sfx_podth1:
-		case sfx_podth2:
-		case sfx_podth3:
-			return sfx_podth1 + Crispy_Random()%3;
-			break;
+	// actor->info->deathsound, from p_enemy.c:A_Scream()
+	case sfxenum_t::sfx_podth1:
+	case sfxenum_t::sfx_podth2:
+	case sfxenum_t::sfx_podth3:
+		return sfxenum_t((int)sfxenum_t::sfx_podth1 + Crispy_Random()%3);
+		break;
 
-		case sfx_bgdth1:
-		case sfx_bgdth2:
-			return sfx_bgdth1 + Crispy_Random()%2;
-			break;
+	case sfxenum_t::sfx_bgdth1:
+	case sfxenum_t::sfx_bgdth2:
+		return sfxenum_t((int)sfxenum_t::sfx_bgdth1 + Crispy_Random()%2);
+		break;
 
-		default:
-			return sound;
-			break;
+	default:
+		return sound;
+		break;
 	}
 }
 
@@ -438,330 +442,353 @@ extern void A_VileTarget();
 
 struct actionsound_t
 {
-	void* const action;
-	const int sound;
+	const void *const action;
+	const sfxenum_t sound;
 	const bool early;
 };
 
-static const actionsound_t actionsounds[] =
-{
-	{A_PosAttack,	sfx_pistol, false},
-	{A_SPosAttack, sfx_shotgn, false},
-	{A_CPosAttack, sfx_shotgn, false},
-	{A_CPosRefire, sfx_shotgn, false},
-	{A_VileTarget, sfx_vilatk, true},
-	{A_SkelWhoosh, sfx_skeswg, false},
-	{A_SkelFist,	sfx_skepch, false},
-	{A_SkelMissile, sfx_skeatk, true},
-	{A_FatAttack1, sfx_firsht, false},
-	{A_FatAttack2, sfx_firsht, false},
-	{A_FatAttack3, sfx_firsht, false},
-	{A_HeadAttack, sfx_firsht, true},
-	{A_BruisAttack, sfx_firsht, true},
-	{A_TroopAttack, sfx_claw,	false},
-	{A_SargAttack, sfx_sgtatk, true},
-	{A_SkullAttack, sfx_sklatk, false},
-	{A_PainAttack, sfx_sklatk, true},
-	{A_BspiAttack, sfx_plasma, false},
-	{A_CyberAttack, sfx_rlaunc, false},
+static const std::array<const actionsound_t, 19> actionsounds{
+	actionsound_t{ A_PosAttack,		sfxenum_t::sfx_pistol,	false },
+	actionsound_t{ A_SPosAttack,	sfxenum_t::sfx_shotgn,	false },
+	actionsound_t{ A_CPosAttack,	sfxenum_t::sfx_shotgn,	false },
+	actionsound_t{ A_CPosRefire,	sfxenum_t::sfx_shotgn,	false },
+	actionsound_t{ A_VileTarget,	sfxenum_t::sfx_vilatk,	true },
+	actionsound_t{ A_SkelWhoosh,	sfxenum_t::sfx_skeswg,	false },
+	actionsound_t{ A_SkelFist,		sfxenum_t::sfx_skepch,	false },
+	actionsound_t{ A_SkelMissile,	sfxenum_t::sfx_skeatk,	true },
+	actionsound_t{ A_FatAttack1,	sfxenum_t::sfx_firsht,	false },
+	actionsound_t{ A_FatAttack2,	sfxenum_t::sfx_firsht,	false },
+	actionsound_t{ A_FatAttack3,	sfxenum_t::sfx_firsht,	false },
+	actionsound_t{ A_HeadAttack,	sfxenum_t::sfx_firsht,	true },
+	actionsound_t{ A_BruisAttack,	sfxenum_t::sfx_firsht,	true },
+	actionsound_t{ A_TroopAttack,	sfxenum_t::sfx_claw,	false },
+	actionsound_t{ A_SargAttack,	sfxenum_t::sfx_sgtatk,	true },
+	actionsound_t{ A_SkullAttack,	sfxenum_t::sfx_sklatk,	false },
+	actionsound_t{ A_PainAttack,	sfxenum_t::sfx_sklatk,	true },
+	actionsound_t{ A_BspiAttack,	sfxenum_t::sfx_plasma,	false },
+	actionsound_t{ A_CyberAttack,	sfxenum_t::sfx_rlaunc,	false }
 };
 
-// [crispy] play attack sound based on state action function (instead of state number)
-static int F_SoundForState (int st)
+// play attack sound based on state action function (instead of state number)
+static sfxenum_t F_SoundForState(statenum_t st)
 {
-	void* const castaction = (void*) caststate->action.acv;
-	void* const nextaction = (void*) (&states[caststate->nextstate])->action.acv;
+	void* const castaction = (void*)caststate->action.acv;
+	void* const nextaction = (void*)(&states[std::size_t(caststate->nextstate)])->action.acv;
 
-	// [crispy] fix Doomguy in casting sequence
-	if (castaction == NULL)
+	// fix Doomguy in casting sequence
+	if (!castaction)
 	{
-		if (st == S_PLAY_ATK2)
-			return sfx_dshtgn;
+		if (st == statenum_t::S_PLAY_ATK2)
+		{
+			return sfxenum_t::sfx_dshtgn;
+		}
 		else
-			return 0;
+		{
+			return sfxenum_t::sfx_None;
+		}
 	}
 	else
 	{
-		int i;
-
-		for (i = 0; i < arrlen(actionsounds); i++)
+		for (size_t i{0}; i < actionsounds.size(); ++i)
 		{
 			const actionsound_t* const as = &actionsounds[i];
 
-			if ((!as->early && castaction == as->action) ||
-				(as->early && nextaction == as->action))
+			if ((!as->early && castaction == as->action) || (as->early && nextaction == as->action))
 			{
 				return as->sound;
 			}
 		}
 	}
 
-	return 0;
+	return sfxenum_t::sfx_None;
 }
 
-//
-// F_StartCast
-//
-void F_StartCast ()
+void F_StartCast()
 {
-	wipegamestate = -1;		// force a screen wipe
+	wipegamestate = (GameState_t)-1;		// force a screen wipe
 	castnum = 0;
-	caststate = &states[mobjinfo[castorder[castnum].type].seestate];
+	caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)];
 	casttics = caststate->tics;
 	castdeath = false;
-	finalestage = F_STAGE_CAST;
+	finalestage = finalestage_t::F_STAGE_CAST;
 	castframes = 0;
 	castonmelee = 0;
 	castattacking = false;
-	S_ChangeMusic(mus_evil, true);
+	S_ChangeMusic(musicenum_t::mus_evil, true);
 }
 
-
-//
-// F_CastTicker
-//
-void F_CastTicker ()
+void F_CastTicker()
 {
-	int		st;
-	int		sfx;
+	statenum_t st;
+	sfxenum_t sfx;
 
 	if (--casttics > 0)
-	return;			// not time to change state yet
+	{
+		return;			// not time to change state yet
+	}
 
-	if (caststate->tics == -1 || caststate->nextstate == S_NULL || castskip) // [crispy] skippable cast
+	if (caststate->tics == -1 || caststate->nextstate == statenum_t::S_NULL || castskip) // [crispy] skippable cast
 	{
-	if (castskip)
-	{
-		castnum += castskip;
-		castskip = 0;
-	}
-	else
-	// switch from deathstate to next monster
-	castnum++;
-	castdeath = false;
-	if (castorder[castnum].name == NULL)
-		castnum = 0;
-	if (mobjinfo[castorder[castnum].type].seesound)
-		S_StartSound(NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].seesound));
-	caststate = &states[mobjinfo[castorder[castnum].type].seestate];
-	castframes = 0;
-	castangle = 0; // [crispy] turnable cast
-	castflip = false; // [crispy] flippable death sequence
-	}
-	else
-	{
-	// just advance to next state in animation
-	// [crispy] fix Doomguy in casting sequence
-	/*
-	if (!castdeath && caststate == &states[S_PLAY_ATK1])
-		goto stopattack;	// Oh, gross hack!
-	*/
-	// [crispy] Allow A_RandomJump() in deaths in cast sequence
-	if (caststate->action.acp1 == A_RandomJump && Crispy_Random() < caststate->misc2)
-	{
-		st = caststate->misc1;
-	}
-	else
-	{
-	// [crispy] fix Doomguy in casting sequence
-	if (!castdeath && caststate == &states[S_PLAY_ATK1])
-		st = S_PLAY_ATK2;
-	else
-	if (!castdeath && caststate == &states[S_PLAY_ATK2])
-		goto stopattack;	// Oh, gross hack!
-	else
-	st = caststate->nextstate;
-	}
-	caststate = &states[st];
-	castframes++;
+		if (castskip)
+		{
+			castnum += castskip;
+			castskip = 0;
+		}
+		else
+		{
+			// switch from deathstate to next monster
+			++castnum;
+		}
 
-	sfx = F_SoundForState(st);
+		castdeath = false;
+
+		if (castorder[castnum].name == nullptr)
+		{
+			castnum = 0;
+		}
+
+		if ((bool)mobjinfo[std::size_t(castorder[castnum].type)].seesound)
+		{
+			S_StartSound(nullptr, F_RandomizeSound(mobjinfo[std::size_t(castorder[castnum].type)].seesound));
+		}
+
+		caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)];
+		castframes = 0;
+		castangle = 0; // turnable cast
+		castflip = false; // flippable death sequence
+	}
+	else
+	{
+		// just advance to next state in animation
+		// fix Doomguy in casting sequence
+		/*
+		if (!castdeath && caststate == &states[S_PLAY_ATK1])
+			goto stopattack;	// Oh, gross hack!
+		*/
+		// Allow A_RandomJump() in deaths in cast sequence
+		if (caststate->action.acp1 == (actionf_p1)A_RandomJump && Crispy_Random() < caststate->misc2)
+		{
+			st = (statenum_t)caststate->misc1;
+		}
+		else
+		{
+			// fix Doomguy in casting sequence
+			if (!castdeath && caststate == &states[std::size_t(statenum_t::S_PLAY_ATK1)])
+			{
+				st = statenum_t::S_PLAY_ATK2;
+			}
+			else if (!castdeath && caststate == &states[std::size_t(statenum_t::S_PLAY_ATK2)])
+			{
+				goto stopattack;	// Oh, gross hack!
+			}
+			else
+			{
+				st = caststate->nextstate;
+			}
+		}
+		caststate = &states[std::size_t(st)];
+		++castframes;
+
+		sfx = F_SoundForState(st);
 /*
-	// sound hacks....
-	switch (st)
-	{
-		case S_PLAY_ATK2:	sfx = sfx_dshtgn; break; // [crispy] fix Doomguy in casting sequence
-		case S_POSS_ATK2:	sfx = sfx_pistol; break;
-		case S_SPOS_ATK2:	sfx = sfx_shotgn; break;
-		case S_VILE_ATK2:	sfx = sfx_vilatk; break;
-		case S_SKEL_FIST2:	sfx = sfx_skeswg; break;
-		case S_SKEL_FIST4:	sfx = sfx_skepch; break;
-		case S_SKEL_MISS2:	sfx = sfx_skeatk; break;
-		case S_FATT_ATK8:
-		case S_FATT_ATK5:
-		case S_FATT_ATK2:	sfx = sfx_firsht; break;
-		case S_CPOS_ATK2:
-		case S_CPOS_ATK3:
-		case S_CPOS_ATK4:	sfx = sfx_shotgn; break;
-		case S_TROO_ATK3:	sfx = sfx_claw; break;
-		case S_SARG_ATK2:	sfx = sfx_sgtatk; break;
-		case S_BOSS_ATK2:
-		case S_BOS2_ATK2:
-		case S_HEAD_ATK2:	sfx = sfx_firsht; break;
-		case S_SKULL_ATK2:	sfx = sfx_sklatk; break;
-		case S_SPID_ATK2:
-		case S_SPID_ATK3:	sfx = sfx_shotgn; break;
-		case S_BSPI_ATK2:	sfx = sfx_plasma; break;
-		case S_CYBER_ATK2:
-		case S_CYBER_ATK4:
-		case S_CYBER_ATK6:	sfx = sfx_rlaunc; break;
-		case S_PAIN_ATK3:	sfx = sfx_sklatk; break;
-		default: sfx = 0; break;
-	}
-
+		// sound hacks....
+		switch (st)
+		{
+			case statenum_t::S_PLAY_ATK2: sfx = sfxenum_t::sfx_dshtgn; break; // [crispy] fix Doomguy in casting sequence
+			case statenum_t::S_POSS_ATK2: sfx = sfxenum_t::sfx_pistol; break;
+			case statenum_t::S_SPOS_ATK2: sfx = sfxenum_t::sfx_shotgn; break;
+			case statenum_t::S_VILE_ATK2: sfx = sfxenum_t::sfx_vilatk; break;
+			case statenum_t::S_SKEL_FIST2: sfx = sfxenum_t::sfx_skeswg; break;
+			case statenum_t::S_SKEL_FIST4: sfx = sfxenum_t::sfx_skepch; break;
+			case statenum_t::S_SKEL_MISS2: sfx = sfxenum_t::sfx_skeatk; break;
+			case statenum_t::S_FATT_ATK8:
+			case statenum_t::S_FATT_ATK5:
+			case statenum_t::S_FATT_ATK2: sfx = sfxenum_t::sfx_firsht; break;
+			case statenum_t::S_CPOS_ATK2:
+			case statenum_t::S_CPOS_ATK3:
+			case statenum_t::S_CPOS_ATK4: sfx = sfxenum_t::sfx_shotgn; break;
+			case statenum_t::S_TROO_ATK3: sfx = sfxenum_t::sfx_claw; break;
+			case statenum_t::S_SARG_ATK2: sfx = sfxenum_t::sfx_sgtatk; break;
+			case statenum_t::S_BOSS_ATK2:
+			case statenum_t::S_BOS2_ATK2:
+			case statenum_t::S_HEAD_ATK2: sfx = sfxenum_t::sfx_firsht; break;
+			case statenum_t::S_SKULL_ATK2: sfx = sfxenum_t::sfx_sklatk; break;
+			case statenum_t::S_SPID_ATK2:
+			case statenum_t::S_SPID_ATK3: sfx = sfxenum_t::sfx_shotgn; break;
+			case statenum_t::S_BSPI_ATK2: sfx = sfxenum_t::sfx_plasma; break;
+			case statenum_t::S_CYBER_ATK2:
+			case statenum_t::S_CYBER_ATK4:
+			case statenum_t::S_CYBER_ATK6: sfx = sfxenum_t::sfx_rlaunc; break;
+			case statenum_t::S_PAIN_ATK3: sfx = sfxenum_t::sfx_sklatk; break;
+			default: sfx = 0; break;
+		}
 */
-	if (sfx)
-		S_StartSound(NULL, sfx);
+		if ((bool)sfx)
+		{
+			S_StartSound(nullptr, sfx);
+		}
 	}
 
 	if (!castdeath && castframes == 12)
 	{
-	// go into attack frame
-	castattacking = true;
-	if (castonmelee)
-		caststate=&states[mobjinfo[castorder[castnum].type].meleestate];
-	else
-		caststate=&states[mobjinfo[castorder[castnum].type].missilestate];
-	castonmelee ^= 1;
-	if (caststate == &states[S_NULL])
-	{
+		// go into attack frame
+		castattacking = true;
 		if (castonmelee)
-		caststate=
-			&states[mobjinfo[castorder[castnum].type].meleestate];
+		{
+			caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].meleestate)];
+		}
 		else
-		caststate=
-			&states[mobjinfo[castorder[castnum].type].missilestate];
-	}
+		{
+			caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].missilestate)];
+		}
+		castonmelee ^= 1;
+		if (caststate == &states[std::size_t(statenum_t::S_NULL)])
+		{
+			if (castonmelee)
+			{
+				caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].meleestate)];
+			}
+			else
+			{
+				caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].missilestate)];
+			}
+		}
 	}
 
 	if (castattacking)
 	{
-	if (castframes == 24
-		||	caststate == &states[mobjinfo[castorder[castnum].type].seestate] )
-	{
-		stopattack:
-		castattacking = false;
-		castframes = 0;
-		caststate = &states[mobjinfo[castorder[castnum].type].seestate];
-	}
+		if (castframes == 24 || caststate == &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)])
+		{
+			stopattack:
+			castattacking = false;
+			castframes = 0;
+			caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)];
+		}
 	}
 
 	casttics = caststate->tics;
 	if (casttics == -1)
 	{
-	// [crispy] Allow A_RandomJump() in deaths in cast sequence
-	if (caststate->action.acp1 == A_RandomJump)
-	{
-		if (Crispy_Random() < caststate->misc2)
+		// Allow A_RandomJump() in deaths in cast sequence
+		if (caststate->action.acp1 == (actionf_p1)A_RandomJump)
 		{
-		caststate = &states[caststate->misc1];
-		}
-		else
-		{
-		caststate = &states[caststate->nextstate];
+			if (Crispy_Random() < caststate->misc2)
+			{
+				caststate = &states[std::size_t(caststate->misc1)];
+			}
+			else
+			{
+				caststate = &states[std::size_t(caststate->nextstate)];
+			}
+
+			casttics = caststate->tics;
 		}
 
-		casttics = caststate->tics;
-	}
-
-	if (casttics == -1)
-	{
-	casttics = 15;
-	}
+		if (casttics == -1)
+		{
+			casttics = 15;
+		}
 	}
 }
 
-
-//
-// F_CastResponder
-//
-
-bool F_CastResponder (EventType* ev)
+bool F_CastResponder(EventType* ev)
 {
 	bool xdeath = false;
 
-	if (ev->type != ev_keydown)
-	return false;
+	if (ev->type != evtype_t::ev_keydown)
+	{
+		return false;
+	}
 
-	// [crispy] make monsters turnable in cast ...
+	// make monsters turnable in cast ...
 	if (ev->data1 == key_left)
 	{
-	if (++castangle > 7)
-		castangle = 0;
-	return false;
+		if (++castangle > 7)
+		{
+			castangle = 0;
+		}
+		return false;
 	}
-	else
-	if (ev->data1 == key_right)
+	else if (ev->data1 == key_right)
 	{
-	if (--castangle < 0)
-		castangle = 7;
+		if (--castangle < 0)
+		{
+			castangle = 7;
+		}
 	return false;
 	}
-	else
-	// [crispy] ... and allow to skip through them ..
-	if (ev->data1 == key_strafeleft || ev->data1 == key_alt_strafeleft)
+	// ... and allow to skip through them ..
+	else if (ev->data1 == key_strafeleft || ev->data1 == key_alt_strafeleft)
 	{
-	castskip = castnum ? -1 : arrlen(castorder)-2;
-	return false;
+		castskip = castnum ? -1 : arrlen(castorder)-2;
+		return false;
 	}
-	else
-	if (ev->data1 == key_straferight || ev->data1 == key_alt_straferight)
+	else if (ev->data1 == key_straferight || ev->data1 == key_alt_straferight)
 	{
-	castskip = +1;
-	return false;
+		castskip = +1;
+		return false;
 	}
-	// [crispy] ... and finally turn them into gibbs
+	// ... and finally turn them into gibbs
 	if (ev->data1 == key_speed)
-	xdeath = true;
+	{
+		xdeath = true;
+	}
 
 	if (castdeath)
-	return true;			// already in dying frames
+	{
+		return true;			// already in dying frames
+	}
 
 	// go into death frame
 	castdeath = true;
-	if (xdeath && mobjinfo[castorder[castnum].type].xdeathstate)
-	caststate = &states[mobjinfo[castorder[castnum].type].xdeathstate];
+	if (xdeath && (bool)mobjinfo[std::size_t(castorder[castnum].type)].xdeathstate)
+	{
+		caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].xdeathstate)];
+	}
 	else
-	caststate = &states[mobjinfo[castorder[castnum].type].deathstate];
+	{
+		caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].deathstate)];
+	}
 	casttics = caststate->tics;
-	// [crispy] Allow A_RandomJump() in deaths in cast sequence
-	if (casttics == -1 && caststate->action.acp1 == A_RandomJump)
+	// Allow A_RandomJump() in deaths in cast sequence
+	if (casttics == -1 && caststate->action.acp1 == (actionf_p1)A_RandomJump)
 	{
 		if (Crispy_Random() < caststate->misc2)
 		{
-			caststate = &states [caststate->misc1];
+			caststate = &states[caststate->misc1];
 		}
 		else
 		{
-			caststate = &states [caststate->nextstate];
+			caststate = &states[std::size_t(caststate->nextstate)];
 		}
 		casttics = caststate->tics;
 	}
 	castframes = 0;
 	castattacking = false;
-	if (xdeath && mobjinfo[castorder[castnum].type].xdeathstate)
-		S_StartSound(NULL, sfx_slop);
-	else
-	if (mobjinfo[castorder[castnum].type].deathsound)
-	S_StartSound(NULL, F_RandomizeSound(mobjinfo[castorder[castnum].type].deathsound));
+	if (xdeath && (bool)mobjinfo[std::size_t(castorder[castnum].type)].xdeathstate)
+	{
+		S_StartSound(nullptr, sfxenum_t::sfx_slop);
+	}
+	else if ((bool)mobjinfo[std::size_t(castorder[castnum].type)].deathsound)
+	{
+		S_StartSound(nullptr, F_RandomizeSound(mobjinfo[std::size_t(castorder[castnum].type)].deathsound));
+	}
 
-	// [crispy] flippable death sequence
-	castflip = crispy->flipcorpses &&
-	castdeath &&
-	(mobjinfo[castorder[castnum].type].flags & MF_FLIPPABLE) &&
-	(Crispy_Random() & 1);
+	// flippable death sequence
+	castflip = crispy->flipcorpses && castdeath
+				&& ((int)mobjinfo[std::size_t(castorder[castnum].type)].flags & (int)mobjflag_t::MF_FLIPPABLE) && (Crispy_Random() & 1);
 
 	return true;
 }
 
-
-void F_CastPrint (const char* text)
+void F_CastPrint(std::string text)
 {
-	const char* ch;
-	int		c;
-	int		cx;
-	int		w;
-	int		width;
+/*
+	std::string ch;
+	int c;
+	int cx;
+	int w;
+	int width;
 
 	// find width
 	ch = text;
@@ -769,18 +796,21 @@ void F_CastPrint (const char* text)
 
 	while (ch)
 	{
-	c = *(ch++);
-	if (!c)
-		break;
-	c = toupper(c) - HU_FONTSTART;
-	if (c < 0 || c> HU_FONTSIZE)
-	{
-		width += 4;
-		continue;
-	}
+		c = *ch;
+		++ch;
+		if (!c)
+		{
+			break;
+		}
+		c = toupper(c) - HU_FONTSTART;
+		if (c < 0 || c> HU_FONTSIZE)
+		{
+			width += 4;
+			continue;
+		}
 
-	w = SHORT (hu_font[c]->width);
-	width += w;
+		w = SHORT (hu_font[c]->width);
+		width += w;
 	}
 
 	// draw it
@@ -788,72 +818,66 @@ void F_CastPrint (const char* text)
 	ch = text;
 	while (ch)
 	{
-	c = *(ch++);
-	if (!c)
-		break;
-	c = toupper(c) - HU_FONTSTART;
-	if (c < 0 || c> HU_FONTSIZE)
-	{
-		cx += 4;
-		continue;
-	}
+		c = *ch;
+		++ch;
+		if (!c)
+		{
+			break;
+		}
+		c = toupper(c) - HU_FONTSTART;
+		if (c < 0 || c> HU_FONTSIZE)
+		{
+			cx += 4;
+			continue;
+		}
 
-	w = SHORT (hu_font[c]->width);
-	V_DrawPatch(cx, 180, hu_font[c]);
-	cx+=w;
+		w = SHORT (hu_font[c]->width);
+		V_DrawPatch(cx, 180, hu_font[c]);
+		cx+=w;
 	}
-
+*/
 }
 
-
-//
-// F_CastDrawer
-//
-
-void F_CastDrawer ()
+void F_CastDrawer()
 {
-	spritedef_t*	sprdef;
-	spriteframe_t*	sprframe;
-	int			lump;
-	bool		flip;
-	patch_t*		patch;
-
 	// erase the entire screen to a background
-	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("BOSSBACK"), pu_tags_t::PU_CACHE), false);
+	V_DrawPatchFullScreen(W_CacheLumpName<patch_t>(DEH_String("BOSSBACK"), pu_tags_t::PU_CACHE), false);
 
-	F_CastPrint (DEH_String(castorder[castnum].name));
+	F_CastPrint(DEH_String(castorder[castnum].name));
 
 	// draw the current frame in the middle of the screen
-	sprdef = &sprites[caststate->sprite];
-	// [crispy] the TNT1 sprite is not supposed to be rendered anyway
-	if (!sprdef->numframes && caststate->sprite == SPR_TNT1)
+	spritedef_t* sprdef = &sprites[std::size_t(caststate->sprite)];
+	// the TNT1 sprite is not supposed to be rendered anyway
+	if (!sprdef->numframes && caststate->sprite == spritenum_t::SPR_TNT1)
 	{
-	return;
+		return;
 	}
-	sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
-	lump = sprframe->lump[castangle]; // [crispy] turnable cast
-	flip = (bool)sprframe->flip[castangle] ^ castflip; // [crispy] turnable cast, flippable death sequence
+	spriteframe_t* sprframe = &sprdef->spriteframes[caststate->frame & FF_FRAMEMASK];
+	int lump = sprframe->lump[castangle]; // turnable cast
+	bool flip = (bool)sprframe->flip[castangle] ^ castflip; // turnable cast, flippable death sequence
 
-	patch = W_CacheLumpNum(lump+firstspritelump, pu_tags_t::PU_CACHE);
+	patch_t* patch = W_CacheLumpNum<patch_t>(lump+firstspritelump, pu_tags_t::PU_CACHE);
 	if (flip)
-	V_DrawPatchFlipped(ORIGWIDTH/2, 170, patch);
+	{
+		V_DrawPatchFlipped(ORIGWIDTH/2, 170, patch);
+	}
 	else
-	V_DrawPatch(ORIGWIDTH/2, 170, patch);
+	{
+		V_DrawPatch(ORIGWIDTH/2, 170, patch);
+	}
 }
 
-
-//
-// F_DrawPatchCol
-//
-static fixed_t dxi, dy, dyi;
+static fixed_t dxi;
+static fixed_t dy;
+static fixed_t dyi;
 
 void F_DrawPatchCol(int x, patch_t* patch, int col)
 {
-	column_t*	column;
-	byte*	source;
-	pixel_t*	dest;
-	pixel_t*	desttop;
-	int		count;
+	column_t* column;
+	byte* source;
+	pixel_t* dest;
+	pixel_t* desttop;
+	int count;
 
 	column = (column_t*)((byte*)patch + LONG(patch->columnofs[col]));
 	desttop = I_VideoBuffer + x;
@@ -861,44 +885,40 @@ void F_DrawPatchCol(int x, patch_t* patch, int col)
 	// step through the posts in a column
 	while (column->topdelta != 0xff )
 	{
-	int srccol = 0;
-	source = (byte*)column + 3;
-	dest = desttop + ((column->topdelta * dy) >> FRACBITS)*SCREENWIDTH;
-	count = (column->length * dy) >> FRACBITS;
+		int srccol = 0;
+		source = (byte*)column + 3;
+		dest = desttop + ((column->topdelta * dy) >> FRACBITS)*SCREENWIDTH;
+		count = (column->length * dy) >> FRACBITS;
 
-	while (count--)
-	{
-		*dest = source[srccol >> FRACBITS];
-		srccol += dyi;
-		dest += SCREENWIDTH;
-	}
-	column = (column_t*)( (byte*)column + column->length + 4 );
+		while (count--)
+		{
+			*dest = source[srccol >> FRACBITS];
+			srccol += dyi;
+			dest += SCREENWIDTH;
+		}
+		column = (column_t*)( (byte*)column + column->length + 4 );
 	}
 }
 
-
-//
-// F_BunnyScroll
-//
-void F_BunnyScroll ()
+void F_BunnyScroll()
 {
-	signed int scrolled;
-	int		x;
-	patch_t*	p1;
-	patch_t*	p2;
-	char	name[10];
-	int		stage;
-	static int	laststage;
-	int			p2offset, p1offset, pillar_width;
+	int scrolled;
+	int x;
+	patch_t* p1;
+	patch_t* p2;
+	char name[10];
+	int stage;
+	static int laststage;
+	int p2offset, p1offset, pillar_width;
 
 	dxi = (ORIGWIDTH << FRACBITS) / NONWIDEWIDTH;
 	dy = (SCREENHEIGHT << FRACBITS) / ORIGHEIGHT;
 	dyi = (ORIGHEIGHT << FRACBITS) / SCREENHEIGHT;
 
-	p1 = W_CacheLumpName(DEH_String("PFUB2"), pu_tags_t::PU_LEVEL);
-	p2 = W_CacheLumpName(DEH_String("PFUB1"), pu_tags_t::PU_LEVEL);
+	p1 = W_CacheLumpName<patch_t>(DEH_String("PFUB2"), pu_tags_t::PU_LEVEL);
+	p2 = W_CacheLumpName<patch_t>(DEH_String("PFUB1"), pu_tags_t::PU_LEVEL);
 
-	// [crispy] fill pillarboxes in widescreen mode
+	// fill pillarboxes in widescreen mode
 	pillar_width = (SCREENWIDTH - (p1->width << FRACBITS) / dxi) / 2;
 
 	if (pillar_width > 0)
@@ -929,51 +949,63 @@ void F_BunnyScroll ()
 
 	V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
-	scrolled = (ORIGWIDTH - ((signed int) finalecount-230)/2);
+	scrolled = (ORIGWIDTH - ((int)finalecount-230)/2);
 	if (scrolled > ORIGWIDTH)
-	scrolled = ORIGWIDTH;
+	{
+		scrolled = ORIGWIDTH;
+	}
 	if (scrolled < 0)
-	scrolled = 0;
+	{
+		scrolled = 0;
+	}
 
-	for (x = pillar_width; x < SCREENWIDTH - pillar_width; x++)
+	for (x = pillar_width; x < SCREENWIDTH - pillar_width; ++x)
 	{
 		int x2 = ((x * dxi) >> FRACBITS) - WIDESCREENDELTA + scrolled;
 
 		if (x2 < p2offset)
+		{
 			F_DrawPatchCol(x, p1, x2 - p1offset);
+		}
 		else
+		{
 			F_DrawPatchCol(x, p2, x2 - p2offset);
+		}
 	}
 
 	if (finalecount < 1130)
-	return;
+	{
+		return;
+	}
 	if (finalecount < 1180)
 	{
 		V_DrawPatch((ORIGWIDTH - 13 * 8) / 2,
 					(ORIGHEIGHT - 8 * 8) / 2,
-					W_CacheLumpName(DEH_String("END0"), pu_tags_t::PU_CACHE));
-	laststage = 0;
-	return;
+					W_CacheLumpName<patch_t>(DEH_String("END0"), pu_tags_t::PU_CACHE));
+		laststage = 0;
+		return;
 	}
 
 	stage = (finalecount-1180) / 5;
 	if (stage > 6)
-	stage = 6;
+	{
+		stage = 6;
+	}
 	if (stage > laststage)
 	{
-	S_StartSound(NULL, sfx_pistol);
-	laststage = stage;
+		S_StartSound(nullptr, sfxenum_t::sfx_pistol);
+		laststage = stage;
 	}
 
 	DEH_snprintf(name, 10, "END%i", stage);
 	V_DrawPatch((ORIGWIDTH - 13 * 8) / 2,
 				(ORIGHEIGHT - 8 * 8) / 2,
-				W_CacheLumpName(name,PU_CACHE));
+				W_CacheLumpName<patch_t>(name, pu_tags_t::PU_CACHE));
 }
 
 static void F_ArtScreenDrawer()
 {
-	const char* lumpname;
+	std::string lumpname;
 
 	if (gameepisode == 3)
 	{
@@ -983,57 +1015,51 @@ static void F_ArtScreenDrawer()
 	{
 		switch (gameepisode)
 		{
-			case 1:
-				if (gameversion >= GameVersion_t::exe_ultimate)
-				{
-					lumpname = "CREDIT";
-				}
-				else
-				{
-					lumpname = "HELP2";
-				}
-				break;
-			case 2:
-				lumpname = "VICTORY2";
-				break;
-			case 4:
-				lumpname = "ENDPIC";
-				break;
-			// [crispy] Sigil
-			case 5:
-				lumpname = "SIGILEND";
-				if (W_CheckNumForName(DEH_String(lumpname)) == -1)
-				{
-					return;
-				}
-				break;
-			default:
+		case 1:
+			if (gameversion >= GameVersion::exe_ultimate)
+			{
+				lumpname = "CREDIT";
+			}
+			else
+			{
+				lumpname = "HELP2";
+			}
+			break;
+		case 2:
+			lumpname = "VICTORY2";
+			break;
+		case 4:
+			lumpname = "ENDPIC";
+			break;
+		case 5:
+			lumpname = "SIGILEND";
+			if (W_CheckNumForName(DEH_String(lumpname)) == -1)
+			{
 				return;
+			}
+			break;
+		default:
+			return;
 		}
 
 		lumpname = DEH_String(lumpname);
 
-		V_DrawPatchFullScreen(W_CacheLumpName(lumpname, pu_tags_t::PU_CACHE), false);
+		V_DrawPatchFullScreen(W_CacheLumpName<patch_t>(lumpname, pu_tags_t::PU_CACHE), false);
 	}
 }
 
-//
-// F_Drawer
-//
-void F_Drawer ()
+void F_Drawer()
 {
 	switch (finalestage)
 	{
-		case F_STAGE_CAST:
-			F_CastDrawer();
-			break;
-		case F_STAGE_TEXT:
-			F_TextWrite();
-			break;
-		case F_STAGE_ARTSCREEN:
-			F_ArtScreenDrawer();
-			break;
+	case finalestage_t::F_STAGE_CAST:
+		F_CastDrawer();
+		break;
+	case finalestage_t::F_STAGE_TEXT:
+		F_TextWrite();
+		break;
+	case finalestage_t::F_STAGE_ARTSCREEN:
+		F_ArtScreenDrawer();
+		break;
 	}
 }
-
-

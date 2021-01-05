@@ -25,9 +25,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(MSVC)
 	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
 	add_compile_options(
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-"
-		"/Zc:__cplusplus" "/permissive-" "/Zc:preprocessor" "/experimental:module" "/MD"
-		"/W4" "/Od" "/arch:AVX2" #"/Zc:externConstexpr"
+		"/Zc:__cplusplus"
+		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHs-" "/EHc-" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MD"
+		"/permissive-" "/Zc:preprocessor"
+		"/W4" "/Od" "/arch:AVX2"
+		#"/experimental:module"
+		#"/Zc:externConstexpr"
 		)
 	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX")
 else()

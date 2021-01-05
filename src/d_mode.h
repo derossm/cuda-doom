@@ -18,7 +18,7 @@
 #include "doomtype.h"
 
 // The "mission" controls what game we are playing.
-enum class GameMission_t
+enum class GameMission
 {
 	doom,			// Doom 1
 	doom2,			// Doom 2
@@ -47,8 +47,7 @@ enum class GameMode
 };
 
 // What version are we emulating?
-
-enum class GameVersion_t
+enum class GameVersion
 {
 	exe_doom_1_2,		// Doom 1.2: shareware and registered
 	exe_doom_1_666,		// Doom 1.666: for shareware, registered and commercial
@@ -67,7 +66,7 @@ enum class GameVersion_t
 };
 
 // What IWAD variant are we using?
-enum class GameVariant_t
+enum class GameVariant
 {
 	vanilla,	// Vanilla Doom
 	freedoom,	// FreeDoom: Phase 1 + 2
@@ -76,7 +75,6 @@ enum class GameVariant_t
 };
 
 // Skill level.
-
 enum class SkillType
 {
 	sk_noitems = -1,	// the "-skill 0" hack
@@ -87,10 +85,10 @@ enum class SkillType
 	sk_nightmare
 };
 
-bool D_ValidGameMode(GameMission_t mission, GameMode mode);
-bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version);
-bool D_ValidEpisodeMap(GameMission_t mission, GameMode mode, int episode, int map);
-int D_GetNumEpisodes(GameMission_t mission, GameMode mode);
-bool D_IsEpisodeMap(GameMission_t mission);
-const char* D_GameMissionString(GameMission_t mission);
-const char* D_GameModeString(GameMode mode);
+bool D_ValidGameMode(GameMission mission, GameMode mode);
+bool D_ValidGameVersion(GameMission mission, GameVersion version);
+bool D_ValidEpisodeMap(GameMission mission, GameMode mode, int episode, int map);
+int D_GetNumEpisodes(GameMission mission, GameMode mode);
+bool D_IsEpisodeMap(GameMission mission);
+std::string D_GameMissionString(GameMission mission);
+std::string D_GameModeString(GameMode mode);

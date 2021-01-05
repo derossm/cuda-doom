@@ -11,7 +11,7 @@
 
 #include "../../derma/common.h"
 
-void SetProgramLocation(const char* path);
-void ExecuteProgram(const char* executable, const char* iwad, const char* args);
-void OpenTerminalWindow(const char* doomwadpath);
-void OpenDocumentation(const char* filename);
+void SetProgramLocation(std::string path);
+void ExecuteProgram(std::string executable, std::string iwad, std::string args);
+void OpenTerminalWindow(std::string doomwadpath);
+void OpenDocumentation(std::string filename);

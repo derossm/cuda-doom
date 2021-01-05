@@ -17,8 +17,8 @@
 #include "pcsound.h"
 #include "pcsound_internal.h"
 
-#define MAX_SOUND_SLICE_TIME 70 /* ms */
-#define SQUARE_WAVE_AMP 0x2000
+constexpr size_t MAX_SOUND_SLICE_TIME{70}; // ms
+constexpr size_t SQUARE_WAVE_AMP{0x2000};
 
 // If true, we initialized SDL and have the responsibility to shut it down
 static int sdl_was_initialized{0};

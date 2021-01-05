@@ -23,7 +23,7 @@
 #include "v_patch.h"
 
 // VIDEO
-#define CENTERY			(SCREENHEIGHT/2)
+#define CENTERY (SCREENHEIGHT/2)
 
 extern int dirtybox[4];
 
@@ -37,7 +37,7 @@ typedef bool (*vpatchclipfunc_t)(patch_t*, int, int);
 void V_SetPatchClipCallback(vpatchclipfunc_t func);
 
 // Allocates buffer screens, call before R_Init.
-void V_Init ();
+void V_Init();
 
 // Draw a block from the specified source screen to the screen.
 void V_CopyRect(int srcx, int srcy, pixel_t* source, int width, int height, int destx, int desty);
@@ -75,7 +75,7 @@ void V_RestoreBuffer();
 // Save a screenshot of the current screen to a file, named in the
 // format described in the string passed to the function, eg.
 // "DOOM%02i.pcx"
-void V_ScreenShot(const char* format);
+void V_ScreenShot(std::string format);
 
 // Load the lookup table for translucency calculations from the TINTTAB lump.
 void V_LoadTintTable();

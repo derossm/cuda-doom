@@ -18,18 +18,18 @@
 #include "doomdef.h"
 
 // Read events from all input devices
-void D_ProcessEvents ();
+void D_ProcessEvents();
 
 //
 // BASE LEVEL
 //
-void D_PageTicker ();
-void D_PageDrawer ();
-void D_AdvanceDemo ();
-void D_DoAdvanceDemo ();
-void D_StartTitle ();
+void D_PageTicker();
+void D_PageDrawer();
+void D_AdvanceDemo();
+void D_DoAdvanceDemo();
+void D_StartTitle();
 
 //
 // GLOBAL VARIABLES
 //
-extern GameAction_t	gameaction;
+extern GameAction_t gameaction;

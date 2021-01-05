@@ -8,10 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
+#include "txt_gui.h"
+
 #include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_io.h"
-#include "txt_gui.h"
 
 #define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)
 #define VALID_Y(y) ((y) >= cliparea->y1 && (y) < cliparea->y2)
@@ -35,7 +36,7 @@ static const int borders[4][4] =
 
 static txt_cliparea_t* cliparea = NULL;
 
-void DrawDesktopBackground(const char* title)
+void DrawDesktopBackground(std::string title)
 {
 	int i;
 	unsigned char* screendata;
@@ -49,8 +50,10 @@ void DrawDesktopBackground(const char* title)
 
 	for (i=0; i<SCREEN_W * SCREEN_H; ++i)
 	{
-		*(p++) = 0xb1;
-		*(p++) = ColorType::grey | (ColorType::blue << 4);
+		*p = 0xb1;
+		++p;
+		*p = ColorType::grey | (ColorType::blue << 4);
+		++p;
 	}
 
 	// Draw the top and bottom banners
@@ -59,16 +62,20 @@ void DrawDesktopBackground(const char* title)
 
 	for (i=0; i<SCREEN_W; ++i)
 	{
-		*(p++) = ' ';
-		*(p++) = ColorType::black | (ColorType::grey << 4);
+		*p = ' ';
+		++p;
+		*p = ColorType::black | (ColorType::grey << 4);
+		++p;
 	}
 
 	p = screendata + (SCREEN_H - 1) * SCREEN_W * 2;
 
 	for (i=0; i<SCREEN_W; ++i)
 	{
-		*(p++) = ' ';
-		*(p++) = ColorType::black | (ColorType::grey << 4);
+		*p = ' ';
+		++p;
+		*p = ColorType::black | (ColorType::grey << 4);
+		++p;
 	}
 
 	// Print the title
@@ -105,7 +112,7 @@ void DrawShadow(int x, int y, int w, int h)
 	}
 }
 
-void DrawWindowFrame(const char* title, int x, int y, int w, int h)
+void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 {
 	SavedColors colors;
 	int x1, y1;
@@ -212,11 +219,11 @@ void DrawSeparator(int x, int y, int w)
 
 // Alternative to DrawString() where the argument is a "code page
 // string" - characters are in native code page format and not UTF-8.
-void DrawCodePageString(const char* s)
+void DrawCodePageString(std::string s)
 {
 	int x, y;
 	int x1;
-	const char* p;
+	std::string p;
 
 	GetXY(&x, &y);
 
@@ -229,14 +236,15 @@ void DrawCodePageString(const char* s)
 			if (VALID_X(x1))
 			{
 				GotoXY(x1, y);
-				PutChar(*p);
+				// FIXME
+				//PutChar(*p);
 			}
 
 			x1 += 1;
 		}
 	}
 
-	GotoXY(x + strlen(s), y);
+	GotoXY(x + s.length(), y);
 }
 
 static void PutUnicodeChar(unsigned c)
@@ -266,11 +274,11 @@ static void PutUnicodeChar(unsigned c)
 	}
 }
 
-void DrawString(const char* s)
+void DrawString(std::string s)
 {
 	int x, y;
 	int x1;
-	const char* p;
+	std::string p;
 	unsigned c;
 
 	GetXY(&x, &y);

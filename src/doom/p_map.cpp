@@ -41,7 +41,7 @@
 // PrBoom-plus, at least so that the big spechits emulation list
 // on Doomworld can also be used with Chocolate Doom.
 
-#define DEFAULT_SPECHIT_MAGIC 0x01C09C98
+constexpr size_t DEFAULT_SPECHIT_MAGIC{0x01C09C98};
 
 // This is from a post by myk on the Doomworld forums,
 // outputted from entryway's spechit_magic generator for
@@ -51,33 +51,33 @@
 // the generator (hacked doom2.exe) and provide it
 // with -spechit.
 
-//#define DEFAULT_SPECHIT_MAGIC 0x84f968e8
+//constexpr size_t DEFAULT_SPECHIT_MAGIC{0x84f968e8};
 
 
-fixed_t		tmbbox[4];
-MapObject*		tmthing;
-int		tmflags;
-fixed_t		tmx;
-fixed_t		tmy;
+fixed_t tmbbox[4];
+MapObject* tmthing;
+int tmflags;
+fixed_t tmx;
+fixed_t tmy;
 
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
-bool		floatok;
+bool floatok;
 
-fixed_t		tmfloorz;
-fixed_t		tmceilingz;
-fixed_t		tmdropoffz;
+fixed_t tmfloorz;
+fixed_t tmceilingz;
+fixed_t tmdropoffz;
 
 // keep track of the line that lowers the ceiling,
 // so missiles don't explode against sky hack walls
-line_t*		ceilingline;
+line_t* ceilingline;
 
 // keep track of special lines as they are hit,
 // but don't process them until the move is proven valid
 
-line_t**	spechit; // [crispy] remove SPECHIT limit
-int		numspechit;
+line_t** spechit; // [crispy] remove SPECHIT limit
+int numspechit;
 static int spechit_max; // [crispy] remove SPECHIT limit
 
 
@@ -91,9 +91,9 @@ static int spechit_max; // [crispy] remove SPECHIT limit
 //
 bool PIT_StompThing (MapObject* thing)
 {
-	fixed_t	blockdist;
+	fixed_t blockdist;
 
-	if (!(thing->flags & MF_SHOOTABLE) )
+	if (!(thing->flags & mobjflag_t::MF_SHOOTABLE) )
 	return true;
 
 	blockdist = thing->radius + tmthing->radius;
@@ -124,14 +124,14 @@ bool PIT_StompThing (MapObject* thing)
 //
 bool P_TeleportMove(MapObject* thing, fixed_t x, fixed_t y)
 {
-	int			xl;
-	int			xh;
-	int			yl;
-	int			yh;
-	int			bx;
-	int			by;
+	int xl;
+	int xh;
+	int yl;
+	int yh;
+	int bx;
+	int by;
 
-	subsector_t*	newsubsec;
+	subsector_t* newsubsec;
 
 	// kill anything occupying the position
 	tmthing = thing;
@@ -155,7 +155,7 @@ bool P_TeleportMove(MapObject* thing, fixed_t x, fixed_t y)
 	tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
 	tmceilingz = newsubsec->sector->ceilingheight;
 
-	validcount++;
+	++validcount;
 	numspechit = 0;
 
 	// stomp on any things contacted
@@ -164,8 +164,8 @@ bool P_TeleportMove(MapObject* thing, fixed_t x, fixed_t y)
 	yl = (tmbbox[BOXBOTTOM] - bmaporgy - MAXRADIUS)>>MAPBLOCKSHIFT;
 	yh = (tmbbox[BOXTOP] - bmaporgy + MAXRADIUS)>>MAPBLOCKSHIFT;
 
-	for (bx=xl ; bx<=xh ; bx++)
-	for (by=yl ; by<=yh ; by++)
+	for (bx=xl ; bx<=xh ; ++bx)
+	for (by=yl ; by<=yh ; ++by)
 		if (!P_BlockThingsIterator(bx,by,PIT_StompThing))
 		return false;
 
@@ -223,7 +223,7 @@ bool PIT_CheckLine (line_t* ld)
 	if (!ld->backsector)
 	return false;		// one sided line
 
-	if (!(tmthing->flags & MF_MISSILE) )
+	if (!(tmthing->flags & mobjflag_t::MF_MISSILE) )
 	{
 	if ( ld->flags & ML_BLOCKING )
 		return false;	// explicitly blocking everything
@@ -258,7 +258,7 @@ bool PIT_CheckLine (line_t* ld)
 			spechit = I_Realloc(spechit, sizeof(*spechit) * spechit_max);
 		}
 		spechit[numspechit] = ld;
-	numspechit++;
+	++numspechit;
 
 		// fraggle: spechits overrun emulation code from prboom-plus
 		if (numspechit > MAXSPECIALCROSS_ORIGINAL)
@@ -278,12 +278,12 @@ bool PIT_CheckLine (line_t* ld)
 //
 bool PIT_CheckThing (MapObject* thing)
 {
-	fixed_t		blockdist;
-	bool		solid;
-	bool		unblocking = false;
-	int			damage;
+	fixed_t blockdist;
+	bool solid;
+	bool unblocking = false;
+	int damage;
 
-	if (!(thing->flags & (MF_SOLID|MF_SPECIAL|MF_SHOOTABLE) ))
+	if (!(thing->flags & (mobjflag_t::MF_SOLID|mobjflag_t::MF_SPECIAL|mobjflag_t::MF_SHOOTABLE) ))
 	return true;
 
 	blockdist = thing->radius + tmthing->radius;
@@ -300,7 +300,7 @@ bool PIT_CheckThing (MapObject* thing)
 	return true;
 
 	// check for skulls slamming into things
-	if (tmthing->flags & MF_SKULLFLY)
+	if (tmthing->flags & mobjflag_t::MF_SKULLFLY)
 	{
 	// [crispy] check if attacking skull flies over player
 	if (critical->overunder && thing->player)
@@ -315,7 +315,7 @@ bool PIT_CheckThing (MapObject* thing)
 
 	P_DamageMobj (thing, tmthing, tmthing, damage);
 
-	tmthing->flags &= ~MF_SKULLFLY;
+	tmthing->flags &= ~mobjflag_t::MF_SKULLFLY;
 	tmthing->momx = tmthing->momy = tmthing->momz = 0;
 
 	P_SetMobjState (tmthing, tmthing->info->spawnstate);
@@ -325,7 +325,7 @@ bool PIT_CheckThing (MapObject* thing)
 
 
 	// missiles can hit other things
-	if (tmthing->flags & MF_MISSILE)
+	if (tmthing->flags & mobjflag_t::MF_MISSILE)
 	{
 	// [crispy] mobj or actual sprite height
 	const fixed_t thingheight = (tmthing->target && tmthing->target->player &&
@@ -358,10 +358,10 @@ bool PIT_CheckThing (MapObject* thing)
 		}
 	}
 
-	if (! (thing->flags & MF_SHOOTABLE) )
+	if (! (thing->flags & mobjflag_t::MF_SHOOTABLE) )
 	{
 		// didn't do any damage
-		return !(thing->flags & MF_SOLID);
+		return !(thing->flags & mobjflag_t::MF_SOLID);
 	}
 
 	// damage / explode
@@ -373,10 +373,10 @@ bool PIT_CheckThing (MapObject* thing)
 	}
 
 	// check for special pickup
-	if (thing->flags & MF_SPECIAL)
+	if (thing->flags & mobjflag_t::MF_SPECIAL)
 	{
-	solid = (thing->flags & MF_SOLID) != 0;
-	if (tmflags&MF_PICKUP)
+	solid = (thing->flags & mobjflag_t::MF_SOLID) != 0;
+	if (tmflags&mobjflag_t::MF_PICKUP)
 	{
 		// can remove thing
 		P_TouchSpecialThing (thing, tmthing);
@@ -387,7 +387,7 @@ bool PIT_CheckThing (MapObject* thing)
 	if (critical->overunder)
 	{
 		// [crispy] a solid hanging body will allow sufficiently small things underneath it
-		if (thing->flags & MF_SOLID && thing->flags & MF_SPAWNCEILING)
+		if (thing->flags & mobjflag_t::MF_SOLID && thing->flags & mobjflag_t::MF_SPAWNCEILING)
 		{
 			if (tmthing->z + tmthing->height <= thing->z)
 			{
@@ -400,7 +400,7 @@ bool PIT_CheckThing (MapObject* thing)
 		}
 
 		// [crispy] allow players to walk over/under shootable objects
-		if (tmthing->player && thing->flags & MF_SHOOTABLE)
+		if (tmthing->player && thing->flags & mobjflag_t::MF_SHOOTABLE)
 		{
 			fixed_t newfloorz, newceilingz;
 			// [crispy] allow the usual 24 units step-up even across monsters' heads,
@@ -455,7 +455,7 @@ bool PIT_CheckThing (MapObject* thing)
 		}
 	}
 
-	return !(thing->flags & MF_SOLID) || unblocking;
+	return !(thing->flags & mobjflag_t::MF_SOLID) || unblocking;
 }
 
 
@@ -474,7 +474,7 @@ bool PIT_CheckThing (MapObject* thing)
 //	(doesn't need to be related to the MapObject->x,y)
 //
 // during:
-// special things are touched if MF_PICKUP
+// special things are touched if mobjflag_t::MF_PICKUP
 // early out on solid lines?
 //
 // out:
@@ -489,13 +489,13 @@ bool PIT_CheckThing (MapObject* thing)
 //
 bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y)
 {
-	int			xl;
-	int			xh;
-	int			yl;
-	int			yh;
-	int			bx;
-	int			by;
-	subsector_t*	newsubsec;
+	int xl;
+	int xh;
+	int yl;
+	int yh;
+	int bx;
+	int by;
+	subsector_t* newsubsec;
 
 	tmthing = thing;
 	tmflags = thing->flags;
@@ -518,10 +518,10 @@ bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y)
 	tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
 	tmceilingz = newsubsec->sector->ceilingheight;
 
-	validcount++;
+	++validcount;
 	numspechit = 0;
 
-	if ( tmflags & MF_NOCLIP )
+	if ( tmflags & mobjflag_t::MF_NOCLIP )
 	return true;
 
 	// Check things first, possibly picking things up.
@@ -534,8 +534,8 @@ bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y)
 	yl = (tmbbox[BOXBOTTOM] - bmaporgy - MAXRADIUS)>>MAPBLOCKSHIFT;
 	yh = (tmbbox[BOXTOP] - bmaporgy + MAXRADIUS)>>MAPBLOCKSHIFT;
 
-	for (bx=xl ; bx<=xh ; bx++)
-	for (by=yl ; by<=yh ; by++)
+	for (bx=xl ; bx<=xh ; ++bx)
+	for (by=yl ; by<=yh ; ++by)
 		if (!P_BlockThingsIterator(bx,by,PIT_CheckThing))
 		return false;
 
@@ -545,8 +545,8 @@ bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y)
 	yl = (tmbbox[BOXBOTTOM] - bmaporgy)>>MAPBLOCKSHIFT;
 	yh = (tmbbox[BOXTOP] - bmaporgy)>>MAPBLOCKSHIFT;
 
-	for (bx=xl ; bx<=xh ; bx++)
-	for (by=yl ; by<=yh ; by++)
+	for (bx=xl ; bx<=xh ; ++bx)
+	for (by=yl ; by<=yh ; ++by)
 		if (!P_BlockLinesIterator (bx,by,PIT_CheckLine))
 		return false;
 
@@ -557,36 +557,36 @@ bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y)
 //
 // P_TryMove
 // Attempt to move to a new position,
-// crossing special lines unless MF_TELEPORT is set.
+// crossing special lines unless mobjflag_t::MF_TELEPORT is set.
 //
 bool P_TryMove(MapObject* thing, fixed_t x, fixed_t y)
 {
-	fixed_t	oldx;
-	fixed_t	oldy;
-	int		side;
-	int		oldside;
-	line_t*	ld;
+	fixed_t oldx;
+	fixed_t oldy;
+	int side;
+	int oldside;
+	line_t* ld;
 
 	floatok = false;
 	if (!P_CheckPosition (thing, x, y))
 	return false;		// solid wall or thing
 
-	if ( !(thing->flags & MF_NOCLIP) )
+	if ( !(thing->flags & mobjflag_t::MF_NOCLIP) )
 	{
 	if (tmceilingz - tmfloorz < thing->height)
 		return false;	// doesn't fit
 
 	floatok = true;
 
-	if ( !(thing->flags&MF_TELEPORT)
+	if ( !(thing->flags&mobjflag_t::MF_TELEPORT)
 			&&tmceilingz - thing->z < thing->height)
 		return false;	// mobj must lower itself to fit
 
-	if ( !(thing->flags&MF_TELEPORT)
+	if ( !(thing->flags&mobjflag_t::MF_TELEPORT)
 			&& tmfloorz - thing->z > 24*FRACUNIT )
 		return false;	// too big a step up
 
-	if ( !(thing->flags&(MF_DROPOFF|MF_FLOAT))
+	if ( !(thing->flags&(mobjflag_t::MF_DROPOFF|mobjflag_t::MF_FLOAT))
 			&& tmfloorz - tmdropoffz > 24*FRACUNIT )
 		return false;	// don't stand over a dropoff
 	}
@@ -605,7 +605,7 @@ bool P_TryMove(MapObject* thing, fixed_t x, fixed_t y)
 	P_SetThingPosition (thing);
 
 	// if any special lines were hit, do the effect
-	if (! (thing->flags&(MF_TELEPORT|MF_NOCLIP)) )
+	if (! (thing->flags&(mobjflag_t::MF_TELEPORT|mobjflag_t::MF_NOCLIP)) )
 	{
 	while (numspechit--)
 	{
@@ -637,7 +637,7 @@ bool P_TryMove(MapObject* thing, fixed_t x, fixed_t y)
 //
 bool P_ThingHeightClip (MapObject* thing)
 {
-	bool		onfloor;
+	bool onfloor;
 
 	onfloor = (thing->z == thing->floorz);
 
@@ -671,16 +671,16 @@ bool P_ThingHeightClip (MapObject* thing)
 // SLIDE MOVE
 // Allows the player to slide along any angled walls.
 //
-fixed_t		bestslidefrac;
-fixed_t		secondslidefrac;
+fixed_t bestslidefrac;
+fixed_t secondslidefrac;
 
-line_t*		bestslideline;
-line_t*		secondslideline;
+line_t* bestslideline;
+line_t* secondslideline;
 
-MapObject*		slidemo;
+MapObject* slidemo;
 
-fixed_t		tmxmove;
-fixed_t		tmymove;
+fixed_t tmxmove;
+fixed_t tmymove;
 
 
 
@@ -691,23 +691,23 @@ fixed_t		tmymove;
 //
 void P_HitSlideLine (line_t* ld)
 {
-	int			side;
+	int side;
 
-	angle_t		lineangle;
-	angle_t		moveangle;
-	angle_t		deltaangle;
+	angle_t lineangle;
+	angle_t moveangle;
+	angle_t deltaangle;
 
-	fixed_t		movelen;
-	fixed_t		newlen;
+	fixed_t movelen;
+	fixed_t newlen;
 
 
-	if (ld->slopetype == ST_HORIZONTAL)
+	if (ld->slopetype == slopetype_t::ST_HORIZONTAL)
 	{
 	tmymove = 0;
 	return;
 	}
 
-	if (ld->slopetype == ST_VERTICAL)
+	if (ld->slopetype == slopetype_t::ST_VERTICAL)
 	{
 	tmxmove = 0;
 	return;
@@ -743,7 +743,7 @@ void P_HitSlideLine (line_t* ld)
 //
 bool PTR_SlideTraverse (intercept_t* in)
 {
-	line_t*	li;
+	line_t* li;
 
 	if (!in->isaline)
 	I_Error("PTR_SlideTraverse: not a line?");
@@ -802,13 +802,13 @@ bool PTR_SlideTraverse (intercept_t* in)
 //
 void P_SlideMove (MapObject* mo)
 {
-	fixed_t		leadx;
-	fixed_t		leady;
-	fixed_t		trailx;
-	fixed_t		traily;
-	fixed_t		newx;
-	fixed_t		newy;
-	int			hitcount;
+	fixed_t leadx;
+	fixed_t leady;
+	fixed_t trailx;
+	fixed_t traily;
+	fixed_t newx;
+	fixed_t newy;
+	int hitcount;
 
 	slidemo = mo;
 	hitcount = 0;
@@ -899,21 +899,21 @@ void P_SlideMove (MapObject* mo)
 //
 // P_LineAttack
 //
-MapObject*		linetarget;	// who got hit (or NULL)
-MapObject*		shootthing;
+MapObject* linetarget;	// who got hit (or NULL)
+MapObject* shootthing;
 
 // Height if not aiming up or down
 // ???: use slope for monsters?
-fixed_t		shootz;
+fixed_t shootz;
 
-int		la_damage;
-fixed_t		attackrange;
+int la_damage;
+fixed_t attackrange;
 
-fixed_t		aimslope;
+fixed_t aimslope;
 
 // slopes to top and bottom of target
-extern fixed_t	topslope;
-extern fixed_t	bottomslope;
+extern fixed_t topslope;
+extern fixed_t bottomslope;
 
 extern degenmobj_t* laserspot;
 
@@ -924,12 +924,12 @@ extern degenmobj_t* laserspot;
 bool
 PTR_AimTraverse (intercept_t* in)
 {
-	line_t*		li;
-	MapObject*		th;
-	fixed_t		slope;
-	fixed_t		thingtopslope;
-	fixed_t		thingbottomslope;
-	fixed_t		dist;
+	line_t* li;
+	MapObject* th;
+	fixed_t slope;
+	fixed_t thingtopslope;
+	fixed_t thingbottomslope;
+	fixed_t dist;
 
 	if (in->isaline)
 	{
@@ -975,7 +975,7 @@ PTR_AimTraverse (intercept_t* in)
 	if (th == shootthing)
 	return true;			// can't shoot self
 
-	if (!(th->flags&MF_SHOOTABLE))
+	if (!(th->flags&mobjflag_t::MF_SHOOTABLE))
 	return true;			// corpse or something
 
 	// check angles to see if the thing can be aimed at
@@ -1009,20 +1009,20 @@ PTR_AimTraverse (intercept_t* in)
 //
 bool PTR_ShootTraverse (intercept_t* in)
 {
-	fixed_t		x;
-	fixed_t		y;
-	fixed_t		z;
-	fixed_t		frac;
+	fixed_t x;
+	fixed_t y;
+	fixed_t z;
+	fixed_t frac;
 
-	line_t*		li;
+	line_t* li;
 
-	MapObject*		th;
+	MapObject* th;
 
-	fixed_t		slope;
-	fixed_t		dist;
-	fixed_t		thingtopslope;
-	fixed_t		thingbottomslope;
-	fixed_t		thingheight; // [crispy] mobj or actual sprite height
+	fixed_t slope;
+	fixed_t dist;
+	fixed_t thingtopslope;
+	fixed_t thingbottomslope;
+	fixed_t thingheight; // [crispy] mobj or actual sprite height
 
 	if (in->isaline)
 	{
@@ -1090,7 +1090,7 @@ bool PTR_ShootTraverse (intercept_t* in)
 		return false;
 
 		// it's a sky hack wall
-		if	(li->backsector && li->backsector->ceilingpic == skyflatnum)
+		if (li->backsector && li->backsector->ceilingpic == skyflatnum)
 		{
 			// [crispy] fix bullet puffs and laser spot not appearing in outdoor areas
 			if (li->backsector->ceilingheight < z)
@@ -1145,7 +1145,7 @@ bool PTR_ShootTraverse (intercept_t* in)
 	if (th == shootthing)
 	return true;		// can't shoot self
 
-	if (!(th->flags&MF_SHOOTABLE))
+	if (!(th->flags&mobjflag_t::MF_SHOOTABLE))
 	return true;		// corpse or something
 
 	// check angles to see if the thing can be aimed at
@@ -1176,7 +1176,7 @@ bool PTR_ShootTraverse (intercept_t* in)
 	if (la_damage == INT_MIN)
 	{
 	// [crispy] pass through Spectres
-	if (th->flags & MF_SHADOW)
+	if (th->flags & mobjflag_t::MF_SHADOW)
 		return true;
 
 	laserspot->thinker.function.acv = (actionf_v) (1);
@@ -1188,7 +1188,7 @@ bool PTR_ShootTraverse (intercept_t* in)
 
 	// Spawn bullet puffs or blod spots,
 	// depending on target type.
-	if (in->d.thing->flags & MF_NOBLOOD)
+	if (in->d.thing->flags & mobjflag_t::MF_NOBLOOD)
 	P_SpawnPuff (x,y,z);
 	else
 	P_SpawnBlood (x,y,z, la_damage, th); // [crispy] pass thing type
@@ -1207,8 +1207,8 @@ bool PTR_ShootTraverse (intercept_t* in)
 //
 fixed_t P_AimLineAttack(MapObject* t1, angle_t angle, fixed_t distance)
 {
-	fixed_t	x2;
-	fixed_t	y2;
+	fixed_t x2;
+	fixed_t y2;
 
 	t1 = P_SubstNullMobj(t1);
 
@@ -1250,8 +1250,8 @@ void P_LineAttack(MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope,
 	// [crispy] smooth laser spot movement with uncapped framerate
 	const fixed_t t1x = (damage == INT_MIN) ? viewx : t1->x;
 	const fixed_t t1y = (damage == INT_MIN) ? viewy : t1->y;
-	fixed_t	x2;
-	fixed_t	y2;
+	fixed_t x2;
+	fixed_t y2;
 
 	angle >>= ANGLETOFINESHIFT;
 	shootthing = t1;
@@ -1273,7 +1273,7 @@ void P_LineAttack(MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope,
 // then call P_LineAttack() with either aimslope or the passed slope
 void P_LineLaser(MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope)
 {
-	fixed_t	lslope;
+	fixed_t lslope;
 
 	laserspot->thinker.function.acv = (actionf_v) (0);
 
@@ -1314,7 +1314,7 @@ void P_LineLaser(MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope)
 	if ((crispy->crosshair & ~CROSSHAIR_INTERCEPT) == CROSSHAIR_PROJECTED)
 	{
 	// [crispy] don't aim at Spectres
-	if (linetarget && !(linetarget->flags & MF_SHADOW) && (crispy->freeaim != FREEAIM_DIRECT))
+	if (linetarget && !(linetarget->flags & mobjflag_t::MF_SHADOW) && (crispy->freeaim != FREEAIM_DIRECT))
 		P_LineAttack(t1, angle, distance, aimslope, INT_MIN);
 	else
 		// [crispy] double the auto aim distance
@@ -1329,18 +1329,18 @@ void P_LineLaser(MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope)
 //
 // USE LINES
 //
-MapObject*		usething;
+MapObject* usething;
 
-bool	PTR_UseTraverse (intercept_t* in)
+bool PTR_UseTraverse (intercept_t* in)
 {
-	int		side;
+	int side;
 
 	if (!in->d.line->special)
 	{
 	P_LineOpening (in->d.line);
 	if (openrange <= 0)
 	{
-		S_StartSound (usething, sfx_noway);
+		S_StartSound (usething, sfxenum_t::sfx_noway);
 
 		// can't use through a wall
 		return false;
@@ -1368,18 +1368,18 @@ bool	PTR_UseTraverse (intercept_t* in)
 //
 void P_UseLines(Player* player)
 {
-	int		angle;
-	fixed_t	x1;
-	fixed_t	y1;
-	fixed_t	x2;
-	fixed_t	y2;
+	int angle;
+	fixed_t x1;
+	fixed_t y1;
+	fixed_t x2;
+	fixed_t y2;
 
-	usething = player->mo;
+	usething = player;
 
-	angle = player->mo->angle >> ANGLETOFINESHIFT;
+	angle = player->angle >> ANGLETOFINESHIFT;
 
-	x1 = player->mo->x;
-	y1 = player->mo->y;
+	x1 = player->x;
+	y1 = player->y;
 	x2 = x1 + (USERANGE>>FRACBITS)*finecosine[angle];
 	y2 = y1 + (USERANGE>>FRACBITS)*finesine[angle];
 
@@ -1390,9 +1390,9 @@ void P_UseLines(Player* player)
 //
 // RADIUS ATTACK
 //
-MapObject*		bombsource;
-MapObject*		bombspot;
-int		bombdamage;
+MapObject* bombsource;
+MapObject* bombspot;
+int bombdamage;
 
 
 //
@@ -1402,11 +1402,11 @@ int		bombdamage;
 //
 bool PIT_RadiusAttack (MapObject* thing)
 {
-	fixed_t	dx;
-	fixed_t	dy;
-	fixed_t	dist;
+	fixed_t dx;
+	fixed_t dy;
+	fixed_t dist;
 
-	if (!(thing->flags & MF_SHOOTABLE) )
+	if (!(thing->flags & mobjflag_t::MF_SHOOTABLE) )
 	return true;
 
 	// Boss spider and cyborg
@@ -1443,15 +1443,15 @@ bool PIT_RadiusAttack (MapObject* thing)
 //
 void P_RadiusAttack(MapObject* spot, MapObject* source, int damage)
 {
-	int		x;
-	int		y;
+	int x;
+	int y;
 
-	int		xl;
-	int		xh;
-	int		yl;
-	int		yh;
+	int xl;
+	int xh;
+	int yl;
+	int yh;
 
-	fixed_t	dist;
+	fixed_t dist;
 
 	dist = (damage+MAXRADIUS)<<FRACBITS;
 	yh = (spot->y + dist - bmaporgy)>>MAPBLOCKSHIFT;
@@ -1462,8 +1462,8 @@ void P_RadiusAttack(MapObject* spot, MapObject* source, int damage)
 	bombsource = source;
 	bombdamage = damage;
 
-	for (y=yl ; y<=yh ; y++)
-	for (x=xl ; x<=xh ; x++)
+	for (y=yl ; y<=yh ; ++y)
+	for (x=xl ; x<=xh ; ++x)
 		P_BlockThingsIterator (x, y, PIT_RadiusAttack );
 }
 
@@ -1477,21 +1477,21 @@ void P_RadiusAttack(MapObject* spot, MapObject* source, int damage)
 //
 // If anything doesn't fit anymore, true will be returned.
 // If crunch is true, they will take damage
-// as they are being crushed.
+// as they are being result_e::crushed.
 // If Crunch is false, you should set the sector height back
 // the way it was and call P_ChangeSector again
 // to undo the changes.
 //
-bool		crushchange;
-bool		nofit;
+bool crushchange;
+bool nofit;
 
 
 //
 // PIT_ChangeSector
 //
-bool PIT_ChangeSector (MapObject*	thing)
+bool PIT_ChangeSector (MapObject* thing)
 {
-	MapObject*	mo;
+	MapObject* mo;
 
 	if (P_ThingHeightClip (thing))
 	{
@@ -1503,20 +1503,20 @@ bool PIT_ChangeSector (MapObject*	thing)
 	// crunch bodies to giblets
 	if (thing->health <= 0)
 	{
-	P_SetMobjState (thing, S_GIBS);
+	P_SetMobjState (thing, statenum_t::S_GIBS);
 
 	// [crispy] no blood, no giblets
-	if (crispy->coloredblood && (thing->flags & MF_NOBLOOD))
+	if (crispy->coloredblood && (thing->flags & mobjflag_t::MF_NOBLOOD))
 	{
-		thing->sprite = SPR_TNT1;
+		thing->sprite = spritenum_t::SPR_TNT1;
 	}
 
-	if (gameversion > exe_doom_1_2)
-		thing->flags &= ~MF_SOLID;
+	if (gameversion > GameVersion::exe_doom_1_2)
+		thing->flags &= ~mobjflag_t::MF_SOLID;
 	thing->height = 0;
 	thing->radius = 0;
 
-	// [crispy] connect giblet object with the crushed monster
+	// [crispy] connect giblet object with the result_e::crushed monster
 	thing->target = thing;
 
 	// keep checking
@@ -1524,7 +1524,7 @@ bool PIT_ChangeSector (MapObject*	thing)
 	}
 
 	// crunch dropped items
-	if (thing->flags & MF_DROPPED)
+	if (thing->flags & mobjflag_t::MF_DROPPED)
 	{
 	P_RemoveMobj (thing);
 
@@ -1532,7 +1532,7 @@ bool PIT_ChangeSector (MapObject*	thing)
 	return true;
 	}
 
-	if (! (thing->flags & MF_SHOOTABLE) )
+	if (! (thing->flags & mobjflag_t::MF_SHOOTABLE) )
 	{
 	// assume it is bloody gibs or something
 	return true;
@@ -1548,7 +1548,7 @@ bool PIT_ChangeSector (MapObject*	thing)
 	mo = P_SpawnMobj (thing->x,
 				thing->y,
 				// [crispy] Lost Souls and Barrels bleed Puffs
-				thing->z + thing->height/2, (thing->flags & MF_NOBLOOD) ? mobjtype_t::MT_PUFF : mobjtype_t::MT_BLOOD);
+				thing->z + thing->height/2, (thing->flags & mobjflag_t::MF_NOBLOOD) ? mobjtype_t::MT_PUFF : mobjtype_t::MT_BLOOD);
 
 	mo->momx = P_SubRandom() << 12;
 	mo->momy = P_SubRandom() << 12;
@@ -1558,7 +1558,7 @@ bool PIT_ChangeSector (MapObject*	thing)
 
 	// [crispy] Spectres bleed spectre blood
 	if (crispy->coloredblood)
-		mo->flags |= (thing->flags & MF_SHADOW);
+		mo->flags |= (thing->flags & mobjflag_t::MF_SHADOW);
 	}
 
 	// keep checking (crush other things)
@@ -1572,15 +1572,15 @@ bool PIT_ChangeSector (MapObject*	thing)
 //
 bool P_ChangeSector(sector_t* sector, bool crunch)
 {
-	int		x;
-	int		y;
+	int x;
+	int y;
 
 	nofit = false;
 	crushchange = crunch;
 
 	// re-check heights for all things near the moving sector
-	for (x=sector->blockbox[BOXLEFT] ; x<= sector->blockbox[BOXRIGHT] ; x++)
-	for (y=sector->blockbox[BOXBOTTOM];y<= sector->blockbox[BOXTOP] ; y++)
+	for (x=sector->blockbox[BOXLEFT] ; x<= sector->blockbox[BOXRIGHT] ; ++x)
+	for (y=sector->blockbox[BOXBOTTOM];y<= sector->blockbox[BOXTOP] ; ++y)
 		P_BlockThingsIterator (x, y, PIT_ChangeSector);
 
 

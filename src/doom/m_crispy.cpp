@@ -175,7 +175,7 @@ void M_CrispyToggleColoredblood(int choice)
 {
 	thinker_t* th;
 
-	if (gameversion == GameVersion_t::exe_chex)
+	if (gameversion == GameVersion::exe_chex)
 	{
 	return;
 	}
@@ -194,11 +194,11 @@ void M_CrispyToggleColoredblood(int choice)
 		{
 			if (crispy->coloredblood)
 			{
-				mobj->flags |= MF_NOBLOOD;
+				mobj->flags |= mobjflag_t::MF_NOBLOOD;
 			}
 			else
 			{
-				mobj->flags &= ~MF_NOBLOOD;
+				mobj->flags &= ~mobjflag_t::MF_NOBLOOD;
 			}
 		}
 	}
@@ -288,7 +288,7 @@ void M_CrispyToggleExtsaveg(int choice)
 
 void M_CrispyToggleFlipcorpses(int choice)
 {
-	if (gameversion == GameVersion_t::exe_chex)
+	if (gameversion == GameVersion::exe_chex)
 	{
 	return;
 	}
@@ -333,7 +333,7 @@ void M_CrispyToggleFullsounds(int choice)
 	crispy->soundfull = !crispy->soundfull;
 
 	// [crispy] weapon sound sources
-	for (i = 0; i < MAXPLAYERS; i++)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
 	if (playeringame[i])
 	{

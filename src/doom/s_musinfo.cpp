@@ -31,11 +31,11 @@
 
 // MACROS ------------------------------------------------------------------
 
-#define MAX_STRING_SIZE 64
+constexpr size_t MAX_STRING_SIZE{64};
 #define ASCII_COMMENT (';')
-#define ASCII_QUOTE (34)
-#define LUMP_SCRIPT 1
-#define FILE_ZONE_SCRIPT 2
+constexpr size_t ASCII_QUOTE{34};
+constexpr size_t LUMP_SCRIPT{1};
+constexpr size_t FILE_ZONE_SCRIPT{2};
 
 // TYPES -------------------------------------------------------------------
 
@@ -46,16 +46,16 @@
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
 static void CheckOpen();
-static void OpenScript(const char* name, int type);
-static void SC_OpenLump(const char* name);
+static void OpenScript(std::string name, int type);
+static void SC_OpenLump(std::string name);
 static void SC_Close();
-static bool SC_Compare(const char* text);
+static bool SC_Compare(std::string text);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-static char* sc_String;
+std::string sc_String;
 static int sc_Line;
 static bool sc_End;
 static bool sc_Crossed;
@@ -63,9 +63,9 @@ static bool sc_Crossed;
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
 static char ScriptName[16];
-static char* ScriptBuffer;
-static char* ScriptPtr;
-static char* ScriptEndPtr;
+std::string ScriptBuffer;
+std::string ScriptPtr;
+std::string ScriptEndPtr;
 static char StringBuffer[MAX_STRING_SIZE];
 static int ScriptLumpNum;
 static bool ScriptOpen = false;
@@ -82,7 +82,7 @@ static bool AlreadyGot = false;
 //
 //==========================================================================
 
-static void SC_OpenLump(const char* name)
+static void SC_OpenLump(std::string name)
 {
 	OpenScript(name, LUMP_SCRIPT);
 }
@@ -93,13 +93,13 @@ static void SC_OpenLump(const char* name)
 //
 //==========================================================================
 
-static void OpenScript(const char* name, int type)
+static void OpenScript(std::string name, int type)
 {
 	SC_Close();
 	if (type == LUMP_SCRIPT)
 	{							// Lump script
 		ScriptLumpNum = W_GetNumForName(name);
-		ScriptBuffer = (char*) W_CacheLumpNum(ScriptLumpNum, pu_tags_t::PU_STATIC);
+		ScriptBuffer = W_CacheLumpNum<char>(ScriptLumpNum, pu_tags_t::PU_STATIC);
 		ScriptSize = W_LumpLength(ScriptLumpNum);
 		M_StringCopy(ScriptName, name, sizeof(ScriptName));
 	}
@@ -134,7 +134,8 @@ static void SC_Close()
 		}
 		else
 		{
-			Z_Free(ScriptBuffer);
+			ScriptBuffer.clear();
+			//Z_Free(ScriptBuffer);
 		}
 		ScriptOpen = false;
 	}
@@ -148,83 +149,95 @@ static void SC_Close()
 
 static bool SC_GetString()
 {
-	char* text;
-	bool foundToken;
+	//std::string text;
+	//bool foundToken;
 
-	CheckOpen();
-	if (AlreadyGot)
+	//CheckOpen();
+	//if (AlreadyGot)
 	{
-		AlreadyGot = false;
-		return true;
+		//AlreadyGot = false;
+		//return true;
 	}
-	foundToken = false;
-	sc_Crossed = false;
-	if (ScriptPtr >= ScriptEndPtr)
+	//foundToken = false;
+	//sc_Crossed = false;
+	//if (ScriptPtr >= ScriptEndPtr)
 	{
-		sc_End = true;
-		return false;
+		//sc_End = true;
+		//return false;
 	}
-	while (foundToken == false)
+	// FIXME
+	//while (foundToken == false)
 	{
-		while (ScriptPtr < ScriptEndPtr && *ScriptPtr <= 32)
+		//while (ScriptPtr < ScriptEndPtr && *ScriptPtr <= 32)
 		{
-			if (*(ScriptPtr++) == '\n')
+			//if (*ScriptPtr == '\n')
 			{
-				sc_Line++;
-				sc_Crossed = true;
+				//++ScriptPtr;
+				//sc_Line++;
+				//sc_Crossed = true;
+			}
+			//else
+			{
+				//++ScriptPtr;
 			}
 		}
-		if (ScriptPtr >= ScriptEndPtr)
+		//if (ScriptPtr >= ScriptEndPtr)
 		{
-			sc_End = true;
-			return false;
+			//sc_End = true;
+			//return false;
 		}
-		if (*ScriptPtr != ASCII_COMMENT)
+		//if (*ScriptPtr != ASCII_COMMENT)
 		{						// Found a token
-			foundToken = true;
+			//foundToken = true;
 		}
-		else
+		//else
 		{						// Skip comment
-			while (*(ScriptPtr++) != '\n')
+			//while (*ScriptPtr != '\n')
 			{
-				if (ScriptPtr >= ScriptEndPtr)
+				//++ScriptPtr;
+				//if (ScriptPtr >= ScriptEndPtr)
 				{
-					sc_End = true;
-					return false;
+					//sc_End = true;
+					//return false;
 				}
 			}
-			sc_Line++;
-			sc_Crossed = true;
+			//++ScriptPtr;
+			//++sc_Line;
+			//sc_Crossed = true;
 		}
 	}
-	text = sc_String;
-	if (*ScriptPtr == ASCII_QUOTE)
+	//text = sc_String;
+	// FIXME
+	//if (*ScriptPtr == ASCII_QUOTE)
 	{							// Quoted string
-		ScriptPtr++;
-		while (*ScriptPtr != ASCII_QUOTE)
+		//++ScriptPtr;
+		//while (*ScriptPtr != ASCII_QUOTE)
 		{
-			*(text++) = *(ScriptPtr++);
-			if (ScriptPtr == ScriptEndPtr
-				|| text == &sc_String[MAX_STRING_SIZE - 1])
+			//*text = *ScriptPtr;
+			//++text;
+			//++ScriptPtr;
+			//if (ScriptPtr == ScriptEndPtr || text == &sc_String[MAX_STRING_SIZE - 1])
 			{
-				break;
+				//break;
 			}
 		}
-		ScriptPtr++;
+		//++ScriptPtr;
 	}
-	else
-	{							// Normal string
-		while ((*ScriptPtr > 32) && (*ScriptPtr != ASCII_COMMENT))
+	//else
+	{
+		// Normal string
+		//while ((*ScriptPtr > 32) && (*ScriptPtr != ASCII_COMMENT))
 		{
-			*(text++) = *(ScriptPtr++);
-			if (ScriptPtr == ScriptEndPtr
-				|| text == &sc_String[MAX_STRING_SIZE - 1])
+			//*text = *ScriptPtr;
+			//++text;
+			//++ScriptPtr;
+			//if (ScriptPtr == ScriptEndPtr || text == &sc_String[MAX_STRING_SIZE - 1])
 			{
-				break;
+				//break;
 			}
 		}
 	}
-	*text = 0;
+	//*text = 0;
 	return true;
 }
 
@@ -234,9 +247,9 @@ static bool SC_GetString()
 //
 //==========================================================================
 
-static bool SC_Compare(const char* text)
+static bool SC_Compare(std::string text)
 {
-	if (strcasecmp(text, sc_String) == 0)
+	if (iequals(text, sc_String) == 0)
 	{
 		return true;
 	}
@@ -266,7 +279,7 @@ musinfo_t musinfo = {0};
 // Parses MUSINFO lump.
 //
 
-void S_ParseMusInfo (const char* mapid)
+void S_ParseMusInfo (std::string mapid)
 {
  if (W_CheckNumForName("MUSINFO") != -1)
  {

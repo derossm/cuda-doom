@@ -24,15 +24,15 @@ bool NET_ReadInt8(net_packet_t* packet, unsigned* data);
 bool NET_ReadInt16(net_packet_t* packet, unsigned* data);
 bool NET_ReadInt32(net_packet_t* packet, unsigned* data);
 
-bool NET_ReadSInt8(net_packet_t* packet, signed int* data);
-bool NET_ReadSInt16(net_packet_t* packet, signed int* data);
-bool NET_ReadSInt32(net_packet_t* packet, signed int* data);
+bool NET_ReadSInt8(net_packet_t* packet, int* data);
+bool NET_ReadSInt16(net_packet_t* packet, int* data);
+bool NET_ReadSInt32(net_packet_t* packet, int* data);
 
-char* NET_ReadString(net_packet_t* packet);
-char* NET_ReadSafeString(net_packet_t* packet);
+std::string NET_ReadString(net_packet_t* packet);
+std::string NET_ReadSafeString(net_packet_t* packet);
 
 void NET_WriteInt8(net_packet_t* packet, unsigned i);
 void NET_WriteInt16(net_packet_t* packet, unsigned i);
 void NET_WriteInt32(net_packet_t* packet, unsigned i);
 
-void NET_WriteString(net_packet_t* packet, const char* string);
+void NET_WriteString(net_packet_t* packet, std::string& string);

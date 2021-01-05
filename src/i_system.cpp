@@ -28,8 +28,8 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-#define DEFAULT_RAM 16*2 /* MiB [crispy] */
-#define MIN_RAM		4*4 /* MiB [crispy] */
+constexpr size_t DEFAULT_RAM{16*2}; // MiB
+constexpr size_t MIN_RAM{4*4}; // MiB
 
 struct atexit_listentry_t
 {
@@ -144,7 +144,7 @@ byte* I_ZoneBase(int* size)
 	return zonemem;
 }
 
-void I_PrintBanner(const char* msg)
+void I_PrintBanner(std::string msg)
 {
 	int i;
 	int spaces = 35 - (strlen(msg) / 2);
@@ -167,7 +167,7 @@ void I_PrintDivider()
 	putchar('\n');
 }
 
-void I_PrintStartupBanner(const char* gamedescription)
+void I_PrintStartupBanner(std::string gamedescription)
 {
 	I_PrintDivider();
 	I_PrintBanner(gamedescription);
@@ -247,7 +247,7 @@ void I_Quit ()
 
 static bool already_quitting = false;
 
-void I_Error(const char* error, ...)
+void I_Error(std::string error, ...)
 {
 	char msgbuf[512];
 	va_list argptr;
@@ -352,7 +352,7 @@ void* I_Realloc(void* ptr, size_t size)
 // DOSBox under XP:
 // 0000:0000 (00 00 00 F1) ?? ?? ?? 00-(07 00)
 
-#define DOS_MEM_DUMP_SIZE 10
+constexpr size_t DOS_MEM_DUMP_SIZE{10};
 
 static const unsigned char mem_dump_dos622[DOS_MEM_DUMP_SIZE] = {
  0x57, 0x92, 0x19, 0x00, 0xF4, 0x06, 0x70, 0x00, 0x16, 0x00};
@@ -388,15 +388,15 @@ bool I_GetMemoryValue(unsigned offset, void* value, int size)
 
 		if (p > 0)
 		{
-			if (!strcasecmp(myargv[p + 1], "dos622"))
+			if (!iequals(myargv[p + 1], "dos622"))
 			{
 				dos_mem_dump = mem_dump_dos622;
 			}
-			if (!strcasecmp(myargv[p + 1], "dos71"))
+			if (!iequals(myargv[p + 1], "dos71"))
 			{
 				dos_mem_dump = mem_dump_win98;
 			}
-			else if (!strcasecmp(myargv[p + 1], "dosbox"))
+			else if (!iequals(myargv[p + 1], "dosbox"))
 			{
 				dos_mem_dump = mem_dump_dosbox;
 			}

@@ -25,12 +25,12 @@
 
 // Silhouette, needed for clipping Segs (mainly)
 // and sprites representing things.
-#define SIL_NONE		0
-#define SIL_BOTTOM		1
-#define SIL_TOP			2
-#define SIL_BOTH		3
+constexpr size_t SIL_NONE{0};
+constexpr size_t SIL_BOTTOM{1};
+constexpr size_t SIL_TOP{2};
+constexpr size_t SIL_BOTH{3};
 
-#define MAXDRAWSEGS		256
+constexpr size_t MAXDRAWSEGS{256};
 
 //
 // INTERNAL MAP TYPES
@@ -106,7 +106,7 @@ struct sector_t
 	void* specialdata;
 
 	int linecount;
-	struct line_s** lines;	// [linecount] size
+	line_t** lines;	// [linecount] size
 
 	// [crispy] WiggleFix: [kb] for R_FixWiggle()
 	int cachedheight;
@@ -267,8 +267,8 @@ struct node_t
 
 // PC direct to screen pointers
 //B UNUSED - keep till detailshift in r_draw.c resolved
-//extern byte*	destview;
-//extern byte*	destscreen;
+//extern byte* destview;
+//extern byte* destscreen;
 
 //
 // OTHER TYPES

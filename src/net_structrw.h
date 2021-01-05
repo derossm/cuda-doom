@@ -16,11 +16,11 @@
 #include "net_defs.h"
 #include "net_packet.h"
 
-void NET_WriteConnectData(net_packet_t* packet, net_connect_data_t* data);
-bool NET_ReadConnectData(net_packet_t* packet, net_connect_data_t* data);
+void NET_WriteConnectData(net_packet_t* packet, net_connect_data* data);
+bool NET_ReadConnectData(net_packet_t* packet, net_connect_data* data);
 
-extern void NET_WriteSettings(net_packet_t* packet, net_gamesettings_t* settings);
-extern bool NET_ReadSettings(net_packet_t* packet, net_gamesettings_t* settings);
+extern void NET_WriteSettings(net_packet_t* packet, net_gamesettings* settings);
+extern bool NET_ReadSettings(net_packet_t* packet, net_gamesettings* settings);
 
 extern void NET_WriteQueryData(net_packet_t* packet, net_querydata_t* querydata);
 extern bool NET_ReadQueryData(net_packet_t* packet, net_querydata_t* querydata);

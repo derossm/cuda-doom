@@ -46,4 +46,4 @@ auto mem_fwrite(const BufferType_Void* ptr, size_t size, size_t nmemb, MEMFILE* 
 void mem_get_buf(MEMFILE* stream, BufferType_Void** buf, size_t* buflen);
 void mem_fclose(MEMFILE* stream);
 auto mem_ftell(MEMFILE* stream);
-auto mem_fseek(MEMFILE* stream, signed long offset, mem_rel_t whence);
+auto mem_fseek(MEMFILE* stream, long offset, mem_rel_t whence);

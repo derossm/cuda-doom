@@ -28,8 +28,8 @@
 
 // Frame flags:
 // handles maximum brightness (torches, muzzle flare, light sources)
-#define FF_FULLBRIGHT	0x8000	// flag in thing->frame
-#define FF_FRAMEMASK	0x7fff
+constexpr size_t FF_FULLBRIGHT{0x8000}; // flag in thing->frame
+constexpr size_t FF_FRAMEMASK{0x7fff};
 
 // Overlay psprites are scaled shapes
 // drawn directly on the view screen,

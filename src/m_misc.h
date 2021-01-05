@@ -14,6 +14,7 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "../derma/d_native.h"
 
 #include "doomtype.h"
 
@@ -28,7 +29,6 @@
 
 int M_StringCopy(...) { return 0; }
 int M_StringConcat(...) { return 0; }
-int M_StringDuplicate(...) { return 0; }
 
 // Returns true if 's' begins with the specified prefix.
 auto M_StringStartsWith(std::string s, std::string prefix)
@@ -73,10 +73,10 @@ auto M_FileLength(FILE* handle)
 	// TODO: find out of ftell uses negative values for errors, and IGNORE THEM instead of returning a huge number... or maybe handle them
 	if (length < 0)
 	{
-		return (size_t)0;
+		return std::size_t(0);
 	}
 
-	return (size_t)length;
+	return std::size_t(length);
 }
 
 auto M_WriteFile(std::string name, std::string source)
@@ -145,7 +145,7 @@ int M_vsnprintf(...)
 	// If truncated, change the final char in the buffer to a \0.
 	// A negative result indicates a truncated buffer on Windows.
 	//if (result < 0 || result >= buf_len)
-	{
+	//{
 		//buf[buf_len - 1] = '\0';
 		//result = buf_len - 1;
 	//}
@@ -277,7 +277,7 @@ std::string M_FileCaseExists(std::string path)
 // The returned value must be freed with Z_Free after use.
 std::string M_TempFile(std::string s)
 {
-	/* const char* tempdir;
+	/* std::string tempdir;
 
 #ifdef _WIN32
 	// Check the TEMP environment variable to find the location.
@@ -366,16 +366,17 @@ std::string M_StringReplace(std::string haystack, std::string needle, std::strin
 }
 
 // Return a newly-malloced string with all the strings given as arguments concatenated together.
+[[deprecated]]
 std::string M_StringJoin(std::string s, ...)
 {
 	/* va_list args;
 
-	auto result_len{strlen(s) + (size_t)1};
+	auto result_len{strlen(s) + 1};
 
 	va_start(args, s);
 	for (;;)
 	{
-		auto v{va_arg(args, const char*)};
+		auto v{va_arg(args, std::string)};
 		if (v == NULL)
 		{
 			break;
@@ -392,7 +393,7 @@ std::string M_StringJoin(std::string s, ...)
 	va_start(args, s);
 	for (;;)
 	{
-		auto v{va_arg(args, const char*)};
+		auto v{va_arg(args, std::string)};
 		if (v == NULL)
 		{
 			break;
@@ -433,7 +434,7 @@ std::string M_OEMToUTF8(std::string oem)
 void M_MakeDirectory(std::string path)
 {
 #ifdef _WIN32
-	mkdir(path.c_str());
+	mkdir(path);
 #else
 	mkdir(path, 0755);
 #endif
@@ -473,7 +474,9 @@ void M_ExtractFileBase(std::string path, std::string dest)
 			break;
 		}
 
-		dest[length++] = toupper((int)*(src++));
+		dest[length] = toupper((int)*src);
+		++length;
+		++src;
 	} */
 }
 
@@ -547,12 +550,17 @@ void M_NormalizeSlashes(std::string str)
 	// Collapse multiple slashes
 	for (auto p{str};* (str++) = *p; )
 	{
-		if (*(p++) == DIR_SEPARATOR)
+		if (*p == DIR_SEPARATOR)
 		{
+			++p;
 			while (*p == DIR_SEPARATOR)
 			{
 				++p;
 			}
+		}
+		else
+		{
+			++p;
 		}
 	} */
 }

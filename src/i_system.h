@@ -21,7 +21,7 @@
 typedef void (*atexit_func_t)();
 
 // Called by DoomMain.
-void I_Init ();
+void I_Init();
 
 // Called by startup code to get the ammount of memory to malloc for the zone management.
 byte* I_ZoneBase(int* size);
@@ -38,7 +38,7 @@ ticcmd_t* I_BaseTiccmd();
 // Called by M_Responder when quit is selected. Clean exit, displays sell blurb.
 void I_Quit()NORETURN;
 
-void I_Error(const char* error, ...) NORETURN PRINTF_ATTR(1, 2);
+void I_Error(std::string error, ...) NORETURN PRINTF_ATTR(1, 2);
 
 void I_Tactile(int on, int off, int total);
 
@@ -54,10 +54,10 @@ void I_AtExit(atexit_func_t func, bool run_if_error);
 void I_BindVariables();
 
 // Print startup banner copyright message.
-void I_PrintStartupBanner(const char* gamedescription);
+void I_PrintStartupBanner(std::string gamedescription);
 
 // Print a centered text banner displaying the given string.
-void I_PrintBanner(const char* text);
+void I_PrintBanner(std::string text);
 
 // Print a dividing line for startup banners.
 void I_PrintDivider();

@@ -10,13 +10,15 @@
 
 #include "SDL_mixer.h"
 
-#include "textscreen.h"
+#include "sound.h"
+
+#include "../../textscreen/textscreen.h"
+
 #include "m_config.h"
 #include "m_misc.h"
 
 #include "execute.h"
 #include "mode.h"
-#include "sound.h"
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-sound"
 
@@ -27,24 +29,24 @@ enum class oplmode_t
 	NUM_OPLMODES,
 };
 
-static const char* opltype_strings[] =
+static std::string opltype_strings[] =
 {
 	"OPL2",
 	"OPL3"
 };
 
-static const char* cfg_extension[] = { "cfg", NULL };
+static std::string cfg_extension[] = { "cfg", NULL };
 
 // Config file variables:
-int snd_sfxdevice = SNDDEVICE_SB;
-int snd_musicdevice = SNDDEVICE_SB;
+int snd_sfxdevice = snddevice_t::SB;
+int snd_musicdevice = snddevice_t::SB;
 int snd_samplerate = 44100;
 int opl_io_port = 0x388;
 int snd_cachesize = 64 * 1024 * 1024;
 int snd_maxslicetime_ms = 28;
-char* snd_musiccmd = "";
+std::string snd_musiccmd = "";
 int snd_pitchshift = 0;
-char* snd_dmxoption = "-opl3"; // [crispy] default to OPL3 emulation
+std::string snd_dmxoption = "-opl3"; // [crispy] default to OPL3 emulation
 
 static int numChannels = 8;
 static int sfxVolume = 8;
@@ -57,9 +59,9 @@ static int show_talk = 0;
 static int use_libsamplerate = 1;
 static float libsamplerate_scale = 0.65;
 
-static char* music_pack_path = NULL;
-static char* timidity_cfg_path = NULL;
-static char* gus_patch_path = NULL;
+std::string music_pack_path = NULL;
+std::string timidity_cfg_path = NULL;
+std::string gus_patch_path = NULL;
 static int gus_ram_kb = 1024;
 
 // DOS specific variables: these are unused but should be maintained
@@ -72,7 +74,7 @@ static int snd_mport = 0;
 
 static int snd_oplmode;
 
-static void UpdateSndDevices(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(data))
+static void UpdateSndDevices(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAST_ARG(data))
 {
 	switch (snd_oplmode)
 	{
@@ -100,91 +102,91 @@ static cudadoom::txt::txt_dropdown_list_t* OPLTypeSelector()
 		snd_oplmode = OPLMODE_OPL2;
 	}
 
-	result = cudadoom::txt::TXT_NewDropdownList(&snd_oplmode, opltype_strings, 2);
+	result = cudadoom::txt::NewDropdownList(&snd_oplmode, opltype_strings, 2);
 
-	cudadoom::txt::TXT_SignalConnect(result, "changed", UpdateSndDevices, NULL);
+	cudadoom::txt::SignalConnect(result, "changed", UpdateSndDevices, NULL);
 
 	return result;
 }
 
-static void OpenMusicPackDir(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(unused))
+static void OpenMusicPackDir(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAST_ARG(unused))
 {
 	if (!OpenFolder(music_pack_path))
 	{
-		cudadoom::txt::TXT_MessageBox("Error", "Failed to open music pack directory.");
+		cudadoom::txt::MessageBox("Error", "Failed to open music pack directory.");
 	}
 }
 
-void ConfigSound(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
+void ConfigSound(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 {
 	cudadoom::txt::Window* window;
 	cudadoom::txt::WindowAction* music_action;
 
 	// Build the window
-	window = cudadoom::txt::TXT_NewWindow("Sound configuration");
-	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+	window = cudadoom::txt::NewWindow("Sound configuration");
+	cudadoom::txt::SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-	cudadoom::txt::TXT_SetColumnWidths(window, 40);
-	cudadoom::txt::TXT_SetWindowPosition(window, cudadoom::txt::TXT_HORIZ_CENTER, cudadoom::txt::TXT_VERT_TOP,
-									cudadoom::txt::TXT_SCREEN_W / 2, 3);
+	cudadoom::txt::SetColumnWidths(window, 40);
+	cudadoom::txt::SetWindowPosition(window, cudadoom::txt::HORIZ_CENTER, cudadoom::txt::VERT_TOP,
+									cudadoom::txt::SCREEN_W / 2, 3);
 
-	music_action = cudadoom::txt::TXT_NewWindowAction('m', "Music Packs");
-	cudadoom::txt::TXT_SetWindowAction(window, cudadoom::txt::TXT_HORIZ_CENTER, music_action);
-	cudadoom::txt::TXT_SignalConnect(music_action, "pressed", OpenMusicPackDir, NULL);
+	music_action = cudadoom::txt::NewWindowAction('m', "Music Packs");
+	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_CENTER, music_action);
+	cudadoom::txt::SignalConnect(music_action, "pressed", OpenMusicPackDir, NULL);
 
-	cudadoom::txt::TXT_AddWidgets(window,
-		cudadoom::txt::TXT_NewSeparator("Sound effects"),
-		cudadoom::txt::TXT_NewRadioButton("Disabled", &snd_sfxdevice, SNDDEVICE_NONE),
-		cudadoom::txt::TXT_If(gamemission == doom,
-			cudadoom::txt::TXT_NewRadioButton("PC speaker effects", &snd_sfxdevice,
-								SNDDEVICE_PCSPEAKER)),
-		cudadoom::txt::TXT_NewRadioButton("Digital sound effects",
+	cudadoom::txt::AddWidgets(window,
+		cudadoom::txt::NewSeparator("Sound effects"),
+		cudadoom::txt::NewRadioButton("Disabled", &snd_sfxdevice, snddevice_t::NONE),
+		cudadoom::txt::If(gamemission == doom,
+			cudadoom::txt::NewRadioButton("PC speaker effects", &snd_sfxdevice,
+								snddevice_t::PCSPEAKER)),
+		cudadoom::txt::NewRadioButton("Digital sound effects",
 							&snd_sfxdevice,
-							SNDDEVICE_SB),
-		cudadoom::txt::TXT_If(gamemission == doom || gamemission == heretic
+							snddevice_t::SB),
+		cudadoom::txt::If(gamemission == doom || gamemission == heretic
 			|| gamemission == hexen,
-			cudadoom::txt::TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
-				cudadoom::txt::TXT_MakeHorizontalTable(
-					cudadoom::txt::TXT_NewStrut(4, 0),
-					cudadoom::txt::TXT_NewCheckBox("Pitch-shifted sounds", &snd_pitchshift),
+			cudadoom::txt::NewConditional(&snd_sfxdevice, snddevice_t::SB,
+				cudadoom::txt::MakeHorizontalTable(
+					cudadoom::txt::NewStrut(4, 0),
+					cudadoom::txt::NewCheckBox("Pitch-shifted sounds", &snd_pitchshift),
 					NULL))),
-		cudadoom::txt::TXT_If(gamemission == strife,
-			cudadoom::txt::TXT_NewConditional(&snd_sfxdevice, SNDDEVICE_SB,
-				cudadoom::txt::TXT_MakeHorizontalTable(
-					cudadoom::txt::TXT_NewStrut(4, 0),
-					cudadoom::txt::TXT_NewCheckBox("Show text with voices", &show_talk),
+		cudadoom::txt::If(gamemission == strife,
+			cudadoom::txt::NewConditional(&snd_sfxdevice, snddevice_t::SB,
+				cudadoom::txt::MakeHorizontalTable(
+					cudadoom::txt::NewStrut(4, 0),
+					cudadoom::txt::NewCheckBox("Show text with voices", &show_talk),
 					NULL))),
 
-		cudadoom::txt::TXT_NewSeparator("Music"),
-		cudadoom::txt::TXT_NewRadioButton("Disabled", &snd_musicdevice, SNDDEVICE_NONE),
+		cudadoom::txt::NewSeparator("Music"),
+		cudadoom::txt::NewRadioButton("Disabled", &snd_musicdevice, snddevice_t::NONE),
 
-		cudadoom::txt::TXT_NewRadioButton("OPL (Adlib/Soundblaster)", &snd_musicdevice,
-							SNDDEVICE_SB),
-		cudadoom::txt::TXT_NewConditional(&snd_musicdevice, SNDDEVICE_SB,
-			cudadoom::txt::TXT_MakeHorizontalTable(
-				cudadoom::txt::TXT_NewStrut(4, 0),
-				cudadoom::txt::TXT_NewLabel("Chip type: "),
+		cudadoom::txt::NewRadioButton("OPL (Adlib/Soundblaster)", &snd_musicdevice,
+							snddevice_t::SB),
+		cudadoom::txt::NewConditional(&snd_musicdevice, snddevice_t::SB,
+			cudadoom::txt::MakeHorizontalTable(
+				cudadoom::txt::NewStrut(4, 0),
+				cudadoom::txt::NewLabel("Chip type: "),
 				OPLTypeSelector(),
 				NULL)),
 
-		cudadoom::txt::TXT_NewRadioButton("GUS (emulated)", &snd_musicdevice, SNDDEVICE_GUS),
-		cudadoom::txt::TXT_NewConditional(&snd_musicdevice, SNDDEVICE_GUS,
-			cudadoom::txt::TXT_MakeTable(2,
-				cudadoom::txt::TXT_NewStrut(4, 0),
-				cudadoom::txt::TXT_NewLabel("Path to patch files: "),
-				cudadoom::txt::TXT_NewStrut(4, 0),
-				cudadoom::txt::TXT_NewFileSelector(&gus_patch_path, 34,
+		cudadoom::txt::NewRadioButton("GUS (emulated)", &snd_musicdevice, snddevice_t::GUS),
+		cudadoom::txt::NewConditional(&snd_musicdevice, snddevice_t::GUS,
+			cudadoom::txt::MakeTable(2,
+				cudadoom::txt::NewStrut(4, 0),
+				cudadoom::txt::NewLabel("Path to patch files: "),
+				cudadoom::txt::NewStrut(4, 0),
+				cudadoom::txt::NewFileSelector(&gus_patch_path, 34,
 									"Select directory containing GUS patches",
-									cudadoom::txt::TXT_DIRECTORY),
+									cudadoom::txt::DIRECTORY),
 				NULL)),
 
-		cudadoom::txt::TXT_NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice, SNDDEVICE_GENMIDI), // [crispy] improve ambigious music backend name
-		cudadoom::txt::TXT_NewConditional(&snd_musicdevice, SNDDEVICE_GENMIDI,
-			cudadoom::txt::TXT_MakeTable(2,
-				cudadoom::txt::TXT_NewStrut(4, 0),
-				cudadoom::txt::TXT_NewLabel("Timidity configuration file: "),
-				cudadoom::txt::TXT_NewStrut(4, 0),
-				cudadoom::txt::TXT_NewFileSelector(&timidity_cfg_path, 34,
+		cudadoom::txt::NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice, snddevice_t::GENMIDI), // [crispy] improve ambigious music backend name
+		cudadoom::txt::NewConditional(&snd_musicdevice, snddevice_t::GENMIDI,
+			cudadoom::txt::MakeTable(2,
+				cudadoom::txt::NewStrut(4, 0),
+				cudadoom::txt::NewLabel("Timidity configuration file: "),
+				cudadoom::txt::NewStrut(4, 0),
+				cudadoom::txt::NewFileSelector(&timidity_cfg_path, 34,
 									"Select Timidity config file",
 									cfg_extension),
 				NULL)),
@@ -227,9 +229,9 @@ void BindSoundVariables()
 		M_BindIntVariable("show_talk",			&show_talk);
 	}
 
-	music_pack_path = M_StringDuplicate("");
-	timidity_cfg_path = M_StringDuplicate("");
-	gus_patch_path = M_StringDuplicate("");
+	music_pack_path = std::string("");
+	timidity_cfg_path = std::string("");
+	gus_patch_path = std::string("");
 
 	// All versions of Heretic and Hexen did pitch-shifting.
 	// Most versions of Doom did not and Strife never did.

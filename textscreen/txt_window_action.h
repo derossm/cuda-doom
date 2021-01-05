@@ -10,13 +10,16 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
+
+#include "txt_widget.h"
 
 #include "txt_main.h"
-#include "txt_widget.h"
-#include "txt_window.h"
 #include "txt_utf8.h"
 #include "txt_io.h"
 #include "txt_gui.h"
+
+//#include "txt_window.h"
 
 namespace cudadoom::txt
 {
@@ -27,27 +30,24 @@ namespace cudadoom::txt
  * A window action is attached to a window and corresponds to a keyboard shortcut that is active within that window.
  * When the key is pressed, the action is triggered. When a window action is triggered, the "pressed" signal is emitted.
  */
-class WindowAction : Widget
+class WindowAction : Widget<WindowAction>
 {
 	int key;
 	std::string label;
 
 public:
-	WidgetClass txt_window_action_class{
-		AlwaysSelectable,
-		WindowActionSizeCalc,
-		WindowActionDrawer,
-		WindowActionKeyPress,
-		WindowActionDestructor,
-		WindowActionMousePress,
-		NULL
-	};
 
-	WindowAction(int _key, std::string _label) : widget_class{&txt_window_action_class)}, key{_key}, label{std::string(_label)}
+	WindowAction(int _key, std::string _label) : widget_class<WindowAction>{}, key{_key}, label{std::string(_label)},
+											widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 	}
 
-	void SizeCalc()
+	bool Selectable() override final const noexcept
+	{
+		return false;
+	}
+
+	void CalculateSize() override final noexcept
 	{
 		char buf[10];
 
@@ -58,7 +58,7 @@ public:
 		height = 1;
 	}
 
-	void Drawer()
+	void Draw() override final const noexcept
 	{
 		char buf[10];
 
@@ -78,11 +78,7 @@ public:
 		DrawString(" ");
 	}
 
-	void Destructor()
-	{
-	}
-
-	auto KeyPress(int _key)
+	bool KeyPress(KeyType _key) override final const noexcept
 	{
 		if (tolower(_key) == tolower(key))
 		{
@@ -93,13 +89,27 @@ public:
 		return false;
 	}
 
-	void MousePress(int x, int y, int b)
+	bool MousePress(MouseEvent evt) override final const noexcept
 	{
 		// Simulate a press of the key
-		if (b == MOUSE_LEFT)
+		if (evt.button == MOUSE_LEFT)
 		{
-			KeyPress(key);
+			return KeyPress(KEY_ENTER);
 		}
+
+		return false;
+	}
+
+	void SetLayout() override final const noexcept
+	{
+	}
+
+	void SetFocus(bool _focus) override final const noexcept
+	{
+	}
+
+	void Destroy() override final const noexcept
+	{
 	}
 
 	// FIXME
@@ -149,7 +159,7 @@ WindowAction* NewWindowSelectAction(Window* window)
  * @param label			Label to display for this action in the tray at the bottom of the window (UTF-8 format).
  * @return				Pointer to the new window action widget.
  */
-//WindowAction* NewWindowAction(int key, const char* label);
+//WindowAction* NewWindowAction(int key, std::string label);
 
 /**
  * Create a new window action that closes the window when the escape key is pressed. The label "Close" is used.

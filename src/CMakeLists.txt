@@ -9,7 +9,7 @@ set(COMMON_SOURCE_FILES
 	i_main.cpp
 	i_system.cpp		i_system.h
 	m_argv.cpp			m_argv.h
-	m_misc.cpp			m_misc.h)
+						m_misc.h)
 
 # Dedicated server (chocolate-server):
 
@@ -28,7 +28,7 @@ set(DEDSERV_FILES
 	net_query.cpp		net_query.h
 	net_server.cpp		net_server.h
 	net_structrw.cpp	net_structrw.h
-	z_native.cpp		z_zone.h)
+						z_zone.h)
 
 add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
 target_include_directories("${PROGRAM_PREFIX}server" PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
@@ -99,12 +99,12 @@ set(GAME_SOURCE_FILES
 	w_file_posix.cpp
 	w_file_win32.cpp
 	w_merge.cpp			w_merge.h
-	z_zone.cpp			z_zone.h)
+						z_zone.h)
 
 set(GAME_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../")
 
 if(MSVC)
-	list(APPEND GAME_SOURCE_FILES "../win32/win_opendir.cpp" "../win32/win_opendir.h")
+	list(APPEND GAME_SOURCE_FILES "../win32/win_opendir.cpp" "../derma/d_native.h" "../derma/d_windows.h" "../win32/win_opendir.h")
 	list(APPEND GAME_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/win32/")
 endif()
 
@@ -194,7 +194,7 @@ set(SETUP_FILES
 	net_sdl.cpp			net_sdl.h
 	net_query.cpp		net_query.h
 	net_structrw.cpp	net_structrw.h
-	z_native.cpp		z_zone.h)
+						z_zone.h)
 
 if(WIN32)
 	add_executable("${PROGRAM_PREFIX}setup" WIN32 ${SETUP_FILES} ${COMMON_SOURCE_FILES} "${CMAKE_CURRENT_BINARY_DIR}/setup-res.rc")
@@ -209,12 +209,12 @@ if(MSVC)
 	set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES LINK_FLAGS "/MANIFEST:NO")
 endif()
 
-add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
+add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
 target_compile_definitions(midiread PRIVATE "-DTEST")
 target_include_directories(midiread PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(midiread SDL2::SDL2main SDL2::SDL2)
 
-add_executable(mus2mid mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp m_misc.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
+add_executable(mus2mid mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
 target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE")
 target_include_directories(mus2mid PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(mus2mid SDL2::SDL2main SDL2::SDL2)

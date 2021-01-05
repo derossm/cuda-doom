@@ -59,22 +59,26 @@ static void Transform(sha1_context_t* hd, byte* data)
 		byte* p2{(byte*)x};
 		for (size_t i{0}; i < 16; ++i, p2 += 4)
 		{
-			p2[3] = *(data++);
-			p2[2] = *(data++);
-			p2[1] = *(data++);
-			p2[0] = *(data++);
+			p2[3] = *data;
+			++data;
+			p2[2] = *data;
+			++data;
+			p2[1] = *data;
+			++data;
+			p2[0] = *data;
+			++data;
 		}
 	}
 #endif
 
-#define K1 0x5A827999L
-#define K2 0x6ED9EBA1L
-#define K3 0x8F1BBCDCL
-#define K4 0xCA62C1D6L
-#define F1(x,y,z)	( z ^ ( x & ( y ^ z ) ) )
-#define F2(x,y,z)	( x ^ y ^ z )
-#define F3(x,y,z)	( ( x & y ) | ( z & ( x | y ) ) )
-#define F4(x,y,z)	( x ^ y ^ z )
+constexpr size_t K1{0x5A827999L};
+constexpr size_t K2{0x6ED9EBA1L};
+constexpr size_t K3{0x8F1BBCDCL};
+constexpr size_t K4{0xCA62C1D6L};
+#define F1(x,y,z) ( z ^ ( x & ( y ^ z ) ) )
+#define F2(x,y,z) ( x ^ y ^ z )
+#define F3(x,y,z) ( ( x & y ) | ( z & ( x | y ) ) )
+#define F4(x,y,z) ( x ^ y ^ z )
 
 #define rol(x,n) ( ((x) << (n)) | ((x) >> (32-(n))) )
 
@@ -181,7 +185,7 @@ void SHA1_Update(sha1_context_t* hd, byte* inbuf, size_t inlen)
 		/* flush the buffer */
 		Transform(hd, hd->buf);
 		hd->count = 0;
-		hd->nblocks++;
+		++(hd->nblocks);
 	}
 
 	if (!inbuf)
@@ -193,7 +197,9 @@ void SHA1_Update(sha1_context_t* hd, byte* inbuf, size_t inlen)
 	{
 		for (; inlen && hd->count < 64; --inlen)
 		{
-			hd->buf[hd->count++] = *(inbuf++);
+			hd->buf[hd->count] = *inbuf;
+			++(hd->count);
+			++inbuf;
 		}
 
 		SHA1_Update(hd, NULL, 0);
@@ -215,7 +221,9 @@ void SHA1_Update(sha1_context_t* hd, byte* inbuf, size_t inlen)
 
 	for (; inlen && hd->count < 64; --inlen)
 	{
-		hd->buf[hd->count++] = *(inbuf++);
+		hd->buf[hd->count] = *inbuf;
+		++(hd->count);
+		++inbuf;
 	}
 }
 
@@ -256,19 +264,23 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t* hd)
 	if (hd->count < 56)
 	{
 		/* enough room */
-		hd->buf[hd->count++] = 0x80; /* pad */
+		hd->buf[hd->count] = 0x80; /* pad */
+		++(hd->count);
 		while (hd->count < 56)
 		{
-			hd->buf[hd->count++] = 0; /* pad */
+			hd->buf[hd->count] = 0; /* pad */
+			++(hd->count);
 		}
 	}
 	else
 	{
 		/* need one extra block */
-		hd->buf[hd->count++] = 0x80; /* pad character */
+		hd->buf[hd->count] = 0x80; /* pad character */
+		++(hd->count);
 		while (hd->count < 64)
 		{
-			hd->buf[hd->count++] = 0;
+			hd->buf[hd->count] = 0;
+			++(hd->count);
 		}
 		SHA1_Update(hd, NULL, 0); /* flush */;
 		memset(hd->buf, 0, 56 ); /* fill next block with zeroes */
@@ -313,7 +325,7 @@ void SHA1_UpdateInt32(sha1_context_t* context, unsigned val)
 	SHA1_Update(context, buf, 4);
 }
 
-void SHA1_UpdateString(sha1_context_t* context, char* str)
+void SHA1_UpdateString(sha1_context_t* context, std::string str)
 {
-	SHA1_Update(context, (byte*)str, strlen(str) + 1);
+	SHA1_Update(context, (byte*)str.c_str(), str.length() + 1);
 }

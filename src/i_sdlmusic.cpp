@@ -12,7 +12,7 @@
 	System interface for music.
 \**********************************************************************************************************************************************/
 
-
+#include "../derma/d_native.h"
 
 #include "SDL.h"
 #include "SDL_mixer.h"
@@ -36,7 +36,7 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-#define MAXMIDLENGTH (96 * 1024)
+constexpr size_t MAXMIDLENGTH{(96 * 1024)};
 
 static bool music_initialized = false;
 
@@ -48,18 +48,18 @@ static bool sdl_was_initialized = false;
 static bool musicpaused = false;
 static int current_music_volume;
 
-char* timidity_cfg_path = "";
+std::string timidity_cfg_path = "";
 
-static char* temp_timidity_cfg = NULL;
+std::string temp_timidity_cfg = NULL;
 
 // If the temp_timidity_cfg config variable is set, generate a "wrapper"
 // config file for Timidity to point to the actual config file. This
 // is needed to inject a "dir" command so that the patches are read
 // relative to the actual config file.
 
-static bool WriteWrapperTimidityConfig(char* write_path)
+static bool WriteWrapperTimidityConfig(std::string write_path)
 {
-	char* path;
+	std::string path;
 	FILE* fstream;
 
 	if (!strcmp(timidity_cfg_path, ""))
@@ -86,12 +86,12 @@ static bool WriteWrapperTimidityConfig(char* write_path)
 
 void I_InitTimidityConfig()
 {
-	char* env_string;
+	std::string env_string;
 	bool success;
 
 	temp_timidity_cfg = M_TempFile("timidity.cfg");
 
-	if (snd_musicdevice == SNDDEVICE_GUS)
+	if (snd_musicdevice == snddevice_t::GUS)
 	{
 		success = GUS_WriteConfig(temp_timidity_cfg);
 	}
@@ -104,7 +104,7 @@ void I_InitTimidityConfig()
 	// config file.
 	if (success)
 	{
-		env_string = M_StringJoin("TIMIDITY_CFG=", temp_timidity_cfg, NULL);
+		env_string = std::string("TIMIDITY_CFG=" + temp_timidity_cfg);
 		putenv(env_string);
 		// env_string deliberately not freed; see putenv manpage
 
@@ -211,7 +211,7 @@ static bool I_SDL_InitMusic()
 #if defined(_WIN32)
 	// [AM] Start up midiproc to handle playing MIDI music.
 	// Don't enable it for GUS, since it handles its own volume just fine.
-	if (snd_musicdevice != SNDDEVICE_GUS)
+	if (snd_musicdevice != snddevice_t::GUS)
 	{
 		I_MidiPipe_InitServer();
 	}
@@ -368,7 +368,7 @@ static bool IsMid(byte* mem, int len)
 }
 */
 
-static bool ConvertMus(byte* musdata, int len, const char* filename)
+static bool ConvertMus(byte* musdata, int len, std::string filename)
 {
 	MEMFILE* instream;
 	MEMFILE* outstream;
@@ -396,12 +396,12 @@ static bool ConvertMus(byte* musdata, int len, const char* filename)
 
 static void* I_SDL_RegisterSong(void* data, int len)
 {
-	char* filename;
+	std::string filename;
 	Mix_Music *music;
 
 	if (!music_initialized)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	// MUS files begin with "MUS"
@@ -463,8 +463,6 @@ static void* I_SDL_RegisterSong(void* data, int len)
 		}
 	}
 
-	free(filename);
-
 	return music;
 }
 
@@ -481,12 +479,12 @@ static bool I_SDL_MusicIsPlaying()
 
 static snddevice_t music_sdl_devices[] =
 {
-	SNDDEVICE_PAS,
-	SNDDEVICE_GUS,
-	SNDDEVICE_WAVEBLASTER,
-	SNDDEVICE_SOUNDCANVAS,
-	SNDDEVICE_GENMIDI,
-	SNDDEVICE_AWE32,
+	snddevice_t::PAS,
+	snddevice_t::GUS,
+	snddevice_t::WAVEBLASTER,
+	snddevice_t::SOUNDCANVAS,
+	snddevice_t::GENMIDI,
+	snddevice_t::AWE32,
 };
 
 music_module_t music_sdl_module =

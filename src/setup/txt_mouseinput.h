@@ -11,15 +11,12 @@
 
 #include "../../derma/common.h"
 
-#include "txt_widget.h"
+#include "../../textscreen/txt_widget.h"
 
-//
 // A mouse input is like an input box. When selected, a box pops up allowing a mouse to be selected.
-//
-
 struct txt_mouse_input_t
 {
-	Widget widget;
+	cudadoom::txt::Widget widget;
 	int *variable;
 	int check_conflicts;
 };

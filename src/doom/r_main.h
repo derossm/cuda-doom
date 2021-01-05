@@ -21,23 +21,23 @@
 //
 // POV related.
 //
-extern fixed_t		viewcos;
-extern fixed_t		viewsin;
+extern fixed_t viewcos;
+extern fixed_t viewsin;
 
-extern int		viewwindowx;
-extern int		viewwindowy;
+extern int viewwindowx;
+extern int viewwindowy;
 
-extern int		centerx;
-extern int		centery;
+extern int centerx;
+extern int centery;
 
-extern fixed_t		centerxfrac;
-extern fixed_t		centeryfrac;
-extern fixed_t		projection;
+extern fixed_t centerxfrac;
+extern fixed_t centeryfrac;
+extern fixed_t projection;
 
-extern int		validcount;
+extern int validcount;
 
-extern int		linecount;
-extern int		loopcount;
+extern int linecount;
+extern int loopcount;
 
 //
 // Lighting LUT.
@@ -56,37 +56,37 @@ extern int LIGHTSCALESHIFT;
 extern int MAXLIGHTZ;
 extern int LIGHTZSHIFT;
 
-extern lighttable_t***	scalelight;
-extern lighttable_t**	scalelightfixed;
-extern lighttable_t***	zlight;
+extern lighttable_t*** scalelight;
+extern lighttable_t** scalelightfixed;
+extern lighttable_t*** zlight;
 
-extern int		extralight;
-extern lighttable_t*	fixedcolormap;
+extern int extralight;
+extern lighttable_t* fixedcolormap;
 
 // Number of diminishing brightness levels.
 // There a 0-31, i.e. 32 LUT in the COLORMAP lump.
-#define NUMCOLORMAPS		32
+constexpr size_t NUMCOLORMAPS{32};
 
 // [AM] Fractional part of the current tic, in the half-open
 //		range of [0.0, 1.0). Used for interpolation.
-extern fixed_t			fractionaltic;
+extern fixed_t fractionaltic;
 
 // Blocky/low detail mode.
 //B remove this?
 // 0 = high, 1 = low
-extern	int		detailshift;
+extern int detailshift;
 
 //
 // Function pointers to switch refresh/drawing functions.
 // Used to select shadow mode etc.
 //
-extern void		(*colfunc) ();
-extern void		(*transcolfunc) ();
-extern void		(*basecolfunc) ();
-extern void		(*fuzzcolfunc) ();
-extern void		(*tlcolfunc) ();
+extern void (*colfunc) ();
+extern void (*transcolfunc) ();
+extern void (*basecolfunc) ();
+extern void (*fuzzcolfunc) ();
+extern void (*tlcolfunc) ();
 // No shadow effects on floors.
-extern void		(*spanfunc) ();
+extern void (*spanfunc) ();
 
 //
 // Utility functions.

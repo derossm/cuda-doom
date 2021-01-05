@@ -38,7 +38,7 @@
 - (bool) addIWADPath: (NSString*) path;
 - (void) addFileToCommandLine: (NSString*) fileName
 			forArgument: (NSString*) args;
-- (bool) selectGameByName: (const char*) name;
+- (bool) selectGameByName: (std::string) name;
 - (void) openTerminal: (id) sender;
 
 - (void) openREADME: (id) sender;

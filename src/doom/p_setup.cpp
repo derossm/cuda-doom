@@ -18,7 +18,6 @@
 #include "i_swap.h"
 #include "m_argv.h"
 #include "m_bbox.h"
-#include "m_misc.h" // [crispy] M_StringJoin()
 
 #include "g_game.h"
 
@@ -29,41 +28,40 @@
 #include "p_local.h"
 
 #include "s_sound.h"
-#include "s_musinfo.h" // [crispy] S_ParseMusInfo()
+#include "s_musinfo.h" // S_ParseMusInfo()
 
 #include "doomstat.h"
 
-#include "p_extnodes.h" // [crispy] support extended node formats
+#include "p_extnodes.h" // support extended node formats
 
-void	P_SpawnMapThing (mapthing_t*	mthing);
-
+void P_SpawnMapThing(mapthing_t* mthing);
 
 //
 // MAP related Lookup tables.
 // Store VERTEXES, LINEDEFS, SIDEDEFS, etc.
 //
-int		numvertexes;
-vertex_t*	vertexes;
+int numvertexes;
+vertex_t* vertexes;
 
-int		numsegs;
-seg_t*		segs;
+int numsegs;
+seg_t* segs;
 
-int		numsectors;
-sector_t*	sectors;
+int numsectors;
+sector_t* sectors;
 
-int		numsubsectors;
-subsector_t*	subsectors;
+int numsubsectors;
+subsector_t* subsectors;
 
-int		numnodes;
-node_t*		nodes;
+int numnodes;
+node_t* nodes;
 
-int		numlines;
-line_t*		lines;
+int numlines;
+line_t* lines;
 
-int		numsides;
-side_t*		sides;
+int numsides;
+side_t* sides;
 
-static int		totallines;
+static int totallines;
 
 // BLOCKMAP
 // Created from axis aligned bounding box
@@ -73,17 +71,16 @@ static int		totallines;
 // by spatial subdivision in 2D.
 //
 // Blockmap size.
-int		bmapwidth;
-int		bmapheight;	// size in mapblocks
-int32_t*	blockmap;	// int for larger maps // [crispy] BLOCKMAP limit
+int bmapwidth;
+int bmapheight;	// size in mapblocks
+int32_t* blockmap;	// int for larger maps // [crispy] BLOCKMAP limit
 // offsets in blockmap are from here
-int32_t*	blockmaplump; // [crispy] BLOCKMAP limit
+int32_t* blockmaplump; // [crispy] BLOCKMAP limit
 // origin of block map
-fixed_t		bmaporgx;
-fixed_t		bmaporgy;
+fixed_t bmaporgx;
+fixed_t bmaporgy;
 // for thing chains
-MapObject**	blocklinks;
-
+MapObject** blocklinks;
 
 // REJECT
 // For fast sight rejection.
@@ -92,16 +89,15 @@ MapObject**	blocklinks;
 // Without special effect, this could be
 // used as a PVS lookup as well.
 //
-byte*		rejectmatrix;
-
+byte* rejectmatrix;
 
 // Maintain single and multi player starting spots.
-#define MAX_DEATHMATCH_STARTS	10
+constexpr size_t MAX_DEATHMATCH_STARTS{10};
 
-mapthing_t	deathmatchstarts[MAX_DEATHMATCH_STARTS];
-mapthing_t*	deathmatch_p;
-mapthing_t	playerstarts[MAXPLAYERS];
-bool		playerstartsingame[MAXPLAYERS];
+mapthing_t deathmatchstarts[MAX_DEATHMATCH_STARTS];
+mapthing_t* deathmatch_p;
+mapthing_t playerstarts[MAX_PLAYERS];
+bool playerstartsingame[MAX_PLAYERS];
 
 // [crispy] recalculate seg offsets
 // adapted from prboom-plus/src/p_setup.c:474-482
@@ -117,35 +113,29 @@ fixed_t GetOffset(vertex_t* v1, vertex_t* v2)
 	return r;
 }
 
-
-
-
-//
-// P_LoadVertexes
-//
-void P_LoadVertexes (int lump)
+void P_LoadVertexes(int lump)
 {
-	byte*		data;
-	int			i;
-	mapvertex_t*	ml;
-	vertex_t*		li;
+	byte* data;
+	int i;
+	mapvertex_t* ml;
+	vertex_t* li;
 
 	// Determine number of lumps:
 	// total lump length / vertex record length.
-	numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
+	numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
 
 	// Allocate zone memory for buffer.
-	vertexes = Z_Malloc<decltype(vertexes)>(numvertexes*sizeof(vertex_t),PU_LEVEL,0);
+	vertexes = Z_Malloc<decltype(vertexes)>(numvertexes*sizeof(vertex_t), pu_tags_t::PU_LEVEL,0);
 
 	// Load data into cache.
-	data = W_CacheLumpNum (lump, pu_tags_t::PU_STATIC);
+	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
 
 	ml = (mapvertex_t*)data;
 	li = vertexes;
 
 	// Copy and convert vertex coordinates,
 	// internal representation as fixed.
-	for (i=0 ; i<numvertexes ; i++, li++, ml++)
+	for (i=0 ; i<numvertexes ; ++i, ++li, ++ml)
 	{
 	li->x = SHORT(ml->x)<<FRACBITS;
 	li->y = SHORT(ml->y)<<FRACBITS;
@@ -160,9 +150,6 @@ void P_LoadVertexes (int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-//
-// GetSectorAtNullAddress
-//
 sector_t* GetSectorAtNullAddress()
 {
 	static bool null_sector_is_initialized = false;
@@ -179,28 +166,25 @@ sector_t* GetSectorAtNullAddress()
 	return &null_sector;
 }
 
-//
-// P_LoadSegs
-//
-void P_LoadSegs (int lump)
+void P_LoadSegs(int lump)
 {
-	byte*		data;
-	int			i;
-	mapseg_t*		ml;
-	seg_t*		li;
-	line_t*		ldef;
-	int			linedef;
-	int			side;
-	int					sidenum;
+	byte* data;
+	int i;
+	mapseg_t* ml;
+	seg_t* li;
+	line_t* ldef;
+	int linedef;
+	int side;
+	int sidenum;
 
-	numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-	segs = Z_Malloc<decltype(segs)>(numsegs*sizeof(seg_t),PU_LEVEL,0);
+	numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
+	segs = Z_Malloc<decltype(segs)>(numsegs*sizeof(seg_t), pu_tags_t::PU_LEVEL,0);
 	memset(segs, 0, numsegs*sizeof(seg_t));
-	data = W_CacheLumpNum (lump,PU_STATIC);
+	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
 
 	ml = (mapseg_t*)data;
 	li = segs;
-	for (i=0 ; i<numsegs ; i++, li++, ml++)
+	for (i=0 ; i<numsegs ; ++i, ++li, ++ml)
 	{
 	li->v1 = &vertexes[(unsigned short)SHORT(ml->v1)]; // [crispy] extended nodes
 	li->v2 = &vertexes[(unsigned short)SHORT(ml->v2)]; // [crispy] extended nodes
@@ -215,13 +199,11 @@ void P_LoadSegs (int lump)
 	// e6y: check for wrong indexes
 	if ((unsigned)linedef >= (unsigned)numlines)
 	{
-		I_Error("P_LoadSegs: seg %d references a non-existent linedef %d",
-			i, (unsigned)linedef);
+		I_Error("P_LoadSegs: seg %d references a non-existent linedef %d", i, (unsigned)linedef);
 	}
 	if ((unsigned)ldef->sidenum[side] >= (unsigned)numsides)
 	{
-		I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d",
-			linedef, i, (unsigned)ldef->sidenum[side]);
+		I_Error("P_LoadSegs: linedef %d for seg %d references a non-existent sidedef %d", linedef, i, (unsigned)ldef->sidenum[side]);
 	}
 
 	li->sidedef = &sides[ldef->sidenum[side]];
@@ -231,15 +213,15 @@ void P_LoadSegs (int lump)
 
 		if (ldef-> flags & ML_TWOSIDED)
 		{
-			sidenum class = ldef->sidenum[side ^ 1];
+			sidenum = ldef->sidenum[side ^ 1];
 
-			// If the sidenum class is out of range, this may be a "glass hack"
+			// If the sidenum is out of range, this may be a "glass hack"
 			// impassible window. Point at side #0 (this may not be
 			// the correct Vanilla behavior; however, it seems to work for
 			// OTTAWAU.WAD, which is the one place I've seen this trick
 			// used).
 
-			if (sidenum class < 0 || sidenum class >= numsides)
+			if (sidenum < 0 || sidenum >= numsides)
 			{
 				// [crispy] linedef has two-sided flag set, but no valid second sidedef;
 				// but since it has a midtexture, it is supposed to be rendered just
@@ -267,12 +249,12 @@ void P_LoadSegs (int lump)
 }
 
 // [crispy] fix long wall wobble
-void P_SegLengths (bool contrast_only)
+void P_SegLengths(bool contrast_only)
 {
 	int i;
 	const int rightangle = abs(finesine[(ANG60/2) >> ANGLETOFINESHIFT]);
 
-	for (i = 0; i < numsegs; i++)
+	for (i = 0; i < numsegs; ++i)
 	{
 	seg_t* const li = &segs[i];
 	int64_t dx, dy;
@@ -307,19 +289,16 @@ void P_SegLengths (bool contrast_only)
 	}
 }
 
-//
-// P_LoadSubsectors
-//
-void P_LoadSubsectors (int lump)
+void P_LoadSubsectors(int lump)
 {
-	byte*		data;
-	int			i;
-	mapsubsector_t*	ms;
-	subsector_t*	ss;
+	byte* data;
+	int i;
+	mapsubsector_t* ms;
+	subsector_t* ss;
 
-	numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-	subsectors = Z_Malloc<decltype(subsectors)>(numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
-	data = W_CacheLumpNum (lump,PU_STATIC);
+	numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
+	subsectors = Z_Malloc<decltype(subsectors)>(numsubsectors*sizeof(subsector_t), pu_tags_t::PU_LEVEL,0);
+	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
 
 	// [crispy] fail on missing subsectors
 	if (!data || !numsubsectors)
@@ -329,7 +308,7 @@ void P_LoadSubsectors (int lump)
 	memset(subsectors,0, numsubsectors*sizeof(subsector_t));
 	ss = subsectors;
 
-	for (i=0 ; i<numsubsectors ; i++, ss++, ms++)
+	for (i=0 ; i<numsubsectors ; ++i, ++ss, ++ms)
 	{
 	ss->numlines = (unsigned short)SHORT(ms->numsegs); // [crispy] extended nodes
 	ss->firstline = (unsigned short)SHORT(ms->firstseg); // [crispy] extended nodes
@@ -338,26 +317,21 @@ void P_LoadSubsectors (int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-
-
-//
-// P_LoadSectors
-//
-void P_LoadSectors (int lump)
+void P_LoadSectors(int lump)
 {
-	byte*		data;
-	int			i;
-	mapsector_t*	ms;
-	sector_t*		ss;
+	byte* data;
+	int i;
+	mapsector_t* ms;
+	sector_t* ss;
 
 	// [crispy] fail on missing sectors
 	if (lump >= numlumps)
 	I_Error("P_LoadSectors: No sectors in map!");
 
-	numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-	sectors = Z_Malloc<decltype(sectors)>(numsectors*sizeof(sector_t),PU_LEVEL,0);
+	numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
+	sectors = Z_Malloc<decltype(sectors)>(numsectors*sizeof(sector_t), pu_tags_t::PU_LEVEL,0);
 	memset(sectors, 0, numsectors*sizeof(sector_t));
-	data = W_CacheLumpNum (lump,PU_STATIC);
+	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
 
 	// [crispy] fail on missing sectors
 	if (!data || !numsectors)
@@ -365,7 +339,7 @@ void P_LoadSectors (int lump)
 
 	ms = (mapsector_t*)data;
 	ss = sectors;
-	for (i=0 ; i<numsectors ; i++, ss++, ms++)
+	for (i=0 ; i<numsectors ; ++i, ++ss, ++ms)
 	{
 	ss->floorheight = SHORT(ms->floorheight)<<FRACBITS;
 	ss->ceilingheight = SHORT(ms->ceilingheight)<<FRACBITS;
@@ -391,22 +365,18 @@ void P_LoadSectors (int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-
-//
-// P_LoadNodes
-//
-void P_LoadNodes (int lump)
+void P_LoadNodes(int lump)
 {
-	byte*	data;
-	int		i;
-	int		j;
-	int		k;
-	mapnode_t*	mn;
-	node_t*	no;
+	byte* data;
+	int i;
+	int j;
+	int k;
+	mapnode_t* mn;
+	node_t* no;
 
-	numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-	nodes = Z_Malloc<decltype(nodes)>(numnodes*sizeof(node_t),PU_LEVEL,0);
-	data = W_CacheLumpNum (lump,PU_STATIC);
+	numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
+	nodes = Z_Malloc<decltype(nodes)>(numnodes*sizeof(node_t), pu_tags_t::PU_LEVEL,0);
+	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
 
 	// [crispy] warn about missing nodes
 	if (!data || !numnodes)
@@ -420,13 +390,13 @@ void P_LoadNodes (int lump)
 	mn = (mapnode_t*)data;
 	no = nodes;
 
-	for (i=0 ; i<numnodes ; i++, no++, mn++)
+	for (i=0 ; i<numnodes ; ++i, ++no, ++mn)
 	{
 	no->x = SHORT(mn->x)<<FRACBITS;
 	no->y = SHORT(mn->y)<<FRACBITS;
 	no->dx = SHORT(mn->dx)<<FRACBITS;
 	no->dy = SHORT(mn->dy)<<FRACBITS;
-	for (j=0 ; j<2 ; j++)
+	for (j=0 ; j<2 ; ++j)
 	{
 		no->children[j] = (unsigned short)SHORT(mn->children[j]); // [crispy] extended nodes
 
@@ -445,7 +415,7 @@ void P_LoadNodes (int lump)
 		no->children[j] |= NF_SUBSECTOR;
 		}
 
-		for (k=0 ; k<4 ; k++)
+		for (k=0 ; k<4 ; ++k)
 		no->bbox[j][k] = SHORT(mn->bbox[j][k])<<FRACBITS;
 	}
 	}
@@ -453,24 +423,20 @@ void P_LoadNodes (int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-
-//
-// P_LoadThings
-//
-void P_LoadThings (int lump)
+void P_LoadThings(int lump)
 {
-	byte				*data;
-	int			i;
-	mapthing_t			*mt;
-	mapthing_t			spawnthing;
-	int			numthings;
-	bool		spawn;
+	byte *data;
+	int i;
+	mapthing_t *mt;
+	mapthing_t spawnthing;
+	int numthings;
+	bool spawn;
 
-	data = W_CacheLumpNum (lump,PU_STATIC);
-	numthings = W_LumpLength (lump) / sizeof(mapthing_t);
+	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
+	numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
 	mt = (mapthing_t*)data;
-	for (i=0 ; i<numthings ; i++, mt++)
+	for (i=0 ; i<numthings ; ++i, ++mt)
 	{
 	spawn = true;
 
@@ -508,7 +474,7 @@ void P_LoadThings (int lump)
 
 	if (!deathmatch)
 	{
-		for (i = 0; i < MAXPLAYERS; i++)
+		for (i = 0; i < MAX_PLAYERS; ++i)
 		{
 			if (playeringame[i] && !playerstartsingame[i])
 			{
@@ -526,25 +492,25 @@ void P_LoadThings (int lump)
 // P_LoadLineDefs
 // Also counts secret lines for intermissions.
 //
-void P_LoadLineDefs (int lump)
+void P_LoadLineDefs(int lump)
 {
-	byte*		data;
-	int			i;
-	maplinedef_t*	mld;
-	line_t*		ld;
-	vertex_t*		v1;
-	vertex_t*		v2;
+	byte* data;
+	int i;
+	maplinedef_t* mld;
+	line_t* ld;
+	vertex_t* v1;
+	vertex_t* v2;
 	int warn, warn2; // [crispy] warn about invalid linedefs
 
-	numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-	lines = Z_Malloc<decltype(lines)>(numlines*sizeof(line_t),PU_LEVEL,0);
+	numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
+	lines = Z_Malloc<decltype(lines)>(numlines*sizeof(line_t), pu_tags_t::PU_LEVEL, 0);
 	memset(lines, 0, numlines*sizeof(line_t));
-	data = W_CacheLumpNum (lump,PU_STATIC);
+	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
 
 	mld = (maplinedef_t*)data;
 	ld = lines;
 	warn = warn2 = 0; // [crispy] warn about invalid linedefs
-	for (i=0 ; i<numlines ; i++, mld++, ld++)
+	for (i=0 ; i<numlines ; ++i, ++mld, ++ld)
 	{
 	ld->flags = (unsigned short)SHORT(mld->flags); // [crispy] extended nodes
 	ld->special = SHORT(mld->special);
@@ -552,7 +518,7 @@ void P_LoadLineDefs (int lump)
 	if ((unsigned short) ld->special > 141 && ld->special != 271 && ld->special != 272)
 	{
 		fprintf(stderr, "P_LoadLineDefs: Unknown special %d at line %d.\n", ld->special, i);
-		warn++;
+		++warn;
 	}
 	ld->tag = SHORT(mld->tag);
 	// [crispy] warn about special linedefs without tag
@@ -581,7 +547,7 @@ void P_LoadLineDefs (int lump)
 			break;
 		default:
 			fprintf(stderr, "P_LoadLineDefs: Special linedef %d without tag.\n", i);
-			warn2++;
+			++warn2;
 			break;
 		}
 	}
@@ -591,15 +557,15 @@ void P_LoadLineDefs (int lump)
 	ld->dy = v2->y - v1->y;
 
 	if (!ld->dx)
-		ld->slopetype = ST_VERTICAL;
+		ld->slopetype = slopetype_t::ST_VERTICAL;
 	else if (!ld->dy)
-		ld->slopetype = ST_HORIZONTAL;
+		ld->slopetype = slopetype_t::ST_HORIZONTAL;
 	else
 	{
 		if (FixedDiv(ld->dy, ld->dx) > 0)
-		ld->slopetype = ST_POSITIVE;
+		ld->slopetype = slopetype_t::ST_POSITIVE;
 		else
-		ld->slopetype = ST_NEGATIVE;
+		ld->slopetype = slopetype_t::ST_NEGATIVE;
 	}
 
 	if (v1->x < v2->x)
@@ -667,64 +633,56 @@ void P_LoadLineDefs (int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-
-//
-// P_LoadSideDefs
-//
-void P_LoadSideDefs (int lump)
+void P_LoadSideDefs(int lump)
 {
-	byte*		data;
-	int			i;
-	mapsidedef_t*	msd;
-	side_t*		sd;
+	byte* data;
+	int i;
+	mapsidedef_t* msd;
+	side_t* sd;
 
-	numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-	sides = Z_Malloc<decltype(sides)>(numsides*sizeof(side_t),PU_LEVEL,0);
+	numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
+	sides = Z_Malloc<decltype(sides)>(numsides*sizeof(side_t), pu_tags_t::PU_LEVEL, 0);
 	memset(sides, 0, numsides*sizeof(side_t));
-	data = W_CacheLumpNum (lump,PU_STATIC);
+	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
 
 	msd = (mapsidedef_t*)data;
 	sd = sides;
-	for (i=0 ; i<numsides ; i++, msd++, sd++)
+	for (i=0 ; i<numsides ; ++i, ++msd, ++sd)
 	{
-	sd->textureoffset = SHORT(msd->textureoffset)<<FRACBITS;
-	sd->rowoffset = SHORT(msd->rowoffset)<<FRACBITS;
-	sd->toptexture = R_TextureNumForName(msd->toptexture);
-	sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
-	sd->midtexture = R_TextureNumForName(msd->midtexture);
-	sd->sector = &sectors[SHORT(msd->sector)];
-	// [crispy] smooth texture scrolling
-	sd->basetextureoffset = sd->textureoffset;
+		sd->textureoffset = SHORT(msd->textureoffset)<<FRACBITS;
+		sd->rowoffset = SHORT(msd->rowoffset)<<FRACBITS;
+		sd->toptexture = R_TextureNumForName(msd->toptexture);
+		sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
+		sd->midtexture = R_TextureNumForName(msd->midtexture);
+		sd->sector = &sectors[SHORT(msd->sector)];
+		// smooth texture scrolling
+		sd->basetextureoffset = sd->textureoffset;
 	}
 
 	W_ReleaseLumpNum(lump);
 }
 
-
-//
-// P_LoadBlockMap
-//
-bool P_LoadBlockMap (int lump)
+bool P_LoadBlockMap(int lump)
 {
 	int i;
 	int count;
 	int lumplen;
 	short *wadblockmaplump;
 
-	// [crispy] (re-)create BLOCKMAP if necessary
+	// (re-)create BLOCKMAP if necessary
 	if (M_CheckParm("-blockmap") ||
 		lump >= numlumps ||
 		(lumplen = W_LumpLength(lump)) < 8 ||
 		(count = lumplen / 2) >= 0x10000)
 	{
-	return false;
+		return false;
 	}
 
-	// [crispy] remove BLOCKMAP limit
+	// remove BLOCKMAP limit
 	// adapted from boom202s/P_SETUP.C:1025-1076
 	wadblockmaplump = Z_Malloc<decltype(wadblockmaplump)>(lumplen, pu_tags_t::PU_LEVEL, NULL);
 	W_ReadLump(lump, wadblockmaplump);
-	blockmaplump = Z_Malloc<decltype(*blockmaplump)>(sizeof(*blockmaplump) * count, pu_tags_t::PU_LEVEL, NULL);
+	blockmaplump = Z_Malloc<decltype(blockmaplump)>(sizeof(*blockmaplump) * count, pu_tags_t::PU_LEVEL, NULL);
 	blockmap = blockmaplump + 4;
 
 	blockmaplump[0] = SHORT(wadblockmaplump[0]);
@@ -734,7 +692,7 @@ bool P_LoadBlockMap (int lump)
 
 	// Swap all short integers to native byte ordering.
 
-	for (i=4; i<count; i++)
+	for (i=4; i<count; ++i)
 	{
 	short t = SHORT(wadblockmaplump[i]);
 	blockmaplump[i] = (t == -1) ? -1l : (int32_t) t & 0xffff;
@@ -760,28 +718,26 @@ bool P_LoadBlockMap (int lump)
 	return true;
 }
 
-
-
 //
 // P_GroupLines
 // Builds sector line lists and subsector sector numbers.
 // Finds block bounding boxes for sectors.
 //
-void P_GroupLines ()
+void P_GroupLines()
 {
-	line_t**		linebuffer;
-	int			i;
-	int			j;
-	line_t*		li;
-	sector_t*		sector;
-	subsector_t*	ss;
-	seg_t*		seg;
-	fixed_t		bbox[4];
-	int			block;
+	line_t** linebuffer;
+	int i;
+	int j;
+	line_t* li;
+	sector_t* sector;
+	subsector_t* ss;
+	seg_t* seg;
+	fixed_t bbox[4];
+	int block;
 
 	// look up sector number for each subsector
 	ss = subsectors;
-	for (i=0 ; i<numsubsectors ; i++, ss++)
+	for (i=0 ; i<numsubsectors ; ++i, ++ss)
 	{
 	seg = &segs[ss->firstline];
 	ss->sector = seg->sidedef->sector;
@@ -790,15 +746,15 @@ void P_GroupLines ()
 	// count number of lines in each sector
 	li = lines;
 	totallines = 0;
-	for (i=0 ; i<numlines ; i++, li++)
+	for (i=0 ; i<numlines ; ++i, ++li)
 	{
-	totallines++;
+	++totallines;
 	li->frontsector->linecount++;
 
 	if (li->backsector && li->backsector != li->frontsector)
 	{
 		li->backsector->linecount++;
-		totallines++;
+		++totallines;
 	}
 	}
 
@@ -844,16 +800,16 @@ void P_GroupLines ()
 	// Generate bounding boxes for sectors
 
 	sector = sectors;
-	for (i=0 ; i<numsectors ; i++, sector++)
+	for (i=0 ; i<numsectors ; ++i, ++sector)
 	{
-	M_ClearBox (bbox);
+	M_ClearBox(bbox);
 
-	for (j=0 ; j<sector->linecount; j++)
+	for (j=0 ; j<sector->linecount; ++j)
 	{
 			li = sector->lines[j];
 
-			M_AddToBox (bbox, li->v1->x, li->v1->y);
-			M_AddToBox (bbox, li->v2->x, li->v2->y);
+			M_AddToBox(bbox, li->v1->x, li->v1->y);
+			M_AddToBox(bbox, li->v2->x, li->v2->y);
 	}
 
 	// set the degenmobj_t to the middle of the bounding box
@@ -890,7 +846,7 @@ static void P_RemoveSlimeTrails()
 {
 	int i;
 
-	for (i = 0; i < numsegs; i++)
+	for (i = 0; i < numsegs; ++i)
 	{
 	const line_t* l = segs[i].linedef;
 	vertex_t* v = segs[i].v1;
@@ -1006,7 +962,7 @@ static void P_LoadReject(int lumpnum)
 
 	if (lumplen >= minlength)
 	{
-		rejectmatrix = W_CacheLumpNum(lumpnum, pu_tags_t::PU_LEVEL);
+		rejectmatrix = W_CacheLumpNum<byte>(lumpnum, pu_tags_t::PU_LEVEL);
 	}
 	else
 	{
@@ -1018,7 +974,7 @@ static void P_LoadReject(int lumpnum)
 }
 
 // [crispy] log game skill in plain text
-const char* skilltable[] =
+std::string skilltable[] =
 {
 	"Nothing",
 	"Baby",
@@ -1098,26 +1054,26 @@ void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 	{
 		if (crispy->havemaster && episode == 3)
 		{
-			gamemission = pack_master;
+			gamemission = GameMission::pack_master;
 		}
 		else
 		if (crispy->havenerve && episode == 2)
 		{
-			gamemission = pack_nerve;
+			gamemission = GameMission::pack_nerve;
 		}
 		else
 		{
-			gamemission = doom2;
+			gamemission = GameMission::doom2;
 		}
 	}
 	else
 	{
-		if (gamemission == pack_master)
+		if (gamemission == GameMission::pack_master)
 		{
 			episode = gameepisode = 3;
 		}
 		else
-		if (gamemission == pack_nerve)
+		if (gamemission == GameMission::pack_nerve)
 		{
 			episode = gameepisode = 2;
 		}
@@ -1139,17 +1095,17 @@ void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 	if (!musinfo.from_savegame)
 	{
 	// Make sure all sounds are stopped before Z_FreeTags.
-	S_Start ();
+	S_Start();
 	}
 	musinfo.from_savegame = false;
 
-	Z_FreeTags (PU_LEVEL, pu_tags_t::PU_PURGELEVEL-1);
+	Z_FreeTags(pu_tags_t::PU_LEVEL, pu_tags_t::PU_PURGELEVEL-1);
 
-	// UNUSED W_Profile ();
-	P_InitThinkers ();
+	// UNUSED W_Profile();
+	P_InitThinkers();
 
 	// if working with a devlopment map, reload it
-	W_Reload ();
+	W_Reload();
 
 // [crispy] factor out map lump name and number finding into a separate function
 /*
@@ -1170,9 +1126,9 @@ void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 	lumpname[4] = 0;
 	}
 
-	lumpnum = W_GetNumForName (lumpname);
+	lumpnum = W_GetNumForName(lumpname);
 */
-	lumpnum = P_GetNumForMap (episode, map, true);
+	lumpnum = P_GetNumForMap(episode, map, true);
 
 	maplumpinfo = lumpinfo[lumpnum];
 	strncpy(lumpname, maplumpinfo->name, 8);
@@ -1185,13 +1141,12 @@ void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 		extern TimeType savedleveltime;
 		const TimeType ltime = savedleveltime / TICRATE;
 		const TimeType ttime = (totalleveltimes + savedleveltime) / TICRATE;
-		char* rfn_str;
+		std::string rfn_str;
 
-		rfn_str = M_StringJoin(
-			respawnparm ? " -respawn" : "",
-			fastparm ? " -fast" : "",
-			nomonsters ? " -nomonsters" : "",
-			NULL);
+		rfn_str = std::string(
+			respawnparm ? " -respawn" : ""
+			+ fastparm ? " -fast" : ""
+			+ nomonsters ? " -nomonsters" : "");
 
 		fprintf(stderr, "P_SetupLevel: %s (%s) %s%s %d:%02d:%02d/%d:%02d:%02d ",
 			maplumpinfo->name, W_WadNameForLump(maplumpinfo),
@@ -1205,46 +1160,46 @@ void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 	crispy_mapformat = P_CheckMapFormat(lumpnum);
 
 	// note: most of this ordering is important
-	crispy_validblockmap = P_LoadBlockMap (lumpnum+ML_BLOCKMAP); // [crispy] (re-)create BLOCKMAP if necessary
-	P_LoadVertexes (lumpnum+ML_VERTEXES);
-	P_LoadSectors (lumpnum+ML_SECTORS);
-	P_LoadSideDefs (lumpnum+ML_SIDEDEFS);
+	crispy_validblockmap = P_LoadBlockMap(lumpnum+ML_BLOCKMAP); // [crispy] (re-)create BLOCKMAP if necessary
+	P_LoadVertexes(lumpnum+ML_VERTEXES);
+	P_LoadSectors(lumpnum+ML_SECTORS);
+	P_LoadSideDefs(lumpnum+ML_SIDEDEFS);
 
-	if (crispy_mapformat & MFMT_HEXEN)
+	if (crispy_mapformat & mapformat_t::MFMT_HEXEN)
 	{
-		P_LoadLineDefs_Hexen (lumpnum+ML_LINEDEFS);
+		P_LoadLineDefs_Hexen(lumpnum+ML_LINEDEFS);
 	}
 	else
 	{
-		P_LoadLineDefs (lumpnum+ML_LINEDEFS);
+		P_LoadLineDefs(lumpnum+ML_LINEDEFS);
 	}
 	// [crispy] (re-)create BLOCKMAP if necessary
 	if (!crispy_validblockmap)
 	{
-		extern void P_CreateBlockMap ();
+		extern void P_CreateBlockMap();
 		P_CreateBlockMap();
 	}
-	if (crispy_mapformat & (MFMT_ZDBSPX | MFMT_ZDBSPZ))
+	if (crispy_mapformat & (mapformat_t::MFMT_ZDBSPX | mapformat_t::MFMT_ZDBSPZ))
 	{
-		P_LoadNodes_ZDBSP (lumpnum+ML_NODES, crispy_mapformat & MFMT_ZDBSPZ);
+		P_LoadNodes_ZDBSP(lumpnum+ML_NODES, crispy_mapformat & mapformat_t::MFMT_ZDBSPZ);
 	}
 	else
 	{
-		if (crispy_mapformat & MFMT_DEEPBSP)
+		if (crispy_mapformat & mapformat_t::MFMT_DEEPBSP)
 		{
-			P_LoadSubsectors_DeePBSP (lumpnum+ML_SSECTORS);
-			P_LoadNodes_DeePBSP (lumpnum+ML_NODES);
-			P_LoadSegs_DeePBSP (lumpnum+ML_SEGS);
+			P_LoadSubsectors_DeePBSP(lumpnum+ML_SSECTORS);
+			P_LoadNodes_DeePBSP(lumpnum+ML_NODES);
+			P_LoadSegs_DeePBSP(lumpnum+ML_SEGS);
 		}
 		else
 		{
-			P_LoadSubsectors (lumpnum+ML_SSECTORS);
-			P_LoadNodes (lumpnum+ML_NODES);
-			P_LoadSegs (lumpnum+ML_SEGS);
+			P_LoadSubsectors(lumpnum+ML_SSECTORS);
+			P_LoadNodes(lumpnum+ML_NODES);
+			P_LoadSegs(lumpnum+ML_SEGS);
 		}
 	}
-	P_GroupLines ();
-	P_LoadReject (lumpnum+ML_REJECT);
+	P_GroupLines();
+	P_LoadReject(lumpnum+ML_REJECT);
 
 	// [crispy] remove slime trails
 	P_RemoveSlimeTrails();
@@ -1255,20 +1210,20 @@ void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 
 	bodyqueslot = 0;
 	deathmatch_p = deathmatchstarts;
-	if (crispy_mapformat & MFMT_HEXEN)
-		P_LoadThings_Hexen (lumpnum+ML_THINGS);
+	if (crispy_mapformat & mapformat_t::MFMT_HEXEN)
+		P_LoadThings_Hexen(lumpnum+ML_THINGS);
 	else
-		P_LoadThings (lumpnum+ML_THINGS);
+		P_LoadThings(lumpnum+ML_THINGS);
 
 	// if deathmatch, randomly spawn the active players
 	if (deathmatch)
 	{
-		for (size_t i{0}; i < MAXPLAYERS; ++i)
+		for (size_t i{0}; i < MAX_PLAYERS; ++i)
 		{
 			if (playeringame[i])
 			{
 				players[i].mo = NULL;
-				G_DeathMatchSpawnPlayer (i);
+				G_DeathMatchSpawnPlayer(i);
 			}
 		}
 	}
@@ -1282,7 +1237,7 @@ void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 	iquehead = iquetail = 0;
 
 	// set up world state
-	P_SpawnSpecials ();
+	P_SpawnSpecials();
 
 	// build subsector connect matrix
 	//	UNUSED P_ConnectSubsectors();
@@ -1296,7 +1251,7 @@ void P_SetupLevel(int episode, int map, int playermask, SkillType skill)
 	//printf ("free memory: 0x%x\n", Z_FreeMemory());
 }
 
-void P_Init ()
+void P_Init()
 {
 	P_InitSwitchList();
 	P_InitPicAnims();

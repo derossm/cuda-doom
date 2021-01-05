@@ -28,11 +28,11 @@ struct ArtiType_t
 // Mainly movements/button commands per game tick, plus a checksum for internal state consistency.
 struct ticcmd_t
 {
-	signed char	forwardmove;	// *2048 for move
-	signed char	sidemove;		// *2048 for move
+	char forwardmove;	// *2048 for move
+	char sidemove;		// *2048 for move
 	short angleturn;			// <<16 for angle delta
 	byte chatchar;
-	buttoncode_t buttons;
+	buttoncode buttons;
 
 	// villsa [STRIFE] according to the asm, consistancy is a short, not a byte
 	byte consistancy;			// checks for net game

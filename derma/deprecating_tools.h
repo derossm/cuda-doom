@@ -18,7 +18,7 @@
 	solution = template function with macro instantiation
 	
 	NOTE: MANY functions also use old school bit manipulations, so changing from a specific sized integral type to an enum type requires
-	refactoring	all that 90's razzmatazz out before updating the parameter types
+	refactoring all that 90's razzmatazz out before updating the parameter types
 */
 template<typename U, typename T>
 constexpr auto _integral_value(T v) noexcept

@@ -129,16 +129,16 @@ public:
 
 	// Power ups. invinc and invis are tic counters.
 	std::array<int, size_t(PowerType_t::NUMPOWERS) + 3> powers; // [crispy] showfps and mapcoords are now "powers"
-	std::array<int, size_t(WeaponType_t::NUMWEAPONS)> weaponowned;
-	std::array<int, size_t(AmmoType_t::NUMAMMO)> ammo;
-	std::array<int, size_t(AmmoType_t::NUMAMMO)> maxammo;
+	std::array<int, size_t(WeaponType::NUMWEAPONS)> weaponowned;
+	std::array<int, size_t(AmmoType::NUMAMMO)> ammo;
+	std::array<int, size_t(AmmoType::NUMAMMO)> maxammo;
 	// Frags, kills of other players.
 	std::array<int, MAX_PLAYERS> frags;
 
 	// Overlay view sprites (gun, etc).
 	std::array<pspdef_t, size_t(psprnum_t::NUMPSPRITES)> psprites;
 
-	std::array<bool, size_t(CardType_t::NUMCARDS)> cards;
+	std::array<bool, size_t(CardType::NUMCARDS)> cards;
 
 	// Hint messages.
 	std::string message;
@@ -157,12 +157,12 @@ public:
 	bool backpack;
 
 	// blinking key or skull in the status bar
-	bool tryopen[(size_t)CardType_t::NUMCARDS];
+	bool tryopen[std::size_t(CardType::NUMCARDS)];
 
-	WeaponType_t readyweapon;
+	WeaponType readyweapon;
 
 	// Is wp_nochange if not changing.
-	WeaponType_t pendingweapon;
+	WeaponType pendingweapon;
 
 	PlayerState playerstate;
 };

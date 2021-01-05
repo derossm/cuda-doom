@@ -14,27 +14,30 @@
 
 #include "../derma/common.h"
 
+#include "doom/doomdef.h"
 #include "doomtype.h"
 #include "d_ticcmd.h"
 #include "sha1.h"
 
+constexpr size_t MAX_MODULES{16};
+
 // Absolute maximum number of "nodes" in the game. This is different to
 // NET_MAXPLAYERS, as there may be observers that are not participating
 // (eg. left/right monitors)
-#define MAXNETNODES 16
+constexpr size_t MAXNETNODES{16};
 
 // The maximum number of players, multiplayer/networking.
 // This is the maximum supported by the networking code; individual games
-// have their own values for MAXPLAYERS that can be smaller.
-#define NET_MAXPLAYERS 8
+// have their own values for MAX_PLAYERS that can be smaller.
+constexpr size_t NET_MAXPLAYERS{8};
 
 // Maximum length of a player's name.
-#define MAXPLAYERNAME 30
+constexpr size_t MAXPLAYERNAME{30};
 
 // Networking and tick handling related.
-#define BACKUPTICS 128
+constexpr size_t BACKUPTICS{128};
 
-struct _net_packet_t
+struct net_packet_t
 {
 	byte* data;
 	size_t len;
@@ -42,15 +45,17 @@ struct _net_packet_t
 	unsigned pos;
 };
 
+struct net_module_t;
+
 // net_addr_t
-struct _net_addr_t
+struct net_addr_t
 {
-	net_module_t* module; // TODO: URGENT -- REFACTOR THIS NAME
+	net_module_t* mod; // TODO: URGENT -- REFACTOR THIS NAME
 	int refcount;
 	void* handle;
 };
 
-struct _net_module_t
+struct net_module_t
 {
 	// Initialize this module for use as a client
 	bool (*InitClient)();
@@ -67,89 +72,87 @@ struct _net_module_t
 	bool (*RecvPacket)(net_addr_t** addr, net_packet_t** packet);
 
 	// Converts an address to a string
-	void (*AddrToString)(net_addr_t* addr, char* buffer, int buffer_len);
+	void (*AddrToString)(net_addr_t* addr, std::string buffer, int buffer_len);
 
 	// Free back an address when no longer in use
 	void (*FreeAddress)(net_addr_t* addr);
 
 	// Try to resolve a name to an address
-	net_addr_t* (*ResolveAddress)(const char* addr);
+	net_addr_t* (*ResolveAddress)(std::string addr);
 };
 
 // Magic number sent when connecting to check this is a valid client
-#define NET_MAGIC_NUMBER		1454104972U
+constexpr size_t NET_MAGIC_NUMBER{1454104972U};
 
 // Old magic number used by Chocolate Doom versions before v3.0:
-#define NET_OLD_MAGIC_NUMBER	3436803284U
+constexpr size_t NET_OLD_MAGIC_NUMBER{3436803284U};
 
 // header field value indicating that the packet is a reliable packet
-#define NET_RELIABLE_PACKET (1 << 15)
+constexpr size_t NET_RELIABLE_PACKET{(1 << 15)};
 
 // Supported protocols. If you're developing a fork of Chocolate
 // Doom, you can add your own entry to this list while maintaining
-// compatibility with Chocolate Doom servers. Higher-numbered enum class values
+// compatibility with Chocolate Doom servers. Higher-numbered enum values
 // will be preferred when negotiating a protocol for the client and server
 // to use, so the order matters.
-// NOTE: The values in this enum class do not have any special value outside of
+// NOTE: The values in this enum do not have any special value outside of
 // the program they're compiled in. What matters is the string representation.
 enum class net_protocol_t
 {
 	// Protocol introduced with Chocolate Doom v3.0. Each compatibility-
 	// breaking change to the network protocol will produce a new protocol
 	// number in this enum.
-	NET_PROTOCOL_CHOCOLATE_DOOM_0,
+	CHOCOLATE_DOOM_0,
 
 	// Add your own protocol here; be sure to add a name for it to the list
 	// in net_common.c too.
 	NET_NUM_PROTOCOLS,
-	NET_PROTOCOL_UNKNOWN
+	UNKNOWN
 };
 
 // packet types
-
-enum class net_packet_type_t
+enum class net_packet_type
 {
-	NET_PACKET_TYPE_SYN,
-	NET_PACKET_TYPE_ACK, // deprecated
-	NET_PACKET_TYPE_REJECTED,
-	NET_PACKET_TYPE_KEEPALIVE,
-	NET_PACKET_TYPE_WAITING_DATA,
-	NET_PACKET_TYPE_GAMESTART,
-	NET_PACKET_TYPE_GAMEDATA,
-	NET_PACKET_TYPE_GAMEDATA_ACK,
-	NET_PACKET_TYPE_DISCONNECT,
-	NET_PACKET_TYPE_DISCONNECT_ACK,
-	NET_PACKET_TYPE_RELIABLE_ACK,
-	NET_PACKET_TYPE_GAMEDATA_RESEND,
-	NET_PACKET_TYPE_CONSOLE_MESSAGE,
-	NET_PACKET_TYPE_QUERY,
-	NET_PACKET_TYPE_QUERY_RESPONSE,
-	NET_PACKET_TYPE_LAUNCH,
-	NET_PACKET_TYPE_NAT_HOLE_PUNCH
+	SYN,
+	ACK, // deprecated
+	REJECTED,
+	KEEPALIVE,
+	WAITING_DATA,
+	GAMESTART,
+	GAMEDATA,
+	GAMEDATA_ACK,
+	DISCONNECT,
+	DISCONNECT_ACK,
+	RELIABLE_ACK,
+	GAMEDATA_RESEND,
+	CONSOLE_MESSAGE,
+	QUERY,
+	QUERY_RESPONSE,
+	LAUNCH,
+	NAT_HOLE_PUNCH
 };
 
-enum class net_master_packet_type_t
+enum class net_master_packet_type
 {
-	NET_MASTER_PACKET_TYPE_ADD,
-	NET_MASTER_PACKET_TYPE_ADD_RESPONSE,
-	NET_MASTER_PACKET_TYPE_QUERY,
-	NET_MASTER_PACKET_TYPE_QUERY_RESPONSE,
-	NET_MASTER_PACKET_TYPE_GET_METADATA,
-	NET_MASTER_PACKET_TYPE_GET_METADATA_RESPONSE,
-	NET_MASTER_PACKET_TYPE_SIGN_START,
-	NET_MASTER_PACKET_TYPE_SIGN_START_RESPONSE,
-	NET_MASTER_PACKET_TYPE_SIGN_END,
-	NET_MASTER_PACKET_TYPE_SIGN_END_RESPONSE,
-	NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH,
-	NET_MASTER_PACKET_TYPE_NAT_HOLE_PUNCH_ALL
+	ADD,
+	ADD_RESPONSE,
+	QUERY,
+	QUERY_RESPONSE,
+	GET_METADATA,
+	GET_METADATA_RESPONSE,
+	SIGN_START,
+	SIGN_START_RESPONSE,
+	SIGN_END,
+	SIGN_END_RESPONSE,
+	NAT_HOLE_PUNCH,
+	NAT_HOLE_PUNCH_ALL
 };
 
 // Settings specified when the client connects to the server.
-
-struct net_connect_data_t
+struct net_connect_data
 {
-	int gamemode;
-	int gamemission;
+	GameMode gamemode;
+	GameMission gamemission;
 	int lowres_turn;
 	int drone;
 	int max_players;
@@ -161,7 +164,7 @@ struct net_connect_data_t
 
 // Game settings sent by client to server when initiating game start,
 // and received from the server by clients when the game starts.
-struct net_gamesettings_t
+struct net_gamesettings
 {
 	TimeType ticdup;
 	TimeType extratics;
@@ -172,7 +175,7 @@ struct net_gamesettings_t
 	int respawn_monsters;
 	int map;
 	int skill;
-	int gameversion;
+	GameVersion gameversion;
 	int lowres_turn;
 	int new_sync;
 	TimeType timelimit;
@@ -188,14 +191,20 @@ struct net_gamesettings_t
 	int player_classes[NET_MAXPLAYERS];
 };
 
-#define NET_TICDIFF_FORWARD			(1 << 0)
-#define NET_TICDIFF_SIDE			(1 << 1)
-#define NET_TICDIFF_TURN			(1 << 2)
-#define NET_TICDIFF_BUTTONS			(1 << 3)
-#define NET_TICDIFF_CONSISTANCY		(1 << 4)
-#define NET_TICDIFF_CHATCHAR		(1 << 5)
-#define NET_TICDIFF_RAVEN			(1 << 6)
-#define NET_TICDIFF_STRIFE			(1 << 7)
+struct net_context
+{
+	net_module_t* mods[MAX_MODULES];
+	int num_modules;
+};
+
+constexpr size_t NET_TICDIFF_FORWARD{(1 << 0)};
+constexpr size_t NET_TICDIFF_SIDE{(1 << 1)};
+constexpr size_t NET_TICDIFF_TURN{(1 << 2)};
+constexpr size_t NET_TICDIFF_BUTTONS{(1 << 3)};
+constexpr size_t NET_TICDIFF_CONSISTANCY{(1 << 4)};
+constexpr size_t NET_TICDIFF_CHATCHAR{(1 << 5)};
+constexpr size_t NET_TICDIFF_RAVEN{(1 << 6)};
+constexpr size_t NET_TICDIFF_STRIFE{(1 << 7)};
 
 struct net_ticdiff_t
 {
@@ -206,7 +215,7 @@ struct net_ticdiff_t
 // Complete set of ticcmds from all players
 struct net_full_ticcmd_t
 {
-	signed int latency;
+	int latency;
 	unsigned seq;
 	bool playeringame[NET_MAXPLAYERS];
 	net_ticdiff_t cmds[NET_MAXPLAYERS];
@@ -215,13 +224,13 @@ struct net_full_ticcmd_t
 // Data sent in response to server queries
 struct net_querydata_t
 {
-	const char* version;
+	std::string version;
 	int server_state;
 	int num_players;
 	int max_players;
-	int gamemode;
-	int gamemission;
-	const char* description;
+	GameMode gamemode;
+	GameMission gamemission;
+	std::string description;
 	net_protocol_t protocol;
 };
 

@@ -31,61 +31,61 @@
 #include "dstrings.h"
 #include "am_map.h"
 
-extern bool inhelpscreens;			// [crispy]
+extern bool inhelpscreens;
 
 // For use if I do walls with outsides/insides
-#define REDS						(256-5*16)
-#define REDRANGE					16
-#define BLUES						(256-4*16+8)
-#define BLUERANGE					8
-#define GREENS						(7*16)
-#define GREENRANGE					16
-#define GRAYS						(6*16)
-#define GRAYSRANGE					16
-#define BROWNS						(4*16)
-#define BROWNRANGE					16
-#define YELLOWS						(256-32+7)
-#define YELLOWRANGE					1
-#define BLACK						0
-#define WHITE						(256-47)
+constexpr size_t REDS{(256-5*16)};
+constexpr size_t REDRANGE{16};
+constexpr size_t BLUES{(256-4*16+8)};
+constexpr size_t BLUERANGE{8};
+constexpr size_t GREENS{(7*16)};
+constexpr size_t GREENRANGE{16};
+constexpr size_t GRAYS{(6*16)};
+constexpr size_t GRAYSRANGE{16};
+constexpr size_t BROWNS{(4*16)};
+constexpr size_t BROWNRANGE{16};
+constexpr size_t YELLOWS{(256-32+7)};
+constexpr size_t YELLOWRANGE{1};
+constexpr size_t BLACK{0};
+constexpr size_t WHITE{(256-47)};
 
 // Automap colors
-#define BACKGROUND					BLACK
-#define YOURCOLORS					WHITE
-#define YOURRANGE					0
-#define WALLCOLORS					(crispy->extautomap ? REDS+4 : REDS) // [crispy] slightly darker red
-#define WALLRANGE					REDRANGE
-#define TSWALLCOLORS				GRAYS
-#define TSWALLRANGE					GRAYSRANGE
-#define FDWALLCOLORS				(crispy->extautomap ? BROWNS+6 : BROWNS) // [crispy] darker brown
-#define FDWALLRANGE					BROWNRANGE
-#define CDWALLCOLORS				(crispy->extautomap ? 163 : YELLOWS) // [crispy] golden yellow
-#define CDWALLRANGE					YELLOWRANGE
-#define THINGCOLORS					GREENS
-#define THINGRANGE					GREENRANGE
-#define SECRETWALLCOLORS			252 // [crispy] purple
+constexpr size_t BACKGROUND{BLACK};
+constexpr size_t YOURCOLORS{WHITE};
+constexpr size_t YOURRANGE{0};
+#define WALLCOLORS (crispy->extautomap ? REDS+4 : REDS) // slightly darker red
+constexpr size_t WALLRANGE{REDRANGE};
+constexpr size_t TSWALLCOLORS{GRAYS};
+constexpr size_t TSWALLRANGE{GRAYSRANGE};
+#define FDWALLCOLORS (crispy->extautomap ? BROWNS+6 : BROWNS) // darker brown
+constexpr size_t FDWALLRANGE{BROWNRANGE};
+#define CDWALLCOLORS (crispy->extautomap ? 163 : YELLOWS) // golden yellow
+constexpr size_t CDWALLRANGE{YELLOWRANGE};
+constexpr size_t THINGCOLORS{GREENS};
+constexpr size_t THINGRANGE{GREENRANGE};
+constexpr size_t SECRETWALLCOLORS{252}; // purple
 
 #define CRISPY_HIGHLIGHT_REVEALED_SECRETS
 
-#define REVEALEDSECRETWALLCOLORS	112 // [crispy] green
-#define SECRETWALLRANGE				WALLRANGE
-#define GRIDCOLORS					(GRAYS + GRAYSRANGE/2)
-#define GRIDRANGE					0
-#define XHAIRCOLORS					GRAYS
+constexpr size_t REVEALEDSECRETWALLCOLORS{112}; // green
+constexpr size_t SECRETWALLRANGE{WALLRANGE};
+constexpr size_t GRIDCOLORS{(GRAYS + GRAYSRANGE/2)};
+constexpr size_t GRIDRANGE{0};
+constexpr size_t XHAIRCOLORS{GRAYS};
 
 // drawing stuff
-#define AM_NUMMARKPOINTS			10
+constexpr size_t AM_NUMMARKPOINTS{10};
 // scale on entry
-#define INITSCALEMTOF				(.2*FRACUNIT)
+constexpr double INITSCALEMTOF{(0.2*FRACUNIT)};
 // how much the automap moves window per tic in frame-buffer coordinates, moves 140 pixels in 1 second
-#define F_PANINC					4
+constexpr size_t F_PANINC{4};
 // how much zoom-in per tic, goes to 2x in 1 second
-#define M_ZOOMIN					((int) (1.02*FRACUNIT))
+constexpr size_t M_ZOOMIN{((int) (1.02*FRACUNIT))};
 // how much zoom-out per tic, pulls out to 0.5x in 1 second
-#define M_ZOOMOUT					((int) (FRACUNIT/1.02))
+constexpr size_t M_ZOOMOUT{((int) (FRACUNIT/1.02))};
 // [crispy] zoom faster with the mouse wheel
-#define M2_ZOOMIN					((int) (1.08*FRACUNIT))
-#define M2_ZOOMOUT					((int) (FRACUNIT/1.08))
+constexpr size_t M2_ZOOMIN{((int) (1.08*FRACUNIT))};
+constexpr size_t M2_ZOOMOUT{((int) (FRACUNIT/1.08))};
 
 // translates between frame-buffer and map distances
 // [crispy] fix int overflow that causes map and grid lines to disappear
@@ -96,7 +96,7 @@ extern bool inhelpscreens;			// [crispy]
 #define CYMTOF(y) (f_y + (f_h - MTOF((y)-m_y)))
 
 // the following is crap
-#define LINE_NEVERSEE ML_DONTDRAW
+constexpr size_t LINE_NEVERSEE{ML_DONTDRAW};
 
 // The vector graphics for the automap.
 // A line drawing of the player pointing right, starting from the middle.
@@ -239,8 +239,8 @@ static int followplayer = 1;	// specifies whether to follow the player around
 static bool stopped = true;
 
 // [crispy] Antialiased lines from Heretic with more colors
-#define NUMSHADES				8
-#define NUMSHADES_BITS			3	// log2(NUMSHADES)
+constexpr size_t NUMSHADES{8};
+constexpr size_t NUMSHADES_BITS{3}; // log2(NUMSHADES)
 static byte color_shades[NUMSHADES * 256];
 
 // Forward declare for AM_LevelInit
@@ -491,7 +491,7 @@ void AM_loadPics()
 	for (auto i{0}; i < 10; ++i)
 	{
 		DEH_snprintf(namebuf, 9, "AMMNUM%d", i);
-		marknums[i] = (patch_t*)W_CacheLumpName(namebuf, pu_tags_t::PU_STATIC);
+		marknums[i] = W_CacheLumpName<patch_t>(namebuf, pu_tags_t::PU_STATIC);
 	}
 }
 
@@ -842,7 +842,7 @@ bool AM_Responder(EventType* ev)
 			rc = false;
 		}
 
-		if ((!deathmatch || gameversion <= GameVersion_t::exe_doom_1_8) && cht_CheckCheat(&cheat_amap, ev->data2))
+		if ((!deathmatch || gameversion <= GameVersion::exe_doom_1_8) && cht_CheckCheat(&cheat_amap, ev->data2))
 		{
 			rc = false;
 			cheating = (cheating + 1) % 3;
@@ -921,19 +921,19 @@ void AM_changeWindowScale()
 
 void AM_doFollowPlayer()
 {
-	if (f_oldloc.x != plr->mo->x || f_oldloc.y != plr->mo->y)
+	if (f_oldloc.x != plr->x || f_oldloc.y != plr->y)
 	{
-		m_x = FTOM(MTOF(plr->mo->x)) - m_w/2;
-		m_y = FTOM(MTOF(plr->mo->y)) - m_h/2;
+		m_x = FTOM(MTOF(plr->x)) - m_w/2;
+		m_y = FTOM(MTOF(plr->y)) - m_h/2;
 		m_x2 = m_x + m_w;
 		m_y2 = m_y + m_h;
-		f_oldloc.x = plr->mo->x;
-		f_oldloc.y = plr->mo->y;
+		f_oldloc.x = plr->x;
+		f_oldloc.y = plr->y;
 
-		// m_x = FTOM(MTOF(plr->mo->x - m_w/2));
-		// m_y = FTOM(MTOF(plr->mo->y - m_h/2));
-		// m_x = plr->mo->x - m_w/2;
-		// m_y = plr->mo->y - m_h/2;
+		// m_x = FTOM(MTOF(plr->x - m_w/2));
+		// m_y = FTOM(MTOF(plr->y - m_h/2));
+		// m_x = plr->x - m_w/2;
+		// m_y = plr->y - m_h/2;
 	}
 }
 
@@ -995,7 +995,7 @@ void AM_Ticker()
 		// if not following the player
 		if (!(!followplayer && crispy->automapoverlay))
 		{
-			mapangle = ANG90 - plr->mo->angle;
+			mapangle = ANG90 - plr->angle;
 		}
 	}
 }
@@ -1641,7 +1641,7 @@ void AM_drawWalls()
 				}
 			}
 		}
-		else if (plr->powers[PowerType_t::pw_allmap])
+		else if (plr->powers[std::size_t(PowerType_t::pw_allmap)])
 		{
 			if (!(lines[i].flags & LINE_NEVERSEE))
 			{
@@ -1734,8 +1734,8 @@ void AM_drawPlayers()
 
 	if (!netgame)
 	{
-		pt.x = plr->mo->x;
-		pt.y = plr->mo->y;
+		pt.x = plr->x;
+		pt.y = plr->y;
 		if (crispy->automaprotate)
 		{
 			AM_rotatePoint(&pt);
@@ -1743,11 +1743,11 @@ void AM_drawPlayers()
 
 		if (cheating)
 		{
-			AM_drawLineCharacter(cheat_player_arrow, arrlen(cheat_player_arrow), 0, plr->mo->angle, WHITE, pt.x, pt.y);
+			AM_drawLineCharacter(cheat_player_arrow, arrlen(cheat_player_arrow), 0, plr->angle, WHITE, pt.x, pt.y);
 		}
 		else
 		{
-			AM_drawLineCharacter(player_arrow, arrlen(player_arrow), 0, plr->mo->angle, WHITE, pt.x, pt.y);
+			AM_drawLineCharacter(player_arrow, arrlen(player_arrow), 0, plr->angle, WHITE, pt.x, pt.y);
 		}
 
 		return;
@@ -1768,7 +1768,7 @@ void AM_drawPlayers()
 			continue;
 		}
 
-		if (p->powers[PowerType_t::pw_invisibility])
+		if (p->powers[std::size_t(PowerType_t::pw_invisibility)])
 		{
 			color = 246;	// *close* to black
 		}
@@ -1777,15 +1777,15 @@ void AM_drawPlayers()
 			color = their_colors[their_color];
 		}
 
-		pt.x = p->mo->x;
-		pt.y = p->mo->y;
+		pt.x = p->x;
+		pt.y = p->y;
 
 		if (crispy->automaprotate)
 		{
 			AM_rotatePoint(&pt);
 		}
 
-		AM_drawLineCharacter(player_arrow, arrlen(player_arrow), 0, p->mo->angle, color, pt.x, pt.y);
+		AM_drawLineCharacter(player_arrow, arrlen(player_arrow), 0, p->angle, color, pt.x, pt.y);
 	}
 }
 
@@ -1802,9 +1802,9 @@ void AM_drawThings(int colors, int colorrange)
 		while (t)
 		{
 			// [crispy] do not draw an extra triangle for the player
-			if (t == plr->mo)
+			if (t == plr)
 			{
-				t = t->snext;
+				t = t->sectorNext;
 				continue;
 			}
 
@@ -1855,19 +1855,19 @@ void AM_drawThings(int colors, int colorrange)
 				else
 				{
 					AM_drawLineCharacter(thintriangle_guy, arrlen(thintriangle_guy),
-										// [crispy] triangle size represents actual thing size
-										t->radius, t->angle,
-										// [crispy] show countable kills in red ...
-										((t->flags & ((int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_CORPSE)) == (int)mobjflag_t::MF_COUNTKILL) ? REDS :
-										// [crispy] ... show Lost Souls and missiles in orange ...
-											(t->flags & ((int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_MISSILE)) ? 216 :
-										// [crispy] ... show other shootable items in dark gold ...
-										(t->flags & (int)mobjflag_t::MF_SHOOTABLE) ? 164 :
-										// [crispy] ... corpses in gray ...
-										(t->flags & (int)mobjflag_t::MF_CORPSE) ? GRAYS :
-										// [crispy] ... and countable items in yellow
-										(t->flags & (int)mobjflag_t::MF_COUNTITEM) ? YELLOWS :
-										colors+lightlev, pt.x, pt.y);
+							// [crispy] triangle size represents actual thing size
+							t->radius, t->angle,
+							// [crispy] show countable kills in red ...
+							(((int)t->flags & ((int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_CORPSE)) == (int)mobjflag_t::MF_COUNTKILL) ? REDS :
+							// [crispy] ... show Lost Souls and missiles in orange ...
+							((int)t->flags & ((int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_MISSILE)) ? 216 :
+							// [crispy] ... show other shootable items in dark gold ...
+							((int)t->flags & (int)mobjflag_t::MF_SHOOTABLE) ? 164 :
+							// [crispy] ... corpses in gray ...
+							((int)t->flags & (int)mobjflag_t::MF_CORPSE) ? GRAYS :
+							// [crispy] ... and countable items in yellow
+							((int)t->flags & (int)mobjflag_t::MF_COUNTITEM) ? YELLOWS :
+							colors+lightlev, pt.x, pt.y);
 				}
 			}
 			else
@@ -1875,7 +1875,7 @@ void AM_drawThings(int colors, int colorrange)
 				AM_drawLineCharacter(thintriangle_guy, arrlen(thintriangle_guy), 16<<FRACBITS, t->angle, colors+lightlev, pt.x, pt.y);
 			}
 
-			t = t->snext;
+			t = t->sectorNext;
 		}
 	}
 }
@@ -1985,8 +1985,10 @@ void AM_GetMarkPoints(int* n, long* p)
 	{
 		for (auto i{0}; i < AM_NUMMARKPOINTS; ++i)
 		{
-			*(p++) = (long)markpoints[i].x;
-			*(p++) = (markpoints[i].x == -1) ? 0L : (long)markpoints[i].y;
+			*p = (long)markpoints[i].x;
+			++p;
+			*p = (markpoints[i].x == -1) ? 0L : (long)markpoints[i].y;
+			++p;
 		}
 	}
 }
@@ -2001,7 +2003,9 @@ void AM_SetMarkPoints (int n, long *p)
 
 	for (auto i{0}; i < AM_NUMMARKPOINTS; ++i)
 	{
-		markpoints[i].x = (int64_t)*(p++);
-		markpoints[i].y = (int64_t)*(p++);
+		markpoints[i].x = (int64_t)*p;
+		++p;
+		markpoints[i].y = (int64_t)*p;
+		++p;
 	}
 }

@@ -48,7 +48,7 @@ bool midi_server_registered = false;
 // Data
 //
 
-#define MIDIPIPE_MAX_WAIT 1000 // Max amount of ms to wait for expected data.
+constexpr size_t MIDIPIPE_MAX_WAIT{1000}; // Max amount of ms to wait for expected data.
 
 static HANDLE midi_process_in_reader; // Input stream for midi process.
 static HANDLE midi_process_in_writer;
@@ -102,7 +102,7 @@ static bool UsingNativeMidi()
 	int i;
 	int decoders = Mix_GetNumMusicDecoders();
 
-	for (i = 0; i < decoders; i++)
+	for (i = 0; i < decoders; ++i)
 	{
 		if (strcmp(Mix_GetMusicDecoder(i), "NATIVEMIDI") == 0)
 		{
@@ -200,7 +200,7 @@ void RemoveFileSpec(TCHAR *path, size_t size)
 	fp = &path[size];
 	while (path <= fp && *fp != DIR_SEPARATOR)
 	{
-		fp--;
+		--fp;
 	}
 	*(fp + 1) = '\0';
 }
@@ -229,7 +229,7 @@ static bool BlockForAck()
 // Tells the MIDI subprocess to load a specific filename for playing. This
 // function blocks until there is an acknowledgement from the server.
 //
-bool I_MidiPipe_RegisterSong(char* filename)
+bool I_MidiPipe_RegisterSong(std::string filename)
 {
 	bool ok;
 	net_packet_t* packet;
@@ -402,15 +402,15 @@ bool I_MidiPipe_InitServer()
 {
 	TCHAR dirname[MAX_PATH + 1];
 	DWORD dirname_len;
-	char* module = NULL;
-	char* cmdline = NULL;
+	CHAR_PTR mod = NULL;
+	CHAR_PTR cmdline = NULL;
 	char params_buf[128];
 	SECURITY_ATTRIBUTES sec_attrs;
 	PROCESS_INFORMATION proc_info;
 	STARTUPINFO startup_info;
 	bool ok;
 
-	if (!UsingNativeMidi() || strlen(snd_musiccmd) > 0)
+	if (!UsingNativeMidi() || !snd_musiccmd.empty())
 	{
 		// If we're not using native MIDI, or if we're playing music through
 		// an exteranl program, we don't need to start the server.
@@ -427,7 +427,7 @@ bool I_MidiPipe_InitServer()
 	RemoveFileSpec(dirname, dirname_len);
 
 	// Define the module.
-	module = PROGRAM_PREFIX "midiproc.exe";
+	mod = PROGRAM_PREFIX "midiproc.exe";
 
 	// Set up pipes
 	memset(&sec_attrs, 0, sizeof(SECURITY_ATTRIBUTES));
@@ -459,19 +459,16 @@ bool I_MidiPipe_InitServer()
 		return false;
 	}
 
-	// Define the command line. Version, Sample Rate, and handles follow
-	// the executable name.
-	M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu",
-		snd_samplerate, (size_t) midi_process_in_reader, (size_t) midi_process_out_writer);
-	cmdline = M_StringJoin(module, " \"" PACKAGE_STRING "\"", " ", params_buf, NULL);
+	// Define the command line. Version, Sample Rate, and handles follow the executable name.
+	M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu", snd_samplerate, (size_t) midi_process_in_reader, (size_t) midi_process_out_writer);
+	cmdline = std::string(mod + " \"" + PACKAGE_STRING + "\" " + params_buf);
 
 	// Launch the subprocess
 	memset(&proc_info, 0, sizeof(proc_info));
 	memset(&startup_info, 0, sizeof(startup_info));
 	startup_info.cb = sizeof(startup_info);
 
-	ok = CreateProcess(TEXT(module), TEXT(cmdline), NULL, NULL, true,
-						0, NULL, dirname, &startup_info, &proc_info);
+	ok = CreateProcess(TEXT(mod), TEXT(cmdline), NULL, NULL, true, 0, NULL, dirname, &startup_info, &proc_info);
 
 	if (!ok)
 	{
@@ -492,4 +489,3 @@ bool I_MidiPipe_InitServer()
 }
 
 #endif
-

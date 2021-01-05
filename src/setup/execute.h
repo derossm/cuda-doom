@@ -10,22 +10,22 @@
 #pragma once
 
 #include "../../derma/common.h"
+#include "../../textscreen/textscreen.h"
 
 #include "doomtype.h"
-#include "textscreen.h"
 
-#define IWAD_DOOM2	(1 << 0)		/* doom2.wad */
-#define IWAD_PLUTONIA (1 << 1)		/* plutonia.wad */
-#define IWAD_TNT		(1 << 2)	/* tnt.wad */
-#define IWAD_DOOM		(1 << 3)	/* doom.wad */
-#define IWAD_DOOM1	(1 << 4)		/* doom1.wad */
-#define IWAD_CHEX		(1 << 5)	/* chex.wad */
+constexpr size_t IWAD_DOOM2{(1 << 0)};			// doom2.wad
+constexpr size_t IWAD_PLUTONIA{(1 << 1)};		// plutonia.wad
+constexpr size_t IWAD_TNT{(1 << 2)};			// tnt.wad
+constexpr size_t IWAD_DOOM{(1 << 3)};			// doom.wad
+constexpr size_t IWAD_DOOM1{(1 << 4)};			// doom1.wad
+constexpr size_t IWAD_CHEX{(1 << 5)};			// chex.wad
 
 execute_context_t* NewExecuteContext();
-void AddCmdLineParameter(execute_context_t* context, const char* s, ...) PRINTF_ATTR(2, 3);
+void AddCmdLineParameter(execute_context_t* context, std::string s, ...) PRINTF_ATTR(2, 3);
 void PassThroughArguments(execute_context_t* context);
 int ExecuteDoom(execute_context_t* context);
 int FindInstalledIWADs();
-bool OpenFolder(const char* path);
+bool OpenFolder(std::string path);
 
 cudadoom::txt::WindowAction* TestConfigAction();

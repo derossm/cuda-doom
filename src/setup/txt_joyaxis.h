@@ -11,10 +11,10 @@
 
 #include "../../derma/common.h"
 
-#include "txt_widget.h"
-#include "txt_window.h"
-
 #include "SDL.h"
+
+#include "../../textscreen/txt_widget.h"
+#include "../../textscreen/txt_window.h"
 
 enum class txt_joystick_axis_direction_t
 {

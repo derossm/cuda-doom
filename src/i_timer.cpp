@@ -24,7 +24,7 @@
 
 static Uint32 basetime = 0;
 
-int I_GetTime ()
+int I_GetTime()
 {
 	Uint32 ticks;
 

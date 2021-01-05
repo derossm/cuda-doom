@@ -40,11 +40,11 @@
 // #define macros to provide functions missing in Windows. Outside Windows, we use strings.h for str[n]casecmp.
 #if !HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP
 	#if !HAVE_DECL_STRCASECMP
-		#define strcasecmp stricmp
+		//#define iequals stricmp
 	#endif
 
 	#if !HAVE_DECL_STRNCASECMP
-		#define strncasecmp strnicmp
+		//#define strncasecmp strnicmp
 	#endif
 #else
 	#include <strings.h>

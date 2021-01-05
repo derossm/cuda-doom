@@ -7,9 +7,8 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Main dehacked code
+		Main dehacked code
 \**********************************************************************************************************************************************/
-
 
 #include "doomtype.h"
 #include "i_glob.h"
@@ -23,24 +22,20 @@
 #include "deh_main.h"
 
 extern deh_section_t* deh_section_types[];
-extern const char* deh_signatures[];
+extern std::string deh_signatures[];
 
 static bool deh_initialized = false;
 
 // If true, we can parse [STRINGS] sections in BEX format.
-
 bool deh_allow_extended_strings = true; // [crispy] always allow
 
 // If true, we can do long string replacements.
-
 bool deh_allow_long_strings = true; // [crispy] always allow
 
 // If true, we can do cheat replacements longer than the originals.
-
 bool deh_allow_long_cheats = true; // [crispy] always allow
 
 // If false, dehacked cheat replacements are ignored.
-
 bool deh_apply_cheats = true;
 
 void DEH_Checksum(sha1_digest_t digest)
@@ -62,7 +57,6 @@ void DEH_Checksum(sha1_digest_t digest)
 }
 
 // Called on startup to call the Init functions
-
 static void InitializeSections()
 {
 	unsigned i;
@@ -96,33 +90,29 @@ void DEH_Init() // [crispy] un-static
 }
 
 // Given a section name, get the section structure which corresponds
-
-static deh_section_t* GetSectionByName(char* name)
+static deh_section_t* GetSectionByName(std::string name)
 {
 	unsigned i;
 
-	// we explicitely do not recognize [STRINGS] sections at all
-	// if extended strings are not allowed
-
+	// we explicitely do not recognize [STRINGS] sections at all if extended strings are not allowed
 	if (!deh_allow_extended_strings && !strncasecmp("[STRINGS]", name, 9))
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	for (i=0; deh_section_types[i] != NULL; ++i)
 	{
-		if (!strcasecmp(deh_section_types[i]->name, name))
+		if (!iequals(deh_section_types[i]->name, name))
 		{
 			return deh_section_types[i];
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 // Is the string passed just whitespace?
-
-static bool IsWhitespace(char* s)
+static bool IsWhitespace(std::string s)
 {
 	for (; *s; ++s)
 	{
@@ -134,18 +124,15 @@ static bool IsWhitespace(char* s)
 }
 
 // Strip whitespace from the start and end of a string
-
-static char* CleanString(char* s)
+std::string CleanString(std::string s)
 {
-	char* strending;
+	std::string strending;
 
 	// Leading whitespace
-
 	while (*s && isspace(*s))
 		++s;
 
 	// Trailing whitespace
-
 	strending = s + strlen(s) - 1;
 
 	while (strlen(s) > 0 && isspace(*strending))
@@ -166,13 +153,11 @@ static char* CleanString(char* s)
 // The string is split on the '=', essentially.
 //
 // Returns true if read correctly
-
-bool DEH_ParseAssignment(char* line, char** variable_name, char** value)
+bool DEH_ParseAssignment(std::string line, char** variable_name, char** value)
 {
-	char* p;
+	std::string p;
 
 	// find the equals
-
 	p = strchr(line, '=');
 
 	if (p == NULL)
@@ -182,12 +167,10 @@ bool DEH_ParseAssignment(char* line, char** variable_name, char** value)
 
 	// variable name at the start
 	// turn the '=' into a \0 to terminate the string here
-
 	*p = '\0';
 	*variable_name = CleanString(line);
 
 	// value immediately follows the '='
-
 	*value = CleanString(p+1);
 
 	return true;
@@ -199,13 +182,12 @@ extern void DEH_RestoreLineStart (deh_context_t* context);
 static bool CheckSignatures(deh_context_t* context)
 {
 	size_t i;
-	char* line;
+	std::string line;
 
 	// [crispy] save pointer to start of line (should be 0 here)
 	DEH_SaveLineStart(context);
 
 	// Read the first line
-
 	line = DEH_ReadLine(context, false);
 
 	if (line == NULL)
@@ -214,7 +196,6 @@ static bool CheckSignatures(deh_context_t* context)
 	}
 
 	// Check all signatures to see if one matches
-
 	for (i=0; deh_signatures[i] != NULL; ++i)
 	{
 		if (!strcmp(deh_signatures[i], line))
@@ -231,8 +212,7 @@ static bool CheckSignatures(deh_context_t* context)
 }
 
 // Parses a comment string in a dehacked file.
-
-static void DEH_ParseComment(char* comment)
+static void DEH_ParseComment(std::string comment)
 {
 	//
 	// Welcome, to the super-secret Chocolate Doom-specific Dehacked
@@ -288,7 +268,7 @@ static void DEH_ParseContext(deh_context_t* context)
 	char section_name[20];
 	void* tag = NULL;
 	bool extended;
-	char* line;
+	std::string line;
 
 	// Read the header and check it matches the signature
 
@@ -305,7 +285,7 @@ static void DEH_ParseContext(deh_context_t* context)
 		// Read the next line. We only allow the special extended parsing
 		// for the BEX [STRINGS] section.
 		extended = current_section != NULL
-				&& !strcasecmp(current_section->name, "[STRINGS]");
+				&& !iequals(current_section->name, "[STRINGS]");
 		// [crispy] save pointer to start of line, just in case
 		DEH_SaveLineStart(context);
 		line = DEH_ReadLine(context, extended);
@@ -394,7 +374,7 @@ static void DEH_ParseContext(deh_context_t* context)
 
 // Parses a dehacked file
 
-int DEH_LoadFile(const char* filename)
+int DEH_LoadFile(std::string filename)
 {
 	deh_context_t* context;
 
@@ -436,9 +416,9 @@ int DEH_LoadFile(const char* filename)
 }
 
 // Load all dehacked patches from the given directory.
-void DEH_AutoLoadPatches(const char* path)
+void DEH_AutoLoadPatches(std::string path)
 {
-	const char* filename;
+	std::string filename;
 	glob_t* glob;
 
 	glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE|GLOB_FLAG_SORTED,
@@ -499,7 +479,7 @@ int DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error)
 	return 1;
 }
 
-int DEH_LoadLumpByName(const char* name, bool allow_long, bool allow_error)
+int DEH_LoadLumpByName(std::string name, bool allow_long, bool allow_error)
 {
 	int lumpnum;
 
@@ -517,7 +497,7 @@ int DEH_LoadLumpByName(const char* name, bool allow_long, bool allow_error)
 // Check the command line for -deh argument, and others.
 void DEH_ParseCommandLine()
 {
-	char* filename;
+	std::string filename;
 	int p;
 
 	//!

@@ -8,8 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
 #include "SDL.h"
+
+#include "txt_joyaxis.h"
+#include "../../textscreen/textscreen.h"
 
 #include "joystick.h"
 #include "i_joystick.h"
@@ -17,15 +19,13 @@
 #include "m_controls.h"
 #include "m_misc.h"
 
-#include "textscreen.h"
-#include "txt_gui.h"
-#include "txt_io.h"
-#include "txt_joyaxis.h"
-#include "txt_utf8.h"
+#include "../../textscreen/txt_gui.h"
+#include "../../textscreen/txt_io.h"
+#include "../../textscreen/txt_utf8.h"
 
-#define JOYSTICK_AXIS_WIDTH 20
+constexpr size_t JOYSTICK_AXIS_WIDTH{20};
 
-static const char* CalibrationLabel(txt_joystick_axis_t* joystick_axis)
+static std::string CalibrationLabel(txt_joystick_axis_t* joystick_axis)
 {
 	switch (joystick_axis->config_stage)
 	{
@@ -58,7 +58,7 @@ static const char* CalibrationLabel(txt_joystick_axis_t* joystick_axis)
 			}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 static void SetCalibrationLabel(txt_joystick_axis_t* joystick_axis)

@@ -34,8 +34,8 @@
 
 struct crispy_t
 {
-	char* havenerve{nullptr};
-	char* havemaster{nullptr};
+	std::string havenerve;
+	std::string havemaster;
 
 	void (*post_rendering_hook) ();
 

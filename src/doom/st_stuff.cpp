@@ -63,62 +63,60 @@ extern bool inhelpscreens; // prevent palette changes
 
 // Palette indices.
 // For damage/bonus red-/gold-shifts
-#define STARTREDPALS		1
-#define STARTBONUSPALS		9
-#define NUMREDPALS			8
-#define NUMBONUSPALS		4
+constexpr size_t STARTREDPALS{1};
+constexpr size_t STARTBONUSPALS{9};
+constexpr size_t NUMREDPALS{8};
+constexpr size_t NUMBONUSPALS{4};
 // Radiation suit, green shift.
-#define RADIATIONPAL		13
+constexpr size_t RADIATIONPAL{13};
 
 // N/256*100% probability
 // that the normal face state will change
-#define ST_FACEPROBABILITY		96
+constexpr size_t ST_FACEPROBABILITY{96};
 
 // For Responder
-#define ST_TOGGLECHAT		KEY_ENTER
+constexpr size_t ST_TOGGLECHAT{KEY_ENTER};
 
 // Location of status bar
-#define ST_X				0
-#define ST_X2				104
+constexpr size_t ST_X{0};
+constexpr size_t ST_X2{104};
 
-#define ST_FX			143
-#define ST_FY			169
+constexpr size_t ST_FX{143};
+constexpr size_t ST_FY{169};
 
 // Should be set to patch width
 // for tall numbers later on
-#define ST_TALLNUMWIDTH		(tallnum[0]->width)
+#define ST_TALLNUMWIDTH (tallnum[0]->width)
 
 // Number of status faces.
-#define ST_NUMPAINFACES		5
-#define ST_NUMSTRAIGHTFACES	3
-#define ST_NUMTURNFACES		2
-#define ST_NUMSPECIALFACES		3
+constexpr size_t ST_NUMPAINFACES{5};
+constexpr size_t ST_NUMSTRAIGHTFACES{3};
+constexpr size_t ST_NUMTURNFACES{2};
+constexpr size_t ST_NUMSPECIALFACES{3};
 
-#define ST_FACESTRIDE \
-			(ST_NUMSTRAIGHTFACES+ST_NUMTURNFACES+ST_NUMSPECIALFACES)
+constexpr size_t ST_FACESTRIDE{(ST_NUMSTRAIGHTFACES+ST_NUMTURNFACES+ST_NUMSPECIALFACES)};
 
-#define ST_NUMEXTRAFACES		2
+constexpr size_t ST_NUMEXTRAFACES{2};
 
-#define ST_NUMFACES \
-			(ST_FACESTRIDE*ST_NUMPAINFACES+ST_NUMEXTRAFACES)
+constexpr size_t ST_NUMFACES{(ST_FACESTRIDE*ST_NUMPAINFACES+ST_NUMEXTRAFACES)};
 
-#define ST_TURNOFFSET		(ST_NUMSTRAIGHTFACES)
-#define ST_OUCHOFFSET		(ST_TURNOFFSET + ST_NUMTURNFACES)
-#define ST_EVILGRINOFFSET		(ST_OUCHOFFSET + 1)
-#define ST_RAMPAGEOFFSET		(ST_EVILGRINOFFSET + 1)
-#define ST_GODFACE			(ST_NUMPAINFACES*ST_FACESTRIDE)
-#define ST_DEADFACE			(ST_GODFACE+1)
+constexpr size_t ST_TURNOFFSET{(ST_NUMSTRAIGHTFACES)};
+constexpr size_t ST_OUCHOFFSET{(ST_TURNOFFSET + ST_NUMTURNFACES)};
+constexpr size_t ST_EVILGRINOFFSET{(ST_OUCHOFFSET + 1)};
+constexpr size_t ST_RAMPAGEOFFSET{(ST_EVILGRINOFFSET + 1)};
+constexpr size_t ST_GODFACE{(ST_NUMPAINFACES*ST_FACESTRIDE)};
+constexpr size_t ST_DEADFACE{(ST_GODFACE+1)};
 
-#define ST_FACESX			143
-#define ST_FACESY			168
+constexpr size_t ST_FACESX{143};
+constexpr size_t ST_FACESY{168};
 
-#define ST_EVILGRINCOUNT		(2*TICRATE)
-#define ST_STRAIGHTFACECOUNT	(TICRATE/2)
-#define ST_TURNCOUNT		(1*TICRATE)
-#define ST_OUCHCOUNT		(1*TICRATE)
-#define ST_RAMPAGEDELAY		(2*TICRATE)
+constexpr size_t ST_EVILGRINCOUNT{(2*TICRATE)};
+constexpr size_t ST_STRAIGHTFACECOUNT{(TICRATE/2)};
+constexpr size_t ST_TURNCOUNT{(1*TICRATE)};
+constexpr size_t ST_OUCHCOUNT{(1*TICRATE)};
+constexpr size_t ST_RAMPAGEDELAY{(2*TICRATE)};
 
-#define ST_MUCHPAIN			20
+constexpr size_t ST_MUCHPAIN{20};
 
 
 // Location and size of statistics,
@@ -133,134 +131,133 @@ extern bool inhelpscreens; // prevent palette changes
 #define ST_WIDESCREENDELTA ((screenblocks >= CRISPY_HUD + 3 && (!automapactive || crispy->automapoverlay)) ? WIDESCREENDELTA : 0)
 
 // AMMO number pos.
-#define ST_AMMOWIDTH		3
-#define ST_AMMOX			(44 - ST_WIDESCREENDELTA)
-#define ST_AMMOY			171
+constexpr size_t ST_AMMOWIDTH{3};
+#define ST_AMMOX (44 - ST_WIDESCREENDELTA)
+constexpr size_t ST_AMMOY{171};
 
 // HEALTH number pos.
-#define ST_HEALTHWIDTH		3
-#define ST_HEALTHX			(90 - ST_WIDESCREENDELTA)
-#define ST_HEALTHY			171
+constexpr size_t ST_HEALTHWIDTH{3};
+#define ST_HEALTHX (90 - ST_WIDESCREENDELTA)
+constexpr size_t ST_HEALTHY{171};
 
 // Weapon pos.
-#define ST_ARMSX			(111 - ST_WIDESCREENDELTA)
-#define ST_ARMSY			172
-#define ST_ARMSBGX			(104 - ST_WIDESCREENDELTA)
-#define ST_ARMSBGY			168
-#define ST_ARMSXSPACE		12
-#define ST_ARMSYSPACE		10
+#define ST_ARMSX (111 - ST_WIDESCREENDELTA)
+constexpr size_t ST_ARMSY{172};
+#define ST_ARMSBGX (104 - ST_WIDESCREENDELTA)
+constexpr size_t ST_ARMSBGY{168};
+constexpr size_t ST_ARMSXSPACE{12};
+constexpr size_t ST_ARMSYSPACE{10};
 
 // Frags pos.
-#define ST_FRAGSX			(138 - ST_WIDESCREENDELTA)
-#define ST_FRAGSY			171
-#define ST_FRAGSWIDTH		2
+#define ST_FRAGSX (138 - ST_WIDESCREENDELTA)
+constexpr size_t ST_FRAGSY{171};
+constexpr size_t ST_FRAGSWIDTH{2};
 
 // ARMOR number pos.
-#define ST_ARMORWIDTH		3
-#define ST_ARMORX			(221 + ST_WIDESCREENDELTA)
-#define ST_ARMORY			171
+constexpr size_t ST_ARMORWIDTH{3};
+#define ST_ARMORX (221 + ST_WIDESCREENDELTA)
+constexpr size_t ST_ARMORY{171};
 
 // Key icon positions.
-#define ST_KEY0WIDTH		8
-#define ST_KEY0HEIGHT		5
-#define ST_KEY0X			(239 + ST_WIDESCREENDELTA)
-#define ST_KEY0Y			171
-#define ST_KEY1WIDTH		ST_KEY0WIDTH
-#define ST_KEY1X			(239 + ST_WIDESCREENDELTA)
-#define ST_KEY1Y			181
-#define ST_KEY2WIDTH		ST_KEY0WIDTH
-#define ST_KEY2X			(239 + ST_WIDESCREENDELTA)
-#define ST_KEY2Y			191
+constexpr size_t ST_KEY0WIDTH{8};
+constexpr size_t ST_KEY0HEIGHT{5};
+#define ST_KEY0X (239 + ST_WIDESCREENDELTA)
+constexpr size_t ST_KEY0Y{171};
+constexpr size_t ST_KEY1WIDTH{ST_KEY0WIDTH};
+#define ST_KEY1X (239 + ST_WIDESCREENDELTA)
+constexpr size_t ST_KEY1Y{181};
+constexpr size_t ST_KEY2WIDTH{ST_KEY0WIDTH};
+#define ST_KEY2X (239 + ST_WIDESCREENDELTA)
+constexpr size_t ST_KEY2Y{191};
 
 // Ammunition counter.
-#define ST_AMMO0WIDTH		3
-#define ST_AMMO0HEIGHT		6
-#define ST_AMMO0X			(288 + ST_WIDESCREENDELTA)
-#define ST_AMMO0Y			173
-#define ST_AMMO1WIDTH		ST_AMMO0WIDTH
-#define ST_AMMO1X			(288 + ST_WIDESCREENDELTA)
-#define ST_AMMO1Y			179
-#define ST_AMMO2WIDTH		ST_AMMO0WIDTH
-#define ST_AMMO2X			(288 + ST_WIDESCREENDELTA)
-#define ST_AMMO2Y			191
-#define ST_AMMO3WIDTH		ST_AMMO0WIDTH
-#define ST_AMMO3X			(288 + ST_WIDESCREENDELTA)
-#define ST_AMMO3Y			185
+constexpr size_t ST_AMMO0WIDTH{3};
+constexpr size_t ST_AMMO0HEIGHT{6};
+#define ST_AMMO0X (288 + ST_WIDESCREENDELTA)
+constexpr size_t ST_AMMO0Y{173};
+constexpr size_t ST_AMMO1WIDTH{ST_AMMO0WIDTH};
+#define ST_AMMO1X (288 + ST_WIDESCREENDELTA)
+constexpr size_t ST_AMMO1Y{179};
+constexpr size_t ST_AMMO2WIDTH{ST_AMMO0WIDTH};
+#define ST_AMMO2X (288 + ST_WIDESCREENDELTA)
+constexpr size_t ST_AMMO2Y{191};
+constexpr size_t ST_AMMO3WIDTH{ST_AMMO0WIDTH};
+#define ST_AMMO3X (288 + ST_WIDESCREENDELTA)
+constexpr size_t ST_AMMO3Y{185};
 
 // Indicate maximum ammunition.
 // Only needed because backpack exists.
-#define ST_MAXAMMO0WIDTH		3
-#define ST_MAXAMMO0HEIGHT		5
-#define ST_MAXAMMO0X		(314 + ST_WIDESCREENDELTA)
-#define ST_MAXAMMO0Y		173
-#define ST_MAXAMMO1WIDTH		ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO1X		(314 + ST_WIDESCREENDELTA)
-#define ST_MAXAMMO1Y		179
-#define ST_MAXAMMO2WIDTH		ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO2X		(314 + ST_WIDESCREENDELTA)
-#define ST_MAXAMMO2Y		191
-#define ST_MAXAMMO3WIDTH		ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO3X		(314 + ST_WIDESCREENDELTA)
-#define ST_MAXAMMO3Y		185
+constexpr size_t ST_MAXAMMO0WIDTH{3};
+constexpr size_t ST_MAXAMMO0HEIGHT{5};
+#define ST_MAXAMMO0X (314 + ST_WIDESCREENDELTA)
+constexpr size_t ST_MAXAMMO0Y{173};
+constexpr size_t ST_MAXAMMO1WIDTH{ST_MAXAMMO0WIDTH};
+#define ST_MAXAMMO1X (314 + ST_WIDESCREENDELTA)
+constexpr size_t ST_MAXAMMO1Y{179};
+constexpr size_t ST_MAXAMMO2WIDTH{ST_MAXAMMO0WIDTH};
+#define ST_MAXAMMO2X (314 + ST_WIDESCREENDELTA)
+constexpr size_t ST_MAXAMMO2Y{191};
+constexpr size_t ST_MAXAMMO3WIDTH{ST_MAXAMMO0WIDTH};
+#define ST_MAXAMMO3X (314 + ST_WIDESCREENDELTA)
+constexpr size_t ST_MAXAMMO3Y{185};
 
 // pistol
-#define ST_WEAPON0X			110
-#define ST_WEAPON0Y			172
+constexpr size_t ST_WEAPON0X{110};
+constexpr size_t ST_WEAPON0Y{172};
 
 // shotgun
-#define ST_WEAPON1X			122
-#define ST_WEAPON1Y			172
+constexpr size_t ST_WEAPON1X{122};
+constexpr size_t ST_WEAPON1Y{172};
 
 // chain gun
-#define ST_WEAPON2X			134
-#define ST_WEAPON2Y			172
+constexpr size_t ST_WEAPON2X{134};
+constexpr size_t ST_WEAPON2Y{172};
 
 // missile launcher
-#define ST_WEAPON3X			110
-#define ST_WEAPON3Y			181
+constexpr size_t ST_WEAPON3X{110};
+constexpr size_t ST_WEAPON3Y{181};
 
 // plasma gun
-#define ST_WEAPON4X			122
-#define ST_WEAPON4Y			181
+constexpr size_t ST_WEAPON4X{122};
+constexpr size_t ST_WEAPON4Y{181};
 
  // bfg
-#define ST_WEAPON5X			134
-#define ST_WEAPON5Y			181
+constexpr size_t ST_WEAPON5X{134};
+constexpr size_t ST_WEAPON5Y{181};
 
 // WPNS title
-#define ST_WPNSX			109
-#define ST_WPNSY			191
+constexpr size_t ST_WPNSX{109};
+constexpr size_t ST_WPNSY{191};
 
  // DETH title
-#define ST_DETHX			109
-#define ST_DETHY			191
+constexpr size_t ST_DETHX{109};
+constexpr size_t ST_DETHY{191};
 
 //Incoming messages window location
 //UNUSED
-// #define ST_MSGTEXTX		(viewwindowx)
-// #define ST_MSGTEXTY		(viewwindowy+viewheight-18)
-#define ST_MSGTEXTX			0
-#define ST_MSGTEXTY			0
+// #define ST_MSGTEXTX (viewwindowx)
+// #define ST_MSGTEXTY (viewwindowy+viewheight-18)
+constexpr size_t ST_MSGTEXTX{0};
+constexpr size_t ST_MSGTEXTY{0};
 // Dimensions given in characters.
-#define ST_MSGWIDTH			52
+constexpr size_t ST_MSGWIDTH{52};
 // Or shall I say, in lines?
-#define ST_MSGHEIGHT		1
+constexpr size_t ST_MSGHEIGHT{1};
 
-#define ST_OUTTEXTX			0
-#define ST_OUTTEXTY			6
+constexpr size_t ST_OUTTEXTX{0};
+constexpr size_t ST_OUTTEXTY{6};
 
 // Width, in characters again.
-#define ST_OUTWIDTH			52
+constexpr size_t ST_OUTWIDTH{52};
  // Height, in lines.
-#define ST_OUTHEIGHT		1
+constexpr size_t ST_OUTHEIGHT{1};
 
-#define ST_MAPTITLEX \
-	(ORIGWIDTH - ST_MAPWIDTH * ST_CHATFONTWIDTH)
+#define ST_MAPTITLEX (ORIGWIDTH - ST_MAPWIDTH * ST_CHATFONTWIDTH)
 
-#define ST_MAPTITLEY		0
-#define ST_MAPHEIGHT		1
+constexpr size_t ST_MAPTITLEY{0};
+constexpr size_t ST_MAPHEIGHT{1};
 
-typedef void (*load_callback_t)(const char* lumpname, patch_t**variable);
+typedef void (*load_callback_t)(std::string lumpname, patch_t**variable);
 
 // graphics are drawn to a backing screen and blitted to the real screen
 pixel_t *st_backing_screen;
@@ -328,7 +325,7 @@ static patch_t* tallpercent;
 static patch_t* shortnum[10];
 
 // 3 key-cards, 3 skulls
-static patch_t* keys[(size_t)CardType_t::NUMCARDS+3]; // [crispy] support combined card and skull keys
+static patch_t* keys[std::size_t(CardType::NUMCARDS)+3]; // [crispy] support combined card and skull keys
 
 // face status patches
 static patch_t* faces[ST_NUMFACES];
@@ -382,7 +379,7 @@ static int st_fragscount;
 static int st_oldhealth = -1;
 
 // used for evil grin
-static bool oldweaponsowned[(size_t)WeaponType_t::NUMWEAPONS];
+static bool oldweaponsowned[std::size_t(WeaponType::NUMWEAPONS)];
 
  // count until face changes
 static int st_facecount = 0;
@@ -477,19 +474,21 @@ void ST_refreshBackground(bool force)
 			int x, y;
 			byte* src;
 			pixel_t* dest;
-			const char* name = (gamemode == GameMode::commercial) ? DEH_String("GRNROCK") : DEH_String("FLOOR7_2");
+			std::string name = (gamemode == GameMode::commercial) ? DEH_String("GRNROCK") : DEH_String("FLOOR7_2");
 
-			src = (byte*)W_CacheLumpName(name, pu_tags_t::PU_CACHE);
+			src = W_CacheLumpName<patch_t>(name, pu_tags_t::PU_CACHE);
 			dest = st_backing_screen;
 
-			for (y = SCREENHEIGHT-(ST_HEIGHT<<crispy->hires); y < SCREENHEIGHT; y++)
+			for (y = SCREENHEIGHT-(ST_HEIGHT<<crispy->hires); y < SCREENHEIGHT; ++y)
 			{
-				for (x = 0; x < SCREENWIDTH; x++)
+				for (x = 0; x < SCREENWIDTH; ++x)
 				{
 #ifndef CRISPY_TRUECOLOR
-					*(dest++) = src[((y&63)<<6) + (x&63)];
+					*dest = src[((y&63)<<6) + (x&63)];
+					++dest;
 #else
-					*(dest++) = colormaps[src[((y&63)<<6) + (x&63)]];
+					*dest = colormaps[src[((y&63)<<6) + (x&63)]];
+					++dest;
 #endif
 				}
 			}
@@ -497,7 +496,7 @@ void ST_refreshBackground(bool force)
 			// [crispy] preserve bezel bottom edge
 			if (scaledviewwidth == SCREENWIDTH)
 			{
-				patch_t* const patch = (patch_t*)W_CacheLumpName(DEH_String("brdr_b"), pu_tags_t::PU_CACHE);
+				patch_t* const patch = W_CacheLumpName<patch_t>(DEH_String("brdr_b"), pu_tags_t::PU_CACHE);
 
 				for (x = 0; x < WIDESCREENDELTA; x += 8)
 				{
@@ -590,17 +589,17 @@ static int ST_cheat_massacre()
 static int ST_cheat_spechits()
 {
 	int speciallines = 0;
-	bool origcards[(size_t)CardType_t::NUMCARDS];
+	bool origcards[std::size_t(CardType::NUMCARDS)];
 	line_t dummy;
 
 	// [crispy] temporarily give all keys
-	for (size_t i{0}; i < (size_t)CardType_t::NUMCARDS; i++)
+	for (size_t i{0}; i < std::size_t(CardType::NUMCARDS); ++i)
 	{
 		origcards[i] = plyr->cards[i];
 		plyr->cards[i] = true;
 	}
 
-	for (size_t i{0}; i < numlines; i++)
+	for (size_t i{0}; i < numlines; ++i)
 	{
 		if (lines[i].special)
 		{
@@ -625,11 +624,11 @@ static int ST_cheat_spechits()
 			P_ShootSpecialLine(plyr, &lines[i]);
 			P_UseSpecialLine(plyr, &lines[i], 0);
 
-			speciallines++;
+			++speciallines;
 		}
 	}
 
-	for (size_t i{0}; i < (size_t)CardType_t::NUMCARDS; i++)
+	for (size_t i{0}; i < std::size_t(CardType::NUMCARDS); ++i)
 	{
 		plyr->cards[i] = origcards[i];
 	}
@@ -639,7 +638,7 @@ static int ST_cheat_spechits()
 	if (gamemode == GameMode::commercial)
 	{
 		// [crispy] Master Levels in PC slot 7
-		if (gamemap == 7 || (gamemission == GameMission_t::pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
+		if (gamemap == 7 || (gamemission == GameMission::pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
 		{
 			// Mancubi
 			speciallines += EV_DoFloor(&dummy, floor_e::lowerFloorToLowest);
@@ -676,13 +675,13 @@ static int ST_cheat_spechits()
 // [crispy] only give available weapons
 static bool WeaponAvailable (int w)
 {
-	if (w < 0 || w >= (int)WeaponType_t::NUMWEAPONS){
+	if (w < 0 || w >= (int)WeaponType::NUMWEAPONS){
 		return false;}
 
-	if (w == (int)WeaponType_t::wp_supershotgun && !crispy->havessg){
+	if (w == (int)WeaponType::wp_supershotgun && !crispy->havessg){
 		return false;}
 
-	if ((w == (int)WeaponType_t::wp_bfg || w == (int)WeaponType_t::wp_plasma) && gamemode == GameMode::shareware){
+	if ((w == (int)WeaponType::wp_bfg || w == (int)WeaponType::wp_plasma) && gamemode == GameMode::shareware){
 		return false;}
 
 	return true;
@@ -693,7 +692,7 @@ static void GiveBackpack (bool give)
 {
 	if (give && !plyr->backpack)
 	{
-		for (size_t i{0}; i < (size_t)AmmoType_t::NUMAMMO; ++i)
+		for (size_t i{0}; i < std::size_t(AmmoType::NUMAMMO); ++i)
 		{
 			plyr->maxammo[i] *= 2;
 		}
@@ -701,7 +700,7 @@ static void GiveBackpack (bool give)
 	}
 	else if (!give && plyr->backpack)
 	{
-		for (size_t i{0}; i < (size_t)AmmoType_t::NUMAMMO; ++i)
+		for (size_t i{0}; i < std::size_t(AmmoType::NUMAMMO); ++i)
 		{
 			plyr->maxammo[i] /= 2;
 		}
@@ -741,7 +740,7 @@ bool ST_Responder(EventType* ev)
 				mapthing_t mt{0};
 				if (plyr->playerstate == PlayerState::dead)
 				{
-					signed int an;
+					int an;
 					extern void P_SpawnPlayer (mapthing_t* mthing);
 
 					mt.x = plyr->x >> FRACBITS;
@@ -787,7 +786,7 @@ bool ST_Responder(EventType* ev)
 				// [crispy] give backpack
 				GiveBackpack(true);
 
-				for (size_t i{0}; i < (int)WeaponType_t::NUMWEAPONS; ++i)
+				for (size_t i{0}; i < (int)WeaponType::NUMWEAPONS; ++i)
 				{
 					if (WeaponAvailable(i)) // [crispy] only give available weapons
 					{
@@ -795,7 +794,7 @@ bool ST_Responder(EventType* ev)
 					}
 				}
 
-				for (size_t i{0}; i < (int)AmmoType_t::NUMAMMO; ++i)
+				for (size_t i{0}; i < (int)AmmoType::NUMAMMO; ++i)
 				{
 					plyr->ammo[i] = plyr->maxammo[i];
 				}
@@ -814,7 +813,7 @@ bool ST_Responder(EventType* ev)
 				// give backpack
 				GiveBackpack(true);
 
-				for (size_t i{0}; i < (int)WeaponType_t::NUMWEAPONS; ++i)
+				for (size_t i{0}; i < (int)WeaponType::NUMWEAPONS; ++i)
 				{
 					if (WeaponAvailable(i)) // only give available weapons
 					{
@@ -822,12 +821,12 @@ bool ST_Responder(EventType* ev)
 					}
 				}
 
-				for (size_t i{0}; i < (int)AmmoType_t::NUMAMMO; ++i)
+				for (size_t i{0}; i < (int)AmmoType::NUMAMMO; ++i)
 				{
 					plyr->ammo[i] = plyr->maxammo[i];
 				}
 
-				for (size_t i{0}; i < (int)CardType_t::NUMCARDS; ++i)
+				for (size_t i{0}; i < (int)CardType::NUMCARDS; ++i)
 				{
 					plyr->cards[i] = true;
 				}
@@ -867,7 +866,7 @@ bool ST_Responder(EventType* ev)
 
 					/*
 					if (((buf[0]-'0')*10 + buf[1]-'0') > 35
-					&& gameversion >= GameVersion_t::exe_doom_1_8)
+					&& gameversion >= GameVersion::exe_doom_1_8)
 					*/
 					// prevent crash with IDMUS00
 					if (musnum < (int)musicenum_t::mus_runnin || musnum >= (int)musicenum_t::NUMMUSIC)
@@ -968,8 +967,8 @@ bool ST_Responder(EventType* ev)
 			// 'choppers' invulnerability & chainsaw
 			else if (cht_CheckCheatSP(&cheat_choppers, ev->data2))
 			{
-				plyr->weaponowned[(size_t)WeaponType_t::wp_chainsaw] = true;
-				plyr->powers[(size_t)PowerType_t::pw_invulnerability] = true;
+				plyr->weaponowned[std::size_t(WeaponType::wp_chainsaw)] = true;
+				plyr->powers[std::size_t(PowerType_t::pw_invulnerability)] = true;
 				plyr->message = DEH_String(STSTR_CHOPPERS);
 			}
 			// 'mypos' for player position
@@ -984,7 +983,7 @@ bool ST_Responder(EventType* ev)
 				plyr->message = buf;
 				*/
 				// extra high precision IDMYPOS variant, updates for 10 seconds
-				plyr->powers[(size_t)PowerType_t::pw_mapcoords] = 10*TICRATE;
+				plyr->powers[std::size_t(PowerType_t::pw_mapcoords)] = 10*TICRATE;
 			}
 
 				// now follow "critical" Crispy Doom specific cheats
@@ -994,8 +993,8 @@ bool ST_Responder(EventType* ev)
 					|| cht_CheckCheatSP(&cheat_massacre3, ev->data2))
 			{
 				int killcount = ST_cheat_massacre();
-				const char* const monster = (gameversion == GameVersion_t::exe_chex) ? "Flemoid" : "Monster";
-				const char* const killed = (gameversion == GameVersion_t::exe_chex) ? "returned" : "killed";
+				std::string const monster = (gameversion == GameVersion::exe_chex) ? "Flemoid" : "Monster";
+				std::string const killed = (gameversion == GameVersion::exe_chex) ? "returned" : "killed";
 
 				//M_snprintf(msg, sizeof(msg), "%s%d %s%s%s %s", crstr[CR_GOLD],
 				//			killcount, crstr[CR_NONE], monster, (killcount == 1) ? "" : "s", killed);
@@ -1083,24 +1082,24 @@ bool ST_Responder(EventType* ev)
 				if (w == -1)
 				{
 					GiveBackpack(false);
-					plyr->powers[(size_t)PowerType_t::pw_strength] = 0;
+					plyr->powers[std::size_t(PowerType_t::pw_strength)] = 0;
 
-					for (size_t i{0}; i < (int)WeaponType_t::NUMWEAPONS; ++i)
+					for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
 					{
 					oldweaponsowned[i] = plyr->weaponowned[i] = false;
 					}
-					oldweaponsowned[(size_t)WeaponType_t::wp_fist] = plyr->weaponowned[(size_t)WeaponType_t::wp_fist] = true;
-					oldweaponsowned[(size_t)WeaponType_t::wp_pistol] = plyr->weaponowned[(size_t)WeaponType_t::wp_pistol] = true;
+					oldweaponsowned[std::size_t(WeaponType::wp_fist)] = plyr->weaponowned[std::size_t(WeaponType::wp_fist)] = true;
+					oldweaponsowned[std::size_t(WeaponType::wp_pistol)] = plyr->weaponowned[std::size_t(WeaponType::wp_pistol)] = true;
 
-					for (size_t i{0}; i < (int)AmmoType_t::NUMAMMO; i++)
+					for (size_t i{0}; i < std::size_t(AmmoType::NUMAMMO); ++i)
 					{
 						plyr->ammo[i] = 0;
 					}
-					plyr->ammo[(size_t)AmmoType_t::am_clip] = deh_initial_bullets;
+					plyr->ammo[std::size_t(AmmoType::am_clip)] = deh_initial_bullets;
 
-					if (plyr->readyweapon > WeaponType_t::wp_pistol)
+					if (plyr->readyweapon > WeaponType::wp_pistol)
 					{
-						plyr->pendingweapon = WeaponType_t::wp_pistol;
+						plyr->pendingweapon = WeaponType::wp_pistol;
 					}
 
 					plyr->message = "All weapons removed!";
@@ -1115,17 +1114,17 @@ bool ST_Responder(EventType* ev)
 				}
 
 				// make '1' apply beserker strength toggle
-				if (w == (int)WeaponType_t::wp_fist)
+				if (w == (int)WeaponType::wp_fist)
 				{
-					if (!plyr->powers[(size_t)PowerType_t::pw_strength])
+					if (!plyr->powers[std::size_t(PowerType_t::pw_strength)])
 					{
 						P_GivePower(plyr, (int)PowerType_t::pw_strength);
-						S_StartSound(NULL, (int)sfxenum_t::sfx_getpow);
+						S_StartSound(NULL, sfxenum_t::sfx_getpow);
 						plyr->message = DEH_String(GOTBERSERK);
 					}
 					else
 					{
-						plyr->powers[(size_t)PowerType_t::pw_strength] = 0;
+						plyr->powers[std::size_t(PowerType_t::pw_strength)] = 0;
 						plyr->message = DEH_String(STSTR_BEHOLDX);
 					}
 				}
@@ -1133,11 +1132,11 @@ bool ST_Responder(EventType* ev)
 				{
 					if (!plyr->weaponowned[w])
 					{
-						extern bool P_GiveWeapon (Player* player, WeaponType_t weapon, bool dropped);
-						extern const char* const WeaponPickupMessages[(size_t)WeaponType_t::NUMWEAPONS];
+						extern bool P_GiveWeapon (Player* player, WeaponType weapon, bool dropped);
+						extern std::string const WeaponPickupMessages[std::size_t(WeaponType::NUMWEAPONS)];
 
-						P_GiveWeapon(plyr, (WeaponType_t)w, false);
-						S_StartSound(NULL, (int)sfxenum_t::sfx_wpnup);
+						P_GiveWeapon(plyr, (WeaponType)w, false);
+						S_StartSound(NULL, sfxenum_t::sfx_wpnup);
 
 						if (w > 1)
 						{
@@ -1162,7 +1161,7 @@ bool ST_Responder(EventType* ev)
 					}
 				}
 
-			/* 	if (!plyr->message)
+			/*  if (!plyr->message)
 				{
 					M_snprintf(msg, sizeof(msg), "Weapon %s%d%s %s", crstr[CR_GOLD], w + 1, crstr[CR_NONE],
 								plyr->weaponowned[w] ? "added" : "removed");
@@ -1175,7 +1174,7 @@ bool ST_Responder(EventType* ev)
 		// implement Crispy Doom's "showfps" cheat, ne debug aid
 		if (cht_CheckCheat(&cheat_showfps, ev->data2) || cht_CheckCheat(&cheat_showfps2, ev->data2))
 		{
-			plyr->powers[(size_t)PowerType_t::pw_showfps] ^= 1;
+			plyr->powers[std::size_t(PowerType_t::pw_showfps)] ^= 1;
 		}
 		// implement Boom's "tnthom" cheat
 		else if (cht_CheckCheat(&cheat_hom, ev->data2))
@@ -1203,7 +1202,7 @@ bool ST_Responder(EventType* ev)
 		// Show skill level
 		else if (cht_CheckCheat(&cheat_skill, ev->data2))
 		{
-			extern const char* skilltable[];
+			extern std::string skilltable[];
 
 			/* M_snprintf(msg, sizeof(msg), "Skill: %s", skilltable[BETWEEN(0,5,(int) gameskill+1)]); */
 			plyr->message = msg;
@@ -1220,11 +1219,11 @@ bool ST_Responder(EventType* ev)
 
 			if (gamemode == GameMode::commercial)
 			{
-				if (gamemission == GameMission_t::pack_master)
+				if (gamemission == GameMission::pack_master)
 				{
 					epsd = 3;
 				}
-				else if (gamemission == GameMission_t::pack_nerve)
+				else if (gamemission == GameMission::pack_nerve)
 				{
 					epsd = 2;
 				}
@@ -1240,7 +1239,7 @@ bool ST_Responder(EventType* ev)
 				map = buf[1] - '0';
 
 				// Chex.exe always warps to episode 1.
-				if (gameversion == GameVersion_t::exe_chex)
+				if (gameversion == GameVersion::exe_chex)
 				{
 					if (epsd > 1)
 					{
@@ -1275,7 +1274,7 @@ bool ST_Responder(EventType* ev)
 							return false;
 						}
 					}
-					if (epsd == 4 && gameversion < GameVersion_t::exe_ultimate)
+					if (epsd == 4 && gameversion < GameVersion::exe_ultimate)
 					{
 						return false;
 					}
@@ -1315,11 +1314,11 @@ bool ST_Responder(EventType* ev)
 					{
 						return false;
 					}
-					if (map > 9 && gamemission == GameMission_t::pack_nerve)
+					if (map > 9 && gamemission == GameMission::pack_nerve)
 					{
 						return false;
 					}
-					if (map > 21 && gamemission == GameMission_t::pack_master)
+					if (map > 21 && gamemission == GameMission::pack_master)
 					{
 						return false;
 					}
@@ -1401,7 +1400,7 @@ void ST_updateFaceWidget()
 	// [crispy] fix status bar face hysteresis
 	int painoffset;
 	// [crispy] no evil grin or rampage face in god mode
-	const bool invul = (plyr->cheats & (int)CheatType::CF_GODMODE) || plyr->powers[(size_t)PowerType_t::pw_invulnerability];
+	const bool invul = (plyr->cheats & (int)CheatType::CF_GODMODE) || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)];
 
 	painoffset = ST_calcPainOffset();
 
@@ -1424,7 +1423,7 @@ void ST_updateFaceWidget()
 			// picking up bonus
 			doevilgrin = false;
 
-			for (size_t i{0}; i < (size_t)WeaponType_t::NUMWEAPONS; ++i)
+			for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
 			{
 				if (oldweaponsowned[i] != plyr->weaponowned[i])
 				{
@@ -1576,13 +1575,13 @@ void ST_updateWidgets()
 	// must redirect the pointer if the ready weapon has changed.
 	// if (w_ready.data != plyr->readyweapon)
 	// {
-	if (weaponinfo[(size_t)plyr->readyweapon].ammo == AmmoType_t::am_noammo)
+	if (weaponinfo[std::size_t(plyr->readyweapon)].ammo == AmmoType::am_noammo)
 	{
 		w_ready.num = &largeammo;
 	}
 	else
 	{
-		w_ready.num = &plyr->ammo[(size_t)weaponinfo[(size_t)plyr->readyweapon].ammo];
+		w_ready.num = &plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
 	}
 	//{
 	// static TimeType tic=0;
@@ -1591,7 +1590,7 @@ void ST_updateWidgets()
 	//	plyr->ammo[weaponinfo[plyr->readyweapon].ammo]+=dir;
 	// if (plyr->ammo[weaponinfo[plyr->readyweapon].ammo] == -100)
 	//	dir = 1;
-	// tic++;
+	// ++tic;
 	// }
 	w_ready.data = (int)plyr->readyweapon;
 
@@ -1616,7 +1615,7 @@ void ST_updateWidgets()
 #if defined(CRISPY_KEYBLINK_WITH_SOUND)
 			if (!(plyr->tryopen[i] & (2*KEYBLINKMASK-1)))
 			{
-				S_StartSound(NULL, sfx_itemup);
+				S_StartSound(NULL, sfxenum_t::sfx_itemup);
 			}
 #endif
 #if defined(CRISPY_KEYBLINK_IN_CLASSIC_HUD)
@@ -1695,10 +1694,10 @@ void ST_doPaletteStuff()
 
 	int cnt = plyr->damagecount;
 
-	if (plyr->powers[(size_t)PowerType_t::pw_strength])
+	if (plyr->powers[std::size_t(PowerType_t::pw_strength)])
 	{
 		// slowly fade the berzerk out
-		bzc = 12 - (plyr->powers[(size_t)PowerType_t::pw_strength]>>6);
+		bzc = 12 - (plyr->powers[std::size_t(PowerType_t::pw_strength)]>>6);
 
 		if (bzc > cnt)
 		{
@@ -1734,7 +1733,7 @@ void ST_doPaletteStuff()
 
 		palette += STARTBONUSPALS;
 	}
-	else if (plyr->powers[(size_t)PowerType_t::pw_ironfeet] > 4*32 || plyr->powers[(size_t)PowerType_t::pw_ironfeet]&8)
+	else if (plyr->powers[std::size_t(PowerType_t::pw_ironfeet)] > 4*32 || plyr->powers[std::size_t(PowerType_t::pw_ironfeet)]&8)
 	{
 		palette = RADIATIONPAL;
 	}
@@ -1747,7 +1746,7 @@ void ST_doPaletteStuff()
 	// radiation suit palette is used to tint the screen green,
 	// as though the player is being covered in goo by an
 	// attacking flemoid.
-	if (gameversion == GameVersion_t::exe_chex && palette >= STARTREDPALS && palette < STARTREDPALS + NUMREDPALS)
+	if (gameversion == GameVersion::exe_chex && palette >= STARTREDPALS && palette < STARTREDPALS + NUMREDPALS)
 	{
 		palette = RADIATIONPAL;
 	}
@@ -1762,7 +1761,7 @@ void ST_doPaletteStuff()
 	{
 		st_palette = palette;
 #ifndef CRISPY_TRUECOLOR
-		pal = (byte*)W_CacheLumpNum(lu_palette, pu_tags_t::PU_CACHE)+palette*768;
+		pal = W_CacheLumpNum<byte>(lu_palette, pu_tags_t::PU_CACHE)+palette*768;
 		I_SetPalette (pal);
 #else
 		I_SetPalette (palette);
@@ -1775,21 +1774,21 @@ static byte* ST_WidgetColor(int i)
 {
 	if (!(crispy->coloredhud & COLOREDHUD_BAR))
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	switch ((hudcolor_t)i)
 	{
 		case hudcolor_t::hudcolor_ammo:
 		{
-			if (weaponinfo[(size_t)plyr->readyweapon].ammo == AmmoType_t::am_noammo)
+			if (weaponinfo[std::size_t(plyr->readyweapon)].ammo == AmmoType::am_noammo)
 			{
-				return NULL;
+				return nullptr;
 			}
 			else
 			{
-				int ammo = plyr->ammo[(size_t)weaponinfo[(size_t)plyr->readyweapon].ammo];
-				int fullammo = maxammo[(size_t)weaponinfo[(size_t)plyr->readyweapon].ammo];
+				int ammo = plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
+				int fullammo = maxammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
 
 				if (ammo < fullammo/4)
 				{
@@ -1815,7 +1814,7 @@ static byte* ST_WidgetColor(int i)
 			int health = plyr->health;
 
 			// [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
-			if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[(size_t)PowerType_t::pw_invulnerability])
+			if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)])
 			{
 				return cr[CR_GRAY];
 			}
@@ -1860,7 +1859,7 @@ static byte* ST_WidgetColor(int i)
 		case hudcolor_t::hudcolor_armor:
 		{
 			// Invulnerability powerup and God Mode cheat turn Armor values gray
-			if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[(size_t)PowerType_t::pw_invulnerability])
+			if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)])
 			{
 				return cr[CR_GRAY];
 			}
@@ -1902,7 +1901,7 @@ static byte* ST_WidgetColor(int i)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 // draw the gibbed death state frames in the Health widget in sync with the actual player sprite
@@ -1913,7 +1912,7 @@ static inline void ST_DrawGibbedPlayerSprites ()
 	spriteframe_t* sprframe;
 	patch_t* patch;
 
-	sprdef = &sprites[(size_t)state->sprite];
+	sprdef = &sprites[std::size_t(state->sprite)];
 
 	// the TNT1 sprite is not supposed to be rendered anyway
 	if (!sprdef->numframes && plyr->sprite == spritenum_t::SPR_TNT1)
@@ -1922,7 +1921,7 @@ static inline void ST_DrawGibbedPlayerSprites ()
 	}
 
 	sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
-	patch = (patch_t*)W_CacheLumpNum(sprframe->lump[0] + firstspritelump, pu_tags_t::PU_CACHE);
+	patch = W_CacheLumpNum<patch_t>(sprframe->lump[0] + firstspritelump, pu_tags_t::PU_CACHE);
 
 	if ((int)plyr->flags & (int)mobjflag_t::MF_TRANSLATION)
 	{
@@ -1952,7 +1951,7 @@ void ST_drawWidgets(bool refresh)
 	if (st_crispyhud)
 	{
 		// [crispy] draw berserk pack instead of no ammo if appropriate
-		if (plyr->readyweapon == WeaponType_t::wp_fist && plyr->powers[(size_t)PowerType_t::pw_strength])
+		if (plyr->readyweapon == WeaponType::wp_fist && plyr->powers[std::size_t(PowerType_t::pw_strength)])
 		{
 			static int lump = -1;
 			patch_t* patch;
@@ -1967,7 +1966,7 @@ void ST_drawWidgets(bool refresh)
 				}
 			}
 
-			patch = (patch_t*)W_CacheLumpNum(lump, pu_tags_t::PU_CACHE);
+			patch = W_CacheLumpNum<patch_t>(lump, pu_tags_t::PU_CACHE);
 
 			// (23,179) is the center of the Ammo widget
 			V_DrawPatch(ST_AMMOX - 21 - SHORT(patch->width)/2 + SHORT(patch->leftoffset),
@@ -1976,14 +1975,14 @@ void ST_drawWidgets(bool refresh)
 		}
 
 		// draw the gibbed death state frames in the Health widget in sync with the actual player sprite
-		if (plyr->health <= 0 && plyr->state - states >= (int)mobjinfo[(size_t)plyr->type].xdeathstate)
+		if (plyr->health <= 0 && plyr->state - states >= (int)mobjinfo[std::size_t(plyr->type)].xdeathstate)
 		{
 			ST_DrawGibbedPlayerSprites();
 			gibbed = true;
 		}
 	}
 
-	for (i=0;i<4;i++)
+	for (i=0;i<4; ++i)
 	{
 		STlib_updateNum(&w_ammo[i], refresh);
 		STlib_updateNum(&w_maxammo[i], refresh);
@@ -2003,9 +2002,9 @@ void ST_drawWidgets(bool refresh)
 	STlib_updateBinIcon(&w_armsbg, refresh);
 
 	// [crispy] show SSG availability in the Shotgun slot of the arms widget
-	st_shotguns = plyr->weaponowned[(size_t)WeaponType_t::wp_shotgun] | plyr->weaponowned[(size_t)WeaponType_t::wp_supershotgun];
+	st_shotguns = plyr->weaponowned[std::size_t(WeaponType::wp_shotgun)] | plyr->weaponowned[std::size_t(WeaponType::wp_supershotgun)];
 
-	for (i=0;i<6;i++)
+	for (i=0;i<6; ++i)
 	{
 		STlib_updateMultIcon(&w_arms[i], refresh);
 	}
@@ -2018,7 +2017,7 @@ void ST_drawWidgets(bool refresh)
 
 	STlib_updateMultIcon(&w_faces, refresh);
 
-	for (i=0;i<3;i++)
+	for (i=0;i<3; ++i)
 	{
 		STlib_updateMultIcon(&w_keyboxes[i], refresh);
 	}
@@ -2116,7 +2115,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 	callback(DEH_String("STTPRCNT"), &tallpercent);
 
 	// key cards
-	for (size_t i{0}; i < (size_t)CardType_t::NUMCARDS; ++i)
+	for (size_t i{0}; i < std::size_t(CardType::NUMCARDS); ++i)
 	{
 		DEH_snprintf(namebuf, 9, "STKEYS%d", i);
 		callback(namebuf, &keys[i]);
@@ -2186,9 +2185,9 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 	++facenum;
 }
 
-static void ST_loadCallback(const char* lumpname, patch_t**variable)
+static void ST_loadCallback(std::string lumpname, patch_t**variable)
 {
-	*variable = (patch_t*)W_CacheLumpName(lumpname, pu_tags_t::PU_STATIC);
+	*variable = W_CacheLumpName<patch_t>(lumpname, pu_tags_t::PU_STATIC);
 }
 
 void ST_loadGraphics()
@@ -2202,7 +2201,7 @@ void ST_loadData()
 	ST_loadGraphics();
 
 	// support combined card and skull keys (if provided by PWAD) i.e. only for display in the status bar
-	for (size_t i{(size_t)CardType_t::NUMCARDS}; i < (size_t)CardType_t::NUMCARDS+3; ++i)
+	for (size_t i{std::size_t(CardType::NUMCARDS)}; i < std::size_t(CardType::NUMCARDS)+3; ++i)
 	{
 		char lumpname[9];
 		int lumpnum;
@@ -2210,11 +2209,11 @@ void ST_loadData()
 		DEH_snprintf(lumpname, 9, "STKEYS%d", i);
 		lumpnum = W_CheckNumForName(lumpname);
 
-		keys[i] = (lumpnum != -1) ? (patch_t*)W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC) : (patch_t*)keys[i-3];
+		keys[i] = (lumpnum != -1) ? W_CacheLumpNum<patch_t>(lumpnum, pu_tags_t::PU_STATIC) : (patch_t*)keys[i-3];
 	}
 }
 
-static void ST_unloadCallback(const char* lumpname, patch_t**variable)
+static void ST_unloadCallback(std::string lumpname, patch_t**variable)
 {
 	W_ReleaseLumpName(lumpname);
 	*variable = NULL;
@@ -2249,7 +2248,7 @@ void ST_initData()
 
 	st_oldhealth = -1;
 
-	for (size_t i{0}; i < (size_t)WeaponType_t::NUMWEAPONS; ++i)
+	for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
 	{
 		oldweaponsowned[i] = plyr->weaponowned[i];
 	}
@@ -2275,7 +2274,7 @@ void ST_createWidgets()
 			ST_AMMOX,
 			ST_AMMOY,
 			tallnum,
-			&plyr->ammo[(size_t)weaponinfo[(size_t)plyr->readyweapon].ammo],
+			&plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)],
 			&st_statusbaron,
 			ST_AMMOWIDTH );
 
@@ -2300,7 +2299,7 @@ void ST_createWidgets()
 				&st_classicstatusbar);
 
 	// weapons owned
-	for(i=0;i<6;i++)
+	for(i=0;i<6; ++i)
 	{
 		STlib_initMultIcon(&w_arms[i],
 							ST_ARMSX+(i%3)*ST_ARMSXSPACE,
@@ -2427,7 +2426,7 @@ void ST_createWidgets()
 
 }
 
-static bool	st_stopped = true;
+static bool st_stopped = true;
 
 
 void ST_Start()
@@ -2446,7 +2445,7 @@ void ST_Start()
 	char namebuf[8];
 
 	DEH_snprintf(namebuf, 7, "STFB%d", consoleplayer);
-	faceback = (patch_t*)W_CacheLumpName(namebuf, pu_tags_t::PU_STATIC);
+	faceback = W_CacheLumpName<patch_t>(namebuf, pu_tags_t::PU_STATIC);
 	}
 }
 
@@ -2456,7 +2455,7 @@ void ST_Stop()
 	return;
 
 #ifndef CRISPY_TRUECOLOR
-	I_SetPalette((byte*)W_CacheLumpNum(lu_palette, pu_tags_t::PU_CACHE));
+	I_SetPalette(W_CacheLumpNum<byte>(lu_palette, pu_tags_t::PU_CACHE));
 #else
 	I_SetPalette (0);
 #endif

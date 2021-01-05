@@ -47,7 +47,7 @@ int WIDESCREENDELTA; // [crispy] horizontal widescreen offset
 static SDL_Window* screen;
 static SDL_Renderer* renderer;
 
-static const char* window_title = "";
+static std::string window_title = "";
 
 // These are (1) the 320x200x8 paletted buffer that we draw to (i.e. the one
 // that holds I_VideoBuffer), (2) the 320x200x32 RGBA intermediate buffer that
@@ -99,9 +99,9 @@ int usemouse = 1;
 int png_screenshots = 1; // [crispy]
 
 // SDL video driver name
-const char* video_driver = "";
+std::string video_driver = "";
 
-const char* window_position = "center";
+std::string window_position = "center";
 
 // SDL display number on which to run.
 int video_display = 0;
@@ -166,7 +166,7 @@ static bool window_focused = true;
 // Window resize state.
 static bool need_resize = false;
 static TimeType last_resize_time;
-#define RESIZE_DELAY 500
+constexpr size_t RESIZE_DELAY{500};
 
 // Gamma correction level to use
 int usegamma = 0;
@@ -840,9 +840,14 @@ void I_SetPalette (byte* doompalette)
 		// controller only supports 6 bits of accuracy.
 
 		// [crispy] intermediate gamma levels
-		palette[i].r = gamma2table[usegamma][*(doompalette++)] & ~3;
-		palette[i].g = gamma2table[usegamma][*(doompalette++)] & ~3;
-		palette[i].b = gamma2table[usegamma][*(doompalette++)] & ~3;
+		palette[i].r = gamma2table[usegamma][*doompalette] & ~3;
+		++doompalette;
+
+		palette[i].g = gamma2table[usegamma][*doompalette] & ~3;
+		++doompalette;
+
+		palette[i].b = gamma2table[usegamma][*doompalette] & ~3;
+		++doompalette;
 	}
 
 	palette_to_set = true;
@@ -912,7 +917,7 @@ void I_SetPalette (int palette)
 }
 #endif
 
-void I_SetWindowTitle(const char* title)
+void I_SetWindowTitle(std::string title)
 {
 	window_title = title;
 }
@@ -1365,7 +1370,7 @@ void I_InitGraphics()
 
 	// Pass through the XSCREENSAVER_WINDOW environment variable to
 	// SDL_WINDOWID, to embed the SDL window into the Xscreensaver window.
-	char* env = getenv("XSCREENSAVER_WINDOW");
+	std::string env = getenv("XSCREENSAVER_WINDOW");
 
 	if (env != NULL)
 	{
@@ -1420,7 +1425,7 @@ void I_InitGraphics()
 	SDL_FillRect(screenbuffer, NULL, 0);
 
 	// Set the palette
-	doompal = W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE);
+	doompal = W_CacheLumpName<byte>(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE);
 	I_SetPalette(doompal);
 	SDL_SetPaletteColors(screenbuffer->format->palette, palette, 0, 256);
 #endif

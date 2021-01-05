@@ -10,15 +10,18 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "doomkeys.h"
 
-#include "txt_main.h"
 #include "txt_widget.h"
-#include "txt_window.h"
+
+#include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_io.h"
 #include "txt_gui.h"
+
+//#include "txt_window.h"
 
 namespace cudadoom::txt
 {
@@ -35,13 +38,24 @@ namespace cudadoom::txt
  *
  * When a checkbox is changed, it emits the "changed" signal.
  */
-struct CheckBox : Widget
+class CheckBox : public Widget<CheckBox>
 {
 	std::string label;
 	int* variable;
 	bool inverted;
 
-	void CheckBoxSizeCalc()
+public:
+
+	CheckBox() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	{
+	}
+
+	bool Selectable() override final const noexcept
+	{
+		return true;
+	}
+
+	void CalculateSize() override final const noexcept
 	{
 		// Minimum width is the string length + right-side space for padding
 
@@ -49,7 +63,7 @@ struct CheckBox : Widget
 		height = 1;
 	}
 
-	void CheckBoxDrawer()
+	void Draw() override final const noexcept
 	{
 		SavedColors colors;
 
@@ -82,15 +96,10 @@ struct CheckBox : Widget
 		}
 	}
 
-	void Destructor()
-	{
-	}
-
-	bool KeyPress(int key)
+	bool KeyPress(Keytype key) override final const noexcept
 	{
 		if (key == KEY_ENTER || key == ' ')
 		{
-			*variable = !*variable;
 			EmitSignal("changed");
 			return true;
 		}
@@ -98,13 +107,27 @@ struct CheckBox : Widget
 		return false;
 	}
 
-	void MousePress(int x, int y, int b)
+	bool MousePress(MouseEvent evt) override final const noexcept
 	{
-		if (b == MOUSE_LEFT)
+		if (evt.button == MOUSE_LEFT)
 		{
 			// Equivalent to pressing enter
-			KeyPress(KEY_ENTER);
+			return KeyPress(KEY_ENTER);
 		}
+
+		return false;
+	}
+
+	void SetLayout() override final const noexcept
+	{
+	}
+
+	void SetFocus(bool _focus) override final const noexcept
+	{
+	}
+
+	void Destroy() override final const noexcept
+	{
 	}
 
 	WidgetClass txt_checkbox_class =
@@ -118,7 +141,8 @@ struct CheckBox : Widget
 		NULL,
 	};
 
-	CheckBox(std::string& _label, int* _variable)
+	CheckBox(std::string& _label, int* _variable) :
+							widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 		label = std::string(_label);
 		variable = _variable;

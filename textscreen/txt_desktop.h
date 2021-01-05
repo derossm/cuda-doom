@@ -10,20 +10,27 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
-#include "doomkeys.h"
+#include "../src/doomkeys.h"
 
 #include "txt_main.h"
-#include "txt_window.h"
-#include "txt_separator.h"
 #include "txt_io.h"
 #include "txt_gui.h"
 
-#define HELP_KEY KEY_F1
-#define MAXWINDOWS 128
+//#include "txt_window.h"
+//#include "txt_separator.h"
 
 namespace cudadoom::txt
 {
+
+#ifdef HELP_KEY
+#undef HELP_KEY
+#endif
+constexpr size_t HELP_KEY{KEY_F1};
+constexpr size_t MAXWINDOWS{128};
+
+class Window;
 
 typedef void (*TxtIdleCallback)(void* user_data);
 
@@ -40,7 +47,7 @@ int WindowKeyPress(Window* window, int c);
  *
  * @param title			The title to display (UTF-8 format).
  */
-void SetDesktopTitle(const char* title);
+void SetDesktopTitle(std::string title);
 
 /**
  * Exit the currently-running main loop and return from the
@@ -97,7 +104,7 @@ int RaiseWindow(Window* window);
  */
 int LowerWindow(Window* window);
 
-static char* desktop_title;
+std::string desktop_title;
 static Window* all_windows[MAXWINDOWS];
 static int num_windows = 0;
 static int main_loop_running = 0;
@@ -124,7 +131,6 @@ void AddDesktopWindow(Window* window)
 void RemoveDesktopWindow(Window* win)
 {
 	// Window must lose focus if it's being removed:
-
 	win->SetWindowFocus(true);
 	size_t to{0};
 	for (size_t from{0}; from < num_windows; ++from)
@@ -201,7 +207,7 @@ int LowerWindow(Window* window)
 	return 0;
 }
 
-static void DrawDesktopBackground(const char* title)
+static void DrawDesktopBackground(std::string title)
 {
 	auto screendata{GetScreenData()};
 
@@ -210,8 +216,10 @@ static void DrawDesktopBackground(const char* title)
 
 	for (size_t i{0}; i < SCREEN_W * SCREEN_H; ++i)
 	{
-		*(p++) = 0xb1;
-		*(p++) = ColorType::grey | (ColorType::blue << 4);
+		*p = 0xb1;
+		++p;
+		*p = ColorType::grey | (ColorType::blue << 4);
+		++p;
 	}
 
 	// Draw the top and bottom banners
@@ -219,16 +227,20 @@ static void DrawDesktopBackground(const char* title)
 
 	for (size_t i{0}; i<SCREEN_W; ++i)
 	{
-		*(p++) = ' ';
-		*(p++) = ColorType::black | (ColorType::grey << 4);
+		*p = ' ';
+		++p;
+		*p = ColorType::black | (ColorType::grey << 4);
+		++p;
 	}
 
 	p = screendata + (SCREEN_H - 1) * SCREEN_W * 2;
 
 	for (size_t i{0}; i<SCREEN_W; ++i)
 	{
-		*(p++) = ' ';
-		*(p++) = ColorType::black | (ColorType::grey << 4);
+		*p = ' ';
+		++p;
+		*p = ColorType::black | (ColorType::grey << 4);
+		++p;
 	}
 
 	// Print the title
@@ -243,8 +255,9 @@ static void DrawDesktopBackground(const char* title)
 static void DrawHelpIndicator()
 {
 	char keybuf[10];
-	int fgcolor;
-	int x, y;
+	ColorType fgcolor;
+	int x;
+	int y;
 
 	GetKeyDescription(HELP_KEY, keybuf, sizeof(keybuf));
 
@@ -285,7 +298,7 @@ void DrawDesktop()
 
 	InitClipArea();
 
-	if (!desktop_title)
+	if (desktop_title.empty())
 	{
 		title = "";
 	}
@@ -381,7 +394,6 @@ void DrawASCIITable()
 			Puts(buf);
 
 			// Write the character directly to the screen memory buffer:
-
 			screendata[(y * SCREEN_W + x * 5 + 3) * 2] = n;
 		}
 	}
@@ -405,7 +417,6 @@ void GUIMainLoop()
 		DispatchEvents();
 
 		// After the last window is closed, exit the loop
-
 		if (num_windows <= 0)
 		{
 			ExitMainLoop();
@@ -413,7 +424,7 @@ void GUIMainLoop()
 		}
 
 		DrawDesktop();
-//		DrawASCIITable();
+		//DrawASCIITable();
 
 		if (!periodic_callback)
 		{

@@ -19,18 +19,44 @@
 
 void M_LoadDefaults();
 void M_SaveDefaults();
-void M_SaveDefaultsAlternate(const char* main, const char* extra);
-void M_SetConfigDir(const char* dir);
+void M_SaveDefaultsAlternate(std::string main, std::string extra);
+void M_SetConfigDir(std::string dir);
 void M_SetMusicPackDir();
-void M_BindIntVariable(const char* name, int* variable);
-void M_BindFloatVariable(const char* name, float* variable);
-void M_BindStringVariable(const char* name, char** variable);
-bool M_SetVariable(const char* name, const char* value);
-int M_GetIntVariable(const char* name);
-const char* M_GetStringVariable(const char* name);
-float M_GetFloatVariable(const char* name);
-void M_SetConfigFilenames(const char* main_config, const char* extra_config);
-char* M_GetSaveGameDir(const char* iwadname);
-char* M_GetAutoloadDir(const char* iwadname);
 
-extern const char* configdir;
+template<typename T>
+requires std::integral<typename std::remove_pointer<T>::type>
+void M_BindIntVariable(std::string name, T location)
+{
+	default_t* variable;
+
+	variable = GetDefaultForName(name);
+	assert(variable->type == default_type_t::INT
+		|| variable->type == default_type_t::INT_HEX
+		|| variable->type == default_type_t::KEY);
+
+	variable->location.i = location;
+	variable->bound = true;
+}
+
+template<typename T>
+requires std::floating_point<typename std::remove_pointer<T>::type>
+void M_BindFloatVariable(std::string name, T location)
+{
+	default_t* variable;
+
+	variable = GetDefaultForName(name);
+	assert(variable->type == default_type_t::FLOAT);
+
+	variable->location.f = location;
+	variable->bound = true;
+}
+
+bool M_SetVariable(std::string name, std::string value);
+int M_GetIntVariable(std::string name);
+std::string M_GetStringVariable(std::string name);
+float M_GetFloatVariable(std::string name);
+void M_SetConfigFilenames(std::string main_config, std::string extra_config);
+std::string M_GetSaveGameDir(std::string iwadname);
+std::string M_GetAutoloadDir(std::string iwadname);
+
+extern std::string configdir;

@@ -11,12 +11,13 @@
 		Dehacked I/O code (does all reads from dehacked files)
 \**********************************************************************************************************************************************/
 
+#include "deh_io.h"
+
+#include "deh_defs.h"
+
 #include "m_misc.h"
 #include "w_wad.h"
 #include "z_zone.h"
-
-#include "deh_defs.h"
-#include "deh_io.h"
 
 auto DEH_NewContext()
 {
@@ -46,7 +47,7 @@ auto DEH_OpenFile(std::string filename)
 // Open a WAD lump for reading.
 auto DEH_OpenLump(int lumpnum)
 {
-	auto lump = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
+	auto lump = W_CacheLumpNum<char>(lumpnum, pu_tags_t::PU_STATIC);
 
 	auto context = DEH_NewContext();
 

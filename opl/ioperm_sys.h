@@ -14,6 +14,7 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "../derma/d_native.h"
 
 #define IOPERM_FILE L"\\\\.\\ioperm"
 
@@ -55,7 +56,7 @@ using SC_CallbackPtr = SC_HANDLE*;
 
 struct DLLFunctions
 {
-	const char* name;
+	std::string name;
 	SC_CallbackPtr fn;
 };
 

@@ -14,7 +14,7 @@
 #include "doomtype.h"
 #include "m_misc.h"
 
-static const char* const adjectives [] = {
+static std::string const adjectives [] = {
 	"Grumpy",
 	"Ecstatic",
 	"Surly",
@@ -58,7 +58,7 @@ static const char* const adjectives [] = {
 	"Baby",
 };
 
-static const char* const nouns[] = {
+static std::string const nouns[] = {
 	"Frad",
 	// Doom
 	"Cacodemon",
@@ -100,13 +100,14 @@ static void InitPetName()
 	srand((unsigned)time(NULL));
 }
 
-char* NET_GetRandomPetName()
+std::string NET_GetRandomPetName()
 {
-	const char* a, *n;
+	std::string a;
+	std::string n;
 
 	InitPetName();
 	a = adjectives[rand() % arrlen(adjectives)];
 	n = nouns[rand() % arrlen(nouns)];
 
-	return M_StringJoin(a, " ", n, NULL);
+	return std::string(a + " " + n);
 }

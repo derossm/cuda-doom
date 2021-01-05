@@ -11,7 +11,7 @@
 
 #include "../../derma/common.h"
 
-#include "txt_widget.h"
+#include "../../textscreen/txt_widget.h"
 
 //
 // A key input is like an input box. When selected, a box pops up allowing a key to be selected.

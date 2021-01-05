@@ -47,11 +47,11 @@
 - (bool) setDropdownList;
 - (void) setDropdownSelection;
 - (void) saveConfig;
-- (char*) doomWadPath;
+- (std::string) doomWadPath;
 - (void) setEnvironment;
-- (const char*) getGameName;
+- (std::string) getGameName;
 - (bool) addIWADPath: (NSString*) path;
-- (bool) selectGameByName: (const char*) name;
+- (bool) selectGameByName: (std::string) name;
 
 @end
 #endif /* APPKIT_EXISTS */

@@ -17,4 +17,4 @@
 #include "../../derma/common.h"
 
 void R_InitDistortedFlats();
-char* R_DistortedFlat(int flatnum);
+std::string R_DistortedFlat(int flatnum);

@@ -11,8 +11,8 @@
 
 #include "../../derma/common.h"
 
-#include "txt_widget.h"
-#include "txt_window.h"
+#include "../../textscreen/txt_widget.h"
+#include "../../textscreen/txt_window.h"
 
 //
 // A joystick input is like an input box. When selected, a box pops up allowing a joystick button to be pressed to select it.

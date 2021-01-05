@@ -15,6 +15,7 @@
 \**********************************************************************************************************************************************/
 
 #ifdef _WIN32
+#include "../derma/d_native.h"
 
 #include "SDL.h"
 #include "SDL_mixer.h"
@@ -85,12 +86,12 @@ static void ShutdownSDL()
 
 //=============================================================================
 // SDL_mixer Interface
-static bool RegisterSong(const char* filename)
+static bool RegisterSong(std::string& filename)
 {
-	music = Mix_LoadMUS(filename);
+	music = Mix_LoadMUS(filename.c_str());
 
 	// Remove the temporary MIDI file
-	remove(filename);
+	remove(filename.c_str());
 
 	if (music == NULL)
 	{
@@ -125,7 +126,7 @@ static void StopSong()
 bool MidiPipe_RegisterSong(buffer_reader_t* reader)
 {
 	auto filename{Reader_ReadString(reader)};
-	if (!filename || *filename == '\0')
+	if (!filename.empty())
 	{
 		return false;
 	}

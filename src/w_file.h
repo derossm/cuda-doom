@@ -17,13 +17,12 @@
 
 #include "doomtype.h"
 
-// FIXME
-using wad_file_t = _wad_file_t;
+struct wad_file_t;
 
 struct wad_file_class_t
 {
 	// Open a file for reading.
-	wad_file_t* (*OpenFile)(const char* path);
+	wad_file_t* (*OpenFile)(std::string path);
 
 	// Close the specified file.
 	void (*CloseFile)(wad_file_t* file);
@@ -33,7 +32,7 @@ struct wad_file_class_t
 	size_t (*Read)(wad_file_t* file, unsigned offset, void* buffer, size_t buffer_len);
 };
 
-struct _wad_file_t
+struct wad_file_t
 {
 	// Class of this file.
 	wad_file_class_t* file_class;
@@ -46,12 +45,12 @@ struct _wad_file_t
 	unsigned length;
 
 	// File's location on disk.
-	char* path; // [crispy] un-const
+	std::string path; // [crispy] un-const
 };
 
 // Open the specified file. Returns a pointer to a new wad_file_t
 // handle for the WAD file, or NULL if it could not be opened.
-wad_file_t* W_OpenFile(const char* path);
+wad_file_t* W_OpenFile(std::string path);
 
 // Close the specified WAD file.
 void W_CloseFile(wad_file_t* wad);

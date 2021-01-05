@@ -19,13 +19,15 @@
 #include "d_event.h"
 //#include "m_cheat.h"
 
+#include "../i_video.h"
+
 // Size of statusbar.
 // Now sensitive for scaling.
-#define ST_HEIGHT	32
-#define ST_WIDTH	ORIGWIDTH
-#define ST_Y		(ORIGHEIGHT - ST_HEIGHT)
+constexpr size_t ST_HEIGHT{32};
+constexpr size_t ST_WIDTH{ORIGWIDTH};
+constexpr size_t ST_Y{(ORIGHEIGHT - ST_HEIGHT)};
 
-#define CRISPY_HUD 12
+constexpr size_t CRISPY_HUD{12};
 
 // [crispy] Demo Timer widget
 extern void ST_DrawDemoTimer(const TimeType time);

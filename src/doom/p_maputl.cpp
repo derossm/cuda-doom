@@ -52,10 +52,10 @@ fixed_t P_AproxDistance(fixed_t dx, fixed_t dy)
 //
 int P_PointOnLineSide(fixed_t x, fixed_t y, line_t* line)
 {
-	fixed_t	dx;
-	fixed_t	dy;
-	fixed_t	left;
-	fixed_t	right;
+	fixed_t dx;
+	fixed_t dy;
+	fixed_t left;
+	fixed_t right;
 
 	if (!line->dx)
 	{
@@ -92,12 +92,12 @@ int P_PointOnLineSide(fixed_t x, fixed_t y, line_t* line)
 //
 int P_BoxOnLineSide(fixed_t* tmbox, line_t* ld)
 {
-	int		p1 = 0;
-	int		p2 = 0;
+	int p1 = 0;
+	int p2 = 0;
 
 	switch (ld->slopetype)
 	{
-		case ST_HORIZONTAL:
+		case slopetype_t::ST_HORIZONTAL:
 	p1 = tmbox[BOXTOP] > ld->v1->y;
 	p2 = tmbox[BOXBOTTOM] > ld->v1->y;
 	if (ld->dx < 0)
@@ -107,7 +107,7 @@ int P_BoxOnLineSide(fixed_t* tmbox, line_t* ld)
 	}
 	break;
 
-		case ST_VERTICAL:
+		case slopetype_t::ST_VERTICAL:
 	p1 = tmbox[BOXRIGHT] < ld->v1->x;
 	p2 = tmbox[BOXLEFT] < ld->v1->x;
 	if (ld->dy < 0)
@@ -117,12 +117,12 @@ int P_BoxOnLineSide(fixed_t* tmbox, line_t* ld)
 	}
 	break;
 
-		case ST_POSITIVE:
+		case slopetype_t::ST_POSITIVE:
 	p1 = P_PointOnLineSide (tmbox[BOXLEFT], tmbox[BOXTOP], ld);
 	p2 = P_PointOnLineSide (tmbox[BOXRIGHT], tmbox[BOXBOTTOM], ld);
 	break;
 
-		case ST_NEGATIVE:
+		case slopetype_t::ST_NEGATIVE:
 	p1 = P_PointOnLineSide (tmbox[BOXRIGHT], tmbox[BOXTOP], ld);
 	p2 = P_PointOnLineSide (tmbox[BOXLEFT], tmbox[BOXBOTTOM], ld);
 	break;
@@ -140,10 +140,10 @@ int P_BoxOnLineSide(fixed_t* tmbox, line_t* ld)
 //
 int P_PointOnDivlineSide(fixed_t x, fixed_t y, divline_t* line)
 {
-	fixed_t	dx;
-	fixed_t	dy;
-	fixed_t	left;
-	fixed_t	right;
+	fixed_t dx;
+	fixed_t dy;
+	fixed_t left;
+	fixed_t right;
 
 	if (!line->dx)
 	{
@@ -204,9 +204,9 @@ void P_MakeDivline(line_t* li, divline_t* dl)
 fixed_t P_InterceptVector(divline_t* v2, divline_t* v1)
 {
 #if 1
-	fixed_t	frac;
-	fixed_t	num;
-	fixed_t	den;
+	fixed_t frac;
+	fixed_t num;
+	fixed_t den;
 
 	den = FixedMul(v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
 
@@ -222,17 +222,17 @@ fixed_t P_InterceptVector(divline_t* v2, divline_t* v1)
 
 	return frac;
 #else	// UNUSED, float debug.
-	float	frac;
-	float	num;
-	float	den;
-	float	v1x;
-	float	v1y;
-	float	v1dx;
-	float	v1dy;
-	float	v2x;
-	float	v2y;
-	float	v2dx;
-	float	v2dy;
+	float frac;
+	float num;
+	float den;
+	float v1x;
+	float v1y;
+	float v1dx;
+	float v1dy;
+	float v2x;
+	float v2y;
+	float v2dx;
+	float v2dy;
 
 	v1x = (float)v1->x/FRACUNIT;
 	v1y = (float)v1->y/FRACUNIT;
@@ -265,13 +265,13 @@ fixed_t P_InterceptVector(divline_t* v2, divline_t* v1)
 fixed_t opentop;
 fixed_t openbottom;
 fixed_t openrange;
-fixed_t	lowfloor;
+fixed_t lowfloor;
 
 
 void P_LineOpening (line_t* linedef)
 {
-	sector_t*	front;
-	sector_t*	back;
+	sector_t* front;
+	sector_t* back;
 
 	if (linedef->sidenum[1] == NO_INDEX) // [crispy] extended nodes
 	{
@@ -317,10 +317,10 @@ void P_LineOpening (line_t* linedef)
 //
 void P_UnsetThingPosition (MapObject* thing)
 {
-	int		blockx;
-	int		blocky;
+	int blockx;
+	int blocky;
 
-	if ( ! (thing->flags & MF_NOSECTOR) )
+	if ( ! (thing->flags & mobjflag_t::MF_NOSECTOR) )
 	{
 	// inert things don't need to be in blockmap?
 	// unlink from subsector
@@ -333,7 +333,7 @@ void P_UnsetThingPosition (MapObject* thing)
 		thing->subsector->sector->thinglist = thing->snext;
 	}
 
-	if ( ! (thing->flags & MF_NOBLOCKMAP) )
+	if ( ! (thing->flags & mobjflag_t::MF_NOBLOCKMAP) )
 	{
 	// inert things don't need to be in blockmap
 	// unlink from block map
@@ -366,34 +366,34 @@ void P_UnsetThingPosition (MapObject* thing)
 void
 P_SetThingPosition (MapObject* thing)
 {
-	subsector_t*	ss;
-	sector_t*		sec;
-	int			blockx;
-	int			blocky;
-	MapObject**		link;
+	subsector_t* ss;
+	sector_t* sec;
+	int blockx;
+	int blocky;
+	MapObject** link;
 
 
 	// link into subsector
 	ss = R_PointInSubsector (thing->x,thing->y);
 	thing->subsector = ss;
 
-	if ( ! (thing->flags & MF_NOSECTOR) )
+	if (!(thing->flags & mobjflag_t::MF_NOSECTOR))
 	{
 	// invisible things don't go into the sector links
 	sec = ss->sector;
 
-	thing->sprev = NULL;
-	thing->snext = sec->thinglist;
+	thing->sectorPrev = nullptr;
+	thing->sectorNext = sec->thinglist;
 
 	if (sec->thinglist)
-		sec->thinglist->sprev = thing;
+		sec->thinglist->sectorPrev = thing;
 
 	sec->thinglist = thing;
 	}
 
 
 	// link into blockmap
-	if ( ! (thing->flags & MF_NOBLOCKMAP) )
+	if (!(thing->flags & mobjflag_t::MF_NOBLOCKMAP))
 	{
 	// inert things don't need to be in blockmap
 	blockx = (thing->x - bmaporgx)>>MAPBLOCKSHIFT;
@@ -405,22 +405,21 @@ P_SetThingPosition (MapObject* thing)
 		&& blocky < bmapheight)
 	{
 		link = &blocklinks[blocky*bmapwidth+blockx];
-		thing->bprev = NULL;
-		thing->bnext = *link;
+		thing->blockPrev = nullptr;
+		thing->blockNext = *link;
 		if (*link)
-		(*link)->bprev = thing;
+		(*link)->blockPrev = thing;
 
 		*link = thing;
 	}
 	else
 	{
 		// thing is off the map
-		thing->bnext = thing->bprev = NULL;
+		thing->blockNext = nullptr;
+		thing->blockPrev = nullptr;
 	}
 	}
 }
-
-
 
 //
 // BLOCK MAP ITERATORS
@@ -439,25 +438,22 @@ P_SetThingPosition (MapObject* thing)
 // to P_BlockLinesIterator, then make one or more calls
 // to it.
 //
-bool P_BlockLinesIterator(int x, int y, bool(*func)(line_t*) )
+bool P_BlockLinesIterator(int x, int y, bool(*func)(line_t*))
 {
-	int			offset;
-	int32_t*		list; // [crispy] BLOCKMAP limit
-	line_t*		ld;
+	int offset;
+	int32_t* list; // [crispy] BLOCKMAP limit
+	line_t* ld;
 
-	if (x<0
-	|| y<0
-	|| x>=bmapwidth
-	|| y>=bmapheight)
+	if (x < 0 || y < 0 || x >= bmapwidth || y >= bmapheight)
 	{
-	return true;
+		return true;
 	}
 
-	offset = y*bmapwidth+x;
+	offset = y*bmapwidth + x;
 
 	offset = *(blockmap+offset);
 
-	for ( list = blockmaplump+offset ; *list != -1 ; list++)
+	for (list = blockmaplump+offset ; *list != -1 ; ++list)
 	{
 	ld = &lines[*list];
 
@@ -478,7 +474,7 @@ bool P_BlockLinesIterator(int x, int y, bool(*func)(line_t*) )
 //
 bool P_BlockThingsIterator(int x, int y, bool(*func)(MapObject*) )
 {
-	MapObject*		mobj;
+	MapObject* mobj;
 
 	if ( x<0
 		|| y<0
@@ -504,8 +500,8 @@ bool P_BlockThingsIterator(int x, int y, bool(*func)(MapObject*) )
 //
 // INTERCEPT ROUTINES
 //
-static intercept_t*	intercepts; // [crispy] remove INTERCEPTS limit
-intercept_t*	intercept_p;
+static intercept_t* intercepts; // [crispy] remove INTERCEPTS limit
+intercept_t* intercept_p;
 
 // [crispy] remove INTERCEPTS limit
 // taken from PrBoom+/src/p_maputl.c:422-433
@@ -522,9 +518,9 @@ static void check_intercept()
 	}
 }
 
-divline_t	trace;
-bool	earlyout;
-int		ptflags;
+divline_t trace;
+bool earlyout;
+int ptflags;
 
 static void InterceptsOverrun(int num_intercepts, intercept_t* intercept);
 
@@ -544,10 +540,10 @@ extern MapObject* shootthing;
 bool
 PIT_AddLineIntercepts (line_t* ld)
 {
-	int			s1;
-	int			s2;
-	fixed_t		frac;
-	divline_t		dl;
+	int s1;
+	int s2;
+	fixed_t frac;
+	divline_t dl;
 
 	// avoid precision problems with two routines
 	if ( trace.dx > FRACUNIT*16
@@ -597,7 +593,7 @@ PIT_AddLineIntercepts (line_t* ld)
 		// [crispy] print a warning
 		fprintf(stderr, "PIT_AddLineIntercepts: Triggered INTERCEPTS overflow!\n");
 	}
-	intercept_p++;
+	++intercept_p;
 
 	return true;	// continue
 }
@@ -609,19 +605,19 @@ PIT_AddLineIntercepts (line_t* ld)
 //
 bool PIT_AddThingIntercepts (MapObject* thing)
 {
-	fixed_t		x1;
-	fixed_t		y1;
-	fixed_t		x2;
-	fixed_t		y2;
+	fixed_t x1;
+	fixed_t y1;
+	fixed_t x2;
+	fixed_t y2;
 
-	int			s1;
-	int			s2;
+	int s1;
+	int s2;
 
-	bool		tracepositive;
+	bool tracepositive;
 
-	divline_t		dl;
+	divline_t dl;
 
-	fixed_t		frac;
+	fixed_t frac;
 
 	tracepositive = (trace.dx ^ trace.dy)>0;
 
@@ -673,7 +669,7 @@ bool PIT_AddThingIntercepts (MapObject* thing)
 		// [crispy] print a warning
 		fprintf(stderr, "PIT_AddThingIntercepts: Triggered INTERCEPTS overflow!\n");
 	}
-	intercept_p++;
+	++intercept_p;
 
 	return true;		// keep going
 }
@@ -686,10 +682,10 @@ bool PIT_AddThingIntercepts (MapObject* thing)
 //
 bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac)
 {
-	int			count;
-	fixed_t		dist;
-	intercept_t*	scan;
-	intercept_t*	in;
+	int count;
+	fixed_t dist;
+	intercept_t* scan;
+	intercept_t* in;
 
 	count = intercept_p - intercepts;
 
@@ -698,7 +694,7 @@ bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac)
 	while (count--)
 	{
 	dist = INT_MAX;
-	for (scan = intercepts ; scan<intercept_p ; scan++)
+	for (scan = intercepts ; scan<intercept_p ; ++scan)
 	{
 		if (scan->frac < dist)
 		{
@@ -714,9 +710,12 @@ bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac)
 	{
 	// don't check these yet, there may be others inserted
 	in = scan = intercepts;
-	for ( scan = intercepts ; scan<intercept_p ; scan++)
+	for ( scan = intercepts ; scan<intercept_p ; ++scan)
 		if (scan->frac > maxfrac)
-		*(in++) = *scan;
+		{
+			*in = *scan;
+			++in;
+		}
 	intercept_p = in;
 	return false;
 	}
@@ -755,29 +754,29 @@ struct intercepts_overrun_t
 
 static intercepts_overrun_t intercepts_overrun[] =
 {
-	{4,	NULL,							false},
-	{4,	NULL, /* &earlyout, */			false},
-	{4,	NULL, /* &intercept_p, */		false},
+	{4,	nullptr,							false},
+	{4,	nullptr, /* &earlyout, */			false},
+	{4,	nullptr, /* &intercept_p, */		false},
 	{4,	&lowfloor,						false},
 	{4,	&openbottom,					false},
 	{4,	&opentop,						false},
 	{4,	&openrange,					false},
-	{4,	NULL,							false},
-	{120, NULL, /* &activeplats, */		false},
-	{8,	NULL,							false},
+	{4,	nullptr,							false},
+	{120, nullptr, /* &activeplats, */		false},
+	{8,	nullptr,							false},
 	{4,	&bulletslope,					false},
-	{4,	NULL, /* &swingx, */			false},
-	{4,	NULL, /* &swingy, */			false},
-	{4,	NULL,							false},
+	{4,	nullptr, /* &swingx, */			false},
+	{4,	nullptr, /* &swingy, */			false},
+	{4,	nullptr,							false},
 	{40, &playerstarts,					true},
-	{4,	NULL, /* &blocklinks, */		false},
+	{4,	nullptr, /* &blocklinks, */		false},
 	{4,	&bmapwidth,					false},
-	{4,	NULL, /* &blockmap, */			false},
+	{4,	nullptr, /* &blockmap, */			false},
 	{4,	&bmaporgx,						false},
 	{4,	&bmaporgy,						false},
-	{4,	NULL, /* &blockmaplump, */		false},
+	{4,	nullptr, /* &blockmaplump, */		false},
 	{4,	&bmapheight,					false},
-	{0,	NULL,							false},
+	{0,	nullptr,							false},
 };
 
 // Overwrite a specific memory location with a value.
@@ -802,7 +801,7 @@ static void InterceptsMemoryOverrun(int location, int value)
 			// Write the value to the memory location.
 			// 16-bit and 32-bit values are written differently.
 
-			if (addr != NULL)
+			if (addr != nullptr)
 			{
 				if (intercepts_overrun[i].int16_array)
 				{
@@ -862,30 +861,30 @@ static void InterceptsOverrun(int num_intercepts, intercept_t* intercept)
 //
 bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, bool (*trav) (intercept_t*))
 {
-	fixed_t	xt1;
-	fixed_t	yt1;
-	fixed_t	xt2;
-	fixed_t	yt2;
+	fixed_t xt1;
+	fixed_t yt1;
+	fixed_t xt2;
+	fixed_t yt2;
 
-	fixed_t	xstep;
-	fixed_t	ystep;
+	fixed_t xstep;
+	fixed_t ystep;
 
-	fixed_t	partial;
+	fixed_t partial;
 
-	fixed_t	xintercept;
-	fixed_t	yintercept;
+	fixed_t xintercept;
+	fixed_t yintercept;
 
-	int		mapx;
-	int		mapy;
+	int mapx;
+	int mapy;
 
-	int		mapxstep;
-	int		mapystep;
+	int mapxstep;
+	int mapystep;
 
-	int		count;
+	int count;
 
 	earlyout = (flags & PT_EARLYOUT) != 0;
 
-	validcount++;
+	++validcount;
 	intercept_p = intercepts;
 
 	if ( ((x1-bmaporgx)&(MAPBLOCKSIZE-1)) == 0)
@@ -957,7 +956,7 @@ bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, b
 	mapx = xt1;
 	mapy = yt1;
 
-	for (count = 0 ; count < 64 ; count++)
+	for (count = 0 ; count < 64 ; ++count)
 	{
 	if (flags & PT_ADDLINES)
 	{

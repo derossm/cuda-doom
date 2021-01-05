@@ -43,8 +43,8 @@ void S_Start();
 // using <sound_id> from sounds.h
 //
 
-void S_StartSound(void* origin, int sound_id);
-void S_StartSoundOnce(void* origin, int sound_id);
+void S_StartSound(void* origin, sfxenum_t sound_id);
+void S_StartSoundOnce(void* origin, sfxenum_t sound_id);
 
 // Stop sound for thing at <origin>
 void S_StopSound(MapObject* origin);
@@ -52,11 +52,11 @@ void S_UnlinkSound(MapObject* origin);
 
 
 // Start music using <music_id> from sounds.h
-void S_StartMusic(int music_id);
+void S_StartMusic(musicenum_t music_id);
 
 // Start music using <music_id> from sounds.h,
 // and set whether looping
-void S_ChangeMusic(int music_id, int looping);
+void S_ChangeMusic(musicenum_t music_id, int looping);
 void S_ChangeMusInfoMusic(int lumpnum, int looping);
 
 // query if music is playing

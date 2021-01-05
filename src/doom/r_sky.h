@@ -19,13 +19,13 @@
 #define SKYFLATNAME "F_SKY1"
 
 // The sky map is 256*128*4 maps.
-#define ANGLETOSKYSHIFT		22
+constexpr size_t ANGLETOSKYSHIFT{22};
 
 // [crispy] stretch sky
-#define SKYSTRETCH_HEIGHT 228
+constexpr size_t SKYSTRETCH_HEIGHT{228};
 
-extern int		skytexture;
-extern int		skytexturemid;
+extern int skytexture;
+extern int skytexturemid;
 
 // Called whenever the view size changes.
 void R_InitSkyMap();

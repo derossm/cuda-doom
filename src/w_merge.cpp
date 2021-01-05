@@ -61,7 +61,7 @@ static int sprite_frames_alloced;
 //
 // Returns -1 if not found
 
-static int FindInList(searchlist_t* list, const char* name)
+static int FindInList(searchlist_t* list, std::string name)
 {
 	int i;
 
@@ -75,8 +75,8 @@ static int FindInList(searchlist_t* list, const char* name)
 }
 
 static bool SetupList(searchlist_t* list, searchlist_t* src_list,
-							const char* startname, const char* endname,
-							const char* startname2, const char* endname2)
+							std::string startname, std::string endname,
+							std::string startname2, std::string endname2)
 {
 	int startlump, endlump;
 
@@ -145,7 +145,7 @@ static void InitSpriteList()
 	num_sprite_frames = 0;
 }
 
-static bool ValidSpriteLumpName(char* name)
+static bool ValidSpriteLumpName(std::string name)
 {
 	if (name[0] == '\0' || name[1] == '\0'
 		|| name[2] == '\0' || name[3] == '\0')
@@ -172,7 +172,7 @@ static bool ValidSpriteLumpName(char* name)
 
 // Find a sprite frame
 
-static sprite_frame_t* FindSpriteFrame(char* name, int frame)
+static sprite_frame_t* FindSpriteFrame(std::string name, int frame)
 {
 	sprite_frame_t* result;
 	int i;
@@ -560,7 +560,7 @@ void W_PrintDirectory()
 
 // Merge in a file by name
 
-void W_MergeFile(const char* filename)
+void W_MergeFile(std::string filename)
 {
 	int old_numlumps;
 
@@ -617,7 +617,7 @@ static void W_NWTAddLumps(searchlist_t* list)
 // Merge sprites and flats in the way NWT does with its -af and -as
 // command-line options.
 
-void W_NWTMergeFile(const char* filename, int flags)
+void W_NWTMergeFile(std::string filename, int flags)
 {
 	int old_numlumps;
 
@@ -663,7 +663,7 @@ void W_NWTMergeFile(const char* filename, int flags)
 // a PWAD, then search the IWAD sprites, removing any sprite lumps that also
 // exist in the PWAD.
 
-void W_NWTDashMerge(const char* filename)
+void W_NWTDashMerge(std::string filename)
 {
 	wad_file_t* wad_file;
 	int old_numlumps;
@@ -714,10 +714,10 @@ void W_NWTDashMerge(const char* filename)
 }
 
 // [crispy] dump merged WAD data into a new IWAD file
-int W_MergeDump (const char* file)
+int W_MergeDump (std::string file)
 {
 	FILE* fp = NULL;
-	char* lump_p = NULL;
+	std::string lump_p = NULL;
 	uint32_t i, dir_p;
 
 	// [crispy] WAD directory structure
@@ -745,7 +745,7 @@ int W_MergeDump (const char* file)
 
 	// [crispy] write lumps to file, starting at offset 12
 	fseek(fp, 12, SEEK_SET);
-	for (i = 0; i < numlumps; i++)
+	for (i = 0; i < numlumps; ++i)
 	{
 	dir[i].pos = LONG(ftell(fp));
 	dir[i].size = LONG(lumpinfo[i]->size);

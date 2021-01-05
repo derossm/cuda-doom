@@ -22,9 +22,9 @@
 
 #define HEADER_CHUNK_ID "MThd"
 #define TRACK_CHUNK_ID "MTrk"
-#define MAX_BUFFER_SIZE 0x10000
+constexpr size_t MAX_BUFFER_SIZE{0x10000};
 
-#define MIDI_CHANNELS_PER_TRACK 16
+constexpr size_t MIDI_CHANNELS_PER_TRACK{16};
 
 enum class midi_EventType_t
 {
@@ -176,7 +176,7 @@ struct midi_file_t
 	unsigned buffer_size;
 };
 
-midi_file_t* MIDI_LoadFile(char* filename);
+midi_file_t* MIDI_LoadFile(std::string filename);
 
 void MIDI_FreeFile(midi_file_t* file);
 

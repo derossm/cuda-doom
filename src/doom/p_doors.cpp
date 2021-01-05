@@ -31,9 +31,9 @@
 //
 // Sliding door frame information
 //
-slidename_t	slideFrameNames[MAXSLIDEDOORS] =
+slidename_t slideFrameNames[MAXSLIDEDOORS] =
 {
-	{"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
+	{	"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
 		"GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	// back
 
 	{"\0","\0","\0","\0"}
@@ -42,143 +42,139 @@ slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 
 void T_VerticalDoor(vldoor_t* door)
 {
-	result_e	res;
+	result_e res;
 
 	switch(door->direction)
 	{
-		case 0:
-	// WAITING
-	if (!--door->topcountdown)
-	{
-		switch(door->type)
+	case 0:
+		// WAITING
+		if (!--door->topcountdown)
 		{
-			case vld_blazeRaise:
-		door->direction = -1; // time to go back down
-		S_StartSound(&door->sector->soundorg, sfx_bdcls);
-		break;
+			switch(door->type)
+			{
+			case vldoor_e::vld_blazeRaise:
+				door->direction = -1; // time to go back down
+				S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_bdcls);
+				break;
 
-			case vld_normal:
-		door->direction = -1; // time to go back down
-		S_StartSound(&door->sector->soundorg, sfx_dorcls);
-		break;
+			case vldoor_e::vld_normal:
+				door->direction = -1; // time to go back down
+				S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_dorcls);
+				break;
 
-			case vld_close30ThenOpen:
-		door->direction = 1;
-		S_StartSound(&door->sector->soundorg, sfx_doropn);
-		break;
+			case vldoor_e::vld_close30ThenOpen:
+				door->direction = 1;
+				S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_doropn);
+				break;
 
 			default:
-		break;
+				break;
+			}
 		}
-	}
-	break;
-
-		case 2:
-	// INITIAL WAIT
-	if (!--door->topcountdown)
-	{
-		switch(door->type)
-		{
-			case vld_raiseIn5Mins:
-		door->direction = 1;
-		door->type = vld_normal;
-		S_StartSound(&door->sector->soundorg, sfx_doropn);
 		break;
+
+	case 2:
+		// INITIAL WAIT
+		if (!--door->topcountdown)
+		{
+			switch(door->type)
+			{
+			case vldoor_e::vld_raiseIn5Mins:
+				door->direction = 1;
+				door->type = vldoor_e::vld_normal;
+				S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_doropn);
+				break;
 
 			default:
-		break;
+				break;
+			}
 		}
-	}
-	break;
+		break;
 
-		case -1:
-	// DOWN
-	res = T_MovePlane(door->sector,
-				door->speed,
-				door->sector->floorheight,
-				false,1,door->direction);
-	if (res == pastdest)
-	{
-		switch(door->type)
+	case -1:
+		// DOWN
+		res = T_MovePlane(door->sector, door->speed, door->sector->floorheight, false,1,door->direction);
+		if (res == result_e::pastdest)
 		{
-			case vld_blazeRaise:
-			case vld_blazeClose:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker(&door->thinker); // unlink and free
-		// [crispy] fix "fast doors make two closing sounds"
-		if (!crispy->soundfix)
-		S_StartSound(&door->sector->soundorg, sfx_bdcls);
-		break;
+			switch(door->type)
+			{
+			case vldoor_e::vld_blazeRaise:
+			case vldoor_e::vld_blazeClose:
+				door->sector->specialdata = NULL;
+				P_RemoveThinker(&door->thinker); // unlink and free
+				// [crispy] fix "fast doors make two closing sounds"
+				if (!crispy->soundfix)
+				{
+					S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_bdcls);
+				}
+				break;
 
-			case vld_normal:
-			case vld_close:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker(&door->thinker); // unlink and free
-		break;
+			case vldoor_e::vld_normal:
+			case vldoor_e::vld_close:
+				door->sector->specialdata = NULL;
+				P_RemoveThinker(&door->thinker); // unlink and free
+				break;
 
-			case vld_close30ThenOpen:
-		door->direction = 0;
-		door->topcountdown = TICRATE*30;
-		break;
+			case vldoor_e::vld_close30ThenOpen:
+				door->direction = 0;
+				door->topcountdown = TICRATE*30;
+				break;
 
 			default:
-		break;
+				break;
+			}
 		}
-	}
-	else if (res == crushed)
-	{
-		switch(door->type)
+		else if (res == result_e::crushed)
 		{
-			case vld_blazeClose:
-			case vld_close:		// DO NOT GO BACK UP!
-		break;
+			switch(door->type)
+			{
+			case vldoor_e::vld_blazeClose:
+			case vldoor_e::vld_close:		// DO NOT GO BACK UP!
+				break;
 
-			// [crispy] fix "fast doors reopening with wrong sound"
-			case vld_blazeRaise:
-		if (crispy->soundfix)
-		{
-		door->direction = 1;
-		S_StartSound(&door->sector->soundorg, sfx_bdopn);
-		break;
-		}
+				// fix "fast doors reopening with wrong sound"
+			case vldoor_e::vld_blazeRaise:
+				if (crispy->soundfix)
+				{
+					door->direction = 1;
+					S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_bdopn);
+					break;
+				}
 
 			default:
-		door->direction = 1;
-		S_StartSound(&door->sector->soundorg, sfx_doropn);
-		break;
+				door->direction = 1;
+				S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_doropn);
+				break;
+			}
 		}
-	}
-	break;
+		break;
 
-		case 1:
-	// UP
-	res = T_MovePlane(door->sector,
-				door->speed,
-				door->topheight,
-				false,1,door->direction);
+	case 1:
+		// UP
+		res = T_MovePlane(door->sector, door->speed, door->topheight, false,1,door->direction);
 
-	if (res == pastdest)
-	{
-		switch(door->type)
+		if (res == result_e::pastdest)
 		{
-			case vld_blazeRaise:
-			case vld_normal:
-		door->direction = 0; // wait at top
-		door->topcountdown = door->topwait;
-		break;
+			switch(door->type)
+			{
+			case vldoor_e::vld_blazeRaise:
+			case vldoor_e::vld_normal:
+				door->direction = 0; // wait at top
+				door->topcountdown = door->topwait;
+				break;
 
-			case vld_close30ThenOpen:
-			case vld_blazeOpen:
-			case vld_open:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker(&door->thinker); // unlink and free
-		break;
+			case vldoor_e::vld_close30ThenOpen:
+			case vldoor_e::vld_blazeOpen:
+			case vldoor_e::vld_open:
+				door->sector->specialdata = NULL;
+				P_RemoveThinker(&door->thinker); // unlink and free
+				break;
 
 			default:
-		break;
+				break;
+			}
 		}
-	}
-	break;
+		break;
 	}
 }
 
@@ -190,7 +186,7 @@ void T_VerticalDoor(vldoor_t* door)
 
 int EV_DoLockedDoor(line_t* line, vldoor_e type, MapObject* thing)
 {
-	Player*	p;
+	Player* p;
 
 	p = thing->player;
 
@@ -201,37 +197,37 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, MapObject* thing)
 	{
 		case 99:	// Blue Lock
 		case 133:
-	if (!p->cards[it_bluecard] && !p->cards[it_blueskull])
+	if (!p->cards[std::size_t(CardType::it_bluecard)] && !p->cards[std::size_t(CardType::it_blueskull)])
 	{
 		p->message = DEH_String(PD_BLUEO);
-		S_StartSound(crispy->soundfix ? p->mo : NULL,sfx_oof);
+		S_StartSound(crispy->soundfix ? p : NULL,sfxenum_t::sfx_oof);
 		// [crispy] blinking key or skull in the status bar
-		p->tryopen[it_bluecard] = KEYBLINKTICS;
+		p->tryopen[std::size_t(CardType::it_bluecard)] = KEYBLINKTICS;
 		return 0;
 	}
 	break;
 
 		case 134: // Red Lock
 		case 135:
-	if (!p->cards[it_redcard] && !p->cards[it_redskull])
+	if (!p->cards[std::size_t(CardType::it_redcard)] && !p->cards[std::size_t(CardType::it_redskull)])
 	{
 		p->message = DEH_String(PD_REDO);
-		S_StartSound(crispy->soundfix ? p->mo : NULL,sfx_oof);
+		S_StartSound(crispy->soundfix ? p : NULL,sfxenum_t::sfx_oof);
 		// [crispy] blinking key or skull in the status bar
-		p->tryopen[it_redcard] = KEYBLINKTICS;
+		p->tryopen[std::size_t(CardType::it_redcard)] = KEYBLINKTICS;
 		return 0;
 	}
 	break;
 
 		case 136:	// Yellow Lock
 		case 137:
-	if (!p->cards[it_yellowcard] &&
-		!p->cards[it_yellowskull])
+	if (!p->cards[std::size_t(CardType::it_yellowcard)] &&
+		!p->cards[std::size_t(CardType::it_yellowskull)])
 	{
 		p->message = DEH_String(PD_YELLOWO);
-		S_StartSound(crispy->soundfix ? p->mo : NULL,sfx_oof);
+		S_StartSound(crispy->soundfix ? p : NULL,sfxenum_t::sfx_oof);
 		// [crispy] blinking key or skull in the status bar
-		p->tryopen[it_yellowcard] = KEYBLINKTICS;
+		p->tryopen[std::size_t(CardType::it_yellowcard)] = KEYBLINKTICS;
 		return 0;
 	}
 	break;
@@ -243,9 +239,9 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, MapObject* thing)
 
 int EV_DoDoor(line_t* line, vldoor_e type)
 {
-	int		secnum,rtn;
-	sector_t*	sec;
-	vldoor_t*	door;
+	int secnum,rtn;
+	sector_t* sec;
+	vldoor_t* door;
 
 	secnum = -1;
 	rtn = 0;
@@ -271,50 +267,50 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 
 	switch(type)
 	{
-		case vld_blazeClose:
+		case vldoor_e::vld_blazeClose:
 		door->topheight = P_FindLowestCeilingSurrounding(sec);
 		door->topheight -= 4*FRACUNIT;
 		door->direction = -1;
 		door->speed = VDOORSPEED * 4;
 		// [crispy] fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
 		if (door->sector->ceilingheight - door->sector->floorheight > 0 || !crispy->soundfix)
-		S_StartSound(&door->sector->soundorg, sfx_bdcls);
+		S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_bdcls);
 		break;
 
-		case vld_close:
+		case vldoor_e::vld_close:
 		door->topheight = P_FindLowestCeilingSurrounding(sec);
 		door->topheight -= 4*FRACUNIT;
 		door->direction = -1;
 		// [crispy] fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
 		if (door->sector->ceilingheight - door->sector->floorheight > 0 || !crispy->soundfix)
-		S_StartSound(&door->sector->soundorg, sfx_dorcls);
+		S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_dorcls);
 		break;
 
-		case vld_close30ThenOpen:
+		case vldoor_e::vld_close30ThenOpen:
 		door->topheight = sec->ceilingheight;
 		door->direction = -1;
 		// [crispy] fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
 		if (door->sector->ceilingheight - door->sector->floorheight > 0 || !crispy->soundfix)
-		S_StartSound(&door->sector->soundorg, sfx_dorcls);
+		S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_dorcls);
 		break;
 
-		case vld_blazeRaise:
-		case vld_blazeOpen:
+		case vldoor_e::vld_blazeRaise:
+		case vldoor_e::vld_blazeOpen:
 		door->direction = 1;
 		door->topheight = P_FindLowestCeilingSurrounding(sec);
 		door->topheight -= 4*FRACUNIT;
 		door->speed = VDOORSPEED * 4;
 		if (door->topheight != sec->ceilingheight)
-		S_StartSound(&door->sector->soundorg, sfx_bdopn);
+		S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_bdopn);
 		break;
 
-		case vld_normal:
-		case vld_open:
+		case vldoor_e::vld_normal:
+		case vldoor_e::vld_open:
 		door->direction = 1;
 		door->topheight = P_FindLowestCeilingSurrounding(sec);
 		door->topheight -= 4*FRACUNIT;
 		if (door->topheight != sec->ceilingheight)
-		S_StartSound(&door->sector->soundorg, sfx_doropn);
+		S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_doropn);
 		break;
 
 		default:
@@ -328,10 +324,10 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 // EV_VerticalDoor : open a door manually, no tag value
 void EV_VerticalDoor(line_t* line, MapObject* thing)
 {
-	Player*	player;
-	sector_t*	sec;
-	vldoor_t*	door;
-	int		side;
+	Player* player;
+	sector_t* sec;
+	vldoor_t* door;
+	int side;
 
 	side = 0;	// only front sides can be used
 
@@ -345,12 +341,12 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 	if ( !player )
 		return;
 
-	if (!player->cards[it_bluecard] && !player->cards[it_blueskull])
+	if (!player->cards[std::size_t(CardType::it_bluecard)] && !player->cards[std::size_t(CardType::it_blueskull)])
 	{
 		player->message = DEH_String(PD_BLUEK);
-		S_StartSound(crispy->soundfix ? player->mo : NULL,sfx_oof);
+		S_StartSound(crispy->soundfix ? player : NULL,sfxenum_t::sfx_oof);
 		// [crispy] blinking key or skull in the status bar
-		player->tryopen[it_bluecard] = KEYBLINKTICS;
+		player->tryopen[std::size_t(CardType::it_bluecard)] = KEYBLINKTICS;
 		return;
 	}
 	break;
@@ -360,13 +356,13 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 	if ( !player )
 		return;
 
-	if (!player->cards[it_yellowcard] &&
-		!player->cards[it_yellowskull])
+	if (!player->cards[std::size_t(CardType::it_yellowcard)] &&
+		!player->cards[std::size_t(CardType::it_yellowskull)])
 	{
 		player->message = DEH_String(PD_YELLOWK);
-		S_StartSound(crispy->soundfix ? player->mo : NULL,sfx_oof);
+		S_StartSound(crispy->soundfix ? player : NULL,sfxenum_t::sfx_oof);
 		// [crispy] blinking key or skull in the status bar
-		player->tryopen[it_yellowcard] = KEYBLINKTICS;
+		player->tryopen[std::size_t(CardType::it_yellowcard)] = KEYBLINKTICS;
 		return;
 	}
 	break;
@@ -376,12 +372,12 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 	if ( !player )
 		return;
 
-	if (!player->cards[it_redcard] && !player->cards[it_redskull])
+	if (!player->cards[std::size_t(CardType::it_redcard)] && !player->cards[std::size_t(CardType::it_redskull)])
 	{
 		player->message = DEH_String(PD_REDK);
-		S_StartSound(crispy->soundfix ? player->mo : NULL,sfx_oof);
+		S_StartSound(crispy->soundfix ? player : NULL,sfxenum_t::sfx_oof);
 		// [crispy] blinking key or skull in the status bar
-		player->tryopen[it_redcard] = KEYBLINKTICS;
+		player->tryopen[std::size_t(CardType::it_redcard)] = KEYBLINKTICS;
 		return;
 	}
 	break;
@@ -403,17 +399,17 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 	door = sec->specialdata;
 	switch(line->special)
 	{
-		case	1: // ONLY FOR "RAISE" DOORS, NOT "OPEN"s
-		case	26:
-		case	27:
-		case	28:
-		case	117:
+		case 1: // ONLY FOR "RAISE" DOORS, NOT "OPEN"s
+		case 26:
+		case 27:
+		case 28:
+		case 117:
 		if (door->direction == -1)
 		{
 		door->direction = 1;	// go back up
 		// [crispy] play sound effect when the door is opened again while going down
 		if (crispy->soundfix && door->thinker.function.acp1 == (actionf_p1)T_VerticalDoor)
-		S_StartSound(&door->sector->soundorg, line->special == 117 ? sfx_bdopn : sfx_doropn);
+		S_StartSound(&door->sector->soundorg, line->special == 117 ? sfxenum_t::sfx_bdopn : sfxenum_t::sfx_doropn);
 		}
 		else
 		{
@@ -429,7 +425,7 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 					door->direction = -1;	// start going down immediately
 					// [crispy] play sound effect when the door is closed manually
 					if (crispy->soundfix)
-					S_StartSound(&door->sector->soundorg, line->special == 117 ? sfx_bdcls : sfx_dorcls);
+					S_StartSound(&door->sector->soundorg, line->special == 117 ? sfxenum_t::sfx_bdcls : sfxenum_t::sfx_dorcls);
 				}
 				else if (door->thinker.function.acp1 == (actionf_p1)T_PlatRaise)
 				{
@@ -467,16 +463,16 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 	{
 		case 117:	// BLAZING DOOR RAISE
 		case 118:	// BLAZING DOOR OPEN
-	S_StartSound(&sec->soundorg,sfx_bdopn);
+	S_StartSound(&sec->soundorg,sfxenum_t::sfx_bdopn);
 	break;
 
 		case 1:	// NORMAL DOOR SOUND
 		case 31:
-	S_StartSound(&sec->soundorg,sfx_doropn);
+	S_StartSound(&sec->soundorg,sfxenum_t::sfx_doropn);
 	break;
 
 		default:	// LOCKED DOOR SOUND
-	S_StartSound(&sec->soundorg,sfx_doropn);
+	S_StartSound(&sec->soundorg,sfxenum_t::sfx_doropn);
 	break;
 	}
 
@@ -497,23 +493,23 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 		case 26:
 		case 27:
 		case 28:
-	door->type = vld_normal;
+	door->type = vldoor_e::vld_normal;
 	break;
 
 		case 31:
 		case 32:
 		case 33:
 		case 34:
-	door->type = vld_open;
+	door->type = vldoor_e::vld_open;
 	line->special = 0;
 	break;
 
 		case 117:	// blazing door raise
-	door->type = vld_blazeRaise;
+	door->type = vldoor_e::vld_blazeRaise;
 	door->speed = VDOORSPEED*4;
 	break;
 		case 118:	// blazing door open
-	door->type = vld_blazeOpen;
+	door->type = vldoor_e::vld_blazeOpen;
 	line->special = 0;
 	door->speed = VDOORSPEED*4;
 	break;
@@ -530,7 +526,7 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 //
 void P_SpawnDoorCloseIn30(sector_t* sec)
 {
-	vldoor_t*	door;
+	vldoor_t* door;
 
 	door = Z_Malloc<decltype(door)>( sizeof(*door), pu_tags_t::PU_LEVSPEC, 0);
 
@@ -542,7 +538,7 @@ void P_SpawnDoorCloseIn30(sector_t* sec)
 	door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
 	door->sector = sec;
 	door->direction = 0;
-	door->type = vld_normal;
+	door->type = vldoor_e::vld_normal;
 	door->speed = VDOORSPEED;
 	door->topcountdown = 30 * TICRATE;
 }
@@ -562,7 +558,7 @@ void P_SpawnDoorRaiseIn5Mins(sector_t* sec, int secnum)
 	door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
 	door->sector = sec;
 	door->direction = 2;
-	door->type = vld_raiseIn5Mins;
+	door->type = vldoor_e::vld_raiseIn5Mins;
 	door->speed = VDOORSPEED;
 	door->topheight = P_FindLowestCeilingSurrounding(sec);
 	door->topheight -= 4*FRACUNIT;
@@ -583,17 +579,17 @@ slideframe_t slideFrames[MAXSLIDEDOORS];
 
 void P_InitSlidingDoorFrames()
 {
-	int		i;
-	int		f1;
-	int		f2;
-	int		f3;
-	int		f4;
+	int i;
+	int f1;
+	int f2;
+	int f3;
+	int f4;
 
 	// DOOM II ONLY...
 	if ( gamemode != GameMode::commercial)
 	return;
 
-	for (i = 0;i < MAXSLIDEDOORS; i++)
+	for (i = 0;i < MAXSLIDEDOORS; ++i)
 	{
 	if (!slideFrameNames[i].frontFrame1[0])
 		break;
@@ -624,10 +620,10 @@ void P_InitSlidingDoorFrames()
 // for which door type to use
 int P_FindSlidingDoorType(line_t* line)
 {
-	int		i;
-	int		val;
+	int i;
+	int val;
 
-	for (i = 0;i < MAXSLIDEDOORS;i++)
+	for (i = 0;i < MAXSLIDEDOORS; ++i)
 	{
 	val = sides[line->sidenum[0]].midtexture;
 	if (val == slideFrames[i].frontFrames[0])
@@ -724,8 +720,8 @@ void T_SlidingDoor(slidedoor_t* door)
 
 void EV_SlidingDoor(line_t* line, MapObject* thing)
 {
-	sector_t*		sec;
-	slidedoor_t*	door;
+	sector_t* sec;
+	slidedoor_t* door;
 
 	// DOOM II ONLY...
 	if (gamemode != GameMode::commercial)

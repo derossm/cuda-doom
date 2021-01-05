@@ -14,4 +14,4 @@
 
 #include "../derma/common.h"
 
-char* NET_GetRandomPetName();
+std::string NET_GetRandomPetName();

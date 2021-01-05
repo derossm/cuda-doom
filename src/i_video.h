@@ -20,11 +20,11 @@
 #include "crispy.h"
 
 // Screen width and height.
-#define ORIGWIDTH			320						// [crispy]
-#define ORIGHEIGHT			200						// [crispy]
+constexpr int ORIGWIDTH{320};
+constexpr int ORIGHEIGHT{200};
 
-#define MAXWIDTH			(ORIGWIDTH << 2)		// [crispy]
-#define MAXHEIGHT			(ORIGHEIGHT << 1)		// [crispy]
+constexpr int MAXWIDTH{(ORIGWIDTH << 2)};
+constexpr int MAXHEIGHT{(ORIGHEIGHT << 1)};
 
 extern int SCREENWIDTH;
 extern int SCREENHEIGHT;
@@ -33,8 +33,8 @@ extern int WIDESCREENDELTA;							// [crispy] horizontal widescreen offset
 void I_GetScreenDimensions();						// [crispy] re-calculate WIDESCREENDELTA
 
 // Screen height used when aspect_ratio_correct=true.
-#define ORIGHEIGHT_4_3		240						// [crispy]
-#define MAXHEIGHT_4_3		(ORIGHEIGHT_4_3 << 1)	// [crispy]
+constexpr int ORIGHEIGHT_4_3{240};
+constexpr int MAXHEIGHT_4_3{(ORIGHEIGHT_4_3 << 1)};
 
 extern int SCREENHEIGHT_4_3;
 
@@ -63,7 +63,7 @@ void I_ReadScreen(pixel_t* scr);
 
 void I_BeginRead();
 
-void I_SetWindowTitle(const char* title);
+void I_SetWindowTitle(std::string title);
 
 void I_CheckIsScreensaver();
 void I_SetGrabMouseCallback(grabmouse_callback_t func);
@@ -85,7 +85,7 @@ void I_StartTic();
 // Enable the loading disk image displayed when reading from disk.
 void I_EnableLoadingDisk(int xoffs, int yoffs);
 
-extern char* video_driver;
+extern std::string video_driver;
 extern bool screenvisible;
 
 extern int vanilla_keyboard_mapping;
@@ -101,7 +101,7 @@ extern int integer_scaling;
 extern int vga_porch_flash;
 extern int force_software_renderer;
 
-extern char* window_position;
+extern std::string window_position;
 void I_GetWindowPosition(int* x, int* y, int w, int h);
 
 // Joystic/gamepad hysteresis

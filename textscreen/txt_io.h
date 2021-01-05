@@ -27,7 +27,7 @@ struct SavedColors
 
 void PutSymbol(int c);
 void PutChar(int c);
-void Puts(const char* s);
+void Puts(std::string s);
 
 void GotoXY(int x, int y);
 void GetXY(int* x, int* y);
@@ -65,8 +65,10 @@ static void NewLine(unsigned char* screendata)
 
 		for (i=0; i<SCREEN_W; ++i)
 		{
-			*(p++) = ' ';
-			*(p++) = fgcolor | (bgcolor << 4);
+			*p = ' ';
+			++p;
+			*p = fgcolor | (bgcolor << 4);
+			++p;
 		}
 	}
 }
@@ -123,10 +125,10 @@ void PutChar(int c)
 	PutChar(GetScreenData(), c);
 }
 
-void Puts(const char* s)
+void Puts(std::string s)
 {
 	unsigned char* screen;
-	const char* p;
+	std::string p;
 
 	screen = GetScreenData();
 
@@ -160,7 +162,7 @@ void BGColor(ColorType color, bool blinking)
 	bgcolor = color;
 	if (blinking)
 	{
-		bgcolor |= ColorType::BLINKING;
+		bgcolor |= COLOR_BLINKING;
 	}
 }
 

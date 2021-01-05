@@ -41,11 +41,11 @@ static bool LoadLibraryPointers()
 		{
 			for (size_t i{0}, size{sizeof(dll_functions) / sizeof(*dll_functions)}; i < size; ++i)
 			{
-				*(dll_functions[i].fn) = (SC_HANDLE)GetProcAddress(dll, dll_functions[i].name);
+				*(dll_functions[i].fn) = (SC_HANDLE)GetProcAddress(dll, dll_functions[i].name.c_str());
 
 				if (*(dll_functions[i].fn) == nullptr)
 				{
-					fprintf(stderr, "LoadLibraryPointers: Failed to get address for '%s'\n", dll_functions[i].name);
+					fprintf(stderr, "LoadLibraryPointers: Failed to get address for '%s'\n", dll_functions[i].name.c_str());
 					return false;
 				}
 			}

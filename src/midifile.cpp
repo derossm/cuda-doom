@@ -11,8 +11,10 @@
 		Reading of MIDI files.
 \**********************************************************************************************************************************************/
 
+#include "midifile.h"
+
 // Check the header of a chunk:
-static bool CheckChunkHeader(chunk_header_t* chunk, const char* expected_id)
+static bool CheckChunkHeader(chunk_header_t* chunk, std::string expected_id)
 {
 	bool result;
 
@@ -82,7 +84,7 @@ static void* ReadByteSequence(unsigned num_bytes, FILE* stream)
 	if (result == NULL)
 	{
 		fprintf(stderr, "ReadByteSequence: Failed to allocate buffer\n");
-		return NULL;
+		return nullptr;
 	}
 
 	// Read the data:
@@ -92,7 +94,7 @@ static void* ReadByteSequence(unsigned num_bytes, FILE* stream)
 		{
 			fprintf(stderr, "ReadByteSequence: Error while reading byte %u\n", i);
 			free(result);
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -426,7 +428,7 @@ void MIDI_FreeFile(midi_file_t* file)
 	free(file);
 }
 
-midi_file_t* MIDI_LoadFile(char* filename)
+midi_file_t* MIDI_LoadFile(std::string filename)
 {
 	midi_file_t* file;
 	FILE* stream;
@@ -537,7 +539,7 @@ unsigned MIDI_GetFileTimeDivision(midi_file_t* file)
 	// Negative time division indicates SMPTE time and must be handled differently.
 	if (result < 0)
 	{
-		return (signed int)(-(result/256)) * (signed int)(result & 0xFF);
+		return (int)(-(result/256)) * (int)(result & 0xFF);
 	}
 	else
 	{
@@ -552,7 +554,7 @@ void MIDI_RestartIterator(midi_track_iter_t* iter)
 
 #ifdef TEST
 
-static char* MIDI_EventTypeToString(midi_EventType_t eventType)
+std::string MIDI_EventTypeToString(midi_EventType_t eventType)
 {
 	switch (eventType)
 	{

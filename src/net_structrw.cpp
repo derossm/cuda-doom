@@ -10,27 +10,26 @@
 	Reading and writing various structures into packets
 \**********************************************************************************************************************************************/
 
-
 #include "doomtype.h"
 #include "i_system.h"
 #include "m_misc.h"
 #include "net_packet.h"
 #include "net_structrw.h"
 
-// String names for the enum class values in net_protocol_t, which are what is
-// sent over the wire. Every enum class value must have an entry in this list.
+// String names for the enum values in net_protocol_t, which are what is
+// sent over the wire. Every enum value must have an entry in this list.
 static struct
 {
 	net_protocol_t protocol;
-	const char* name;
+	std::string name;
 } protocol_names[] = {
-	{NET_PROTOCOL_CHOCOLATE_DOOM_0, "CHOCOLATE_DOOM_0"},
+	{net_protocol_t::CHOCOLATE_DOOM_0, "CHOCOLATE_DOOM_0"},
 };
 
-void NET_WriteConnectData(net_packet_t* packet, net_connect_data_t* data)
+void NET_WriteConnectData(net_packet_t* packet, net_connect_data* data)
 {
-	NET_WriteInt8(packet, data->gamemode);
-	NET_WriteInt8(packet, data->gamemission);
+	NET_WriteInt8(packet, (unsigned)data->gamemode);
+	NET_WriteInt8(packet, (unsigned)data->gamemission);
 	NET_WriteInt8(packet, data->lowres_turn);
 	NET_WriteInt8(packet, data->drone);
 	NET_WriteInt8(packet, data->max_players);
@@ -40,7 +39,7 @@ void NET_WriteConnectData(net_packet_t* packet, net_connect_data_t* data)
 	NET_WriteInt8(packet, data->player_class);
 }
 
-bool NET_ReadConnectData(net_packet_t* packet, net_connect_data_t* data)
+bool NET_ReadConnectData(net_packet_t* packet, net_connect_data* data)
 {
 	return NET_ReadInt8(packet, (unsigned*) &data->gamemode)
 		&& NET_ReadInt8(packet, (unsigned*) &data->gamemission)
@@ -53,7 +52,7 @@ bool NET_ReadConnectData(net_packet_t* packet, net_connect_data_t* data)
 		&& NET_ReadInt8(packet, (unsigned*) &data->player_class);
 }
 
-void NET_WriteSettings(net_packet_t* packet, net_gamesettings_t* settings)
+void NET_WriteSettings(net_packet_t* packet, net_gamesettings* settings)
 {
 	int i;
 
@@ -81,7 +80,7 @@ void NET_WriteSettings(net_packet_t* packet, net_gamesettings_t* settings)
 	}
 }
 
-bool NET_ReadSettings(net_packet_t* packet, net_gamesettings_t* settings)
+bool NET_ReadSettings(net_packet_t* packet, net_gamesettings* settings)
 {
 	bool success;
 	int i;
@@ -99,10 +98,10 @@ bool NET_ReadSettings(net_packet_t* packet, net_gamesettings_t* settings)
 			&& NET_ReadInt8(packet, (unsigned*) &settings->lowres_turn)
 			&& NET_ReadInt8(packet, (unsigned*) &settings->new_sync)
 			&& NET_ReadInt32(packet, (unsigned*) &settings->timelimit)
-			&& NET_ReadSInt8(packet, (signed int*) &settings->loadgame)
+			&& NET_ReadSInt8(packet, (int*) &settings->loadgame)
 			&& NET_ReadInt8(packet, (unsigned*) &settings->random)
 			&& NET_ReadInt8(packet, (unsigned*) &settings->num_players)
-			&& NET_ReadSInt8(packet, (signed int*) &settings->consoleplayer);
+			&& NET_ReadSInt8(packet, (int*) &settings->consoleplayer);
 
 	if (!success)
 	{
@@ -127,7 +126,7 @@ bool NET_ReadQueryData(net_packet_t* packet, net_querydata_t* query)
 
 	query->version = NET_ReadSafeString(packet);
 
-	success = query->version != NULL
+	success = !query->version.empty()
 			&& NET_ReadInt8(packet, (unsigned*) &query->server_state)
 			&& NET_ReadInt8(packet, (unsigned*) &query->num_players)
 			&& NET_ReadInt8(packet, (unsigned*) &query->max_players)
@@ -146,7 +145,7 @@ bool NET_ReadQueryData(net_packet_t* packet, net_querydata_t* query)
 	// okay if it cannot be successfully read.
 	query->protocol = NET_ReadProtocolList(packet);
 
-	return query->description != NULL;
+	return !query->description.empty();
 }
 
 void NET_WriteQueryData(net_packet_t* packet, net_querydata_t* query)
@@ -164,8 +163,7 @@ void NET_WriteQueryData(net_packet_t* packet, net_querydata_t* query)
 	NET_WriteProtocolList(packet);
 }
 
-void NET_WriteTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff,
-							bool lowres_turn)
+void NET_WriteTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff, bool lowres_turn)
 {
 	// Header
 
@@ -206,11 +204,10 @@ void NET_WriteTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff,
 	}
 }
 
-bool NET_ReadTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff,
-							bool lowres_turn)
+bool NET_ReadTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff, bool lowres_turn)
 {
 	unsigned val;
-	signed int sval;
+	int sval;
 
 	// Read header
 
@@ -475,7 +472,7 @@ void NET_WriteWaitData(net_packet_t* packet, net_waitdata_t* data)
 bool NET_ReadWaitData(net_packet_t* packet, net_waitdata_t* data)
 {
 	int i;
-	char* s;
+	std::string s;
 
 	if (!NET_ReadInt8(packet, (unsigned*) &data->num_players)
 		|| !NET_ReadInt8(packet, (unsigned*) &data->num_drones)
@@ -561,7 +558,7 @@ void NET_WritePRNGSeed(net_packet_t* packet, prng_seed_t seed)
 	NET_WriteBlob(packet, seed, sizeof(prng_seed_t));
 }
 
-static net_protocol_t ParseProtocolName(const char* name)
+static net_protocol_t ParseProtocolName(std::string name)
 {
 	int i;
 
@@ -573,20 +570,20 @@ static net_protocol_t ParseProtocolName(const char* name)
 		}
 	}
 
-	return NET_PROTOCOL_UNKNOWN;
+	return net_protocol_t::UNKNOWN;
 }
 
 // NET_ReadProtocol reads a single string-format protocol name from the given
-// packet, returning NET_PROTOCOL_UNKNOWN if the string describes an unknown
+// packet, returning net_protocol_t::UNKNOWN if the string describes an unknown
 // protocol.
 net_protocol_t NET_ReadProtocol(net_packet_t* packet)
 {
-	const char* name;
+	std::string name;
 
 	name = NET_ReadString(packet);
 	if (name == NULL)
 	{
-		return NET_PROTOCOL_UNKNOWN;
+		return net_protocol_t::UNKNOWN;
 	}
 
 	return ParseProtocolName(name);
@@ -615,7 +612,7 @@ void NET_WriteProtocol(net_packet_t* packet, net_protocol_t protocol)
 // NET_ReadProtocolList reads a list of string-format protocol names from
 // the given packet, returning a single protocol number. The protocol that is
 // returned is the last protocol in the list that is a supported protocol. If
-// no recognized protocols are read, NET_PROTOCOL_UNKNOWN is returned.
+// no recognized protocols are read, net_protocol_t::UNKNOWN is returned.
 net_protocol_t NET_ReadProtocolList(net_packet_t* packet)
 {
 	net_protocol_t result;
@@ -624,24 +621,24 @@ net_protocol_t NET_ReadProtocolList(net_packet_t* packet)
 
 	if (!NET_ReadInt8(packet, &num_protocols))
 	{
-		return NET_PROTOCOL_UNKNOWN;
+		return net_protocol_t::UNKNOWN;
 	}
 
-	result = NET_PROTOCOL_UNKNOWN;
+	result = net_protocol_t::UNKNOWN;
 
 	for (i = 0; i < num_protocols; ++i)
 	{
 		net_protocol_t p;
-		const char* name;
+		std::string name;
 
 		name = NET_ReadString(packet);
-		if (name == NULL)
+		if (name.empty())
 		{
-			return NET_PROTOCOL_UNKNOWN;
+			return net_protocol_t::UNKNOWN;
 		}
 
 		p = ParseProtocolName(name);
-		if (p != NET_PROTOCOL_UNKNOWN)
+		if (p != net_protocol_t::UNKNOWN)
 		{
 			result = p;
 		}
@@ -659,9 +656,9 @@ void NET_WriteProtocolList(net_packet_t* packet)
 {
 	int i;
 
-	NET_WriteInt8(packet, NET_NUM_PROTOCOLS);
+	NET_WriteInt8(packet, (unsigned)net_protocol_t::NET_NUM_PROTOCOLS);
 
-	for (i = 0; i < NET_NUM_PROTOCOLS; ++i)
+	for (i = 0; i < std::size_t(net_protocol_t::NET_NUM_PROTOCOLS); ++i)
 	{
 		NET_WriteProtocol(packet, i);
 	}

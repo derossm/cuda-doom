@@ -21,8 +21,8 @@
 
 struct bex_string_t
 {
-	const char* macro;
-	const char* string;
+	std::string macro;
+	std::string string;
 };
 
 // mnemonic keys table
@@ -328,7 +328,7 @@ static const bex_string_t bex_stringtable[] = {
 	{"BGCASTCALL", "BOSSBACK"},
 };
 
-static void* DEH_BEXStrStart(deh_context_t* context, char* line)
+static void* DEH_BEXStrStart(deh_context_t* context, std::string line)
 {
 	char s[10];
 
@@ -337,12 +337,13 @@ static void* DEH_BEXStrStart(deh_context_t* context, char* line)
 	DEH_Warning(context, "Parse error on section start");
 	}
 
-	return NULL;
+	return nullptr;
 }
 
-static void DEH_BEXStrParseLine(deh_context_t* context, char* line, void* tag)
+static void DEH_BEXStrParseLine(deh_context_t* context, std::string line, void* tag)
 {
-	char* variable_name, *value;
+	std::string variable_name;
+	std::string value;
 	int i;
 
 	if (!DEH_ParseAssignment(line, &variable_name, &value))
@@ -351,9 +352,9 @@ static void DEH_BEXStrParseLine(deh_context_t* context, char* line, void* tag)
 	return;
 	}
 
-	for (i = 0; i < arrlen(bex_stringtable); i++)
+	for (i = 0; i < arrlen(bex_stringtable); ++i)
 	{
-	if (!strcasecmp(bex_stringtable[i].macro, variable_name))
+	if (!iequals(bex_stringtable[i].macro, variable_name))
 	{
 		DEH_AddStringReplacement(bex_stringtable[i].string, value);
 	}

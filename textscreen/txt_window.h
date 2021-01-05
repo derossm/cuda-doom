@@ -10,18 +10,21 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "doomkeys.h"
 
-#include "txt_main.h"
 #include "txt_widget.h"
 #include "txt_table.h"
+
+#include "txt_main.h"
+#include "txt_io.h"
+#include "txt_gui.h"
+
+#include "txt_desktop.h"
 #include "txt_label.h"
 #include "txt_separator.h"
 #include "txt_window_action.h"
-#include "txt_desktop.h"
-#include "txt_io.h"
-#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -39,19 +42,11 @@ namespace cudadoom::txt
  * action to activate the currently-selected widget.
  */
 
-using point_t = long double;
-
-struct Vec2
-{
-	point_t x;
-	point_t y;
-};
-
 // Callback function for window key presses
 typedef int (*WindowKeyPress)(int key, void* user_data);
 typedef int (*WindowMousePress)(int x, int y, int b, void* user_data);
 
-class Window : Table
+class Window : public Table<Window>
 {
 public:
 	// Base class: all windows are tables with one column.
@@ -83,15 +78,25 @@ public:
 	std::string help_url;
 
 	Window(std::string& _title) noexcept :	title{_title}, coordinates{.x{SCREEN_W/2}, .y{SCREEN_H/2}},
-											verticalAlign{AlignVertical::center}, horizontalAlign{AlignHorizontal::center}
+											verticalAlign{AlignVertical::center}, horizontalAlign{AlignHorizontal::center},
+											widget_class{ Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy }
 	{
-		AddWidget(NewSeparator(nullptr));
+		AddWidget(Separator(nullptr));
 
 		AddDesktopWindow(this);
 
 		// Default actions
 		SetWindowAction(AlignHorizontal::left, NewWindowEscapeAction(this));
 		SetWindowAction(AlignHorizontal::right, NewWindowSelectAction(this));
+	}
+
+	bool Selectable() override final const noexcept
+	{
+		return true;
+	}
+
+	void CalculateSize() override final const noexcept
+	{
 	}
 
 	void SetWindowAction(AlignHorizontal position, Widget& action) noexcept
@@ -153,9 +158,9 @@ public:
 		auto space_left_offset{0};
 
 		// Left action
-		if (actions[AlignHorizontal::left])
+		if (actions[std::size_t(AlignHorizontal::left)])
 		{
-			widget = actions[AlignHorizontal::left];
+			widget = actions[std::size_t(AlignHorizontal::left)];
 
 			CalcWidgetSize(widget);
 
@@ -170,9 +175,9 @@ public:
 		}
 
 		// Draw the right action
-		if (actions[AlignHorizontal::right])
+		if (actions[std::size_t(AlignHorizontal::right)])
 		{
-			widget = actions[AlignHorizontal::right];
+			widget = actions[std::size_t(AlignHorizontal::right)];
 
 			CalcWidgetSize(widget);
 
@@ -186,9 +191,9 @@ public:
 		}
 
 		// Draw the center action
-		if (actions[AlignHorizontal::center])
+		if (actions[std::size_t(AlignHorizontal::center)])
 		{
-			widget = actions[AlignHorizontal::center];
+			widget = actions[std::size_t(AlignHorizontal::center)];
 
 			CalcWidgetSize(widget);
 
@@ -235,12 +240,12 @@ public:
 	}
 
 	// Sets size and position of all widgets in a window
-	void LayoutWindow() noexcept
+	void SetLayout() override final const noexcept
 	{
 		auto widget = (Widget*)window;
 
 		// Calculate size of table
-		CalcWidgetSize(window);
+		CalculateSize();
 
 		// Widgets area: add one character of padding on each side
 		auto widget_w = widget->width + 2;
@@ -278,7 +283,7 @@ public:
 
 		// Set the table size and position
 		widget->width = widget_w - 2;
-		// widgets->h		(already set)
+		// widgets->h // already set
 		widget->x = window_x + 2;
 		widget->y = window_y;
 
@@ -289,10 +294,10 @@ public:
 
 		// Layout the table and action area
 		LayoutActionArea();
-		LayoutWidget(widget);
+		//SetLayout();
 	}
 
-	void DrawWindow() noexcept
+	void Draw() override final const noexcept
 	{
 		LayoutWindow();
 
@@ -334,13 +339,12 @@ public:
 		coordinates.y = y;
 	}
 
-	int _MouseButtonPress(int b) noexcept
+	bool MousePress(MouseEvent evt) override final noexcept
 	{
-		int x;
-		int y;
+		auto [button, x, y] = evt;
 
 		// Lay out the window, set positions and sizes of all widgets
-		LayoutWindow();
+		SetLayout();
 
 		// Get the current mouse position
 		GetMousePosition(&x, &y);
@@ -359,7 +363,7 @@ public:
 			// Is it within the table range?
 			auto widget = (Widget*)window;
 
-			if (x >= widget->x && x < (signed) (widget->x + widget->width) && y >= widget->y && y < (signed) (widget->y + widget->height))
+			if (x >= widget->x && x < (int) (widget->x + widget->width) && y >= widget->y && y < (int) (widget->y + widget->height))
 			{
 				WidgetMousePress(window, x, y, b);
 				return 1;
@@ -371,7 +375,7 @@ public:
 		{
 			auto widget = actions[i];
 
-			if (widget && x >= widget->x && x < (signed) (widget->x + widget->width) && y >= widget->y && y < (signed) (widget->y + widget->height))
+			if (widget && x >= widget->x && x < (int) (widget->x + widget->width) && y >= widget->y && y < (int) (widget->y + widget->height))
 			{
 				// Main table temporarily loses focus when action area button is clicked. This way, any active input boxes that depend
 				// on having focus will save their values before the action is performed.
@@ -388,7 +392,7 @@ public:
 		return 0;
 	}
 
-	int _WindowKeyPress(int c) noexcept
+	bool KeyPress(KeyType c) override final noexcept
 	{
 		// Is this a mouse button ?
 		if (c >= MOUSE_BASE && c < MOUSE_BASE + MAX_MOUSE_BUTTONS)
@@ -436,7 +440,7 @@ public:
 		mouse_listener_data = _user_data;
 	}
 
-	void SetWindowFocus(int focused) noexcept
+	void SetFocus(bool _focus) override final const noexcept
 	{
 		SetWidgetFocus(focused);
 	}
@@ -452,10 +456,10 @@ public:
 		ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 	}
 	#else
-	void OpenURL(const char* url) noexcept
+	void OpenURL(std::string url) noexcept
 	{
 		size_t cmd_len = strlen(url) + 30;
-		char* cmd = static_cast<decltype(cmd)>(malloc(cmd_len));
+		std::string cmd = static_cast<decltype(cmd)>(malloc(cmd_len));
 
 	#if defined(__MACOSX__)
 		snprintf(cmd, cmd_len, "open \"%s\"", url);
@@ -513,7 +517,7 @@ public:
  * @param title		Title to display in the titlebar of the new window (UTF-8 format).
  * @return			Pointer to a new @ref Window structure representing the new window.
  */
-Window* NewWindow(const char* title);
+Window* NewWindow(std::string title);
 
 /**
  * Close a window.
@@ -591,7 +595,7 @@ void SetMouseListener(Window* window, TxtWindowMousePress mouse_listener, void* 
  * @param message		The message to display in the window (UTF-8 format).
  * @return				The new window.
  */
-Window* MessageBox(const char* title, const char* message, ...);
+Window* MessageBox(std::string title, std::string message, ...);
 
 /**
  * Set the help URL for the given window.
@@ -600,7 +604,7 @@ Window* MessageBox(const char* title, const char* message, ...);
  * @param help_url		String containing URL of the help page for this
  *						window, or NULL to set no help for this window.
  */
-void SetWindowHelpURL(Window* window, const char* help_url);
+void SetWindowHelpURL(Window* window, std::string help_url);
 
 /**
  * Open the help URL for the given window, if one is set.

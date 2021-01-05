@@ -9,11 +9,12 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	WAD I/O functions.
+		WAD I/O functions.
 \**********************************************************************************************************************************************/
 
-
 #include "config.h"
+
+#include "../derma/d_native.h"
 
 #include "doomtype.h"
 #include "m_argv.h"
@@ -41,7 +42,7 @@ static wad_file_class_t* wad_file_classes[] =
 	&stdc_wad_file,
 };
 
-wad_file_t* W_OpenFile(const char* path)
+wad_file_t* W_OpenFile(std::string path)
 {
 	wad_file_t* result;
 	int i;

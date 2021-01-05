@@ -15,10 +15,10 @@
 #include "d_iwad.h"
 
 typedef void (*GameSelectCallback)();
-extern GameMission_t gamemission;
+extern GameMission gamemission;
 
 void SetupMission(GameSelectCallback callback);
 void InitBindings();
-const char* GetExecutableName();
-const char* GetGameTitle();
+std::string GetExecutableName();
+std::string GetGameTitle();
 const iwad_t**GetIwads();

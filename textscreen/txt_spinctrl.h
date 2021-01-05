@@ -10,16 +10,19 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "doomkeys.h"
 
+#include "txt_widget.h"
+
 #include "txt_enums.h"
 #include "txt_main.h"
-#include "txt_widget.h"
-#include "txt_window.h"
 #include "txt_utf8.h"
 #include "txt_io.h"
 #include "txt_gui.h"
+
+//#include "txt_window.h"
 
 namespace cudadoom::txt
 {
@@ -32,7 +35,7 @@ namespace cudadoom::txt
  * to be increased or decreased.
  */
 
-class SpinControl : Widget
+class SpinControl : Widget<SpinControl>
 {
 public:
 	bool editing{false};
@@ -44,34 +47,71 @@ public:
 
 	std::string buffer;
 
-	WidgetClass txt_spincontrol_class =
-	{
-		AlwaysSelectable,
-		SpinControlSizeCalc,
-		SpinControlDrawer,
-		SpinControlKeyPress,
-		SpinControlDestructor,
-		SpinControlMousePress,
-		NULL,
-		SpinControlFocused,
-	};
+public:
 
-	SpinControl() : widget_class(&txt_spincontrol_class)
+	SpinControl() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 	}
 
-	SpinControl(int* _value, int _min, int _max) : widget_class(&txt_spincontrol_class),
+	SpinControl(int* _value, int _min, int _max) : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
 														value{_value}, min{_min}, max{_max}, step{1}
 	{
 	}
 
-	SpinControl(float* _value, float _min, float _max) : widget_class(&txt_spincontrol_class),
+	SpinControl(float* _value, float _min, float _max) : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
 															value{_value}, min{_min}, max{_max}, step{0.1f}
 	{
 	}
 
+	bool Selectable() override final const noexcept
+	{
+		return true;
+	}
+
+	void CalculateSize() override final const noexcept
+	{
+	}
+
+	void Draw() override final const noexcept
+	{
+	}
+
+	bool KeyPress(Keytype key) override final const noexcept
+	{
+		if (key == KEY_ENTER || key == ' ')
+		{
+			EmitSignal("changed");
+			return true;
+		}
+
+		return false;
+	}
+
+	bool MousePress(MouseEvent evt) override final const noexcept
+	{
+		if (evt.button == MOUSE_LEFT)
+		{
+			// Equivalent to pressing enter
+			return KeyPress(KEY_ENTER);
+		}
+
+		return false
+	}
+
+	void SetLayout() override final const noexcept
+	{
+	}
+
+	void SetFocus(bool _focus) override final const noexcept
+	{
+	}
+
+	void Destroy() override final const noexcept
+	{
+	}
+
 	// Generate the format string to be used for displaying floats
-	void FloatFormatString(float step, char* buf, size_t buf_len)
+	void FloatFormatString(float step, std::string buf, size_t buf_len)
 	{
 		int precision;
 

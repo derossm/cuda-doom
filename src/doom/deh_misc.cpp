@@ -125,7 +125,7 @@ int deh_species_infighting = DEH_DEFAULT_SPECIES_INFIGHTING;
 
 static struct
 {
-	const char* deh_name;
+	std::string deh_name;
 	int *value;
 } misc_settings[] = {
 	{"Initial Health",		&deh_initial_health},
@@ -145,14 +145,14 @@ static struct
 	{"BFG Cells/Shot",		&deh_bfg_cells_per_shot},
 };
 
-static void* DEH_MiscStart(deh_context_t* context, char* line)
+static void* DEH_MiscStart(deh_context_t* context, std::string line)
 {
-	return NULL;
+	return nullptr;
 }
 
-static void DEH_MiscParseLine(deh_context_t* context, char* line, void* tag)
+static void DEH_MiscParseLine(deh_context_t* context, std::string line, void* tag)
 {
-	char* variable_name, *value;
+	std::string variable_name, *value;
 	int ivalue;
 	size_t i;
 
@@ -166,7 +166,7 @@ static void DEH_MiscParseLine(deh_context_t* context, char* line, void* tag)
 
 	ivalue = atoi(value);
 
-	if (!strcasecmp(variable_name, "Monsters Infight"))
+	if (!iequals(variable_name, "Monsters Infight"))
 	{
 		// See notes above.
 
@@ -189,7 +189,7 @@ static void DEH_MiscParseLine(deh_context_t* context, char* line, void* tag)
 
 	for (i=0; i<arrlen(misc_settings); ++i)
 	{
-		if (!strcasecmp(variable_name, misc_settings[i].deh_name))
+		if (!iequals(variable_name, misc_settings[i].deh_name))
 		{
 			*misc_settings[i].value = ivalue;
 			return;

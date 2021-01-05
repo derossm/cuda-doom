@@ -1,6 +1,5 @@
-This is Chocolate Doom’s “to do” list. Note that this is kind of an arbitrary
-and unstructured wish list of features and improvements. The bug tracker
-(http://chocolate-doom.org/bugs) has more feature requests.
+This is Chocolate Doom’s “to do” list. Note that this is kind of an arbitrary and unstructured wish list of features and improvements.
+The bug tracker (http://chocolate-doom.org/bugs) has more feature requests.
 
 * Multiplayer: - Use UPnP to automatically configure port forwarding for NATed networks. - Multiplayer options and configuration file (server name, etc)
 * Improve multiplayer startup: - Select an IWAD automatically from the server’s game type rather than all players having to specify -iwad. - Send list of WADs to load instead of all clients having to specify -file. - Same applies to dehacked patches and wad merging parameters.

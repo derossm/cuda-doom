@@ -17,7 +17,7 @@
 
 #include "doomtype.h"
 
-#define MAX_MOUSE_BUTTONS 8
+constexpr size_t MAX_MOUSE_BUTTONS{8};
 
 extern float mouse_acceleration;
 extern int mouse_threshold;

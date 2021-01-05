@@ -15,30 +15,30 @@
 
 #include "../../derma/common.h"
 
-extern seg_t*		curline;
-extern side_t*		sidedef;
-extern line_t*		linedef;
-extern sector_t*	frontsector;
-extern sector_t*	backsector;
+extern seg_t* curline;
+extern side_t* sidedef;
+extern line_t* linedef;
+extern sector_t* frontsector;
+extern sector_t* backsector;
 
-extern int		rw_x;
-extern int		rw_stopx;
+extern int rw_x;
+extern int rw_stopx;
 
-extern bool		segtextured;
+extern bool segtextured;
 
 // false if the back side is the same plane
-extern bool		markfloor;
-extern bool		markceiling;
+extern bool markfloor;
+extern bool markceiling;
 
-extern bool		skymap;
+extern bool skymap;
 
-extern drawseg_t*	drawsegs;
-extern drawseg_t*	ds_p;
-extern int		numdrawsegs;
+extern drawseg_t* drawsegs;
+extern drawseg_t* ds_p;
+extern int numdrawsegs;
 
-extern lighttable_t**	hscalelight;
-extern lighttable_t**	vscalelight;
-extern lighttable_t**	dscalelight;
+extern lighttable_t** hscalelight;
+extern lighttable_t** vscalelight;
+extern lighttable_t** dscalelight;
 
 typedef void (*drawfunc_t) (int start, int stop);
 

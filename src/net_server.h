@@ -25,7 +25,7 @@ void NET_SV_Run();
 void NET_SV_Shutdown();
 
 // Add a network module to the context used by the server
-void NET_SV_AddModule(net_module_t* module);	// TODO URGENT REFACTOR THIS NAME
+void NET_SV_AddModule(net_module_t* mod);	// TODO URGENT REFACTOR THIS NAME
 
 // Register server with master server.
 void NET_SV_RegisterWithMaster();

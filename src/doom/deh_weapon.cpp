@@ -28,28 +28,28 @@ DEH_BEGIN_MAPPING(weapon_mapping, weaponinfo_t)
  DEH_MAPPING("Firing frame",		flashstate)
 DEH_END_MAPPING
 
-static void* DEH_WeaponStart(deh_context_t* context, char* line)
+static void* DEH_WeaponStart(deh_context_t* context, std::string line)
 {
 	int weapon_number = 0;
 
 	if (sscanf(line, "Weapon %i", &weapon_number) != 1)
 	{
 		DEH_Warning(context, "Parse error on section start");
-		return NULL;
+		return nullptr;
 	}
 
-	if (weapon_number < 0 || weapon_number >= NUMWEAPONS)
+	if (weapon_number < 0 || weapon_number >= (int)WeaponType::NUMWEAPONS)
 	{
 		DEH_Warning(context, "Invalid weapon number: %i", weapon_number);
-		return NULL;
+		return nullptr;
 	}
 
 	return &weaponinfo[weapon_number];
 }
 
-static void DEH_WeaponParseLine(deh_context_t* context, char* line, void* tag)
+static void DEH_WeaponParseLine(deh_context_t* context, std::string line, void* tag)
 {
-	char* variable_name, *value;
+	std::string variable_name, *value;
 	weaponinfo_t* weapon;
 	int ivalue;
 
@@ -73,21 +73,17 @@ static void DEH_WeaponParseLine(deh_context_t* context, char* line, void* tag)
 
 static void DEH_WeaponSHA1Sum(sha1_context_t* context)
 {
-	int i;
-
-	for (i=0; i<NUMWEAPONS ;++i)
+	for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
 	{
 		DEH_StructSHA1Sum(context, &weapon_mapping, &weaponinfo[i]);
 	}
 }
 
-deh_section_t deh_section_weapon =
-{
+deh_section_t deh_section_weapon{
 	"Weapon",
 	NULL,
 	DEH_WeaponStart,
 	DEH_WeaponParseLine,
 	NULL,
-	DEH_WeaponSHA1Sum,
+	DEH_WeaponSHA1Sum
 };
-

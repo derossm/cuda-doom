@@ -17,22 +17,22 @@
 
 #include "r_data.h"
 
-#define PL_SKYFLAT (0x80000000)
+constexpr size_t PL_SKYFLAT{0x80000000};
 
 // Visplane related.
-extern int*		lastopening; // [crispy] 32-bit integer math
+extern int* lastopening; // [crispy] 32-bit integer math
 
 typedef void (*planefunction_t) (int top, int bottom);
 
-extern planefunction_t	floorfunc;
-extern planefunction_t	ceilingfunc_t;
+extern planefunction_t floorfunc;
+extern planefunction_t ceilingfunc_t;
 
-extern int		floorclip[MAXWIDTH]; // [crispy] 32-bit integer math
-extern int		ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
+extern int floorclip[MAXWIDTH]; // [crispy] 32-bit integer math
+extern int ceilingclip[MAXWIDTH]; // [crispy] 32-bit integer math
 
-extern fixed_t*	yslope;
-extern fixed_t		yslopes[LOOKDIRS][MAXHEIGHT];
-extern fixed_t		distscale[MAXWIDTH];
+extern fixed_t* yslope;
+extern fixed_t yslopes[LOOKDIRS][MAXHEIGHT];
+extern fixed_t distscale[MAXWIDTH];
 
 void R_InitPlanes();
 void R_ClearPlanes();

@@ -323,7 +323,7 @@ enum
 
 struct fullbright_t
 {
-	const char* const texture;
+	std::string const texture;
 	const int game;
 	byte* colormask;
 };
@@ -523,16 +523,16 @@ static const fullbright_t fullbright_hacx[] = {
 	{"HW512",	DOOM2ONLY, notgrayorbrown},
 };
 
-static byte* R_BrightmapForTexName_Doom (const char* texname)
+static byte* R_BrightmapForTexName_Doom (std::string texname)
 {
 	int i;
 
-	for (i = 0; i < arrlen(fullbright_doom); i++)
+	for (i = 0; i < arrlen(fullbright_doom); ++i)
 	{
 		const fullbright_t* fullbright = &fullbright_doom[i];
 
-		if ((gamemission == doom && fullbright->game == DOOM2ONLY) ||
-			(gamemission != doom && fullbright->game == DOOM1ONLY))
+		if ((gamemission == GameMission::doom && fullbright->game == DOOM2ONLY) ||
+			(gamemission != GameMission::doom && fullbright->game == DOOM1ONLY))
 		{
 			continue;
 		}
@@ -548,11 +548,11 @@ static byte* R_BrightmapForTexName_Doom (const char* texname)
 
 static bool chex2 = false;
 
-static byte* R_BrightmapForTexName_Chex (const char* texname)
+static byte* R_BrightmapForTexName_Chex (std::string texname)
 {
 	int i;
 
-	for (i = 0; i < arrlen(fullbright_chex); i++)
+	for (i = 0; i < arrlen(fullbright_chex); ++i)
 	{
 		const fullbright_t* fullbright = &fullbright_chex[i];
 
@@ -571,11 +571,11 @@ static byte* R_BrightmapForTexName_Chex (const char* texname)
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForTexName_Hacx (const char* texname)
+static byte* R_BrightmapForTexName_Hacx (std::string texname)
 {
 	int i;
 
-	for (i = 0; i < arrlen(fullbright_hacx); i++)
+	for (i = 0; i < arrlen(fullbright_hacx); ++i)
 	{
 		const fullbright_t* fullbright = &fullbright_hacx[i];
 
@@ -598,29 +598,29 @@ static byte* R_BrightmapForSprite_Doom (const int type)
 		switch (type)
 		{
 			// Armor Bonus
-			case SPR_BON2:
+			case spritenum_t::SPR_BON2:
 			// Cell Charge
-			case SPR_CELL:
+			case spritenum_t::SPR_CELL:
 			{
 				return greenonly1;
 				break;
 			}
 			// Barrel
-			case SPR_BAR1:
+			case spritenum_t::SPR_BAR1:
 			{
 				return greenonly3;
 				break;
 			}
 			// Cell Charge Pack
-			case SPR_CELP:
+			case spritenum_t::SPR_CELP:
 			{
 				return yellowonly;
 				break;
 			}
 			// BFG9000
-			case SPR_BFUG:
+			case spritenum_t::SPR_BFUG:
 			// Plasmagun
-			case SPR_PLAS:
+			case spritenum_t::SPR_PLAS:
 			{
 				return redonly;
 				break;
@@ -668,37 +668,37 @@ static byte* R_BrightmapForSprite_Hacx (const int type)
 		switch (type)
 		{
 			// Chainsaw
-			case SPR_CSAW:
+			case spritenum_t::SPR_CSAW:
 			// Plasmagun
-			case SPR_PLAS:
+			case spritenum_t::SPR_PLAS:
 			// Cell Charge
-			case SPR_CELL:
+			case spritenum_t::SPR_CELL:
 			// Cell Charge Pack
-			case SPR_CELP:
+			case spritenum_t::SPR_CELP:
 			{
 				return redonly;
 				break;
 			}
 			// Rocket launcher
-			case SPR_LAUN:
+			case spritenum_t::SPR_LAUN:
 			// Medikit
-			case SPR_MEDI:
+			case spritenum_t::SPR_MEDI:
 			{
 				return redandgreen;
 				break;
 			}
 			// Rocket
-			case SPR_ROCK:
+			case spritenum_t::SPR_ROCK:
 			// Box of rockets
-			case SPR_BROK:
+			case spritenum_t::SPR_BROK:
 			{
 				return greenonly1;
 				break;
 			}
 			// Health Bonus
-			case SPR_BON1:
+			case spritenum_t::SPR_BON1:
 			// Stimpack
-			case SPR_STIM:
+			case spritenum_t::SPR_STIM:
 			{
 				return notgrayorbrown;
 				break;
@@ -769,10 +769,10 @@ static byte* R_BrightmapForState_Doom (const int state)
 	{
 		switch (state)
 		{
-			case S_BFG1:
-			case S_BFG2:
-			case S_BFG3:
-			case S_BFG4:
+			case statenum_t::S_BFG1:
+			case statenum_t::S_BFG2:
+			case statenum_t::S_BFG3:
+			case statenum_t::S_BFG4:
 			{
 				return redonly;
 				break;
@@ -789,21 +789,21 @@ static byte* R_BrightmapForState_Hacx (const int state)
 	{
 		switch (state)
 		{
-			case S_SAW2:
-			case S_SAW3:
+			case statenum_t::S_SAW2:
+			case statenum_t::S_SAW3:
 			{
 				return hacxlightning;
 				break;
 			}
-			case S_MISSILE:
+			case statenum_t::S_MISSILE:
 			{
 				return redandgreen;
 				break;
 			}
-			case S_SAW:
-			case S_SAWB:
-			case S_PLASMA:
-			case S_PLASMA2:
+			case statenum_t::S_SAW:
+			case statenum_t::S_SAWB:
+			case statenum_t::S_PLASMA:
+			case statenum_t::S_PLASMA2:
 			{
 				return redonly;
 				break;
@@ -821,14 +821,14 @@ static byte* R_BrightmapForState_None (const int state)
 
 // [crispy] initialize brightmaps
 
-byte* (*R_BrightmapForTexName) (const char* texname);
+byte* (*R_BrightmapForTexName) (std::string texname);
 byte* (*R_BrightmapForSprite) (const int type);
 byte* (*R_BrightmapForFlatNum) (const int num);
 byte* (*R_BrightmapForState) (const int state);
 
 void R_InitBrightmaps ()
 {
-	if (gameversion == GameVersion_t::exe_hacx)
+	if (gameversion == GameVersion::exe_hacx)
 	{
 		bmapflatnum[0] = R_FlatNumForName("FLOOR1_1");
 		bmapflatnum[1] = R_FlatNumForName("FLOOR1_7");
@@ -849,13 +849,13 @@ void R_InitBrightmaps ()
 		R_BrightmapForState = R_BrightmapForState_Hacx;
 	}
 	else
-	if (gameversion == GameVersion_t::exe_chex)
+	if (gameversion == GameVersion::exe_chex)
 	{
 		int lump;
 
 		// [crispy] detect Chex Quest 2
 		lump = W_CheckNumForName("INTERPIC");
-		if (!strcasecmp(W_WadNameForLump(lumpinfo[lump]), "chex2.wad"))
+		if (!iequals(W_WadNameForLump(lumpinfo[lump]), "chex2.wad"))
 		{
 			chex2 = true;
 		}

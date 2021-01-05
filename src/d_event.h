@@ -67,7 +67,7 @@ struct EventType
 };
 
 // Button/action code definitions.
-enum class buttoncode_t
+enum class buttoncode
 {
 	BT_NONE = 0,
 	// Press "Fire".

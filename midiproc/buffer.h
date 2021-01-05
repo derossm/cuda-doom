@@ -13,6 +13,7 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "../derma/d_native.h"
 
 #ifdef _WIN32
 
@@ -58,14 +59,14 @@ void DeleteBuffer(buffer_t* buf)
 }
 
 // return the length of the buffer passed out in the 2nd param, GROSS TODO FIX
-auto Buffer_Data(buffer_t* /*IN*/ buf, byte** /*OUT*/ data)
+size_t Buffer_Data(buffer_t* /*IN*/ buf, byte** /*OUT*/ data)
 {
 	*data = buf->data;
 	return buf->data_len;
 }
 
 // Push data onto the end of the buffer.
-auto Buffer_Push(buffer_t* buf, const void* data, size_t len)
+bool Buffer_Push(buffer_t* buf, const void* data, size_t len)
 {
 	//if (len <= 0)
 	//{
@@ -137,17 +138,17 @@ void DeleteReader(buffer_reader_t* reader)
 	//free(reader);
 }
 
-auto Reader_BytesRead(buffer_reader_t* reader)
+ptrdiff_t Reader_BytesRead(buffer_reader_t* reader)
 {
 	return reader->pos - reader->buffer->data;
 }
 
-auto Reader_ReadInt8(buffer_reader_t* reader, uint8_t* out)
+bool Reader_ReadInt8(buffer_reader_t* reader, uint8_t* out)
 {
 	byte* data;
 	size_t len{Buffer_Data(reader->buffer, &data)};
 
-	byte* data_end{data + len};
+	auto data_end{data + len};
 
 	if (data_end - reader->pos < 1)
 	{
@@ -160,13 +161,13 @@ auto Reader_ReadInt8(buffer_reader_t* reader, uint8_t* out)
 	return true;
 }
 
-auto Reader_ReadInt16(buffer_reader_t* reader, uint16_t* out)
+bool Reader_ReadInt16(buffer_reader_t* reader, uint16_t* out)
 {
 	byte* data;
 	size_t len{Buffer_Data(reader->buffer, &data)};
 
-	byte* data_end{data + len};
-	byte* dp{reader->pos};
+	auto data_end{data + len};
+	auto dp{reader->pos};
 
 	if (data_end - reader->pos < 2)
 	{
@@ -179,13 +180,13 @@ auto Reader_ReadInt16(buffer_reader_t* reader, uint16_t* out)
 	return true;
 }
 
-auto Reader_ReadInt32(buffer_reader_t* reader)
+uint32_t Reader_ReadInt32(buffer_reader_t* reader)
 {
 	byte* data;
 	size_t len{Buffer_Data(reader->buffer, &data)};
 
-	byte* data_end{data + len};
-	byte* dp{reader->pos};
+	auto data_end{data + len};
+	auto dp{reader->pos};
 
 	if (data_end - reader->pos < 4)
 	{
@@ -197,14 +198,14 @@ auto Reader_ReadInt32(buffer_reader_t* reader)
 	return (uint32_t)((dp[0] << 24) | (dp[1] << 16) | (dp[2] << 8) | dp[3]);
 }
 
-auto Reader_ReadString(buffer_reader_t* reader)
+std::string Reader_ReadString(buffer_reader_t* reader)
 {
 	byte* data;
 	size_t len{Buffer_Data(reader->buffer, &data)};
 
-	byte* data_start{reader->pos};
-	byte* data_end{data + len};
-	byte* dp{reader->pos};
+	auto data_start{reader->pos};
+	auto data_end{data + len};
+	auto dp{reader->pos};
 
 	while (dp < data_end && *dp != '\0')
 	{
@@ -214,11 +215,11 @@ auto Reader_ReadString(buffer_reader_t* reader)
 	if (dp >= data_end)
 	{
 		// Didn't see a null terminator, not a complete string.
-		return (char*)nullptr;
+		return (std::string)nullptr;
 	}
 
 	reader->pos = dp + 1;
-	return (char*)data_start;
+	return std::string((char*)data_start);
 }
 
 #endif

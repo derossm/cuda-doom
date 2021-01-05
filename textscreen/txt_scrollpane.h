@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "txt_widget.h"
 
@@ -23,7 +24,7 @@ namespace cudadoom::txt
  * that is larger than it. Scroll bars appear on the side to allow
  * different areas of the contained widget to be seen.
  */
-struct txt_scrollpane_t
+class ScrollPane : public Widget<ScrollPane>
 {
 	Widget widget;
 	int w;
@@ -33,6 +34,59 @@ struct txt_scrollpane_t
 	int expand_w;
 	int expand_h;
 	Widget* child;
+
+public:
+
+	ScrollPane() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	{
+	}
+
+	bool Selectable() override final const noexcept
+	{
+		return true;
+	}
+
+	void CalculateSize() override final const noexcept
+	{
+	}
+
+	void Draw() override final const noexcept
+	{
+	}
+
+	bool KeyPress(Keytype key) override final const noexcept
+	{
+		if (key == KEY_ENTER || key == ' ')
+		{
+			EmitSignal("changed");
+			return true;
+		}
+
+		return false;
+	}
+
+	bool MousePress(MouseEvent evt) override final const noexcept
+	{
+		if (evt.button == MOUSE_LEFT)
+		{
+			// Equivalent to pressing enter
+			return KeyPress(KEY_ENTER);
+		}
+
+		return false
+	}
+
+	void SetLayout() override final const noexcept
+	{
+	}
+
+	void SetFocus(bool _focus) override final const noexcept
+	{
+	}
+
+	void Destroy() override final const noexcept
+	{
+	}
 };
 
 /**

@@ -18,12 +18,12 @@
 #include "doomtype.h"
 
 // so that the individual game logic and sound driver code agree
-#define NORM_PITCH 127
+constexpr size_t NORM_PITCH{127};
 
 struct sfxinfo_t
 {
 	// tag name, used for hexen.
-	const char* tagname;
+	std::string tagname;
 
 	// lump name. If we are running with use_sfx_prefix=true, a
 	// 'DS' (or 'DP' for PC speaker sounds) is prepended to this.
@@ -62,7 +62,7 @@ struct sfxinfo_t
 struct musicinfo_t
 {
 	// up to 6-character name
-	const char* name;
+	std::string name;
 
 	// lump number of music
 	int lumpnum;
@@ -77,17 +77,17 @@ struct musicinfo_t
 
 enum class snddevice_t
 {
-	SNDDEVICE_NONE = 0,
-	SNDDEVICE_PCSPEAKER = 1,
-	SNDDEVICE_ADLIB = 2,
-	SNDDEVICE_SB = 3,
-	SNDDEVICE_PAS = 4,
-	SNDDEVICE_GUS = 5,
-	SNDDEVICE_WAVEBLASTER = 6,
-	SNDDEVICE_SOUNDCANVAS = 7,
-	SNDDEVICE_GENMIDI = 8,
-	SNDDEVICE_AWE32 = 9,
-	SNDDEVICE_CD = 10
+	NONE = 0,
+	PCSPEAKER,
+	ADLIB,
+	SB,
+	PAS,
+	GUS,
+	WAVEBLASTER,
+	SOUNDCANVAS,
+	GENMIDI,
+	AWE32,
+	CD
 };
 
 // Interface for sound modules
@@ -193,7 +193,7 @@ extern int snd_musicdevice;
 extern int snd_samplerate;
 extern int snd_cachesize;
 extern int snd_maxslicetime_ms;
-extern char* snd_musiccmd;
+extern std::string snd_musiccmd;
 extern int snd_pitchshift;
 
 void I_BindSoundVariables();

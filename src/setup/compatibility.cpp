@@ -6,52 +6,49 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-\**********************************************************************************************************************************************/
-// Sound control menu
 
+	DESCRIPTION:
+		Sound control menu
+\**********************************************************************************************************************************************/
+
+#include "compatibility.h"
+
+#include "../../textscreen/textscreen.h"
 
 #include "crispy.h"
 #include "m_config.h"
-#include "textscreen.h"
 #include "mode.h"
-
-#include "compatibility.h"
 
 #define WINDOW_HELP_URL "https://www.chocolate-doom.org/setup-compat"
 
 int vanilla_savegame_limit = 0;
 int vanilla_demo_limit = 0;
 
-void CompatibilitySettings(cudadoom::txt::TXT_UNCAST_ARG(widget), void* user_data)
+void CompatibilitySettings(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 {
 	cudadoom::txt::Window* window;
 
-	// [crispy]
 	if (gamemission == doom)
 	{
-		cudadoom::txt::TXT_MessageBox(NULL, "Please refer to the in-game Crispness menu.");
+		cudadoom::txt::MessageBox(NULL, "Please refer to the in-game Crispness menu.");
 	}
 	else
 	{
-	window = cudadoom::txt::TXT_NewWindow("Compatibility");
+		window = cudadoom::txt::NewWindow("Compatibility");
 
-	cudadoom::txt::TXT_SetWindowHelpURL(window, WINDOW_HELP_URL);
+		cudadoom::txt::SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-	cudadoom::txt::TXT_AddWidgets(window,
-					cudadoom::txt::TXT_NewCheckBox("Vanilla savegame limit",
-									&vanilla_savegame_limit),
-					cudadoom::txt::TXT_NewCheckBox("Vanilla demo limit",
-									&vanilla_demo_limit),
-					NULL);
+		cudadoom::txt::AddWidgets(window,
+						cudadoom::txt::NewCheckBox("Vanilla savegame limit", &vanilla_savegame_limit),
+						cudadoom::txt::NewCheckBox("Vanilla demo limit", &vanilla_demo_limit), NULL);
 	}
 }
 
 void BindCompatibilityVariables()
 {
-	// [crispy]
 	if (gamemission == doom)
 	{
-		M_BindIntVariable("crispy_automapoverlay", &crispy->automapoverlay);
+		M_BindIntVariable("crispy_automapoverlay",	&crispy->automapoverlay);
 		M_BindIntVariable("crispy_automaprotate",	&crispy->automaprotate);
 		M_BindIntVariable("crispy_automapstats",	&crispy->automapstats);
 		M_BindIntVariable("crispy_bobfactor",		&crispy->bobfactor);
@@ -61,8 +58,8 @@ void BindCompatibilityVariables()
 		M_BindIntVariable("crispy_coloredblood",	&crispy->coloredblood);
 		M_BindIntVariable("crispy_coloredhud",		&crispy->coloredhud);
 		M_BindIntVariable("crispy_crosshair",		&crispy->crosshair);
-		M_BindIntVariable("crispy_crosshairhealth", &crispy->crosshairhealth);
-		M_BindIntVariable("crispy_crosshairtarget", &crispy->crosshairtarget);
+		M_BindIntVariable("crispy_crosshairhealth",	&crispy->crosshairhealth);
+		M_BindIntVariable("crispy_crosshairtarget",	&crispy->crosshairtarget);
 		M_BindIntVariable("crispy_crosshairtype",	&crispy->crosshairtype);
 		M_BindIntVariable("crispy_demobar",			&crispy->demobar);
 		M_BindIntVariable("crispy_demotimer",		&crispy->demotimer);
@@ -99,7 +96,7 @@ void BindCompatibilityVariables()
 	}
 	else if (gamemission == heretic)
 	{
-		M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
+		M_BindIntVariable("vanilla_savegame_limit",	&vanilla_savegame_limit);
 		M_BindIntVariable("vanilla_demo_limit",		&vanilla_demo_limit);
 		M_BindIntVariable("crispy_automapstats",	&crispy->automapstats);
 		M_BindIntVariable("crispy_hires",			&crispy->hires);
@@ -112,8 +109,7 @@ void BindCompatibilityVariables()
 	}
 	else
 	{
-	M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-	M_BindIntVariable("vanilla_demo_limit",		&vanilla_demo_limit);
+	M_BindIntVariable("vanilla_savegame_limit",		&vanilla_savegame_limit);
+	M_BindIntVariable("vanilla_demo_limit",			&vanilla_demo_limit);
 	}
 }
-

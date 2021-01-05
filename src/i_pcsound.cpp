@@ -23,7 +23,7 @@
 
 #include "pcsound.h"
 
-#define TIMER_FREQ 1193181 /* hz */
+constexpr size_t TIMER_FREQ{1193181}; // hz
 
 static bool pcs_initialized = false;
 
@@ -113,7 +113,7 @@ static bool CachePCSLump(sfxinfo_t* sfxinfo)
 
 	// Load from WAD
 
-	current_sound_lump = W_CacheLumpNum(sfxinfo->lumpnum, pu_tags_t::PU_STATIC);
+	current_sound_lump = W_CacheLumpNum<uint8_t>(sfxinfo->lumpnum, pu_tags_t::PU_STATIC);
 	lumplen = W_LumpLength(sfxinfo->lumpnum);
 
 	// Read header
@@ -146,7 +146,7 @@ static bool CachePCSLump(sfxinfo_t* sfxinfo)
 static bool IsDisabledSound(sfxinfo_t* sfxinfo)
 {
 	int i;
-	const char* disabled_sounds[] = {
+	std::string disabled_sounds[] = {
 		"posact",
 		"bgact",
 		"dmact",
@@ -308,7 +308,7 @@ void I_PCS_UpdateSoundParams(int channel, int vol, int sep)
 
 static snddevice_t sound_pcsound_devices[] =
 {
-	SNDDEVICE_PCSPEAKER,
+	snddevice_t::PCSPEAKER,
 };
 
 sound_module_t sound_pcsound_module =

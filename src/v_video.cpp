@@ -129,7 +129,7 @@ void V_CopyRect(int srcx, int srcy, pixel_t* source,
 	src = source + SCREENWIDTH * srcy + srcx;
 	dest = dest_screen + SCREENWIDTH * desty + destx;
 
-	for ( ; height>0 ; height--)
+	for ( ; height>0 ; --height)
 	{
 		memcpy(dest, src, width * sizeof(*dest));
 		src += SCREENWIDTH;
@@ -232,8 +232,8 @@ void V_DrawPatch(int x, int y, patch_t* patch)
 	col = 0;
 	if (x < 0)
 	{
-	col += dxi * ((-x * dx) >> FRACBITS);
-	x = 0;
+		col += dxi * ((-x * dx) >> FRACBITS);
+		x = 0;
 	}
 
 	desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
@@ -243,7 +243,7 @@ void V_DrawPatch(int x, int y, patch_t* patch)
 	// convert x to screen position
 	x = (x * dx) >> FRACBITS;
 
-	for ( ; col<w << FRACBITS ; x++, col+=dxi, desttop++)
+	for ( ; col<w << FRACBITS ; ++x, col+=dxi, ++desttop)
 	{
 		int topdelta = -1;
 
@@ -376,7 +376,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch)
 	// convert x to screen position
 	x = (x * dx) >> FRACBITS;
 
-	for ( ; col<w << FRACBITS ; x++, col+=dxi, desttop++)
+	for ( ; col<w << FRACBITS ; ++x, col+=dxi, ++desttop)
 	{
 		int topdelta = -1;
 
@@ -484,7 +484,7 @@ void V_DrawTLPatch(int x, int y, patch_t* patch)
 	desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
 
 	w = SHORT(patch->width);
-	for (; col < w << FRACBITS; x++, col+=dxi, desttop++)
+	for (; col < w << FRACBITS; ++x, col+=dxi, ++desttop)
 	{
 		column = (column_t*) ((byte*) patch + LONG(patch->columnofs[col >> FRACBITS]));
 
@@ -535,7 +535,7 @@ void V_DrawXlaPatch(int x, int y, patch_t* patch)
 	desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
 
 	w = SHORT(patch->width);
-	for(; col < w << FRACBITS; x++, col+=dxi, desttop++)
+	for(; col < w << FRACBITS; ++x, col+=dxi, ++desttop)
 	{
 		column = (column_t*) ((byte*) patch + LONG(patch->columnofs[col >> FRACBITS]));
 
@@ -588,7 +588,7 @@ void V_DrawAltTLPatch(int x, int y, patch_t* patch)
 	desttop = dest_screen + ((y * dy) >> FRACBITS) * SCREENWIDTH + ((x * dx) >> FRACBITS);
 
 	w = SHORT(patch->width);
-	for (; col < w << FRACBITS; x++, col+=dxi, desttop++)
+	for (; col < w << FRACBITS; ++x, col+=dxi, ++desttop)
 	{
 		column = (column_t*) ((byte*) patch + LONG(patch->columnofs[col >> FRACBITS]));
 
@@ -643,7 +643,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t* patch)
 	desttop2 = dest_screen + (((y + 2) * dy) >> FRACBITS) * SCREENWIDTH + (((x + 2) * dx) >> FRACBITS);
 
 	w = SHORT(patch->width);
-	for (; col < w << FRACBITS; x++, col+=dxi, desttop++, desttop2++)
+	for (; col < w << FRACBITS; ++x, col+=dxi, ++desttop, ++desttop2)
 	{
 		column = (column_t*) ((byte*) patch + LONG(patch->columnofs[col >> FRACBITS]));
 
@@ -677,7 +677,7 @@ void V_DrawShadowedPatch(int x, int y, patch_t* patch)
 
 void V_LoadTintTable()
 {
-	tinttable = W_CacheLumpName("TINTTAB", pu_tags_t::PU_STATIC);
+	tinttable = W_CacheLumpName<byte>("TINTTAB", pu_tags_t::PU_STATIC);
 }
 
 //
@@ -688,7 +688,7 @@ void V_LoadTintTable()
 
 void V_LoadXlaTable()
 {
-	xlatab = W_CacheLumpName("XLATAB", pu_tags_t::PU_STATIC);
+	xlatab = W_CacheLumpName<byte>("XLATAB", pu_tags_t::PU_STATIC);
 }
 
 //
@@ -741,9 +741,9 @@ void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t* src)
 
 	dest = dest_screen + (y << crispy->hires) * SCREENWIDTH + (x << crispy->hires);
 
-	for (i = 0; i < (height << crispy->hires); i++)
+	for (i = 0; i < (height << crispy->hires); ++i)
 	{
-		for (j = 0; j < (width << crispy->hires); j++)
+		for (j = 0; j < (width << crispy->hires); ++j)
 		{
 			*(dest + i * SCREENWIDTH + j) = *(src + (i >> crispy->hires) * width + (j >> crispy->hires));
 		}
@@ -752,8 +752,10 @@ void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t* src)
 
 void V_DrawFilledBox(int x, int y, int w, int h, int c)
 {
-	pixel_t* buf, *buf1;
-	int x1, y1;
+	pixel_t* buf;
+	pixel_t* buf1;
+	int x1;
+	int y1;
 
 	buf = I_VideoBuffer + SCREENWIDTH * y + x;
 
@@ -763,7 +765,8 @@ void V_DrawFilledBox(int x, int y, int w, int h, int c)
 
 		for (x1 = 0; x1 < w; ++x1)
 		{
-			*(buf1++) = c;
+			*buf1 = c;
+			++buf1;
 		}
 
 		buf += SCREENWIDTH;
@@ -783,7 +786,8 @@ void V_DrawHorizLine(int x, int y, int w, int c)
 
 	for (x1 = 0; x1 < w; ++x1)
 	{
-		*(buf++) = c;
+		*buf = c;
+		++buf;
 	}
 }
 
@@ -816,7 +820,8 @@ void V_DrawBox(int x, int y, int w, int h, int c)
 
 void V_CopyScaledBuffer(pixel_t* dest, pixel_t* src, size_t size)
 {
-	int i, j;
+	int i;
+	int j;
 
 #ifdef RANGECHECK
 	if (size > ORIGWIDTH * ORIGHEIGHT)
@@ -827,9 +832,9 @@ void V_CopyScaledBuffer(pixel_t* dest, pixel_t* src, size_t size)
 
 	while (size--)
 	{
-		for (i = 0; i <= crispy->hires; i++)
+		for (i = 0; i <= crispy->hires; ++i)
 		{
-			for (j = 0; j <= crispy->hires; j++)
+			for (j = 0; j <= crispy->hires; ++j)
 			{
 				*(dest + (size << crispy->hires) + (crispy->hires * (int) (size / ORIGWIDTH) + i) * SCREENWIDTH + j) = *(src + size);
 			}
@@ -880,42 +885,42 @@ void V_RestoreBuffer()
 
 struct pcx_t
 {
-	char		manufacturer;
-	char		version;
-	char		encoding;
-	char		bits_per_pixel;
+	char manufacturer;
+	char version;
+	char encoding;
+	char bits_per_pixel;
 
-	unsigned short	xmin;
-	unsigned short	ymin;
-	unsigned short	xmax;
-	unsigned short	ymax;
+	unsigned short xmin;
+	unsigned short ymin;
+	unsigned short xmax;
+	unsigned short ymax;
 
-	unsigned short	hres;
-	unsigned short	vres;
+	unsigned short hres;
+	unsigned short vres;
 
-	unsigned char	palette[48];
+	unsigned char palette[48];
 
-	char		reserved;
-	char		color_planes;
-	unsigned short	bytes_per_line;
-	unsigned short	palette_type;
+	char reserved;
+	char color_planes;
+	unsigned short bytes_per_line;
+	unsigned short palette_type;
 
-	char		filler[58];
-	unsigned char	data;		// unbounded
+	char filler[58];
+	unsigned char data;		// unbounded
 };
 
 //
 // WritePCXfile
 //
 
-void WritePCXfile(char* filename, pixel_t* data,
+void WritePCXfile(std::string filename, pixel_t* data,
 					int width, int height,
 					byte* palette)
 {
-	int		i;
-	int		length;
-	pcx_t*	pcx;
-	byte*	pack;
+	int i;
+	int length;
+	pcx_t* pcx;
+	byte* pack;
 
 	pcx = Z_Malloc<decltype(pcx)>(width*height*2+1000, pu_tags_t::PU_STATIC, NULL);
 
@@ -939,21 +944,34 @@ void WritePCXfile(char* filename, pixel_t* data,
 	// pack the image
 	pack = &pcx->data;
 
-	for (i=0 ; i<width*height ; i++)
+	for (i=0 ; i<width*height ; ++i)
 	{
-	if ( (*data & 0xc0) != 0xc0)
-		*(pack++) = *(data++);
-	else
-	{
-		*(pack++) = 0xc1;
-		*(pack++) = *(data++);
-	}
+		if ( (*data & 0xc0) != 0xc0)
+		{
+			*pack = *data;
+			++pack;
+			++data;
+		}
+		else
+		{
+			*pack = 0xc1;
+			++pack;
+
+			*pack = *data;
+			++pack;
+			++data;
+		}
 	}
 
 	// write the palette
-	*(pack++) = 0x0c;	// palette ID byte
-	for (i=0 ; i<768 ; i++)
-	*(pack++) = *(palette++);
+	*pack = 0x0c;	// palette ID byte
+	++pack;
+	for (i=0 ; i<768 ; ++i)
+	{
+		*pack = *palette;
+		++pack;
+		++palette;
+	}
 
 	// write output file
 	length = pack - (byte*)pcx;
@@ -977,7 +995,7 @@ static void warning_fn(png_structp p, png_const_charp s)
 	printf("libpng warning: %s\n", s);
 }
 
-void WritePNGfile(char* filename, pixel_t* data, int width, int height, byte* palette)
+void WritePNGfile(std::string filename, pixel_t* data, int width, int height, byte* palette)
 {
 	png_structp ppng;
 	png_infop pinfo;
@@ -1049,7 +1067,7 @@ void WritePNGfile(char* filename, pixel_t* data, int width, int height, byte* pa
 		return;
 	}
 
-	for (i = 0; i < 256; i++)
+	for (i = 0; i < 256; ++i)
 	{
 		pcolor[i].red	= *(palette + 3 * i);
 		pcolor[i].green = *(palette + 3 * i + 1);
@@ -1065,16 +1083,16 @@ void WritePNGfile(char* filename, pixel_t* data, int width, int height, byte* pa
 
 	if (rowbuf)
 	{
-		for (i = 0; i < SCREENHEIGHT; i++)
+		for (i = 0; i < SCREENHEIGHT; ++i)
 		{
 			// expand the row 5x
-			for (j = 0; j < SCREENWIDTH; j++)
+			for (j = 0; j < SCREENWIDTH; ++j)
 			{
 				memset(rowbuf + j * w_factor, *(data + i*SCREENWIDTH + j), w_factor);
 			}
 
 			// write the row 6 times
-			for (j = 0; j < h_factor; j++)
+			for (j = 0; j < h_factor; ++j)
 			{
 				png_write_row(ppng, rowbuf);
 			}
@@ -1083,7 +1101,7 @@ void WritePNGfile(char* filename, pixel_t* data, int width, int height, byte* pa
 		free(rowbuf);
 	}
 */
-	for (i = 0; i < height; i++)
+	for (i = 0; i < height; ++i)
 	{
 		png_write_row(ppng, rowbuf);
 		rowbuf += j;
@@ -1100,11 +1118,11 @@ void WritePNGfile(char* filename, pixel_t* data, int width, int height, byte* pa
 // V_ScreenShot
 //
 
-void V_ScreenShot(const char* format)
+void V_ScreenShot(std::string format)
 {
 	int i;
 	char lbmname[16]; // haleyjd 20110213: BUG FIX - 12 is too small!
-	const char* ext;
+	std::string ext;
 
 	// find a file name to save it to
 
@@ -1120,7 +1138,7 @@ void V_ScreenShot(const char* format)
 		ext = "pcx";
 	}
 
-	for (i=0; i<=9999; i++) // [crispy] increase screenshot filename limit
+	for (i=0; i<=9999; ++i) // [crispy] increase screenshot filename limit
 	{
 		M_snprintf(lbmname, sizeof(lbmname), format, i, ext);
 
@@ -1149,7 +1167,7 @@ void V_ScreenShot(const char* format)
 	{
 	WritePNGfile(lbmname, I_VideoBuffer,
 					SCREENWIDTH, SCREENHEIGHT,
-					W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
+					W_CacheLumpName<byte>(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
 	}
 	else
 #endif
@@ -1157,14 +1175,15 @@ void V_ScreenShot(const char* format)
 	// save the pcx file
 	WritePCXfile(lbmname, I_VideoBuffer,
 					SCREENWIDTH, SCREENHEIGHT,
-					W_CacheLumpName(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
+					W_CacheLumpName<byte>(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
 	}
 }
 
-#define MOUSE_SPEED_BOX_WIDTH 120
-#define MOUSE_SPEED_BOX_HEIGHT 9
+constexpr size_t MOUSE_SPEED_BOX_WIDTH{120};
+constexpr size_t MOUSE_SPEED_BOX_HEIGHT{9};
+// variable
 #define MOUSE_SPEED_BOX_X (SCREENWIDTH - MOUSE_SPEED_BOX_WIDTH - 10)
-#define MOUSE_SPEED_BOX_Y 15
+constexpr size_t MOUSE_SPEED_BOX_Y{15};
 
 //
 // V_DrawMouseSpeedBox

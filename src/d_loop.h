@@ -53,10 +53,10 @@ void TryRunTics();
 void D_StartGameLoop();
 
 // Initialize networking code and connect to server.
-bool D_InitNetGame(net_connect_data_t* connect_data);
+bool D_InitNetGame(net_connect_data* connect_data);
 
 // Start game with specified settings. The structure will be updated with the actual settings for the game.
-void D_StartNetGame(net_gamesettings_t* settings, netgame_startup_callback_t callback);
+void D_StartNetGame(net_gamesettings* settings, netgame_startup_callback_t callback);
 
 extern bool singletics;
 extern TimeType gametic;
@@ -64,7 +64,7 @@ extern TimeType ticdup;
 extern TimeType oldleveltime;	// [crispy] check if leveltime keeps tickin'
 
 // Check if it is permitted to record a demo with a non-vanilla feature.
-bool D_NonVanillaRecord(bool conditional, const char* feature);
+bool D_NonVanillaRecord(bool conditional, std::string feature);
 
 // Check if it is permitted to play back a demo with a non-vanilla feature.
-bool D_NonVanillaPlayback(bool conditional, int lumpnum, const char* feature);
+bool D_NonVanillaPlayback(bool conditional, int lumpnum, std::string feature);

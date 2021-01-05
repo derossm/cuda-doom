@@ -16,13 +16,13 @@
 
 #include "pcsound.h"
 
-#define PCSOUND_8253_FREQUENCY 1193280
+constexpr size_t PCSOUND_8253_FREQUENCY{1193280};
 
 typedef int (*pcsound_init_func)(pcsound_callback_func callback);
 typedef void (*pcsound_shutdown_func)();
 struct pcsound_driver_t
 {
-	const char* name;
+	std::string name;
 	pcsound_init_func init_func;
 	pcsound_shutdown_func shutdown_func;
 };

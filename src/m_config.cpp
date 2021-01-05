@@ -33,34 +33,34 @@
 // Location where all configuration data is stored -
 // default.cfg, savegames, etc.
 
-const char* configdir;
+std::string configdir;
 
-static char* autoload_path = "";
+std::string autoload_path = "";
 
 // Default filenames for configuration files.
 
-static const char* default_main_config;
-static const char* default_extra_config;
+static std::string default_main_config;
+static std::string default_extra_config;
 
 enum class default_type_t
 {
-	DEFAULT_INT,
-	DEFAULT_INT_HEX,
-	DEFAULT_STRING,
-	DEFAULT_FLOAT,
-	DEFAULT_KEY,
+	INT,
+	INT_HEX,
+	STRING,
+	FLOAT,
+	KEY,
 };
 
 struct default_t
 {
 	// Name of the variable
-	const char* name;
+	std::string name;
 
 	// Pointer to the location in memory of the variable
 	union
 	{
 		int *i;
-		char** s;
+		std::string* s;
 		float *f;
 	} location;
 
@@ -87,99 +87,55 @@ struct default_collection_t
 {
 	default_t* defaults;
 	int numdefaults;
-	const char* filename;
+	std::string filename;
 };
 
-#define CONFIG_VARIABLE_GENERIC(name, type) \
-	{ #name, {NULL}, type, 0, 0, false }
+#define CONFIG_VARIABLE_GENERIC(name, type) { #name, {NULL}, type, 0, 0, false }
 
-#define CONFIG_VARIABLE_KEY(name) \
-	CONFIG_VARIABLE_GENERIC(name, DEFAULT_KEY)
-#define CONFIG_VARIABLE_INT(name) \
-	CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT)
-#define CONFIG_VARIABLE_INT_HEX(name) \
-	CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT_HEX)
-#define CONFIG_VARIABLE_FLOAT(name) \
-	CONFIG_VARIABLE_GENERIC(name, DEFAULT_FLOAT)
-#define CONFIG_VARIABLE_STRING(name) \
-	CONFIG_VARIABLE_GENERIC(name, DEFAULT_STRING)
+#define CONFIG_VARIABLE_KEY(name) CONFIG_VARIABLE_GENERIC(name, default_type_t::KEY)
+#define CONFIG_VARIABLE_INT(name) CONFIG_VARIABLE_GENERIC(name, default_type_t::INT)
+#define CONFIG_VARIABLE_INT_HEX(name) CONFIG_VARIABLE_GENERIC(name, default_type_t::INT_HEX)
+#define CONFIG_VARIABLE_FLOAT(name) CONFIG_VARIABLE_GENERIC(name, default_type_t::FLOAT)
+#define CONFIG_VARIABLE_STRING(name) CONFIG_VARIABLE_GENERIC(name, default_type_t::STRING)
 
 //! @begin_config_file default
 
-static default_t	doom_defaults_list[] =
+static default_t doom_defaults_list[] =
 {
-	//!
 	// Mouse sensitivity. This value is used to multiply input mouse
 	// movement to control the effect of moving the mouse.
 	//
 	// The "normal" maximum value available for this through the
 	// in-game options menu is 9. A value of 31 or greater will cause
 	// the game to crash when entering the options menu.
-	//
 
 	CONFIG_VARIABLE_INT(mouse_sensitivity),
 
-	//!
 	// Horizontal mouse sensitivity (strafe)
-	//
-
 	CONFIG_VARIABLE_INT(mouse_sensitivity_x2),
 
-	//!
 	// Vertical mouse sensitivity
-	//
-
 	CONFIG_VARIABLE_INT(mouse_sensitivity_y),
 
-	//!
 	// Volume of sound effects, range 0-15.
-	//
-
 	CONFIG_VARIABLE_INT(sfx_volume),
 
-	//!
 	// Volume of in-game music, range 0-15.
-	//
-
 	CONFIG_VARIABLE_INT(music_volume),
 
-	//!
-	// @game strife
-	//
-	// If non-zero, dialogue text is displayed over characters' pictures
-	// when engaging actors who have voices.
-	//
-
+	// If non-zero, dialogue text is displayed over characters' pictures when engaging actors who have voices.
 	CONFIG_VARIABLE_INT(show_talk),
 
-	//!
-	// @game strife
-	//
 	// Volume of voice sound effects, range 0-15.
-	//
-
 	CONFIG_VARIABLE_INT(voice_volume),
 
-	//!
-	// @game doom
-	//
-	// If non-zero, messages are displayed on the heads-up display
-	// in the game ("picked up a clip", etc). If zero, these messages
-	// are not displayed.
-	//
-
+	// If non-zero, messages are displayed on the heads-up display in the game ("picked up a clip", etc). If zero, these messages are not displayed.
 	CONFIG_VARIABLE_INT(show_messages),
 
-	//!
 	// Keyboard key to turn right.
-	//
-
 	CONFIG_VARIABLE_KEY(key_right),
 
-	//!
 	// Keyboard key to turn left.
-	//
-
 	CONFIG_VARIABLE_KEY(key_left),
 
 	//!
@@ -2192,40 +2148,20 @@ static default_t extra_defaults_list[] =
 	CONFIG_VARIABLE_INT(crispy_truecolor),
 #endif
 
-	//!
-	// @game doom
-	//
 	// Uncapped Framerate.
-	//
-
 	CONFIG_VARIABLE_INT(crispy_uncapped),
 
-	//!
-	// @game doom
-	//
 	// Enable VSync.
-	//
-
 	CONFIG_VARIABLE_INT(crispy_vsync),
 
-	//!
-	// @game doom
-	//
 	// Squat down weapon on impact.
-	//
-
 	CONFIG_VARIABLE_INT(crispy_weaponsquat),
 
-	//!
-	// @game doom
-	//
 	// Widescreen rendering.
-	//
-
 	CONFIG_VARIABLE_INT(crispy_widescreen),
 };
 
-static default_collection_t extra_defaults =
+default_collection_t extra_defaults =
 {
 	extra_defaults_list,
 	arrlen(extra_defaults_list),
@@ -2233,20 +2169,19 @@ static default_collection_t extra_defaults =
 };
 
 // Search a collection for a variable
-
-static default_t* SearchCollection(default_collection_t* collection, const char* name)
+default_t* SearchCollection(default_collection_t* collection, std::string name)
 {
 	int i;
 
 	for (i=0; i<collection->numdefaults; ++i)
 	{
-		if (!strcmp(name, collection->defaults[i].name))
+		if (!name.compare(collection->defaults[i].name))
 		{
 			return &collection->defaults[i];
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 // Mapping from DOS keyboard scan code to internal key code (as defined
@@ -2280,167 +2215,160 @@ static const int scantokey[128] =
 };
 
 
-static void SaveDefaultCollection(default_collection_t* collection)
+void SaveDefaultCollection(default_collection_t* collection)
 {
 	default_t* defaults;
 	int i, v;
 	FILE* f;
 
-	f = fopen (collection->filename, "w");
+	f = fopen(collection->filename.c_str(), "w");
 	if (!f)
-	return; // can't write the file, but don't complain
-
+	{
+		return; // can't write the file, but don't complain
+	}
 	defaults = collection->defaults;
 
-	for (i=0 ; i<collection->numdefaults ; i++)
+	for (i=0 ; i<collection->numdefaults ; ++i)
 	{
 		int chars_written;
 
 		// Ignore unbound variables
-
 		if (!defaults[i].bound)
 		{
 			continue;
 		}
 
 		// Print the name and line up all values at 30 characters
-
-		chars_written = fprintf(f, "%s ", defaults[i].name);
+		chars_written = fprintf(f, "%s ", defaults[i].name.c_str());
 
 		for (; chars_written < 30; ++chars_written)
+		{
 			fprintf(f, " ");
+		}
 
 		// Print the value
-
 		switch (defaults[i].type)
 		{
-			case DEFAULT_KEY:
+		case default_type_t::KEY:
 
-				// use the untranslated version if we can, to reduce
-				// the possibility of screwing up the user's config
-				// file
+			// use the untranslated version if we can, to reduce the possibility of screwing up the user's config file
+			v = *defaults[i].location.i;
 
-				v = *defaults[i].location.i;
+			if (v == KEY_RSHIFT)
+			{
+				// Special case: for shift, force scan code for
+				// right shift, as this is what Vanilla uses.
+				// This overrides the change check below, to fix
+				// configuration files made by old versions that
+				// mistakenly used the scan code for left shift.
 
-				if (v == KEY_RSHIFT)
+				v = 54;
+			}
+			else if (defaults[i].untranslated && v == defaults[i].original_translated)
+			{
+				// Has not been changed since the last time we read the config file.
+				v = defaults[i].untranslated;
+			}
+			else
+			{
+				// search for a reverse mapping back to a scancode in the scantokey table
+				int s;
+				for (s=0; s<128; ++s)
 				{
-					// Special case: for shift, force scan code for
-					// right shift, as this is what Vanilla uses.
-					// This overrides the change check below, to fix
-					// configuration files made by old versions that
-					// mistakenly used the scan code for left shift.
-
-					v = 54;
-				}
-				else if (defaults[i].untranslated
-						&& v == defaults[i].original_translated)
-				{
-					// Has not been changed since the last time we
-					// read the config file.
-
-					v = defaults[i].untranslated;
-				}
-				else
-				{
-					// search for a reverse mapping back to a scancode
-					// in the scantokey table
-
-					int s;
-
-					for (s=0; s<128; ++s)
+					if (scantokey[s] == v)
 					{
-						if (scantokey[s] == v)
-						{
-							v = s;
-							break;
-						}
+						v = s;
+						break;
 					}
 				}
+			}
 
 			fprintf(f, "%i", v);
-				break;
+			break;
 
-			case DEFAULT_INT:
+		case default_type_t::INT:
 			fprintf(f, "%i", *defaults[i].location.i);
-				break;
+			break;
 
-			case DEFAULT_INT_HEX:
+		case default_type_t::INT_HEX:
 			fprintf(f, "0x%x", *defaults[i].location.i);
-				break;
+			break;
 
-			case DEFAULT_FLOAT:
-				fprintf(f, "%f", *defaults[i].location.f);
-				break;
+		case default_type_t::FLOAT:
+			fprintf(f, "%f", *defaults[i].location.f);
+			break;
 
-			case DEFAULT_STRING:
+		case default_type_t::STRING:
 			fprintf(f,"\"%s\"", *defaults[i].location.s);
-				break;
+			break;
 		}
 
 		fprintf(f, "\n");
 	}
 
-	fclose (f);
+	fclose(f);
 }
 
 // Parses integer values in the configuration file
-
-static int ParseIntParameter(const char* strparm)
+int ParseIntParameter(std::string strparm)
 {
 	int parm;
 
 	if (strparm[0] == '0' && strparm[1] == 'x')
-		sscanf(strparm+2, "%x", (unsigned*) &parm);
+	{
+		// FIXME
+		//sscanf(strparm+2, "%x", (unsigned*) &parm);
+	}
 	else
-		sscanf(strparm, "%i", &parm);
+	{
+		// FIXME
+		//sscanf(strparm, "%i", &parm);
+	}
 
 	return parm;
 }
 
-static void SetVariable(default_t* def, const char* value)
+void SetVariable(default_t* def, std::string value)
 {
 	int intparm;
 
 	// parameter found
-
 	switch (def->type)
 	{
-		case DEFAULT_STRING:
-			*def->location.s = M_StringDuplicate(value);
-			break;
+	case default_type_t::STRING:
+		*def->location.s = std::string(value);
+		break;
 
-		case DEFAULT_INT:
-		case DEFAULT_INT_HEX:
-			*def->location.i = ParseIntParameter(value);
-			break;
+	case default_type_t::INT:
+	case default_type_t::INT_HEX:
+		*def->location.i = ParseIntParameter(value);
+		break;
 
-		case DEFAULT_KEY:
+	case default_type_t::KEY:
 
-			// translate scancodes read from config
-			// file (save the old value in untranslated)
+		// translate scancodes read from config file (save the old value in untranslated)
+		intparm = ParseIntParameter(value);
+		def->untranslated = intparm;
+		if (intparm >= 0 && intparm < 128)
+		{
+			intparm = scantokey[intparm];
+		}
+		else
+		{
+			intparm = 0;
+		}
 
-			intparm = ParseIntParameter(value);
-			def->untranslated = intparm;
-			if (intparm >= 0 && intparm < 128)
-			{
-				intparm = scantokey[intparm];
-			}
-			else
-			{
-				intparm = 0;
-			}
+		def->original_translated = intparm;
+		*def->location.i = intparm;
+		break;
 
-			def->original_translated = intparm;
-			*def->location.i = intparm;
-			break;
-
-		case DEFAULT_FLOAT:
-			*def->location.f = (float) atof(value);
-			break;
+	case default_type_t::FLOAT:
+		*def->location.f = (float)atof(value.c_str());
+		break;
 	}
 }
 
-static void LoadDefaultCollection(default_collection_t* collection)
+void LoadDefaultCollection(default_collection_t* collection)
 {
 	FILE* f;
 	default_t* def;
@@ -2448,13 +2376,11 @@ static void LoadDefaultCollection(default_collection_t* collection)
 	char strparm[100];
 
 	// read the file in, overriding any set defaults
-	f = fopen(collection->filename, "r");
+	f = fopen(collection->filename.c_str(), "r");
 
 	if (f == NULL)
 	{
-		// File not opened, but don't complain.
-		// It's probably just the first time they ran the game.
-
+		// File not opened, but don't complain. It's probably just the first time they ran the game.
 		return;
 	}
 
@@ -2463,33 +2389,26 @@ static void LoadDefaultCollection(default_collection_t* collection)
 		if (fscanf(f, "%79s %99[^\n]\n", defname, strparm) != 2)
 		{
 			// This line doesn't match
-
 			continue;
 		}
 
 		// Find the setting in the list
-
 		def = SearchCollection(collection, defname);
 
 		if (def == NULL || !def->bound)
 		{
-			// Unknown variable? Unbound variables are also treated
-			// as unknown.
-
+			// Unknown variable? Unbound variables are also treated as unknown.
 			continue;
 		}
 
-		// Strip off trailing non-printable characters (\r characters
-		// from DOS text files)
-
+		// Strip off trailing non-printable characters (\r characters from DOS text files)
 		while (strlen(strparm) > 0 && !isprint(strparm[strlen(strparm)-1]))
 		{
 			strparm[strlen(strparm)-1] = '\0';
 		}
 
 		// Surrounded by quotes? If so, remove them.
-		if (strlen(strparm) >= 2
-			&& strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"')
+		if (strlen(strparm) >= 2 && strparm[0] == '"' && strparm[strlen(strparm) - 1] == '"')
 		{
 			strparm[strlen(strparm) - 1] = '\0';
 			memmove(strparm, strparm + 1, sizeof(strparm) - 1);
@@ -2498,38 +2417,27 @@ static void LoadDefaultCollection(default_collection_t* collection)
 		SetVariable(def, strparm);
 	}
 
-	fclose (f);
+	fclose(f);
 }
 
-// Set the default filenames to use for configuration files.
-
-void M_SetConfigFilenames(const char* main_config, const char* extra_config)
+void M_SetConfigFilenames(std::string main_config, std::string extra_config)
 {
 	default_main_config = main_config;
 	default_extra_config = extra_config;
 }
 
-//
-// M_SaveDefaults
-//
-
-void M_SaveDefaults ()
+void M_SaveDefaults()
 {
 	SaveDefaultCollection(&doom_defaults);
 	SaveDefaultCollection(&extra_defaults);
 }
 
-//
-// Save defaults to alternate filenames
-//
-
-void M_SaveDefaultsAlternate(const char* main, const char* extra)
+void M_SaveDefaultsAlternate(std::string main, std::string extra)
 {
-	const char* orig_main;
-	const char* orig_extra;
+	std::string orig_main;
+	std::string orig_extra;
 
 	// Temporarily change the filenames
-
 	orig_main = doom_defaults.filename;
 	orig_extra = extra_defaults.filename;
 
@@ -2539,16 +2447,11 @@ void M_SaveDefaultsAlternate(const char* main, const char* extra)
 	M_SaveDefaults();
 
 	// Restore normal filenames
-
 	doom_defaults.filename = orig_main;
 	extra_defaults.filename = orig_extra;
 }
 
-//
-// M_LoadDefaults
-//
-
-void M_LoadDefaults ()
+void M_LoadDefaults()
 {
 	int i;
 
@@ -2557,48 +2460,32 @@ void M_LoadDefaults ()
 
 	// check for a custom default file
 
-	//!
-	// @arg <file>
-	// @vanilla
-	//
-	// Load main configuration from the specified file, instead of the
-	// default.
-	//
-
+	// Load main configuration from the specified file, instead of the default.
 	i = M_CheckParmWithArgs("-config", 1);
 
 	if (i)
 	{
-	doom_defaults.filename = myargv[i+1];
-	printf ("	default file: %s\n",doom_defaults.filename);
+		doom_defaults.filename = myargv[i+1];
+		printf ("\tdefault file: %s\n", doom_defaults.filename);
 	}
 	else
 	{
-		doom_defaults.filename
-			= M_StringJoin(configdir, default_main_config, NULL);
+		doom_defaults.filename = std::string(configdir + default_main_config);
 	}
 
 	printf("saving config in %s\n", doom_defaults.filename);
 
-	//!
-	// @arg <file>
-	//
-	// Load additional configuration from the specified file, instead of
-	// the default.
-	//
-
+	// Load additional configuration from the specified file, instead of the default.
 	i = M_CheckParmWithArgs("-extraconfig", 1);
 
 	if (i)
 	{
 		extra_defaults.filename = myargv[i+1];
-		printf("		extra configuration file: %s\n",
-				extra_defaults.filename);
+		printf("\t\textra configuration file: %s\n", extra_defaults.filename);
 	}
 	else
 	{
-		extra_defaults.filename
-			= M_StringJoin(configdir, default_extra_config, NULL);
+		extra_defaults.filename = std::string(configdir + default_extra_config);
 	}
 
 	LoadDefaultCollection(&doom_defaults);
@@ -2606,13 +2493,11 @@ void M_LoadDefaults ()
 }
 
 // Get a configuration file variable by its name
-
-static default_t* GetDefaultForName(const char* name)
+default_t* GetDefaultForName(std::string name)
 {
 	default_t* result;
 
 	// Try the main list and the extras
-
 	result = SearchCollection(&doom_defaults, name);
 
 	if (result == NULL)
@@ -2621,7 +2506,6 @@ static default_t* GetDefaultForName(const char* name)
 	}
 
 	// Not found? Internal error.
-
 	if (result == NULL)
 	{
 		I_Error("Unknown configuration variable: '%s'", name);
@@ -2630,53 +2514,48 @@ static default_t* GetDefaultForName(const char* name)
 	return result;
 }
 
-//
 // Bind a variable to a given configuration file variable, by name.
-//
-
-void M_BindIntVariable(const char* name, int *location)
+/* template<typename T>
+requires std::integral<typename std::remove_pointer<T>::type>
+void M_BindIntVariable(std::string name, T location)
 {
 	default_t* variable;
 
 	variable = GetDefaultForName(name);
-	assert(variable->type == DEFAULT_INT
-		|| variable->type == DEFAULT_INT_HEX
-		|| variable->type == DEFAULT_KEY);
+	//assert(variable->type == default_type_t::INT
+	//	|| variable->type == default_type_t::INT_HEX
+	//	|| variable->type == default_type_t::KEY);
 
 	variable->location.i = location;
 	variable->bound = true;
 }
 
-void M_BindFloatVariable(const char* name, float *location)
+template<typename T>
+requires std::floating_point<typename std::remove_pointer<T>::type>
+void M_BindFloatVariable(std::string name, T location)
 {
 	default_t* variable;
 
 	variable = GetDefaultForName(name);
-	assert(variable->type == DEFAULT_FLOAT);
+	//assert(variable->type == default_type_t::FLOAT);
 
 	variable->location.f = location;
 	variable->bound = true;
-}
+} */
 
-void M_BindStringVariable(const char* name, const char** location)
+void M_BindStringVariable(std::string& name, std::string& location)
 {
-	default_t* variable;
+	default_t* variable = GetDefaultForName(name);
+	assert(variable->type == default_type_t::STRING);
 
-	variable = GetDefaultForName(name);
-	assert(variable->type == DEFAULT_STRING);
-
-	variable->location.s = location;
+	variable->location.s = &location;
 	variable->bound = true;
 }
 
-// Set the value of a particular variable; an API function for other
-// parts of the program to assign values to config variables by name.
-
-bool M_SetVariable(const char* name, const char* value)
+// Set the value of a particular variable; an API function for other parts of the program to assign values to config variables by name.
+bool M_SetVariable(std::string name, std::string value)
 {
-	default_t* variable;
-
-	variable = GetDefaultForName(name);
+	default_t* variable = GetDefaultForName(name);
 
 	if (variable == NULL || !variable->bound)
 	{
@@ -2689,15 +2568,12 @@ bool M_SetVariable(const char* name, const char* value)
 }
 
 // Get the value of a variable.
-
-int M_GetIntVariable(const char* name)
+int M_GetIntVariable(std::string name)
 {
-	default_t* variable;
-
-	variable = GetDefaultForName(name);
+	default_t* variable = GetDefaultForName(name);
 
 	if (variable == NULL || !variable->bound
-		|| (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX))
+		|| (variable->type != default_type_t::INT && variable->type != default_type_t::INT_HEX))
 	{
 		return 0;
 	}
@@ -2705,29 +2581,23 @@ int M_GetIntVariable(const char* name)
 	return *variable->location.i;
 }
 
-const char* M_GetStringVariable(const char* name)
+std::string M_GetStringVariable(std::string name)
 {
-	default_t* variable;
+	default_t* variable = GetDefaultForName(name);
 
-	variable = GetDefaultForName(name);
-
-	if (variable == NULL || !variable->bound
-		|| variable->type != DEFAULT_STRING)
+	if (variable == NULL || !variable->bound || variable->type != default_type_t::STRING)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	return *variable->location.s;
 }
 
-float M_GetFloatVariable(const char* name)
+float M_GetFloatVariable(std::string name)
 {
-	default_t* variable;
+	default_t* variable = GetDefaultForName(name);
 
-	variable = GetDefaultForName(name);
-
-	if (variable == NULL || !variable->bound
-		|| variable->type != DEFAULT_FLOAT)
+	if (variable == NULL || !variable->bound || variable->type != default_type_t::FLOAT)
 	{
 		return 0;
 	}
@@ -2735,10 +2605,8 @@ float M_GetFloatVariable(const char* name)
 	return *variable->location.f;
 }
 
-// Get the path to the default configuration dir to use, if NULL
-// is passed to M_SetConfigDir.
-
-static char* GetDefaultConfigDir()
+// Get the path to the default configuration dir to use, if NULL is passed to M_SetConfigDir.
+std::string GetDefaultConfigDir()
 {
 #if !defined(_WIN32) || defined(_WIN32_WCE)
 
@@ -2746,33 +2614,25 @@ static char* GetDefaultConfigDir()
 	// determined by SDL. On typical Unix systems, this might be
 	// ~/.local/share/chocolate-doom. On Windows, we behave like
 	// Vanilla Doom and save in the current directory.
-
-	char* result;
-	char* copy;
+	std::string result;
+	std::string copy;
 
 	result = SDL_GetPrefPath("", PACKAGE_TARNAME);
 	if (result != NULL)
 	{
-		copy = M_StringDuplicate(result);
+		copy = std::string(result);
 		SDL_free(result);
 		return copy;
 	}
 #endif /* #ifndef _WIN32 */
-	return M_StringDuplicate("");
+	return std::string("");
 }
 
-//
-// SetConfigDir:
-//
-// Sets the location of the configuration directory, where configuration
-// files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
-//
-
-void M_SetConfigDir(const char* dir)
+// Sets the location of the configuration directory, where configuration files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
+void M_SetConfigDir(std::string dir)
 {
 	// Use the directory that was passed, or find the default.
-
-	if (dir != NULL)
+	if (!dir.empty())
 	{
 		configdir = dir;
 	}
@@ -2781,13 +2641,12 @@ void M_SetConfigDir(const char* dir)
 		configdir = GetDefaultConfigDir();
 	}
 
-	if (strcmp(configdir, "") != 0)
+	if (configdir.compare(""))
 	{
 		printf("Using %s for configuration and saves\n", configdir);
 	}
 
 	// Make the directory if it doesn't already exist:
-
 	M_MakeDirectory(configdir);
 }
 
@@ -2798,56 +2657,46 @@ void M_SetConfigDir(const char* dir)
 "For more information check here:\n\n" \
 " <https://www.chocolate-doom.org/wiki/index.php/Digital_music_packs>\n\n"
 
-// Set the value of music_pack_path if it is currently empty, and create
-// the directory if necessary.
+// Set the value of music_pack_path if it is currently empty, and create the directory if necessary.
 void M_SetMusicPackDir()
 {
-	const char* current_path;
-	char* prefdir, *music_pack_path, *readme_path;
+	std::string current_path;
+	std::string prefdir;
+	std::string music_pack_path;
+	std::string readme_path;
 
 	current_path = M_GetStringVariable("music_pack_path");
 
-	if (current_path != NULL && strlen(current_path) > 0)
+	if (!current_path.empty())
 	{
 		return;
 	}
 
 	prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
-	music_pack_path = M_StringJoin(prefdir, "music-packs", NULL);
+	music_pack_path = std::string(prefdir + "music-packs");
 
 	M_MakeDirectory(prefdir);
 	M_MakeDirectory(music_pack_path);
 	M_SetVariable("music_pack_path", music_pack_path);
 
-	// We write a README file with some basic instructions on how to use
-	// the directory.
-	readme_path = M_StringJoin(music_pack_path, DIR_SEPARATOR_S,
-								"README.txt", NULL);
+	// We write a README file with some basic instructions on how to use the directory.
+	readme_path = std::string(music_pack_path + DIR_SEPARATOR_S + "README.txt");
 	M_WriteFile(readme_path, MUSIC_PACK_README, strlen(MUSIC_PACK_README));
 
-	free(readme_path);
-	free(music_pack_path);
-	SDL_free(prefdir);
+	//free(readme_path);
+	//free(music_pack_path);
+	// FIXME ???
+	//SDL_free(prefdir);
 }
 
-//
-// Calculate the path to the directory to use to store save games.
-// Creates the directory as necessary.
-//
-
-char* M_GetSaveGameDir(const char* iwadname)
+// Calculate the path to the directory to use to store save games. Creates the directory as necessary.
+char* M_GetSaveGameDir(std::string iwadname)
 {
-	char* savegamedir;
-	char* topdir;
+	std::string savegamedir;
+	std::string topdir;
 	int p;
 
-	//!
-	// @arg <directory>
-	//
-	// Specify a path from which to load and save games. If the directory
-	// does not exist then it will automatically be created.
-	//
-
+	// Specify a path from which to load and save games. If the directory does not exist then it will automatically be created.
 	p = M_CheckParmWithArgs("-savedir", 1);
 	if (p)
 	{
@@ -2858,68 +2707,58 @@ char* M_GetSaveGameDir(const char* iwadname)
 		}
 
 		// add separator at end just in case
-		savegamedir = M_StringJoin(savegamedir, DIR_SEPARATOR_S, NULL);
+		savegamedir = std::string(savegamedir + DIR_SEPARATOR_S);
 
 		printf("Save directory changed to %s.\n", savegamedir);
 	}
 #ifdef _WIN32
-	// In -cdrom mode, we write savegames to a specific directory
-	// in addition to configs.
-
+	// In -cdrom mode, we write savegames to a specific directory in addition to configs.
 	else if (M_ParmExists("-cdrom"))
 	{
-		savegamedir = M_StringDuplicate(configdir);
+		savegamedir = std::string(configdir);
 	}
 #endif
-	// If not "doing" a configuration directory (Windows), don't "do"
-	// a savegame directory, either.
-	else if (!strcmp(configdir, ""))
+	// If not "doing" a configuration directory (Windows), don't "do" a savegame directory, either.
+	else if (!configdir.compare(""))
 	{
-	savegamedir = M_StringDuplicate("");
+		savegamedir = std::string("");
 	}
 	else
 	{
 		// ~/.local/share/chocolate-doom/savegames
-
-		topdir = M_StringJoin(configdir, "savegames", NULL);
+		topdir = std::string(configdir + "savegames");
 		M_MakeDirectory(topdir);
 
 		// eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
-
-		savegamedir = M_StringJoin(topdir, DIR_SEPARATOR_S, iwadname,
-									DIR_SEPARATOR_S, NULL);
+		savegamedir = std::string(topdir + DIR_SEPARATOR_S + iwadname + DIR_SEPARATOR_S);
 
 		M_MakeDirectory(savegamedir);
 
-		free(topdir);
+		//free(topdir);
 	}
 
 	return savegamedir;
 }
 
-//
-// Calculate the path to the directory for autoloaded WADs/DEHs.
-// Creates the directory as necessary.
-//
-char* M_GetAutoloadDir(const char* iwadname)
+// Calculate the path to the directory for autoloaded WADs/DEHs. Creates the directory as necessary.
+char* M_GetAutoloadDir(std::string iwadname)
 {
-	char* result;
+	std::string result;
 
-	if (autoload_path == NULL || strlen(autoload_path) == 0)
+	if (autoload_path.empty())
 	{
-		char* prefdir;
+		std::string prefdir;
 		prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
-		autoload_path = M_StringJoin(prefdir, "autoload", NULL);
-		SDL_free(prefdir);
+		autoload_path = std::string(prefdir + "autoload");
+		// FIXME ???
+		//SDL_free(prefdir);
 	}
 
 	M_MakeDirectory(autoload_path);
 
-	result = M_StringJoin(autoload_path, DIR_SEPARATOR_S, iwadname, NULL);
+	result = std::string(autoload_path + DIR_SEPARATOR_S + iwadname);
 	M_MakeDirectory(result);
 
 	// TODO: Add README file
-
 	return result;
 }
-

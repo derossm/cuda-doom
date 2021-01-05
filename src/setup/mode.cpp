@@ -8,11 +8,12 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-
-#include "doomtype.h"
+#include "mode.h"
 
 #include "config.h"
-#include "textscreen.h"
+#include "../../textscreen/textscreen.h"
+#include "../../textscreen/txt_widget.h"
+#include "../../textscreen/txt_window.h"
 
 #include "doomtype.h"
 #include "d_mode.h"
@@ -31,20 +32,18 @@
 #include "multiplayer.h"
 #include "sound.h"
 
-#include "mode.h"
-
-GameMission_t gamemission;
-static const iwad_t**iwads;
+GameMission gamemission;
+static const iwad_t** mode_iwads;
 
 struct mission_config_t
 {
-	const char* label;
-	GameMission_t mission;
+	std::string label;
+	GameMission mission;
 	int mask;
-	const char* name;
-	const char* config_file;
-	const char* extra_config_file;
-	const char* executable;
+	std::string name;
+	std::string config_file;
+	std::string extra_config_file;
+	std::string executable;
 };
 
 // Default mission to fall back on, if no IWADs are found at all:
@@ -98,22 +97,22 @@ static GameSelectCallback game_selected_callback;
 static int showMessages = 1;
 static int screenblocks = 10;
 static int detailLevel = 0;
-static char* savedir = NULL;
-static char* executable = NULL;
-static const char* game_title = "Doom";
-static char* back_flat = "F_PAVE01";
+std::string savedir;
+std::string executable;
+std::string game_title = "Doom";
+std::string back_flat = "F_PAVE01";
 static int comport = 0;
-static char* nickname = NULL;
+std::string nickname;
 
 static void BindMiscVariables()
 {
-	if (gamemission == doom)
+	if (gamemission == GameMission::doom)
 	{
 		M_BindIntVariable("detaillevel",	&detailLevel);
 		M_BindIntVariable("show_messages", &showMessages);
 	}
 
-	if (gamemission == hexen)
+	if (gamemission == GameMission::hexen)
 	{
 		M_BindStringVariable("savedir", &savedir);
 		M_BindIntVariable("messageson", &showMessages);
@@ -125,14 +124,13 @@ static void BindMiscVariables()
 
 		// On Windows, hexndata\ is the default.
 
-		if (!strcmp(savedir, ""))
+		if (!savedir.compare(""))
 		{
-			free(savedir);
 			savedir = "hexndata" DIR_SEPARATOR_S;
 		}
 	}
 
-	if (gamemission == strife)
+	if (gamemission == GameMission::strife)
 	{
 		// Strife has a different default value than the other games
 		screenblocks = 10;
@@ -165,17 +163,17 @@ void InitBindings()
 	M_BindMapControls();
 	M_BindMenuControls();
 
-	if (gamemission == heretic || gamemission == hexen)
+	if (gamemission == GameMission::heretic || gamemission == GameMission::hexen)
 	{
 		M_BindHereticControls();
 	}
 
-	if (gamemission == hexen)
+	if (gamemission == GameMission::hexen)
 	{
 		M_BindHexenControls();
 	}
 
-	if (gamemission == strife)
+	if (gamemission == GameMission::strife)
 	{
 		M_BindStrifeControls();
 	}
@@ -196,9 +194,7 @@ void InitBindings()
 
 static void SetExecutable(mission_config_t* config)
 {
-	char* extension;
-
-	free(executable);
+	std::string extension;
 
 #ifdef _WIN32
 	extension = ".exe";
@@ -206,31 +202,29 @@ static void SetExecutable(mission_config_t* config)
 	extension = "";
 #endif
 
-	executable = M_StringJoin(config->executable, extension, NULL);
+	executable = std::string(config->executable + extension);
 }
 
 static void SetMission(mission_config_t* config)
 {
-	iwads = D_FindAllIWADs(config->mask);
+	mode_iwads = D_FindAllIWADs(config->mask);
 	gamemission = config->mission;
 	SetExecutable(config);
 	game_title = config->label;
 	M_SetConfigFilenames(config->config_file, config->extra_config_file);
 }
 
-static mission_config_t* GetMissionForName(const char* name)
+static mission_config_t* GetMissionForName(std::string name)
 {
-	int i;
-
-	for (i=0; i<arrlen(mission_configs); ++i)
+	for (size_t i{0}; i < arrlen(mission_configs); ++i)
 	{
-		if (!strcmp(mission_configs[i].name, name))
+		if (!name.compare(mission_configs[i].name)) //!strcmp(mission_configs[i].name, name))
 		{
 			return &mission_configs[i];
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 // Check the name of the executable. If it contains one of the game
@@ -239,12 +233,11 @@ static mission_config_t* GetMissionForName(const char* name)
 static bool CheckExecutableName(GameSelectCallback callback)
 {
 	mission_config_t* config;
-	const char* exe_name;
-	int i;
+	std::string exe_name;
 
 	exe_name = M_GetExecutableName();
 
-	for (i=0; i<arrlen(mission_configs); ++i)
+	for (size_t i{0}; i < arrlen(mission_configs); ++i)
 	{
 		config = &mission_configs[i];
 
@@ -259,10 +252,8 @@ static bool CheckExecutableName(GameSelectCallback callback)
 	return false;
 }
 
-static void GameSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(config))
+static void GameSelected(cudadoom::txt::Widget* widget, mission_config_t* config)
 {
-	cudadoom::txt::TXT_CAST_ARG(mission_config_t, config);
-
 	SetMission(config);
 	game_selected_callback();
 }
@@ -270,14 +261,12 @@ static void GameSelected(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::T
 static void OpenGameSelectDialog(GameSelectCallback callback)
 {
 	mission_config_t* mission = NULL;
-	cudadoom::txt::Window* window;
-	const iwad_t**iwads;
+	cudadoom::txt::Window window("Select game");
+	const iwad_t** mode_iwads;
 	int num_games;
 	int i;
 
-	window = cudadoom::txt::TXT_NewWindow("Select game");
-
-	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewLabel("Select a game to configure:\n"));
+	window.AddWidget(cudadoom::txt::Label("Select a game to configure:\n"));
 	num_games = 0;
 
 	// Add a button for each game.
@@ -287,27 +276,27 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 		// Do we have any IWADs for this game installed?
 		// If so, add a button.
 
-		iwads = D_FindAllIWADs(mission_configs[i].mask & (IWAD_MASK_DOOM|IWAD_MASK_HERETIC)); // [crispy] restrict game choice to Doom and Heretic
+		mode_iwads = D_FindAllIWADs(mission_configs[i].mask & (IWAD_MASK_DOOM|IWAD_MASK_HERETIC)); // [crispy] restrict game choice to Doom and Heretic
 
-		if (iwads[0] != NULL)
+		if (mode_iwads[0] != NULL)
 		{
 			mission = &mission_configs[i];
-			cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewButton2(mission_configs[i].label,
+			window.AddWidget(cudadoom::txt::Button(mission_configs[i].label,
 													GameSelected,
 													&mission_configs[i]));
 			++num_games;
 		}
 
-		free(iwads);
+		free(mode_iwads);
 	}
 
-	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewStrut(0, 1));
+	window.AddWidget(cudadoom::txt::Strut(0, 1));
 
 	// No IWADs found at all? Fall back to doom, then.
 
 	if (num_games == 0)
 	{
-		cudadoom::txt::TXT_CloseWindow(window);
+		window.CloseWindow();
 		SetMission(DEFAULT_MISSION);
 		callback();
 		return;
@@ -317,19 +306,21 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 
 	if (num_games == 1)
 	{
-		cudadoom::txt::TXT_CloseWindow(window);
+		window.CloseWindow();
 		SetMission(mission);
 		callback();
 		return;
 	}
 
 	game_selected_callback = callback;
+
+	// FIXME this function just ends?
 }
 
 void SetupMission(GameSelectCallback callback)
 {
 	mission_config_t* config;
-	const char* mission_name;
+	std::string mission_name;
 	int p;
 
 	//!
@@ -361,18 +352,17 @@ void SetupMission(GameSelectCallback callback)
 	}
 }
 
-const char* GetExecutableName()
+std::string GetExecutableName()
 {
 	return executable;
 }
 
-const char* GetGameTitle()
+std::string GetGameTitle()
 {
 	return game_title;
 }
 
 const iwad_t**GetIwads()
 {
-	return iwads;
+	return mode_iwads;
 }
-

@@ -19,9 +19,7 @@
 
 #include "deh_mapping.h"
 
-static deh_mapping_entry_t* GetMappingEntryByName(deh_context_t* context,
-													deh_mapping_t* mapping,
-													char* name)
+static deh_mapping_entry_t* GetMappingEntryByName(deh_context_t* context, deh_mapping_t* mapping, std::string name)
 {
 	int i;
 
@@ -29,12 +27,12 @@ static deh_mapping_entry_t* GetMappingEntryByName(deh_context_t* context,
 	{
 		deh_mapping_entry_t* entry = &mapping->entries[i];
 
-		if (!strcasecmp(entry->name, name))
+		if (!iequals(entry->name, name))
 		{
 			if (entry->location == NULL)
 			{
 				DEH_Warning(context, "Field '%s' is unsupported", name);
-				return NULL;
+				return nullptr;
 			}
 
 			return entry;
@@ -45,7 +43,7 @@ static deh_mapping_entry_t* GetMappingEntryByName(deh_context_t* context,
 
 	DEH_Warning(context, "Field named '%s' not found", name);
 
-	return NULL;
+	return nullptr;
 }
 
 //
@@ -68,7 +66,7 @@ static void* GetStructField(void* structptr,
 //
 
 bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping,
-						void* structptr, char* name, int value)
+						void* structptr, std::string name, int value)
 {
 	deh_mapping_entry_t* entry;
 	void* location;
@@ -119,7 +117,7 @@ bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping,
 //
 
 bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping,
-								void* structptr, char* name, char* value)
+								void* structptr, std::string name, std::string value)
 {
 	deh_mapping_entry_t* entry;
 	void* location;
@@ -148,8 +146,7 @@ bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping,
 	return true;
 }
 
-void DEH_StructSHA1Sum(sha1_context_t* context, deh_mapping_t* mapping,
-						void* structptr)
+void DEH_StructSHA1Sum(sha1_context_t* context, deh_mapping_t* mapping, void* structptr)
 {
 	int i;
 

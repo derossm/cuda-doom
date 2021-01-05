@@ -8,14 +8,15 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-//
-// Color translation tables
+	DESCRIPTION:
+		Color translation tables
 \**********************************************************************************************************************************************/
 
-#include "doomtype.h"
 #include "v_trans.h"
 
-// [crispy] here used to be static color translation tables based on
+#include "doomtype.h"
+
+// here used to be static color translation tables based on
 // the ones found in Boom and MBF. Nowadays these are recalculated
 // by means of actual color space conversions in r_data:R_InitColormaps().
 
@@ -78,7 +79,7 @@ byte* cr[] =
 	(byte*) &cr_red2green
 };
 
-char**crstr = 0;
+CHAR_PTR* crstr = 0;
 
 /*
 Date: Sun, 26 Oct 2014 10:36:12 -0700
@@ -106,134 +107,147 @@ then, to also use this routine to convert colors *to* gray?
 	- Paul Haeberli
 */
 
-#define CTOLERANCE		(0.0001)
+constexpr double CTOLERANCE{0.0001};
 
 struct vect
 {
-	float x;
-	float y;
-	float z;
+	double x;
+	double y;
+	double z;
 };
 
-static void hsv_to_rgb(vect *hsv, vect *rgb)
+static void hsv_to_rgb(vect* hsv, vect* rgb)
 {
-	float h, s, v;
+	auto h = hsv->x;
+	auto s = hsv->y;
+	auto v = hsv->z;
 
-	h = hsv->x;
-	s = hsv->y;
-	v = hsv->z;
 	h *= 360.0;
-	if (s<CTOLERANCE) {
+	if (s < CTOLERANCE)
+	{
 		rgb->x = v;
 		rgb->y = v;
 		rgb->z = v;
-	} else {
-		int i;
-		float f, p, q, t;
-
+	}
+	else 
+	{
 		if (h>=360.0)
+		{
 			h -= 360.0;
+		}
 		h /= 60.0;
-		i = floor(h);
-		f = h - i;
-		p = v*(1.0-s);
-		q = v*(1.0-(s*f));
-		t = v*(1.0-(s*(1.0-f)));
-		switch (i) {
-			case 0 :
-				rgb->x = v;
-				rgb->y = t;
-				rgb->z = p;
-				break;
-			case 1 :
-				rgb->x = q;
-				rgb->y = v;
-				rgb->z = p;
-				break;
-			case 2 :
-				rgb->x = p;
-				rgb->y = v;
-				rgb->z = t;
-				break;
-			case 3 :
-				rgb->x = p;
-				rgb->y = q;
-				rgb->z = v;
-				break;
-			case 4 :
-				rgb->x = t;
-				rgb->y = p;
-				rgb->z = v;
-				break;
-			case 5 :
-				rgb->x = v;
-				rgb->y = p;
-				rgb->z = q;
-				break;
+		int i = floor(h);
+		auto f = h - i;
+		auto p = v*(1.0-s);
+		auto q = v*(1.0-(s*f));
+		auto t = v*(1.0-(s*(1.0-f)));
+		switch (i) 
+		{
+		case 0:
+			rgb->x = v;
+			rgb->y = t;
+			rgb->z = p;
+			break;
+		case 1:
+			rgb->x = q;
+			rgb->y = v;
+			rgb->z = p;
+			break;
+		case 2:
+			rgb->x = p;
+			rgb->y = v;
+			rgb->z = t;
+			break;
+		case 3:
+			rgb->x = p;
+			rgb->y = q;
+			rgb->z = v;
+			break;
+		case 4:
+			rgb->x = t;
+			rgb->y = p;
+			rgb->z = v;
+			break;
+		case 5:
+			rgb->x = v;
+			rgb->y = p;
+			rgb->z = q;
+			break;
 		}
 	}
 }
 
-static void rgb_to_hsv(vect *rgb, vect *hsv)
+static void rgb_to_hsv(vect* rgb, vect* hsv)
 {
-	float h, s, v;
-	float cmax, cmin;
-	float r, g, b;
+	auto r = rgb->x;
+	auto g = rgb->y;
+	auto b = rgb->z;
+	// find the cmax and cmin of r g b
+	auto cmax = r;
+	auto cmin = r;
+	cmax = (g > cmax ? g : cmax);
+	cmin = (g < cmin ? g : cmin);
+	cmax = (b > cmax ? b : cmax);
+	cmin = (b < cmin ? b : cmin);
+	auto v = cmax; // value
 
-	r = rgb->x;
-	g = rgb->y;
-	b = rgb->z;
-	/* find the cmax and cmin of r g b */
-	cmax = r;
-	cmin = r;
-	cmax = (g>cmax ? g:cmax);
-	cmin = (g<cmin ? g:cmin);
-	cmax = (b>cmax ? b:cmax);
-	cmin = (b<cmin ? b:cmin);
-	v = cmax;			/* value */
-	if (cmax>CTOLERANCE)
+	decltype(cmax) h;
+	decltype(cmax) s;
+	if (cmax > CTOLERANCE)
+	{
 		s = (cmax - cmin)/cmax;
-	else {
+	}
+	else
+	{
 		s = 0.0;
 		h = 0.0;
 	}
-	if (s<CTOLERANCE)
+	if (s < CTOLERANCE)
+	{
 		h = 0.0;
-	else {
-		float cdelta;
-		float rc, gc, bc;
-
-		cdelta = cmax-cmin;
-		rc = (cmax-r)/cdelta;
-		gc = (cmax-g)/cdelta;
-		bc = (cmax-b)/cdelta;
-		if (r==cmax)
+	}
+	else
+	{
+		auto cdelta = cmax-cmin;
+		auto rc = (cmax-r)/cdelta;
+		auto gc = (cmax-g)/cdelta;
+		auto bc = (cmax-b)/cdelta;
+		if (r == cmax)
+		{
 			h = bc-gc;
+		}
 		else
+		{
 			if (g==cmax)
+			{
 				h = 2.0+rc-bc;
+			}
 			else
+			{
 				h = 4.0+gc-rc;
+			}
+		}
+
 		h = h*60.0;
 		if (h<0.0)
+		{
 			h += 360.0;
+		}
 	}
 	hsv->x = h/360.0;
 	hsv->y = s;
 	hsv->z = v;
 }
 
-// [crispy] copied over from i_video.c
+// copied over from i_video.c
 static int I_GetPaletteIndex2(byte* palette, int r, int g, int b)
 {
-	int best, best_diff, diff;
-	int i;
+	int best = 0;
+	int best_diff = INT_MAX;
 
-	best = 0; best_diff = INT_MAX;
-
-	for (i = 0; i < 256; ++i)
+	for (size_t i{0}; i < 256; ++i)
 	{
-		diff = (r - palette[3 * i + 0]) * (r - palette[3 * i + 0])
+		int diff = (r - palette[3 * i + 0]) * (r - palette[3 * i + 0])
 				+ (g - palette[3 * i + 1]) * (g - palette[3 * i + 1])
 				+ (b - palette[3 * i + 2]) * (b - palette[3 * i + 2]);
 
@@ -254,52 +268,55 @@ static int I_GetPaletteIndex2(byte* palette, int r, int g, int b)
 
 byte V_Colorize (byte* playpal, int cr, byte source, bool keepgray109)
 {
-	vect rgb, hsv;
-
-	// [crispy] preserve gray drop shadow in IWAD status bar numbers
+	// preserve gray drop shadow in IWAD status bar numbers
 	if (cr == CR_NONE || (keepgray109 && source == 109))
-	return source;
+	{
+		return source;
+	}
 
-	rgb.x = playpal[3 * source + 0] / 255.;
-	rgb.y = playpal[3 * source + 1] / 255.;
-	rgb.z = playpal[3 * source + 2] / 255.;
+	vect rgb{
+		.x = playpal[3 * source + 0] / 255.0,
+		.y = playpal[3 * source + 1] / 255.0,
+		.z = playpal[3 * source + 2] / 255.0
+	};
 
+	vect hsv;
 	rgb_to_hsv(&rgb, &hsv);
 
 	if (cr == CR_DARK)
-	hsv.z *= 0.5;
-	else
-	if (cr == CR_GRAY)
-	hsv.y = 0;
+	{
+		hsv.z *= 0.5;
+	}
+	else if (cr == CR_GRAY)
+	{
+		hsv.y = 0.0;
+	}
 	else
 	{
-	// [crispy] hack colors to full saturation
-	hsv.y = 1.0;
+		// hack colors to full saturation
+		hsv.y = 1.0;
 
-	if (cr == CR_GREEN)
-	{
-//		hsv.x = 135./360.;
-		hsv.x = (150. * hsv.z + 120. * (1. - hsv.z))/360.;
-	}
-	else
-	if (cr == CR_GOLD)
-	{
-//		hsv.x = 45./360.;
-//		hsv.x = (50. * hsv.z + 30. * (1. - hsv.z))/360.;
-		hsv.x = (7.0 + 53. * hsv.z)/360.;
-		hsv.y = 1.0 - 0.4 * hsv.z;
-		hsv.z = 0.2 + 0.8 * hsv.z;
-	}
-	else
-	if (cr == CR_RED)
-	{
-		hsv.x = 0.;
-	}
-	else
-	if (cr == CR_BLUE)
-	{
-		hsv.x = 240./360.;
-	}
+		if (cr == CR_GREEN)
+		{
+			//hsv.x = 135.0/360.0;
+			hsv.x = (150.0 * hsv.z + 120.0 * (1.0 - hsv.z))/360.0;
+		}
+		else if (cr == CR_GOLD)
+		{
+			//hsv.x = 45.0/360.0;
+			//hsv.x = (50.0 * hsv.z + 30.0 * (1.0 - hsv.z))/360.0;
+			hsv.x = (7.0 + 53.0 * hsv.z)/360.0;
+			hsv.y = 1.0 - 0.4 * hsv.z;
+			hsv.z = 0.2 + 0.8 * hsv.z;
+		}
+		else if (cr == CR_RED)
+		{
+			hsv.x = 0.0;
+		}
+		else if (cr == CR_BLUE)
+		{
+			hsv.x = 240.0/360.0;
+		}
 	}
 
 	hsv_to_rgb(&hsv, &rgb);
@@ -308,5 +325,5 @@ byte V_Colorize (byte* playpal, int cr, byte source, bool keepgray109)
 	rgb.y *= 255.;
 	rgb.z *= 255.;
 
-	return I_GetPaletteIndex2(playpal, (int) rgb.x, (int) rgb.y, (int) rgb.z);
+	return I_GetPaletteIndex2(playpal, (int)rgb.x, (int)rgb.y, (int)rgb.z);
 }

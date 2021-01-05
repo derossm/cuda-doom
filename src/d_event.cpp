@@ -15,7 +15,7 @@
 
 #include "d_event.h"
 
-#define MAXEVENTS 64
+constexpr size_t MAXEVENTS{64};
 
 static EventType events[MAXEVENTS];
 static int eventhead;

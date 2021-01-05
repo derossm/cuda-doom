@@ -8,20 +8,21 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
+#include "txt_scrollpane.h"
+
 #include "doomkeys.h"
 
-#include "txt_main.h"
 #include "txt_table.h"
+
+#include "txt_main.h"
 #include "txt_io.h"
 #include "txt_gui.h"
 
-#include "txt_scrollpane.h"
-
-#define SCROLLBAR_VERTICAL (1 << 0)
-#define SCROLLBAR_HORIZONTAL (1 << 1)
-
 namespace cudadoom::txt
 {
+
+constexpr size_t SCROLLBAR_VERTICAL{(1 << 0)};
+constexpr size_t SCROLLBAR_HORIZONTAL{(1 << 1)};
 
 static int FullWidth(txt_scrollpane_t* scrollpane)
 {
@@ -245,8 +246,8 @@ static void ShowSelectedWidget(txt_scrollpane_t* scrollpane)
 	{
 		scrollpane->y -= scrollpane->widget.y - selected->y;
 	}
-	else if ((signed) (selected->y + selected->h) >
-				(signed) (scrollpane->widget.y + scrollpane->h))
+	else if ((int) (selected->y + selected->h) >
+				(int) (scrollpane->widget.y + scrollpane->h))
 	{
 		scrollpane->y += (selected->y + selected->h)
 						- (scrollpane->widget.y + scrollpane->h);
@@ -258,8 +259,8 @@ static void ShowSelectedWidget(txt_scrollpane_t* scrollpane)
 	{
 		scrollpane->x -= scrollpane->widget.x - selected->x;
 	}
-	else if ((signed) (selected->x + selected->w) >
-				(signed) (scrollpane->widget.x + scrollpane->w))
+	else if ((int) (selected->x + selected->w) >
+				(int) (scrollpane->widget.x + scrollpane->w))
 	{
 		scrollpane->x += (selected->x + selected->w)
 						- (scrollpane->widget.x + scrollpane->w);

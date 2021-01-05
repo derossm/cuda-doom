@@ -19,7 +19,7 @@
 struct multiitem_t
 {
 	int value;
-	const char* name;
+	std::string name;
 };
 
 extern multiitem_t multiitem_bobfactor[NUM_BOBFACTORS];

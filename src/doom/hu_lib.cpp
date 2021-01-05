@@ -27,7 +27,7 @@
 // bool : whether the screen is always erased
 #define noterased viewwindowx
 
-extern bool	automapactive;	// in AM_map.c
+extern bool automapactive;	// in AM_map.c
 
 void HUlib_init()
 {
@@ -80,16 +80,16 @@ bool HUlib_delCharFromTextLine(hu_textline_t* t)
 void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor)
 {
 
-	int			i;
-	int			w;
-	int			x;
-	int			y;
-	unsigned char	c;
+	int i;
+	int w;
+	int x;
+	int y;
+	unsigned char c;
 
 	// draw the new stuff
 	x = l->x;
 	y = l->y; // [crispy] support line breaks
-	for (i=0;i<l->len;i++)
+	for (i=0;i<l->len; ++i)
 	{
 	c = toupper(l->l[i]);
 	// [crispy] support multi-colored text lines
@@ -97,7 +97,7 @@ void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor)
 	{
 		if (l->l[i+1] >= '0' && l->l[i+1] <= '0' + CRMAX - 1)
 		{
-			i++;
+			++i;
 			dp_translation = (crispy->coloredhud & COLOREDHUD_TEXT) ? cr[(int) (l->l[i] - '0')] : NULL;
 		}
 	}
@@ -139,9 +139,9 @@ void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor)
 // sorta called by HU_Erase and just better darn get things straight
 void HUlib_eraseTextLine(hu_textline_t* l)
 {
-	int			lh;
-	int			y;
-	int			yoffset;
+	int lh;
+	int y;
+	int yoffset;
 
 	// Only erases when NOT in automap and the screen is reduced,
 	// and the text must either need updating or refreshing
@@ -153,15 +153,15 @@ void HUlib_eraseTextLine(hu_textline_t* l)
 	lh = (SHORT(l->f[0]->height) + 1) << crispy->hires;
 	// [crispy] support line breaks
 	yoffset = 1;
-	for (y = 0; y < l->len; y++)
+	for (y = 0; y < l->len; ++y)
 	{
 		if (l->l[y] == '\n')
 		{
-		yoffset++;
+			++yoffset;
 		}
 	}
 	lh *= yoffset;
-	for (y=(l->y << crispy->hires),yoffset=y*SCREENWIDTH ; y<(l->y << crispy->hires)+lh ; y++,yoffset+=SCREENWIDTH)
+	for (y=(l->y << crispy->hires),yoffset=y*SCREENWIDTH ; y<(l->y << crispy->hires)+lh ; ++y, yoffset+=SCREENWIDTH)
 	{
 		if (y < viewwindowy || y >= viewwindowy + viewheight)
 		R_VideoErase(yoffset, SCREENWIDTH); // erase entire line
@@ -187,7 +187,7 @@ void HUlib_initSText(hu_stext_t* s, int x, int y, int h, patch_t** font, int sta
 	s->on = on;
 	s->laston = true;
 	s->cl = 0;
-	for (i=0;i<h;i++)
+	for (i=0;i<h; ++i)
 	HUlib_initTextLine(&s->l[i],
 				x, y - i*(SHORT(font[0]->height)+1),
 				font, startchar);
@@ -205,62 +205,69 @@ void HUlib_addLineToSText(hu_stext_t* s)
 	HUlib_clearTextLine(&s->l[s->cl]);
 
 	// everything needs updating
-	for (i=0 ; i<s->h ; i++)
+	for (i=0 ; i<s->h ; ++i)
 	s->l[i].needsupdate = 4;
 
 }
 
-void
-HUlib_addMessageToSText
-( hu_stext_t*	s,
- const char*	prefix,
- const char*	msg )
+void HUlib_addMessageToSText(hu_stext_t* s, std::string prefix, std::string msg)
 {
 	HUlib_addLineToSText(s);
 	if (prefix)
-	while (*prefix)
-		HUlib_addCharToTextLine(&s->l[s->cl], *((prefix++)));
+	{
+		while (*prefix)
+		{
+			HUlib_addCharToTextLine(&s->l[s->cl], *((prefix++)));
+		}
+	}
 
 	while (*msg)
-	HUlib_addCharToTextLine(&s->l[s->cl], *((msg++)));
+	{
+		HUlib_addCharToTextLine(&s->l[s->cl], *((msg++)));
+	}
 }
 
 void HUlib_drawSText(hu_stext_t* s)
 {
-	int i, idx;
+	int i;
+	int idx;
 	hu_textline_t* l;
 
 	if (!*s->on)
-	return; // if not on, don't draw
+	{
+		return; // if not on, don't draw
+	}
 
 	// draw everything
-	for (i=0 ; i<s->h ; i++)
+	for (i=0 ; i<s->h ; ++i)
 	{
-	idx = s->cl - i;
-	if (idx < 0)
-		idx += s->h; // handle queue of lines
+		idx = s->cl - i;
+		if (idx < 0)
+		{
+			idx += s->h; // handle queue of lines
+		}
 
-	l = &s->l[idx];
+		l = &s->l[idx];
 
-	// need a decision made here on whether to skip the draw
-	HUlib_drawTextLine(l, false); // no cursor, please
+		// need a decision made here on whether to skip the draw
+		HUlib_drawTextLine(l, false); // no cursor, please
 	}
 
 }
 
 void HUlib_eraseSText(hu_stext_t* s)
 {
-
 	int i;
 
-	for (i=0 ; i<s->h ; i++)
+	for (i=0 ; i<s->h ; ++i)
 	{
-	if (s->laston && !*s->on)
-		s->l[i].needsupdate = 4;
-	HUlib_eraseTextLine(&s->l[i]);
+		if (s->laston && !*s->on)
+		{
+			s->l[i].needsupdate = 4;
+		}
+		HUlib_eraseTextLine(&s->l[i]);
 	}
 	s->laston = *s->on;
-
 }
 
 void HUlib_initIText(hu_itext_t* it, int x, int y, patch_t** font, int startchar, bool* on)
@@ -292,7 +299,7 @@ void HUlib_resetIText(hu_itext_t* it)
 	HUlib_clearTextLine(&it->l);
 }
 
-void HUlib_addPrefixToIText(hu_itext_t* it, char* str)
+void HUlib_addPrefixToIText(hu_itext_t* it, std::string str)
 {
 	while (*str)
 	HUlib_addCharToTextLine(&it->l, *((str++)));

@@ -30,7 +30,7 @@ add_library(doom STATIC
 			g_game.cpp		g_game.h
 			hu_lib.cpp		hu_lib.h
 			hu_stuff.cpp	hu_stuff.h
-			info.cpp		info.h
+							info.h
 							m_background.h
 			m_crispy.cpp	m_crispy.h
 			m_menu.cpp		m_menu.h

@@ -10,7 +10,7 @@
 	Example program: desktop calculator
 \**********************************************************************************************************************************************/
 
-#include "..\textscreen.h"
+#include "../textscreen.h"
 
 enum class operator_t
 {
@@ -31,13 +31,13 @@ void UpdateInputBox(void)
 {
 	char buf[20];
 
-	cudadoom::txt::TXT_snprintf(buf, sizeof(buf), " %i", input_value);
-	cudadoom::txt::TXT_SetLabel(input_box, buf);
+	cudadoom::txt::snprintf(buf, sizeof(buf), " %i", input_value);
+	cudadoom::txt::SetLabel(input_box, buf);
 }
 
-void InsertNumber(cudadoom::txt::TXT_UNCAST_ARG(button), cudadoom::txt::TXT_UNCAST_ARG(value))
+void InsertNumber(cudadoom::txt::UNCAST_ARG(button), cudadoom::txt::UNCAST_ARG(value))
 {
-	cudadoom::txt::TXT_CAST_ARG(int, value);
+	cudadoom::txt::CAST_ARG(int, value);
 
 	if (starting_input)
 	{
@@ -56,32 +56,32 @@ void AddNumberButton(cudadoom::txt::txt_table_t* table, int value)
 	*val_copy = value;
 
 	char buf[10];
-	cudadoom::txt::TXT_snprintf(buf, sizeof(buf), " %i ", value);
+	cudadoom::txt::snprintf(buf, sizeof(buf), " %i ", value);
 
-	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewButton2(buf, InsertNumber, val_copy));
+	cudadoom::txt::AddWidget(table, cudadoom::txt::NewButton2(buf, InsertNumber, val_copy));
 }
 
-void Operator(cudadoom::txt::TXT_UNCAST_ARG(button), cudadoom::txt::TXT_UNCAST_ARG(op))
+void Operator(cudadoom::txt::UNCAST_ARG(button), cudadoom::txt::UNCAST_ARG(op))
 {
-	cudadoom::txt::TXT_CAST_ARG(operator_t, op);
+	cudadoom::txt::CAST_ARG(operator_t, op);
 
 	first_operand = input_value;
 	operator = *op;
 	starting_input = 1;
 }
 
-void AddOperatorButton(cudadoom::txt::txt_table_t* table, const char* label, operator_t op)
+void AddOperatorButton(cudadoom::txt::txt_table_t* table, std::string label, operator_t op)
 {
 	operator_t* op_copy = static_cast<decltype(op_copy)>(malloc(sizeof(operator_t)));
 	*op_copy = op;
 
 	char buf[10];
-	cudadoom::txt::TXT_snprintf(buf, sizeof(buf), " %s ", label);
+	cudadoom::txt::snprintf(buf, sizeof(buf), " %s ", label);
 
-	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewButton2(buf, Operator, op_copy));
+	cudadoom::txt::AddWidget(table, cudadoom::txt::NewButton2(buf, Operator, op_copy));
 }
 
-void Calculate(cudadoom::txt::TXT_UNCAST_ARG(button), void* unused)
+void Calculate(cudadoom::txt::UNCAST_ARG(button), void* unused)
 {
 	switch (operator)
 	{
@@ -112,17 +112,17 @@ void BuildGUI()
 	cudadoom::txt::Window* window;
 	cudadoom::txt::txt_table_t* table;
 
-	window = cudadoom::txt::TXT_NewWindow("Calculator");
+	window = cudadoom::txt::NewWindow("Calculator");
 
-	input_box = cudadoom::txt::TXT_NewLabel("asdf");
-	cudadoom::txt::TXT_SetBGColor(input_box, cudadoom::txt::ColorType::black);
-	cudadoom::txt::TXT_AddWidget(window, input_box);
-	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewSeparator(NULL));
-	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewStrut(0, 1));
+	input_box = cudadoom::txt::NewLabel("asdf");
+	cudadoom::txt::SetBGColor(input_box, cudadoom::txt::ColorType::black);
+	cudadoom::txt::AddWidget(window, input_box);
+	cudadoom::txt::AddWidget(window, cudadoom::txt::NewSeparator(NULL));
+	cudadoom::txt::AddWidget(window, cudadoom::txt::NewStrut(0, 1));
 
-	table = cudadoom::txt::TXT_NewTable(4);
-	cudadoom::txt::TXT_AddWidget(window, table);
-	cudadoom::txt::TXT_SetWidgetAlign(table, cudadoom::txt::TXT_HORIZ_CENTER);
+	table = cudadoom::txt::NewTable(4);
+	cudadoom::txt::AddWidget(window, table);
+	cudadoom::txt::SetWidgetAlign(table, cudadoom::txt::HORIZ_CENTER);
 
 	AddNumberButton(table, 7);
 	AddNumberButton(table, 8);
@@ -137,30 +137,30 @@ void BuildGUI()
 	AddNumberButton(table, 3);
 	AddOperatorButton(table, "+", OP_PLUS);
 	AddNumberButton(table, 0);
-	cudadoom::txt::TXT_AddWidget(table, NULL);
+	cudadoom::txt::AddWidget(table, NULL);
 
-	cudadoom::txt::TXT_AddWidget(table, cudadoom::txt::TXT_NewButton2(" = ", Calculate, NULL));
+	cudadoom::txt::AddWidget(table, cudadoom::txt::NewButton2(" = ", Calculate, NULL));
 	AddOperatorButton(table, "/", OP_DIV);
 
-	cudadoom::txt::TXT_AddWidget(window, cudadoom::txt::TXT_NewStrut(0, 1));
+	cudadoom::txt::AddWidget(window, cudadoom::txt::NewStrut(0, 1));
 	UpdateInputBox();
 }
 
 int main(int argc, char* argv[])
 {
-	if (!cudadoom::txt::TXT_Init())
+	if (!cudadoom::txt::Init())
 	{
 		fprintf(stderr, "Failed to initialise GUI\n");
 		exit(-1);
 	}
 
-	cudadoom::txt::TXT_SetDesktopTitle("Calculator demo");
+	cudadoom::txt::SetDesktopTitle("Calculator demo");
 
 	BuildGUI();
 
-	cudadoom::txt::TXT_GUIMainLoop();
+	cudadoom::txt::GUIMainLoop();
 
-	cudadoom::txt::TXT_Shutdown();
+	cudadoom::txt::Shutdown();
 
 	return 0;
 }

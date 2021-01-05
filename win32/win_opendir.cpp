@@ -25,6 +25,8 @@
 	* Significantly revised and rewinddir, seekdir and telldir added by Colin Peters <colin@fu.is.saga-u.ac.jp>
 \**********************************************************************************************************************************************/
 
+#include "../derma/d_native.h"
+
 #ifndef _MSC_VER
 #error i_opndir.c is for Microsoft Visual C++ only
 #endif

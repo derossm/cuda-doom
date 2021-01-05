@@ -30,14 +30,14 @@ static void NET_Conn_Init(net_connection_t* conn, net_addr_t* addr, net_protocol
 void NET_Conn_InitClient(net_connection_t* conn, net_addr_t* addr, net_protocol_t protocol)
 {
 	NET_Conn_Init(conn, addr, protocol);
-	conn->state = NET_CONN_STATE_CONNECTING;
+	conn->state = net_connstate_t::CONNECTING;
 }
 
 // Initialize as a server connection
 void NET_Conn_InitServer(net_connection_t* conn, net_addr_t* addr, net_protocol_t protocol)
 {
 	NET_Conn_Init(conn, addr, protocol);
-	conn->state = NET_CONN_STATE_CONNECTED;
+	conn->state = net_connstate_t::CONNECTED;
 }
 
 // Send a packet to a connection
@@ -54,25 +54,25 @@ static void NET_Conn_ParseDisconnect(net_connection_t* conn, net_packet_t* packe
 
 	// Other end wants to disconnect; Send a DISCONNECT_ACK reply.
 	reply = NET_NewPacket(10);
-	NET_WriteInt16(reply, NET_PACKET_TYPE_DISCONNECT_ACK);
+	NET_WriteInt16(reply, (unsigned)net_packet_type::DISCONNECT_ACK);
 	NET_Conn_SendPacket(conn, reply);
 	NET_FreePacket(reply);
 
 	conn->last_send_time = I_GetTimeMS();
 
-	conn->state = NET_CONN_STATE_DISCONNECTED_SLEEP;
-	conn->disconnect_reason = NET_DISCONNECT_REMOTE;
+	conn->state = net_connstate_t::DISCONNECTED_SLEEP;
+	conn->disconnect_reason = net_disconnect_reason_t::REMOTE;
 }
 
 // Parse a DISCONNECT_ACK packet
 static void NET_Conn_ParseDisconnectACK(net_connection_t* conn, net_packet_t* packet)
 {
 
-	if (conn->state == NET_CONN_STATE_DISCONNECTING)
+	if (conn->state == net_connstate_t::DISCONNECTING)
 	{
 		// We have received an acknowledgement to our disconnect request. We have been disconnected successfully.
-		conn->state = NET_CONN_STATE_DISCONNECTED;
-		conn->disconnect_reason = NET_DISCONNECT_LOCAL;
+		conn->state = net_connstate_t::DISCONNECTED;
+		conn->disconnect_reason = net_disconnect_reason_t::LOCAL;
 		conn->last_send_time = -1;
 	}
 }
@@ -146,7 +146,7 @@ static bool NET_Conn_ReliablePacket(net_connection_t* conn, net_packet_t* packet
 	// sending a complete packet just for one byte of information.
 	reply = NET_NewPacket(10);
 
-	NET_WriteInt16(reply, NET_PACKET_TYPE_RELIABLE_ACK);
+	NET_WriteInt16(reply, (unsigned)net_packet_type::RELIABLE_ACK);
 	NET_WriteInt8(reply, conn->reliable_recv_seq & 0xff);
 
 	NET_Conn_SendPacket(conn, reply);
@@ -159,8 +159,7 @@ static bool NET_Conn_ReliablePacket(net_connection_t* conn, net_packet_t* packet
 // Process a packet received by the server
 //
 // Returns true if eaten by common code
-bool NET_Conn_Packet(net_connection_t* conn, net_packet_t* packet,
-						unsigned* packet_type)
+bool NET_Conn_Packet(net_connection_t* conn, net_packet_t* packet, unsigned* packet_type)
 {
 	conn->keepalive_recv_time = I_GetTimeMS();
 
@@ -177,18 +176,18 @@ bool NET_Conn_Packet(net_connection_t* conn, net_packet_t* packet,
 		*packet_type &= ~NET_RELIABLE_PACKET;
 	}
 
-	switch (*packet_type)
+	switch ((net_packet_type)*packet_type)
 	{
-		case NET_PACKET_TYPE_DISCONNECT:
+		case net_packet_type::DISCONNECT:
 			NET_Conn_ParseDisconnect(conn, packet);
 			break;
-		case NET_PACKET_TYPE_DISCONNECT_ACK:
+		case net_packet_type::DISCONNECT_ACK:
 			NET_Conn_ParseDisconnectACK(conn, packet);
 			break;
-		case NET_PACKET_TYPE_KEEPALIVE:
+		case net_packet_type::KEEPALIVE:
 			// No special action needed.
 			break;
-		case NET_PACKET_TYPE_RELIABLE_ACK:
+		case net_packet_type::RELIABLE_ACK:
 			NET_Conn_ParseReliableACK(conn, packet);
 			break;
 		default:
@@ -202,12 +201,12 @@ bool NET_Conn_Packet(net_connection_t* conn, net_packet_t* packet,
 
 void NET_Conn_Disconnect(net_connection_t* conn)
 {
-	if (conn->state != NET_CONN_STATE_DISCONNECTED
-		&& conn->state != NET_CONN_STATE_DISCONNECTING
-		&& conn->state != NET_CONN_STATE_DISCONNECTED_SLEEP)
+	if (conn->state != net_connstate_t::DISCONNECTED
+		&& conn->state != net_connstate_t::DISCONNECTING
+		&& conn->state != net_connstate_t::DISCONNECTED_SLEEP)
 	{
-		conn->state = NET_CONN_STATE_DISCONNECTING;
-		conn->disconnect_reason = NET_DISCONNECT_LOCAL;
+		conn->state = net_connstate_t::DISCONNECTING;
+		conn->disconnect_reason = net_disconnect_reason_t::LOCAL;
 		conn->last_send_time = -1;
 		conn->num_retries = 0;
 	}
@@ -220,21 +219,21 @@ void NET_Conn_Run(net_connection_t* conn)
 
 	nowtime = I_GetTimeMS();
 
-	if (conn->state == NET_CONN_STATE_CONNECTED)
+	if (conn->state == net_connstate_t::CONNECTED)
 	{
 		// Check the keepalive counters
 		if (nowtime - conn->keepalive_recv_time > CONNECTION_TIMEOUT_LEN * 1000)
 		{
 			// Haven't received any packets from the other end in a long time. Assume disconnected.
-			conn->state = NET_CONN_STATE_DISCONNECTED;
-			conn->disconnect_reason = NET_DISCONNECT_TIMEOUT;
+			conn->state = net_connstate_t::DISCONNECTED;
+			conn->disconnect_reason = net_disconnect_reason_t::TIMEOUT;
 		}
 
 		if (nowtime - conn->keepalive_send_time > KEEPALIVE_PERIOD * 1000)
 		{
 			// We have not sent anything in a long time. Send a keepalive.
 			packet = NET_NewPacket(10);
-			NET_WriteInt16(packet, NET_PACKET_TYPE_KEEPALIVE);
+			NET_WriteInt16(packet, (unsigned)net_packet_type::KEEPALIVE);
 			NET_Conn_SendPacket(conn, packet);
 			NET_FreePacket(packet);
 		}
@@ -252,7 +251,7 @@ void NET_Conn_Run(net_connection_t* conn)
 			conn->reliable_packets->last_send_time = nowtime;
 		}
 	}
-	else if (conn->state == NET_CONN_STATE_DISCONNECTING)
+	else if (conn->state == net_connstate_t::DISCONNECTING)
 	{
 		// Waiting for a reply to our DISCONNECT request.
 		if (conn->last_send_time < 0
@@ -263,7 +262,7 @@ void NET_Conn_Run(net_connection_t* conn)
 			{
 				// send another disconnect
 				packet = NET_NewPacket(10);
-				NET_WriteInt16(packet, NET_PACKET_TYPE_DISCONNECT);
+				NET_WriteInt16(packet, (unsigned)net_packet_type::DISCONNECT);
 				NET_Conn_SendPacket(conn, packet);
 				NET_FreePacket(packet);
 				conn->last_send_time = nowtime;
@@ -273,19 +272,19 @@ void NET_Conn_Run(net_connection_t* conn)
 			else
 			{
 				// No more retries allowed. Force disconnect.
-				conn->state = NET_CONN_STATE_DISCONNECTED;
-				conn->disconnect_reason = NET_DISCONNECT_LOCAL;
+				conn->state = net_connstate_t::DISCONNECTED;
+				conn->disconnect_reason = net_disconnect_reason_t::LOCAL;
 			}
 		}
 	}
-	else if (conn->state == NET_CONN_STATE_DISCONNECTED_SLEEP)
+	else if (conn->state == net_connstate_t::DISCONNECTED_SLEEP)
 	{
 		// We are disconnected, waiting in case we need to send a DISCONNECT_ACK to the server again.
 		if (nowtime - conn->last_send_time > 5000)
 		{
 			// Idle for 5 seconds, switch state
-			conn->state = NET_CONN_STATE_DISCONNECTED;
-			conn->disconnect_reason = NET_DISCONNECT_REMOTE;
+			conn->state = net_connstate_t::DISCONNECTED;
+			conn->disconnect_reason = net_disconnect_reason_t::REMOTE;
 		}
 	}
 }
@@ -344,7 +343,7 @@ unsigned NET_ExpandTicNum(unsigned relative, unsigned b)
 }
 
 // Check that game settings are valid
-bool NET_ValidGameSettings(GameMode mode, GameMission_t mission, net_gamesettings_t* settings)
+bool NET_ValidGameSettings(GameMode mode, GameMission mission, net_gamesettings* settings)
 {
 	if (settings->ticdup <= 0)
 		return false;
@@ -392,7 +391,7 @@ void NET_OpenLog()
 	}
 }
 
-void NET_Log(const char* fmt, ...)
+void NET_Log(std::string fmt, ...)
 {
 	va_list args;
 

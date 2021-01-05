@@ -28,7 +28,7 @@ struct posix_wad_file_t
 
 extern wad_file_class_t posix_wad_file;
 
-static void MapFile(posix_wad_file_t* wad, const char* filename)
+static void MapFile(posix_wad_file_t* wad, std::string filename)
 {
 	void* result;
 	int protection;
@@ -66,7 +66,7 @@ unsigned GetFileLength(int handle)
 	return lseek(handle, 0, SEEK_END);
 }
 
-static wad_file_t* W_POSIX_OpenFile(const char* path)
+static wad_file_t* W_POSIX_OpenFile(std::string path)
 {
 	posix_wad_file_t* result;
 	int handle;
@@ -75,7 +75,7 @@ static wad_file_t* W_POSIX_OpenFile(const char* path)
 
 	if (handle < 0)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	// Create a new posix_wad_file_t to hold the file handle.
@@ -83,7 +83,7 @@ static wad_file_t* W_POSIX_OpenFile(const char* path)
 	result = Z_Malloc<posix_wad_file_t>(sizeof(posix_wad_file_t), pu_tags_t::PU_STATIC, 0);
 	result->wad.file_class = &posix_wad_file;
 	result->wad.length = GetFileLength(handle);
-	result->wad.path = M_StringDuplicate(path);
+	result->wad.path = std::string(path);
 	result->wad.mapped = NULL;
 	result->handle = handle;
 

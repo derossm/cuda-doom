@@ -1173,8 +1173,8 @@ void OPL3_Reset(opl3_chip *chip, Bit32u samplerate)
 
 void OPL3_WriteReg(opl3_chip* chip, Bit16u reg, Bit8u v)
 {
-	Bit8u high{(reg >> 8) & Bit8u(0x01)};
-	Bit8u regm{reg & Bit8u(0xff)};
+	Bit8u high{(reg >> 8) & static_cast<Bit8u>(0x01)};
+	Bit8u regm{reg & static_cast<Bit8u>(0xff)};
 	switch (regm & Bit8u(0xf0))
 	{
 	case 0x00:

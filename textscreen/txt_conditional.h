@@ -10,9 +10,11 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "txt_widget.h"
-#include "txt_strut.h"
+
+//#include "txt_strut.h"
 
 namespace cudadoom::txt
 {
@@ -23,12 +25,65 @@ namespace cudadoom::txt
  * A conditional widget contains another widget, and conditionally
  * shows or hides it based on the value of a variable.
  */
-struct Conditional
+class Conditional : public Widget<Conditional>
 {
 	Widget widget;
 	int *var;
 	int expected_value;
 	Widget* child;
+
+public:
+
+	Conditional() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	{
+	}
+
+	bool Selectable() override final const noexcept
+	{
+		return true;
+	}
+
+	void CalculateSize() override final const noexcept
+	{
+	}
+
+	void Draw() override final const noexcept
+	{
+	}
+
+	bool KeyPress(Keytype key) override final const noexcept
+	{
+		if (key == KEY_ENTER || key == ' ')
+		{
+			EmitSignal("changed");
+			return true;
+		}
+
+		return false;
+	}
+
+	bool MousePress(MouseEvent evt) override final const noexcept
+	{
+		if (evt.button == MOUSE_LEFT)
+		{
+			// Equivalent to pressing enter
+			return KeyPress(KEY_ENTER);
+		}
+
+		return false
+	}
+
+	void SetLayout() override final const noexcept
+	{
+	}
+
+	void SetFocus(bool _focus) override final const noexcept
+	{
+	}
+
+	void Destroy() override final const noexcept
+	{
+	}
 
 	int ConditionTrue()
 	{

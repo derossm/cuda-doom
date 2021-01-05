@@ -96,14 +96,14 @@ extern fixed_t offsetms;
 static net_connection_t client_connection;
 static net_clientstate_t client_state;
 static net_addr_t* server_addr;
-static net_context_t* client_context;
+static net_context* client_context;
 
 // game settings, as received from the server when the game started
 
-static net_gamesettings_t settings;
+static net_gamesettings settings;
 
 // Why did the server reject us?
-char* net_client_reject_reason = NULL;
+std::string net_client_reject_reason = NULL;
 
 // true if the client code is in use
 
@@ -121,7 +121,7 @@ bool net_waiting_for_launch = false;
 
 // Name that we send to the server
 
-char* net_player_name = NULL;
+std::string net_player_name;
 
 // Connected but not participating in the game (observer)
 
@@ -197,9 +197,9 @@ static void UpdateClockSync(unsigned seq,
 	}
 
 	// PID filter. These are manually trained parameters.
-#define KP 0.1
-#define KI 0.01
-#define KD 0.02
+constexpr double KP{0.1};
+constexpr double KI{0.01};
+constexpr double KD{0.02};
 
 	// How does our latency compare to the worst other player?
 	error = latency - remote_latency;
@@ -295,10 +295,10 @@ static void NET_CL_Shutdown()
 
 void NET_CL_LaunchGame()
 {
-	NET_Conn_NewReliable(&client_connection, NET_PACKET_TYPE_LAUNCH);
+	NET_Conn_NewReliable(&client_connection, net_packet_type::LAUNCH);
 }
 
-void NET_CL_StartGame(net_gamesettings_t* settings)
+void NET_CL_StartGame(net_gamesettings* settings)
 {
 	net_packet_t* packet;
 
@@ -309,7 +309,7 @@ void NET_CL_StartGame(net_gamesettings_t* settings)
 	// Send packet
 
 	packet = NET_Conn_NewReliable(&client_connection,
-									NET_PACKET_TYPE_GAMESTART);
+									net_packet_type::GAMESTART);
 
 	NET_WriteSettings(packet, settings);
 }
@@ -320,7 +320,7 @@ static void NET_CL_SendGameDataACK()
 
 	packet = NET_NewPacket(10);
 
-	NET_WriteInt16(packet, NET_PACKET_TYPE_GAMEDATA_ACK);
+	NET_WriteInt16(packet, net_packet_type::GAMEDATA_ACK);
 	NET_WriteInt8(packet, recvwindow_start & 0xff);
 
 	NET_Conn_SendPacket(&client_connection, packet);
@@ -348,7 +348,7 @@ static void NET_CL_SendTics(int start, int end)
 	// Build a new packet to send to the server
 
 	packet = NET_NewPacket(512);
-	NET_WriteInt16(packet, NET_PACKET_TYPE_GAMEDATA);
+	NET_WriteInt16(packet, net_packet_type::GAMEDATA);
 
 	// Write the start tic and number of tics. Send only the low byte
 	// of start - it can be inferred by the server.
@@ -424,7 +424,7 @@ void NET_CL_SendTiccmd(ticcmd_t* ticcmd, TimeType maketic)
 static void NET_CL_ParseSYN(net_packet_t* packet)
 {
 	net_protocol_t protocol;
-	char* server_version;
+	std::string server_version;
 
 	NET_Log("client: processing SYN response");
 
@@ -436,7 +436,7 @@ static void NET_CL_ParseSYN(net_packet_t* packet)
 	}
 
 	protocol = NET_ReadProtocol(packet);
-	if (protocol == NET_PROTOCOL_UNKNOWN)
+	if (protocol == net_protocol_t::UNKNOWN)
 	{
 		NET_Log("client: error: can't find a common protocol");
 		return;
@@ -444,7 +444,7 @@ static void NET_CL_ParseSYN(net_packet_t* packet)
 
 	// We are now successfully connected.
 	NET_Log("client: connected to server");
-	client_connection.state = NET_CONN_STATE_CONNECTED;
+	client_connection.state = net_connstate_t::CONNECTED;
 	client_connection.protocol = protocol;
 
 	// Even though we have negotiated a compatible protocol, the game may still
@@ -459,7 +459,7 @@ static void NET_CL_ParseSYN(net_packet_t* packet)
 	}
 }
 
-static void SetRejectReason(const char* s)
+static void SetRejectReason(std::string s)
 {
 	free(net_client_reject_reason);
 	if (s != NULL)
@@ -474,7 +474,7 @@ static void SetRejectReason(const char* s)
 
 static void NET_CL_ParseReject(net_packet_t* packet)
 {
-	char* msg;
+	std::string msg;
 
 	msg = NET_ReadSafeString(packet);
 	if (msg == NULL)
@@ -482,10 +482,10 @@ static void NET_CL_ParseReject(net_packet_t* packet)
 		return;
 	}
 
-	if (client_connection.state == NET_CONN_STATE_CONNECTING)
+	if (client_connection.state == net_connstate_t::CONNECTING)
 	{
-		client_connection.state = NET_CONN_STATE_DISCONNECTED;
-		client_connection.disconnect_reason = NET_DISCONNECT_REMOTE;
+		client_connection.state = net_connstate_t::DISCONNECTED;
+		client_connection.disconnect_reason = net_disconnect_reason_t::REMOTE;
 		SetRejectReason(msg);
 	}
 }
@@ -570,7 +570,7 @@ static void NET_CL_ParseGameStart(net_packet_t* packet)
 	}
 
 	if (settings.num_players > NET_MAXPLAYERS
-		|| settings.consoleplayer >= (signed int) settings.num_players)
+		|| settings.consoleplayer >= (int) settings.num_players)
 	{
 		// insane values
 		NET_Log("client: error: bad settings, num_players=%d, consoleplayer=%d",
@@ -611,7 +611,7 @@ static void NET_CL_SendResendRequest(int start, int end)
 	//printf("CL: Send resend %i-%i\n", start, end);
 
 	packet = NET_NewPacket(64);
-	NET_WriteInt16(packet, NET_PACKET_TYPE_GAMEDATA_RESEND);
+	NET_WriteInt16(packet, net_packet_type::GAMEDATA_RESEND);
 	NET_WriteInt32(packet, start);
 	NET_WriteInt8(packet, end - start + 1);
 	NET_Conn_SendPacket(&client_connection, packet);
@@ -722,7 +722,7 @@ static void NET_CL_CheckResends()
 }
 
 
-// Parsing of NET_PACKET_TYPE_GAMEDATA packets
+// Parsing of net_packet_type::GAMEDATA packets
 // (packets containing the actual ticcmd data)
 
 static void NET_CL_ParseGameData(net_packet_t* packet)
@@ -911,7 +911,7 @@ static void NET_CL_ParseResendRequest(net_packet_t* packet)
 
 static void NET_CL_ParseConsoleMessage(net_packet_t* packet)
 {
-	char* msg;
+	std::string msg;
 
 	msg = NET_ReadSafeString(packet);
 
@@ -946,35 +946,35 @@ static void NET_CL_ParsePacket(net_packet_t* packet)
 	{
 		switch (packet_type)
 		{
-			case NET_PACKET_TYPE_SYN:
+			case net_packet_type::SYN:
 				NET_CL_ParseSYN(packet);
 				break;
 
-			case NET_PACKET_TYPE_REJECTED:
+			case net_packet_type::REJECTED:
 				NET_CL_ParseReject(packet);
 				break;
 
-			case NET_PACKET_TYPE_WAITING_DATA:
+			case net_packet_type::WAITING_DATA:
 				NET_CL_ParseWaitingData(packet);
 				break;
 
-			case NET_PACKET_TYPE_LAUNCH:
+			case net_packet_type::LAUNCH:
 				NET_CL_ParseLaunch(packet);
 				break;
 
-			case NET_PACKET_TYPE_GAMESTART:
+			case net_packet_type::GAMESTART:
 				NET_CL_ParseGameStart(packet);
 				break;
 
-			case NET_PACKET_TYPE_GAMEDATA:
+			case net_packet_type::GAMEDATA:
 				NET_CL_ParseGameData(packet);
 				break;
 
-			case NET_PACKET_TYPE_GAMEDATA_RESEND:
+			case net_packet_type::GAMEDATA_RESEND:
 				NET_CL_ParseResendRequest(packet);
 				break;
 
-			case NET_PACKET_TYPE_CONSOLE_MESSAGE:
+			case net_packet_type::CONSOLE_MESSAGE:
 				NET_CL_ParseConsoleMessage(packet);
 				break;
 
@@ -1014,8 +1014,8 @@ void NET_CL_Run()
 
 	NET_Conn_Run(&client_connection);
 
-	if (client_connection.state == NET_CONN_STATE_DISCONNECTED
-		|| client_connection.state == NET_CONN_STATE_DISCONNECTED_SLEEP)
+	if (client_connection.state == net_connstate_t::DISCONNECTED
+		|| client_connection.state == net_connstate_t::DISCONNECTED_SLEEP)
 	{
 		NET_CL_Disconnected();
 
@@ -1023,7 +1023,7 @@ void NET_CL_Run()
 	}
 
 	net_waiting_for_launch =
-			client_connection.state == NET_CONN_STATE_CONNECTED
+			client_connection.state == net_connstate_t::CONNECTED
 			&& client_state == CLIENT_STATE_WAITING_LAUNCH;
 
 	if (client_state == CLIENT_STATE_IN_GAME)
@@ -1038,14 +1038,14 @@ void NET_CL_Run()
 	}
 }
 
-static void NET_CL_SendSYN(net_connect_data_t* data)
+static void NET_CL_SendSYN(net_connect_data* data)
 {
 	net_packet_t* packet;
 
 	NET_Log("client: sending SYN");
 
 	packet = NET_NewPacket(10);
-	NET_WriteInt16(packet, NET_PACKET_TYPE_SYN);
+	NET_WriteInt16(packet, net_packet_type::SYN);
 	NET_WriteInt32(packet, NET_MAGIC_NUMBER);
 	NET_WriteString(packet, PACKAGE_STRING);
 	NET_WriteProtocolList(packet);
@@ -1056,7 +1056,7 @@ static void NET_CL_SendSYN(net_connect_data_t* data)
 }
 
 // Connect to a server
-bool NET_CL_Connect(net_addr_t* addr, net_connect_data_t* data)
+bool NET_CL_Connect(net_addr_t* addr, net_connect_data* data)
 {
 	TimeType start_time;
 	TimeType last_send_time;
@@ -1073,26 +1073,26 @@ bool NET_CL_Connect(net_addr_t* addr, net_connect_data_t* data)
 	client_context = NET_NewContext();
 
 	// initialize module for client mode
-	if (!addr->module->InitClient())
+	if (!addr->mod->InitClient())
 	{
 		SetRejectReason("Failed to initialize client module");
 		return false;
 	}
 
-	NET_AddModule(client_context, addr->module);
+	NET_AddModule(client_context, addr->mod);
 
 	net_client_connected = true;
 	net_client_received_wait_data = false;
 	sent_hole_punch = false;
 
-	NET_Conn_InitClient(&client_connection, addr, NET_PROTOCOL_UNKNOWN);
+	NET_Conn_InitClient(&client_connection, addr, net_protocol_t::UNKNOWN);
 
 	// try to connect
 	start_time = I_GetTimeMS();
 	last_send_time = -1;
 	SetRejectReason("Unknown reason");
 
-	while (client_connection.state == NET_CONN_STATE_CONNECTING)
+	while (client_connection.state == net_connstate_t::CONNECTING)
 	{
 		TimeType nowtime = I_GetTimeMS();
 
@@ -1127,7 +1127,7 @@ bool NET_CL_Connect(net_addr_t* addr, net_connect_data_t* data)
 		I_Sleep(1);
 	}
 
-	if (client_connection.state == NET_CONN_STATE_CONNECTED)
+	if (client_connection.state == net_connstate_t::CONNECTED)
 	{
 		// connected ok!
 		NET_Log("client: connected successfully");
@@ -1149,14 +1149,14 @@ bool NET_CL_Connect(net_addr_t* addr, net_connect_data_t* data)
 
 // read game settings received from server
 
-bool NET_CL_GetSettings(net_gamesettings_t* _settings)
+bool NET_CL_GetSettings(net_gamesettings* _settings)
 {
 	if (client_state != CLIENT_STATE_IN_GAME)
 	{
 		return false;
 	}
 
-	memcpy(_settings, &settings, sizeof(net_gamesettings_t));
+	memcpy(_settings, &settings, sizeof(net_gamesettings));
 
 	return true;
 }
@@ -1177,8 +1177,8 @@ void NET_CL_Disconnect()
 
 	start_time = I_GetTimeMS();
 
-	while (client_connection.state != NET_CONN_STATE_DISCONNECTED
-		&& client_connection.state != NET_CONN_STATE_DISCONNECTED_SLEEP)
+	while (client_connection.state != net_connstate_t::DISCONNECTED
+		&& client_connection.state != net_connstate_t::DISCONNECTED_SLEEP)
 	{
 		if (I_GetTimeMS() - start_time > 5000)
 		{

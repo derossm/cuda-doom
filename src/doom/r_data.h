@@ -18,9 +18,9 @@
 #include "r_defs.h"
 #include "r_state.h"
 
-#define LOOKDIRMIN	110 // [crispy] -110, actually
-#define LOOKDIRMAX	90
-#define LOOKDIRS	(LOOKDIRMIN+1+LOOKDIRMAX) // [crispy] lookdir range: -110..0..90
+constexpr size_t LOOKDIRMIN{110}; // [crispy] -110, actually
+constexpr size_t LOOKDIRMAX{90};
+constexpr size_t LOOKDIRS{(LOOKDIRMIN+1+LOOKDIRMAX)}; // [crispy] lookdir range: -110..0..90
 
 // Retrieve column data for span blitting.
 byte* R_GetColumn(int tex, int col);
@@ -33,9 +33,9 @@ void R_InitData();
 void R_PrecacheLevel();
 
 // Retrieval. Floor/ceiling opaque texture tiles, lookup by name. For animation?
-int R_FlatNumForName(const char* name);
+int R_FlatNumForName(std::string name);
 
 
 // Called by P_Ticker for switches and animations, returns the texture number for the texture name.
-int R_TextureNumForName(const char* name);
-int R_CheckTextureNumForName(const char* name);
+int R_TextureNumForName(std::string name);
+int R_CheckTextureNumForName(std::string name);

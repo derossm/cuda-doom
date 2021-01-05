@@ -23,9 +23,9 @@
 #include "m_misc.h"
 
 // When an axis is within the dead zone, it is set to zero. This is 5% of the full range:
-#define DEAD_ZONE (32768 / 3)
+constexpr size_t DEAD_ZONE{(32768 / 3)};
 
-static SDL_Joystick* joystick = NULL;
+static SDL_Joystick* joystick = nullptr;
 
 // Configuration variables:
 
@@ -33,7 +33,7 @@ static SDL_Joystick* joystick = NULL;
 static int usejoystick = 0;
 
 // SDL GUID and index of the joystick to use.
-static char* joystick_guid = "";
+std::string joystick_guid = "";
 static int joystick_index = -1;
 
 // Which joystick axis to use for horizontal movement, and whether to invert the direction:

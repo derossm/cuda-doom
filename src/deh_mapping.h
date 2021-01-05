@@ -44,12 +44,12 @@
 		}													\
 	};
 
-#define MAX_MAPPING_ENTRIES 32
+constexpr size_t MAX_MAPPING_ENTRIES{32};
 
 struct deh_mapping_entry_t
 {
 	// field name
-	const char* name;
+	std::string name;
 
 	// location relative to the base in the deh_mapping_t struct
 	// If this is NULL, it is an unsupported mapping
@@ -68,6 +68,6 @@ struct deh_mapping_t
 	deh_mapping_entry_t entries[MAX_MAPPING_ENTRIES];
 };
 
-bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping, void* structptr, char* name, int value);
-bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping, void* structptr, char* name, char* value);
+bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping, void* structptr, std::string name, int value);
+bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping, void* structptr, std::string name, std::string value);
 void DEH_StructSHA1Sum(sha1_context_t* context, deh_mapping_t* mapping, void* structptr);

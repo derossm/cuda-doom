@@ -11,14 +11,12 @@
 		Demonstration program for OPL library to play back DRO format files.
 \**********************************************************************************************************************************************/
 
-
-
 #include "SDL.h"
 
 #include "opl.h"
 
 #define HEADER_STRING "DBRAWOPL"
-#define ADLIB_PORT 0x388
+constexpr size_t ADLIB_PORT{0x388};
 
 void WriteReg(unsigned reg, unsigned val)
 {
@@ -133,7 +131,7 @@ void TimerCallback(void* data)
 	OPL_SetCallback(delay * OPL_MS, TimerCallback, timer_data);
 }
 
-void PlayFile(char* filename)
+void PlayFile(std::string filename)
 {
 	struct timer_data timer_data;
 	int running;

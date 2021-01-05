@@ -12,11 +12,9 @@
 	Globally defined strings.
 \**********************************************************************************************************************************************/
 
-
-
 #include "dstrings.h"
 
-const char* doom1_endmsg[] =
+std::string doom1_endmsg[] =
 {
  "are you sure you want to\nquit this great game?",
  "please don't leave, there's more\ndemons to toast!",
@@ -28,7 +26,7 @@ const char* doom1_endmsg[] =
  "go ahead and leave. see if i care.",
 };
 
-const char* doom2_endmsg[] =
+std::string doom2_endmsg[] =
 {
  // QuitDOOM II messages
  "are you sure you want to\nquit this great game?",
@@ -42,10 +40,8 @@ const char* doom2_endmsg[] =
 };
 
 #if 0
-
 // UNUSED messages included in the source release
-
-char* endmsg[] =
+std::string endmsg[] =
 {
  // DOOM1
  QUITMSG,
@@ -61,9 +57,4 @@ char* endmsg[] =
  // Internal debug. Different style, too.
  "THIS IS NO MESSAGE!\nPage intentionally left blank."
 };
-
 #endif
-
-
-
-

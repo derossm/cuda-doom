@@ -41,27 +41,27 @@ enum class opl_port_t
 	OPL_REGISTER_PORT_OPL3 = 2
 };
 
-#define OPL_NUM_OPERATORS		21
-#define OPL_NUM_VOICES			9
+constexpr size_t OPL_NUM_OPERATORS{21};
+constexpr size_t OPL_NUM_VOICES{9};
 
-#define OPL_REG_WAVEFORM_ENABLE	0x01
-#define OPL_REG_TIMER1			0x02
-#define OPL_REG_TIMER2			0x03
-#define OPL_REG_TIMER_CTRL		0x04
-#define OPL_REG_FM_MODE			0x08
-#define OPL_REG_NEW				0x105
+constexpr size_t OPL_REG_WAVEFORM_ENABLE{0x01};
+constexpr size_t OPL_REG_TIMER1{0x02};
+constexpr size_t OPL_REG_TIMER2{0x03};
+constexpr size_t OPL_REG_TIMER_CTRL{0x04};
+constexpr size_t OPL_REG_FM_MODE{0x08};
+constexpr size_t OPL_REG_NEW{0x105};
 
 // Operator registers (21 of each):
-#define OPL_REGS_TREMOLO		0x20
-#define OPL_REGS_LEVEL			0x40
-#define OPL_REGS_ATTACK			0x60
-#define OPL_REGS_SUSTAIN		0x80
-#define OPL_REGS_WAVEFORM		0xE0
+constexpr size_t OPL_REGS_TREMOLO{0x20};
+constexpr size_t OPL_REGS_LEVEL{0x40};
+constexpr size_t OPL_REGS_ATTACK{0x60};
+constexpr size_t OPL_REGS_SUSTAIN{0x80};
+constexpr size_t OPL_REGS_WAVEFORM{0xE0};
 
 // Voice registers (9 of each):
-#define OPL_REGS_FREQ_1			0xA0
-#define OPL_REGS_FREQ_2			0xB0
-#define OPL_REGS_FEEDBACK		0xC0
+constexpr size_t OPL_REGS_FREQ_1{0xA0};
+constexpr size_t OPL_REGS_FREQ_2{0xB0};
+constexpr size_t OPL_REGS_FEEDBACK{0xC0};
 
 // Times
 constexpr uint64_t OPL_SECOND{	1'000'000};

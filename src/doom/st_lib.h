@@ -27,24 +27,24 @@ struct st_number_t
 {
 	// upper right-hand corner
 	// of the number (right-justified)
-	int		x;
-	int		y;
+	int x;
+	int y;
 
 	// max # of digits in number
 	int width;
 
 	// last number value
-	int		oldnum;
+	int oldnum;
 
 	// pointer to current value
-	int*	num;
+	int* num;
 
 	// pointer to bool stating
 	// whether to update number
-	bool*	on;
+	bool* on;
 
 	// list of patches for 0-9
-	patch_t**	p;
+	patch_t** p;
 
 	// user data
 	int data;
@@ -54,10 +54,10 @@ struct st_number_t
 struct st_percent_t
 {
 	// number information
-	st_number_t		n;
+	st_number_t n;
 
 	// percent sign graphic
-	patch_t*		p;
+	patch_t* p;
 
 	// [crispy] remember previous colorization
 	byte* oldtranslation;
@@ -67,46 +67,46 @@ struct st_percent_t
 struct st_multicon_t
 {
 		// center-justified location of icons
-	int			x;
-	int			y;
+	int x;
+	int y;
 
 	// last icon number
-	int			oldinum;
+	int oldinum;
 
 	// pointer to current icon
-	int*		inum;
+	int* inum;
 
 	// pointer to bool stating
 	// whether to update icon
-	bool*		on;
+	bool* on;
 
 	// list of icons
-	patch_t**		p;
+	patch_t** p;
 
 	// user data
-	int			data;
+	int data;
 };
 
 // Binary Icon widget
 struct st_binicon_t
 {
 	// center-justified location of icon
-	int			x;
-	int			y;
+	int x;
+	int y;
 
 	// last icon value
-	bool		oldval;
+	bool oldval;
 
 	// pointer to current icon status
-	bool*		val;
+	bool* val;
 
 	// pointer to bool
 	// stating whether to update icon
-	bool*		on;
+	bool* on;
 
 
-	patch_t*		p;	// icon
-	int			data;	// user data
+	patch_t* p;	// icon
+	int data;	// user data
 };
 
 //

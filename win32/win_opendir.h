@@ -15,7 +15,7 @@
 #include <io.h>
 
 #ifndef FILENAME_MAX
-#define FILENAME_MAX 260
+constexpr size_t FILENAME_MAX{260};
 #endif
 
 struct dirent
@@ -46,8 +46,8 @@ struct DIR
 	char dd_name[1];
 };
 
-DIR* opendir(const char*);
-struct dirent* readdir(DIR*);
+DIR* opendir(std::string);
+dirent* readdir(DIR*);
 int closedir(DIR*);
 void rewinddir(DIR*);
 long telldir(DIR*);

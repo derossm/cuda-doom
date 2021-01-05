@@ -12,6 +12,8 @@
 \**********************************************************************************************************************************************/
 
 #include "config.h"
+#include "../derma/d_native.h"
+
 #include "pcsound.h"
 #include "pcsound_internal.h"
 
@@ -74,7 +76,7 @@ bool PCSound_Init(pcsound_callback_func callback_func)
 	{
 		for (size_t i{0}; drivers[i]; ++i)
 		{
-			if (!strcmp(drivers[i]->name, driver_name))
+			if (!drivers[i]->name.compare(driver_name))
 			{
 				// Found the driver!
 				if (drivers[i]->init_func(callback_func))
@@ -83,7 +85,7 @@ bool PCSound_Init(pcsound_callback_func callback_func)
 				}
 				else
 				{
-					printf("Failed to initialize PC sound driver: %s\n", drivers[i]->name);
+					printf("Failed to initialize PC sound driver: %s\n", drivers[i]->name.c_str());
 					break;
 				}
 			}
@@ -104,7 +106,7 @@ bool PCSound_Init(pcsound_callback_func callback_func)
 
 	if (pcsound_driver)
 	{
-		printf("Using PC sound driver: %s\n", pcsound_driver->name);
+		printf("Using PC sound driver: %s\n", pcsound_driver->name.c_str());
 		return true;
 	}
 	else

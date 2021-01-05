@@ -22,17 +22,17 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-#define MAX_INSTRUMENTS 256
+constexpr size_t MAX_INSTRUMENTS{256};
 
 struct gus_config_t
 {
-	char* patch_names[MAX_INSTRUMENTS];
-	int used[MAX_INSTRUMENTS];
-	int mapping[MAX_INSTRUMENTS];
+	std::array<std::string, MAX_INSTRUMENTS> patch_names;
+	std::array<int, MAX_INSTRUMENTS> used;
+	std::array<int, MAX_INSTRUMENTS> mapping;
 	unsigned count;
 };
 
-char* gus_patch_path = "";
+std::string gus_patch_path = "";
 int gus_ram_kb = 1024;
 
 static unsigned MappingIndex()
@@ -53,10 +53,10 @@ static unsigned MappingIndex()
 	}
 }
 
-static int SplitLine(char* line, char** fields, unsigned max_fields)
+static int SplitLine(std::string line, char** fields, unsigned max_fields)
 {
 	unsigned num_fields;
-	char* p;
+	CHAR_PTR p;
 
 	fields[0] = line;
 	num_fields = 1;
@@ -100,9 +100,9 @@ static int SplitLine(char* line, char** fields, unsigned max_fields)
 	return num_fields;
 }
 
-static void ParseLine(gus_config_t* config, char* line)
+static void ParseLine(gus_config_t* config, std::string line)
 {
-	char* fields[6];
+	std::array<std::string, 6> fields;
 	unsigned i;
 	unsigned num_fields;
 	unsigned instr_id, mapped_id;
@@ -124,7 +124,7 @@ static void ParseLine(gus_config_t* config, char* line)
 
 	mapped_id = atoi(fields[MappingIndex()]);
 
-	for (i = 0; i < config->count; i++)
+	for (i = 0; i < config->count; ++i)
 	{
 		if (config->used[i] == mapped_id)
 		{
@@ -137,16 +137,16 @@ static void ParseLine(gus_config_t* config, char* line)
 		// DMX uses wrong patch name (we should use name of 'mapped_id'
 		// instrument, but DMX uses name of 'instr_id' instead).
 		free(config->patch_names[i]);
-		config->patch_names[i] = M_StringDuplicate(fields[5]);
+		config->patch_names[i] = std::string(fields[5]);
 		config->used[i] = mapped_id;
 		config->count++;
 	}
 	config->mapping[instr_id] = i;
 }
 
-static void ParseDMXConfig(char* dmxconf, gus_config_t* config)
+static void ParseDMXConfig(std::string dmxconf, gus_config_t* config)
 {
-	char* p, *newline;
+	CHAR_PTR p, *newline;
 	unsigned i;
 
 	memset(config, 0, sizeof(gus_config_t));
@@ -193,11 +193,11 @@ static void FreeDMXConfig(gus_config_t* config)
 	}
 }
 
-static char* ReadDMXConfig()
+std::string ReadDMXConfig()
 {
 	int lumpnum;
 	unsigned len;
-	char* data;
+	std::string data;
 
 	// TODO: This should be chosen based on gamemode == GameMode::commercial:
 
@@ -216,7 +216,7 @@ static char* ReadDMXConfig()
 	return data;
 }
 
-static bool WriteTimidityConfig(char* path, gus_config_t* config)
+static bool WriteTimidityConfig(std::string path, gus_config_t* config)
 {
 	FILE* fstream;
 	unsigned i;
@@ -263,10 +263,10 @@ static bool WriteTimidityConfig(char* path, gus_config_t* config)
 	return true;
 }
 
-bool GUS_WriteConfig(char* path)
+bool GUS_WriteConfig(std::string path)
 {
 	bool result;
-	char* dmxconf;
+	std::string dmxconf;
 	gus_config_t config;
 
 	if (!strcmp(gus_patch_path, ""))

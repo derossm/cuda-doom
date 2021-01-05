@@ -20,14 +20,14 @@
 #include "i_video.h"
 
 // Palette fade-in takes two seconds
-#define FADE_TIME 2000
+constexpr size_t FADE_TIME{2000};
 
-#define HR_SCREENWIDTH 640
-#define HR_SCREENHEIGHT 480
+constexpr size_t HR_SCREENWIDTH{640};
+constexpr size_t HR_SCREENHEIGHT{480};
 
 static SDL_Window* hr_screen = NULL;
 static SDL_Surface* hr_surface = NULL;
-static const char* window_title = "";
+static std::string window_title = "";
 
 bool I_SetVideoModeHR()
 {
@@ -56,7 +56,7 @@ bool I_SetVideoModeHR()
 	return true;
 }
 
-void I_SetWindowTitleHR(const char* title)
+void I_SetWindowTitleHR(std::string title)
 {
 	window_title = title;
 }

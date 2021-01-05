@@ -30,7 +30,7 @@ DEH_BEGIN_MAPPING(state_mapping, state_t)
  DEH_UNSUPPORTED_MAPPING("Codep frame")
 DEH_END_MAPPING
 
-static void* DEH_FrameStart(deh_context_t* context, char* line)
+static void* DEH_FrameStart(deh_context_t* context, std::string line)
 {
 	int frame_number = 0;
 	state_t* state;
@@ -38,13 +38,13 @@ static void* DEH_FrameStart(deh_context_t* context, char* line)
 	if (sscanf(line, "Frame %i", &frame_number) != 1)
 	{
 		DEH_Warning(context, "Parse error on section start");
-		return NULL;
+		return nullptr;
 	}
 
-	if (frame_number < 0 || frame_number >= NUMSTATES)
+	if (frame_number < 0 || frame_number >= (int)statenum_t::NUMSTATES)
 	{
 		DEH_Warning(context, "Invalid frame number: %i", frame_number);
-		return NULL;
+		return nullptr;
 	}
 
 	if (frame_number >= DEH_VANILLA_NUMSTATES)
@@ -66,25 +66,25 @@ static void* DEH_FrameStart(deh_context_t* context, char* line)
 // This is noticable in Batman Doom where it is impossible to switch weapons
 // away from the fist once selected.
 
-static void DEH_FrameOverflow(deh_context_t* context, char* varname, int value)
+static void DEH_FrameOverflow(deh_context_t* context, std::string varname, int value)
 {
-	if (!strcasecmp(varname, "Duration"))
+	if (!iequals(varname, "Duration"))
 	{
 		weaponinfo[0].ammo = value;
 	}
-	else if (!strcasecmp(varname, "Codep frame"))
+	else if (!iequals(varname, "Codep frame"))
 	{
 		weaponinfo[0].upstate = value;
 	}
-	else if (!strcasecmp(varname, "Next frame"))
+	else if (!iequals(varname, "Next frame"))
 	{
 		weaponinfo[0].downstate = value;
 	}
-	else if (!strcasecmp(varname, "Unknown 1"))
+	else if (!iequals(varname, "Unknown 1"))
 	{
 		weaponinfo[0].readystate = value;
 	}
-	else if (!strcasecmp(varname, "Unknown 2"))
+	else if (!iequals(varname, "Unknown 2"))
 	{
 		weaponinfo[0].atkstate = value;
 	}
@@ -95,10 +95,10 @@ static void DEH_FrameOverflow(deh_context_t* context, char* varname, int value)
 	}
 }
 
-static void DEH_FrameParseLine(deh_context_t* context, char* line, void* tag)
+static void DEH_FrameParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	state_t* state;
-	char* variable_name, *value;
+	std::string variable_name, *value;
 	int ivalue;
 
 	if (tag == NULL)
@@ -121,7 +121,7 @@ static void DEH_FrameParseLine(deh_context_t* context, char* line, void* tag)
 	ivalue = atoi(value);
 
 	// [crispy] drop the overflow simulation into the frame table
-	if (state == &states[NUMSTATES - 1] && false)
+	if (state == &states[std::size_t(statenum_t::NUMSTATES - 1)] && false)
 	{
 		DEH_FrameOverflow(context, variable_name, ivalue);
 	}
@@ -135,9 +135,7 @@ static void DEH_FrameParseLine(deh_context_t* context, char* line, void* tag)
 
 static void DEH_FrameSHA1Sum(sha1_context_t* context)
 {
-	int i;
-
-	for (i=0; i<NUMSTATES; ++i)
+	for (size_t i{0}; i < std::size_t(statenum_t::NUMSTATES); ++i)
 	{
 		DEH_StructSHA1Sum(context, &state_mapping, &states[i]);
 	}
@@ -152,4 +150,3 @@ deh_section_t deh_section_frame =
 	NULL,
 	DEH_FrameSHA1Sum,
 };
-

@@ -31,8 +31,8 @@
 // // because it will get overwritten automatically if needed.
 // //
 
-// #define MEM_ALIGN sizeof(void*)
-// #define ZONEID	0x1d4a11
+// constexpr size_t MEM_ALIGN{sizeof(void*)};
+// constexpr size_t ZONEID{0x1d4a11};
 
 // //struct memblock_t
 // //{
@@ -216,7 +216,7 @@
 // }
 
 // // You can pass a NULL user if the tag is < pu_tags_t::PU_PURGELEVEL.
-// #define MINFRAGMENT		64
+// constexpr size_t MINFRAGMENT{64};
 
 // void* Z_Malloc(int size, pu_tags_t tag, void* user)
 // {
@@ -423,7 +423,7 @@
 // 	}
 // }
 
-// void Z_ChangeTag2(void* ptr, pu_tags_t tag, const char* file, int line)
+// void Z_ChangeTag2(void* ptr, pu_tags_t tag, std::string file, int line)
 // {
 // 	memblock_t*	block;
 

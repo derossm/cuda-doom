@@ -11,12 +11,14 @@
 
 #include "../derma/common.h"
 
-#include "txt_main.h"
 #include "txt_widget.h"
-#include "txt_window.h"
+
+#include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_io.h"
 #include "txt_gui.h"
+
+//#include "txt_window.h"
 
 namespace cudadoom::txt
 {
@@ -39,7 +41,22 @@ struct Separator : Widget
 {
 	std::string label;
 
-	void SizeCalc()
+	bool KeyPress(KeyType key) override final = delete;
+	bool MousePress(MouseEvent evt) override final = delete;
+	void SetLayout() override final = delete;
+	void SetFocus(bool _focus) override final = delete;
+
+public:
+	Separator() : widget_class{ Selectable, CalculateSize, Draw, nullptr, nullptr, nullptr, nullptr, Destroy }
+	{
+	}
+
+	bool Selectable() override final const noexcept
+	{
+		return false;
+	}
+
+	void CalculateSize() override final const noexcept
 	{
 		if (label != "")
 		{
@@ -54,7 +71,7 @@ struct Separator : Widget
 		height = 1;
 	}
 
-	void Drawer()
+	void Draw() override final const noexcept
 	{
 		int x;
 		int y;
@@ -72,12 +89,12 @@ struct Separator : Widget
 
 			FGColor(ColorType::bright_green);
 			DrawString(" ");
-			DrawString(separator->label);
+			DrawString(label.c_str());
 			DrawString(" ");
 		}
 	}
 
-	void Destructor()
+	void Destroy() override final const noexcept
 	{
 	}
 
@@ -92,16 +109,6 @@ struct Separator : Widget
 			label = std::string{};
 		}
 	}
-
-	WidgetClass txt_separator_class{
-		NeverSelectable,
-		SeparatorSizeCalc,
-		SeparatorDrawer,
-		nullptr,
-		SeparatorDestructor,
-		nullptr,
-		nullptr
-	};
 
 	Separator(std::string& _label) : label(_label)
 	{

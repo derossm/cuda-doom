@@ -53,7 +53,7 @@ static void PlayerQuitGame(Player* player)
 	playeringame[player_num] = false;
 	players[consoleplayer].message = exitmsg;
 	// [crispy] don't interpolate players who left the game
-	player->mo->interp = false;
+	player->interp = false;
 
 	// TODO: check if it is sensible to do this:
 
@@ -70,7 +70,7 @@ static void RunTic(ticcmd_t* cmds, bool *ingame)
 
 	// Check for player quits.
 
-	for (i = 0; i < MAXPLAYERS; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
 		if (!demoplayback && playeringame[i] && !ingame[i])
 		{
@@ -100,7 +100,7 @@ static loop_interface_t doom_loop_interface = {
 // Load game settings from the specified structure and
 // set global variables.
 
-static void LoadGameSettings(net_gamesettings_t* settings)
+static void LoadGameSettings(net_gamesettings* settings)
 {
 	unsigned i;
 
@@ -122,7 +122,7 @@ static void LoadGameSettings(net_gamesettings_t* settings)
 				"because there is a client recording a Vanilla demo.\n");
 	}
 
-	for (i = 0; i < MAXPLAYERS; ++i)
+	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
 		playeringame[i] = i < settings->num_players;
 	}
@@ -131,7 +131,7 @@ static void LoadGameSettings(net_gamesettings_t* settings)
 // Save the game settings from global variables to the specified
 // game settings structure.
 
-static void SaveGameSettings(net_gamesettings_t* settings)
+static void SaveGameSettings(net_gamesettings* settings)
 {
 	// Fill in game settings structure with appropriate parameters
 	// for the new game
@@ -152,11 +152,11 @@ static void SaveGameSettings(net_gamesettings_t* settings)
 							|| M_ParmExists("-shorttics");
 }
 
-static void InitConnectData(net_connect_data_t* connect_data)
+static void InitConnectData(net_connect_data* connect_data)
 {
 	bool shorttics;
 
-	connect_data->max_players = MAXPLAYERS;
+	connect_data->max_players = MAX_PLAYERS;
 	connect_data->drone = false;
 
 	//!
@@ -218,7 +218,7 @@ static void InitConnectData(net_connect_data_t* connect_data)
 
 void D_ConnectNetGame()
 {
-	net_connect_data_t connect_data;
+	net_connect_data connect_data;
 
 	InitConnectData(&connect_data);
 	netgame = D_InitNetGame(&connect_data);
@@ -243,7 +243,7 @@ void D_ConnectNetGame()
 //
 void D_CheckNetGame ()
 {
-	net_gamesettings_t settings;
+	net_gamesettings settings;
 
 	if (netgame)
 	{

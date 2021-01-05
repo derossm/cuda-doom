@@ -8,28 +8,26 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
+#include "txt_mouseinput.h"
 
 #include "doomkeys.h"
+
 #include "m_misc.h"
 
-#include "txt_mouseinput.h"
-#include "txt_gui.h"
-#include "txt_io.h"
-#include "txt_label.h"
-#include "txt_utf8.h"
-#include "txt_window.h"
+#include "../../textscreen/txt_gui.h"
+#include "../../textscreen/txt_io.h"
+#include "../../textscreen/txt_label.h"
+#include "../../textscreen/txt_utf8.h"
+#include "../../textscreen/txt_window.h"
 
 // eg. "BUTTON #10"
-#define MOUSE_INPUT_WIDTH 10
+constexpr size_t MOUSE_INPUT_WIDTH{10};
 
-static int MousePressCallback(Window* window,
-								int x, int y, int b,
-								TXT_UNCAST_ARG(mouse_input))
+static int MousePressCallback(Window* window, int x, int y, int b, TXT_UNCAST_ARG(mouse_input))
 {
 	TXT_CAST_ARG(txt_mouse_input_t, mouse_input);
 
 	// Got the mouse press. Save to the variable and close the window.
-
 	*mouse_input->variable = b - TXT_MOUSE_BASE;
 
 	if (mouse_input->check_conflicts)
@@ -64,7 +62,7 @@ static void TXT_MouseInputSizeCalc(TXT_UNCAST_ARG(mouse_input))
 	mouse_input->widget.h = 1;
 }
 
-static void GetMouseButtonDescription(int button, char* buf, size_t buf_len)
+static void GetMouseButtonDescription(int button, std::string buf, size_t buf_len)
 {
 	switch (button)
 	{

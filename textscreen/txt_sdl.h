@@ -22,7 +22,7 @@ namespace cudadoom::txt
 
 struct FontType
 {
-	const char* name;
+	std::string name;
 	const uint8_t* data;
 	unsigned w;
 	unsigned h;

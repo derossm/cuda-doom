@@ -1,4 +1,5 @@
 add_library(textscreen STATIC
+									txt_common.h
 									textscreen.h
 									txt_defines.h
 									txt_enums.h
@@ -6,7 +7,7 @@ add_library(textscreen STATIC
 									txt_checkbox.h
 									txt_desktop.h
 									txt_dropdown.h
-			txt_fileselect.cpp		txt_fileselect.h
+									txt_fileselect.h
 			txt_gui.cpp				txt_gui.h
 									txt_inputbox.h
 									txt_io.h

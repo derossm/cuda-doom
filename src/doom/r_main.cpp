@@ -28,7 +28,7 @@
 #include "st_stuff.h" // [crispy] ST_refreshBackground()
 
 // Fineangles in the SCREENWIDTH wide window.
-#define FIELDOFVIEW 2048
+constexpr size_t FIELDOFVIEW{2048};
 
 int viewangleoffset;
 
@@ -46,49 +46,49 @@ fixed_t centeryfrac;
 fixed_t projection;
 
 // just for profiling purposes
-int			framecount;
+int framecount;
 
-int			sscount;
-int			linecount;
-int			loopcount;
+int sscount;
+int linecount;
+int loopcount;
 
-fixed_t			viewx;
-fixed_t			viewy;
-fixed_t			viewz;
+fixed_t viewx;
+fixed_t viewy;
+fixed_t viewz;
 
-angle_t			viewangle;
+angle_t viewangle;
 
-fixed_t			viewcos;
-fixed_t			viewsin;
+fixed_t viewcos;
+fixed_t viewsin;
 
-Player*		viewplayer;
+Player* viewplayer;
 
 // 0 = high, 1 = low
-int			detailshift;
+int detailshift;
 
 //
 // precalculated math tables
 //
-angle_t			clipangle;
+angle_t clipangle;
 
 // The viewangletox[viewangle + FINEANGLES/4] lookup
 // maps the visible view angles to screen X coordinates,
 // flattening the arc to a flat projection plane.
 // There will be many angles mapped to the same X.
-int			viewangletox[FINEANGLES/2];
+int viewangletox[FINEANGLES/2];
 
 // The xtoviewangleangle[] table maps a screen pixel
 // to the lowest viewangle that maps back to x ranges
 // from clipangle to -clipangle.
-angle_t			xtoviewangle[MAXWIDTH+1];
+angle_t xtoviewangle[MAXWIDTH+1];
 
 // [crispy] parameterized for smooth diminishing lighting
-lighttable_t***		scalelight = NULL;
-lighttable_t**		scalelightfixed = NULL;
-lighttable_t***		zlight = NULL;
+lighttable_t*** scalelight = NULL;
+lighttable_t** scalelightfixed = NULL;
+lighttable_t*** zlight = NULL;
 
 // bumped light from gun blasts
-int			extralight;
+int extralight;
 
 // [crispy] parameterized for smooth diminishing lighting
 int LIGHTLEVELS;
@@ -135,10 +135,10 @@ void R_AddPointToBox(int x, int y, fixed_t* box)
 //
 int R_PointOnSide(fixed_t x, fixed_t y, node_t* node)
 {
-	fixed_t	dx;
-	fixed_t	dy;
-	fixed_t	left;
-	fixed_t	right;
+	fixed_t dx;
+	fixed_t dy;
+	fixed_t left;
+	fixed_t right;
 
 	if (!node->dx)
 	{
@@ -184,14 +184,14 @@ int R_PointOnSide(fixed_t x, fixed_t y, node_t* node)
 
 int R_PointOnSegSide(fixed_t x, fixed_t y, seg_t* line)
 {
-	fixed_t	lx;
-	fixed_t	ly;
-	fixed_t	ldx;
-	fixed_t	ldy;
-	fixed_t	dx;
-	fixed_t	dy;
-	fixed_t	left;
-	fixed_t	right;
+	fixed_t lx;
+	fixed_t ly;
+	fixed_t ldx;
+	fixed_t ldy;
+	fixed_t dx;
+	fixed_t dy;
+	fixed_t left;
+	fixed_t right;
 
 	lx = line->v1->x;
 	ly = line->v1->y;
@@ -585,7 +585,7 @@ void R_InitTextureMapping()
 }
 
 // Only inits the zlight table, because the scalelight table changes with view size.
-#define DISTMAP		2
+constexpr size_t DISTMAP{2};
 
 void R_InitLightTables()
 {
@@ -856,16 +856,16 @@ subsector_t* R_PointInSubsector(fixed_t x, fixed_t y)
 	if (!numnodes)
 		return subsectors;
 
-	nodenum class = numnodes-1;
+	nodenum = numnodes-1;
 
-	while (! (nodenum class & NF_SUBSECTOR) )
+	while (! (nodenum & NF_SUBSECTOR) )
 	{
 		node = &nodes[nodenum];
 		side = R_PointOnSide(x, y, node);
-		nodenum class = node->children[side];
+		nodenum = node->children[side];
 	}
 
-	return &subsectors[nodenum class & ~NF_SUBSECTOR];
+	return &subsectors[nodenum & ~NF_SUBSECTOR];
 }
 
 void R_SetupFrame(Player* player)
@@ -883,25 +883,25 @@ void R_SetupFrame(Player* player)
 		leveltime > 1 &&
 		// Don't interpolate if the player did something
 		// that would necessitate turning it off for a tic.
-		player->mo->interp == true &&
+		player->interp == true &&
 		// Don't interpolate during a paused state
 		leveltime > oldleveltime)
 	{
 		// Interpolate player camera from their old position to their current one.
-		viewx = player->mo->oldx + FixedMul(player->mo->x - player->mo->oldx, fractionaltic);
-		viewy = player->mo->oldy + FixedMul(player->mo->y - player->mo->oldy, fractionaltic);
+		viewx = player->oldx + FixedMul(player->x - player->oldx, fractionaltic);
+		viewy = player->oldy + FixedMul(player->y - player->oldy, fractionaltic);
 		viewz = player->oldviewz + FixedMul(player->viewz - player->oldviewz, fractionaltic);
-		viewangle = R_InterpolateAngle(player->mo->oldangle, player->mo->angle, fractionaltic) + viewangleoffset;
+		viewangle = R_InterpolateAngle(player->oldangle, player->angle, fractionaltic) + viewangleoffset;
 
 		pitch = (player->oldlookdir + (player->lookdir - player->oldlookdir) * FIXED2DOUBLE(fractionaltic)) / MLOOKUNIT
 				+ (player->oldrecoilpitch + FixedMul(player->recoilpitch - player->oldrecoilpitch, fractionaltic));
 	}
 	else
 	{
-		viewx = player->mo->x;
-		viewy = player->mo->y;
+		viewx = player->x;
+		viewy = player->y;
 		viewz = player->viewz;
-		viewangle = player->mo->angle + viewangleoffset;
+		viewangle = player->angle + viewangleoffset;
 
 		// [crispy] pitch is actual lookdir and weapon pitch
 		pitch = player->lookdir / MLOOKUNIT + player->recoilpitch;

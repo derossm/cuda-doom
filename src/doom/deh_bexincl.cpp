@@ -8,10 +8,9 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-//
-// Parses INCLUDE directives in BEX files
+	DESCRIPTION:
+		Parses INCLUDE directives in BEX files
 \**********************************************************************************************************************************************/
-
 
 #include "m_misc.h"
 
@@ -20,73 +19,65 @@
 
 static bool bex_nested = false;
 
-static void* DEH_BEXInclStart(deh_context_t* context, char* line)
+static void DEH_BEXInclStart(deh_context_t* context, std::string line)
 {
-	char* deh_file, *inc_file, *try_path;
 	extern bool bex_notext;
 
-	if (!DEH_FileName(context))
+	if (DEH_FileName(context).empty())
 	{
-	DEH_Warning(context, "DEHACKED lumps may not include files");
-	return NULL;
+		DEH_Warning(context, "DEHACKED lumps may not include files");
+		return;
 	}
 
-	deh_file = DEH_FileName(context);
+	std::string deh_file = DEH_FileName(context);
 
 	if (bex_nested)
 	{
-	DEH_Warning(context, "Included files may not include other files");
-	return NULL;
+		DEH_Warning(context, "Included files may not include other files");
+		return;
 	}
 
-	inc_file = static_cast<decltype(inc_file)>(malloc(strlen(line) + 1));
+	std::string inc_file = static_cast<decltype(inc_file)>(malloc(strlen(line) + 1));
 
 	if (sscanf(line, "INCLUDE NOTEXT %32s", inc_file) == 1)
 	{
-	bex_notext = true;
+		bex_notext = true;
+	}
+	else if (sscanf(line, "INCLUDE %32s", inc_file) == 1)
+	{
+		// well, fine - VERY HELPFUL COMMENT TO BE REMOVED NEXT COMMIT TODO
 	}
 	else
-	if (sscanf(line, "INCLUDE %32s", inc_file) == 1)
 	{
-	// well, fine
-	}
-	else
-	{
-	DEH_Warning(context, "Parse error on section start");
-	free(inc_file);
-	return NULL;
+		DEH_Warning(context, "Parse error on section start");
+		return;
 	}
 
 	// first, try loading the file right away
-	try_path = inc_file;
+	std::string try_path = inc_file;
 
 	if (!M_FileExists(try_path))
 	{
-	// second, try loading the file in the directory of the current file
-	char* dir;
-	dir = M_DirName(deh_file);
-	try_path = M_StringJoin(dir, DIR_SEPARATOR_S, inc_file, NULL);
-	free(dir);
+		// second, try loading the file in the directory of the current file
+		std::string dir = M_DirName(deh_file);
+		try_path = std::string(dir + DIR_SEPARATOR_S + inc_file);
 	}
 
 	bex_nested = true;
 
 	if (!M_FileExists(try_path) || !DEH_LoadFile(try_path))
 	{
-	DEH_Warning(context, "Could not include \"%s\"", inc_file);
+		DEH_Warning(context, "Could not include \"%s\"", inc_file);
 	}
 
 	bex_nested = false;
 	bex_notext = false;
 
-	if (try_path != inc_file)
-	free(try_path);
-	free(inc_file);
-
-	return NULL;
+	return;
 }
 
-static void DEH_BEXInclParseLine(deh_context_t* context, char* line, void* tag)
+[[deprecated]]
+static void DEH_BEXInclParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	// not used
 }

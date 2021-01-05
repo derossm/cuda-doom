@@ -18,45 +18,35 @@
 #include "net_io.h"
 #include "z_zone.h"
 
-#define MAX_MODULES 16
-
-struct _net_context_t
-{
-	net_module_t* modules[MAX_MODULES];
-	int num_modules;
-};
-
 net_addr_t net_broadcast_addr;
 
-net_context_t* NET_NewContext()
+net_context* NET_NewContext()
 {
-	net_context_t* context;
-
-	context = Z_Malloc<net_context_t>(sizeof(net_context_t), pu_tags_t::PU_STATIC, 0);
+	net_context* context = Z_Malloc<net_context*>(sizeof(net_context), pu_tags_t::PU_STATIC, 0);
 	context->num_modules = 0;
 
 	return context;
 }
 
-void NET_AddModule(net_context_t* context, net_module_t* module)
+void NET_AddModule(net_context* context, net_module_t* mod)
 {
 	if (context->num_modules >= MAX_MODULES)
 	{
 		I_Error("NET_AddModule: No more modules for context");
 	}
 
-	context->modules[context->num_modules] = module;
+	context->mods[context->num_modules] = mod;
 	++context->num_modules;
 }
 
-net_addr_t* NET_ResolveAddress(net_context_t* context, const char* addr)
+net_addr_t* NET_ResolveAddress(net_context* context, std::string addr)
 {
 	int i;
 	net_addr_t* result;
 
 	for (i=0; i<context->num_modules; ++i)
 	{
-		result = context->modules[i]->ResolveAddress(addr);
+		result = context->mods[i]->ResolveAddress(addr);
 
 		if (result != NULL)
 		{
@@ -65,25 +55,25 @@ net_addr_t* NET_ResolveAddress(net_context_t* context, const char* addr)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void NET_SendPacket(net_addr_t* addr, net_packet_t* packet)
 {
-	addr->module->SendPacket(addr, packet);
+	addr->mod->SendPacket(addr, packet);
 }
 
-void NET_SendBroadcast(net_context_t* context, net_packet_t* packet)
+void NET_SendBroadcast(net_context* context, net_packet_t* packet)
 {
 	int i;
 
 	for (i=0; i<context->num_modules; ++i)
 	{
-		context->modules[i]->SendPacket(&net_broadcast_addr, packet);
+		context->mods[i]->SendPacket(&net_broadcast_addr, packet);
 	}
 }
 
-bool NET_RecvPacket(net_context_t* context,
+bool NET_RecvPacket(net_context* context,
 						net_addr_t**addr,
 						net_packet_t**packet)
 {
@@ -93,7 +83,7 @@ bool NET_RecvPacket(net_context_t* context,
 
 	for (i=0; i<context->num_modules; ++i)
 	{
-		if (context->modules[i]->RecvPacket(addr, packet))
+		if (context->mods[i]->RecvPacket(addr, packet))
 		{
 			NET_ReferenceAddress(*addr);
 			return true;
@@ -106,11 +96,11 @@ bool NET_RecvPacket(net_context_t* context,
 // Note: this prints into a static buffer, calling again overwrites
 // the first result
 
-char* NET_AddrToString(net_addr_t* addr)
+std::string NET_AddrToString(net_addr_t* addr)
 {
 	static char buf[128];
 
-	addr->module->AddrToString(addr, buf, sizeof(buf) - 1);
+	addr->mod->AddrToString(addr, buf, sizeof(buf) - 1);
 
 	return buf;
 }
@@ -136,7 +126,7 @@ void NET_ReleaseAddress(net_addr_t* addr)
 	//printf("%s: -refcount=%d\n", NET_AddrToString(addr), addr->refcount);
 	if (addr->refcount <= 0)
 	{
-		addr->module->FreeAddress(addr);
+		addr->mod->FreeAddress(addr);
 	}
 }
 

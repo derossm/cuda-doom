@@ -10,7 +10,6 @@
 // Parses Text substitution sections in dehacked files
 \**********************************************************************************************************************************************/
 
-
 #include "doomtype.h"
 
 #include "z_zone.h"
@@ -25,7 +24,7 @@ bool bex_notext = false;
 // Given a string length, find the maximum length of a
 // string that can replace it.
 
-static int cudadoom::txt::TXT_MaxStringLength(int len)
+static int cudadoom::txt::MaxStringLength(int len)
 {
 	// Enough bytes for the string and the NUL terminator
 
@@ -42,32 +41,30 @@ static int cudadoom::txt::TXT_MaxStringLength(int len)
 	return len - 1;
 }
 
-static void* DEH_TextStart(deh_context_t* context, char* line)
+static void* DEH_TextStart(deh_context_t* context, std::string line)
 {
-	char* from_text, *to_text;
+	std::string from_text, *to_text;
 	int fromlen, tolen;
 	int i;
 
 	if (sscanf(line, "Text %i %i", &fromlen, &tolen) != 2)
 	{
 		DEH_Warning(context, "Parse error on section start");
-		return NULL;
+		return nullptr;
 	}
 
 	// Only allow string replacements that are possible in Vanilla Doom.
 	// Chocolate Doom is unforgiving!
-
-	if (!deh_allow_long_strings && tolen > cudadoom::txt::TXT_MaxStringLength(fromlen))
+	if (!deh_allow_long_strings && tolen > cudadoom::txt::MaxStringLength(fromlen))
 	{
 		DEH_Error(context, "Replacement string is longer than the maximum possible in doom.exe");
-		return NULL;
+		return nullptr;
 	}
 
 	from_text = static_cast<decltype(from_text)>(malloc(fromlen + 1));
 	to_text = static_cast<decltype(to_text)>(malloc(tolen + 1));
 
 	// read in the "from" text
-
 	for (i=0; i<fromlen; ++i)
 	{
 		from_text[i] = DEH_GetChar(context);
@@ -75,7 +72,6 @@ static void* DEH_TextStart(deh_context_t* context, char* line)
 	from_text[fromlen] = '\0';
 
 	// read in the "to" text
-
 	for (i=0; i<tolen; ++i)
 	{
 		to_text[i] = DEH_GetChar(context);
@@ -84,16 +80,16 @@ static void* DEH_TextStart(deh_context_t* context, char* line)
 
 	if (!bex_notext)
 	{
-	DEH_AddStringReplacement(from_text, to_text);
+		DEH_AddStringReplacement(from_text, to_text);
 	}
 
 	free(from_text);
 	free(to_text);
 
-	return NULL;
+	return nullptr;
 }
 
-static void DEH_TextParseLine(deh_context_t* context, char* line, void* tag)
+static void DEH_TextParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	// not used
 }
@@ -105,6 +101,5 @@ deh_section_t deh_section_text =
 	DEH_TextStart,
 	DEH_TextParseLine,
 	NULL,
-	NULL,
+	NULL
 };
-

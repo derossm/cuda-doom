@@ -10,15 +10,18 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "doomkeys.h"
 
-#include "txt_main.h"
 #include "txt_widget.h"
-#include "txt_window.h"
+
+#include "txt_main.h"
 #include "txt_utf8.h"
 #include "txt_io.h"
 #include "txt_gui.h"
+
+//#include "txt_window.h"
 
 namespace cudadoom::txt
 {
@@ -28,17 +31,35 @@ namespace cudadoom::txt
  * A button is a widget that can be selected to perform some action.
  * When a button is pressed, it emits the "pressed" signal.
  */
-struct Button : Widget
+class Button : public Widget<Button>
 {
 	std::string label;
 
-	void SizeCalc()
+public:
+
+	Button(std::string& _label) : label(_label),
+							 widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	{
+	}
+
+	Button(std::string& _label, WidgetSignalFunc _handle, UserData _user) :
+							widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	{
+		SetButtonLabel(_label);
+		SignalConnect(std::string("pressed"), _handle, _user);
+	}
+
+	bool Selectable() override final const noexcept
+	{
+	}
+
+	void CalculateSize() override final const noexcept
 	{
 		width = label.length();
 		height = 1;
 	}
 
-	void Drawer()
+	void Draw() override final const noexcept
 	{
 		SetWidgetBG();
 
@@ -50,7 +71,7 @@ struct Button : Widget
 		}
 	}
 
-	bool KeyPress(int key)
+	bool KeyPress(KeyType key) override final const noexcept
 	{
 		if (key == KEY_ENTER)
 		{
@@ -61,41 +82,32 @@ struct Button : Widget
 		return false;
 	}
 
-	void MousePress(int x, int y, int b)
+	bool MousePress(MouseEvent evt) override final const noexcept
 	{
-		if (b == MOUSE_LEFT)
+		if (evt.button == MOUSE_LEFT)
 		{
 			// Equivalent to pressing enter
-			KeyPress(KEY_ENTER);
+			return KeyPress(KEY_ENTER);
 		}
+
+		return false;
 	}
 
-	WidgetClass ButtonClass =
+	void SetLayout() override final const noexcept
 	{
-		AlwaysSelectable,
-		ButtonSizeCalc,
-		ButtonDrawer,
-		ButtonKeyPress,
-		ButtonDestructor,
-		ButtonMousePress,
-		NULL
-	};
+	}
+
+	void SetFocus() override final const noexcept
+	{
+	}
+
+	void Destroy() override final const noexcept
+	{
+	}
 
 	void SetButtonLabel(std::string& _label)
 	{
 		label = std::string(_label);
-	}
-
-	Button(std::string& _label) : label(_label)
-	{
-	}
-
-	Button(std::string& _label, WidgetSignalFunc _handle, UserData _user)
-	{
-		SetButtonLabel(_label);
-		SignalConnect(std::string("pressed"), _handle, _user);
-
-		return button;
 	}
 };
 

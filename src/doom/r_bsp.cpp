@@ -28,15 +28,15 @@
 
 
 
-seg_t*		curline;
-side_t*		sidedef;
-line_t*		linedef;
-sector_t*	frontsector;
-sector_t*	backsector;
+seg_t* curline;
+side_t* sidedef;
+line_t* linedef;
+sector_t* frontsector;
+sector_t* backsector;
 
-drawseg_t*	drawsegs = NULL;
-drawseg_t*	ds_p;
-int		numdrawsegs = 0;
+drawseg_t* drawsegs = NULL;
+drawseg_t* ds_p;
+int numdrawsegs = 0;
 
 
 void R_StoreWallRange(int start, int stop);
@@ -61,7 +61,7 @@ void R_ClearDrawSegs ()
 //
 struct cliprange_t
 {
-	int	first;
+	int first;
 	int last;
 
 };
@@ -72,12 +72,12 @@ struct cliprange_t
 // The simplest thing we can do, other than fix this bug, is to let the game
 // render overage and then bomb out by detecting the overflow after the
 // fact. -haleyjd
-//#define MAXSEGS 32
-#define MAXSEGS (MAXWIDTH / 2 + 1)
+//constexpr size_t MAXSEGS{32};
+constexpr size_t MAXSEGS{(MAXWIDTH / 2 + 1)};
 
 // newend is one past the last valid seg
-cliprange_t*	newend;
-cliprange_t	solidsegs[MAXSEGS];
+cliprange_t* newend;
+cliprange_t solidsegs[MAXSEGS];
 
 
 
@@ -90,14 +90,14 @@ cliprange_t	solidsegs[MAXSEGS];
 //
 void R_ClipSolidWallSegment(int first, int last)
 {
-	cliprange_t*	next;
-	cliprange_t*	start;
+	cliprange_t* next;
+	cliprange_t* start;
 
 	// Find the first range that touches the range
 	// (adjacent pixels are touching).
 	start = solidsegs;
 	while (start->last < first-1)
-	start++;
+	++start;
 
 	if (first < start->first)
 	{
@@ -107,12 +107,12 @@ void R_ClipSolidWallSegment(int first, int last)
 		// so insert a new clippost.
 		R_StoreWallRange (first, last);
 		next = newend;
-		newend++;
+		++newend;
 
 		while (next != start)
 		{
 		*next = *(next-1);
-		next--;
+		--next;
 		}
 		next->first = first;
 		next->last = last;
@@ -134,7 +134,7 @@ void R_ClipSolidWallSegment(int first, int last)
 	{
 	// There is a fragment between two posts.
 	R_StoreWallRange (next->last + 1, (next+1)->first - 1);
-	next++;
+	++next;
 
 	if (last <= next->last)
 	{
@@ -180,13 +180,13 @@ void R_ClipSolidWallSegment(int first, int last)
 //
 void R_ClipPassWallSegment(int first, int last)
 {
-	cliprange_t*	start;
+	cliprange_t* start;
 
 	// Find the first range that touches the range
 	// (adjacent pixels are touching).
 	start = solidsegs;
 	while (start->last < first-1)
-	start++;
+	++start;
 
 	if (first < start->first)
 	{
@@ -209,7 +209,7 @@ void R_ClipPassWallSegment(int first, int last)
 	{
 	// There is a fragment between two posts.
 	R_StoreWallRange (start->last + 1, (start+1)->first - 1);
-	start++;
+	++start;
 
 	if (last <= start->last)
 		return;
@@ -262,14 +262,14 @@ void R_MaybeInterpolateSector(sector_t* sector)
 // Clips the given segment
 // and adds any visible pieces to the line list.
 //
-void R_AddLine (seg_t*	line)
+void R_AddLine (seg_t* line)
 {
-	int			x1;
-	int			x2;
-	angle_t		angle1;
-	angle_t		angle2;
-	angle_t		span;
-	angle_t		tspan;
+	int x1;
+	int x2;
+	angle_t angle1;
+	angle_t angle2;
+	angle_t span;
+	angle_t tspan;
 
 	curline = line;
 
@@ -374,7 +374,7 @@ void R_AddLine (seg_t*	line)
 // Returns true
 // if some part of the bbox might be visible.
 //
-int	checkcoord[12][4] =
+int checkcoord[12][4] =
 {
 	{3,0,2,1},
 	{3,0,2,0},
@@ -390,26 +390,26 @@ int	checkcoord[12][4] =
 };
 
 
-bool R_CheckBBox (fixed_t*	bspcoord)
+bool R_CheckBBox (fixed_t* bspcoord)
 {
-	int			boxx;
-	int			boxy;
-	int			boxpos;
+	int boxx;
+	int boxy;
+	int boxpos;
 
-	fixed_t		x1;
-	fixed_t		y1;
-	fixed_t		x2;
-	fixed_t		y2;
+	fixed_t x1;
+	fixed_t y1;
+	fixed_t x2;
+	fixed_t y2;
 
-	angle_t		angle1;
-	angle_t		angle2;
-	angle_t		span;
-	angle_t		tspan;
+	angle_t angle1;
+	angle_t angle2;
+	angle_t span;
+	angle_t tspan;
 
-	cliprange_t*	start;
+	cliprange_t* start;
 
-	int			sx1;
-	int			sx2;
+	int sx1;
+	int sx2;
 
 	// Find the corners of the box
 	// that define the edges from current viewpoint.
@@ -482,11 +482,11 @@ bool R_CheckBBox (fixed_t*	bspcoord)
 	// Does not cross a pixel.
 	if (sx1 == sx2)
 	return false;
-	sx2--;
+	--sx2;
 
 	start = solidsegs;
 	while (start->last < sx2)
-	start++;
+	++start;
 
 	if (sx1 >= start->first
 	&& sx2 <= start->last)
@@ -508,9 +508,9 @@ bool R_CheckBBox (fixed_t*	bspcoord)
 //
 void R_Subsector (int num)
 {
-	int			count;
-	seg_t*		line;
-	subsector_t*	sub;
+	int count;
+	seg_t* line;
+	subsector_t* sub;
 
 #ifdef RANGECHECK
 	if (num>=numsubsectors)
@@ -519,7 +519,7 @@ void R_Subsector (int num)
 			numsubsectors);
 #endif
 
-	sscount++;
+	++sscount;
 	sub = &subsectors[num];
 	frontsector = sub->sector;
 	count = sub->numlines;
@@ -558,8 +558,8 @@ void R_Subsector (int num)
 
 	while (count--)
 	{
-	R_AddLine (line);
-	line++;
+		R_AddLine(line);
+		++line;
 	}
 
 	// check for solidsegs overflow - extremely unsatisfactory!
@@ -567,18 +567,14 @@ void R_Subsector (int num)
 		I_Error("R_Subsector: solidsegs overflow (vanilla may crash here)\n");
 }
 
-
-
-
-//
 // RenderBSPNode
 // Renders all subsectors below a given node,
 // traversing subtree recursively.
 // Just call with BSP root.
 void R_RenderBSPNode (int bspnum)
 {
-	node_t*	bsp;
-	int		side;
+	node_t* bsp;
+	int side;
 
 	// Found a subsector?
 	if (bspnum & NF_SUBSECTOR)
@@ -602,5 +598,3 @@ void R_RenderBSPNode (int bspnum)
 	if (R_CheckBBox (bsp->bbox[side^1]))
 	R_RenderBSPNode (bsp->children[side^1]);
 }
-
-

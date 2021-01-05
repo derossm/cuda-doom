@@ -17,30 +17,30 @@
 // Valid game mode/mission combinations, with the number of episodes/maps for each.
 static struct
 {
-	GameMission_t mission;
+	GameMission mission;
 	GameMode mode;
 	int episode;
 	int map;
 } valid_modes[] = {
-	{ GameMission_t::pack_chex,		GameMode::retail,		1, 5 },
-	{ GameMission_t::doom,			GameMode::shareware,	1, 9 },
-	{ GameMission_t::doom,			GameMode::registered,	3, 9 },
-	{ GameMission_t::doom,			GameMode::retail,		4, 9 },
-	{ GameMission_t::doom2,			GameMode::commercial,	1, 32 },
-	{ GameMission_t::pack_tnt,		GameMode::commercial,	1, 32 },
-	{ GameMission_t::pack_plut,		GameMode::commercial,	1, 32 },
-	{ GameMission_t::pack_hacx,		GameMode::commercial,	1, 32 },
-	{ GameMission_t::pack_nerve,	GameMode::commercial,	1, 9 },
-	{ GameMission_t::pack_master,	GameMode::commercial,	1, 21 },
-	{ GameMission_t::heretic,		GameMode::shareware,	1, 9 },
-	{ GameMission_t::heretic,		GameMode::registered,	3, 9 },
-	{ GameMission_t::heretic,		GameMode::retail,		5, 9 },
-	{ GameMission_t::hexen,			GameMode::commercial,	1, 60 },
-	{ GameMission_t::strife,		GameMode::commercial,	1, 34 },
+	{ GameMission::pack_chex,		GameMode::retail,		1, 5 },
+	{ GameMission::doom,			GameMode::shareware,	1, 9 },
+	{ GameMission::doom,			GameMode::registered,	3, 9 },
+	{ GameMission::doom,			GameMode::retail,		4, 9 },
+	{ GameMission::doom2,			GameMode::commercial,	1, 32 },
+	{ GameMission::pack_tnt,		GameMode::commercial,	1, 32 },
+	{ GameMission::pack_plut,		GameMode::commercial,	1, 32 },
+	{ GameMission::pack_hacx,		GameMode::commercial,	1, 32 },
+	{ GameMission::pack_nerve,	GameMode::commercial,	1, 9 },
+	{ GameMission::pack_master,	GameMode::commercial,	1, 21 },
+	{ GameMission::heretic,		GameMode::shareware,	1, 9 },
+	{ GameMission::heretic,		GameMode::registered,	3, 9 },
+	{ GameMission::heretic,		GameMode::retail,		5, 9 },
+	{ GameMission::hexen,			GameMode::commercial,	1, 60 },
+	{ GameMission::strife,		GameMode::commercial,	1, 34 },
 };
 
 // Check that a gamemode+gamemission received over the network is valid.
-bool D_ValidGameMode(GameMission_t mission, GameMode mode)
+bool D_ValidGameMode(GameMission mission, GameMode mode)
 {
 	for (size_t i{0}; i < arrlen(valid_modes); ++i)
 	{
@@ -53,10 +53,10 @@ bool D_ValidGameMode(GameMission_t mission, GameMode mode)
 	return false;
 }
 
-bool D_ValidEpisodeMap(GameMission_t mission, GameMode mode, int episode, int map)
+bool D_ValidEpisodeMap(GameMission mission, GameMode mode, int episode, int map)
 {
 	// Hacks for Heretic secret episodes
-	if (mission == GameMission_t::heretic)
+	if (mission == GameMission::heretic)
 	{
 		if (mode == GameMode::retail && episode == 6)
 		{
@@ -82,7 +82,7 @@ bool D_ValidEpisodeMap(GameMission_t mission, GameMode mode, int episode, int ma
 }
 
 // Get the number of valid episodes for the specified mission/mode.
-int D_GetNumEpisodes(GameMission_t mission, GameMode mode)
+int D_GetNumEpisodes(GameMission mission, GameMode mode)
 {
 	auto episode{1};
 
@@ -96,33 +96,33 @@ int D_GetNumEpisodes(GameMission_t mission, GameMode mode)
 
 // Table of valid versions
 static struct {
-	GameMission_t mission;
-	GameVersion_t version;
+	GameMission mission;
+	GameVersion version;
 } valid_versions[] = {
-	{ GameMission_t::doom,		GameVersion_t::exe_doom_1_2 },
-	{ GameMission_t::doom,		GameVersion_t::exe_doom_1_666 },
-	{ GameMission_t::doom,		GameVersion_t::exe_doom_1_7 },
-	{ GameMission_t::doom,		GameVersion_t::exe_doom_1_8 },
-	{ GameMission_t::doom,		GameVersion_t::exe_doom_1_9 },
-	{ GameMission_t::doom,		GameVersion_t::exe_hacx },
-	{ GameMission_t::doom,		GameVersion_t::exe_ultimate },
-	{ GameMission_t::doom,		GameVersion_t::exe_final },
-	{ GameMission_t::doom,		GameVersion_t::exe_final2 },
-	{ GameMission_t::doom,		GameVersion_t::exe_chex },
-	{ GameMission_t::heretic,	GameVersion_t::exe_heretic_1_3 },
-	{ GameMission_t::hexen,		GameVersion_t::exe_hexen_1_1 },
-	{ GameMission_t::strife,	GameVersion_t::exe_strife_1_2 },
-	{ GameMission_t::strife,	GameVersion_t::exe_strife_1_31 },
+	{ GameMission::doom,		GameVersion::exe_doom_1_2 },
+	{ GameMission::doom,		GameVersion::exe_doom_1_666 },
+	{ GameMission::doom,		GameVersion::exe_doom_1_7 },
+	{ GameMission::doom,		GameVersion::exe_doom_1_8 },
+	{ GameMission::doom,		GameVersion::exe_doom_1_9 },
+	{ GameMission::doom,		GameVersion::exe_hacx },
+	{ GameMission::doom,		GameVersion::exe_ultimate },
+	{ GameMission::doom,		GameVersion::exe_final },
+	{ GameMission::doom,		GameVersion::exe_final2 },
+	{ GameMission::doom,		GameVersion::exe_chex },
+	{ GameMission::heretic,	GameVersion::exe_heretic_1_3 },
+	{ GameMission::hexen,		GameVersion::exe_hexen_1_1 },
+	{ GameMission::strife,	GameVersion::exe_strife_1_2 },
+	{ GameMission::strife,	GameVersion::exe_strife_1_31 },
 };
 
-bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
+bool D_ValidGameVersion(GameMission mission, GameVersion version)
 {
 	// All Doom variants can use the Doom versions.
-	if (mission == GameMission_t::doom2 || mission == GameMission_t::pack_plut || mission == GameMission_t::pack_tnt
-		|| mission == GameMission_t::pack_hacx || mission == GameMission_t::pack_chex
-		|| mission == GameMission_t::pack_nerve || mission == GameMission_t::pack_master)
+	if (mission == GameMission::doom2 || mission == GameMission::pack_plut || mission == GameMission::pack_tnt
+		|| mission == GameMission::pack_hacx || mission == GameMission::pack_chex
+		|| mission == GameMission::pack_nerve || mission == GameMission::pack_master)
 	{
-		mission = GameMission_t::doom;
+		mission = GameMission::doom;
 	}
 
 	for (size_t i{0}; i < arrlen(valid_versions); ++i)
@@ -137,58 +137,58 @@ bool D_ValidGameVersion(GameMission_t mission, GameVersion_t version)
 }
 
 // Does this mission type use ExMy form, rather than MAPxy form?
-bool D_IsEpisodeMap(GameMission_t mission)
+bool D_IsEpisodeMap(GameMission mission)
 {
 	switch (mission)
 	{
-		case GameMission_t::doom:
-		case GameMission_t::heretic:
-		case GameMission_t::pack_chex:
+		case GameMission::doom:
+		case GameMission::heretic:
+		case GameMission::pack_chex:
 			return true;
 
-		case GameMission_t::none:
-		case GameMission_t::hexen:
-		case GameMission_t::doom2:
-		case GameMission_t::pack_hacx:
-		case GameMission_t::pack_tnt:
-		case GameMission_t::pack_plut:
-		case GameMission_t::pack_nerve:
-		case GameMission_t::pack_master:
-		case GameMission_t::strife:
+		case GameMission::none:
+		case GameMission::hexen:
+		case GameMission::doom2:
+		case GameMission::pack_hacx:
+		case GameMission::pack_tnt:
+		case GameMission::pack_plut:
+		case GameMission::pack_nerve:
+		case GameMission::pack_master:
+		case GameMission::strife:
 		default:
 			return false;
 	}
 }
 
-const char* D_GameMissionString(GameMission_t mission)
+std::string D_GameMissionString(GameMission mission)
 {
 	switch (mission)
 	{
-		case GameMission_t::doom:
+		case GameMission::doom:
 			return "doom";
-		case GameMission_t::doom2:
+		case GameMission::doom2:
 			return "doom2";
-		case GameMission_t::pack_tnt:
+		case GameMission::pack_tnt:
 			return "tnt";
-		case GameMission_t::pack_plut:
+		case GameMission::pack_plut:
 			return "plutonia";
-		case GameMission_t::pack_hacx:
+		case GameMission::pack_hacx:
 			return "hacx";
-		case GameMission_t::pack_chex:
+		case GameMission::pack_chex:
 			return "chex";
-		case GameMission_t::heretic:
+		case GameMission::heretic:
 			return "heretic";
-		case GameMission_t::hexen:
+		case GameMission::hexen:
 			return "hexen";
-		case GameMission_t::strife:
+		case GameMission::strife:
 			return "strife";
-		case GameMission_t::none:
+		case GameMission::none:
 		default:
 			return "none";
 	}
 }
 
-const char* D_GameModeString(GameMode mode)
+std::string D_GameModeString(GameMode mode)
 {
 	switch (mode)
 	{

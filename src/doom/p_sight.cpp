@@ -25,15 +25,15 @@
 //
 // P_CheckSight
 //
-fixed_t		sightzstart;		// eye z of looker
-fixed_t		topslope;
-fixed_t		bottomslope;		// slopes to top and bottom of target
+fixed_t sightzstart;		// eye z of looker
+fixed_t topslope;
+fixed_t bottomslope;		// slopes to top and bottom of target
 
-divline_t	strace;			// from t1 to t2
-fixed_t		t2x;
-fixed_t		t2y;
+divline_t strace;			// from t1 to t2
+fixed_t t2x;
+fixed_t t2y;
 
-int		sightcounts[2];
+int sightcounts[2];
 
 
 // PTR_SightTraverse() for Doom 1.2 sight calculations
@@ -80,10 +80,10 @@ bool PTR_SightTraverse(intercept_t* in)
 //
 int P_DivlineSide(fixed_t x, fixed_t y, divline_t* node)
 {
-	fixed_t	dx;
-	fixed_t	dy;
-	fixed_t	left;
-	fixed_t	right;
+	fixed_t dx;
+	fixed_t dy;
+	fixed_t left;
+	fixed_t right;
 
 	if (!node->dx)
 	{
@@ -130,9 +130,9 @@ int P_DivlineSide(fixed_t x, fixed_t y, divline_t* node)
 //
 fixed_t P_InterceptVector2(divline_t* v2, divline_t* v1)
 {
-	fixed_t	frac;
-	fixed_t	num;
-	fixed_t	den;
+	fixed_t frac;
+	fixed_t num;
+	fixed_t den;
 
 	den = FixedMul(v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
 
@@ -154,21 +154,21 @@ fixed_t P_InterceptVector2(divline_t* v2, divline_t* v1)
 //
 bool P_CrossSubsector (int num)
 {
-	seg_t*		seg;
-	line_t*		line;
-	int			s1;
-	int			s2;
-	int			count;
-	subsector_t*	sub;
-	sector_t*		front;
-	sector_t*		back;
-	fixed_t		opentop;
-	fixed_t		openbottom;
-	divline_t		divl;
-	vertex_t*		v1;
-	vertex_t*		v2;
-	fixed_t		frac;
-	fixed_t		slope;
+	seg_t* seg;
+	line_t* line;
+	int s1;
+	int s2;
+	int count;
+	subsector_t* sub;
+	sector_t* front;
+	sector_t* back;
+	fixed_t opentop;
+	fixed_t openbottom;
+	divline_t divl;
+	vertex_t* v1;
+	vertex_t* v2;
+	fixed_t frac;
+	fixed_t slope;
 
 #ifdef RANGECHECK
 	if (num>=numsubsectors)
@@ -183,7 +183,7 @@ bool P_CrossSubsector (int num)
 	count = sub->numlines;
 	seg = &segs[sub->firstline];
 
-	for ( ; count ; seg++, count--)
+	for ( ; count ; ++seg, --count)
 	{
 	line = seg->linedef;
 
@@ -284,8 +284,8 @@ bool P_CrossSubsector (int num)
 //
 bool P_CrossBSPNode (int bspnum)
 {
-	node_t*	bsp;
-	int		side;
+	node_t* bsp;
+	int side;
 
 	if (bspnum & NF_SUBSECTOR)
 	{
@@ -326,11 +326,11 @@ bool P_CrossBSPNode (int bspnum)
 //
 bool P_CheckSight(MapObject* t1, MapObject* t2)
 {
-	int		s1;
-	int		s2;
-	int		pnum;
-	int		bytenum;
-	int		bitnum;
+	int s1;
+	int s2;
+	int pnum;
+	int bytenum;
+	int bitnum;
 
 	// First check for trivial rejection.
 
@@ -338,7 +338,7 @@ bool P_CheckSight(MapObject* t1, MapObject* t2)
 	s1 = (t1->subsector->sector - sectors);
 	s2 = (t2->subsector->sector - sectors);
 	pnum = s1*numsectors + s2;
-	bytenum class = pnum>>3;
+	bytenum = pnum>>3;
 	bitnum = 1 << (pnum&7);
 
 	// Check in REJECT table.
@@ -354,13 +354,13 @@ bool P_CheckSight(MapObject* t1, MapObject* t2)
 	// Now look from eyes of t1 to any part of t2.
 	sightcounts[1]++;
 
-	validcount++;
+	++validcount;
 
 	sightzstart = t1->z + t1->height - (t1->height>>2);
 	topslope = (t2->z+t2->height) - sightzstart;
 	bottomslope = (t2->z) - sightzstart;
 
-	if (gameversion <= GameVersion_t::exe_doom_1_2)
+	if (gameversion <= GameVersion::exe_doom_1_2)
 	{
 		return P_PathTraverse(t1->x, t1->y, t2->x, t2->y,
 								PT_EARLYOUT | PT_ADDLINES, PTR_SightTraverse);

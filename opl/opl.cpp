@@ -12,6 +12,7 @@
 \**********************************************************************************************************************************************/
 
 #include "config.h"
+#include "../derma/d_native.h"
 
 #include "SDL.h"
 
@@ -69,7 +70,7 @@ static opl_init_result_t InitDriver(opl_driver_t* _driver, unsigned port_base)
 
 	if (result1 == opl_init_result_t::OPL_INIT_NONE || result2 == opl_init_result_t::OPL_INIT_NONE)
 	{
-		printf("OPL_Init: No OPL detected using '%s' driver.\n", _driver->name);
+		printf("OPL_Init: No OPL detected using '%s' driver.\n", _driver->name.c_str());
 		_driver->shutdown_func();
 		driver = nullptr;
 		return opl_init_result_t::OPL_INIT_NONE;
@@ -77,7 +78,7 @@ static opl_init_result_t InitDriver(opl_driver_t* _driver, unsigned port_base)
 
 	init_stage_reg_writes = 0;
 
-	printf("OPL_Init: Using driver '%s'.\n", driver->name);
+	printf("OPL_Init: Using driver '%s'.\n", driver->name.c_str());
 
 	return result2;
 }
@@ -102,26 +103,26 @@ static opl_init_result_t AutoSelectDriver(unsigned port_base)
 // Initialize the OPL library. Return value indicates type of OPL chip detected, if any.
 opl_init_result_t OPL_Init(unsigned port_base)
 {
-	const char* driver_name{std::getenv("OPL_DRIVER")};
+	std::string driver_name{std::getenv("OPL_DRIVER")};
 
-	if (driver_name)
+	if (!driver_name.empty())
 	{
 		// Search the list until we find the driver with this name.
 		for (size_t i{0}; drivers[i]; ++i)
 		{
-			if (!strcmp(driver_name, drivers[i]->name))
+			if (!driver_name.compare(drivers[i]->name))
 			{
 				auto result{InitDriver(drivers[i], port_base)};
 				if (result == opl_init_result_t::OPL_INIT_NONE)
 				{
-					printf("OPL_Init: Failed to initialize driver: '%s'.\n", driver_name);
+					printf("OPL_Init: Failed to initialize driver: '%s'.\n", driver_name.c_str());
 				}
 
 				return result;
 			}
 		}
 
-		printf("OPL_Init: unknown driver: '%s'.\n", driver_name);
+		printf("OPL_Init: unknown driver: '%s'.\n", driver_name.c_str());
 
 		return opl_init_result_t::OPL_INIT_NONE;
 	}

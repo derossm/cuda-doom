@@ -27,7 +27,7 @@
 // join a game. Bomb out with an error message if game options are
 // specified to a dedicated server.
 
-static const char* not_dedicated_options[]{
+static std::string not_dedicated_options[]{
 	"-deh", "-iwad", "-cdrom", "-gameversion", "-nomonsters", "-respawn",
 	"-fast", "-altdeath", "-deathmatch", "-turbo", "-merge", "-af", "-as",
 	"-aa", "-file", "-wart", "-skill", "-episode", "-timer", "-avg", "-warp",
@@ -36,7 +36,7 @@ static const char* not_dedicated_options[]{
 
 static void CheckForClientOptions()
 {
-	for (size_t i{0}; not_dedicated_options[i] != NULL; ++i)
+	for (size_t i{0}; !not_dedicated_options[i].empty(); ++i)
 	{
 		if (M_CheckParm(not_dedicated_options[i]) > 0)
 		{

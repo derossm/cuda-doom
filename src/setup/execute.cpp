@@ -8,10 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
-#include "textscreen.h"
+#include "execute.h"
+
+#include "../../textscreen/textscreen.h"
 
 #include "config.h"
-#include "execute.h"
 #include "mode.h"
 #include "m_argv.h"
 #include "m_config.h"
@@ -19,14 +20,14 @@
 
 struct execute_context_t
 {
-	char* response_file;
+	std::string response_file;
 	FILE* stream;
 };
 
 // Returns the path to a temporary file of the given name, stored inside the system temporary directory.
-static char* TempFile(const char* s)
+std::string TempFile(std::string s)
 {
-	const char* tempdir;
+	std::string tempdir;
 
 #ifdef _WIN32
 	// Check the TEMP environment variable to find the location.
@@ -43,12 +44,12 @@ static char* TempFile(const char* s)
 	tempdir = "/tmp";
 #endif
 
-	return M_StringJoin(tempdir, DIR_SEPARATOR_S, s, NULL);
+	return std::string(tempdir + DIR_SEPARATOR_S + s);
 }
 
-static int ArgumentNeedsEscape(const char* arg)
+static int ArgumentNeedsEscape(std::string arg)
 {
-	const char* p;
+	std::string p;
 
 	for (p = arg; *p != '\0'; ++p)
 	{
@@ -100,7 +101,7 @@ execute_context_t* NewExecuteContext()
 	return result;
 }
 
-void AddCmdLineParameter(execute_context_t* context, const char* s, ...)
+void AddCmdLineParameter(execute_context_t* context, std::string s, ...)
 {
 	va_list args;
 
@@ -114,7 +115,7 @@ void AddCmdLineParameter(execute_context_t* context, const char* s, ...)
 
 #if defined(_WIN32)
 
-bool OpenFolder(const char* path)
+bool OpenFolder(std::string path)
 {
 	// "If the function succeeds, it returns a value greater than 32."
 	return (int)ShellExecute(NULL, "open", path, NULL, NULL, SW_SHOWDEFAULT) > 32;
@@ -141,7 +142,7 @@ static unsigned WaitForProcessExit(HANDLE subprocess)
 	}
 }
 
-static void ConcatWCString(wchar_t* buf, const char* value)
+static void ConcatWCString(wchar_t* buf, std::string value)
 {
 	MultiByteToWideChar(CP_OEMCP, 0,
 						value, strlen(value) + 1,
@@ -152,7 +153,7 @@ static void ConcatWCString(wchar_t* buf, const char* value)
 //
 // "program" "arg"
 
-static wchar_t* BuildCommandLine(const char* program, const char* arg)
+static wchar_t* BuildCommandLine(std::string program, std::string arg)
 {
 	wchar_t exe_path[MAX_PATH];
 	wchar_t* result;
@@ -195,7 +196,7 @@ static wchar_t* BuildCommandLine(const char* program, const char* arg)
 	return result;
 }
 
-static int ExecuteCommand(const char* program, const char* arg)
+static int ExecuteCommand(std::string program, std::string arg)
 {
 	STARTUPINFOW startup_info;
 	PROCESS_INFORMATION proc_info;
@@ -233,15 +234,15 @@ static int ExecuteCommand(const char* program, const char* arg)
 
 #else
 
-bool OpenFolder(const char* path)
+bool OpenFolder(std::string path)
 {
-	char* cmd;
+	std::string cmd;
 	int result;
 
 #if defined(__MACOSX__)
-	cmd = M_StringJoin("open \"", path, "\"", NULL);
+	cmd = std::string("open \"" + path + "\"");
 #else
-	cmd = M_StringJoin("xdg-open \"", path, "\"", NULL);
+	cmd = std::string("xdg-open \"" + path + "\"");
 #endif
 	result = system(cmd);
 	free(cmd);
@@ -252,10 +253,10 @@ bool OpenFolder(const char* path)
 // Given the specified program name, get the full path to the program,
 // assuming that it is in the same directory as this program is.
 
-static char* GetFullExePath(const char* program)
+std::string GetFullExePath(std::string program)
 {
-	char* result;
-	char* sep;
+	std::string result;
+	std::string sep;
 	size_t result_len;
 	unsigned path_len;
 
@@ -263,7 +264,7 @@ static char* GetFullExePath(const char* program)
 
 	if (sep == NULL)
 	{
-		result = M_StringDuplicate(program);
+		result = std::string(program);
 	}
 	else
 	{
@@ -280,11 +281,11 @@ static char* GetFullExePath(const char* program)
 	return result;
 }
 
-static int ExecuteCommand(const char* program, const char* arg)
+static int ExecuteCommand(std::string program, std::string arg)
 {
 	pid_t childpid;
 	int result;
-	const char* argv[3];
+	std::string argv[3];
 
 	childpid = fork();
 
@@ -322,14 +323,14 @@ static int ExecuteCommand(const char* program, const char* arg)
 
 int ExecuteDoom(execute_context_t* context)
 {
-	char* response_file_arg;
+	std::string response_file_arg;
 	int result;
 
 	fclose(context->stream);
 
 	// Build the command line
 
-	response_file_arg = M_StringJoin("@", context->response_file, NULL);
+	response_file_arg = std::string("@" + context->response_file);
 
 	// Run Doom
 
@@ -345,17 +346,17 @@ int ExecuteDoom(execute_context_t* context)
 	return result;
 }
 
-static void TestCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::TXT_UNCAST_ARG(data))
+static void TestCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAST_ARG(data))
 {
 	execute_context_t* exec;
-	char* main_cfg;
-	char* extra_cfg;
+	std::string main_cfg;
+	std::string extra_cfg;
 	cudadoom::txt::Window* testwindow;
 
-	testwindow = cudadoom::txt::TXT_MessageBox("Starting Doom",
+	testwindow = cudadoom::txt::MessageBox("Starting Doom",
 								"Starting Doom to test the\n"
 								"settings. Please wait.");
-	cudadoom::txt::TXT_DrawDesktop();
+	cudadoom::txt::DrawDesktop();
 
 	// Save temporary configuration files with the current configuration
 
@@ -372,7 +373,7 @@ static void TestCallback(cudadoom::txt::TXT_UNCAST_ARG(widget), cudadoom::txt::T
 	AddCmdLineParameter(exec, "-extraconfig \"%s\"", extra_cfg);
 	ExecuteDoom(exec);
 
-	cudadoom::txt::TXT_CloseWindow(testwindow);
+	cudadoom::txt::CloseWindow(testwindow);
 
 	// Delete the temporary config files
 
@@ -386,8 +387,8 @@ WindowAction* TestConfigAction()
 {
 	cudadoom::txt::WindowAction* test_action;
 
-	test_action = cudadoom::txt::TXT_NewWindowAction('t', "Test");
-	cudadoom::txt::TXT_SignalConnect(test_action, "pressed", TestCallback, NULL);
+	test_action = cudadoom::txt::NewWindowAction('t', "Test");
+	cudadoom::txt::SignalConnect(test_action, "pressed", TestCallback, NULL);
 
 	return test_action;
 }

@@ -35,7 +35,7 @@
 
 #define LOW_PASS_FILTER
 //#define DEBUG_DUMP_WAVS
-#define NUM_CHANNELS 16*2 // [crispy] support up to 32 sound channels
+constexpr size_t NUM_CHANNELS{16*2}; // support up to 32 sound channels
 
 struct allocated_sound_t
 {
@@ -209,7 +209,7 @@ static allocated_sound_t* AllocateSound(sfxinfo_t* sfxinfo, size_t len)
 
 		if (snd == NULL && !FindAndFreeSound())
 		{
-			return NULL;
+			return nullptr;
 		}
 
 	} while (snd == NULL);
@@ -281,7 +281,7 @@ static allocated_sound_t* GetAllocatedSoundBySfxInfoAndPitch(sfxinfo_t* sfxinfo,
 		p = p->next;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 // Allocate a new sound chunk and pitch-shift an existing sound up-or-down
@@ -304,14 +304,14 @@ static allocated_sound_t* PitchShift(allocated_sound_t* insnd, int pitch)
 	// ensure that the new buffer is an even length
 	if ((dstlen % 2) == 0)
 	{
-		dstlen++;
+		++dstlen;
 	}
 
 	outsnd = AllocateSound(insnd->sfxinfo, dstlen);
 
 	if (!outsnd)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	outsnd->pitch = pitch;
@@ -552,7 +552,7 @@ static bool ConvertibleRatio(int freq1, int freq2)
 
 // Debug code to dump resampled sound effects to WAV files for analysis.
 
-static void WriteWAV(char* filename, byte* data,
+static void WriteWAV(std::string filename, byte* data,
 						uint32_t length, int samplerate)
 {
 	FILE* wav;
@@ -740,7 +740,7 @@ static bool CacheSFX(sfxinfo_t* sfxinfo)
 	// need to load the sound
 
 	lumpnum = sfxinfo->lumpnum;
-	data = W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
+	data = W_CacheLumpNum<byte>(lumpnum, pu_tags_t::PU_STATIC);
 	lumplen = W_LumpLength(lumpnum);
 
 	// [crispy] Check if this is a valid RIFF wav file
@@ -844,7 +844,7 @@ static bool CacheSFX(sfxinfo_t* sfxinfo)
 	return true;
 }
 
-static void GetSfxLumpName(sfxinfo_t* sfx, char* buf, size_t buf_len)
+static void GetSfxLumpName(sfxinfo_t* sfx, std::string buf, size_t buf_len)
 {
 	// Linked sfx lumps? Get the lump number for the sound linked to.
 
@@ -1189,12 +1189,12 @@ static bool I_SDL_InitSound(bool _use_sfx_prefix)
 
 static snddevice_t sound_sdl_devices[] =
 {
-	SNDDEVICE_SB,
-	SNDDEVICE_PAS,
-	SNDDEVICE_GUS,
-	SNDDEVICE_WAVEBLASTER,
-	SNDDEVICE_SOUNDCANVAS,
-	SNDDEVICE_AWE32,
+	snddevice_t::SB,
+	snddevice_t::PAS,
+	snddevice_t::GUS,
+	snddevice_t::WAVEBLASTER,
+	snddevice_t::SOUNDCANVAS,
+	snddevice_t::AWE32,
 };
 
 sound_module_t sound_sdl_module =

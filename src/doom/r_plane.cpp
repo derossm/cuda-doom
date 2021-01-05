@@ -29,7 +29,7 @@ planefunction_t floorfunc;
 planefunction_t ceilingfunc;
 
 // Here comes the obnoxious "visplane".
-#define MAXVISPLANES 128
+constexpr size_t MAXVISPLANES{128};
 visplane_t* visplanes = NULL;
 visplane_t* lastvisplane;
 visplane_t* floorplane;
@@ -37,7 +37,7 @@ visplane_t* ceilingplane;
 static int numvisplanes;
 
 // ?
-#define MAXOPENINGS	MAXWIDTH*64*4
+constexpr size_t MAXOPENINGS{MAXWIDTH*64*4};
 int openings[MAXOPENINGS];
 int* lastopening;
 
@@ -186,7 +186,7 @@ static void R_RaiseVisplanes(visplane_t** vp)
 
 visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel)
 {
-	visplane_t*	check;
+	visplane_t* check;
 
 	// add support for MBF sky tranfers
 	if (picnum == skyflatnum || picnum & PL_SKYFLAT)
@@ -195,7 +195,7 @@ visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel)
 		lightlevel = 0;
 	}
 
-	for (check=visplanes; check<lastvisplane; check++)
+	for (check=visplanes; check<lastvisplane; ++check)
 	{
 		if (height == check->height && picnum == check->picnum && lightlevel == check->lightlevel)
 		{
@@ -348,7 +348,7 @@ void R_DrawPlanes()
 	}
 #endif
 
-	for (pl = visplanes ; pl < lastvisplane ; pl++)
+	for (pl = visplanes ; pl < lastvisplane ; ++pl)
 	{
 		bool swirling;
 
@@ -365,7 +365,7 @@ void R_DrawPlanes()
 			if (pl->picnum & PL_SKYFLAT)
 			{
 				const line_t* l = &lines[pl->picnum & ~PL_SKYFLAT];
-				const side_t* s = *l->sidenum class + sides;
+				const side_t* s = *l->sidenum + sides;
 				texture = texturetranslation[s->toptexture];
 				dc_texturemid = s->rowoffset - 28*FRACUNIT;
 				// stretch sky
@@ -397,7 +397,7 @@ void R_DrawPlanes()
 			{
 				dc_iscale = dc_iscale * dc_texheight / SKYSTRETCH_HEIGHT;
 			}
-			for (x=pl->minx ; x <= pl->maxx ; x++)
+			for (x=pl->minx ; x <= pl->maxx ; ++x)
 			{
 				dc_yl = pl->top[x];
 				dc_yh = pl->bottom[x];
@@ -440,7 +440,7 @@ void R_DrawPlanes()
 
 		stop = pl->maxx + 1;
 
-		for (x=pl->minx ; x<= stop ; x++)
+		for (x=pl->minx ; x<= stop ; ++x)
 		{
 			R_MakeSpans(x,pl->top[x-1],
 				pl->bottom[x-1],

@@ -20,7 +20,7 @@
 
 extern void R_InitBrightmaps();
 
-extern byte* (*R_BrightmapForTexName) (const char* texname);
+extern byte* (*R_BrightmapForTexName) (std::string texname);
 extern byte* (*R_BrightmapForSprite) (const int type);
 extern byte* (*R_BrightmapForFlatNum) (const int num);
 extern byte* (*R_BrightmapForState) (const int state);

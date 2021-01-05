@@ -78,7 +78,7 @@ int quickSaveSlot;
  // 1 = message to be printed
 int messageToPrint;
 // ...and here is the message string!
-const char* messageString;
+std::string messageString;
 
 // message x & y
 int messx;
@@ -113,9 +113,9 @@ char saveOldString[SAVESTRINGSIZE];		// old save description before edit
 bool inhelpscreens;
 bool menuactive;
 
-#define SKULLXOFF			-32
-#define LINEHEIGHT			16
-#define CRISPY_LINEHEIGHT	10 // [crispy] Crispness menu
+constexpr int SKULLXOFF{-32};
+constexpr size_t LINEHEIGHT{16};
+constexpr size_t CRISPY_LINEHEIGHT{10};
 
 extern bool sendpause;
 char savegamestrings[10][SAVESTRINGSIZE];
@@ -124,7 +124,7 @@ char endstring[160];
 
 static bool opldev;
 
-extern bool speedkeydown ();
+extern bool speedkeydown();
 
 //
 // MENU TYPEDEFS
@@ -142,7 +142,7 @@ struct menuitem_t
 
 	// hotkey in menu
 	char alphaKey;
-	const char* alttext;		// [crispy] alternative text for menu items
+	std::string alttext;		// [crispy] alternative text for menu items
 };
 
 
@@ -150,7 +150,7 @@ struct menuitem_t
 struct menu_t
 {
 	short numitems;				// # of menu items
-	struct menu_s* prevMenu;	// previous menu
+	menu_t* prevMenu;	// previous menu
 	menuitem_t* menuitems;		// menu items
 	void (*routine)();			// draw routine
 	short x;					// x,y of menu
@@ -165,10 +165,10 @@ short whichSkull;				// which skull to draw
 
 // graphic name of skulls
 // warning: initializer-string for array of chars is too long
-const char* skullName[2] = { "M_SKULL1", "M_SKULL2" };
+std::string skullName[2] = { "M_SKULL1", "M_SKULL2" };
 
 // current menudef
-menu_t*	currentMenu;
+menu_t* currentMenu;
 
 static void M_NewGame(int choice);
 static void M_Episode(int choice);
@@ -214,10 +214,10 @@ static void M_DrawSave();
 static void M_DrawSaveLoadBorder(int x,int y);
 static void M_SetupNextMenu(menu_t* menudef);
 static void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
-static void M_WriteText(int x, int y, const char* string);
-int M_StringWidth(const char* string);										// [crispy] un-static
-static int M_StringHeight(const char* string);
-static void M_StartMessage(const char* string, void* routine, bool input);
+static void M_WriteText(int x, int y, std::string string);
+int M_StringWidth(std::string string);										// [crispy] un-static
+static int M_StringHeight(std::string string);
+static void M_StartMessage(std::string string, void* routine, bool input);
 static void M_ClearMenus ();
 
 // [crispy] Crispness menu
@@ -253,8 +253,8 @@ menuitem_t MainMenu[]=
 
 menu_t MainDef =
 {
-	main_end,
-	NULL,
+	main_e::main_end,
+	nullptr,
 	MainMenu,
 	M_DrawMainMenu,
 	97,
@@ -283,13 +283,13 @@ menuitem_t EpisodeMenu[]=
 
 menu_t EpiDef =
 {
-	ep_end,			// # of menu items
+	episodes_e::ep_end,			// # of menu items
 	&MainDef,		// previous menu
 	EpisodeMenu,	// menuitem_t ->
 	M_DrawEpisode,	// drawing routine ->
 	48,				// x,y
 	63,
-	ep1				// lastOn
+	episodes_e::ep1				// lastOn
 };
 
 enum class newgame_e
@@ -313,13 +313,13 @@ menuitem_t NewGameMenu[]=
 
 menu_t NewDef =
 {
-	newg_end,		// # of menu items
+	newgame_e::newg_end,		// # of menu items
 	&EpiDef,		// previous menu
 	NewGameMenu,	// menuitem_t ->
 	M_DrawNewGame,	// drawing routine ->
 	48,				// x,y
 	63,
-	hurtme			// lastOn
+	newgame_e::hurtme			// lastOn
 };
 
 enum class options_e
@@ -349,7 +349,7 @@ menuitem_t OptionsMenu[]=
 
 menu_t OptionsDef =
 {
-	opt_end,
+	options_e::opt_end,
 	&MainDef,
 	OptionsMenu,
 	M_DrawOptions,
@@ -384,7 +384,7 @@ static menuitem_t MouseMenu[]=
 
 static menu_t MouseDef =
 {
-	mouse_end,
+	mouse_e::mouse_end,
 	&OptionsDef,
 	MouseMenu,
 	M_DrawMouse,
@@ -441,7 +441,7 @@ static menuitem_t Crispness1Menu[]=
 
 static menu_t Crispness1Def =
 {
-	crispness1_end,
+	crispness1_e::crispness1_end,
 	&OptionsDef,
 	Crispness1Menu,
 	M_DrawCrispness1,
@@ -495,7 +495,7 @@ static menuitem_t Crispness2Menu[]=
 
 static menu_t Crispness2Def =
 {
-	crispness2_end,
+	crispness2_e::crispness2_end,
 	&OptionsDef,
 	Crispness2Menu,
 	M_DrawCrispness2,
@@ -551,7 +551,7 @@ static menuitem_t Crispness3Menu[]=
 
 static menu_t Crispness3Def =
 {
-	crispness3_end,
+	crispness3_e::crispness3_end,
 	&OptionsDef,
 	Crispness3Menu,
 	M_DrawCrispness3,
@@ -601,7 +601,7 @@ static menuitem_t Crispness4Menu[]=
 
 static menu_t Crispness4Def =
 {
-	crispness4_end,
+	crispness4_e::crispness4_end,
 	&OptionsDef,
 	Crispness4Menu,
 	M_DrawCrispness4,
@@ -634,7 +634,7 @@ menuitem_t ReadMenu1[] =
 
 menu_t ReadDef1 =
 {
-	read1_end,
+	read_e::read1_end,
 	&MainDef,
 	ReadMenu1,
 	M_DrawReadThis1,
@@ -656,7 +656,7 @@ menuitem_t ReadMenu2[]=
 
 menu_t ReadDef2 =
 {
-	read2_end,
+	read_e2::read2_end,
 	&ReadDef1,
 	ReadMenu2,
 	M_DrawReadThis2,
@@ -684,7 +684,7 @@ menuitem_t SoundMenu[]=
 
 menu_t SoundDef =
 {
-	sound_end,
+	sound_e::sound_end,
 	&OptionsDef,
 	SoundMenu,
 	M_DrawSound,
@@ -720,7 +720,7 @@ menuitem_t LoadMenu[]=
 
 menu_t LoadDef =
 {
-	load_end,
+	load_e::load_end,
 	&MainDef,
 	LoadMenu,
 	M_DrawLoad,
@@ -743,7 +743,7 @@ menuitem_t SaveMenu[]=
 
 menu_t SaveDef =
 {
-	load_end,
+	load_e::load_end,
 	&MainDef,
 	SaveMenu,
 	M_DrawSave,
@@ -756,7 +756,7 @@ menu_t SaveDef =
 // read the strings from the savegame files
 void M_ReadSaveStrings()
 {
-	for (size_t i{0}; i < load_end; ++i)
+	for (size_t i{0}; i < load_e::load_end; ++i)
 	{
 		char name[256];
 		M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
@@ -780,9 +780,9 @@ static int LoadDef_x = 72;
 static int LoadDef_y = 28;
 void M_DrawLoad()
 {
-	V_DrawPatchDirect(LoadDef_x, LoadDef_y, W_CacheLumpName(DEH_String("M_LOADG"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(LoadDef_x, LoadDef_y, W_CacheLumpName<patch_t>(DEH_String("M_LOADG"), pu_tags_t::PU_CACHE));
 
-	for (size_t i{0}; i < load_end; ++i)
+	for (size_t i{0}; i < load_e::load_end; ++i)
 	{
 		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
 
@@ -794,21 +794,21 @@ void M_DrawLoad()
 
 		M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT*i, savegamestrings[i]);
 
-		dp_translation = NULL;
+		dp_translation = nullptr;
 	}
 }
 
 void M_DrawSaveLoadBorder(int x,int y)
 {
-	V_DrawPatchDirect(x - 8, y + 7, W_CacheLumpName(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(x - 8, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE));
 
 	for (size_t i{0}; i < 24; ++i)
 	{
-		V_DrawPatchDirect(x, y + 7, W_CacheLumpName(DEH_String("M_LSCNTR"), pu_tags_t::PU_CACHE));
+		V_DrawPatchDirect(x, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSCNTR"), pu_tags_t::PU_CACHE));
 		x += 8;
 	}
 
-	V_DrawPatchDirect(x, y + 7, W_CacheLumpName(DEH_String("M_LSRGHT"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(x, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSRGHT"), pu_tags_t::PU_CACHE));
 }
 
 void M_LoadSelect(int choice)
@@ -847,8 +847,8 @@ static int SaveDef_x = 72;
 static int SaveDef_y = 28;
 void M_DrawSave()
 {
-	V_DrawPatchDirect(SaveDef_x, SaveDef_y, W_CacheLumpName(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE));
-	for (size_t i{0}; i < load_end; ++i)
+	V_DrawPatchDirect(SaveDef_x, SaveDef_y, W_CacheLumpName<patch_t>(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE));
+	for (size_t i{0}; i < load_e::load_end; ++i)
 	{
 		M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT*i);
 		M_WriteText(LoadDef.x, LoadDef.y + LINEHEIGHT*i, savegamestrings[i]);
@@ -886,7 +886,7 @@ static void SetDefaultSaveName(int slot)
 	}
 	else
 	{
-		auto wadname{M_StringDuplicate(W_WadNameForLump(maplumpinfo))};
+		auto wadname{std::string(W_WadNameForLump(maplumpinfo))};
 		auto ext = strrchr(*wadname, '.');
 
 		if (ext)
@@ -902,7 +902,7 @@ static void SetDefaultSaveName(int slot)
 }
 
 // [crispy] override savegame name if it already starts with a map identifier
-static bool StartsWithMapIdentifier(char* str)
+static bool StartsWithMapIdentifier(std::string str)
 {
 	M_ForceUppercase(str);
 
@@ -976,7 +976,7 @@ void M_QuickSaveResponse(int key)
 	if (key == key_menu_confirm)
 	{
 		M_DoSave(quickSaveSlot);
-		S_StartSound(nullptr, sfx_swtchx);
+		S_StartSound(nullptr, sfxenum_t::sfx_swtchx);
 	}
 }
 
@@ -984,7 +984,7 @@ void M_QuickSave()
 {
 	if (!usergame)
 	{
-		S_StartSound(NULL, sfx_oof);
+		S_StartSound(nullptr, sfxenum_t::sfx_oof);
 		return;
 	}
 
@@ -1002,7 +1002,7 @@ void M_QuickSave()
 		return;
 	}
 	// [crispy] print savegame name in golden letters
-	auto savegamestring{M_StringJoin(crstr[CR_GOLD], savegamestrings[quickSaveSlot], crstr[CR_NONE], NULL)};
+	auto savegamestring{std::string(std::string(crstr[CR_GOLD]) + savegamestrings[quickSaveSlot] + std::string(crstr[CR_NONE]))};
 	DEH_snprintf(tempstring, sizeof(tempstring), QSPROMPT, *savegamestring);
 	M_StartMessage(tempstring, M_QuickSaveResponse, true);
 }
@@ -1012,7 +1012,7 @@ void M_QuickLoadResponse(int key)
 	if (key == key_menu_confirm)
 	{
 		M_LoadSelect(quickSaveSlot);
-		S_StartSound(NULL, sfx_swtchx);
+		S_StartSound(nullptr, sfxenum_t::sfx_swtchx);
 	}
 }
 
@@ -1035,7 +1035,7 @@ void M_QuickLoad()
 		return;
 	}
 	// [crispy] print savegame name in golden letters
-	auto savegamestring{M_StringJoin(crstr[CR_GOLD], savegamestrings[quickSaveSlot], crstr[CR_NONE], NULL)};
+	auto savegamestring{std::string(std::string(crstr[CR_GOLD]) + savegamestrings[quickSaveSlot] + std::string(crstr[CR_NONE]))};
 	DEH_snprintf(tempstring, sizeof(tempstring), QLPROMPT, *savegamestring);
 	M_StartMessage(tempstring, M_QuickLoadResponse, true);
 }
@@ -1046,7 +1046,7 @@ void M_DrawReadThis1()
 {
 	inhelpscreens = true;
 
-	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP2"), pu_tags_t::PU_CACHE), false);
+	V_DrawPatchFullScreen(W_CacheLumpName<patch_t>(DEH_String("HELP2"), pu_tags_t::PU_CACHE), false);
 }
 
 // Read This Menus - optional second page.
@@ -1055,25 +1055,25 @@ void M_DrawReadThis2()
 	inhelpscreens = true;
 
 	// We only ever draw the second page if this is
-	// gameversion == GameVersion_t::exe_doom_1_9 and gamemode == GameMode::registered
-	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP1"), pu_tags_t::PU_CACHE), false);
+	// gameversion == GameVersion::exe_doom_1_9 and gamemode == GameMode::registered
+	V_DrawPatchFullScreen(W_CacheLumpName<patch_t>(DEH_String("HELP1"), pu_tags_t::PU_CACHE), false);
 }
 
 void M_DrawReadThisCommercial()
 {
 	inhelpscreens = true;
 
-	V_DrawPatchFullScreen(W_CacheLumpName(DEH_String("HELP"), pu_tags_t::PU_CACHE), false);
+	V_DrawPatchFullScreen(W_CacheLumpName<patch_t>(DEH_String("HELP"), pu_tags_t::PU_CACHE), false);
 }
 
 // Change Sfx & Music volumes
 void M_DrawSound()
 {
-	V_DrawPatchDirect(60, 38, W_CacheLumpName(DEH_String("M_SVOL"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(60, 38, W_CacheLumpName<patch_t>(DEH_String("M_SVOL"), pu_tags_t::PU_CACHE));
 
-	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1), 16, sfxVolume);
+	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sound_e::sfx_vol+1), 16, sfxVolume);
 
-	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(music_vol+1), 16, musicVolume);
+	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sound_e::music_vol+1), 16, musicVolume);
 }
 
 void M_Sound(int choice)
@@ -1125,13 +1125,13 @@ void M_MusicVol(int choice)
 
 void M_DrawMainMenu()
 {
-	V_DrawPatchDirect(94, 2, W_CacheLumpName(DEH_String("M_DOOM"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(94, 2, W_CacheLumpName<patch_t>(DEH_String("M_DOOM"), pu_tags_t::PU_CACHE));
 }
 
 void M_DrawNewGame()
 {
-	V_DrawPatchDirect(96, 14, W_CacheLumpName(DEH_String("M_NEWG"), pu_tags_t::PU_CACHE));
-	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_SKILL"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(96, 14, W_CacheLumpName<patch_t>(DEH_String("M_NEWG"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(54, 38, W_CacheLumpName<patch_t>(DEH_String("M_SKILL"), pu_tags_t::PU_CACHE));
 }
 
 void M_NewGame(int choice)
@@ -1150,7 +1150,7 @@ void M_NewGame(int choice)
 
 	// Chex Quest disabled the episode select screen, as did Doom II.
 
-	if ((gamemode == GameMode::commercial && !crispy->havenerve && !crispy->havemaster) || gameversion == GameVersion_t::exe_chex)
+	if ((gamemode == GameMode::commercial && crispy->havenerve.empty() && crispy->havemaster.empty()) || gameversion == GameVersion::exe_chex)
 	{
 		// [crispy] NRFTL / The Master Levels
 		M_SetupNextMenu(&NewDef);
@@ -1165,7 +1165,7 @@ int epi;
 
 void M_DrawEpisode()
 {
-	V_DrawPatchDirect(54, 38, W_CacheLumpName(DEH_String("M_EPISOD"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(54, 38, W_CacheLumpName<patch_t>(DEH_String("M_EPISOD"), pu_tags_t::PU_CACHE));
 }
 
 void M_VerifyNightmare(int key)
@@ -1175,13 +1175,13 @@ void M_VerifyNightmare(int key)
 		return;
 	}
 
-	G_DeferedInitNew(nightmare, epi+1, 1);
+	G_DeferedInitNew(newgame_e::nightmare, epi+1, 1);
 	M_ClearMenus();
 }
 
 void M_ChooseSkill(int choice)
 {
-	if (choice == nightmare)
+	if (choice == newgame_e::nightmare)
 	{
 		M_StartMessage(DEH_String(NIGHTMARE), M_VerifyNightmare, true);
 		return;
@@ -1204,43 +1204,42 @@ void M_Episode(int choice)
 	M_SetupNextMenu(&NewDef);
 }
 
-static const char* detailNames[2] = {"M_GDHIGH", "M_GDLOW"};
-static const char* msgNames[2] = {"M_MSGOFF", "M_MSGON"};
+static std::string detailNames[2] = {"M_GDHIGH", "M_GDLOW"};
+static std::string msgNames[2] = {"M_MSGOFF", "M_MSGON"};
 
 void M_DrawOptions()
 {
-	V_DrawPatchDirect(108, 15, W_CacheLumpName(DEH_String("M_OPTTTL"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(108, 15, W_CacheLumpName<patch_t>(DEH_String("M_OPTTTL"), pu_tags_t::PU_CACHE));
 
 	if (OptionsDef.lumps_missing == -1)
 	{
-		V_DrawPatchDirect(OptionsDef.x + 175, OptionsDef.y + LINEHEIGHT * detail,
-					W_CacheLumpName(DEH_String(detailNames[detailLevel]), pu_tags_t::PU_CACHE));
+		V_DrawPatchDirect(OptionsDef.x + 175, OptionsDef.y + LINEHEIGHT * options_e::detail,
+					W_CacheLumpName<patch_t>(DEH_String(detailNames[detailLevel]), pu_tags_t::PU_CACHE));
 	}
 	else
 	if (OptionsDef.lumps_missing > 0)
 	{
 		M_WriteText(OptionsDef.x + M_StringWidth("Graphic Detail: "),
-					OptionsDef.y + LINEHEIGHT * detail + 8 - (M_StringHeight("HighLow")/2), detailLevel ? "Low" : "High");
+					OptionsDef.y + LINEHEIGHT * options_e::detail + 8 - (M_StringHeight("HighLow")/2), detailLevel ? "Low" : "High");
 	}
 
 	if (OptionsDef.lumps_missing == -1)
 	{
-		V_DrawPatchDirect(OptionsDef.x + 120, OptionsDef.y + LINEHEIGHT * messages,
-					W_CacheLumpName(DEH_String(msgNames[showMessages]), pu_tags_t::PU_CACHE));
+		V_DrawPatchDirect(OptionsDef.x + 120, OptionsDef.y + LINEHEIGHT * options_e::messages,
+					W_CacheLumpName<patch_t>(DEH_String(msgNames[showMessages]), pu_tags_t::PU_CACHE));
 	}
 	else
 	if (OptionsDef.lumps_missing > 0)
 	{
 		M_WriteText(OptionsDef.x + M_StringWidth("Messages: "),
-					OptionsDef.y + LINEHEIGHT * messages + 8 - (M_StringHeight("OnOff")/2), showMessages ? "On" : "Off");
+					OptionsDef.y + LINEHEIGHT * options_e::messages + 8 - (M_StringHeight("OnOff")/2), showMessages ? "On" : "Off");
 	}
 
 // [crispy] mouse sensitivity menu
 /*
-	M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (mousesens + 1),
-			10, mouseSensitivity);
+	M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (mousesens + 1), 10, mouseSensitivity);
 */
-	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(scrnsize+1), 9 + (crispy->widescreen ? 6 : 3),screenSize); // [crispy] Crispy HUD
+	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(options_e::scrnsize+1), 9 + (crispy->widescreen ? 6 : 3),screenSize); // [crispy] Crispy HUD
 }
 
 // [crispy] mouse sensitivity menu
@@ -1248,25 +1247,25 @@ static void M_DrawMouse()
 {
 	char mouse_menu_text[48];
 
-	V_DrawPatchDirect(60, LoadDef_y, W_CacheLumpName(DEH_String("M_MSENS"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(60, LoadDef_y, W_CacheLumpName<patch_t>(DEH_String("M_MSENS"), pu_tags_t::PU_CACHE));
 
-	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_horiz + 6, "HORIZONTAL: TURN");
+	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_horiz + 6, "HORIZONTAL: TURN");
 
-	M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_empty1, 21, mouseSensitivity);
+	M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_empty1, 21, mouseSensitivity);
 
-	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_horiz2 + 6, "HORIZONTAL: STRAFE");
+	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_horiz2 + 6, "HORIZONTAL: STRAFE");
 
-	M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_empty2, 21, mouseSensitivity_x2);
+	M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_empty2, 21, mouseSensitivity_x2);
 
-	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_vert + 6, "VERTICAL");
+	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_vert + 6, "VERTICAL");
 
-	M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_empty3, 21, mouseSensitivity_y);
+	M_DrawThermo(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_empty3, 21, mouseSensitivity_y);
 
 	M_snprintf(mouse_menu_text, sizeof(mouse_menu_text), "%sInvert Vertical Axis: %s%s", crstr[CR_NONE],
 				mouse_y_invert ? crstr[CR_GREEN] : crstr[CR_DARK], mouse_y_invert ? "On" : "Off");
-	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_invert + 6, mouse_menu_text);
+	M_WriteText(MouseDef.x, MouseDef.y + LINEHEIGHT * mouse_e::mouse_invert + 6, mouse_menu_text);
 
-	dp_translation = NULL;
+	dp_translation = nullptr;
 }
 
 // [crispy] Crispness menu
@@ -1283,9 +1282,11 @@ static void M_DrawCrispnessBackground()
 		for (size_t x{0}; x < SCREENWIDTH; ++x)
 		{
 #ifndef CRISPY_TRUECOLOR
-			*(dest++) = src[(y & 63) * 64 + (x & 63)];
+			*dest = src[(y & 63) * 64 + (x & 63)];
+			++dest;
 #else
-			*(dest++) = colormaps[src[(y & 63) * 64 + (x & 63)]];
+			*dest = colormaps[src[(y & 63) * 64 + (x & 63)]];
+			++dest;
 #endif
 		}
 	}
@@ -1295,19 +1296,19 @@ static void M_DrawCrispnessBackground()
 
 static char crispy_menu_text[48];
 
-static void M_DrawCrispnessHeader(const char* item)
+static void M_DrawCrispnessHeader(std::string item)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[CR_GOLD], item);
 	M_WriteText(ORIGWIDTH/2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
 }
 
-static void M_DrawCrispnessSeparator(int y, const char* item)
+static void M_DrawCrispnessSeparator(int y, std::string item)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[CR_GOLD], item);
 	M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessItem(int y, const char* item, int feat, bool cond)
+static void M_DrawCrispnessItem(int y, std::string item, int feat, bool cond)
 {
 	// FIXME WE HEARD YOU LIKED TERNERIES SO WE GOT YOU TERNERIES FOR YOUR TERNERIES
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
@@ -1317,7 +1318,7 @@ static void M_DrawCrispnessItem(int y, const char* item, int feat, bool cond)
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessMultiItem(int y, const char* item, multiitem_t* multiitem, int feat, bool cond)
+static void M_DrawCrispnessMultiItem(int y, std::string item, multiitem_t* multiitem, int feat, bool cond)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
 				"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
@@ -1326,7 +1327,7 @@ static void M_DrawCrispnessMultiItem(int y, const char* item, multiitem_t* multi
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessGoto(int y, const char* item)
+static void M_DrawCrispnessGoto(int y, std::string item)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[CR_GOLD], item);
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
@@ -1338,25 +1339,25 @@ static void M_DrawCrispness1()
 
 	M_DrawCrispnessHeader("Crispness 1/4");
 
-	M_DrawCrispnessSeparator(crispness_sep_rendering, "Rendering");
-	M_DrawCrispnessItem(crispness_hires, "High Resolution Rendering", crispy->hires, true);
-	M_DrawCrispnessMultiItem(crispness_widescreen, "Widescreen Aspect Ratio", multiitem_widescreen, crispy->widescreen, aspect_ratio_correct);
-	M_DrawCrispnessItem(crispness_uncapped, "Uncapped Framerate", crispy->uncapped, true);
-	M_DrawCrispnessItem(crispness_vsync, "Enable VSync", crispy->vsync, !force_software_renderer);
-	M_DrawCrispnessItem(crispness_smoothscaling, "Smooth Pixel Scaling", crispy->smoothscaling, true);
+	M_DrawCrispnessSeparator(crispness1_e::crispness_sep_rendering, "Rendering");
+	M_DrawCrispnessItem(crispness1_e::crispness_hires, "High Resolution Rendering", crispy->hires, true);
+	M_DrawCrispnessMultiItem(crispness1_e::crispness_widescreen, "Widescreen Aspect Ratio", multiitem_widescreen, crispy->widescreen, aspect_ratio_correct);
+	M_DrawCrispnessItem(crispness1_e::crispness_uncapped, "Uncapped Framerate", crispy->uncapped, true);
+	M_DrawCrispnessItem(crispness1_e::crispness_vsync, "Enable VSync", crispy->vsync, !force_software_renderer);
+	M_DrawCrispnessItem(crispness1_e::crispness_smoothscaling, "Smooth Pixel Scaling", crispy->smoothscaling, true);
 
-	M_DrawCrispnessSeparator(crispness_sep_visual, "Visual");
-	M_DrawCrispnessMultiItem(crispness_coloredhud, "Colorize HUD Elements", multiitem_coloredhud, crispy->coloredhud, true);
-	M_DrawCrispnessMultiItem(crispness_translucency, "Enable Translucency", multiitem_translucency, crispy->translucency, true);
-	M_DrawCrispnessItem(crispness_smoothlight, "Smooth Diminishing Lighting", crispy->smoothlight, true);
-	M_DrawCrispnessMultiItem(crispness_brightmaps, "Apply Brightmaps to", multiitem_brightmaps, crispy->brightmaps, true);
-	M_DrawCrispnessItem(crispness_coloredblood, "Colored Blood and Corpses", crispy->coloredblood, gameversion != GameVersion_t::exe_chex);
-	M_DrawCrispnessItem(crispness_flipcorpses, "Randomly Mirrored Corpses", crispy->flipcorpses, gameversion != GameVersion_t::exe_chex);
+	M_DrawCrispnessSeparator(crispness1_e::crispness_sep_visual, "Visual");
+	M_DrawCrispnessMultiItem(crispness1_e::crispness_coloredhud, "Colorize HUD Elements", multiitem_coloredhud, crispy->coloredhud, true);
+	M_DrawCrispnessMultiItem(crispness1_e::crispness_translucency, "Enable Translucency", multiitem_translucency, crispy->translucency, true);
+	M_DrawCrispnessItem(crispness1_e::crispness_smoothlight, "Smooth Diminishing Lighting", crispy->smoothlight, true);
+	M_DrawCrispnessMultiItem(crispness1_e::crispness_brightmaps, "Apply Brightmaps to", multiitem_brightmaps, crispy->brightmaps, true);
+	M_DrawCrispnessItem(crispness1_e::crispness_coloredblood, "Colored Blood and Corpses", crispy->coloredblood, gameversion != GameVersion::exe_chex);
+	M_DrawCrispnessItem(crispness1_e::crispness_flipcorpses, "Randomly Mirrored Corpses", crispy->flipcorpses, gameversion != GameVersion::exe_chex);
 
-	M_DrawCrispnessGoto(crispness1_next, "Next Page >");
-	M_DrawCrispnessGoto(crispness1_prev, "< Last Page");
+	M_DrawCrispnessGoto(crispness1_e::crispness1_next, "Next Page >");
+	M_DrawCrispnessGoto(crispness1_e::crispness1_prev, "< Last Page");
 
-	dp_translation = NULL;
+	dp_translation = nullptr;
 }
 
 static void M_DrawCrispness2()
@@ -1365,24 +1366,24 @@ static void M_DrawCrispness2()
 
 	M_DrawCrispnessHeader("Crispness 2/4");
 
-	M_DrawCrispnessSeparator(crispness_sep_audible, "Audible");
-	M_DrawCrispnessItem(crispness_soundfull, "Play sounds in full length", crispy->soundfull, true);
-	M_DrawCrispnessItem(crispness_soundfix, "Misc. Sound Fixes", crispy->soundfix, true);
-	M_DrawCrispnessMultiItem(crispness_sndchannels, "Sound Channels", multiitem_sndchannels, snd_channels >> 4, snd_sfxdevice != SNDDEVICE_PCSPEAKER);
-	M_DrawCrispnessItem(crispness_soundmono, "Mono SFX", crispy->soundmono, true);
+	M_DrawCrispnessSeparator(crispness2_e::crispness_sep_audible, "Audible");
+	M_DrawCrispnessItem(crispness2_e::crispness_soundfull, "Play sounds in full length", crispy->soundfull, true);
+	M_DrawCrispnessItem(crispness2_e::crispness_soundfix, "Misc. Sound Fixes", crispy->soundfix, true);
+	M_DrawCrispnessMultiItem(crispness2_e::crispness_sndchannels, "Sound Channels", multiitem_sndchannels, snd_channels >> 4, snd_sfxdevice != snddevice_t::PCSPEAKER);
+	M_DrawCrispnessItem(crispness2_e::crispness_soundmono, "Mono SFX", crispy->soundmono, true);
 
-	M_DrawCrispnessSeparator(crispness_sep_navigational, "Navigational");
-	M_DrawCrispnessItem(crispness_extautomap, "Extended Automap colors", crispy->extautomap, true);
-	M_DrawCrispnessItem(crispness_smoothmap, "Smooth automap lines", crispy->smoothmap, true);
-	M_DrawCrispnessMultiItem(crispness_automapstats, "Show Level Stats", multiitem_widgets, crispy->automapstats, true);
-	M_DrawCrispnessMultiItem(crispness_leveltime, "Show Level Time", multiitem_widgets, crispy->leveltime, true);
-	M_DrawCrispnessMultiItem(crispness_playercoords, "Show Player Coords", multiitem_widgets, crispy->playercoords, true);
-	M_DrawCrispnessMultiItem(crispness_secretmessage, "Report Revealed Secrets", multiitem_secretmessage, crispy->secretmessage, true);
+	M_DrawCrispnessSeparator(crispness2_e::crispness_sep_navigational, "Navigational");
+	M_DrawCrispnessItem(crispness2_e::crispness_extautomap, "Extended Automap colors", crispy->extautomap, true);
+	M_DrawCrispnessItem(crispness2_e::crispness_smoothmap, "Smooth automap lines", crispy->smoothmap, true);
+	M_DrawCrispnessMultiItem(crispness2_e::crispness_automapstats, "Show Level Stats", multiitem_widgets, crispy->automapstats, true);
+	M_DrawCrispnessMultiItem(crispness2_e::crispness_leveltime, "Show Level Time", multiitem_widgets, crispy->leveltime, true);
+	M_DrawCrispnessMultiItem(crispness2_e::crispness_playercoords, "Show Player Coords", multiitem_widgets, crispy->playercoords, true);
+	M_DrawCrispnessMultiItem(crispness2_e::crispness_secretmessage, "Report Revealed Secrets", multiitem_secretmessage, crispy->secretmessage, true);
 
-	M_DrawCrispnessGoto(crispness2_next, "Next Page >");
-	M_DrawCrispnessGoto(crispness2_prev, "< Prev Page");
+	M_DrawCrispnessGoto(crispness2_e::crispness2_next, "Next Page >");
+	M_DrawCrispnessGoto(crispness2_e::crispness2_prev, "< Prev Page");
 
-	dp_translation = NULL;
+	dp_translation = nullptr;
 }
 
 static void M_DrawCrispness3()
@@ -1391,28 +1392,28 @@ static void M_DrawCrispness3()
 
 	M_DrawCrispnessHeader("Crispness 3/4");
 
-	M_DrawCrispnessSeparator(crispness_sep_tactical, "Tactical");
+	M_DrawCrispnessSeparator(crispness3_e::crispness_sep_tactical, "Tactical");
 
-	M_DrawCrispnessMultiItem(crispness_freelook, "Allow Free Look", multiitem_freelook, crispy->freelook, true);
-	M_DrawCrispnessItem(crispness_mouselook, "Permanent Mouse Look", crispy->mouselook, true);
-	M_DrawCrispnessMultiItem(crispness_bobfactor, "Player View/Weapon Bobbing", multiitem_bobfactor, crispy->bobfactor, true);
-	M_DrawCrispnessMultiItem(crispness_centerweapon, "Weapon Attack Alignment", multiitem_centerweapon, crispy->centerweapon, crispy->bobfactor != BOBFACTOR_OFF);
-	M_DrawCrispnessItem(crispness_weaponsquat, "Squat weapon down on impact", crispy->weaponsquat, true);
-	M_DrawCrispnessItem(crispness_pitch, "Weapon Recoil Pitch", crispy->pitch, true);
-	M_DrawCrispnessItem(crispness_neghealth, "Negative Player Health", crispy->neghealth, true);
+	M_DrawCrispnessMultiItem(crispness3_e::crispness_freelook, "Allow Free Look", multiitem_freelook, crispy->freelook, true);
+	M_DrawCrispnessItem(crispness3_e::crispness_mouselook, "Permanent Mouse Look", crispy->mouselook, true);
+	M_DrawCrispnessMultiItem(crispness3_e::crispness_bobfactor, "Player View/Weapon Bobbing", multiitem_bobfactor, crispy->bobfactor, true);
+	M_DrawCrispnessMultiItem(crispness3_e::crispness_centerweapon, "Weapon Attack Alignment", multiitem_centerweapon, crispy->centerweapon, crispy->bobfactor != BOBFACTOR_OFF);
+	M_DrawCrispnessItem(crispness3_e::crispness_weaponsquat, "Squat weapon down on impact", crispy->weaponsquat, true);
+	M_DrawCrispnessItem(crispness3_e::crispness_pitch, "Weapon Recoil Pitch", crispy->pitch, true);
+	M_DrawCrispnessItem(crispness3_e::crispness_neghealth, "Negative Player Health", crispy->neghealth, true);
 // M_DrawCrispnessItem(crispness_extsaveg, "Extended Savegames", crispy->extsaveg, true);
 
-	M_DrawCrispnessSeparator(crispness_sep_crosshair, "Crosshair");
+	M_DrawCrispnessSeparator(crispness3_e::crispness_sep_crosshair, "Crosshair");
 
-	M_DrawCrispnessMultiItem(crispness_crosshair, "Draw Crosshair", multiitem_crosshair, crispy->crosshair, true);
-	M_DrawCrispnessMultiItem(crispness_crosshairtype, "Crosshair Shape", multiitem_crosshairtype, crispy->crosshairtype + 1, crispy->crosshair);
-	M_DrawCrispnessItem(crispness_crosshairhealth, "Color indicates Health", crispy->crosshairhealth, crispy->crosshair);
-	M_DrawCrispnessItem(crispness_crosshairtarget, "Highlight on target", crispy->crosshairtarget, crispy->crosshair);
+	M_DrawCrispnessMultiItem(crispness3_e::crispness_crosshair, "Draw Crosshair", multiitem_crosshair, crispy->crosshair, true);
+	M_DrawCrispnessMultiItem(crispness3_e::crispness_crosshairtype, "Crosshair Shape", multiitem_crosshairtype, crispy->crosshairtype + 1, crispy->crosshair);
+	M_DrawCrispnessItem(crispness3_e::crispness_crosshairhealth, "Color indicates Health", crispy->crosshairhealth, crispy->crosshair);
+	M_DrawCrispnessItem(crispness3_e::crispness_crosshairtarget, "Highlight on target", crispy->crosshairtarget, crispy->crosshair);
 
-	M_DrawCrispnessGoto(crispness3_next, "Next Page >");
-	M_DrawCrispnessGoto(crispness3_prev, "< Prev Page");
+	M_DrawCrispnessGoto(crispness3_e::crispness3_next, "Next Page >");
+	M_DrawCrispnessGoto(crispness3_e::crispness3_prev, "< Prev Page");
 
-	dp_translation = NULL;
+	dp_translation = nullptr;
 }
 
 static void M_DrawCrispness4()
@@ -1421,24 +1422,24 @@ static void M_DrawCrispness4()
 
 	M_DrawCrispnessHeader("Crispness 4/4");
 
-	M_DrawCrispnessSeparator(crispness_sep_physical, "Physical");
+	M_DrawCrispnessSeparator(crispness4_e::crispness_sep_physical, "Physical");
 
-	M_DrawCrispnessMultiItem(crispness_freeaim, "Vertical Aiming", multiitem_freeaim, crispy->freeaim, crispy->singleplayer);
-	M_DrawCrispnessMultiItem(crispness_jumping, "Allow Jumping", multiitem_jump, crispy->jump, crispy->singleplayer);
-	M_DrawCrispnessItem(crispness_overunder, "Walk over/under Monsters", crispy->overunder, crispy->singleplayer);
-	M_DrawCrispnessItem(crispness_recoil, "Weapon Recoil Thrust", crispy->recoil, crispy->singleplayer);
+	M_DrawCrispnessMultiItem(crispness4_e::crispness_freeaim, "Vertical Aiming", multiitem_freeaim, crispy->freeaim, crispy->singleplayer);
+	M_DrawCrispnessMultiItem(crispness4_e::crispness_jumping, "Allow Jumping", multiitem_jump, crispy->jump, crispy->singleplayer);
+	M_DrawCrispnessItem(crispness4_e::crispness_overunder, "Walk over/under Monsters", crispy->overunder, crispy->singleplayer);
+	M_DrawCrispnessItem(crispness4_e::crispness_recoil, "Weapon Recoil Thrust", crispy->recoil, crispy->singleplayer);
 
-	M_DrawCrispnessSeparator(crispness_sep_demos, "Demos");
+	M_DrawCrispnessSeparator(crispness4_e::crispness_sep_demos, "Demos");
 
-	M_DrawCrispnessMultiItem(crispness_demotimer, "Show Demo Timer", multiitem_demotimer, crispy->demotimer, true);
-	M_DrawCrispnessMultiItem(crispness_demotimerdir, "Playback Timer Direction", multiitem_demotimerdir, crispy->demotimerdir + 1, crispy->demotimer & DEMOTIMER_PLAYBACK);
-	M_DrawCrispnessItem(crispness_demobar, "Show Demo Progress Bar", crispy->demobar, true);
-	M_DrawCrispnessItem(crispness_demousetimer, "\"Use\" Button Timer", crispy->btusetimer, true);
+	M_DrawCrispnessMultiItem(crispness4_e::crispness_demotimer, "Show Demo Timer", multiitem_demotimer, crispy->demotimer, true);
+	M_DrawCrispnessMultiItem(crispness4_e::crispness_demotimerdir, "Playback Timer Direction", multiitem_demotimerdir, crispy->demotimerdir + 1, crispy->demotimer & DEMOTIMER_PLAYBACK);
+	M_DrawCrispnessItem(crispness4_e::crispness_demobar, "Show Demo Progress Bar", crispy->demobar, true);
+	M_DrawCrispnessItem(crispness4_e::crispness_demousetimer, "\"Use\" Button Timer", crispy->btusetimer, true);
 
-	M_DrawCrispnessGoto(crispness4_next, "First Page >");
-	M_DrawCrispnessGoto(crispness4_prev, "< Prev Page");
+	M_DrawCrispnessGoto(crispness4_e::crispness4_next, "First Page >");
+	M_DrawCrispnessGoto(crispness4_e::crispness4_prev, "< Prev Page");
 
-	dp_translation = NULL;
+	dp_translation = nullptr;
 }
 
 void M_Options(int choice)
@@ -1532,13 +1533,13 @@ void M_EndGame(int choice)
 	choice = 0;
 	if (!usergame)
 	{
-		S_StartSound(NULL, sfxenum_t::sfx_oof);
+		S_StartSound(nullptr, sfxenum_t::sfx_oof);
 		return;
 	}
 
 	if (netgame)
 	{
-		M_StartMessage(DEH_String(NETEND), NULL, false);
+		M_StartMessage(DEH_String(NETEND), nullptr, false);
 		return;
 	}
 
@@ -1565,26 +1566,26 @@ void M_FinishReadThis(int choice)
 
 int quitsounds[8] =
 {
-	sfx_pldeth,
-	sfx_dmpain,
-	sfx_popain,
-	sfx_slop,
-	sfx_telept,
-	sfx_posit1,
-	sfx_posit3,
-	sfx_sgtatk
+	sfxenum_t::sfx_pldeth,
+	sfxenum_t::sfx_dmpain,
+	sfxenum_t::sfx_popain,
+	sfxenum_t::sfx_slop,
+	sfxenum_t::sfx_telept,
+	sfxenum_t::sfx_posit1,
+	sfxenum_t::sfx_posit3,
+	sfxenum_t::sfx_sgtatk
 };
 
 int quitsounds2[8] =
 {
-	sfx_vilact,
-	sfx_getpow,
-	sfx_boscub,
-	sfx_slop,
-	sfx_skeswg,
-	sfx_kntdth,
-	sfx_bspact,
-	sfx_sgtatk
+	sfxenum_t::sfx_vilact,
+	sfxenum_t::sfx_getpow,
+	sfxenum_t::sfx_boscub,
+	sfxenum_t::sfx_slop,
+	sfxenum_t::sfx_skeswg,
+	sfxenum_t::sfx_kntdth,
+	sfxenum_t::sfx_bspact,
+	sfxenum_t::sfx_sgtatk
 };
 
 void M_QuitResponse(int key)
@@ -1601,11 +1602,11 @@ void M_QuitResponse(int key)
 	{
 		if (gamemode == GameMode::commercial)
 		{
-			S_StartSound(NULL, quitsounds2[(gametic>>2)&7]);
+			S_StartSound(nullptr, quitsounds2[(gametic>>2)&7]);
 		}
 		else
 		{
-			S_StartSound(NULL, quitsounds[(gametic>>2)&7]);
+			S_StartSound(nullptr, quitsounds[(gametic>>2)&7]);
 		}
 
 		I_WaitVBL(105);
@@ -1614,11 +1615,11 @@ void M_QuitResponse(int key)
 	I_Quit();
 }
 
-static const char* M_SelectEndMessage()
+static std::string M_SelectEndMessage()
 {
-	const char** endmsg;
+	CHAR_PTR* endmsg;
 
-	if (logical_gamemission == doom)
+	if (logical_gamemission == GameMission::doom)
 	{
 		// Doom 1
 		endmsg = doom1_endmsg;
@@ -1765,16 +1766,16 @@ void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
 
 	auto xx = x;
 
-	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERML"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERML"), pu_tags_t::PU_CACHE));
 	xx += 8;
 
 	for (size_t i{0}; i < thermWidth; ++i)
 	{
-		V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERMM"), pu_tags_t::PU_CACHE));
+		V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMM"), pu_tags_t::PU_CACHE));
 		xx += 8;
 	}
 
-	V_DrawPatchDirect(xx, y, W_CacheLumpName(DEH_String("M_THERMR"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMR"), pu_tags_t::PU_CACHE));
 
 	M_snprintf(num, 4, "%3d", thermDot);
 	M_WriteText(xx + 8, y + 3, num);
@@ -1785,12 +1786,12 @@ void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
 		dp_translation = cr[CR_DARK];
 	}
 
-	V_DrawPatchDirect((x + 8) + thermDot * 8, y, W_CacheLumpName(DEH_String("M_THERMO"), pu_tags_t::PU_CACHE));
+	V_DrawPatchDirect((x + 8) + thermDot * 8, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMO"), pu_tags_t::PU_CACHE));
 
 	dp_translation = nullptr;
 }
 
-void M_StartMessage(const char* string, void* routine, bool input)
+void M_StartMessage(std::string string, void* routine, bool input)
 {
 	messageLastMenuActive = menuactive;
 	messageToPrint = 1;
@@ -1809,7 +1810,7 @@ void M_StartMessage(const char* string, void* routine, bool input)
 }
 
 // Find string width from hu_font chars
-int M_StringWidth(const char* string)
+int M_StringWidth(std::string string)
 {
 	int width{0};
 
@@ -1840,7 +1841,7 @@ int M_StringWidth(const char* string)
 }
 
 // Find string height from hu_font chars
-int M_StringHeight(const char* string)
+int M_StringHeight(std::string string)
 {
 	int height{SHORT(hu_font[0]->height)};
 
@@ -1857,18 +1858,19 @@ int M_StringHeight(const char* string)
 }
 
 // Write a string using the hu_font
-void M_WriteText(int x, int y, const char* string)
+void M_WriteText(int x, int y, std::string string)
 {
 	int w;
 	int c;
 
-	const char* ch = string;
+	std::string ch = string;
 	auto cx = x;
 	auto cy = y;
 
 	while(1)
 	{
-		c = *(ch++);
+		c = *ch;
+		++ch;
 		if (!c)
 		{
 			break;
@@ -1886,7 +1888,8 @@ void M_WriteText(int x, int y, const char* string)
 		{
 			if (*ch >= '0' && *ch <= '0' + CRMAX - 1)
 			{
-				c = *(ch++);
+				c = *ch;
+				++ch;
 				dp_translation = cr[(int) (c - '0')];
 				continue;
 			}
@@ -1967,14 +1970,14 @@ static int G_GotoNextLevel()
 
 		if (W_CheckNumForName("map31") < 0)
 		{
-			if (gamemission == pack_hacx)
+			if (gamemission == GameMission::pack_hacx)
 			{
 				doom2_next[30] = 16;
 				doom2_next[20] = 1;
 			}
 		}
 
-		if (gamemission == pack_master)
+		if (gamemission == GameMission::pack_master)
 		{
 			doom2_next[1] = 3;
 			doom2_next[14] = 16;
@@ -1998,7 +2001,7 @@ static int G_GotoNextLevel()
 			doom_next[3][7] = 11;
 		}
 
-		if (gameversion == GameVersion_t::exe_chex)
+		if (gameversion == GameVersion::exe_chex)
 		{
 			doom_next[0][2] = 14;
 			doom_next[0][4] = 11;
@@ -2013,7 +2016,7 @@ static int G_GotoNextLevel()
 		if (gamemode == GameMode::commercial)
 		{
 			epsd = gameepisode;
-			if (gamemission == pack_nerve)
+			if (gamemission == GameMission::pack_nerve)
 			{
 				map = nerve_next[gamemap-1];
 			}
@@ -2053,7 +2056,7 @@ static int G_GotoNextLevel()
 // CONTROL PANEL
 //
 
-bool M_Responder (EventType* ev)
+bool M_Responder(EventType* ev)
 {
 	int ch;
 	int key;
@@ -2067,7 +2070,7 @@ bool M_Responder (EventType* ev)
 	// In testcontrols mode, none of the function keys should do anything - the only key is escape to quit.
 	if (testcontrols)
 	{
-		if (ev->type == ev_quit || (ev->type == ev_keydown && (ev->data1 == key_menu_activate || ev->data1 == key_menu_quit)))
+		if (ev->type == evtype_t::ev_quit || (ev->type == evtype_t::ev_keydown && (ev->data1 == key_menu_activate || ev->data1 == key_menu_quit)))
 		{
 			I_Quit();
 			return true;
@@ -2077,7 +2080,7 @@ bool M_Responder (EventType* ev)
 	}
 
 	// "close" button pressed on window?
-	if (ev->type == ev_quit)
+	if (ev->type == evtype_t::ev_quit)
 	{
 		// First click on close button = bring up quit confirm message. Second click on close button = confirm quit
 		if (menuactive && messageToPrint && messageRoutine == M_QuitResponse)
@@ -2086,7 +2089,7 @@ bool M_Responder (EventType* ev)
 		}
 		else
 		{
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			M_QuitDOOM(0);
 		}
 
@@ -2097,7 +2100,7 @@ bool M_Responder (EventType* ev)
 	ch = 0;
 	key = -1;
 
-	if (ev->type == ev_joystick)
+	if (ev->type == evtype_t::ev_joystick)
 	{
 		// Simulate key presses from joystick events to interact with the menu.
 		if (menuactive)
@@ -2176,7 +2179,7 @@ bool M_Responder (EventType* ev)
 	}
 	else
 	{
-		if (ev->type == ev_mouse && mousewait < I_GetTime())
+		if (ev->type == evtype_t::ev_mouse && mousewait < I_GetTime())
 		{
 			// novert disables controlling the menus with the mouse
 			if (!novert)
@@ -2236,7 +2239,7 @@ bool M_Responder (EventType* ev)
 		}
 		else
 		{
-			if (ev->type == ev_keydown)
+			if (ev->type == evtype_t::ev_keydown)
 			{
 				key = ev->data1;
 				ch = ev->data2;
@@ -2286,7 +2289,7 @@ bool M_Responder (EventType* ev)
 			// instead, use ev->data3 which gives the fully-translated and
 			// modified key input.
 
-			if (ev->type != ev_keydown)
+			if (ev->type != evtype_t::ev_keydown)
 			{
 				break;
 			}
@@ -2341,7 +2344,7 @@ bool M_Responder (EventType* ev)
 		}
 
 		messageToPrint = 0; // moved here
-		S_StartSound(NULL, sfxenum_t::sfx_swtchx);
+		S_StartSound(nullptr, sfxenum_t::sfx_swtchx);
 
 		return true;
 	}
@@ -2369,7 +2372,7 @@ bool M_Responder (EventType* ev)
 			}
 
 			M_SizeDisplay(0);
-			S_StartSound(NULL, sfxenum_t::sfx_stnmov);
+			S_StartSound(nullptr, sfxenum_t::sfx_stnmov);
 			return true;
 		}
 		else if (key == key_menu_incscreen) // Screen size up
@@ -2380,14 +2383,14 @@ bool M_Responder (EventType* ev)
 			}
 
 			M_SizeDisplay(1);
-			S_StartSound(NULL, sfxenum_t::sfx_stnmov);
+			S_StartSound(nullptr, sfxenum_t::sfx_stnmov);
 			return true;
 		}
 		else if (key == key_menu_help)		// Help key
 		{
 			M_StartControlPanel();
 
-			if (gameversion >= GameVersion_t::exe_ultimate)
+			if (gameversion >= GameVersion::exe_ultimate)
 			{
 				currentMenu = &ReadDef2;
 			}
@@ -2397,20 +2400,20 @@ bool M_Responder (EventType* ev)
 			}
 
 			itemOn = 0;
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			return true;
 		}
 		else if (key == key_menu_save)		// Save
 		{
 			M_StartControlPanel();
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			M_SaveGame(0);
 			return true;
 		}
 		else if (key == key_menu_load)		// Load
 		{
 			M_StartControlPanel();
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			M_LoadGame(0);
 			return true;
 		}
@@ -2418,43 +2421,43 @@ bool M_Responder (EventType* ev)
 		{
 			M_StartControlPanel();
 			currentMenu = &SoundDef;
-			itemOn = sfx_vol;
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			itemOn = (int)sound_e::sfx_vol;
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			return true;
 		}
 		else if (key == key_menu_detail)	// Detail toggle
 		{
 			M_ChangeDetail(0);
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			return true;
 		}
 		else if (key == key_menu_qsave)	// Quicksave
 		{
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			M_QuickSave();
 			return true;
 		}
 		else if (key == key_menu_endgame) // End game
 		{
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			M_EndGame(0);
 			return true;
 		}
 		else if (key == key_menu_messages) // Toggle messages
 		{
 			M_ChangeMessages(0);
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			return true;
 		}
 		else if (key == key_menu_qload)	// Quickload
 		{
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			M_QuickLoad();
 			return true;
 		}
 		else if (key == key_menu_quit)		// Quit DOOM
 		{
-			S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			M_QuitDOOM(0);
 			return true;
 		}
@@ -2467,7 +2470,7 @@ bool M_Responder (EventType* ev)
 			}
 			players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
 #ifndef CRISPY_TRUECOLOR
-			I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"),PU_CACHE));
+			I_SetPalette(W_CacheLumpName<patch_t>(DEH_String("PLAYPAL"), pu_tags_t::PU_CACHE));
 #else
 			{
 				extern void R_InitColormaps();
@@ -2504,7 +2507,7 @@ bool M_Responder (EventType* ev)
 		if (key == key_menu_activate)
 		{
 			M_StartControlPanel();
-			S_StartSound(NULL,sfx_swtchn);
+			S_StartSound(nullptr,sfxenum_t::sfx_swtchn);
 			return true;
 		}
 		return false;
@@ -2524,7 +2527,7 @@ bool M_Responder (EventType* ev)
 			{
 				++itemOn;
 			}
-			S_StartSound(NULL, sfxenum_t::sfx_pstop);
+			S_StartSound(nullptr, sfxenum_t::sfx_pstop);
 		} while(currentMenu->menuitems[itemOn].status==-1);
 
 		return true;
@@ -2542,7 +2545,7 @@ bool M_Responder (EventType* ev)
 			{
 				--itemOn;
 			}
-			S_StartSound(NULL, sfxenum_t::sfx_pstop);
+			S_StartSound(nullptr, sfxenum_t::sfx_pstop);
 		} while(currentMenu->menuitems[itemOn].status==-1);
 
 	return true;
@@ -2552,7 +2555,7 @@ bool M_Responder (EventType* ev)
 		// Slide slider left
 		if (currentMenu->menuitems[itemOn].routine && currentMenu->menuitems[itemOn].status == 2)
 		{
-			S_StartSound(NULL, sfxenum_t::sfx_stnmov);
+			S_StartSound(nullptr, sfxenum_t::sfx_stnmov);
 			currentMenu->menuitems[itemOn].routine(0);
 		}
 		return true;
@@ -2562,7 +2565,7 @@ bool M_Responder (EventType* ev)
 		// Slide slider right
 		if (currentMenu->menuitems[itemOn].routine && currentMenu->menuitems[itemOn].status == 2)
 		{
-			S_StartSound(NULL, sfxenum_t::sfx_stnmov);
+			S_StartSound(nullptr, sfxenum_t::sfx_stnmov);
 			currentMenu->menuitems[itemOn].routine(1);
 		}
 		return true;
@@ -2576,12 +2579,12 @@ bool M_Responder (EventType* ev)
 			if (currentMenu->menuitems[itemOn].status == 2)
 			{
 				currentMenu->menuitems[itemOn].routine(1);		// right arrow
-				S_StartSound(NULL, sfxenum_t::sfx_stnmov);
+				S_StartSound(nullptr, sfxenum_t::sfx_stnmov);
 			}
 			else
 			{
 				currentMenu->menuitems[itemOn].routine(itemOn);
-				S_StartSound(NULL, sfxenum_t::sfx_pistol);
+				S_StartSound(nullptr, sfxenum_t::sfx_pistol);
 			}
 		}
 		return true;
@@ -2591,7 +2594,7 @@ bool M_Responder (EventType* ev)
 		// Deactivate menu
 		currentMenu->lastOn = itemOn;
 		M_ClearMenus();
-		S_StartSound(NULL,sfx_swtchx);
+		S_StartSound(nullptr, sfxenum_t::sfx_swtchx);
 		return true;
 	}
 	else if (key == key_menu_back)
@@ -2603,7 +2606,7 @@ bool M_Responder (EventType* ev)
 		{
 			currentMenu = currentMenu->prevMenu;
 			itemOn = currentMenu->lastOn;
-			S_StartSound(NULL,sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 		}
 		return true;
 	}
@@ -2620,7 +2623,7 @@ bool M_Responder (EventType* ev)
 			}
 			else
 			{
-				S_StartSound(NULL,sfx_oof);
+				S_StartSound(nullptr, sfxenum_t::sfx_oof);
 			}
 		}
 	}
@@ -2631,7 +2634,7 @@ bool M_Responder (EventType* ev)
 		if (currentMenu == CrispnessMenus[crispness_cur])
 		{
 			M_CrispnessPrev(0);
-			S_StartSound(NULL,sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			return true;
 		}
 	}
@@ -2641,7 +2644,7 @@ bool M_Responder (EventType* ev)
 		if (currentMenu == CrispnessMenus[crispness_cur])
 		{
 			M_CrispnessNext(0);
-			S_StartSound(NULL, sfx_swtchn);
+			S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 			return true;
 		}
 	}
@@ -2657,7 +2660,7 @@ bool M_Responder (EventType* ev)
 			if (currentMenu->menuitems[i].alphaKey == ch)
 			{
 				itemOn = i;
-				S_StartSound(NULL, sfx_pstop);
+				S_StartSound(nullptr, sfxenum_t::sfx_pstop);
 				return true;
 			}
 		}
@@ -2667,7 +2670,7 @@ bool M_Responder (EventType* ev)
 			if (currentMenu->menuitems[i].alphaKey == ch)
 			{
 				itemOn = i;
-				S_StartSound(NULL, sfx_pstop);
+				S_StartSound(nullptr, sfxenum_t::sfx_pstop);
 				return true;
 			}
 		}
@@ -2681,7 +2684,7 @@ bool M_Responder (EventType* ev)
 //
 // M_StartControlPanel
 //
-void M_StartControlPanel ()
+void M_StartControlPanel()
 {
 	// intro might call this repeatedly
 	if (menuactive)
@@ -2703,9 +2706,9 @@ void M_StartControlPanel ()
 // Display OPL debug messages - hack for GENMIDI development.
 static void M_DrawOPLDev()
 {
-	extern void I_OPL_DevMessages(char* , size_t);
+	extern void I_OPL_DevMessages(std::string , size_t);
 	char debug[1024];
-	char* curr, *p;
+	std::string curr, p;
 	int line;
 
 	I_OPL_DevMessages(debug, sizeof(debug));
@@ -2716,7 +2719,7 @@ static void M_DrawOPLDev()
 	{
 		p = strchr(curr, '\n');
 
-		if (p != NULL)
+		if (p != nullptr)
 		{
 			*p = '\0';
 		}
@@ -2724,7 +2727,7 @@ static void M_DrawOPLDev()
 		M_WriteText(0, line * 8, curr);
 		++line;
 
-		if (p == NULL)
+		if (p == nullptr)
 		{
 			break;
 		}
@@ -2734,13 +2737,13 @@ static void M_DrawOPLDev()
 }
 
 // Called after the view has been rendered, but before it has been blitted.
-void M_Drawer ()
+void M_Drawer()
 {
 	static short x;
 	static short y;
 	unsigned max;
 	char string[80];
-	const char* name;
+	std::string name;
 	int start;
 
 	inhelpscreens = false;
@@ -2833,30 +2836,30 @@ void M_Drawer ()
 
 	for (size_t i{0}; i < max; ++i)
 	{
-		const char* alttext = currentMenu->menuitems[i].alttext;
+		std::string alttext = currentMenu->menuitems[i].alttext;
 		name = DEH_String(currentMenu->menuitems[i].name);
 
 		if (name[0] && (W_CheckNumForName(name) > 0 || alttext))
 		{
 			// [crispy] shade unavailable menu items
-			if ((currentMenu == &MainDef && i == savegame && (!usergame || gamestate != GameState_t::GS_LEVEL)) ||
-				(currentMenu == &OptionsDef && i == endgame && (!usergame || netgame)) ||
-				(currentMenu == &MainDef && i == loadgame && (netgame && !demoplayback)) ||
-				(currentMenu == &MainDef && i == newgame && (demorecording || (netgame && !demoplayback))))
+			if ((currentMenu == &MainDef && i == (int)main_e::savegame && (!usergame || gamestate != GameState_t::GS_LEVEL)) ||
+				(currentMenu == &OptionsDef && i == (int)options_e::endgame && (!usergame || netgame)) ||
+				(currentMenu == &MainDef && i == (int)main_e::loadgame && (netgame && !demoplayback)) ||
+				(currentMenu == &MainDef && i == (int)main_e::newgame && (demorecording || (netgame && !demoplayback))))
 			{
 				dp_translation = cr[CR_DARK];
 			}
 
 			if (W_CheckNumForName(name) > 0 && currentMenu->lumps_missing == -1)
 			{
-				V_DrawPatchDirect(x, y, W_CacheLumpName(name, pu_tags_t::PU_CACHE));
+				V_DrawPatchDirect(x, y, W_CacheLumpName<patch_t>(name, pu_tags_t::PU_CACHE));
 			}
-			else if (alttext)
+			else if (!alttext.empty())
 			{
 				M_WriteText(x, y+8-(M_StringHeight(alttext)/2), alttext);
 			}
 
-			dp_translation = NULL;
+			dp_translation = nullptr;
 		}
 		y += LINEHEIGHT;
 	}
@@ -2867,26 +2870,28 @@ void M_Drawer ()
 		char item[4];
 		M_snprintf(item, sizeof(item), "%s>", whichSkull ? crstr[CR_NONE] : crstr[CR_DARK]);
 		M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * itemOn, item);
-		dp_translation = NULL;
+		dp_translation = nullptr;
 	}
 	else
 	{
-		V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn*LINEHEIGHT, W_CacheLumpName(DEH_String(skullName[whichSkull]), pu_tags_t::PU_CACHE));
+		V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn*LINEHEIGHT, W_CacheLumpName<patch_t>(DEH_String(skullName[whichSkull]), pu_tags_t::PU_CACHE));
 	}
 }
 
-void M_ClearMenus ()
+void M_ClearMenus()
 {
 	menuactive = 0;
 
-	// [crispy] entering menus while recording demos pauses the game
+	// entering menus while recording demos pauses the game
 	if (demorecording && paused)
 	{
 		sendpause = true;
 	}
 
 	// if (!netgame && usergame && paused)
-	//		sendpause = true;
+	//{
+		//sendpause = true;
+	//}
 }
 
 void M_SetupNextMenu(menu_t* menudef)
@@ -2895,7 +2900,7 @@ void M_SetupNextMenu(menu_t* menudef)
 	itemOn = currentMenu->lastOn;
 }
 
-void M_Ticker ()
+void M_Ticker()
 {
 	if (--skullAnimCounter <= 0)
 	{
@@ -2904,7 +2909,7 @@ void M_Ticker ()
 	}
 }
 
-void M_Init ()
+void M_Init()
 {
 	currentMenu = &MainDef;
 	menuactive = 0;
@@ -2913,19 +2918,19 @@ void M_Init ()
 	skullAnimCounter = 10;
 	screenSize = screenblocks - 3;
 	messageToPrint = 0;
-	messageString = NULL;
+	messageString.clear();
 	messageLastMenuActive = menuactive;
 	quickSaveSlot = -1;
 
 	// Here we could catch other version dependencies, like HELP1/2, and four episodes.
 	// The same hacks were used in the original Doom EXEs.
-	if (gameversion >= GameVersion_t::exe_ultimate)
+	if (gameversion >= GameVersion::exe_ultimate)
 	{
-		MainMenu[readthis].routine = M_ReadThis2;
-		ReadDef2.prevMenu = NULL;
+		MainMenu[std::size_t(main_e::readthis)].routine = M_ReadThis2;
+		ReadDef2.prevMenu = nullptr;
 	}
 
-	if (gameversion >= GameVersion_t::exe_final && gameversion <= GameVersion_t::exe_final2)
+	if (gameversion >= GameVersion::exe_final && gameversion <= GameVersion::exe_final2)
 	{
 		ReadDef2.routine = M_DrawReadThisCommercial;
 		// rearrange Skull in Final Doom HELP screen
@@ -2934,14 +2939,14 @@ void M_Init ()
 
 	if (gamemode == GameMode::commercial)
 	{
-		MainMenu[readthis] = MainMenu[quitdoom];
+		MainMenu[std::size_t(main_e::readthis)] = MainMenu[std::size_t(main_e::quitdoom)];
 		--MainDef.numitems;
 		MainDef.y += 8;
 		NewDef.prevMenu = &MainDef;
 		ReadDef1.routine = M_DrawReadThisCommercial;
 		ReadDef1.x = 330;
 		ReadDef1.y = 165;
-		ReadMenu1[rdthsempty1].routine = M_FinishReadThis;
+		ReadMenu1[std::size_t(read_e::rdthsempty1)].routine = M_FinishReadThis;
 	}
 
 	// Sigil
@@ -2954,12 +2959,12 @@ void M_Init ()
 	// three episodes; if we're emulating one of those then don't try
 	// to show episode four. If we are, then do show episode four
 	// (should crash if missing).
-	if (gameversion < exe_ultimate)
+	if (gameversion < GameVersion::exe_ultimate)
 	{
 		--EpiDef.numitems;
 	}
 	// chex.exe shows only one episode.
-	else if (gameversion == GameVersion_t::exe_chex)
+	else if (gameversion == GameVersion::exe_chex)
 	{
 		EpiDef.numitems = 1;
 		// never show the Episode menu
@@ -2967,29 +2972,29 @@ void M_Init ()
 	}
 
 	// NRFTL / The Master Levels
-	if (crispy->havenerve || crispy->havemaster)
+	if (!crispy->havenerve.empty() || !crispy->havemaster.empty())
 	{
 		int i;
 
 		NewDef.prevMenu = &EpiDef;
-		EpisodeMenu[0].alphaKey = gamevariant == freedm || gamevariant == freedoom ? 'f' : 'h';
-		EpisodeMenu[0].alttext = gamevariant == freedm ? "FreeDM" : gamevariant == freedoom ? "Freedoom: Phase 2" : "Hell on Earth";
+		EpisodeMenu[0].alphaKey = gamevariant == GameVariant::freedm || gamevariant == GameVariant::freedoom ? 'f' : 'h';
+		EpisodeMenu[0].alttext = gamevariant == GameVariant::freedm ? "FreeDM" : gamevariant == GameVariant::freedoom ? "Freedoom: Phase 2" : "Hell on Earth";
 		EpiDef.numitems = 1;
 
-		if (crispy->havenerve)
+		if (!crispy->havenerve.empty())
 		{
 			EpisodeMenu[EpiDef.numitems].alphaKey = 'n';
 			EpisodeMenu[EpiDef.numitems].alttext = "No Rest for the Living";
 			++EpiDef.numitems;
 
 			// render the episode menu with the HUD font if the graphics are not from the BFG Edition Doom 2 IWAD or from a PWAD
-			if (gamevariant != bfgedition && (i = W_CheckNumForName("M_EPI2")) != -1 && W_IsIWADLump(lumpinfo[i]))
+			if (gamevariant != GameVariant::bfgedition && (i = W_CheckNumForName("M_EPI2")) != -1 && W_IsIWADLump(lumpinfo[i]))
 			{
 				EpiDef.lumps_missing = 1;
 			}
 		}
 
-		if (crispy->havemaster)
+		if (!crispy->havemaster.empty())
 		{
 			EpisodeMenu[EpiDef.numitems].alphaKey = 't';
 			EpisodeMenu[EpiDef.numitems].alttext = "The Master Levels";
@@ -3005,9 +3010,9 @@ void M_Init ()
 
 	// rearrange Load Game and Save Game menus
 	{
-		const patch_t* patchl = W_CacheLumpName(DEH_String("M_LOADG"), pu_tags_t::PU_CACHE);
-		const patch_t* patchs = W_CacheLumpName(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE);
-		const patch_t* patchm = W_CacheLumpName(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE);
+		const patch_t* patchl = W_CacheLumpName<patch_t>(DEH_String("M_LOADG"), pu_tags_t::PU_CACHE);
+		const patch_t* patchs = W_CacheLumpName<patch_t>(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE);
+		const patch_t* patchm = W_CacheLumpName<patch_t>(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE);
 
 		LoadDef_x = (ORIGWIDTH - SHORT(patchl->width)) / 2 + SHORT(patchl->leftoffset);
 		SaveDef_x = (ORIGWIDTH - SHORT(patchs->width)) / 2 + SHORT(patchs->leftoffset);
@@ -3017,7 +3022,7 @@ void M_Init ()
 
 		short vstep = ORIGHEIGHT - 32; // ST_HEIGHT
 		vstep -= captionheight;
-		vstep -= (load_end - 1) * LINEHEIGHT + SHORT(patchm->height);
+		vstep -= (load_e::load_end - 1) * LINEHEIGHT + SHORT(patchm->height);
 		vstep /= 3;
 
 		if (vstep > 0)
@@ -3032,8 +3037,8 @@ void M_Init ()
 	// remove DOS reference from the game quit confirmation dialogs
 	if (!M_ParmExists("-nodeh"))
 	{
-		const char* string;
-		char* replace;
+		std::string string;
+		std::string replace;
 
 		// "i wouldn't leave if i were you.\ndos is much worse."
 		string = doom1_endmsg[3];
@@ -3041,7 +3046,6 @@ void M_Init ()
 		{
 			replace = M_StringReplace(string, "dos", crispy->platform);
 			DEH_AddStringReplacement(string, replace);
-			free(replace);
 		}
 
 		// "you're trying to say you like dos\nbetter than me, right?"
@@ -3050,7 +3054,6 @@ void M_Init ()
 		{
 			replace = M_StringReplace(string, "dos", crispy->platform);
 			DEH_AddStringReplacement(string, replace);
-			free(replace);
 		}
 
 		// "don't go now, there's a \ndimensional shambler waiting\nat the dos prompt!"
@@ -3059,7 +3062,6 @@ void M_Init ()
 		{
 			replace = M_StringReplace(string, "dos", "command");
 			DEH_AddStringReplacement(string, replace);
-			free(replace);
 		}
 	}
 
@@ -3067,17 +3069,14 @@ void M_Init ()
 }
 
 // extended savegames
-static char* savegwarning;
+std::string savegwarning;
 static void M_ForceLoadGameResponse(int key)
 {
-	free(savegwarning);
-	free(savewadfilename);
-
 	if (key != key_menu_confirm || !savemaplumpinfo)
 	{
 		// no need to end game anymore when denied to load savegame
 		//M_EndGameResponse(key_menu_confirm);
-		savewadfilename = NULL;
+		savewadfilename.clear();
 
 		// reload Load Game menu
 		M_StartControlPanel();
@@ -3085,35 +3084,33 @@ static void M_ForceLoadGameResponse(int key)
 		return;
 	}
 
-	savewadfilename = (char*)W_WadNameForLump(savemaplumpinfo);
-	gameaction = ga_loadgame;
+	savewadfilename = W_WadNameForLump(savemaplumpinfo);
+	gameaction = GameAction_t::ga_loadgame;
 }
 
 void M_ForceLoadGame()
 {
 	savegwarning =
 	savemaplumpinfo ?
-	M_StringJoin("This savegame requires the file\n",
-					crstr[CR_GOLD], savewadfilename, crstr[CR_NONE], "\n",
-					"to restore ", crstr[CR_GOLD], savemaplumpinfo->name, crstr[CR_NONE], " .\n\n",
-					"Continue to restore from\n",
-					crstr[CR_GOLD], W_WadNameForLump(savemaplumpinfo), crstr[CR_NONE], " ?\n\n",
-					PRESSYN, NULL) :
-	M_StringJoin("This savegame requires the file\n",
-					crstr[CR_GOLD], savewadfilename, crstr[CR_NONE], "\n",
-					"to restore a map that is\n",
-					"currently not available!\n\n",
-					PRESSKEY, NULL) ;
+	std::string("This savegame requires the file\n"
+					+ crstr[CR_GOLD] + savewadfilename + crstr[CR_NONE] + "\n"
+					+ "to restore " + crstr[CR_GOLD] + savemaplumpinfo->name + crstr[CR_NONE] + " .\n\n"
+					+"Continue to restore from\n"
+					+ crstr[CR_GOLD] + W_WadNameForLump(savemaplumpinfo) + crstr[CR_NONE] + " ?\n\n"
+					+ PRESSYN) :
+	std::string("This savegame requires the file\n"
+					+ crstr[CR_GOLD] + savewadfilename + crstr[CR_NONE] + "\n"
+					+ "to restore a map that is\n"
+					+ "currently not available!\n\n"
+					+ PRESSKEY);
 
 	M_StartMessage(savegwarning, M_ForceLoadGameResponse, savemaplumpinfo != NULL);
 	messageToPrint = 2;
-	S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+	S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 }
 
 static void M_ConfirmDeleteGameResponse(int key)
 {
-	free(savegwarning);
-
 	if (key == key_menu_confirm)
 	{
 		char name[256];
@@ -3127,11 +3124,11 @@ static void M_ConfirmDeleteGameResponse(int key)
 
 void M_ConfirmDeleteGame()
 {
-	savegwarning = M_StringJoin("delete savegame\n\n", crstr[CR_GOLD], savegamestrings[itemOn], crstr[CR_NONE], " ?\n\n", PRESSYN, NULL);
+	savegwarning = std::string("delete savegame\n\n" + std::string(crstr[CR_GOLD]) + savegamestrings[itemOn] + std::string(crstr[CR_NONE]) + " ?\n\n" + PRESSYN);
 
 	M_StartMessage(savegwarning, M_ConfirmDeleteGameResponse, true);
 	messageToPrint = 2;
-	S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+	S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 }
 
 // indicate game version mismatch
@@ -3139,5 +3136,5 @@ void M_LoadGameVerMismatch()
 {
 	M_StartMessage("Game Version Mismatch\n\n"PRESSKEY, NULL, false);
 	messageToPrint = 2;
-	S_StartSound(NULL, sfxenum_t::sfx_swtchn);
+	S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 }

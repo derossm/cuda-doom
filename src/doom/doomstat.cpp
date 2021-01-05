@@ -16,9 +16,9 @@
 
 // Game Mode - identify IWAD as shareware, retail etc.
 GameMode gamemode = GameMode::indetermined;
-GameMission_t gamemission = GameMission_t::doom;
-GameVersion_t gameversion = GameVersion_t::exe_final2;
-GameVariant_t gamevariant = GameVariant_t::vanilla;
+GameMission gamemission = GameMission::doom;
+GameVersion gameversion = GameVersion::exe_final2;
+GameVariant gamevariant = GameVariant::vanilla;
 
 // Set if homebrew PWAD stuff has been added.
 bool modifiedgame;

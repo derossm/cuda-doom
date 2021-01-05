@@ -51,7 +51,7 @@ static void CopyRegion(pixel_t* dest, int dest_pitch, pixel_t* src, int src_pitc
 	}
 }
 
-static void SaveDiskData(const char* disk_lump, int xoffs, int yoffs)
+static void SaveDiskData(std::string disk_lump, int xoffs, int yoffs)
 {
 	// Allocate a complete temporary screen where we'll draw the patch.
 	pixel_t* tmpscreen = Z_Malloc<decltype(tmpscreen)>(SCREENWIDTH * SCREENHEIGHT * sizeof(*tmpscreen), pu_tags_t::PU_STATIC, NULL);
@@ -69,7 +69,7 @@ static void SaveDiskData(const char* disk_lump, int xoffs, int yoffs)
 	disk_data = Z_Malloc<decltype(disk_data)>(LOADING_DISK_W * LOADING_DISK_H * sizeof(*disk_data), pu_tags_t::PU_STATIC, NULL);
 
 	// Draw the patch and save the result to disk_data.
-	patch_t* disk = (patch_t*)W_CacheLumpName(disk_lump, pu_tags_t::PU_STATIC);
+	patch_t* disk = W_CacheLumpName<patch_t>(disk_lump, pu_tags_t::PU_STATIC);
 	V_DrawPatch((loading_disk_xoffs >> crispy->hires) - WIDESCREENDELTA, loading_disk_yoffs >> crispy->hires, disk);
 	CopyRegion(disk_data, LOADING_DISK_W, tmpscreen + yoffs * SCREENWIDTH + xoffs, SCREENWIDTH, LOADING_DISK_W, LOADING_DISK_H);
 	W_ReleaseLumpName(disk_lump);
@@ -78,7 +78,7 @@ static void SaveDiskData(const char* disk_lump, int xoffs, int yoffs)
 	Z_Free(tmpscreen);
 }
 
-void V_EnableLoadingDisk(const char* lump_name, int xoffs, int yoffs)
+void V_EnableLoadingDisk(std::string lump_name, int xoffs, int yoffs)
 {
 	loading_disk_xoffs = xoffs;
 	loading_disk_yoffs = yoffs;

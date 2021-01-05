@@ -21,7 +21,7 @@
 // #include "i_system.h"
 // #include "doomtype.h"
 
-// #define ZONEID	0x1d4a11
+// constexpr size_t ZONEID{0x1d4a11};
 
 // struct memblock_t
 // {
@@ -35,7 +35,7 @@
 
 // // Linked list of allocated blocks for each tag type
 
-// static memblock_t* allocated_blocks[_integral_value<size_t>(pu_tags_t::PU_NUM_TAGS)];
+// static memblock_t* allocated_blocks[std::size_t(_integral_value<size_t>(pu_tags_t::PU_NUM_TAGS))];
 
 // #ifdef TESTING
 
@@ -47,7 +47,7 @@
 
 // 	if (test_malloced + size > 2 * 1024 * 1024)
 // 	{
-// 		return NULL;
+// 		return nullptr;
 // 	}
 
 // 	test_malloced += size;
@@ -162,7 +162,7 @@
 // 	memblock_t* next_block;
 // 	int remaining;
 
-// 	block = allocated_blocks[_integral_value<size_t>(pu_tags_t::PU_CACHE)];
+// 	block = allocated_blocks[std::size_t(_integral_value<size_t>(pu_tags_t::PU_CACHE))];
 
 // 	if (block == NULL)
 // 	{
@@ -398,7 +398,7 @@
 // 	}
 // }
 
-// void Z_ChangeTag2(void* ptr, pu_tags_t tag, const char* file, int line)
+// void Z_ChangeTag2(void* ptr, pu_tags_t tag, std::string file, int line)
 // {
 // 	memblock_t*	block;
 

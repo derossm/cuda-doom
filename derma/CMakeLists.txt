@@ -3,7 +3,6 @@ add_library(derma STATIC
 									c_headers.h
 									namespace_forwards.h
 									common.h
-									txt_common.h
 									d_windows.h
 									d_unix.h
 									deprecating_tools.h)

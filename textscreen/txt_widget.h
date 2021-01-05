@@ -10,12 +10,14 @@
 #pragma once
 
 #include "../derma/common.h"
+#include "txt_common.h"
 
 #include "txt_enums.h"
 #include "txt_defines.h"
-#include "txt_desktop.h"
 #include "txt_io.h"
 #include "txt_gui.h"
+
+#include "txt_desktop.h"
 
 namespace cudadoom::txt
 {
@@ -28,124 +30,28 @@ namespace cudadoom::txt
  * Widgets may emit signals. The types of signal emitted by a widget depend on the type of the widget.
  * It is possible to be notified when a signal occurs using the @ref SignalConnect function.
  */
-
-using UserData = void*;
-
-class CallbackEntry
+class WidgetBase
 {
-private:
-	UserData user;
-	std::function<void(UserData)> handle;
-	std::string signal;
-
-	CallbackEntry() = delete;
-
-	// do not copy
-	CallbackEntry(const CallbackEntry& rhs) = delete;
-	CallbackEntry& operator=(const CallbackEntry& rhs) = delete;
-
 public:
-	CallbackEntry(std::string _signal, std::function<void(UserData)> _handle, UserData _user) noexcept
-		: signal(std::move(_signal)), handle(std::move(_handle)), user(std::move(_user))
+	virtual ~WidgetBase()
 	{
-	}
-
-	CallbackEntry(CallbackEntry&& rhs) noexcept : signal(std::move(rhs.signal)), handle(std::move(rhs.handle)), user(std::move(rhs.user))
-	{
-	}
-
-	std::function<void(UserData)> findByName(std::string& _signal)
-	{
-		if (signal.compare(_signal))
-		{
-			return handle;
-		}
-		else
-		{
-			return nullptr;
-		}
-	}
-
-	CallbackEntry& operator=(CallbackEntry&& rhs) noexcept
-	{
-		signal = std::move(rhs.signal);
-		handle = std::move(rhs.handle);
-		user = std::move(rhs.user);
-		return *this;
-	}
-
-	~CallbackEntry() = default;
-
-};
-
-class CallbackTable
-{
-private:
-	std::vector<CallbackEntry> callbacks;
-
-	CallbackTable(CallbackTable&&) = delete;
-	CallbackTable& operator=(CallbackTable&&) = delete;
-
-	CallbackTable(const CallbackTable&) = delete;
-	CallbackTable& operator=(const CallbackTable&) = delete;
-
-public:
-	// reserve callbacks in contiguous memory
-	CallbackTable() noexcept : callbacks(32)
-	{
-	}
-
-	~CallbackTable() = default;
-
-	void connect(std::string&& signal, std::function<void(UserData)>&& handle, UserData&& user)
-	{
-		callbacks.emplace_back(CallbackEntry(std::move(signal), std::move(handle), std::move(user)));
-	}
-
-	std::function<void(UserData)> get(std::string& signal)
-	{
-		for(auto& iter: callbacks)
-		{
-			if (auto ptr = iter.findByName(signal); ptr)
-			{
-				return ptr;
-			}
-		}
-
-		return nullptr;
-	}
-
-	size_t size()
-	{
-		return callbacks.size();
 	}
 };
 
-class WidgetClass
-{
-public:
-	std::function<int(void)> SelectableWidget{};
-	std::function<void(void)> CalcWidgetSize{};
-	std::function<void(void)> DrawWidget{};
-	std::function<int(int)> WidgetKeyPress{};
-	std::function<void(void)> DestroyWidget{};
-	std::function<int(int, int, int)> WidgetMousePress{};
-	std::function<void(void)> LayoutWidget{};
-	std::function<void(bool)> SetWidgetFocus{};
-};
-
-class Widget
+template<typename T = WidgetBase>
+requires std::derived_from<T, WidgetBase>
+class Widget : public WidgetBase
 {
 	// TEMP PUBLIC UNTIL ALL DEPENDENTS CONVERTED TODO UPDATE THIS
 public:
 	Widget* parent{nullptr};
-	WidgetClass* widget_class{nullptr};
+	WidgetClass<T> widget_class;
 
 	// These are set automatically when the window is drawn and should not be set manually.
 	int64_t x{0};
 	int64_t y{0};
-	int64_t width{0};
-	int64_t height{0};
+	int width{0};
+	int height{0};
 
 	CallbackTable callback_table;
 
@@ -154,16 +60,17 @@ public:
 	bool _visible{false};
 	bool _focused{false};
 
-	Widget()
+	Widget() : widget_class{ Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy }
 	{
 		
 	}
 
-	~Widget()
+	virtual ~Widget()
 	{
 	}
 
 public:
+	using Type = T;
 	inline bool visible() const noexcept
 	{
 		return _visible;
@@ -239,37 +146,37 @@ public:
 		unsetFocus();
 	}
 
-	inline void CalcWidgetSize()
+	virtual inline void CalculateSize() noexcept
 	{
-		size_calc(widget);
+		//size_calc(widget);
 	}
 
-	void SignalConnect(std::string&& signal, std::function<void(void*)>&& handle, UserData&& user)
+	inline void SignalConnect(std::string&& signal, std::function<void(void*)>&& handle, UserData&& user) noexcept
 	{
 		callback_table.connect(std::move(signal), std::move(handle), std::move(user));
 	}
 
-	void EmitSignal(std::string& signal_name)
+	inline void EmitSignal(std::string& signal_name) noexcept
 	{
-		auto table{callback_table};
+		//auto table{callback_table};
 
 		// Don't destroy the table while we're searching through it (one of the callbacks may destroy this window)
 		//RefCallbackTable(table);
 
 		// Search the table for all callbacks with this name and invoke the functions.
-		for (size_t i{0}; i < table.size(); ++i)
-		{
+		//for (size_t i{0}; i < table.size(); ++i)
+		//{
 			//if (!strcmp(table->callbacks[i].signal_name, signal_name))
 			//{
 				//table->callbacks[i].func(widget, table->callbacks[i].user_data);
 			//}
-		}
+		//}
 
 		// Finished using the table
 		//UnrefCallbackTable(table);
 	}
 
-	void DrawWidget()
+	virtual inline void Draw() noexcept
 	{
 		SavedColors colors;
 
@@ -285,58 +192,63 @@ public:
 		RestoreColors(&colors);
 	}
 
-	void DestroyWidget()
+	virtual inline void Destroy() noexcept
 	{
 	}
 
-	int KeyPress(int key)
+	virtual inline bool KeyPress(KeyType key) noexcept
 	{
 		return 0;//key_press(widget, key);
 	}
 
-	void SetWidgetFocus(bool _focused)
+	// void SetWidgetFocus(bool _focused)
+	// {
+	// 	if (!focused() && _focused)
+	// 	{
+	// 		setFocus();
+	// 	}
+	// 	else if(focused() && !_focused)
+	// 	{
+	// 		unsetFocus();
+	// 	}
+	// }
+
+	inline void SetAlign(AlignHorizontal _align) noexcept
 	{
-		if (!focused() && _focused)
-		{
-			setFocus();
-		}
-		else if(focused() && !_focused)
-		{
-			unsetFocus();
-		}
+		align = _align;
 	}
 
-	void SetWidgetAlign(AlignHorizontal horiz_align)
-	{
-		align = horiz_align;
-	}
-
-	void MousePress(int x, int y, int b)
+	virtual inline bool MousePress(MouseEvent evt) noexcept
 	{
 		//mouse_press(x, y, b);
 	}
 
-	void LayoutWidget()
+	virtual inline void SetLayout() noexcept
 	{
 		//layout();
 	}
 
-	bool AlwaysSelectable()
+	virtual inline void SetFocus(bool _focus) noexcept
+	{
+		//layout();
+	}
+
+	inline bool AlwaysSelectable() noexcept
 	{
 		return true;
 	}
 
-	bool NeverSelectable()
+	inline bool NeverSelectable() noexcept
 	{
 		return false;
 	}
 
-	int SelectableWidget()
+	virtual inline bool Selectable() noexcept
 	{
-		return 0;//selectable(widget);
+		return true;
 	}
 
-	bool ContainsWidget(Widget* needle)
+	inline bool ContainsWidget(Widget* needle) noexcept
 	{
 		while (needle)
 		{
@@ -351,7 +263,7 @@ public:
 		return false;
 	}
 
-	bool HoveringOverWidget()
+	inline bool HoveringOverWidget() noexcept
 	{
 		int _x;
 		int _y;
@@ -370,7 +282,7 @@ public:
 		return (_x >= x && _x < x + width && _y >= y && _y < y + height);
 	}
 
-	void SetWidgetBG()
+	inline void SetWidgetBG() noexcept
 	{
 		if (focused())
 		{
@@ -385,6 +297,7 @@ public:
 			// Use normal window background.
 		}
 	}
+
 };
 
 /**
@@ -395,7 +308,7 @@ public:
  * @param func			The callback function to invoke.
  * @param user_data	User-specified pointer to pass to the callback function.
  */
-//void SignalConnect(const char* signal_name, WidgetSignalFunc func, void* user_data);
+//void SignalConnect(std::string signal_name, WidgetSignalFunc func, void* user_data);
 
 /**
  * Set the policy for how a widget should be aligned within a table.

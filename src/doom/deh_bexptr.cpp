@@ -110,7 +110,7 @@ extern void A_LineEffect();
 
 struct bex_codeptr_t
 {
-	const char* mnemonic;
+	std::string mnemonic;
 	const actionf_t pointer;
 };
 
@@ -207,9 +207,9 @@ static const bex_codeptr_t bex_codeptrtable[] = {
 	{"NULL", {NULL}},
 };
 
-extern actionf_t codeptrs[NUMSTATES];
+extern actionf_t codeptrs[std::size_t(statenum_t::NUMSTATES)];
 
-static void* DEH_BEXPtrStart(deh_context_t* context, char* line)
+static void* DEH_BEXPtrStart(deh_context_t* context, std::string line)
 {
 	char s[10];
 
@@ -218,13 +218,13 @@ static void* DEH_BEXPtrStart(deh_context_t* context, char* line)
 	DEH_Warning(context, "Parse error on section start");
 	}
 
-	return NULL;
+	return nullptr;
 }
 
-static void DEH_BEXPtrParseLine(deh_context_t* context, char* line, void* tag)
+static void DEH_BEXPtrParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	state_t* state;
-	char* variable_name, *value, frame_str[6];
+	std::string variable_name, *value, frame_str[6];
 	int frame_number, i;
 
 	// parse "FRAME nn = mnemonic", where
@@ -237,13 +237,13 @@ static void DEH_BEXPtrParseLine(deh_context_t* context, char* line, void* tag)
 
 	// parse "FRAME nn", where frame_number = "nn"
 	if (sscanf(variable_name, "%5s %32d", frame_str, &frame_number) != 2 ||
-		strcasecmp(frame_str, "FRAME"))
+		iequals(frame_str, "FRAME"))
 	{
 	DEH_Warning(context, "Failed to parse assignment: %s", variable_name);
 	return;
 	}
 
-	if (frame_number < 0 || frame_number >= NUMSTATES)
+	if (frame_number < 0 || frame_number >= (int)statenum_t::NUMSTATES)
 	{
 	DEH_Warning(context, "Invalid frame number: %i", frame_number);
 	return;
@@ -251,9 +251,9 @@ static void DEH_BEXPtrParseLine(deh_context_t* context, char* line, void* tag)
 
 	state = (state_t*) &states[frame_number];
 
-	for (i = 0; i < arrlen(bex_codeptrtable); i++)
+	for (i = 0; i < arrlen(bex_codeptrtable); ++i)
 	{
-	if (!strcasecmp(bex_codeptrtable[i].mnemonic, value))
+	if (!iequals(bex_codeptrtable[i].mnemonic, value))
 	{
 		state->action = bex_codeptrtable[i].pointer;
 		return;

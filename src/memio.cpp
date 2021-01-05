@@ -38,7 +38,7 @@ size_t mem_fread(BufferType_Void* buf, size_t size, size_t nmemb, MEMFILE* strea
 	if (stream->mode != memfile_mode_t::MODE_READ)
 	{
 		printf("not a read stream\n");
-		return (size_t)0;
+		return std::size_t(0);
 	}
 
 	// Trying to read more bytes than we have left?
@@ -79,7 +79,7 @@ auto mem_fwrite(const BufferType_Void* ptr, size_t size, size_t nmemb, MEMFILE* 
 
 	if (stream->mode != memfile_mode_t::MODE_WRITE)
 	{
-		return (size_t)0;
+		return std::size_t(0);
 	}
 
 	// More bytes than can fit in the buffer? If so, reallocate bigger.

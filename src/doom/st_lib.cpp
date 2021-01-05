@@ -12,7 +12,6 @@
 		The status bar widget code.
 \**********************************************************************************************************************************************/
 
-
 #include "deh_main.h"
 #include "doomdef.h"
 #include "z_zone.h"
@@ -25,7 +24,7 @@
 #include "r_local.h"
 #include "v_trans.h" // [crispy] colored status bar widgets
 
-// in AM_map.c
+// in AM_map.cpp
 extern bool automapactive;
 extern int screenblocks;
 
@@ -36,7 +35,7 @@ void STlib_init()
 {
 	if (W_CheckNumForName(DEH_String("STTMINUS")) >= 0)
 	{
-		sttminus = (patch_t*)W_CacheLumpName(DEH_String("STTMINUS"), pu_tags_t::PU_STATIC);
+		sttminus = W_CacheLumpName<patch_t>(DEH_String("STTMINUS"), pu_tags_t::PU_STATIC);
 	}
 	else
 	{

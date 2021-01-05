@@ -29,7 +29,7 @@
 // 'gamemission' can be equal to pack_chex or pack_hacx, but these are
 // just modified versions of doom and doom2, and should be interpreted
 // as the same most of the time.
-#define logical_gamemission (gamemission == pack_chex ? doom : gamemission == pack_hacx ? doom2 : gamemission)
+#define logical_gamemission (gamemission == GameMission::pack_chex ? GameMission::doom : gamemission == GameMission::pack_hacx ? GameMission::doom2 : gamemission)
 
 // Command line parameters.
 extern bool nomonsters;		// checkparm of -nomonsters
@@ -39,9 +39,9 @@ extern bool devparm;		// DEBUG: launched with -devparm
 
 // Game Mode - identify IWAD as shareware, retail etc.
 extern GameMode gamemode;
-extern GameMission_t gamemission;
-extern GameVersion_t gameversion;
-extern GameVariant_t gamevariant;
+extern GameMission gamemission;
+extern GameVersion gameversion;
+extern GameVariant gamevariant;
 
 // Set if homebrew PWAD stuff has been added.
 extern bool modifiedgame;
@@ -85,7 +85,7 @@ extern int deathmatch;
 // Music volume has default, 0 - 15
 // These are multiplied by 8.
 extern int sfxVolume;
-extern int usicVolume;
+extern int musicVolume;
 
 // Current music/sfx card - index useless
 // w/o a reference LUT in a sound module.
@@ -180,7 +180,7 @@ extern wbstartstruct_t wminfo;
 // Internal parameters, used for engine.
 
 // File handling stuff.
-extern char* savegamedir;
+extern std::string savegamedir;
 
 // if true, load all graphics at level load
 extern bool precache;

@@ -62,7 +62,7 @@ int cht_CheckCheat(cheatseq_t* cht, char key)
 	return false;
 }
 
-void cht_GetParam(cheatseq_t* cht, char* buffer)
+void cht_GetParam(cheatseq_t* cht, std::string buffer)
 {
 	memcpy(buffer, cht->parameter_buf, cht->parameter_chars);
 }
