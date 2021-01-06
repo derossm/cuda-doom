@@ -938,10 +938,10 @@ void R_SetupFrame(Player* player)
 		walllights = scalelightfixed;
 
 		std::fill_n(std::begin(scalelightfixed), MAXLIGHTSCALE, fixedcolormap);
-		// for (i = 0; i < MAXLIGHTSCALE; ++i)
-		// {
-		// 	scalelightfixed[i] = fixedcolormap;
-		// }
+		//for (i = 0; i < MAXLIGHTSCALE; ++i)
+		//{
+		//	scalelightfixed[i] = fixedcolormap;
+		//}
 	}
 	else
 	{

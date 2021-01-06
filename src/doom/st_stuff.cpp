@@ -1603,13 +1603,13 @@ void ST_updateWidgets()
 	// if (plyr->ammo[weaponinfo[plyr->readyweapon].ammo] == -100)
 	//	dir = 1;
 	// ++tic;
-	// }
+	//}
 	w_ready.data = (int)plyr->readyweapon;
 
 	// if (*w_ready.on)
 	// STlib_updateNum(&w_ready, true);
 	// refresh weapon change
-	// }
+	//}
 
 	// update keycard multiple widgets
 	for (size_t i{0}; i < 3; ++i)

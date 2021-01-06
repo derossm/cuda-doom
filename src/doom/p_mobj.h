@@ -112,13 +112,13 @@ public:
 	// Thing being chased/attacked for tracers.
 	MapObject* tracer;
 
-	mobjinfo_t* info;	// &mobjinfo[mobj->type]
+	mobjinfo_t* info;		// &mobjinfo[mobj->type]
 
 	subsector_t* subsector;
 
 	state_t* state;
 
-	int frame;			// might be ORed with FF_FULLBRIGHT
+	int frame;				// might be ORed with FF_FULLBRIGHT
 
 	// If == validcount, already checked.
 	int validcount;
@@ -127,7 +127,7 @@ public:
 
 	// Movement direction, movement generation (zig-zagging).
 	dirtype_t movedir;		// 0-7
-	int movecount;		// when 0, select a new dir
+	int movecount;			// when 0, select a new dir
 
 	// If >0, the target will be chased no matter what (even if shot)
 	int threshold;

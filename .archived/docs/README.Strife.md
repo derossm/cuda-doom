@@ -1,5 +1,4 @@
 ````````````````````````````````````````````````````````````````````````
-
 		  Samuel ‘Kaiser’ Villarreal and James ‘Quasar’ Haley Present
 
 		   C	  H		 O		C	   O	  L		 A		T	   E

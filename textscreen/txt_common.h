@@ -280,15 +280,16 @@ public:
 	using Type = T;
 };
 
-// static WidgetClass txt_widget_class{
-// 	Selectable,
-// 	CalculateSize,
-// 	Draw,
-// 	KeyPress,
-// 	MousePress,
-// 	SetLayout,
-// 	SetFocus,
-// 	Destroy
-// };
+// static WidgetClass txt_widget_class
+//{
+//	Selectable,
+//	CalculateSize,
+//	Draw,
+//	KeyPress,
+//	MousePress,
+//	SetLayout,
+//	SetFocus,
+//	Destroy
+//};
 
 }

@@ -215,17 +215,17 @@ public:
 		//UnrefCallbackTable(table);
 	}
 
-	// void SetWidgetFocus(bool _focused)
-	// {
-	// 	if (!focused() && _focused)
-	// 	{
-	// 		setFocus();
-	// 	}
-	// 	else if(focused() && !_focused)
-	// 	{
-	// 		unsetFocus();
-	// 	}
-	// }
+	//void SetWidgetFocus(bool _focused)
+	//{
+	//	if (!focused() && _focused)
+	//	{
+	//		setFocus();
+	//	}
+	//	else if(focused() && !_focused)
+	//	{
+	//		unsetFocus();
+	//	}
+	//}
 
 	inline void SetAlign(AlignHorizontal _align) noexcept
 	{

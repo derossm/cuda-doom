@@ -186,7 +186,7 @@ std::string M_BaseName(std::string path)
 // Case-insensitive version of strstr()
 std::string M_StrCaseStr(std::string haystack, std::string needle)
 {
-	/* 	auto haystack_len{strlen(haystack)};
+	/*	auto haystack_len{strlen(haystack)};
 		auto needle_len{strlen(needle)};
 
 		if (haystack_len < needle_len)
@@ -211,7 +211,7 @@ std::string M_StrCaseStr(std::string haystack, std::string needle)
 // Returns a newly allocated string that the caller is responsible for freeing.
 std::string M_FileCaseExists(std::string path)
 {
-	/* 	auto path_dup{std::string(path)};
+	/*	auto path_dup{std::string(path)};
 
 		// 0: actual path
 		if (M_FileExists(path_dup))
@@ -323,7 +323,7 @@ std::string M_StringReplace(std::string haystack, std::string needle, std::strin
 	//auto repacement_len{replacement.length()};
 
 	// FIXME
-/* 	for (auto p{haystack}; ; )
+/*	for (auto p{haystack}; ; )
 	{
 		p = std::string(strstr(p.c_str(), needle.c_str()));
 		if (p == NULL)
@@ -410,7 +410,7 @@ std::string M_StringJoin(std::string s, ...)
 #ifdef _WIN32
 std::string M_OEMToUTF8(std::string oem)
 {
-	/* 	auto size{strlen(oem)};
+	/*	auto size{strlen(oem)};
 		if (size == std::numeric_limits<size_t>::max())
 		{
 			// oem is too big to convert
@@ -442,7 +442,7 @@ void M_MakeDirectory(std::string path)
 
 void M_ExtractFileBase(std::string path, std::string dest)
 {
-	/* 	auto size{strlen(path)};
+	/*	auto size{strlen(path)};
 		if (size == 0)
 		{
 			return;
@@ -482,7 +482,7 @@ void M_ExtractFileBase(std::string path, std::string dest)
 
 void M_ForceUppercase(std::string text)
 {
-	/* 	for (auto p{text}; *p != '\0'; ++p)
+	/*	for (auto p{text}; *p != '\0'; ++p)
 		{
 			*p = toupper(*p);
 		} */
@@ -490,7 +490,7 @@ void M_ForceUppercase(std::string text)
 
 void M_ForceLowercase(std::string text)
 {
-	/* 	for (auto p{text}; *p != '\0'; ++p)
+	/*	for (auto p{text}; *p != '\0'; ++p)
 		{
 			*p = tolower(*p);
 		} */
@@ -508,7 +508,7 @@ void M_ForceLowercase(std::string text)
 // BOOM.
 void M_NormalizeSlashes(std::string str)
 {
-	/* 	auto size{strlen(str)};
+	/*	auto size{strlen(str)};
 		if (size == 0)
 		{
 			return;

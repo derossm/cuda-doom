@@ -51,7 +51,7 @@ public:
 		align{AlignHorizontal::left},
 		width{_width}
 	{
-		/* 	if (_val)
+		/*	if (_val)
 			{
 				buffer = std::string(valueIn);
 			}

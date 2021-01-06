@@ -15,9 +15,7 @@
 
 #include "../derma/common.h"
 
-// DOOM keyboard definition.
-// This is the stuff configured by Setup.Exe.
-// Most key data are simple ascii (uppercased).
+// DOOM keyboard definition. This is the stuff configured by Setup.Exe. Most key data are simple ascii (uppercased).
 enum class Keybinds
 {
 	KEY_RIGHTARROW = 0xae,
@@ -195,7 +193,7 @@ constexpr size_t KEYP_ENTER{KEY_ENTER};
 
 // Default names for keys, to use in English or as fallback.
 #define KEY_NAMES_ARRAY													\
-	{ KEY_BACKSPACE, 	"BACKSP" },	{ KEY_TAB,			"TAB" },		\
+	{ KEY_BACKSPACE,	"BACKSP" },	{ KEY_TAB,			"TAB" },		\
 	{ KEY_INS,			"INS" },	{ KEY_DEL,			"DEL" },		\
 	{ KEY_PGUP,			"PGUP" },	{ KEY_PGDN,			"PGDN" },		\
 	{ KEY_ENTER,		"ENTER" },	{ KEY_ESCAPE,		"ESC" },		\

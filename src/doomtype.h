@@ -37,25 +37,9 @@ using dpixel_t = int64_t;
 
 #define arrlen(array) (sizeof(array) / sizeof(*array))
 
-// #define macros to provide functions missing in Windows. Outside Windows, we use strings.h for str[n]casecmp.
-#if !HAVE_DECL_STRCASECMP || !HAVE_DECL_STRNCASECMP
-#if !HAVE_DECL_STRCASECMP
-	//#define iequals stricmp
-#endif
-
-#if !HAVE_DECL_STRNCASECMP
-	//#define strncasecmp strnicmp
-#endif
-#else
-#include <strings.h>
-#endif
-
-// The packed attribute forces structures to be packed into the minimum
-// space necessary. If this is not done, the compiler may align structure
-// fields differently to optimize memory access, inflating the overall
-// structure size. It is important to use the packed attribute on certain
-// structures where alignment is important, particularly data read/written
-// to disk.
+// The packed attribute forces structures to be packed into the minimum space necessary. If this is not done, the compiler may align structure
+// fields differently to optimize memory access, inflating the overall structure size. It is important to use the packed attribute on certain
+// structures where alignment is important, particularly data read/written to disk.
 
 #ifdef __GNUC__
 #if defined(_WIN32) && !defined(__clang__)
