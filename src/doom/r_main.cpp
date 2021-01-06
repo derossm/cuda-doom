@@ -82,9 +82,9 @@ int viewangletox[FINEANGLES / 2];
 angle_t xtoviewangle[MAXWIDTH + 1];
 
 // [crispy] parameterized for smooth diminishing lighting
-lighttable_t*** scalelight = NULL;
-lighttable_t** scalelightfixed = NULL;
-lighttable_t*** zlight = NULL;
+lighttable_t*** scalelight = nullptr;
+std::vector<lighttable_t> scalelightfixed;
+lighttable_t*** zlight = nullptr;
 
 // bumped light from gun blasts
 int extralight;
@@ -93,11 +93,10 @@ int extralight;
 int LIGHTLEVELS;
 int LIGHTSEGSHIFT;
 int LIGHTBRIGHT;
-int MAXLIGHTSCALE;
+size_t MAXLIGHTSCALE;
 int LIGHTSCALESHIFT;
 int MAXLIGHTZ;
 int LIGHTZSHIFT;
-
 
 void (*colfunc) ();
 void (*basecolfunc) ();
@@ -106,32 +105,29 @@ void (*transcolfunc) ();
 void (*tlcolfunc) ();
 void (*spanfunc) ();
 
-
-
-//
-// R_AddPointToBox
-// Expand a given bbox
-// so that it encloses a given point.
-//
+// Expand a given bbox so that it encloses a given point.
 void R_AddPointToBox(int x, int y, fixed_t* box)
 {
 	if (x < box[BOXLEFT])
+	{
 		box[BOXLEFT] = x;
+	}
 	if (x > box[BOXRIGHT])
+	{
 		box[BOXRIGHT] = x;
+	}
 	if (y < box[BOXBOTTOM])
+	{
 		box[BOXBOTTOM] = y;
+	}
 	if (y > box[BOXTOP])
+	{
 		box[BOXTOP] = y;
+	}
 }
 
-
-//
-// R_PointOnSide
-// Traverse BSP (sub) tree,
-// check point against partition plane.
+// Traverse BSP (sub) tree, check point against partition plane.
 // Returns side 0 (front) or 1 (back).
-//
 int R_PointOnSide(fixed_t x, fixed_t y, node_t* node)
 {
 	fixed_t dx;
@@ -142,14 +138,18 @@ int R_PointOnSide(fixed_t x, fixed_t y, node_t* node)
 	if (!node->dx)
 	{
 		if (x <= node->x)
+		{
 			return node->dy > 0;
+		}
 
 		return node->dy < 0;
 	}
 	if (!node->dy)
 	{
 		if (y <= node->y)
+		{
 			return node->dx < 0;
+		}
 
 		return node->dx > 0;
 	}
@@ -201,14 +201,18 @@ int R_PointOnSegSide(fixed_t x, fixed_t y, seg_t* line)
 	if (!ldx)
 	{
 		if (x <= lx)
+		{
 			return ldy > 0;
+		}
 
 		return ldy < 0;
 	}
 	if (!ldy)
 	{
 		if (y <= ly)
+		{
 			return ldx < 0;
+		}
 
 		return ldx > 0;
 	}
@@ -255,7 +259,9 @@ angle_t R_PointToAngleSlope(fixed_t x, fixed_t y, int (*slope_div) (unsigned num
 	y -= viewy;
 
 	if ((!x) && (!y))
+	{
 		return 0;
+	}
 
 	if (x >= 0)
 	{
@@ -343,8 +349,7 @@ angle_t R_PointToAngleCrispy(fixed_t x, fixed_t y)
 	int64_t x_viewx = (int64_t)x - viewx;
 
 	// [crispy] the worst that could happen is e.g. INT_MIN-INT_MAX = 2*INT_MIN
-	if (x_viewx < INT_MIN || x_viewx > INT_MAX ||
-		y_viewy < INT_MIN || y_viewy > INT_MAX)
+	if (x_viewx < INT_MIN || x_viewx > INT_MAX || y_viewy < INT_MIN || y_viewy > INT_MAX)
 	{
 		// [crispy] preserving the angle by halfing the distance in both directions
 		x = x_viewx / 2 + viewx;
@@ -601,10 +606,10 @@ void R_InitLightTables()
 		free(scalelight);
 	}
 
-	if (scalelightfixed)
-	{
-		free(scalelightfixed);
-	}
+	//if (scalelightfixed)
+	//{
+		//free(scalelightfixed);
+	//}
 
 	if (zlight)
 	{
@@ -638,7 +643,7 @@ void R_InitLightTables()
 	}
 
 	scalelight = static_cast<decltype(scalelight)>(malloc(LIGHTLEVELS * sizeof(*scalelight)));
-	scalelightfixed = static_cast<decltype(scalelightfixed)>(malloc(MAXLIGHTSCALE * sizeof(*scalelightfixed)));
+	scalelightfixed.reserve(MAXLIGHTSCALE);
 	zlight = static_cast<decltype(zlight)>(malloc(LIGHTLEVELS * sizeof(*zlight)));
 
 	// Calculate the light levels to use for each level / distance combination.
@@ -875,16 +880,11 @@ void R_SetupFrame(Player* player)
 
 	viewplayer = player;
 
-	// [AM] Interpolate the player camera if the feature is enabled.
-	if (crispy->uncapped &&
-		// Don't interpolate on the first tic of a level,
-		// otherwise oldviewz might be garbage.
-		leveltime > 1 &&
-		// Don't interpolate if the player did something
-		// that would necessitate turning it off for a tic.
-		player->interp == true &&
-		// Don't interpolate during a paused state
-		leveltime > oldleveltime)
+	// Interpolate the player camera if the feature is enabled.
+	// Don't interpolate on the first tic of a level, otherwise oldviewz might be garbage.
+	// Don't interpolate if the player did something that would necessitate turning it off for a tic.
+	// Don't interpolate during a paused state
+	if (crispy->uncapped && leveltime > 1 && player->interp == true && leveltime > oldleveltime)
 	{
 		// Interpolate player camera from their old position to their current one.
 		viewx = player->oldx + FixedMul(player->x - player->oldx, fractionaltic);
@@ -909,10 +909,13 @@ void R_SetupFrame(Player* player)
 	extralight = player->extralight;
 
 	if (pitch > LOOKDIRMAX)
+	{
 		pitch = LOOKDIRMAX;
-	else
-		if (pitch < -LOOKDIRMIN)
-			pitch = -LOOKDIRMIN;
+	}
+	else if (pitch < -LOOKDIRMIN)
+	{
+		pitch = -LOOKDIRMIN;
+	}
 
 	// apply new yslope[] whenever "lookdir", "detailshift" or "screenblocks" change
 	tempCentery = viewheight / 2 + (pitch * (1 << crispy->hires)) * (screenblocks < 11 ? screenblocks : 11) / 10;
@@ -934,11 +937,16 @@ void R_SetupFrame(Player* player)
 
 		walllights = scalelightfixed;
 
-		for (i = 0; i < MAXLIGHTSCALE; ++i)
-			scalelightfixed[i] = fixedcolormap;
+		std::fill_n(std::begin(scalelightfixed), MAXLIGHTSCALE, fixedcolormap);
+		// for (i = 0; i < MAXLIGHTSCALE; ++i)
+		// {
+		// 	scalelightfixed[i] = fixedcolormap;
+		// }
 	}
 	else
+	{
 		fixedcolormap = 0;
+	}
 
 	++framecount;
 	++validcount;

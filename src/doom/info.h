@@ -23,97 +23,78 @@
 #include "d_think.h"
 
 // Misc. mobj flags
-enum class mobjflag_t
+enum class mobjflag_e
 {
 	// Call P_SpecialThing when touched.
-	MF_SPECIAL = 1ull,
+	MF_SPECIAL,
 	// Blocks.
-	MF_SOLID = 2,
+	MF_SOLID,
 	// Can be hit.
-	MF_SHOOTABLE = 4,
+	MF_SHOOTABLE,
 	// Don't use the sector links (invisible but touchable).
-	MF_NOSECTOR = 8,
+	MF_NOSECTOR,
 	// Don't use the blocklinks (inert but displayable)
-	MF_NOBLOCKMAP = 16,
+	MF_NOBLOCKMAP,
 
 	// Not to be activated by sound, deaf monster.
-	MF_AMBUSH = 32,
+	MF_AMBUSH,
 	// Will try to attack right back.
-	MF_JUSTHIT = 64,
+	MF_JUSTHIT,
 	// Will take at least one step before attacking.
-	MF_JUSTATTACKED = 128,
-	// On level spawning (initial position),
-	// hang from ceiling instead of stand on floor.
-	MF_SPAWNCEILING = 256,
-	// Don't apply gravity (every tic),
-	// that is, object will float, keeping current height
-	// or changing it actively.
-	MF_NOGRAVITY = 512,
+	MF_JUSTATTACKED,
+	// On level spawning (initial position), hang from ceiling instead of stand on floor.
+	MF_SPAWNCEILING,
+	// Don't apply gravity (every tic), that is, object will float, keeping current height or changing it actively.
+	MF_NOGRAVITY,
 
-	// Movement flags.
-	// This allows jumps from high places.
-	MF_DROPOFF = 0x400,
+	// Movement flags. This allows jumps from high places.
+	MF_DROPOFF,
 	// For players, will pick up items.
-	MF_PICKUP = 0x800,
+	MF_PICKUP,
 	// Player cheat. ???
-	MF_NOCLIP = 0x1000,
+	MF_NOCLIP,
 	// Player: keep info about sliding along walls.
-	MF_SLIDE = 0x2000,
-	// Allow moves to any height, no gravity.
-	// For active floaters, e.g. cacodemons, pain elementals.
-	MF_FLOAT = 0x4000,
-	// Don't cross lines
-	// ??? or look at heights on teleport.
-	MF_TELEPORT = 0x8000,
-	// Don't hit same species, explode on block.
-	// Player missiles as well as fireballs of various kinds.
-	MF_MISSILE = 0x10000,
-	// Dropped by a demon, not level spawned.
-	// E.g. ammo clips dropped by dying former humans.
-	MF_DROPPED = 0x20000,
-	// Use fuzzy draw (shadow demons or spectres),
-	// temporary player invisibility powerup.
-	MF_SHADOW = 0x40000,
-	// Flag: don't bleed when shot (use puff),
-	// barrels and shootable furniture shall not bleed.
-	MF_NOBLOOD = 0x80000,
-	// Don't stop moving halfway off a step,
-	// that is, have dead bodies slide down all the way.
-	MF_CORPSE = 0x100000,
-	// Floating to a height for a move, ???
-	// don't auto float to target's height.
-	MF_INFLOAT = 0x200000,
+	MF_SLIDE,
+	// Allow moves to any height, no gravity. For active floaters, e.g. cacodemons, pain elementals.
+	MF_FLOAT,
+	// Don't cross lines or look at heights on teleport.
+	MF_TELEPORT,
+	// Don't hit same species, explode on block. Player missiles as well as fireballs of various kinds.
+	MF_MISSILE,
+	// Dropped by a demon, not level spawned. E.g. ammo clips dropped by dying former humans.
+	MF_DROPPED,
+	// Use fuzzy draw (shadow demons or spectres), temporary player invisibility powerup.
+	MF_SHADOW,
+	// Flag: don't bleed when shot (use puff), barrels and shootable furniture shall not bleed.
+	MF_NOBLOOD,
+	// Don't stop moving halfway off a step, that is, have dead bodies slide down all the way.
+	MF_CORPSE,
+	// Floating to a height for a move, don't auto float to target's height.
+	MF_INFLOAT,
 
-	// On kill, count this enemy object
-	// towards intermission kill total.
-	// Happy gathering.
-	MF_COUNTKILL = 0x400000,
+	// On kill, count this enemy object towards intermission kill total.
+	MF_COUNTKILL,
 
-	// On picking up, count this item object
-	// towards intermission item total.
-	MF_COUNTITEM = 0x800000,
+	// On picking up, count this item object towards intermission item total.
+	MF_COUNTITEM,
 
-	// Special handling: skull in flight.
-	// Neither a cacodemon nor a missile.
-	MF_SKULLFLY = 0x1000000,
+	// Special handling: skull in flight. Neither a cacodemon nor a missile.
+	MF_SKULLFLY,
 
-	// Don't spawn this object
-	// in death match mode (e.g. key cards).
-	MF_NOTDMATCH = 0x2000000,
+	// Don't spawn this object in death match mode (e.g. key cards).
+	MF_NOTDMATCH,
+	// Player sprites in multiplayer modes are modified using an internal color lookup table for re-indexing.
+	// If 0x4 0x8 or 0xc,use a translation table for player colormaps
+	MF_TRANSLATION,
 
-	// Player sprites in multiplayer modes are modified
-	// using an internal color lookup table for re-indexing.
-	// If 0x4 0x8 or 0xc,
-	// use a translation table for player colormaps
-	MF_TRANSLATION = 0xc000000,
-	// Hmm ???.
-	MF_TRANSSHIFT = 26,
+	MF_TRANSSHIFT = MF_TRANSLATION,
 
-	// [crispy] randomly flip corpse, blood and death animation sprites
-	MF_FLIPPABLE = 0x40000000,
+	// randomly flip corpse, blood and death animation sprites
+	MF_FLIPPABLE,
+	// translucent sprite
+	MF_TRANSLUCENT,
 
-	// [crispy] translucent sprite
-	MF_TRANSLUCENT = 0x80000000
+	size
 };
 
 enum class spritenum_t
@@ -2758,7 +2739,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,						// mass
 		0,							// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_PICKUP | (int)mobjflag_t::MF_NOTDMATCH | (int)mobjflag_t::MF_FLIPPABLE,	// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_PICKUP | (int)mobjflag_e::MF_NOTDMATCH | (int)mobjflag_e::MF_FLIPPABLE,	// flags
 		statenum_t::S_NULL			// raisestate
 	},
 	{
@@ -2784,7 +2765,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_POSS_RAISE1		// raisestate
 	},
 	{
@@ -2810,7 +2791,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_SPOS_RAISE1		// raisestate
 	},
 	{
@@ -2836,7 +2817,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		500,		// mass
 		0,		// damage
 		sfxenum_t::sfx_vilact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -2862,7 +2843,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -2888,7 +2869,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		500,		// mass
 		0,		// damage
 		sfxenum_t::sfx_skeact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_SKEL_RAISE1		// raisestate
 	},
 	{
@@ -2914,7 +2895,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		10,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -2940,7 +2921,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -2966,7 +2947,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_FATT_RAISE1		// raisestate
 	},
 	{
@@ -2992,7 +2973,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		8,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3018,7 +2999,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_CPOS_RAISE1		// raisestate
 	},
 	{
@@ -3044,7 +3025,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_bgact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_TROO_RAISE1		// raisestate
 	},
 	{
@@ -3070,7 +3051,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		400,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_SARG_RAISE1		// raisestate
 	},
 	{
@@ -3096,7 +3077,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		400,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_SHADOW | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_SHADOW | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_SARG_RAISE1		// raisestate
 	},
 	{
@@ -3122,7 +3103,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		400,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_FLOAT | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_HEAD_RAISE1		// raisestate
 	},
 	{
@@ -3148,7 +3129,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_BOSS_RAISE1		// raisestate
 	},
 	{
@@ -3174,7 +3155,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		8,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3200,7 +3181,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_BOS2_RAISE1		// raisestate
 	},
 	{
@@ -3226,7 +3207,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		50,		// mass
 		3,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_FLOAT | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3252,7 +3233,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3278,7 +3259,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		600,		// mass
 		0,		// damage
 		sfxenum_t::sfx_bspact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_BSPI_RAISE1		// raisestate
 	},
 	{
@@ -3304,7 +3285,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		1000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3330,7 +3311,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		400,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dmact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_FLOAT | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_PAIN_RAISE1		// raisestate
 	},
 	{
@@ -3356,7 +3337,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_posact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_SSWV_RAISE1		// raisestate
 	},
 	{
@@ -3382,7 +3363,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		10000000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3408,7 +3389,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		10000000,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3434,7 +3415,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOSECTOR,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOSECTOR,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3460,7 +3441,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOSECTOR,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOSECTOR,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3486,7 +3467,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		3,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_NOCLIP,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_NOCLIP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3512,7 +3493,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3538,7 +3519,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_NOBLOOD,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_NOBLOOD,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3564,7 +3545,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		3,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3590,7 +3571,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		5,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3616,7 +3597,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		20,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3642,7 +3623,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		5,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3668,7 +3649,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		100,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3694,7 +3675,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		5,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3720,7 +3701,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_FLIPPABLE | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_FLIPPABLE | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3746,7 +3727,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3772,7 +3753,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3798,7 +3779,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3824,7 +3805,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOSECTOR,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOSECTOR,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3850,7 +3831,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_NOGRAVITY | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_NOGRAVITY | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3876,7 +3857,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3902,7 +3883,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3928,7 +3909,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3954,7 +3935,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -3980,7 +3961,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4006,7 +3987,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4032,7 +4013,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4058,7 +4039,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4084,7 +4065,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4110,7 +4091,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_NOTDMATCH,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_NOTDMATCH,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4136,7 +4117,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4162,7 +4143,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4188,7 +4169,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4214,7 +4195,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4240,7 +4221,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4266,7 +4247,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4292,7 +4273,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4318,7 +4299,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4344,7 +4325,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4370,7 +4351,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM | (int)mobjflag_t::MF_TRANSLUCENT,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM | (int)mobjflag_e::MF_TRANSLUCENT,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4396,7 +4377,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4422,7 +4403,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4448,7 +4429,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4474,7 +4455,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4500,7 +4481,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4526,7 +4507,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4552,7 +4533,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4578,7 +4559,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4604,7 +4585,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4630,7 +4611,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4656,7 +4637,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4682,7 +4663,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4708,7 +4689,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4734,7 +4715,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4760,7 +4741,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4786,7 +4767,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL,		// flags
+		(int)mobjflag_e::MF_SPECIAL,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4812,7 +4793,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4838,7 +4819,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4864,7 +4845,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4890,7 +4871,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4916,7 +4897,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4942,7 +4923,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4968,7 +4949,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -4994,7 +4975,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5020,7 +5001,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5046,7 +5027,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5072,7 +5053,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5098,7 +5079,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5124,7 +5105,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5150,7 +5131,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5176,7 +5157,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5202,7 +5183,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5228,7 +5209,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5254,7 +5235,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5280,7 +5261,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5306,7 +5287,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5358,7 +5339,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5384,7 +5365,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5410,7 +5391,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5436,7 +5417,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5462,7 +5443,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5488,7 +5469,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5514,7 +5495,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5540,7 +5521,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5566,7 +5547,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5592,7 +5573,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5618,7 +5599,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5644,7 +5625,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5670,7 +5651,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5696,7 +5677,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5722,7 +5703,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5748,7 +5729,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5774,7 +5755,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5800,7 +5781,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5826,7 +5807,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5852,7 +5833,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		0 | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		0 | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5878,7 +5859,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5930,7 +5911,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5956,7 +5937,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -5982,7 +5963,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6008,7 +5989,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6034,7 +6015,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6060,7 +6041,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID,		// flags
+		(int)mobjflag_e::MF_SOLID,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6086,7 +6067,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6112,7 +6093,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6138,7 +6119,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6164,7 +6145,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6190,7 +6171,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6216,7 +6197,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SPAWNCEILING | (int)mobjflag_t::MF_NOGRAVITY,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SPAWNCEILING | (int)mobjflag_e::MF_NOGRAVITY,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6242,7 +6223,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6268,7 +6249,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6294,7 +6275,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	// [crispy] additional BOOM and MBF states, sprites and code pointers
@@ -6321,7 +6302,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		10,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6347,7 +6328,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		10,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6373,7 +6354,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_dgact,		// activesound
-		(int)mobjflag_t::MF_SOLID | (int)mobjflag_t::MF_SHOOTABLE | (int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_FLIPPABLE,		// flags
+		(int)mobjflag_e::MF_SOLID | (int)mobjflag_e::MF_SHOOTABLE | (int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_FLIPPABLE,		// flags
 		statenum_t::S_DOGS_RAISE1		// raisestate
 	},
 	{
@@ -6399,7 +6380,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		4,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY /* |(int)mobjflag_t::MF_BOUNCES */,
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY /* |(int)mobjflag_e::MF_BOUNCES */,
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6425,7 +6406,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		4,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP | (int)mobjflag_t::MF_MISSILE | (int)mobjflag_t::MF_DROPOFF | (int)mobjflag_t::MF_NOGRAVITY /* |(int)mobjflag_t::MF_BOUNCES */,
+		(int)mobjflag_e::MF_NOBLOCKMAP | (int)mobjflag_e::MF_MISSILE | (int)mobjflag_e::MF_DROPOFF | (int)mobjflag_e::MF_NOGRAVITY /* |(int)mobjflag_e::MF_BOUNCES */,
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6451,7 +6432,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_SPECIAL | (int)mobjflag_t::MF_COUNTITEM,		// flags
+		(int)mobjflag_e::MF_SPECIAL | (int)mobjflag_e::MF_COUNTITEM,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	{
@@ -6477,7 +6458,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		int(mobjflag_t::MF_SPECIAL) | int(mobjflag_t::MF_COUNTITEM),		// flags
+		int(mobjflag_e::MF_SPECIAL) | int(mobjflag_e::MF_COUNTITEM),		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 	// [crispy] support MUSINFO lump (dynamic music changing)
@@ -6504,7 +6485,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		100,		// mass
 		0,		// damage
 		sfxenum_t::sfx_None,		// activesound
-		(int)mobjflag_t::MF_NOBLOCKMAP,		// flags
+		(int)mobjflag_e::MF_NOBLOCKMAP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
 };

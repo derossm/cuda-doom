@@ -18,51 +18,51 @@
 #include "deh_mapping.h"
 
 #include "info.h"
-#include "p_mobj.h" // mobjflag_t::MF_*
+#include "p_mobj.h" // mobjflag_e::MF_*
 
 struct bex_thingbits_t
 {
 	std::string flag;
-	mobjflag_t bits;
+	mobjflag_e bits;
 };
 
 static const bex_thingbits_t bex_thingbitstable[] = {
-	{"SPECIAL", mobjflag_t::MF_SPECIAL},
-	{"SOLID", mobjflag_t::MF_SOLID},
-	{"SHOOTABLE", mobjflag_t::MF_SHOOTABLE},
-	{"NOSECTOR", mobjflag_t::MF_NOSECTOR},
-	{"NOBLOCKMAP", mobjflag_t::MF_NOBLOCKMAP},
-	{"AMBUSH", mobjflag_t::MF_AMBUSH},
-	{"JUSTHIT", mobjflag_t::MF_JUSTHIT},
-	{"JUSTATTACKED", mobjflag_t::MF_JUSTATTACKED},
-	{"SPAWNCEILING", mobjflag_t::MF_SPAWNCEILING},
-	{"NOGRAVITY", mobjflag_t::MF_NOGRAVITY},
-	{"DROPOFF", mobjflag_t::MF_DROPOFF},
-	{"PICKUP", mobjflag_t::MF_PICKUP},
-	{"NOCLIP", mobjflag_t::MF_NOCLIP},
-	{"SLIDE", mobjflag_t::MF_SLIDE},
-	{"FLOAT", mobjflag_t::MF_FLOAT},
-	{"TELEPORT", mobjflag_t::MF_TELEPORT},
-	{"MISSILE", mobjflag_t::MF_MISSILE},
-	{"DROPPED", mobjflag_t::MF_DROPPED},
-	{"SHADOW", mobjflag_t::MF_SHADOW},
-	{"NOBLOOD", mobjflag_t::MF_NOBLOOD},
-	{"CORPSE", mobjflag_t::MF_CORPSE},
-	{"INFLOAT", mobjflag_t::MF_INFLOAT},
-	{"COUNTKILL", mobjflag_t::MF_COUNTKILL},
-	{"COUNTITEM", mobjflag_t::MF_COUNTITEM},
-	{"SKULLFLY", mobjflag_t::MF_SKULLFLY},
-	{"NOTDMATCH", mobjflag_t::MF_NOTDMATCH},
-	{"TRANSLUCENT", mobjflag_t::MF_TRANSLUCENT},
+	{"SPECIAL", mobjflag_e::MF_SPECIAL},
+	{"SOLID", mobjflag_e::MF_SOLID},
+	{"SHOOTABLE", mobjflag_e::MF_SHOOTABLE},
+	{"NOSECTOR", mobjflag_e::MF_NOSECTOR},
+	{"NOBLOCKMAP", mobjflag_e::MF_NOBLOCKMAP},
+	{"AMBUSH", mobjflag_e::MF_AMBUSH},
+	{"JUSTHIT", mobjflag_e::MF_JUSTHIT},
+	{"JUSTATTACKED", mobjflag_e::MF_JUSTATTACKED},
+	{"SPAWNCEILING", mobjflag_e::MF_SPAWNCEILING},
+	{"NOGRAVITY", mobjflag_e::MF_NOGRAVITY},
+	{"DROPOFF", mobjflag_e::MF_DROPOFF},
+	{"PICKUP", mobjflag_e::MF_PICKUP},
+	{"NOCLIP", mobjflag_e::MF_NOCLIP},
+	{"SLIDE", mobjflag_e::MF_SLIDE},
+	{"FLOAT", mobjflag_e::MF_FLOAT},
+	{"TELEPORT", mobjflag_e::MF_TELEPORT},
+	{"MISSILE", mobjflag_e::MF_MISSILE},
+	{"DROPPED", mobjflag_e::MF_DROPPED},
+	{"SHADOW", mobjflag_e::MF_SHADOW},
+	{"NOBLOOD", mobjflag_e::MF_NOBLOOD},
+	{"CORPSE", mobjflag_e::MF_CORPSE},
+	{"INFLOAT", mobjflag_e::MF_INFLOAT},
+	{"COUNTKILL", mobjflag_e::MF_COUNTKILL},
+	{"COUNTITEM", mobjflag_e::MF_COUNTITEM},
+	{"SKULLFLY", mobjflag_e::MF_SKULLFLY},
+	{"NOTDMATCH", mobjflag_e::MF_NOTDMATCH},
+	{"TRANSLUCENT", mobjflag_e::MF_TRANSLUCENT},
 	// TRANSLATION consists of 2 bits, not 1
-	{"TRANSLATION", (mobjflag_t)0x04000000},
-	{"TRANSLATION1", (mobjflag_t)0x04000000},
-	{"TRANSLATION2", (mobjflag_t)0x08000000},
+	{"TRANSLATION", (mobjflag_e)0x04000000},
+	{"TRANSLATION1", (mobjflag_e)0x04000000},
+	{"TRANSLATION2", (mobjflag_e)0x08000000},
 	// unused bits, for Boom compatibility
-	{"UNUSED1", (mobjflag_t)0x08000000},
-	{"UNUSED2", (mobjflag_t)0x10000000},
-	{"UNUSED3", (mobjflag_t)0x20000000},
-	{"UNUSED4", (mobjflag_t)0x40000000},
+	{"UNUSED1", (mobjflag_e)0x08000000},
+	{"UNUSED2", (mobjflag_e)0x10000000},
+	{"UNUSED3", (mobjflag_e)0x20000000},
+	{"UNUSED4", (mobjflag_e)0x40000000},
 };
 
 DEH_BEGIN_MAPPING(thing_mapping, mobjinfo_t)

@@ -15,10 +15,6 @@
 #include "cpp_headers.h"
 #include "namespace_forwards.h"
 #include "deprecating_tools.h"
-//#include "d_windows.h"
-
-class DepType;
-using txt_inputbox_t = cudadoom::txt::InputBox<DepType>;
 
 using byte = uint8_t;
 

@@ -313,7 +313,7 @@ void P_UnsetThingPosition(MapObject* thing)
 	int blockx;
 	int blocky;
 
-	if (!(thing->flags & mobjflag_t::MF_NOSECTOR))
+	if (!(thing->flags & mobjflag_e::MF_NOSECTOR))
 	{
 		// inert things don't need to be in blockmap?
 		// unlink from subsector
@@ -326,7 +326,7 @@ void P_UnsetThingPosition(MapObject* thing)
 			thing->subsector->sector->thinglist = thing->snext;
 	}
 
-	if (!(thing->flags & mobjflag_t::MF_NOBLOCKMAP))
+	if (!(thing->flags & mobjflag_e::MF_NOBLOCKMAP))
 	{
 		// inert things don't need to be in blockmap
 		// unlink from block map
@@ -370,7 +370,7 @@ P_SetThingPosition(MapObject* thing)
 	ss = R_PointInSubsector(thing->x, thing->y);
 	thing->subsector = ss;
 
-	if (!(thing->flags & mobjflag_t::MF_NOSECTOR))
+	if (!(thing->flags & mobjflag_e::MF_NOSECTOR))
 	{
 		// invisible things don't go into the sector links
 		sec = ss->sector;
@@ -386,7 +386,7 @@ P_SetThingPosition(MapObject* thing)
 
 
 	// link into blockmap
-	if (!(thing->flags & mobjflag_t::MF_NOBLOCKMAP))
+	if (!(thing->flags & mobjflag_e::MF_NOBLOCKMAP))
 	{
 		// inert things don't need to be in blockmap
 		blockx = (thing->x - bmaporgx) >> MAPBLOCKSHIFT;

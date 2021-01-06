@@ -16,7 +16,7 @@ if(PC_ZLIB_VERSION)
 	set(ZLIB_VERSION "${PC_ZLIB_VERSION}")
 endif()
 
-find_library(ZLIB_LIBRARY "zlib" HINTS "$ZLIB_DIR}/lib" ${PC_ZLIB_LIBRARY_DIRS})
+find_library(ZLIB_LIBRARY "zlib" HINTS "${ZLIB_DIR}/lib" ${PC_ZLIB_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(zlib FOUND_VAR ZLIB_FOUND REQUIRED_VARS ZLIB_LIBRARY VERSION_VAR ZLIB_VERSION)

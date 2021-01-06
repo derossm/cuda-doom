@@ -145,18 +145,16 @@ struct menuitem_t
 	std::string alttext;		// [crispy] alternative text for menu items
 };
 
-
-
 struct menu_t
 {
 	short numitems;				// # of menu items
-	menu_t* prevMenu;	// previous menu
+	menu_t* prevMenu;			// previous menu
 	menuitem_t* menuitems;		// menu items
 	void (*routine)();			// draw routine
 	short x;					// x,y of menu
 	short y;
 	short lastOn;				// last item user was on in menu
-	short lumps_missing;		// [crispy] indicate missing menu graphics lumps
+	short lumps_missing;		// indicate missing menu graphics lumps
 };
 
 short itemOn;					// menu item skull is on
@@ -183,14 +181,14 @@ static void M_QuitDOOM(int choice);
 
 static void M_ChangeMessages(int choice);
 static void M_ChangeSensitivity(int choice);
-static void M_ChangeSensitivity_x2(int choice);								// [crispy] mouse sensitivity menu
-static void M_ChangeSensitivity_y(int choice);								// [crispy] mouse sensitivity menu
-static void M_MouseInvert(int choice);										// [crispy] mouse sensitivity menu
+static void M_ChangeSensitivity_x2(int choice);
+static void M_ChangeSensitivity_y(int choice);
+static void M_MouseInvert(int choice);
 static void M_SfxVol(int choice);
 static void M_MusicVol(int choice);
 static void M_ChangeDetail(int choice);
 static void M_SizeDisplay(int choice);
-static void M_Mouse(int choice);											// [crispy] mouse sensitivity menu
+static void M_Mouse(int choice);
 static void M_Sound(int choice);
 
 static void M_FinishReadThis(int choice);
@@ -206,7 +204,7 @@ static void M_DrawReadThis2();
 static void M_DrawNewGame();
 static void M_DrawEpisode();
 static void M_DrawOptions();
-static void M_DrawMouse();													// [crispy] mouse sensitivity menu
+static void M_DrawMouse();
 static void M_DrawSound();
 static void M_DrawLoad();
 static void M_DrawSave();
@@ -215,7 +213,7 @@ static void M_DrawSaveLoadBorder(int x, int y);
 static void M_SetupNextMenu(menu_t* menudef);
 static void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
 static void M_WriteText(int x, int y, std::string string);
-int M_StringWidth(std::string string);										// [crispy] un-static
+int M_StringWidth(std::string string);
 static int M_StringHeight(std::string string);
 static void M_StartMessage(std::string string, void* routine, bool input);
 static void M_ClearMenus();
@@ -1943,20 +1941,20 @@ static int G_ReloadLevel()
 static int G_GotoNextLevel()
 {
 	byte doom_next[5][9] = {
-	   {12, 13, 19, 15, 16, 17, 18, 21, 14},
-	   {22, 23, 24, 25, 29, 27, 28, 31, 26},
-	   {32, 33, 34, 35, 36, 39, 38, 41, 37},
-	   {42, 49, 44, 45, 46, 47, 48, 51, 43},
-	   {52, 53, 54, 55, 56, 59, 58, 11, 57},
+		{12, 13, 19, 15, 16, 17, 18, 21, 14},
+		{22, 23, 24, 25, 29, 27, 28, 31, 26},
+		{32, 33, 34, 35, 36, 39, 38, 41, 37},
+		{42, 49, 44, 45, 46, 47, 48, 51, 43},
+		{52, 53, 54, 55, 56, 59, 58, 11, 57},
 	};
 	byte doom2_next[33] = {
-	   2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-	   12, 13, 14, 15, 31, 17, 18, 19, 20, 21,
-	   22, 23, 24, 25, 26, 27, 28, 29, 30, 1,
-	   32, 16, 3
+		2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+		12, 13, 14, 15, 31, 17, 18, 19, 20, 21,
+		22, 23, 24, 25, 26, 27, 28, 29, 30, 1,
+		32, 16, 3
 	};
 	byte nerve_next[9] = {
-	   2, 3, 4, 9, 6, 7, 8, 1, 5
+		2, 3, 4, 9, 6, 7, 8, 1, 5
 	};
 
 	int changed = false;

@@ -345,82 +345,78 @@ static bool CheckLoadMasterlevels()
 	return true;
 }
 
-// [crispy] check if the 20 individual separate Mater Levels PWADs are available
-
-static struct
+// check if the 20 individual separate Mater Levels PWADs are available
+#include <filesystem>
+struct WadEntry
 {
-	std::string wad_name;
 	int pc_slot;
 	int psn_slot;
+	std::string wad_name;
+	std::filesystem::path file_path;
 	bool custom_sky;
-	std::string file_path;
-} masterlevels_wads[] = {
-	{"ATTACK.WAD",	1, 1},
-	{"CANYON.WAD",	1, 2},
-	{"CATWALK.WAD",	1, 3},
-	{"COMBINE.WAD",	1, 4, true},
-	{"FISTULA.WAD",	1, 5},
-	{"GARRISON.WAD", 1, 6},
-	{"MANOR.WAD",		1, 7, true},
-	{"PARADOX.WAD",	1, 8},
-	{"SUBSPACE.WAD", 1, 9},
-	{"SUBTERRA.WAD", 1, 10},
-	{"TTRAP.WAD",		1, 11, true},
-	{"VIRGIL.WAD",	3, 12, true},
-	{"MINOS.WAD",		5, 13, true},
-	{"BLOODSEA.WAD", 7, 14},
-	{"MEPHISTO.WAD", 7, 15},
-	{"NESSUS.WAD",	7, 16, true},
-	{"GERYON.WAD",	8, 17, true},
-	{"VESPERAS.WAD", 9, 18, true},
-	{"BLACKTWR.WAD", 25, 19},
-	{"TEETH.WAD",	31, 20},
-	{NULL,			32, 21}, // [crispy] TEETH.WAD
+};
+
+std::array<WadEntry, 20> masterlevels_wads
+{
+	WadEntry{.pc_slot{1},	.psn_slot{1},	.wad_name{"ATTACK.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{1},	.psn_slot{2},	.wad_name{"CANYON.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{1},	.psn_slot{3},	.wad_name{"CATWALK.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{1},	.psn_slot{4},	.wad_name{"COMBINE.WAD"},	.file_path{},	.custom_sky{true} },
+	WadEntry{.pc_slot{1},	.psn_slot{5},	.wad_name{"FISTULA.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{1},	.psn_slot{6},	.wad_name{"GARRISON.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{1},	.psn_slot{7},	.wad_name{"MANOR.WAD"},		.file_path{},	.custom_sky{true} },
+	WadEntry{.pc_slot{1},	.psn_slot{8},	.wad_name{"PARADOX.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{1},	.psn_slot{9},	.wad_name{"SUBSPACE.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{1},	.psn_slot{10},	.wad_name{"SUBTERRA.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{1},	.psn_slot{11},	.wad_name{"TTRAP.WAD"},		.file_path{},	.custom_sky{true} },
+	WadEntry{.pc_slot{3},	.psn_slot{12},	.wad_name{"VIRGIL.WAD"},	.file_path{},	.custom_sky{true} },
+	WadEntry{.pc_slot{5},	.psn_slot{13},	.wad_name{"MINOS.WAD"},		.file_path{},	.custom_sky{true} },
+	WadEntry{.pc_slot{7},	.psn_slot{14},	.wad_name{"BLOODSEA.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{7},	.psn_slot{15},	.wad_name{"MEPHISTO.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{7},	.psn_slot{16},	.wad_name{"NESSUS.WAD"},	.file_path{},	.custom_sky{true} },
+	WadEntry{.pc_slot{8},	.psn_slot{17},	.wad_name{"GERYON.WAD"},	.file_path{},	.custom_sky{true} },
+	WadEntry{.pc_slot{9},	.psn_slot{18},	.wad_name{"VESPERAS.WAD"},	.file_path{},	.custom_sky{true} },
+	WadEntry{.pc_slot{25},	.psn_slot{19},	.wad_name{"BLACKTWR.WAD"},	.file_path{},	.custom_sky{false} },
+	WadEntry{.pc_slot{31},	.psn_slot{20},	.wad_name{"TEETH.WAD"},		.file_path{},	.custom_sky{false} }
+	//{NULL,				32, 21}, // TEETH.WAD
 };
 
 static bool CheckMasterlevelsAvailable()
 {
-	int i;
-	std::string dir;
+	std::string dir{M_DirName(iwadfile)};
 
-	dir = M_DirName(iwadfile);
-
-	for (i = 0; masterlevels_wads[i].wad_name; ++i)
+	//for (size_t i{0}; !masterlevels_wads[i].wad_name.empty(); ++i)
+	std::ranges::for_each(masterlevels_wads, [&dir](auto& iter) mutable
 	{
 		std::string havemaster;
 
-		if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
+		if (iwadfile.ends_with(DIR_SEPARATOR))
 		{
-			havemaster = std::string(dir + DIR_SEPARATOR_S + masterlevels_wads[i].wad_name);
+			havemaster = std::string(dir + DIR_SEPARATOR_S + iter.wad_name);
 		}
 		else
 		{
-			havemaster = std::string(masterlevels_wads[i].wad_name);
+			havemaster = std::string(iter.wad_name);
 		}
 
 		if (!M_FileExists(havemaster))
 		{
-			free(havemaster);
-			havemaster = D_FindWADByName(masterlevels_wads[i].wad_name);
+			havemaster = cudadoom::IWAD().D_FindWADByName(iter.wad_name);
 		}
 
-		if (havemaster.empty())
+		if (!havemaster.empty())
 		{
-			int j;
-
-			for (j = 0; j < i; ++j)
-			{
-				free(masterlevels_wads[i].file_path);
-			}
-
-			free(dir);
-			return false;
+			iter.file_path = havemaster;
 		}
+	});
 
-		masterlevels_wads[i].file_path = havemaster;
-	}
+	//for (size_t j{0}; j < i; ++j)
+	std::ranges::for_each(masterlevels_wads, [](auto& iter)
+	{
+		//iter.file_path.clear();
+	});
 
-	free(dir);
+	dir.clear();
 	return true;
 }
 

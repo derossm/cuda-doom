@@ -33,7 +33,7 @@
 
 // // Linked list of allocated blocks for each tag type
 
-// static memblock_t* allocated_blocks[std::size_t(_integral_value<size_t>(pu_tags_t::PU_NUM_TAGS))];
+// static memblock_t* allocated_blocks[std::size_t(pu_tags_t::PU_NUM_TAGS)];
 
 // #ifdef TESTING
 
@@ -79,8 +79,8 @@
 // static void Z_InsertBlock(memblock_t* block)
 // {
 // 	block->prev = NULL;
-// 	block->next = allocated_blocks[_integral_value<size_t>(block->tag)];
-// 	allocated_blocks[_integral_value<size_t>(block->tag)] = block;
+// 	block->next = allocated_blocks[std::size_t(block->tag)];
+// 	allocated_blocks[std::size_t(block->tag)] = block;
 
 // 	if (block->next != NULL)
 // 	{
@@ -98,7 +98,7 @@
 // 	{
 // 		// Start of list
 
-// 		allocated_blocks[_integral_value<size_t>(block->tag)] = block->next;
+// 		allocated_blocks[std::size_t(block->tag)] = block->next;
 // 	}
 // 	else
 // 	{
@@ -160,7 +160,7 @@
 // 	memblock_t* next_block;
 // 	int remaining;
 
-// 	block = allocated_blocks[std::size_t(_integral_value<size_t>(pu_tags_t::PU_CACHE))];
+// 	block = allocated_blocks[std::size_t(pu_tags_t::PU_CACHE)];
 
 // 	if (block == NULL)
 // 	{
@@ -375,7 +375,7 @@
 // 	memblock_t* prev;
 
 // 	// Check all chains
-// 	for (size_t i{0}; i < _integral_value<size_t>(pu_tags_t::PU_NUM_TAGS); ++i)
+// 	for (size_t i{0}; i < std::size_t(pu_tags_t::PU_NUM_TAGS); ++i)
 // 	{
 // 		prev = NULL;
 

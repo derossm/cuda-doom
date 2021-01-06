@@ -56,7 +56,7 @@ void A_Recoil(Player* player)
 {
 	if (player)
 	{
-		if (critical->recoil && !((int)player->flags & (int)mobjflag_t::MF_NOCLIP))
+		if (critical->recoil && !((int)player->flags & (int)mobjflag_e::MF_NOCLIP))
 		{
 			P_Thrust(player, ANG180 + player->angle, 2048 * recoil_values[std::size_t(std::size_t(player->readyweapon)][0)]);
 		}
@@ -535,7 +535,7 @@ void A_Saw(MapObject* mobj, Player* player, pspdef_t* psp)
 	else
 		player->angle += ANG90/20;
 	}
-	player->flags |= mobjflag_t::MF_JUSTATTACKED;
+	player->flags |= mobjflag_e::MF_JUSTATTACKED;
 }
 
 // Doom does not check the bounds of the ammo array. As a result,

@@ -23,34 +23,33 @@
 
 constexpr int TOCENTER{-8};
 constexpr size_t AFLAG_JUMP{0x80};
-constexpr size_t FLOATSPEED{(FRACUNIT*4)};
+constexpr size_t FLOATSPEED{(FRACUNIT * 4)};
 
 constexpr size_t MAXHEALTH{100};
-constexpr size_t VIEWHEIGHT{(41*FRACUNIT)};
+constexpr size_t VIEWHEIGHT{(41 * FRACUNIT)};
 
 // mapblocks are used to check movement
 // against lines and things
 constexpr size_t MAPBLOCKUNITS{128};
-constexpr size_t MAPBLOCKSIZE{(MAPBLOCKUNITS*FRACUNIT)};
-constexpr size_t MAPBLOCKSHIFT{(FRACBITS+7)};
-constexpr size_t MAPBMASK{(MAPBLOCKSIZE-1)};
-constexpr size_t MAPBTOFRAC{(MAPBLOCKSHIFT-FRACBITS)};
-
+constexpr size_t MAPBLOCKSIZE{(MAPBLOCKUNITS * FRACUNIT)};
+constexpr size_t MAPBLOCKSHIFT{(FRACBITS + 7)};
+constexpr size_t MAPBMASK{(MAPBLOCKSIZE - 1)};
+constexpr size_t MAPBTOFRAC{(MAPBLOCKSHIFT - FRACBITS)};
 
 // player radius for movement checking
-constexpr size_t PLAYERRADIUS{16*FRACUNIT};
+constexpr size_t PLAYERRADIUS{16 * FRACUNIT};
 
 // MAXRADIUS is for precalculated sector block boxes
 // the spider demon is larger,
 // but we do not have any moving sectors nearby
-constexpr size_t MAXRADIUS{32*FRACUNIT};
+constexpr size_t MAXRADIUS{32 * FRACUNIT};
 
 constexpr size_t GRAVITY{FRACUNIT};
-constexpr size_t MAXMOVE{(30*FRACUNIT)};
+constexpr size_t MAXMOVE{(30 * FRACUNIT)};
 
-constexpr size_t USERANGE{(64*FRACUNIT)};
-constexpr size_t MELEERANGE{(64*FRACUNIT)};
-constexpr size_t MISSILERANGE{(32*64*FRACUNIT)};
+constexpr size_t USERANGE{(64 * FRACUNIT)};
+constexpr size_t MELEERANGE{(64 * FRACUNIT)};
+constexpr size_t MISSILERANGE{(32 * 64 * FRACUNIT)};
 
 // follow a player exlusively for 3 seconds
 constexpr size_t BASETHRESHOLD{100};
@@ -94,7 +93,6 @@ extern TimeType itemrespawntime[ITEMQUESIZE];
 extern int iquehead;
 extern int iquetail;
 
-
 void P_RespawnSpecials();
 
 MapObject* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type);
@@ -116,7 +114,6 @@ void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe);
 // P_ENEMY
 //
 void P_NoiseAlert(MapObject* target, MapObject* emmiter);
-
 
 //
 // P_MAPUTL
@@ -164,8 +161,8 @@ extern fixed_t lowfloor;
 
 void P_LineOpening(line_t* linedef);
 
-bool P_BlockLinesIterator(int x, int y, bool(*func)(line_t*) );
-bool P_BlockThingsIterator(int x, int y, bool(*func)(MapObject*) );
+bool P_BlockLinesIterator(int x, int y, bool(*func)(line_t*));
+bool P_BlockThingsIterator(int x, int y, bool(*func)(MapObject*));
 
 constexpr size_t PT_ADDLINES{1};
 constexpr size_t PT_ADDTHINGS{2};
@@ -178,7 +175,6 @@ bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2, int flags, b
 void P_UnsetThingPosition(MapObject* thing);
 void P_SetThingPosition(MapObject* thing);
 
-
 //
 // P_MAP
 //
@@ -188,7 +184,6 @@ void P_SetThingPosition(MapObject* thing);
 extern bool floatok;
 extern fixed_t tmfloorz;
 extern fixed_t tmceilingz;
-
 
 extern line_t* ceilingline;
 
@@ -240,7 +235,7 @@ extern int P_GetNumForMap(int episode, int map, bool critical);
 
 // [crispy] blinking key or skull in the status bar
 constexpr size_t KEYBLINKMASK{0x8};
-constexpr size_t KEYBLINKTICS{(7*KEYBLINKMASK)};
+constexpr size_t KEYBLINKTICS{(7 * KEYBLINKMASK)};
 extern int st_keyorskull[3];
 
 //

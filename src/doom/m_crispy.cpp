@@ -194,11 +194,11 @@ void M_CrispyToggleColoredblood(int choice)
 			{
 				if (crispy->coloredblood)
 				{
-					mobj->flags |= mobjflag_t::MF_NOBLOOD;
+					mobj->flags |= mobjflag_e::MF_NOBLOOD;
 				}
 				else
 				{
-					mobj->flags &= ~mobjflag_t::MF_NOBLOOD;
+					mobj->flags &= ~mobjflag_e::MF_NOBLOOD;
 				}
 			}
 		}

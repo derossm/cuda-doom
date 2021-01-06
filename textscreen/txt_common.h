@@ -39,6 +39,9 @@ class Widget;
 template<class T>
 class Table;
 
+template<typename T>
+class InputBox;
+
 class Window;
 
 class Button;
@@ -46,9 +49,6 @@ class CheckBox;
 class Conditional;
 class DropDownList;
 class FileSelect;
-
-template<typename T>
-class InputBox;
 
 class Label;
 class RadioButton;
@@ -60,6 +60,97 @@ class WindowAction;
 
 using point_t = long double;
 using UserData = void*;
+
+class DepType {};
+
+template<typename T, typename U>
+class StrongType
+{
+	T value;
+public:
+	explicit StrongType(const T& _val) noexcept : value{_val} {}
+	T get() { return value; }
+
+	auto operator<=>(const StrongType<T, U>&) const = default;
+	
+	StrongType<T, U>& operator=(const StrongType<T, U>& other)
+	{
+		if (this != &other)
+		{
+			value = other.value;
+		}
+
+		return *this;
+	}
+
+	inline bool operator==(const T& rhs) const noexcept { return (value == rhs) == 0; }
+	inline bool operator!=(const T& rhs) const noexcept { return (value != rhs) != 0; }
+	inline bool operator< (const T& rhs) const noexcept { return (value <  rhs) <  0; }
+	inline bool operator> (const T& rhs) const noexcept { return (value >  rhs) >  0; }
+	inline bool operator<=(const T& rhs) const noexcept { return (value <= rhs) <= 0; }
+	inline bool operator>=(const T& rhs) const noexcept { return (value >= rhs) >= 0; }
+
+	friend inline bool operator==(const T& lhs, const StrongType<T, U>& rhs) noexcept;
+	friend inline bool operator!=(const T& lhs, const StrongType<T, U>& rhs) noexcept;
+	friend inline bool operator< (const T& lhs, const StrongType<T, U>& rhs) noexcept;
+	friend inline bool operator> (const T& lhs, const StrongType<T, U>& rhs) noexcept;
+	friend inline bool operator<=(const T& lhs, const StrongType<T, U>& rhs) noexcept;
+	friend inline bool operator>=(const T& lhs, const StrongType<T, U>& rhs) noexcept;
+
+	//inline bool operator==(const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) == 0; }
+	//inline bool operator!=(const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) != 0; }
+	//inline bool operator< (const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) < 0; }
+	//inline bool operator> (const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) > 0; }
+	//inline bool operator<=(const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) <= 0; }
+	//inline bool operator>=(const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) >= 0; }
+
+	//inline bool operator==(const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) == 0; }
+	//inline bool operator!=(const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) != 0; }
+	//inline bool operator< (const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) < 0; }
+	//inline bool operator> (const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) > 0; }
+	//inline bool operator<=(const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) <= 0; }
+	//inline bool operator>=(const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) >= 0; }
+
+	StrongType<T, U>& operator=(const T& other)
+	{
+		if constexpr (std::is_class<T>::value == true)
+		{	if constexpr (std::is_base_of_v<StrongType<T,U>, T>::value == true)
+			{
+				if (this != &other)
+				{
+					value = other.value;
+				}
+				
+				return *this;
+			}
+		}
+
+		value = other;
+
+		return *this;
+	}
+
+	//T operator()() { return value; }
+};
+
+template<typename T, typename U>
+inline bool operator==(const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs == rhs.value) == 0; }
+template<typename T, typename U>
+inline bool operator!=(const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs != rhs.value) != 0; }
+template<typename T, typename U>
+inline bool operator< (const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs <  rhs.value) <  0; }
+template<typename T, typename U>
+inline bool operator> (const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs >  rhs.value) >  0; }
+template<typename T, typename U>
+inline bool operator<=(const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs <= rhs.value) <= 0; }
+template<typename T, typename U>
+inline bool operator>=(const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs >= rhs.value) >= 0; }
+
+struct KeyType {};
+struct MouseType {};
+
+using Key = StrongType<int, KeyType>;
+using MouseButton = StrongType<int, MouseType>;
 
 struct Vec2
 {
@@ -74,28 +165,17 @@ struct Vec3
 	point_t z;
 };
 
+struct KeyEvent
+{
+	Key key;
+};
+
 struct MouseEvent
 {
 	int button;
 	float x;
 	float y;
 };
-
-template<typename T, typename U>
-class StrongType
-{
-	T value;
-public:
-	explicit StrongType(const T& _val) noexcept : value{_val} {}
-	//T get() { return value; }
-};
-
-struct KeyType {};
-using Key = StrongType<int, KeyType>;
-
-class DepType
-{};
-
 
 class CallbackEntry
 {

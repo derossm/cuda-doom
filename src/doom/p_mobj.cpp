@@ -129,9 +129,9 @@ static void P_ExplodeMissileSafe(MapObject* mo, bool safe)
 	if (mo->tics < 1)
 		mo->tics = 1;
 
-	mo->flags &= ~mobjflag_t::MF_MISSILE;
+	mo->flags &= ~mobjflag_e::MF_MISSILE;
 	// [crispy] missile explosions are translucent
-	mo->flags |= mobjflag_t::MF_TRANSLUCENT;
+	mo->flags |= mobjflag_e::MF_TRANSLUCENT;
 
 	if (mo->info->deathsound)
 		S_StartSound(mo, mo->info->deathsound);
@@ -158,10 +158,10 @@ void P_XYMovement(MapObject* mo)
 
 	if (!mo->momx && !mo->momy)
 	{
-		if (mo->flags & mobjflag_t::MF_SKULLFLY)
+		if (mo->flags & mobjflag_e::MF_SKULLFLY)
 		{
 			// the skull slammed into something
-			mo->flags &= ~mobjflag_t::MF_SKULLFLY;
+			mo->flags &= ~mobjflag_e::MF_SKULLFLY;
 			mo->momx = mo->momy = mo->momz = 0;
 
 			P_SetMobjState(mo, mo->info->spawnstate);
@@ -207,7 +207,7 @@ void P_XYMovement(MapObject* mo)
 			{	// try to slide along it
 				P_SlideMove(mo);
 			}
-			else if (mo->flags & mobjflag_t::MF_MISSILE)
+			else if (mo->flags & mobjflag_e::MF_MISSILE)
 			{
 				bool safe = false;
 				// explode a missile
@@ -243,13 +243,13 @@ void P_XYMovement(MapObject* mo)
 		return;
 	}
 
-	if (mo->flags & (mobjflag_t::MF_MISSILE | mobjflag_t::MF_SKULLFLY))
+	if (mo->flags & (mobjflag_e::MF_MISSILE | mobjflag_e::MF_SKULLFLY))
 		return;	// no friction for missiles ever
 
 	if (mo->z > mo->floorz)
 		return;		// no friction when airborne
 
-	if (mo->flags & mobjflag_t::MF_CORPSE)
+	if (mo->flags & mobjflag_e::MF_CORPSE)
 	{
 		// do not stop sliding
 		// if halfway off a step with some momentum
@@ -305,12 +305,12 @@ void P_ZMovement(MapObject* mo)
 	// adjust height
 	mo->z += mo->momz;
 
-	if (mo->flags & mobjflag_t::MF_FLOAT
+	if (mo->flags & mobjflag_e::MF_FLOAT
 		&& mo->target)
 	{
 		// float down towards target if too close
-		if (!(mo->flags & mobjflag_t::MF_SKULLFLY)
-			&& !(mo->flags & mobjflag_t::MF_INFLOAT))
+		if (!(mo->flags & mobjflag_e::MF_SKULLFLY)
+			&& !(mo->flags & mobjflag_e::MF_INFLOAT))
 		{
 			dist = P_AproxDistance(mo->x - mo->target->x,
 				mo->y - mo->target->y);
@@ -355,7 +355,7 @@ void P_ZMovement(MapObject* mo)
 
 		int correct_lost_soul_bounce = gameversion >= GameVersion::exe_ultimate;
 
-		if (correct_lost_soul_bounce && mo->flags & mobjflag_t::MF_SKULLFLY)
+		if (correct_lost_soul_bounce && mo->flags & mobjflag_e::MF_SKULLFLY)
 		{
 			// the skull slammed into something
 			mo->momz = -mo->momz;
@@ -399,17 +399,17 @@ void P_ZMovement(MapObject* mo)
 		// hit by a raising floor this incorrectly reverses its Y momentum.
 		//
 
-		if (!correct_lost_soul_bounce && mo->flags & mobjflag_t::MF_SKULLFLY)
+		if (!correct_lost_soul_bounce && mo->flags & mobjflag_e::MF_SKULLFLY)
 			mo->momz = -mo->momz;
 
-		if ((mo->flags & mobjflag_t::MF_MISSILE)
-			&& !(mo->flags & mobjflag_t::MF_NOCLIP))
+		if ((mo->flags & mobjflag_e::MF_MISSILE)
+			&& !(mo->flags & mobjflag_e::MF_NOCLIP))
 		{
 			P_ExplodeMissile(mo);
 			return;
 		}
 	}
-	else if (!(mo->flags & mobjflag_t::MF_NOGRAVITY))
+	else if (!(mo->flags & mobjflag_e::MF_NOGRAVITY))
 	{
 		if (mo->momz == 0)
 			mo->momz = -GRAVITY * 2;
@@ -426,13 +426,13 @@ void P_ZMovement(MapObject* mo)
 			mo->z = mo->ceilingz - mo->height;
 		}
 
-		if (mo->flags & mobjflag_t::MF_SKULLFLY)
+		if (mo->flags & mobjflag_e::MF_SKULLFLY)
 		{	// the skull slammed into something
 			mo->momz = -mo->momz;
 		}
 
-		if ((mo->flags & mobjflag_t::MF_MISSILE)
-			&& !(mo->flags & mobjflag_t::MF_NOCLIP))
+		if ((mo->flags & mobjflag_e::MF_MISSILE)
+			&& !(mo->flags & mobjflag_e::MF_NOCLIP))
 		{
 			P_ExplodeMissile(mo);
 			return;
@@ -481,7 +481,7 @@ P_NightmareRespawn(MapObject* mobj)
 	mthing = &mobj->spawnpoint;
 
 	// spawn it
-	if (mobj->info->flags & mobjflag_t::MF_SPAWNCEILING)
+	if (mobj->info->flags & mobjflag_e::MF_SPAWNCEILING)
 		z = ONCEILINGZ;
 	else
 		z = ONFLOORZ;
@@ -495,7 +495,7 @@ P_NightmareRespawn(MapObject* mobj)
 	++extrakills;
 
 	if (mthing->options & MTF_AMBUSH)
-		mo->flags |= mobjflag_t::MF_AMBUSH;
+		mo->flags |= mobjflag_e::MF_AMBUSH;
 
 	mo->reactiontime = 18;
 
@@ -548,7 +548,7 @@ void P_MobjThinker(MapObject* mobj)
 	// momentum movement
 	if (mobj->momx
 		|| mobj->momy
-		|| (mobj->flags & mobjflag_t::MF_SKULLFLY))
+		|| (mobj->flags & mobjflag_e::MF_SKULLFLY))
 	{
 		P_XYMovement(mobj);
 
@@ -581,7 +581,7 @@ void P_MobjThinker(MapObject* mobj)
 	else
 	{
 		// check for nightmare respawn
-		if (!(mobj->flags & mobjflag_t::MF_COUNTKILL))
+		if (!(mobj->flags & mobjflag_e::MF_COUNTKILL))
 			return;
 
 		if (!respawnmonsters)
@@ -653,7 +653,7 @@ static MapObject* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t ty
 		mobj->z = z;
 
 	// [crispy] randomly flip corpse, blood and death animation sprites
-	if (mobj->flags & mobjflag_t::MF_FLIPPABLE && !(mobj->flags & mobjflag_t::MF_SHOOTABLE))
+	if (mobj->flags & mobjflag_e::MF_FLIPPABLE && !(mobj->flags & mobjflag_e::MF_SHOOTABLE))
 	{
 		mobj->health = (mobj->health & (int)~1) - (Crispy_Random() & 1);
 	}
@@ -672,7 +672,7 @@ static MapObject* P_SpawnMobjSafe(fixed_t x, fixed_t y, fixed_t z, mobjtype_t ty
 	{
 		const spritedef_t* const sprdef = &sprites[mobj->sprite];
 
-		if (!sprdef->numframes || !(mobj->flags & (mobjflag_t::MF_SOLID | mobjflag_t::MF_SHOOTABLE)))
+		if (!sprdef->numframes || !(mobj->flags & (mobjflag_e::MF_SOLID | mobjflag_e::MF_SHOOTABLE)))
 		{
 			info->actualheight = info->height;
 		}
@@ -714,8 +714,8 @@ int iquetail;
 
 void P_RemoveMobj(MapObject* mobj)
 {
-	if ((mobj->flags & mobjflag_t::MF_SPECIAL)
-		&& !(mobj->flags & mobjflag_t::MF_DROPPED)
+	if ((mobj->flags & mobjflag_e::MF_SPECIAL)
+		&& !(mobj->flags & mobjflag_e::MF_DROPPED)
 		&& (mobj->type != mobjtype_t::MT_INV)
 		&& (mobj->type != mobjtype_t::MT_INS))
 	{
@@ -802,7 +802,7 @@ void P_RespawnSpecials()
 	}
 
 	// spawn it
-	if (mobjinfo[i].flags & mobjflag_t::MF_SPAWNCEILING)
+	if (mobjinfo[i].flags & mobjflag_e::MF_SPAWNCEILING)
 		z = ONCEILINGZ;
 	else
 		z = ONFLOORZ;
@@ -863,7 +863,7 @@ void P_SpawnPlayer(mapthing_t* mthing)
 
 	// set color translations for player sprites
 	if (mthing->type > 1)
-		mobj->flags |= (mthing->type - 1) << mobjflag_t::MF_TRANSSHIFT;
+		mobj->flags |= (mthing->type - 1) << mobjflag_e::MF_TRANSSHIFT;
 
 	mobj->angle = ANG45 * (mthing->angle / 45);
 	mobj->player = p;
@@ -989,13 +989,13 @@ void P_SpawnMapThing(mapthing_t* mthing)
 	}
 
 	// don't spawn keycards and players in deathmatch
-	if (deathmatch && mobjinfo[i].flags & mobjflag_t::MF_NOTDMATCH)
+	if (deathmatch && mobjinfo[i].flags & mobjflag_e::MF_NOTDMATCH)
 		return;
 
 	// don't spawn any monsters if -nomonsters
 	if (nomonsters
 		&& (i == mobjtype_t::MT_SKULL
-			|| (mobjinfo[i].flags & mobjflag_t::MF_COUNTKILL)))
+			|| (mobjinfo[i].flags & mobjflag_e::MF_COUNTKILL)))
 	{
 		return;
 	}
@@ -1004,7 +1004,7 @@ void P_SpawnMapThing(mapthing_t* mthing)
 	x = mthing->x << FRACBITS;
 	y = mthing->y << FRACBITS;
 
-	if (mobjinfo[i].flags & mobjflag_t::MF_SPAWNCEILING)
+	if (mobjinfo[i].flags & mobjflag_e::MF_SPAWNCEILING)
 		z = ONCEILINGZ;
 	else
 		z = ONFLOORZ;
@@ -1014,14 +1014,14 @@ void P_SpawnMapThing(mapthing_t* mthing)
 
 	if (mobj->tics > 0)
 		mobj->tics = 1 + (P_Random() % mobj->tics);
-	if (mobj->flags & mobjflag_t::MF_COUNTKILL)
+	if (mobj->flags & mobjflag_e::MF_COUNTKILL)
 		++totalkills;
-	if (mobj->flags & mobjflag_t::MF_COUNTITEM)
+	if (mobj->flags & mobjflag_e::MF_COUNTITEM)
 		++totalitems;
 
 	mobj->angle = ANG45 * (mthing->angle / 45);
 	if (mthing->options & MTF_AMBUSH)
-		mobj->flags |= mobjflag_t::MF_AMBUSH;
+		mobj->flags |= mobjflag_e::MF_AMBUSH;
 
 	// [crispy] support MUSINFO lump (dynamic music changing)
 	if (i == mobjtype_t::MT_MUSICSOURCE)
@@ -1031,14 +1031,14 @@ void P_SpawnMapThing(mapthing_t* mthing)
 
 	// [crispy] Lost Souls bleed Puffs
 	if (crispy->coloredblood && i == mobjtype_t::MT_SKULL)
-		mobj->flags |= mobjflag_t::MF_NOBLOOD;
+		mobj->flags |= mobjflag_e::MF_NOBLOOD;
 
 	// [crispy] randomly colorize space marine corpse objects
 	if (!netgame && crispy->coloredblood &&
 		(mobj->info->spawnstate == statenum_t::S_PLAY_DIE7 ||
 			mobj->info->spawnstate == statenum_t::S_PLAY_XDIE9))
 	{
-		mobj->flags |= (Crispy_Random() & 3) << mobjflag_t::MF_TRANSSHIFT;
+		mobj->flags |= (Crispy_Random() & 3) << mobjflag_e::MF_TRANSSHIFT;
 	}
 
 	// [crispy] blinking key or skull in the status bar
@@ -1114,7 +1114,7 @@ void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, MapObject* target
 
 	// [crispy] Spectres bleed spectre blood
 	if (crispy->coloredblood)
-		th->flags |= (target->flags & mobjtype_t::mobjflag_t::MF_SHADOW);
+		th->flags |= (target->flags & mobjtype_t::mobjflag_e::MF_SHADOW);
 }
 
 
@@ -1183,7 +1183,7 @@ MapObject* P_SpawnMissile(MapObject* source, MapObject* dest, mobjtype_t type)
 	an = R_PointToAngle2(source->x, source->y, dest->x, dest->y);
 
 	// fuzzy player
-	if (dest->flags & mobjtype_t::mobjflag_t::MF_SHADOW)
+	if (dest->flags & mobjtype_t::mobjflag_e::MF_SHADOW)
 		an += P_SubRandom() << 20;
 
 	th->angle = an;

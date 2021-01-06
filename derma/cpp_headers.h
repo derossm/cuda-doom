@@ -31,3 +31,5 @@
 #include <utility>
 
 #include <functional>
+
+#include <bitset>

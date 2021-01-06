@@ -59,7 +59,8 @@ void A_Mushroom(MapObject* actor)
 			mo->momx = FixedMul(mo->momx, misc2);
 			mo->momy = FixedMul(mo->momy, misc2);				// Slow down a bit
 			mo->momz = FixedMul(mo->momz, misc2);
-			mo->flags &= ~mobjflag_t::MF_NOGRAVITY;	// Make debris fall under gravity
+			//mo->flags &= ~mobjflag_e::MF_NOGRAVITY;	// Make debris fall under gravity
+			mo->flags.set(mobjflag_e::MF_NOGRAVITY, false);
 		}
 }
 
@@ -89,7 +90,7 @@ void A_Spawn(MapObject* mo)
 	{
 		//MapObject* newmobj =
 		P_SpawnMobj(mo->x, mo->y, (mo->state->misc2 << FRACBITS) + mo->z, mo->state->misc1 - 1);
-		//newmobj->flags = (newmobj->flags & ~mobjflag_t::MF_FRIEND) | (mo->flags & mobjflag_t::MF_FRIEND);
+		//newmobj->flags = (newmobj->flags & ~mobjflag_e::MF_FRIEND) | (mo->flags & mobjflag_e::MF_FRIEND);
 	}
 }
 
@@ -207,7 +208,7 @@ void A_FireOldBFG(MapObject* mobj, Player* player, pspdef_t* psp)
 
 	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
 
-	if (crispy->recoil && !(player->flags & mobjflag_t::MF_NOCLIP))
+	if (crispy->recoil && !(player->flags & mobjflag_e::MF_NOCLIP))
 		P_Thrust(player, ANG180 + player->angle,
 			512 * 20);//recoil_values[wp_plasma][0]);
 
@@ -226,7 +227,7 @@ void A_FireOldBFG(MapObject* mobj, Player* player, pspdef_t* psp)
 		//if (autoaim || !beta_emulation)
 		{
 			// killough 8/2/98: make autoaiming prefer enemies
-			int mask = 0; //mobjflag_t::MF_FRIEND;
+			int mask = 0; //mobjflag_e::MF_FRIEND;
 			fixed_t slope;
 			if (critical->freeaim == FREEAIM_DIRECT)
 			{

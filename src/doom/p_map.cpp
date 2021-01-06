@@ -92,7 +92,7 @@ bool PIT_StompThing(MapObject* thing)
 {
 	fixed_t blockdist;
 
-	if (!(thing->flags & mobjflag_t::MF_SHOOTABLE))
+	if (!(thing->flags & mobjflag_e::MF_SHOOTABLE))
 		return true;
 
 	blockdist = thing->radius + tmthing->radius;
@@ -222,7 +222,7 @@ bool PIT_CheckLine(line_t* ld)
 	if (!ld->backsector)
 		return false;		// one sided line
 
-	if (!(tmthing->flags & mobjflag_t::MF_MISSILE))
+	if (!(tmthing->flags & mobjflag_e::MF_MISSILE))
 	{
 		if (ld->flags & ML_BLOCKING)
 			return false;	// explicitly blocking everything
@@ -282,7 +282,7 @@ bool PIT_CheckThing(MapObject* thing)
 	bool unblocking = false;
 	int damage;
 
-	if (!(thing->flags & (mobjflag_t::MF_SOLID | mobjflag_t::MF_SPECIAL | mobjflag_t::MF_SHOOTABLE)))
+	if (!(thing->flags & (mobjflag_e::MF_SOLID | mobjflag_e::MF_SPECIAL | mobjflag_e::MF_SHOOTABLE)))
 		return true;
 
 	blockdist = thing->radius + tmthing->radius;
@@ -299,7 +299,7 @@ bool PIT_CheckThing(MapObject* thing)
 		return true;
 
 	// check for skulls slamming into things
-	if (tmthing->flags & mobjflag_t::MF_SKULLFLY)
+	if (tmthing->flags & mobjflag_e::MF_SKULLFLY)
 	{
 		// [crispy] check if attacking skull flies over player
 		if (critical->overunder && thing->player)
@@ -314,7 +314,7 @@ bool PIT_CheckThing(MapObject* thing)
 
 		P_DamageMobj(thing, tmthing, tmthing, damage);
 
-		tmthing->flags &= ~mobjflag_t::MF_SKULLFLY;
+		tmthing->flags &= ~mobjflag_e::MF_SKULLFLY;
 		tmthing->momx = tmthing->momy = tmthing->momz = 0;
 
 		P_SetMobjState(tmthing, tmthing->info->spawnstate);
@@ -324,7 +324,7 @@ bool PIT_CheckThing(MapObject* thing)
 
 
 	// missiles can hit other things
-	if (tmthing->flags & mobjflag_t::MF_MISSILE)
+	if (tmthing->flags & mobjflag_e::MF_MISSILE)
 	{
 		// [crispy] mobj or actual sprite height
 		const fixed_t thingheight = (tmthing->target && tmthing->target->player &&
@@ -357,10 +357,10 @@ bool PIT_CheckThing(MapObject* thing)
 			}
 		}
 
-		if (!(thing->flags & mobjflag_t::MF_SHOOTABLE))
+		if (!(thing->flags & mobjflag_e::MF_SHOOTABLE))
 		{
 			// didn't do any damage
-			return !(thing->flags & mobjflag_t::MF_SOLID);
+			return !(thing->flags & mobjflag_e::MF_SOLID);
 		}
 
 		// damage / explode
@@ -372,10 +372,10 @@ bool PIT_CheckThing(MapObject* thing)
 	}
 
 	// check for special pickup
-	if (thing->flags & mobjflag_t::MF_SPECIAL)
+	if (thing->flags & mobjflag_e::MF_SPECIAL)
 	{
-		solid = (thing->flags & mobjflag_t::MF_SOLID) != 0;
-		if (tmflags & mobjflag_t::MF_PICKUP)
+		solid = (thing->flags & mobjflag_e::MF_SOLID) != 0;
+		if (tmflags & mobjflag_e::MF_PICKUP)
 		{
 			// can remove thing
 			P_TouchSpecialThing(thing, tmthing);
@@ -386,7 +386,7 @@ bool PIT_CheckThing(MapObject* thing)
 	if (critical->overunder)
 	{
 		// [crispy] a solid hanging body will allow sufficiently small things underneath it
-		if (thing->flags & mobjflag_t::MF_SOLID && thing->flags & mobjflag_t::MF_SPAWNCEILING)
+		if (thing->flags & mobjflag_e::MF_SOLID && thing->flags & mobjflag_e::MF_SPAWNCEILING)
 		{
 			if (tmthing->z + tmthing->height <= thing->z)
 			{
@@ -399,7 +399,7 @@ bool PIT_CheckThing(MapObject* thing)
 		}
 
 		// [crispy] allow players to walk over/under shootable objects
-		if (tmthing->player && thing->flags & mobjflag_t::MF_SHOOTABLE)
+		if (tmthing->player && thing->flags & mobjflag_e::MF_SHOOTABLE)
 		{
 			fixed_t newfloorz, newceilingz;
 			// [crispy] allow the usual 24 units step-up even across monsters' heads,
@@ -454,7 +454,7 @@ bool PIT_CheckThing(MapObject* thing)
 		}
 	}
 
-	return !(thing->flags & mobjflag_t::MF_SOLID) || unblocking;
+	return !(thing->flags & mobjflag_e::MF_SOLID) || unblocking;
 }
 
 
@@ -473,7 +473,7 @@ bool PIT_CheckThing(MapObject* thing)
 //	(doesn't need to be related to the MapObject->x,y)
 //
 // during:
-// special things are touched if mobjflag_t::MF_PICKUP
+// special things are touched if mobjflag_e::MF_PICKUP
 // early out on solid lines?
 //
 // out:
@@ -520,7 +520,7 @@ bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y)
 	++validcount;
 	numspechit = 0;
 
-	if (tmflags & mobjflag_t::MF_NOCLIP)
+	if (tmflags & mobjflag_e::MF_NOCLIP)
 		return true;
 
 	// Check things first, possibly picking things up.
@@ -556,7 +556,7 @@ bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y)
 //
 // P_TryMove
 // Attempt to move to a new position,
-// crossing special lines unless mobjflag_t::MF_TELEPORT is set.
+// crossing special lines unless mobjflag_e::MF_TELEPORT is set.
 //
 bool P_TryMove(MapObject* thing, fixed_t x, fixed_t y)
 {
@@ -570,22 +570,22 @@ bool P_TryMove(MapObject* thing, fixed_t x, fixed_t y)
 	if (!P_CheckPosition(thing, x, y))
 		return false;		// solid wall or thing
 
-	if (!(thing->flags & mobjflag_t::MF_NOCLIP))
+	if (!(thing->flags & mobjflag_e::MF_NOCLIP))
 	{
 		if (tmceilingz - tmfloorz < thing->height)
 			return false;	// doesn't fit
 
 		floatok = true;
 
-		if (!(thing->flags & mobjflag_t::MF_TELEPORT)
+		if (!(thing->flags & mobjflag_e::MF_TELEPORT)
 			&& tmceilingz - thing->z < thing->height)
 			return false;	// mobj must lower itself to fit
 
-		if (!(thing->flags & mobjflag_t::MF_TELEPORT)
+		if (!(thing->flags & mobjflag_e::MF_TELEPORT)
 			&& tmfloorz - thing->z > 24 * FRACUNIT)
 			return false;	// too big a step up
 
-		if (!(thing->flags & (mobjflag_t::MF_DROPOFF | mobjflag_t::MF_FLOAT))
+		if (!(thing->flags & (mobjflag_e::MF_DROPOFF | mobjflag_e::MF_FLOAT))
 			&& tmfloorz - tmdropoffz > 24 * FRACUNIT)
 			return false;	// don't stand over a dropoff
 	}
@@ -604,7 +604,7 @@ bool P_TryMove(MapObject* thing, fixed_t x, fixed_t y)
 	P_SetThingPosition(thing);
 
 	// if any special lines were hit, do the effect
-	if (!(thing->flags & (mobjflag_t::MF_TELEPORT | mobjflag_t::MF_NOCLIP)))
+	if (!(thing->flags & (mobjflag_e::MF_TELEPORT | mobjflag_e::MF_NOCLIP)))
 	{
 		while (numspechit--)
 		{
@@ -974,7 +974,7 @@ PTR_AimTraverse(intercept_t* in)
 	if (th == shootthing)
 		return true;			// can't shoot self
 
-	if (!(th->flags & mobjflag_t::MF_SHOOTABLE))
+	if (!(th->flags & mobjflag_e::MF_SHOOTABLE))
 		return true;			// corpse or something
 
 		// check angles to see if the thing can be aimed at
@@ -1144,7 +1144,7 @@ bool PTR_ShootTraverse(intercept_t* in)
 	if (th == shootthing)
 		return true;		// can't shoot self
 
-	if (!(th->flags & mobjflag_t::MF_SHOOTABLE))
+	if (!(th->flags & mobjflag_e::MF_SHOOTABLE))
 		return true;		// corpse or something
 
 		// check angles to see if the thing can be aimed at
@@ -1175,7 +1175,7 @@ bool PTR_ShootTraverse(intercept_t* in)
 	if (la_damage == INT_MIN)
 	{
 		// [crispy] pass through Spectres
-		if (th->flags & mobjflag_t::MF_SHADOW)
+		if (th->flags & mobjflag_e::MF_SHADOW)
 			return true;
 
 		laserspot->thinker.function.acv = (actionf_v)(1);
@@ -1187,7 +1187,7 @@ bool PTR_ShootTraverse(intercept_t* in)
 
 	// Spawn bullet puffs or blod spots,
 	// depending on target type.
-	if (in->d.thing->flags & mobjflag_t::MF_NOBLOOD)
+	if (in->d.thing->flags & mobjflag_e::MF_NOBLOOD)
 		P_SpawnPuff(x, y, z);
 	else
 		P_SpawnBlood(x, y, z, la_damage, th); // [crispy] pass thing type
@@ -1313,7 +1313,7 @@ void P_LineLaser(MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope)
 	if ((crispy->crosshair & ~CROSSHAIR_INTERCEPT) == CROSSHAIR_PROJECTED)
 	{
 		// [crispy] don't aim at Spectres
-		if (linetarget && !(linetarget->flags & mobjflag_t::MF_SHADOW) && (crispy->freeaim != FREEAIM_DIRECT))
+		if (linetarget && !(linetarget->flags & mobjflag_e::MF_SHADOW) && (crispy->freeaim != FREEAIM_DIRECT))
 			P_LineAttack(t1, angle, distance, aimslope, INT_MIN);
 		else
 			// [crispy] double the auto aim distance
@@ -1405,7 +1405,7 @@ bool PIT_RadiusAttack(MapObject* thing)
 	fixed_t dy;
 	fixed_t dist;
 
-	if (!(thing->flags & mobjflag_t::MF_SHOOTABLE))
+	if (!(thing->flags & mobjflag_e::MF_SHOOTABLE))
 		return true;
 
 	// Boss spider and cyborg
@@ -1505,13 +1505,13 @@ bool PIT_ChangeSector(MapObject* thing)
 		P_SetMobjState(thing, statenum_t::S_GIBS);
 
 		// [crispy] no blood, no giblets
-		if (crispy->coloredblood && (thing->flags & mobjflag_t::MF_NOBLOOD))
+		if (crispy->coloredblood && (thing->flags & mobjflag_e::MF_NOBLOOD))
 		{
 			thing->sprite = spritenum_t::SPR_TNT1;
 		}
 
 		if (gameversion > GameVersion::exe_doom_1_2)
-			thing->flags &= ~mobjflag_t::MF_SOLID;
+			thing->flags &= ~mobjflag_e::MF_SOLID;
 		thing->height = 0;
 		thing->radius = 0;
 
@@ -1523,7 +1523,7 @@ bool PIT_ChangeSector(MapObject* thing)
 	}
 
 	// crunch dropped items
-	if (thing->flags & mobjflag_t::MF_DROPPED)
+	if (thing->flags & mobjflag_e::MF_DROPPED)
 	{
 		P_RemoveMobj(thing);
 
@@ -1531,7 +1531,7 @@ bool PIT_ChangeSector(MapObject* thing)
 		return true;
 	}
 
-	if (!(thing->flags & mobjflag_t::MF_SHOOTABLE))
+	if (!(thing->flags & mobjflag_e::MF_SHOOTABLE))
 	{
 		// assume it is bloody gibs or something
 		return true;
@@ -1547,7 +1547,7 @@ bool PIT_ChangeSector(MapObject* thing)
 		mo = P_SpawnMobj(thing->x,
 			thing->y,
 			// [crispy] Lost Souls and Barrels bleed Puffs
-			thing->z + thing->height / 2, (thing->flags & mobjflag_t::MF_NOBLOOD) ? mobjtype_t::MT_PUFF : mobjtype_t::MT_BLOOD);
+			thing->z + thing->height / 2, (thing->flags & mobjflag_e::MF_NOBLOOD) ? mobjtype_t::MT_PUFF : mobjtype_t::MT_BLOOD);
 
 		mo->momx = P_SubRandom() << 12;
 		mo->momy = P_SubRandom() << 12;
@@ -1557,7 +1557,7 @@ bool PIT_ChangeSector(MapObject* thing)
 
 		// [crispy] Spectres bleed spectre blood
 		if (crispy->coloredblood)
-			mo->flags |= (thing->flags & mobjflag_t::MF_SHADOW);
+			mo->flags |= (thing->flags & mobjflag_e::MF_SHADOW);
 	}
 
 	// keep checking (crush other things)

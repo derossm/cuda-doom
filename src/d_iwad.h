@@ -73,10 +73,10 @@ class IWAD
 		iwad_t{ std::string("freedoom2.wad"),	GameMission::doom2,		GameMode::commercial,		std::string("Freedoom: Phase 2") },
 		iwad_t{ std::string("freedoom1.wad"),	GameMission::doom,		GameMode::retail,			std::string("Freedoom: Phase 1") },
 		iwad_t{ std::string("freedm.wad"),		GameMission::doom2,		GameMode::commercial,		std::string("FreeDM") },
-		iwad_t{ std::string("heretic.wad"),		GameMission::heretic,		GameMode::retail,			std::string("Heretic") },
-		iwad_t{ std::string("heretic1.wad"),	GameMission::heretic,		GameMode::shareware,		std::string("Heretic Shareware") },
+		iwad_t{ std::string("heretic.wad"),		GameMission::heretic,	GameMode::retail,			std::string("Heretic") },
+		iwad_t{ std::string("heretic1.wad"),	GameMission::heretic,	GameMode::shareware,		std::string("Heretic Shareware") },
 		iwad_t{ std::string("hexen.wad"),		GameMission::hexen,		GameMode::commercial,		std::string("Hexen") },
-		iwad_t{ std::string("strife1.wad"),		GameMission::strife,		GameMode::commercial,		std::string("Strife") }
+		iwad_t{ std::string("strife1.wad"),		GameMission::strife,	GameMode::commercial,		std::string("Strife") }
 	};
 	//{ std::string("strife0.wad"),	GameMission::strife,		GameMode::commercial,		std::string("Strife") }, // haleyjd: STRIFE-FIXME
 

@@ -776,7 +776,7 @@ bool F_CastResponder(EventType* ev)
 
 	// flippable death sequence
 	castflip = crispy->flipcorpses && castdeath
-		&& ((int)mobjinfo[std::size_t(castorder[castnum].type)].flags & (int)mobjflag_t::MF_FLIPPABLE) && (Crispy_Random() & 1);
+		&& ((int)mobjinfo[std::size_t(castorder[castnum].type)].flags & (int)mobjflag_e::MF_FLIPPABLE) && (Crispy_Random() & 1);
 
 	return true;
 }

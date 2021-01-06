@@ -20,10 +20,11 @@
 	NOTE: MANY functions also use old school bit manipulations, so changing from a specific sized integral type to an enum type requires
 	refactoring all that 90's razzmatazz out before updating the parameter types
 */
-template<typename U, typename T>
-constexpr auto _integral_value(T v) noexcept
+
+template<typename T, typename U>
+constexpr auto _integral_value(U v) noexcept
 {
-	return static_cast<U>(v);
+	return static_cast<T>(v);
 }
 
 template<typename T>
@@ -31,4 +32,3 @@ constexpr auto _underlying_value(T v) noexcept
 {
 	return static_cast<std::underlying_type_t<T>>(v);
 }
-#define value(a) _underlying_value<decltype(a)>(a)

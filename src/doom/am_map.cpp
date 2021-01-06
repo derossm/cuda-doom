@@ -1858,15 +1858,15 @@ void AM_drawThings(int colors, int colorrange)
 						// [crispy] triangle size represents actual thing size
 						t->radius, t->angle,
 						// [crispy] show countable kills in red ...
-						(((int)t->flags & ((int)mobjflag_t::MF_COUNTKILL | (int)mobjflag_t::MF_CORPSE)) == (int)mobjflag_t::MF_COUNTKILL) ? REDS :
+						(((int)t->flags & ((int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_CORPSE)) == (int)mobjflag_e::MF_COUNTKILL) ? REDS :
 						// [crispy] ... show Lost Souls and missiles in orange ...
-						((int)t->flags & ((int)mobjflag_t::MF_FLOAT | (int)mobjflag_t::MF_MISSILE)) ? 216 :
+						((int)t->flags & ((int)mobjflag_e::MF_FLOAT | (int)mobjflag_e::MF_MISSILE)) ? 216 :
 						// [crispy] ... show other shootable items in dark gold ...
-						((int)t->flags & (int)mobjflag_t::MF_SHOOTABLE) ? 164 :
+						((int)t->flags & (int)mobjflag_e::MF_SHOOTABLE) ? 164 :
 						// [crispy] ... corpses in gray ...
-						((int)t->flags & (int)mobjflag_t::MF_CORPSE) ? GRAYS :
+						((int)t->flags & (int)mobjflag_e::MF_CORPSE) ? GRAYS :
 						// [crispy] ... and countable items in yellow
-						((int)t->flags & (int)mobjflag_t::MF_COUNTITEM) ? YELLOWS :
+						((int)t->flags & (int)mobjflag_e::MF_COUNTITEM) ? YELLOWS :
 						colors + lightlev, pt.x, pt.y);
 				}
 			}

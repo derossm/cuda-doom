@@ -196,10 +196,10 @@ bool P_CheckMissileRange(MapObject* actor)
 		return false;
 	}
 
-	if (actor->flags & (int)mobjflag_t::MF_JUSTHIT)
+	if (actor->flags & (int)mobjflag_e::MF_JUSTHIT)
 	{
 		// the target just hit the enemy, so fight back!
-		actor->flags &= ~mobjflag_t::MF_JUSTHIT;
+		actor->flags &= ~mobjflag_e::MF_JUSTHIT;
 		return true;
 	}
 
@@ -289,7 +289,7 @@ bool P_Move(MapObject* actor)
 	if (!try_ok)
 	{
 		// open any specials
-		if (actor->flags & mobjflag_t::MF_FLOAT && floatok)
+		if (actor->flags & mobjflag_e::MF_FLOAT && floatok)
 		{
 			// must adjust height
 			if (actor->z < tmfloorz)
@@ -301,7 +301,7 @@ bool P_Move(MapObject* actor)
 				actor->z -= FLOATSPEED;
 			}
 
-			actor->flags |= mobjflag_t::MF_INFLOAT;
+			actor->flags |= mobjflag_e::MF_INFLOAT;
 			return true;
 		}
 
@@ -327,10 +327,10 @@ bool P_Move(MapObject* actor)
 	}
 	else
 	{
-		actor->flags &= ~mobjflag_t::MF_INFLOAT;
+		actor->flags &= ~mobjflag_e::MF_INFLOAT;
 	}
 
-	if (!(actor->flags & mobjflag_t::MF_FLOAT))
+	if (!(actor->flags & mobjflag_e::MF_FLOAT))
 	{
 		actor->z = actor->floorz;
 	}
@@ -620,11 +620,11 @@ void A_Look(MapObject* actor)
 		return;
 	}
 
-	if (targ && (targ->flags & mobjflag_t::MF_SHOOTABLE))
+	if (targ && (targ->flags & mobjflag_e::MF_SHOOTABLE))
 	{
 		actor->target = targ;
 
-		if (actor->flags & mobjflag_t::MF_AMBUSH)
+		if (actor->flags & mobjflag_e::MF_AMBUSH)
 		{
 			if (P_CheckSight(actor, actor->target))
 			{
@@ -730,7 +730,7 @@ void A_Chase(MapObject* actor)
 		}
 	}
 
-	if (!actor->target || !(actor->target->flags & mobjflag_t::MF_SHOOTABLE))
+	if (!actor->target || !(actor->target->flags & mobjflag_e::MF_SHOOTABLE))
 	{
 		// look for a new target
 		if (P_LookForPlayers(actor, true))
@@ -743,9 +743,9 @@ void A_Chase(MapObject* actor)
 	}
 
 	// do not attack twice in a row
-	if (actor->flags & mobjflag_t::MF_JUSTATTACKED)
+	if (actor->flags & mobjflag_e::MF_JUSTATTACKED)
 	{
-		actor->flags &= ~mobjflag_t::MF_JUSTATTACKED;
+		actor->flags &= ~mobjflag_e::MF_JUSTATTACKED;
 		if (gameskill != SkillType::sk_nightmare && !fastparm)
 		{
 			P_NewChaseDir(actor);
@@ -779,7 +779,7 @@ void A_Chase(MapObject* actor)
 		}
 
 		P_SetMobjState(actor, actor->info->missilestate);
-		actor->flags = (int)actor->flags | (int)mobjflag_t::MF_JUSTATTACKED;
+		actor->flags = (int)actor->flags | (int)mobjflag_e::MF_JUSTATTACKED;
 		return;
 	}
 
@@ -814,11 +814,11 @@ void A_FaceTarget(MapObject* actor)
 		return;
 	}
 
-	actor->flags &= ~mobjflag_t::MF_AMBUSH;
+	actor->flags &= ~mobjflag_e::MF_AMBUSH;
 
 	actor->angle = R_PointToAngle2(actor->x, actor->y, actor->target->x, actor->target->y);
 
-	if (actor->target->flags & mobjflag_t::MF_SHADOW)
+	if (actor->target->flags & mobjflag_e::MF_SHADOW)
 	{
 		actor->angle += P_SubRandom() << 21;
 	}
@@ -1199,7 +1199,7 @@ bool PIT_VileCheck(MapObject* thing)
 	int maxdist;
 	bool check;
 
-	if (!(thing->flags & mobjflag_t::MF_CORPSE))
+	if (!(thing->flags & mobjflag_e::MF_CORPSE))
 	{
 		return true;	// not a monster
 	}
@@ -1293,7 +1293,7 @@ void A_VileChase(MapObject* actor)
 					// [crispy] resurrected pools of gore ("ghost monsters") are translucent
 					if (corpsehit->height == 0 && corpsehit->radius == 0)
 					{
-						corpsehit->flags |= mobjflag_t::MF_TRANSLUCENT;
+						corpsehit->flags |= mobjflag_e::MF_TRANSLUCENT;
 						fprintf(stderr, "A_VileChase: Resurrected ghost monster (%d) at (%d/%d)!\n",
 							corpsehit->type, corpsehit->x >> FRACBITS, corpsehit->y >> FRACBITS);
 					}
@@ -1518,7 +1518,7 @@ void A_SkullAttack(MapObject* actor)
 	}
 
 	dest = actor->target;
-	actor->flags |= mobjflag_t::MF_SKULLFLY;
+	actor->flags |= mobjflag_e::MF_SKULLFLY;
 
 	S_StartSound(actor, actor->info->attacksound);
 	A_FaceTarget(actor);
@@ -1591,7 +1591,7 @@ void A_PainShootSkull(MapObject* actor, angle_t angle)
 	// [crispy] Lost Souls bleed Puffs
 	if (crispy->coloredblood)
 	{
-		newmobj->flags |= mobjflag_t::MF_NOBLOOD;
+		newmobj->flags |= mobjflag_e::MF_NOBLOOD;
 	}
 
 	newmobj->target = actor->target;
@@ -1672,7 +1672,7 @@ void A_Pain(MapObject* actor)
 void A_Fall(MapObject* actor)
 {
 	// actor is on ground, it can be walked over
-	actor->flags &= ~mobjflag_t::MF_SOLID;
+	actor->flags &= ~mobjflag_e::MF_SOLID;
 
 	// So change this if corpse objects
 	// are meant to be obstacles.
@@ -2006,7 +2006,7 @@ void A_BrainExplode(MapObject* mo)
 	}
 
 	// [crispy] brain explosions are translucent
-	th->flags |= mobjflag_t::MF_TRANSLUCENT;
+	th->flags |= mobjflag_e::MF_TRANSLUCENT;
 }
 
 void A_BrainDie(MapObject* mo)

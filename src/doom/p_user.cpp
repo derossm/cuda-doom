@@ -129,7 +129,7 @@ void P_MovePlayer(Player* player)
 	// Do not let the player control movement if not onground.
 	onground = (player->z <= player->floorz);
 	// give full control in no-clipping mode
-	onground |= (player->flags & mobjflag_t::MF_NOCLIP);
+	onground |= (player->flags & mobjflag_e::MF_NOCLIP);
 
 	if (cmd->forwardmove && onground)
 	{
@@ -266,21 +266,25 @@ void P_PlayerThink(Player* player)
 	// fixme: do this in the cheat code
 	if (player->cheats & CheatType::CF_NOCLIP)
 	{
-		player->flags |= mobjflag_t::MF_NOCLIP;
+		//player->flags |= mobjflag_e::MF_NOCLIP;
+		player->flags.set(mobjflag_e::MF_NOCLIP, true);
 	}
 	else
 	{
-		player->flags &= ~mobjflag_t::MF_NOCLIP;
+		//player->flags &= ~mobjflag_e::MF_NOCLIP;
+		player->flags.set(mobjflag_e::MF_NOCLIP, false);
 	}
 
 	// chain saw run forward
 	cmd = &player->cmd;
-	if (player->flags & mobjflag_t::MF_JUSTATTACKED)
+	//if (player->flags & mobjflag_e::MF_JUSTATTACKED)
+	if (player->flags.test(mobjflag_e::MF_JUSTATTACKED))
 	{
 		cmd->angleturn = 0;
 		cmd->forwardmove = 0xc800 / 512;
 		cmd->sidemove = 0;
-		player->flags &= ~mobjflag_t::MF_JUSTATTACKED;
+		//player->flags &= ~mobjflag_e::MF_JUSTATTACKED;
+		player->flags.set(mobjflag_e::MF_JUSTATTACKED, false);
 	}
 
 
@@ -439,7 +443,7 @@ void P_PlayerThink(Player* player)
 	{
 		if (!--player->powers[std::size_t(PowerType_t::pw_invisibility)])
 		{
-			player->flags &= ~mobjflag_t::MF_SHADOW;
+			player->flags &= ~mobjflag_e::MF_SHADOW;
 		}
 	}
 

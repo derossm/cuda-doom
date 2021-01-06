@@ -128,7 +128,7 @@ public:
 	TimeType jumpTics;
 
 	// Power ups. invinc and invis are tic counters.
-	std::array<int, size_t(PowerType_t::NUMPOWERS) + 3> powers; // [crispy] showfps and mapcoords are now "powers"
+	std::array<int, size_t(PowerType_t::NUMPOWERS)> powers; // [crispy] showfps and mapcoords are now "powers"
 	std::array<int, size_t(WeaponType::NUMWEAPONS)> weaponowned;
 	std::array<int, size_t(AmmoType::NUMAMMO)> ammo;
 	std::array<int, size_t(AmmoType::NUMAMMO)> maxammo;

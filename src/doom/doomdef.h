@@ -117,10 +117,10 @@ enum class PowerType_t
 	pw_ironfeet,
 	pw_allmap,
 	pw_infrared,
-	NUMPOWERS,
 	// [crispy] showfps and mapcoords are now "powers"
 	pw_showfps,
-	pw_mapcoords
+	pw_mapcoords,
+	NUMPOWERS,
 };
 
 // Power up durations, how many seconds till expiration, assuming TICRATE is 35 ticks/second.

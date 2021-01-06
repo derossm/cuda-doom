@@ -419,10 +419,10 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 		// NULL colormap = shadow draw
 		colfunc = fuzzcolfunc;
 	}
-	else if (vis->mobjflags & mobjflag_t::MF_TRANSLATION)
+	else if (vis->mobjflags & mobjflag_e::MF_TRANSLATION)
 	{
 		colfunc = transcolfunc;
-		dc_translation = translationtables - 256 + ((vis->mobjflags & mobjflag_t::MF_TRANSLATION) >> (mobjflag_t::MF_TRANSSHIFT - 8));
+		dc_translation = translationtables - 256 + ((vis->mobjflags & mobjflag_e::MF_TRANSLATION) >> (mobjflag_e::MF_TRANSSHIFT - 8));
 	}
 	// [crispy] color-translated sprites (i.e. blood)
 	else if (vis->translation)
@@ -431,11 +431,11 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 		dc_translation = vis->translation;
 	}
 	// [crispy] translucent sprites
-	else if (crispy->translucency && vis->mobjflags & mobjflag_t::MF_TRANSLUCENT)
+	else if (crispy->translucency && vis->mobjflags & mobjflag_e::MF_TRANSLUCENT)
 	{
-		if (!(vis->mobjflags & (mobjflag_t::MF_NOGRAVITY | mobjflag_t::MF_COUNTITEM)) ||
-			(vis->mobjflags & mobjflag_t::MF_NOGRAVITY && crispy->translucency & TRANSLUCENCY_MISSILE) ||
-			(vis->mobjflags & mobjflag_t::MF_COUNTITEM && crispy->translucency & TRANSLUCENCY_ITEM))
+		if (!(vis->mobjflags & (mobjflag_e::MF_NOGRAVITY | mobjflag_e::MF_COUNTITEM)) ||
+			(vis->mobjflags & mobjflag_e::MF_NOGRAVITY && crispy->translucency & TRANSLUCENCY_MISSILE) ||
+			(vis->mobjflags & mobjflag_e::MF_COUNTITEM && crispy->translucency & TRANSLUCENCY_ITEM))
 		{
 			colfunc = tlcolfunc;
 		}
@@ -615,8 +615,8 @@ void R_ProjectSprite(MapObject* thing)
 
 	// [crispy] randomly flip corpse, blood and death animation sprites
 	if (crispy->flipcorpses &&
-		(thing->flags & mobjflag_t::MF_FLIPPABLE) &&
-		!(thing->flags & mobjflag_t::MF_SHOOTABLE) &&
+		(thing->flags & mobjflag_e::MF_FLIPPABLE) &&
+		!(thing->flags & mobjflag_e::MF_SHOOTABLE) &&
 		(thing->health & 1))
 	{
 		flip = !flip;
@@ -682,7 +682,7 @@ void R_ProjectSprite(MapObject* thing)
 	vis->patch = lump;
 
 	// get light level
-	if (thing->flags & mobjflag_t::MF_SHADOW)
+	if (thing->flags & mobjflag_e::MF_SHADOW)
 	{
 		// shadow draw
 		vis->colormap[0] = vis->colormap[1] = NULL;
@@ -743,7 +743,7 @@ void R_ProjectSprite(MapObject* thing)
 
 #ifdef CRISPY_TRUECOLOR
 	// [crispy] translucent sprites
-	if (thing->flags & mobjflag_t::MF_TRANSLUCENT)
+	if (thing->flags & mobjflag_e::MF_TRANSLUCENT)
 	{
 		vis->blendfunc = (thing->frame & FF_FULLBRIGHT) ? I_BlendAdd : I_BlendOver;
 	}
@@ -841,7 +841,7 @@ static void R_DrawLSprite()
 	vis->brightmap = dc_brightmap;
 	vis->translation = R_LaserspotColor();
 #ifdef CRISPY_TRUECOLOR
-	vis->mobjflags |= mobjflag_t::MF_TRANSLUCENT;
+	vis->mobjflags |= mobjflag_e::MF_TRANSLUCENT;
 	vis->blendfunc = I_BlendAdd;
 #endif
 	vis->xiscale = FixedDiv(FRACUNIT, xscale);
@@ -1005,7 +1005,7 @@ void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate g
 	// [crispy] translucent gun flash sprites
 	if (psprnum == psprnum_t::ps_flash)
 	{
-		vis->mobjflags |= mobjflag_t::MF_TRANSLUCENT;
+		vis->mobjflags |= mobjflag_e::MF_TRANSLUCENT;
 #ifdef CRISPY_TRUECOLOR
 		vis->blendfunc = I_BlendOver; // I_BlendAdd;
 #endif

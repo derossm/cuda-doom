@@ -9,6 +9,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 
+#include "../../derma/enumbitset.h"
+
 #include "doomdef.h"
 #include "doomkeys.h"
 #include "doomstat.h"
@@ -1310,7 +1312,7 @@ void G_PlayerFinishLevel(int player)
 	//memset(p->powers, 0, sizeof(p->powers));
 	//memset(p->cards, 0, sizeof(p->cards));
 	//memset(p->tryopen, 0, sizeof(p->tryopen)); // blinking key or skull in the status bar
-	p->flags = p->flags & (int)~mobjflag_t::MF_SHADOW; // cancel invisibility
+	p->flags.set(mobjflag_e::MF_SHADOW, false); // cancel invisibility
 	p->extralight = 0;			// cancel gun flashes
 	p->fixedcolormap = 0;		// cancel ir gogles
 	p->damagecount = 0;			// no palette changes

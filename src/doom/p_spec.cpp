@@ -1046,7 +1046,7 @@ void P_PlayerInSpecialSector(Player* player)
 	case 5:
 		// HELLSLIME DAMAGE
 		// [crispy] no nukage damage with NOCLIP cheat
-		if (!player->powers[std::size_t(PowerType_t::pw_ironfeet)] && !(player->flags & mobjflag_t::MF_NOCLIP))
+		if (!player->powers[std::size_t(PowerType_t::pw_ironfeet)] && !(player->flags & mobjflag_e::MF_NOCLIP))
 			if (!(leveltime & 0x1f))
 				P_DamageMobj(player, NULL, NULL, 10);
 		break;
@@ -1054,7 +1054,7 @@ void P_PlayerInSpecialSector(Player* player)
 	case 7:
 		// NUKAGE DAMAGE
 		// [crispy] no nukage damage with NOCLIP cheat
-		if (!player->powers[std::size_t(PowerType_t::pw_ironfeet)] && !(player->flags & mobjflag_t::MF_NOCLIP))
+		if (!player->powers[std::size_t(PowerType_t::pw_ironfeet)] && !(player->flags & mobjflag_e::MF_NOCLIP))
 			if (!(leveltime & 0x1f))
 				P_DamageMobj(player, NULL, NULL, 5);
 		break;
@@ -1065,7 +1065,7 @@ void P_PlayerInSpecialSector(Player* player)
 		// STROBE HURT
 		// [crispy] no nukage damage with NOCLIP cheat
 		if ((!player->powers[std::size_t(PowerType_t::pw_ironfeet)]
-			|| (P_Random() < 5)) && !(player->flags & mobjflag_t::MF_NOCLIP))
+			|| (P_Random() < 5)) && !(player->flags & mobjflag_e::MF_NOCLIP))
 		{
 			if (!(leveltime & 0x1f))
 				P_DamageMobj(player, NULL, NULL, 20);

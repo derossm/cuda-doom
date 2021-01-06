@@ -22,7 +22,7 @@
 bool EV_Teleport(line_t* line, int side, MapObject* thing)
 {
 	// don't teleport missiles
-	if (thing->flags & mobjflag_t::MF_MISSILE)
+	if (thing->flags & mobjflag_e::MF_MISSILE)
 	{
 		return false;
 	}

@@ -30,19 +30,11 @@ namespace cudadoom::txt
  * Widgets may emit signals. The types of signal emitted by a widget depend on the type of the widget.
  * It is possible to be notified when a signal occurs using the @ref SignalConnect function.
  */
-class WidgetBase
-{
-public:
-	virtual ~WidgetBase()
-	{}
-};
 
-template<typename T = WidgetBase>
-requires std::derived_from<T, WidgetBase>
-class Widget : public WidgetBase
+template<typename T>
+class Widget
 {
-	// TEMP PUBLIC UNTIL ALL DEPENDENTS CONVERTED TODO UPDATE THIS
-public:
+private:
 	Widget* parent{nullptr};
 	WidgetClass<T> widget_class;
 
@@ -52,13 +44,18 @@ public:
 	int width{0};
 	int height{0};
 
-	CallbackTable callback_table;
+	CallbackTable callbackTable;
 
 	AlignHorizontal align{};
 
-	bool _visible{false};
-	bool _focused{false};
+	bool b_visible{false};
+	bool b_focused{false};
 
+public:
+	using Type = T;
+
+	//================================================================================================================================
+	// ctors, dtors, etc
 	Widget() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 
@@ -67,46 +64,95 @@ public:
 	virtual ~Widget()
 	{}
 
-public:
-	using Type = T;
+	//================================================================================================================================
+
+	virtual inline bool Selectable() const noexcept
+	{
+		return true;
+	}
+
+	virtual inline void CalculateSize() const noexcept
+	{
+		//size_calc(widget);
+	}
+
+	virtual inline void Draw() const noexcept
+	{
+		SavedColors colors;
+
+		// The drawing function might change the fg/bg colors, so make sure we restore them after it's done.
+		SaveColors(&colors);
+
+		// For convenience...
+		GotoXY(x, y);
+
+		// Call drawer method
+		//drawer();
+
+		RestoreColors(&colors);
+	}
+
+	virtual inline bool KeyPress(KeyEvent evt) const noexcept
+	{
+		return 0;//key_press(widget, key);
+	}
+
+	virtual inline bool MousePress(MouseEvent evt) const noexcept
+	{
+		//mouse_press(x, y, b);
+	}
+
+	virtual inline void SetLayout() const noexcept
+	{
+		//layout();
+	}
+
+	virtual inline void SetFocus(bool _focus) const noexcept
+	{
+		//layout();
+	}
+
+	virtual inline void Destroy() const noexcept
+	{}
+
 	inline bool visible() const noexcept
 	{
-		return _visible;
+		return b_visible;
 	}
 
 	inline bool focused() const noexcept
 	{
-		return _focused;
+		return b_focused;
 	}
 
 	inline void setVisible() noexcept
 	{
-		_visible = true;
+		b_visible = true;
 	}
 
 	inline void unsetVisible() noexcept
 	{
-		_visible = false;
+		b_visible = false;
 	}
 
 	inline void setFocus() noexcept
 	{
-		_focused = true;
+		b_focused = true;
 	}
 
 	inline void unsetFocus() noexcept
 	{
-		_focused = false;
+		b_focused = false;
 	}
 
 	inline void toggleVisible() noexcept
 	{
-		_visible = !_visible;
+		b_visible = !b_visible;
 	}
 
 	inline void toggleFocus() noexcept
 	{
-		_focused = !_focused;
+		b_focused = !b_focused;
 	}
 
 	inline void toggleVisibility() noexcept
@@ -144,11 +190,6 @@ public:
 		unsetFocus();
 	}
 
-	virtual inline void CalculateSize() noexcept
-	{
-		//size_calc(widget);
-	}
-
 	inline void SignalConnect(std::string&& signal, std::function<void(void*)>&& handle, UserData&& user) noexcept
 	{
 		callback_table.connect(std::move(signal), std::move(handle), std::move(user));
@@ -174,30 +215,6 @@ public:
 		//UnrefCallbackTable(table);
 	}
 
-	virtual inline void Draw() noexcept
-	{
-		SavedColors colors;
-
-		// The drawing function might change the fg/bg colors, so make sure we restore them after it's done.
-		SaveColors(&colors);
-
-		// For convenience...
-		GotoXY(x, y);
-
-		// Call drawer method
-		//drawer();
-
-		RestoreColors(&colors);
-	}
-
-	virtual inline void Destroy() noexcept
-	{}
-
-	virtual inline bool KeyPress(KeyType key) noexcept
-	{
-		return 0;//key_press(widget, key);
-	}
-
 	// void SetWidgetFocus(bool _focused)
 	// {
 	// 	if (!focused() && _focused)
@@ -215,21 +232,6 @@ public:
 		align = _align;
 	}
 
-	virtual inline bool MousePress(MouseEvent evt) noexcept
-	{
-		//mouse_press(x, y, b);
-	}
-
-	virtual inline void SetLayout() noexcept
-	{
-		//layout();
-	}
-
-	virtual inline void SetFocus(bool _focus) noexcept
-	{
-		//layout();
-	}
-
 	inline bool AlwaysSelectable() noexcept
 	{
 		return true;
@@ -238,11 +240,6 @@ public:
 	inline bool NeverSelectable() noexcept
 	{
 		return false;
-	}
-
-	virtual inline bool Selectable() noexcept
-	{
-		return true;
 	}
 
 	inline bool ContainsWidget(Widget* needle) noexcept

@@ -14,6 +14,7 @@
 #pragma once
 
 #include "../../derma/common.h"
+#include "../../derma/enumbitset.h"
 
 // We need the WAD data structure for Map things, from the THINGS lump.
 #include "doomdata.h"
@@ -70,7 +71,7 @@
 // Any MapObject that needs to be acted upon by something else
 // in the play world (block movement, be shot, etc) will also
 // need to be linked into the blockmap.
-// If the thing has the mobjflag_t::MF_NOBLOCK flag set, it will not use
+// If the thing has the mobjflag_e::MF_NOBLOCK flag set, it will not use
 // the block links. It can still interact with other things,
 // but only as the instigator (missiles will run into other
 // things, but nothing can run into a missile).
@@ -81,12 +82,12 @@
 // A valid MapObject is a MapObject that has the proper subsector_t
 // filled in for its xy coordinates and is linked into the
 // sector from which the subsector was made, or has the
-// mobjflag_t::MF_NOSECTOR flag set (the subsector_t needs to be valid
-// even if mobjflag_t::MF_NOSECTOR is set), and is linked into a blockmap
-// block or has the mobjflag_t::MF_NOBLOCKMAP flag set.
+// mobjflag_e::MF_NOSECTOR flag set (the subsector_t needs to be valid
+// even if mobjflag_e::MF_NOSECTOR is set), and is linked into a blockmap
+// block or has the mobjflag_e::MF_NOBLOCKMAP flag set.
 // Links should only be modified by the P_[Un]SetThingPosition()
 // functions.
-// Do not change the mobjflag_t::MF_NO? flags while a thing is valid.
+// Do not change the mobjflag_e::MF_NO? flags while a thing is valid.
 //
 // Any questions?
 
@@ -176,11 +177,11 @@ public:
 
 	spritenum_t sprite;		// used to find patch_t and flip value
 
-	mobjflag_t flags;
-
 	// List: thinker links.
 	thinker_t thinker;
 
 	// For nightmare respawn.
 	mapthing_t spawnpoint;
+
+	cudadoom::BitSet<mobjflag_e, mobjflag_e::size> flags;
 };

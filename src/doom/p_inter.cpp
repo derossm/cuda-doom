@@ -171,7 +171,7 @@ std::string const WeaponPickupMessages[std::size_t(WeaponType::NUMWEAPONS)] =
 	GOTSHOTGUN2
 };
 
-// The weapon name may have a mobjflag_t::MF_DROPPED flag ored in.
+// The weapon name may have a mobjflag_e::MF_DROPPED flag ored in.
 bool P_GiveWeapon(Player* player, WeaponType weapon, bool dropped)
 {
 	bool gaveammo;
@@ -294,7 +294,7 @@ bool P_GivePower(Player* player, PowerType_t power)
 	if (power == PowerType_t::pw_invisibility)
 	{
 		player->powers[std::size_t(power)] = PowerDuration_t::INVISTICS;
-		player->flags |= mobjflag_t::MF_SHADOW;
+		player->flags |= mobjflag_e::MF_SHADOW;
 		return true;
 	}
 
@@ -332,7 +332,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 	int i;
 	fixed_t delta;
 	sfxenum_t sound;
-	const bool dropped = (((int)special->flags & (int)mobjflag_t::MF_DROPPED) != 0);
+	const bool dropped = (((int)special->flags & (int)mobjflag_e::MF_DROPPED) != 0);
 
 	delta = special->z - toucher->z;
 
@@ -611,7 +611,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		// [NS] Give half ammo for drops of all types.
 	case spritenum_t::SPR_CLIP:
 		/*
-		if (special->flags & mobjflag_t::MF_DROPPED)
+		if (special->flags & mobjflag_e::MF_DROPPED)
 		{
 			if (!P_GiveAmmo(player,am_clip,0))
 			return;
@@ -713,7 +713,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		break;
 
 	case spritenum_t::SPR_MGUN:
-		if (!P_GiveWeapon(player, WeaponType::wp_chaingun, (special->flags & mobjflag_t::MF_DROPPED) != 0))
+		if (!P_GiveWeapon(player, WeaponType::wp_chaingun, (special->flags & mobjflag_e::MF_DROPPED) != 0))
 		{
 			return;
 		}
@@ -749,7 +749,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		break;
 
 	case spritenum_t::SPR_SHOT:
-		if (!P_GiveWeapon(player, WeaponType::wp_shotgun, (special->flags & mobjflag_t::MF_DROPPED) != 0))
+		if (!P_GiveWeapon(player, WeaponType::wp_shotgun, (special->flags & mobjflag_e::MF_DROPPED) != 0))
 		{
 			return;
 		}
@@ -758,7 +758,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		break;
 
 	case spritenum_t::SPR_SGN2:
-		if (!P_GiveWeapon(player, WeaponType::wp_supershotgun, (special->flags & mobjflag_t::MF_DROPPED) != 0))
+		if (!P_GiveWeapon(player, WeaponType::wp_supershotgun, (special->flags & mobjflag_e::MF_DROPPED) != 0))
 		{
 			return;
 		}
@@ -770,7 +770,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		I_Error("P_SpecialThing: Unknown gettable thing");
 	}
 
-	if (special->flags & mobjflag_t::MF_COUNTITEM)
+	if (special->flags & mobjflag_e::MF_COUNTITEM)
 	{
 		player->itemcount++;
 	}
@@ -787,20 +787,20 @@ void P_KillMobj(MapObject* source, MapObject* target)
 	mobjtype_t item;
 	MapObject* mo;
 
-	target->flags &= ~(mobjflag_t::MF_SHOOTABLE | mobjflag_t::MF_FLOAT | mobjflag_t::MF_SKULLFLY);
+	target->flags &= ~(mobjflag_e::MF_SHOOTABLE | mobjflag_e::MF_FLOAT | mobjflag_e::MF_SKULLFLY);
 
 	if (target->type != mobjtype_t::MT_SKULL)
 	{
-		target->flags &= ~mobjflag_t::MF_NOGRAVITY;
+		target->flags &= ~mobjflag_e::MF_NOGRAVITY;
 	}
 
-	target->flags |= mobjflag_t::MF_CORPSE | mobjflag_t::MF_DROPOFF;
+	target->flags |= mobjflag_e::MF_CORPSE | mobjflag_e::MF_DROPOFF;
 	target->height >>= 2;
 
 	if (source && source->player)
 	{
 		// count for intermission
-		if (target->flags & mobjflag_t::MF_COUNTKILL)
+		if (target->flags & mobjflag_e::MF_COUNTKILL)
 		{
 			source->player->killcount++;
 		}
@@ -810,7 +810,7 @@ void P_KillMobj(MapObject* source, MapObject* target)
 			source->player->frags[target->player - players]++;
 		}
 	}
-	else if (!netgame && (target->flags & mobjflag_t::MF_COUNTKILL))
+	else if (!netgame && (target->flags & mobjflag_e::MF_COUNTKILL))
 	{
 		// count all monster deaths, even those caused by other monsters
 		players[0].killcount++;
@@ -824,7 +824,7 @@ void P_KillMobj(MapObject* source, MapObject* target)
 			target->player->frags[target->player - players]++;
 		}
 
-		target->flags &= ~mobjflag_t::MF_SOLID;
+		target->flags &= ~mobjflag_e::MF_SOLID;
 		target->player->playerstate = PlayerState::dead;
 		P_DropWeapon(target->player);
 		// [crispy] center view when dying
@@ -845,7 +845,7 @@ void P_KillMobj(MapObject* source, MapObject* target)
 	// [crispy] Lost Soul, Pain Elemental and Barrel explosions are translucent
 	if (target->type == mobjtype_t::MT_SKULL || target->type == mobjtype_t::MT_PAIN || target->type == mobjtype_t::MT_BARREL)
 	{
-		target->flags |= mobjflag_t::MF_TRANSLUCENT;
+		target->flags |= mobjflag_e::MF_TRANSLUCENT;
 	}
 
 	if (target->health < -target->info->spawnhealth && target->info->xdeathstate)
@@ -860,7 +860,7 @@ void P_KillMobj(MapObject* source, MapObject* target)
 	target->tics -= P_Random() & 3;
 
 	// [crispy] randomly flip corpse, blood and death animation sprites
-	if (target->flags & mobjflag_t::MF_FLIPPABLE)
+	if (target->flags & mobjflag_e::MF_FLIPPABLE)
 	{
 		target->health = (target->health & (int)~1) - (Crispy_Random() & 1);
 	}
@@ -892,7 +892,7 @@ void P_KillMobj(MapObject* source, MapObject* target)
 	}
 
 	mo = P_SpawnMobj(target->x, target->y, ONFLOORZ, item);
-	mo->flags |= mobjflag_t::MF_DROPPED;	// special versions of items
+	mo->flags |= mobjflag_e::MF_DROPPED;	// special versions of items
 }
 
 // P_DamageMobj
@@ -912,7 +912,7 @@ void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, in
 	fixed_t thrust;
 	int temp;
 
-	if (!(target->flags & mobjflag_t::MF_SHOOTABLE))
+	if (!(target->flags & mobjflag_e::MF_SHOOTABLE))
 	{
 		return;	// shouldn't happen...
 	}
@@ -922,7 +922,7 @@ void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, in
 		return;
 	}
 
-	if (target->flags & mobjflag_t::MF_SKULLFLY)
+	if (target->flags & mobjflag_e::MF_SKULLFLY)
 	{
 		target->momx = target->momy = target->momz = 0;
 	}
@@ -936,7 +936,7 @@ void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, in
 	// Some close combat weapons should not
 	// inflict thrust and push the victim out of reach,
 	// thus kick away unless using the chainsaw.
-	if (inflictor && !(target->flags & mobjflag_t::MF_NOCLIP) && (!source || !source->player || source->player->readyweapon != WeaponType::wp_chainsaw))
+	if (inflictor && !(target->flags & mobjflag_e::MF_NOCLIP) && (!source || !source->player || source->player->readyweapon != WeaponType::wp_chainsaw))
 	{
 		ang = R_PointToAngle2(inflictor->x, inflictor->y, target->x, target->y);
 		thrust = damage * (FRACUNIT >> 3) * 100 / target->info->mass;
@@ -1029,9 +1029,9 @@ void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, in
 		return;
 	}
 
-	if ((P_Random() < target->info->painchance) && !(target->flags & mobjflag_t::MF_SKULLFLY))
+	if ((P_Random() < target->info->painchance) && !(target->flags & mobjflag_e::MF_SKULLFLY))
 	{
-		target->flags |= mobjflag_t::MF_JUSTHIT;	// fight back!
+		target->flags |= mobjflag_e::MF_JUSTHIT;	// fight back!
 		P_SetMobjState(target, target->info->painstate);
 	}
 

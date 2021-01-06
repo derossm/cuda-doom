@@ -563,7 +563,7 @@ static int ST_cheat_massacre()
 		{
 			MapObject* mo = (MapObject*)th;
 
-			if ((int)mo->flags & (int)mobjflag_t::MF_COUNTKILL || mo->type == mobjtype_t::MT_SKULL)
+			if ((int)mo->flags & (int)mobjflag_e::MF_COUNTKILL || mo->type == mobjtype_t::MT_SKULL)
 			{
 				if (mo->health > 0)
 				{
@@ -967,7 +967,7 @@ bool ST_Responder(EventType* ev)
 			{
 				// FIXME
 				//memset(plyr->powers., 0, sizeof(plyr->powers));
-				plyr->flags = (mobjflag_t)((unsigned)plyr->flags & ~(unsigned)mobjflag_t::MF_SHADOW); // cancel invisibility
+				plyr->flags = (mobjflag_e)((unsigned)plyr->flags & ~(unsigned)mobjflag_e::MF_SHADOW); // cancel invisibility
 				plyr->message = DEH_String(STSTR_BEHOLDX);
 			}
 
@@ -1935,9 +1935,9 @@ static inline void ST_DrawGibbedPlayerSprites()
 	sprframe = &sprdef->spriteframes[state->frame & FF_FRAMEMASK];
 	patch = W_CacheLumpNum<patch_t>(sprframe->lump[0] + firstspritelump, pu_tags_t::PU_CACHE);
 
-	if ((int)plyr->flags & (int)mobjflag_t::MF_TRANSLATION)
+	if ((int)plyr->flags & (int)mobjflag_e::MF_TRANSLATION)
 	{
-		dp_translation = translationtables - 256 + (((int)plyr->flags & (int)mobjflag_t::MF_TRANSLATION) >> ((int)mobjflag_t::MF_TRANSSHIFT - 8));
+		dp_translation = translationtables - 256 + (((int)plyr->flags & (int)mobjflag_e::MF_TRANSLATION) >> ((int)mobjflag_e::MF_TRANSSHIFT - 8));
 	}
 
 	V_DrawPatch(ST_HEALTHX - 17, 186, patch);
