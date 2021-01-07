@@ -8,11 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
-#include "txt_common.h"
+//////////
 
-#include "../src/doomkeys.h"
+#include "txt_common.h"
 
 #include "txt_main.h"
 #include "txt_io.h"
@@ -20,6 +20,9 @@
 
 //#include "txt_window.h"
 //#include "txt_separator.h"
+
+// DECOUPLE
+#include "../src/doomkeys.h"
 
 namespace cudadoom::txt
 {
@@ -30,30 +33,30 @@ namespace cudadoom::txt
 constexpr size_t HELP_KEY{KEY_F1};
 constexpr size_t MAXWINDOWS{128};
 
-class Window;
+//class Window;
 
-typedef void (*TxtIdleCallback)(void* user_data);
+//typedef void (*TxtIdleCallback)(void* user_data);
 
-void AddDesktopWindow(Window* win);
-void RemoveDesktopWindow(Window* win);
-void DrawDesktop();
-void DispatchEvents();
-void DrawWindow(Window* window);
-void SetWindowFocus(Window* window, int focused);
-int WindowKeyPress(Window* window, int c);
+//void AddDesktopWindow(Window* win);
+//void RemoveDesktopWindow(Window* win);
+//void DrawDesktop();
+//void DispatchEvents();
+//void DrawWindow(Window* window);
+//void SetWindowFocus(Window* window, int focused);
+//int WindowKeyPress(Window* window, int c);
 
 /**
  * Set the title displayed at the top of the screen.
  *
  * @param title			The title to display (UTF-8 format).
  */
-void SetDesktopTitle(std::string title);
+//void SetDesktopTitle(std::string title);
 
 /**
  * Exit the currently-running main loop and return from the
  * @ref GUIMainLoop function.
  */
-void ExitMainLoop();
+//void ExitMainLoop();
 
 /**
  * Start the main event loop. At least one window must have been
@@ -63,7 +66,7 @@ void ExitMainLoop();
  * It is possible to trigger an exit from this function using the
  * @ref ExitMainLoop function.
  */
-void GUIMainLoop();
+//void GUIMainLoop();
 
 /**
  * Get the top window on the desktop that is currently receiving
@@ -71,7 +74,7 @@ void GUIMainLoop();
  *
  * @return	The active window, or NULL if no windows are present.
  */
-Window* GetActiveWindow();
+//Window* GetActiveWindow();
 
 /**
  * Set a callback function to be invoked periodically by the main
@@ -84,7 +87,7 @@ Window* GetActiveWindow();
  *						eg. a value of 200 will cause the callback
  *						to be invoked at least once every 200ms.
  */
-void SetPeriodicCallback(TxtIdleCallback callback, void* user_data, unsigned period);
+//void SetPeriodicCallback(TxtIdleCallback callback, void* user_data, unsigned period);
 
 /**
  * Raise the z-position of the given window relative to other windows.
@@ -93,7 +96,7 @@ void SetPeriodicCallback(TxtIdleCallback callback, void* user_data, unsigned per
  * @return				Non-zero if the window was raised successfully,
  *						or zero if the window could not be raised further.
  */
-int RaiseWindow(Window* window);
+//int RaiseWindow(Window* window);
 
 /**
  * Lower the z-position of the given window relative to other windows.
@@ -102,6 +105,7 @@ int RaiseWindow(Window* window);
  * @return				Non-zero if the window was lowered successfully,
  *						or zero if the window could not be lowered further.
  */
+/*
 int LowerWindow(Window* window);
 
 std::string desktop_title;
@@ -438,5 +442,5 @@ void GUIMainLoop()
 		}
 	}
 }
-
+/**/
 } // END NAMESPACE cudadoom::txt

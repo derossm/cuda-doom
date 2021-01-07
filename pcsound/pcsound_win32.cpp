@@ -55,6 +55,7 @@ static int PCSound_Win32_Init(pcsound_callback_func callback_func)
 	return 0;
 
 	// Find the OS version
+/*
 	osvi.dwOSVersionInfoSize = sizeof(osvi);
 
 	result = GetVersionEx(&osvi);
@@ -77,6 +78,7 @@ static int PCSound_Win32_Init(pcsound_callback_func callback_func)
 	sound_thread_handle = SDL_CreateThread(SoundThread, "PC speaker thread", NULL);
 
 	return 1;
+*/
 }
 
 static void PCSound_Win32_Shutdown()
@@ -92,4 +94,4 @@ pcsound_driver_t pcsound_win32_driver =
 	PCSound_Win32_Shutdown,
 };
 
-#endif /* #ifdef _WIN32 */
+#endif // #ifdef _WIN32

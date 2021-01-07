@@ -8,8 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
+
 #include "txt_common.h"
 
 #include "txt_widget.h"
@@ -31,7 +33,7 @@ namespace cudadoom::txt
  */
 class Label : public Widget<Label>
 {
-	Widget widget;
+	//Widget widget;
 	std::string label;
 	char** lines;
 	unsigned w;
@@ -41,49 +43,51 @@ class Label : public Widget<Label>
 
 public:
 
-	Label() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	Label() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{	}
 
-	bool Selectable() noexcept override final
+	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override final
 	{	}
 
-	void Draw() noexcept override final
+	inline void Draw() noexcept override final
 	{	}
 
-	bool KeyPress(Keytype key) noexcept override final
+	inline bool KeyPress(KeyEvent key) noexcept override final
 	{
+/*
 		if (key == KEY_ENTER || key == ' ')
 		{
 			EmitSignal("changed");
 			return true;
 		}
-
+/**/
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent evt) noexcept override final
 	{
+/*
 		if (evt.button == MOUSE_LEFT)
 		{
 			// Equivalent to pressing enter
 			return KeyPress(KEY_ENTER);
 		}
-
-		return false
+/**/
+		return false;
 	}
 
-	void SetLayout() noexcept override final
+	inline void SetLayout() noexcept override final
 	{	}
 
-	void SetFocus(bool _focus) noexcept override final
+	inline void SetFocus(bool _focus) noexcept override final
 	{	}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{	}
 };
 
@@ -93,7 +97,7 @@ public:
  * @param label			String to display in the widget (UTF-8 format).
  * @return				Pointer to the new label widget.
  */
-txt_label_t* NewLabel(std::string label);
+//txt_label_t* NewLabel(std::string label);
 
 /**
  * Set the string displayed in a label widget.
@@ -101,7 +105,7 @@ txt_label_t* NewLabel(std::string label);
  * @param label			The widget.
  * @param value			The string to display (UTF-8 format).
  */
-void SetLabel(txt_label_t* label, std::string value);
+//void SetLabel(txt_label_t* label, std::string value);
 
 /**
  * Set the background color of a label widget.
@@ -110,7 +114,7 @@ void SetLabel(txt_label_t* label, std::string value);
  * @param color			The background color to use.
  */
 
-void SetBGColor(txt_label_t* label, ColorType color);
+//void SetBGColor(txt_label_t* label, ColorType color);
 
 /**
  * Set the foreground color of a label widget.
@@ -118,8 +122,8 @@ void SetBGColor(txt_label_t* label, ColorType color);
  * @param label			The widget.
  * @param color			The foreground color to use.
  */
-void SetFGColor(txt_label_t* label, ColorType color);
-
+//void SetFGColor(txt_label_t* label, ColorType color);
+/*
 static void LabelSizeCalc(UNCAST_ARG(label))
 {
 	CAST_ARG(txt_label_t, label);
@@ -298,5 +302,5 @@ void SetBGColor(txt_label_t* label, ColorType color)
 {
 	label->bgcolor = color;
 }
-
+/**/
 } // END NAMESPACE cudadoom::txt

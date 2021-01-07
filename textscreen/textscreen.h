@@ -8,10 +8,9 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
-
-#include "../src/doomkeys.h"
+//////////
 
 #include "txt_main.h"
 #include "txt_button.h"
@@ -31,3 +30,6 @@
 #include "txt_widget.h"
 #include "txt_window_action.h"
 #include "txt_window.h"
+
+// DECOUPLE
+#include "../src/doomkeys.h"

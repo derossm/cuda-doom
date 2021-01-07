@@ -8,10 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
 #include "txt_common.h"
-
 #include "txt_widget.h"
 
 #include "txt_main.h"
@@ -37,29 +37,30 @@ class WindowAction : public Widget<WindowAction>
 
 public:
 
-	WindowAction(int _key, std::string _label) : widget_class<WindowAction>{}, key{_key}, label{std::string(_label)},
-		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	WindowAction(int _key, std::string _label) //: widget_class<WindowAction>{}, key{_key}, label{std::string(_label)},
+		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 	}
 
-	bool Selectable() noexcept override final
+	inline bool Selectable() const noexcept override final
 	{
 		return false;
 	}
 
-	void CalculateSize() override final noexcept
+	inline void CalculateSize() noexcept override final
 	{
-		char buf[10];
+		//char buf[10];
 
-		GetKeyDescription(key, buf, sizeof(buf));
+		//GetKeyDescription(key, buf, sizeof(buf));
 
 		// Width is label length, plus key description length, plus '=' and two surrounding spaces.
-		width = label.length() + UTF8_Strlen(buf) + 3;
-		height = 1;
+		//width = label.length() + UTF8_Strlen(buf) + 3;
+		//height = 1;
 	}
 
-	void Draw() noexcept override final
+	inline void Draw() noexcept override final
 	{
+/*
 		char buf[10];
 
 		GetKeyDescription(key, buf, sizeof(buf));
@@ -76,51 +77,54 @@ public:
 		FGColor(ColorType::bright_white);
 		DrawString(label);
 		DrawString(" ");
+/**/
 	}
 
-	bool KeyPress(KeyType _key) noexcept override final
+	inline bool KeyPress(KeyEvent _key) noexcept override final
 	{
+/*
 		if (tolower(_key) == tolower(key))
 		{
 			EmitSignal("pressed");
 			return true;
 		}
-
+/**/
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent evt) noexcept override final
 	{
+/*
 		// Simulate a press of the key
 		if (evt.button == MOUSE_LEFT)
 		{
 			return KeyPress(KEY_ENTER);
 		}
-
+/**/
 		return false;
 	}
 
-	void SetLayout() noexcept override final
+	inline void SetLayout() noexcept override final
 	{}
 
-	void SetFocus(bool _focus) noexcept override final
+	inline void SetFocus(bool _focus) noexcept override final
 	{}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{}
 
 	// FIXME
-	void WindowCloseCallback(Window* window)
+	inline void WindowCloseCallback(Window* window) noexcept
 	{
-		window->CloseWindow();
+		//window->CloseWindow();
 	}
 
-	void WindowSelectCallback(Window* window)
+	inline void WindowSelectCallback(Window* window) noexcept
 	{
-		window->WidgetKeyPress(KEY_ENTER);
+		//window->WidgetKeyPress(KEY_ENTER);
 	}
 };
-
+/*
 // An action with the name "close" the closes the window
 WindowAction* NewWindowEscapeAction(Window* window)
 {
@@ -146,7 +150,7 @@ WindowAction* NewWindowSelectAction(Window* window)
 
 	return action;
 }
-
+/**/
 } // END NAMESPACE cudadoom::txt
 
 /**

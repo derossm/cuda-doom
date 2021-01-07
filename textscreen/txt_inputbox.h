@@ -8,8 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
+
 #include "txt_common.h"
 
 #include "txt_widget.h"
@@ -44,12 +46,12 @@ public:
 	using type = T;
 
 	InputBox(T _val = nullptr, int _width = 0) noexcept : buffer{std::string(_val)},
-		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
-		callback_table{NewCallbackTable()},
-		focused{false},
-		visible{true},
-		align{AlignHorizontal::left},
-		width{_width}
+		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
+		//callback_table{NewCallbackTable()},
+		//focused{false},
+		//visible{true},
+		//align{AlignHorizontal::left},
+		//width{_width}
 	{
 		/*	if (_val)
 			{
@@ -61,29 +63,30 @@ public:
 			} */
 	}
 
-	bool Selectable() noexcept override final
+	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override final
 	{	}
 
-	void Draw() noexcept override final
+	inline void Draw() noexcept override final
 	{	}
 
-	bool KeyPress(Keytype key) noexcept override final
+	inline bool KeyPress(KeyEvent key) noexcept override final
 	{
+/*
 		if (key == KEY_ENTER || key == ' ')
 		{
 			EmitSignal("changed");
 			return true;
 		}
-
+/**/
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent evt) noexcept override final
 	{
 		if (evt.button == MOUSE_LEFT)
 		{
@@ -91,16 +94,16 @@ public:
 			return KeyPress(KEY_ENTER);
 		}
 
-		return false
+		return false;
 	}
 
-	void SetLayout() noexcept override final
+	inline void SetLayout() noexcept override final
 	{	}
 
-	void SetFocus(bool _focus) noexcept override final
+	inline void SetFocus(bool _focus) noexcept override final
 	{	}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{	}
 
 	void set(T _val) noexcept

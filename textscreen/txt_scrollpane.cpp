@@ -10,17 +10,18 @@
 
 #include "txt_scrollpane.h"
 
-#include "doomkeys.h"
-
 #include "txt_table.h"
 
 #include "txt_main.h"
 #include "txt_io.h"
 #include "txt_gui.h"
 
+// DECOUPLE
+#include "doomkeys.h"
+
 namespace cudadoom::txt
 {
-
+/*
 constexpr size_t SCROLLBAR_VERTICAL{(1 << 0)};
 constexpr size_t SCROLLBAR_HORIZONTAL{(1 << 1)};
 
@@ -234,10 +235,7 @@ static void ScrollPaneFocused(UNCAST_ARG(scrollpane), int focused)
 	}
 }
 
-// Hack for tables - when browsing a table inside a scroll pane,
-// automatically scroll the window to show the newly-selected
-// item.
-
+// Hack for tables - when browsing a table inside a scroll pane, automatically scroll the window to show the newly-selected item.
 static void ShowSelectedWidget(txt_scrollpane_t* scrollpane)
 {
 	Widget* selected;
@@ -313,7 +311,6 @@ static int PageSelectedWidget(txt_scrollpane_t* scrollpane, int key)
 }
 
 // Interpret arrow key presses as scroll commands
-
 static int InterpretScrollKey(txt_scrollpane_t* scrollpane, int key)
 {
 	int maxy;
@@ -395,10 +392,7 @@ static int ScrollPaneKeyPress(UNCAST_ARG(scrollpane), int key)
 	{
 		result = WidgetKeyPress(scrollpane->child, key);
 
-		// Gross hack - if we're scrolling in a menu with the keyboard,
-		// automatically move the scroll pane to show the new
-		// selected item.
-
+		// Gross hack - if we're scrolling in a menu with the keyboard, automatically move the scroll pane to show the new selected item.
 		if ((key == KEY_UPARROW || key == KEY_DOWNARROW
 			|| key == KEY_LEFTARROW || key == KEY_RIGHTARROW
 			|| key == KEY_PGUP || key == KEY_PGDN
@@ -413,9 +407,7 @@ static int ScrollPaneKeyPress(UNCAST_ARG(scrollpane), int key)
 			ShowSelectedWidget(scrollpane);
 		}
 
-		// If the child widget didn't use the keypress, we can see
-		// if it can be interpreted as a scrolling command.
-
+		// If the child widget didn't use the keypress, we can see if it can be interpreted as a scrolling command.
 		if (result == 0)
 		{
 			result = InterpretScrollKey(scrollpane, key);
@@ -582,5 +574,6 @@ txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target))
 
 	return scrollpane;
 }
+/**/
 
 } // END NAMESPACE cudadoom::txt

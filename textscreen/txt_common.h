@@ -13,7 +13,7 @@
 
 	------------------------------------------------------------
 	Any new code or derivations not subject to prior copyrights:
-		Copyright(C) 2020 Mason DeRoss
+		Copyright(C) 2021 Mason DeRoss
 
 		Released under the GNU All-permissive License
 
@@ -24,8 +24,9 @@
 
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
 
 namespace cudadoom::txt
 {
@@ -72,7 +73,7 @@ public:
 	T get() { return value; }
 
 	auto operator<=>(const StrongType<T, U>&) const = default;
-	
+
 	StrongType<T, U>& operator=(const StrongType<T, U>& other)
 	{
 		if (this != &other)
@@ -120,7 +121,7 @@ public:
 				{
 					value = other.value;
 				}
-				
+
 				return *this;
 			}
 		}
@@ -180,24 +181,24 @@ struct MouseEvent
 class CallbackEntry
 {
 private:
-	UserData user;
-	std::function<void(UserData)> handle;
+	//UserData user;
+	//std::function<void(UserData)> handle;
 	std::string signal;
 
-	CallbackEntry() = delete;
+	//CallbackEntry() = delete;
 
 	// do not copy
-	CallbackEntry(const CallbackEntry& rhs) = delete;
-	CallbackEntry& operator=(const CallbackEntry& rhs) = delete;
+	//CallbackEntry(const CallbackEntry& rhs) = delete;
+	//CallbackEntry& operator=(const CallbackEntry& rhs) = delete;
 
 public:
-	CallbackEntry(std::string _signal, std::function<void(UserData)> _handle, UserData _user) noexcept
-		: signal(std::move(_signal)), handle(std::move(_handle)), user(std::move(_user))
-	{}
+	//CallbackEntry(std::string _signal, std::function<void(UserData)> _handle, UserData _user) noexcept
+		//: signal(std::move(_signal)), handle(std::move(_handle)), user(std::move(_user))
+	//{}
 
-	CallbackEntry(CallbackEntry&& rhs) noexcept : signal(std::move(rhs.signal)), handle(std::move(rhs.handle)), user(std::move(rhs.user))
-	{}
-
+	//CallbackEntry(CallbackEntry&& rhs) noexcept : signal(std::move(rhs.signal)), handle(std::move(rhs.handle)), user(std::move(rhs.user))
+	//{}
+/*
 	std::function<void(UserData)> findByName(std::string& _signal)
 	{
 		if (signal.compare(_signal))
@@ -209,43 +210,43 @@ public:
 			return nullptr;
 		}
 	}
+*/
+	//CallbackEntry& operator=(CallbackEntry&& rhs) noexcept
+	//{
+		//signal = std::move(rhs.signal);
+		//handle = std::move(rhs.handle);
+		//user = std::move(rhs.user);
+		//return *this;
+	//}
 
-	CallbackEntry& operator=(CallbackEntry&& rhs) noexcept
-	{
-		signal = std::move(rhs.signal);
-		handle = std::move(rhs.handle);
-		user = std::move(rhs.user);
-		return *this;
-	}
-
-	~CallbackEntry() = default;
+	//~CallbackEntry() = default;
 
 };
 
 class CallbackTable
 {
 private:
-	std::vector<CallbackEntry> callbacks;
+	//std::vector<CallbackEntry> callbacks;
 
-	CallbackTable(CallbackTable&&) = delete;
-	CallbackTable& operator=(CallbackTable&&) = delete;
+	//CallbackTable(CallbackTable&&) = delete;
+	//CallbackTable& operator=(CallbackTable&&) = delete;
 
-	CallbackTable(const CallbackTable&) = delete;
-	CallbackTable& operator=(const CallbackTable&) = delete;
+	//CallbackTable(const CallbackTable&) = delete;
+	//CallbackTable& operator=(const CallbackTable&) = delete;
 
 public:
 	// reserve callbacks in contiguous memory
-	CallbackTable() noexcept : callbacks(32)
-	{}
+	//CallbackTable() noexcept //: callbacks(32)
+	//{}
 
-	~CallbackTable() = default;
+	//~CallbackTable() = default;
 
-	void connect(std::string&& signal, std::function<void(UserData)>&& handle, UserData&& user)
-	{
-		callbacks.emplace_back(CallbackEntry(std::move(signal), std::move(handle), std::move(user)));
-	}
+	//void connect(std::string&& signal, std::function<void(UserData)>&& handle, UserData&& user)
+	//{
+		//callbacks.emplace_back(CallbackEntry(std::move(signal), std::move(handle), std::move(user)));
+	//}
 
-	std::function<void(UserData)> get(std::string& signal)
+	/*std::function<void(UserData)> get(std::string& signal)
 	{
 		for (auto& iter : callbacks)
 		{
@@ -256,11 +257,11 @@ public:
 		}
 
 		return nullptr;
-	}
+	}*/
 
 	size_t size()
 	{
-		return callbacks.size();
+		//return callbacks.size();
 	}
 };
 
@@ -268,14 +269,14 @@ template<typename T>
 class WidgetClass
 {
 public:
-	std::function<bool(void)> Selectable;
-	std::function<void(void)> CalculateSize;
-	std::function<void(void)> Draw;
-	std::function<bool(KeyType)> KeyPress;
-	std::function<bool(MouseEvent)> MousePress;
-	std::function<void(void)> SetLayout;
-	std::function<void(bool)> SetFocus;
-	std::function<void(void)> Destroy;
+	//std::function<bool(void)> Selectable;
+	//std::function<void(void)> CalculateSize;
+	//std::function<void(void)> Draw;
+	//std::function<bool(KeyType)> KeyPress;
+	//std::function<bool(MouseEvent)> MousePress;
+	//std::function<void(void)> SetLayout;
+	//std::function<void(bool)> SetFocus;
+	//std::function<void(void)> Destroy;
 
 	using Type = T;
 };

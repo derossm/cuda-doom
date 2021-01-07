@@ -8,11 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
-#include "txt_common.h"
+//////////
 
-#include "doomkeys.h"
+#include "txt_common.h"
 
 #include "txt_widget.h"
 
@@ -25,10 +25,13 @@
 #include "txt_separator.h"
 #include "txt_strut.h"
 
-cudadoom::txt::Widget txt_table_overflow_right;
-cudadoom::txt::Widget txt_table_overflow_down;
-cudadoom::txt::Widget txt_table_eol;
-cudadoom::txt::Widget txt_table_empty;
+// DECOUPLE
+#include "../src/doomkeys.h"
+
+//cudadoom::txt::Widget txt_table_overflow_right;
+//cudadoom::txt::Widget txt_table_overflow_down;
+//cudadoom::txt::Widget txt_table_eol;
+//cudadoom::txt::Widget txt_table_empty;
 
 namespace cudadoom::txt
 {
@@ -49,7 +52,7 @@ class Table : public Widget<T>
 public:
 	// Widgets in this table
 	// The widget at (x,y) in the table is widgets[columns * y + x]
-	std::vector<std::unique_ptr<Widget>> widgets;
+	//std::vector<std::unique_ptr<Widget>> widgets;
 
 	int columns;
 
@@ -59,20 +62,292 @@ public:
 
 public:
 
-	Table(int _columns = 1) : widget_class<Table>{}, columns{_columns},
-		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	Table(int _columns = 1) //: widget_class<Table>{}, columns{_columns},
+		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 		// Add a strut for each column at the start of the table. These are used by the SetColumnWidths function below:
 		// the struts are created with widths of 0 each, but this function changes them.
 		for (size_t i{0}; i < columns; ++i)
 		{
-			AddWidget(NewStrut(0, 0));
+			//AddWidget(NewStrut(0, 0));
 		}
 	}
 
 	virtual ~Table()
 	{	}
 
+	// Determine whether the table is selectable.
+	inline bool Selectable() const noexcept override
+	{
+/*
+		// Is the currently-selected cell selectable?
+		if (SelectableCell(selected_x, selected_y))
+		{
+			return true;
+		}
+
+		// Find the first selectable cell and set selected_x, selected_y.
+		for (size_t i{0}; i < widgets.size(); ++i)
+		{
+			if (widgets[i]->IsActualWidget() && widgets[i]->SelectableWidget())
+			{
+				ChangeSelection(i % columns, i / columns);
+				return true;
+			}
+		}
+/**/
+		// No selectable widgets exist within the table.
+		return false;
+	}
+
+	inline void CalculateSize() noexcept override
+	{
+/*
+		auto rows = Rows();
+
+		unsigned* row_heights = static_cast<decltype(row_heights)>(malloc(sizeof(int) * rows));
+		unsigned* column_widths = static_cast<decltype(column_widths)>(malloc(sizeof(int) * table->columns));
+
+		CalcRowColSizes(row_heights, column_widths);
+
+		width = 0;
+
+		for (size_t x{0}; x < columns; ++x)
+		{
+			width += column_widths[x];
+		}
+
+		height = 0;
+
+		for (size_t y{0}; y < rows; ++y)
+		{
+			height += row_heights[y];
+		}
+
+		free(row_heights);
+		free(column_widths);
+*/
+	}
+
+	inline void Draw() noexcept override
+	{
+/*
+		Widget* widget;
+		int i;
+
+		// Check the table's current selection points at something valid before drawing.
+
+		CheckValidSelection(table);
+
+		// Draw all cells
+		for (i = 0; i < table->num_widgets; ++i)
+		{
+			widget = table->widgets[i];
+
+			if (IsActualWidget(widget))
+			{
+				GotoXY(widget->x, widget->y);
+				DrawWidget(widget);
+			}
+		}
+/**/
+	}
+
+	inline bool KeyPress(KeyEvent key) noexcept override
+	{
+/*
+		auto rows{Rows(table)};
+
+		// Send to the currently selected widget first
+		auto selected{selected_y * columns + selected_x};
+
+		if (selected >= 0 && selected < widgets.size())
+		{
+			if (widgets[selected]->IsActualWidget() && widgets[selected]->SelectableWidget() && widgets[selected]->WidgetKeyPress(key))
+			{
+				return true;
+			}
+		}
+
+		if (key == KEY_TAB)
+		{
+			auto dir{GetModifierState(ModifierType::shift) ? -1 : 1};
+
+			// Cycle through all widgets until we find one that can be selected.
+			for (size_t i{selected_y * columns + selected_x + dir}; i >= 0 && i < widgets.size(); i += dir)
+			{
+				if (widgets[i]->IsActualWidget() && widgets[i]->SelectableWidget())
+				{
+					ChangeSelection(i % columns, i / columns);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		if (key == KEY_DOWNARROW)
+		{
+			// Move cursor down to the next selectable widget
+			for (size_t new_y{selected_y + 1}; new_y < rows; ++new_y)
+			{
+				auto new_x{FindSelectableColumn(new_y, selected_x)};
+
+				if (new_x >= 0)
+				{
+					// Found a selectable widget in this column!
+					ChangeSelection(new_x, new_y);
+
+					return true;
+				}
+			}
+		}
+
+		if (key == KEY_UPARROW)
+		{
+			// Move cursor up to the next selectable widget
+			for (size_t new_y{selected_y - 1}; new_y >= 0; --new_y)
+			{
+				auto new_x{FindSelectableColumn(new_y, selected_x)};
+
+				if (new_x >= 0)
+				{
+					// Found a selectable widget in this column!
+					ChangeSelection(new_x, new_y);
+
+					return true;
+				}
+			}
+		}
+
+		if (key == KEY_LEFTARROW)
+		{
+			// Move cursor left
+			for (size_t new_x{selected_x - 1}; new_x >= 0; --new_x)
+			{
+				if (SelectableCell(new_x, selected_y))
+				{
+					// Found a selectable widget!
+					ChangeSelection(new_x, selected_y);
+
+					return true;
+				}
+			}
+		}
+
+		if (key == KEY_RIGHTARROW)
+		{
+			// Move cursor left
+			for (size_t new_x{selected_x + 1}; new_x < columns; ++new_x)
+			{
+				if (SelectableCell(new_x, selected_y))
+				{
+					// Found a selectable widget!
+					ChangeSelection(new_x, selected_y);
+
+					return true;
+				}
+			}
+		}
+/**/
+		return false;
+	}
+
+	// Responds to mouse presses
+	inline bool MousePress(MouseEvent evt) noexcept override
+	{
+/*
+		auto [button, x, y] = evt;
+		for (size_t i{0}; i < table->num_widgets; ++i)
+		{
+			auto widget = table->widgets[i];
+
+			// NULL widgets are spacers
+			if (IsActualWidget(widget))
+			{
+				if (x >= widget->x && x < (int)(widget->x + widget->width) && y >= widget->y && y < (int)(widget->y + widget->height))
+				{
+					// This is the widget that was clicked!
+
+					// Select the cell if the widget is selectable
+					if (SelectableWidget(widget))
+					{
+						ChangeSelection(table, i % table->columns, i / table->columns);
+					}
+
+					// Propagate click
+					Widget::MousePress(evt);
+
+					break;
+				}
+			}
+		}
+/**/
+		return false;
+	}
+
+	inline void SetLayout() noexcept override
+	{
+/*
+		// Work out the column widths and row heights
+		auto rows{Rows()};
+
+		unsigned* column_widths = static_cast<decltype(column_widths)>(malloc(sizeof(int) * columns));
+		unsigned* row_heights = static_cast<decltype(row_heights)>(malloc(sizeof(int) * rows));
+
+		CalcRowColSizes(row_heights, column_widths);
+
+		// If this table only has one column, expand column size to fit the display width. Ensures that separators reach the window edges when drawing windows.
+		if (columns == 1)
+		{
+			column_widths[0] = width;
+		}
+
+		// Draw all cells
+		auto draw_y{y};
+
+		for (size_t y{0}; y < rows; ++y)
+		{
+			auto draw_x{x};
+
+			for (size_t x{0}; x < columns; ++x)
+			{
+				auto i{y * columns + x};
+
+				if (i >= widgets.size())
+				{
+					break;
+				}
+
+				auto widget{widgets[i]};
+
+				if (widget->IsActualWidget())
+				{
+					CalculateWidgetDimensions(x, y, column_widths, row_heights, &widget->width, &widget->height);
+					LayoutCell(x, y, draw_x, draw_y);
+				}
+
+				draw_x += column_widths[x];
+			}
+
+			draw_y += row_heights[y];
+		}
+
+		free(row_heights);
+		free(column_widths);
+/**/
+	}
+
+	inline void SetFocus(bool state) noexcept override
+	{
+
+	}
+
+	inline void Destroy() noexcept override
+	{
+		//ClearTable();
+	}
+/*
 	// Returns true if the given widget in the table's widgets[] array refers to an actual widget - not NULL, or one of the special overflow pointers.
 	int IsActualWidget()
 	{
@@ -91,11 +366,6 @@ public:
 				widgets.erase(widgets.at(i));
 			}
 		}
-	}
-
-	void Destroy() noexcept override
-	{
-		ClearTable();
 	}
 
 	int Rows()
@@ -258,33 +528,6 @@ public:
 				}
 			}
 		}
-	}
-
-	void CalculateSize() noexcept override
-	{
-		auto rows = Rows();
-
-		unsigned* row_heights = static_cast<decltype(row_heights)>(malloc(sizeof(int) * rows));
-		unsigned* column_widths = static_cast<decltype(column_widths)>(malloc(sizeof(int) * table->columns));
-
-		CalcRowColSizes(row_heights, column_widths);
-
-		width = 0;
-
-		for (size_t x{0}; x < columns; ++x)
-		{
-			width += column_widths[x];
-		}
-
-		height = 0;
-
-		for (size_t y{0}; y < rows; ++y)
-		{
-			height += row_heights[y];
-		}
-
-		free(row_heights);
-		free(column_widths);
 	}
 
 	void FillRowToEnd()
@@ -450,105 +693,6 @@ public:
 		}
 	}
 
-	bool KeyPress(KeyType key) noexcept override
-	{
-		auto rows{Rows(table)};
-
-		// Send to the currently selected widget first
-		auto selected{selected_y * columns + selected_x};
-
-		if (selected >= 0 && selected < widgets.size())
-		{
-			if (widgets[selected]->IsActualWidget() && widgets[selected]->SelectableWidget() && widgets[selected]->WidgetKeyPress(key))
-			{
-				return true;
-			}
-		}
-
-		if (key == KEY_TAB)
-		{
-			auto dir{GetModifierState(ModifierType::shift) ? -1 : 1};
-
-			// Cycle through all widgets until we find one that can be selected.
-			for (size_t i{selected_y * columns + selected_x + dir}; i >= 0 && i < widgets.size(); i += dir)
-			{
-				if (widgets[i]->IsActualWidget() && widgets[i]->SelectableWidget())
-				{
-					ChangeSelection(i % columns, i / columns);
-					return true;
-				}
-			}
-
-			return false;
-		}
-
-		if (key == KEY_DOWNARROW)
-		{
-			// Move cursor down to the next selectable widget
-			for (size_t new_y{selected_y + 1}; new_y < rows; ++new_y)
-			{
-				auto new_x{FindSelectableColumn(new_y, selected_x)};
-
-				if (new_x >= 0)
-				{
-					// Found a selectable widget in this column!
-					ChangeSelection(new_x, new_y);
-
-					return true;
-				}
-			}
-		}
-
-		if (key == KEY_UPARROW)
-		{
-			// Move cursor up to the next selectable widget
-			for (size_t new_y{selected_y - 1}; new_y >= 0; --new_y)
-			{
-				auto new_x{FindSelectableColumn(new_y, selected_x)};
-
-				if (new_x >= 0)
-				{
-					// Found a selectable widget in this column!
-					ChangeSelection(new_x, new_y);
-
-					return true;
-				}
-			}
-		}
-
-		if (key == KEY_LEFTARROW)
-		{
-			// Move cursor left
-			for (size_t new_x{selected_x - 1}; new_x >= 0; --new_x)
-			{
-				if (SelectableCell(new_x, selected_y))
-				{
-					// Found a selectable widget!
-					ChangeSelection(new_x, selected_y);
-
-					return true;
-				}
-			}
-		}
-
-		if (key == KEY_RIGHTARROW)
-		{
-			// Move cursor left
-			for (size_t new_x{selected_x + 1}; new_x < columns; ++new_x)
-			{
-				if (SelectableCell(new_x, selected_y))
-				{
-					// Found a selectable widget!
-					ChangeSelection(new_x, selected_y);
-
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
 	// Check the currently selected widget in the table is valid.
 	void CheckValidSelection()
 	{
@@ -608,136 +752,6 @@ public:
 
 		// Recursively lay out any widgets contained in the widget
 		LayoutWidget();
-	}
-
-	void SetLayout() noexcept override
-	{
-		// Work out the column widths and row heights
-		auto rows{Rows()};
-
-		unsigned* column_widths = static_cast<decltype(column_widths)>(malloc(sizeof(int) * columns));
-		unsigned* row_heights = static_cast<decltype(row_heights)>(malloc(sizeof(int) * rows));
-
-		CalcRowColSizes(row_heights, column_widths);
-
-		// If this table only has one column, expand column size to fit the display width. Ensures that separators reach the window edges when drawing windows.
-		if (columns == 1)
-		{
-			column_widths[0] = width;
-		}
-
-		// Draw all cells
-		auto draw_y{y};
-
-		for (size_t y{0}; y < rows; ++y)
-		{
-			auto draw_x{x};
-
-			for (size_t x{0}; x < columns; ++x)
-			{
-				auto i{y * columns + x};
-
-				if (i >= widgets.size())
-				{
-					break;
-				}
-
-				auto widget{widgets[i]};
-
-				if (widget->IsActualWidget())
-				{
-					CalculateWidgetDimensions(x, y, column_widths, row_heights, &widget->width, &widget->height);
-					LayoutCell(x, y, draw_x, draw_y);
-				}
-
-				draw_x += column_widths[x];
-			}
-
-			draw_y += row_heights[y];
-		}
-
-		free(row_heights);
-		free(column_widths);
-	}
-
-	void Draw() noexcept override
-	{
-		Widget* widget;
-		int i;
-
-		// Check the table's current selection points at something valid before drawing.
-
-		CheckValidSelection(table);
-
-		// Draw all cells
-		for (i = 0; i < table->num_widgets; ++i)
-		{
-			widget = table->widgets[i];
-
-			if (IsActualWidget(widget))
-			{
-				GotoXY(widget->x, widget->y);
-				DrawWidget(widget);
-			}
-		}
-	}
-
-	// Responds to mouse presses
-	bool MousePress(MouseEvent evt) noexcept override
-	{
-		auto [button, x, y] = evt;
-		for (size_t i{0}; i < table->num_widgets; ++i)
-		{
-			auto widget = table->widgets[i];
-
-			// NULL widgets are spacers
-			if (IsActualWidget(widget))
-			{
-				if (x >= widget->x && x < (int)(widget->x + widget->width) && y >= widget->y && y < (int)(widget->y + widget->height))
-				{
-					// This is the widget that was clicked!
-
-					// Select the cell if the widget is selectable
-					if (SelectableWidget(widget))
-					{
-						ChangeSelection(table, i % table->columns, i / table->columns);
-					}
-
-					// Propagate click
-					Widget::MousePress(evt);
-
-					break;
-				}
-			}
-		}
-	}
-
-	// Determine whether the table is selectable.
-	bool Selectable() noexcept override
-	{
-		// Is the currently-selected cell selectable?
-		if (SelectableCell(selected_x, selected_y))
-		{
-			return true;
-		}
-
-		// Find the first selectable cell and set selected_x, selected_y.
-		for (size_t i{0}; i < widgets.size(); ++i)
-		{
-			if (widgets[i]->IsActualWidget() && widgets[i]->SelectableWidget())
-			{
-				ChangeSelection(i % columns, i / columns);
-				return true;
-			}
-		}
-
-		// No selectable widgets exist within the table.
-		return false;
-	}
-
-	void SetFocus(bool state) noexcept override
-	{
-
 	}
 
 	// Need to pass through focus changes to the selected child widget.
@@ -949,8 +963,9 @@ public:
 
 		return changed;
 	}
+/**/
 };
-
+/*
 // Alternative to NewTable() that allows a list of widgets to be provided in its arguments.
 std::unique_ptr<Table> MakeTable(int columns, ...)
 {
@@ -1026,8 +1041,9 @@ std::unique_ptr<Table> MakeHorizontalTable(Widget* first_widget, ...)
 	va_end(args);
 
 	return result;
-}
 
+}
+/**/
 //void InitTable(txt_table_t* table, int columns);
 
 /**

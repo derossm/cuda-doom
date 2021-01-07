@@ -8,12 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE FIXME
 #include "../derma/common.h"
 #include "txt_common.h"
-
-#include "doomkeys.h"
-
+//////////
 #include "txt_widget.h"
 
 #include "txt_main.h"
@@ -24,33 +22,31 @@
 //#include "txt_window.h"
 #include "txt_button.h"
 
+// DECOUPLE
+#include "doomkeys.h"
+
 namespace cudadoom::txt
 {
 
 /**
  * Dropdown list widget.
  *
- * A dropdown list allows the user to select from a list of values,
- * which appears when the list is selected.
- *
- * When the value of a dropdown list is changed, the "changed" signal
- * is emitted.
+ * A dropdown list allows the user to select from a list of values, which appears when the list is selected.
+ * When the value of a dropdown list is changed, the "changed" signal is emitted.
  */
-
- // Drop-down list box.
 class DropDownList : public Widget<DropDownList>
 {
-	Widget widget;
+	//Widget widget;
 	int* variable;
 	CHAR_PTR* values;
 	int num_values;
 
 public:
 
-	DropDownList() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	DropDownList() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{	}
 
-	bool Selectable() noexcept override final
+	bool Selectable() const noexcept override final
 	{
 		return true;
 	}
@@ -61,25 +57,27 @@ public:
 	void Draw() noexcept override final
 	{	}
 
-	bool KeyPress(Keytype key) noexcept override final
+	bool KeyPress(KeyEvent key) noexcept override final
 	{
+/*
 		if (key == KEY_ENTER || key == ' ')
 		{
 			EmitSignal("changed");
 			return true;
 		}
-
+/**/
 		return false;
 	}
 
 	bool MousePress(MouseEvent evt) noexcept override final
 	{
+/*
 		if (evt.button == MOUSE_LEFT)
 		{
 			// Equivalent to pressing enter
 			return KeyPress(KEY_ENTER);
 		}
-
+/**/
 		return false
 	}
 
@@ -92,14 +90,14 @@ public:
 	void Destroy() noexcept override final
 	{	}
 };
-
+/*
 struct callback_data_t
 {
 	Window* window;
 	txt_dropdown_list_t* list;
 	int item;
 };
-
+/**/
 /**
  * Create a new dropdown list widget.
  *

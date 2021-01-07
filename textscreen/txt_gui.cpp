@@ -51,7 +51,8 @@ void DrawDesktopBackground(std::string title)
 	{
 		*p = 0xb1;
 		++p;
-		*p = ColorType::grey | (ColorType::blue << 4);
+// FIXME
+//		*p = ColorType::grey | (ColorType::blue << 4);
 		++p;
 	}
 
@@ -62,7 +63,8 @@ void DrawDesktopBackground(std::string title)
 	{
 		*p = ' ';
 		++p;
-		*p = ColorType::black | (ColorType::grey << 4);
+// FIXME
+//		*p = ColorType::black | (ColorType::grey << 4);
 		++p;
 	}
 
@@ -72,7 +74,8 @@ void DrawDesktopBackground(std::string title)
 	{
 		*p = ' ';
 		++p;
-		*p = ColorType::black | (ColorType::grey << 4);
+// FIXME
+//		*p = ColorType::black | (ColorType::grey << 4);
 		++p;
 	}
 
@@ -102,7 +105,7 @@ void DrawShadow(int x, int y, int w, int h)
 		{
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
-				p[1] = ColorType::dark_grey;
+				p[1] = std::size_t(ColorType::dark_grey);
 			}
 
 			p += 2;
@@ -125,7 +128,7 @@ void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 	{
 		// Select the appropriate row and column in the borders array to pick the appropriate character to draw at this location.
 		// Draw a horizontal line on the third line down, so we draw a box around the title.
-		by = y1 == y ? 0 : y1 == y + 2 && title != NULL ? 2 : y1 == y + h - 1 ? 3 : 1;
+		by = y1 == y ? 0 : y1 == y + 2 && !title.empty() ? 2 : y1 == y + h - 1 ? 3 : 1;
 
 		for (x1 = x; x1 < x + w; ++x1)
 		{
@@ -140,7 +143,7 @@ void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 	}
 
 	// Draw the title
-	if (title != NULL)
+	if (!title.empty())
 	{
 		GotoXY(x + 1, y + 1);
 		BGColor(ColorType::grey, false);
@@ -209,7 +212,7 @@ void DrawCodePageString(std::string s)
 	int x;
 	int y;
 	int x1;
-	std::string p;
+	CHAR_PTR p;
 
 	GetXY(&x, &y);
 
@@ -217,13 +220,13 @@ void DrawCodePageString(std::string s)
 	{
 		x1 = x;
 
-		for (p = s; *p != '\0'; ++p)
+		for (p = s.c_str(); *p != '\0'; ++p)
 		{
 			if (VALID_X(x1))
 			{
 				GotoXY(x1, y);
 				// FIXME
-				//PutChar(*p);
+				PutChar(*p);
 			}
 
 			x1 += 1;
@@ -263,7 +266,7 @@ void DrawString(std::string s)
 	int x;
 	int y;
 	int x1;
-	std::string p;
+	CHAR_PTR p;
 	unsigned c;
 
 	GetXY(&x, &y);
@@ -272,9 +275,10 @@ void DrawString(std::string s)
 	{
 		x1 = x;
 
-		for (p = s; *p != '\0'; )
+		// FIXME
+		for (p = s.c_str(); *p != '\0'; )
 		{
-			c = DecodeUTF8(&p);
+			c = DecodeUTF8(p);
 
 			if (c == 0)
 			{

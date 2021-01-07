@@ -11,12 +11,11 @@
 		Routines for selecting files, and the txt_fileselect_t widget.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE FIXME
 #include "../derma/common.h"
 #include "../derma/d_native.h"
+//////////
 #include "txt_common.h"
-
-#include "doomkeys.h"
 
 #include "txt_widget.h"
 #include "txt_inputbox.h"
@@ -25,30 +24,32 @@
 #include "txt_io.h"
 #include "txt_gui.h"
 
+// DECOUPLE
+#include "doomkeys.h"
+
 namespace cudadoom::txt
 {
 
 /**
  * File selection widget.
  *
- * A file selection widget resembles an input box (@ref txt_inputbox_t)
- * but opens a file selector dialog box when clicked.
+ * A file selection widget resembles an input box (@ref txt_inputbox_t) but opens a file selector dialog box when clicked.
  */
 
  //class FileSelect : public Widget<FileSelect>
 class FileSelect : public InputBox<FileSelect>
 {
-	Widget widget;
-	txt_inputbox_t* inputbox;
+	//Widget widget;
+	//txt_inputbox_t* inputbox;
 	int size;
 	std::string prompt;
 	CHAR_PTR* extensions;
 
 	// Dummy value to select a directory.
-	std::string DIRECTORY[] = {"__directory__"};
+	std::string DIRECTORY{"__directory__"};
 
 public:
-
+/*
 	FileSelect() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{}
 
@@ -65,13 +66,13 @@ public:
 
 		//SignalConnect("changed", InputBoxChanged);
 	}
-
-		bool Selectable() noexcept override final
+/**/
+	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override final
 	{
 		// Calculate widget size, but override the width to always
 		// be the configured size.
@@ -81,7 +82,7 @@ public:
 		//widget.h = inputbox->widget.h;
 	}
 
-	void Draw() noexcept override final
+	inline void Draw() noexcept override final
 	{
 		// Input box widget inherits all the properties of the
 		// file selector.
@@ -92,13 +93,14 @@ public:
 		//inputbox->widget.h = widget.h;
 
 		// Triple bar symbol gives a distinguishing look to the file selector.
-		DrawCodePageString("\xf0 ");
-		BGColor(ColorType::black, false);
+		//DrawCodePageString("\xf0 ");
+		//BGColor(ColorType::black, false);
 		//DrawWidget(inputbox);
 	}
 
-	bool KeyPress(Keytype key) noexcept override final
+	inline bool KeyPress(KeyEvent key) noexcept override final
 	{
+/*
 		if (key == KEY_ENTER || key == ' ')
 		{
 			EmitSignal("changed");
@@ -116,18 +118,19 @@ public:
 				//return true;
 			//}
 		//}
-
-		//return false;
+/**/
+		return false;
 	}
 
-	bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent evt) noexcept override final
 	{
+/*
 		if (evt.button == MOUSE_LEFT)
 		{
 			// Equivalent to pressing enter
 			return KeyPress(KEY_ENTER);
 		}
-
+/**/
 		return false
 			//if (!editing && !GetModifierState(ModifierType::alt) && evt.button == MOUSE_LEFT)
 			//{
@@ -141,15 +144,15 @@ public:
 			//return false;
 	}
 
-	void SetLayout() noexcept override final
+	inline void SetLayout() noexcept override final
 	{}
 
-	void SetFocus(bool _focus) noexcept override final
+	inline void SetFocus(bool _focus) noexcept override final
 	{}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{}
-
+/*
 	bool DoSelectFile()
 	{
 		std::string path;
@@ -184,7 +187,7 @@ public:
 	{
 		//EmitSignal("changed");
 	}
-
+/**/
 	// This is currently disabled on Windows because it doesn't work.
 	// Current issues:
 	//	* On Windows Vista+ the mouse cursor freezes when the dialog is
@@ -193,7 +196,7 @@ public:
 	//		UpdateScreen can be run in the background).
 	//	* On Windows XP the program exits/crashes when the dialog is
 	//		closed.
-
+/*
 #if defined(_WIN32)
 	bool CanSelectFiles()
 	{
@@ -623,7 +626,7 @@ public:
 		int oldlen;
 		int newlen;
 		int i;
-		char* c; 
+		char* c;
 		char* newext = NULL;
 
 		oldlen = strlen(orig);
@@ -815,6 +818,7 @@ public:
 		return result;
 	}
 #endif
+/**/
 };
 
 /**

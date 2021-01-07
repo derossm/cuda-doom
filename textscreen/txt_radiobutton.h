@@ -8,11 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
-#include "txt_common.h"
+//////////
 
-#include "doomkeys.h"
+#include "txt_common.h"
 
 #include "txt_widget.h"
 
@@ -22,6 +22,9 @@
 #include "txt_gui.h"
 
 //#include "txt_window.h"
+
+// DECOUPLE
+#include "../src/doomkeys.h"
 
 namespace cudadoom::txt
 {
@@ -51,51 +54,53 @@ class RadioButton : public Widget<RadioButton>
 
 public:
 
-	RadioButton() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	RadioButton() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{}
 
-	bool Selectable() noexcept override final
+	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override final
 	{}
 
-	void Draw() noexcept override final
+	inline void Draw() noexcept override final
 	{}
 
-	bool KeyPress(Keytype key) noexcept override final
+	inline bool KeyPress(KeyEvent key) noexcept override final
 	{
+/*
 		if (key == KEY_ENTER || key == ' ')
 		{
 			EmitSignal("changed");
 			return true;
 		}
-
+/**/
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent evt) noexcept override final
 	{
+/*
 		if (evt.button == MOUSE_LEFT)
 		{
 			// Equivalent to pressing enter
 			return KeyPress(KEY_ENTER);
 		}
-
-		return false
+/**/
+		return false;
 	}
 
-	void SetLayout() noexcept override final
+	inline void SetLayout() noexcept override final
 	{}
 
-	void SetFocus(bool _focus) noexcept override final
+	inline void SetFocus(bool _focus) noexcept override final
 	{}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{}
-
+/*
 	static void RadioButtonSizeCalc(UNCAST_ARG(radiobutton))
 	{
 		CAST_ARG(RadioButton, radiobutton);
@@ -108,6 +113,7 @@ public:
 
 	static void RadioButtonDrawer(UNCAST_ARG(radiobutton))
 	{
+
 		CAST_ARG(RadioButton, radiobutton);
 		SavedColors colors;
 		int i;
@@ -143,6 +149,7 @@ public:
 		{
 			DrawString(" ");
 		}
+
 	}
 
 	static void RadioButtonDestructor(UNCAST_ARG(radiobutton))
@@ -199,6 +206,7 @@ public:
 	{
 		label = std::string(_label);
 	}
+/**/
 };
 
 } // END NAMESPACE cudadoom::txt

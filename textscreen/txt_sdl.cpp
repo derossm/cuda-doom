@@ -10,14 +10,13 @@
 	DESCRIPTION:
 		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
-
+// DECOUPLE
 #include "../derma/d_native.h"
+//////////
 
 #include "SDL.h"
 
 #include "txt_sdl.h"
-
-#include "doomkeys.h"
 
 #include "txt_main.h"
 #include "txt_utf8.h"
@@ -27,6 +26,10 @@
 #include "fonts/large.h"
 #include "fonts/codepage.h"
 
+// DECOUPLE
+#include "doomkeys.h"
+
+//using CHAR_PTR = char*;
 namespace cudadoom::txt
 {
 
@@ -67,25 +70,106 @@ constexpr FontType highdpi_font{"normal-highdpi", nullptr, 8, 16};
 //} key_names[]{KEY_NAMES_ARRAY};
 
 // Unicode key mapping; see codepage.h.
-static const short code_page_to_unicode[]{CODE_PAGE_TO_UNICODE};
+static constexpr std::array<short, 256> code_page_to_unicode{
+		// CP437 control codes:
+	0x0000, 0x263a, 0x263b, 0x2665, // 00 - 0f
+	0x2666, 0x2663, 0x2660, 0x2022,
+	0x25d8, 0x25cb, 0x25d9, 0x2642,
+	0x2640, 0x266a, 0x266b, 0x263c,
 
-constexpr SDL_Color ega_colors[]{
-	{0x00, 0x00, 0x00, 0xff},			// 0: Black
-	{0x00, 0x00, 0xa8, 0xff},			// 1: Blue
-	{0x00, 0xa8, 0x00, 0xff},			// 2: Green
-	{0x00, 0xa8, 0xa8, 0xff},			// 3: Cyan
-	{0xa8, 0x00, 0x00, 0xff},			// 4: Red
-	{0xa8, 0x00, 0xa8, 0xff},			// 5: Magenta
-	{0xa8, 0x54, 0x00, 0xff},			// 6: Brown
-	{0xa8, 0xa8, 0xa8, 0xff},			// 7: Grey
-	{0x54, 0x54, 0x54, 0xff},			// 8: Dark grey
-	{0x54, 0x54, 0xfe, 0xff},			// 9: Bright blue
-	{0x54, 0xfe, 0x54, 0xff},			// 10: Bright green
-	{0x54, 0xfe, 0xfe, 0xff},			// 11: Bright cyan
-	{0xfe, 0x54, 0x54, 0xff},			// 12: Bright red
-	{0xfe, 0x54, 0xfe, 0xff},			// 13: Bright magenta
-	{0xfe, 0xfe, 0x54, 0xff},			// 14: Yellow
-	{0xfe, 0xfe, 0xfe, 0xff}			// 15: Bright white
+	0x25ba, 0x25c4, 0x2195, 0x203c, // 10 - 1f
+	0x00b6, 0x00a7, 0x25ac, 0x21a8,
+	0x2191, 0x2193, 0x2192, 0x2190,
+	0x221f, 0x2194, 0x25b2, 0x25bc,
+		// Standard ASCII range:
+	0x0020, 0x0021, 0x0022, 0x0023, // 20 - 2f
+	0x0024, 0x0025, 0x0026, 0x0027,
+	0x0028, 0x0029, 0x002a, 0x002b,
+	0x002c, 0x002d, 0x002e, 0x002f,
+
+	0x0030, 0x0031, 0x0032, 0x0033, // 30 - 3f
+	0x0034, 0x0035, 0x0036, 0x0037,
+	0x0038, 0x0039, 0x003a, 0x003b,
+	0x003c, 0x003d, 0x003e, 0x003f,
+
+	0x0040, 0x0041, 0x0042, 0x0043, // 40 - 4f
+	0x0044, 0x0045, 0x0046, 0x0047,
+	0x0048, 0x0049, 0x004a, 0x004b,
+	0x004c, 0x004d, 0x004e, 0x004f,
+
+	0x0050, 0x0051, 0x0052, 0x0053, // 50 - 5f
+	0x0054, 0x0055, 0x0056, 0x0057,
+	0x0058, 0x0059, 0x005a, 0x005b,
+	0x005c, 0x005d, 0x005e, 0x005f,
+
+	0x0060, 0x0061, 0x0062, 0x0063, // 60 - 6f
+	0x0064, 0x0065, 0x0066, 0x0067,
+	0x0068, 0x0069, 0x006a, 0x006b,
+	0x006c, 0x006d, 0x006e, 0x006f,
+
+	0x0070, 0x0071, 0x0072, 0x0073, // 70 - 7f
+	0x0074, 0x0075, 0x0076, 0x0077,
+	0x0078, 0x0079, 0x007a, 0x007b,
+	0x007c, 0x007d, 0x007e, 0x2302,
+		// CP437 Extended ASCII range:
+	0x00c7, 0x00fc, 0x00e9, 0x00e2, // 80 - 8f
+	0x00e4, 0x00e0, 0x00e5, 0x00e7,
+	0x00ea, 0x00eb, 0x00e8, 0x00ef,
+	0x00ee, 0x00ec, 0x00c4, 0x00c5,
+
+	0x00c9, 0x00e6, 0x00c6, 0x00f4, // 90 - 9f
+	0x00f6, 0x00f2, 0x00fb, 0x00f9,
+	0x00ff, 0x00d6, 0x00dc, 0x00a2,
+	0x00a3, 0x00a5, 0x20a7, 0x0192,
+
+	0x00e1, 0x00ed, 0x00f3, 0x00fa, // a0 - af
+	0x00f1, 0x00d1, 0x00aa, 0x00ba,
+	0x00bf, 0x2310, 0x00ac, 0x00bd,
+	0x00bc, 0x00a1, 0x00ab, 0x00bb,
+
+	0x2591, 0x2592, 0x2593, 0x2502,	// b0 - bf
+	0x2524, 0x2561, 0x2562, 0x2556,
+	0x2555, 0x2563, 0x2551, 0x2557,
+	0x255d, 0x255c, 0x255b, 0x2510,
+
+	0x2514, 0x2534, 0x252c, 0x251c,	// c0 - cf
+	0x2500, 0x253c, 0x255e, 0x255f,
+	0x255a, 0x2554, 0x2569, 0x2566,
+	0x2560, 0x2550, 0x256c, 0x2567,
+
+	0x2568, 0x2564, 0x2565, 0x2559, // d0 - df
+	0x2558, 0x2552, 0x2553, 0x256b,
+	0x256a, 0x2518, 0x250c, 0x2588,
+	0x2584, 0x258c, 0x2590, 0x2580,
+
+	0x03b1, 0x00df, 0x0393, 0x03c0, // e0 - ef
+	0x03a3, 0x03c3, 0x00b5, 0x03c4,
+	0x03a6, 0x0398, 0x03a9, 0x03b4,
+	0x221e, 0x03c6, 0x03b5, 0x2229,
+
+	0x2261, 0x00b1, 0x2265, 0x2264, // f0 - ff
+	0x2320, 0x2321, 0x00f7, 0x2248,
+	0x00b0, 0x2219, 0x00b7, 0x221a,
+	0x207f, 0x00b2, 0x25a0, 0x00a0
+};
+
+static constexpr std::array<SDL_Color, 16> ega_colors{
+	SDL_Color{0x00, 0x00, 0x00, 0xff},			// 0: Black
+	SDL_Color{0x00, 0x00, 0xa8, 0xff},			// 1: Blue
+	SDL_Color{0x00, 0xa8, 0x00, 0xff},			// 2: Green
+	SDL_Color{0x00, 0xa8, 0xa8, 0xff},			// 3: Cyan
+	SDL_Color{0xa8, 0x00, 0x00, 0xff},			// 4: Red
+	SDL_Color{0xa8, 0x00, 0xa8, 0xff},			// 5: Magenta
+	SDL_Color{0xa8, 0x54, 0x00, 0xff},			// 6: Brown
+	SDL_Color{0xa8, 0xa8, 0xa8, 0xff},			// 7: Grey
+	SDL_Color{0x54, 0x54, 0x54, 0xff},			// 8: Dark grey
+	SDL_Color{0x54, 0x54, 0xfe, 0xff},			// 9: Bright blue
+	SDL_Color{0x54, 0xfe, 0x54, 0xff},			// 10: Bright green
+	SDL_Color{0x54, 0xfe, 0xfe, 0xff},			// 11: Bright cyan
+	SDL_Color{0xfe, 0x54, 0x54, 0xff},			// 12: Bright red
+	SDL_Color{0xfe, 0x54, 0xfe, 0xff},			// 13: Bright magenta
+	SDL_Color{0xfe, 0xfe, 0x54, 0xff},			// 14: Yellow
+	SDL_Color{0xfe, 0xfe, 0xfe, 0xff}			// 15: Bright white
 };
 
 #ifdef _WIN32
@@ -109,26 +193,16 @@ static int Win32_UseLargeFont()
 
 static const FontType* FontForName(std::string name)
 {
-	const FontType* fonts[]{&small_font, &normal_font, &large_font, &highdpi_font, nullptr};
+	constexpr std::array<const FontType*, 4> fonts{&small_font, &normal_font, &large_font, &highdpi_font};
 
-	for (size_t i{0}; fonts[i]->name; ++i)
-	{
-		if (!strcmp(fonts[i]->name, name))
-		{
-			return fonts[i];
-		}
-	}
-
-	return nullptr;
+	return *std::ranges::find_if(fonts, [&name](auto& iter){ return name.compare(iter->name.data()); });
 }
 
-// Select the font to use, based on screen resolution
-// If the highest screen resolution available is less than 640x480, use the small font.
+// Select the font to use, based on screen resolution. If the highest screen resolution available is less than 640x480, use the small font.
 static void ChooseFont()
 {
 	// Allow normal selection to be overridden from an environment variable:
-	std::string env{getenv("TEXTSCREEN_FONT")};
-	if (env)
+	if (auto env{getenv("TEXTSCREEN_FONT")}; env)
 	{
 		font = FontForName(env);
 
@@ -226,7 +300,7 @@ int Init()
 	screenbuffer = SDL_CreateRGBSurface(0, SCREEN_W * font->w, SCREEN_H * font->h, 8, 0, 0, 0, 0);
 
 	SDL_LockSurface(screenbuffer);
-	SDL_SetPaletteColors(screenbuffer->format->palette, ega_colors, 0, 16);
+	SDL_SetPaletteColors(screenbuffer->format->palette, ega_colors.data(), 0, 16);
 	SDL_UnlockSurface(screenbuffer);
 
 	screendata = static_cast<decltype(screendata)>(malloc(SCREEN_W * SCREEN_H * 2));
@@ -278,7 +352,8 @@ static inline void UpdateCharacter(int x, int y)
 	}
 
 	// How many bytes per line?
-	p = &font->data[(character * font->w * font->h) / 8];
+	// FIXME
+	//p = &font->data[(character * font->w * font->h) / 8];
 	unsigned bit{0};
 
 	unsigned char* s = ((unsigned char*)screenbuffer->pixels) + (y * font->h * screenbuffer->pitch) + (x * font->w);
@@ -349,9 +424,9 @@ void UpdateScreenArea(int x, int y, int w, int h)
 	x = LimitToRange(x, 0, SCREEN_W);
 	y = LimitToRange(y, 0, SCREEN_H);
 
-	for (size_t y1{y}; y1 < y_end; ++y1)
+	for (auto y1{y}; y1 < y_end; ++y1)
 	{
-		for (size_t x1{x}; x1 < x_end; ++x1)
+		for (auto x1{x}; x1 < x_end; ++x1)
 		{
 			UpdateCharacter(x1, y1);
 		}
@@ -414,9 +489,6 @@ void GetMousePosition(int* x, int* y)
 
 // Translates the SDL key
 
-// XXX: duplicate from doomtype.h
-#define arrlen(array) (sizeof(array) / sizeof(*array))
-
 static int TranslateScancode(SDL_Scancode scancode)
 {
 	switch (scancode)
@@ -436,7 +508,7 @@ static int TranslateScancode(SDL_Scancode scancode)
 		return KEY_RALT;
 
 	default:
-		if (scancode < arrlen(scancode_translate_table))
+		if (scancode < scancode_translate_table.size())
 		{
 			return scancode_translate_table[scancode];
 		}
@@ -550,9 +622,7 @@ int GetChar()
 				return TranslateKeysym(&ev.key.keysym);
 			case InputType::text:
 				// We ignore key inputs in this mode, except for a few special cases needed during text input:
-				if (ev.key.keysym.sym == SDL_KeyCode::SDLK_ESCAPE
-					|| ev.key.keysym.sym == SDL_KeyCode::SDLK_BACKSPACE
-					|| ev.key.keysym.sym == SDL_KeyCode::SDLK_RETURN)
+				if (ev.key.keysym.sym == SDL_KeyCode::SDLK_ESCAPE || ev.key.keysym.sym == SDL_KeyCode::SDLK_BACKSPACE || ev.key.keysym.sym == SDL_KeyCode::SDLK_RETURN)
 				{
 					return TranslateKeysym(&ev.key.keysym);
 				}
@@ -563,11 +633,11 @@ int GetChar()
 		case SDL_EventType::SDL_TEXTINPUT:
 			if (input_mode == InputType::text)
 			{
+				// FIXME
 				// TODO: Support input of more than just the first char?
-				std::string p{ev.text.text};
-				int result{DecodeUTF8(&p)};
+				//int result{DecodeUTF8(ev.text.text)};
 				// 0-127 is ASCII, but we map non-ASCII Unicode chars into a higher range to avoid conflicts with special keys.
-				return UNICODE_TO_KEY(result);
+				//return UNICODE_TO_KEY(result);
 			}
 			break;
 
@@ -611,7 +681,7 @@ int GetModifierState(ModifierType mod)
 int UnicodeCharacter(unsigned c)
 {
 	// Check the code page mapping to see if this character maps to anything.
-	for (size_t i{0}; i < arrlen(code_page_to_unicode); ++i)
+	for (size_t i{0}; i < code_page_to_unicode.size(); ++i)
 	{
 		if (code_page_to_unicode[i] == c)
 		{
@@ -623,68 +693,89 @@ int UnicodeCharacter(unsigned c)
 }
 
 // Returns true if the given UTF8 key name is printable to the screen.
-static int PrintableName(std::string s)
+static bool PrintableName(std::string s)
 {
+/*
 	std::string p = s;
 	while (*p != '\0')
 	{
 		unsigned c{DecodeUTF8(&p)};
 		if (UnicodeCharacter(c) < 0)
 		{
-			return 0;
+			return false;
 		}
 	}
-
-	return 1;
+/**/
+	return true;
 }
 
-static std::string NameForKey(int key)
+static constexpr std::string_view NameForKey(int key)
 {
 	// Overrides purely for aesthetical reasons, so that default window accelerator keys match those of setup.exe.
 	switch (key)
 	{
-	case KEY_ESCAPE: return "ESC";
-	case KEY_ENTER: return "ENTER";
+	case KEY_ESCAPE:
+		return "ESC";
+	case KEY_ENTER:
+		return "ENTER";
 	default:
 		break;
 	}
 
-	// This key presumably maps to a scan code that is listed in the
-	// translation table. Find which mapping and once we have a scancode,
-	// we can convert it into a virtual key, then a string via SDL.
-	for (size_t i{0}; i < arrlen(scancode_translate_table); ++i)
+	// This key presumably maps to a scan code that is listed in the translation table.
+	// Find which mapping and once we have a scancode, we can convert it into a virtual key, then a string via SDL.
+	for (size_t i{0}; i < scancode_translate_table.size(); ++i)
 	{
 		if (scancode_translate_table[i] == key)
 		{
-			std::string result = SDL_GetKeyName(SDL_GetKeyFromScancode(i));
-			if (UTF8_Strlen(result) > 6 || !PrintableName(result))
-			{
-				break;
-			}
-			return result;
+			// we could, if were inclined, make this another find_if and pass ptrdiff_t i = (&iter - &scanccode_translate_table),
+			// which is perfectly safe for our constexpr std::array iterators, but locks in that design
+			// hence we reserve that kind of optimization for when it matters
+
+			// we could also look up SDL key names and use them for our table names to be able to pass them directly
+			// to get key names without the scancode call -- thoughts for later
+			return SDL_GetKeyName(SDL_GetKeyFromScancode(SDL_Scancode(i)));
 		}
 	}
 
 	// Use US English fallback names, if the localized name is too long, not found in the scancode table, or contains unprintable chars
-	// (non-extended ASCII character set):
-	for (size_t i{0}; i < arrlen(key_names); ++i)
+	// (i.e. non-extended ASCII character set):
+	/* first pass approach to re-write
+	for (auto& iter : key_names)
 	{
-		if (key_names[i].key == key)
+		if (iter.key == key)
 		{
-			return key_names[i].name;
+			return std::string_view((const char*)&(iter.name.begin()), iter.name.size());
 		}
-	}
+	}*/
 
-	return nullptr;
+	// NOTE : the lambda is being immediately evaluated to ensure the result of find_if is promptly handed to the original callee, while having error handling
+	// * ideally RVO this freshly constructed rvalue string_view of the constexpr std::array element holding the matching name
+	// * or else this function returns a default constructed string_view
+	// * worst case performance is one std::move of string_view plus the potentially O(n) comparisons in key_names by find_if
+	return [&key]()
+	{
+		if (auto&& rv{std::ranges::find_if(key_names, [&key](auto& iter){ return iter.key == key; })}; rv != key_names.end())
+		{
+			return std::string_view{rv->name.data()};
+		}
+		else
+		{
+			return std::string_view{};
+		}
+	}();
 }
 
-void GetKeyDescription(int key, std::string buf, size_t buf_len)
+// FIXME updata all calls to GKD to take honest return values instead of parameter hacks
+auto GetKeyDescription(int key)
 {
+/*
 	std::string keyname{NameForKey(key)};
 
 	if (keyname)
 	{
-		StringCopy(buf, keyname, buf_len);
+		//StringCopy(buf, keyname, buf_len);
+
 
 		// Key description should be all-uppercase to match setup.exe.
 		for (size_t i{0}; buf[i] != '\0'; ++i)
@@ -696,6 +787,11 @@ void GetKeyDescription(int key, std::string buf, size_t buf_len)
 	{
 		snprintf(buf, buf_len, "??%i", key);
 	}
+/**/
+	//std::for_each(NameForKey(key), std::ranges::copy) | std::ranges::transform();
+	//return std::ranges::copy(NameForKey(key), std::string{}, );
+	// I wish input views were supported, so I guess I'll have to wait to learn how to make these until they exist
+	//return NameForKey(key) | std::views::transform_view([](auto iter){ return char(std::toupper(iter)); });
 }
 
 // Searches the desktop screen buffer to determine whether there are any blinking characters.
@@ -782,62 +878,6 @@ void SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data)
 {
 	event_callback = callback;
 	event_callback_data = user_data;
-}
-
-// Safe string functions.
-void StringCopy(std::string dest, std::string src, size_t dest_len)
-{
-	if (dest_len < 1)
-	{
-		return;
-	}
-
-	dest[dest_len - 1] = '\0';
-	strncpy(dest, src, dest_len - 1);
-}
-
-void StringConcat(std::string dest, std::string src, size_t dest_len)
-{
-	size_t offset{strlen(dest)};
-	if (offset > dest_len)
-	{
-		offset = dest_len;
-	}
-
-	StringCopy(dest + offset, src, dest_len - offset);
-}
-
-// Safe, portable vsnprintf().
-int vsnprintf(std::string buf, size_t buf_len, std::string s, va_list args)
-{
-	if (buf_len < 1)
-	{
-		return 0;
-	}
-
-	// Windows (and other OSes?) has a vsnprintf() that doesn't always append a trailing \0.
-	// So we must do it, and write into a buffer that is one byte shorter; otherwise this function is unsafe.
-	auto result{vsnprintf(buf, buf_len, s, args)};
-
-	// If truncated, change the final char in the buffer to a \0. A negative result indicates a truncated buffer on Windows.
-	if (result < 0 || result >= buf_len)
-	{
-		buf[buf_len - 1] = '\0';
-		result = buf_len - 1;
-	}
-
-	return result;
-}
-
-// Safe, portable snprintf().
-int snprintf(std::string buf, size_t buf_len, std::string s, ...)
-{
-	va_list args;
-	int result;
-	va_start(args, s);
-	result = vsnprintf(buf, buf_len, s, args);
-	va_end(args);
-	return result;
 }
 
 } // END NAMESPACE cudadoom::txt

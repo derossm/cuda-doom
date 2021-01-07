@@ -11,8 +11,9 @@
 		Base interface that abstracts the text mode screen.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
 
 #include "txt_defines.h"
 #include "txt_sdl.h"

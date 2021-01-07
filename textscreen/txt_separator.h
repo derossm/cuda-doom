@@ -8,8 +8,9 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
 
 #include "txt_widget.h"
 
@@ -37,26 +38,27 @@ namespace cudadoom::txt
   * allows the separator to be used as a section divider for grouping
   * related controls.
   */
-struct Separator : public Widget<Separator>
+class Separator : public Widget<Separator>
 {
 	std::string label;
 
-	bool KeyPress(KeyType key) override final = delete;
-	bool MousePress(MouseEvent evt) override final = delete;
-	void SetLayout() override final = delete;
-	void SetFocus(bool _focus) override final = delete;
+	//bool KeyPress(KeyEvent key) override final = delete;
+	//bool MousePress(MouseEvent evt) override final = delete;
+	//void SetLayout() override final = delete;
+	//void SetFocus(bool _focus) override final = delete;
 
 public:
-	Separator() : widget_class{Selectable, CalculateSize, Draw, nullptr, nullptr, nullptr, nullptr, Destroy}
+	Separator() //: widget_class{Selectable, CalculateSize, Draw, nullptr, nullptr, nullptr, nullptr, Destroy}
 	{}
 
-	bool Selectable() noexcept override final
+	inline bool Selectable() const noexcept override final
 	{
 		return false;
 	}
 
-	void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override final
 	{
+/*
 		if (label != "")
 		{
 			// Minimum width is the string length + two spaces for padding
@@ -68,10 +70,12 @@ public:
 		}
 
 		height = 1;
+/**/
 	}
 
-	void Draw() noexcept override final
+	inline void Draw() noexcept override final
 	{
+/*
 		int x;
 		int y;
 
@@ -91,13 +95,15 @@ public:
 			DrawString(label.c_str());
 			DrawString(" ");
 		}
+/**/
 	}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{}
 
 	void SetLabel(Separator* separator, std::string& _label)
 	{
+/*
 		if (label != "")
 		{
 			label = std::string(_label);
@@ -106,10 +112,11 @@ public:
 		{
 			label = std::string{};
 		}
+/**/
 	}
 
-	Separator(std::string& _label) : label(_label)
-	{}
+	//Separator(std::string& _label) : label(_label)
+	//{}
 };
 
 } // END NAMESPACE cudadoom::txt

@@ -8,8 +8,9 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
 
 namespace cudadoom::txt
 {
@@ -21,7 +22,7 @@ std::string EncodeUTF8(std::string str, unsigned c)
 }
 
 // Decode UTF-8 character, incrementing *ptr over the decoded bytes.
-unsigned DecodeUTF8(CHAR_PTR* ptr)
+unsigned DecodeUTF8(CHAR_PTR ptr)
 {
 	return 0;
 }

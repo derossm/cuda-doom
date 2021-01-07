@@ -8,10 +8,9 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
-
-#include "doomkeys.h"
+//////////
 
 #include "txt_widget.h"
 
@@ -19,6 +18,9 @@
 #include "txt_io.h"
 
 //#include "txt_window.h"
+
+// DECOUPLE
+#include "../src/doomkeys.h"
 
 namespace cudadoom::txt
 {
@@ -44,29 +46,28 @@ namespace cudadoom::txt
 
 class Strut : public Widget<Strut>
 {
-
-	void Draw() override final = delete;
-	bool KeyPress(KeyType key) override final = delete;
-	bool MousePress(MouseEvent evt) override final = delete;
-	void SetLayout() override final = delete;
-	void SetFocus(bool _focus) override final = delete;
+	//void Draw() override final = delete;
+	//bool KeyPress(KeyEvent key) override final = delete;
+	//bool MousePress(MouseEvent evt) override final = delete;
+	//void SetLayout() override final = delete;
+	//void SetFocus(bool _focus) override final = delete;
 public:
-	Strut(int _width, int _height, Widget& _parent) : width{_width}, height{_height}, parent{&_parent},
-		widget_class{Selectable, CalculateSize, nullptr, nullptr, nullptr, nullptr, nullptr, Destroy}
+	Strut(int _width, int _height, Widget& _parent) //: width{_width}, height{_height}, parent{&_parent},
+		//widget_class{Selectable, CalculateSize, nullptr, nullptr, nullptr, nullptr, nullptr, Destroy}
 	{
 	}
 
-	bool Selectable() noexcept override final
+	inline bool Selectable() const noexcept override final
 	{
 		return false;
 	}
 
-	void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override final
 	{
 		// Minimum width is the string length + two spaces for padding
 	}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{}
 
 };

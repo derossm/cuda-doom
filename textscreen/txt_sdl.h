@@ -11,22 +11,27 @@
 		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
 #pragma once
-
-#include "../derma/common.h"
+// DECOUPLE
+//#include "../derma/common.h"
+//////////
 
 #include "SDL.h"
 
+#include <array>
+
 namespace cudadoom::txt
 {
-// The textscreen API itself doesn't need SDL; however, SDL needs its headers included where main() is defined.
 
+// The textscreen API itself doesn't need SDL; however, SDL needs its headers included where main() is defined.
 struct FontType
 {
-	const char name[16];
-	const uint8_t* data;
+	// 32 BYTE struct
+	std::array<const char, 16> name;
+	const uint8_t* __data;
 	unsigned w;
 	unsigned h;
 };
+static_assert(sizeof(FontType) == 32);
 
 // Event callback function type: a function of this type can be used to intercept events in the textscreen event processing loop.
 // Returning 1 will cause the event to be eaten; the textscreen code will not see it.

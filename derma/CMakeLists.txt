@@ -5,7 +5,8 @@ add_library(derma STATIC
 									common.h
 									d_windows.h
 									d_unix.h
-									deprecating_tools.h)
+									deprecating_tools.h
+									enumbitset.h)
 
 target_include_directories(derma INTERFACE "." PRIVATE "../src/")
 

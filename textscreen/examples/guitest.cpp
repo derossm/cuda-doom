@@ -56,6 +56,7 @@ void PwnBox(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 
 void UpdateLabel(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 {
+/*
 	char buf[40];
 
 	cudadoom::txt::StringCopy(buf, " Current value: ", sizeof(buf));
@@ -65,6 +66,22 @@ void UpdateLabel(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 	}
 	cudadoom::txt::StringConcat(buf, radio_values[radiobutton_value], sizeof(buf));
 	cudadoom::txt::StringConcat(buf, "\n", sizeof(buf));
+
+	cudadoom::txt::SetLabel(value_label, buf);
+/**/
+	std::string buf{[&]()
+	{
+		const char rv[]{" Current value: "};
+
+		if (cheesy)
+		{
+			return rv + "Cheesy ";
+		}
+		else
+		{
+			return rv;
+		}
+	}() + radio_values[radiobutton_value] + "\n"};
 
 	cudadoom::txt::SetLabel(value_label, buf);
 }

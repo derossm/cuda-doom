@@ -8,11 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
-#include "txt_common.h"
+//////////
 
-#include "doomkeys.h"
+#include "txt_common.h"
 
 #include "txt_widget.h"
 
@@ -22,6 +22,9 @@
 #include "txt_gui.h"
 
 //#include "txt_window.h"
+
+// DECOUPLE
+#include "../src/doomkeys.h"
 
 namespace cudadoom::txt
 {
@@ -37,29 +40,30 @@ class Button : public Widget<Button>
 
 public:
 
-	Button(std::string& _label) : label(_label),
-		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	Button(std::string& _label) //: label(_label),
+		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 	}
 
-	Button(std::string& _label, WidgetSignalFunc _handle, UserData _user) :
-		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	Button(std::string& _label, UserData _user) //:
+		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
-		SetButtonLabel(_label);
-		SignalConnect(std::string("pressed"), _handle, _user);
+		//SetButtonLabel(_label);
+		//SignalConnect(std::string("pressed"), _handle, _user);
 	}
 
-	bool Selectable() noexcept override final
+	inline bool Selectable() const noexcept override final
 	{}
 
-	void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override final
 	{
-		width = label.length();
-		height = 1;
+		//width = label.length();
+		//height = 1;
 	}
 
-	void Draw() noexcept override final
+	inline void Draw() noexcept override final
 	{
+/*
 		SetWidgetBG();
 
 		DrawString(label);
@@ -68,37 +72,40 @@ public:
 		{
 			DrawString(" ");
 		}
+/**/
 	}
 
-	bool KeyPress(KeyType key) noexcept override final
+	inline bool KeyPress(KeyEvent key) noexcept override final
 	{
+/*
 		if (key == KEY_ENTER)
 		{
 			EmitSignal("pressed");
 			return true;
 		}
-
+/**/
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent evt) noexcept override final
 	{
+/*
 		if (evt.button == MOUSE_LEFT)
 		{
 			// Equivalent to pressing enter
 			return KeyPress(KEY_ENTER);
 		}
-
+/**/
 		return false;
 	}
 
-	void SetLayout() noexcept override final
+	inline void SetLayout() noexcept override final
 	{}
 
-	void SetFocus() noexcept override final
+	inline void SetFocus(bool _focus) noexcept override final
 	{}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{}
 
 	void SetButtonLabel(std::string& _label)

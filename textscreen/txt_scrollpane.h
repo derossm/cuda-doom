@@ -8,8 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
+
 #include "txt_common.h"
 
 #include "txt_widget.h"
@@ -26,60 +28,62 @@ namespace cudadoom::txt
  */
 class ScrollPane : public Widget<ScrollPane>
 {
-	Widget widget;
+//	Widget widget;
 	int w;
 	int h;
 	int x;
 	int y;
 	int expand_w;
 	int expand_h;
-	Widget* child;
+//	Widget* child;
 
 public:
 
-	ScrollPane() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	ScrollPane()// : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{}
 
-	bool Selectable() noexcept override final
+	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override final
 	{}
 
-	void Draw() noexcept override final
+	inline void Draw() noexcept override final
 	{}
 
-	bool KeyPress(Keytype key) noexcept override final
+	inline bool KeyPress(KeyEvent key) noexcept override final
 	{
+/*
 		if (key == KEY_ENTER || key == ' ')
 		{
 			EmitSignal("changed");
 			return true;
 		}
-
+/**/
 		return false;
 	}
 
-	bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent evt) noexcept override final
 	{
+/*
 		if (evt.button == MOUSE_LEFT)
 		{
 			// Equivalent to pressing enter
 			return KeyPress(KEY_ENTER);
 		}
-
-		return false
+/**/
+		return false;
 	}
 
-	void SetLayout() noexcept override final
+	inline void SetLayout() noexcept override final
 	{}
 
-	void SetFocus(bool _focus) noexcept override final
+	inline void SetFocus(bool _focus) noexcept override final
 	{}
 
-	void Destroy() noexcept override final
+	inline void Destroy() noexcept override final
 	{}
 };
 
@@ -92,6 +96,6 @@ public:
  *						contain.
  * @return				Pointer to the new scroll pane widget.
  */
-txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target));
+//txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target));
 
 } // END NAMESPACE cudadoom::txt

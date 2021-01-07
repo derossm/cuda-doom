@@ -8,8 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
+
 #include "txt_common.h"
 
 #include "txt_enums.h"
@@ -35,8 +37,8 @@ template<typename T>
 class Widget
 {
 private:
-	Widget* parent{nullptr};
-	WidgetClass<T> widget_class;
+	//Widget* parent{nullptr};
+	//WidgetClass<T> widget_class;
 
 	// These are set automatically when the window is drawn and should not be set manually.
 	int64_t x{0};
@@ -44,7 +46,7 @@ private:
 	int width{0};
 	int height{0};
 
-	CallbackTable callbackTable;
+	//CallbackTable callbackTable;
 
 	AlignHorizontal align{};
 
@@ -56,7 +58,7 @@ public:
 
 	//================================================================================================================================
 	// ctors, dtors, etc
-	Widget() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	Widget() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 
 	}
@@ -71,48 +73,49 @@ public:
 		return true;
 	}
 
-	virtual inline void CalculateSize() const noexcept
+	virtual inline void CalculateSize() noexcept
 	{
 		//size_calc(widget);
 	}
 
-	virtual inline void Draw() const noexcept
+	virtual inline void Draw() noexcept
 	{
-		SavedColors colors;
+		//SavedColors colors;
 
 		// The drawing function might change the fg/bg colors, so make sure we restore them after it's done.
-		SaveColors(&colors);
+		//SaveColors(&colors);
 
 		// For convenience...
-		GotoXY(x, y);
+		//GotoXY(x, y);
 
 		// Call drawer method
 		//drawer();
 
-		RestoreColors(&colors);
+		//RestoreColors(&colors);
 	}
 
-	virtual inline bool KeyPress(KeyEvent evt) const noexcept
+	virtual inline bool KeyPress(KeyEvent evt) noexcept
 	{
-		return 0;//key_press(widget, key);
+		return false;//key_press(widget, key);
 	}
 
-	virtual inline bool MousePress(MouseEvent evt) const noexcept
+	virtual inline bool MousePress(MouseEvent evt) noexcept
 	{
 		//mouse_press(x, y, b);
+		return false;
 	}
 
-	virtual inline void SetLayout() const noexcept
+	virtual inline void SetLayout() noexcept
 	{
 		//layout();
 	}
 
-	virtual inline void SetFocus(bool _focus) const noexcept
+	virtual inline void SetFocus(bool _focus) noexcept
 	{
 		//layout();
 	}
 
-	virtual inline void Destroy() const noexcept
+	virtual inline void Destroy() noexcept
 	{}
 
 	inline bool visible() const noexcept
@@ -190,13 +193,13 @@ public:
 		unsetFocus();
 	}
 
-	inline void SignalConnect(std::string&& signal, std::function<void(void*)>&& handle, UserData&& user) noexcept
-	{
-		callback_table.connect(std::move(signal), std::move(handle), std::move(user));
-	}
+	//inline void SignalConnect(std::string&& signal, std::function<void(void*)>&& handle, UserData&& user) noexcept
+	//{
+		//callback_table.connect(std::move(signal), std::move(handle), std::move(user));
+	//}
 
-	inline void EmitSignal(std::string& signal_name) noexcept
-	{
+	//inline void EmitSignal(std::string& signal_name) noexcept
+	//{
 		//auto table{callback_table};
 
 		// Don't destroy the table while we're searching through it (one of the callbacks may destroy this window)
@@ -213,7 +216,7 @@ public:
 
 		// Finished using the table
 		//UnrefCallbackTable(table);
-	}
+	//}
 
 	//void SetWidgetFocus(bool _focused)
 	//{
@@ -242,54 +245,54 @@ public:
 		return false;
 	}
 
-	inline bool ContainsWidget(Widget* needle) noexcept
-	{
-		while (needle)
-		{
-			if (needle == this)
-			{
-				return true;
-			}
-
-			needle = needle->parent;
-		}
-
-		return false;
-	}
+//	inline bool ContainsWidget(Widget* needle) noexcept
+//	{
+//		while (needle)
+//		{
+//			if (needle == this)
+//			{
+//				return true;
+//			}
+//
+//			needle = needle->parent;
+//		}
+//
+//		return false;
+//	}
 
 	inline bool HoveringOverWidget() noexcept
 	{
-		int _x;
-		int _y;
+		//int _x;
+		//int _y;
 
 		// We can only be hovering over widgets in the active window.
-		auto active_window = (Widget*)GetActiveWindow();
+		//auto active_window = (Widget*)GetActiveWindow();
 
-		if (!active_window || !ContainsWidget(active_window))
-		{
+		//if (!active_window || !ContainsWidget(active_window))
+		//{
 			return false;
-		}
+		//}
 
 		// Is the mouse cursor within the bounds of the widget?
-		GetMousePosition(&_x, &_y);
+		//GetMousePosition(&_x, &_y);
 
-		return (_x >= x && _x < x + width && _y >= y && _y < y + height);
+		//return (_x >= x && _x < x + width && _y >= y && _y < y + height);
 	}
 
 	inline void SetWidgetBG() noexcept
 	{
-		if (focused())
-		{
-			BGColor(ColorType::grey, false);
-		}
-		else if (HoveringOverWidget())
-		{
-			BGColor(HOVER_BACKGROUND, false);
-		}
-		else
-		{
+		//if (focused())
+		//{
+			//BGColor(ColorType::grey, false);
+		//}
+		//else if (HoveringOverWidget())
+		//{
+			//BGColor(HOVER_BACKGROUND, false);
+		//}
+		//else
+		//{
 			// Use normal window background.
-		}
+		//}
 	}
 
 };

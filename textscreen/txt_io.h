@@ -11,8 +11,9 @@
 		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
 #pragma once
-
+// DECOUPLE
 #include "../derma/common.h"
+//////////
 
 #include "txt_main.h"
 
@@ -67,7 +68,8 @@ static void NewLine(unsigned char* screendata)
 		{
 			*p = ' ';
 			++p;
-			*p = fgcolor | (bgcolor << 4);
+// FIXME
+//			*p = fgcolor | (bgcolor << 4);
 			++p;
 		}
 	}
@@ -81,8 +83,9 @@ static void PutSymbol(unsigned char* screendata, int c)
 
 	// Add a new character to the buffer
 
+// FIXME
 	p[0] = c;
-	p[1] = fgcolor | (bgcolor << 4);
+//	p[1] = fgcolor | (bgcolor << 4);
 
 	++cur_x;
 
@@ -127,7 +130,7 @@ void PutChar(int c)
 
 void Puts(std::string s)
 {
-	unsigned char* screen;
+	/*unsigned char* screen;
 	std::string p;
 
 	screen = GetScreenData();
@@ -137,7 +140,7 @@ void Puts(std::string s)
 		PutChar(screen, *p);
 	}
 
-	PutChar(screen, '\n');
+	PutChar(screen, '\n');*/
 }
 
 void GotoXY(int x, int y)
@@ -162,20 +165,23 @@ void BGColor(ColorType color, bool blinking)
 	bgcolor = color;
 	if (blinking)
 	{
-		bgcolor |= COLOR_BLINKING;
+// FIXME
+//		bgcolor |= COLOR_BLINKING;
 	}
 }
 
 void SaveColors(SavedColors* save)
 {
-	save->bgcolor = bgcolor;
-	save->fgcolor = fgcolor;
+// FIXME
+//	save->bgcolor = bgcolor;
+//	save->fgcolor = fgcolor;
 }
 
 void RestoreColors(SavedColors* save)
 {
-	bgcolor = save->bgcolor;
-	fgcolor = save->fgcolor;
+// FIXME
+//	bgcolor = save->bgcolor;
+//	fgcolor = save->fgcolor;
 }
 
 void ClearScreen()
