@@ -525,7 +525,6 @@ void R_DrawFuzzColumnLow()
 	}
 }
 
-
 // R_DrawTranslatedColumn
 // Used to draw player sprites
 // with the green colorramp mapped to others.

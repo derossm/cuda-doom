@@ -174,7 +174,6 @@ static void Transform(sha1_context_t* hd, byte* data)
 	hd->h4 += e;
 }
 
-
 /* Update the message digest with the contents
  * of INBUF with length INLEN.
  */
@@ -226,7 +225,6 @@ void SHA1_Update(sha1_context_t* hd, byte* inbuf, size_t inlen)
 		++inbuf;
 	}
 }
-
 
 /* The routine final terminates the computation and
  * returns the digest.

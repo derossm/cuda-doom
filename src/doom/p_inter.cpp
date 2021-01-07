@@ -962,7 +962,6 @@ void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, in
 			damage = target->health - 1;
 		}
 
-
 		// Below certain threshold,
 		// ignore damage in GOD mode, or with INVUL power.
 		if (damage < 1000 && ((player->cheats & CheatType::CF_GODMODE) || player->powers[std::size_t(PowerType_t::pw_invulnerability)]))

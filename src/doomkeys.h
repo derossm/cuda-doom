@@ -73,7 +73,7 @@ enum class Keybinds
 	KEYP_PERIOD = 0,
 	KEYP_EQUALS = KEY_EQUALS,
 	KEYP_ENTER = KEY_ENTER,
-	//
+	// a-z
 	KEY_A = 'a',
 	KEY_B = 'b',
 	KEY_C = 'c',
@@ -135,7 +135,6 @@ constexpr size_t KEY_RALT{(0x80 + 0x38)};
 constexpr size_t KEY_LALT{KEY_RALT};
 
 // new keys:
-
 constexpr size_t KEY_CAPSLOCK{(0x80 + 0x3a)};
 constexpr size_t KEY_NUMLOCK{(0x80 + 0x45)};
 constexpr size_t KEY_SCRLCK{(0x80 + 0x46)};
@@ -167,61 +166,85 @@ constexpr size_t KEYP_PERIOD{0};
 constexpr size_t KEYP_EQUALS{KEY_EQUALS};
 constexpr size_t KEYP_ENTER{KEY_ENTER};
 
-#define SCANCODE_TO_KEYS_ARRAY													\
-	0x0, 0x0, 0x0, 0x0, 'a',									/* 000-009 */	\
-	'b', 'c', 'd', 'e', 'f',													\
-	'g', 'h', 'i', 'j', 'k',									/* 010-019 */	\
-	'l', 'm', 'n', 'o', 'p',													\
-	'q', 'r', 's', 't', 'u',									/* 020-029 */	\
-	'v', 'w', 'x', 'y', 'z',													\
-	'1', '2', '3', '4', '5',									/* 030-039 */	\
-	'6', '7', '8', '9', '0',													\
-	KEY_ENTER, KEY_ESCAPE, KEY_BACKSPACE, KEY_TAB, ' ',			/* 040-049 */	\
-	KEY_MINUS, KEY_EQUALS, '[', ']', '\\',										\
-	0x0, ';', '\'', '`', ',',									/* 050-059 */	\
-	'.', '/', KEY_CAPSLOCK, KEY_F1, KEY_F2,										\
-	KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7,						/* 060-069 */	\
-	KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12,									\
-	KEY_PRTSCR, KEY_SCRLCK, KEY_PAUSE, KEY_INS, KEY_HOME,		/* 070-079 */	\
-	KEY_PGUP, KEY_DEL, KEY_END, KEY_PGDN, KEY_RIGHTARROW,						\
-	KEY_LEFTARROW, KEY_DOWNARROW, KEY_UPARROW,					/* 080-089 */	\
-	KEY_NUMLOCK, KEYP_DIVIDE,													\
-	KEYP_MULTIPLY, KEYP_MINUS, KEYP_PLUS, KEYP_ENTER, KEYP_1,					\
-	KEYP_2, KEYP_3, KEYP_4, KEYP_5, KEYP_6,						/* 090-099 */	\
-	KEYP_7, KEYP_8, KEYP_9, KEYP_0, KEYP_PERIOD,								\
-	0x0, 0x0, 0x0, KEYP_EQUALS									/* 100-103 */
+//#define SCANCODE_TO_KEYS_ARRAY
+constexpr std::array<int, 104> scancode_translate_table
+{
+	int{0x0},			int{0x0},			int{0x0},			int{0x0},			int{'a'},				// 000-009
+	int{'b'},			int{'c'},			int{'d'},			int{'e'},			int{'f'},
+	int{'g'},			int{'h'},			int{'i'},			int{'j'},			int{'k'},				// 010-019
+	int{'l'},			int{'m'},			int{'n'},			int{'o'},			int{'p'},
+	int{'q'},			int{'r'},			int{'s'},			int{'t'},			int{'u'},				// 020-029
+	int{'v'},			int{'w'},			int{'x'},			int{'y'},			int{'z'},
+	int{'1'},			int{'2'},			int{'3'},			int{'4'},			int{'5'},				// 030-039
+	int{'6'},			int{'7'},			int{'8'},			int{'9'},			int{'0'},
+	int{KEY_ENTER},		int{KEY_ESCAPE},	int{KEY_BACKSPACE},	int{KEY_TAB},		int{' '},				// 040-049
+	int{KEY_MINUS},		int{KEY_EQUALS},	int{'['},			int{']'},			int{'\\'},
+	int{0x0},			int{';'},			int{'\''},			int{'`'},			int{','},				// 050-059
+	int{'.'},			int{'/'},			int{KEY_CAPSLOCK},	int{KEY_F1},		int{KEY_F2},
+	int{KEY_F3},		int{KEY_F4},		int{KEY_F5},		int{KEY_F6},		int{KEY_F7},			// 060-069
+	int{KEY_F8},		int{KEY_F9},		int{KEY_F10},		int{KEY_F11},		int{KEY_F12},
+	int{KEY_PRTSCR},	int{KEY_SCRLCK},	int{KEY_PAUSE},		int{KEY_INS},		int{KEY_HOME},			// 070-079
+	int{KEY_PGUP},		int{KEY_DEL},		int{KEY_END},		int{KEY_PGDN},		int{KEY_RIGHTARROW},
+	int{KEY_LEFTARROW},	int{KEY_DOWNARROW},	int{KEY_UPARROW},	int{KEY_NUMLOCK},	int{KEYP_DIVIDE},		// 080-089
+	int{KEYP_MULTIPLY},	int{KEYP_MINUS},	int{KEYP_PLUS},		int{KEYP_ENTER},	int{KEYP_1},
+	int{KEYP_2},		int{KEYP_3},		int{KEYP_4},		int{KEYP_5},		int{KEYP_6},			// 090-099
+	int{KEYP_7},		int{KEYP_8},		int{KEYP_9},		int{KEYP_0},		int{KEYP_PERIOD},
+	int{0x0},			int{0x0},			int{0x0},			int{KEYP_EQUALS}							// 100-103
+};
 
 // Default names for keys, to use in English or as fallback.
-#define KEY_NAMES_ARRAY													\
-	{ KEY_BACKSPACE,	"BACKSP" },	{ KEY_TAB,			"TAB" },		\
-	{ KEY_INS,			"INS" },	{ KEY_DEL,			"DEL" },		\
-	{ KEY_PGUP,			"PGUP" },	{ KEY_PGDN,			"PGDN" },		\
-	{ KEY_ENTER,		"ENTER" },	{ KEY_ESCAPE,		"ESC" },		\
-	{ KEY_F1,			"F1" },		{ KEY_F2,			"F2" },			\
-	{ KEY_F3,			"F3" },		{ KEY_F4,			"F4" },			\
-	{ KEY_F5,			"F5" },		{ KEY_F6,			"F6" },			\
-	{ KEY_F7,			"F7" },		{ KEY_F8,			"F8" },			\
-	{ KEY_F9,			"F9" },		{ KEY_F10,			"F10" },		\
-	{ KEY_F11,			"F11" },	{ KEY_F12,			"F12" },		\
-	{ KEY_HOME,			"HOME" },	{ KEY_END,			"END" },		\
-	{ KEY_MINUS,		"-" },		{ KEY_EQUALS,		"=" },			\
-	{ KEY_NUMLOCK,		"NUMLCK" },	{ KEY_SCRLCK,		"SCRLCK" },		\
-	{ KEY_PAUSE,		"PAUSE" },	{ KEY_PRTSCR,		"PRTSC" },		\
-	{ KEY_UPARROW,		"UP" },		{ KEY_DOWNARROW,	"DOWN" },		\
-	{ KEY_LEFTARROW,	"LEFT" }	{ KEY_RIGHTARROW,	"RIGHT" },		\
-	{ KEY_RALT,			"ALT" },	{ KEY_LALT,			"ALT" },		\
-	{ KEY_RSHIFT,		"SHIFT" },	{ KEY_CAPSLOCK,		"CAPS" },		\
-	{ KEY_RCTRL,		"CTRL" },	{ KEYP_5,			"NUM5" },		\
-	{ ' ',				"SPACE" },										\
-	{ 'a', "A" },	{ 'b', "B" },	{ 'c', "C" },	{ 'd', "D" },		\
-	{ 'e', "E" },	{ 'f', "F" },	{ 'g', "G" },	{ 'h', "H" },		\
-	{ 'i', "I" },	{ 'j', "J" },	{ 'k', "K" },	{ 'l', "L" },		\
-	{ 'm', "M" },	{ 'n', "N" },	{ 'o', "O" },	{ 'p', "P" },		\
-	{ 'q', "Q" },	{ 'r', "R" },	{ 's', "S" },	{ 't', "T" },		\
-	{ 'u', "U" },	{ 'v', "V" },	{ 'w', "W" },	{ 'x', "X" },		\
-	{ 'y', "Y" },	{ 'z', "Z" },	{ '0', "0" },	{ '1', "1" },		\
-	{ '2', "2" },	{ '3', "3" },	{ '4', "4" },	{ '5', "5" },		\
-	{ '6', "6" },	{ '7', "7" },	{ '8', "8" },	{ '9', "9" },		\
-	{ '[', "[" },	{ ']', "]" },	{ ';', ";" },	{ '`', "`" },		\
-	{ ',', "," },	{ '.', "." },	{ '/', "/" },	{ '\\', "\\" },		\
-	{ '\'', "\'" }
+//#define KEY_NAMES_ARRAY
+struct KeyNames
+{
+	// 8 byte size total per key name pair
+	const UCHAR key;
+	const char name[7];
+};
+
+//constexpr int k = sizeof(KeyNames);
+constexpr std::array<KeyNames, 84> key_names{
+	const KeyNames{ const UCHAR{KEY_BACKSPACE},	{"BACKSP"}	},	const KeyNames{ const UCHAR{KEY_TAB},			{"TAB"}		},
+	const KeyNames{ const UCHAR{KEY_INS},		{"INS"}		},	const KeyNames{ const UCHAR{KEY_DEL},			{"DEL"}		},
+	const KeyNames{ const UCHAR{KEY_PGUP},		{"PGUP"}	},	const KeyNames{ const UCHAR{KEY_PGDN},			{"PGDN"}	},
+	const KeyNames{ const UCHAR{KEY_ENTER},		{"ENTER"}	},	const KeyNames{ const UCHAR{KEY_ESCAPE},		{"ESC"}		},
+	const KeyNames{ const UCHAR{KEY_F1},		{"F1"}		},	const KeyNames{ const UCHAR{KEY_F2},			{"F2"}		},
+	const KeyNames{ const UCHAR{KEY_F3},		{"F3"}		},	const KeyNames{ const UCHAR{KEY_F4},			{"F4"}		},
+	const KeyNames{ const UCHAR{KEY_F5},		{"F5"}		},	const KeyNames{ const UCHAR{KEY_F6},			{"F6"}		},
+	const KeyNames{ const UCHAR{KEY_F7},		{"F7"}		},	const KeyNames{ const UCHAR{KEY_F8},			{"F8"}		},
+	const KeyNames{ const UCHAR{KEY_F9},		{"F9"}		},	const KeyNames{ const UCHAR{KEY_F10},			{"F10"}		},
+	const KeyNames{ const UCHAR{KEY_F11},		{"F11"}		},	const KeyNames{ const UCHAR{KEY_F12},			{"F12"}		},
+	const KeyNames{ const UCHAR{KEY_HOME},		{"HOME"}	},	const KeyNames{ const UCHAR{KEY_END},			{"END"}		},
+	const KeyNames{ const UCHAR{KEY_MINUS},		{"-"}		},	const KeyNames{ const UCHAR{KEY_EQUALS},		{"=" }		},
+	const KeyNames{ const UCHAR{KEY_NUMLOCK},	{"NUMLCK"}	},	const KeyNames{ const UCHAR{KEY_SCRLCK},		{"SCRLCK"}	},
+	const KeyNames{ const UCHAR{KEY_PAUSE},		{"PAUSE"}	},	const KeyNames{ const UCHAR{KEY_PRTSCR},		{"PRTSC"}	},
+	const KeyNames{ const UCHAR{KEY_UPARROW},	{"UP"}		},	const KeyNames{ const UCHAR{KEY_DOWNARROW},		{"DOWN"}	},
+	const KeyNames{ const UCHAR{KEY_LEFTARROW},	{"LEFT"}	},	const KeyNames{ const UCHAR{KEY_RIGHTARROW},	{"RIGHT"}	},
+	const KeyNames{ const UCHAR{KEY_RALT},		{"ALT"}		},	const KeyNames{ const UCHAR{KEY_LALT},			{"ALT"}		},
+	const KeyNames{ const UCHAR{KEY_RSHIFT},	{"SHIFT"}	},	const KeyNames{ const UCHAR{KEY_CAPSLOCK},		{"CAPS"}	},
+	const KeyNames{ const UCHAR{KEY_RCTRL},		{"CTRL"}	},	const KeyNames{ const UCHAR{KEYP_5},			{"NUM5"}	},
+
+	const KeyNames{ const UCHAR{' '},			{"SPACE"}	},
+	const KeyNames{ const UCHAR{'a'},			{"A"}		},	const KeyNames{ const UCHAR{'b'},				{"B"}		},
+	const KeyNames{ const UCHAR{'c'}, 			{"C"}		},	const KeyNames{ const UCHAR{'d'},				{"D"}		},
+	const KeyNames{ const UCHAR{'e'},			{"E"}		},	const KeyNames{ const UCHAR{'f'},				{"F"}		},
+	const KeyNames{ const UCHAR{'g'},			{"G"}		},	const KeyNames{ const UCHAR{'h'},				{"H"}		},
+	const KeyNames{ const UCHAR{'i'},			{"I"}		},	const KeyNames{ const UCHAR{'j'},				{"J"}		},
+	const KeyNames{ const UCHAR{'k'},			{"K"}		},	const KeyNames{ const UCHAR{'l'},				{"L"}		},
+	const KeyNames{ const UCHAR{'m'},			{"M"}		},	const KeyNames{ const UCHAR{'n'},				{"N"}		},
+	const KeyNames{ const UCHAR{'o'},			{"O"}		},	const KeyNames{ const UCHAR{'p'},				{"P"}		},
+	const KeyNames{ const UCHAR{'q'},			{"Q"}		},	const KeyNames{ const UCHAR{'r'},				{"R"}		},
+	const KeyNames{ const UCHAR{'s'},			{"S"}		},	const KeyNames{ const UCHAR{'t'},				{"T"}		},
+	const KeyNames{ const UCHAR{'u'},			{"U"}		},	const KeyNames{ const UCHAR{'v'},				{"V"}		},
+	const KeyNames{ const UCHAR{'w'},			{"W"}		},	const KeyNames{ const UCHAR{'x'},				{"X"}		},
+	const KeyNames{ const UCHAR{'y'},			{"Y"}		},	const KeyNames{ const UCHAR{'z'},				{"Z"}		},
+	const KeyNames{ const UCHAR{'0'},			{"0"}		},	const KeyNames{ const UCHAR{'1'},				{"1"}		},
+	const KeyNames{ const UCHAR{'2'},			{"2"}		},	const KeyNames{ const UCHAR{'3'},				{"3"}		},
+	const KeyNames{ const UCHAR{'4'},			{"4"}		},	const KeyNames{ const UCHAR{'5'},				{"5"}		},
+	const KeyNames{ const UCHAR{'6'},			{"6"}		},	const KeyNames{ const UCHAR{'7'},				{"7"}		},
+	const KeyNames{ const UCHAR{'8'},			{"8"}		},	const KeyNames{ const UCHAR{'9'},				{"9"}		},
+	const KeyNames{ const UCHAR{'['},			{"["}		},	const KeyNames{ const UCHAR{']'},				{"]"}		},
+	const KeyNames{ const UCHAR{';'},			{";"}		},	const KeyNames{ const UCHAR{'`'},				{"`"}		},
+	const KeyNames{ const UCHAR{','},			{","}		},	const KeyNames{ const UCHAR{'.'},				{"."}		},
+	const KeyNames{ const UCHAR{'/'},			{"/"}		},	const KeyNames{ const UCHAR{'\\'},				{"\\"}		},
+	const KeyNames{ const UCHAR{'\''},			{"\'"}		}
+};

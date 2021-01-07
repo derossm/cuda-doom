@@ -98,7 +98,8 @@ static void DEH_FrameOverflow(deh_context_t* context, std::string varname, int v
 static void DEH_FrameParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	state_t* state;
-	std::string variable_name, * value;
+	std::string variable_name;
+	std::string value;
 	int ivalue;
 
 	if (tag == NULL)

@@ -38,4 +38,4 @@ std::string UTF8_SkipChars(std::string str, unsigned n)
 	return std::string{};
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

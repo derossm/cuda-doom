@@ -169,8 +169,7 @@ public:
 		return 0;
 	}
 
-	static void RadioButtonMousePress(UNCAST_ARG(radiobutton),
-		int x, int y, int b)
+	static void RadioButtonMousePress(UNCAST_ARG(radiobutton), int x, int y, int b)
 	{
 		CAST_ARG(RadioButton, radiobutton);
 
@@ -202,4 +201,4 @@ public:
 	}
 };
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

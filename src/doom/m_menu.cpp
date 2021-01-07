@@ -282,10 +282,10 @@ menuitem_t EpisodeMenu[] =
 menu_t EpiDef =
 {
 	episodes_e::ep_end,			// # of menu items
-	&MainDef,		// previous menu
-	EpisodeMenu,	// menuitem_t ->
-	M_DrawEpisode,	// drawing routine ->
-	48,				// x,y
+	&MainDef,					// previous menu
+	EpisodeMenu,				// menuitem_t ->
+	M_DrawEpisode,				// drawing routine ->
+	48,							// x,y
 	63,
 	episodes_e::ep1				// lastOn
 };
@@ -312,10 +312,10 @@ menuitem_t NewGameMenu[] =
 menu_t NewDef =
 {
 	newgame_e::newg_end,		// # of menu items
-	&EpiDef,		// previous menu
-	NewGameMenu,	// menuitem_t ->
-	M_DrawNewGame,	// drawing routine ->
-	48,				// x,y
+	&EpiDef,					// previous menu
+	NewGameMenu,				// menuitem_t ->
+	M_DrawNewGame,				// drawing routine ->
+	48,							// x,y
 	63,
 	newgame_e::hurtme			// lastOn
 };
@@ -2676,8 +2676,6 @@ bool M_Responder(EventType* ev)
 
 	return false;
 }
-
-
 
 //
 // M_StartControlPanel

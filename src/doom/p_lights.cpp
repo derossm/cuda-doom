@@ -43,8 +43,6 @@ void T_FireFlicker(fireflicker_t* flick)
 	flick->count = 4;
 }
 
-
-
 //
 // P_SpawnFireFlicker
 //
@@ -67,12 +65,9 @@ void P_SpawnFireFlicker(sector_t* sector)
 	flick->count = 4;
 }
 
-
-
 //
 // BROKEN LIGHT FLASHING
 //
-
 
 //
 // T_LightFlash
@@ -95,9 +90,6 @@ void T_LightFlash(lightflash_t* flash)
 	}
 
 }
-
-
-
 
 //
 // P_SpawnLightFlash
@@ -125,12 +117,9 @@ void P_SpawnLightFlash(sector_t* sector)
 	flash->count = (P_Random() & flash->maxtime) + 1;
 }
 
-
-
 //
 // STROBE LIGHT FLASHING
 //
-
 
 //
 // T_StrobeFlash
@@ -152,8 +141,6 @@ void T_StrobeFlash(strobe_t* flash)
 	}
 
 }
-
-
 
 //
 // P_SpawnStrobeFlash
@@ -187,7 +174,6 @@ void P_SpawnStrobeFlash(sector_t* sector, int fastOrSlow, int inSync)
 		flash->count = 1;
 }
 
-
 //
 // Start strobing lights (usually from a trigger)
 //
@@ -206,8 +192,6 @@ void EV_StartLightStrobing(line_t* line)
 		P_SpawnStrobeFlash(sec, SLOWDARK, 0);
 	}
 }
-
-
 
 //
 // TURN LINE'S TAG LIGHTS OFF
@@ -241,7 +225,6 @@ void EV_TurnTagLightsOff(line_t* line)
 		}
 	}
 }
-
 
 //
 // TURN LINE'S TAG LIGHTS ON
@@ -282,7 +265,6 @@ void EV_LightTurnOn(line_t* line, int bright)
 	}
 }
 
-
 //
 // Spawn glowing light
 //
@@ -312,7 +294,6 @@ void T_Glow(glow_t* g)
 		break;
 	}
 }
-
 
 void P_SpawnGlowingLight(sector_t* sector)
 {

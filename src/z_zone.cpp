@@ -112,7 +112,8 @@ static void ScanForBlock(void* start, void* end)
 {
 	memblock_t* block;
 	void** mem;
-	int i, len;
+	int i;
+	int len;
 	pu_tags_t tag;
 
 	block = mainzone->blocklist.next;

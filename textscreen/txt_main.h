@@ -157,4 +157,4 @@ int vsnprintf(std::string buf, size_t buf_len, std::string s, va_list args);
 // Safe version of snprintf().
 int snprintf(std::string buf, size_t buf_len, std::string s, ...) PRINTF_ATTR(3, 4);
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

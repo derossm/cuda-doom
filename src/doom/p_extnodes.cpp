@@ -90,9 +90,11 @@ void P_LoadSegs_DeePBSP(int lump)
 	{
 		seg_t* li = segs + i;
 		mapseg_deepbsp_t* ml = data + i;
-		int side, linedef;
+		int side;
+		int linedef;
 		line_t* ldef;
-		int vn1, vn2;
+		int vn1;
+		int vn2;
 
 		// [MB] 2020-04-30: Fix endianess for DeePBSDP V4 nodes
 		vn1 = LONG(ml->v1);
@@ -239,8 +241,10 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 	byte* output;
 #endif
 
-	unsigned orgVerts, newVerts;
-	unsigned numSubs, currSeg;
+	unsigned orgVerts;
+	unsigned newVerts;
+	unsigned numSubs;
+	unsigned currSeg;
 	unsigned numSegs;
 	unsigned numNodes;
 	vertex_t* newvertarray = NULL;
@@ -253,7 +257,8 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 	{
 #ifdef HAVE_LIBZ
 		const int len = W_LumpLength(lump);
-		int outlen, err;
+		int outlen;
+		int err;
 		z_stream* zstream;
 
 		// first estimate for compression rate:
@@ -326,12 +331,10 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	for (i = 0; i < newVerts; ++i)
 	{
-		newvertarray[i + orgVerts].r_x =
-			newvertarray[i + orgVerts].x = LONG(*((unsigned*)data));
+		newvertarray[i + orgVerts].r_x = newvertarray[i + orgVerts].x = LONG(*((unsigned*)data));
 		data += sizeof(newvertarray[0].x);
 
-		newvertarray[i + orgVerts].r_y =
-			newvertarray[i + orgVerts].y = LONG(*((unsigned*)data));
+		newvertarray[i + orgVerts].r_y = newvertarray[i + orgVerts].y = LONG(*((unsigned*)data));
 		data += sizeof(newvertarray[0].y);
 	}
 
@@ -453,7 +456,8 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	for (i = 0; i < numnodes; ++i)
 	{
-		int j, k;
+		int j;
+		int k;
 		node_t* no = nodes + i;
 		mapnode_zdbsp_t* mn = (mapnode_zdbsp_t*)data + i;
 

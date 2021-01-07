@@ -12,7 +12,6 @@
 // Parses [PARS] sections in BEX files
 \**********************************************************************************************************************************************/
 
-
 #include "deh_bexpars.h"
 #include "deh_io.h"
 
@@ -33,7 +32,9 @@ static void* DEH_BEXParsStart(deh_context_t* context, std::string line)
 
 static void DEH_BEXParsParseLine(deh_context_t* context, std::string line, void* tag)
 {
-	int episode, map, partime;
+	int episode;
+	int map;
+	int partime;
 
 	if (sscanf(line, "par %32d %32d %32d", &episode, &map, &partime) == 3)
 	{

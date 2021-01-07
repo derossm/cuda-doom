@@ -100,7 +100,6 @@ int key_invend = KEY_END;
 int key_invuse = KEY_ENTER;
 int key_invdrop = KEY_BACKSPACE;
 
-
 //
 // Mouse controls
 //
@@ -194,7 +193,6 @@ int key_menu_cleanscreenshot = 0; // [crispy]
 int key_menu_del = KEY_DEL; // [crispy]
 int key_menu_nextlevel = 0; // [crispy]
 int key_menu_reloadlevel = 0; // [crispy]
-
 
 //
 // Joystick controls

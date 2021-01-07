@@ -86,7 +86,8 @@ bool P_SetMobjState(MapObject* mobj, statenum_t state)
 static statenum_t P_LatestSafeState(statenum_t state)
 {
 	statenum_t safestate = statenum_t::S_NULL;
-	static statenum_t laststate, lastsafestate;
+	static statenum_t laststate;
+	static statenum_t lastsafestate;
 
 	if (state == laststate)
 	{
@@ -392,7 +393,6 @@ void P_ZMovement(MapObject* mo)
 		}
 		mo->z = mo->floorz;
 
-
 		// cph 2001/05/26 -
 		// See lost soul bouncing comment above. We need this here for bug
 		// compatibility with original Doom2 v1.9 - if a soul is charging and
@@ -439,8 +439,6 @@ void P_ZMovement(MapObject* mo)
 		}
 	}
 }
-
-
 
 //
 // P_NightmareRespawn
@@ -566,7 +564,6 @@ void P_MobjThinker(MapObject* mobj)
 			return;		// mobj was removed
 	}
 
-
 	// cycle through states,
 	// calling action functions at transitions
 	if (mobj->tics != -1)
@@ -602,7 +599,6 @@ void P_MobjThinker(MapObject* mobj)
 	}
 
 }
-
 
 //
 // P_SpawnMobj
@@ -703,14 +699,10 @@ MapObject* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
 	return P_SpawnMobjSafe(x, y, z, type, false);
 }
 
-//
-// P_RemoveMobj
-//
 mapthing_t itemrespawnque[ITEMQUESIZE];
 TimeType itemrespawntime[ITEMQUESIZE];
 int iquehead;
 int iquetail;
-
 
 void P_RemoveMobj(MapObject* mobj)
 {
@@ -745,9 +737,6 @@ void P_RemoveMobj(MapObject* mobj)
 	// free block
 	P_RemoveThinker((thinker_t*)mobj);
 }
-
-
-
 
 //
 // P_RespawnSpecials
@@ -814,8 +803,6 @@ void P_RespawnSpecials()
 	// pull it from the que
 	iquetail = (iquetail + 1) & (ITEMQUESIZE - 1);
 }
-
-
 
 // [crispy] weapon sound sources
 degenmobj_t muzzles[MAX_PLAYERS];
@@ -898,7 +885,6 @@ void P_SpawnPlayer(mapthing_t* mthing)
 		HU_Start();
 	}
 }
-
 
 //
 // P_SpawnMapThing
@@ -1052,12 +1038,9 @@ void P_SpawnMapThing(mapthing_t* mthing)
 				st_keyorskull[it_yellowcard] = 3;
 }
 
-
-
 //
 // GAME SPAWN FUNCTIONS
 //
-
 
 //
 // P_SpawnPuff
@@ -1087,8 +1070,6 @@ void P_SpawnPuffSafe(fixed_t x, fixed_t y, fixed_t z, bool safe)
 		P_SetMobjState(th, safe ? P_LatestSafeState(statenum_t::S_PUFF3) : statenum_t::S_PUFF3);
 }
 
-
-
 //
 // P_SpawnBlood
 //
@@ -1116,8 +1097,6 @@ void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, MapObject* target
 	if (crispy->coloredblood)
 		th->flags |= (target->flags & mobjtype_t::mobjflag_e::MF_SHADOW);
 }
-
-
 
 //
 // P_CheckMissileSpawn
@@ -1202,7 +1181,6 @@ MapObject* P_SpawnMissile(MapObject* source, MapObject* dest, mobjtype_t type)
 
 	return th;
 }
-
 
 //
 // P_SpawnPlayerMissile

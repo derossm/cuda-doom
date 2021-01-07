@@ -410,7 +410,8 @@ void NET_Log(std::string fmt, ...)
 
 void NET_LogPacket(net_packet_t* packet)
 {
-	int i, bytes;
+	int i;
+	int bytes;
 
 	if (net_debug == NULL)
 	{

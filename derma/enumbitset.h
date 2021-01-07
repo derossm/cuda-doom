@@ -17,6 +17,7 @@ namespace cudadoom
 {
 
 template<typename E, E N>
+	requires std::is_enum_v<std::remove_reference_t<E>>
 class BitSet : public std::bitset<static_cast<size_t>(N)>
 {
 public:
@@ -37,6 +38,16 @@ public:
 		bitset::set(pos, value);
 		return *this;
 	}
+
+	template<typename... Es>
+	requires (std::is_enum_v<std::remove_reference_t<Es>> && ...)
+			|| (std::is_integral<std::remove_reference_t<Es>> && ...)
+	inline BitSet<E, N>& set(bool value, Es... es) :
+	{
+		auto ev = {es...};
+		std::for_each(ev.begin(), ev.end(), [&](auto& iter){ bitset::set(static_cast<size_t>(iter), value); });
+	}
+
 
 	inline BitSet<E, N>& flip() noexcept
 	{
@@ -88,86 +99,5 @@ public:
 
 	//inline bool operator<=>(const BitSet<E, N> &b) = default;
 };
-
-/*
-template<typename T, typename E>
-requires std::is_enum_v<E>
-class Index
-{
-private:
-	E value;
-
-public:
-	using Type = T;
-	using Enum = E;
-
-	Index()
-	{
-	}
-
-	~Index()
-	{
-	}
-
-	inline bool operator==(const E& rhs) const noexcept { return (value == rhs) == 0; }
-	inline bool operator!=(const E& rhs) const noexcept { return (value != rhs) != 0; }
-	inline bool operator< (const E& rhs) const noexcept { return (value <  rhs) <  0; }
-	inline bool operator> (const E& rhs) const noexcept { return (value >  rhs) >  0; }
-	inline bool operator<=(const E& rhs) const noexcept { return (value <= rhs) <= 0; }
-	inline bool operator>=(const E& rhs) const noexcept { return (value >= rhs) >= 0; }
-
-	T& operator[](std::ptrdiff_t rhs) { return static_cast<T>(value); }
-	T& operator[](std::ptrdiff_t lhs, Index<T, E>* rhs) { return static_cast<T>(this->value); }
-
-	friend inline bool operator==(const E& lhs, const Index<T, E>& rhs) noexcept;
-	friend inline bool operator!=(const E& lhs, const Index<T, E>& rhs) noexcept;
-	friend inline bool operator< (const E& lhs, const Index<T, E>& rhs) noexcept;
-	friend inline bool operator> (const E& lhs, const Index<T, E>& rhs) noexcept;
-	friend inline bool operator<=(const E& lhs, const Index<T, E>& rhs) noexcept;
-	friend inline bool operator>=(const E& lhs, const Index<T, E>& rhs) noexcept;
-
-	Index<T, E>& operator=(const T& other)
-	{
-		if constexpr (std::is_class<T>::value == true)
-		{	//if constexpr (std::is_base_of_v<Index<T,E>, T>::value == true)
-			//{
-				if (this != &other)
-				{
-					value = other.value;
-				}
-				
-				return *this;
-			//}
-		}
-
-		value = other;
-
-		return *this;
-	}
-
-	Index<T, E>& operator=(const E& other)
-	{
-		value = other;
-
-		return *this;
-	}
-
-	//T operator()() { return value; }
-};
-
-template<typename T, typename E>
-inline bool operator==(const E& lhs, const Index<T, E>& rhs) noexcept { return (lhs == rhs.value) == 0; }
-template<typename T, typename E>
-inline bool operator!=(const E& lhs, const Index<T, E>& rhs) noexcept { return (lhs != rhs.value) != 0; }
-template<typename T, typename E>
-inline bool operator< (const E& lhs, const Index<T, E>& rhs) noexcept { return (lhs <  rhs.value) <  0; }
-template<typename T, typename E>
-inline bool operator> (const E& lhs, const Index<T, E>& rhs) noexcept { return (lhs >  rhs.value) >  0; }
-template<typename T, typename E>
-inline bool operator<=(const E& lhs, const Index<T, E>& rhs) noexcept { return (lhs <= rhs.value) <= 0; }
-template<typename T, typename E>
-inline bool operator>=(const E& lhs, const Index<T, E>& rhs) noexcept { return (lhs >= rhs.value) >= 0; }
-
- */
 
 } // end namespace cudadoom

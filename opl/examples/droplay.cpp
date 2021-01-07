@@ -94,7 +94,8 @@ void TimerCallback(void* data)
 
 	for (;;)
 	{
-		int reg, val;
+		int reg;
+		int val;
 
 		// End of file?
 

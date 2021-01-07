@@ -12,7 +12,6 @@
 		The client waiting screen when we are waiting for the server to start the game.
 \**********************************************************************************************************************************************/
 
-
 #include "config.h"
 #include "doomkeys.h"
 
@@ -247,7 +246,8 @@ static void CloseWindow(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAST
 
 static void CheckSHA1Sums()
 {
-	bool correct_wad, correct_deh;
+	bool correct_wad;
+	bool correct_deh;
 	bool same_freedoom;
 	cudadoom::txt::Window* window;
 	cudadoom::txt::WindowAction* cont_button;
@@ -348,13 +348,7 @@ static void ParseCommandLineArgs()
 {
 	int i;
 
-	//!
-	// @arg <n>
-	// @category net
-	//
 	// Autostart the netgame when n nodes (clients) have joined the server.
-	//
-
 	i = M_CheckParmWithArgs("-nodes", 1);
 	if (i > 0)
 	{
@@ -366,12 +360,9 @@ static void CheckAutoLaunch()
 {
 	int nodes;
 
-	if (net_client_received_wait_data
-		&& net_client_wait_data.is_controller
-		&& expected_nodes > 0)
+	if (net_client_received_wait_data && net_client_wait_data.is_controller && expected_nodes > 0)
 	{
-		nodes = net_client_wait_data.num_players
-			+ net_client_wait_data.num_drones;
+		nodes = net_client_wait_data.num_players + net_client_wait_data.num_drones;
 
 		if (nodes >= expected_nodes)
 		{

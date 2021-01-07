@@ -52,7 +52,6 @@ void T_PlatRaise(plat_t* plat)
 				S_StartSound(&plat->sector->soundorg, sfxenum_t::sfx_stnmov);
 		}
 
-
 		if (res == result_e::crushed && (!plat->crush))
 		{
 			plat->count = plat->wait;
@@ -111,7 +110,6 @@ void T_PlatRaise(plat_t* plat)
 	}
 }
 
-
 //
 // Do Platforms
 // "amount" is only used for SOME platforms.
@@ -125,7 +123,6 @@ int EV_DoPlat(line_t* line, plattype_e type, int amount)
 
 	secnum = -1;
 	rtn = 0;
-
 
 	//	Activate all <type> plats that are in_stasis
 	switch (type)
@@ -229,8 +226,6 @@ int EV_DoPlat(line_t* line, plattype_e type, int amount)
 	}
 	return rtn;
 }
-
-
 
 void P_ActivateInStasis(int tag)
 {

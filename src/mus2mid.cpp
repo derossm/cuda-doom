@@ -130,7 +130,6 @@ static bool WriteTime(TimeType time, MEMFILE* midioutput)
 	}
 }
 
-
 // Write the end of track marker
 static bool WriteEndTrack(MEMFILE* midioutput)
 {
@@ -423,7 +422,6 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 	byte eventdescriptor;
 	int channel; // Channel number
 	musevent event;
-
 
 	// Bunch of vars read from MUS lump
 	byte key;

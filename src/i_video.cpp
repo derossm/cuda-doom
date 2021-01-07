@@ -476,7 +476,8 @@ static void UpdateGrab()
 	}
 	else if (!grab && currently_grabbed)
 	{
-		int screen_w, screen_h;
+		int screen_w;
+		int screen_h;
 
 		SetShowCursor(true);
 
@@ -496,7 +497,8 @@ static void UpdateGrab()
 static void LimitTextureSize(int *w_upscale, int *h_upscale)
 {
 	SDL_RendererInfo rinfo;
-	int orig_w, orig_h;
+	int orig_w;
+	int orig_h;
 
 	orig_w = *w_upscale;
 	orig_h = *h_upscale;

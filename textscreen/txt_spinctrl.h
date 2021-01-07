@@ -387,7 +387,7 @@ public:
 	}
 };
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt
 
 /**
  * Create a new spin control widget tracking an integer value.

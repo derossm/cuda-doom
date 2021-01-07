@@ -346,4 +346,4 @@ public:
 	  */
 	  //bool ContainsWidget(Widget&& needle);
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

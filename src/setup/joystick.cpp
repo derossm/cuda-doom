@@ -35,7 +35,9 @@ struct joystick_config_t
 struct known_joystick_t
 {
 	std::string name;
-	int axes, buttons, hats;
+	int axes;
+	int buttons;
+	int hats;
 	const joystick_config_t* configs;
 };
 
@@ -494,7 +496,6 @@ static const known_joystick_t known_joysticks[] =
 		nes30_pro_controller,
 	},
 
-
 	// 8Bitdo FC30 Pro, http://8bitdo.cn/fc30pro/
 	// connected over bluetooth
 	{
@@ -595,7 +596,9 @@ static const known_joystick_t* GetJoystickType(int index)
 {
 	SDL_Joystick* joystick;
 	std::string name;
-	int axes, buttons, hats;
+	int axes;
+	int buttons;
+	int hats;
 	int i;
 
 	joystick = all_joysticks[index];

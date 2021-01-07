@@ -89,7 +89,6 @@ static void TXT_KeyInputSizeCalc(TXT_UNCAST_ARG(key_input))
 	key_input->widget.h = 1;
 }
 
-
 static void TXT_KeyInputDrawer(TXT_UNCAST_ARG(key_input))
 {
 	TXT_CAST_ARG(txt_key_input_t, key_input);

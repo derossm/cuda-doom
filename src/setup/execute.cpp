@@ -149,10 +149,7 @@ static void ConcatWCString(wchar_t* buf, std::string value)
 		buf + wcslen(buf), strlen(value) + 1);
 }
 
-// Build the command line string, a wide character string of the form:
-//
-// "program" "arg"
-
+// Build the command line string, a wide character string of the form: "program" "arg"
 static wchar_t* BuildCommandLine(std::string program, std::string arg)
 {
 	wchar_t exe_path[MAX_PATH];
@@ -160,19 +157,14 @@ static wchar_t* BuildCommandLine(std::string program, std::string arg)
 	wchar_t* sep;
 
 	// Get the path to this .exe file.
-
 	GetModuleFileNameW(NULL, exe_path, MAX_PATH);
 
 	// Allocate buffer to contain result string.
-
-	result = calloc(wcslen(exe_path) + strlen(program) + strlen(arg) + 6,
-		sizeof(wchar_t));
+	result = calloc(wcslen(exe_path) + strlen(program) + strlen(arg) + 6, sizeof(wchar_t));
 
 	wcscpy(result, L"\"");
 
-	// Copy the path part of the filename (including ending \)
-	// into the result buffer:
-
+	// Copy the path part of the filename (including ending \) into the result buffer:
 	sep = wcsrchr(exe_path, DIR_SEPARATOR);
 
 	if (sep != NULL)
@@ -182,11 +174,9 @@ static wchar_t* BuildCommandLine(std::string program, std::string arg)
 	}
 
 	// Concatenate the name of the program:
-
 	ConcatWCString(result, program);
 
 	// End of program name, start of argument:
-
 	wcscat(result, L"\" \"");
 
 	ConcatWCString(result, arg);
@@ -206,21 +196,17 @@ static int ExecuteCommand(std::string program, std::string arg)
 	command = BuildCommandLine(program, arg);
 
 	// Invoke the program:
-
 	memset(&proc_info, 0, sizeof(proc_info));
 	memset(&startup_info, 0, sizeof(startup_info));
 	startup_info.cb = sizeof(startup_info);
 
-	if (!CreateProcessW(NULL, command,
-		NULL, NULL, false, 0, NULL, NULL,
-		&startup_info, &proc_info))
+	if (!CreateProcessW(NULL, command, NULL, NULL, false, 0, NULL, NULL, &startup_info, &proc_info))
 	{
 		result = -1;
 	}
 	else
 	{
 		// Wait for the process to finish, and save the exit code.
-
 		result = WaitForProcessExit(proc_info.hProcess);
 
 		CloseHandle(proc_info.hProcess);
@@ -250,9 +236,7 @@ bool OpenFolder(std::string path)
 	return result == 0;
 }
 
-// Given the specified program name, get the full path to the program,
-// assuming that it is in the same directory as this program is.
-
+// Given the specified program name, get the full path to the program, assuming that it is in the same directory as this program is.
 std::string GetFullExePath(std::string program)
 {
 	std::string result;
@@ -292,7 +276,6 @@ static int ExecuteCommand(std::string program, std::string arg)
 	if (childpid == 0)
 	{
 		// This is the child. Execute the command.
-
 		argv[0] = GetFullExePath(program);
 		argv[1] = arg;
 		argv[2] = NULL;
@@ -303,9 +286,7 @@ static int ExecuteCommand(std::string program, std::string arg)
 	}
 	else
 	{
-		// This is the parent. Wait for the child to finish, and return
-		// the status code.
-
+		// This is the parent. Wait for the child to finish, and return the status code.
 		waitpid(childpid, &result, 0);
 
 		if (WIFEXITED(result) && WEXITSTATUS(result) != 0x80)
@@ -329,11 +310,9 @@ int ExecuteDoom(execute_context_t* context)
 	fclose(context->stream);
 
 	// Build the command line
-
 	response_file_arg = std::string("@" + context->response_file);
 
 	// Run Doom
-
 	result = ExecuteCommand(GetExecutableName(), response_file_arg);
 
 	free(response_file_arg);
@@ -353,20 +332,16 @@ static void TestCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAS
 	std::string extra_cfg;
 	cudadoom::txt::Window* testwindow;
 
-	testwindow = cudadoom::txt::MessageBox("Starting Doom",
-		"Starting Doom to test the\n"
-		"settings. Please wait.");
+	testwindow = cudadoom::txt::MessageBox("Starting Doom","Starting Doom to test the\nsettings. Please wait.");
 	cudadoom::txt::DrawDesktop();
 
 	// Save temporary configuration files with the current configuration
-
 	main_cfg = TempFile("tmp.cfg");
 	extra_cfg = TempFile("extratmp.cfg");
 
 	M_SaveDefaultsAlternate(main_cfg, extra_cfg);
 
 	// Run with the -testcontrols parameter
-
 	exec = NewExecuteContext();
 	AddCmdLineParameter(exec, "-testcontrols");
 	AddCmdLineParameter(exec, "-config \"%s\"", main_cfg);
@@ -376,7 +351,6 @@ static void TestCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAS
 	cudadoom::txt::CloseWindow(testwindow);
 
 	// Delete the temporary config files
-
 	remove(main_cfg);
 	remove(extra_cfg);
 	free(main_cfg);
@@ -392,4 +366,3 @@ WindowAction* TestConfigAction()
 
 	return test_action;
 }
-

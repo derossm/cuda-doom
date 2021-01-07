@@ -180,7 +180,6 @@ int R_PointOnSide(fixed_t x, fixed_t y, node_t* node)
 	return 1;
 }
 
-
 int R_PointOnSegSide(fixed_t x, fixed_t y, seg_t* line)
 {
 	fixed_t lx;

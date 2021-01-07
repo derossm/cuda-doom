@@ -1168,4 +1168,4 @@ std::unique_ptr<Table> MakeHorizontalTable(Widget* first_widget, ...)
 		   */
 		   //int PageTable(UNCAST_ARG(table), int pagex, int pagey);
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

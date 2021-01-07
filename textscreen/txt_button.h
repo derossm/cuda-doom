@@ -107,4 +107,4 @@ public:
 	}
 };
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

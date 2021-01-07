@@ -21,12 +21,12 @@ namespace cudadoom::txt
 {
 
 // Array of border characters for drawing windows. The array looks like this:
-//
+
 // +-++
 // | ||
 // +-++
 // +-++
-static const int borders[4][4] =
+constexpr int borders[4][4] =
 {
 	{0xda, 0xc4, 0xc2, 0xbf},
 	{0xb3, ' ', 0xb3, 0xb3},
@@ -45,7 +45,6 @@ void DrawDesktopBackground(std::string title)
 	screendata = GetScreenData();
 
 	// Fill the screen with gradient characters
-
 	p = screendata;
 
 	for (i = 0; i < SCREEN_W * SCREEN_H; ++i)
@@ -57,7 +56,6 @@ void DrawDesktopBackground(std::string title)
 	}
 
 	// Draw the top and bottom banners
-
 	p = screendata;
 
 	for (i = 0; i < SCREEN_W; ++i)
@@ -79,7 +77,6 @@ void DrawDesktopBackground(std::string title)
 	}
 
 	// Print the title
-
 	GotoXY(0, 0);
 	FGColor(ColorType::black);
 	BGColor(ColorType::grey, false);
@@ -92,7 +89,8 @@ void DrawShadow(int x, int y, int w, int h)
 {
 	unsigned char* screendata;
 	unsigned char* p;
-	int x1, y1;
+	int x1;
+	int y1;
 
 	screendata = GetScreenData();
 
@@ -115,29 +113,23 @@ void DrawShadow(int x, int y, int w, int h)
 void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 {
 	SavedColors colors;
-	int x1, y1;
-	int bx, by;
+	int x1;
+	int y1;
+	int bx;
+	int by;
 
 	SaveColors(&colors);
 	FGColor(ColorType::bright_cyan);
 
 	for (y1 = y; y1 < y + h; ++y1)
 	{
-		// Select the appropriate row and column in the borders
-		// array to pick the appropriate character to draw at
-		// this location.
-		//
-		// Draw a horizontal line on the third line down, so we
-		// draw a box around the title.
-
-		by = y1 == y ? 0 :
-			y1 == y + 2 && title != NULL ? 2 :
-			y1 == y + h - 1 ? 3 : 1;
+		// Select the appropriate row and column in the borders array to pick the appropriate character to draw at this location.
+		// Draw a horizontal line on the third line down, so we draw a box around the title.
+		by = y1 == y ? 0 : y1 == y + 2 && title != NULL ? 2 : y1 == y + h - 1 ? 3 : 1;
 
 		for (x1 = x; x1 < x + w; ++x1)
 		{
-			bx = x1 == x ? 0 :
-				x1 == x + w - 1 ? 3 : 1;
+			bx = x1 == x ? 0 : x1 == x + w - 1 ? 3 : 1;
 
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
@@ -148,7 +140,6 @@ void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 	}
 
 	// Draw the title
-
 	if (title != NULL)
 	{
 		GotoXY(x + 1, y + 1);
@@ -165,7 +156,6 @@ void DrawWindowFrame(std::string title, int x, int y, int w, int h)
 	}
 
 	// Draw the window's shadow.
-
 	DrawShadow(x + 2, y + h, w, 1);
 	DrawShadow(x + w, y + 1, 2, h);
 
@@ -195,16 +185,12 @@ void DrawSeparator(int x, int y, int w)
 	{
 		GotoXY(x1, y);
 
-		b = x1 == x ? 0 :
-			x1 == x + w - 1 ? 3 :
-			1;
+		b = x1 == x ? 0 : x1 == x + w - 1 ? 3 : 1;
 
 		if (VALID_X(x1))
 		{
 			// Read the current value from the screen
-			// Check that it matches what the window should look like if
-			// there is no separator, then apply the separator
-
+			// Check that it matches what the window should look like if there is no separator, then apply the separator
 			if (*data == borders[1][b])
 			{
 				PutChar(borders[2][b]);
@@ -217,11 +203,11 @@ void DrawSeparator(int x, int y, int w)
 	RestoreColors(&colors);
 }
 
-// Alternative to DrawString() where the argument is a "code page
-// string" - characters are in native code page format and not UTF-8.
+// Alternative to DrawString() where the argument is a "code page string" - characters are in native code page format and not UTF-8.
 void DrawCodePageString(std::string s)
 {
-	int x, y;
+	int x;
+	int y;
 	int x1;
 	std::string p;
 
@@ -258,10 +244,8 @@ static void PutUnicodeChar(unsigned c)
 		return;
 	}
 
-	// Map Unicode character into the symbol used to represent it in this
-	// code page. For unrepresentable characters, print a fallback instead.
-	// Note that we use PutSymbol() here because we just want to do a
-	// raw write into the screen buffer.
+	// Map Unicode character into the symbol used to represent it in this code page. For unrepresentable characters, print a fallback instead.
+	// Note that we use PutSymbol() here because we just want to do a raw write into the screen buffer.
 	d = UnicodeCharacter(c);
 
 	if (d >= 0)
@@ -276,7 +260,8 @@ static void PutUnicodeChar(unsigned c)
 
 void DrawString(std::string s)
 {
-	int x, y;
+	int x;
+	int y;
 	int x1;
 	std::string p;
 	unsigned c;
@@ -437,21 +422,20 @@ void PushClipArea(int x1, int x2, int y1, int y2)
 	newarea->y1 = cliparea->y1;
 	newarea->y2 = cliparea->y2;
 
-	if (x1 > newarea->x1)
-		newarea->x1 = x1;
-	if (x2 < newarea->x2)
-		newarea->x2 = x2;
-	if (y1 > newarea->y1)
-		newarea->y1 = y1;
-	if (y2 < newarea->y2)
-		newarea->y2 = y2;
+	if (x1 > newarea->x1){
+		newarea->x1 = x1;}
+	if (x2 < newarea->x2){
+		newarea->x2 = x2;}
+	if (y1 > newarea->y1){
+		newarea->y1 = y1;}
+	if (y2 < newarea->y2){
+		newarea->y2 = y2;}
 
 #if 0
 	printf("New scrollable area: %i,%i-%i,%i\n", x1, y1, x2, y2);
 #endif
 
 	// Hook into the list
-
 	newarea->next = cliparea;
 	cliparea = newarea;
 }
@@ -461,15 +445,13 @@ void PopClipArea()
 	txt_cliparea_t* next_cliparea;
 
 	// Never pop the last entry
-
-	if (cliparea->next == NULL)
-		return;
+	if (cliparea->next == NULL){
+		return;}
 
 	// Unlink the last entry and delete
-
 	next_cliparea = cliparea->next;
 	free(cliparea);
 	cliparea = next_cliparea;
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

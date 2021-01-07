@@ -132,7 +132,6 @@ void T_MoveCeiling(ceiling_t* ceiling)
 	}
 }
 
-
 //
 // EV_DoCeiling
 // Move a ceiling up/down and all around!
@@ -213,7 +212,6 @@ int EV_DoCeiling(line_t* line, ceiling_e type)
 	}
 	return rtn;
 }
-
 
 //
 // Add an active ceiling

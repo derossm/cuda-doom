@@ -71,14 +71,9 @@ static void InitializeSections()
 	}
 }
 
-void DEH_Init() // [crispy] un-static
+void DEH_Init()
 {
-	//!
-	// @category mod
-	//
 	// Ignore cheats in dehacked files.
-	//
-
 	if (M_CheckParm("-nocheats") > 0)
 	{
 		deh_apply_cheats = false;
@@ -117,8 +112,8 @@ static bool IsWhitespace(std::string s)
 {
 	for (; *s; ++s)
 	{
-		if (!isspace(*s))
-			return false;
+		if (!isspace(*s)){
+			return false;}
 	}
 
 	return true;
@@ -130,8 +125,8 @@ std::string CleanString(std::string s)
 	std::string strending;
 
 	// Leading whitespace
-	while (*s && isspace(*s))
-		++s;
+	while (*s && isspace(*s)){
+		++s;}
 
 	// Trailing whitespace
 	strending = s + strlen(s) - 1;
@@ -145,15 +140,8 @@ std::string CleanString(std::string s)
 	return s;
 }
 
-// This pattern is used a lot of times in different sections,
-// an assignment is essentially just a statement of the form:
-//
-// Variable Name = Value
-//
-// The variable name can include spaces or any other characters.
-// The string is split on the '=', essentially.
-//
-// Returns true if read correctly
+// This pattern is used a lot of times in different sections, an assignment is essentially just a statement of the form: Variable Name = Value
+// The variable name can include spaces or any other characters. The string is split on the '=', essentially. Returns true if read correctly.
 bool DEH_ParseAssignment(std::string line, char** variable_name, char** value)
 {
 	std::string p;
@@ -166,8 +154,7 @@ bool DEH_ParseAssignment(std::string line, char** variable_name, char** value)
 		return false;
 	}
 
-	// variable name at the start
-	// turn the '=' into a \0 to terminate the string here
+	// variable name at the start turn the '=' into a \0 to terminate the string here
 	*p = '\0';
 	*variable_name = CleanString(line);
 
@@ -205,8 +192,7 @@ static bool CheckSignatures(deh_context_t* context)
 		}
 	}
 
-	// [crispy] not a valid signature, try parsing this line again
-	// and see if it starts with a section marker
+	// [crispy] not a valid signature, try parsing this line again and see if it starts with a section marker
 	DEH_RestoreLineStart(context);
 
 	return false;
@@ -215,45 +201,29 @@ static bool CheckSignatures(deh_context_t* context)
 // Parses a comment string in a dehacked file.
 static void DEH_ParseComment(std::string comment)
 {
-	//
-	// Welcome, to the super-secret Chocolate Doom-specific Dehacked
-	// overrides function.
-	//
-	// Putting these magic comments into your Dehacked lumps will
-	// allow you to go beyond the normal limits of Vanilla Dehacked.
-	// Because of this, these comments are deliberately undocumented,
-	// and if you're using them you should be aware that your mod
-	// is not compatible with Vanilla Doom and you're probably a
-	// very naughty person.
-	//
+	// Welcome, to the super-secret Chocolate Doom-specific Dehacked overrides function.
 
-	// Allow comments containing this special value to allow string
-	// replacements longer than those permitted by DOS dehacked.
-	// This allows us to use a dehacked patch for doing string
-	// replacements for emulating Chex Quest.
-	//
-	// If you use this, your dehacked patch may not work in Vanilla
-	// Doom.
+	// Putting these magic comments into your Dehacked lumps will allow you to go beyond the normal limits of Vanilla Dehacked.
+	// Because of this, these comments are deliberately undocumented, and if you're using them you should be aware that your
+	// mod is not compatible with Vanilla Doom and you're probably a very naughty person.
 
+	// Allow comments containing this special value to allow string replacements longer than those permitted by DOS dehacked.
+	// This allows us to use a dehacked patch for doing string replacements for emulating Chex Quest.
+
+	// If you use this, your dehacked patch may not work in Vanilla Doom.
 	if (strstr(comment, "*allow-long-strings*") != NULL)
 	{
 		deh_allow_long_strings = true;
 	}
 
-	// Allow magic comments to allow longer cheat replacements than
-	// those permitted by DOS dehacked. This is also for Chex
-	// Quest.
-
+	// Allow magic comments to allow longer cheat replacements than those permitted by DOS dehacked. This is also for Chex Quest.
 	if (strstr(comment, "*allow-long-cheats*") != NULL)
 	{
 		deh_allow_long_cheats = true;
 	}
 
-	// Allow magic comments to allow parsing [STRINGS] section
-	// that are usually only found in BEX format files. This allows
-	// for substitution of map and episode names when loading
-	// Freedoom/FreeDM IWADs.
-
+	// Allow magic comments to allow parsing [STRINGS] section that are usually only found in BEX format files.
+	// This allows for substitution of map and episode names when loading Freedoom/FreeDM IWADs.
 	if (strstr(comment, "*allow-extended-strings*") != NULL)
 	{
 		deh_allow_extended_strings = true;
@@ -261,7 +231,6 @@ static void DEH_ParseComment(std::string comment)
 }
 
 // Parses a dehacked file by reading from the context
-
 static void DEH_ParseContext(deh_context_t* context)
 {
 	deh_section_t* current_section = NULL;
@@ -272,7 +241,6 @@ static void DEH_ParseContext(deh_context_t* context)
 	std::string line;
 
 	// Read the header and check it matches the signature
-
 	if (!CheckSignatures(context))
 	{
 		// [crispy] make non-fatal
@@ -280,19 +248,15 @@ static void DEH_ParseContext(deh_context_t* context)
 	}
 
 	// Read the file
-
 	while (!DEH_HadError(context))
 	{
-		// Read the next line. We only allow the special extended parsing
-		// for the BEX [STRINGS] section.
-		extended = current_section != NULL
-			&& !iequals(current_section->name, "[STRINGS]");
+		// Read the next line. We only allow the special extended parsing for the BEX [STRINGS] section.
+		extended = current_section != NULL && !iequals(current_section->name, "[STRINGS]");
 		// [crispy] save pointer to start of line, just in case
 		DEH_SaveLineStart(context);
 		line = DEH_ReadLine(context, extended);
 
 		// end of file?
-
 		if (line == NULL)
 		{
 			return;
@@ -304,7 +268,6 @@ static void DEH_ParseContext(deh_context_t* context)
 		if (line[0] == '#')
 		{
 			// comment
-
 			DEH_ParseComment(line);
 			continue;
 		}
@@ -314,14 +277,12 @@ static void DEH_ParseContext(deh_context_t* context)
 			if (current_section != NULL)
 			{
 				// end of section
-
 				if (current_section->end != NULL)
 				{
 					current_section->end(context, tag);
 				}
 
-				// [crispy] if this was a BEX line parser, remember it in case
-				// the next section does not start with a section marker
+				// [crispy] if this was a BEX line parser, remember it in case the next section does not start with a section marker
 				if (current_section->name[0] == '[')
 				{
 					prev_section = current_section;
@@ -340,13 +301,11 @@ static void DEH_ParseContext(deh_context_t* context)
 			if (current_section != NULL)
 			{
 				// parse this line
-
 				current_section->line_parser(context, line, tag);
 			}
 			else
 			{
 				// possibly the start of a new section
-
 				sscanf(line, "%19s", section_name);
 
 				current_section = GetSectionByName(section_name);
@@ -356,25 +315,23 @@ static void DEH_ParseContext(deh_context_t* context)
 					tag = current_section->start(context, line);
 					//printf("started %s tag\n", section_name);
 				}
+				else if (prev_section != NULL)
+				{
+					// [crispy] try this line again with the previous line parser
+					DEH_RestoreLineStart(context);
+					current_section = prev_section;
+					prev_section = NULL;
+				}
 				else
-					if (prev_section != NULL)
-					{
-						// [crispy] try this line again with the previous line parser
-						DEH_RestoreLineStart(context);
-						current_section = prev_section;
-						prev_section = NULL;
-					}
-					else
-					{
-						//printf("unknown section name %s\n", section_name);
-					}
+				{
+					//printf("unknown section name %s\n", section_name);
+				}
 			}
 		}
 	}
 }
 
 // Parses a dehacked file
-
 int DEH_LoadFile(std::string filename)
 {
 	deh_context_t* context;
@@ -384,15 +341,11 @@ int DEH_LoadFile(std::string filename)
 		DEH_Init();
 	}
 
-	// Before parsing a new file, reset special override flags to false.
-	// Magic comments should only apply to the file in which they were
-	// defined, and shouldn't carry over to subsequent files as well.
-	// [crispy] always allow everything
-/*
-	deh_allow_long_strings = false;
-	deh_allow_long_cheats = false;
-	deh_allow_extended_strings = false;
-*/
+	// Before parsing a new file, reset special override flags to false. Magic comments should only apply to the file in which they were
+	// defined, and shouldn't carry over to subsequent files as well. -edit: always allow everything
+	//deh_allow_long_strings = false;
+	//deh_allow_long_cheats = false;
+	//deh_allow_extended_strings = false;
 
 	printf(" loading %s\n", filename);
 
@@ -438,9 +391,7 @@ void DEH_AutoLoadPatches(std::string path)
 	I_EndGlob(glob);
 }
 
-// Load dehacked file from WAD lump.
-// If allow_long is set, allow long strings and cheats just for this lump.
-
+// Load dehacked file from WAD lump. If allow_long is set, allow long strings and cheats just for this lump.
 int DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error)
 {
 	deh_context_t* context;
@@ -450,13 +401,10 @@ int DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error)
 		DEH_Init();
 	}
 
-	// Reset all special flags to defaults.
-	// [crispy] always allow everything
-/*
-	deh_allow_long_strings = allow_long;
-	deh_allow_long_cheats = allow_long;
-	deh_allow_extended_strings = false;
-*/
+	// Reset all special flags to defaults. -edit: always allow everything
+	//deh_allow_long_strings = allow_long;
+	//deh_allow_long_cheats = allow_long;
+	//deh_allow_extended_strings = false;
 
 	context = DEH_OpenLump(lumpnum);
 
@@ -470,8 +418,7 @@ int DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error)
 
 	DEH_CloseFile(context);
 
-	// If there was an error while parsing, abort with an error, but allow
-	// errors to just be ignored if allow_error=true.
+	// If there was an error while parsing, abort with an error, but allow errors to just be ignored if allow_error=true.
 	if (!allow_error && DEH_HadError(context))
 	{
 		I_Error("Error parsing dehacked lump");
@@ -501,13 +448,7 @@ void DEH_ParseCommandLine()
 	std::string filename;
 	int p;
 
-	//!
-	// @arg <files>
-	// @category mod
-	//
 	// Load the given dehacked patch(es)
-	//
-
 	p = M_CheckParm("-deh");
 
 	if (p > 0)
@@ -523,4 +464,3 @@ void DEH_ParseCommandLine()
 		}
 	}
 }
-

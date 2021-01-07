@@ -104,7 +104,6 @@ struct st_binicon_t
 	// stating whether to update icon
 	bool* on;
 
-
 	patch_t* p;	// icon
 	int data;	// user data
 };

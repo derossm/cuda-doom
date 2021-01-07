@@ -47,20 +47,13 @@ wad_file_t* W_OpenFile(std::string path)
 	wad_file_t* result;
 	int i;
 
-	//!
-	// @category obscure
-	//
-	// Use the OS's virtual memory subsystem to map WAD files
-	// directly into memory.
-	//
-
+	// Use the OS's virtual memory subsystem to map WAD files directly into memory.
 	if (!M_CheckParm("-mmap"))
 	{
 		return stdc_wad_file.OpenFile(path);
 	}
 
 	// Try all classes in order until we find one that works
-
 	result = NULL;
 
 	for (i = 0; i < arrlen(wad_file_classes); ++i)
@@ -86,4 +79,3 @@ size_t W_Read(wad_file_t* wad, unsigned offset,
 {
 	return wad->file_class->Read(wad, offset, buffer, buffer_len);
 }
-

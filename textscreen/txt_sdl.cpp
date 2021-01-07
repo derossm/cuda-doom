@@ -54,22 +54,22 @@ static const FontType* font;
 
 // Dummy "font" that means to try highdpi rendering, or fallback to
 // normal_font otherwise.
-static const FontType highdpi_font{"normal-highdpi", nullptr, 8, 16};
+constexpr FontType highdpi_font{"normal-highdpi", nullptr, 8, 16};
 
 // Mapping from SDL keyboard scancode to internal key code.
-static const int scancode_translate_table[]{SCANCODE_TO_KEYS_ARRAY};
+//static const int scancode_translate_table[]{SCANCODE_TO_KEYS_ARRAY};
 
 // String names of keys. This is a fallback; we usually use the SDL API.
-static const struct
-{
-	int key;
-	std::string name;
-} key_names[]{KEY_NAMES_ARRAY};
+//static const struct
+//{
+	//int key;
+	//std::string name;
+//} key_names[]{KEY_NAMES_ARRAY};
 
 // Unicode key mapping; see codepage.h.
 static const short code_page_to_unicode[]{CODE_PAGE_TO_UNICODE};
 
-static const SDL_Color ega_colors[]{
+constexpr SDL_Color ega_colors[]{
 	{0x00, 0x00, 0x00, 0xff},			// 0: Black
 	{0x00, 0x00, 0xa8, 0xff},			// 1: Blue
 	{0x00, 0xa8, 0x00, 0xff},			// 2: Green
@@ -412,9 +412,7 @@ void GetMousePosition(int* x, int* y)
 	}
 }
 
-//
 // Translates the SDL key
-//
 
 // XXX: duplicate from doomtype.h
 #define arrlen(array) (sizeof(array) / sizeof(*array))
@@ -842,4 +840,4 @@ int snprintf(std::string buf, size_t buf_len, std::string s, ...)
 	return result;
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

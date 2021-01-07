@@ -20,11 +20,17 @@ using sha1_digest_t = byte[20];
 
 struct sha1_context_t
 {
-	uint32_t h0, h1, h2, h3, h4;
+	uint32_t h0;
+	uint32_t h1;
+	uint32_t h2;
+	uint32_t h3;
+	uint32_t h4;
 	uint32_t nblocks;
-	byte buf[64];
 	int count;
+	// room for another int
+	byte buf[64];
 };
+constexpr size_t sizel = sizeof(sha1_context_t);
 
 void SHA1_Init(sha1_context_t* context);
 void SHA1_Update(sha1_context_t* context, byte* buf, size_t len);

@@ -46,7 +46,6 @@
 // Loads of by-pixel layout and placement, offsets etc.
 //
 
-
 //
 // Different vetween registered DOOM (1994) and
 // Ultimate DOOM - Final edition (retail, 1995?).
@@ -56,7 +55,6 @@
 constexpr size_t NUMEPISODES{4};
 constexpr size_t NUMMAPS{9};
 
-
 // in tics
 //U constexpr size_t PAUSELEN{(TICRATE*2)};
 //U constexpr size_t SCORESTEP{100};
@@ -64,7 +62,6 @@ constexpr size_t NUMMAPS{9};
 // pixel distance from "(YOU)" to "PLAYER N"
 //U constexpr size_t STARDIST{10};
 //U constexpr size_t WK{1};
-
 
 // GLOBAL LOCATIONS
 constexpr size_t WI_TITLEY{2};
@@ -77,13 +74,11 @@ constexpr size_t SP_STATSY{50};
 constexpr size_t SP_TIMEX{16};
 constexpr size_t SP_TIMEY{ORIGHEIGHT - 32};
 
-
 // NET GAME STUFF
 constexpr size_t NG_STATSY{50};
 #define NG_STATSX (32 + SHORT(star->width)/2 + 32*!dofrags)
 
 constexpr size_t NG_SPACINGX{64};
-
 
 // DEATHMATCH STUFF
 constexpr size_t DM_MATRIXX{42};
@@ -98,9 +93,6 @@ constexpr size_t DM_KILLERSY{100};
 constexpr size_t DM_VICTIMSX{5};
 constexpr size_t DM_VICTIMSY{50};
 
-
-
-
 enum class animenum_t
 {
 	always,
@@ -114,7 +106,6 @@ struct point_t
 	int y;
 
 };
-
 
 //
 // Animation.
@@ -162,7 +153,6 @@ struct anim_t
 
 };
 
-
 static point_t lnodes[NUMEPISODES][NUMMAPS] =
 {
 	// Episode 0 World Map
@@ -206,7 +196,6 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 
 };
 
-
 //
 // Animation locations for episode 0 (1).
 // Using patches saves a lot of space,
@@ -216,7 +205,6 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 #define ANIM(type, period, nanims, x, y, nexttic)			\
 	{ (type), (period), (nanims), { (x), (y) }, (nexttic),	\
 		0, { NULL, NULL, NULL }, 0, 0, 0, 0 }
-
 
 static anim_t epsd0animinfo[] =
 {
@@ -269,7 +257,6 @@ static anim_t* anims[NUMEPISODES] =
 	epsd2animinfo
 };
 
-
 //
 // GENERAL DATA
 //
@@ -291,7 +278,6 @@ constexpr size_t SP_PAUSE{1};
 // in seconds
 constexpr size_t SHOWNEXTLOCDELAY{4};
 //constexpr size_t SHOWLASTLOCDELAY{SHOWNEXTLOCDELAY};
-
 
 // used to accelerate or skip a stage
 static int acceleratestage;
@@ -325,7 +311,6 @@ static int cnt_pause;
 
 // # of commercial levels
 static int NUMCMAPS = 32;
-
 
 //
 //	GRAPHICS
@@ -407,7 +392,6 @@ bool WI_Responder(EventType* ev)
 	return false;
 }
 
-
 // Draws "<Levelname> Finished!"
 void WI_drawLF()
 {
@@ -449,8 +433,6 @@ void WI_drawLF()
 		V_DrawPatch(0, y, &tmp);
 	}
 }
-
-
 
 // Draws "Entering <LevelName>"
 void WI_drawEL()
@@ -520,8 +502,6 @@ void WI_drawOnLnode(int n, patch_t* c[])
 		printf("Could not place patch on level %d", n + 1);
 	}
 }
-
-
 
 void WI_initAnimatedBack()
 {
@@ -698,8 +678,6 @@ void WI_drawPercent(int x, int y, int p)
 	WI_drawNum(x, y, p, -1);
 }
 
-
-
 //
 // Display level completion time and par,
 // or "sucks" message if overflow.
@@ -742,7 +720,6 @@ void WI_drawTime(int x, int y, int t, bool suck)
 	}
 }
 
-
 void WI_End()
 {
 	void WI_unloadData();
@@ -774,7 +751,6 @@ void WI_updateNoState()
 }
 
 static bool snl_pointeron = false;
-
 
 void WI_initShowNextLoc()
 {
@@ -875,7 +851,6 @@ int WI_fragSum(int playernum)
 		}
 	}
 
-
 	// JDC hack - negative frags.
 	frags -= plrs[playernum].frags[playernum];
 	// UNUSED if (frags < 0)
@@ -884,13 +859,9 @@ int WI_fragSum(int playernum)
 	return frags;
 }
 
-
-
 static int dm_state;
 static int dm_frags[MAX_PLAYERS][MAX_PLAYERS];
 static int dm_totals[MAX_PLAYERS];
-
-
 
 void WI_initDeathmatchStats()
 {
@@ -919,8 +890,6 @@ void WI_initDeathmatchStats()
 	WI_initAnimatedBack();
 }
 
-
-
 void WI_updateDeathmatchStats()
 {
 
@@ -947,11 +916,9 @@ void WI_updateDeathmatchStats()
 			}
 		}
 
-
 		S_StartSound(0, sfxenum_t::sfx_barexp);
 		dm_state = 4;
 	}
-
 
 	if (dm_state == 2)
 	{
@@ -1021,8 +988,6 @@ void WI_updateDeathmatchStats()
 		}
 	}
 }
-
-
 
 void WI_drawDeathmatchStats()
 {
@@ -1137,8 +1102,6 @@ void WI_initNetgameStats()
 
 	WI_initAnimatedBack();
 }
-
-
 
 void WI_updateNetgameStats()
 {
@@ -1292,8 +1255,6 @@ void WI_updateNetgameStats()
 		}
 	}
 }
-
-
 
 void WI_drawNetgameStats()
 {
@@ -1631,8 +1592,6 @@ void WI_checkForAccelerate()
 	}
 }
 
-
-
 // Updates stuff each tick
 void WI_Ticker()
 {
@@ -1679,7 +1638,8 @@ typedef void (*load_callback_t)(std::string lumpname, patch_t** variable);
 
 static void WI_loadUnloadData(load_callback_t callback)
 {
-	int i, j;
+	int i;
+	int j;
 	char name[9];
 	anim_t* a;
 
@@ -1940,7 +1900,6 @@ void WI_Drawer()
 		break;
 	}
 }
-
 
 void WI_initVariables(wbstartstruct_t* wbstartstruct)
 {

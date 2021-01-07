@@ -34,9 +34,8 @@ enum class GameMission
 	none
 };
 
-// The "mode" allows more accurate specification of the game mode we are
-// in: eg. shareware vs. registered. So doom1.wad and doom.wad are the
-// same mission, but a different mode.
+// The "mode" allows more accurate specification of the game mode we are in: eg. shareware vs. registered.
+// So doom1.wad and doom.wad are the same mission, but a different mode.
 enum class GameMode
 {
 	shareware,		// Doom/Heretic shareware
@@ -49,6 +48,7 @@ enum class GameMode
 // What version are we emulating?
 enum class GameVersion
 {
+	invalid = -1,
 	exe_doom_1_2,		// Doom 1.2: shareware and registered
 	exe_doom_1_666,		// Doom 1.666: for shareware, registered and commercial
 	exe_doom_1_7,		// Doom 1.7/1.7a: "

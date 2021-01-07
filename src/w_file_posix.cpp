@@ -158,14 +158,12 @@ size_t W_POSIX_Read(wad_file_t* wad, unsigned offset,
 	return bytes_read;
 }
 
-
 wad_file_class_t posix_wad_file =
 {
 	W_POSIX_OpenFile,
 	W_POSIX_CloseFile,
 	W_POSIX_Read,
 };
-
 
 #endif /* #ifdef HAVE_MMAP */
 

@@ -103,7 +103,6 @@ then, to also use this routine to convert colors *to* gray?
 	You can convert any color to an equivalent grey by setting the saturation
 	to 0.0
 
-
 	- Paul Haeberli
 */
 

@@ -22,13 +22,11 @@
 #include "m_argv.h"
 #include "m_config.h"
 
-static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;
+//static const int scancode_translate_table[] = SCANCODE_TO_KEYS_ARRAY;
 
-// Lookup table for mapping ASCII characters to their equivalent when
-// shift is pressed on a US layout keyboard. This is the original table
-// as found in the Doom sources, comments and all.
-static const char shiftxform[] =
-{
+// Lookup table for mapping ASCII characters to their equivalent when shift is pressed on a US layout keyboard.
+// This is the original table as found in the Doom sources, comments and all.
+constexpr char shiftxform[]{
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 	11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 	21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
@@ -66,35 +64,29 @@ static const char shiftxform[] =
 	'{', '|', '}', '~', 127
 };
 
-// If true, I_StartTextInput() has been called, and we are populating
-// the data3 field of ev_keydown events.
+// If true, I_StartTextInput() has been called, and we are populating the data3 field of ev_keydown events.
 static bool text_input_enabled = true;
 
 // Bit mask of mouse button state.
 static unsigned mouse_button_state = 0;
 
-// Disallow mouse and joystick movement to cause forward/backward
-// motion. Specified with the '-novert' command line parameter.
+// Disallow mouse and joystick movement to cause forward/backward motion. Specified with the '-novert' command line parameter.
 // This is an int to allow saving to config file
 int novert = 1; // [crispy]
 
 // If true, keyboard mapping is ignored, like in Vanilla Doom.
-// The sensible thing to do is to disable this if you have a non-US
-// keyboard.
-
+// The sensible thing to do is to disable this if you have a non-US keyboard.
 int vanilla_keyboard_mapping = true;
 
 // Mouse acceleration
-//
-// This emulates some of the behavior of DOS mouse drivers by increasing
-// the speed when the mouse is moved fast.
-//
-// The mouse input values are input directly to the game, but when
-// the values exceed the value of mouse_threshold, they are multiplied
-// by mouse_acceleration to increase the speed.
+
+// This emulates some of the behavior of DOS mouse drivers by increasing the speed when the mouse is moved fast.
+
+// The mouse input values are input directly to the game, but when the values exceed the value of mouse_threshold,
+// they are multiplied by mouse_acceleration to increase the speed.
 float mouse_acceleration = 2.0;
 int mouse_threshold = 10;
-// [crispy]
+
 float mouse_acceleration_y = 1.0;
 int mouse_threshold_y = 0;
 int mouse_y_invert = 0;
@@ -132,13 +124,11 @@ static int TranslateKey(SDL_Keysym* sym)
 	}
 }
 
-// Get the localized version of the key press. This takes into account the
-// keyboard layout, but does not apply any changes due to modifiers, (eg.
-// shift-, alt-, etc.)
+// Get the localized version of the key press.
+// This takes into account the keyboard layout, but does not apply any changes due to modifiers, (eg. shift-, alt-, etc.)
 static int GetLocalizedKey(SDL_Keysym* sym)
 {
-	// When using Vanilla mapping, we just base everything off the scancode
-	// and always pretend the user is using a US layout keyboard.
+	// When using Vanilla mapping, we just base everything off the scancode and always pretend the user is using a US layout keyboard.
 	if (vanilla_keyboard_mapping)
 	{
 		return TranslateKey(sym);
@@ -159,24 +149,20 @@ static int GetLocalizedKey(SDL_Keysym* sym)
 // Get the equivalent ASCII (Unicode?) character for a keypress.
 static int GetTypedChar(SDL_Keysym* sym)
 {
-	// We only return typed characters when entering text, after
-	// I_StartTextInput() has been called. Otherwise we return nothing.
+	// We only return typed characters when entering text, after I_StartTextInput() has been called. Otherwise we return nothing.
 	if (!text_input_enabled)
 	{
 		return 0;
 	}
 
-	// If we're strictly emulating Vanilla, we should always act like
-	// we're using a US layout keyboard (in ev_keydown, data1=data2).
+	// If we're strictly emulating Vanilla, we should always act like we're using a US layout keyboard (in ev_keydown, data1=data2).
 	// Otherwise we should use the native key mapping.
 	if (vanilla_keyboard_mapping)
 	{
 		int result = TranslateKey(sym);
 
-		// If shift is held down, apply the original uppercase
-		// translation table used under DOS.
-		if ((SDL_GetModState() & KMOD_SHIFT) != 0
-			&& result >= 0 && result < arrlen(shiftxform))
+		// If shift is held down, apply the original uppercase translation table used under DOS.
+		if ((SDL_GetModState() & KMOD_SHIFT) != 0 && result >= 0 && result < arrlen(shiftxform))
 		{
 			result = shiftxform[result];
 		}
@@ -190,8 +176,10 @@ static int GetTypedChar(SDL_Keysym* sym)
 		// Special cases, where we always return a fixed value.
 		switch (sym->sym)
 		{
-		case SDLK_BACKSPACE: return KEY_BACKSPACE;
-		case SDLK_RETURN:	return KEY_ENTER;
+		case SDLK_BACKSPACE:
+			return KEY_BACKSPACE;
+		case SDLK_RETURN:
+			return KEY_ENTER;
 		default:
 			break;
 		}
@@ -207,7 +195,7 @@ static int GetTypedChar(SDL_Keysym* sym)
 		// API does not guarantee anything of the sort, but in practice this
 		// is what happens and I've verified it through manual inspect of
 		// the SDL source code.
-		//
+
 		// In an ideal world we'd split out ev_keydown into a separate
 		// ev_textinput event, as SDL2 has done. But this doesn't work
 		// (I experimented with the idea), because lots of Doom's code is
@@ -215,20 +203,17 @@ static int GetTypedChar(SDL_Keysym* sym)
 		// being passed on to another responder. If code is listening for
 		// a text input, it cannot block the corresponding keydown events
 		// which can affect other responders.
-		//
+
 		// So we're stuck with this as a rather fragile alternative.
 
-		if (SDL_PeepEvents(&next_event, 1, SDL_PEEKEVENT,
-			SDL_FIRSTEVENT, SDL_LASTEVENT) == 1
-			&& next_event.type == SDL_TEXTINPUT)
+		if (SDL_PeepEvents(&next_event, 1, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT) == 1 && next_event.type == SDL_TEXTINPUT)
 		{
 			// If an SDL_TEXTINPUT event is found, we always assume it
 			// matches the key press. The input text must be a single
 			// ASCII character - if it isn't, it's possible the input
 			// char is a Unicode value instead; better to send a null
 			// character than the unshifted key.
-			if (strlen(next_event.text.text) == 1
-				&& (next_event.text.text[0] & 0x80) == 0)
+			if (strlen(next_event.text.text) == 1 && (next_event.text.text[0] & 0x80) == 0)
 			{
 				return next_event.text.text[0];
 			}
@@ -241,8 +226,7 @@ static int GetTypedChar(SDL_Keysym* sym)
 
 void I_HandleKeyboardEvent(SDL_Event* sdlevent)
 {
-	// XXX: passing pointers to event for access after this function
-	// has terminated is undefined behaviour
+	// XXX: passing pointers to event for access after this function has terminated is undefined behaviour
 	EventType event;
 
 	switch (sdlevent->type)
@@ -263,12 +247,8 @@ void I_HandleKeyboardEvent(SDL_Event* sdlevent)
 		event.type = ev_keyup;
 		event.data1 = TranslateKey(&sdlevent->key.keysym);
 
-		// data2/data3 are initialized to zero for ev_keyup.
-		// For ev_keydown it's the shifted Unicode character
-		// that was typed, but if something wants to detect
-		// key releases it should do so based on data1
-		// (key ID), not the printable char.
-
+		// data2/data3 are initialized to zero for ev_keyup. For ev_keydown it's the shifted Unicode character
+		// that was typed, but if something wants to detect key releases it should do so based on data1 (key ID), not the printable char.
 		event.data2 = 0;
 		event.data3 = 0;
 
@@ -313,10 +293,7 @@ static void UpdateMouseButtonState(unsigned button, bool on)
 		return;
 	}
 
-	// Note: button "0" is left, button "1" is right,
-	// button "2" is middle for Doom. This is different
-	// to how SDL sees things.
-
+	// Note: button "0" is left, button "1" is right, button "2" is middle for Doom. This is different to how SDL sees things.
 	switch (button)
 	{
 	case SDL_BUTTON_LEFT:
@@ -338,7 +315,6 @@ static void UpdateMouseButtonState(unsigned button, bool on)
 	}
 
 	// Turn bit representing this button on or off.
-
 	if (on)
 	{
 		mouse_button_state |= (1 << button);
@@ -349,7 +325,6 @@ static void UpdateMouseButtonState(unsigned button, bool on)
 	}
 
 	// Post an event with the new button state.
-
 	event.type = ev_mouse;
 	event.data1 = mouse_button_state;
 	event.data2 = event.data3 = 0;
@@ -358,9 +333,7 @@ static void UpdateMouseButtonState(unsigned button, bool on)
 
 static void MapMouseWheelToButtons(SDL_MouseWheelEvent* wheel)
 {
-	// SDL2 distinguishes button events from mouse wheel events.
-	// We want to treat the mouse wheel as two buttons, as per
-	// SDL1
+	// SDL2 distinguishes button events from mouse wheel events. We want to treat the mouse wheel as two buttons, as per SDL1
 	static EventType up, down;
 	int button;
 
@@ -424,7 +397,6 @@ static int AccelerateMouse(int val)
 	}
 }
 
-// [crispy]
 static int AccelerateMouseY(int val)
 {
 	if (val < 0)
@@ -440,14 +412,13 @@ static int AccelerateMouseY(int val)
 	}
 }
 
-//
 // Read the change in mouse state to generate mouse motion events
-//
-// This is to combine all mouse movement for a tic into one mouse
-// motion event.
+
+// This is to combine all mouse movement for a tic into one mouse motion event.
 void I_ReadMouse()
 {
-	int x, y;
+	int x;
+	int y;
 	EventType ev;
 
 	SDL_GetRelativeMouseState(&x, &y);
@@ -460,15 +431,14 @@ void I_ReadMouse()
 
 		if (true || !novert) // [crispy] moved to src/*/g_game.c
 		{
-			ev.data3 = -AccelerateMouseY(y); // [crispy]
+			ev.data3 = -AccelerateMouseY(y);
 		}
 		else
 		{
 			ev.data3 = 0;
 		}
 
-		// XXX: undefined behaviour since event is scoped to
-		// this function
+		// XXX: undefined behaviour since event is scoped to this function
 		D_PostEvent(&ev);
 	}
 }
@@ -480,7 +450,7 @@ void I_BindInputVariables()
 	M_BindIntVariable("mouse_threshold", &mouse_threshold);
 	M_BindIntVariable("vanilla_keyboard_mapping", &vanilla_keyboard_mapping);
 	M_BindIntVariable("novert", &novert);
-	M_BindFloatVariable("mouse_acceleration_y", &mouse_acceleration_y); // [crispy]
-	M_BindIntVariable("mouse_threshold_y", &mouse_threshold_y); // [crispy]
-	M_BindIntVariable("mouse_y_invert", &mouse_y_invert); // [crispy]
+	M_BindFloatVariable("mouse_acceleration_y", &mouse_acceleration_y);
+	M_BindIntVariable("mouse_threshold_y", &mouse_threshold_y);
+	M_BindIntVariable("mouse_y_invert", &mouse_y_invert);
 }

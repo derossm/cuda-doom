@@ -147,7 +147,8 @@ void P_InitSwitchList()
 		// warn if either one is missing, but only add if both are valid
 		if (alphSwitchList_episode <= episode)
 		{
-			int texture1, texture2;
+			int texture1;
+			int texture2;
 			std::string name1 = DEH_String(alphSwitchList[i].name1);
 			std::string name2 = DEH_String(alphSwitchList[i].name2);
 

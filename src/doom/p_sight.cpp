@@ -71,7 +71,6 @@ bool PTR_SightTraverse(intercept_t* in)
 	return true; // keep going
 }
 
-
 //
 // P_DivlineSide
 // Returns side 0 (front), 1 (back), or 2 (on).
@@ -118,7 +117,6 @@ int P_DivlineSide(fixed_t x, fixed_t y, divline_t* node)
 		return 2;
 	return 1;		// back side
 }
-
 
 //
 // P_InterceptVector2
@@ -273,8 +271,6 @@ bool P_CrossSubsector(int num)
 	return true;
 }
 
-
-
 //
 // P_CrossBSPNode
 // Returns true
@@ -314,7 +310,6 @@ bool P_CrossBSPNode(int bspnum)
 	// cross the ending side
 	return P_CrossBSPNode(bsp->children[side ^ 1]);
 }
-
 
 //
 // P_CheckSight
@@ -374,5 +369,4 @@ bool P_CheckSight(MapObject* t1, MapObject* t2)
 	// the head node is the last node output
 	return P_CrossBSPNode(numnodes - 1);
 }
-
 

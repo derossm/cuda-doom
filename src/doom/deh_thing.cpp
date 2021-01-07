@@ -200,7 +200,8 @@ static void* DEH_ThingStart(deh_context_t* context, std::string line)
 static void DEH_ThingParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	mobjinfo_t* mobj;
-	std::string variable_name, * value;
+	std::string variable_name;
+	std::string value;
 	int ivalue;
 
 	if (!tag)

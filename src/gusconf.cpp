@@ -9,11 +9,9 @@
 
 	DESCRIPTION:
 		GUS emulation code.
-//
-//		Actually emulating a GUS is far too much work; fortunately
-//		GUS "emulation" already exists in the form of Timidity, which
-//		supports GUS patch files. This code therefore converts Doom's
-//		DMXGUS lump into an equivalent Timidity configuration file.
+
+		Actually emulating a GUS is far too much work; fortunately GUS "emulation" already exists in the form of Timidity, which
+		supports GUS patch files. This code therefore converts Doom's DMXGUS lump into an equivalent Timidity configuration file.
 \**********************************************************************************************************************************************/
 
 #include "m_misc.h"
@@ -132,8 +130,7 @@ static void ParseLine(gus_config_t* config, std::string line)
 
 	if (i == config->count)
 	{
-		// DMX uses wrong patch name (we should use name of 'mapped_id'
-		// instrument, but DMX uses name of 'instr_id' instead).
+		// DMX uses wrong patch name (we should use name of 'mapped_id' instrument, but DMX uses name of 'instr_id' instead).
 		free(config->patch_names[i]);
 		config->patch_names[i] = std::string(fields[5]);
 		config->used[i] = mapped_id;
@@ -144,7 +141,8 @@ static void ParseLine(gus_config_t* config, std::string line)
 
 static void ParseDMXConfig(std::string dmxconf, gus_config_t* config)
 {
-	CHAR_PTR p, * newline;
+	CHAR_PTR p;
+	CHAR_PTR newline;
 	unsigned i;
 
 	memset(config, 0, sizeof(gus_config_t));
@@ -198,7 +196,6 @@ std::string ReadDMXConfig()
 	std::string data;
 
 	// TODO: This should be chosen based on gamemode == GameMode::commercial:
-
 	lumpnum = W_CheckNumForName("DMXGUS");
 
 	if (lumpnum < 0)
@@ -237,8 +234,7 @@ static bool WriteTimidityConfig(std::string path, gus_config_t* config)
 		if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS
 			&& config->patch_names[config->mapping[i]] != NULL)
 		{
-			fprintf(fstream, "%u %s\n",
-				i, config->patch_names[config->mapping[i]]);
+			fprintf(fstream, "%u %s\n", i, config->patch_names[config->mapping[i]]);
 		}
 	}
 
@@ -246,11 +242,9 @@ static bool WriteTimidityConfig(std::string path, gus_config_t* config)
 
 	for (i = 128 + 35; i <= 128 + 81; ++i)
 	{
-		if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS
-			&& config->patch_names[config->mapping[i]] != NULL)
+		if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS && config->patch_names[config->mapping[i]] != NULL)
 		{
-			fprintf(fstream, "%u %s\n",
-				i - 128, config->patch_names[config->mapping[i]]);
+			fprintf(fstream, "%u %s\n", i - 128, config->patch_names[config->mapping[i]]);
 		}
 	}
 
@@ -270,10 +264,8 @@ bool GUS_WriteConfig(std::string path)
 	if (!strcmp(gus_patch_path, ""))
 	{
 		printf("You haven't configured gus_patch_path.\n");
-		printf("gus_patch_path needs to point to the location of "
-			"your GUS patch set.\n"
-			"To get a copy of the \"standard\" GUS patches, "
-			"download a copy of dgguspat.zip.\n");
+		printf("gus_patch_path needs to point to the location of your GUS patch set.\n"
+			"To get a copy of the \"standard\" GUS patches, download a copy of dgguspat.zip.\n");
 
 		return false;
 	}
@@ -288,4 +280,3 @@ bool GUS_WriteConfig(std::string path)
 
 	return result;
 }
-

@@ -103,7 +103,8 @@ bool playerstartsingame[MAX_PLAYERS];
 // adapted from prboom-plus/src/p_setup.c:474-482
 fixed_t GetOffset(vertex_t* v1, vertex_t* v2)
 {
-	fixed_t dx, dy;
+	fixed_t dx;
+	fixed_t dy;
 	fixed_t r;
 
 	dx = (v1->x - v2->x) >> FRACBITS;
@@ -257,10 +258,9 @@ void P_SegLengths(bool contrast_only)
 	for (i = 0; i < numsegs; ++i)
 	{
 		seg_t* const li = &segs[i];
-		int64_t dx, dy;
 
-		dx = li->v2->r_x - li->v1->r_x;
-		dy = li->v2->r_y - li->v1->r_y;
+		int64_t dx = li->v2->r_x - li->v1->r_x;
+		int64_t dy = li->v2->r_y - li->v1->r_y;
 
 		if (!contrast_only)
 		{
@@ -487,7 +487,6 @@ void P_LoadThings(int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-
 //
 // P_LoadLineDefs
 // Also counts secret lines for intermissions.
@@ -500,7 +499,8 @@ void P_LoadLineDefs(int lump)
 	line_t* ld;
 	vertex_t* v1;
 	vertex_t* v2;
-	int warn, warn2; // [crispy] warn about invalid linedefs
+	int warn;
+	int warn2; // [crispy] warn about invalid linedefs
 
 	numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
 	lines = Z_Malloc<decltype(lines)>(numlines * sizeof(line_t), pu_tags_t::PU_LEVEL, 0);

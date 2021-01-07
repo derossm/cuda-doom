@@ -25,7 +25,6 @@ except ImportError:
 		print("WARNING: Could not update %s. Please install the Python Imaging library or Pillow." % sys.argv[3])
 		sys.exit(0)
 
-
 def generate_font_data(filename):
 	"""Read font data from the given file.
 

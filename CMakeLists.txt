@@ -40,7 +40,7 @@ endif()
 set(VCPKG_DIR "G:/dev/vcpkg/packages")
 set(ARCHITECTURE "_x64-windows")
 
-# libm or fdlibm (Freely Distributable libm) : c math library IEEE 754 floating-point arithmetic
+# libm or fdlibm (Freely Distributable libm) : C math library IEEE 754 floating-point arithmetic
 find_package(m 5.3 REQUIRED)
 if(M_FOUND)
 	set(HAVE_LIBM TRUE)

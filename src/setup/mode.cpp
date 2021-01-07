@@ -148,16 +148,12 @@ static void BindMiscVariables()
 
 }
 
-//
 // Initialise all configuration file bindings.
-//
-
 void InitBindings()
 {
 	M_ApplyPlatformDefaults();
 
 	// Keyboard, mouse, joystick controls
-
 	M_BindBaseControls();
 	M_BindWeaponControls();
 	M_BindMapControls();
@@ -179,7 +175,6 @@ void InitBindings()
 	}
 
 	// All other variables
-
 	BindCompatibilityVariables();
 	BindDisplayVariables();
 	BindJoystickVariables();
@@ -191,7 +186,6 @@ void InitBindings()
 }
 
 // Set the name of the executable program to run the game:
-
 static void SetExecutable(mission_config_t* config)
 {
 	std::string extension;
@@ -227,9 +221,7 @@ static mission_config_t* GetMissionForName(std::string name)
 	return nullptr;
 }
 
-// Check the name of the executable. If it contains one of the game
-// names (eg. chocolate-hexen-setup.exe) then use that game.
-
+// Check the name of the executable. If it contains one of the game names (eg. chocolate-hexen-setup.exe) then use that game.
 static bool CheckExecutableName(GameSelectCallback callback)
 {
 	mission_config_t* config;
@@ -270,20 +262,15 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 	num_games = 0;
 
 	// Add a button for each game.
-
 	for (i=0; i<arrlen(mission_configs); ++i)
 	{
-		// Do we have any IWADs for this game installed?
-		// If so, add a button.
-
+		// Do we have any IWADs for this game installed? If so, add a button.
 		mode_iwads = D_FindAllIWADs(mission_configs[i].mask & (IWAD_MASK_DOOM|IWAD_MASK_HERETIC)); // [crispy] restrict game choice to Doom and Heretic
 
 		if (mode_iwads[0] != NULL)
 		{
 			mission = &mission_configs[i];
-			window.AddWidget(cudadoom::txt::Button(mission_configs[i].label,
-													GameSelected,
-													&mission_configs[i]));
+			window.AddWidget(cudadoom::txt::Button(mission_configs[i].label, GameSelected, &mission_configs[i]));
 			++num_games;
 		}
 
@@ -293,7 +280,6 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 	window.AddWidget(cudadoom::txt::Strut(0, 1));
 
 	// No IWADs found at all? Fall back to doom, then.
-
 	if (num_games == 0)
 	{
 		window.CloseWindow();
@@ -303,7 +289,6 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 	}
 
 	// Only one game? Use that game, and don't bother with a dialog.
-
 	if (num_games == 1)
 	{
 		window.CloseWindow();
@@ -323,13 +308,7 @@ void SetupMission(GameSelectCallback callback)
 	std::string mission_name;
 	int p;
 
-	//!
-	// @arg <game>
-	//
-	// Specify the game to configure the settings for. Valid
-	// values are 'doom', 'heretic', 'hexen' and 'strife'.
-	//
-
+	// Specify the game to configure the settings for. Valid values are 'doom', 'heretic', 'hexen' and 'strife'.
 	p = M_CheckParm("-game");
 
 	if (p > 0)

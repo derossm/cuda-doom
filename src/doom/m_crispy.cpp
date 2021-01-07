@@ -480,7 +480,6 @@ void M_CrispyToggleSmoothMap(int choice)
 	AM_LevelInit(true);
 }
 
-
 void M_CrispyToggleSndChannels(int choice)
 {
 	choice = 0;

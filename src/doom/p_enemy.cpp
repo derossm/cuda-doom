@@ -637,7 +637,6 @@ void A_Look(MapObject* actor)
 		}
 	}
 
-
 	if (!P_LookForPlayers(actor, false))
 	{
 		return;
@@ -700,7 +699,6 @@ void A_Chase(MapObject* actor)
 		actor->reactiontime--;
 	}
 
-
 	// modify target threshold
 	if (actor->threshold)
 	{
@@ -717,8 +715,38 @@ void A_Chase(MapObject* actor)
 	// turn towards movement direction if not there yet
 	if (actor->movedir < 8)
 	{
-		actor->angle &= (7 << 29);
+		actor->angle &= (7 << 29);// (bits 1, 2, 3 kept, all others false)
 		delta = actor->angle - (actor->movedir << 29);
+
+		// FEATURE NOTE FIXME
+		// compare 3 least significant bits of angle with the 3 bits of movedir
+		// the first bit of these 3 bit patterns now indicates the sign, because of the shifting
+		// pretty crazy to combine arithmetic with bit operations, to exploit the 32 bit sign bit
+		// with the assumption it's actually a 32 bit integer
+		// SO, LET'S MAKE A CLASS TO HANDLE THIS PROPERLY!! YAY YAY YA!!
+
+		// Consider how these values are to be used next, to see if we really even need shifts and such nonsense:
+		// FOUR CASES (A > 0 && M > 0; 0 > A && 0 > M; A > 0 > M; M > 0 > A):
+
+		// 1)
+		// if A 000, 001, 010, 011 then angle is positive
+		// if M 000, 001, 010, 011 then movedir is positive
+		// then A - M is positive if A's first bit is lower than M's
+
+		// 2)
+		// if A 100, 101, 110, 111 then angle is negative
+		// if D 100, 101, 110, 111 then movedir is negative
+		// then A - M is  if A's first bit is  than M's
+
+		// 3)
+		// if A 000, 001, 010, 011 then angle is positive
+		// if M 100, 101, 110, 111 then movedir is positive
+		// then A - M is  if A's first bit is  than M's
+
+		// 4)
+		// if A 100, 101, 110, 111 then angle is negative
+		// if D 000, 001, 010, 011 then movedir is positive
+		// then A - M is  if A's first bit is  than M's
 
 		if (delta > 0)
 		{
@@ -960,7 +988,6 @@ void A_TroopAttack(MapObject* actor)
 	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_TROOPSHOT);
 }
 
-
 void A_SargAttack(MapObject* actor)
 {
 	int damage;
@@ -1024,7 +1051,6 @@ void A_CyberAttack(MapObject* actor)
 	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_ROCKET);
 }
 
-
 void A_BruisAttack(MapObject* actor)
 {
 	int damage;
@@ -1047,7 +1073,6 @@ void A_BruisAttack(MapObject* actor)
 	// launch a missile
 	P_SpawnMissile(actor, actor->target, mobjtype_t::MT_BRUISERSHOT);
 }
-
 
 //
 // A_SkelMissile
@@ -1156,7 +1181,6 @@ void A_Tracer(MapObject* actor)
 		actor->momz += FRACUNIT / 8;
 	}
 }
-
 
 void A_SkelWhoosh(MapObject* actor)
 {
@@ -1438,7 +1462,6 @@ void A_FatRaise(MapObject* actor)
 	A_FaceTarget(actor);
 	S_StartSound(actor, sfxenum_t::sfx_manatk);
 }
-
 
 void A_FatAttack1(MapObject* actor)
 {
@@ -1891,8 +1914,6 @@ void A_CloseShotgun2(MapObject* mobj, Player* player, pspdef_t* psp)
 	S_StartSound(player->so, sfxenum_t::sfx_dbcls); // [crispy] weapon sound source
 	A_ReFire(NULL, player, psp); // [crispy] let pspr action pointers get called from mobj states
 }
-
-
 
 MapObject** braintargets = NULL;
 int numbraintargets = 0; // [crispy] initialize

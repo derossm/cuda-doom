@@ -187,7 +187,6 @@ result_e T_MovePlane(sector_t* sector, fixed_t speed, fixed_t dest, bool crush, 
 	return flag;
 }
 
-
 //
 // MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN)
 //

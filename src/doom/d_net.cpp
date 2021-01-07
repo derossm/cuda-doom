@@ -32,7 +32,6 @@
 ticcmd_t* netcmds;
 
 // Called when a player leaves the game
-
 static void PlayerQuitGame(Player* player)
 {
 	static char exitmsg[80];
@@ -40,9 +39,7 @@ static void PlayerQuitGame(Player* player)
 
 	player_num = player - players;
 
-	// Do this the same way as Vanilla Doom does, to allow dehacked
-	// replacements of this message
-
+	// Do this the same way as Vanilla Doom does, to allow dehacked replacements of this message
 	M_StringCopy(exitmsg, DEH_String("Player 1 left the game"),
 		sizeof(exitmsg));
 
@@ -54,7 +51,6 @@ static void PlayerQuitGame(Player* player)
 	player->interp = false;
 
 	// TODO: check if it is sensible to do this:
-
 	if (demorecording)
 	{
 		G_CheckDemoStatus();
@@ -67,7 +63,6 @@ static void RunTic(ticcmd_t* cmds, bool* ingame)
 	unsigned i;
 
 	// Check for player quits.
-
 	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
 		if (!demoplayback && playeringame[i] && !ingame[i])
@@ -78,9 +73,7 @@ static void RunTic(ticcmd_t* cmds, bool* ingame)
 
 	netcmds = cmds;
 
-	// check that there are players in the game. if not, we cannot
-	// run a tic.
-
+	// check that there are players in the game. if not, we cannot run a tic.
 	if (advancedemo)
 		D_DoAdvanceDemo();
 
@@ -94,10 +87,7 @@ static loop_interface_t doom_loop_interface = {
 	M_Ticker
 };
 
-
-// Load game settings from the specified structure and
-// set global variables.
-
+// Load game settings from the specified structure and set global variables.
 static void LoadGameSettings(net_gamesettings* settings)
 {
 	unsigned i;
@@ -126,14 +116,10 @@ static void LoadGameSettings(net_gamesettings* settings)
 	}
 }
 
-// Save the game settings from global variables to the specified
-// game settings structure.
-
+// Save the game settings from global variables to the specified game settings structure.
 static void SaveGameSettings(net_gamesettings* settings)
 {
-	// Fill in game settings structure with appropriate parameters
-	// for the new game
-
+	// Fill in game settings structure with appropriate parameters for the new game
 	settings->deathmatch = deathmatch;
 	settings->episode = startepisode;
 	settings->map = startmap;
@@ -157,24 +143,14 @@ static void InitConnectData(net_connect_data* connect_data)
 	connect_data->max_players = MAX_PLAYERS;
 	connect_data->drone = false;
 
-	//!
-	// @category net
-	//
 	// Run as the left screen in three screen mode.
-	//
-
 	if (M_CheckParm("-left") > 0)
 	{
 		viewangleoffset = ANG90;
 		connect_data->drone = true;
 	}
 
-	//!
-	// @category net
-	//
 	// Run as the right screen in three screen mode.
-	//
-
 	if (M_CheckParm("-right") > 0)
 	{
 		viewangleoffset = ANG270;
@@ -186,31 +162,20 @@ static void InitConnectData(net_connect_data* connect_data)
 	//
 
 	// Game type fields:
-
 	connect_data->gamemode = gamemode;
 	connect_data->gamemission = gamemission;
 
-	//!
-	// @category demo
-	//
 	// Play with low turning resolution to emulate demo recording.
-	//
-
 	shorttics = M_ParmExists("-shorttics");
 
 	// Are we recording a demo? Possibly set lowres turn mode
-
-	connect_data->lowres_turn = (M_ParmExists("-record")
-		&& !M_ParmExists("-longtics"))
-		|| shorttics;
+	connect_data->lowres_turn = (M_ParmExists("-record") && !M_ParmExists("-longtics")) || shorttics;
 
 	// Read checksums of our WAD directory and dehacked information
-
 	W_Checksum(connect_data->wad_sha1sum);
 	DEH_Checksum(connect_data->deh_sha1sum);
 
 	// Are we playing with the Freedoom IWAD?
-
 	connect_data->is_freedoom = W_CheckNumForName("FREEDOOM") >= 0;
 }
 
@@ -221,24 +186,14 @@ void D_ConnectNetGame()
 	InitConnectData(&connect_data);
 	netgame = D_InitNetGame(&connect_data);
 
-	//!
-	// @category net
-	//
-	// Start the game playing as though in a netgame with a single
-	// player. This can also be used to play back single player netgame
-	// demos.
-	//
-
+	// Start the game playing as though in a netgame with a single player. This can also be used to play back single player netgame demos.
 	if (M_CheckParm("-solo-net") > 0)
 	{
 		netgame = true;
 	}
 }
 
-//
-// D_CheckNetGame
 // Works out player numbers among the net participants
-//
 void D_CheckNetGame()
 {
 	net_gamesettings settings;
@@ -261,15 +216,12 @@ void D_CheckNetGame()
 		consoleplayer + 1, settings.num_players, settings.num_players);
 
 	// Show players here; the server might have specified a time limit
-
 	if (timelimit > 0 && deathmatch)
 	{
 		// Gross hack to work like Vanilla:
-
 		if (timelimit == 20 && M_CheckParm("-avg"))
 		{
-			DEH_printf("Austin Virtual Gaming: Levels will end "
-				"after 20 minutes\n");
+			DEH_printf("Austin Virtual Gaming: Levels will end after 20 minutes\n");
 		}
 		else
 		{
@@ -280,4 +232,3 @@ void D_CheckNetGame()
 		}
 	}
 }
-

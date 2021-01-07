@@ -283,7 +283,8 @@ void S_ParseMusInfo(std::string mapid)
 {
 	if (W_CheckNumForName("MUSINFO") != -1)
 	{
-		int num, lumpnum;
+		int num;
+		int lumpnum;
 		int inMap = false;
 
 		SC_OpenLump("MUSINFO");

@@ -259,8 +259,9 @@ public:
 	{
 		unsigned result_len = 1;
 		unsigned i;
-		char* result, * out;
-		size_t out_len, offset;
+		char* result;
+		char* out;
+		size_t out_len; size_t offset;
 
 		if (extensions == NULL)
 		{
@@ -534,7 +535,8 @@ public:
 
 	std::string GenerateAppleScript(std::string window_title, CHAR_PTR* extensions)
 	{
-		std::string selector, * result;
+		std::string selector;
+		std::string result;
 		size_t result_len;
 
 		selector = GenerateSelector(window_title, extensions);
@@ -565,7 +567,8 @@ public:
 	std::string SelectFile(std::string window_title, CHAR_PTR* extensions)
 	{
 		char* argv[4];
-		std::string result, * applescript;
+		std::string result;
+		std::string applescript;
 
 		applescript = GenerateAppleScript(window_title, extensions);
 		if (!applescript)
@@ -617,8 +620,11 @@ public:
 	// pattern representation (like [Ww][Aa][Dd])
 	std::string ExpandExtension(std::string orig)
 	{
-		int oldlen, newlen, i;
-		char* c, * newext = NULL;
+		int oldlen;
+		int newlen;
+		int i;
+		char* c; 
+		char* newext = NULL;
 
 		oldlen = strlen(orig);
 		newlen = oldlen * 4; // pathological case: 'w' => '[Ww]'
@@ -724,7 +730,9 @@ public:
 	{
 		std::string result;
 		int completed;
-		int pid, status, result_len;
+		int pid;
+		int status;
+		int result_len;
 		int pipefd[2];
 
 		if (pipe(pipefd) != 0)
@@ -844,4 +852,4 @@ public:
 	*/
 	//extern std::string DIRECTORY[];
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

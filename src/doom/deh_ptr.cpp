@@ -84,7 +84,8 @@ static void* DEH_PointerStart(deh_context_t* context, char* line)
 static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 {
 	state_t* state;
-	std::string variable_name, * value;
+	std::string variable_name;
+	std::string value;
 	int ivalue;
 
 	if (tag == NULL)

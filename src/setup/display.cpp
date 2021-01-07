@@ -25,7 +25,8 @@ extern void RestartTextscreen();
 
 struct window_size_t
 {
-	int w, h;
+	int w;
+	int h;
 };
 
 // List of aspect ratio-uncorrected window sizes:

@@ -28,7 +28,8 @@ you so incredibly much for this! - Fabian
 int main (int argc, char** argv)
 {
 	FILE* file;
-	int c, i = 0;
+	int c;
+	int i = 0;
 
 	if (argc < 2 || !(file = fopen(argv[1], "r")))
 	{

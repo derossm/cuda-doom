@@ -143,7 +143,6 @@ void F_StartFinale()
 	finaletext = DEH_String(finaletext);
 	finaleflat = DEH_String(finaleflat);
 
-
 	finaletext_rw = std::string(finaletext);
 
 	finalestage = finalestage_t::F_STAGE_TEXT;
@@ -249,7 +248,9 @@ void F_TextWrite()
 		byte* src;
 		pixel_t* dest;
 
-		int x,y,w;
+		int x;
+		int y;
+		int w;
 		int count;
 		std::string ch; // [crispy] un-const
 		int c;
@@ -909,7 +910,9 @@ void F_BunnyScroll()
 	char name[10];
 	int stage;
 	static int laststage;
-	int p2offset, p1offset, pillar_width;
+	int p2offset;
+	int p1offset;
+	int pillar_width;
 
 	dxi = (ORIGWIDTH << FRACBITS) / NONWIDEWIDTH;
 	dy = (SCREENHEIGHT << FRACBITS) / ORIGHEIGHT;

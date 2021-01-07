@@ -39,16 +39,12 @@ static deh_mapping_entry_t* GetMappingEntryByName(deh_context_t* context, deh_ma
 	}
 
 	// Not found.
-
 	DEH_Warning(context, "Field named '%s' not found", name);
 
 	return nullptr;
 }
 
-//
 // Get the location of the specified field in the specified structure.
-//
-
 static void* GetStructField(void* structptr,
 	deh_mapping_t* mapping,
 	deh_mapping_entry_t* entry)
@@ -60,10 +56,7 @@ static void* GetStructField(void* structptr,
 	return (uint8_t*)structptr + offset;
 }
 
-//
 // Set the value of a particular field in a structure by name
-//
-
 bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping,
 	void* structptr, std::string name, int value)
 {
@@ -78,7 +71,6 @@ bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping,
 	}
 
 	// Sanity check:
-
 	if (entry->is_string)
 	{
 		DEH_Error(context, "Tried to set '%s' as integer (BUG)", name);
@@ -87,8 +79,7 @@ bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping,
 
 	location = GetStructField(structptr, mapping, entry);
 
-	//		printf("Setting %p::%s to %i (%i bytes)\n",
-	//				structptr, name, value, entry->size);
+	//printf("Setting %p::%s to %i (%i bytes)\n", structptr, name, value, entry->size);
 
 	// Set field content based on its type:
 
@@ -111,10 +102,7 @@ bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping,
 	return true;
 }
 
-//
 // Set the value of a string field in a structure by name
-//
-
 bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping,
 	void* structptr, std::string name, std::string value)
 {
@@ -129,7 +117,6 @@ bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping,
 	}
 
 	// Sanity check:
-
 	if (!entry->is_string)
 	{
 		DEH_Error(context, "Tried to set '%s' as string (BUG)", name);
@@ -139,7 +126,6 @@ bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping,
 	location = GetStructField(structptr, mapping, entry);
 
 	// Copy value into field:
-
 	M_StringCopy(location, value, entry->size);
 
 	return true;
@@ -150,7 +136,6 @@ void DEH_StructSHA1Sum(sha1_context_t* context, deh_mapping_t* mapping, void* st
 	int i;
 
 	// Go through each mapping
-
 	for (i = 0; mapping->entries[i].name != NULL; ++i)
 	{
 		deh_mapping_entry_t* entry = &mapping->entries[i];
@@ -159,12 +144,10 @@ void DEH_StructSHA1Sum(sha1_context_t* context, deh_mapping_t* mapping, void* st
 		if (entry->location == NULL)
 		{
 			// Unsupported field
-
 			continue;
 		}
 
 		// Add in data for this field
-
 		location = (uint8_t*)structptr + ((uint8_t*)entry->location - (uint8_t*)mapping->base);
 
 		switch (entry->size)
@@ -185,4 +168,3 @@ void DEH_StructSHA1Sum(sha1_context_t* context, deh_mapping_t* mapping, void* st
 		}
 	}
 }
-

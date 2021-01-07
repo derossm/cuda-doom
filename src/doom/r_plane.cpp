@@ -355,7 +355,6 @@ void R_DrawPlanes()
 		if (pl->minx > pl->maxx)
 			continue;
 
-
 		// sky flat
 		// [crispy] add support for MBF sky tranfers
 		if (pl->picnum == skyflatnum || pl->picnum & PL_SKYFLAT)

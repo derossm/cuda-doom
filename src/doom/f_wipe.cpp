@@ -32,7 +32,6 @@ static pixel_t* wipe_scr_start;
 static pixel_t* wipe_scr_end;
 static pixel_t* wipe_scr;
 
-
 void wipe_shittyColMajorXform(dpixel_t* array, int width, int height)
 {
 	dpixel_t* dest = Z_Malloc<dpixel_t*>(width * height * sizeof(*dest), pu_tags_t::PU_STATIC, 0);
@@ -102,7 +101,6 @@ int wipe_exitColorXForm(int width, int height, TimeType ticks)
 {
 	return 0;
 }
-
 
 static int* y;
 

@@ -86,13 +86,10 @@ void V_MarkRect(int x, int y, int width, int height)
 	}
 }
 
-
 //
 // V_CopyRect
 //
-void V_CopyRect(int srcx, int srcy, pixel_t* source,
-	int width, int height,
-	int destx, int desty)
+void V_CopyRect(int srcx, int srcy, pixel_t* source, int width, int height, int destx, int desty)
 {
 	pixel_t* src;
 	pixel_t* dest;
@@ -199,7 +196,10 @@ static const inline pixel_t drawpatchpx11(const pixel_t dest, const pixel_t sour
 typedef const pixel_t drawpatchpx_t(const pixel_t dest, const pixel_t source);
 static drawpatchpx_t* const drawpatchpx_a[2][2] = {{drawpatchpx11, drawpatchpx10}, {drawpatchpx01, drawpatchpx00}};
 
-static fixed_t dx, dxi, dy, dyi;
+static fixed_t dx;
+static fixed_t dxi;
+static fixed_t dy;
+static fixed_t dyi;
 
 void V_DrawPatch(int x, int y, patch_t* patch)
 {
@@ -266,7 +266,8 @@ void V_DrawPatch(int x, int y, patch_t* patch)
 		// step through the posts in a column
 		while (column->topdelta != 0xff)
 		{
-			int top, srccol = 0;
+			int top;
+			int srccol = 0;
 			// [crispy] support for DeePsea tall patches
 			if (column->topdelta <= topdelta)
 			{
@@ -405,7 +406,8 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch)
 		// step through the posts in a column
 		while (column->topdelta != 0xff)
 		{
-			int top, srccol = 0;
+			int top;
+			int srccol = 0;
 			// [crispy] support for DeePsea tall patches
 			if (column->topdelta <= topdelta)
 			{
@@ -451,8 +453,6 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch)
 	}
 }
 
-
-
 //
 // V_DrawPatchDirect
 // Draws directly to the screen on the pc.
@@ -471,7 +471,8 @@ void V_DrawPatchDirect(int x, int y, patch_t* patch)
 
 void V_DrawTLPatch(int x, int y, patch_t* patch)
 {
-	int count, col;
+	int count;
+	int col;
 	column_t* column;
 	pixel_t* desttop, * dest;
 	byte* source;
@@ -524,9 +525,11 @@ void V_DrawTLPatch(int x, int y, patch_t* patch)
 
 void V_DrawXlaPatch(int x, int y, patch_t* patch)
 {
-	int count, col;
+	int count;
+	int col;
 	column_t* column;
-	pixel_t* desttop, * dest;
+	pixel_t* desttop;
+	pixel_t* dest;
 	byte* source;
 	int w;
 
@@ -575,9 +578,11 @@ void V_DrawXlaPatch(int x, int y, patch_t* patch)
 
 void V_DrawAltTLPatch(int x, int y, patch_t* patch)
 {
-	int count, col;
+	int count;
+	int col;
 	column_t* column;
-	pixel_t* desttop, * dest;
+	pixel_t* desttop;
+	pixel_t* dest;
 	byte* source;
 	int w;
 
@@ -628,20 +633,20 @@ void V_DrawAltTLPatch(int x, int y, patch_t* patch)
 
 void V_DrawShadowedPatch(int x, int y, patch_t* patch)
 {
-	int count, col;
+	int count;
+	int col;
 	column_t* column;
-	pixel_t* desttop, * dest;
+	pixel_t* desttop;
+	pixel_t* dest;
 	byte* source;
-	pixel_t* desttop2, * dest2;
+	pixel_t* desttop2;
+	pixel_t* dest2;
 	int w;
 
 	y -= SHORT(patch->topoffset);
 	x -= SHORT(patch->leftoffset);
 
-	if (x < 0
-		|| x + SHORT(patch->width) > ORIGWIDTH
-		|| y < 0
-		|| y + SHORT(patch->height) > ORIGHEIGHT)
+	if (x < 0 || x + SHORT(patch->width) > ORIGWIDTH || y < 0 || y + SHORT(patch->height) > ORIGHEIGHT)
 	{
 		I_Error("Bad V_DrawShadowedPatch");
 	}
@@ -679,40 +684,25 @@ void V_DrawShadowedPatch(int x, int y, patch_t* patch)
 	}
 }
 
-//
 // Load tint table from TINTTAB lump.
-//
-
 void V_LoadTintTable()
 {
 	tinttable = W_CacheLumpName<byte>("TINTTAB", pu_tags_t::PU_STATIC);
 }
 
-//
-// V_LoadXlaTable
-//
 // villsa [STRIFE] Load xla table from XLATAB lump.
-//
-
 void V_LoadXlaTable()
 {
 	xlatab = W_CacheLumpName<byte>("XLATAB", pu_tags_t::PU_STATIC);
 }
 
-//
-// V_DrawBlock
 // Draw a linear block of pixels into the view buffer.
-//
-
 void V_DrawBlock(int x, int y, int width, int height, pixel_t* src)
 {
 	pixel_t* dest;
 
 #ifdef RANGECHECK
-	if (x < 0
-		|| x + width >SCREENWIDTH
-		|| y < 0
-		|| y + height > SCREENHEIGHT)
+	if (x < 0 || x + width >SCREENWIDTH || y < 0 || y + height > SCREENHEIGHT)
 	{
 		I_Error("Bad V_DrawBlock");
 	}
@@ -733,13 +723,11 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t* src)
 void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t* src)
 {
 	pixel_t* dest;
-	int i, j;
+	int i;
+	int j;
 
 #ifdef RANGECHECK
-	if (x < 0
-		|| x + width > ORIGWIDTH
-		|| y < 0
-		|| y + height > ORIGHEIGHT)
+	if (x < 0 || x + width > ORIGWIDTH || y < 0 || y + height > ORIGHEIGHT)
 	{
 		I_Error("Bad V_DrawScaledBlock");
 	}
@@ -917,13 +905,7 @@ struct pcx_t
 	unsigned char data;		// unbounded
 };
 
-//
-// WritePCXfile
-//
-
-void WritePCXfile(std::string filename, pixel_t* data,
-	int width, int height,
-	byte* palette)
+void WritePCXfile(std::string filename, pixel_t* data, int width, int height, byte* palette)
 {
 	int i;
 	int length;
@@ -1193,13 +1175,11 @@ constexpr size_t MOUSE_SPEED_BOX_HEIGHT{9};
 #define MOUSE_SPEED_BOX_X (SCREENWIDTH - MOUSE_SPEED_BOX_WIDTH - 10)
 constexpr size_t MOUSE_SPEED_BOX_Y{15};
 
-//
-// V_DrawMouseSpeedBox
-//
-
 static void DrawAcceleratingBox(int speed)
 {
-	int red, white, yellow;
+	int red;
+	int white;
+	int yellow;
 	int original_speed;
 	int redline_x;
 	int linelen;
@@ -1292,7 +1272,9 @@ static void DrawNonAcceleratingBox(int speed)
 void V_DrawMouseSpeedBox(int speed)
 {
 	extern int usemouse;
-	int bgcolor, bordercolor, black;
+	int bgcolor;
+	int bordercolor;
+	int black;
 
 	// If the mouse is turned off, don't draw the box at all.
 	if (!usemouse)

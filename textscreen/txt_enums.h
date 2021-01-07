@@ -26,4 +26,4 @@ enum class AlignHorizontal
 	right
 };
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

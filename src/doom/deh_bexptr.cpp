@@ -223,8 +223,11 @@ static void* DEH_BEXPtrStart(deh_context_t* context, std::string line)
 static void DEH_BEXPtrParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	state_t* state;
-	std::string variable_name, * value, frame_str[6];
-	int frame_number, i;
+	std::string variable_name;
+	std::string value;
+	CHAR_PTR frame_str[6];
+	int frame_number;
+	int i;
 
 	// parse "FRAME nn = mnemonic", where
 	// variable_name = "FRAME nn" and value = "mnemonic"
@@ -235,8 +238,7 @@ static void DEH_BEXPtrParseLine(deh_context_t* context, std::string line, void* 
 	}
 
 	// parse "FRAME nn", where frame_number = "nn"
-	if (sscanf(variable_name, "%5s %32d", frame_str, &frame_number) != 2 ||
-		iequals(frame_str, "FRAME"))
+	if (sscanf(variable_name, "%5s %32d", frame_str, &frame_number) != 2 || iequals(frame_str, "FRAME"))
 	{
 		DEH_Warning(context, "Failed to parse assignment: %s", variable_name);
 		return;

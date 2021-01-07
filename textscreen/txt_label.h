@@ -131,10 +131,13 @@ static void LabelSizeCalc(UNCAST_ARG(label))
 static void LabelDrawer(UNCAST_ARG(label))
 {
 	CAST_ARG(txt_label_t, label);
-	unsigned x, y;
-	int origin_x, origin_y;
+	unsigned x;
+	unsigned y;
+	int origin_x;
+	int origin_y;
 	unsigned align_indent = 0;
-	unsigned w, sw;
+	unsigned w;
+	unsigned sw;
 
 	w = label->widget.w;
 
@@ -296,4 +299,4 @@ void SetBGColor(txt_label_t* label, ColorType color)
 	label->bgcolor = color;
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

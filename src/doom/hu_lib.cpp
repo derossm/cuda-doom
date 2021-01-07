@@ -133,7 +133,6 @@ void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor)
 	}
 }
 
-
 // sorta called by HU_Erase and just better darn get things straight
 void HUlib_eraseTextLine(hu_textline_t* l)
 {
@@ -275,7 +274,6 @@ void HUlib_initIText(hu_itext_t* it, int x, int y, patch_t** font, int startchar
 	it->laston = true;
 	HUlib_initTextLine(&it->l, x, y, font, startchar);
 }
-
 
 // The following deletion routines adhere to the left margin restriction
 void HUlib_delCharFromIText(hu_itext_t* it)

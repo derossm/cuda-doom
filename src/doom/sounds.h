@@ -122,7 +122,6 @@ enum class musicenum_t
 	mus_musinfo
 };
 
-
 //
 // Identifiers for all sfx in game.
 //

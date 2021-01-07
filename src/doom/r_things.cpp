@@ -44,7 +44,6 @@ struct maskdraw_t
 	int bottomclip;
 };
 
-
 static degenmobj_t laserspot_m = {{0}};
 degenmobj_t* laserspot = &laserspot_m;
 
@@ -74,7 +73,6 @@ lighttable_t** spritelights;
 // used for psprite clipping and initializing clipping
 int negonearray[MAXWIDTH]; // [crispy] 32-bit integer math
 int screenheightarray[MAXWIDTH]; // [crispy] 32-bit integer math
-
 
 //
 // INITIALIZATION FUNCTIONS
@@ -406,7 +404,6 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 	fixed_t frac;
 	patch_t* patch;
 
-
 	patch = W_CacheLumpNum<patch_t>(vis->patch + firstspritelump, pu_tags_t::PU_CACHE);
 
 	// [crispy] brightmaps for select sprites
@@ -475,8 +472,6 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 	blendfunc = I_BlendOver;
 #endif
 }
-
-
 
 //
 // R_ProjectSprite
@@ -792,7 +787,8 @@ byte* R_LaserspotColor()
 static void R_DrawLSprite()
 {
 	fixed_t xscale;
-	fixed_t tx, tz;
+	fixed_t tx;
+	fixed_t tz;
 	vissprite_t* vis;
 
 	static int lump;
@@ -893,7 +889,6 @@ void R_AddSprites(sector_t* sec)
 	for (thing = sec->thinglist; thing; thing = thing->sectorNext)
 		R_ProjectSprite(thing);
 }
-
 
 //
 // R_DrawPSprite
@@ -1080,7 +1075,6 @@ void R_SortVisSprites()
 #else
 vissprite_t vsprsortedhead;
 
-
 void R_SortVisSprites()
 {
 	int i;
@@ -1185,7 +1179,6 @@ void R_DrawSprite(vissprite_t* spr)
 			// seg is behind sprite
 			continue;
 		}
-
 
 		// clip this piece of the sprite
 		silhouette = ds->silhouette;

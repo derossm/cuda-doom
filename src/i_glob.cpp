@@ -169,7 +169,8 @@ std::string I_NextGlob(glob_t* glob)
 
 static bool MatchesGlob(std::string name, std::string glob, int flags)
 {
-	int n, g;
+	int n;
+	int g;
 
 	while (*glob != '\0')
 	{
@@ -251,7 +252,9 @@ static void SortFilenames(char** filenames, int len, int flags)
 {
 	std::string pivot;
 	std::string tmp;
-	int i, left_len, cmp;
+	int i;
+	int left_len;
+	int cmp;
 
 	if (len <= 1)
 	{

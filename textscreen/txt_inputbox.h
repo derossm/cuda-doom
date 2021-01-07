@@ -317,4 +317,4 @@ auto NewIntInputBox(int value, int width)
 	return InputBox(value, width);
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

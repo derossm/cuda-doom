@@ -488,7 +488,7 @@ class IWAD
 			//{
 				// Break at the separator and use the left hand side as another iwad directory
 				// TODO what is this trying to do? modify a std::string for what purpose? INVESTIGATE
-				//*p = '\0';
+				// *p = '\0';
 				//AddIWADDir(M_StringJoin(left, suffix));
 				//left = p + 1;
 			//}

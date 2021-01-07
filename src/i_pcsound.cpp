@@ -8,7 +8,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	System interface for PC speaker sound.
+		System interface for PC speaker sound.
 \**********************************************************************************************************************************************/
 
 #include "SDL.h"
@@ -36,7 +36,7 @@ static unsigned current_sound_remaining = 0;
 static int current_sound_handle = 0;
 static int current_sound_lump_num = -1;
 
-static const uint16_t divisors[] = {
+constexpr uint16_t divisors[]{
 	0,
 	6818, 6628, 6449, 6279, 6087, 5906, 5736, 5575,
 	5423, 5279, 5120, 4971, 4830, 4697, 4554, 4435,
@@ -47,13 +47,13 @@ static const uint16_t divisors[] = {
 	1709, 1659, 1612, 1565, 1521, 1478, 1435, 1395,
 	1355, 1316, 1280, 1242, 1207, 1173, 1140, 1107,
 	1075, 1045, 1015, 986, 959, 931, 905, 879,
-		854, 829, 806, 783, 760, 739, 718, 697,
-		677, 658, 640, 621, 604, 586, 570, 553,
-		538, 522, 507, 493, 479, 465, 452, 439,
-		427, 415, 403, 391, 380, 369, 359, 348,
-		339, 329, 319, 310, 302, 293, 285, 276,
-		269, 261, 253, 246, 239, 232, 226, 219,
-		213, 207, 201, 195, 190, 184, 179,
+	854, 829, 806, 783, 760, 739, 718, 697,
+	677, 658, 640, 621, 604, 586, 570, 553,
+	538, 522, 507, 493, 479, 465, 452, 439,
+	427, 415, 403, 391, 380, 369, 359, 348,
+	339, 329, 319, 310, 302, 293, 285, 276,
+	269, 261, 253, 246, 239, 232, 226, 219,
+	213, 207, 201, 195, 190, 184, 179
 };
 
 static void PCSCallbackFunc(int *duration, int *freq)
@@ -71,13 +71,9 @@ static void PCSCallbackFunc(int *duration, int *freq)
 	if (current_sound_lump != NULL && current_sound_remaining > 0)
 	{
 		// Read the next tone
-
 		tone = *current_sound_pos;
 
-		// Use the tone -> frequency lookup table. See pcspkr10.zip
-		// for a full discussion of this.
-		// Check we don't overflow the frequency table.
-
+		// Use the tone -> frequency lookup table. See pcspkr10.zip for a full discussion of this. Check we don't overflow the frequency table.
 		if (tone < arrlen(divisors) && divisors[tone] != 0)
 		{
 			*freq = (int) (TIMER_FREQ / divisors[tone]);
@@ -104,7 +100,6 @@ static bool CachePCSLump(sfxinfo_t* sfxinfo)
 	int headerlen;
 
 	// Free the current sound lump back to the cache
-
 	if (current_sound_lump != NULL)
 	{
 		W_ReleaseLumpNum(current_sound_lump_num);
@@ -112,12 +107,10 @@ static bool CachePCSLump(sfxinfo_t* sfxinfo)
 	}
 
 	// Load from WAD
-
 	current_sound_lump = W_CacheLumpNum<uint8_t>(sfxinfo->lumpnum, pu_tags_t::PU_STATIC);
 	lumplen = W_LumpLength(sfxinfo->lumpnum);
 
 	// Read header
-
 	if (current_sound_lump[0] != 0x00 || current_sound_lump[1] != 0x00)
 	{
 		return false;
@@ -131,7 +124,6 @@ static bool CachePCSLump(sfxinfo_t* sfxinfo)
 	}
 
 	// Header checks out ok
-
 	current_sound_remaining = headerlen;
 	current_sound_pos = current_sound_lump + 4;
 	current_sound_lump_num = sfxinfo->lumpnum;
@@ -139,21 +131,11 @@ static bool CachePCSLump(sfxinfo_t* sfxinfo)
 	return true;
 }
 
-// These Doom PC speaker sounds are not played - this can be seen in the
-// Heretic source code, where there are remnants of this left over
-// from Doom.
-
+// These Doom PC speaker sounds are not played - this can be seen in the Heretic source code, where there are remnants of this left over from Doom.
 static bool IsDisabledSound(sfxinfo_t* sfxinfo)
 {
 	int i;
-	std::string disabled_sounds[] = {
-		"posact",
-		"bgact",
-		"dmact",
-		"dmpain",
-		"popain",
-		"sawidl",
-	};
+	std::string disabled_sounds[] = { "posact", "bgact", "dmact", "dmpain", "popain", "sawidl" };
 
 	for (i=0; i<arrlen(disabled_sounds); ++i)
 	{
@@ -166,11 +148,7 @@ static bool IsDisabledSound(sfxinfo_t* sfxinfo)
 	return false;
 }
 
-static int I_PCS_StartSound(sfxinfo_t* sfxinfo,
-							int channel,
-							int vol,
-							int sep,
-							int pitch)
+static int I_PCS_StartSound(sfxinfo_t* sfxinfo, int channel, int vol, int sep, int pitch)
 {
 	int result;
 
@@ -221,7 +199,6 @@ static void I_PCS_StopSound(int handle)
 	}
 
 	// If this is the channel currently playing, immediately end it.
-
 	if (current_sound_handle == handle)
 	{
 		current_sound_remaining = 0;
@@ -230,11 +207,7 @@ static void I_PCS_StopSound(int handle)
 	SDL_UnlockMutex(sound_lock);
 }
 
-//
-// Retrieve the raw data lump index
-// for a given SFX name.
-//
-
+// Retrieve the raw data lump index for a given SFX name.
 static int I_PCS_GetSfxLumpNum(sfxinfo_t* sfx)
 {
 	char namebuf[9];
@@ -248,10 +221,9 @@ static int I_PCS_GetSfxLumpNum(sfxinfo_t* sfx)
 		M_StringCopy(namebuf, DEH_String(sfx->name), sizeof(namebuf));
 	}
 
-		// [crispy] make missing sounds non-fatal
+	// make missing sounds non-fatal
 	return W_CheckNumForName(namebuf);
 }
-
 
 static bool I_PCS_SoundIsPlaying(int handle)
 {
@@ -273,11 +245,9 @@ static bool I_PCS_InitSound(bool _use_sfx_prefix)
 	use_sfx_prefix = _use_sfx_prefix;
 
 	// Use the sample rate from the configuration file
-
 	PCSound_SetSampleRate(snd_samplerate);
 
 	// Initialize the PC speaker subsystem.
-
 	pcs_initialized = PCSound_Init(PCSCallbackFunc);
 
 	if (pcs_initialized)
@@ -324,4 +294,3 @@ sound_module_t sound_pcsound_module =
 	I_PCS_StopSound,
 	I_PCS_SoundIsPlaying,
 };
-

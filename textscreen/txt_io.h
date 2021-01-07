@@ -193,4 +193,4 @@ void ClearScreen()
 	cur_y = 0;
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

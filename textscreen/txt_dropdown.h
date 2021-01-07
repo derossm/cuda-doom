@@ -360,4 +360,4 @@ txt_dropdown_list_t* NewDropdownList(int* variable, CHAR_PTR* values, int num_va
 	return list;
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

@@ -38,9 +38,6 @@ int numdrawsegs = 0;
 
 void R_StoreWallRange(int start, int stop);
 
-
-
-
 //
 // R_ClearDrawSegs
 //
@@ -48,8 +45,6 @@ void R_ClearDrawSegs()
 {
 	ds_p = drawsegs;
 }
-
-
 
 //
 // ClipWallSegment
@@ -75,9 +70,6 @@ constexpr size_t MAXSEGS{(MAXWIDTH / 2 + 1)};
 // newend is one past the last valid seg
 cliprange_t* newend;
 cliprange_t solidsegs[MAXSEGS];
-
-
-
 
 //
 // R_ClipSolidWallSegment
@@ -156,7 +148,6 @@ crunch:
 		return;
 	}
 
-
 	while (next++ != newend)
 	{
 		// Remove a post.
@@ -165,8 +156,6 @@ crunch:
 
 	newend = start + 1;
 }
-
-
 
 //
 // R_ClipPassWallSegment
@@ -215,8 +204,6 @@ void R_ClipPassWallSegment(int first, int last)
 	// There is a fragment after *next.
 	R_StoreWallRange(start->last + 1, last);
 }
-
-
 
 //
 // R_ClearClipSegs
@@ -355,7 +342,6 @@ void R_AddLine(seg_t* line)
 		return;
 	}
 
-
 clippass:
 	R_ClipPassWallSegment(x1, x2 - 1);
 	return;
@@ -363,7 +349,6 @@ clippass:
 clipsolid:
 	R_ClipSolidWallSegment(x1, x2 - 1);
 }
-
 
 //
 // R_CheckBBox
@@ -385,7 +370,6 @@ int checkcoord[12][4] =
 	{2,1,3,1},
 	{2,1,3,0}
 };
-
 
 bool R_CheckBBox(fixed_t* bspcoord)
 {
@@ -467,7 +451,6 @@ bool R_CheckBBox(fixed_t* bspcoord)
 		angle2 = -clipangle;
 	}
 
-
 	// Find the first clippost
 	// that touches the source post
 	// (adjacent pixels are touching).
@@ -494,8 +477,6 @@ bool R_CheckBBox(fixed_t* bspcoord)
 
 	return true;
 }
-
-
 
 //
 // R_Subsector

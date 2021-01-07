@@ -439,4 +439,4 @@ void GUIMainLoop()
 	}
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

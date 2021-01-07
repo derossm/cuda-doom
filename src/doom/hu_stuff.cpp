@@ -1105,7 +1105,6 @@ static char chatchars[QUEUESIZE];
 static int head = 0;
 static int tail = 0;
 
-
 void HU_queueChatChar(char c)
 {
 	if (((head + 1) & (QUEUESIZE - 1)) == tail)

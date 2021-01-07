@@ -44,7 +44,6 @@ static addrpair_t** addr_table;
 static int addr_table_size = -1;
 
 // Initializes the address table
-
 static void NET_SDL_InitAddrTable()
 {
 	addr_table_size = 16;
@@ -55,13 +54,10 @@ static void NET_SDL_InitAddrTable()
 
 static bool AddressesEqual(IPaddress* a, IPaddress* b)
 {
-	return a->host == b->host
-		&& a->port == b->port;
+	return a->host == b->host && a->port == b->port;
 }
 
-// Finds an address by searching the table. If the address is not found,
-// it is added to the table.
-
+// Finds an address by searching the table. If the address is not found, it is added to the table.
 static net_addr_t* NET_SDL_FindAddress(IPaddress* addr)
 {
 	addrpair_t* new_entry;
@@ -88,20 +84,15 @@ static net_addr_t* NET_SDL_FindAddress(IPaddress* addr)
 	// Was not found in list. We need to add it.
 
 	// Is there any space in the table? If not, increase the table size
-
 	if (empty_entry < 0)
 	{
 		addrpair_t** new_addr_table;
 		int new_addr_table_size;
 
-		// after reallocing, we will add this in as the first entry
-		// in the new block of memory
-
+		// after reallocing, we will add this in as the first entry in the new block of memory
 		empty_entry = addr_table_size;
 
-		// allocate a new array twice the size, init to 0 and copy
-		// the existing table in. replace the old table.
-
+		// allocate a new array twice the size, init to 0 and copy the existing table in. replace the old table.
 		new_addr_table_size = addr_table_size * 2;
 		new_addr_table = Z_Malloc<addrpair_t>(sizeof(addrpair_t*) * new_addr_table_size,
 			pu_tags_t::PU_STATIC, 0);
@@ -114,7 +105,6 @@ static net_addr_t* NET_SDL_FindAddress(IPaddress* addr)
 	}
 
 	// Add a new entry
-
 	new_entry = Z_Malloc<addrpair_t>(sizeof(addrpair_t), pu_tags_t::PU_STATIC, 0);
 
 	new_entry->sdl_addr = *addr;
@@ -151,14 +141,7 @@ static bool NET_SDL_InitClient()
 	if (initted)
 		return true;
 
-	//!
-	// @category net
-	// @arg <n>
-	//
-	// Use the specified UDP port for communications, instead of
-	// the default (2342).
-	//
-
+	// Use the specified UDP port for communications, instead of the default (2342).
 	p = M_CheckParmWithArgs("-port", 1);
 	if (p > 0)
 		port = atoi(myargv[p + 1]);
@@ -256,8 +239,7 @@ static void NET_SDL_SendPacket(net_addr_t* addr, net_packet_t* packet)
 
 	if (!SDLNet_UDP_Send(udpsocket, -1, &sdl_packet))
 	{
-		I_Error("NET_SDL_SendPacket: Error transmitting packet: %s",
-			SDLNet_GetError());
+		I_Error("NET_SDL_SendPacket: Error transmitting packet: %s", SDLNet_GetError());
 	}
 }
 
@@ -269,23 +251,19 @@ static bool NET_SDL_RecvPacket(net_addr_t** addr, net_packet_t** packet)
 
 	if (result < 0)
 	{
-		I_Error("NET_SDL_RecvPacket: Error receiving packet: %s",
-			SDLNet_GetError());
+		I_Error("NET_SDL_RecvPacket: Error receiving packet: %s", SDLNet_GetError());
 	}
 
 	// no packets received
-
 	if (result == 0)
 		return false;
 
 	// Put the data into a new packet structure
-
 	*packet = NET_NewPacket(recvpacket->len);
 	memcpy((*packet)->data, recvpacket->data, recvpacket->len);
 	(*packet)->len = recvpacket->len;
 
 	// Address
-
 	*addr = NET_SDL_FindAddress(&recvpacket->address);
 
 	return true;
@@ -305,10 +283,8 @@ void NET_SDL_AddrToString(net_addr_t* addr, std::string buffer, int buffer_len)
 		(host >> 24) & 0xff, (host >> 16) & 0xff,
 		(host >> 8) & 0xff, host & 0xff);
 
-	// If we are using the default port we just need to show the IP address,
-	// but otherwise we need to include the port. This is important because
-	// we use the string representation in the setup tool to provided an
-	// address to connect to.
+	// If we are using the default port we just need to show the IP address, but otherwise we need to include the port.
+	// This is important because we use the string representation in the setup tool to provided an address to connect to.
 	if (port != DEFAULT_PORT)
 	{
 		char portbuf[10];
@@ -345,7 +321,6 @@ net_addr_t* NET_SDL_ResolveAddress(std::string address)
 	if (result)
 	{
 		// unable to resolve
-
 		return nullptr;
 	}
 	else
@@ -355,7 +330,6 @@ net_addr_t* NET_SDL_ResolveAddress(std::string address)
 }
 
 // Complete module
-
 net_module_t net_sdl_module =
 {
 	NET_SDL_InitClient,
@@ -366,4 +340,3 @@ net_module_t net_sdl_module =
 	NET_SDL_FreeAddress,
 	NET_SDL_ResolveAddress,
 };
-

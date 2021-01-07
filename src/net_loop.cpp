@@ -23,7 +23,8 @@ constexpr size_t MAX_QUEUE_SIZE{16};
 struct packet_queue_t
 {
 	net_packet_t* packets[MAX_QUEUE_SIZE];
-	int head, tail;
+	int head;
+	int tail;
 };
 
 static packet_queue_t client_queue;
@@ -218,5 +219,4 @@ net_module_t net_loop_server_module =
 	NET_SV_FreeAddress,
 	NET_SV_ResolveAddress,
 };
-
 

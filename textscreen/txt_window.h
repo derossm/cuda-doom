@@ -612,4 +612,4 @@ void SetWindowHelpURL(Window* window, std::string help_url);
  */
 void OpenWindowHelpURL(Window* window);
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

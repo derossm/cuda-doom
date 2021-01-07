@@ -152,7 +152,8 @@ static void* DEH_MiscStart(deh_context_t* context, std::string line)
 
 static void DEH_MiscParseLine(deh_context_t* context, std::string line, void* tag)
 {
-	std::string variable_name, * value;
+	std::string variable_name;
+	std::string value;
 	int ivalue;
 	size_t i;
 

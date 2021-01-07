@@ -102,17 +102,12 @@ static byte* AutoAllocMemory(int* size, int default_ram, int min_ram)
 byte* I_ZoneBase(int* size)
 {
 	byte* zonemem;
-	int min_ram, default_ram;
+	int min_ram;
+	int default_ram;
 	int p;
 	static int i = 1;
 
-	//!
-	// @category obscure
-	// @arg <mb>
-	//
 	// Specify the heap size, in MiB (default 16).
-	//
-
 	p = M_CheckParmWithArgs("-mb", 1);
 
 	if (p > 0)
@@ -137,8 +132,7 @@ byte* I_ZoneBase(int* size)
 	// [crispy] if called again, allocate another zone twice as big
 	i *= 2;
 
-	printf("zone memory: %p, %d MiB allocated for zone\n",
-		zonemem, *size >> 20); // [crispy] human-understandable zone heap size
+	printf("zone memory: %p, %d MiB allocated for zone\n", zonemem, *size >> 20); // [crispy] human-understandable zone heap size
 
 	return zonemem;
 }
@@ -181,12 +175,7 @@ void I_PrintStartupBanner(std::string gamedescription)
 	I_PrintDivider();
 }
 
-//
-// I_ConsoleStdout
-//
 // Returns true if stdout is a real console, false if it is a file
-//
-
 bool I_ConsoleStdout()
 {
 #ifdef _WIN32
@@ -197,11 +186,8 @@ bool I_ConsoleStdout()
 #endif
 }
 
-//
-// I_Init
-//
 /*
-void I_Init ()
+void I_Init()
 {
 	I_CheckIsScreensaver();
 	I_InitTimer();
@@ -215,16 +201,11 @@ void I_BindVariables()
 }
 */
 
-//
-// I_Quit
-//
-
 void I_Quit()
 {
 	atexit_listentry_t* entry;
 
 	// Run through all exit functions
-
 	entry = exit_funcs;
 
 	while (entry != NULL)
@@ -237,12 +218,6 @@ void I_Quit()
 
 	exit(0);
 }
-
-
-
-//
-// I_Error
-//
 
 static bool already_quitting = false;
 
@@ -278,7 +253,6 @@ void I_Error(std::string error, ...)
 	va_end(argptr);
 
 	// Shutdown. Here might be other errors.
-
 	entry = exit_funcs;
 
 	while (entry != NULL)
@@ -291,33 +265,21 @@ void I_Error(std::string error, ...)
 		entry = entry->next;
 	}
 
-	//!
-	// @category obscure
-	//
-	// If specified, don't show a GUI window for error messages when the
-	// game exits with an error.
-	//
+	// If specified, don't show a GUI window for error messages when the game exits with an error.
 	exit_gui_popup = !M_ParmExists("-nogui");
 
-	// Pop up a GUI dialog box to show the error message, if the
-	// game was not run from the console (and the user will
-	// therefore be unable to otherwise see the message).
+	// Pop up a GUI dialog box to show the error message, if the game was not run from the console
+	// (and the user will therefore be unable to otherwise see the message).
 	if (exit_gui_popup && !I_ConsoleStdout())
 	{
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
-			PACKAGE_STRING, msgbuf, NULL);
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, PACKAGE_STRING, msgbuf, NULL);
 	}
 
 	// abort();
-
 	SDL_Quit();
 
 	exit(-1);
 }
-
-//
-// I_Realloc
-//
 
 void* I_Realloc(void* ptr, size_t size)
 {
@@ -333,32 +295,20 @@ void* I_Realloc(void* ptr, size_t size)
 	return new_ptr;
 }
 
-//
-// Read Access Violation emulation.
-//
-// From PrBoom+, by entryway.
-//
-
+// Read Access Violation emulation. From PrBoom+, by entryway.
 // C:\>debug
 // -d 0:0
-//
-// DOS 6.22:
-// 0000:0000 (57 92 19 00) F4 06 70 00-(16 00)
-// DOS 7.1:
-// 0000:0000 (9E 0F C9 00) 65 04 70 00-(16 00)
-// Win98:
-// 0000:0000 (9E 0F C9 00) 65 04 70 00-(16 00)
-// DOSBox under XP:
-// 0000:0000 (00 00 00 F1) ?? ?? ?? 00-(07 00)
+
+// DOS 6.22: 0000:0000 (57 92 19 00) F4 06 70 00-(16 00)
+// DOS 7.1: 0000:0000 (9E 0F C9 00) 65 04 70 00-(16 00)
+// Win98: 0000:0000 (9E 0F C9 00) 65 04 70 00-(16 00)
+// DOSBox under XP: 0000:0000 (00 00 00 F1) ?? ?? ?? 00-(07 00)
 
 constexpr size_t DOS_MEM_DUMP_SIZE{10};
 
-static const unsigned char mem_dump_dos622[DOS_MEM_DUMP_SIZE] = {
- 0x57, 0x92, 0x19, 0x00, 0xF4, 0x06, 0x70, 0x00, 0x16, 0x00};
-static const unsigned char mem_dump_win98[DOS_MEM_DUMP_SIZE] = {
- 0x9E, 0x0F, 0xC9, 0x00, 0x65, 0x04, 0x70, 0x00, 0x16, 0x00};
-static const unsigned char mem_dump_dosbox[DOS_MEM_DUMP_SIZE] = {
- 0x00, 0x00, 0x00, 0xF1, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00};
+constexpr unsigned char mem_dump_dos622[DOS_MEM_DUMP_SIZE] = { 0x57, 0x92, 0x19, 0x00, 0xF4, 0x06, 0x70, 0x00, 0x16, 0x00 };
+constexpr unsigned char mem_dump_win98[DOS_MEM_DUMP_SIZE] = { 0x9E, 0x0F, 0xC9, 0x00, 0x65, 0x04, 0x70, 0x00, 0x16, 0x00 };
+constexpr unsigned char mem_dump_dosbox[DOS_MEM_DUMP_SIZE] = { 0x00, 0x00, 0x00, 0xF1, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00 };
 static unsigned char mem_dump_custom[DOS_MEM_DUMP_SIZE];
 
 static const unsigned char* dos_mem_dump = mem_dump_dos622;
@@ -369,20 +319,15 @@ bool I_GetMemoryValue(unsigned offset, void* value, int size)
 
 	if (firsttime)
 	{
-		int p, i, val;
+		int p;
+		int i;
+		int val;
 
 		firsttime = false;
 		i = 0;
 
-		//!
-		// @category compat
-		// @arg <version>
-		//
-		// Specify DOS version to emulate for NULL pointer dereference
-		// emulation. Supported versions are: dos622, dos71, dosbox.
-		// The default is to emulate DOS 7.1 (Windows 98).
-		//
-
+		// Specify DOS version to emulate for NULL pointer dereference emulation.
+		// Supported versions are: dos622, dos71, dosbox. The default is to emulate DOS 7.1 (Windows 98).
 		p = M_CheckParmWithArgs("-setmem", 1);
 
 		if (p > 0)
@@ -425,8 +370,7 @@ bool I_GetMemoryValue(unsigned offset, void* value, int size)
 		*((unsigned char*)value) = dos_mem_dump[offset];
 		return true;
 	case 2:
-		*((unsigned short*)value) = dos_mem_dump[offset]
-			| (dos_mem_dump[offset + 1] << 8);
+		*((unsigned short*)value) = dos_mem_dump[offset] | (dos_mem_dump[offset + 1] << 8);
 		return true;
 	case 4:
 		*((unsigned*)value) = dos_mem_dump[offset]
@@ -438,4 +382,3 @@ bool I_GetMemoryValue(unsigned offset, void* value, int size)
 
 	return false;
 }
-

@@ -73,7 +73,8 @@ static int NeedsScrollbars(txt_scrollpane_t* scrollpane)
 static void SanityCheckScrollbars(txt_scrollpane_t* scrollpane)
 {
 	int scrollbars;
-	int max_x, max_y;
+	int max_x;
+	int max_y;
 
 	scrollbars = NeedsScrollbars(scrollpane);
 
@@ -163,7 +164,10 @@ static void ScrollPaneSizeCalc(UNCAST_ARG(scrollpane))
 static void ScrollPaneDrawer(UNCAST_ARG(scrollpane))
 {
 	CAST_ARG(txt_scrollpane_t, scrollpane);
-	int x1, y1, x2, y2;
+	int x1;
+	int y1;
+	int x2;
+	int y2;
 	int scrollbars;
 
 	// We set a clipping area of the scroll pane.
@@ -421,12 +425,12 @@ static int ScrollPaneKeyPress(UNCAST_ARG(scrollpane), int key)
 	return result;
 }
 
-static void ScrollPaneMousePress(UNCAST_ARG(scrollpane),
-	int x, int y, int b)
+static void ScrollPaneMousePress(UNCAST_ARG(scrollpane), int x, int y, int b)
 {
 	CAST_ARG(txt_scrollpane_t, scrollpane);
 	int scrollbars;
-	int rel_x, rel_y;
+	int rel_x;
+	int rel_y;
 
 	scrollbars = NeedsScrollbars(scrollpane);
 
@@ -579,4 +583,4 @@ txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target))
 	return scrollpane;
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

@@ -780,7 +780,6 @@ void A_Light2(MapObject* mobj, Player* player, pspdef_t* psp)
 	player->extralight = 2;
 }
 
-
 //
 // A_BFGSpray
 // Spawn a BFG explosion on every monster in view

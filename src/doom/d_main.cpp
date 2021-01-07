@@ -66,13 +66,8 @@
 
 #include "d_main.h"
 
-// D-DoomLoop()
-// Not a globally visible function,
-// just included for source reference,
-// called by D_DoomMain, never exits.
-// Manages timing and IO,
-// calls all ?_Responder, ?_Ticker, and ?_Drawer,
-// calls I_GetTime, I_StartFrame, and I_StartTic
+// Not a globally visible function, just included for source reference, called by D_DoomMain, never exits.
+// Manages timing and IO, calls all ?_Responder, ?_Ticker, and ?_Drawer, calls I_GetTime, I_StartFrame, and I_StartTic
 void D_DoomLoop();
 
 std::string gamedescription;
@@ -132,7 +127,7 @@ void D_ProcessEvents()
 	{
 		if (M_Responder(ev))
 		{
-			continue;				// menu ate the event
+			continue; // menu ate the event
 		}
 
 		G_Responder(ev);
@@ -203,7 +198,7 @@ bool D_Display()
 		}
 		if (inhelpscreensstate && !inhelpscreens)
 		{
-			redrawsbar = true;				// just put away the help screen
+			redrawsbar = true; // just put away the help screen
 		}
 		ST_Drawer(viewheight == SCREENHEIGHT, redrawsbar);
 		fullscreen = viewheight == SCREENHEIGHT;
@@ -257,7 +252,7 @@ bool D_Display()
 	if (gamestate == GameState_t::GS_LEVEL && oldgamestate != GameState_t::GS_LEVEL)
 	{
 		viewactivestate = false;		// view was not active
-		R_FillBackScreen();	// draw the pattern into the back screen
+		R_FillBackScreen();				// draw the pattern into the back screen
 	}
 
 	// see if the border needs to be updated to the screen
@@ -286,8 +281,7 @@ bool D_Display()
 	inhelpscreensstate = inhelpscreens;
 	oldgamestate = wipegamestate = gamestate;
 
-	// [crispy] in automap overlay mode,
-	// draw the automap and HUD on top of everything else
+	// [crispy] in automap overlay mode, draw the automap and HUD on top of everything else
 	if (automapactive && crispy->automapoverlay)
 	{
 		AM_Drawer();
@@ -383,8 +377,8 @@ void D_BindVariables()
 	NET_BindVariables();
 
 	M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
-	M_BindIntVariable("mouse_sensitivity_x2", &mouseSensitivity_x2); // [crispy]
-	M_BindIntVariable("mouse_sensitivity_y", &mouseSensitivity_y); // [crispy]
+	M_BindIntVariable("mouse_sensitivity_x2", &mouseSensitivity_x2);
+	M_BindIntVariable("mouse_sensitivity_y", &mouseSensitivity_y);
 	M_BindIntVariable("sfx_volume", &sfxVolume);
 	M_BindIntVariable("music_volume", &musicVolume);
 	M_BindIntVariable("show_messages", &showMessages);
@@ -393,12 +387,11 @@ void D_BindVariables()
 	M_BindIntVariable("snd_channels", &snd_channels);
 	// [crispy] unconditionally disable savegame and demo limits
 	//M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
-	//M_BindIntVariable("vanilla_demo_limit",		&vanilla_demo_limit);
+	//M_BindIntVariable("vanilla_demo_limit", &vanilla_demo_limit);
 	M_BindIntVariable("show_endoom", &show_endoom);
 	M_BindIntVariable("show_diskicon", &show_diskicon);
 
 	// Multiplayer chat macros
-
 	for (auto i{0}; i < 10; ++i)
 	{
 		char buf[12];
@@ -472,7 +465,6 @@ bool D_GrabMouseCallback()
 	}
 
 	// only grab mouse when playing levels (but not demos)
-
 	return (gamestate == GameState_t::GS_LEVEL) && !demoplayback && !advancedemo;
 }
 
@@ -495,7 +487,7 @@ void D_RunFrame()
 		wipestart = nowtime;
 		wipe = !wipe_ScreenWipe(wipe_Melt, 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
 		I_UpdateNoBlit();
-		M_Drawer();							// menu is drawn even on top of wipes
+		M_Drawer();								// menu is drawn even on top of wipes
 		I_FinishUpdate();						// page flip or blit buffer
 		return;
 	}
@@ -520,13 +512,12 @@ void D_RunFrame()
 		else
 		{
 			// normal update
-			I_FinishUpdate();				// page flip or blit buffer
+			I_FinishUpdate(); // page flip or blit buffer
 		}
 	}
 
-	// [crispy] post-rendering function pointer to apply config changes
-	// that affect rendering and that are better applied after the current
-	// frame has finished rendering
+	// [crispy] post-rendering function pointer to apply config changes that affect rendering and that are better
+	// applied after the current frame has finished rendering
 	if (crispy->post_rendering_hook && !wipe)
 	{
 		crispy->post_rendering_hook();
@@ -609,19 +600,13 @@ void D_DoAdvanceDemo()
 	// [crispy] update the "singleplayer" variable
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 
-	// The Ultimate Doom executable changed the demo sequence to add
-	// a DEMO4 demo. Final Doom was based on Ultimate, so also
-	// includes this change; however, the Final Doom IWADs do not
-	// include a DEMO4 lump, so the game bombs out with an error
-	// when it reaches this point in the demo sequence.
+	// The Ultimate Doom executable changed the demo sequence to add a DEMO4 demo. Final Doom was based on Ultimate, so also includes this change;
+	// however, the Final Doom IWADs do not include a DEMO4 lump, so the game bombs out with an error when it reaches this point in the demo sequence.
 
-	// However! There is an alternate version of Final Doom that
-	// includes a fixed executable.
+	// However! There is an alternate version of Final Doom that includes a fixed executable.
 
 	// [crispy] get rid of this demo sequence breaking bug
-	/*
-	if (gameversion == GameVersion::exe_ultimate || gameversion == GameVersion::exe_final)
-	*/
+	//if (gameversion == GameVersion::exe_ultimate || gameversion == GameVersion::exe_final)
 	if (W_CheckNumForName(DEH_String("demo4")) >= 0)
 	{
 		demosequence = (demosequence + 1) % 7;
@@ -695,8 +680,7 @@ void D_DoAdvanceDemo()
 		break;
 	}
 
-	// The Doom 3: BFG Edition version of doom2.wad does not have a
-	// TITLETPIC lump. Use INTERPIC instead as a workaround.
+	// The Doom 3: BFG Edition version of doom2.wad does not have a TITLETPIC lump. Use INTERPIC instead as a workaround.
 	if (gamevariant == GameVariant::bfgedition && !iequals(pagename, "TITLEPIC") && W_CheckNumForName("titlepic") < 0)
 	{
 		// use DMENUPIC instead of TITLEPIC, it's awesome
@@ -711,8 +695,7 @@ void D_StartTitle()
 	D_AdvanceDemo();
 }
 
-// Strings for dehacked replacements of the startup banner
-//
+// Strings for dehacked replacements of the startup banner.
 // These are from the original source: some of them are perhaps not used in any dehacked patches
 static std::string banners[] =
 {
@@ -762,8 +745,8 @@ std::string GetGameName(std::string gamename)
 	for (i = 0; i < arrlen(banners); ++i)
 	{
 		std::string deh_sub;
-		// Has the banner been replaced?
 
+		// Has the banner been replaced?
 		deh_sub = DEH_String(banners[i]);
 
 		if (deh_sub != banners[i])
@@ -772,10 +755,8 @@ std::string GetGameName(std::string gamename)
 			int version;
 			std::string deh_gamename;
 
-			// Has been replaced.
-			// We need to expand via printf to include the Doom version number
+			// Has been replaced. We need to expand via printf to include the Doom version number.
 			// We also need to cut off spaces to get the basic name
-
 			gamename_size = strlen(deh_sub) + 10;
 			deh_gamename = static_cast<decltype(deh_gamename)>(malloc(gamename_size));
 			if (deh_gamename == NULL)
@@ -839,7 +820,6 @@ void D_IdentifyVersion()
 {
 	// gamemission is set up by the D_FindIWAD function. But if we specify '-iwad', we have to identify using IdentifyIWADByName.
 	// However, if the iwad does not match any known IWAD name, we may have a dilemma. Try to identify by its contents.
-
 	if (gamemission == GameMission::none)
 	{
 		unsigned i;
@@ -861,21 +841,17 @@ void D_IdentifyVersion()
 		if (gamemission == GameMission::none)
 		{
 			// Still no idea. I don't think this is going to work.
-
 			I_Error("Unknown or invalid IWAD file.");
 		}
 	}
 
 	// Make sure gamemode is set up correctly
-
 	if (logical_gamemission == GameMission::doom)
 	{
 		// Doom 1. But which version?
-
 		if (W_CheckNumForName("E4M1") > 0)
 		{
 			// Ultimate Doom
-
 			gamemode = GameMode::retail;
 		}
 		else if (W_CheckNumForName("E3M1") > 0)
@@ -894,18 +870,11 @@ void D_IdentifyVersion()
 		// Doom 2 of some kind.
 		gamemode = GameMode::commercial;
 
-		// We can manually override the gamemission that we got from the
-		// IWAD detection code. This allows us to eg. play Plutonia 2
-		// with Freedoom and get the right level names.
+		// We can manually override the gamemission that we got from the IWAD detection code.
+		// This allows us to eg. play Plutonia 2 with Freedoom and get the right level names.
 
-		//!
-		// @category compat
-		// @arg <pack>
-		//
-		// Explicitly specify a Doom II "mission pack" to run as, instead of
-		// detecting it based on the filename. Valid values are: "doom2",
-		// "tnt" and "plutonia".
-		//
+		// Explicitly specify a Doom II "mission pack" to run as, instead of detecting it based on the filename.
+		// Valid values are: "doom2", "tnt" and "plutonia".
 		p = M_CheckParmWithArgs("-pack", 1);
 		if (p > 0)
 		{
@@ -920,7 +889,6 @@ static void D_SetGameDescription()
 	if (logical_gamemission == GameMission::doom)
 	{
 		// Doom 1. But which version?
-
 		if (gamevariant == GameVariant::freedoom)
 		{
 			gamedescription = GetGameName("Freedoom: Phase 1");
@@ -928,7 +896,6 @@ static void D_SetGameDescription()
 		else if (gamemode == GameMode::retail)
 		{
 			// Ultimate Doom
-
 			gamedescription = GetGameName("The Ultimate DOOM");
 		}
 		else if (gamemode == GameMode::registered)
@@ -943,7 +910,6 @@ static void D_SetGameDescription()
 	else
 	{
 		// Doom 2 of some kind. But which mission?
-
 		if (gamevariant == GameVariant::freedm)
 		{
 			gamedescription = GetGameName("FreeDM");
@@ -980,7 +946,7 @@ static void D_SetGameDescription()
 	}
 }
 
-//		print title for every printed line
+// print title for every printed line
 char title[128];
 
 static bool D_AddFile(std::string filename)
@@ -993,9 +959,7 @@ static bool D_AddFile(std::string filename)
 	return handle != NULL;
 }
 
-// Copyright message banners
-// Some dehacked mods replace these. These are only displayed if they are
-// replaced by dehacked.
+// Copyright message banners. Some dehacked mods replace these. These are only displayed if they are replaced by dehacked.
 static std::string copyright_banners[] =
 {
 	"===========================================================================\n"
@@ -1030,9 +994,7 @@ void PrintDehackedBanners()
 		{
 			printf("%s", deh_s);
 
-			// Make sure the modified banner always ends in a newline character.
-			// If it doesn't, add a newline. This fixes av.wad.
-
+			// Make sure the modified banner always ends in a newline character. If it doesn't, add a newline. This fixes av.wad.
 			if (deh_s[strlen(deh_s) - 1] != '\n')
 			{
 				printf("\n");
@@ -1057,11 +1019,10 @@ static struct
 	{"Final Doom",			"final",		GameVersion::exe_final},
 	{"Final Doom (alt)",	"final2",		GameVersion::exe_final2},
 	{"Chex Quest",			"chex",			GameVersion::exe_chex},
-	{ std::string{},		std::string{},	GameVersion(0)},
+	{ std::string{},		std::string{},	GameVersion::invalid}
 };
 
 // Initialize the game version
-
 static void InitGameVersion()
 {
 	byte* demolump;
@@ -1071,15 +1032,7 @@ static void InitGameVersion()
 	int i;
 	bool status;
 
-	//!
-	// @arg <version>
-	// @category compat
-	//
-	// Emulate a specific version of Doom. Valid values are "1.2",
-	// "1.666", "1.7", "1.8", "1.9", "ultimate", "final", "final2",
-	// "hacx" and "chex".
-	//
-
+	// Emulate a specific version of Doom. Valid values are "1.2", "1.666", "1.7", "1.8", "1.9", "ultimate", "final", "final2", "hacx" and "chex".
 	p = M_CheckParmWithArgs("-gameversion", 1);
 
 	if (p)
@@ -1109,17 +1062,14 @@ static void InitGameVersion()
 	else
 	{
 		// Determine automatically
-
 		if (gamemission == GameMission::pack_chex)
 		{
 			// chex.exe - identified by iwad filename
-
 			gameversion = GameVersion::exe_chex;
 		}
 		else if (gamemission == GameMission::pack_hacx)
 		{
 			// hacx.exe: identified by iwad filename
-
 			gameversion = GameVersion::exe_hacx;
 		}
 		else if (gamemode == GameMode::shareware || gamemode == GameMode::registered
@@ -1176,11 +1126,8 @@ static void InitGameVersion()
 		}
 		else if (gamemode == GameMode::commercial)
 		{
-			// Final Doom: tnt or plutonia
-			// Defaults to emulating the first Final Doom executable,
-			// which has the crash in the demo loop; however, having
-			// this as the default should mean that it plays back
-			// most demos correctly.
+			// Final Doom: tnt or plutonia. Defaults to emulating the first Final Doom executable, which has the crash in the demo loop;
+			// however, having this as the default should mean that it plays back most demos correctly.
 
 			gameversion = GameVersion::exe_final;
 		}
@@ -1193,14 +1140,12 @@ static void InitGameVersion()
 	}
 
 	// The original exe does not support retail - 4th episode not supported
-
 	if (gameversion < GameVersion::exe_ultimate && gamemode == GameMode::retail)
 	{
 		gamemode = GameMode::registered;
 	}
 
 	// EXEs prior to the Final Doom exes do not support Final Doom.
-
 	if (gameversion < GameVersion::exe_final && gamemode == GameMode::commercial
 		&& (gamemission == GameMission::pack_tnt || gamemission == GameMission::pack_plut))
 	{
@@ -1224,15 +1169,12 @@ void PrintGameVersion()
 }
 
 // Function called at exit to display the ENDOOM screen
-
 static void D_Endoom()
 {
 	byte* endoom;
 
-	// Don't show ENDOOM if we have it disabled, or we're running
-	// in screensaver or control test mode. Only show it once the
-	// game has actually started.
-
+	// Don't show ENDOOM if we have it disabled, or we're running in screensaver or control test mode.
+	// Only show it once the game has actually started.
 	if (!show_endoom || !main_loop_started
 		|| screensaver_mode || M_CheckParm("-testcontrols") > 0)
 	{
@@ -1250,9 +1192,8 @@ static void LoadIwadDeh()
 	// The Freedoom IWADs have DEHACKED lumps that must be loaded.
 	if (gamevariant == GameVariant::freedoom || gamevariant == GameVariant::freedm)
 	{
-		// Old versions of Freedoom (before 2014-09) did not have technically
-		// valid DEHACKED lumps, so ignore errors and just continue if this
-		// is an old IWAD.
+		// Old versions of Freedoom (before 2014-09) did not have technically valid DEHACKED lumps,
+		// so ignore errors and just continue if this is an old IWAD.
 		DEH_LoadLumpByName("DEHACKED", false, true);
 	}
 
@@ -1261,13 +1202,11 @@ static void LoadIwadDeh()
 	{
 		if (!DEH_LoadLumpByName("DEHACKED", true, false))
 		{
-			I_Error("DEHACKED lump not found. Please check that this is the "
-				"Hacx v1.2 IWAD.");
+			I_Error("DEHACKED lump not found. Please check that this is the Hacx v1.2 IWAD.");
 		}
 	}
 
-	// Chex Quest needs a separate Dehacked patch which must be downloaded
-	// and installed next to the IWAD.
+	// Chex Quest needs a separate Dehacked patch which must be downloaded and installed next to the IWAD.
 	if (gameversion == GameVersion::exe_chex)
 	{
 		std::string chex_deh = NULL;
@@ -1277,8 +1216,7 @@ static void LoadIwadDeh()
 		dirname = M_DirName(iwadfile);
 		chex_deh = std::string(dirname + DIR_SEPARATOR_S + "chex.deh");
 
-		// If the dehacked patch isn't found, try searching the WAD
-		// search path instead. We might find it...
+		// If the dehacked patch isn't found, try searching the WAD search path instead. We might find it...
 		if (!M_FileExists(chex_deh))
 		{
 			chex_deh = D_FindWADByName("chex.deh");
@@ -1287,11 +1225,8 @@ static void LoadIwadDeh()
 		// Still not found?
 		if (chex_deh.empty())
 		{
-			I_Error("Unable to find Chex Quest dehacked file (chex.deh).\n"
-				"The dehacked file is required in order to emulate\n"
-				"chex.exe correctly. It can be found in your nearest\n"
-				"/idgames repository mirror at:\n\n"
-				"	utils/exe_edit/patches/chexdeh.zip");
+			I_Error("Unable to find Chex Quest dehacked file (chex.deh).\nThe dehacked file is required in order to emulate\n"
+				"chex.exe correctly. It can be found in your nearest\n/idgames repository mirror at:\n\n utils/exe_edit/patches/chexdeh.zip");
 		}
 
 		if (!DEH_LoadFile(chex_deh))
@@ -1319,48 +1254,27 @@ void D_DoomMain()
 	I_AtExit(D_Endoom, false);
 
 	// print banner
-
 	I_PrintBanner(PACKAGE_STRING);
 
 	DEH_printf("Z_Init: Init zone memory allocation daemon. \n");
 	Z_Init();
 
-	//!
-	// @category net
-	//
-	// Start a dedicated server, routing packets but not participating
-	// in the game itself.
-	//
-
+	// Start a dedicated server, routing packets but not participating in the game itself.
 	if (M_CheckParm("-dedicated") > 0)
 	{
 		printf("Dedicated server mode.\n");
 		NET_DedicatedServer();
-
 		// Never returns
 	}
 
-	//!
-	// @category net
-	//
-	// Query the Internet master server for a global list of active
-	// servers.
-	//
-
+	// Query the Internet master server for a global list of active servers.
 	if (M_CheckParm("-search"))
 	{
 		NET_MasterQuery();
 		exit(0);
 	}
 
-	//!
-	// @arg <address>
-	// @category net
-	//
-	// Query the status of the server running on the given IP
-	// address.
-	//
-
+	// Query the status of the server running on the given IP address.
 	p = M_CheckParmWithArgs("-query", 1);
 
 	if (p)
@@ -1369,85 +1283,37 @@ void D_DoomMain()
 		exit(0);
 	}
 
-	//!
-	// @category net
-	//
 	// Search the local LAN for running servers.
-	//
-
 	if (M_CheckParm("-localsearch"))
 	{
 		NET_LANQuery();
 		exit(0);
 	}
 
-	//!
-	// @category game
-	// @vanilla
-	//
 	// Disable monsters.
-	//
-
 	nomonsters = M_CheckParm("-nomonsters");
 
-	//!
-	// @category game
-	// @vanilla
-	//
 	// Monsters respawn after being killed.
-	//
 
 	respawnparm = M_CheckParm("-respawn");
 
-	//!
-	// @category game
-	// @vanilla
-	//
 	// Monsters move faster.
-	//
-
 	fastparm = M_CheckParm("-fast");
 
-	//!
-	// @vanilla
-	//
-	// Developer mode. F1 saves a screenshot in the current working
-	// directory.
-	//
-
+	// Developer mode. F1 saves a screenshot in the current working directory.
 	devparm = M_CheckParm("-devparm");
 
 	I_DisplayFPSDots(devparm);
 
-	//!
-	// @category net
-	// @vanilla
-	//
 	// Start a deathmatch game.
-	//
-
 	if (M_CheckParm("-deathmatch"))
 		deathmatch = 1;
 
-	//!
-	// @category net
-	// @vanilla
-	//
-	// Start a deathmatch 2.0 game. Weapons do not stay in place and
-	// all items respawn after 30 seconds.
-	//
-
+	// Start a deathmatch 2.0 game. Weapons do not stay in place and all items respawn after 30 seconds.
 	if (M_CheckParm("-altdeath"))
 		deathmatch = 2;
 
-	//!
-	// @category net
-	// @vanilla
-	//
-	// Start a deathmatch 3.0 game. Weapons stay in place and
-	// all items respawn after 30 seconds.
-	//
-
+	// Start a deathmatch 3.0 game. Weapons stay in place and all items respawn after 30 seconds.
 	if (M_CheckParm("-dm3"))
 		deathmatch = 3;
 
@@ -1455,18 +1321,8 @@ void D_DoomMain()
 		DEH_printf(D_DEVSTR);
 
 	// find which dir to use for config files
-
 #ifdef _WIN32
-
-	//!
-	// @category obscure
-	// @platform windows
-	// @vanilla
-	//
-	// Save configuration data and savegames in c:\doomdata,
-	// allowing play from CD.
-	//
-
+	// Save configuration data and savegames in c:\doomdata, allowing play from CD.
 	if (M_ParmExists("-cdrom"))
 	{
 		printf(D_CDROM);
@@ -1477,19 +1333,10 @@ void D_DoomMain()
 #endif
 	{
 		// Auto-detect the configuration dir.
-
 		M_SetConfigDir(NULL);
 	}
 
-	//!
-	// @category game
-	// @arg <x>
-	// @vanilla
-	//
-	// Turbo mode. The player's speed is multiplied by x%. If unspecified,
-	// x defaults to 200. Values are rounded up to 10 and down to 400.
-	//
-
+	// Turbo mode. The player's speed is multiplied by x%. If unspecified, x defaults to 200. Values are rounded up to 10 and down to 400.
 	if ((p = M_CheckParm("-turbo")))
 	{
 		int scale = 200;
@@ -1526,11 +1373,9 @@ void D_DoomMain()
 	iwadfile = D_FindIWAD(cudadoom::IWAD_MASK_DOOM, &gamemission);
 
 	// None found?
-
 	if (iwadfile.empty())
 	{
-		I_Error("Game mode indeterminate. No IWAD file was found. Try\n"
-			"specifying one with the '-iwad' command line parameter.\n");
+		I_Error("Game mode indeterminate. No IWAD file was found. Try\nspecifying one with the '-iwad' command line parameter.\n");
 	}
 
 	modifiedgame = false;
@@ -1541,13 +1386,11 @@ void D_DoomMain()
 
 	W_CheckCorrectIWAD(GameMission::doom);
 
-	// Now that we've loaded the IWAD, we can figure out what gamemission
-	// we're playing and which version of Vanilla Doom we need to emulate.
+	// Now that we've loaded the IWAD, we can figure out what gamemission we're playing and which version of Vanilla Doom we need to emulate.
 	D_IdentifyVersion();
 	InitGameVersion();
 
 	// Check which IWAD variant we are using.
-
 	if (W_CheckNumForName("FREEDOOM") >= 0)
 	{
 		if (W_CheckNumForName("FREEDM") >= 0)
@@ -1564,16 +1407,10 @@ void D_DoomMain()
 		gamevariant = GameVariant::bfgedition;
 	}
 
-	//!
-	// @category mod
-	//
-	// Disable automatic loading of Dehacked patches for certain
-	// IWAD files.
-	//
+	// Disable automatic loading of Dehacked patches for certain IWAD files.
 	if (!M_ParmExists("-nodeh"))
 	{
-		// Some IWADs have dehacked patches that need to be loaded for
-		// them to be played properly.
+		// Some IWADs have dehacked patches that need to be loaded for them to be played properly.
 		LoadIwadDeh();
 	}
 
@@ -1582,9 +1419,7 @@ void D_DoomMain()
 	// Furthermore, the M_GDHIGH lumps have been modified in a way that
 	// makes them incompatible to Vanilla Doom and the modified version
 	// of doom2.wad is missing the TITLEPIC lump.
-	// We specifically check for DMENUPIC here, before PWADs have been
-	// loaded which could probably include a lump of that name.
-
+	// We specifically check for DMENUPIC here, before PWADs have been loaded which could probably include a lump of that name.
 	if (gamevariant == GameVariant::bfgedition)
 	{
 		printf("BFG Edition: Using workarounds as needed.\n");
@@ -1603,7 +1438,7 @@ void D_DoomMain()
 		// for the options menu (says "Fullscreen:"). Why the perpetrators
 		// couldn't just add a new graphic lump and had to reuse this one,
 		// I don't know.
-		//
+
 		// The end result is that M_GDHIGH is too wide and causes the game
 		// to crash. As a workaround to get a minimum level of support for
 		// the BFG edition IWADs, use the "ON"/"OFF" graphics instead.
@@ -1617,30 +1452,19 @@ void D_DoomMain()
 		DEH_AddStringReplacement("M_SCRNSZ", "M_DISP");
 	}
 
-	//!
-	// @category game
-	// @category mod
-	//
 	// Automatic pistol start when advancing from one level to the next. At the
 	// beginning of each level, the player's health is reset to 100, their
 	// armor to 0 and their inventory is reduced to the following: pistol,
 	// fists and 50 bullets. This option is not allowed when recording a demo,
 	// playing back a demo or when starting a network game.
-	//
-
 	crispy->pistolstart = M_ParmExists("-pistolstart");
 
-	//!
-	// @category mod
-	//
 	// Disable auto-loading of .wad and .deh files.
-	//
 	if (!M_ParmExists("-noautoload") && gamemode != GameMode::shareware)
 	{
 		std::string autoload_dir;
 
 		// common auto-loaded files for all Doom flavors
-
 		if (gamemission < GameMission::pack_chex)
 		{
 			autoload_dir = M_GetAutoloadDir("doom-all");
@@ -1657,8 +1481,7 @@ void D_DoomMain()
 	}
 
 	// Load Dehacked patches specified on the command line with -deh.
-	// Note that there's a very careful and deliberate ordering to how
-	// Dehacked patches are loaded. The order we use is:
+	// Note that there's a very careful and deliberate ordering to how. Dehacked patches are loaded. The order we use is:
 	// 1. IWAD dehacked patches.
 	// 2. Command line dehacked patches specified with -deh.
 	// 3. PWAD dehacked patches in DEHACKED lumps.
@@ -1667,14 +1490,7 @@ void D_DoomMain()
 	// Load PWAD files.
 	modifiedgame = W_ParseCommandLine();
 
-	//!
-	// @arg <file>
-	// @category mod
-	//
-	// [crispy] experimental feature: in conjunction with -merge <files>
-	// merges PWADs into the main IWAD and writes the merged data into <file>
-	//
-
+	// [crispy] experimental feature: in conjunction with -merge <files> merges PWADs into the main IWAD and writes the merged data into <file>
 	p = M_CheckParm("-mergedump");
 
 	if (p)
@@ -1703,13 +1519,7 @@ void D_DoomMain()
 		}
 	}
 
-	//!
-	// @arg <file>
-	// @category mod
-	//
 	// [crispy] experimental feature: dump lump data into a new LMP file <file>
-	//
-
 	p = M_CheckParm("-lumpdump");
 
 	if (p)
@@ -1740,28 +1550,14 @@ void D_DoomMain()
 	}
 
 	// Debug:
-//	W_PrintDirectory();
+	//W_PrintDirectory();
 
-	//!
-	// @arg <demo>
-	// @category demo
-	// @vanilla
-	//
 	// Play back the demo named demo.lmp.
-	//
-
 	p = M_CheckParmWithArgs("-playdemo", 1);
 
 	if (!p)
 	{
-		//!
-		// @arg <demo>
-		// @category demo
-		// @vanilla
-		//
-		// Play back the demo named demo.lmp, determining the framerate
-		// of the screen.
-		//
+		// Play back the demo named demo.lmp, determining the framerate of the screen.
 		p = M_CheckParmWithArgs("-timedemo", 1);
 
 	}
@@ -1771,8 +1567,7 @@ void D_DoomMain()
 		std::string uc_filename = strdup(myargv[p + 1]);
 		M_ForceUppercase(uc_filename);
 
-		// With Vanilla you have to specify the file without extension,
-		// but make that optional.
+		// With Vanilla you have to specify the file without extension, but make that optional.
 		if (M_StringEndsWith(uc_filename, ".LMP"))
 		{
 			M_StringCopy(file, myargv[p + 1], sizeof(file));
@@ -1790,8 +1585,7 @@ void D_DoomMain()
 			// [crispy] check if the demo file name gets truncated to a lump name that is already present
 			if ((i = W_CheckNumForNameFromTo(lumpinfo[numlumps - 1]->name, numlumps - 2, 0)) != -1)
 			{
-				printf("Demo lump name collision detected with lump \'%.8s\' from %s.\n",
-					lumpinfo[i]->name, W_WadNameForLump(lumpinfo[i]));
+				printf("Demo lump name collision detected with lump \'%.8s\' from %s.\n", lumpinfo[i]->name, W_WadNameForLump(lumpinfo[i]));
 				// [FG] the DEMO1 lump is almost certainly always a demo lump
 				M_StringCopy(lumpinfo[numlumps - 1]->name, "DEMO1", 6);
 			}
@@ -1800,10 +1594,8 @@ void D_DoomMain()
 		}
 		else
 		{
-			// If file failed to load, still continue trying to play
-			// the demo in the same way as Vanilla Doom. This makes
-			// tricks like "-playdemo demo1" possible.
-
+			// If file failed to load, still continue trying to play the demo in the same way as Vanilla Doom.
+			// This makes tricks like "-playdemo demo1" possible.
 			M_StringCopy(demolumpname, myargv[p + 1], sizeof(demolumpname));
 		}
 
@@ -1830,19 +1622,15 @@ void D_DoomMain()
 		}
 	}
 
-	// Load DEHACKED lumps from WAD files - but only if we give the right
-	// command line parameter.
+	// Load DEHACKED lumps from WAD files - but only if we give the right command line parameter.
 
-	//!
-	// @category mod
-	//
-	// Load Dehacked patches from DEHACKED lumps contained in one of the
-	// loaded PWAD files.
-	//
+	// Load Dehacked patches from DEHACKED lumps contained in one of the loaded PWAD files.
+
 	// [crispy] load DEHACKED lumps by default, but allow overriding
 	if (!M_ParmExists("-nodehlump") && !M_ParmExists("-nodeh"))
 	{
-		int i, loaded = 0;
+		int i;
+		int loaded = 0;
 
 		for (i = numiwadlumps; i < numlumps; ++i)
 		{
@@ -1856,8 +1644,7 @@ void D_DoomMain()
 		printf(" loaded %i DEHACKED lumps from PWAD files.\n", loaded);
 	}
 
-	// Set the gamedescription string. This is only possible now that
-	// we've finished loading Dehacked patches.
+	// Set the gamedescription string. This is only possible now that we've finished loading Dehacked patches.
 	D_SetGameDescription();
 
 	savegamedir = M_GetSaveGameDir(D_SaveGameIWADName(gamemission, gamevariant));
@@ -1865,22 +1652,19 @@ void D_DoomMain()
 	// Check for -file in shareware
 	if (modifiedgame && (gamevariant != GameVariant::freedoom))
 	{
-		// These are the lumps that will be checked in IWAD,
-		// if any one is not present, execution will be aborted.
+		// These are the lumps that will be checked in IWAD, if any one is not present, execution will be aborted.
 		char name[23][8] =
 		{
-			"e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
-			"e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
-			"dphoof","bfgga0","heada1","cybra1","spida1d1"
+			"e2m1", "e2m2", "e2m3", "e2m4", "e2m5", "e2m6", "e2m7", "e2m8", "e2m9",
+			"e3m1", "e3m3", "e3m3", "e3m4", "e3m5", "e3m6", "e3m7", "e3m8", "e3m9",
+			"dphoof", "bfgga0", "heada1", "cybra1", "spida1d1"
 		};
 		int i;
 
 		if (gamemode == GameMode::shareware)
-			I_Error(DEH_String("\nYou cannot -file with the shareware "
-				"version. Register!"));
+			I_Error(DEH_String("\nYou cannot -file with the shareware version. Register!"));
 
-		// Check for fake IWAD with right name,
-		// but w/o all the lumps of the registered version.
+		// Check for fake IWAD with right name, but w/o all the lumps of the registered version.
 		if (gamemode == GameMode::registered)
 			for (i = 0;i < 23; ++i)
 				if (W_CheckNumForName(name[i]) < 0)
@@ -1889,13 +1673,11 @@ void D_DoomMain()
 
 	// [crispy] disable meaningless warning, we always use "-merge" anyway
 #if 0
-	if (W_CheckNumForName("SS_START") >= 0
-		|| W_CheckNumForName("FF_END") >= 0)
+	if (W_CheckNumForName("SS_START") >= 0 || W_CheckNumForName("FF_END") >= 0)
 	{
 		I_PrintDivider();
 		printf(" WARNING: The loaded WAD file contains modified sprites or\n"
-			" floor textures. You may want to use the '-merge' command\n"
-			" line option instead of '-file'.\n");
+				" floor textures. You may want to use the '-merge' command\n line option instead of '-file'.\n");
 	}
 #endif
 
@@ -1910,33 +1692,29 @@ void D_DoomMain()
 	I_InitMusic();
 
 	// [crispy] check for SSG resources
-	crispy->havessg =
-		(
-			gamemode == GameMode::commercial ||
-			(
-				W_CheckNumForName("sht2a0") != -1 && // [crispy] wielding/firing sprite sequence
-				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dshtgn)]) != -1 && // [crispy] firing sound
-				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbopn)]) != -1 && // [crispy] opening sound
-				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbload)]) != -1 && // [crispy] reloading sound
-				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbcls)]) != -1	// [crispy] closing sound
-				)
+	// [crispy] wielding/firing sprite sequence
+	// [crispy] firing sound
+	// [crispy] opening sound
+	// [crispy] reloading sound
+	// [crispy] closing sound
+	crispy->havessg = (
+					gamemode == GameMode::commercial || (
+					W_CheckNumForName("sht2a0") != -1
+					&& I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dshtgn)]) != -1
+					&& I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbopn)]) != -1
+					&& I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbload)]) != -1
+					&& I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbcls)]) != -1)
 			);
 
 	// [crispy] check for presence of a 5th episode
-	crispy->haved1e5 = (gameversion == GameVersion::exe_ultimate) &&
-		(W_CheckNumForName("m_epi5") != -1) &&
-		(W_CheckNumForName("e5m1") != -1) &&
-		(W_CheckNumForName("wilv40") != -1);
+	crispy->haved1e5 = (gameversion == GameVersion::exe_ultimate)
+		&& (W_CheckNumForName("m_epi5") != -1) && (W_CheckNumForName("e5m1") != -1) && (W_CheckNumForName("wilv40") != -1);
 
 	// [crispy] check for presence of E1M10
-	crispy->havee1m10 = (gamemode == GameMode::retail) &&
-		(W_CheckNumForName("e1m10") != -1) &&
-		(W_CheckNumForName("sewers") != -1);
+	crispy->havee1m10 = (gamemode == GameMode::retail) && (W_CheckNumForName("e1m10") != -1) && (W_CheckNumForName("sewers") != -1);
 
 	// [crispy] check for presence of MAP33
-	crispy->havemap33 = (gamemode == GameMode::commercial) &&
-		(W_CheckNumForName("map33") != -1) &&
-		(W_CheckNumForName("cwilv32") != -1);
+	crispy->havemap33 = (gamemode == GameMode::commercial) && (W_CheckNumForName("map33") != -1) && (W_CheckNumForName("cwilv32") != -1);
 
 	// [crispy] change level name for MAP33 if not already changed
 	if (crispy->havemap33 && !DEH_HasStringReplacement(PHUSTR_1))
@@ -1956,15 +1734,7 @@ void D_DoomMain()
 	startmap = 1;
 	autostart = false;
 
-	//!
-	// @category game
-	// @arg <skill>
-	// @vanilla
-	//
-	// Set the game skill, 1-5 (1: easiest, 5: hardest). A skill of
-	// 0 disables all monsters.
-	//
-
+	// Set the game skill, 1-5 (1: easiest, 5: hardest). A skill of 0 disables all monsters.
 	p = M_CheckParmWithArgs("-skill", 1);
 
 	if (p)
@@ -1973,14 +1743,7 @@ void D_DoomMain()
 		autostart = true;
 	}
 
-	//!
-	// @category game
-	// @arg <n>
-	// @vanilla
-	//
 	// Start playing on episode n (1-4)
-	//
-
 	p = M_CheckParmWithArgs("-episode", 1);
 
 	if (p)
@@ -1992,14 +1755,7 @@ void D_DoomMain()
 
 	timelimit = 0;
 
-	//!
-	// @arg <n>
-	// @category net
-	// @vanilla
-	//
 	// For multiplayer games: exit each level after n minutes.
-	//
-
 	p = M_CheckParmWithArgs("-timer", 1);
 
 	if (p)
@@ -2007,13 +1763,7 @@ void D_DoomMain()
 		timelimit = atoi(myargv[p + 1]);
 	}
 
-	//!
-	// @category net
-	// @vanilla
-	//
 	// Austin Virtual Gaming: end levels after 20 minutes.
-	//
-
 	p = M_CheckParm("-avg");
 
 	if (p)
@@ -2021,15 +1771,7 @@ void D_DoomMain()
 		timelimit = 20;
 	}
 
-	//!
-	// @category game
-	// @arg [<x> <y> | <xy>]
-	// @vanilla
-	//
-	// Start a game immediately, warping to ExMy (Doom 1) or MAPxy
-	// (Doom 2)
-	//
-
+	// Start a game immediately, warping to ExMy (Doom 1) or MAPxy (Doom 2)
 	p = M_CheckParmWithArgs("-warp", 1);
 
 	if (p)
@@ -2056,9 +1798,7 @@ void D_DoomMain()
 		crispy->demowarp = startmap;
 	}
 
-	// Undocumented:
-	// Invoked by setup to test the controls.
-
+	// Undocumented: Invoked by setup to test the controls.
 	p = M_CheckParm("-testcontrols");
 
 	if (p > 0)
@@ -2096,17 +1836,9 @@ void D_DoomMain()
 	}
 
 	// Check for load game parameter
-	// We do this here and save the slot number, so that the network code
-	// can override it or send the load slot to other players.
+	// We do this here and save the slot number, so that the network code can override it or send the load slot to other players.
 
-	//!
-	// @category game
-	// @arg <s>
-	// @vanilla
-	//
 	// Load the game in slot s.
-	//
-
 	p = M_CheckParmWithArgs("-loadgame", 1);
 
 	if (p)
@@ -2142,10 +1874,7 @@ void D_DoomMain()
 	DEH_printf("ST_Init: Init status bar.\n");
 	ST_Init();
 
-	// If Doom II without a MAP01 lump, this is a store demo.
-	// Moved this here so that MAP01 isn't constantly looked up
-	// in the main loop.
-
+	// If Doom II without a MAP01 lump, this is a store demo. Moved this here so that MAP01 isn't constantly looked up in the main loop.
 	if (gamemode == GameMode::commercial && W_CheckNumForName("map01") < 0)
 		storedemo = true;
 
@@ -2155,14 +1884,7 @@ void D_DoomMain()
 		DEH_printf("External statistics registered.\n");
 	}
 
-	//!
-	// @arg <x>
-	// @category demo
-	// @vanilla
-	//
 	// Record a demo named x.lmp.
-	//
-
 	p = M_CheckParmWithArgs("-record", 1);
 
 	if (p)
@@ -2174,7 +1896,7 @@ void D_DoomMain()
 	p = M_CheckParmWithArgs("-playdemo", 1);
 	if (p)
 	{
-		singledemo = true;				// quit after one demo
+		singledemo = true; // quit after one demo
 		G_DeferedPlayDemo(demolumpname);
 		D_DoomLoop(); // never returns
 	}
@@ -2198,9 +1920,8 @@ void D_DoomMain()
 		if (autostart || netgame)
 			G_InitNew(startskill, startepisode, startmap);
 		else
-			D_StartTitle();				// start up intro loop
+			D_StartTitle(); // start up intro loop
 	}
 
 	D_DoomLoop(); // never returns
 }
-

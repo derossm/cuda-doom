@@ -43,8 +43,10 @@ static int cudadoom::txt::MaxStringLength(int len)
 
 static void* DEH_TextStart(deh_context_t* context, std::string line)
 {
-	std::string from_text, * to_text;
-	int fromlen, tolen;
+	std::string from_text;
+	std::string to_text;
+	int fromlen;
+	int tolen;
 	int i;
 
 	if (sscanf(line, "Text %i %i", &fromlen, &tolen) != 2)

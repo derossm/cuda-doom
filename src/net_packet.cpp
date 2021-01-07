@@ -235,7 +235,6 @@ void NET_WriteInt16(net_packet_t* packet, unsigned i)
 	packet->len += 2;
 }
 
-
 // Write a single byte to the packet
 void NET_WriteInt32(net_packet_t* packet, unsigned i)
 {

@@ -78,4 +78,4 @@ public:
  * @param height		Height of the strut, in characters.
  */
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

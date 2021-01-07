@@ -171,14 +171,14 @@ static void NET_CL_Disconnected()
 	D_ReceiveTic(NULL, NULL);
 }
 
-// Called when a packet is received from the server containing game
-// data. This updates the clock synchronization variable (offsetms)
-// using a PID filter that keeps client clocks in sync.
-static void UpdateClockSync(unsigned seq,
-	unsigned remote_latency)
+// Called when a packet is received from the server containing game data.
+// This updates the clock synchronization variable (offsetms) using a PID filter that keeps client clocks in sync.
+static void UpdateClockSync(unsigned seq, unsigned remote_latency)
 {
-	static int last_error, cumul_error;
-	int latency, error;
+	static int last_error;
+	static int cumul_error;
+	int latency;
+	int error;
 
 	if (seq == send_queue[seq % BACKUPTICS].seq)
 	{
@@ -186,9 +186,7 @@ static void UpdateClockSync(unsigned seq,
 	}
 	else if (seq > send_queue[seq % BACKUPTICS].seq)
 	{
-		// We have received the ticcmd from the server before we have
-		// even sent ours
-
+		// We have received the ticcmd from the server before we have even sent ours
 		latency = 0;
 	}
 	else
@@ -212,22 +210,16 @@ static void UpdateClockSync(unsigned seq,
 	last_error = error;
 	last_latency = latency;
 
-	NET_Log("client: latency %d, remote %d -> offset=%dms, cumul_error=%d",
-		latency, remote_latency, offsetms / FRACUNIT, cumul_error);
+	NET_Log("client: latency %d, remote %d -> offset=%dms, cumul_error=%d", latency, remote_latency, offsetms / FRACUNIT, cumul_error);
 }
 
-// Expand a net_full_ticcmd_t, applying the diffs in cmd->cmds as
-// patches against recvwindow_cmd_base. Place the results into
-// the d_net.c structures (netcmds/nettics) and save the new ticcmd
-// back into recvwindow_cmd_base.
-
-static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t* cmd, unsigned seq,
-	ticcmd_t* ticcmds)
+// Expand a net_full_ticcmd_t, applying the diffs in cmd->cmds as patches against recvwindow_cmd_base.
+// Place the results into the d_net.c structures (netcmds/nettics) and save the new ticcmd back into recvwindow_cmd_base.
+static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t* cmd, unsigned seq, ticcmd_t* ticcmds)
 {
 	int i;
 
 	// Expand tic diffs for all players
-
 	for (i = 0; i < NET_MAXPLAYERS; ++i)
 	{
 		if (i == settings.consoleplayer && !drone)
@@ -241,20 +233,16 @@ static void NET_CL_ExpandFullTiccmd(net_full_ticcmd_t* cmd, unsigned seq,
 
 			diff = &cmd->cmds[i];
 
-			// Use the ticcmd diff to patch the previous ticcmd to
-			// the new ticcmd
-
+			// Use the ticcmd diff to patch the previous ticcmd to the new ticcmd
 			NET_TiccmdPatch(&recvwindow_cmd_base[i], diff, &ticcmds[i]);
 
 			// Store a copy for next time
-
 			recvwindow_cmd_base[i] = ticcmds[i];
 		}
 	}
 }
 
 // Advance the receive window
-
 static void NET_CL_AdvanceWindow()
 {
 	ticcmd_t ticcmds[NET_MAXPLAYERS];
@@ -262,15 +250,12 @@ static void NET_CL_AdvanceWindow()
 	while (recvwindow[0].active)
 	{
 		// Expand tic diff data into d_net.c structures
-
 		NET_CL_ExpandFullTiccmd(&recvwindow[0].cmd, recvwindow_start,
 			ticcmds);
 		D_ReceiveTic(ticcmds, recvwindow[0].cmd.playeringame);
 
 		// Advance the window
-
-		memmove(recvwindow, recvwindow + 1,
-			sizeof(net_server_recv_t) * (BACKUPTICS - 1));
+		memmove(recvwindow, recvwindow + 1, sizeof(net_server_recv_t) * (BACKUPTICS - 1));
 		memset(&recvwindow[BACKUPTICS - 1], 0, sizeof(net_server_recv_t));
 
 		++recvwindow_start;
@@ -280,7 +265,6 @@ static void NET_CL_AdvanceWindow()
 }
 
 // Shut down the client code, etc. Invoked after a disconnect.
-
 static void NET_CL_Shutdown()
 {
 	if (net_client_connected)
@@ -288,7 +272,6 @@ static void NET_CL_Shutdown()
 		net_client_connected = false;
 
 		NET_ReleaseAddress(server_addr);
-
 		// Shut down network module, etc. To do.
 	}
 }
@@ -303,13 +286,10 @@ void NET_CL_StartGame(net_gamesettings* settings)
 	net_packet_t* packet;
 
 	// Start from a ticcmd of all zeros
-
 	memset(&last_ticcmd, 0, sizeof(ticcmd_t));
 
 	// Send packet
-
-	packet = NET_Conn_NewReliable(&client_connection,
-		net_packet_type::GAMESTART);
+	packet = NET_Conn_NewReliable(&client_connection, net_packet_type::GAMESTART);
 
 	NET_WriteSettings(packet, settings);
 }
@@ -338,7 +318,6 @@ static void NET_CL_SendTics(int start, int end)
 	if (!net_client_connected)
 	{
 		// Disconnected from server
-
 		return;
 	}
 
@@ -346,19 +325,15 @@ static void NET_CL_SendTics(int start, int end)
 		start = 0;
 
 	// Build a new packet to send to the server
-
 	packet = NET_NewPacket(512);
 	NET_WriteInt16(packet, net_packet_type::GAMEDATA);
 
-	// Write the start tic and number of tics. Send only the low byte
-	// of start - it can be inferred by the server.
-
+	// Write the start tic and number of tics. Send only the low byte of start - it can be inferred by the server.
 	NET_WriteInt8(packet, recvwindow_start & 0xff);
 	NET_WriteInt8(packet, start & 0xff);
 	NET_WriteInt8(packet, end - start + 1);
 
 	// Add the tics.
-
 	for (i = start; i <= end; ++i)
 	{
 		net_server_send_t* sendobj;
@@ -371,20 +346,16 @@ static void NET_CL_SendTics(int start, int end)
 	}
 
 	// Send the packet
-
 	NET_Conn_SendPacket(&client_connection, packet);
 
 	// All done!
-
 	NET_FreePacket(packet);
 
 	// Acknowledgement has been sent as part of the packet
-
 	need_to_acknowledge = false;
 }
 
 // Add a new ticcmd to the send queue
-
 void NET_CL_SendTiccmd(ticcmd_t* ticcmd, TimeType maketic)
 {
 	net_ticdiff_t diff;
@@ -720,7 +691,6 @@ static void NET_CL_CheckResends()
 		NET_CL_SendGameDataACK();
 	}
 }
-
 
 // Parsing of net_packet_type::GAMEDATA packets
 // (packets containing the actual ticcmd data)

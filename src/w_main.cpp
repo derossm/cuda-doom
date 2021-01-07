@@ -12,7 +12,6 @@
 		Common code to parse command line, identifying WAD files to load.
 \**********************************************************************************************************************************************/
 
-
 #include "config.h"
 #include "d_iwad.h"
 #include "i_glob.h"
@@ -23,24 +22,15 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-// Parse the command line, merging WAD files that are sppecified.
-// Returns true if at least one file was added.
+// Parse the command line, merging WAD files that are sppecified. Returns true if at least one file was added.
 bool W_ParseCommandLine()
 {
 	bool modifiedgame = false;
 	int p;
 
-	// Merged PWADs are loaded first, because they are supposed to be
-	// modified IWADs.
+	// Merged PWADs are loaded first, because they are supposed to be modified IWADs.
 
-	//!
-	// @arg <files>
-	// @category mod
-	//
-	// Simulates the behavior of deutex's -merge option, merging a PWAD
-	// into the main IWAD. Multiple files may be specified.
-	//
-
+	// Simulates the behavior of deutex's -merge option, merging a PWAD into the main IWAD. Multiple files may be specified.
 	p = M_CheckParmWithArgs("-merge", 1);
 
 	if (p > 0)
@@ -63,13 +53,7 @@ bool W_ParseCommandLine()
 
 	// NWT's -merge option:
 
-	//!
-	// @arg <files>
-	// @category mod
-	//
-	// Simulates the behavior of NWT's -merge option. Multiple files
-	// may be specified.
-
+	// Simulates the behavior of NWT's -merge option. Multiple files may be specified.
 	p = M_CheckParmWithArgs("-nwtmerge", 1);
 
 	if (p > 0)
@@ -88,16 +72,7 @@ bool W_ParseCommandLine()
 		}
 	}
 
-	// Add flats
-
-	//!
-	// @arg <files>
-	// @category mod
-	//
-	// Simulates the behavior of NWT's -af option, merging flats into
-	// the main IWAD directory. Multiple files may be specified.
-	//
-
+	// Simulates the behavior of NWT's -af option, merging flats into the main IWAD directory. Multiple files may be specified.
 	p = M_CheckParmWithArgs("-af", 1);
 
 	if (p > 0)
@@ -115,15 +90,7 @@ bool W_ParseCommandLine()
 			free(filename);
 		}
 	}
-
-	//!
-	// @arg <files>
-	// @category mod
-	//
-	// Simulates the behavior of NWT's -as option, merging sprites
-	// into the main IWAD directory. Multiple files may be specified.
-	//
-
+	// Simulates the behavior of NWT's -as option, merging sprites into the main IWAD directory. Multiple files may be specified.
 	p = M_CheckParmWithArgs("-as", 1);
 
 	if (p > 0)
@@ -141,13 +108,7 @@ bool W_ParseCommandLine()
 		}
 	}
 
-	//!
-	// @arg <files>
-	// @category mod
-	//
 	// Equivalent to "-af <files> -as <files>".
-	//
-
 	p = M_CheckParmWithArgs("-aa", 1);
 
 	if (p > 0)
@@ -166,13 +127,7 @@ bool W_ParseCommandLine()
 		}
 	}
 
-	//!
-	// @arg <files>
-	// @vanilla
-	//
 	// Load the specified PWAD files.
-	//
-
 	p = M_CheckParmWithArgs("-file", 1);
 	if (p)
 	{

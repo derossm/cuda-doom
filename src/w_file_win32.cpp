@@ -176,14 +176,12 @@ size_t W_Win32_Read(wad_file_t* wad, unsigned offset,
 	return bytes_read;
 }
 
-
 wad_file_class_t win32_wad_file =
 {
 	W_Win32_OpenFile,
 	W_Win32_CloseFile,
 	W_Win32_Read,
 };
-
 
 #endif /* #ifdef _WIN32 */
 

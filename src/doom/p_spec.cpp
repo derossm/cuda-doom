@@ -154,7 +154,8 @@ void P_InitPicAnims()
 	lastanim = anims;
 	for (i = 0; animdefs[i].istexture != -1; ++i)
 	{
-		std::string startname, * endname;
+		std::string startname;
+		std::string endname;
 
 		// [crispy] remove MAXANIMS limit
 		if (lastanim >= anims + maxanims)
@@ -397,7 +398,6 @@ P_FindLowestCeilingSurrounding(sector_t* sec)
 	return height;
 }
 
-
 //
 // FIND HIGHEST CEILING IN THE SURROUNDING SECTORS
 //
@@ -422,11 +422,7 @@ fixed_t P_FindHighestCeilingSurrounding(sector_t* sec)
 	return height;
 }
 
-
-
-//
 // RETURN NEXT SECTOR # THAT LINE TAG REFERS TO
-//
 int P_FindSectorFromLineTag(line_t* line, int start)
 {
 	int i;
@@ -460,9 +456,6 @@ int P_FindSectorFromLineTag(line_t* line, int start)
 	return -1;
 }
 
-
-
-
 //
 // Find minimum light from an adjacent sector
 //
@@ -487,8 +480,6 @@ int P_FindMinSurroundingLight(sector_t* sector, int max)
 	}
 	return min;
 }
-
-
 
 //
 // EVENTS
@@ -560,7 +551,6 @@ void P_CrossSpecialLinePtr(line_t* line, int side, MapObject* thing)
 		if (!ok)
 			return;
 	}
-
 
 	// Note: could use some const's here.
 	switch (line->special)
@@ -1021,8 +1011,6 @@ void P_ShootSpecialLine(MapObject* thing, line_t* line)
 	}
 }
 
-
-
 //
 // P_PlayerInSpecialSector
 // Called every tic frame
@@ -1338,7 +1326,6 @@ static void DonutOverrun(fixed_t* s3_floorheight, short* s3_floorpic, line_t* li
 	*s3_floorpic = (short)tmp_s3_floorpic;
 }
 
-
 //
 // Special Stuff that can not be categorized
 //
@@ -1551,7 +1538,6 @@ void P_SpawnSpecials()
 			break;
 		}
 	}
-
 
 	//	Init line EFFECTs
 	numlinespecials = 0;

@@ -94,4 +94,4 @@ public:
  */
 txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target));
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

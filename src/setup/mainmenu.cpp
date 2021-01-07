@@ -276,7 +276,6 @@ static void SetWindowTitle()
 		"Doom",
 		GetGameTitle());
 
-
 	cudadoom::txt::SetDesktopTitle(title);
 }
 

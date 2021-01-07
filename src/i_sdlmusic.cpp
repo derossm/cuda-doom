@@ -132,8 +132,6 @@ static void RemoveTimidityConfig()
 	}
 }
 
-// Shutdown music
-
 static void I_SDL_ShutdownMusic()
 {
 	if (music_initialized)
@@ -155,7 +153,8 @@ static void I_SDL_ShutdownMusic()
 
 static bool SDLIsInitialized()
 {
-	int freq, channels;
+	int freq;
+	int channels;
 	Uint16 format;
 
 	return Mix_QuerySpec(&freq, &format, &channels) != 0;
@@ -164,9 +163,7 @@ static bool SDLIsInitialized()
 // Initialize music subsystem
 static bool I_SDL_InitMusic()
 {
-	// If SDL_mixer is not initialized, we have to initialize it
-	// and have the responsibility to shut it down later on.
-
+	// If SDL_mixer is not initialized, we have to initialize it and have the responsibility to shut it down later on.
 	if (SDLIsInitialized())
 	{
 		music_initialized = true;
@@ -195,22 +192,17 @@ static bool I_SDL_InitMusic()
 	// Initialize SDL_Mixer for MIDI music playback
 	Mix_Init(MIX_INIT_MID | MIX_INIT_FLAC | MIX_INIT_OGG | MIX_INIT_MP3); // [crispy] initialize some more audio formats
 
-	// Once initialization is complete, the temporary Timidity config
-	// file can be removed.
-
+	// Once initialization is complete, the temporary Timidity config file can be removed.
 	RemoveTimidityConfig();
 
-	// If snd_musiccmd is set, we need to call Mix_SetMusicCMD to
-	// configure an external music playback program.
-
+	// If snd_musiccmd is set, we need to call Mix_SetMusicCMD to configure an external music playback program.
 	if (strlen(snd_musiccmd) > 0)
 	{
 		Mix_SetMusicCMD(snd_musiccmd);
 	}
 
 #if defined(_WIN32)
-	// [AM] Start up midiproc to handle playing MIDI music.
-	// Don't enable it for GUS, since it handles its own volume just fine.
+	// Start up midiproc to handle playing MIDI music. Don't enable it for GUS, since it handles its own volume just fine.
 	if (snd_musicdevice != snddevice_t::GUS)
 	{
 		I_MidiPipe_InitServer();
@@ -220,11 +212,7 @@ static bool I_SDL_InitMusic()
 	return music_initialized;
 }
 
-//
-// SDL_mixer's native MIDI music playing does not pause properly.
-// As a workaround, set the volume to 0 when paused.
-//
-
+// SDL_mixer's native MIDI music playing does not pause properly. As a workaround, set the volume to 0 when paused.
 static void UpdateMusicVolume()
 {
 	int vol;
@@ -245,7 +233,6 @@ static void UpdateMusicVolume()
 }
 
 // Set music volume (0 - 127)
-
 static void I_SDL_SetMusicVolume(int volume)
 {
 	// Internal state variable.
@@ -255,7 +242,6 @@ static void I_SDL_SetMusicVolume(int volume)
 }
 
 // Start playing a mid
-
 static void I_SDL_PlaySong(void* handle, bool looping)
 {
 	int loops;
@@ -359,7 +345,6 @@ static void I_SDL_UnRegisterSong(void* handle)
 }
 
 // Determine whether memory block is a .mid file
-
 // [crispy] Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
 /*
 static bool IsMid(byte* mem, int len)
@@ -404,14 +389,11 @@ static void* I_SDL_RegisterSong(void* data, int len)
 		return nullptr;
 	}
 
-	// MUS files begin with "MUS"
-	// Reject anything which doesnt have this signature
-
+	// MUS files begin with "MUS" Reject anything which doesnt have this signature
 	filename = M_TempFile("doom"); // [crispy] generic filename
 
 	// [crispy] Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
-	// MUS is the only format that requires conversion,
-	// let SDL_Mixer figure out the others
+	// MUS is the only format that requires conversion, let SDL_Mixer figure out the others
 /*
 	if (IsMid(data, len) && len < MAXMIDLENGTH)
 */
@@ -422,24 +404,19 @@ static void* I_SDL_RegisterSong(void* data, int len)
 	else
 	{
 		// Assume a MUS file and try to convert
-
 		ConvertMus(data, len, filename);
 	}
 
-	// Load the MIDI. In an ideal world we'd be using Mix_LoadMUS_RW()
-	// by now, but Mix_SetMusicCMD() only works with Mix_LoadMUS(), so
-	// we have to generate a temporary file.
-
+	// Load the MIDI. In an ideal world we'd be using Mix_LoadMUS_RW() by now,
+	// but Mix_SetMusicCMD() only works with Mix_LoadMUS(), so we have to generate a temporary file.
 #if defined(_WIN32)
-	// [AM] If we do not have an external music command defined, play
-	//		music with the MIDI server.
+	// If we do not have an external music command defined, play music with the MIDI server.
 	if (midi_server_initialized)
 	{
 		music = NULL;
 		if (!I_MidiPipe_RegisterSong(filename))
 		{
-			fprintf(stderr, "Error loading midi: %s\n",
-				"Could not communicate with midiproc.");
+			fprintf(stderr, "Error loading midi: %s\n", "Could not communicate with midiproc.");
 		}
 	}
 	else
@@ -452,11 +429,8 @@ static void* I_SDL_RegisterSong(void* data, int len)
 			fprintf(stderr, "Error loading midi: %s\n", Mix_GetError());
 		}
 
-		// Remove the temporary MIDI file; however, when using an external
-		// MIDI program we can't delete the file. Otherwise, the program
-		// won't find the file to play. This means we leave a mess on
-		// disk :(
-
+		// Remove the temporary MIDI file; however, when using an external MIDI program we can't delete the file.
+		// Otherwise, the program won't find the file to play. This means we leave a mess on disk :(
 		if (strlen(snd_musiccmd) == 0)
 		{
 			remove(filename);
@@ -503,4 +477,3 @@ music_module_t music_sdl_module =
 	I_SDL_MusicIsPlaying,
 	NULL, // Poll
 };
-

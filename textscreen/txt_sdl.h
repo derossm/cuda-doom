@@ -22,7 +22,7 @@ namespace cudadoom::txt
 
 struct FontType
 {
-	std::string name;
+	const char name[16];
 	const uint8_t* data;
 	unsigned w;
 	unsigned h;
@@ -36,4 +36,4 @@ typedef int (*TxtSDLEventCallbackFunc)(SDL_Event* event, void* user_data);
 // callback function. user_data is a void pointer to be passed to the callback function.
 void SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data);
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt

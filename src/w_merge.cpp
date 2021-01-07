@@ -12,7 +12,6 @@
 		Ideally this should work exactly the same as in deutex, but trying to read the deutex source code made my brain hurt.
 \**********************************************************************************************************************************************/
 
-
 #include "doomtype.h"
 #include "i_swap.h" // [crispy] LONG()
 #include "i_system.h"
@@ -76,7 +75,8 @@ static bool SetupList(searchlist_t* list, searchlist_t* src_list,
 	std::string startname, std::string endname,
 	std::string startname2, std::string endname2)
 {
-	int startlump, endlump;
+	int startlump;
+	int endlump;
 
 	list->numlumps = 0;
 	startlump = FindInList(src_list, startname);
@@ -380,7 +380,8 @@ static void DoMerge()
 	lumpinfo_t** newlumps;
 	int num_newlumps;
 	int lumpindex;
-	int i, n;
+	int i;
+	int n;
 
 	// Can't ever have more lumps than we already have
 	newlumps = calloc(numlumps, sizeof(lumpinfo_t*));
@@ -716,7 +717,8 @@ int W_MergeDump(std::string file)
 {
 	FILE* fp = NULL;
 	std::string lump_p = NULL;
-	uint32_t i, dir_p;
+	uint32_t i;
+	uint32_t dir_p;
 
 	// [crispy] WAD directory structure
 	struct directory_t

@@ -206,7 +206,6 @@ static void ConfigExtraKeys(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 		scrollpane = cudadoom::txt::NewScrollPane(0, 13, table);
 		window->AddWidget(scrollpane);
 
-
 		if (gamemission == GameMission::doom)
 		{
 			table->AddSectionLabel("View", false);

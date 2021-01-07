@@ -287,7 +287,6 @@ void P_PlayerThink(Player* player)
 		player->flags.set(mobjflag_e::MF_JUSTATTACKED, false);
 	}
 
-
 	// center view
 	// e.g. after teleporting, dying, jumping and on demand
 	if (player->centering)
@@ -392,7 +391,6 @@ void P_PlayerThink(Player* player)
 			newweapon = WeaponType::wp_supershotgun;
 		}
 
-
 		if (player->weaponowned[std::size_t(newweapon)] && newweapon != player->readyweapon)
 		{
 			// Do not go to plasma or BFG in shareware, even if cheated.
@@ -443,7 +441,8 @@ void P_PlayerThink(Player* player)
 	{
 		if (!--player->powers[std::size_t(PowerType_t::pw_invisibility)])
 		{
-			player->flags &= ~mobjflag_e::MF_SHADOW;
+			//player->flags &= ~mobjflag_e::MF_SHADOW;
+			player->flags.set(mobjflag_e::MF_SHADOW, false)
 		}
 	}
 

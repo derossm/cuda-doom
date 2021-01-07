@@ -24,11 +24,13 @@ extern std::string iwadfile;
 // [crispy] auto-load SIGIL.WAD (and SIGIL_SHREDS.WAD) if available
 void D_LoadSigilWad()
 {
-	int i, j;
-	std::string sigil_wad = NULL, * sigil_shreds = NULL;
+	int i;
+	int j;
+	std::string sigil_wad;
+	std::string sigil_shreds;
 	std::string dirname;
 
-	std::string const sigil_wads[] = {
+	const std::string sigil_wads[]{
 		"SIGIL_v1_21.wad",
 		"SIGIL_v1_2.wad",
 		"SIGIL.wad"
@@ -164,7 +166,8 @@ void D_LoadSigilWad()
 // [crispy] check if NERVE.WAD is already loaded as a PWAD
 static bool CheckNerveLoaded()
 {
-	int i, j;
+	int i;
+	int j;
 
 	if ((i = W_GetNumForName("MAP01")) != -1 &&
 		(j = W_GetNumForName("MAP09")) != -1 &&
@@ -189,7 +192,8 @@ static bool CheckNerveLoaded()
 // [crispy] auto-load NERVE.WAD if available
 static void CheckLoadNerve()
 {
-	int i, j;
+	int i;
+	int j;
 
 	static const struct
 	{
@@ -270,7 +274,8 @@ void D_LoadNerveWad()
 // [crispy] check if the single MASTERLEVELS.WAD is already loaded as a PWAD
 static bool CheckMasterlevelsLoaded()
 {
-	int i, j;
+	int i;
+	int j;
 
 	if ((i = W_GetNumForName("MAP01")) != -1 &&
 		(j = W_GetNumForName("MAP21")) != -1 &&
@@ -288,7 +293,8 @@ static bool CheckMasterlevelsLoaded()
 // [crispy] auto-load the single MASTERLEVELS.WAD if available
 static bool CheckLoadMasterlevels()
 {
-	int i, j;
+	int i;
+	int j;
 
 	if (strrchr(iwadfile, DIR_SEPARATOR) != NULL)
 	{
@@ -332,7 +338,6 @@ static bool CheckLoadMasterlevels()
 			// [crispy] indicate this is not the complete MASTERLEVELS.WAD
 			crispy->havemaster = (char*)-1;
 		}
-
 
 		M_snprintf(lumpname, 9, "MAP%02d", i + 1);
 		j = W_GetNumForName(lumpname);
@@ -423,7 +428,8 @@ static bool CheckMasterlevelsAvailable()
 // [crispy] auto-load the 20 individual separate Mater Levels PWADs as if the were the single MASTERLEVELS.WAD
 static void LoadMasterlevelsWads()
 {
-	int i, j;
+	int i;
+	int j;
 	char lumpname[9];
 
 	std::string const sky_lumps[] = {

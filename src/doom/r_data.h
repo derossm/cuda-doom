@@ -35,7 +35,6 @@ void R_PrecacheLevel();
 // Retrieval. Floor/ceiling opaque texture tiles, lookup by name. For animation?
 int R_FlatNumForName(std::string name);
 
-
 // Called by P_Ticker for switches and animations, returns the texture number for the texture name.
 int R_TextureNumForName(std::string name);
 int R_CheckTextureNumForName(std::string name);

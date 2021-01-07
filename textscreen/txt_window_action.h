@@ -147,7 +147,7 @@ WindowAction* NewWindowSelectAction(Window* window)
 	return action;
 }
 
-} /* END NAMESPACE cudadoom::txt */
+} // END NAMESPACE cudadoom::txt
 
 /**
  * Create a new window action.

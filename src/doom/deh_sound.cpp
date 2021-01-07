@@ -56,7 +56,8 @@ static void* DEH_SoundStart(deh_context_t* context, std::string line)
 static void DEH_SoundParseLine(deh_context_t* context, std::string line, void* tag)
 {
 	sfxinfo_t* sfx;
-	std::string variable_name, * value;
+	std::string variable_name;
+	std::string value;
 	int ivalue;
 
 	if (tag == NULL)

@@ -145,7 +145,8 @@ static int EventCallback(SDL_Event* event, TXT_UNCAST_ARG(joystick_input))
 
 	if (event->type == SDL_JOYBUTTONDOWN)
 	{
-		int vbutton, physbutton;
+		int vbutton;
+		int physbutton;
 
 		// Before changing anything, remap button configuration into
 		// canonical form, to avoid conflicts.

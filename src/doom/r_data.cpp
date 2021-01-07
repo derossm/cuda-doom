@@ -27,7 +27,6 @@
 #include "doomstat.h"
 #include "r_sky.h"
 
-
 #include "r_data.h"
 #include "v_trans.h" // [crispy] tranmap, CRMAX
 #include "r_bmaps.h" // [crispy] R_BrightmapForTexName()
@@ -39,8 +38,6 @@
 // A column is composed of zero or more posts,
 // a patch or sprite is composed of zero or more columns.
 //
-
-
 
 //
 // Texture definition.
@@ -59,7 +56,6 @@ struct mappatch_t
 	short colormap;
 };
 
-
 //
 // Texture definition.
 // A DOOM wall texture is a list of patches
@@ -76,7 +72,6 @@ struct maptexture_t
 	mappatch_t patches[1];
 };
 
-
 // A single patch from a texture definition,
 // basically a rectangular area within
 // the texture rectangle.
@@ -89,7 +84,6 @@ struct texpatch_t
 	short originy;
 	int patch;
 };
-
 
 // A maptexturedef_t describes a rectangular texture,
 // which is composed of one or more mappatch_t structures
@@ -116,8 +110,6 @@ struct texture_t
 	texpatch_t patches[1];
 };
 
-
-
 int firstflat;
 int lastflat;
 int numflats;
@@ -133,7 +125,6 @@ int numspritelumps;
 int numtextures;
 texture_t** textures;
 texture_t** textures_hashtable;
-
 
 int* texturewidthmask;
 int* texturewidth; // [crispy] texture width for wrapping column getter function
@@ -158,7 +149,6 @@ fixed_t* spritetopoffset;
 
 lighttable_t* colormaps;
 
-
 //
 // MAPTEXTURE_T CACHING
 // When a texture is first needed,
@@ -170,8 +160,6 @@ lighttable_t* colormaps;
 // but any columns with multiple patches
 // will have new column_ts generated.
 //
-
-
 
 // [crispy] replace R_DrawColumnInCache(), R_GenerateComposite() and R_GenerateLookup()
 // with Lee Killough's implementations found in MBF to fix Medusa bug
@@ -229,8 +217,6 @@ void R_DrawColumnInCache(column_t* patch, byte* cache, int originy, int cachehei
 		patch = (column_t*)((byte*)patch + patch->length + 4);
 	}
 }
-
-
 
 //
 // R_GenerateComposite
@@ -328,7 +314,8 @@ void R_GenerateComposite(int texnum)
 			const byte* mark = marks + i * texture->height;
 			int j = 0;
 			// [crispy] absolut topdelta for first 254 pixels, then relative
-			int abstop, reltop = 0;
+			int abstop;
+			int reltop = 0;
 			bool relative = false;
 
 			// save column in temporary so we can shuffle it around
@@ -382,8 +369,6 @@ void R_GenerateComposite(int texnum)
 	Z_ChangeTag(block, pu_tags_t::PU_CACHE);
 	Z_ChangeTag(block2, pu_tags_t::PU_CACHE);
 }
-
-
 
 //
 // R_GenerateLookup
@@ -472,13 +457,15 @@ void R_GenerateLookup(int texnum)
 		{
 			int pat = patch->patch;
 			const patch_t* realpatch = W_CacheLumpNum<patch_t>(pat, pu_tags_t::PU_CACHE);
-			int x, x1 = patch++->originx, x2 = x1 + SHORT(realpatch->width);
+			int x;
+			int x1 = patch++->originx;
+			int x2 = x1 + SHORT(realpatch->width);
 			const int* cofs = realpatch->columnofs - x1;
 
-			if (x2 > texture->width)
-				x2 = texture->width;
-			if (x1 < 0)
-				x1 = 0;
+			if (x2 > texture->width){
+				x2 = texture->width;}
+			if (x1 < 0){
+				x1 = 0;}
 
 			for (x = x1; x < x2; ++x)
 			{
@@ -627,7 +614,6 @@ static void GenerateTextureHashTable()
 		*rover = textures[i];
 	}
 }
-
 
 //
 // R_InitTextures
@@ -1057,8 +1043,13 @@ static void R_InitTranMap()
 		else
 		{
 			// file not readable
-			byte* fg, * bg, blend[3], * tp = tranmap;
-			int i, j, btmp;
+			byte* fg;
+			byte* bg;
+			byte blend[3];
+			byte* tp = tranmap;
+			int i;
+			int j;
+			int btmp;
 
 			I_SetPalette(playpal);
 			// [crispy] background color
@@ -1137,8 +1128,12 @@ void R_InitColormaps()
 	colormaps = W_CacheLumpNum<lighttable_t>(lump, pu_tags_t::PU_STATIC);
 #else
 	byte* playpal;
-	int c, i, j = 0;
-	byte r, g, b;
+	int c;
+	int i;
+	int j = 0;
+	byte r;
+	byte g;
+	byte b;
 	extern byte** gamma2table;
 
 	// [crispy] intermediate gamma levels
@@ -1207,7 +1202,8 @@ void R_InitColormaps()
 	{
 		byte* playpal = W_CacheLumpName<byte>("PLAYPAL", pu_tags_t::PU_STATIC);
 		char c[3];
-		int i, j;
+		int i;
+		int j;
 		bool keepgray = false;
 		extern byte V_Colorize(byte * playpal, int cr, byte source, bool keepgray109);
 
@@ -1258,8 +1254,6 @@ void R_InitData()
 #endif
 }
 
-
-
 //
 // R_FlatNumForName
 // Retrieval, get a flat number for a flat name.
@@ -1283,9 +1277,6 @@ int R_FlatNumForName(std::string name)
 	}
 	return i - firstflat;
 }
-
-
-
 
 //
 // R_CheckTextureNumForName
@@ -1316,8 +1307,6 @@ int R_CheckTextureNumForName(std::string name)
 	return -1;
 }
 
-
-
 //
 // R_TextureNumForName
 // Calls R_CheckTextureNumForName,
@@ -1342,9 +1331,6 @@ int R_TextureNumForName(std::string name)
 	}
 	return i;
 }
-
-
-
 
 //
 // R_PrecacheLevel

@@ -50,7 +50,6 @@ void S_StartSoundOnce(void* origin, sfxenum_t sound_id);
 void S_StopSound(MapObject* origin);
 void S_UnlinkSound(MapObject* origin);
 
-
 // Start music using <music_id> from sounds.h
 void S_StartMusic(musicenum_t music_id);
 

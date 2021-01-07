@@ -7,8 +7,6 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-// DESCRIPTION: none
 \**********************************************************************************************************************************************/
 
 #include "config.h"
@@ -26,26 +24,18 @@
 #include "m_config.h"
 
 // Sound sample rate to use for digital output (Hz)
-
 int snd_samplerate = 44100;
 
-// Maximum number of bytes to dedicate to allocated sound effects.
-// (Default: 64MB)
-
+// Maximum number of bytes to dedicate to allocated sound effects. (Default: 64MB)
 int snd_cachesize = 64 * 1024 * 1024;
 
-// Config variable that controls the sound buffer size.
-// We default to 28ms (1000 / 35fps = 1 buffer per tic).
-
+// Config variable that controls the sound buffer size. We default to 28ms (1000 / 35fps = 1 buffer per tic).
 int snd_maxslicetime_ms = 28;
 
 // External command to invoke to play back music.
-
 std::string snd_musiccmd = "";
 
-// Whether to vary the pitch of sound effects
-// Each game will set the default differently
-
+// Whether to vary the pitch of sound effects; Each game will set the default differently
 int snd_pitchshift = -1;
 
 snddevice_t snd_musicdevice = snddevice_t::SB;
@@ -58,12 +48,10 @@ static music_module_t* music_module;
 // If true, the music pack module was successfully initialized.
 static bool music_packs_active = false;
 
-// This is either equal to music_module or &music_pack_module,
-// depending on whether the current track is substituted.
+// This is either equal to music_module or &music_pack_module, depending on whether the current track is substituted.
 static music_module_t* active_music_module;
 
 // Sound modules
-
 extern void I_InitTimidityConfig();
 extern sound_module_t sound_sdl_module;
 extern sound_module_t sound_pcsound_module;
@@ -72,26 +60,20 @@ extern music_module_t music_opl_module;
 extern music_module_t music_pack_module;
 
 // For OPL module:
-
 extern opl_driver_ver_t opl_drv_ver;
 extern int opl_io_port;
 
 // For native music module:
-
 extern std::string music_pack_path;
 extern std::string timidity_cfg_path;
 
-// DOS-specific options: These are unused but should be maintained
-// so that the config file can be shared between chocolate
-// doom and doom.exe
-
+// DOS-specific options: These are unused but should be maintained so that the config file can be shared between chocolate doom and doom.exe
 static int snd_sbport = 0;
 static int snd_sbirq = 0;
 static int snd_sbdma = 0;
 static int snd_mport = 0;
 
 // Compiled-in sound modules:
-
 static sound_module_t* sound_modules[] =
 {
 	&sound_sdl_module,
@@ -100,7 +82,6 @@ static sound_module_t* sound_modules[] =
 };
 
 // Compiled-in music modules:
-
 static music_module_t* music_modules[] =
 {
 	&music_sdl_module,
@@ -109,9 +90,7 @@ static music_module_t* music_modules[] =
 };
 
 // Check if a sound device is in the given list of devices
-
-static bool SndDeviceInList(snddevice_t device, snddevice_t* list,
-								int len)
+static bool SndDeviceInList(snddevice_t device, snddevice_t* list, int len)
 {
 	int i;
 
@@ -126,9 +105,7 @@ static bool SndDeviceInList(snddevice_t device, snddevice_t* list,
 	return false;
 }
 
-// Find and initialize a sound_module_t appropriate for the setting
-// in snd_sfxdevice.
-
+// Find and initialize a sound_module_t appropriate for the setting in snd_sfxdevice.
 static void InitSfxModule(bool use_sfx_prefix)
 {
 	int i;
@@ -137,15 +114,10 @@ static void InitSfxModule(bool use_sfx_prefix)
 
 	for (i=0; sound_modules[i] != NULL; ++i)
 	{
-		// Is the sfx device in the list of devices supported by
-		// this module?
-
-		if (SndDeviceInList(snd_sfxdevice,
-							sound_modules[i]->sound_devices,
-							sound_modules[i]->num_sound_devices))
+		// Is the sfx device in the list of devices supported by this module?
+		if (SndDeviceInList(snd_sfxdevice, sound_modules[i]->sound_devices, sound_modules[i]->num_sound_devices))
 		{
 			// Initialize the module
-
 			if (sound_modules[i]->Init(use_sfx_prefix))
 			{
 				sound_module = sound_modules[i];
@@ -156,7 +128,6 @@ static void InitSfxModule(bool use_sfx_prefix)
 }
 
 // Initialize music according to snd_musicdevice.
-
 static void InitMusicModule()
 {
 	int i;
@@ -165,15 +136,10 @@ static void InitMusicModule()
 
 	for (i=0; music_modules[i] != NULL; ++i)
 	{
-		// Is the music device in the list of devices supported
-		// by this module?
-
-		if (SndDeviceInList(snd_musicdevice,
-							music_modules[i]->sound_devices,
-							music_modules[i]->num_sound_devices))
+		// Is the music device in the list of devices supported by this module?
+		if (SndDeviceInList(snd_musicdevice, music_modules[i]->sound_devices, music_modules[i]->num_sound_devices))
 		{
 			// Initialize the module
-
 			if (music_modules[i]->Init())
 			{
 				music_module = music_modules[i];
@@ -183,61 +149,34 @@ static void InitMusicModule()
 	}
 }
 
-//
-// Initializes sound stuff, including volume
-// Sets channels, SFX and music volume,
-// allocates channel buffer, sets S_sfx lookup.
-//
-
+// Initializes sound stuff, including volume Sets channels, SFX and music volume, allocates channel buffer, sets S_sfx lookup.
 void I_InitSound(bool use_sfx_prefix)
 {
-	bool nosound, nosfx, nomusic, nomusicpacks;
+	bool nosound;
+	bool nosfx;
+	bool nomusic;
+	bool nomusicpacks;
 
-	//!
-	// @vanilla
-	//
 	// Disable all sound output.
-	//
-
 	nosound = M_CheckParm("-nosound") > 0;
 
-	//!
-	// @vanilla
-	//
 	// Disable sound effects.
-	//
-
 	nosfx = M_CheckParm("-nosfx") > 0;
 
-	//!
-	// @vanilla
-	//
 	// Disable music.
-	//
-
 	nomusic = M_CheckParm("-nomusic") > 0;
 
-	//!
-	//
 	// Disable substitution music packs.
-	//
-
 	nomusicpacks = M_ParmExists("-nomusicpacks");
 
 	// Auto configure the music pack directory.
 	M_SetMusicPackDir();
 
 	// Initialize the sound and music subsystems.
-
 	if (!nosound && !screensaver_mode)
 	{
-		// This is kind of a hack. If native MIDI is enabled, set up
-		// the TIMIDITY_CFG environment variable here before SDL_mixer
-		// is opened.
-
-		if (!nomusic
-			&& (snd_musicdevice == snddevice_t::GENMIDI
-			|| snd_musicdevice == snddevice_t::GUS))
+		// This is kind of a hack. If native MIDI is enabled, set up the TIMIDITY_CFG environment variable here before SDL_mixer is opened.
+		if (!nomusic && (snd_musicdevice == snddevice_t::GENMIDI || snd_musicdevice == snddevice_t::GUS))
 		{
 			I_InitTimidityConfig();
 		}
@@ -261,9 +200,9 @@ void I_InitSound(bool use_sfx_prefix)
 	}
 	// [crispy] print the SDL audio backend
 	{
-	std::string driver_name = SDL_GetCurrentAudioDriver();
+		std::string driver_name = SDL_GetCurrentAudioDriver();
 
-	fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", !driver_name.empty() ? driver_name.c_str() : "none");
+		fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", !driver_name.empty() ? driver_name.c_str() : "none");
 	}
 }
 
@@ -416,10 +355,8 @@ void I_ResumeSong()
 
 void* I_RegisterSong(void* data, int len)
 {
-	// If the music pack module is active, check to see if there is a
-	// valid substitution for this track. If there is, we set the
-	// active_music_module pointer to the music pack module for the
-	// duration of this particular track.
+	// If the music pack module is active, check to see if there is a valid substitution for this track. If there is, we set the
+	// active_music_module pointer to the music pack module for the duration of this particular track.
 	if (music_packs_active)
 	{
 		void* handle;

@@ -36,6 +36,6 @@ bool I_MidiPipe_InitServer();
 
 #include "doomtype.h"
 
-static const bool midi_server_registered = false;
+constexpr bool midi_server_registered = false;
 
 #endif /* _WIN32 */

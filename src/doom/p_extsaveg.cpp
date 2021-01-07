@@ -28,7 +28,8 @@
 constexpr size_t MAX_LINE_LEN{260};
 constexpr size_t MAX_STRING_LEN{80};
 
-std::string line, * string;
+std::string line;
+std::string string;
 
 static void P_WritePackageTarname(std::string key)
 {
@@ -135,7 +136,10 @@ static void P_WriteFireFlicker(std::string key)
 
 static void P_ReadFireFlicker(std::string key)
 {
-	int sector, count, maxlight, minlight;
+	int sector;
+	int count;
+	int maxlight;
+	int minlight;
 
 	if (sscanf(line, "%s %d %d %d %d\n",
 		string,
@@ -182,7 +186,8 @@ static void P_WriteSoundTarget(std::string key)
 
 static void P_ReadSoundTarget(std::string key)
 {
-	int sector, target;
+	int sector;
+	int target;
 
 	if (sscanf(line, "%s %d %d\n",
 		string,
@@ -216,7 +221,8 @@ static void P_WriteOldSpecial(std::string key)
 
 static void P_ReadOldSpecial(std::string key)
 {
-	int sector, oldspecial;
+	int sector;
+	int oldspecial;
 
 	if (sscanf(line, "%s %d %d\n",
 		string,
@@ -242,12 +248,8 @@ static void P_WriteButton(std::string key)
 
 		if (button->btimer)
 		{
-			M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n",
-				key,
-				(int)(button->line - lines),
-				(int)button->where,
-				(int)button->btexture,
-				(int)button->btimer);
+			M_snprintf(line, MAX_LINE_LEN, "%s %d %d %d %d\n", key,
+						(int)(button->line - lines), (int)button->where, (int)button->btexture, (int)button->btimer);
 			fputs(line, save_stream);
 		}
 	}
@@ -255,23 +257,20 @@ static void P_WriteButton(std::string key)
 
 static void P_ReadButton(std::string key)
 {
-	int linedef, where, btexture, btimer;
+	int linedef;
+	int where;
+	int btexture;
+	int btimer;
 
-	if (sscanf(line, "%s %d %d %d %d\n",
-		string,
-		&linedef,
-		&where,
-		&btexture,
-		&btimer) == 5 &&
-		!strncmp(string, key, MAX_STRING_LEN))
+	if (sscanf(line, "%s %d %d %d %d\n", string, &linedef, &where, &btexture, &btimer) == 5 && !strncmp(string, key, MAX_STRING_LEN))
 	{
 		P_StartButton(&lines[linedef], where, btexture, btimer);
 	}
 }
 
 // numbraintargets, braintargeton
-
-extern int numbraintargets, braintargeton;
+extern int numbraintargets;
+extern int braintargeton;
 
 static void P_WriteBrainTarget(std::string key)
 {
@@ -300,10 +299,10 @@ static void P_WriteBrainTarget(std::string key)
 
 static void P_ReadBrainTarget(std::string key)
 {
-	int numtargets, targeton;
+	int numtargets;
+	int targeton;
 
-	if (sscanf(line, "%s %d %d", string, &numtargets, &targeton) == 3 &&
-		!strncmp(string, key, MAX_STRING_LEN))
+	if (sscanf(line, "%s %d %d", string, &numtargets, &targeton) == 3 && !strncmp(string, key, MAX_STRING_LEN))
 	{
 		numbraintargets = 0; // [crispy] force A_BrainAwake()
 		braintargeton = targeton;
@@ -369,7 +368,8 @@ static void P_WritePlayersLookdir(std::string key)
 
 static void P_ReadPlayersLookdir(std::string key)
 {
-	int i, value;
+	int i;
+	int value;
 
 	if (sscanf(line, "%s %d %d", string, &i, &value) == 3 &&
 		!strncmp(string, key, MAX_STRING_LEN) &&

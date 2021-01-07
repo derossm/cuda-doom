@@ -19,7 +19,7 @@
 
 #include "sounds.h"
 #include "s_sound.h"
-#include "s_musinfo.h" // [crispy] struct musinfo
+#include "s_musinfo.h"
 
 #include "m_misc.h"
 #include "m_random.h"
@@ -29,15 +29,11 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
-// when to clip out sounds
-// Does not fit the large outdoor areas.
+// when to clip out sounds; Does not fit the large outdoor areas.
 constexpr size_t S_CLIPPING_DIST{(1200 * FRACUNIT)};
 
-// Distance tp origin when sounds should be maxed out.
-// This should relate to movement clipping resolution
-// (see BLOCKMAP handling).
-// In the source code release: (160*FRACUNIT). Changed back to the
-// Vanilla value of 200 (why was this changed?)
+// Distance tp origin when sounds should be maxed out. This should relate to movement clipping resolution (see BLOCKMAP handling).
+// In the source code release: (160*FRACUNIT). Changed back to the Vanilla value of 200 (why was this changed?)
 constexpr size_t S_CLOSE_DIST{(200 * FRACUNIT)};
 
 // The range over which sound attenuates
@@ -65,38 +61,28 @@ struct channel_t
 };
 
 // The set of channels available
-
 static channel_t* channels;
 static degenmobj_t* sobjs;
 
-// Maximum volume of a sound effect.
-// Internal default is max out of 0-15.
-
+// Maximum volume of a sound effect. Internal default is max out of 0-15.
 int sfxVolume = 8;
 
 // Maximum volume of music.
-
 int musicVolume = 8;
 
 // Internal volume level, ranging from 0-127
-
 static int snd_SfxVolume;
 
 // Whether songs are mus_paused
-
 static bool mus_paused;
 
 // Music currently being played
-
 static musicinfo_t* mus_playing = NULL;
 
 // Number of channels to use
-
 int snd_channels = 8;
 
-// [crispy] add support for alternative music tracks for Final Doom's
-// TNT and Plutonia as introduced in DoomMetalVol5.wad
-
+// [crispy] add support for alternative music tracks for Final Doom's TNT and Plutonia as introduced in DoomMetalVol5.wad
 struct altmusic_t
 {
 	std::string const from;
@@ -127,7 +113,7 @@ static const altmusic_t altmusic_tnt[] =
 	{"messag", "horizo"}, // MAP20
 	{"count2", "in_cit"}, // MAP21
 	{"ddtbl3", "aim"},	// MAP22
-//	{"ampie", "ampie"}, // MAP23
+	//{"ampie", "ampie"}, // MAP23
 	{"theda3", "betwee"}, // MAP24
 	{"adrian", "doom"},	// MAP25
 	{"messg2", "blood"}, // MAP26
@@ -135,15 +121,13 @@ static const altmusic_t altmusic_tnt[] =
 	{"tense", "aim"},	// MAP28
 	{"shawn3", "bells"}, // MAP29
 	{"openin", "beast"}, // MAP30
-//	{"evil",	"evil"},	// MAP31
+	//{"evil",	"evil"},	// MAP31
 	{"ultima", "in_cit"}, // MAP32
 	{NULL,		NULL},
 };
 
-// Plutonia music is completely taken from Doom 1 and 2, but re-arranged.
-// That is, Plutonia's D_RUNNIN (for MAP01) is the renamed D_E1M2. So,
-// it makes sense to play the D_E1M2 replacement from DoomMetal in Plutonia.
-
+// Plutonia music is completely taken from Doom 1 and 2, but re-arranged. That is, Plutonia's D_RUNNIN (for MAP01) is the renamed D_E1M2.
+// So, it makes sense to play the D_E1M2 replacement from DoomMetal in Plutonia.
 static const altmusic_t altmusic_plut[] =
 {
 	{"runnin", "e1m2"},	// MAP01
@@ -183,21 +167,21 @@ static const altmusic_t altmusic_plut[] =
 
 static void S_RegisterAltMusic()
 {
-	const altmusic_t* altmusic_fromto, * altmusic;
+	const altmusic_t* altmusic_fromto;
+	const altmusic_t* altmusic;
 
 	if (gamemission == GameMission::pack_tnt)
 	{
 		altmusic_fromto = altmusic_tnt;
 	}
+	else if (gamemission == GameMission::pack_plut)
+	{
+		altmusic_fromto = altmusic_plut;
+	}
 	else
-		if (gamemission == GameMission::pack_plut)
-		{
-			altmusic_fromto = altmusic_plut;
-		}
-		else
-		{
-			return;
-		}
+	{
+		return;
+	}
 
 	// [crispy] chicken-out if only one lump is missing, something must be wrong
 	for (altmusic = altmusic_fromto; altmusic->from; ++altmusic)
@@ -218,12 +202,7 @@ static void S_RegisterAltMusic()
 	}
 }
 
-//
-// Initializes sound stuff, including volume
-// Sets channels, SFX and music volume,
-// allocates channel buffer, sets S_sfx lookup.
-//
-
+// Initializes sound stuff, including volume Sets channels, SFX and music volume, allocates channel buffer, sets S_sfx lookup.
 void S_Init(int sfxVolume, int musicVolume)
 {
 	int i;
@@ -249,9 +228,7 @@ void S_Init(int sfxVolume, int musicVolume)
 	S_SetSfxVolume(sfxVolume);
 	S_SetMusicVolume(musicVolume);
 
-	// Allocating the internal channels for mixing
-	// (the maximum numer of sounds rendered
-	// simultaneously) within zone memory.
+	// Allocating the internal channels for mixing (the maximum numer of sounds rendered simultaneously) within zone memory.
 	// [crispy] variable number of sound channels
 	channels = I_Realloc(NULL, snd_channels * sizeof(channel_t));
 	sobjs = I_Realloc(NULL, snd_channels * sizeof(degenmobj_t));
@@ -289,8 +266,7 @@ void S_Init(int sfxVolume, int musicVolume)
 		music->lumpnum = W_CheckNumForName(namebuf);
 	}
 
-	// [crispy] add support for alternative music tracks for Final Doom's
-	// TNT and Plutonia as introduced in DoomMetalVol5.wad
+	// [crispy] add support for alternative music tracks for Final Doom's TNT and Plutonia as introduced in DoomMetalVol5.wad
 	S_RegisterAltMusic();
 
 	// [crispy] handle stereo separation for mono-sfx and flipped levels
@@ -313,14 +289,12 @@ static void S_StopChannel(int cnum)
 	if (c->sfxinfo)
 	{
 		// stop the sound playing
-
 		if (I_SoundIsPlaying(c->handle))
 		{
 			I_StopSound(c->handle);
 		}
 
 		// check to see if other channels are playing the sound
-
 		for (i = 0; i < snd_channels; ++i)
 		{
 			if (cnum != i && c->sfxinfo == channels[i].sfxinfo)
@@ -330,24 +304,18 @@ static void S_StopChannel(int cnum)
 		}
 
 		// degrade usefulness of sound data
-
 		c->sfxinfo->usefulness--;
 		c->sfxinfo = NULL;
 		c->origin = NULL;
 	}
 }
 
-//
-// Per level startup code.
-// Kills playing sounds at start of level,
-// determines music if any, changes music.
-//
+// Per level startup code. Kills playing sounds at start of level, determines music if any, changes music.
 static short prevmap = -1;
 
 void S_Start()
 {
-	// kill all playing sounds at start of level
-	// (trust me - a good idea)
+	// kill all playing sounds at start of level (trust me - a good idea)
 	for (size_t cnum{0}; cnum < snd_channels; ++cnum)
 	{
 		if (channels[cnum].sfxinfo)
@@ -390,7 +358,6 @@ void S_Start()
 		int spmus[] =
 		{
 			// Song - Who? - Where?
-
 			musicenum_t::mus_e3m4,		// American		e4m1
 			musicenum_t::mus_e3m2,		// Romero		e4m2
 			musicenum_t::mus_e3m3,		// Shawn		e4m3
@@ -454,12 +421,9 @@ void S_StopSound(MapObject* origin)
 	}
 }
 
-// [crispy] removed map objects may finish their sounds
-// When map objects are removed from the map by P_RemoveMobj(), instead of
-// stopping their sounds, their coordinates are transfered to "sound objects"
-// so stereo positioning and distance calculations continue to work even after
-// the corresponding map object has already disappeared.
-// Thanks to jeff-d and kb1 for discussing this feature and the former for the
+// [crispy] removed map objects may finish their sounds. When map objects are removed from the map by P_RemoveMobj(), instead of
+// stopping their sounds, their coordinates are transfered to "sound objects" so stereo positioning and distance calculations continue to work
+// even after the corresponding map object has already disappeared. Thanks to jeff-d and kb1 for discussing this feature and the former for the
 // original implementation idea: https://www.doomworld.com/vb/post/1585325
 void S_UnlinkSound(MapObject* origin)
 {
@@ -482,11 +446,7 @@ void S_UnlinkSound(MapObject* origin)
 	}
 }
 
-//
-// S_GetChannel :
 //	If none available, return -1. Otherwise channel #.
-//
-
 static int S_GetChannel(MapObject* origin, sfxinfo_t* sfxinfo)
 {
 	// channel number to use
@@ -541,15 +501,9 @@ static int S_GetChannel(MapObject* origin, sfxinfo_t* sfxinfo)
 	return cnum;
 }
 
-//
-// Changes volume and stereo-separation variables
-// from the norm of a sound effect to be played.
-// If the sound is not audible, returns a 0.
-// Otherwise, modifies parameters and returns 1.
-//
-
-static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
-	int* vol, int* sep)
+// Changes volume and stereo-separation variables from the norm of a sound effect to be played.
+// If the sound is not audible, returns a 0. Otherwise, modifies parameters and returns 1.
+static int S_AdjustSoundParams(MapObject* listener, MapObject* source, int* vol, int* sep)
 {
 	fixed_t approx_dist;
 	fixed_t adx;
@@ -559,8 +513,7 @@ static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
 	// [crispy] proper sound clipping in Doom 2 MAP08 and The Ultimate Doom E4M8 / Sigil E5M8
 	const bool doom1map8 = (gamemap == 8 && ((gamemode != GameMode::commercial && gameepisode < 4) || !crispy->soundfix));
 
-	// calculate the distance to sound origin
-	// and clip it if necessary
+	// calculate the distance to sound origin and clip it if necessary
 	adx = abs(listener->x - source->x);
 	ady = abs(listener->y - source->y);
 
@@ -573,10 +526,7 @@ static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
 	}
 
 	// angle of source to listener
-	angle = R_PointToAngle2(listener->x,
-		listener->y,
-		source->x,
-		source->y);
+	angle = R_PointToAngle2(listener->x, listener->y, source->x, source->y);
 
 	if (angle > listener->angle)
 	{
@@ -604,23 +554,18 @@ static int S_AdjustSoundParams(MapObject* listener, MapObject* source,
 			approx_dist = S_CLIPPING_DIST;
 		}
 
-		*vol = 15 + ((snd_SfxVolume - 15)
-			* ((S_CLIPPING_DIST - approx_dist) >> FRACBITS))
-			/ S_ATTENUATOR;
+		*vol = 15 + ((snd_SfxVolume - 15) * ((S_CLIPPING_DIST - approx_dist) >> FRACBITS)) / S_ATTENUATOR;
 	}
 	else
 	{
 		// distance effect
-		*vol = (snd_SfxVolume
-			* ((S_CLIPPING_DIST - approx_dist) >> FRACBITS))
-			/ S_ATTENUATOR;
+		*vol = (snd_SfxVolume * ((S_CLIPPING_DIST - approx_dist) >> FRACBITS)) / S_ATTENUATOR;
 	}
 
 	return (*vol > 0);
 }
 
 // clamp supplied integer to the range 0 <= x <= 255.
-
 static int Clamp(int x)
 {
 	if (x < 0)
@@ -678,9 +623,7 @@ void S_StartSound(void* origin_p, int sfx_id)
 		}
 	}
 
-
-	// Check to see if it is audible,
-	// and if not, modify the params
+	// Check to see if it is audible, and if not, modify the params
 	if (origin && origin != players[consoleplayer] && origin != players[consoleplayer].so) // [crispy] weapon sound source
 	{
 		rc = S_AdjustSoundParams(players[consoleplayer],
@@ -688,8 +631,7 @@ void S_StartSound(void* origin_p, int sfx_id)
 			&volume,
 			&sep);
 
-		if (origin->x == players[consoleplayer]->x
-			&& origin->y == players[consoleplayer]->y)
+		if (origin->x == players[consoleplayer]->x && origin->y == players[consoleplayer]->y)
 		{
 			sep = NORM_SEP;
 		}
@@ -747,12 +689,12 @@ void S_StartSound(void* origin_p, int sfx_id)
 void S_StartSoundOnce(void* origin_p, int sfx_id)
 {
 	int cnum;
-	const sfxinfo_t* const sfx = &S_sfx[sfx_id];
+	//const sfxinfo_t* const sfx = &S_sfx[sfx_id];
+	const sfxinfo_t& sfx = S_sfx[sfx_id];
 
 	for (cnum = 0; cnum < snd_channels; ++cnum)
 	{
-		if (channels[cnum].sfxinfo == sfx &&
-			channels[cnum].origin == origin_p)
+		if (channels[cnum].sfxinfo == &sfx && channels[cnum].origin == origin_p)
 		{
 			return;
 		}
@@ -761,10 +703,7 @@ void S_StartSoundOnce(void* origin_p, int sfx_id)
 	S_StartSound(origin_p, sfx_id);
 }
 
-//
 // Stop and resume music, during game PAUSE.
-//
-
 void S_PauseSound()
 {
 	if (mus_playing && !mus_paused)
@@ -782,10 +721,6 @@ void S_ResumeSound()
 		mus_paused = false;
 	}
 }
-
-//
-// Updates music & sounds
-//
 
 void S_UpdateSounds(MapObject* listener)
 {
@@ -826,14 +761,10 @@ void S_UpdateSounds(MapObject* listener)
 					}
 				}
 
-				// check non-local sounds for distance clipping
-				// or modify their params
+				// check non-local sounds for distance clipping or modify their params
 				if (c->origin && listener != c->origin && c->origin != players[consoleplayer].so) // [crispy] weapon sound source
 				{
-					audible = S_AdjustSoundParams(listener,
-						c->origin,
-						&volume,
-						&sep);
+					audible = S_AdjustSoundParams(listener, c->origin, &volume, &sep);
 
 					if (!audible)
 					{
@@ -847,8 +778,7 @@ void S_UpdateSounds(MapObject* listener)
 			}
 			else
 			{
-				// if channel is allocated but sound has stopped,
-				// free it
+				// if channel is allocated but sound has stopped, free it
 				S_StopChannel(cnum);
 			}
 		}
@@ -859,11 +789,10 @@ void S_SetMusicVolume(int volume)
 {
 	if (volume < 0 || volume > 127)
 	{
-		I_Error("Attempt to set music volume at %d",
-			volume);
+		I_Error("Attempt to set music volume at %d", volume);
 	}
 
-	// [crispy] [JN] Fixed bug when music was hearable with zero volume
+	// [crispy] Fixed bug when music was hearable with zero volume
 	if (!musicVolume)
 	{
 		S_PauseSound();
@@ -886,10 +815,6 @@ void S_SetSfxVolume(int volume)
 
 	snd_SfxVolume = volume;
 }
-
-//
-// Starts some music with the music id found in sounds.h.
-//
 
 void S_StartMusic(int m_id)
 {
@@ -933,9 +858,9 @@ void S_ChangeMusic(int musicnum, int looping)
 	}
 
 	// [crispy] prevent music number under- and overflows
-	if (musicnum <= musicenum_t::mus_None || (gamemode == GameMode::commercial && musicnum < musicenum_t::mus_runnin) ||
-		musicnum >= musicenum_t::NUMMUSIC || (gamemode != GameMode::commercial && musicnum >= musicenum_t::mus_runnin) ||
-		S_music[musicnum].lumpnum == -1)
+	if (musicnum <= musicenum_t::mus_None 
+		|| (gamemode == GameMode::commercial && musicnum < musicenum_t::mus_runnin) || musicnum >= musicenum_t::NUMMUSIC
+		|| (gamemode != GameMode::commercial && musicnum >= musicenum_t::mus_runnin) || S_music[musicnum].lumpnum == -1)
 	{
 		const unsigned umusicnum = (unsigned)musicnum;
 

@@ -52,13 +52,11 @@ constexpr size_t DEFAULT_SPECHIT_MAGIC{0x01C09C98};
 
 //constexpr size_t DEFAULT_SPECHIT_MAGIC{0x84f968e8};
 
-
 fixed_t tmbbox[4];
 MapObject* tmthing;
 int tmflags;
 fixed_t tmx;
 fixed_t tmy;
-
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
@@ -78,8 +76,6 @@ line_t* ceilingline;
 line_t** spechit; // [crispy] remove SPECHIT limit
 int numspechit;
 static int spechit_max; // [crispy] remove SPECHIT limit
-
-
 
 //
 // TELEPORT MOVE
@@ -116,7 +112,6 @@ bool PIT_StompThing(MapObject* thing)
 
 	return true;
 }
-
 
 //
 // P_TeleportMove
@@ -185,7 +180,6 @@ bool P_TeleportMove(MapObject* thing, fixed_t x, fixed_t y)
 
 	return true;
 }
-
 
 //
 // MOVEMENT ITERATOR FUNCTIONS
@@ -322,7 +316,6 @@ bool PIT_CheckThing(MapObject* thing)
 		return false;		// stop moving
 	}
 
-
 	// missiles can hit other things
 	if (tmthing->flags & mobjflag_e::MF_MISSILE)
 	{
@@ -457,7 +450,6 @@ bool PIT_CheckThing(MapObject* thing)
 	return !(thing->flags & mobjflag_e::MF_SOLID) || unblocking;
 }
 
-
 //
 // MOVEMENT CLIPPING
 //
@@ -552,7 +544,6 @@ bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y)
 	return true;
 }
 
-
 //
 // P_TryMove
 // Attempt to move to a new position,
@@ -623,7 +614,6 @@ bool P_TryMove(MapObject* thing, fixed_t x, fixed_t y)
 	return true;
 }
 
-
 //
 // P_ThingHeightClip
 // Takes a valid thing and adjusts the thing->floorz,
@@ -664,8 +654,6 @@ bool P_ThingHeightClip(MapObject* thing)
 	return true;
 }
 
-
-
 //
 // SLIDE MOVE
 // Allows the player to slide along any angled walls.
@@ -680,8 +668,6 @@ MapObject* slidemo;
 
 fixed_t tmxmove;
 fixed_t tmymove;
-
-
 
 //
 // P_HitSlideLine
@@ -698,7 +684,6 @@ void P_HitSlideLine(line_t* ld)
 
 	fixed_t movelen;
 	fixed_t newlen;
-
 
 	if (ld->slopetype == slopetype_t::ST_HORIZONTAL)
 	{
@@ -735,7 +720,6 @@ void P_HitSlideLine(line_t* ld)
 	tmxmove = FixedMul(newlen, finecosine[lineangle]);
 	tmymove = FixedMul(newlen, finesine[lineangle]);
 }
-
 
 //
 // PTR_SlideTraverse
@@ -788,8 +772,6 @@ isblocking:
 	return false;	// stop
 }
 
-
-
 //
 // P_SlideMove
 // The momx / momy move is bad, so try to slide
@@ -815,7 +797,6 @@ void P_SlideMove(MapObject* mo)
 retry:
 	if (++hitcount == 3)
 		goto stairstep;		// don't loop forever
-
 
 		// trace along the three leading corners
 	if (mo->momx > 0)
@@ -893,7 +874,6 @@ retry:
 		goto retry;
 	}
 }
-
 
 //
 // P_LineAttack
@@ -1002,7 +982,6 @@ PTR_AimTraverse(intercept_t* in)
 	return false;			// don't go any farther
 }
 
-
 //
 // PTR_ShootTraverse
 //
@@ -1072,7 +1051,6 @@ bool PTR_ShootTraverse(intercept_t* in)
 
 		// shot continues
 		return true;
-
 
 		// hit line
 	hitline:
@@ -1162,7 +1140,6 @@ bool PTR_ShootTraverse(intercept_t* in)
 	if (thingbottomslope > aimslope)
 		return true;		// shot under the thing
 
-
 		// hit thing
 		// position a bit closer
 	frac = in->frac - FixedDiv(10 * FRACUNIT, attackrange);
@@ -1200,7 +1177,6 @@ bool PTR_ShootTraverse(intercept_t* in)
 
 }
 
-
 //
 // P_AimLineAttack
 //
@@ -1235,7 +1211,6 @@ fixed_t P_AimLineAttack(MapObject* t1, angle_t angle, fixed_t distance)
 
 	return 0;
 }
-
 
 //
 // P_LineAttack
@@ -1324,7 +1299,6 @@ void P_LineLaser(MapObject* t1, angle_t angle, fixed_t distance, fixed_t slope)
 	crispy->crosshair &= ~CROSSHAIR_INTERCEPT;
 }
 
-
 //
 // USE LINES
 //
@@ -1360,7 +1334,6 @@ bool PTR_UseTraverse(intercept_t* in)
 	return false;
 }
 
-
 //
 // P_UseLines
 // Looks for special lines in front of the player to activate.
@@ -1385,14 +1358,12 @@ void P_UseLines(Player* player)
 	P_PathTraverse(x1, y1, x2, y2, PT_ADDLINES, PTR_UseTraverse);
 }
 
-
 //
 // RADIUS ATTACK
 //
 MapObject* bombsource;
 MapObject* bombspot;
 int bombdamage;
-
 
 //
 // PIT_RadiusAttack
@@ -1435,7 +1406,6 @@ bool PIT_RadiusAttack(MapObject* thing)
 	return true;
 }
 
-
 //
 // P_RadiusAttack
 // Source is the creature that caused the explosion at spot.
@@ -1466,8 +1436,6 @@ void P_RadiusAttack(MapObject* spot, MapObject* source, int damage)
 			P_BlockThingsIterator(x, y, PIT_RadiusAttack);
 }
 
-
-
 //
 // SECTOR HEIGHT CHANGING
 // After modifying a sectors floor or ceiling height,
@@ -1484,7 +1452,6 @@ void P_RadiusAttack(MapObject* spot, MapObject* source, int damage)
 bool crushchange;
 bool nofit;
 
-
 //
 // PIT_ChangeSector
 //
@@ -1497,7 +1464,6 @@ bool PIT_ChangeSector(MapObject* thing)
 		// keep checking
 		return true;
 	}
-
 
 	// crunch bodies to giblets
 	if (thing->health <= 0)
@@ -1564,8 +1530,6 @@ bool PIT_ChangeSector(MapObject* thing)
 	return true;
 }
 
-
-
 //
 // P_ChangeSector
 //
@@ -1581,7 +1545,6 @@ bool P_ChangeSector(sector_t* sector, bool crunch)
 	for (x = sector->blockbox[BOXLEFT]; x <= sector->blockbox[BOXRIGHT]; ++x)
 		for (y = sector->blockbox[BOXBOTTOM];y <= sector->blockbox[BOXTOP]; ++y)
 			P_BlockThingsIterator(x, y, PIT_ChangeSector);
-
 
 	return nofit;
 }

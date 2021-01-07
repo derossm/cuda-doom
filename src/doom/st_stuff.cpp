@@ -118,7 +118,6 @@ constexpr size_t ST_RAMPAGEDELAY{(2 * TICRATE)};
 
 constexpr size_t ST_MUCHPAIN{20};
 
-
 // Location and size of statistics,
 // justified according to widget type.
 // Problem is, within which space? STbar? Screen?
@@ -371,7 +370,6 @@ static st_number_t w_ammo[4];
 // max ammo widgets
 static st_number_t w_maxammo[4];
 
-
 // number of frags so far in deathmatch
 static int st_fragscount;
 
@@ -471,7 +469,8 @@ void ST_refreshBackground(bool force)
 		// so it appears to the left and right of the status bar in widescreen mode
 		if ((SCREENWIDTH >> crispy->hires) != ST_WIDTH)
 		{
-			int x, y;
+			int x;
+			int y;
 			byte* src;
 			pixel_t* dest;
 			std::string name = (gamemode == GameMode::commercial) ? DEH_String("GRNROCK") : DEH_String("FLOOR7_2");
@@ -2440,7 +2439,6 @@ void ST_createWidgets()
 
 static bool st_stopped = true;
 
-
 void ST_Start()
 {
 	if (!st_stopped)
@@ -2505,7 +2503,8 @@ void ST_DrawDemoTime(const TimeType time)
 	const TimeType mins = time / (60 * TICRATE);
 	const float secs = (float)(time % (60 * TICRATE)) / TICRATE;
 	const int w = shortnum[0]->width;
-	int n, x;
+	int n;
+	int x;
 
 	// FIXME
 	//n = M_snprintf(buffer, sizeof(buffer), "%02i %05.02f", mins, secs);

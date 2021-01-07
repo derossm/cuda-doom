@@ -179,7 +179,6 @@ void T_VerticalDoor(vldoor_t* door)
 	}
 }
 
-
 //
 // EV_DoLockedDoor
 // Move a locked door up/down
@@ -237,10 +236,10 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, MapObject* thing)
 	return EV_DoDoor(line, type);
 }
 
-
 int EV_DoDoor(line_t* line, vldoor_e type)
 {
-	int secnum, rtn;
+	int secnum;
+	int rtn;
 	sector_t* sec;
 	vldoor_t* door;
 
@@ -252,7 +251,6 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 		sec = &sectors[secnum];
 		if (sec->specialdata)
 			continue;
-
 
 		// new door thinker
 		rtn = 1;
@@ -477,7 +475,6 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 		break;
 	}
 
-
 	// new door thinker
 	door = Z_Malloc<decltype(*door)>(sizeof(*door), pu_tags_t::PU_LEVSPEC, 0);
 	P_AddThinker(&door->thinker);
@@ -520,7 +517,6 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 	door->topheight = P_FindLowestCeilingSurrounding(sec);
 	door->topheight -= 4 * FRACUNIT;
 }
-
 
 //
 // Spawn a door that closes after 30 seconds

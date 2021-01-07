@@ -69,11 +69,9 @@ fixed_t topstep;
 int64_t bottomfrac; // [crispy] WiggleFix
 fixed_t bottomstep;
 
-
 lighttable_t** walllights;
 
 int* maskedtexturecol; // [crispy] 32-bit integer math
-
 
 // [crispy] WiggleFix: add this code block near the top of r_segs.c
 //
@@ -289,9 +287,6 @@ void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 
 }
 
-
-
-
 //
 // R_RenderSegLoop
 // Draws zero, one, or two textures (and possibly a masked
@@ -475,8 +470,6 @@ void R_RenderSegLoop()
 	}
 }
 
-
-
 // [crispy] WiggleFix: move R_ScaleFromGlobalAngle function to r_segs.c,
 // above R_StoreWallRange
 fixed_t R_ScaleFromGlobalAngle(angle_t visangle)
@@ -513,7 +506,11 @@ void R_StoreWallRange(int start, int stop)
 {
 	fixed_t vtop;
 	int lightnum;
-	int64_t dx, dy, dx1, dy1, dist; // [crispy] fix long wall wobble
+	int64_t dx;
+	int64_t dy;
+	int64_t dx1;
+	int64_t dy1;
+	int64_t dist; // [crispy] fix long wall wobble
 	const uint32_t len = curline->length;
 
 	// [crispy] remove MAXDRAWSEGS Vanilla limit
@@ -560,7 +557,6 @@ void R_StoreWallRange(int start, int stop)
 	dist = ((dy * dx1 - dx * dy1) / len) << 1;
 	rw_distance = (fixed_t)BETWEEN(INT_MIN, INT_MAX, dist);
 
-
 	ds_p->x1 = rw_x = start;
 	ds_p->x2 = stop;
 	ds_p->curline = curline;
@@ -586,8 +582,10 @@ void R_StoreWallRange(int start, int stop)
 #if 0
 		if (rw_distance < FRACUNIT / 2)
 		{
-			fixed_t trx, try;
-			fixed_t gxt, gyt;
+			fixed_t trx;
+			fixed_t try;
+			fixed_t gxt;
+			fixed_t gyt;
 
 			trx = curline->v1->x - viewx;
 			try = curline->v1->y - viewy;
@@ -702,7 +700,6 @@ void R_StoreWallRange(int start, int stop)
 			worldtop = worldhigh;
 		}
 
-
 		if (worldlow != worldbottom
 			|| backsector->floorpic != frontsector->floorpic
 			|| backsector->lightlevel != frontsector->lightlevel)
@@ -714,7 +711,6 @@ void R_StoreWallRange(int start, int stop)
 			// same plane on both sides
 			markfloor = false;
 		}
-
 
 		if (worldhigh != worldtop
 			|| backsector->ceilingpic != frontsector->ceilingpic
@@ -734,7 +730,6 @@ void R_StoreWallRange(int start, int stop)
 			// closed door
 			markceiling = markfloor = true;
 		}
-
 
 		if (worldhigh < worldtop)
 		{
@@ -823,7 +818,6 @@ void R_StoreWallRange(int start, int stop)
 	// of the view plane, it is definitely invisible
 	// and doesn't need to be marked.
 
-
 	if (frontsector->interpfloorheight >= viewz)
 	{
 		// above view plane
@@ -836,7 +830,6 @@ void R_StoreWallRange(int start, int stop)
 		// below view plane
 		markceiling = false;
 	}
-
 
 	// calculate incremental stepping values for texture edges
 	worldtop >>= invhgtbits;
@@ -874,7 +867,6 @@ void R_StoreWallRange(int start, int stop)
 		floorplane = R_CheckPlane(floorplane, rw_x, rw_stopx - 1);
 
 	R_RenderSegLoop();
-
 
 	// save sprite clipping info
 	if (((ds_p->silhouette & SIL_TOP) || maskedtexture)

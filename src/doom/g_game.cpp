@@ -139,8 +139,6 @@ bool precache = true;		// if true, load all graphics at start
 bool testcontrols = false;	// Invoked by setup to test controls
 int testcontrols_mousespeed;
 
-
-
 wbstartstruct_t wminfo;					// parms for world map / intermission
 
 byte consistancy[MAX_PLAYERS][BACKUPTICS];
@@ -284,7 +282,8 @@ static bool WeaponSelectable(WeaponType weapon)
 static int G_NextWeapon(int direction)
 {
 	WeaponType weapon;
-	int start_i, i;
+	int start_i;
+	int i;
 
 	// Find index in the table.
 
@@ -1440,7 +1439,8 @@ bool G_CheckSpot(int playernum, mapthing_t* mthing)
 	// This code is imported from PrBoom+.
 
 	{
-		fixed_t xa, ya;
+		fixed_t xa;
+		fixed_t ya;
 		int an;
 
 		// This calculation overflows in Vanilla Doom, but here we deliberately
@@ -1495,7 +1495,8 @@ bool G_CheckSpot(int playernum, mapthing_t* mthing)
 //
 void G_DeathMatchSpawnPlayer(int playernum)
 {
-	int i, j;
+	int i;
+	int j;
 	int selections;
 
 	selections = deathmatch_p - deathmatchstarts;
@@ -1648,8 +1649,10 @@ void G_SecretExitLevel()
 constexpr size_t TIMESTRSIZE{16};
 static void G_FormatLevelStatTime(std::string str, TimeType tics)
 {
-	int exitHours, exitMinutes;
-	float exitTime, exitSeconds;
+	int exitHours;
+	int exitMinutes;
+	float exitTime;
+	float exitSeconds;
 
 	exitTime = (float)tics / 35;
 	exitHours = exitTime / 3600;
@@ -1673,7 +1676,10 @@ static void G_WriteLevelStat()
 {
 	static FILE* fstream = NULL;
 
-	int i, playerKills = 0, playerItems = 0, playerSecrets = 0;
+	int i;
+	int playerKills = 0;
+	int playerItems = 0;
+	int playerSecrets = 0;
 
 	char levelString[8];
 	char levelTimeString[TIMESTRSIZE];
@@ -2864,7 +2870,10 @@ static std::string DemoVersionDescription(int version)
 void G_DoPlayDemo()
 {
 	SkillType skill;
-	int i, lumpnum, episode, map;
+	int i;
+	int lumpnum;
+	int episode;
+	int map;
 	int demoversion;
 	bool olddemo = false;
 	int lumplength;
@@ -2961,7 +2970,6 @@ void G_DoPlayDemo()
 		consoleplayer = 0;
 	}
 
-
 	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
 		playeringame[i] = *demo_p;
@@ -2999,7 +3007,8 @@ void G_DoPlayDemo()
 
 	// demo progress bar
 	{
-		int i, numplayersingame = 0;
+		int i;
+		int numplayersingame = 0;
 		byte* demo_ptr = demo_p;
 
 		for (i = 0; i < MAX_PLAYERS; ++i)

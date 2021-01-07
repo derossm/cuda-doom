@@ -93,7 +93,8 @@ static int FindPressedAxisButton(txt_joystick_axis_t* joystick_axis)
 
 static int FindUncenteredHat(SDL_Joystick* joystick, int* axis_invert)
 {
-	int i, hatval;
+	int i;
+	int hatval;
 
 	for (i = 0; i < SDL_JoystickNumHats(joystick); ++i)
 	{
@@ -215,7 +216,8 @@ static bool SetButtonAxisPositive(txt_joystick_axis_t* joystick_axis)
 
 static void IdentifyBadAxes(txt_joystick_axis_t* joystick_axis)
 {
-	int i, val;
+	int i;
+	int val;
 
 	free(joystick_axis->bad_axis);
 
@@ -333,8 +335,7 @@ static int EventCallback(SDL_Event* event, TXT_UNCAST_ARG(joystick_axis))
 	return 0;
 }
 
-static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
-	TXT_UNCAST_ARG(joystick_axis))
+static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(joystick_axis))
 {
 	TXT_CAST_ARG(txt_joystick_axis_t, joystick_axis);
 
@@ -347,9 +348,7 @@ static void CalibrateWindowClosed(TXT_UNCAST_ARG(widget),
 	TXT_SDL_SetEventCallback(NULL, NULL);
 }
 
-void TXT_ConfigureJoystickAxis(txt_joystick_axis_t* joystick_axis,
-	int using_button,
-	txt_joystick_axis_callback_t callback)
+void TXT_ConfigureJoystickAxis(txt_joystick_axis_t* joystick_axis, int using_button, txt_joystick_axis_callback_t callback)
 {
 	// Open the joystick first.
 	if (SDL_Init(SDL_INIT_JOYSTICK) < 0)
@@ -368,17 +367,11 @@ void TXT_ConfigureJoystickAxis(txt_joystick_axis_t* joystick_axis,
 
 	// Build the prompt window.
 
-	joystick_axis->config_window
-		= TXT_NewWindow("Gamepad/Joystick calibration");
-	TXT_AddWidgets(joystick_axis->config_window,
-		TXT_NewStrut(0, 1),
-		joystick_axis->config_label = TXT_NewLabel(""),
-		TXT_NewStrut(0, 1),
-		NULL);
+	joystick_axis->config_window = TXT_NewWindow("Gamepad/Joystick calibration");
+	TXT_AddWidgets(joystick_axis->config_window, TXT_NewStrut(0, 1), joystick_axis->config_label = TXT_NewLabel(""), TXT_NewStrut(0, 1), NULL);
 
 	TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_LEFT, NULL);
-	TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_CENTER,
-		TXT_NewWindowAbortAction(joystick_axis->config_window));
+	TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_CENTER, TXT_NewWindowAbortAction(joystick_axis->config_window));
 	TXT_SetWindowAction(joystick_axis->config_window, TXT_HORIZ_RIGHT, NULL);
 	TXT_SetWidgetAlign(joystick_axis->config_window, TXT_HORIZ_CENTER);
 
@@ -428,7 +421,8 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
 	}
 	else if (IS_BUTTON_AXIS(*joystick_axis->axis))
 	{
-		int neg, pos;
+		int neg;
+		int pos;
 
 		neg = BUTTON_AXIS_NEG(*joystick_axis->axis);
 		pos = BUTTON_AXIS_POS(*joystick_axis->axis);
@@ -436,7 +430,8 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
 	}
 	else if (IS_HAT_AXIS(*joystick_axis->axis))
 	{
-		int hat, dir;
+		int hat;
+		int dir;
 
 		hat = HAT_AXIS_HAT(*joystick_axis->axis);
 		dir = HAT_AXIS_DIRECTION(*joystick_axis->axis);
@@ -481,13 +476,11 @@ static int TXT_JoystickAxisKeyPress(TXT_UNCAST_ARG(joystick_axis), int key)
 	return 0;
 }
 
-static void TXT_JoystickAxisMousePress(TXT_UNCAST_ARG(widget),
-	int x, int y, int b)
+static void TXT_JoystickAxisMousePress(TXT_UNCAST_ARG(widget), int x, int y, int b)
 {
 	TXT_CAST_ARG(txt_joystick_axis_t, widget);
 
 	// Clicking is like pressing enter
-
 	if (b == TXT_MOUSE_LEFT)
 	{
 		TXT_JoystickAxisKeyPress(widget, KEY_ENTER);

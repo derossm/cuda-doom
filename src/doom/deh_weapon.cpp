@@ -49,7 +49,8 @@ static void* DEH_WeaponStart(deh_context_t* context, std::string line)
 
 static void DEH_WeaponParseLine(deh_context_t* context, std::string line, void* tag)
 {
-	std::string variable_name, * value;
+	std::string variable_name;
+	std::string value;
 	weaponinfo_t* weapon;
 	int ivalue;
 
