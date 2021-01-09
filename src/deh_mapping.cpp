@@ -12,6 +12,8 @@
 		Allows the fields in structures to be mapped out and accessed by name
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "i_system.h"
 #include "m_misc.h"

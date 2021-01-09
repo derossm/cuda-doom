@@ -12,10 +12,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 // DECOUPLE
-#include "../derma/common.h"
-//////////
+//#include "../derma/common.h"
 
-#include "txt_main.h"
+#include <string>
+
+#include "txt_common.h"
+//#include "txt_main.h"
 
 namespace cudadoom::txt
 {

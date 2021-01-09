@@ -12,12 +12,15 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include <string>
+#include <memory>
+
 #include "../derma/common.h"
 #include "../derma/d_native.h"
 
 #ifdef _WIN32
 
-#include <doomtype.h>
+#include "doomtype.h"
 
 constexpr size_t BUFFER_SIZE{1024};
 

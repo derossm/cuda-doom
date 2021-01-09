@@ -13,6 +13,8 @@
 		Archiving: Extended SaveGame I/O.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "config.h"
 #include "doomstat.h"
 #include "doomtype.h"

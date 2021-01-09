@@ -80,5 +80,9 @@ add_library(doom STATIC
 			st_stuff.cpp	st_stuff.h
 			wi_stuff.cpp	wi_stuff.h)
 
+set_target_properties(doom PROPERTIES LINKER_LANGUAGE CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 target_include_directories(doom PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
 target_link_libraries(doom SDL2::SDL2 SDL2::mixer SDL2::net)

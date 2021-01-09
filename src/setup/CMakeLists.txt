@@ -14,5 +14,9 @@ add_library(setup STATIC
 			txt_keyinput.cpp	txt_keyinput.h
 			txt_mouseinput.cpp	txt_mouseinput.h)
 
+set_target_properties(setup PROPERTIES LINKER_LANGUAGE CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 target_include_directories(setup PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
 target_link_libraries(setup textscreen SDL2::SDL2 SDL2::mixer)

@@ -9,14 +9,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 // DECOUPLE
-#include "../derma/common.h"
-//////////
+//#include "../derma/common.h"
 
 #include "txt_common.h"
-
 #include "txt_widget.h"
-
-//#include "txt_strut.h"
 
 namespace cudadoom::txt
 {
@@ -71,7 +67,7 @@ public:
 			return KeyPress(KEY_ENTER);
 		}
 /**/
-		return false
+		return false;
 	}
 
 	inline void SetLayout() noexcept override final

@@ -9,17 +9,15 @@
 \**********************************************************************************************************************************************/
 #pragma once
 // DECOUPLE
-#include "../derma/common.h"
-//////////
+//#include "../derma/common.h"
+
+#include <string>
 
 #include "txt_common.h"
 
-#include "txt_enums.h"
-#include "txt_defines.h"
-#include "txt_io.h"
-#include "txt_gui.h"
-
-#include "txt_desktop.h"
+//#include "txt_io.h"
+//#include "txt_gui.h"
+//#include "txt_desktop.h"
 
 namespace cudadoom::txt
 {

@@ -11,6 +11,8 @@
 		Demonstration program for OPL library to play back DRO format files.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "SDL.h"
 
 #include "opl.h"

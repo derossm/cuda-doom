@@ -12,6 +12,8 @@
 		The client waiting screen when we are waiting for the server to start the game.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "config.h"
 #include "doomkeys.h"
 

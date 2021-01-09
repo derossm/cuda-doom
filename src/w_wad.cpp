@@ -12,6 +12,8 @@
 		Handles WAD file header, directory, lump I/O.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "i_swap.h"
 #include "i_system.h"
 #include "i_video.h"

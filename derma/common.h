@@ -11,10 +11,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "c_headers.h"
-#include "cpp_headers.h"
-#include "namespace_forwards.h"
-#include "deprecating_tools.h"
+#include <string>
+#include <cctype>
 
 using byte = uint8_t;
 

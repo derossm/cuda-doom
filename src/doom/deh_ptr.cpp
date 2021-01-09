@@ -11,6 +11,8 @@
 		Parses Action Pointer entries in dehacked files
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "info.h"
 

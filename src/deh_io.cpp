@@ -11,6 +11,8 @@
 		Dehacked I/O code (does all reads from dehacked files)
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "deh_io.h"
 
 #include "deh_defs.h"

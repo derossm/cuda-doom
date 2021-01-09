@@ -12,6 +12,8 @@
 		Do all the WAD I/O, get map description, set up initial state and misc. LUTs.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "z_zone.h"
 
 #include "deh_main.h"

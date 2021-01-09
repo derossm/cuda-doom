@@ -15,6 +15,8 @@
 		Functions to blit a block to the screen.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "i_system.h"
 
 #include "doomtype.h"

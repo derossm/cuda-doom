@@ -13,20 +13,17 @@
 
 #include "config.h"
 
-// OpenBSD has a i386_iopl on i386 and amd64_iopl on x86_64,
-// even though they do the same thing. Take care of this
-// here, and map set_iopl to point to the appropriate name.
-
-//#if defined(HAVE_LIBI386)
-//	#define set_iopl i386_iopl
-//#elif defined(HAVE_LIBAMD64)
-//	#define set_iopl amd64_iopl
-//#else
-//	#define NO_OBSD_DRIVER
-//#endif
+// OpenBSD has a i386_iopl on i386 and amd64_iopl on x86_64, even though they do the same thing.
+// Take care of this here, and map set_iopl to point to the appropriate name.
+#if defined(HAVE_LIBI386)
+	#define set_iopl i386_iopl
+#elif defined(HAVE_LIBAMD64)
+	#define set_iopl amd64_iopl
+#else
+	#define NO_OBSD_DRIVER
+#endif
 
 // If the above succeeded, proceed with the rest.
-
 #include "opl.h"
 #include "opl_internal.h"
 #include "opl_timer.h"
@@ -90,4 +87,4 @@ opl_driver_t opl_openbsd_driver =
 	OPL_Timer_AdjustCallbacks
 };
 
-#endif /* #ifndef NO_OBSD_DRIVER */
+#endif // #ifndef NO_OBSD_DRIVER

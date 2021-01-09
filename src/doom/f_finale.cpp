@@ -12,6 +12,8 @@
 		Game completion, final screen animation.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 // Functions.
 #include "deh_main.h"
 #include "i_system.h"

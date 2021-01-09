@@ -14,6 +14,8 @@
 		supports GUS patch files. This code therefore converts Doom's DMXGUS lump into an equivalent Timidity configuration file.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "m_misc.h"
 #include "w_wad.h"
 #include "z_zone.h"

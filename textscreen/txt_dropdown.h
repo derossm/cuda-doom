@@ -9,21 +9,19 @@
 \**********************************************************************************************************************************************/
 #pragma once
 // DECOUPLE FIXME
-#include "../derma/common.h"
+//#include "../derma/common.h"
+#include "../derma/keybinds.h"
+
+#include <string>
+
 #include "txt_common.h"
-//////////
 #include "txt_widget.h"
+//#include "txt_button.h"
 
-#include "txt_main.h"
-#include "txt_utf8.h"
-#include "txt_io.h"
-#include "txt_gui.h"
-
-//#include "txt_window.h"
-#include "txt_button.h"
-
-// DECOUPLE
-#include "doomkeys.h"
+//#include "txt_main.h"
+//#include "txt_utf8.h"
+//#include "txt_io.h"
+//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -78,7 +76,7 @@ public:
 			return KeyPress(KEY_ENTER);
 		}
 /**/
-		return false
+		return false;
 	}
 
 	void SetLayout() noexcept override final
@@ -111,8 +109,8 @@ struct callback_data_t
  *						the labels to use for the list (UTF-8 format).
  * @param num_values		The number of variables in the list.
  */
-txt_dropdown_list_t* NewDropdownList(int* variable, CHAR_PTR* values, int num_values);
-
+//txt_dropdown_list_t* NewDropdownList(int* variable, CHAR_PTR* values, int num_values);
+/*
 // Check if the selected value for a list is valid
 static int ValidSelection(txt_dropdown_list_t* list)
 {
@@ -134,7 +132,6 @@ static int SelectorWindowY(txt_dropdown_list_t* list)
 	}
 
 	// Keep dropdown inside the screen.
-
 	if (result < 1)
 	{
 		result = 1;
@@ -148,9 +145,9 @@ static int SelectorWindowY(txt_dropdown_list_t* list)
 }
 
 // Called when a button in the selector window is pressed
-static void ItemSelected(UNCAST_ARG(button), UNCAST_ARG(callback_data))
+static void ItemSelected((button), (callback_data))
 {
-	CAST_ARG(callback_data_t, callback_data);
+	//(callback_data_t, callback_data);
 
 	// Set the variable
 	*callback_data->list->variable = callback_data->item;
@@ -162,15 +159,14 @@ static void ItemSelected(UNCAST_ARG(button), UNCAST_ARG(callback_data))
 }
 
 // Free callback data when the window is closed
-static void FreeCallbackData(UNCAST_ARG(list),
-	UNCAST_ARG(callback_data))
+static void FreeCallbackData((list), (callback_data))
 {
-	CAST_ARG(callback_data_t, callback_data);
+	//(callback_data_t, callback_data);
 
-	free(callback_data);
+	//free(callback_data);
 }
 
-// Catch presses of escape and close the window.
+ Catch presses of escape and close the window.
 static int SelectorWindowListener(Window* window, int key, void* user_data)
 {
 	if (key == KEY_ESCAPE)
@@ -196,7 +192,7 @@ static int SelectorMouseListener(Window* window, int x, int y, int b, void* unus
 
 	return 0;
 }
-
+/*
 // Open the dropdown list window to select an item
 static void OpenSelectorWindow(txt_dropdown_list_t* list)
 {
@@ -357,5 +353,5 @@ txt_dropdown_list_t* NewDropdownList(int* variable, CHAR_PTR* values, int num_va
 
 	return list;
 }
-
+/**/
 } // END NAMESPACE cudadoom::txt

@@ -9,22 +9,5 @@
 	DESCRIPTION:
 
 \**********************************************************************************************************************************************/
-#pragma once
 
-#include <cassert>
-#include <cerrno>
-
-#include <cstdlib>
-#include <cstdio>
-#include <cctype>
-
-#include <cinttypes>
-#include <climits>
-#include <cstdarg>
-
-#include <cmath>
-
-#include <cstddef>
-
-#include <ctime>
-#include <cstdint>
+#include "textscreen.h"

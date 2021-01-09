@@ -29,7 +29,7 @@
 #endif
 
 #ifdef _MSC_VER
-	#include <direct.h>
+	//#include <direct.h>
 	//#include <win_opendir.h>
 	#include <sys/stat.h>
 #endif

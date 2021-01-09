@@ -12,6 +12,8 @@
 		DOOM selection menu, options, episode etc. Sliders and icons. Kinda widget stuff.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomdef.h"
 #include "doomkeys.h"
 #include "dstrings.h"

@@ -17,6 +17,8 @@
 
 // [crispy] adapted from chocolate-doom/src/hexen/sc_man.c:18-470
 
+#include <string>
+
 // HEADER FILES ------------------------------------------------------------
 
 #include "doomstat.h"

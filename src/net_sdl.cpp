@@ -11,6 +11,8 @@
 		Networking module which uses SDL_net
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "i_system.h"
 #include "m_argv.h"

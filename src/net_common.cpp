@@ -11,6 +11,8 @@
 		Common code shared between the client and server
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "net_common.h"
 
 static FILE* net_debug = NULL;

@@ -14,6 +14,8 @@
 		[crispy] adapted from smmu/r_ripple.c, by Simon Howard
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include <tables.h>
 #include <i_system.h>
 #include <w_wad.h>

@@ -13,6 +13,8 @@
 		parse command line parameters, configure game parameters (turbo), and call the startup functions.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "config.h"
 #include "../derma/d_native.h"
 

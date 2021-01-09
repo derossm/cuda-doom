@@ -14,6 +14,8 @@
 		Line Tag handling. Line and Sector triggers.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomdef.h"
 #include "doomstat.h"
 

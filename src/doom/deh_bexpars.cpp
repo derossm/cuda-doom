@@ -8,9 +8,11 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-//
-// Parses [PARS] sections in BEX files
+	DESCRIPTION:
+		Parses [PARS] sections in BEX files
 \**********************************************************************************************************************************************/
+
+#include <string>
 
 #include "deh_bexpars.h"
 #include "deh_io.h"

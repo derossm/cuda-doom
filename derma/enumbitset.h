@@ -11,7 +11,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "common.h"
+#include <bitset>
+
+#include <algorithm>
+
+#include <concepts>
+#include <type_traits>
 
 namespace cudadoom
 {
@@ -23,26 +28,25 @@ class BitSet : public std::bitset<static_cast<size_t>(N)>
 public:
 	inline BitSet<E, N>& set() noexcept
 	{
-		bitset::set();
+		this->bitset::set();
 		return *this;
 	}
 
-	inline BitSet<E, N>& set(E pos, bool value = true)
+	inline BitSet<E, N>& set(E pos, bool value = true) noexcept
 	{
-		bitset::set(static_cast<size_t>(pos), value);
+		this->bitset::set(static_cast<size_t>(pos), value);
 		return *this;
 	}
 
-	inline BitSet<E, N>& set(size_t pos, bool value = true)
+	inline BitSet<E, N>& set(size_t pos, bool value = true) noexcept
 	{
-		bitset::set(pos, value);
+		this->bitset::set(pos, value);
 		return *this;
 	}
 
 	template<typename... Es>
-	requires (std::is_enum_v<std::remove_reference_t<Es>> && ...)
-			|| (std::is_integral<std::remove_reference_t<Es>> && ...)
-	inline BitSet<E, N>& set(bool value, Es... es) :
+		requires (std::is_enum_v<std::remove_reference_t<Es>> && ...) || (std::is_integral<std::remove_reference_t<Es>> && ...)
+	inline BitSet<E, N>& set(bool value, Es... es) noexcept
 	{
 		auto ev = {es...};
 		std::for_each(ev.begin(), ev.end(), [&](auto& iter){ bitset::set(static_cast<size_t>(iter), value); });
@@ -51,49 +55,49 @@ public:
 
 	inline BitSet<E, N>& flip() noexcept
 	{
-		bitset::flip();
+		this->bitset::flip();
 		return *this;
 	}
 
-	inline BitSet<E, N>& flip(E pos)
+	inline BitSet<E, N>& flip(E pos) noexcept
 	{
-		bitset::flip(static_cast<size_t>(pos));
+		this->bitset::flip(static_cast<size_t>(pos));
 		return *this;
 	}
 
-	inline BitSet<E, N>& flip(size_t pos)
+	inline BitSet<E, N>& flip(size_t pos) noexcept
 	{
-		bitset::flip(pos);
+		this->bitset::flip(pos);
 		return *this;
 	}
 
 	inline BitSet<E, N>& reset() noexcept
 	{
-		bitset::reset();
+		this->bitset::reset();
 		return *this;
 	}
 
-	inline BitSet<E, N>& reset(E pos)
+	inline BitSet<E, N>& reset(E pos) noexcept
 	{
-		bitset::reset(static_cast<size_t>(pos));
+		this->bitset::reset(static_cast<size_t>(pos));
 		return *this;
 	}
 
-	inline BitSet<E, N>& reset(size_t pos)
+	inline BitSet<E, N>& reset(size_t pos) noexcept
 	{
-		bitset::reset(pos);
+		this->bitset::reset(pos);
 		return *this;
 	}
 
-	inline bool test(E pos)
+	inline bool test(E pos) noexcept
 	{
-		bitset::test(static_cast<size_t>(pos));
+		this->bitset::test(static_cast<size_t>(pos));
 		return *this;
 	}
 
-	inline bool test(size_t pos)
+	inline bool test(size_t pos) noexcept
 	{
-		bitset::test(pos);
+		this->bitset::test(pos);
 		return *this;
 	}
 

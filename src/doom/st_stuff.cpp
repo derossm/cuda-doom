@@ -14,6 +14,8 @@
 		Does palette indicators as well (red pain/berserk, bright pickup)
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "i_swap.h" // SHORT()
 #include "i_system.h"
 #include "i_video.h"

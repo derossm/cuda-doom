@@ -12,6 +12,8 @@
 		Ideally this should work exactly the same as in deutex, but trying to read the deutex source code made my brain hurt.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "i_swap.h" // [crispy] LONG()
 #include "i_system.h"

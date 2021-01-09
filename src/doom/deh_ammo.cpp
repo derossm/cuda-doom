@@ -11,6 +11,8 @@
 		Parses "Ammo" sections in dehacked files
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomdef.h"
 #include "doomtype.h"
 #include "deh_defs.h"
@@ -45,7 +47,9 @@ static void DEH_AmmoParseLine(deh_context_t* context, std::string line, void* ta
 	int ammo_number;
 
 	if (tag == NULL)
+	{
 		return;
+	}
 
 	ammo_number = ((int*)tag) - maxammo;
 
@@ -83,8 +87,7 @@ static void DEH_AmmoSHA1Hash(sha1_context_t* context)
 	}
 }
 
-deh_section_t deh_section_ammo =
-{
+deh_section_t deh_section_ammo{
 	"Ammo",
 	NULL,
 	DEH_AmmoStart,

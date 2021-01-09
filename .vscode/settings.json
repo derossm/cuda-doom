@@ -75,7 +75,10 @@
 		"xlocmes": "cpp",
 		"xlocmon": "cpp",
 		"xloctime": "cpp",
-		"bitset": "cpp"
+		"bitset": "cpp",
+		"optional": "cpp",
+		"ranges": "cpp",
+		"span": "cpp"
 	},
 	"git.allowForcePush": true,
 	"editor.rulers": [

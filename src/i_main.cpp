@@ -12,6 +12,8 @@
 		Main program, simply calls D_DoomMain high level loop.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "config.h"
 #include "crispy.h"
 

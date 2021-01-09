@@ -11,6 +11,8 @@
 		File globbing API. This allows the contents of the filesystem to be interrogated.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "i_glob.h"
 #include "m_misc.h"
 #include "config.h"

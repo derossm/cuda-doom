@@ -11,6 +11,8 @@
 		Parses Text substitution sections in dehacked files
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "deh_str.h"
 #include "m_misc.h"

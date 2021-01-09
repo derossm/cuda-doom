@@ -10,6 +10,8 @@
 	Reading and writing various structures into packets
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "i_system.h"
 #include "m_misc.h"

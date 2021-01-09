@@ -69,7 +69,8 @@ def convert_image(font_prefix, filename, output_filename):
 		outfile.write("/* Font data generated from %s; do not edit.\n"
 						"   Please see textscreen/fonts/README for copyright\n"
 						"   information. */\n\n" % filename)
-		outfile.write("static const uint8_t %s_font_data[] =\n{\n" % font_prefix)
+		outfile.write("#include <array>\n\n")
+		outfile.write("static constexpr std::array<uint8_t, %d> %s_font_data\n{\n" % (len(data), font_prefix))
 		for index, b in enumerate(data):
 			if (index % 8) == 0:
 				outfile.write("    ")
@@ -81,8 +82,8 @@ def convert_image(font_prefix, filename, output_filename):
 		outfile.write("};\n")
 
 		outfile.write("\n")
-		outfile.write("static const txt_font_t %s_font =\n{\n" % font_prefix)
-		outfile.write("    \"%s\", %s_font_data, %d, %d,\n" % (font_prefix, font_prefix, dimensions[0], dimensions[1]))
-		outfile.write("};\n")
+		#outfile.write("static const txt_font_t %s_font =\n{\n" % font_prefix)
+		#outfile.write("    \"%s\", %s_font_data, %d, %d,\n" % (font_prefix, font_prefix, dimensions[0], dimensions[1]))
+		#outfile.write("};\n")
 
 convert_image(sys.argv[1], sys.argv[2], sys.argv[3])

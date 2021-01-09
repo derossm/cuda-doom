@@ -25,11 +25,26 @@
 \**********************************************************************************************************************************************/
 #pragma once
 // DECOUPLE
-#include "../derma/common.h"
-//////////
+//#include "../derma/common.h"
+
+#include <string>
 
 namespace cudadoom::txt
 {
+
+enum class AlignVertical
+{
+	top,
+	center,
+	bottom
+};
+
+enum class AlignHorizontal
+{
+	left,
+	center,
+	right
+};
 
 template<class T>
 class WidgetClass;
@@ -98,20 +113,6 @@ public:
 	friend inline bool operator<=(const T& lhs, const StrongType<T, U>& rhs) noexcept;
 	friend inline bool operator>=(const T& lhs, const StrongType<T, U>& rhs) noexcept;
 
-	//inline bool operator==(const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) == 0; }
-	//inline bool operator!=(const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) != 0; }
-	//inline bool operator< (const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) < 0; }
-	//inline bool operator> (const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) > 0; }
-	//inline bool operator<=(const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) <= 0; }
-	//inline bool operator>=(const StrongType<T, U>& lhs, const T& rhs){ return cmp(lhs.value,rhs) >= 0; }
-
-	//inline bool operator==(const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) == 0; }
-	//inline bool operator!=(const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) != 0; }
-	//inline bool operator< (const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) < 0; }
-	//inline bool operator> (const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) > 0; }
-	//inline bool operator<=(const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) <= 0; }
-	//inline bool operator>=(const T& lhs, const StrongType<T, U>& rhs){ return cmp(lhs,rhs.value) >= 0; }
-
 	StrongType<T, U>& operator=(const T& other)
 	{
 		if constexpr (std::is_class<T>::value == true)
@@ -130,8 +131,6 @@ public:
 
 		return *this;
 	}
-
-	//T operator()() { return value; }
 };
 
 template<typename T, typename U>
@@ -294,3 +293,37 @@ public:
 //};
 
 }
+
+//---------------------------------------------------------------------------
+// txt_main.h
+//---------------------------------------------------------------------------
+
+//#define KEY_TO_MOUSE_BUTTON(x) ( (x) >= MOUSE_BASE && (x) < MOUSE_BASE + MAX_MOUSE_BUTTONS ? (x) - MOUSE_BASE : -1 )
+
+// Convert a key value to a Unicode character:
+//#define KEY_TO_UNICODE(x) ( (x) < 128 ? (x) : (x) >= UNICODE_BASE ? ((x) - UNICODE_BASE + 128) : 0 )
+
+// Convert a Unicode character to a key value:
+//#define UNICODE_TO_KEY(u) ( (u) < 128 ? (u) : ((u) - 128 + UNICODE_BASE) )
+
+//#ifdef __GNUC__
+//#define PRINTF_ATTR(fmt, first) __attribute__((format(printf, fmt, first)))
+//#else // __GNUC__
+//#define PRINTF_ATTR(fmt, first)
+//#endif // __GNUC__
+
+//---------------------------------------------------------------------------
+// txt_table.h
+//---------------------------------------------------------------------------
+
+// Magic value that if used in a table, will indicate that the cell is empty and the widget in the cell to the left can overflow into it.
+//#define TABLE_OVERFLOW_RIGHT (&txt_table_overflow_right)
+
+// Magic value that if used in a table, will indicate that the cell is empty and the widget in the cell above it can overflow down into it.
+//#define TABLE_OVERFLOW_DOWN (&txt_table_overflow_down)
+
+// Magic value that if given to AddWidget(), will pad out all columns until the end of line.
+//#define TABLE_EOL (&txt_table_eol)
+
+// Indicates empty space to AddWidgets(). Equivalent to AddWidget(table, NULL), except AddWidgets() uses NULL for end of input.
+//#define TABLE_EMPTY (&txt_table_empty)

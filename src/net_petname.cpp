@@ -11,6 +11,8 @@
 		Generate a randomized, private, memorable name for a Player
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "m_misc.h"
 

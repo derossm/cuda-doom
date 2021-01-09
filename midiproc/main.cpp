@@ -14,6 +14,8 @@
 		Windows Vista and later where the mixer model doesn't support separate volumes to different devices for the same process.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #ifdef _WIN32
 #include "../derma/d_native.h"
 

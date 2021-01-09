@@ -11,65 +11,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-namespace cudadoom
-{
-	namespace d
-	{
-	}
-
-	namespace deh
-	{
-	}
-
-	namespace f
-	{
-	}
-
-	namespace g
-	{
-	}
-
-	namespace hu
-	{
-	}
-
-	namespace m
-	{
-	}
-
-	namespace midi
-	{
-	}
-
-	namespace opl
-	{
-	}
-
-	namespace pcsnd
-	{
-	}
-
-	namespace p
-	{
-	}
-
-	namespace r
-	{
-	}
-
-	namespace s
-	{
-	}
-
-	namespace st
-	{
-	}
-
-	namespace txt
-	{
-	}
-}
-
 namespace cudadoom::midi
 {
 	enum class PacketType;

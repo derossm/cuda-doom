@@ -11,6 +11,8 @@
 		Parses "Frame" sections in dehacked files
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "d_items.h"
 #include "info.h"

@@ -9,24 +9,18 @@
 \**********************************************************************************************************************************************/
 #pragma once
 // DECOUPLE
-#include "../derma/common.h"
-//////////
+//#include "../derma/common.h"
+#include "../derma/keybinds.h"
 
 #include "txt_common.h"
-
 #include "txt_widget.h"
+//#include "txt_strut.h"
+//#include "txt_separator.h"
 
-#include "txt_defines.h"
-#include "txt_main.h"
-#include "txt_io.h"
-#include "txt_gui.h"
-
-#include "txt_desktop.h"
-#include "txt_separator.h"
-#include "txt_strut.h"
-
-// DECOUPLE
-#include "../src/doomkeys.h"
+//#include "txt_main.h"
+//#include "txt_io.h"
+//#include "txt_gui.h"
+//#include "txt_desktop.h"
 
 //cudadoom::txt::Widget txt_table_overflow_right;
 //cudadoom::txt::Widget txt_table_overflow_down;

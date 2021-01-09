@@ -10,6 +10,8 @@
 	Functions for presenting the information captured from the statistics buffer to a file.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "d_player.h"
 #include "d_mode.h"
 #include "m_argv.h"
@@ -27,9 +29,7 @@ static const int doom2_par_times[]{
 };
 
 /* Player colors. */
-static std::string player_colors[]{
-	"Green", "Indigo", "Brown", "Red"
-};
+static std::string player_colors[]{ "Green", "Indigo", "Brown", "Red" };
 
 // Array of end-of-level statistics that have been captured.
 constexpr size_t MAX_CAPTURES{32};

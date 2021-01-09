@@ -15,6 +15,8 @@
 		Adapted from doomretro/src/r_data.c:97-209
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomtype.h"
 #include "doomstat.h"
 #include "r_data.h"

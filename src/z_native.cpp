@@ -13,6 +13,8 @@
 		This is an implementation of the zone memory API which uses native calls to malloc() and free().
 \**********************************************************************************************************************************************/
 /*
+#include <string>
+
 #include "z_zone.h"
 #include "i_system.h"
 #include "doomtype.h"

@@ -12,16 +12,16 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include <string>
+
 #include "../derma/common.h"
 
 #include "doomtype.h"
 #include "deh_str.h"
 #include "sha1.h"
 
-// These are the limits that dehacked uses (from dheinit.h in the dehacked
-// source). If these limits are exceeded, it does not generate an error, but
-// a warning is displayed.
-
+// These are the limits that dehacked uses (from dheinit.h in the dehacked source).
+// If these limits are exceeded, it does not generate an error, but a warning is displayed.
 constexpr size_t DEH_VANILLA_NUMSTATES{966};
 constexpr size_t DEH_VANILLA_NUMSFX{107};
 

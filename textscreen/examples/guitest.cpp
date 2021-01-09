@@ -11,6 +11,8 @@
 		Demonstrates all the main textscreen widgets in use and shows how a simple textscreen program can be written.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "../textscreen.h"
 
 enum

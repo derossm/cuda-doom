@@ -13,6 +13,8 @@
 		Auto-loading of (semi-)official PWAD expansions, i.e. Sigil, No Rest for the Living and The Master Levels
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomstat.h"
 #include "deh_str.h"
 #include "d_iwad.h"

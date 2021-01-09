@@ -11,13 +11,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "common.h"
+#include <concepts>
+#include <type_traits>
 
 namespace cudadoom
 {
 
 template<typename T, typename E>
-requires std::is_enum_v<E>
+	requires std::is_enum_v<E>
 class BitManipulator
 {
 private:

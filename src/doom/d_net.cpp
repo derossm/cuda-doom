@@ -40,8 +40,7 @@ static void PlayerQuitGame(Player* player)
 	player_num = player - players;
 
 	// Do this the same way as Vanilla Doom does, to allow dehacked replacements of this message
-	M_StringCopy(exitmsg, DEH_String("Player 1 left the game"),
-		sizeof(exitmsg));
+	M_StringCopy(exitmsg, DEH_String("Player 1 left the game"), sizeof(exitmsg));
 
 	exitmsg[7] += player_num;
 
@@ -75,12 +74,14 @@ static void RunTic(ticcmd_t* cmds, bool* ingame)
 
 	// check that there are players in the game. if not, we cannot run a tic.
 	if (advancedemo)
+	{
 		D_DoAdvanceDemo();
+	}
 
 	G_Ticker();
 }
 
-static loop_interface_t doom_loop_interface = {
+static loop_interface_t doom_loop_interface{
 	D_ProcessEvents,
 	G_BuildTiccmd,
 	RunTic,
@@ -106,8 +107,7 @@ static void LoadGameSettings(net_gamesettings* settings)
 
 	if (lowres_turn)
 	{
-		printf("NOTE: Turning resolution is reduced; this is probably "
-			"because there is a client recording a Vanilla demo.\n");
+		printf("NOTE: Turning resolution is reduced; this is probably because there is a client recording a Vanilla demo.\n");
 	}
 
 	for (i = 0; i < MAX_PLAYERS; ++i)
@@ -131,9 +131,7 @@ static void SaveGameSettings(net_gamesettings* settings)
 	settings->respawn_monsters = respawnparm;
 	settings->timelimit = timelimit;
 
-	settings->lowres_turn = (M_ParmExists("-record")
-		&& !M_ParmExists("-longtics"))
-		|| M_ParmExists("-shorttics");
+	settings->lowres_turn = (M_ParmExists("-record") && !M_ParmExists("-longtics")) || M_ParmExists("-shorttics");
 }
 
 static void InitConnectData(net_connect_data* connect_data)
@@ -209,11 +207,9 @@ void D_CheckNetGame()
 	D_StartNetGame(&settings, NULL);
 	LoadGameSettings(&settings);
 
-	DEH_printf("startskill %i deathmatch: %i startmap: %i startepisode: %i\n",
-		startskill, deathmatch, startmap, startepisode);
+	DEH_printf("startskill %i deathmatch: %i startmap: %i startepisode: %i\n", startskill, deathmatch, startmap, startepisode);
 
-	DEH_printf("player %i of %i (%i nodes)\n",
-		consoleplayer + 1, settings.num_players, settings.num_players);
+	DEH_printf("player %i of %i (%i nodes)\n", consoleplayer + 1, settings.num_players, settings.num_players);
 
 	// Show players here; the server might have specified a time limit
 	if (timelimit > 0 && deathmatch)
@@ -227,7 +223,9 @@ void D_CheckNetGame()
 		{
 			DEH_printf("Levels will end after %d minute", timelimit);
 			if (timelimit > 1)
+			{
 				printf("s");
+			}
 			printf(".\n");
 		}
 	}

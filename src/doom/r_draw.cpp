@@ -12,6 +12,8 @@
 		The actual span/column drawing functions. Here find the main potential for optimization, e.g. inline assembly, different algorithms.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomdef.h"
 #include "deh_main.h"
 #include "i_system.h"

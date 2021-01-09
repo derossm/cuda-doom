@@ -69,9 +69,6 @@ find_package(SDL2 2.0.0 REQUIRED)
 find_package(SDL2_mixer 2.0.0 REQUIRED)
 find_package(SDL2_net 2.0.0 REQUIRED)
 
-#include(CheckSymbolExists)
-#include(CheckIncludeFile)
-
 string(CONCAT WINDOWS_RC_VERSION "${PROJECT_VERSION_MAJOR}, " "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")
 
 # Without a hyphen. This is used for the bash-completion scripts.

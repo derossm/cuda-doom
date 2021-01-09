@@ -12,20 +12,19 @@
 \**********************************************************************************************************************************************/
 #pragma once
 // DECOUPLE FIXME
-#include "../derma/common.h"
-#include "../derma/d_native.h"
-//////////
+//#include "../derma/common.h"
+//#include "../derma/d_native.h"
+#include "../derma/keybinds.h"
+
+#include <string>
+
 #include "txt_common.h"
-
 #include "txt_widget.h"
-#include "txt_inputbox.h"
+//#include "txt_inputbox.h"
 
-#include "txt_main.h"
-#include "txt_io.h"
-#include "txt_gui.h"
-
-// DECOUPLE
-#include "doomkeys.h"
+//#include "txt_main.h"
+//#include "txt_io.h"
+//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -131,7 +130,7 @@ public:
 			return KeyPress(KEY_ENTER);
 		}
 /**/
-		return false
+		return false;
 			//if (!editing && !GetModifierState(ModifierType::alt) && evt.button == MOUSE_LEFT)
 			//{
 				//if (DoSelectFile())

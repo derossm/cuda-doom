@@ -12,6 +12,8 @@
 		Handling interactions (i.e., collisions).
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "doomdef.h"
 #include "dstrings.h"
 #include "sounds.h"

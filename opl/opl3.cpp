@@ -17,6 +17,13 @@
 	version: 1.8
 \**********************************************************************************************************************************************/
 
+#include <vector>
+
+#include <algorithm>
+#include <ranges>
+
+#include <../derma/enumbitset.h>
+
 #include "opl3.h"
 
 constexpr size_t RSM_FRAC{10};

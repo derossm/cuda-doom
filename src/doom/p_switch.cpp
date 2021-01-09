@@ -12,6 +12,8 @@
 		Switches, buttons. Two-state animation. Exits.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "i_system.h"
 #include "deh_main.h"
 #include "doomdef.h"

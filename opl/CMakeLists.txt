@@ -10,5 +10,6 @@ add_library(opl STATIC
 			ioperm_sys.cpp	ioperm_sys.h
 			opl3.cpp		opl3.h)
 
+set_target_properties(opl PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(opl INTERFACE "." PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(opl SDL2::mixer)

@@ -11,6 +11,8 @@
 		Querying servers to find their current status.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "i_system.h"
 #include "i_timer.h"
 #include "m_misc.h"

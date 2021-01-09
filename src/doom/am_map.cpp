@@ -991,8 +991,7 @@ void AM_Ticker()
 	{
 		mapcenter.x = m_x + m_w / 2;
 		mapcenter.y = m_y + m_h / 2;
-		// [crispy] keep the map static in overlay mode
-		// if not following the player
+		// [crispy] keep the map static in overlay mode if not following the player
 		if (!(!followplayer && crispy->automapoverlay))
 		{
 			mapangle = ANG90 - plr->angle;
@@ -1008,9 +1007,8 @@ void AM_clearFB(int color)
 
 // Automap clipping of lines.
 //
-// Based on Cohen-Sutherland clipping algorithm but with a slightly
-// faster reject and precalculated slopes. If the speed is needed,
-// use a hash algorithm to handle the common cases.
+// Based on Cohen-Sutherland clipping algorithm but with a slightly faster reject and precalculated slopes.
+// If the speed is needed, use a hash algorithm to handle the common cases.
 bool AM_clipMline(mline_t* ml, fline_t* fl)
 {
 	enum
@@ -1791,7 +1789,6 @@ void AM_drawPlayers()
 
 void AM_drawThings(int colors, int colorrange)
 {
-
 	for (auto i{0}; i < numsectors; ++i)
 	{
 		keycolor_t key;

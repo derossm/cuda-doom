@@ -11,6 +11,8 @@
 		Network packet manipulation (net_packet_t)
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "m_misc.h"
 #include "net_packet.h"
 #include "z_zone.h"

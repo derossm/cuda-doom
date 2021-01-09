@@ -11,6 +11,8 @@
 		Top-level dehacked definitions for Doom dehacked.
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "deh_defs.h"
 #include "deh_main.h"
 

@@ -10,6 +10,8 @@
 	Example program: desktop calculator
 \**********************************************************************************************************************************************/
 
+#include <string>
+
 #include "../textscreen.h"
 
 enum class operator_t
