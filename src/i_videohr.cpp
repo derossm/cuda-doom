@@ -29,7 +29,7 @@ constexpr size_t HR_SCREENHEIGHT{480};
 
 static SDL_Window* hr_screen = NULL;
 static SDL_Surface* hr_surface = NULL;
-static std::string window_title = "";
+static ::std::string window_title = "";
 
 bool I_SetVideoModeHR()
 {
@@ -58,7 +58,7 @@ bool I_SetVideoModeHR()
 	return true;
 }
 
-void I_SetWindowTitleHR(std::string title)
+void I_SetWindowTitleHR(::std::string title)
 {
 	window_title = title;
 }

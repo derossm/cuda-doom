@@ -47,7 +47,7 @@ extern int loopcount;
 
 // Lighting constants.
 // Now why not 32 levels here?
-// [crispy] parameterized for smooth diminishing lighting
+// parameterized for smooth diminishing lighting
 extern int LIGHTLEVELS;
 extern int LIGHTSEGSHIFT;
 extern int LIGHTBRIGHT;

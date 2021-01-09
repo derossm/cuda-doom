@@ -140,10 +140,10 @@ void A_PlaySound(MapObject* mo)
 	S_StartSound(mo->state->misc2 ? NULL : mo, mo->state->misc1);
 }
 
-// [crispy] this is pretty much the only action pointer that makes sense for both mobj and pspr states
+// this is pretty much the only action pointer that makes sense for both mobj and pspr states
 void A_RandomJump(MapObject* mo, Player* player, pspdef_t* psp)
 {
-	// [crispy] first, try to apply to pspr states
+	// first, try to apply to pspr states
 	if (player && psp)
 	{
 		if (Crispy_Random() < psp->state->misc2)
@@ -154,7 +154,7 @@ void A_RandomJump(MapObject* mo, Player* player, pspdef_t* psp)
 		}
 	}
 	else
-		// [crispy] second, apply to mobj states
+		// second, apply to mobj states
 		if (mo)
 		{
 			if (Crispy_Random() < mo->state->misc2)
@@ -206,13 +206,13 @@ void A_FireOldBFG(MapObject* mobj, Player* player, pspdef_t* psp)
 	int type = mobjtype_t::MT_PLASMA1;
 	extern void P_CheckMissileSpawn(MapObject * th);
 
-	if (!player) return; // [crispy] let pspr action pointers get called from mobj states
+	if (!player) return; // let pspr action pointers get called from mobj states
 
 	if (crispy->recoil && !(player->flags & mobjflag_e::MF_NOCLIP))
 		P_Thrust(player, ANG180 + player->angle,
 			512 * 20);//recoil_values[wp_plasma][0]);
 
-	player->ammo[std::size_t(weaponinfo[std::size_t(player->readyweapon)].ammo)]--;
+	player->ammo[::std::size_t(weaponinfo[::std::size_t(player->readyweapon)].ammo)]--;
 
 	player->extralight = 2;
 
@@ -264,7 +264,7 @@ void A_FireOldBFG(MapObject* mobj, Player* player, pspdef_t* psp)
 			}
 		}
 
-		th = P_SpawnMobj(mo->x, mo->y, mo->z + 62 * FRACUNIT - player->psprites[std::size_t(psprnum_t::ps_weapon)].sy, type);
+		th = P_SpawnMobj(mo->x, mo->y, mo->z + 62 * FRACUNIT - player->psprites[::std::size_t(psprnum_t::ps_weapon)].sy, type);
 		th->target = mo; // P_SetTarget(&th->target, mo);
 		th->angle = an1;
 		th->momx = finecosine[an1 >> ANGLETOFINESHIFT] * 25;

@@ -33,19 +33,19 @@ bool savegame_error;
 static int restoretargets_fail;
 
 // Get the filename of a temporary file to write the savegame to. After the file has been successfully saved, it will be renamed to the real file.
-std::string P_TempSaveGameFile()
+::std::string P_TempSaveGameFile()
 {
-	return std::string(savegamedir + "temp.dsg");
+	return ::std::string(savegamedir + "temp.dsg");
 }
 
 // Get the filename of the save game file to use for the specified slot.
-std::string P_SaveGameFile(int slot)
+::std::string P_SaveGameFile(int slot)
 {
 	//static size_t filename_size = 0;
 	//char basename[32];
 
 	// FIXME
-	std::string filename;
+	::std::string filename;
 	//DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);
 	//M_snprintf(filename, filename_size, "%s%s", savegamedir, basename);
 
@@ -245,7 +245,7 @@ static void saveg_read_mobj_t(MapObject* str)
 		// FIXME
 		//str->player = &players[pl - 1];
 		//str->player = str;
-		//str->player->so = Crispy_PlayerSO(pl - 1); // [crispy] weapon sound sources
+		//str->player->so = Crispy_PlayerSO(pl - 1); // weapon sound sources
 	}
 	else
 	{
@@ -759,7 +759,7 @@ static void saveg_write_glow_t(glow_t* str)
 	saveg_write32(str->direction);
 }
 
-void P_WriteSaveGameHeader(std::string description)
+void P_WriteSaveGameHeader(::std::string description)
 {
 	char name[VERSIONSIZE];
 
@@ -1052,7 +1052,7 @@ void P_UnArchiveThinkers()
 			//mobj->target = NULL;
 			//mobj->tracer = NULL;
 			P_SetThingPosition(mobj);
-			mobj->info = &mobjinfo[std::size_t(mobj->type)];
+			mobj->info = &mobjinfo[::std::size_t(mobj->type)];
 			// Fix for falling down into a wall after savegame loaded
 			//mobj->floorz = mobj->subsector->sector->floorheight;
 			//mobj->ceilingz = mobj->subsector->sector->ceilingheight;
@@ -1135,7 +1135,7 @@ void P_ArchiveSpecials()
 				saveg_write_pad();
 				saveg_write_ceiling_t((ceiling_t*)th);
 			}
-			// [crispy] save plats in statis
+			// save plats in statis
 			for (i = 0; i < MAXPLATS; ++i)
 			{
 				if (activeplats[i] == (plat_t*)th)

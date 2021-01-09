@@ -20,7 +20,7 @@
 #include "deh_io.h"
 #include "deh_main.h"
 
-// [crispy] support INCLUDE NOTEXT directive in BEX files
+// support INCLUDE NOTEXT directive in BEX files
 bool bex_notext = false;
 
 // Given a string length, find the maximum length of a
@@ -43,10 +43,10 @@ static int cudadoom::txt::MaxStringLength(int len)
 	return len - 1;
 }
 
-static void* DEH_TextStart(deh_context_t* context, std::string line)
+static void* DEH_TextStart(deh_context_t* context, ::std::string line)
 {
-	std::string from_text;
-	std::string to_text;
+	::std::string from_text;
+	::std::string to_text;
 	int fromlen;
 	int tolen;
 	int i;
@@ -93,7 +93,7 @@ static void* DEH_TextStart(deh_context_t* context, std::string line)
 	return nullptr;
 }
 
-static void DEH_TextParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_TextParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
 	// not used
 }

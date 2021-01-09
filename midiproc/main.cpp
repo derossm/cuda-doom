@@ -88,7 +88,7 @@ static void ShutdownSDL()
 
 //=============================================================================
 // SDL_mixer Interface
-static bool RegisterSong(std::string& filename)
+static bool RegisterSong(::std::string& filename)
 {
 	music = Mix_LoadMUS(filename.c_str());
 

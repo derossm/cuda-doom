@@ -54,7 +54,7 @@ int M_Random()
 	return rndtable[rndindex];
 }
 
-// [crispy] our own private random function
+// our own private random function
 int Crispy_Random()
 {
 	crndindex = (crndindex + 1) & 0xff;

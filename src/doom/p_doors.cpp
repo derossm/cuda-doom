@@ -103,7 +103,7 @@ void T_VerticalDoor(vldoor_t* door)
 			case vldoor_e::vld_blazeClose:
 				door->sector->specialdata = NULL;
 				P_RemoveThinker(&door->thinker); // unlink and free
-				// [crispy] fix "fast doors make two closing sounds"
+				// fix "fast doors make two closing sounds"
 				if (!crispy->soundfix)
 				{
 					S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_bdcls);
@@ -197,37 +197,37 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, MapObject* thing)
 	{
 	case 99:	// Blue Lock
 	case 133:
-		if (!p->cards[std::size_t(CardType::it_bluecard)] && !p->cards[std::size_t(CardType::it_blueskull)])
+		if (!p->cards[::std::size_t(CardType::it_bluecard)] && !p->cards[::std::size_t(CardType::it_blueskull)])
 		{
 			p->message = DEH_String(PD_BLUEO);
 			S_StartSound(crispy->soundfix ? p : NULL, sfxenum_t::sfx_oof);
-			// [crispy] blinking key or skull in the status bar
-			p->tryopen[std::size_t(CardType::it_bluecard)] = KEYBLINKTICS;
+			// blinking key or skull in the status bar
+			p->tryopen[::std::size_t(CardType::it_bluecard)] = KEYBLINKTICS;
 			return 0;
 		}
 		break;
 
 	case 134: // Red Lock
 	case 135:
-		if (!p->cards[std::size_t(CardType::it_redcard)] && !p->cards[std::size_t(CardType::it_redskull)])
+		if (!p->cards[::std::size_t(CardType::it_redcard)] && !p->cards[::std::size_t(CardType::it_redskull)])
 		{
 			p->message = DEH_String(PD_REDO);
 			S_StartSound(crispy->soundfix ? p : NULL, sfxenum_t::sfx_oof);
-			// [crispy] blinking key or skull in the status bar
-			p->tryopen[std::size_t(CardType::it_redcard)] = KEYBLINKTICS;
+			// blinking key or skull in the status bar
+			p->tryopen[::std::size_t(CardType::it_redcard)] = KEYBLINKTICS;
 			return 0;
 		}
 		break;
 
 	case 136:	// Yellow Lock
 	case 137:
-		if (!p->cards[std::size_t(CardType::it_yellowcard)] &&
-			!p->cards[std::size_t(CardType::it_yellowskull)])
+		if (!p->cards[::std::size_t(CardType::it_yellowcard)] &&
+			!p->cards[::std::size_t(CardType::it_yellowskull)])
 		{
 			p->message = DEH_String(PD_YELLOWO);
 			S_StartSound(crispy->soundfix ? p : NULL, sfxenum_t::sfx_oof);
-			// [crispy] blinking key or skull in the status bar
-			p->tryopen[std::size_t(CardType::it_yellowcard)] = KEYBLINKTICS;
+			// blinking key or skull in the status bar
+			p->tryopen[::std::size_t(CardType::it_yellowcard)] = KEYBLINKTICS;
 			return 0;
 		}
 		break;
@@ -271,7 +271,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 			door->topheight -= 4 * FRACUNIT;
 			door->direction = -1;
 			door->speed = VDOORSPEED * 4;
-			// [crispy] fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
+			// fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
 			if (door->sector->ceilingheight - door->sector->floorheight > 0 || !crispy->soundfix)
 				S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_bdcls);
 			break;
@@ -280,7 +280,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 			door->topheight = P_FindLowestCeilingSurrounding(sec);
 			door->topheight -= 4 * FRACUNIT;
 			door->direction = -1;
-			// [crispy] fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
+			// fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
 			if (door->sector->ceilingheight - door->sector->floorheight > 0 || !crispy->soundfix)
 				S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_dorcls);
 			break;
@@ -288,7 +288,7 @@ int EV_DoDoor(line_t* line, vldoor_e type)
 		case vldoor_e::vld_close30ThenOpen:
 			door->topheight = sec->ceilingheight;
 			door->direction = -1;
-			// [crispy] fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
+			// fix door-closing sound playing, even when door is already closed (repeatable walkover trigger)
 			if (door->sector->ceilingheight - door->sector->floorheight > 0 || !crispy->soundfix)
 				S_StartSound(&door->sector->soundorg, sfxenum_t::sfx_dorcls);
 			break;
@@ -340,12 +340,12 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 		if (!player)
 			return;
 
-		if (!player->cards[std::size_t(CardType::it_bluecard)] && !player->cards[std::size_t(CardType::it_blueskull)])
+		if (!player->cards[::std::size_t(CardType::it_bluecard)] && !player->cards[::std::size_t(CardType::it_blueskull)])
 		{
 			player->message = DEH_String(PD_BLUEK);
 			S_StartSound(crispy->soundfix ? player : NULL, sfxenum_t::sfx_oof);
-			// [crispy] blinking key or skull in the status bar
-			player->tryopen[std::size_t(CardType::it_bluecard)] = KEYBLINKTICS;
+			// blinking key or skull in the status bar
+			player->tryopen[::std::size_t(CardType::it_bluecard)] = KEYBLINKTICS;
 			return;
 		}
 		break;
@@ -355,13 +355,13 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 		if (!player)
 			return;
 
-		if (!player->cards[std::size_t(CardType::it_yellowcard)] &&
-			!player->cards[std::size_t(CardType::it_yellowskull)])
+		if (!player->cards[::std::size_t(CardType::it_yellowcard)] &&
+			!player->cards[::std::size_t(CardType::it_yellowskull)])
 		{
 			player->message = DEH_String(PD_YELLOWK);
 			S_StartSound(crispy->soundfix ? player : NULL, sfxenum_t::sfx_oof);
-			// [crispy] blinking key or skull in the status bar
-			player->tryopen[std::size_t(CardType::it_yellowcard)] = KEYBLINKTICS;
+			// blinking key or skull in the status bar
+			player->tryopen[::std::size_t(CardType::it_yellowcard)] = KEYBLINKTICS;
 			return;
 		}
 		break;
@@ -371,12 +371,12 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 		if (!player)
 			return;
 
-		if (!player->cards[std::size_t(CardType::it_redcard)] && !player->cards[std::size_t(CardType::it_redskull)])
+		if (!player->cards[::std::size_t(CardType::it_redcard)] && !player->cards[::std::size_t(CardType::it_redskull)])
 		{
 			player->message = DEH_String(PD_REDK);
 			S_StartSound(crispy->soundfix ? player : NULL, sfxenum_t::sfx_oof);
-			// [crispy] blinking key or skull in the status bar
-			player->tryopen[std::size_t(CardType::it_redcard)] = KEYBLINKTICS;
+			// blinking key or skull in the status bar
+			player->tryopen[::std::size_t(CardType::it_redcard)] = KEYBLINKTICS;
 			return;
 		}
 		break;
@@ -386,7 +386,7 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 
 	if (line->sidenum[side ^ 1] == NO_INDEX)
 	{
-		// [crispy] do not crash if the wrong side of the door is pushed
+		// do not crash if the wrong side of the door is pushed
 		fprintf(stderr, "EV_VerticalDoor: DR special type on 1-sided linedef\n");
 		return;
 	}
@@ -406,7 +406,7 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 			if (door->direction == -1)
 			{
 				door->direction = 1;	// go back up
-				// [crispy] play sound effect when the door is opened again while going down
+				// play sound effect when the door is opened again while going down
 				if (crispy->soundfix && door->thinker.function.acp1 == (actionf_p1)T_VerticalDoor)
 					S_StartSound(&door->sector->soundorg, line->special == 117 ? sfxenum_t::sfx_bdopn : sfxenum_t::sfx_doropn);
 			}
@@ -422,7 +422,7 @@ void EV_VerticalDoor(line_t* line, MapObject* thing)
 				if (door->thinker.function.acp1 == (actionf_p1)T_VerticalDoor)
 				{
 					door->direction = -1;	// start going down immediately
-					// [crispy] play sound effect when the door is closed manually
+					// play sound effect when the door is closed manually
 					if (crispy->soundfix)
 						S_StartSound(&door->sector->soundorg, line->special == 117 ? sfxenum_t::sfx_bdcls : sfxenum_t::sfx_dorcls);
 				}

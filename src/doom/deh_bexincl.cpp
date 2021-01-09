@@ -21,7 +21,7 @@
 
 static bool bex_nested = false;
 
-static void DEH_BEXInclStart(deh_context_t* context, std::string line)
+static void DEH_BEXInclStart(deh_context_t* context, ::std::string line)
 {
 	extern bool bex_notext;
 
@@ -31,7 +31,7 @@ static void DEH_BEXInclStart(deh_context_t* context, std::string line)
 		return;
 	}
 
-	std::string deh_file = DEH_FileName(context);
+	::std::string deh_file = DEH_FileName(context);
 
 	if (bex_nested)
 	{
@@ -39,7 +39,7 @@ static void DEH_BEXInclStart(deh_context_t* context, std::string line)
 		return;
 	}
 
-	std::string inc_file = static_cast<decltype(inc_file)>(malloc(strlen(line) + 1));
+	::std::string inc_file = static_cast<decltype(inc_file)>(malloc(strlen(line) + 1));
 
 	if (sscanf(line, "INCLUDE NOTEXT %32s", inc_file) == 1)
 	{
@@ -56,13 +56,13 @@ static void DEH_BEXInclStart(deh_context_t* context, std::string line)
 	}
 
 	// first, try loading the file right away
-	std::string try_path = inc_file;
+	::std::string try_path = inc_file;
 
 	if (!M_FileExists(try_path))
 	{
 		// second, try loading the file in the directory of the current file
-		std::string dir = M_DirName(deh_file);
-		try_path = std::string(dir + DIR_SEPARATOR_S + inc_file);
+		::std::string dir = M_DirName(deh_file);
+		try_path = ::std::string(dir + DIR_SEPARATOR_S + inc_file);
 	}
 
 	bex_nested = true;
@@ -79,7 +79,7 @@ static void DEH_BEXInclStart(deh_context_t* context, std::string line)
 }
 
 [[deprecated]]
-static void DEH_BEXInclParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_BEXInclParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
 	// not used
 }

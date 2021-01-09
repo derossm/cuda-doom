@@ -74,13 +74,13 @@ struct net_module_t
 	bool (*RecvPacket)(net_addr_t** addr, net_packet_t** packet);
 
 	// Converts an address to a string
-	void (*AddrToString)(net_addr_t* addr, std::string buffer, int buffer_len);
+	void (*AddrToString)(net_addr_t* addr, ::std::string buffer, int buffer_len);
 
 	// Free back an address when no longer in use
 	void (*FreeAddress)(net_addr_t* addr);
 
 	// Try to resolve a name to an address
-	net_addr_t* (*ResolveAddress)(std::string addr);
+	net_addr_t* (*ResolveAddress)(::std::string addr);
 };
 
 // Magic number sent when connecting to check this is a valid client
@@ -226,13 +226,13 @@ struct net_full_ticcmd_t
 // Data sent in response to server queries
 struct net_querydata_t
 {
-	std::string version;
+	::std::string version;
 	int server_state;
 	int num_players;
 	int max_players;
 	GameMode gamemode;
 	GameMission gamemission;
-	std::string description;
+	::std::string description;
 	net_protocol_t protocol;
 };
 

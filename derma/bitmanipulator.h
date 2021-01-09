@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************\
-	Copyright(C) 2020 Mason DeRoss
+	Copyright© 2020-2021 Mason DeRoss
 
 	Released under the GNU All-permissive License
 
@@ -18,7 +18,7 @@ namespace cudadoom
 {
 
 template<typename T, typename E>
-	requires std::is_enum_v<E>
+	//requires ::std::is_enum_v<E>
 class BitManipulator
 {
 private:
@@ -52,8 +52,8 @@ public:
 
 	BitManipulator<T, E>& operator=(const T& other)
 	{
-		if constexpr (std::is_class<T>::value == true)
-		{	if constexpr (std::is_base_of_v<StrongType<T,U>, T>::value == true)
+		if constexpr (::std::is_class<T>::value == true)
+		{	if constexpr (::std::is_base_of_v<StrongType<T,U>, T>::value == true)
 			{
 				if (this != &other)
 				{
@@ -92,12 +92,9 @@ inline bool operator<=(const E& lhs, const BitManipulator<T, E>& rhs) noexcept {
 template<typename T, typename E>
 inline bool operator>=(const E& lhs, const BitManipulator<T, E>& rhs) noexcept { return (lhs >= rhs.value) >= 0; }
 
-} // end namespace cudadoom
-
-
 /*
 template<typename T, typename E>
-requires std::is_enum_v<E>
+requires ::std::is_enum_v<E>
 class Index
 {
 private:
@@ -122,8 +119,8 @@ public:
 	inline bool operator<=(const E& rhs) const noexcept { return (value <= rhs) <= 0; }
 	inline bool operator>=(const E& rhs) const noexcept { return (value >= rhs) >= 0; }
 
-	T& operator[](std::ptrdiff_t rhs) { return static_cast<T>(value); }
-	T& operator[](std::ptrdiff_t lhs, Index<T, E>* rhs) { return static_cast<T>(this->value); }
+	T& operator[](::std::ptrdiff_t rhs) { return static_cast<T>(value); }
+	T& operator[](::std::ptrdiff_t lhs, Index<T, E>* rhs) { return static_cast<T>(this->value); }
 
 	friend inline bool operator==(const E& lhs, const Index<T, E>& rhs) noexcept;
 	friend inline bool operator!=(const E& lhs, const Index<T, E>& rhs) noexcept;
@@ -134,8 +131,8 @@ public:
 
 	Index<T, E>& operator=(const T& other)
 	{
-		if constexpr (std::is_class<T>::value == true)
-		{	//if constexpr (std::is_base_of_v<Index<T,E>, T>::value == true)
+		if constexpr (::std::is_class<T>::value == true)
+		{	//if constexpr (::std::is_base_of_v<Index<T,E>, T>::value == true)
 			//{
 				if (this != &other)
 				{
@@ -174,4 +171,6 @@ inline bool operator<=(const E& lhs, const Index<T, E>& rhs) noexcept { return (
 template<typename T, typename E>
 inline bool operator>=(const E& lhs, const Index<T, E>& rhs) noexcept { return (lhs >= rhs.value) >= 0; }
 
- */
+*/
+
+} // end namespace cudadoom

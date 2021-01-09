@@ -29,12 +29,12 @@
 static int usemouse = 1;
 
 static int mouseSensitivity = 5;
-static int mouseSensitivity_x2 = 5; // [crispy]
+static int mouseSensitivity_x2 = 5;
 static float mouse_acceleration = 2.0;
 static int mouse_threshold = 10;
-static int mouseSensitivity_y = 5; // [crispy]
-static float mouse_acceleration_y = 1.0; // [crispy]
-static int mouse_threshold_y = 0; // [crispy]
+static int mouseSensitivity_y = 5;
+static float mouse_acceleration_y = 1.0;
+static int mouse_threshold_y = 0;
 static int grabmouse = 1;
 
 int novert = 1;
@@ -50,8 +50,8 @@ static int* all_mouse_buttons[] = {
 	&mousebjump,
 	&mousebprevweapon,
 	&mousebnextweapon,
-	&mousebmouselook, // [crispy]
-	&mousebreverse, // [crispy]
+	&mousebmouselook,
+	&mousebreverse,
 	&mousebinvleft,
 	&mousebinvright
 };
@@ -74,7 +74,7 @@ static void MouseSetCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::U
 	}
 }
 
-static void AddMouseControl(cudadoom::txt::UNCAST_ARG(table), std::string label, int* var)
+static void AddMouseControl(cudadoom::txt::UNCAST_ARG(table), ::std::string label, int* var)
 {
 	cudadoom::txt::CAST_ARG(cudadoom::txt::txt_table_t, table);
 	cudadoom::txt::txt_mouse_input_t* mouse_input;
@@ -121,7 +121,7 @@ static void ConfigExtraButtons(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt:
 		AddMouseControl(buttons_table, "Jump", &mousebjump);
 	}
 
-	if (gamemission == doom) // [crispy]
+	if (gamemission == doom)
 	{
 		AddMouseControl(buttons_table, "Quick Reverse", &mousebreverse);
 		AddMouseControl(buttons_table, "Mouse Look [*]", &mousebmouselook);
@@ -140,7 +140,7 @@ void ConfigMouse(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 	cudadoom::txt::SetWindowAction(window, cudadoom::txt::HORIZ_CENTER, TestConfigAction());
 	cudadoom::txt::SetWindowHelpURL(window, WINDOW_HELP_URL);
 
-	if (gamemission == doom) // [crispy]
+	if (gamemission == doom)
 	{
 		cudadoom::txt::AddWidgets(window,
 			cudadoom::txt::NewCheckBox("Enable mouse", &usemouse),
@@ -157,15 +157,15 @@ void ConfigMouse(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 
 			cudadoom::txt::NewSeparator("Mouse motion"),
 			cudadoom::txt::NewLabel("Speed (h/turn)"),
-			cudadoom::txt::NewSpinControl(&mouseSensitivity, 0, 255), // [crispy] extended range
+			cudadoom::txt::NewSpinControl(&mouseSensitivity, 0, 255), // extended range
 			cudadoom::txt::NewLabel("Speed (h/strafe)"),
-			cudadoom::txt::NewSpinControl(&mouseSensitivity_x2, 0, 255), // [crispy] extended range
+			cudadoom::txt::NewSpinControl(&mouseSensitivity_x2, 0, 255), // extended range
 			cudadoom::txt::NewLabel("Acceleration (h)"),
 			cudadoom::txt::NewFloatSpinControl(&mouse_acceleration, 1.0, 5.0),
 			cudadoom::txt::NewLabel("Acceleration threshold (h)"),
 			cudadoom::txt::NewSpinControl(&mouse_threshold, 0, 32),
 			cudadoom::txt::NewLabel("Speed (v)"),
-			cudadoom::txt::NewSpinControl(&mouseSensitivity_y, 0, 255), // [crispy] extended range
+			cudadoom::txt::NewSpinControl(&mouseSensitivity_y, 0, 255), // extended range
 			cudadoom::txt::NewLabel("Acceleration (v)"),
 			cudadoom::txt::NewFloatSpinControl(&mouse_acceleration_y, 1.0, 5.0),
 			cudadoom::txt::NewLabel("Acceleration threshold (v)"),
@@ -216,7 +216,7 @@ void BindMouseVariables()
 	M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
 	M_BindIntVariable("mouse_threshold", &mouse_threshold);
 	M_BindFloatVariable("mouse_acceleration", &mouse_acceleration);
-	if (gamemission == doom) // [crispy]
+	if (gamemission == doom)
 	{
 		M_BindIntVariable("mouse_sensitivity_x2", &mouseSensitivity_x2);
 		M_BindIntVariable("mouse_sensitivity_y", &mouseSensitivity_y);

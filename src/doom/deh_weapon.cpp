@@ -30,7 +30,7 @@ DEH_MAPPING("Shooting frame", atkstate)
 DEH_MAPPING("Firing frame", flashstate)
 DEH_END_MAPPING
 
-static void* DEH_WeaponStart(deh_context_t* context, std::string line)
+static void* DEH_WeaponStart(deh_context_t* context, ::std::string line)
 {
 	int weapon_number = 0;
 
@@ -49,10 +49,10 @@ static void* DEH_WeaponStart(deh_context_t* context, std::string line)
 	return &weaponinfo[weapon_number];
 }
 
-static void DEH_WeaponParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_WeaponParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
-	std::string variable_name;
-	std::string value;
+	::std::string variable_name;
+	::std::string value;
 	weaponinfo_t* weapon;
 	int ivalue;
 
@@ -76,7 +76,7 @@ static void DEH_WeaponParseLine(deh_context_t* context, std::string line, void* 
 
 static void DEH_WeaponSHA1Sum(sha1_context_t* context)
 {
-	for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
+	for (size_t i{0}; i < ::std::size_t(WeaponType::NUMWEAPONS); ++i)
 	{
 		DEH_StructSHA1Sum(context, &weapon_mapping, &weaponinfo[i]);
 	}

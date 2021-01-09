@@ -453,7 +453,7 @@ bool mus2mid(MEMFILE* musinput, MEMFILE* midioutput)
 		return true;
 	}
 
-	// [crispy] enable MUS format header check
+	// enable MUS format header check
 #define CHECK_MUS_HEADER
 #ifdef CHECK_MUS_HEADER
 	// Check MUS header

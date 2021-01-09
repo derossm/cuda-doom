@@ -94,11 +94,11 @@ enum class buttoncode
 	BTS_SAVEMASK = (4+8+16),
 	BTS_SAVESHIFT = 2,
 
-	// [crispy] demo joined.
+	// demo joined.
 	BT_JOIN = 64
 };
 
-// [STRIFE] Strife specific buttons
+// Strife specific buttons
 // TODO - not finished
 enum class buttoncode2_t
 {

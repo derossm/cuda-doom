@@ -24,9 +24,9 @@
 
 #include "doomstat.h"
 
-#include "v_trans.h" // [crispy] colored blood sprites
-#include "p_local.h" // [crispy] MLOOKUNIT
-#include "r_bmaps.h" // [crispy] R_BrightmapForTexName()
+#include "v_trans.h" // colored blood sprites
+#include "p_local.h" // MLOOKUNIT
+#include "r_bmaps.h" // R_BrightmapForTexName()
 
 constexpr size_t MINZ{(FRACUNIT * 4)};
 constexpr size_t BASEYCENTER{(ORIGHEIGHT / 2)};
@@ -47,7 +47,7 @@ struct maskdraw_t
 static degenmobj_t laserspot_m = {{0}};
 degenmobj_t* laserspot = &laserspot_m;
 
-// [crispy] extendable, but the last char element must be zero,
+// extendable, but the last char element must be zero,
 // keep in sync with multiitem_t multiitem_crosshairtype[] in m_menu.c
 static laserpatch_t laserpatch_m[] = {
 	{'+', "cross1", 0, 0, 0},
@@ -71,8 +71,8 @@ lighttable_t** spritelights;
 
 // constant arrays
 // used for psprite clipping and initializing clipping
-int negonearray[MAXWIDTH]; // [crispy] 32-bit integer math
-int screenheightarray[MAXWIDTH]; // [crispy] 32-bit integer math
+int negonearray[MAXWIDTH]; // 32-bit integer math
+int screenheightarray[MAXWIDTH]; // 32-bit integer math
 
 //
 // INITIALIZATION FUNCTIONS
@@ -91,10 +91,10 @@ const char* spritename;
 void R_InstallSpriteLump(int lump, unsigned frame, char rot, bool flipped)
 {
 	int r;
-	// [crispy] support 16 sprite rotations
+	// support 16 sprite rotations
 	unsigned rotation = (rot >= 'A') ? rot - 'A' + 10 : (rot >= '0') ? rot - '0' : 17;
 
-	if (frame >= 29 || rotation > 16) // [crispy] support 16 sprite rotations
+	if (frame >= 29 || rotation > 16) // support 16 sprite rotations
 		I_Error("R_InstallSpriteLump: Bad frame characters in lump %i", lump);
 
 	if ((int)frame > maxframe)
@@ -103,24 +103,24 @@ void R_InstallSpriteLump(int lump, unsigned frame, char rot, bool flipped)
 	if (rotation == 0)
 	{
 		// the lump should be used for all rotations
-		// [crispy] make non-fatal
+		// make non-fatal
 		if (sprtemp[frame].rotate == false)
 			fprintf(stderr, "R_InitSprites: Sprite %s frame %c has multip rot=0 lump\n", spritename, 'A' + frame);
 
-		// [crispy] make non-fatal
+		// make non-fatal
 		if (sprtemp[frame].rotate == true)
 			fprintf(stderr, "R_InitSprites: Sprite %s frame %c has rotations and a rot=0 lump\n", spritename, 'A' + frame);
 
-		// [crispy] moved ...
+		// moved ...
 		//	sprtemp[frame].rotate = false;
 		for (r = 0; r < 8; ++r)
 		{
-			// [crispy] only if not yet substituted
+			// only if not yet substituted
 			if (sprtemp[frame].lump[r] == -1)
 			{
 				sprtemp[frame].lump[r] = lump - firstspritelump;
 				sprtemp[frame].flip[r] = (byte)flipped;
-				// [crispy] ... here
+				// ... here
 				sprtemp[frame].rotate = false;
 			}
 		}
@@ -128,25 +128,25 @@ void R_InstallSpriteLump(int lump, unsigned frame, char rot, bool flipped)
 	}
 
 	// the lump is only used for one rotation
-	// [crispy] make non-fatal
+	// make non-fatal
 	if (sprtemp[frame].rotate == false)
 		fprintf(stderr, "R_InitSprites: Sprite %s frame %c has rotations and a rot=0 lump\n", spritename, 'A' + frame);
 
-	// [crispy] moved ...
+	// moved ...
 	//	sprtemp[frame].rotate = true;
 
 	// make 0 based
 	--rotation;
 	if (sprtemp[frame].lump[rotation] != -1)
 	{
-		// [crispy] make non-fatal
+		// make non-fatal
 		fprintf(stderr, "R_InitSprites: Sprite %s : %c : %c has two lumps mapped to it\n", spritename, 'A' + frame, '1' + rotation);
 		return;
 	}
 
 	sprtemp[frame].lump[rotation] = lump - firstspritelump;
 	sprtemp[frame].flip[rotation] = (byte)flipped;
-	// [crispy] ... here
+	// ... here
 	sprtemp[frame].rotate = true;
 }
 
@@ -240,7 +240,7 @@ void R_InitSpriteDefs(CHAR_PTR* namelist)
 			{
 			case -1:
 				// no rotations were found for that frame at all
-				// [crispy] make non-fatal
+				// make non-fatal
 				fprintf(stderr, "R_InitSprites: No patches found for %s frame %c\n", spritename, frame + 'A');
 				break;
 
@@ -254,7 +254,7 @@ void R_InitSpriteDefs(CHAR_PTR* namelist)
 					if (sprtemp[frame].lump[rotation] == -1)
 						I_Error("R_InitSprites: Sprite %s frame %c is missing rotations", spritename, frame + 'A');
 
-				// [crispy] support 16 sprite rotations
+				// support 16 sprite rotations
 				sprtemp[frame].rotate = 2;
 				for (; rotation < 16; ++rotation)
 					if (sprtemp[frame].lump[rotation] == -1)
@@ -305,13 +305,13 @@ vissprite_t overflowsprite;
 
 vissprite_t* R_NewVisSprite()
 {
-	// [crispy] remove MAXVISSPRITE Vanilla limit
+	// remove MAXVISSPRITE Vanilla limit
 	if (vissprite_p == &vissprites[numvissprites])
 	{
 		static int max;
 		int numvissprites_old = numvissprites;
 
-		// [crispy] cap MAXVISSPRITES limit at 4096
+		// cap MAXVISSPRITES limit at 4096
 		if (!max && numvissprites == 32 * MAXVISSPRITES)
 		{
 			fprintf(stderr, "R_NewVisSprite: MAXVISSPRITES limit capped at %d.\n", numvissprites);
@@ -340,25 +340,25 @@ vissprite_t* R_NewVisSprite()
 // Masked means: partly transparent, i.e. stored
 // in posts/runs of opaque pixels.
 //
-int* mfloorclip; // [crispy] 32-bit integer math
-int* mceilingclip; // [crispy] 32-bit integer math
+int* mfloorclip; // 32-bit integer math
+int* mceilingclip; // 32-bit integer math
 
 fixed_t spryscale;
-int64_t sprtopscreen; // [crispy] WiggleFix
+int64_t sprtopscreen; // WiggleFix
 
 void R_DrawMaskedColumn(column_t* column)
 {
-	int64_t topscreen; // [crispy] WiggleFix
-	int64_t bottomscreen; // [crispy] WiggleFix
+	int64_t topscreen; // WiggleFix
+	int64_t bottomscreen; // WiggleFix
 	fixed_t basetexturemid;
 	int top = -1;
 
 	basetexturemid = dc_texturemid;
-	dc_texheight = 0; // [crispy] Tutti-Frutti fix
+	dc_texheight = 0; // Tutti-Frutti fix
 
 	for (; column->topdelta != 0xff; )
 	{
-		// [crispy] support for DeePsea tall patches
+		// support for DeePsea tall patches
 		if (column->topdelta <= top)
 		{
 			top += column->topdelta;
@@ -372,8 +372,8 @@ void R_DrawMaskedColumn(column_t* column)
 		topscreen = sprtopscreen + spryscale * top;
 		bottomscreen = topscreen + spryscale * column->length;
 
-		dc_yl = (int)((topscreen + FRACUNIT - 1) >> FRACBITS); // [crispy] WiggleFix
-		dc_yh = (int)((bottomscreen - 1) >> FRACBITS); // [crispy] WiggleFix
+		dc_yl = (int)((topscreen + FRACUNIT - 1) >> FRACBITS); // WiggleFix
+		dc_yh = (int)((bottomscreen - 1) >> FRACBITS); // WiggleFix
 
 		if (dc_yh >= mfloorclip[dc_x])
 			dc_yh = mfloorclip[dc_x] - 1;
@@ -406,7 +406,7 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 
 	patch = W_CacheLumpNum<patch_t>(vis->patch + firstspritelump, pu_tags_t::PU_CACHE);
 
-	// [crispy] brightmaps for select sprites
+	// brightmaps for select sprites
 	dc_colormap[0] = vis->colormap[0];
 	dc_colormap[1] = vis->colormap[1];
 	dc_brightmap = vis->brightmap;
@@ -421,13 +421,13 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 		colfunc = transcolfunc;
 		dc_translation = translationtables - 256 + ((vis->mobjflags & mobjflag_e::MF_TRANSLATION) >> (mobjflag_e::MF_TRANSSHIFT - 8));
 	}
-	// [crispy] color-translated sprites (i.e. blood)
+	// color-translated sprites (i.e. blood)
 	else if (vis->translation)
 	{
 		colfunc = transcolfunc;
 		dc_translation = vis->translation;
 	}
-	// [crispy] translucent sprites
+	// translucent sprites
 	else if (crispy->translucency && vis->mobjflags & mobjflag_e::MF_TRANSLUCENT)
 	{
 		if (!(vis->mobjflags & (mobjflag_e::MF_NOGRAVITY | mobjflag_e::MF_COUNTITEM)) ||
@@ -454,7 +454,7 @@ void R_DrawVisSprite(vissprite_t* vis, int x1, int x2)
 #ifdef RANGECHECK
 		if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
 		{
-			// [crispy] make non-fatal
+			// make non-fatal
 			if (!error)
 			{
 				fprintf(stderr, "R_DrawSpriteRange: bad texturecolumn\n");
@@ -565,8 +565,8 @@ void R_ProjectSprite(MapObject* thing)
 		I_Error("R_ProjectSprite: invalid sprite number %i ",
 			thing->sprite);
 #endif
-	sprdef = &sprites[std::size_t(thing->sprite)];
-	// [crispy] the TNT1 sprite is not supposed to be rendered anyway
+	sprdef = &sprites[::std::size_t(thing->sprite)];
+	// the TNT1 sprite is not supposed to be rendered anyway
 	if (!sprdef->numframes && thing->sprite == spritenum_t::SPR_TNT1)
 	{
 		return;
@@ -582,13 +582,13 @@ void R_ProjectSprite(MapObject* thing)
 	{
 		// choose a different rotation based on player view
 		ang = R_PointToAngle(interpx, interpy);
-		// [crispy] now made non-fatal
+		// now made non-fatal
 		if (sprframe->rotate == -1)
 		{
 			return;
 		}
 		else
-			// [crispy] support 16 sprite rotations
+			// support 16 sprite rotations
 			if (sprframe->rotate == 2)
 			{
 				const unsigned rot2 = (ang - interpangle + (unsigned)(ANG45 / 4) * 17);
@@ -608,7 +608,7 @@ void R_ProjectSprite(MapObject* thing)
 		flip = (bool)sprframe->flip[0];
 	}
 
-	// [crispy] randomly flip corpse, blood and death animation sprites
+	// randomly flip corpse, blood and death animation sprites
 	if (crispy->flipcorpses &&
 		(thing->flags & mobjflag_e::MF_FLIPPABLE) &&
 		!(thing->flags & mobjflag_e::MF_SHOOTABLE) &&
@@ -618,7 +618,7 @@ void R_ProjectSprite(MapObject* thing)
 	}
 
 	// calculate edges of the shape
-	// [crispy] fix sprite offsets for mirrored sprites
+	// fix sprite offsets for mirrored sprites
 	tx -= flip ? spritewidth[lump] - spriteoffset[lump] : spriteoffset[lump];
 	x1 = (centerxfrac + FixedMul(tx, xscale)) >> FRACBITS;
 
@@ -649,7 +649,7 @@ void R_ProjectSprite(MapObject* thing)
 
 	// store information in a vissprite
 	vis = R_NewVisSprite();
-	vis->translation = NULL; // [crispy] no color translation
+	vis->translation = NULL; // no color translation
 	vis->mobjflags = thing->flags;
 	vis->scale = xscale << detailshift;
 	vis->gx = interpx;
@@ -701,18 +701,18 @@ void R_ProjectSprite(MapObject* thing)
 		if (index >= MAXLIGHTSCALE)
 			index = MAXLIGHTSCALE - 1;
 
-		// [crispy] brightmaps for select sprites
+		// brightmaps for select sprites
 		vis->colormap[0] = spritelights[index];
 		vis->colormap[1] = scalelight[LIGHTLEVELS - 1][MAXLIGHTSCALE - 1];
 	}
 	vis->brightmap = R_BrightmapForSprite(thing->sprite);
 
-	// [crispy] colored blood
+	// colored blood
 	if (crispy->coloredblood &&
 		(thing->type == mobjtype_t::MT_BLOOD || thing->state - states == statenum_t::S_GIBS) &&
 		thing->target)
 	{
-		// [crispy] Thorn Things in Hacx bleed green blood
+		// Thorn Things in Hacx bleed green blood
 		if (gamemission == GameMission::pack_hacx)
 		{
 			if (thing->target->type == mobjtype_t::MT_BABY)
@@ -722,13 +722,13 @@ void R_ProjectSprite(MapObject* thing)
 		}
 		else
 		{
-			// [crispy] Barons of Hell and Hell Knights bleed green blood
+			// Barons of Hell and Hell Knights bleed green blood
 			if (thing->target->type == mobjtype_t::MT_BRUISER || thing->target->type == mobjtype_t::MT_KNIGHT)
 			{
 				vis->translation = cr[CR_RED2GREEN];
 			}
 			else
-				// [crispy] Cacodemons bleed blue blood
+				// Cacodemons bleed blue blood
 				if (thing->target->type == mobjtype_t::MT_HEAD)
 				{
 					vis->translation = cr[CR_RED2BLUE];
@@ -737,7 +737,7 @@ void R_ProjectSprite(MapObject* thing)
 	}
 
 #ifdef CRISPY_TRUECOLOR
-	// [crispy] translucent sprites
+	// translucent sprites
 	if (thing->flags & mobjflag_e::MF_TRANSLUCENT)
 	{
 		vis->blendfunc = (thing->frame & FF_FULLBRIGHT) ? I_BlendAdd : I_BlendOver;
@@ -751,7 +751,7 @@ byte* R_LaserspotColor()
 {
 	if (crispy->crosshairtarget)
 	{
-		// [crispy] the projected crosshair code calls P_LineLaser() itself
+		// the projected crosshair code calls P_LineLaser() itself
 		if (crispy->crosshair == CROSSHAIR_STATIC)
 		{
 			P_LineLaser(viewplayer, viewangle, 16 * 64 * FRACUNIT, PLAYER_SLOPE(viewplayer));
@@ -762,13 +762,13 @@ byte* R_LaserspotColor()
 		}
 	}
 
-	// [crispy] keep in sync with st_stuff.c:ST_WidgetColor(hudcolor_health)
+	// keep in sync with st_stuff.c:ST_WidgetColor(hudcolor_health)
 	if (crispy->crosshairhealth)
 	{
 		const int health = viewplayer->health;
 
-		// [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
-		if (viewplayer->cheats & CheatType::CF_GODMODE || viewplayer->powers[std::size_t(PowerType_t::pw_invulnerability)])
+		// Invulnerability powerup and God Mode cheat turn Health values gray
+		if (viewplayer->cheats & CheatType::CF_GODMODE || viewplayer->powers[::std::size_t(PowerType_t::pw_invulnerability)])
 			return cr[CR_GRAY];
 		else if (health < 25)
 			return cr[CR_RED];
@@ -783,7 +783,7 @@ byte* R_LaserspotColor()
 	return nullptr;
 }
 
-// [crispy] generate a vissprite for the laser spot
+// generate a vissprite for the laser spot
 static void R_DrawLSprite()
 {
 	fixed_t xscale;
@@ -794,7 +794,7 @@ static void R_DrawLSprite()
 	static int lump;
 	static patch_t* patch;
 
-	if (weaponinfo[std::size_t(viewplayer->readyweapon)].ammo == AmmoType::am_noammo || viewplayer->playerstate != PlayerState::live)
+	if (weaponinfo[::std::size_t(viewplayer->readyweapon)].ammo == AmmoType::am_noammo || viewplayer->playerstate != PlayerState::live)
 	{
 		return;
 	}
@@ -820,7 +820,7 @@ static void R_DrawLSprite()
 	}
 
 	xscale = FixedDiv(projection, tz);
-	// [crispy] the original patch has 5x5 pixels, cap the projection at 20x20
+	// the original patch has 5x5 pixels, cap the projection at 20x20
 	xscale = (xscale > 4 * FRACUNIT) ? 4 * FRACUNIT : xscale;
 
 	tx = -(FixedMul(laserspot->y - viewy, viewcos) - FixedMul(laserspot->x - viewx, viewsin));
@@ -831,9 +831,9 @@ static void R_DrawLSprite()
 	}
 
 	vis = R_NewVisSprite();
-	memset(vis, 0, sizeof(*vis)); // [crispy] set all fields to NULL, except ...
-	vis->patch = lump - firstspritelump; // [crispy] not a sprite patch
-	vis->colormap[0] = vis->colormap[1] = fixedcolormap ? fixedcolormap : colormaps; // [crispy] always full brightness
+	memset(vis, 0, sizeof(*vis)); // set all fields to NULL, except ...
+	vis->patch = lump - firstspritelump; // not a sprite patch
+	vis->colormap[0] = vis->colormap[1] = fixedcolormap ? fixedcolormap : colormaps; // always full brightness
 	vis->brightmap = dc_brightmap;
 	vis->translation = R_LaserspotColor();
 #ifdef CRISPY_TRUECOLOR
@@ -893,7 +893,7 @@ void R_AddSprites(sector_t* sec)
 //
 // R_DrawPSprite
 //
-void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate gun from flash sprites
+void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // differentiate gun from flash sprites
 {
 	fixed_t tx;
 	int x1;
@@ -911,8 +911,8 @@ void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate g
 		I_Error("R_ProjectSprite: invalid sprite number %i ",
 			psp->state->sprite);
 #endif
-	sprdef = &sprites[std::size_t(psp->state->sprite)];
-	// [crispy] the TNT1 sprite is not supposed to be rendered anyway
+	sprdef = &sprites[::std::size_t(psp->state->sprite)];
+	// the TNT1 sprite is not supposed to be rendered anyway
 	if (!sprdef->numframes && psp->state->sprite == spritenum_t::SPR_TNT1)
 	{
 		return;
@@ -930,7 +930,7 @@ void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate g
 	// calculate edges of the shape
 	tx = psp->sx2 - (ORIGWIDTH / 2) * FRACUNIT;
 
-	// [crispy] fix sprite offsets for mirrored sprites
+	// fix sprite offsets for mirrored sprites
 	tx -= flip ? 2 * tx - spriteoffset[lump] + spritewidth[lump] : spriteoffset[lump];
 	x1 = (centerxfrac + FixedMul(tx, pspritescale)) >> FRACBITS;
 
@@ -947,9 +947,9 @@ void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate g
 
 	// store information in a vissprite
 	vis = &avis;
-	vis->translation = NULL; // [crispy] no color translation
+	vis->translation = NULL; // no color translation
 	vis->mobjflags = 0;
-	// [crispy] weapons drawn 1 pixel too high when player is idle
+	// weapons drawn 1 pixel too high when player is idle
 	vis->texturemid = (BASEYCENTER << FRACBITS) + FRACUNIT / 4 - (psp->sy2 + abs(psp->dy) - spritetopoffset[lump]);
 	vis->x1 = x1 < 0 ? 0 : x1;
 	vis->x2 = x2 >= viewwidth ? viewwidth - 1 : x2;
@@ -966,7 +966,7 @@ void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate g
 		vis->startfrac = 0;
 	}
 
-	// [crispy] free look
+	// free look
 	vis->texturemid += FixedMul(((centery - viewheight / 2) << FRACBITS), pspriteiscale) >> detailshift;
 
 	if (vis->x1 > x1)
@@ -974,7 +974,7 @@ void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate g
 
 	vis->patch = lump;
 
-	if (viewplayer->powers[std::size_t(PowerType_t::pw_invisibility)] > 4 * 32 || viewplayer->powers[std::size_t(PowerType_t::pw_invisibility)] & 8)
+	if (viewplayer->powers[::std::size_t(PowerType_t::pw_invisibility)] > 4 * 32 || viewplayer->powers[::std::size_t(PowerType_t::pw_invisibility)] & 8)
 	{
 		// shadow draw
 		vis->colormap[0] = vis->colormap[1] = NULL;
@@ -997,7 +997,7 @@ void R_DrawPSprite(pspdef_t* psp, psprnum_t psprnum) // [crispy] differentiate g
 	}
 	vis->brightmap = R_BrightmapForState(psp->state - states);
 
-	// [crispy] translucent gun flash sprites
+	// translucent gun flash sprites
 	if (psprnum == psprnum_t::ps_flash)
 	{
 		vis->mobjflags |= mobjflag_e::MF_TRANSLUCENT;
@@ -1038,12 +1038,12 @@ void R_DrawPlayerSprites()
 	for (i = 0, psp = viewplayer->psprites; i < psprnum_t::NUMPSPRITES; ++i, ++psp)
 	{
 		if (psp->state)
-			R_DrawPSprite(psp, i); // [crispy] pass gun or flash sprite
+			R_DrawPSprite(psp, i); // pass gun or flash sprite
 	}
 }
 
 #ifdef HAVE_QSORT
-// [crispy] use stdlib's qsort() function for sorting the vissprites[] array
+// use stdlib's qsort() function for sorting the vissprites[] array
 static inline int cmp_vissprites(const void* a, const void* b)
 {
 	const vissprite_t* vsa = (const vissprite_t*)a;
@@ -1064,7 +1064,7 @@ void R_SortVisSprites()
 	if (!count)
 		return;
 
-	// [crispy] maintain a stable sort for deliberately overlaid sprites
+	// maintain a stable sort for deliberately overlaid sprites
 	for (ds = vissprites; ds < vissprite_p; ++ds)
 	{
 		ds->next = ds + 1;
@@ -1130,8 +1130,8 @@ void R_SortVisSprites()
 void R_DrawSprite(vissprite_t* spr)
 {
 	drawseg_t* ds;
-	int clipbot[MAXWIDTH]; // [crispy] 32-bit integer math
-	int cliptop[MAXWIDTH]; // [crispy] 32-bit integer math
+	int clipbot[MAXWIDTH]; // 32-bit integer math
+	int cliptop[MAXWIDTH]; // 32-bit integer math
 	int x;
 	int r1;
 	int r2;

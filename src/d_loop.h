@@ -63,10 +63,10 @@ void D_StartNetGame(net_gamesettings* settings, netgame_startup_callback_t callb
 extern bool singletics;
 extern TimeType gametic;
 extern TimeType ticdup;
-extern TimeType oldleveltime;	// [crispy] check if leveltime keeps tickin'
+extern TimeType oldleveltime;	// check if leveltime keeps tickin'
 
 // Check if it is permitted to record a demo with a non-vanilla feature.
-bool D_NonVanillaRecord(bool conditional, std::string feature);
+bool D_NonVanillaRecord(bool conditional, ::std::string feature);
 
 // Check if it is permitted to play back a demo with a non-vanilla feature.
-bool D_NonVanillaPlayback(bool conditional, int lumpnum, std::string feature);
+bool D_NonVanillaPlayback(bool conditional, int lumpnum, ::std::string feature);

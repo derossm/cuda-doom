@@ -8,24 +8,9 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include "txt_common.h"
 #include "txt_widget.h"
-//#include "txt_strut.h"
-//#include "txt_separator.h"
-
-//#include "txt_main.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
-//#include "txt_desktop.h"
-
-//cudadoom::txt::Widget txt_table_overflow_right;
-//cudadoom::txt::Widget txt_table_overflow_down;
-//cudadoom::txt::Widget txt_table_eol;
-//cudadoom::txt::Widget txt_table_empty;
 
 namespace cudadoom::txt
 {
@@ -40,13 +25,23 @@ namespace cudadoom::txt
 	widgets to place inside a horizontal list. A vertical list is possible simply by creating a table containing a single column.
  */
 
+// txt_table_overflow_right;
+// txt_table_overflow_down;
+// txt_table_eol;
+// txt_table_empty;
+
+class Table : public TableBase<Table>
+{
+
+};
+
 template<typename T>
-class Table : public Widget<T>
+class TableBase : public Widget<T>
 {
 public:
 	// Widgets in this table
 	// The widget at (x,y) in the table is widgets[columns * y + x]
-	//std::vector<std::unique_ptr<Widget>> widgets;
+	//::std::vector<::std::unique_ptr<Widget>> widgets;
 
 	int columns;
 
@@ -532,7 +527,7 @@ public:
 		}
 	}
 
-	void AddWidget(std::unique_ptr<Widget> widget)
+	void AddWidget(::std::unique_ptr<Widget> widget)
 	{
 		// Convenience alias for NULL:
 		// FIXME these are impossible conditions now
@@ -603,7 +598,7 @@ public:
 		for (;;)
 		{
 			// FIXME
-			std::unique_ptr<Widget> widget = va_arg(args, std::unique_ptr<Widget>);
+			::std::unique_ptr<Widget> widget = va_arg(args, ::std::unique_ptr<Widget>);
 
 			if (widget == nullptr)
 			{
@@ -961,11 +956,11 @@ public:
 };
 /*
 // Alternative to NewTable() that allows a list of widgets to be provided in its arguments.
-std::unique_ptr<Table> MakeTable(int columns, ...)
+::std::unique_ptr<Table> MakeTable(int columns, ...)
 {
 	va_list args;
 
-	auto table{std::make_unique(Table(columns))};
+	auto table{::std::make_unique(Table(columns))};
 	va_start(args, columns);
 
 	for (;;)
@@ -986,7 +981,7 @@ std::unique_ptr<Table> MakeTable(int columns, ...)
 }
 
 // Create a horizontal table from a list of widgets.
-std::unique_ptr<Table> MakeHorizontalTable(Widget* first_widget, ...)
+::std::unique_ptr<Table> MakeHorizontalTable(Widget* first_widget, ...)
 {
 	va_list args;
 	// First, find the number of arguments to determine the width of the box.
@@ -1011,7 +1006,7 @@ std::unique_ptr<Table> MakeHorizontalTable(Widget* first_widget, ...)
 	va_end(args);
 
 	// Create the table.
-	auto result{std::make_unique(Table(num_args))};
+	auto result{::std::make_unique(Table(num_args))};
 	result->AddWidget(first_widget);
 
 	// Go through the list again and add each widget.
@@ -1178,4 +1173,4 @@ std::unique_ptr<Table> MakeHorizontalTable(Widget* first_widget, ...)
 		   */
 		   //int PageTable(UNCAST_ARG(table), int pagex, int pagey);
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

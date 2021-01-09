@@ -55,7 +55,7 @@ int SlopeDiv(unsigned num, unsigned den)
 	}
 }
 
-// [crispy] catch SlopeDiv overflows, only used in rendering
+// catch SlopeDiv overflows, only used in rendering
 int SlopeDivCrispy(unsigned num, unsigned den)
 {
 	if (den < 512)

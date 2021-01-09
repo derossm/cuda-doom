@@ -44,7 +44,7 @@ extern int key_invleft;
 extern int key_invright;
 extern int key_useartifact;
 
-// villsa [STRIFE] strife keys
+// strife keys
 extern int key_usehealth;
 extern int key_invquery;
 extern int key_mission;
@@ -136,10 +136,10 @@ extern int key_menu_gamma;
 extern int key_menu_incscreen;
 extern int key_menu_decscreen;
 extern int key_menu_screenshot;
-extern int key_menu_cleanscreenshot;		// [crispy]
-extern int key_menu_del;					// [crispy]
-extern int key_menu_nextlevel;				// [crispy]
-extern int key_menu_reloadlevel;			// [crispy]
+extern int key_menu_cleanscreenshot;
+extern int key_menu_del;
+extern int key_menu_nextlevel;
+extern int key_menu_reloadlevel;
 
 extern int mousebfire;
 extern int mousebstrafe;

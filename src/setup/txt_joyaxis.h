@@ -26,7 +26,7 @@ enum class txt_joystick_axis_stage_t
 {
 	CONFIG_CENTER,		// "Center the joystick and press a button..."
 	CONFIG_STAGE1,		// "Top or left and press a button..."
-	CONFIG_STAGE2		// [Optional] "Bottom or right and press a button..."
+	CONFIG_STAGE2		// Optional: "Bottom or right and press a button..."
 };
 
 // Callback invoked when calibration is completed.

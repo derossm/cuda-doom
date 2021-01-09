@@ -50,11 +50,11 @@ static lumpindex_t* lumphash;
 // load the file again.
 static wad_file_t* reloadhandle = nullptr;
 static lumpinfo_t* reloadlumps = nullptr;
-std::string reloadname = nullptr;
+::std::string reloadname = nullptr;
 static int reloadlump = -1;
 
 // Hash function used for lump names.
-unsigned W_LumpNameHash(std::string s)
+unsigned W_LumpNameHash(::std::string s)
 {
 	// This is the djb2 string hash function, modded to work on strings that have a maximum length of 8.
 	unsigned result = 5381;
@@ -70,7 +70,7 @@ unsigned W_LumpNameHash(std::string s)
 // All files are optional, but at least one file must be found (PWAD, if all required lumps are present).
 // Files with a .wad extension are wadlink files with multiple lumps.
 // Other files are single lumps with the base filename for the lump name.
-wad_file_t* W_AddFile(std::string filename)
+wad_file_t* W_AddFile(::std::string filename)
 {
 	wadinfo_t header;
 	lumpindex_t i;
@@ -141,7 +141,7 @@ wad_file_t* W_AddFile(std::string filename)
 
 		// Vanilla Doom doesn't like WADs with more than 4046 lumps
 		// https://www.doomworld.com/vb/post/1010985
-		// [crispy] disable PWAD lump number limit
+		// disable PWAD lump number limit
 		if (!strncmp(header.identification, "PWAD", 4) && header.numlumps > 4046 && false)
 		{
 			W_CloseFile(wad_file);
@@ -207,7 +207,7 @@ int W_NumLumps()
 }
 
 // Returns -1 if name not found.
-lumpindex_t W_CheckNumForName(std::string name)
+lumpindex_t W_CheckNumForName(::std::string name)
 {
 	// Do we have a hash table yet?
 	if (lumphash != NULL)
@@ -242,7 +242,7 @@ lumpindex_t W_CheckNumForName(std::string name)
 }
 
 // Calls W_CheckNumForName, but bombs out if not found.
-lumpindex_t W_GetNumForName(std::string name)
+lumpindex_t W_GetNumForName(::std::string name)
 {
 	lumpindex_t i = W_CheckNumForName(name);
 
@@ -254,7 +254,7 @@ lumpindex_t W_GetNumForName(std::string name)
 	return i;
 }
 
-lumpindex_t W_CheckNumForNameFromTo(std::string name, int from, int to)
+lumpindex_t W_CheckNumForNameFromTo(::std::string name, int from, int to)
 {
 	for (lumpindex_t i = from; i >= to; --i)
 	{
@@ -326,7 +326,7 @@ void W_ReleaseLumpNum(lumpindex_t lumpnum)
 	}
 }
 
-void W_ReleaseLumpName(std::string name)
+void W_ReleaseLumpName(::std::string name)
 {
 	W_ReleaseLumpNum(W_GetNumForName(name));
 }
@@ -474,7 +474,7 @@ void W_Reload()
 	W_GenerateHashTable();
 }
 
-std::string W_WadNameForLump(const lumpinfo_t* lump)
+::std::string W_WadNameForLump(const lumpinfo_t* lump)
 {
 	return M_BaseName(lump->wad_file->path);
 }
@@ -484,8 +484,8 @@ bool W_IsIWADLump(const lumpinfo_t* lump)
 	return lump->wad_file == lumpinfo[0]->wad_file;
 }
 
-// [crispy] dump lump data into a new LMP file
-lumpindex_t W_LumpDump(std::string lumpname)
+// dump lump data into a new LMP file
+lumpindex_t W_LumpDump(::std::string lumpname)
 {
 	auto i = W_CheckNumForName(lumpname);
 
@@ -494,8 +494,8 @@ lumpindex_t W_LumpDump(std::string lumpname)
 		return -1;
 	}
 
-	// [crispy] open file for writing
-	auto filename = std::string(lumpname + ".lmp");
+	// open file for writing
+	auto filename = ::std::string(lumpname + ".lmp");
 	//M_ForceLowercase(filename); TODO workaround
 	auto fp = fopen(filename, "wb");
 	if (!fp)

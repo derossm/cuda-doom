@@ -92,5 +92,5 @@ bool D_ValidGameVersion(GameMission mission, GameVersion version);
 bool D_ValidEpisodeMap(GameMission mission, GameMode mode, int episode, int map);
 int D_GetNumEpisodes(GameMission mission, GameMode mode);
 bool D_IsEpisodeMap(GameMission mission);
-std::string D_GameMissionString(GameMission mission);
-std::string D_GameModeString(GameMode mode);
+::std::string D_GameMissionString(GameMission mission);
+::std::string D_GameModeString(GameMode mode);

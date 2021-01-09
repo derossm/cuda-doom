@@ -27,5 +27,5 @@
 // 8 per each game type
 constexpr size_t NUM_QUITMESSAGES{8};
 
-extern std::string doom1_endmsg[];
-extern std::string doom2_endmsg[];
+extern ::std::string doom1_endmsg[];
+extern ::std::string doom2_endmsg[];

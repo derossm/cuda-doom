@@ -105,7 +105,7 @@ static opl_init_result_t AutoSelectDriver(unsigned port_base)
 // Initialize the OPL library. Return value indicates type of OPL chip detected, if any.
 opl_init_result_t OPL_Init(unsigned port_base)
 {
-	std::string driver_name{std::getenv("OPL_DRIVER")};
+	::std::string driver_name{::std::getenv("OPL_DRIVER")};
 
 	if (!driver_name.empty())
 	{

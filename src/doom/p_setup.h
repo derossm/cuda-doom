@@ -18,7 +18,7 @@
 #include "w_wad.h"
 
 extern lumpinfo_t* maplumpinfo;
-// [crispy] pointer to the map lump about to load
+// pointer to the map lump about to load
 extern lumpinfo_t* savemaplumpinfo;
 
 // NOT called by W_Ticker. Fixme.

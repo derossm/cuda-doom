@@ -8,15 +8,9 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include "txt_common.h"
 #include "txt_widget.h"
-
-//#include "txt_main.h"
-//#include "txt_io.h"
 
 namespace cudadoom::txt
 {
@@ -68,11 +62,4 @@ public:
 
 };
 
-/**
- * Create a new strut.
- *
- * @param width		Width of the strut, in characters.
- * @param height	Height of the strut, in characters.
- */
-
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

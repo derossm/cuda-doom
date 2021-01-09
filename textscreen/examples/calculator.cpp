@@ -72,7 +72,7 @@ void Operator(cudadoom::txt::UNCAST_ARG(button), cudadoom::txt::UNCAST_ARG(op))
 	starting_input = 1;
 }
 
-void AddOperatorButton(cudadoom::txt::txt_table_t* table, std::string label, operator_t op)
+void AddOperatorButton(cudadoom::txt::txt_table_t* table, ::std::string label, operator_t op)
 {
 	operator_t* op_copy = static_cast<decltype(op_copy)>(malloc(sizeof(operator_t)));
 	*op_copy = op;

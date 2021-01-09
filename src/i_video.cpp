@@ -41,15 +41,15 @@
 #include "z_zone.h"
 
 int SCREENWIDTH, SCREENHEIGHT, SCREENHEIGHT_4_3;
-int NONWIDEWIDTH; // [crispy] non-widescreen SCREENWIDTH
-int WIDESCREENDELTA; // [crispy] horizontal widescreen offset
+int NONWIDEWIDTH; // non-widescreen SCREENWIDTH
+int WIDESCREENDELTA; // horizontal widescreen offset
 
 // These are (1) the window (or the full screen) that our game is rendered to
 // and (2) the renderer that scales the texture (see below) into this window.
 static SDL_Window* screen;
 static SDL_Renderer* renderer;
 
-static std::string window_title = "";
+static ::std::string window_title = "";
 
 // These are (1) the 320x200x8 paletted buffer that we draw to (i.e. the one
 // that holds I_VideoBuffer), (2) the 320x200x32 RGBA intermediate buffer that
@@ -82,9 +82,9 @@ static SDL_Texture* redpane = nullptr;
 static SDL_Texture* yelpane = nullptr;
 static SDL_Texture* grnpane = nullptr;
 static int pane_alpha;
-static unsigned rmask, gmask, bmask, amask; // [crispy] moved up here
+static unsigned rmask, gmask, bmask, amask; // moved up here
 static const uint8_t blend_alpha = 0xa8;
-extern pixel_t* colormaps; // [crispy] evil hack to get FPS dots working as in Vanilla
+extern pixel_t* colormaps; // evil hack to get FPS dots working as in Vanilla
 #else
 static SDL_Color palette[256];
 #endif
@@ -98,12 +98,12 @@ static bool nomouse = false;
 int usemouse = 1;
 
 // Save screenshots in PNG format.
-int png_screenshots = 1; // [crispy]
+int png_screenshots = 1;
 
 // SDL video driver name
-std::string video_driver = "";
+::std::string video_driver = "";
 
-std::string window_position = "center";
+::std::string window_position = "center";
 
 // SDL display number on which to run.
 int video_display = 0;
@@ -717,7 +717,7 @@ void I_FinishUpdate()
 		}
 	}
 
-	// [crispy] [AM] Real FPS counter
+	// [AM] Real FPS counter
 	{
 		static int lastmili{0};
 		static int fpscount{0};
@@ -805,19 +805,19 @@ void I_ReadScreen (pixel_t* scr)
 	memcpy(scr, I_VideoBuffer, SCREENWIDTH*SCREENHEIGHT*sizeof(*scr));
 }
 
-// [crispy] intermediate gamma levels
+// intermediate gamma levels
 byte** gamma2table = nullptr;
 void I_SetGammaTable ()
 {
 	gamma2table = static_cast<decltype(gamma2table)>(malloc(9 * sizeof(*gamma2table)));
 
-	// [crispy] 5 original gamma levels
+	// 5 original gamma levels
 	for (auto i = 0; i < 5; ++i)
 	{
 		gamma2table[2*i] = (byte*)gammatable[i];
 	}
 
-	// [crispy] 4 intermediate gamma levels
+	// 4 intermediate gamma levels
 	for (auto i = 0; i < 4; ++i)
 	{
 		gamma2table[2*i+1] = static_cast<byte*>(malloc(256 * sizeof(**gamma2table)));
@@ -832,7 +832,7 @@ void I_SetGammaTable ()
 #ifndef CRISPY_TRUECOLOR
 void I_SetPalette (byte* doompalette)
 {
-	// [crispy] intermediate gamma levels
+	// intermediate gamma levels
 	if (!gamma2table)
 	{
 		I_SetGammaTable();
@@ -843,7 +843,7 @@ void I_SetPalette (byte* doompalette)
 		// Zero out the bottom two bits of each channel - the PC VGA
 		// controller only supports 6 bits of accuracy.
 
-		// [crispy] intermediate gamma levels
+		// intermediate gamma levels
 		palette[i].r = gamma2table[usegamma][*doompalette] & ~3;
 		++doompalette;
 
@@ -921,7 +921,7 @@ void I_SetPalette (int palette)
 }
 #endif
 
-void I_SetWindowTitle(std::string title)
+void I_SetWindowTitle(::std::string title)
 {
 	window_title = title;
 }
@@ -929,7 +929,7 @@ void I_SetWindowTitle(std::string title)
 // Call the SDL function to set the window title, based on the title set with I_SetWindowTitle.
 void I_InitWindowTitle()
 {
-	auto buf = std::string(window_title + " - " + PACKAGE_STRING);
+	auto buf = ::std::string(window_title + " - " + PACKAGE_STRING);
 	SDL_SetWindowTitle(screen, buf.c_str());
 	//free(buf);
 }
@@ -1044,7 +1044,7 @@ static void SetSDLVideoDriver()
 	// Allow a default value for the SDL video driver to be specified in the configuration file.
 	if (strcmp(video_driver, "") != 0)
 	{
-		auto env_string = std::string("SDL_VIDEODRIVER=" + video_driver);
+		auto env_string = ::std::string("SDL_VIDEODRIVER=" + video_driver);
 		putenv(env_string.c_str());
 		//free(env_string);
 	}
@@ -1190,7 +1190,7 @@ static void SetVideoMode()
 	// Turn on vsync if we aren't in a -timedemo
 	if (!singletics && mode.refresh_rate > 0)
 	{
-		if (crispy->vsync) // [crispy] uncapped vsync
+		if (crispy->vsync) // uncapped vsync
 		{
 		renderer_flags |= SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC;
 		}
@@ -1310,7 +1310,7 @@ static void SetVideoMode()
 	CreateUpscaledTexture(true);
 }
 
-// [crispy] re-calculate SCREENWIDTH, SCREENHEIGHT, NONWIDEWIDTH and WIDESCREENDELTA
+// re-calculate SCREENWIDTH, SCREENHEIGHT, NONWIDEWIDTH and WIDESCREENDELTA
 void I_GetScreenDimensions ()
 {
 	SDL_DisplayMode mode;
@@ -1326,7 +1326,7 @@ void I_GetScreenDimensions ()
 
 	if (SDL_GetCurrentDisplayMode(video_display, &mode) == 0)
 	{
-		// [crispy] sanity check: really widescreen display?
+		// sanity check: really widescreen display?
 		if (mode.w * ah >= mode.h * SCREENWIDTH)
 		{
 			w = mode.w;
@@ -1334,7 +1334,7 @@ void I_GetScreenDimensions ()
 		}
 	}
 
-	// [crispy] widescreen rendering makes no sense without aspect ratio correction
+	// widescreen rendering makes no sense without aspect ratio correction
 	if (crispy->widescreen && aspect_ratio_correct)
 	{
 		switch(crispy->widescreen)
@@ -1356,9 +1356,9 @@ void I_GetScreenDimensions ()
 		}
 
 		SCREENWIDTH = w * ah / h;
-		// [crispy] make sure SCREENWIDTH is an integer multiple of 4 ...
+		// make sure SCREENWIDTH is an integer multiple of 4 ...
 		SCREENWIDTH = (SCREENWIDTH + 3) & (int)~3;
-		// [crispy] ... but never exceeds MAXWIDTH (array size!)
+		// ... but never exceeds MAXWIDTH (array size!)
 		SCREENWIDTH = MIN(SCREENWIDTH, MAXWIDTH);
 	}
 
@@ -1374,7 +1374,7 @@ void I_InitGraphics()
 
 	// Pass through the XSCREENSAVER_WINDOW environment variable to
 	// SDL_WINDOWID, to embed the SDL window into the Xscreensaver window.
-	std::string env = getenv("XSCREENSAVER_WINDOW");
+	::std::string env = getenv("XSCREENSAVER_WINDOW");
 
 	if (env != NULL)
 	{
@@ -1400,7 +1400,7 @@ void I_InitGraphics()
 		fullscreen = true;
 	}
 
-	// [crispy] run-time variable high-resolution rendering
+	// run-time variable high-resolution rendering
 	I_GetScreenDimensions();
 
 #ifndef CRISPY_TRUECOLOR
@@ -1408,7 +1408,7 @@ void I_InitGraphics()
 	blit_rect.h = SCREENHEIGHT;
 #endif
 
-	// [crispy] (re-)initialize resolution-agnostic patch drawing
+	// (re-)initialize resolution-agnostic patch drawing
 	V_Init();
 
 	if (aspect_ratio_correct == 1)
@@ -1469,10 +1469,10 @@ void I_InitGraphics()
 	I_AtExit(I_ShutdownGraphics, true);
 }
 
-// [crispy] re-initialize only the parts of the rendering stack that are really necessary
+// re-initialize only the parts of the rendering stack that are really necessary
 void I_ReInitGraphics (int reinit)
 {
-	// [crispy] re-set rendering resolution and re-create framebuffers
+	// re-set rendering resolution and re-create framebuffers
 	if (reinit & REINIT_FRAMEBUFFERS)
 	{
 		unsigned rmask;
@@ -1488,7 +1488,7 @@ void I_ReInitGraphics (int reinit)
 		blit_rect.h = SCREENHEIGHT;
 #endif
 
-		// [crispy] re-initialize resolution-agnostic patch drawing
+		// re-initialize resolution-agnostic patch drawing
 		V_Init();
 
 #ifndef CRISPY_TRUECOLOR
@@ -1500,18 +1500,18 @@ void I_ReInitGraphics (int reinit)
 		SDL_PixelFormatEnumToMasks(pixel_format, &unused_bpp, &rmask, &gmask, &bmask, &amask);
 		argbbuffer = SDL_CreateRGBSurface(0, SCREENWIDTH, SCREENHEIGHT, 32, rmask, gmask, bmask, amask);
 #ifndef CRISPY_TRUECOLOR
-		// [crispy] re-set the framebuffer pointer
+		// re-set the framebuffer pointer
 		I_VideoBuffer = screenbuffer->pixels;
 #else
 		I_VideoBuffer = argbbuffer->pixels;
 #endif
 		V_RestoreBuffer();
 
-		// [crispy] it will get re-created below with the new resolution
+		// it will get re-created below with the new resolution
 		SDL_DestroyTexture(texture);
 	}
 
-	// [crispy] re-create renderer
+	// re-create renderer
 	if (reinit & REINIT_RENDERER)
 	{
 		SDL_RendererInfo info;
@@ -1532,22 +1532,22 @@ void I_ReInitGraphics (int reinit)
 		renderer = SDL_CreateRenderer(screen, -1, flags);
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-		// [crispy] the texture gets destroyed in SDL_DestroyRenderer(), force its re-creation
+		// the texture gets destroyed in SDL_DestroyRenderer(), force its re-creation
 		texture_upscaled = NULL;
 	}
 
-	// [crispy] re-create textures
+	// re-create textures
 	if (reinit & REINIT_TEXTURES)
 	{
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 
 		texture = SDL_CreateTexture(renderer, pixel_format, SDL_TextureAccess::SDL_TEXTUREACCESS_STREAMING, SCREENWIDTH, SCREENHEIGHT);
 
-		// [crispy] force its re-creation
+		// force its re-creation
 		CreateUpscaledTexture(true);
 	}
 
-	// [crispy] re-set logical rendering resolution
+	// re-set logical rendering resolution
 	if (reinit & REINIT_ASPECTRATIO)
 	{
 		if (aspect_ratio_correct == 1)
@@ -1573,11 +1573,11 @@ void I_ReInitGraphics (int reinit)
 		#endif
 	}
 
-	// [crispy] adjust the window size and re-set the palette
+	// adjust the window size and re-set the palette
 	need_resize = true;
 }
 
-// [crispy] take screenshot of the rendered image
+// take screenshot of the rendered image
 void I_RenderReadPixels(byte** data, int* w, int* h, int* p)
 {
 	SDL_Rect rect;
@@ -1586,7 +1586,7 @@ void I_RenderReadPixels(byte** data, int* w, int* h, int* p)
 	uint32_t png_format;
 	byte* pixels;
 
-	// [crispy] adjust cropping rectangle if necessary
+	// adjust cropping rectangle if necessary
 	rect.x = 0;
 	rect.y = 0;
 	SDL_GetRendererOutputSize(renderer, &rect.w, &rect.h);
@@ -1624,7 +1624,7 @@ void I_RenderReadPixels(byte** data, int* w, int* h, int* p)
 		}
 	}
 
-	// [crispy] native PNG pixel format
+	// native PNG pixel format
 #if SDL_VERSION_ATLEAST(2, 0, 5)
 	png_format = SDL_PixelFormatEnum::SDL_PIXELFORMAT_RGB24;
 #else
@@ -1635,9 +1635,9 @@ void I_RenderReadPixels(byte** data, int* w, int* h, int* p)
 #endif
 #endif
 	format = SDL_AllocFormat(png_format);
-	temp = rect.w * format->BytesPerPixel; // [crispy] pitch
+	temp = rect.w * format->BytesPerPixel; // pitch
 
-	// [crispy] As far as I understand the issue, SDL_RenderPresent()
+	// As far as I understand the issue, SDL_RenderPresent()
 	// may return early, i.e. before it has actually finished rendering the
 	// current texture to screen -- from where we want to capture it.
 	// However, it does never return before it has finished rendering the
@@ -1651,7 +1651,7 @@ void I_RenderReadPixels(byte** data, int* w, int* h, int* p)
 		SDL_RenderPresent(renderer);
 	}
 
-	// [crispy] allocate memory for screenshot image
+	// allocate memory for screenshot image
 	pixels = static_cast<decltype(pixels)>(malloc(rect.h * temp));
 	SDL_RenderReadPixels(renderer, &rect, format->format, pixels, temp);
 
@@ -1701,7 +1701,7 @@ const pixel_t I_BlendAdd(const pixel_t bg, const pixel_t fg)
 	return amask | r | g | b;
 }
 
-// [crispy] http://stereopsis.com/doubleblend.html
+// http://stereopsis.com/doubleblend.html
 const pixel_t I_BlendDark(const pixel_t bg, const int d)
 {
 	const uint32_t ag = (bg & 0xff00ff00) >> 8;

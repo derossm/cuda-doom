@@ -35,10 +35,9 @@
 
 constexpr size_t BONUSADD{6};
 
-// a weapon is found with two clip loads,
-// a big item has five clip loads
-int maxammo[std::size_t(AmmoType::NUMAMMO)] = {200, 50, 300, 50};
-int clipammo[std::size_t(AmmoType::NUMAMMO)] = {10, 4, 20, 1};
+// a weapon is found with two clip loads, a big item has five clip loads
+int maxammo[::std::size_t(AmmoType::NUMAMMO)] = {200, 50, 300, 50};
+int clipammo[::std::size_t(AmmoType::NUMAMMO)] = {10, 4, 20, 1};
 
 //
 // GET STUFF
@@ -46,7 +45,7 @@ int clipammo[std::size_t(AmmoType::NUMAMMO)] = {10, 4, 20, 1};
 
 // Num is the number of clip loads, not the individual count (0= 1/2 clip).
 // Returns false if the ammo can't be picked up at all.
-bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dropped ammo/weapons give half as much.
+bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // Dropped ammo/weapons give half as much.
 {
 	int oldammo;
 
@@ -60,18 +59,18 @@ bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dr
 		I_Error("P_GiveAmmo: bad type %i", ammo);
 	}
 
-	if (player->ammo[std::size_t(ammo)] == player->maxammo[std::size_t(ammo)])
+	if (player->ammo[::std::size_t(ammo)] == player->maxammo[::std::size_t(ammo)])
 	{
 		return false;
 	}
 
 	if (num)
 	{
-		num *= clipammo[std::size_t(ammo)];
+		num *= clipammo[::std::size_t(ammo)];
 	}
 	else
 	{
-		num = clipammo[std::size_t(ammo)] / 2;
+		num = clipammo[::std::size_t(ammo)] / 2;
 	}
 
 	if (gameskill == SkillType::sk_baby || gameskill == SkillType::sk_nightmare)
@@ -80,7 +79,7 @@ bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dr
 		num <<= 1;
 	}
 
-	// [NS] Halve if needed.
+	// Halve if needed.
 	if (dropped)
 	{
 		num >>= 1;
@@ -91,12 +90,12 @@ bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dr
 		}
 	}
 
-	oldammo = player->ammo[std::size_t(ammo)];
-	player->ammo[std::size_t(ammo)] += num;
+	oldammo = player->ammo[::std::size_t(ammo)];
+	player->ammo[::std::size_t(ammo)] += num;
 
-	if (player->ammo[std::size_t(ammo)] > player->maxammo[std::size_t(ammo)])
+	if (player->ammo[::std::size_t(ammo)] > player->maxammo[::std::size_t(ammo)])
 	{
-		player->ammo[std::size_t(ammo)] = player->maxammo[std::size_t(ammo)];
+		player->ammo[::std::size_t(ammo)] = player->maxammo[::std::size_t(ammo)];
 	}
 
 	// If non zero ammo, don't change up weapons, player was lower on purpose.
@@ -111,7 +110,7 @@ bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dr
 	case AmmoType::am_clip:
 		if (player->readyweapon == WeaponType::wp_fist)
 		{
-			if (player->weaponowned[std::size_t(WeaponType::wp_chaingun)])
+			if (player->weaponowned[::std::size_t(WeaponType::wp_chaingun)])
 			{
 				player->pendingweapon = WeaponType::wp_chaingun;
 			}
@@ -125,7 +124,7 @@ bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dr
 	case AmmoType::am_shell:
 		if (player->readyweapon == WeaponType::wp_fist || player->readyweapon == WeaponType::wp_pistol)
 		{
-			if (player->weaponowned[std::size_t(WeaponType::wp_shotgun)])
+			if (player->weaponowned[::std::size_t(WeaponType::wp_shotgun)])
 			{
 				player->pendingweapon = WeaponType::wp_shotgun;
 			}
@@ -135,7 +134,7 @@ bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dr
 	case AmmoType::am_cell:
 		if (player->readyweapon == WeaponType::wp_fist || player->readyweapon == WeaponType::wp_pistol)
 		{
-			if (player->weaponowned[std::size_t(WeaponType::wp_plasma)])
+			if (player->weaponowned[::std::size_t(WeaponType::wp_plasma)])
 			{
 				player->pendingweapon = WeaponType::wp_plasma;
 			}
@@ -145,7 +144,7 @@ bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dr
 	case AmmoType::am_misl:
 		if (player->readyweapon == WeaponType::wp_fist)
 		{
-			if (player->weaponowned[std::size_t(WeaponType::wp_missile)])
+			if (player->weaponowned[::std::size_t(WeaponType::wp_missile)])
 			{
 				player->pendingweapon = WeaponType::wp_missile;
 			}
@@ -159,8 +158,8 @@ bool P_GiveAmmo(Player* player, AmmoType ammo, int num, bool dropped) // [NS] Dr
 	return true;
 }
 
-// [crispy] show weapon pickup messages in multiplayer games
-std::string const WeaponPickupMessages[std::size_t(WeaponType::NUMWEAPONS)] =
+// show weapon pickup messages in multiplayer games
+::std::string const WeaponPickupMessages[::std::size_t(WeaponType::NUMWEAPONS)] =
 {
 	NULL, // wp_fist
 	NULL, // wp_pistol
@@ -182,26 +181,26 @@ bool P_GiveWeapon(Player* player, WeaponType weapon, bool dropped)
 	if (netgame && (deathmatch != 2) && !dropped)
 	{
 		// leave placed weapons forever on net games
-		if (player->weaponowned[std::size_t(weapon)])
+		if (player->weaponowned[::std::size_t(weapon)])
 		{
 			return false;
 		}
 
 		player->bonuscount += BONUSADD;
-		player->weaponowned[std::size_t(weapon)] = true;
+		player->weaponowned[::std::size_t(weapon)] = true;
 
 		if (deathmatch)
 		{
-			P_GiveAmmo(player, weaponinfo[std::size_t(weapon)].ammo, 5, false);
+			P_GiveAmmo(player, weaponinfo[::std::size_t(weapon)].ammo, 5, false);
 		}
 		else
 		{
-			P_GiveAmmo(player, weaponinfo[std::size_t(weapon)].ammo, 2, false);
+			P_GiveAmmo(player, weaponinfo[::std::size_t(weapon)].ammo, 2, false);
 		}
 
 		player->pendingweapon = weapon;
-		// [crispy] show weapon pickup messages in multiplayer games
-		player->message = DEH_String(WeaponPickupMessages[std::size_t(weapon)]);
+		// show weapon pickup messages in multiplayer games
+		player->message = DEH_String(WeaponPickupMessages[::std::size_t(weapon)]);
 
 		if (player == &players[consoleplayer])
 		{
@@ -211,25 +210,25 @@ bool P_GiveWeapon(Player* player, WeaponType weapon, bool dropped)
 		return false;
 	}
 
-	if (weaponinfo[std::size_t(weapon)].ammo != AmmoType::am_noammo)
+	if (weaponinfo[::std::size_t(weapon)].ammo != AmmoType::am_noammo)
 	{
 		// give one clip with a dropped weapon, two clips with a found weapon
 		// Just need to pass that it's dropped.
-		gaveammo = P_GiveAmmo(player, weaponinfo[std::size_t(weapon)].ammo, 2, dropped);
+		gaveammo = P_GiveAmmo(player, weaponinfo[::std::size_t(weapon)].ammo, 2, dropped);
 	}
 	else
 	{
 		gaveammo = false;
 	}
 
-	if (player->weaponowned[std::size_t(weapon)])
+	if (player->weaponowned[::std::size_t(weapon)])
 	{
 		gaveweapon = false;
 	}
 	else
 	{
 		gaveweapon = true;
-		player->weaponowned[std::size_t(weapon)] = true;
+		player->weaponowned[::std::size_t(weapon)] = true;
 		player->pendingweapon = weapon;
 	}
 
@@ -276,55 +275,55 @@ bool P_GiveArmor(Player* player, int armortype)
 
 void P_GiveCard(Player* player, CardType card)
 {
-	if (player->cards[std::size_t(card)])
+	if (player->cards[::std::size_t(card)])
 	{
 		return;
 	}
 
-	player->bonuscount += netgame ? BONUSADD : 0; // [crispy] Fix "Key pickup resets palette"
-	player->cards[std::size_t(card)] = 1;
+	player->bonuscount += netgame ? BONUSADD : 0; // Fix "Key pickup resets palette"
+	player->cards[::std::size_t(card)] = 1;
 }
 
 bool P_GivePower(Player* player, PowerType_t power)
 {
 	if (power == PowerType_t::pw_invulnerability)
 	{
-		player->powers[std::size_t(power)] = PowerDuration_t::INVULNTICS;
+		player->powers[::std::size_t(power)] = PowerDuration_t::INVULNTICS;
 		return true;
 	}
 
 	if (power == PowerType_t::pw_invisibility)
 	{
-		player->powers[std::size_t(power)] = PowerDuration_t::INVISTICS;
+		player->powers[::std::size_t(power)] = PowerDuration_t::INVISTICS;
 		player->flags |= mobjflag_e::MF_SHADOW;
 		return true;
 	}
 
 	if (power == PowerType_t::pw_infrared)
 	{
-		player->powers[std::size_t(power)] = PowerDuration_t::INFRATICS;
+		player->powers[::std::size_t(power)] = PowerDuration_t::INFRATICS;
 		return true;
 	}
 
 	if (power == PowerType_t::pw_ironfeet)
 	{
-		player->powers[std::size_t(power)] = PowerDuration_t::IRONTICS;
+		player->powers[::std::size_t(power)] = PowerDuration_t::IRONTICS;
 		return true;
 	}
 
 	if (power == PowerType_t::pw_strength)
 	{
 		P_GiveBody(player, 100);
-		player->powers[std::size_t(power)] = 1;
+		player->powers[::std::size_t(power)] = 1;
 		return true;
 	}
 
-	if (player->powers[std::size_t(power)])
+	if (player->powers[::std::size_t(power)])
 	{
 		return false;	// already got it
 	}
 
-	player->powers[std::size_t(power)] = 1;
+	player->powers[::std::size_t(power)] = 1;
 	return true;
 }
 
@@ -434,7 +433,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		// cards
 		// leave cards for everyone
 	case spritenum_t::SPR_BKEY:
-		if (!player->cards[std::size_t(CardType::it_bluecard)])
+		if (!player->cards[::std::size_t(CardType::it_bluecard)])
 		{
 			player->message = DEH_String(GOTBLUECARD);
 		}
@@ -446,7 +445,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		return;
 
 	case spritenum_t::SPR_YKEY:
-		if (!player->cards[std::size_t(CardType::it_yellowcard)])
+		if (!player->cards[::std::size_t(CardType::it_yellowcard)])
 		{
 			player->message = DEH_String(GOTYELWCARD);
 		}
@@ -458,7 +457,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		return;
 
 	case spritenum_t::SPR_RKEY:
-		if (!player->cards[std::size_t(CardType::it_redcard)])
+		if (!player->cards[::std::size_t(CardType::it_redcard)])
 		{
 			player->message = DEH_String(GOTREDCARD);
 		}
@@ -470,7 +469,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		return;
 
 	case spritenum_t::SPR_BSKU:
-		if (!player->cards[std::size_t(CardType::it_blueskull)])
+		if (!player->cards[::std::size_t(CardType::it_blueskull)])
 		{
 			player->message = DEH_String(GOTBLUESKUL);
 		}
@@ -482,7 +481,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		return;
 
 	case spritenum_t::SPR_YSKU:
-		if (!player->cards[std::size_t(CardType::it_yellowskull)])
+		if (!player->cards[::std::size_t(CardType::it_yellowskull)])
 		{
 			player->message = DEH_String(GOTYELWSKUL);
 		}
@@ -494,7 +493,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		return;
 
 	case spritenum_t::SPR_RSKU:
-		if (!player->cards[std::size_t(CardType::it_redskull)])
+		if (!player->cards[::std::size_t(CardType::it_redskull)])
 		{
 			player->message = DEH_String(GOTREDSKULL);
 		}
@@ -610,7 +609,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		break;
 
 		// ammo
-		// [NS] Give half ammo for drops of all types.
+		// Give half ammo for drops of all types.
 	case spritenum_t::SPR_CLIP:
 		/*
 		if (special->flags & mobjflag_e::MF_DROPPED)
@@ -690,13 +689,13 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 	case spritenum_t::SPR_BPAK:
 		if (!player->backpack)
 		{
-			for (i = 0; i < std::size_t(AmmoType::NUMAMMO); ++i)
+			for (i = 0; i < ::std::size_t(AmmoType::NUMAMMO); ++i)
 			{
 				player->maxammo[i] *= 2;
 			}
 			player->backpack = true;
 		}
-		for (i = 0; i < std::size_t(AmmoType::NUMAMMO); ++i)
+		for (i = 0; i < ::std::size_t(AmmoType::NUMAMMO); ++i)
 		{
 			P_GiveAmmo(player, i, 1, false);
 		}
@@ -704,7 +703,7 @@ void P_TouchSpecialThing(MapObject* special, MapObject* toucher)
 		break;
 
 		// weapons
-		// [NS] Give half ammo for all dropped weapons.
+		// Give half ammo for all dropped weapons.
 	case spritenum_t::SPR_BFUG:
 		if (!P_GiveWeapon(player, WeaponType::wp_bfg, dropped))
 		{
@@ -829,22 +828,21 @@ void P_KillMobj(MapObject* source, MapObject* target)
 		target->flags &= ~mobjflag_e::MF_SOLID;
 		target->player->playerstate = PlayerState::dead;
 		P_DropWeapon(target->player);
-		// [crispy] center view when dying
+		// center view when dying
 		target->player->centering = true;
-		// [JN] & [crispy] Reset the yellow bonus palette when the player dies
+		// Reset the yellow bonus palette when the player dies
 		target->player->bonuscount = 0;
-		// [JN] & [crispy] Remove the effect of the inverted palette when the player dies
-		target->player->fixedcolormap = target->player->powers[std::size_t(PowerType_t::pw_infrared)] ? 1 : 0;
+		// Remove the effect of the inverted palette when the player dies
+		target->player->fixedcolormap = target->player->powers[::std::size_t(PowerType_t::pw_infrared)] ? 1 : 0;
 
 		if (target->player == &players[consoleplayer] && automapactive)
 		{
-			// don't die in auto map,
-			// switch view prior to dying
+			// don't die in auto map, switch view prior to dying
 			AM_Stop();
 		}
 	}
 
-	// [crispy] Lost Soul, Pain Elemental and Barrel explosions are translucent
+	// Lost Soul, Pain Elemental and Barrel explosions are translucent
 	if (target->type == mobjtype_t::MT_SKULL || target->type == mobjtype_t::MT_PAIN || target->type == mobjtype_t::MT_BARREL)
 	{
 		target->flags |= mobjflag_e::MF_TRANSLUCENT;
@@ -861,7 +859,7 @@ void P_KillMobj(MapObject* source, MapObject* target)
 
 	target->tics -= P_Random() & 3;
 
-	// [crispy] randomly flip corpse, blood and death animation sprites
+	// randomly flip corpse, blood and death animation sprites
 	if (target->flags & mobjflag_e::MF_FLIPPABLE)
 	{
 		target->health = (target->health & (int)~1) - (Crispy_Random() & 1);
@@ -884,7 +882,7 @@ void P_KillMobj(MapObject* source, MapObject* target)
 	// Drop stuff.
 	// This determines the kind of object spawned
 	// during the death frame of a thing.
-	if (target->info->droppeditem != mobjtype_t::MT_NULL) // [crispy] drop generalization
+	if (target->info->droppeditem != mobjtype_t::MT_NULL) // drop generalization
 	{
 		item = target->info->droppeditem;
 	}
@@ -966,7 +964,7 @@ void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, in
 
 		// Below certain threshold,
 		// ignore damage in GOD mode, or with INVUL power.
-		if (damage < 1000 && ((player->cheats & CheatType::CF_GODMODE) || player->powers[std::size_t(PowerType_t::pw_invulnerability)]))
+		if (damage < 1000 && ((player->cheats & CheatType::CF_GODMODE) || player->powers[::std::size_t(PowerType_t::pw_invulnerability)]))
 		{
 			return;
 		}
@@ -1045,7 +1043,7 @@ void P_DamageMobj(MapObject* target, MapObject* inflictor, MapObject* source, in
 		// chase after this one
 		target->target = source;
 		target->threshold = BASETHRESHOLD;
-		if (target->state == &states[std::size_t(target->info->spawnstate)] && target->info->seestate != statenum_t::S_NULL)
+		if (target->state == &states[::std::size_t(target->info->spawnstate)] && target->info->seestate != statenum_t::S_NULL)
 		{
 			P_SetMobjState(target, target->info->seestate);
 		}

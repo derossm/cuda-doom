@@ -35,7 +35,7 @@ int snd_cachesize = 64 * 1024 * 1024;
 int snd_maxslicetime_ms = 28;
 
 // External command to invoke to play back music.
-std::string snd_musiccmd = "";
+::std::string snd_musiccmd = "";
 
 // Whether to vary the pitch of sound effects; Each game will set the default differently
 int snd_pitchshift = -1;
@@ -66,8 +66,8 @@ extern opl_driver_ver_t opl_drv_ver;
 extern int opl_io_port;
 
 // For native music module:
-extern std::string music_pack_path;
-extern std::string timidity_cfg_path;
+extern ::std::string music_pack_path;
+extern ::std::string timidity_cfg_path;
 
 // DOS-specific options: These are unused but should be maintained so that the config file can be shared between chocolate doom and doom.exe
 static int snd_sbport = 0;
@@ -200,9 +200,9 @@ void I_InitSound(bool use_sfx_prefix)
 			music_packs_active = music_pack_module.Init();
 		}
 	}
-	// [crispy] print the SDL audio backend
+	// print the SDL audio backend
 	{
-		std::string driver_name = SDL_GetCurrentAudioDriver();
+		::std::string driver_name = SDL_GetCurrentAudioDriver();
 
 		fprintf(stderr, "I_InitSound: SDL audio driver is %s\n", !driver_name.empty() ? driver_name.c_str() : "none");
 	}
@@ -421,7 +421,7 @@ bool I_MusicIsPlaying()
 
 void I_BindSoundVariables()
 {
-	extern std::string snd_dmxoption;
+	extern ::std::string snd_dmxoption;
 	extern int use_libsamplerate;
 	extern float libsamplerate_scale;
 

@@ -8,18 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
 
 #include <string>
 
 #include "txt_common.h"
 #include "txt_widget.h"
-
-//#include "txt_main.h"
-//#include "txt_utf8.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -32,7 +25,7 @@ namespace cudadoom::txt
 class Label : public Widget<Label>
 {
 	//Widget widget;
-	std::string label;
+	::std::string label;
 	char** lines;
 	unsigned w;
 	unsigned h;
@@ -95,7 +88,7 @@ public:
  * @param label			String to display in the widget (UTF-8 format).
  * @return				Pointer to the new label widget.
  */
-//txt_label_t* NewLabel(std::string label);
+//txt_label_t* NewLabel(::std::string label);
 
 /**
  * Set the string displayed in a label widget.
@@ -103,7 +96,7 @@ public:
  * @param label			The widget.
  * @param value			The string to display (UTF-8 format).
  */
-//void SetLabel(txt_label_t* label, std::string value);
+//void SetLabel(txt_label_t* label, ::std::string value);
 
 /**
  * Set the background color of a label widget.
@@ -216,9 +209,9 @@ WidgetClass txt_label_class =
 	NULL,
 };
 
-void SetLabel(txt_label_t* label, std::string value)
+void SetLabel(txt_label_t* label, ::std::string value)
 {
-	std::string p;
+	::std::string p;
 	unsigned y;
 
 	// Free back the old label
@@ -271,7 +264,7 @@ void SetLabel(txt_label_t* label, std::string value)
 	}
 }
 
-txt_label_t* NewLabel(std::string text)
+txt_label_t* NewLabel(::std::string text)
 {
 	txt_label_t* label;
 
@@ -301,4 +294,4 @@ void SetBGColor(txt_label_t* label, ColorType color)
 	label->bgcolor = color;
 }
 /**/
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

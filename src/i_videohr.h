@@ -18,7 +18,7 @@
 
 bool I_SetVideoModeHR();
 void I_UnsetVideoModeHR();
-void I_SetWindowTitleHR(std::string title);
+void I_SetWindowTitleHR(::std::string title);
 void I_ClearScreenHR();
 void I_SlamBlockHR(int x, int y, int w, int h, const byte* src);
 void I_SlamHR(const byte* buffer);

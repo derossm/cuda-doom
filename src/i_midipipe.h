@@ -25,7 +25,7 @@
 extern bool midi_server_initialized;
 extern bool midi_server_registered;
 
-bool I_MidiPipe_RegisterSong(std::string filename);
+bool I_MidiPipe_RegisterSong(::std::string filename);
 void I_MidiPipe_UnregisterSong();
 void I_MidiPipe_SetVolume(int vol);
 void I_MidiPipe_PlaySong(int loops);

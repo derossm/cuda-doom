@@ -1,8 +1,8 @@
 /**********************************************************************************************************************************************\
-	[Doom]
+	Doom
 	Copyright(C) 1993-1996 Id Software, Inc.
 
-	[textscreen]
+	textscreen
 	Copyright(C) 2005-2014 Simon Howard
 
 	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -13,7 +13,7 @@
 
 	------------------------------------------------------------
 	Any new code or derivations not subject to prior copyrights:
-		Copyright(C) 2021 Mason DeRoss
+		Copyright© 2020-2021 Mason DeRoss
 
 		Released under the GNU All-permissive License
 
@@ -24,276 +24,12 @@
 
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
 
 #include <string>
 
-namespace cudadoom::txt
-{
-
-enum class AlignVertical
-{
-	top,
-	center,
-	bottom
-};
-
-enum class AlignHorizontal
-{
-	left,
-	center,
-	right
-};
-
-template<class T>
-class WidgetClass;
-
-template<class T>
-class Widget;
-
-template<class T>
-class Table;
-
-template<typename T>
-class InputBox;
-
-class Window;
-
-class Button;
-class CheckBox;
-class Conditional;
-class DropDownList;
-class FileSelect;
-
-class Label;
-class RadioButton;
-class ScrollPane;
-class Separator;
-class SpinControl;
-class Strut;
-class WindowAction;
-
-using point_t = long double;
-using UserData = void*;
-
-class DepType {};
-
-template<typename T, typename U>
-class StrongType
-{
-	T value;
-public:
-	explicit StrongType(const T& _val) noexcept : value{_val} {}
-	T get() { return value; }
-
-	auto operator<=>(const StrongType<T, U>&) const = default;
-
-	StrongType<T, U>& operator=(const StrongType<T, U>& other)
-	{
-		if (this != &other)
-		{
-			value = other.value;
-		}
-
-		return *this;
-	}
-
-	inline bool operator==(const T& rhs) const noexcept { return (value == rhs) == 0; }
-	inline bool operator!=(const T& rhs) const noexcept { return (value != rhs) != 0; }
-	inline bool operator< (const T& rhs) const noexcept { return (value <  rhs) <  0; }
-	inline bool operator> (const T& rhs) const noexcept { return (value >  rhs) >  0; }
-	inline bool operator<=(const T& rhs) const noexcept { return (value <= rhs) <= 0; }
-	inline bool operator>=(const T& rhs) const noexcept { return (value >= rhs) >= 0; }
-
-	friend inline bool operator==(const T& lhs, const StrongType<T, U>& rhs) noexcept;
-	friend inline bool operator!=(const T& lhs, const StrongType<T, U>& rhs) noexcept;
-	friend inline bool operator< (const T& lhs, const StrongType<T, U>& rhs) noexcept;
-	friend inline bool operator> (const T& lhs, const StrongType<T, U>& rhs) noexcept;
-	friend inline bool operator<=(const T& lhs, const StrongType<T, U>& rhs) noexcept;
-	friend inline bool operator>=(const T& lhs, const StrongType<T, U>& rhs) noexcept;
-
-	StrongType<T, U>& operator=(const T& other)
-	{
-		if constexpr (std::is_class<T>::value == true)
-		{	if constexpr (std::is_base_of_v<StrongType<T,U>, T>::value == true)
-			{
-				if (this != &other)
-				{
-					value = other.value;
-				}
-
-				return *this;
-			}
-		}
-
-		value = other;
-
-		return *this;
-	}
-};
-
-template<typename T, typename U>
-inline bool operator==(const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs == rhs.value) == 0; }
-template<typename T, typename U>
-inline bool operator!=(const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs != rhs.value) != 0; }
-template<typename T, typename U>
-inline bool operator< (const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs <  rhs.value) <  0; }
-template<typename T, typename U>
-inline bool operator> (const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs >  rhs.value) >  0; }
-template<typename T, typename U>
-inline bool operator<=(const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs <= rhs.value) <= 0; }
-template<typename T, typename U>
-inline bool operator>=(const T& lhs, const StrongType<T, U>& rhs) noexcept { return (lhs >= rhs.value) >= 0; }
-
-struct KeyType {};
-struct MouseType {};
-
-using Key = StrongType<int, KeyType>;
-using MouseButton = StrongType<int, MouseType>;
-
-struct Vec2
-{
-	point_t x;
-	point_t y;
-};
-
-struct Vec3
-{
-	point_t x;
-	point_t y;
-	point_t z;
-};
-
-struct KeyEvent
-{
-	Key key;
-};
-
-struct MouseEvent
-{
-	int button;
-	float x;
-	float y;
-};
-
-class CallbackEntry
-{
-private:
-	//UserData user;
-	//std::function<void(UserData)> handle;
-	std::string signal;
-
-	//CallbackEntry() = delete;
-
-	// do not copy
-	//CallbackEntry(const CallbackEntry& rhs) = delete;
-	//CallbackEntry& operator=(const CallbackEntry& rhs) = delete;
-
-public:
-	//CallbackEntry(std::string _signal, std::function<void(UserData)> _handle, UserData _user) noexcept
-		//: signal(std::move(_signal)), handle(std::move(_handle)), user(std::move(_user))
-	//{}
-
-	//CallbackEntry(CallbackEntry&& rhs) noexcept : signal(std::move(rhs.signal)), handle(std::move(rhs.handle)), user(std::move(rhs.user))
-	//{}
+#include "../derma/strongtype.h"
+#include "txt_callback.h"
 /*
-	std::function<void(UserData)> findByName(std::string& _signal)
-	{
-		if (signal.compare(_signal))
-		{
-			return handle;
-		}
-		else
-		{
-			return nullptr;
-		}
-	}
-*/
-	//CallbackEntry& operator=(CallbackEntry&& rhs) noexcept
-	//{
-		//signal = std::move(rhs.signal);
-		//handle = std::move(rhs.handle);
-		//user = std::move(rhs.user);
-		//return *this;
-	//}
-
-	//~CallbackEntry() = default;
-
-};
-
-class CallbackTable
-{
-private:
-	//std::vector<CallbackEntry> callbacks;
-
-	//CallbackTable(CallbackTable&&) = delete;
-	//CallbackTable& operator=(CallbackTable&&) = delete;
-
-	//CallbackTable(const CallbackTable&) = delete;
-	//CallbackTable& operator=(const CallbackTable&) = delete;
-
-public:
-	// reserve callbacks in contiguous memory
-	//CallbackTable() noexcept //: callbacks(32)
-	//{}
-
-	//~CallbackTable() = default;
-
-	//void connect(std::string&& signal, std::function<void(UserData)>&& handle, UserData&& user)
-	//{
-		//callbacks.emplace_back(CallbackEntry(std::move(signal), std::move(handle), std::move(user)));
-	//}
-
-	/*std::function<void(UserData)> get(std::string& signal)
-	{
-		for (auto& iter : callbacks)
-		{
-			if (auto ptr = iter.findByName(signal); ptr)
-			{
-				return ptr;
-			}
-		}
-
-		return nullptr;
-	}*/
-
-	size_t size()
-	{
-		//return callbacks.size();
-	}
-};
-
-template<typename T>
-class WidgetClass
-{
-public:
-	//std::function<bool(void)> Selectable;
-	//std::function<void(void)> CalculateSize;
-	//std::function<void(void)> Draw;
-	//std::function<bool(KeyType)> KeyPress;
-	//std::function<bool(MouseEvent)> MousePress;
-	//std::function<void(void)> SetLayout;
-	//std::function<void(bool)> SetFocus;
-	//std::function<void(void)> Destroy;
-
-	using Type = T;
-};
-
-// static WidgetClass txt_widget_class
-//{
-//	Selectable,
-//	CalculateSize,
-//	Draw,
-//	KeyPress,
-//	MousePress,
-//	SetLayout,
-//	SetFocus,
-//	Destroy
-//};
-
-}
-
 //---------------------------------------------------------------------------
 // txt_main.h
 //---------------------------------------------------------------------------
@@ -327,3 +63,210 @@ public:
 
 // Indicates empty space to AddWidgets(). Equivalent to AddWidget(table, NULL), except AddWidgets() uses NULL for end of input.
 //#define TABLE_EMPTY (&txt_table_empty)
+
+// For the moment, txt_sdl.cpp is the only implementation of the base text mode screen API:
+
+// textscreen key values:
+// Key values are difficult because we have to support multiple conflicting address spaces.
+// First, Doom's key constants use 0-127 as ASCII and extra values from 128-255 to represent special keys.
+// Second, mouse buttons are represented as buttons. Finally, we want to be able to support Unicode.
+
+// So we define different ranges:
+// 0-255:	Doom key constants, including ASCII.
+// 256-511:	Mouse buttons and other reserved.
+// >=512:	Unicode values greater than 127 are offset up into this range.
+// Special keypress values that correspond to mouse button clicks
+
+//#ifdef HELP_KEY
+//#undef HELP_KEY
+//#endif
+//constexpr size_t HELP_KEY{KEY_F1};
+//typedef void (*TxtIdleCallback)(void* user_data);
+
+*/
+
+namespace cudadoom::txt
+{
+
+//========================================
+// Forward Declarations
+template<class T>
+class WidgetClass;
+
+template<class T, class U>
+class Widget;
+
+	// is-a Widget
+	template<class T>
+	class TableBase;
+		// is-a TableBase
+		class Table;
+		class Window;
+
+	// is-a Widget
+	template<class T>
+	class InputBase;
+		// is-a InputBase
+		class InputBox;
+		class FileSelect;
+
+	// is-a Widget
+	class Button;
+	class CheckBox;
+	class Conditional;
+	class DropDownList;
+	class Label;
+	class RadioButton;
+	class ScrollPane;
+	class Separator;
+	class SpinControl;
+	class Strut;
+	class WindowAction;
+
+//========================================
+// Textscreen Constants
+constexpr short MOUSE_BASE{256};
+constexpr short MOUSE_LEFT{MOUSE_BASE + 0};
+constexpr short MOUSE_RIGHT{MOUSE_BASE + 1};
+constexpr short MOUSE_MIDDLE{MOUSE_BASE + 2};
+constexpr short MOUSE_SCROLLUP{MOUSE_BASE + 3};
+constexpr short MOUSE_SCROLLDOWN{MOUSE_BASE + 4};
+constexpr short MAX_MOUSE_BUTTONS{32};
+
+// Unicode offset. Unicode values from 128 onwards are offset up into this range, so UNICODE_BASE = Unicode character #128, and so on.
+constexpr short UNICODE_BASE{512};
+
+// Array of border characters for drawing windows. The array looks like this:
+
+// +-++
+// | ||
+// +-++
+// +-++
+constexpr uint8_t borders[4][4] =
+{
+	{0xda, 0xc4, 0xc2, 0xbf},
+	{0xb3, ' ', 0xb3, 0xb3},
+	{0xc3, 0xc4, 0xc5, 0xb4},
+	{0xc0, 0xc4, 0xc1, 0xd9},
+};
+
+constexpr uint8_t SCROLLBAR_VERTICAL{(1 << 0)};
+constexpr uint8_t SCROLLBAR_HORIZONTAL{(1 << 1)};
+
+//========================================
+// THESE SHOULD BE DYNAMIC REFACTOR FIXME
+// Screen size
+constexpr short SCREEN_W{80};
+constexpr short SCREEN_H{25};
+
+// Time between character blinks in ms
+constexpr short BLINK_PERIOD{250};
+constexpr short LARGE_FONT_THRESHOLD{144};
+constexpr short COLOR_BLINKING{8};
+
+constexpr size_t MAXWINDOWS{128};
+
+constexpr ColorType INACTIVE_WINDOW_BACKGROUND{ColorType::black};
+constexpr ColorType ACTIVE_WINDOW_BACKGROUND{ColorType::blue};
+constexpr ColorType HOVER_BACKGROUND{ColorType::cyan};
+//----------------------------------------
+
+//========================================
+// enums
+enum class ColorType
+{
+	black,
+	blue,
+	green,
+	cyan,
+	red,
+	magenta,
+	brown,
+	grey,
+	dark_grey,
+	bright_blue,
+	bright_green,
+	bright_cyan,
+	bright_red,
+	bright_magenta,
+	yellow,
+	bright_white
+};
+
+// Modifier keys.
+enum class ModifierType
+{
+	shift,
+	ctrl,
+	alt
+};
+
+// Due to the way the SDL API works, we provide different ways of configuring how we read input events, each of which is useful in different scenarios.
+enum class InputType
+{
+	// "Localized" output that takes software keyboard layout into account, but key shifting has no effect.
+	normal,
+	// "Raw" input; the keys correspond to physical keyboard layout and software keyboard layout has no effect.
+	raw,
+	// Used for full text input. Events are fully shifted and localized. However, not all keyboard keys will generate input.
+	// Setting this mode may activate the on-screen keyboard, depending on device and OS.
+	text
+};
+
+enum class AlignVertical
+{
+	top,
+	center,
+	bottom
+};
+
+enum class AlignHorizontal
+{
+	left,
+	center,
+	right
+};
+
+//========================================
+// Types and Aliases
+using point_t = long double;
+using UserData = void*;
+
+struct KeyType {};
+struct MouseType {};
+
+using Key = StrongType<int, KeyType>;
+using MouseButton = StrongType<int, MouseType>;
+
+struct Vec2
+{
+	point_t x;
+	point_t y;
+};
+
+struct Vec3
+{
+	point_t x;
+	point_t y;
+	point_t z;
+};
+
+struct KeyEvent
+{
+	Key key;
+};
+
+struct MouseEvent
+{
+	int button;
+	float x;
+	float y;
+};
+
+struct SavedColors
+{
+	ColorType backgroundColor;
+	ColorType foregroundColor;
+};
+
+} // end namespace cudadoom::txt

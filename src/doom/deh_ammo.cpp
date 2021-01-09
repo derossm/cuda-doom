@@ -20,7 +20,7 @@
 #include "deh_main.h"
 #include "p_local.h"
 
-static void* DEH_AmmoStart(deh_context_t* context, std::string line)
+static void* DEH_AmmoStart(deh_context_t* context, ::std::string line)
 {
 	int ammo_number = 0;
 
@@ -39,9 +39,9 @@ static void* DEH_AmmoStart(deh_context_t* context, std::string line)
 	return &maxammo[ammo_number];
 }
 
-static void DEH_AmmoParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_AmmoParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
-	std::string variable_name;
+	::std::string variable_name;
 	char* value;
 	int ivalue;
 	int ammo_number;
@@ -80,7 +80,7 @@ static void DEH_AmmoParseLine(deh_context_t* context, std::string line, void* ta
 
 static void DEH_AmmoSHA1Hash(sha1_context_t* context)
 {
-	for (size_t i{0}; i < std::size_t(AmmoType::NUMAMMO); ++i)
+	for (size_t i{0}; i < ::std::size_t(AmmoType::NUMAMMO); ++i)
 	{
 		SHA1_UpdateInt32(context, clipammo[i]);
 		SHA1_UpdateInt32(context, maxammo[i]);

@@ -23,7 +23,7 @@
 #include "hu_lib.h"
 #include "r_local.h"
 #include "r_draw.h"
-#include "v_trans.h" // [crispy] colored HUlib_drawTextLine()
+#include "v_trans.h" // colored HUlib_drawTextLine()
 
 // bool : whether the screen is always erased
 #define noterased viewwindowx
@@ -88,11 +88,11 @@ void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor)
 
 	// draw the new stuff
 	x = l->x;
-	y = l->y; // [crispy] support line breaks
+	y = l->y; // support line breaks
 	for (i = 0;i < l->len; ++i)
 	{
 		c = toupper(l->l[i]);
-		// [crispy] support multi-colored text lines
+		// support multi-colored text lines
 		if (c == cr_esc)
 		{
 			if (l->l[i + 1] >= '0' && l->l[i + 1] <= '0' + CRMAX - 1)
@@ -102,7 +102,7 @@ void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor)
 			}
 		}
 		else
-			// [crispy] support line breaks
+			// support line breaks
 			if (c == '\n')
 			{
 				x = l->x;
@@ -150,7 +150,7 @@ void HUlib_eraseTextLine(hu_textline_t* l)
 		viewwindowx && (l->needsupdate || crispy->cleanscreenshot || crispy->screenshotmsg == 4))
 	{
 		lh = (SHORT(l->f[0]->height) + 1) << crispy->hires;
-		// [crispy] support line breaks
+		// support line breaks
 		yoffset = 1;
 		for (y = 0; y < l->len; ++y)
 		{
@@ -209,7 +209,7 @@ void HUlib_addLineToSText(hu_stext_t* s)
 
 }
 
-void HUlib_addMessageToSText(hu_stext_t* s, std::string prefix, std::string msg)
+void HUlib_addMessageToSText(hu_stext_t* s, ::std::string prefix, ::std::string msg)
 {
 	HUlib_addLineToSText(s);
 	if (prefix)
@@ -297,7 +297,7 @@ void HUlib_resetIText(hu_itext_t* it)
 	HUlib_clearTextLine(&it->l);
 }
 
-void HUlib_addPrefixToIText(hu_itext_t* it, std::string str)
+void HUlib_addPrefixToIText(hu_itext_t* it, ::std::string str)
 {
 	while (*str)
 		HUlib_addCharToTextLine(&it->l, *((str++)));

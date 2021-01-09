@@ -35,7 +35,7 @@ static SDL_Joystick* joystick = nullptr;
 static int usejoystick = 0;
 
 // SDL GUID and index of the joystick to use.
-std::string joystick_guid = "";
+::std::string joystick_guid = "";
 static int joystick_index = -1;
 
 // Which joystick axis to use for horizontal movement, and whether to invert the direction:
@@ -362,7 +362,7 @@ void I_BindJoystickVariables()
 
 	for (size_t i{0}; i < NUM_VIRTUAL_BUTTONS; ++i)
 	{
-		std::string name = std::string("joystick_physical_button" + i);
+		::std::string name = ::std::string("joystick_physical_button" + i);
 		M_BindIntVariable(name.c_str(), &joystick_physical_buttons[i]);
 	}
 }

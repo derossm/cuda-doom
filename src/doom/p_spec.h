@@ -40,7 +40,7 @@ void P_ShootSpecialLine(MapObject* thing, line_t* line);
 
 void P_CrossSpecialLine(int linenum, int side, MapObject* thing);
 
-// [crispy] more MBF code pointers
+// more MBF code pointers
 void P_CrossSpecialLinePtr(line_t* line, int side, MapObject* thing);
 
 void P_PlayerInSpecialSector(Player* player);
@@ -137,7 +137,7 @@ void P_SpawnGlowingLight(sector_t* sector);
 //
 // P_SWITCH
 //
-// [crispy] add PACKEDATTR for reading SWITCHES lumps from memory
+// add PACKEDATTR for reading SWITCHES lumps from memory
 struct switchlist_t
 {
 	char name1[9];

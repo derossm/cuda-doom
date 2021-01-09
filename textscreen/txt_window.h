@@ -8,23 +8,12 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include <string>
 
 #include "txt_common.h"
 #include "txt_widget.h"
 #include "txt_table.h"
-//#include "txt_label.h"
-//#include "txt_separator.h"
-//#include "txt_window_action.h"
-
-//#include "txt_main.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
-//#include "txt_desktop.h"
 
 namespace cudadoom::txt
 {
@@ -52,7 +41,7 @@ public:
 	// Base class: all windows are tables with one column.
 	//Table table;
 
-	std::string title;
+	::std::string title;
 
 	// Screen coordinates of the window
 	AlignVertical verticalAlign;
@@ -60,7 +49,7 @@ public:
 	Vec2 coordinates;
 
 	// Actions that appear in the box at the bottom of the window
-	//std::array<std::unique_ptr<Widget>, 3> actions;
+	//::std::array<::std::unique_ptr<Widget>, 3> actions;
 
 	// Callback functions to invoke when keys/mouse buttons are pressed
 	WindowKeyPress key_listener{nullptr};
@@ -75,9 +64,9 @@ public:
 	unsigned window_h;
 
 	// URL of a webpage with help about this window. If set, a help key indicator is shown while this window is active.
-	std::string help_url;
+	::std::string help_url;
 
-	Window(std::string& _title) noexcept //: title{_title}, coordinates{.x{SCREEN_W / 2}, .y{SCREEN_H / 2}},
+	Window(::std::string& _title) noexcept //: title{_title}, coordinates{.x{SCREEN_W / 2}, .y{SCREEN_H / 2}},
 		//verticalAlign{AlignVertical::center}, horizontalAlign{AlignHorizontal::center},
 		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
@@ -300,7 +289,7 @@ public:
 			DestroyWidget(actions[size_t(position)]);
 		}
 
-		actions[size_t(position)] = std::make_unique(action);
+		actions[size_t(position)] = ::std::make_unique(action);
 
 		// maintain parent pointer
 		//action.parent = &widget;
@@ -352,9 +341,9 @@ public:
 		auto space_left_offset{0};
 
 		// Left action
-		if (actions[std::size_t(AlignHorizontal::left)])
+		if (actions[::std::size_t(AlignHorizontal::left)])
 		{
-			widget = actions[std::size_t(AlignHorizontal::left)];
+			widget = actions[::std::size_t(AlignHorizontal::left)];
 
 			CalcWidgetSize(widget);
 
@@ -369,9 +358,9 @@ public:
 		}
 
 		// Draw the right action
-		if (actions[std::size_t(AlignHorizontal::right)])
+		if (actions[::std::size_t(AlignHorizontal::right)])
 		{
-			widget = actions[std::size_t(AlignHorizontal::right)];
+			widget = actions[::std::size_t(AlignHorizontal::right)];
 
 			CalcWidgetSize(widget);
 
@@ -385,9 +374,9 @@ public:
 		}
 
 		// Draw the center action
-		if (actions[std::size_t(AlignHorizontal::center)])
+		if (actions[::std::size_t(AlignHorizontal::center)])
 		{
-			widget = actions[std::size_t(AlignHorizontal::center)];
+			widget = actions[::std::size_t(AlignHorizontal::center)];
 
 			CalcWidgetSize(widget);
 
@@ -453,21 +442,21 @@ public:
 		mouse_listener_data = _user_data;
 	}
 
-	void SetWindowHelpURL(std::string&& _help_url) noexcept
+	void SetWindowHelpURL(::std::string&& _help_url) noexcept
 	{
-		help_url(std::forward<std::string>(_help_url));
+		help_url(::std::forward<::std::string>(_help_url));
 	}
 
 #ifdef _WIN32
-	void OpenURL(std::string& url) noexcept
+	void OpenURL(::std::string& url) noexcept
 	{
 		ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 	}
 #else
-	void OpenURL(std::string url) noexcept
+	void OpenURL(::std::string url) noexcept
 	{
 		size_t cmd_len = strlen(url) + 30;
-		std::string cmd = static_cast<decltype(cmd)>(malloc(cmd_len));
+		::std::string cmd = static_cast<decltype(cmd)>(malloc(cmd_len));
 
 #if defined(__MACOSX__)
 		snprintf(cmd, cmd_len, "open \"%s\"", url);
@@ -500,7 +489,7 @@ public:
 		}
 	}
 
-	void MessageBox(std::string& title, std::string& message, ...) noexcept
+	void MessageBox(::std::string& title, ::std::string& message, ...) noexcept
 	{
 		Window* window;
 		char buf[256];
@@ -526,7 +515,7 @@ public:
  * @param title		Title to display in the titlebar of the new window (UTF-8 format).
  * @return			Pointer to a new @ref Window structure representing the new window.
  */
-//Window* NewWindow(std::string title);
+//Window* NewWindow(::std::string title);
 
 /**
  * Close a window.
@@ -604,7 +593,7 @@ public:
  * @param message		The message to display in the window (UTF-8 format).
  * @return				The new window.
  */
-//Window* MessageBox(std::string title, std::string message, ...);
+//Window* MessageBox(::std::string title, ::std::string message, ...);
 
 /**
  * Set the help URL for the given window.
@@ -613,7 +602,7 @@ public:
  * @param help_url		String containing URL of the help page for this
  *						window, or NULL to set no help for this window.
  */
-//void SetWindowHelpURL(Window* window, std::string help_url);
+//void SetWindowHelpURL(Window* window, ::std::string help_url);
 
 /**
  * Open the help URL for the given window, if one is set.
@@ -622,4 +611,4 @@ public:
  */
 //void OpenWindowHelpURL(Window* window);
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

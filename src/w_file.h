@@ -24,7 +24,7 @@ struct wad_file_t;
 struct wad_file_class_t
 {
 	// Open a file for reading.
-	wad_file_t* (*OpenFile)(std::string path);
+	wad_file_t* (*OpenFile)(::std::string path);
 
 	// Close the specified file.
 	void (*CloseFile)(wad_file_t* file);
@@ -47,12 +47,12 @@ struct wad_file_t
 	unsigned length;
 
 	// File's location on disk.
-	std::string path; // [crispy] un-const
+	::std::string path; // un-const
 };
 
 // Open the specified file. Returns a pointer to a new wad_file_t
 // handle for the WAD file, or NULL if it could not be opened.
-wad_file_t* W_OpenFile(std::string path);
+wad_file_t* W_OpenFile(::std::string path);
 
 // Close the specified WAD file.
 void W_CloseFile(wad_file_t* wad);

@@ -20,7 +20,7 @@
 
 #include "deh_mapping.h"
 
-static deh_mapping_entry_t* GetMappingEntryByName(deh_context_t* context, deh_mapping_t* mapping, std::string name)
+static deh_mapping_entry_t* GetMappingEntryByName(deh_context_t* context, deh_mapping_t* mapping, ::std::string name)
 {
 	int i;
 
@@ -60,7 +60,7 @@ static void* GetStructField(void* structptr,
 
 // Set the value of a particular field in a structure by name
 bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping,
-	void* structptr, std::string name, int value)
+	void* structptr, ::std::string name, int value)
 {
 	deh_mapping_entry_t* entry;
 	void* location;
@@ -106,7 +106,7 @@ bool DEH_SetMapping(deh_context_t* context, deh_mapping_t* mapping,
 
 // Set the value of a string field in a structure by name
 bool DEH_SetStringMapping(deh_context_t* context, deh_mapping_t* mapping,
-	void* structptr, std::string name, std::string value)
+	void* structptr, ::std::string name, ::std::string value)
 {
 	deh_mapping_entry_t* entry;
 	void* location;

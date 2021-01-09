@@ -8,18 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
 
 #include <string>
 
 #include "txt_common.h"
 #include "txt_widget.h"
-
-//#include "txt_main.h"
-//#include "txt_utf8.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -33,14 +26,41 @@ namespace cudadoom::txt
 class WindowAction : public Widget<WindowAction>
 {
 	int key;
-	std::string label;
+	::std::string label;
 
 public:
 
-	WindowAction(int _key, std::string _label) //: widget_class<WindowAction>{}, key{_key}, label{std::string(_label)},
+	WindowAction(int _key, ::std::string _label) //: widget_class<WindowAction>{}, key{_key}, label{::std::string(_label)},
 		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 	}
+/*
+// An action with the name "close" the closes the window
+WindowAction* NewWindowEscapeAction(Window* window)
+{
+	auto action{WindowAction(KEY_ESCAPE, "Close")};
+	SignalConnect(action, "pressed", WindowCloseCallback, window);
+
+	return action;
+}
+
+// Exactly the same as the above, but the button is named "abort"
+WindowAction* NewWindowAbortAction(Window* window)
+{
+	auto action{WindowAction(KEY_ESCAPE, "Abort")};
+	SignalConnect(action, "pressed", WindowCloseCallback, window);
+
+	return action;
+}
+
+WindowAction* NewWindowSelectAction(Window* window)
+{
+	auto action{WindowAction(KEY_ENTER, "Select")};
+	SignalConnect(action, "pressed", WindowSelectCallback, window);
+
+	return action;
+}
+/**/
 
 	inline bool Selectable() const noexcept override final
 	{
@@ -124,65 +144,5 @@ public:
 		//window->WidgetKeyPress(KEY_ENTER);
 	}
 };
-/*
-// An action with the name "close" the closes the window
-WindowAction* NewWindowEscapeAction(Window* window)
-{
-	auto action{WindowAction(KEY_ESCAPE, "Close")};
-	SignalConnect(action, "pressed", WindowCloseCallback, window);
 
-	return action;
-}
-
-// Exactly the same as the above, but the button is named "abort"
-WindowAction* NewWindowAbortAction(Window* window)
-{
-	auto action{WindowAction(KEY_ESCAPE, "Abort")};
-	SignalConnect(action, "pressed", WindowCloseCallback, window);
-
-	return action;
-}
-
-WindowAction* NewWindowSelectAction(Window* window)
-{
-	auto action{WindowAction(KEY_ENTER, "Select")};
-	SignalConnect(action, "pressed", WindowSelectCallback, window);
-
-	return action;
-}
-/**/
-} // END NAMESPACE cudadoom::txt
-
-/**
- * Create a new window action.
- *
- * @param key			The keyboard key that triggers this action.
- * @param label			Label to display for this action in the tray at the bottom of the window (UTF-8 format).
- * @return				Pointer to the new window action widget.
- */
- //WindowAction* NewWindowAction(int key, std::string label);
-
- /**
-  * Create a new window action that closes the window when the escape key is pressed. The label "Close" is used.
-  *
-  * @param window		The window to close.
-  * @return				Pointer to the new window action widget.
-  */
-  //WindowAction* NewWindowEscapeAction(Window* window);
-
-  /**
-   * Create a new window action that closes the window when the escape key is pressed. The label "Abort" is used.
-   *
-   * @param window		The window to close.
-   * @return				Pointer to the new window action widget.
-   */
-   //WindowAction* NewWindowAbortAction(Window* window);
-
-   /**
-	* Create a new "select" window action. This does not really do anything, but reminds the user that "enter" can be pressed to
-	* activate the currently-selected widget.
-	*
-	* @param window		The window.
-	* @return				Pointer to the new window action widget.
-	*/
-	//WindowAction* NewWindowSelectAction(Window* window);
+} // end namespace cudadoom::txt

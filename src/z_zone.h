@@ -58,7 +58,7 @@ void Z_FreeTags(pu_tags_t lowtag, pu_tags_t hightag);
 void Z_DumpHeap(pu_tags_t lowtag, pu_tags_t hightag);
 void Z_FileDumpHeap(FILE* f);
 void Z_CheckHeap();
-void Z_ChangeTag2(void* ptr, pu_tags_t tag, std::string file, size_t line);
+void Z_ChangeTag2(void* ptr, pu_tags_t tag, ::std::string file, size_t line);
 void Z_ChangeUser(void* ptr, void** user);
 auto Z_FreeMemory();
 auto Z_ZoneSize();
@@ -272,7 +272,7 @@ T& Z_Malloc(size_t size, pu_tags_t tag, void* user)
 			// scanned all the way around the list
 			//I_Error("Z_Malloc: failed on allocation of %i bytes", size);
 
-			// [crispy] allocate another zone twice as big
+			// allocate another zone twice as big
 			Z_Init();
 
 			base = mainzone->rover;
@@ -461,7 +461,7 @@ void Z_CheckHeap()
 	}
 }
 
-void Z_ChangeTag2(void* ptr, pu_tags_t tag, std::string file, size_t line)
+void Z_ChangeTag2(void* ptr, pu_tags_t tag, ::std::string file, size_t line)
 {
 	auto block{(memblock_t*)((byte*)ptr - sizeof(memblock_t))};
 

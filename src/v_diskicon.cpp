@@ -53,7 +53,7 @@ static void CopyRegion(pixel_t* dest, int dest_pitch, pixel_t* src, int src_pitc
 	}
 }
 
-static void SaveDiskData(std::string disk_lump, int xoffs, int yoffs)
+static void SaveDiskData(::std::string disk_lump, int xoffs, int yoffs)
 {
 	// Allocate a complete temporary screen where we'll draw the patch.
 	pixel_t* tmpscreen = Z_Malloc<decltype(tmpscreen)>(SCREENWIDTH * SCREENHEIGHT * sizeof(*tmpscreen), pu_tags_t::PU_STATIC, NULL);
@@ -80,7 +80,7 @@ static void SaveDiskData(std::string disk_lump, int xoffs, int yoffs)
 	Z_Free(tmpscreen);
 }
 
-void V_EnableLoadingDisk(std::string lump_name, int xoffs, int yoffs)
+void V_EnableLoadingDisk(::std::string lump_name, int xoffs, int yoffs)
 {
 	loading_disk_xoffs = xoffs;
 	loading_disk_yoffs = yoffs;

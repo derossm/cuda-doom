@@ -23,21 +23,21 @@
 // TODO ENFORCE DO NOT USE THESE "HANDY" MACROS, TEMP MEASURE CALL LAMBDA TO STD ALGORITHMS
 #ifndef MIN
 	//#define MIN(a,b) (((a)<(b))?(a):(b))
-#	define MIN(a,b) [](auto x, auto y){return std::min(x, y);}(a, b)
+#	define MIN(a,b) [](auto x, auto y){return ::std::min(x, y);}(a, b)
 #endif
 #ifndef MAX
 	//#define MAX(a,b) (((a)>(b))?(a):(b))
-#define MAX(a,b) [](auto x, auto y){return std::max(x, y);}(a, b)
+#define MAX(a,b) [](auto x, auto y){return ::std::max(x, y);}(a, b)
 #endif
 #ifndef BETWEEN
 	//#define BETWEEN(l,u,x) (((l)>(x))?(l):((x)>(u))?(u):(x))
-#define BETWEEN(l,u,x) [](auto v, auto lo, auto hi){return std::clamp(v, lo, hi);}(x, l, u)
+#define BETWEEN(l,u,x) [](auto v, auto lo, auto hi){return ::std::clamp(v, lo, hi);}(x, l, u)
 #endif
 
 struct crispy_t
 {
-	std::string havenerve;
-	std::string havemaster;
+	::std::string havenerve;
+	::std::string havemaster;
 
 	void (*post_rendering_hook) ();
 
@@ -104,19 +104,19 @@ struct crispy_t
 	bool singleplayer{true};
 	bool stretchsky{false};
 
-	std::string sdlversion{};
-	std::string platform{};
+	::std::string sdlversion{};
+	::std::string platform{};
 };
 
-// [crispy] "regular" config variables
+// "regular" config variables
 static crispy_t crispy_s{};
 crispy_t* const crispy = &crispy_s;
 
-// [crispy] "critical" config variables
+// "critical" config variables
 static const crispy_t critical_s{0};
 const crispy_t* critical = &critical_s;
 
-// [crispy] update the "singleplayer" variable and the "critical" struct
+// update the "singleplayer" variable and the "critical" struct
 void CheckCrispySingleplayer(bool singleplayer)
 {
 	if ((crispy->singleplayer = singleplayer))

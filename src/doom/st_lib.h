@@ -59,7 +59,7 @@ struct st_percent_t
 	// percent sign graphic
 	patch_t* p;
 
-	// [crispy] remember previous colorization
+	// remember previous colorization
 	byte* oldtranslation;
 };
 

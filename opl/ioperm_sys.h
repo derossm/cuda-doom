@@ -58,7 +58,7 @@ using SC_CallbackPtr = SC_HANDLE*;
 
 struct DLLFunctions
 {
-	std::string name;
+	::std::string name;
 	SC_CallbackPtr fn;
 };
 

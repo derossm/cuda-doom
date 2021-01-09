@@ -29,7 +29,7 @@ constexpr size_t ST_Y{(ORIGHEIGHT - ST_HEIGHT)};
 
 constexpr size_t CRISPY_HUD{12};
 
-// [crispy] Demo Timer widget
+// Demo Timer widget
 extern void ST_DrawDemoTimer(const TimeType time);
 extern TimeType defdemotics;
 extern TimeType deftotaldemotics;
@@ -53,7 +53,7 @@ void ST_Start();
 // Called by startup code.
 void ST_Init();
 
-// [crispy] forcefully initialize the status bar backing screen
+// forcefully initialize the status bar backing screen
 extern void ST_refreshBackground(bool force);
 
 // States for status bar code.

@@ -236,7 +236,7 @@ static void TXT_JoystickInputSizeCalc(TXT_UNCAST_ARG(joystick_input))
 	joystick_input->widget.h = 1;
 }
 
-static void GetJoystickButtonDescription(int vbutton, std::string buf,
+static void GetJoystickButtonDescription(int vbutton, ::std::string buf,
 	size_t buf_len)
 {
 	M_snprintf(buf, buf_len, "BUTTON #%i",

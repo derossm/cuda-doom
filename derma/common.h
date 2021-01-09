@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************\
-	Copyright(C) 2020 Mason DeRoss
+	Copyright© 2020-2021 Mason DeRoss
 
 	Released under the GNU All-permissive License
 
@@ -14,15 +14,15 @@
 #include <string>
 #include <cctype>
 
-using byte = uint8_t;
+using byte = ::std::byte;
 
 using TimeType = uint64_t;
 
 using CHAR_PTR = const char*;
 
-bool iequals(const std::string& lhs, const std::string& rhs)
+bool iequals(const ::std::string& lhs, const ::std::string& rhs)
 {
-	return std::equal(lhs.begin(), lhs.end(), rhs.begin(),
+	return ::std::equal(lhs.begin(), lhs.end(), rhs.begin(),
 		[](char l, char r)
 		{
 			return tolower(l) == tolower(r);

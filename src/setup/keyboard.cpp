@@ -155,15 +155,15 @@ static void KeySetCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNC
 
 // Add a label and keyboard input to the specified table.
 
-static void AddKeyControl(cudadoom::txt::Table* table, std::string name, int* var)
+static void AddKeyControl(cudadoom::txt::Table* table, ::std::string name, int* var)
 {
-	table->AddWidget(std::make_unique<cudadoom::txt::Label>(name));
-	table->AddWidget(std::make_unique<cudadoom::txt::txt_key_input_t>(var));
+	table->AddWidget(::std::make_unique<cudadoom::txt::Label>(name));
+	table->AddWidget(::std::make_unique<cudadoom::txt::txt_key_input_t>(var));
 
 	cudadoom::txt::SignalConnect(key_input, "set", KeySetCallback, var);
 }
 
-static void AddSectionLabel(cudadoom::txt::UNCAST_ARG(table), std::string title,
+static void AddSectionLabel(cudadoom::txt::UNCAST_ARG(table), ::std::string title,
 	bool add_space)
 {
 	cudadoom::txt::CAST_ARG(cudadoom::txt::txt_table_t, table);
@@ -337,10 +337,10 @@ static void ConfigExtraKeys(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 
 static void OtherKeysDialog(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAST_ARG(unused))
 {
-	auto window = std::make_unique<cudadoom::txt::Window>("Other keys");
+	auto window = ::std::make_unique<cudadoom::txt::Window>("Other keys");
 	window->SetWindowHelpURL(WINDOW_HELP_URL);
 
-	auto table = std::make_unique<cudadoom::txt::Table>(2);
+	auto table = ::std::make_unique<cudadoom::txt::Table>(2);
 
 	table->SetColumnWidths(25, 9);
 
@@ -415,7 +415,7 @@ static void OtherKeysDialog(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UN
 		table->AddKeyControl("- to player 8", &key_multi_msgplayer[7]);
 	}
 
-	table->AddWidget(std::make_unique<cudadoom::txt::txt_scrollpane_t>(0, 13, table));
+	table->AddWidget(::std::make_unique<cudadoom::txt::txt_scrollpane_t>(0, 13, table));
 }
 
 void ConfigKeyboard(cudadoom::txt::UNCAST_ARG(widget), void* user_data)

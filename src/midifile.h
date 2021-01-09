@@ -178,7 +178,7 @@ struct midi_file_t
 	unsigned buffer_size;
 };
 
-midi_file_t* MIDI_LoadFile(std::string filename);
+midi_file_t* MIDI_LoadFile(::std::string filename);
 
 void MIDI_FreeFile(midi_file_t* file);
 

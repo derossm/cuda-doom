@@ -130,12 +130,12 @@ extern int displayplayer;
 extern int totalkills;
 extern int totalitems;
 extern int totalsecret;
-extern int extrakills;		// [crispy] count spawned monsters
+extern int extrakills;		// count spawned monsters
 
 // Timer, for scores.
 extern TimeType levelstarttic;	// gametic at level start
 extern TimeType leveltime;		// tics in game play for par
-extern TimeType totalleveltimes;	// [crispy] CPhipps - total time for all completed levels
+extern TimeType totalleveltimes;	// CPhipps - total time for all completed levels
 
 // DEMO playback/recording related stuff.
 // No demo, there is a human player in charge?
@@ -182,7 +182,7 @@ extern wbstartstruct_t wminfo;
 // Internal parameters, used for engine.
 
 // File handling stuff.
-extern std::string savegamedir;
+extern ::std::string savegamedir;
 
 // if true, load all graphics at level load
 extern bool precache;

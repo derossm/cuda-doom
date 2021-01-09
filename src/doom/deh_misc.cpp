@@ -127,7 +127,7 @@ int deh_species_infighting = DEH_DEFAULT_SPECIES_INFIGHTING;
 
 static struct
 {
-	std::string deh_name;
+	::std::string deh_name;
 	int* value;
 } misc_settings[] = {
 	{"Initial Health",		&deh_initial_health},
@@ -147,15 +147,15 @@ static struct
 	{"BFG Cells/Shot",		&deh_bfg_cells_per_shot},
 };
 
-static void* DEH_MiscStart(deh_context_t* context, std::string line)
+static void* DEH_MiscStart(deh_context_t* context, ::std::string line)
 {
 	return nullptr;
 }
 
-static void DEH_MiscParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_MiscParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
-	std::string variable_name;
-	std::string value;
+	::std::string variable_name;
+	::std::string value;
 	int ivalue;
 	size_t i;
 

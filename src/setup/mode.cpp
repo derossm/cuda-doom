@@ -39,13 +39,13 @@ static const iwad_t** mode_iwads;
 
 struct mission_config_t
 {
-	std::string label;
+	::std::string label;
 	GameMission mission;
 	int mask;
-	std::string name;
-	std::string config_file;
-	std::string extra_config_file;
-	std::string executable;
+	::std::string name;
+	::std::string config_file;
+	::std::string extra_config_file;
+	::std::string executable;
 };
 
 // Default mission to fall back on, if no IWADs are found at all:
@@ -99,12 +99,12 @@ static GameSelectCallback game_selected_callback;
 static int showMessages = 1;
 static int screenblocks = 10;
 static int detailLevel = 0;
-std::string savedir;
-std::string executable;
-std::string game_title = "Doom";
-std::string back_flat = "F_PAVE01";
+::std::string savedir;
+::std::string executable;
+::std::string game_title = "Doom";
+::std::string back_flat = "F_PAVE01";
 static int comport = 0;
-std::string nickname;
+::std::string nickname;
 
 static void BindMiscVariables()
 {
@@ -190,7 +190,7 @@ void InitBindings()
 // Set the name of the executable program to run the game:
 static void SetExecutable(mission_config_t* config)
 {
-	std::string extension;
+	::std::string extension;
 
 #ifdef _WIN32
 	extension = ".exe";
@@ -198,7 +198,7 @@ static void SetExecutable(mission_config_t* config)
 	extension = "";
 #endif
 
-	executable = std::string(config->executable + extension);
+	executable = ::std::string(config->executable + extension);
 }
 
 static void SetMission(mission_config_t* config)
@@ -210,7 +210,7 @@ static void SetMission(mission_config_t* config)
 	M_SetConfigFilenames(config->config_file, config->extra_config_file);
 }
 
-static mission_config_t* GetMissionForName(std::string name)
+static mission_config_t* GetMissionForName(::std::string name)
 {
 	for (size_t i{0}; i < arrlen(mission_configs); ++i)
 	{
@@ -227,7 +227,7 @@ static mission_config_t* GetMissionForName(std::string name)
 static bool CheckExecutableName(GameSelectCallback callback)
 {
 	mission_config_t* config;
-	std::string exe_name;
+	::std::string exe_name;
 
 	exe_name = M_GetExecutableName();
 
@@ -267,7 +267,7 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 	for (i=0; i<arrlen(mission_configs); ++i)
 	{
 		// Do we have any IWADs for this game installed? If so, add a button.
-		mode_iwads = D_FindAllIWADs(mission_configs[i].mask & (IWAD_MASK_DOOM|IWAD_MASK_HERETIC)); // [crispy] restrict game choice to Doom and Heretic
+		mode_iwads = D_FindAllIWADs(mission_configs[i].mask & (IWAD_MASK_DOOM|IWAD_MASK_HERETIC)); // restrict game choice to Doom and Heretic
 
 		if (mode_iwads[0] != NULL)
 		{
@@ -307,7 +307,7 @@ static void OpenGameSelectDialog(GameSelectCallback callback)
 void SetupMission(GameSelectCallback callback)
 {
 	mission_config_t* config;
-	std::string mission_name;
+	::std::string mission_name;
 	int p;
 
 	// Specify the game to configure the settings for. Valid values are 'doom', 'heretic', 'hexen' and 'strife'.
@@ -333,12 +333,12 @@ void SetupMission(GameSelectCallback callback)
 	}
 }
 
-std::string GetExecutableName()
+::std::string GetExecutableName()
 {
 	return executable;
 }
 
-std::string GetGameTitle()
+::std::string GetGameTitle()
 {
 	return game_title;
 }

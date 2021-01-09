@@ -8,30 +8,13 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include <string>
 
 #include "txt_common.h"
 
-//#include "txt_main.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
-
 namespace cudadoom::txt
 {
-
-#ifdef HELP_KEY
-#undef HELP_KEY
-#endif
-constexpr size_t HELP_KEY{KEY_F1};
-constexpr size_t MAXWINDOWS{128};
-
-//class Window;
-
-//typedef void (*TxtIdleCallback)(void* user_data);
 
 //void AddDesktopWindow(Window* win);
 //void RemoveDesktopWindow(Window* win);
@@ -46,7 +29,7 @@ constexpr size_t MAXWINDOWS{128};
  *
  * @param title			The title to display (UTF-8 format).
  */
-//void SetDesktopTitle(std::string title);
+//void SetDesktopTitle(::std::string title);
 
 /**
  * Exit the currently-running main loop and return from the
@@ -104,7 +87,7 @@ constexpr size_t MAXWINDOWS{128};
 /*
 int LowerWindow(Window* window);
 
-std::string desktop_title;
+::std::string desktop_title;
 static Window* all_windows[MAXWINDOWS];
 static int num_windows = 0;
 static int main_loop_running = 0;
@@ -207,7 +190,7 @@ int LowerWindow(Window* window)
 	return 0;
 }
 
-static void DrawDesktopBackground(std::string title)
+static void DrawDesktopBackground(::std::string title)
 {
 	auto screendata{GetScreenData()};
 
@@ -284,17 +267,17 @@ static void DrawHelpIndicator()
 	DrawString("=Help ");
 }
 
-void SetDesktopTitle(std::string& _title)
+void SetDesktopTitle(::std::string& _title)
 {
 	//free(desktop_title);
-	desktop_title = std::string(_title);
+	desktop_title = ::std::string(_title);
 	//SetWindowTitle(title);
 }
 
 void DrawDesktop()
 {
 	Window* active_window;
-	std::string title;
+	::std::string title;
 
 	InitClipArea();
 
@@ -439,4 +422,4 @@ void GUIMainLoop()
 	}
 }
 /**/
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

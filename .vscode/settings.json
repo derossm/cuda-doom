@@ -2,7 +2,6 @@
 	"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
 	"editor.wordWrapColumn": 161,
 	"editor.wordWrap": "bounded",
-	"editor.accessibilitySupport": "off",
 	"files.associations": {
 		"*.ixx": "cpp",
 		"memory": "cpp",

@@ -58,7 +58,7 @@ struct net_client_t
 	net_addr_t* addr;
 	net_connection_t connection;
 	TimeType last_send_time;
-	std::string name;
+	::std::string name;
 
 	// If true, the client has sent the net_packet_type::GAMESTART
 	// message indicating that it is ready for the game to start.
@@ -172,8 +172,8 @@ static bool ClientConnected(net_client_t* client)
 
 // Send a message to be displayed on a client's console
 
-static void NET_SV_SendConsoleMessage(net_client_t* client, std::string s, ...) PRINTF_ATTR(2, 3);
-static void NET_SV_SendConsoleMessage(net_client_t* client, std::string s, ...)
+static void NET_SV_SendConsoleMessage(net_client_t* client, ::std::string s, ...) PRINTF_ATTR(2, 3);
+static void NET_SV_SendConsoleMessage(net_client_t* client, ::std::string s, ...)
 {
 	char buf[1024];
 	va_list args;
@@ -185,12 +185,12 @@ static void NET_SV_SendConsoleMessage(net_client_t* client, std::string s, ...)
 
 	packet = NET_Conn_NewReliable(&client->connection, net_packet_type::CONSOLE_MESSAGE);
 
-	NET_WriteString(packet, std::string(buf));
+	NET_WriteString(packet, ::std::string(buf));
 }
 
 // Send a message to all clients
-static void NET_SV_BroadcastMessage(std::string s, ...) PRINTF_ATTR(1, 2);
-static void NET_SV_BroadcastMessage(std::string s, ...)
+static void NET_SV_BroadcastMessage(::std::string s, ...) PRINTF_ATTR(1, 2);
+static void NET_SV_BroadcastMessage(::std::string s, ...)
 {
 	char buf[1024];
 	va_list args;
@@ -521,7 +521,7 @@ static net_client_t* NET_SV_FindClient(net_addr_t* addr)
 
 // send a rejection packet to a client
 
-static void NET_SV_SendReject(net_addr_t* addr, std::string msg)
+static void NET_SV_SendReject(net_addr_t* addr, ::std::string msg)
 {
 	net_packet_t* packet;
 
@@ -565,8 +565,8 @@ static void NET_SV_ParseSYN(net_packet_t* packet, net_client_t* client, net_addr
 	net_connect_data data;
 	net_packet_t* reply;
 	net_protocol_t protocol;
-	std::string player_name;
-	std::string client_version;
+	::std::string player_name;
+	::std::string client_version;
 	int num_players;
 	int i;
 
@@ -744,7 +744,7 @@ static void NET_SV_ParseSYN(net_packet_t* packet, net_client_t* client, net_addr
 	memcpy(client->deh_sha1sum, data.deh_sha1sum, sizeof(sha1_digest_t));
 	client->is_freedoom = data.is_freedoom;
 	client->max_players = data.max_players;
-	client->name = std::string(player_name);
+	client->name = ::std::string(player_name);
 	client->recording_lowres = data.lowres_turn;
 	client->drone = data.drone;
 	client->player_class = data.player_class;
@@ -1391,7 +1391,7 @@ void NET_SV_SendQueryResponse(net_addr_t* addr)
 
 static void NET_SV_ParseHolePunch(net_packet_t* packet)
 {
-	std::string addr_string;
+	::std::string addr_string;
 	net_packet_t* sendpacket;
 	net_addr_t* addr;
 

@@ -134,7 +134,7 @@ void TimerCallback(void* data)
 	OPL_SetCallback(delay * OPL_MS, TimerCallback, timer_data);
 }
 
-void PlayFile(std::string filename)
+void PlayFile(::std::string filename)
 {
 	struct timer_data timer_data;
 	int running;

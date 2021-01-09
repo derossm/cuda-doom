@@ -10,8 +10,8 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		[crispy] add support for SMMU swirling flats
-		[crispy] adapted from smmu/r_ripple.c, by Simon Howard
+ add support for SMMU swirling flats
+ adapted from smmu/r_ripple.c, by Simon Howard
 \**********************************************************************************************************************************************/
 
 #include <string>
@@ -78,7 +78,7 @@ void R_InitDistortedFlats()
 	}
 }
 
-std::string R_DistortedFlat(int flatnum)
+::std::string R_DistortedFlat(int flatnum)
 {
 	static int swirltic{-1};
 	static int swirlflat{-1};

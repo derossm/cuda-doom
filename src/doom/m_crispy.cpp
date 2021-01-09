@@ -14,10 +14,10 @@
 \**********************************************************************************************************************************************/
 
 #include "doomstat.h"
-#include "p_local.h" // [crispy] thinkercap
+#include "p_local.h" // thinkercap
 #include "s_sound.h"
-#include "r_defs.h" // [crispy] laserpatch
-#include "r_sky.h" // [crispy] R_InitSkyMap()
+#include "r_defs.h" // laserpatch
+#include "r_sky.h" // R_InitSkyMap()
 
 #include "m_crispy.h"
 
@@ -183,7 +183,7 @@ void M_CrispyToggleColoredblood(int choice)
 	choice = 0;
 	crispy->coloredblood = !crispy->coloredblood;
 
-	// [crispy] switch NOBLOOD flag for Lost Souls
+	// switch NOBLOOD flag for Lost Souls
 	for (th = thinkercap.next; th && th != &thinkercap; th = th->next)
 	{
 		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
@@ -307,7 +307,7 @@ void M_CrispyToggleFreeaim(int choice)
 	choice = 0;
 	crispy->freeaim = (crispy->freeaim + 1) % NUM_FREEAIMS;
 
-	// [crispy] update the "critical" struct
+	// update the "critical" struct
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 }
 
@@ -332,7 +332,7 @@ void M_CrispyToggleFullsounds(int choice)
 	choice = 0;
 	crispy->soundfull = !crispy->soundfull;
 
-	// [crispy] weapon sound sources
+	// weapon sound sources
 	for (i = 0; i < MAX_PLAYERS; ++i)
 	{
 		if (playeringame[i])
@@ -346,15 +346,15 @@ static void M_CrispyToggleHiresHook()
 {
 	crispy->hires = !crispy->hires;
 
-	// [crispy] re-initialize framebuffers, textures and renderer
+	// re-initialize framebuffers, textures and renderer
 	I_ReInitGraphics(REINIT_FRAMEBUFFERS | REINIT_TEXTURES | REINIT_ASPECTRATIO);
-	// [crispy] re-calculate framebuffer coordinates
+	// re-calculate framebuffer coordinates
 	R_ExecuteSetViewSize();
-	// [crispy] re-draw bezel
+	// re-draw bezel
 	R_FillBackScreen();
-	// [crispy] re-calculate disk icon coordinates
+	// re-calculate disk icon coordinates
 	EnableLoadingDisk();
-	// [crispy] re-calculate automap coordinates
+	// re-calculate automap coordinates
 	AM_LevelInit(true);
 }
 
@@ -375,7 +375,7 @@ void M_CrispyToggleJumping(int choice)
 	choice = 0;
 	crispy->jump = (crispy->jump + 1) % NUM_JUMPS;
 
-	// [crispy] update the "critical" struct
+	// update the "critical" struct
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 }
 
@@ -409,7 +409,7 @@ void M_CrispyToggleOverunder(int choice)
 	choice = 0;
 	crispy->overunder = !crispy->overunder;
 
-	// [crispy] update the "critical" struct
+	// update the "critical" struct
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 }
 
@@ -424,7 +424,7 @@ void M_CrispyTogglePitch(int choice)
 void M_CrispyTogglePlayerCoords(int choice)
 {
 	choice = 0;
-	crispy->playercoords = (crispy->playercoords + 1) % (NUM_WIDGETS - 1); // [crispy] disable "always" setting
+	crispy->playercoords = (crispy->playercoords + 1) % (NUM_WIDGETS - 1); // disable "always" setting
 }
 
 void M_CrispyToggleRecoil(int choice)
@@ -437,7 +437,7 @@ void M_CrispyToggleRecoil(int choice)
 	choice = 0;
 	crispy->recoil = !crispy->recoil;
 
-	// [crispy] update the "critical" struct
+	// update the "critical" struct
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 }
 
@@ -457,11 +457,11 @@ static void M_CrispyToggleSmoothLightingHook()
 {
 	crispy->smoothlight = !crispy->smoothlight;
 
-	// [crispy] re-calculate the zlight[][] array
+	// re-calculate the zlight[][] array
 	R_InitLightTables();
-	// [crispy] re-calculate the scalelight[][] array
+	// re-calculate the scalelight[][] array
 	R_ExecuteSetViewSize();
-	// [crispy] re-calculate fake contrast
+	// re-calculate fake contrast
 	P_SegLengths(true);
 }
 
@@ -543,17 +543,17 @@ static void M_CrispyToggleWidescreenHook()
 {
 	crispy->widescreen = (crispy->widescreen + 1) % NUM_RATIOS;
 
-	// [crispy] no need to re-init when switching from wide to compact
+	// no need to re-init when switching from wide to compact
 	{
-		// [crispy] re-initialize framebuffers, textures and renderer
+		// re-initialize framebuffers, textures and renderer
 		I_ReInitGraphics(REINIT_FRAMEBUFFERS | REINIT_TEXTURES | REINIT_ASPECTRATIO);
-		// [crispy] re-calculate framebuffer coordinates
+		// re-calculate framebuffer coordinates
 		R_ExecuteSetViewSize();
-		// [crispy] re-draw bezel
+		// re-draw bezel
 		R_FillBackScreen();
-		// [crispy] re-calculate disk icon coordinates
+		// re-calculate disk icon coordinates
 		EnableLoadingDisk();
-		// [crispy] re-calculate automap coordinates
+		// re-calculate automap coordinates
 		AM_LevelInit(true);
 	}
 }

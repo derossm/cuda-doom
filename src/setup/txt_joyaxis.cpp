@@ -27,7 +27,7 @@
 
 constexpr size_t JOYSTICK_AXIS_WIDTH{20};
 
-static std::string CalibrationLabel(txt_joystick_axis_t* joystick_axis)
+static ::std::string CalibrationLabel(txt_joystick_axis_t* joystick_axis)
 {
 	switch (joystick_axis->config_stage)
 	{

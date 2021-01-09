@@ -36,9 +36,9 @@ void NET_BindVariables();
 extern bool net_client_connected;
 extern bool net_client_received_wait_data;
 extern net_waitdata_t net_client_wait_data;
-extern std::string net_client_reject_reason;
+extern ::std::string net_client_reject_reason;
 extern bool net_waiting_for_launch;
-extern std::string net_player_name;
+extern ::std::string net_player_name;
 
 extern sha1_digest_t net_server_wad_sha1sum;
 extern sha1_digest_t net_server_deh_sha1sum;

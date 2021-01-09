@@ -19,7 +19,7 @@
 
 #include "r_local.h"
 #include "r_sky.h"
-#include "r_bmaps.h" // [crispy] brightmaps
+#include "r_bmaps.h" // brightmaps
 
 // OPTIMIZE: closed two sided lines as single sided
 
@@ -58,22 +58,22 @@ int worldbottom;
 int worldhigh;
 int worldlow;
 
-int64_t pixhigh; // [crispy] WiggleFix
-int64_t pixlow; // [crispy] WiggleFix
+int64_t pixhigh; // WiggleFix
+int64_t pixlow; // WiggleFix
 fixed_t pixhighstep;
 fixed_t pixlowstep;
 
-int64_t topfrac; // [crispy] WiggleFix
+int64_t topfrac; // WiggleFix
 fixed_t topstep;
 
-int64_t bottomfrac; // [crispy] WiggleFix
+int64_t bottomfrac; // WiggleFix
 fixed_t bottomstep;
 
 lighttable_t** walllights;
 
-int* maskedtexturecol; // [crispy] 32-bit integer math
+int* maskedtexturecol; // 32-bit integer math
 
-// [crispy] WiggleFix: add this code block near the top of r_segs.c
+// WiggleFix: add this code block near the top of r_segs.c
 //
 // R_FixWiggle()
 // Dynamic wall/texture rescaler, AKA "WiggleHack II"
@@ -189,7 +189,7 @@ void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 
 	lightnum = (frontsector->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
-	// [crispy] smoother fake contrast
+	// smoother fake contrast
 	lightnum += curline->fakecontrast;
 	/*
 		if (curline->v1->y == curline->v2->y)
@@ -234,7 +234,7 @@ void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 	for (dc_x = x1; dc_x <= x2; ++dc_x)
 	{
 		// calculate lighting
-		if (maskedtexturecol[dc_x] != INT_MAX) // [crispy] 32-bit integer math
+		if (maskedtexturecol[dc_x] != INT_MAX) // 32-bit integer math
 		{
 			if (!fixedcolormap)
 			{
@@ -243,11 +243,11 @@ void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 				if (index >= MAXLIGHTSCALE)
 					index = MAXLIGHTSCALE - 1;
 
-				// [crispy] no brightmaps for mid-textures
+				// no brightmaps for mid-textures
 				dc_colormap[0] = dc_colormap[1] = walllights[index];
 			}
 
-			// [crispy] apply Killough's int64 sprtopscreen overflow fix
+			// apply Killough's int64 sprtopscreen overflow fix
 			// from winmbf/Source/r_segs.c:174-191
 			// killough 3/2/98:
 			//
@@ -266,11 +266,11 @@ void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 				if (t + (int64_t)textureheight[texnum] * spryscale < 0 ||
 					t >(int64_t) SCREENHEIGHT << FRACBITS * 2)
 				{
-					spryscale += rw_scalestep; // [crispy] MBF had this in the for-loop iterator
+					spryscale += rw_scalestep; // MBF had this in the for-loop iterator
 					continue; // skip if the texture is out of screen's range
 				}
 
-				sprtopscreen = (int64_t)(t >> FRACBITS); // [crispy] WiggleFix
+				sprtopscreen = (int64_t)(t >> FRACBITS); // WiggleFix
 			}
 
 			dc_iscale = 0xffffffffu / (unsigned)spryscale;
@@ -280,7 +280,7 @@ void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2)
 				(byte*)R_GetColumnMod(texnum, maskedtexturecol[dc_x]) - 3);
 
 			R_DrawMaskedColumn(col);
-			maskedtexturecol[dc_x] = INT_MAX; // [crispy] 32-bit integer math
+			maskedtexturecol[dc_x] = INT_MAX; // 32-bit integer math
 		}
 		spryscale += rw_scalestep;
 	}
@@ -312,7 +312,7 @@ void R_RenderSegLoop()
 	for (; rw_x < rw_stopx; ++rw_x)
 	{
 		// mark floor / ceiling areas
-		yl = (int)((topfrac + heightunit - 1) >> heightbits); // [crispy] WiggleFix
+		yl = (int)((topfrac + heightunit - 1) >> heightbits); // WiggleFix
 
 		// no space above wall?
 		if (yl < ceilingclip[rw_x] + 1)
@@ -333,7 +333,7 @@ void R_RenderSegLoop()
 			}
 		}
 
-		yh = (int)(bottomfrac >> heightbits); // [crispy] WiggleFix
+		yh = (int)(bottomfrac >> heightbits); // WiggleFix
 
 		if (yh >= floorclip[rw_x])
 			yh = floorclip[rw_x] - 1;
@@ -364,7 +364,7 @@ void R_RenderSegLoop()
 			if (index >= MAXLIGHTSCALE)
 				index = MAXLIGHTSCALE - 1;
 
-			// [crispy] optional brightmaps
+			// optional brightmaps
 			dc_colormap[0] = walllights[index];
 			dc_colormap[1] = (!fixedcolormap && (crispy->brightmaps & BRIGHTMAPS_TEXTURES)) ? scalelight[LIGHTLEVELS - 1][MAXLIGHTSCALE - 1] : dc_colormap[0];
 			dc_x = rw_x;
@@ -385,7 +385,7 @@ void R_RenderSegLoop()
 			dc_yh = yh;
 			dc_texturemid = rw_midtexturemid;
 			dc_source = R_GetColumn(midtexture, texturecolumn);
-			dc_texheight = textureheight[midtexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
+			dc_texheight = textureheight[midtexture] >> FRACBITS; // Tutti-Frutti fix
 			dc_brightmap = texturebrightmap[midtexture];
 			colfunc();
 			ceilingclip[rw_x] = viewheight;
@@ -397,7 +397,7 @@ void R_RenderSegLoop()
 			if (toptexture)
 			{
 				// top wall
-				mid = (int)(pixhigh >> heightbits); // [crispy] WiggleFix
+				mid = (int)(pixhigh >> heightbits); // WiggleFix
 				pixhigh += pixhighstep;
 
 				if (mid >= floorclip[rw_x])
@@ -409,7 +409,7 @@ void R_RenderSegLoop()
 					dc_yh = mid;
 					dc_texturemid = rw_toptexturemid;
 					dc_source = R_GetColumn(toptexture, texturecolumn);
-					dc_texheight = textureheight[toptexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
+					dc_texheight = textureheight[toptexture] >> FRACBITS; // Tutti-Frutti fix
 					dc_brightmap = texturebrightmap[toptexture];
 					colfunc();
 					ceilingclip[rw_x] = mid;
@@ -427,7 +427,7 @@ void R_RenderSegLoop()
 			if (bottomtexture)
 			{
 				// bottom wall
-				mid = (int)((pixlow + heightunit - 1) >> heightbits); // [crispy] WiggleFix
+				mid = (int)((pixlow + heightunit - 1) >> heightbits); // WiggleFix
 				pixlow += pixlowstep;
 
 				// no space above wall?
@@ -441,7 +441,7 @@ void R_RenderSegLoop()
 					dc_texturemid = rw_bottomtexturemid;
 					dc_source = R_GetColumn(bottomtexture,
 						texturecolumn);
-					dc_texheight = textureheight[bottomtexture] >> FRACBITS; // [crispy] Tutti-Frutti fix
+					dc_texheight = textureheight[bottomtexture] >> FRACBITS; // Tutti-Frutti fix
 					dc_brightmap = texturebrightmap[bottomtexture];
 					colfunc();
 					floorclip[rw_x] = mid;
@@ -470,7 +470,7 @@ void R_RenderSegLoop()
 	}
 }
 
-// [crispy] WiggleFix: move R_ScaleFromGlobalAngle function to r_segs.c,
+// WiggleFix: move R_ScaleFromGlobalAngle function to r_segs.c,
 // above R_StoreWallRange
 fixed_t R_ScaleFromGlobalAngle(angle_t visangle)
 {
@@ -510,10 +510,10 @@ void R_StoreWallRange(int start, int stop)
 	int64_t dy;
 	int64_t dx1;
 	int64_t dy1;
-	int64_t dist; // [crispy] fix long wall wobble
+	int64_t dist; // fix long wall wobble
 	const uint32_t len = curline->length;
 
-	// [crispy] remove MAXDRAWSEGS Vanilla limit
+	// remove MAXDRAWSEGS Vanilla limit
 	if (ds_p == &drawsegs[numdrawsegs])
 	{
 		int numdrawsegs_old = numdrawsegs;
@@ -539,14 +539,14 @@ void R_StoreWallRange(int start, int stop)
 	// mark the segment as visible for auto map
 	linedef->flags |= ML_MAPPED;
 
-	// [crispy] (flags & ML_MAPPED) is all we need to know for automap
+	// (flags & ML_MAPPED) is all we need to know for automap
 	if (automapactive && !crispy->automapoverlay)
 		return;
 
 	// calculate rw_distance for scale calculation
-	rw_normalangle = curline->r_angle + ANG90; // [crispy] use re-calculated angle
+	rw_normalangle = curline->r_angle + ANG90; // use re-calculated angle
 
-	// [crispy] fix long wall wobble
+	// fix long wall wobble
 	// thank you very much Linguica, e6y and kb1
 	// http://www.doomworld.com/vb/post/1340718
 	// shift right to avoid possibility of int64 overflow in rw_distance calculation
@@ -562,7 +562,7 @@ void R_StoreWallRange(int start, int stop)
 	ds_p->curline = curline;
 	rw_stopx = stop + 1;
 
-	// [crispy] WiggleFix: add this line, in r_segs.c:R_StoreWallRange,
+	// WiggleFix: add this line, in r_segs.c:R_StoreWallRange,
 	// right before calls to R_ScaleFromGlobalAngle:
 	R_FixWiggle(frontsector);
 
@@ -634,7 +634,7 @@ void R_StoreWallRange(int start, int stop)
 	}
 	else
 	{
-		// [crispy] fix sprites being visible behind closed doors
+		// fix sprites being visible behind closed doors
 		// adapted from mbfsrc/R_BSP.C:234-257
 		const bool doorclosed =
 			// if door is closed because back is shut:
@@ -783,7 +783,7 @@ void R_StoreWallRange(int start, int stop)
 	if (segtextured)
 	{
 
-		// [crispy] fix long wall wobble
+		// fix long wall wobble
 		rw_offset = (fixed_t)(((dx * dx1 + dy * dy1) / len) << 1);
 		rw_offset += sidedef->textureoffset + curline->offset;
 		rw_centerangle = ANG90 + viewangle - rw_normalangle;
@@ -796,7 +796,7 @@ void R_StoreWallRange(int start, int stop)
 		{
 			lightnum = (frontsector->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
-			// [crispy] smoother fake contrast
+			// smoother fake contrast
 			lightnum += curline->fakecontrast;
 			/*
 					if (curline->v1->y == curline->v2->y)
@@ -836,10 +836,10 @@ void R_StoreWallRange(int start, int stop)
 	worldbottom >>= invhgtbits;
 
 	topstep = -FixedMul(rw_scalestep, worldtop);
-	topfrac = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldtop * rw_scale) >> FRACBITS); // [crispy] WiggleFix
+	topfrac = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldtop * rw_scale) >> FRACBITS); // WiggleFix
 
 	bottomstep = -FixedMul(rw_scalestep, worldbottom);
-	bottomfrac = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldbottom * rw_scale) >> FRACBITS); // [crispy] WiggleFix
+	bottomfrac = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldbottom * rw_scale) >> FRACBITS); // WiggleFix
 
 	if (backsector)
 	{
@@ -848,13 +848,13 @@ void R_StoreWallRange(int start, int stop)
 
 		if (worldhigh < worldtop)
 		{
-			pixhigh = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldhigh * rw_scale) >> FRACBITS); // [crispy] WiggleFix
+			pixhigh = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldhigh * rw_scale) >> FRACBITS); // WiggleFix
 			pixhighstep = -FixedMul(rw_scalestep, worldhigh);
 		}
 
 		if (worldlow > worldbottom)
 		{
-			pixlow = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldlow * rw_scale) >> FRACBITS); // [crispy] WiggleFix
+			pixlow = ((int64_t)centeryfrac >> invhgtbits) - (((int64_t)worldlow * rw_scale) >> FRACBITS); // WiggleFix
 			pixlowstep = -FixedMul(rw_scalestep, worldlow);
 		}
 	}

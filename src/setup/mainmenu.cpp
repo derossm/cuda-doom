@@ -176,7 +176,7 @@ static void LaunchDoom(void* unused1, void* unused2)
 
 static cudadoom::txt::Button* GetLaunchButton()
 {
-	std::string label;
+	::std::string label;
 
 	switch (gamemission)
 	{
@@ -272,7 +272,7 @@ static void SetIcon()
 
 static void SetWindowTitle()
 {
-	std::string title;
+	::std::string title;
 
 	title = M_StringReplace(PACKAGE_NAME " Setup ver " PACKAGE_VERSION,
 		"Doom",
@@ -297,7 +297,7 @@ static void InitTextscreen()
 	// <https://doomwiki.org/wiki/Romero_Blue>
 	cudadoom::txt::SetColor(cudadoom::txt::ColorType::blue, 0x04, 0x14, 0x40);
 
-	// [crispy] Crispy colors for Crispy Setup
+	// Crispy colors for Crispy Setup
 	cudadoom::txt::SetColor(cudadoom::txt::ColorType::bright_green, 249, 227, 0); // 0xF9, 0xE3, 0x00
 	cudadoom::txt::SetColor(cudadoom::txt::ColorType::cyan, 220, 153, 0);			// 0xDC, 0x99, 0x00
 	cudadoom::txt::SetColor(cudadoom::txt::ColorType::bright_cyan, 76, 160, 223); // 0x4C, 0xA0, 0xDF

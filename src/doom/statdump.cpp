@@ -29,7 +29,7 @@ static const int doom2_par_times[]{
 };
 
 /* Player colors. */
-static std::string player_colors[]{ "Green", "Indigo", "Brown", "Red" };
+static ::std::string player_colors[]{ "Green", "Indigo", "Brown", "Red" };
 
 // Array of end-of-level statistics that have been captured.
 constexpr size_t MAX_CAPTURES{32};

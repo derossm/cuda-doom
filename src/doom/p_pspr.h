@@ -48,9 +48,9 @@ struct pspdef_t
 	fixed_t sx;
 	fixed_t sy;
 
-	// [crispy] squat down weapon sprite
+	// squat down weapon sprite
 	fixed_t dy;
-	// [crispy] variable weapon sprite bob
+	// variable weapon sprite bob
 	fixed_t sx2;
 	fixed_t sy2;
 };

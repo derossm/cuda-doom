@@ -32,7 +32,7 @@ DEH_MAPPING("Unknown 2", misc2)
 DEH_UNSUPPORTED_MAPPING("Codep frame")
 DEH_END_MAPPING
 
-static void* DEH_FrameStart(deh_context_t* context, std::string line)
+static void* DEH_FrameStart(deh_context_t* context, ::std::string line)
 {
 	int frame_number = 0;
 	state_t* state;
@@ -68,7 +68,7 @@ static void* DEH_FrameStart(deh_context_t* context, std::string line)
 // This is noticable in Batman Doom where it is impossible to switch weapons
 // away from the fist once selected.
 
-static void DEH_FrameOverflow(deh_context_t* context, std::string varname, int value)
+static void DEH_FrameOverflow(deh_context_t* context, ::std::string varname, int value)
 {
 	if (!iequals(varname, "Duration"))
 	{
@@ -97,11 +97,11 @@ static void DEH_FrameOverflow(deh_context_t* context, std::string varname, int v
 	}
 }
 
-static void DEH_FrameParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_FrameParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
 	state_t* state;
-	std::string variable_name;
-	std::string value;
+	::std::string variable_name;
+	::std::string value;
 	int ivalue;
 
 	if (tag == NULL)
@@ -123,8 +123,8 @@ static void DEH_FrameParseLine(deh_context_t* context, std::string line, void* t
 
 	ivalue = atoi(value);
 
-	// [crispy] drop the overflow simulation into the frame table
-	if (state == &states[std::size_t(statenum_t::NUMSTATES - 1)] && false)
+	// drop the overflow simulation into the frame table
+	if (state == &states[::std::size_t(statenum_t::NUMSTATES - 1)] && false)
 	{
 		DEH_FrameOverflow(context, variable_name, ivalue);
 	}
@@ -138,7 +138,7 @@ static void DEH_FrameParseLine(deh_context_t* context, std::string line, void* t
 
 static void DEH_FrameSHA1Sum(sha1_context_t* context)
 {
-	for (size_t i{0}; i < std::size_t(statenum_t::NUMSTATES); ++i)
+	for (size_t i{0}; i < ::std::size_t(statenum_t::NUMSTATES); ++i)
 	{
 		DEH_StructSHA1Sum(context, &state_mapping, &states[i]);
 	}

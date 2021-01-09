@@ -25,7 +25,7 @@ char** myargv;
 
 // Checks for the given parameter in the program's command line arguments.
 // Returns the argument number (1 to argc-1) or 0 if not present
-int M_CheckParmWithArgs(std::string check, int num_args)
+int M_CheckParmWithArgs(::std::string check, int num_args)
 {
 	for (size_t i{1}; i < myargc - num_args; ++i)
 	{
@@ -39,19 +39,19 @@ int M_CheckParmWithArgs(std::string check, int num_args)
 }
 
 // Returns true if the given parameter exists in the program's command line arguments, false if not.
-bool M_ParmExists(std::string check)
+bool M_ParmExists(::std::string check)
 {
 	return M_CheckParm(check) != 0;
 }
 
-int M_CheckParm(std::string check)
+int M_CheckParm(::std::string check)
 {
 	return M_CheckParmWithArgs(check, 0);
 }
 
 constexpr size_t MAXARGVS{100};
 
-static void LoadResponseFile(int argv_index, std::string filename)
+static void LoadResponseFile(int argv_index, ::std::string filename)
 {
 	// Read the response file into memory
 	FILE* handle = fopen(filename, "rb");
@@ -68,7 +68,7 @@ static void LoadResponseFile(int argv_index, std::string filename)
 
 	// Read in the entire file
 	// Allocate one byte extra - this is in case there is an argument at the end of the response file, in which case a '\0' will be needed.
-	std::string file = static_cast<decltype(file)>(malloc(size + 1));
+	::std::string file = static_cast<decltype(file)>(malloc(size + 1));
 
 	for (size_t i{0}, k; i < size; i += k)
 	{
@@ -89,7 +89,7 @@ static void LoadResponseFile(int argv_index, std::string filename)
 		++newargc;
 	}
 
-	std::string infile = file;
+	::std::string infile = file;
 	for(size_t k{0}; k < size;)
 	{
 		// Skip past space characters to the next argument
@@ -204,12 +204,12 @@ enum
 	FILETYPE_DEH = 0x8,
 };
 
-static int GuessFileType(std::string name)
+static int GuessFileType(::std::string name)
 {
 	int ret = FILETYPE_UNKNOWN;
 
-	std::string base = M_BaseName(name);
-	std::string lower = std::string(base);
+	::std::string base = M_BaseName(name);
+	::std::string lower = ::std::string(base);
 	M_ForceLowercase(lower);
 
 	static bool iwad_found{false};
@@ -233,7 +233,7 @@ static int GuessFileType(std::string name)
 
 struct argument_t
 {
-	std::string str;
+	::std::string str;
 	int type;
 	int stable;
 };
@@ -264,7 +264,7 @@ void M_AddLooseFiles()
 	// but only fully-qualified LFS or UNC file paths
 	for (size_t i{1}; i < myargc; ++i)
 	{
-		std::string arg = myargv[i];
+		::std::string arg = myargv[i];
 
 		if (strlen(arg) < 3 || arg[0] == '-' || arg[0] == '@' || ((!isalpha(arg[0]) || arg[1] != ':' || arg[2] != '\\')
 			&& (arg[0] != '\\' || arg[1] != '\\')))
@@ -284,19 +284,19 @@ void M_AddLooseFiles()
 	// and sort parameters right before their corresponding file paths
 	if (types & FILETYPE_IWAD)
 	{
-		arguments[myargc].str = std::string("-iwad");
+		arguments[myargc].str = ::std::string("-iwad");
 		arguments[myargc].type = FILETYPE_IWAD - 1;
 		++myargc;
 	}
 	if (types & FILETYPE_PWAD)
 	{
-		arguments[myargc].str = std::string("-merge");
+		arguments[myargc].str = ::std::string("-merge");
 		arguments[myargc].type = FILETYPE_PWAD - 1;
 		++myargc;
 	}
 	if (types & FILETYPE_DEH)
 	{
-		arguments[myargc].str = std::string("-deh");
+		arguments[myargc].str = ::std::string("-deh");
 		arguments[myargc].type = FILETYPE_DEH - 1;
 		++myargc;
 	}
@@ -320,7 +320,7 @@ void M_AddLooseFiles()
 #endif
 
 // Return the name of the executable used to start the program:
-std::string M_GetExecutableName()
+::std::string M_GetExecutableName()
 {
 	return M_BaseName(myargv[0]);
 }

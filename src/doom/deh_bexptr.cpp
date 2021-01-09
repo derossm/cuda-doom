@@ -93,14 +93,14 @@ extern void A_BrainSpit();
 extern void A_SpawnSound();
 extern void A_SpawnFly();
 extern void A_BrainExplode();
-// [crispy] additional BOOM and MBF states, sprites and code pointers
+// additional BOOM and MBF states, sprites and code pointers
 extern void A_Stop();
 extern void A_Die();
 extern void A_FireOldBFG();
 extern void A_Detonate();
 extern void A_Mushroom();
 extern void A_BetaSkullAttack();
-// [crispy] more MBF code pointers
+// more MBF code pointers
 extern void A_Spawn();
 extern void A_Turn();
 extern void A_Face();
@@ -111,7 +111,7 @@ extern void A_LineEffect();
 
 struct bex_codeptr_t
 {
-	std::string mnemonic;
+	::std::string mnemonic;
 	const actionf_t pointer;
 };
 
@@ -190,14 +190,14 @@ static const bex_codeptr_t bex_codeptrtable[] = {
 	{"SpawnSound", {A_SpawnSound}},
 	{"SpawnFly", {A_SpawnFly}},
 	{"BrainExplode", {A_BrainExplode}},
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	{"Stop", {A_Stop}},
 	{"Die", {A_Die}},
 	{"FireOldBFG", {A_FireOldBFG}},
 	{"Detonate", {A_Detonate}},
 	{"Mushroom", {A_Mushroom}},
 	{"BetaSkullAttack", {A_BetaSkullAttack}},
-	// [crispy] more MBF code pointers
+	// more MBF code pointers
 	{"Spawn", {A_Spawn}},
 	{"Turn", {A_Turn}},
 	{"Face", {A_Face}},
@@ -208,9 +208,9 @@ static const bex_codeptr_t bex_codeptrtable[] = {
 	{"NULL", {NULL}},
 };
 
-extern actionf_t codeptrs[std::size_t(statenum_t::NUMSTATES)];
+extern actionf_t codeptrs[::std::size_t(statenum_t::NUMSTATES)];
 
-static void* DEH_BEXPtrStart(deh_context_t* context, std::string line)
+static void* DEH_BEXPtrStart(deh_context_t* context, ::std::string line)
 {
 	char s[10];
 
@@ -222,11 +222,11 @@ static void* DEH_BEXPtrStart(deh_context_t* context, std::string line)
 	return nullptr;
 }
 
-static void DEH_BEXPtrParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_BEXPtrParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
 	state_t* state;
-	std::string variable_name;
-	std::string value;
+	::std::string variable_name;
+	::std::string value;
 	CHAR_PTR frame_str[6];
 	int frame_number;
 	int i;

@@ -23,13 +23,13 @@ enum
 };
 
 // also put some crazy extensions to test the escape function. a"b"c"""dd
-std::string extensions[] = {"wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", NULL};
-std::string radio_values[] = {"Badger", "Mushroom", "Snake"};
-std::string textbox_value;
+::std::string extensions[] = {"wad", "lmp", "txt", "a\"b\"c\"\"\"dd", "", "\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"", NULL};
+::std::string radio_values[] = {"Badger", "Mushroom", "Snake"};
+::std::string textbox_value;
 int numbox_value{0};
 int radiobutton_value;
-std::string file_path;
-std::string dir_path;
+::std::string file_path;
+::std::string dir_path;
 txt_label_t* value_label;
 Window* firstwin;
 int cheesy;
@@ -71,7 +71,7 @@ void UpdateLabel(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 
 	cudadoom::txt::SetLabel(value_label, buf);
 /**/
-	std::string buf{[&]()
+	::std::string buf{[&]()
 	{
 		const char rv[]{" Current value: "};
 
@@ -95,7 +95,7 @@ void CloseWindow(cudadoom::txt::UNCAST_ARG(button), void* user_data)
 
 void UnicodeWindow(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 {
-	static std::string strings[] = {"lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"};
+	static ::std::string strings[] = {"lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"};
 
 	static int var1;
 	static int var2;

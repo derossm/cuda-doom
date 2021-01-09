@@ -19,7 +19,7 @@
 #include "../../derma/common.h"
 
 /* p_extsaveg.c */
-extern std::string savewadfilename;
+extern ::std::string savewadfilename;
 
 extern void P_WriteExtendedSaveGameData();
 extern void P_ReadExtendedSaveGameData(int pass);

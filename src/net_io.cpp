@@ -39,7 +39,7 @@ void NET_AddModule(net_context* context, net_module_t* mod)
 	++context->num_modules;
 }
 
-net_addr_t* NET_ResolveAddress(net_context* context, std::string addr)
+net_addr_t* NET_ResolveAddress(net_context* context, ::std::string addr)
 {
 	int i;
 	net_addr_t* result;
@@ -96,7 +96,7 @@ bool NET_RecvPacket(net_context* context,
 // Note: this prints into a static buffer, calling again overwrites
 // the first result
 
-std::string NET_AddrToString(net_addr_t* addr)
+::std::string NET_AddrToString(net_addr_t* addr)
 {
 	static char buf[128];
 

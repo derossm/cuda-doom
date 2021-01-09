@@ -16,7 +16,7 @@
 #include "midifile.h"
 
 // Check the header of a chunk:
-static bool CheckChunkHeader(chunk_header_t* chunk, std::string expected_id)
+static bool CheckChunkHeader(chunk_header_t* chunk, ::std::string expected_id)
 {
 	bool result;
 
@@ -430,7 +430,7 @@ void MIDI_FreeFile(midi_file_t* file)
 	free(file);
 }
 
-midi_file_t* MIDI_LoadFile(std::string filename)
+midi_file_t* MIDI_LoadFile(::std::string filename)
 {
 	midi_file_t* file;
 	FILE* stream;
@@ -556,7 +556,7 @@ void MIDI_RestartIterator(midi_track_iter_t* iter)
 
 #ifdef TEST
 
-std::string MIDI_EventTypeToString(midi_EventType_t eventType)
+::std::string MIDI_EventTypeToString(midi_EventType_t eventType)
 {
 	switch (eventType)
 	{

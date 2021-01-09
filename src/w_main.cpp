@@ -39,7 +39,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
-			std::string filename;
+			::std::string filename;
 
 			modifiedgame = true;
 
@@ -62,7 +62,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
-			std::string filename;
+			::std::string filename;
 
 			modifiedgame = true;
 
@@ -81,7 +81,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
-			std::string filename;
+			::std::string filename;
 
 			modifiedgame = true;
 
@@ -99,7 +99,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
-			std::string filename;
+			::std::string filename;
 
 			modifiedgame = true;
 			filename = D_TryFindWADByName(myargv[p]);
@@ -117,7 +117,7 @@ bool W_ParseCommandLine()
 	{
 		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
 		{
-			std::string filename;
+			::std::string filename;
 
 			modifiedgame = true;
 
@@ -138,11 +138,11 @@ bool W_ParseCommandLine()
 		modifiedgame = true;			// homebrew levels
 		while (++p != myargc && myargv[p][0] != '-')
 		{
-			std::string filename;
+			::std::string filename;
 
 			filename = D_TryFindWADByName(myargv[p]);
 
-			// [crispy] always merge arguments of "-file" parameter
+			// always merge arguments of "-file" parameter
 			printf(" merging %s !\n", filename);
 			W_MergeFile(filename);
 			free(filename);
@@ -154,10 +154,10 @@ bool W_ParseCommandLine()
 }
 
 // Load all WAD files from the given directory.
-void W_AutoLoadWADs(std::string path)
+void W_AutoLoadWADs(::std::string path)
 {
 	glob_t* glob;
-	std::string filename;
+	::std::string filename;
 
 	glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED, "*.wad", "*.lmp", NULL);
 	for (;;)
@@ -179,10 +179,10 @@ void W_AutoLoadWADs(std::string path)
 const struct lump_t
 {
 	GameMission mission;
-	std::string lumpname;
+	::std::string lumpname;
 };
 
-std::array<lump_t, 4> unique_lumps{
+::std::array<lump_t, 4> unique_lumps{
 	lump_t{ GameMission::doom,		"POSSA1" },
 	lump_t{ GameMission::heretic,	"IMPXA1" },
 	lump_t{ GameMission::hexen,		"ETTNA1" },
@@ -191,7 +191,7 @@ std::array<lump_t, 4> unique_lumps{
 
 void W_CheckCorrectIWAD(GameMission mission)
 {
-	auto result = std::ranges::find_first_of(unique_lumps,
+	auto result = ::std::ranges::find_first_of(unique_lumps,
 		[&mission](auto iter) { return iter.mission == mission || D_SuggestGameName(iter, GameMode::indetermined) });
 
 	/*

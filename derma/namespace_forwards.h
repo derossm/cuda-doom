@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************\
-	Copyright(C) 2020 Mason DeRoss
+	Copyright© 2020-2021 Mason DeRoss
 
 	Released under the GNU All-permissive License
 
@@ -10,15 +10,16 @@
 
 \**********************************************************************************************************************************************/
 #pragma once
-
+/*
 namespace cudadoom::midi
 {
 	enum class PacketType;
 	using PacketTypeAlias = unsigned;
-}
+} // end namespace cudadoom::midi
 
 namespace cudadoom::txt
 {
 	template<typename T>
 	class InputBox;
-}
+} // end namespace cudadoom::txt
+*/

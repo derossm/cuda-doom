@@ -218,7 +218,7 @@ bool P_CheckMissileRange(MapObject* actor)
 
 	dist >>= FRACBITS;
 
-	// [crispy] generalization of the Arch Vile's different attack range
+	// generalization of the Arch Vile's different attack range
 	if (actor->info->maxattackrange > 0)
 	{
 		if (dist > actor->info->maxattackrange)
@@ -227,7 +227,7 @@ bool P_CheckMissileRange(MapObject* actor)
 		}
 	}
 
-	// [crispy] generalization of the Revenant's different melee threshold
+	// generalization of the Revenant's different melee threshold
 	if (actor->info->meleethreshold > 0)
 	{
 		if (dist < actor->info->meleethreshold)
@@ -236,13 +236,13 @@ bool P_CheckMissileRange(MapObject* actor)
 		}
 	}
 
-	// [crispy] generalize missile chance for Cyb, Spider, Revenant & Lost Soul
+	// generalize missile chance for Cyb, Spider, Revenant & Lost Soul
 	if (actor->info->missilechancemult != FRACUNIT)
 	{
 		dist = FixedMul(dist, actor->info->missilechancemult);
 	}
 
-	// [crispy] generalization of Min Missile Chance values hardcoded in vanilla
+	// generalization of Min Missile Chance values hardcoded in vanilla
 	if (dist > actor->info->minmissilechance)
 	{
 		dist = actor->info->minmissilechance;
@@ -371,7 +371,7 @@ void P_NewChaseDir(MapObject* actor)
 	}
 
 	olddir = actor->movedir;
-	turnaround = opposite[std::size_t(olddir)];
+	turnaround = opposite[::std::size_t(olddir)];
 
 	deltax = actor->target->x - actor->x;
 	deltay = actor->target->y - actor->y;
@@ -533,7 +533,7 @@ bool P_LookForPlayers(MapObject* actor, bool allaround)
 
 		player = &players[actor->lastlook];
 
-		// [crispy] monsters don't look for players with NOTARGET cheat
+		// monsters don't look for players with NOTARGET cheat
 		if (player->cheats & CheatType::CF_NOTARGET)
 		{
 			continue;
@@ -614,7 +614,7 @@ void A_Look(MapObject* actor)
 	actor->threshold = 0;	// any shot will wake up
 	targ = actor->subsector->sector->soundtarget;
 
-	// [crispy] monsters don't look for players with NOTARGET cheat
+	// monsters don't look for players with NOTARGET cheat
 	if (targ && targ->player && (targ->player->cheats & CheatType::CF_NOTARGET))
 	{
 		return;
@@ -669,7 +669,7 @@ seeyou:
 		if (actor->type == mobjtype_t::MT_SPIDER || actor->type == mobjtype_t::MT_CYBORG)
 		{
 			// full volume
-			// [crispy] prevent from adding up volume
+			// prevent from adding up volume
 			crispy->soundfull ? S_StartSoundOnce(nullptr, sound) : S_StartSound(nullptr, sound);
 		}
 		else
@@ -677,7 +677,7 @@ seeyou:
 			S_StartSound(actor, sound);
 		}
 
-		// [crispy] make seesounds uninterruptible
+		// make seesounds uninterruptible
 		if (crispy->soundfull)
 		{
 			S_UnlinkSound(actor);
@@ -1060,7 +1060,7 @@ void A_BruisAttack(MapObject* actor)
 		return;
 	}
 
-	// [crispy] face the enemy
+	// face the enemy
 // A_FaceTarget(actor);
 	if (P_CheckMeleeRange(actor))
 	{
@@ -1238,7 +1238,7 @@ bool PIT_VileCheck(MapObject* thing)
 		return true;	// monster doesn't have a raise state
 	}
 
-	maxdist = thing->info->radius + mobjinfo[std::size_t(mobjtype_t::MT_VILE)].radius;
+	maxdist = thing->info->radius + mobjinfo[::std::size_t(mobjtype_t::MT_VILE)].radius;
 
 	if (abs(thing->x - viletryx) > maxdist || abs(thing->y - viletryy) > maxdist)
 	{
@@ -1311,10 +1311,10 @@ void A_VileChase(MapObject* actor)
 					corpsehit->health = info->spawnhealth;
 					corpsehit->target = NULL;
 
-					// [crispy] count resurrected monsters
+					// count resurrected monsters
 					++extrakills;
 
-					// [crispy] resurrected pools of gore ("ghost monsters") are translucent
+					// resurrected pools of gore ("ghost monsters") are translucent
 					if (corpsehit->height == 0 && corpsehit->radius == 0)
 					{
 						corpsehit->flags |= mobjflag_e::MF_TRANSLUCENT;
@@ -1404,11 +1404,11 @@ void A_VileTarget(MapObject* actor)
 	actor->tracer = fog;
 	fog->target = actor;
 	fog->tracer = actor->target;
-	// [crispy] play DSFLAMST sound when Arch-Vile spawns fire attack
-	if (crispy->soundfix && I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_flamst)]) != -1)
+	// play DSFLAMST sound when Arch-Vile spawns fire attack
+	if (crispy->soundfix && I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_flamst)]) != -1)
 	{
 		S_StartSound(fog, sfxenum_t::sfx_flamst);
-		// [crispy] make DSFLAMST sound uninterruptible
+		// make DSFLAMST sound uninterruptible
 		if (crispy->soundfull)
 		{
 			S_UnlinkSound(fog);
@@ -1595,7 +1595,7 @@ void A_PainShootSkull(MapObject* actor, angle_t angle)
 	// okay, there's playe for another one
 	an = angle >> ANGLETOFINESHIFT;
 
-	prestep = 4 * FRACUNIT + 3 * (actor->info->radius + mobjinfo[std::size_t(mobjtype_t::MT_SKULL)].radius) / 2;
+	prestep = 4 * FRACUNIT + 3 * (actor->info->radius + mobjinfo[::std::size_t(mobjtype_t::MT_SKULL)].radius) / 2;
 
 	x = actor->x + FixedMul(prestep, finecosine[an]);
 	y = actor->y + FixedMul(prestep, finesine[an]);
@@ -1611,7 +1611,7 @@ void A_PainShootSkull(MapObject* actor, angle_t angle)
 		return;
 	}
 
-	// [crispy] Lost Souls bleed Puffs
+	// Lost Souls bleed Puffs
 	if (crispy->coloredblood)
 	{
 		newmobj->flags |= mobjflag_e::MF_NOBLOOD;
@@ -1670,7 +1670,7 @@ void A_Scream(MapObject* actor)
 	if (actor->type == mobjtype_t::MT_SPIDER || actor->type == mobjtype_t::MT_CYBORG)
 	{
 		// full volume
-		// [crispy] prevent from adding up volume
+		// prevent from adding up volume
 		crispy->soundfull ? S_StartSoundOnce(nullptr, sound) : S_StartSound(nullptr, sound);
 	}
 	else
@@ -1763,7 +1763,7 @@ void A_BossDeath(MapObject* mo)
 
 	if (gamemode == GameMode::commercial)
 	{
-		// [crispy] Master Levels in PC slot 7
+		// Master Levels in PC slot 7
 		if (gamemap != 7 && !(gamemission == GameMission::pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
 		{
 			return;
@@ -1889,18 +1889,18 @@ void A_OpenShotgun2(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player)
 	{
-		return; // [crispy] let pspr action pointers get called from mobj states
+		return; // let pspr action pointers get called from mobj states
 	}
-	S_StartSound(player->so, sfxenum_t::sfx_dbopn); // [crispy] weapon sound source
+	S_StartSound(player->so, sfxenum_t::sfx_dbopn); // weapon sound source
 }
 
 void A_LoadShotgun2(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player)
 	{
-		return; // [crispy] let pspr action pointers get called from mobj states
+		return; // let pspr action pointers get called from mobj states
 	}
-	S_StartSound(player->so, sfxenum_t::sfx_dbload); // [crispy] weapon sound source
+	S_StartSound(player->so, sfxenum_t::sfx_dbload); // weapon sound source
 }
 
 void A_ReFire(MapObject* mobj, Player* player, pspdef_t* psp);
@@ -1909,16 +1909,16 @@ void A_CloseShotgun2(MapObject* mobj, Player* player, pspdef_t* psp)
 {
 	if (!player)
 	{
-		return; // [crispy] let pspr action pointers get called from mobj states
+		return; // let pspr action pointers get called from mobj states
 	}
-	S_StartSound(player->so, sfxenum_t::sfx_dbcls); // [crispy] weapon sound source
-	A_ReFire(NULL, player, psp); // [crispy] let pspr action pointers get called from mobj states
+	S_StartSound(player->so, sfxenum_t::sfx_dbcls); // weapon sound source
+	A_ReFire(NULL, player, psp); // let pspr action pointers get called from mobj states
 }
 
 MapObject** braintargets = NULL;
-int numbraintargets = 0; // [crispy] initialize
+int numbraintargets = 0; // initialize
 int braintargeton = 0;
-static int maxbraintargets; // [crispy] remove braintargets limit
+static int maxbraintargets; // remove braintargets limit
 
 void A_BrainAwake(MapObject* mo)
 {
@@ -1940,7 +1940,7 @@ void A_BrainAwake(MapObject* mo)
 
 		if (m->type == mobjtype_t::MT_BOSSTARGET)
 		{
-			// [crispy] remove braintargets limit
+			// remove braintargets limit
 			if (numbraintargets == maxbraintargets)
 			{
 				maxbraintargets = maxbraintargets ? 2 * maxbraintargets : 32;
@@ -1959,14 +1959,14 @@ void A_BrainAwake(MapObject* mo)
 
 	S_StartSound(nullptr, sfxenum_t::sfx_bossit);
 
-	// [crispy] prevent braintarget overflow
+	// prevent braintarget overflow
 	// (e.g. in two subsequent maps featuring a brain spitter)
 	if (braintargeton >= numbraintargets)
 	{
 		braintargeton = 0;
 	}
 
-	// [crispy] no spawn spots available
+	// no spawn spots available
 	if (numbraintargets == 0)
 	{
 		numbraintargets = -1;
@@ -1975,7 +1975,7 @@ void A_BrainAwake(MapObject* mo)
 
 void A_BrainPain(MapObject* mo)
 {
-	// [crispy] prevent from adding up volume
+	// prevent from adding up volume
 	crispy->soundfull ? S_StartSoundOnce(nullptr, sfxenum_t::sfx_bospn) : S_StartSound(nullptr, sfxenum_t::sfx_bospn);
 }
 
@@ -2026,7 +2026,7 @@ void A_BrainExplode(MapObject* mo)
 		th->tics = 1;
 	}
 
-	// [crispy] brain explosions are translucent
+	// brain explosions are translucent
 	th->flags |= mobjflag_e::MF_TRANSLUCENT;
 }
 
@@ -2048,13 +2048,13 @@ void A_BrainSpit(MapObject* mo)
 		return;
 	}
 
-	// [crispy] avoid division by zero by recalculating the number of spawn spots
+	// avoid division by zero by recalculating the number of spawn spots
 	if (numbraintargets == 0)
 	{
 		A_BrainAwake(nullptr);
 	}
 
-	// [crispy] still no spawn spots available
+	// still no spawn spots available
 	if (numbraintargets == -1)
 	{
 		return;

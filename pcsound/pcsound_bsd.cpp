@@ -8,7 +8,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		PC speaker driver for [Open]BSD (Should be NetBSD as well, but untested).
+		PC speaker driver for OpenBSD (Should be NetBSD as well, but untested).
 \**********************************************************************************************************************************************/
 
 #include "config.h"

@@ -105,7 +105,7 @@ static net_context* client_context;
 static net_gamesettings settings;
 
 // Why did the server reject us?
-std::string net_client_reject_reason = NULL;
+::std::string net_client_reject_reason = NULL;
 
 // true if the client code is in use
 
@@ -123,7 +123,7 @@ bool net_waiting_for_launch = false;
 
 // Name that we send to the server
 
-std::string net_player_name;
+::std::string net_player_name;
 
 // Connected but not participating in the game (observer)
 
@@ -397,7 +397,7 @@ void NET_CL_SendTiccmd(ticcmd_t* ticcmd, TimeType maketic)
 static void NET_CL_ParseSYN(net_packet_t* packet)
 {
 	net_protocol_t protocol;
-	std::string server_version;
+	::std::string server_version;
 
 	NET_Log("client: processing SYN response");
 
@@ -432,7 +432,7 @@ static void NET_CL_ParseSYN(net_packet_t* packet)
 	}
 }
 
-static void SetRejectReason(std::string s)
+static void SetRejectReason(::std::string s)
 {
 	free(net_client_reject_reason);
 	if (s != NULL)
@@ -447,7 +447,7 @@ static void SetRejectReason(std::string s)
 
 static void NET_CL_ParseReject(net_packet_t* packet)
 {
-	std::string msg;
+	::std::string msg;
 
 	msg = NET_ReadSafeString(packet);
 	if (msg == NULL)
@@ -883,7 +883,7 @@ static void NET_CL_ParseResendRequest(net_packet_t* packet)
 
 static void NET_CL_ParseConsoleMessage(net_packet_t* packet)
 {
-	std::string msg;
+	::std::string msg;
 
 	msg = NET_ReadSafeString(packet);
 

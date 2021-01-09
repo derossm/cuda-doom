@@ -8,18 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
 
 #include <string>
 
 #include "txt_common.h"
 #include "txt_widget.h"
-
-//#include "txt_main.h"
-//#include "txt_utf8.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -40,7 +33,7 @@ namespace cudadoom::txt
   */
 class Separator : public Widget<Separator>
 {
-	std::string label;
+	::std::string label;
 
 	//bool KeyPress(KeyEvent key) override final = delete;
 	//bool MousePress(MouseEvent evt) override final = delete;
@@ -101,22 +94,22 @@ public:
 	inline void Destroy() noexcept override final
 	{}
 
-	void SetLabel(Separator* separator, std::string& _label)
+	void SetLabel(Separator* separator, ::std::string& _label)
 	{
 /*
 		if (label != "")
 		{
-			label = std::string(_label);
+			label = ::std::string(_label);
 		}
 		else
 		{
-			label = std::string{};
+			label = ::std::string{};
 		}
 /**/
 	}
 
-	//Separator(std::string& _label) : label(_label)
+	//Separator(::std::string& _label) : label(_label)
 	//{}
 };
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

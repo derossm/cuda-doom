@@ -21,16 +21,16 @@ extern int myargc;
 extern CHAR_PTR* myargv;
 
 // Returns the position of the given parameter in the arg list (0 if not found).
-int M_CheckParm(std::string check);
+int M_CheckParm(::std::string check);
 
 // Same as M_CheckParm, but checks that num_args arguments are available following the specified argument.
-int M_CheckParmWithArgs(std::string check, int num_args);
+int M_CheckParmWithArgs(::std::string check, int num_args);
 
 void M_FindResponseFile();
 void M_AddLooseFiles();
 
 // Parameter has been specified?
-bool M_ParmExists(std::string check);
+bool M_ParmExists(::std::string check);
 
 // Get name of executable used to run this program:
-std::string M_GetExecutableName();
+::std::string M_GetExecutableName();

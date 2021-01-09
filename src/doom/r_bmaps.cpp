@@ -22,7 +22,7 @@
 #include "r_data.h"
 #include "w_wad.h"
 
-// [crispy] brightmap data
+// brightmap data
 
 static byte nobrightmap[256] = {0};
 
@@ -226,7 +226,7 @@ static byte brighttan[256] =
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-// [crispy] Chex Quest's "locked" door switches
+// Chex Quest's "locked" door switches
 
 static byte chexred[256] =
 {
@@ -248,7 +248,7 @@ static byte chexred[256] =
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-// [crispy] Chex Quest's "open" door switches
+// Chex Quest's "open" door switches
 
 static byte chexgreen[256] =
 {
@@ -270,7 +270,7 @@ static byte chexgreen[256] =
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-// [crispy] Chex Quest's "lock"/"open" knobs
+// Chex Quest's "lock"/"open" knobs
 
 static byte chexredgreen[256] =
 {
@@ -314,7 +314,7 @@ static byte hacxlightning[256] =
 
 byte* dc_brightmap = nobrightmap;
 
-// [crispy] brightmaps for textures
+// brightmaps for textures
 
 enum
 {
@@ -325,13 +325,13 @@ enum
 
 struct fullbright_t
 {
-	std::string const texture;
+	::std::string const texture;
 	const int game;
 	byte* colormask;
 };
 
 static const fullbright_t fullbright_doom[] = {
-	// [crispy] common textures
+	// common textures
 	{"COMP2",	DOOM1AND2, blueandgreen},
 	{"COMPSTA1", DOOM1AND2, notgray},
 	{"COMPSTA2", DOOM1AND2, notgray},
@@ -377,7 +377,7 @@ static const fullbright_t fullbright_doom[] = {
 	{"SW2SLAD", DOOM1AND2, redonly},
 	{"SW2STARG", DOOM2ONLY, greenonly2},
 	{"SW2STON1", DOOM1AND2, greenonly3},
-	// [crispy] beware!
+	// beware!
 	{"SW2STON2", DOOM1ONLY, redonly},
 	{"SW2STON2", DOOM2ONLY, greenonly2},
 	{"SW2STON6", DOOM1AND2, redonly},
@@ -401,7 +401,7 @@ static const fullbright_t fullbright_doom[] = {
 			{"SW2SATYR", DOOM1AND2, brighttan},
 			{"SW2LION", DOOM1AND2, brighttan},
 			{"SW2GARG", DOOM1AND2, brighttan},
-			// [crispy] Final Doom textures
+			// Final Doom textures
 			// TNT - Evilution exclusive
 			{"PNK4EXIT", DOOM2ONLY, redonly},
 			{"SLAD2",	DOOM2ONLY, notgrayorbrown},
@@ -525,7 +525,7 @@ static const fullbright_t fullbright_hacx[] = {
 								{"HW512",	DOOM2ONLY, notgrayorbrown},
 };
 
-static byte* R_BrightmapForTexName_Doom(std::string texname)
+static byte* R_BrightmapForTexName_Doom(::std::string texname)
 {
 	int i;
 
@@ -550,7 +550,7 @@ static byte* R_BrightmapForTexName_Doom(std::string texname)
 
 static bool chex2 = false;
 
-static byte* R_BrightmapForTexName_Chex(std::string texname)
+static byte* R_BrightmapForTexName_Chex(::std::string texname)
 {
 	int i;
 
@@ -573,7 +573,7 @@ static byte* R_BrightmapForTexName_Chex(std::string texname)
 	return nobrightmap;
 }
 
-static byte* R_BrightmapForTexName_Hacx(std::string texname)
+static byte* R_BrightmapForTexName_Hacx(::std::string texname)
 {
 	int i;
 
@@ -590,9 +590,9 @@ static byte* R_BrightmapForTexName_Hacx(std::string texname)
 	return nobrightmap;
 }
 
-// [crispy] brightmaps for sprites
+// brightmaps for sprites
 
-// [crispy] adapted from russian-doom/src/doom/r_things.c:617-639
+// adapted from russian-doom/src/doom/r_things.c:617-639
 static byte* R_BrightmapForSprite_Doom(const int type)
 {
 	if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
@@ -635,7 +635,7 @@ static byte* R_BrightmapForSprite_Doom(const int type)
 
 static byte* R_BrightmapForSprite_Chex(const int type)
 {
-	// [crispy] TODO
+	// TODO
 	/*
 	if (crispy->brightmaps & BRIGHTMAPS_SPRITES)
 	{
@@ -711,7 +711,7 @@ static byte* R_BrightmapForSprite_Hacx(const int type)
 	return nobrightmap;
 }
 
-// [crispy] brightmaps for flats
+// brightmaps for flats
 
 static int bmapflatnum[12];
 
@@ -763,7 +763,7 @@ static byte* R_BrightmapForFlatNum_None(const int num)
 	return nobrightmap;
 }
 
-// [crispy] brightmaps for states
+// brightmaps for states
 
 static byte* R_BrightmapForState_Doom(const int state)
 {
@@ -821,9 +821,9 @@ static byte* R_BrightmapForState_None(const int state)
 	return nobrightmap;
 }
 
-// [crispy] initialize brightmaps
+// initialize brightmaps
 
-byte* (*R_BrightmapForTexName) (std::string texname);
+byte* (*R_BrightmapForTexName) (::std::string texname);
 byte* (*R_BrightmapForSprite) (const int type);
 byte* (*R_BrightmapForFlatNum) (const int num);
 byte* (*R_BrightmapForState) (const int state);
@@ -855,7 +855,7 @@ void R_InitBrightmaps()
 		{
 			int lump;
 
-			// [crispy] detect Chex Quest 2
+			// detect Chex Quest 2
 			lump = W_CheckNumForName("INTERPIC");
 			if (!iequals(W_WadNameForLump(lumpinfo[lump]), "chex2.wad"))
 			{
@@ -869,7 +869,7 @@ void R_InitBrightmaps()
 		}
 		else
 		{
-			// [crispy] only three select brightmapped flats
+			// only three select brightmapped flats
 			bmapflatnum[0] = R_FlatNumForName("CONS1_1");
 			bmapflatnum[1] = R_FlatNumForName("CONS1_5");
 			bmapflatnum[2] = R_FlatNumForName("CONS1_7");

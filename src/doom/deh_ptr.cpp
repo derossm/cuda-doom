@@ -20,11 +20,11 @@
 #include "deh_io.h"
 #include "deh_main.h"
 
-actionf_t codeptrs[std::size_t(statenum_t::NUMSTATES)]; // [crispy] share with deh_bexptr.c
+actionf_t codeptrs[::std::size_t(statenum_t::NUMSTATES)]; // share with deh_bexptr.c
 
 static int CodePointerIndex(actionf_t* ptr)
 {
-	for (size_t i{0}; i < std::size_t(statenum_t::NUMSTATES); ++i)
+	for (size_t i{0}; i < ::std::size_t(statenum_t::NUMSTATES); ++i)
 	{
 		if (!memcmp(&codeptrs[i], ptr, sizeof(actionf_t)))
 		{
@@ -41,13 +41,13 @@ static void DEH_PointerInit()
 
 	// Initialize list of dehacked pointers
 
-	for (i = 0; i < std::size_t(statenum_t::EXTRASTATES); ++i)
+	for (i = 0; i < ::std::size_t(statenum_t::EXTRASTATES); ++i)
 	{
 		codeptrs[i] = states[i].action;
 	}
 
 	// [BH] Initialize extra dehacked states
-	for (; i < std::size_t(statenum_t::NUMSTATES); ++i)
+	for (; i < ::std::size_t(statenum_t::NUMSTATES); ++i)
 	{
 		states[i].sprite = spritenum_t::SPR_TNT1;
 		states[i].frame = 0;
@@ -86,8 +86,8 @@ static void* DEH_PointerStart(deh_context_t* context, char* line)
 static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 {
 	state_t* state;
-	std::string variable_name;
-	std::string value;
+	::std::string variable_name;
+	::std::string value;
 	int ivalue;
 
 	if (tag == NULL)
@@ -131,7 +131,7 @@ static void DEH_PointerParseLine(deh_context_t* context, char* line, void* tag)
 
 static void DEH_PointerSHA1Sum(sha1_context_t* context)
 {
-	for (size_t i{0}; i < std::size_t(statenum_t::NUMSTATES); ++i)
+	for (size_t i{0}; i < ::std::size_t(statenum_t::NUMSTATES); ++i)
 	{
 		SHA1_UpdateInt32(context, CodePointerIndex(&states[i].action));
 	}

@@ -239,16 +239,16 @@ enum class spritenum_t
 	SPR_BRS1,
 	SPR_TLMP,
 	SPR_TLP2,
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	SPR_TNT1,
 	SPR_DOGS,
 	SPR_PLS1,
 	SPR_PLS2,
 	SPR_BON3,
 	SPR_BON4,
-	// [BH] blood splats, [crispy] unused
+	// blood splats, unused
 	SPR_BLD2,
-	// [BH] 100 extra sprite names to use in dehacked patches
+	// 100 extra sprite names to use in dehacked patches
 	SPR_SP00, SPR_SP01, SPR_SP02, SPR_SP03, SPR_SP04, SPR_SP05, SPR_SP06, SPR_SP07, SPR_SP08, SPR_SP09,
 	SPR_SP10, SPR_SP11, SPR_SP12, SPR_SP13, SPR_SP14, SPR_SP15, SPR_SP16, SPR_SP17, SPR_SP18, SPR_SP19,
 	SPR_SP20, SPR_SP21, SPR_SP22, SPR_SP23, SPR_SP24, SPR_SP25, SPR_SP26, SPR_SP27, SPR_SP28, SPR_SP29,
@@ -1231,7 +1231,7 @@ enum class statenum_t
 	S_TECH2LAMP2,
 	S_TECH2LAMP3,
 	S_TECH2LAMP4,
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	S_TNT1,
 	S_GRENADE,
 	S_DETONATE,
@@ -1301,7 +1301,7 @@ enum class statenum_t
 	S_BSKUL_DIE7,
 	S_BSKUL_DIE8,
 	S_MUSHROOM,
-	// [BH] extra dehacked states
+	// extra dehacked states
 	EXTRASTATES = 1089,
 	NUMSTATES = 4000
 };
@@ -1309,12 +1309,12 @@ enum class statenum_t
 //struct state_t;
 //struct mobjinfo_t;
 
-//extern state_t states[std::size_t(statenum_t::NUMSTATES)];
-//extern std::string sprnames[];
+//extern state_t states[::std::size_t(statenum_t::NUMSTATES)];
+//extern ::std::string sprnames[];
 
 enum class mobjtype_t
 {
-	MT_NULL = -1, // [crispy] null/invalid mobj (zero is reserved for MT_PLAYER)
+	MT_NULL = -1, // null/invalid mobj (zero is reserved for MT_PLAYER)
 	MT_PLAYER,
 	MT_POSSESSED,
 	MT_SHOTGUY,
@@ -1452,7 +1452,7 @@ enum class mobjtype_t
 	MT_MISC84,
 	MT_MISC85,
 	MT_MISC86,
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	MT_PUSH,
 	MT_PULL,
 	MT_DOGS,
@@ -1460,9 +1460,9 @@ enum class mobjtype_t
 	MT_PLASMA2,
 	MT_SCEPTRE,
 	MT_BIBLE,
-	// [crispy] support MUSINFO lump (dynamic music changing)
+	// support MUSINFO lump (dynamic music changing)
 	MT_MUSICSOURCE,
-	// [BH] 100 extra mobjs to use in dehacked patches
+	// 100 extra mobjs to use in dehacked patches
 	MT_EXTRA00 = 150, MT_EXTRA01, MT_EXTRA02, MT_EXTRA03, MT_EXTRA04,
 	MT_EXTRA05, MT_EXTRA06, MT_EXTRA07, MT_EXTRA08, MT_EXTRA09,
 	MT_EXTRA10, MT_EXTRA11, MT_EXTRA12, MT_EXTRA13, MT_EXTRA14,
@@ -1486,7 +1486,7 @@ enum class mobjtype_t
 	NUMMOBJTYPES
 };
 
-//extern mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)];
+//extern mobjinfo_t mobjinfo[::std::size_t(mobjtype_t::NUMMOBJTYPES)];
 
 // DO NOT RE-ARRANGE WITHOUT FIXING {} ASSIGNMENTS
 struct state_t
@@ -1528,21 +1528,21 @@ struct mobjinfo_t
 	int flags;
 	statenum_t raisestate;
 
-	// [crispy] height of the spawnstate's first sprite in pixels
+	// height of the spawnstate's first sprite in pixels
 	int actualheight;
-	// [crispy] mobj to drop after death
+	// mobj to drop after death
 	mobjtype_t droppeditem;
-	// [crispy] distance to switch from missile to melee attack (generaliz. for Revenant)
+	// distance to switch from missile to melee attack (generaliz. for Revenant)
 	int meleethreshold;
-	// [crispy] maximum distance range to start shooting (generaliz. for Arch Vile)
+	// maximum distance range to start shooting (generaliz. for Arch Vile)
 	int maxattackrange;
-	// [crispy] minimum likelihood of a missile attack (generaliz. for Cyberdemon)
+	// minimum likelihood of a missile attack (generaliz. for Cyberdemon)
 	int minmissilechance;
-	// [crispy] multiplier for likelihood of a missile attack (generaliz. for various)
+	// multiplier for likelihood of a missile attack (generaliz. for various)
 	int missilechancemult;
 };
 
-std::string sprnames[]{
+::std::string sprnames[]{
 	"TROO","SHTG","PUNG","PISG","PISF","SHTF","SHT2","CHGG","CHGF","MISG",
 	"MISF","SAWG","PLSG","PLSF","BFGG","BFGF","BLUD","PUFF","BAL1","BAL2",
 	"PLSS","PLSE","MISL","BFS1","BFE1","BFE2","TFOG","IFOG","PLAY","POSS",
@@ -1557,11 +1557,11 @@ std::string sprnames[]{
 	"COL3","COL4","CAND","CBRA","COL6","TRE1","TRE2","ELEC","CEYE","FSKU",
 	"COL5","TBLU","TGRN","TRED","SMBT","SMGT","SMRT","HDB1","HDB2","HDB3",
 	"HDB4","HDB5","HDB6","POB1","POB2","BRS1","TLMP","TLP2",
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	"TNT1","DOGS","PLS1","PLS2","BON3","BON4",
-	// [BH] blood splats, [crispy] unused
+	// blood splats, unused
 	"BLD2",
-	// [BH] 100 extra sprite names to use in dehacked patches
+	// 100 extra sprite names to use in dehacked patches
 	"SP00", "SP01", "SP02", "SP03", "SP04", "SP05", "SP06", "SP07", "SP08", "SP09",
 	"SP10", "SP11", "SP12", "SP13", "SP14", "SP15", "SP16", "SP17", "SP18", "SP19",
 	"SP20", "SP21", "SP22", "SP23", "SP24", "SP25", "SP26", "SP27", "SP28", "SP29",
@@ -1650,7 +1650,7 @@ void A_BrainSpit();
 void A_SpawnSound();
 void A_SpawnFly();
 void A_BrainExplode();
-// [crispy] additional BOOM and MBF states, sprites and code pointers
+// additional BOOM and MBF states, sprites and code pointers
 void A_Stop();
 void A_Die();
 void A_FireOldBFG();
@@ -1664,7 +1664,7 @@ constexpr size_t BFGDELAY{1};
 #define OLDBFG_4FRAMES(x) OLDBFG_2FRAMES(x) OLDBFG_2FRAMES(x+2)
 #define OLDBFG_8FRAMES(x) OLDBFG_4FRAMES(x) OLDBFG_4FRAMES(x+4)
 
-constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
+constexpr state_t states[::std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_TROO,0,0,{nullptr},statenum_t::S_NULL,0,0},	// S_NULL
 	{spritenum_t::SPR_SHTG,4,0,{A_Light0},statenum_t::S_NULL,0,0},	// S_LIGHTDONE
 	{spritenum_t::SPR_PUNG,0,1,{A_WeaponReady},statenum_t::S_PUNCH,0,0},	// S_PUNCH
@@ -1701,7 +1701,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_SHT2,0,1,{A_Lower},statenum_t::S_DSGUNDOWN,0,0},	// S_DSGUNDOWN
 	{spritenum_t::SPR_SHT2,0,1,{A_Raise},statenum_t::S_DSGUNUP,0,0},	// S_DSGUNUP
 	{spritenum_t::SPR_SHT2,0,3,{nullptr},statenum_t::S_DSGUN2,0,0},	// S_DSGUN1
-	// [crispy] killough 9/5/98: make SSG lighting flash more uniform along super shotgun
+	// killough 9/5/98: make SSG lighting flash more uniform along super shotgun
 	{spritenum_t::SPR_SHT2,0 | 0x8000,7,{A_FireShotgun2},statenum_t::S_DSGUN3,0,0},	// S_DSGUN2
 	{spritenum_t::SPR_SHT2,1,7,{nullptr},statenum_t::S_DSGUN4,0,0},	// S_DSGUN3
 	{spritenum_t::SPR_SHT2,2,7,{A_CheckReload},statenum_t::S_DSGUN5,0,0},	// S_DSGUN4
@@ -1713,7 +1713,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_SHT2,0,5,{A_ReFire},statenum_t::S_DSGUN,0,0},	// S_DSGUN10
 	{spritenum_t::SPR_SHT2,1,7,{nullptr},statenum_t::S_DSNR2,0,0},	// S_DSNR1
 	{spritenum_t::SPR_SHT2,0,3,{nullptr},statenum_t::S_DSGUNDOWN,0,0},	// S_DSNR2
-	// [crispy] killough 8/20/98: reduce first SSG flash frame one tic, to fix
+	// killough 8/20/98: reduce first SSG flash frame one tic, to fix
 	// Doom II SSG flash bug, in which SSG raises before flash finishes
 	{spritenum_t::SPR_SHT2,32776,50,{A_Light1},statenum_t::S_DSGUNFLASH2,0,0},	// S_DSGUNFLASH1
 	{spritenum_t::SPR_SHT2,32777,4,{A_Light2},statenum_t::S_LIGHTDONE,0,0},	// S_DSGUNFLASH2
@@ -1853,7 +1853,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_POSS,3,4,{A_Chase},statenum_t::S_POSS_RUN8,0,0},	// S_POSS_RUN7
 	{spritenum_t::SPR_POSS,3,4,{A_Chase},statenum_t::S_POSS_RUN1,0,0},	// S_POSS_RUN8
 	{spritenum_t::SPR_POSS,4,10,{A_FaceTarget},statenum_t::S_POSS_ATK2,0,0},	// S_POSS_ATK1
-	// [crispy] render Zombiman's firing frames full-bright
+	// render Zombiman's firing frames full-bright
 	{spritenum_t::SPR_POSS,5 | 0x8000,8,{A_PosAttack},statenum_t::S_POSS_ATK3,0,0},	// S_POSS_ATK2
 	{spritenum_t::SPR_POSS,4,8,{nullptr},statenum_t::S_POSS_RUN1,0,0},	// S_POSS_ATK3
 	{spritenum_t::SPR_POSS,6,3,{nullptr},statenum_t::S_POSS_PAIN2,0,0},	// S_POSS_PAIN
@@ -2088,7 +2088,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_CPOS,4,10,{A_FaceTarget},statenum_t::S_CPOS_ATK2,0,0},	// S_CPOS_ATK1
 	{spritenum_t::SPR_CPOS,32773,4,{A_CPosAttack},statenum_t::S_CPOS_ATK3,0,0},	// S_CPOS_ATK2
 	{spritenum_t::SPR_CPOS,32772,4,{A_CPosAttack},statenum_t::S_CPOS_ATK4,0,0},	// S_CPOS_ATK3
-	// [crispy] render Minigun zombie's firing frames full-bright
+	// render Minigun zombie's firing frames full-bright
 	{spritenum_t::SPR_CPOS,5 | 0x8000,1,{A_CPosRefire},statenum_t::S_CPOS_ATK2,0,0},	// S_CPOS_ATK4
 	{spritenum_t::SPR_CPOS,6,3,{nullptr},statenum_t::S_CPOS_PAIN2,0,0},	// S_CPOS_PAIN
 	{spritenum_t::SPR_CPOS,6,3,{A_Pain},statenum_t::S_CPOS_RUN1,0,0},	// S_CPOS_PAIN2
@@ -2355,7 +2355,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_CYBR,3,3,{A_Metal},statenum_t::S_CYBER_RUN8,0,0},	// S_CYBER_RUN7
 	{spritenum_t::SPR_CYBR,3,3,{A_Chase},statenum_t::S_CYBER_RUN1,0,0},	// S_CYBER_RUN8
 	{spritenum_t::SPR_CYBR,4,6,{A_FaceTarget},statenum_t::S_CYBER_ATK2,0,0},	// S_CYBER_ATK1
-	// [crispy] render Cyberdemon's firing frames full-bright
+	// render Cyberdemon's firing frames full-bright
 	{spritenum_t::SPR_CYBR,5 | 0x8000,12,{A_CyberAttack},statenum_t::S_CYBER_ATK3,0,0},	// S_CYBER_ATK2
 	{spritenum_t::SPR_CYBR,4,12,{A_FaceTarget},statenum_t::S_CYBER_ATK4,0,0},	// S_CYBER_ATK3
 	{spritenum_t::SPR_CYBR,5 | 0x8000,12,{A_CyberAttack},statenum_t::S_CYBER_ATK5,0,0},	// S_CYBER_ATK4
@@ -2638,7 +2638,7 @@ constexpr state_t states[std::size_t(statenum_t::NUMSTATES)]{
 	{spritenum_t::SPR_TLP2,32769,4,{nullptr},statenum_t::S_TECH2LAMP3,0,0},	// S_TECH2LAMP2
 	{spritenum_t::SPR_TLP2,32770,4,{nullptr},statenum_t::S_TECH2LAMP4,0,0},	// S_TECH2LAMP3
 	{spritenum_t::SPR_TLP2,32771,4,{nullptr},statenum_t::S_TECH2LAMP,0,0},	// S_TECH2LAMP4
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	{spritenum_t::SPR_TNT1,0,0,{nullptr},statenum_t::S_TNT1,0,0},	// S_TNT1
 	{spritenum_t::SPR_MISL,32768,1000,{A_Die},statenum_t::S_GRENADE,0,0},	// S_GRENADE
 	{spritenum_t::SPR_MISL,32769,4,{A_Scream},statenum_t::S_DETONATE2,0,0},	// S_DETONATE
@@ -2717,7 +2717,7 @@ spritenum_t::SPR_BFGG,1,0,{A_Light0},statenum_t::S_OLDBFG43,0,0
 {spritenum_t::SPR_MISL,32769,8,{A_Mushroom},statenum_t::S_EXPLODE2,0,0},	// S_MUSHROOM
 };
 
-static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
+static mobjinfo_t mobjinfo[::std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 	{
 		// MT_PLAYER	"OUR HERO"
 		-1,							// doomednum
@@ -6280,7 +6280,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		(int)mobjflag_e::MF_NOBLOCKMAP,		// flags
 		statenum_t::S_NULL		// raisestate
 	},
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	{
 		// MT_PUSH
 		5001,		// doomednum
@@ -6463,7 +6463,7 @@ static mobjinfo_t mobjinfo[std::size_t(mobjtype_t::NUMMOBJTYPES)]{
 		int(mobjflag_e::MF_SPECIAL) | int(mobjflag_e::MF_COUNTITEM),		// flags
 		statenum_t::S_NULL		// raisestate
 	},
-	// [crispy] support MUSINFO lump (dynamic music changing)
+	// support MUSINFO lump (dynamic music changing)
 	{
 		// MT_MUSICSOURCE
 		14164,		// doomednum

@@ -20,7 +20,7 @@ int M_Random();
 // As M_Random, but used only by the play simulation.
 int P_Random();
 
-// [crispy] our own private random function
+// our own private random function
 int Crispy_Random();
 
 // Fix randoms for demos.

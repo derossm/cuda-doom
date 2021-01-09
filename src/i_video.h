@@ -30,9 +30,9 @@ constexpr int MAXHEIGHT{(ORIGHEIGHT << 1)};
 
 extern int SCREENWIDTH;
 extern int SCREENHEIGHT;
-extern int NONWIDEWIDTH;							// [crispy] non-widescreen SCREENWIDTH
-extern int WIDESCREENDELTA;							// [crispy] horizontal widescreen offset
-void I_GetScreenDimensions();						// [crispy] re-calculate WIDESCREENDELTA
+extern int NONWIDEWIDTH;							// non-widescreen SCREENWIDTH
+extern int WIDESCREENDELTA;							// horizontal widescreen offset
+void I_GetScreenDimensions();						// re-calculate WIDESCREENDELTA
 
 // Screen height used when aspect_ratio_correct=true.
 constexpr int ORIGHEIGHT_4_3{240};
@@ -65,7 +65,7 @@ void I_ReadScreen(pixel_t* scr);
 
 void I_BeginRead();
 
-void I_SetWindowTitle(std::string title);
+void I_SetWindowTitle(::std::string title);
 
 void I_CheckIsScreensaver();
 void I_SetGrabMouseCallback(grabmouse_callback_t func);
@@ -87,7 +87,7 @@ void I_StartTic();
 // Enable the loading disk image displayed when reading from disk.
 void I_EnableLoadingDisk(int xoffs, int yoffs);
 
-extern std::string video_driver;
+extern ::std::string video_driver;
 extern bool screenvisible;
 
 extern int vanilla_keyboard_mapping;
@@ -103,7 +103,7 @@ extern int integer_scaling;
 extern int vga_porch_flash;
 extern int force_software_renderer;
 
-extern std::string window_position;
+extern ::std::string window_position;
 void I_GetWindowPosition(int* x, int* y, int w, int h);
 
 // Joystic/gamepad hysteresis

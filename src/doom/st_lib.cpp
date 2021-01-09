@@ -22,7 +22,7 @@
 #include "st_stuff.h"
 #include "st_lib.h"
 #include "r_local.h"
-#include "v_trans.h" // [crispy] colored status bar widgets
+#include "v_trans.h" // colored status bar widgets
 
 // in AM_map.cpp
 extern bool automapactive;
@@ -66,7 +66,7 @@ void STlib_drawNum(st_number_t* n, bool refresh)
 	auto h{SHORT(n->p[0]->height)};
 	//auto x{n->x};
 
-	// [crispy] redraw only if necessary
+	// redraw only if necessary
 	if (n->oldnum == num && !refresh)
 	{
 		return;
@@ -145,20 +145,20 @@ void STlib_initPercent(st_percent_t* p, int x, int y, patch_t** pl, int* num, bo
 	STlib_initNum(&p->n, x, y, pl, num, on, 3);
 	p->p = percent;
 
-	// [crispy] remember previous colorization
+	// remember previous colorization
 	p->oldtranslation = nullptr;
 }
 
 void STlib_updatePercent(st_percent_t* per, int refresh)
 {
-	// [crispy] remember previous colorization
+	// remember previous colorization
 	if (per->oldtranslation != dp_translation)
 	{
 		refresh = true;
 		per->oldtranslation = dp_translation;
 	}
 
-	STlib_updateNum(&per->n, refresh);	// [crispy] moved here
+	STlib_updateNum(&per->n, refresh);	// moved here
 
 	if (crispy->coloredhud & COLOREDHUD_BAR)
 	{

@@ -48,7 +48,7 @@ void Buffer_Clear(buffer_t* buf)
 
 auto NewBuffer()
 {
-	auto buf{std::make_unique<buffer_t>()};
+	auto buf{::std::make_unique<buffer_t>()};
 	//buffer_t* buf = static_cast<decltype(buf)>(malloc(sizeof(buffer_t)));
 
 	buf->buffer_end = buf->buffer + BUFFER_SIZE;
@@ -128,7 +128,7 @@ void Buffer_Shift(buffer_t* buf, size_t len)
 auto NewReader(buffer_t* buffer)
 {
 	//buffer_reader_t* reader = static_cast<decltype(reader)>(malloc(sizeof(buffer_reader_t)));
-	auto reader{std::make_unique<buffer_reader_t>()};
+	auto reader{::std::make_unique<buffer_reader_t>()};
 
 	reader->buffer = buffer;
 	reader->pos = buffer->data;
@@ -201,7 +201,7 @@ uint32_t Reader_ReadInt32(buffer_reader_t* reader)
 	return (uint32_t)((dp[0] << 24) | (dp[1] << 16) | (dp[2] << 8) | dp[3]);
 }
 
-std::string Reader_ReadString(buffer_reader_t* reader)
+::std::string Reader_ReadString(buffer_reader_t* reader)
 {
 	byte* data;
 	size_t len{Buffer_Data(reader->buffer, &data)};
@@ -218,11 +218,11 @@ std::string Reader_ReadString(buffer_reader_t* reader)
 	if (dp >= data_end)
 	{
 		// Didn't see a null terminator, not a complete string.
-		return (std::string)nullptr;
+		return (::std::string)nullptr;
 	}
 
 	reader->pos = dp + 1;
-	return std::string((char*)data_start);
+	return ::std::string((char*)data_start);
 }
 
 #endif

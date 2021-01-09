@@ -23,13 +23,13 @@
 // in POSIX.1. Other than Linux, the d_type field is available mainly
 // only on BSD systems. The remaining fields are available on many, but
 // not all systems.
-bool IsDirectory(std::string dir)
+bool IsDirectory(::std::string dir)
 {
-	return std::filesystem::directory_iterator{std::filesystem::path{dir}}->is_directory();
+	return ::std::filesystem::directory_iterator{::std::filesystem::path{dir}}->is_directory();
 }
 
 // CALLED EXTERN
-glob_t* I_StartMultiGlob(std::string directory, int flags, std::string glob, ...)
+glob_t* I_StartMultiGlob(::std::string directory, int flags, ::std::string glob, ...)
 {
 	char** globs;
 	int num_globs;
@@ -41,13 +41,13 @@ glob_t* I_StartMultiGlob(std::string directory, int flags, std::string glob, ...
 	{
 		return nullptr;
 	}
-	globs[0] = std::string(glob);
+	globs[0] = ::std::string(glob);
 	num_globs = 1;
 
 	va_start(args, glob);
 	for (;;)
 	{
-		std::string arg = va_arg(args, std::string);
+		::std::string arg = va_arg(args, ::std::string);
 		char** new_globs;
 
 		if (arg == NULL)
@@ -61,7 +61,7 @@ glob_t* I_StartMultiGlob(std::string directory, int flags, std::string glob, ...
 			FreeStringList(globs, num_globs);
 		}
 		globs = new_globs;
-		globs[num_globs] = std::string(arg);
+		globs[num_globs] = ::std::string(arg);
 		++num_globs;
 	}
 	va_end(args);
@@ -81,7 +81,7 @@ glob_t* I_StartMultiGlob(std::string directory, int flags, std::string glob, ...
 		return nullptr;
 	}
 
-	result->directory = std::string(directory);
+	result->directory = ::std::string(directory);
 	result->globs = globs;
 	result->num_globs = num_globs;
 	result->flags = flags;
@@ -93,7 +93,7 @@ glob_t* I_StartMultiGlob(std::string directory, int flags, std::string glob, ...
 }
 
 // CALLED EXTERN
-glob_t* I_StartGlob(std::string directory, std::string glob, int flags)
+glob_t* I_StartGlob(::std::string directory, ::std::string glob, int flags)
 {
 	return I_StartMultiGlob(directory, flags, glob, NULL);
 }
@@ -116,7 +116,7 @@ void I_EndGlob(glob_t* glob)
 }
 
 // CALLED EXTERN
-std::string NextGlob(glob_t* glob)
+::std::string NextGlob(glob_t* glob)
 {
 	dirent* de;
 
@@ -131,13 +131,13 @@ std::string NextGlob(glob_t* glob)
 		|| !MatchesAnyGlob(de->d_name, glob));
 
 	// Return the fully-qualified path, not just the bare filename.
-	return std::string(glob->directory + DIR_SEPARATOR_S + de->d_name);
+	return ::std::string(glob->directory + DIR_SEPARATOR_S + de->d_name);
 }
 
 // CALLED EXTERN
-std::string I_NextGlob(glob_t* glob)
+::std::string I_NextGlob(glob_t* glob)
 {
-	std::string result;
+	::std::string result;
 
 	if (glob == NULL)
 	{
@@ -169,7 +169,7 @@ std::string I_NextGlob(glob_t* glob)
 	return result;
 }
 
-static bool MatchesGlob(std::string name, std::string glob, int flags)
+static bool MatchesGlob(::std::string name, ::std::string glob, int flags)
 {
 	int n;
 	int g;
@@ -215,7 +215,7 @@ static bool MatchesGlob(std::string name, std::string glob, int flags)
 	return *name == '\0';
 }
 
-static bool MatchesAnyGlob(std::string name, glob_t* glob)
+static bool MatchesAnyGlob(::std::string name, glob_t* glob)
 {
 	int i;
 
@@ -231,7 +231,7 @@ static bool MatchesAnyGlob(std::string name, glob_t* glob)
 
 static void ReadAllFilenames(glob_t* glob)
 {
-	std::string name;
+	::std::string name;
 
 	glob->filenames = NULL;
 	glob->filenames_len = 0;
@@ -252,8 +252,8 @@ static void ReadAllFilenames(glob_t* glob)
 
 static void SortFilenames(char** filenames, int len, int flags)
 {
-	std::string pivot;
-	std::string tmp;
+	::std::string pivot;
+	::std::string tmp;
 	int i;
 	int left_len;
 	int cmp;

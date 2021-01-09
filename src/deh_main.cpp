@@ -25,18 +25,18 @@
 #include "deh_main.h"
 
 extern deh_section_t* deh_section_types[];
-extern std::string deh_signatures[];
+extern ::std::string deh_signatures[];
 
 static bool deh_initialized = false;
 
 // If true, we can parse [STRINGS] sections in BEX format.
-bool deh_allow_extended_strings = true; // [crispy] always allow
+bool deh_allow_extended_strings = true; // always allow
 
 // If true, we can do long string replacements.
-bool deh_allow_long_strings = true; // [crispy] always allow
+bool deh_allow_long_strings = true; // always allow
 
 // If true, we can do cheat replacements longer than the originals.
-bool deh_allow_long_cheats = true; // [crispy] always allow
+bool deh_allow_long_cheats = true; // always allow
 
 // If false, dehacked cheat replacements are ignored.
 bool deh_apply_cheats = true;
@@ -88,7 +88,7 @@ void DEH_Init()
 }
 
 // Given a section name, get the section structure which corresponds
-static deh_section_t* GetSectionByName(std::string name)
+static deh_section_t* GetSectionByName(::std::string name)
 {
 	unsigned i;
 
@@ -110,7 +110,7 @@ static deh_section_t* GetSectionByName(std::string name)
 }
 
 // Is the string passed just whitespace?
-static bool IsWhitespace(std::string s)
+static bool IsWhitespace(::std::string s)
 {
 	for (; *s; ++s)
 	{
@@ -122,9 +122,9 @@ static bool IsWhitespace(std::string s)
 }
 
 // Strip whitespace from the start and end of a string
-std::string CleanString(std::string s)
+::std::string CleanString(::std::string s)
 {
-	std::string strending;
+	::std::string strending;
 
 	// Leading whitespace
 	while (*s && isspace(*s)){
@@ -144,9 +144,9 @@ std::string CleanString(std::string s)
 
 // This pattern is used a lot of times in different sections, an assignment is essentially just a statement of the form: Variable Name = Value
 // The variable name can include spaces or any other characters. The string is split on the '=', essentially. Returns true if read correctly.
-bool DEH_ParseAssignment(std::string line, char** variable_name, char** value)
+bool DEH_ParseAssignment(::std::string line, char** variable_name, char** value)
 {
-	std::string p;
+	::std::string p;
 
 	// find the equals
 	p = strchr(line, '=');
@@ -172,9 +172,9 @@ extern void DEH_RestoreLineStart(deh_context_t* context);
 static bool CheckSignatures(deh_context_t* context)
 {
 	size_t i;
-	std::string line;
+	::std::string line;
 
-	// [crispy] save pointer to start of line (should be 0 here)
+	// save pointer to start of line (should be 0 here)
 	DEH_SaveLineStart(context);
 
 	// Read the first line
@@ -194,14 +194,14 @@ static bool CheckSignatures(deh_context_t* context)
 		}
 	}
 
-	// [crispy] not a valid signature, try parsing this line again and see if it starts with a section marker
+	// not a valid signature, try parsing this line again and see if it starts with a section marker
 	DEH_RestoreLineStart(context);
 
 	return false;
 }
 
 // Parses a comment string in a dehacked file.
-static void DEH_ParseComment(std::string comment)
+static void DEH_ParseComment(::std::string comment)
 {
 	// Welcome, to the super-secret Chocolate Doom-specific Dehacked overrides function.
 
@@ -236,16 +236,16 @@ static void DEH_ParseComment(std::string comment)
 static void DEH_ParseContext(deh_context_t* context)
 {
 	deh_section_t* current_section = NULL;
-	deh_section_t* prev_section = NULL; // [crispy] remember previous line parser
+	deh_section_t* prev_section = NULL; // remember previous line parser
 	char section_name[20];
 	void* tag = NULL;
 	bool extended;
-	std::string line;
+	::std::string line;
 
 	// Read the header and check it matches the signature
 	if (!CheckSignatures(context))
 	{
-		// [crispy] make non-fatal
+		// make non-fatal
 		fprintf(stderr, "This is not a valid dehacked patch file!\n");
 	}
 
@@ -254,7 +254,7 @@ static void DEH_ParseContext(deh_context_t* context)
 	{
 		// Read the next line. We only allow the special extended parsing for the BEX [STRINGS] section.
 		extended = current_section != NULL && !iequals(current_section->name, "[STRINGS]");
-		// [crispy] save pointer to start of line, just in case
+		// save pointer to start of line, just in case
 		DEH_SaveLineStart(context);
 		line = DEH_ReadLine(context, extended);
 
@@ -284,7 +284,7 @@ static void DEH_ParseContext(deh_context_t* context)
 					current_section->end(context, tag);
 				}
 
-				// [crispy] if this was a BEX line parser, remember it in case the next section does not start with a section marker
+				// if this was a BEX line parser, remember it in case the next section does not start with a section marker
 				if (current_section->name[0] == '[')
 				{
 					prev_section = current_section;
@@ -319,7 +319,7 @@ static void DEH_ParseContext(deh_context_t* context)
 				}
 				else if (prev_section != NULL)
 				{
-					// [crispy] try this line again with the previous line parser
+					// try this line again with the previous line parser
 					DEH_RestoreLineStart(context);
 					current_section = prev_section;
 					prev_section = NULL;
@@ -334,7 +334,7 @@ static void DEH_ParseContext(deh_context_t* context)
 }
 
 // Parses a dehacked file
-int DEH_LoadFile(std::string filename)
+int DEH_LoadFile(::std::string filename)
 {
 	deh_context_t* context;
 
@@ -372,13 +372,13 @@ int DEH_LoadFile(std::string filename)
 }
 
 // Load all dehacked patches from the given directory.
-void DEH_AutoLoadPatches(std::string path)
+void DEH_AutoLoadPatches(::std::string path)
 {
-	std::string filename;
+	::std::string filename;
 	glob_t* glob;
 
 	glob = I_StartMultiGlob(path, GLOB_FLAG_NOCASE | GLOB_FLAG_SORTED,
-		"*.deh", "*.bex", "*.hhe", "*.seh", NULL); // [crispy] *.bex
+		"*.deh", "*.bex", "*.hhe", "*.seh", NULL); // *.bex
 	for (;;)
 	{
 		filename = I_NextGlob(glob);
@@ -429,7 +429,7 @@ int DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error)
 	return 1;
 }
 
-int DEH_LoadLumpByName(std::string name, bool allow_long, bool allow_error)
+int DEH_LoadLumpByName(::std::string name, bool allow_long, bool allow_error)
 {
 	int lumpnum;
 
@@ -447,7 +447,7 @@ int DEH_LoadLumpByName(std::string name, bool allow_long, bool allow_error)
 // Check the command line for -deh argument, and others.
 void DEH_ParseCommandLine()
 {
-	std::string filename;
+	::std::string filename;
 	int p;
 
 	// Load the given dehacked patch(es)

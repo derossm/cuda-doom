@@ -12,10 +12,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-	[crispy] support MUSINFO lump (dynamic music changing)
+ support MUSINFO lump (dynamic music changing)
 \**********************************************************************************************************************************************/
 
-// [crispy] adapted from chocolate-doom/src/hexen/sc_man.c:18-470
+// adapted from chocolate-doom/src/hexen/sc_man.c:18-470
 
 #include <string>
 
@@ -48,16 +48,16 @@ constexpr size_t FILE_ZONE_SCRIPT{2};
 // PRIVATE FUNCTION PROTOTYPES ---------------------------------------------
 
 static void CheckOpen();
-static void OpenScript(std::string name, int type);
-static void SC_OpenLump(std::string name);
+static void OpenScript(::std::string name, int type);
+static void SC_OpenLump(::std::string name);
 static void SC_Close();
-static bool SC_Compare(std::string text);
+static bool SC_Compare(::std::string text);
 
 // EXTERNAL DATA DECLARATIONS ----------------------------------------------
 
 // PUBLIC DATA DEFINITIONS -------------------------------------------------
 
-std::string sc_String;
+::std::string sc_String;
 static int sc_Line;
 static bool sc_End;
 static bool sc_Crossed;
@@ -65,9 +65,9 @@ static bool sc_Crossed;
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
 static char ScriptName[16];
-std::string ScriptBuffer;
-std::string ScriptPtr;
-std::string ScriptEndPtr;
+::std::string ScriptBuffer;
+::std::string ScriptPtr;
+::std::string ScriptEndPtr;
 static char StringBuffer[MAX_STRING_SIZE];
 static int ScriptLumpNum;
 static bool ScriptOpen = false;
@@ -84,7 +84,7 @@ static bool AlreadyGot = false;
 //
 //==========================================================================
 
-static void SC_OpenLump(std::string name)
+static void SC_OpenLump(::std::string name)
 {
 	OpenScript(name, LUMP_SCRIPT);
 }
@@ -95,7 +95,7 @@ static void SC_OpenLump(std::string name)
 //
 //==========================================================================
 
-static void OpenScript(std::string name, int type)
+static void OpenScript(::std::string name, int type)
 {
 	SC_Close();
 	if (type == LUMP_SCRIPT)
@@ -151,7 +151,7 @@ static void SC_Close()
 
 static bool SC_GetString()
 {
-	//std::string text;
+	//::std::string text;
 	//bool foundToken;
 
 	//CheckOpen();
@@ -249,7 +249,7 @@ static bool SC_GetString()
 //
 //==========================================================================
 
-static bool SC_Compare(std::string text)
+static bool SC_Compare(::std::string text)
 {
 	if (iequals(text, sc_String) == 0)
 	{
@@ -272,7 +272,7 @@ static void CheckOpen()
 	}
 }
 
-// [crispy] adapted from prboom-plus/src/s_advsound.c:54-159
+// adapted from prboom-plus/src/s_advsound.c:54-159
 
 musinfo_t musinfo = {0};
 
@@ -281,7 +281,7 @@ musinfo_t musinfo = {0};
 // Parses MUSINFO lump.
 //
 
-void S_ParseMusInfo(std::string mapid)
+void S_ParseMusInfo(::std::string mapid)
 {
 	if (W_CheckNumForName("MUSINFO") != -1)
 	{
@@ -351,7 +351,7 @@ void T_MusInfo()
 	{
 		if (!musinfo.tics && musinfo.lastmapthing != musinfo.mapthing)
 		{
-			// [crispy] encode music lump number in mapthing health
+			// encode music lump number in mapthing health
 			int arraypt = musinfo.mapthing->health - 1000;
 
 			if (arraypt >= 0 && arraypt < MAX_MUS_ENTRIES)

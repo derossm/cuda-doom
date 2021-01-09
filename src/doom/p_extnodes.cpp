@@ -22,7 +22,7 @@
 
 #include "p_extnodes.h"
 
-// [crispy] support maps with compressed ZDBSP nodes
+// support maps with compressed ZDBSP nodes
 #include "config.h"
 
 #ifdef HAVE_LIBZ
@@ -33,7 +33,7 @@ void P_SpawnMapThing(mapthing_t* mthing);
 fixed_t GetOffset(vertex_t* v1, vertex_t* v2);
 sector_t* GetSectorAtNullAddress();
 
-// [crispy] support maps with NODES in compressed or uncompressed ZDBSP
+// support maps with NODES in compressed or uncompressed ZDBSP
 // format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
 mapformat_t P_CheckMapFormat(int lumpnum)
 {
@@ -75,7 +75,7 @@ mapformat_t P_CheckMapFormat(int lumpnum)
 	return format;
 }
 
-// [crispy] support maps with DeePBSP nodes
+// support maps with DeePBSP nodes
 // adapted from prboom-plus/src/p_setup.c:633-752
 void P_LoadSegs_DeePBSP(int lump)
 {
@@ -96,7 +96,7 @@ void P_LoadSegs_DeePBSP(int lump)
 		int vn1;
 		int vn2;
 
-		// [MB] 2020-04-30: Fix endianess for DeePBSDP V4 nodes
+		// Fix endianess for DeePBSDP V4 nodes
 		vn1 = LONG(ml->v1);
 		vn2 = LONG(ml->v2);
 
@@ -105,7 +105,7 @@ void P_LoadSegs_DeePBSP(int lump)
 
 		li->angle = (SHORT(ml->angle)) << FRACBITS;
 
-		//	li->offset = (SHORT(ml->offset))<<FRACBITS; // [crispy] recalculated below
+		//	li->offset = (SHORT(ml->offset))<<FRACBITS; // recalculated below
 		linedef = (unsigned short)SHORT(ml->linedef);
 		ldef = &lines[linedef];
 		li->linedef = ldef;
@@ -125,7 +125,7 @@ void P_LoadSegs_DeePBSP(int lump)
 
 		li->sidedef = &sides[ldef->sidenum[side]];
 		li->frontsector = sides[ldef->sidenum[side]].sector;
-		// [crispy] recalculate
+		// recalculate
 		li->offset = GetOffset(li->v1, (ml->side ? ldef->v2 : ldef->v1));
 
 		if (ldef->flags & ML_TWOSIDED)
@@ -152,8 +152,7 @@ void P_LoadSegs_DeePBSP(int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-// [crispy] support maps with DeePBSP nodes
-// adapted from prboom-plus/src/p_setup.c:843-863
+// support maps with DeePBSP nodes adapted from prboom-plus/src/p_setup.c:843-863
 void P_LoadSubsectors_DeePBSP(int lump)
 {
 	mapsubsector_deepbsp_t* data;
@@ -163,21 +162,20 @@ void P_LoadSubsectors_DeePBSP(int lump)
 	subsectors = Z_Malloc<decltype(subsectors)>(numsubsectors * sizeof(subsector_t), pu_tags_t::PU_LEVEL, 0);
 	data = W_CacheLumpNum<mapsubsector_deepbsp_t>(lump, pu_tags_t::PU_STATIC);
 
-	// [crispy] fail on missing subsectors
-	if (!data || !numsubsectors)
-		I_Error("P_LoadSubsectors: No subsectors in map!");
+	// fail on missing subsectors
+	if (!data || !numsubsectors){
+		I_Error("P_LoadSubsectors: No subsectors in map!");}
 
 	for (i = 0; i < numsubsectors; ++i)
 	{
-		// [MB] 2020-04-30: Fix endianess for DeePBSDP V4 nodes
+		// Fix endianess for DeePBSDP V4 nodes
 		subsectors[i].numlines = (unsigned short)SHORT(data[i].numsegs);
 		subsectors[i].firstline = LONG(data[i].firstseg);
 	}
 
 	W_ReleaseLumpNum(lump);
 }
-// [crispy] support maps with DeePBSP nodes
-// adapted from prboom-plus/src/p_setup.c:995-1038
+// support maps with DeePBSP nodes adapted from prboom-plus/src/p_setup.c:995-1038
 void P_LoadNodes_DeePBSP(int lump)
 {
 	const byte* data;
@@ -187,7 +185,7 @@ void P_LoadNodes_DeePBSP(int lump)
 	nodes = Z_Malloc<decltype(nodes)>(numnodes * sizeof(node_t), pu_tags_t::PU_LEVEL, 0);
 	data = W_CacheLumpNum<byte>(lump, pu_tags_t::PU_STATIC);
 
-	// [crispy] warn about missing nodes
+	// warn about missing nodes
 	if (!data || !numnodes)
 	{
 		if (numsubsectors == 1)
@@ -213,7 +211,7 @@ void P_LoadNodes_DeePBSP(int lump)
 		for (j = 0; j < 2; ++j)
 		{
 			int k;
-			// [MB] 2020-04-30: Fix endianess for DeePBSDP V4 nodes
+			// Fix endianess for DeePBSDP V4 nodes
 			no->children[j] = LONG(mn->children[j]);
 
 			for (k = 0; k < 4; ++k)
@@ -224,7 +222,7 @@ void P_LoadNodes_DeePBSP(int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-// [crispy] support maps with compressed or uncompressed ZDBSP nodes
+// support maps with compressed or uncompressed ZDBSP nodes
 // adapted from prboom-plus/src/p_setup.c:1040-1331
 // heavily modified, condensed and simplyfied
 // - removed most paranoid checks, brought in line with Vanilla P_LoadNodes()
@@ -232,7 +230,7 @@ void P_LoadNodes_DeePBSP(int lump)
 // - inlined P_LoadZSegs()
 // - added support for compressed ZDBSP nodes
 // - added support for flipped levels
-// [MB] 2020-04-30: Fix endianess for ZDoom extended nodes
+// Fix endianess for ZDoom extended nodes
 void P_LoadNodes_ZDBSP(int lump, bool compressed)
 {
 	byte* data;
@@ -483,7 +481,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 		W_ReleaseLumpNum(lump);
 }
 
-// [crispy] allow loading of Hexen-format maps
+// allow loading of Hexen-format maps
 // adapted from chocolate-doom/src/hexen/p_setup.c:348-400
 void P_LoadThings_Hexen(int lump)
 {
@@ -520,7 +518,7 @@ void P_LoadThings_Hexen(int lump)
 	W_ReleaseLumpNum(lump);
 }
 
-// [crispy] allow loading of Hexen-format maps
+// allow loading of Hexen-format maps
 // adapted from chocolate-doom/src/hexen/p_setup.c:410-490
 void P_LoadLineDefs_Hexen(int lump)
 {
@@ -529,7 +527,7 @@ void P_LoadLineDefs_Hexen(int lump)
 	maplinedef_hexen_t* mld;
 	line_t* ld;
 	vertex_t* v1, * v2;
-	int warn; // [crispy] warn about unknown linedef types
+	int warn; // warn about unknown linedef types
 
 	numlines = W_LumpLength(lump) / sizeof(maplinedef_hexen_t);
 	lines = Z_Malloc<decltype(lines)>(numlines * sizeof(line_t), pu_tags_t::PU_LEVEL, 0);
@@ -538,7 +536,7 @@ void P_LoadLineDefs_Hexen(int lump)
 
 	mld = (maplinedef_hexen_t*)data;
 	ld = lines;
-	warn = 0; // [crispy] warn about unknown linedef types
+	warn = 0; // warn about unknown linedef types
 	for (i = 0; i < numlines; ++i, ++mld, ++ld)
 	{
 		ld->flags = (unsigned short)SHORT(mld->flags);
@@ -550,7 +548,7 @@ void P_LoadLineDefs_Hexen(int lump)
 		//ld->arg4 = mld->arg4;
 		//ld->arg5 = mld->arg5;
 
-		// [crispy] warn about unknown linedef types
+		// warn about unknown linedef types
 		if ((unsigned short)ld->special > 141)
 		{
 			fprintf(stderr, "P_LoadLineDefs: Unknown special %d at line %d\n", ld->special, i);
@@ -595,14 +593,14 @@ void P_LoadLineDefs_Hexen(int lump)
 			ld->bbox[BOXTOP] = v1->y;
 		}
 
-		// [crispy] calculate sound origin of line to be its midpoint
+		// calculate sound origin of line to be its midpoint
 		ld->soundorg.x = ld->bbox[BOXLEFT] / 2 + ld->bbox[BOXRIGHT] / 2;
 		ld->soundorg.y = ld->bbox[BOXTOP] / 2 + ld->bbox[BOXBOTTOM] / 2;
 
 		ld->sidenum[0] = SHORT(mld->sidenum[0]);
 		ld->sidenum[1] = SHORT(mld->sidenum[1]);
 
-		// [crispy] substitute dummy sidedef for missing right side
+		// substitute dummy sidedef for missing right side
 		if (ld->sidenum[0] == NO_INDEX)
 		{
 			ld->sidenum[0] = 0;
@@ -619,7 +617,7 @@ void P_LoadLineDefs_Hexen(int lump)
 			ld->backsector = 0;
 	}
 
-	// [crispy] warn about unknown linedef types
+	// warn about unknown linedef types
 	if (warn)
 	{
 		fprintf(stderr, "P_LoadLineDefs: Found %d line%s with unknown linedef type.\n"

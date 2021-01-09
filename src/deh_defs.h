@@ -39,9 +39,9 @@ struct deh_context_t
 	// Current line number that we have reached:
 	int linenum{0};
 
-	std::string filename;
-	std::string input_buffer;
-	std::string readbuffer;
+	::std::string filename;
+	::std::string input_buffer;
+	::std::string readbuffer;
 
 	// Used by DEH_ReadLine:
 	bool last_was_newline{true};
@@ -53,14 +53,14 @@ struct deh_context_t
 };
 
 typedef void (*deh_section_init_t)();
-typedef void* (*deh_section_start_t)(deh_context_t* context, std::string line);
+typedef void* (*deh_section_start_t)(deh_context_t* context, ::std::string line);
 typedef void (*deh_section_end_t)(deh_context_t* context, void* tag);
-typedef void (*deh_line_parser_t)(deh_context_t* context, std::string line, void* tag);
+typedef void (*deh_line_parser_t)(deh_context_t* context, ::std::string line, void* tag);
 typedef void (*deh_sha1_hash_t)(sha1_context_t* context);
 
 struct deh_section_t
 {
-	std::string name;
+	::std::string name;
 
 	// Called on startup to initialize code
 	deh_section_init_t init;

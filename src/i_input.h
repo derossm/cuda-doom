@@ -21,10 +21,10 @@ constexpr size_t MAX_MOUSE_BUTTONS{8};
 
 extern float mouse_acceleration;
 extern int mouse_threshold;
-extern float mouse_acceleration_y;		// [crispy]
-extern int mouse_threshold_y;			// [crispy]
-extern int mouse_y_invert;				// [crispy]
-extern int novert;						// [crispy]
+extern float mouse_acceleration_y;
+extern int mouse_threshold_y;
+extern int mouse_y_invert;
+extern int novert;
 
 void I_BindInputVariables();
 void I_ReadMouse();

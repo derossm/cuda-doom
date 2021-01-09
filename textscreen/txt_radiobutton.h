@@ -8,19 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include <string>
 
 #include "txt_common.h"
 #include "txt_widget.h"
-
-//#include "txt_main.h"
-//#include "txt_utf8.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -44,7 +36,7 @@ namespace cudadoom::txt
  */
 class RadioButton : public Widget<RadioButton>
 {
-	std::string label;
+	::std::string label;
 	int* variable;
 	int value;
 
@@ -194,15 +186,15 @@ public:
 		NULL
 	};
 
-	RadioButton(std::string& _label, int* variable, int value) : label{std::string(_label)}, variable{variable}, value{value}
+	RadioButton(::std::string& _label, int* variable, int value) : label{::std::string(_label)}, variable{variable}, value{value}
 	{
 	}
 
-	void SetRadioButtonLabel(RadioButton* radiobutton, std::string& _label)
+	void SetRadioButtonLabel(RadioButton* radiobutton, ::std::string& _label)
 	{
-		label = std::string(_label);
+		label = ::std::string(_label);
 	}
 /**/
 };
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

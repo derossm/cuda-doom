@@ -123,7 +123,7 @@ byte* I_ZoneBase(int* size)
 		min_ram = MIN_RAM;
 	}
 
-	// [crispy] do not allocate new zones ad infinitum
+	// do not allocate new zones ad infinitum
 	if (i > 8)
 	{
 		min_ram = default_ram + 1;
@@ -131,15 +131,15 @@ byte* I_ZoneBase(int* size)
 
 	zonemem = AutoAllocMemory(size, default_ram * i, min_ram * i);
 
-	// [crispy] if called again, allocate another zone twice as big
+	// if called again, allocate another zone twice as big
 	i *= 2;
 
-	printf("zone memory: %p, %d MiB allocated for zone\n", zonemem, *size >> 20); // [crispy] human-understandable zone heap size
+	printf("zone memory: %p, %d MiB allocated for zone\n", zonemem, *size >> 20); // human-understandable zone heap size
 
 	return zonemem;
 }
 
-void I_PrintBanner(std::string msg)
+void I_PrintBanner(::std::string msg)
 {
 	int i;
 	int spaces = 35 - (strlen(msg) / 2);
@@ -162,7 +162,7 @@ void I_PrintDivider()
 	putchar('\n');
 }
 
-void I_PrintStartupBanner(std::string gamedescription)
+void I_PrintStartupBanner(::std::string gamedescription)
 {
 	I_PrintDivider();
 	I_PrintBanner(gamedescription);
@@ -223,7 +223,7 @@ void I_Quit()
 
 static bool already_quitting = false;
 
-void I_Error(std::string error, ...)
+void I_Error(::std::string error, ...)
 {
 	char msgbuf[512];
 	va_list argptr;

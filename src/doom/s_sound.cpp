@@ -84,11 +84,11 @@ static musicinfo_t* mus_playing = NULL;
 // Number of channels to use
 int snd_channels = 8;
 
-// [crispy] add support for alternative music tracks for Final Doom's TNT and Plutonia as introduced in DoomMetalVol5.wad
+// add support for alternative music tracks for Final Doom's TNT and Plutonia as introduced in DoomMetalVol5.wad
 struct altmusic_t
 {
-	std::string const from;
-	std::string const to;
+	::std::string const from;
+	::std::string const to;
 };
 
 static const altmusic_t altmusic_tnt[] =
@@ -185,7 +185,7 @@ static void S_RegisterAltMusic()
 		return;
 	}
 
-	// [crispy] chicken-out if only one lump is missing, something must be wrong
+	// chicken-out if only one lump is missing, something must be wrong
 	for (altmusic = altmusic_fromto; altmusic->from; ++altmusic)
 	{
 		char name[9];
@@ -231,7 +231,7 @@ void S_Init(int sfxVolume, int musicVolume)
 	S_SetMusicVolume(musicVolume);
 
 	// Allocating the internal channels for mixing (the maximum numer of sounds rendered simultaneously) within zone memory.
-	// [crispy] variable number of sound channels
+	// variable number of sound channels
 	channels = I_Realloc(NULL, snd_channels * sizeof(channel_t));
 	sobjs = I_Realloc(NULL, snd_channels * sizeof(degenmobj_t));
 
@@ -258,8 +258,8 @@ void S_Init(int sfxVolume, int musicVolume)
 
 	I_AtExit(S_Shutdown, true);
 
-	// [crispy] initialize dedicated music tracks for the 4th episode
-	for (size_t i{std::size_t(musicenum_t::mus_e4m1)}; i <= std::size_t(musicenum_t::mus_e5m9); ++i)
+	// initialize dedicated music tracks for the 4th episode
+	for (size_t i{::std::size_t(musicenum_t::mus_e4m1)}; i <= ::std::size_t(musicenum_t::mus_e5m9); ++i)
 	{
 		musicinfo_t* const music = &S_music[i];
 		char namebuf[9];
@@ -268,10 +268,10 @@ void S_Init(int sfxVolume, int musicVolume)
 		music->lumpnum = W_CheckNumForName(namebuf);
 	}
 
-	// [crispy] add support for alternative music tracks for Final Doom's TNT and Plutonia as introduced in DoomMetalVol5.wad
+	// add support for alternative music tracks for Final Doom's TNT and Plutonia as introduced in DoomMetalVol5.wad
 	S_RegisterAltMusic();
 
-	// [crispy] handle stereo separation for mono-sfx and flipped levels
+	// handle stereo separation for mono-sfx and flipped levels
 	S_UpdateStereoSeparation();
 }
 
@@ -327,7 +327,7 @@ void S_Start()
 	}
 
 	// start new music for the level
-	if (musicVolume) // [crispy] do not reset pause state at zero music volume
+	if (musicVolume) // do not reset pause state at zero music volume
 	{
 		mus_paused = musicenum_t::mus_None;
 	}
@@ -371,7 +371,7 @@ void S_Start()
 			musicenum_t::mus_e1m9,		// Tim			e4m9
 		};
 
-		if (gameepisode < 4 || gameepisode == 5) // [crispy] Sigil
+		if (gameepisode < 4 || gameepisode == 5) // Sigil
 		{
 			mnum = (int)musicenum_t::mus_e1m1 + (gameepisode - 1) * 9 + gamemap - 1;
 		}
@@ -379,7 +379,7 @@ void S_Start()
 		{
 			mnum = spmus[gamemap - 1];
 
-			// [crispy] support dedicated music tracks for the 4th episode
+			// support dedicated music tracks for the 4th episode
 			{
 				const int sp_mnum = (int)musicenum_t::mus_e1m1 + 3 * 9 + gamemap - 1;
 
@@ -391,7 +391,7 @@ void S_Start()
 		}
 	}
 
-	// [crispy] do not change music if not changing map (preserves IDMUS choice)
+	// do not change music if not changing map (preserves IDMUS choice)
 	{
 		const short curmap = (gameepisode << 8) + gamemap;
 
@@ -403,7 +403,7 @@ void S_Start()
 		prevmap = curmap;
 	}
 
-	// [crispy] reset musinfo data at the start of a new map
+	// reset musinfo data at the start of a new map
 	memset(&musinfo, 0, sizeof(musinfo));
 
 	S_ChangeMusic(mnum, true);
@@ -423,7 +423,7 @@ void S_StopSound(MapObject* origin)
 	}
 }
 
-// [crispy] removed map objects may finish their sounds. When map objects are removed from the map by P_RemoveMobj(), instead of
+// removed map objects may finish their sounds. When map objects are removed from the map by P_RemoveMobj(), instead of
 // stopping their sounds, their coordinates are transfered to "sound objects" so stereo positioning and distance calculations continue to work
 // even after the corresponding map object has already disappeared. Thanks to jeff-d and kb1 for discussing this feature and the former for the
 // original implementation idea: https://www.doomworld.com/vb/post/1585325
@@ -512,7 +512,7 @@ static int S_AdjustSoundParams(MapObject* listener, MapObject* source, int* vol,
 	fixed_t ady;
 	angle_t angle;
 
-	// [crispy] proper sound clipping in Doom 2 MAP08 and The Ultimate Doom E4M8 / Sigil E5M8
+	// proper sound clipping in Doom 2 MAP08 and The Ultimate Doom E4M8 / Sigil E5M8
 	const bool doom1map8 = (gamemap == 8 && ((gamemode != GameMode::commercial && gameepisode < 4) || !crispy->soundfix));
 
 	// calculate the distance to sound origin and clip it if necessary
@@ -594,7 +594,7 @@ void S_StartSound(void* origin_p, int sfx_id)
 	origin = (MapObject*)origin_p;
 	volume = snd_SfxVolume;
 
-	// [crispy] make non-fatal, consider zero volume
+	// make non-fatal, consider zero volume
 	if (sfx_id == sfxenum_t::sfx_None || !snd_SfxVolume || (nodrawers && singletics))
 	{
 		return;
@@ -626,7 +626,7 @@ void S_StartSound(void* origin_p, int sfx_id)
 	}
 
 	// Check to see if it is audible, and if not, modify the params
-	if (origin && origin != players[consoleplayer] && origin != players[consoleplayer].so) // [crispy] weapon sound source
+	if (origin && origin != players[consoleplayer] && origin != players[consoleplayer].so) // weapon sound source
 	{
 		rc = S_AdjustSoundParams(players[consoleplayer],
 			origin,
@@ -764,7 +764,7 @@ void S_UpdateSounds(MapObject* listener)
 				}
 
 				// check non-local sounds for distance clipping or modify their params
-				if (c->origin && listener != c->origin && c->origin != players[consoleplayer].so) // [crispy] weapon sound source
+				if (c->origin && listener != c->origin && c->origin != players[consoleplayer].so) // weapon sound source
 				{
 					audible = S_AdjustSoundParams(listener, c->origin, &volume, &sep);
 
@@ -794,7 +794,7 @@ void S_SetMusicVolume(int volume)
 		I_Error("Attempt to set music volume at %d", volume);
 	}
 
-	// [crispy] Fixed bug when music was hearable with zero volume
+	// Fixed bug when music was hearable with zero volume
 	if (!musicVolume)
 	{
 		S_PauseSound();
@@ -859,7 +859,7 @@ void S_ChangeMusic(int musicnum, int looping)
 		}
 	}
 
-	// [crispy] prevent music number under- and overflows
+	// prevent music number under- and overflows
 	if (musicnum <= musicenum_t::mus_None 
 		|| (gamemode == GameMode::commercial && musicnum < musicenum_t::mus_runnin) || musicnum >= musicenum_t::NUMMUSIC
 		|| (gamemode != GameMode::commercial && musicnum >= musicenum_t::mus_runnin) || S_music[musicnum].lumpnum == -1)
@@ -924,7 +924,7 @@ void S_ChangeMusic(int musicnum, int looping)
 	if (!musinfo.items[0])
 	{
 		musinfo.items[0] = music->lumpnum;
-		S_music[std::size_t(musicenum_t::mus_musinfo)].lumpnum = -1;
+		S_music[::std::size_t(musicenum_t::mus_musinfo)].lumpnum = -1;
 	}
 }
 
@@ -933,10 +933,10 @@ void S_ChangeMusInfoMusic(int lumpnum, int looping)
 {
 	musicinfo_t* music;
 
-	// [crispy] restarting the map plays the original music
+	// restarting the map plays the original music
 	prevmap = -1;
 
-	// [crispy] play no music if this is not the right map
+	// play no music if this is not the right map
 	if (nodrawers && singletics)
 	{
 		musinfo.current_item = lumpnum;
@@ -948,7 +948,7 @@ void S_ChangeMusInfoMusic(int lumpnum, int looping)
 		return;
 	}
 
-	music = &S_music[std::size_t(musicenum_t::mus_musinfo)];
+	music = &S_music[::std::size_t(musicenum_t::mus_musinfo)];
 
 	if (music->lumpnum == lumpnum)
 	{
@@ -963,7 +963,7 @@ void S_ChangeMusInfoMusic(int lumpnum, int looping)
 	music->handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
 
 	I_PlaySong(music->handle, looping);
-	// [crispy] log played music
+	// log played music
 	{
 		char name[9];
 		M_snprintf(name, sizeof(name), "%s", lumpinfo[music->lumpnum]->name);

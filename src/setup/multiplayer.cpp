@@ -62,63 +62,63 @@ static int found_iwad_selected = -1;
 
 // Filename to pass to '-iwad'.
 
-static std::string iwadfile;
+static ::std::string iwadfile;
 
-static std::string wad_extensions[] = {"wad", "lmp", "deh", NULL};
+static ::std::string wad_extensions[] = {"wad", "lmp", "deh", NULL};
 
-static std::string doom_skills[] =
+static ::std::string doom_skills[] =
 {
 	"I'm too young to die.", "Hey, not too rough.", "Hurt me plenty.",
 	"Ultra-Violence.", "NIGHTMARE!"
 };
 
-static std::string chex_skills[] =
+static ::std::string chex_skills[] =
 {
 	"Easy does it", "Not so sticky", "Gobs of goo", "Extreme ooze",
 	"SUPER SLIMEY!"
 };
 
-static std::string heretic_skills[] =
+static ::std::string heretic_skills[] =
 {
 	"Thou needeth a wet-nurse", "Yellowbellies-R-us", "Bringest them oneth",
 	"Thou art a smite-meister", "Black plague possesses thee"
 };
 
-static std::string hexen_fighter_skills[] =
+static ::std::string hexen_fighter_skills[] =
 {
 	"Squire", "Knight", "Warrior", "Berserker", "Titan"
 };
 
-static std::string hexen_cleric_skills[] =
+static ::std::string hexen_cleric_skills[] =
 {
 	"Altar boy", "Acolyte", "Priest", "Cardinal", "Pope"
 };
 
-static std::string hexen_mage_skills[] =
+static ::std::string hexen_mage_skills[] =
 {
 	"Apprentice", "Enchanter", "Sorceror", "Warlock", "Archimage"
 };
 
-static std::string strife_skills[] =
+static ::std::string strife_skills[] =
 {
 	"Training", "Rookie", "Veteran", "Elite", "Bloodbath"
 };
 
-static std::string character_classes[] = {"Fighter", "Cleric", "Mage"};
+static ::std::string character_classes[] = {"Fighter", "Cleric", "Mage"};
 
-static std::string gamemodes[] = {"Co-operative", "Deathmatch", "Deathmatch 2.0", "Deathmatch 3.0"};
+static ::std::string gamemodes[] = {"Co-operative", "Deathmatch", "Deathmatch 2.0", "Deathmatch 3.0"};
 
-static std::string strife_gamemodes[] =
+static ::std::string strife_gamemodes[] =
 {
 	"Normal deathmatch",
 	"Items respawn" // (altdeath)
 };
 
-std::string net_player_name;
-std::string chat_macros[10];
+::std::string net_player_name;
+::std::string chat_macros[10];
 
-std::string wads[NUM_WADS];
-std::string extra_params[NUM_EXTRA_PARAMS];
+::std::string wads[NUM_WADS];
+::std::string extra_params[NUM_EXTRA_PARAMS];
 static int character_class = 0;
 static int skill = 2;
 static int nomonsters = 0;
@@ -138,7 +138,7 @@ static int warpmap = 1;
 
 // Address to connect to when joining a game
 
-std::string connect_address = NULL;
+::std::string connect_address = NULL;
 
 static cudadoom::txt::Window* query_window;
 static int query_servers_found;
@@ -701,7 +701,7 @@ static cudadoom::txt::txt_dropdown_list_t* GameTypeDropdown()
 // and the single player warp menu. The parameters specify
 // the window title and whether to display multiplayer options.
 
-static void StartGameMenu(std::string window_title, int multiplayer)
+static void StartGameMenu(::std::string window_title, int multiplayer)
 {
 	cudadoom::txt::Window* window;
 	cudadoom::txt::Widget* iwad_selector;
@@ -850,7 +850,7 @@ static void SelectQueryAddress(cudadoom::txt::UNCAST_ARG(button), cudadoom::txt:
 	// Set address to connect to:
 
 	free(connect_address);
-	connect_address = std::string(button->label);
+	connect_address = ::std::string(button->label);
 
 	// Auto-choose IWAD if there is already a player connected.
 
@@ -943,7 +943,7 @@ static void QueryWindowClosed(cudadoom::txt::UNCAST_ARG(window), void* unused)
 	cudadoom::txt::SetPeriodicCallback(NULL, NULL, 0);
 }
 
-static void ServerQueryWindow(std::string title)
+static void ServerQueryWindow(::std::string title)
 {
 	cudadoom::txt::txt_table_t* results_table;
 
@@ -1004,7 +1004,7 @@ void JoinMultiGame(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 void SetChatMacroDefaults()
 {
 	int i;
-	std::string const defaults[] =
+	::std::string const defaults[] =
 	{
 		HUSTR_CHATMACRO0,
 		HUSTR_CHATMACRO1,
@@ -1023,7 +1023,7 @@ void SetChatMacroDefaults()
 	{
 		if (chat_macros[i] == NULL)
 		{
-			chat_macros[i] = std::string(defaults[i]);
+			chat_macros[i] = ::std::string(defaults[i]);
 		}
 	}
 }

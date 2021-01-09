@@ -22,14 +22,14 @@
 
 struct execute_context_t
 {
-	std::string response_file;
+	::std::string response_file;
 	FILE* stream;
 };
 
 // Returns the path to a temporary file of the given name, stored inside the system temporary directory.
-std::string TempFile(std::string s)
+::std::string TempFile(::std::string s)
 {
-	std::string tempdir;
+	::std::string tempdir;
 
 #ifdef _WIN32
 	// Check the TEMP environment variable to find the location.
@@ -46,12 +46,12 @@ std::string TempFile(std::string s)
 	tempdir = "/tmp";
 #endif
 
-	return std::string(tempdir + DIR_SEPARATOR_S + s);
+	return ::std::string(tempdir + DIR_SEPARATOR_S + s);
 }
 
-static int ArgumentNeedsEscape(std::string arg)
+static int ArgumentNeedsEscape(::std::string arg)
 {
-	std::string p;
+	::std::string p;
 
 	for (p = arg; *p != '\0'; ++p)
 	{
@@ -103,7 +103,7 @@ execute_context_t* NewExecuteContext()
 	return result;
 }
 
-void AddCmdLineParameter(execute_context_t* context, std::string s, ...)
+void AddCmdLineParameter(execute_context_t* context, ::std::string s, ...)
 {
 	va_list args;
 
@@ -117,7 +117,7 @@ void AddCmdLineParameter(execute_context_t* context, std::string s, ...)
 
 #if defined(_WIN32)
 
-bool OpenFolder(std::string path)
+bool OpenFolder(::std::string path)
 {
 	// "If the function succeeds, it returns a value greater than 32."
 	return (int)ShellExecute(NULL, "open", path, NULL, NULL, SW_SHOWDEFAULT) > 32;
@@ -144,7 +144,7 @@ static unsigned WaitForProcessExit(HANDLE subprocess)
 	}
 }
 
-static void ConcatWCString(wchar_t* buf, std::string value)
+static void ConcatWCString(wchar_t* buf, ::std::string value)
 {
 	MultiByteToWideChar(CP_OEMCP, 0,
 		value, strlen(value) + 1,
@@ -152,7 +152,7 @@ static void ConcatWCString(wchar_t* buf, std::string value)
 }
 
 // Build the command line string, a wide character string of the form: "program" "arg"
-static wchar_t* BuildCommandLine(std::string program, std::string arg)
+static wchar_t* BuildCommandLine(::std::string program, ::std::string arg)
 {
 	wchar_t exe_path[MAX_PATH];
 	wchar_t* result;
@@ -188,7 +188,7 @@ static wchar_t* BuildCommandLine(std::string program, std::string arg)
 	return result;
 }
 
-static int ExecuteCommand(std::string program, std::string arg)
+static int ExecuteCommand(::std::string program, ::std::string arg)
 {
 	STARTUPINFOW startup_info;
 	PROCESS_INFORMATION proc_info;
@@ -222,15 +222,15 @@ static int ExecuteCommand(std::string program, std::string arg)
 
 #else
 
-bool OpenFolder(std::string path)
+bool OpenFolder(::std::string path)
 {
-	std::string cmd;
+	::std::string cmd;
 	int result;
 
 #if defined(__MACOSX__)
-	cmd = std::string("open \"" + path + "\"");
+	cmd = ::std::string("open \"" + path + "\"");
 #else
-	cmd = std::string("xdg-open \"" + path + "\"");
+	cmd = ::std::string("xdg-open \"" + path + "\"");
 #endif
 	result = system(cmd);
 	free(cmd);
@@ -239,10 +239,10 @@ bool OpenFolder(std::string path)
 }
 
 // Given the specified program name, get the full path to the program, assuming that it is in the same directory as this program is.
-std::string GetFullExePath(std::string program)
+::std::string GetFullExePath(::std::string program)
 {
-	std::string result;
-	std::string sep;
+	::std::string result;
+	::std::string sep;
 	size_t result_len;
 	unsigned path_len;
 
@@ -250,7 +250,7 @@ std::string GetFullExePath(std::string program)
 
 	if (sep == NULL)
 	{
-		result = std::string(program);
+		result = ::std::string(program);
 	}
 	else
 	{
@@ -267,11 +267,11 @@ std::string GetFullExePath(std::string program)
 	return result;
 }
 
-static int ExecuteCommand(std::string program, std::string arg)
+static int ExecuteCommand(::std::string program, ::std::string arg)
 {
 	pid_t childpid;
 	int result;
-	std::string argv[3];
+	::std::string argv[3];
 
 	childpid = fork();
 
@@ -306,13 +306,13 @@ static int ExecuteCommand(std::string program, std::string arg)
 
 int ExecuteDoom(execute_context_t* context)
 {
-	std::string response_file_arg;
+	::std::string response_file_arg;
 	int result;
 
 	fclose(context->stream);
 
 	// Build the command line
-	response_file_arg = std::string("@" + context->response_file);
+	response_file_arg = ::std::string("@" + context->response_file);
 
 	// Run Doom
 	result = ExecuteCommand(GetExecutableName(), response_file_arg);
@@ -330,8 +330,8 @@ int ExecuteDoom(execute_context_t* context)
 static void TestCallback(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::UNCAST_ARG(data))
 {
 	execute_context_t* exec;
-	std::string main_cfg;
-	std::string extra_cfg;
+	::std::string main_cfg;
+	::std::string extra_cfg;
 	cudadoom::txt::Window* testwindow;
 
 	testwindow = cudadoom::txt::MessageBox("Starting Doom","Starting Doom to test the\nsettings. Please wait.");

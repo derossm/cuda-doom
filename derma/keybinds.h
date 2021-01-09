@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************\
-	Copyright(C) 2020 Mason DeRoss
+	Copyright© 2020-2021 Mason DeRoss
 
 	Released under the GNU All-permissive License
 
@@ -9,30 +9,30 @@
 	DESCRIPTION:
 
 \**********************************************************************************************************************************************/
-/**********************************************************************************************************************************************\
-	Copyright(C) 1993-1996 Id Software, Inc.
-	Copyright(C) 2005-2014 Simon Howard
-
-	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
-
-	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-	DESCRIPTION:
-		Key definitions
-\**********************************************************************************************************************************************/
-#pragma once
 
 #include <array>
+#include <map>
 
-enum class SCANCODES : short
+#include <algorithm>
+#include <functional>
+
+#include <any>
+
+// WINDOWS DEFINES FROM FILES WE DON'T EVEN INCLUDE
+#ifdef DELETE // WinNT.h
+#undef DELETE
+#endif
+#ifdef HELP_KEY // WinUser.h
+#undef HELP_KEY
+#endif
+
+enum class SCANCODES : uint16_t
 {
 	SDL_SCANCODE_UNKNOWN = 0,
 	PADDING_0 = 1,
 	PADDING_1 = 2,
 	PADDING_2 = 3,
-	SDL_SCANCODE_A = 4,	// These values are from usage page 0x07 (USB keyboard page).
+	SDL_SCANCODE_A = 4,
 	SDL_SCANCODE_B = 5,
 	SDL_SCANCODE_C = 6,
 	SDL_SCANCODE_D = 7,
@@ -101,7 +101,7 @@ enum class SCANCODES : short
 	SDL_SCANCODE_PRINTSCREEN = 70,
 	SDL_SCANCODE_SCROLLLOCK = 71,
 	SDL_SCANCODE_PAUSE = 72,
-	SDL_SCANCODE_INSERT = 73,				// insert on PC, help on some Mac keyboards (but does send code 73, not 117)
+	SDL_SCANCODE_INSERT = 73,
 	SDL_SCANCODE_HOME = 74,
 	SDL_SCANCODE_PAGEUP = 75,
 	SDL_SCANCODE_DELETE = 76,
@@ -111,7 +111,7 @@ enum class SCANCODES : short
 	SDL_SCANCODE_LEFT = 80,
 	SDL_SCANCODE_DOWN = 81,
 	SDL_SCANCODE_UP = 82,
-	SDL_SCANCODE_NUMLOCKCLEAR = 83,			// num lock on PC, clear on Mac keyboards
+	SDL_SCANCODE_NUMLOCKCLEAR = 83,
 	SDL_SCANCODE_KP_DIVIDE = 84,
 	SDL_SCANCODE_KP_MULTIPLY = 85,
 	SDL_SCANCODE_KP_MINUS = 86,
@@ -129,8 +129,8 @@ enum class SCANCODES : short
 	SDL_SCANCODE_KP_0 = 98,
 	SDL_SCANCODE_KP_PERIOD = 99,
 	SDL_SCANCODE_NONUSBACKSLASH = 100,
-	SDL_SCANCODE_APPLICATION = 101, 		// windows contextual menu, compose
-	SDL_SCANCODE_POWER = 102,				// The USB document says this is a status flag, not a physical key - but some Mac keyboards do have a power key.
+	SDL_SCANCODE_APPLICATION = 101, 
+	SDL_SCANCODE_POWER = 102,
 	SDL_SCANCODE_KP_EQUALS = 103,
 	SDL_SCANCODE_F13 = 104,
 	SDL_SCANCODE_F14 = 105,
@@ -149,7 +149,7 @@ enum class SCANCODES : short
 	SDL_SCANCODE_MENU = 118,
 	SDL_SCANCODE_SELECT = 119,
 	SDL_SCANCODE_STOP = 120,
-	SDL_SCANCODE_AGAIN = 121, // redo
+	SDL_SCANCODE_AGAIN = 121,
 	SDL_SCANCODE_UNDO = 122,
 	SDL_SCANCODE_CUT = 123,
 	SDL_SCANCODE_COPY = 124,
@@ -158,30 +158,30 @@ enum class SCANCODES : short
 	SDL_SCANCODE_MUTE = 127,
 	SDL_SCANCODE_VOLUMEUP = 128,
 	SDL_SCANCODE_VOLUMEDOWN = 129,
-	SDL_SCANCODE_LOCKINGCAPSLOCK = 130,	// not sure whether there's a reason to enable these
-	SDL_SCANCODE_LOCKINGNUMLOCK = 131,	//
-	SDL_SCANCODE_LOCKINGSCROLLLOCK = 132,	//
+	SDL_SCANCODE_LOCKINGCAPSLOCK = 130,
+	SDL_SCANCODE_LOCKINGNUMLOCK = 131,
+	SDL_SCANCODE_LOCKINGSCROLLLOCK = 132,
 	SDL_SCANCODE_KP_COMMA = 133,
 	SDL_SCANCODE_KP_EQUALSAS400 = 134,
-	SDL_SCANCODE_INTERNATIONAL1 = 135,		// used on Asian keyboards, see footnotes in USB doc
+	SDL_SCANCODE_INTERNATIONAL1 = 135,
 	SDL_SCANCODE_INTERNATIONAL2 = 136,
-	SDL_SCANCODE_INTERNATIONAL3 = 137,		// Yen
+	SDL_SCANCODE_INTERNATIONAL3 = 137,
 	SDL_SCANCODE_INTERNATIONAL4 = 138,
 	SDL_SCANCODE_INTERNATIONAL5 = 139,
 	SDL_SCANCODE_INTERNATIONAL6 = 140,
 	SDL_SCANCODE_INTERNATIONAL7 = 141,
 	SDL_SCANCODE_INTERNATIONAL8 = 142,
 	SDL_SCANCODE_INTERNATIONAL9 = 143,
-	SDL_SCANCODE_LANG1 = 144,				// Hangul/English toggle
-	SDL_SCANCODE_LANG2 = 145,				// Hanja conversion
-	SDL_SCANCODE_LANG3 = 146,				// Katakana
-	SDL_SCANCODE_LANG4 = 147,				// Hiragana
-	SDL_SCANCODE_LANG5 = 148,				// Zenkaku/Hankaku
-	SDL_SCANCODE_LANG6 = 149,				// reserved
-	SDL_SCANCODE_LANG7 = 150,				// reserved
-	SDL_SCANCODE_LANG8 = 151,				// reserved
-	SDL_SCANCODE_LANG9 = 152,				// reserved
-	SDL_SCANCODE_ALTERASE = 153,			// Erase-Eaze
+	SDL_SCANCODE_LANG1 = 144,
+	SDL_SCANCODE_LANG2 = 145,
+	SDL_SCANCODE_LANG3 = 146,
+	SDL_SCANCODE_LANG4 = 147,
+	SDL_SCANCODE_LANG5 = 148,
+	SDL_SCANCODE_LANG6 = 149,
+	SDL_SCANCODE_LANG7 = 150,
+	SDL_SCANCODE_LANG8 = 151,
+	SDL_SCANCODE_LANG9 = 152,
+	SDL_SCANCODE_ALTERASE = 153,
 	SDL_SCANCODE_SYSREQ = 154,
 	SDL_SCANCODE_CANCEL = 155,
 	SDL_SCANCODE_CLEAR = 156,
@@ -285,8 +285,8 @@ enum class SCANCODES : short
 	PADDING_02 = 254,
 	PADDING_03 = 255,
 	PADDING_04 = 256,
-	SDL_SCANCODE_MODE = 257,				// Usage page 0x07
-	SDL_SCANCODE_AUDIONEXT = 258,			// These values are mapped from usage page 0x0C (USB consumer page).
+	SDL_SCANCODE_MODE = 257,
+	SDL_SCANCODE_AUDIONEXT = 258,
 	SDL_SCANCODE_AUDIOPREV = 259,
 	SDL_SCANCODE_AUDIOSTOP = 260,
 	SDL_SCANCODE_AUDIOPLAY = 261,
@@ -303,144 +303,310 @@ enum class SCANCODES : short
 	SDL_SCANCODE_AC_STOP = 272,
 	SDL_SCANCODE_AC_REFRESH = 273,
 	SDL_SCANCODE_AC_BOOKMARKS = 274,
-	SDL_SCANCODE_BRIGHTNESSDOWN = 275,		// Usage page 0x0C
+	SDL_SCANCODE_BRIGHTNESSDOWN = 275,
 	SDL_SCANCODE_BRIGHTNESSUP = 276,
-	SDL_SCANCODE_DISPLAYSWITCH = 277,		// display mirroring/dual display switch, video mode switch
+	SDL_SCANCODE_DISPLAYSWITCH = 277,
 	SDL_SCANCODE_KBDILLUMTOGGLE = 278,
 	SDL_SCANCODE_KBDILLUMDOWN = 279,
 	SDL_SCANCODE_KBDILLUMUP = 280,
 	SDL_SCANCODE_EJECT = 281,
 	SDL_SCANCODE_SLEEP = 282,
 	SDL_SCANCODE_APP1 = 283,
-	SDL_SCANCODE_APP2 = 284,				// These values are mapped from usage page 0x0C (USB consumer page).
+	SDL_SCANCODE_APP2 = 284,
 	SDL_SCANCODE_AUDIOREWIND = 285,
-	SDL_SCANCODE_AUDIOFASTFORWARD = 286,	// Usage page 0x0C (additional media keys)
+	SDL_SCANCODE_AUDIOFASTFORWARD = 286,
 	SDL_SCANCODE_COUNT,
 
-	SDL_NUM_SCANCODES = 512				// not a key, just marks the number of scancodes for array bounds
+	SDL_NUM_SCANCODES = 512 // not a key, just marks the number of scancodes for array bounds
 };
 
-	//SDL_SCANCODE_BACKSLASH = 49,	// Located at the lower left of the return key on ISO keyboards and at the right end of the QWERTY row on
-									// ANSI keyboards. Produces REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS
-									// and VERTICAL LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR SIGN and
-									// POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a German layout, GRAVE ACCENT and
-									// POUND SIGN in a French Mac layout, and ASTERISK and MICRO SIGN in a French Windows layout.
-
-	//SDL_SCANCODE_NONUSHASH = 50,	// ISO USB keyboards actually use this code instead of 49 for the same key, but all OSes I've seen treat the
-									// two codes identically. So, as an implementor, unless your keyboard generates both of those codes and your
-									// OS treats them differently, you should generate SDL_SCANCODE_BACKSLASH instead of this code. As a user,
-									// you should not rely on this code because SDL will never generate it with most (all?) keyboards.
-
-	//SDL_SCANCODE_GRAVE = 53,		// Located in the top left corner (on both ANSI and ISO keyboards). Produces GRAVE ACCENT and TILDE in a
-									// US Windows layout and in US and UK Mac layouts on ANSI keyboards, GRAVE ACCENT and NOT SIGN in a
-									// UK Windows layout, SECTION SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards,
-									// SECTION SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards), CIRCUMFLEX ACCENT
-									// and DEGREE SIGN in a German layout (Mac: only on ISO keyboards), SUPERSCRIPT TWO and TILDE in a
-									// French Windows layout, COMMERCIAL AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and
-									// LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on ANSI keyboards.
-
-	//SDL_SCANCODE_NONUSBACKSLASH = 100,// This is the additional key that ISO keyboards have over ANSI ones, located between left shift and Y.
-										// Produces GRAVE ACCENT and TILDE in a US or UK Mac layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a
-										// US or UK Windows layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German, or French layout.
-
-	//SDL_SCANCODE_MODE = 257,			// I'm not sure if this is really not covered by any of the above,
-										// but since there's a special KMOD_MODE for it I'm adding it here
-
-	//SDL_SCANCODE_LALT = 226,			// alt, option
-	//SDL_SCANCODE_LGUI = 227,			// windows, command (apple), meta
-	//SDL_SCANCODE_RCTRL = 228,
-	//SDL_SCANCODE_RSHIFT = 229,
-	//SDL_SCANCODE_RALT = 230,			// alt gr, option
-	//SDL_SCANCODE_RGUI = 231,			// windows, command (apple), meta
-
-enum class Keybinds
+enum class Keys : uint16_t
 {
-	KEY_RIGHTARROW = 0xae,
-	KEY_LEFTARROW = 0xac,
-	KEY_UPARROW = 0xad,
-	KEY_DOWNARROW = 0xaf,
-	KEY_ESCAPE = 27,
-	KEY_ENTER = 13,
-	KEY_TAB = 9,
-	KEY_F1 = (0x80 + 0x3b),
-	KEY_F2 = (0x80 + 0x3c),
-	KEY_F3 = (0x80 + 0x3d),
-	KEY_F4 = (0x80 + 0x3e),
-	KEY_F5 = (0x80 + 0x3f),
-	KEY_F6 = (0x80 + 0x40),
-	KEY_F7 = (0x80 + 0x41),
-	KEY_F8 = (0x80 + 0x42),
-	KEY_F9 = (0x80 + 0x43),
-	KEY_F10 = (0x80 + 0x44),
-	KEY_F11 = (0x80 + 0x57),
-	KEY_F12 = (0x80 + 0x58),
-	KEY_BACKSPACE = 0x7f,
-	KEY_PAUSE = 0xff,
-	KEY_EQUALS = 0x3d,
-	KEY_MINUS = 0x2d,
-	KEY_RSHIFT = (0x80 + 0x36),
-	KEY_RCTRL = (0x80 + 0x1d),
-	KEY_RALT = (0x80 + 0x38),
-	KEY_LALT = KEY_RALT,
-	// new keys:
-	KEY_CAPSLOCK = (0x80 + 0x3a),
-	KEY_NUMLOCK = (0x80 + 0x45),
-	KEY_SCRLCK = (0x80 + 0x46),
-	KEY_PRTSCR = (0x80 + 0x59),
-	KEY_HOME = (0x80 + 0x47),
-	KEY_END = (0x80 + 0x4f),
-	KEY_PGUP = (0x80 + 0x49),
-	KEY_PGDN = (0x80 + 0x51),
-	KEY_INS = (0x80 + 0x52),
-	KEY_DEL = (0x80 + 0x53),
-	KEYP_0 = KEY_INS,
-	KEYP_1 = KEY_END,
-	KEYP_2 = KEY_DOWNARROW,
-	KEYP_3 = KEY_PGDN,
-	KEYP_4 = KEY_LEFTARROW,
-	KEYP_5 = (0x80 + 0x4c),
-	KEYP_6 = KEY_RIGHTARROW,
-	KEYP_7 = KEY_HOME,
-	KEYP_8 = KEY_UPARROW,
-	KEYP_9 = KEY_PGUP,
-	KEYP_DIVIDE = '/',
-	KEYP_PLUS = '+',
-	KEYP_MINUS = '-',
-	KEYP_MULTIPLY = '*',
-	KEYP_PERIOD = 0,
-	KEYP_EQUALS = KEY_EQUALS,
-	KEYP_ENTER = KEY_ENTER,
-	// a-z
-	KEY_A = 'a',
-	KEY_B = 'b',
-	KEY_C = 'c',
-	KEY_D = 'd',
-	KEY_E = 'e',
-	KEY_F = 'f',
-	KEY_G = 'g',
-	KEY_H = 'h',
-	KEY_I = 'i',
-	KEY_J = 'j',
-	KEY_K = 'k',
-	KEY_L = 'l',
-	KEY_M = 'm',
-	KEY_N = 'n',
-	KEY_O = 'o',
-	KEY_P = 'p',
-	KEY_Q = 'q',
-	KEY_R = 'r',
-	KEY_S = 's',
-	KEY_T = 't',
-	KEY_U = 'u',
-	KEY_V = 'v',
-	KEY_W = 'w',
-	KEY_X = 'x',
-	KEY_Y = 'y',
-	KEY_Z = 'z'
+	// SCANCODE 4-49
+	KEY_A,
+	KEY_B,
+	KEY_C,
+	KEY_D,
+	KEY_E,
+	KEY_F,
+	KEY_G,
+	KEY_H,
+	KEY_I,
+	KEY_J,
+	KEY_K,
+	KEY_L,
+	KEY_M,
+	KEY_N,
+	KEY_O,
+	KEY_P,
+	KEY_Q,
+	KEY_R,
+	KEY_S,
+	KEY_T,
+	KEY_U,
+	KEY_V,
+	KEY_W,
+	KEY_X,
+	KEY_Y,
+	KEY_Z,
+	KEY_1,
+	KEY_2,
+	KEY_3,
+	KEY_4,
+	KEY_5,
+	KEY_6,
+	KEY_7,
+	KEY_8,
+	KEY_9,
+	KEY_0,
+	ENTER,
+	ESCAPE,
+	BACKSPACE,
+	TAB,
+	SPACE,
+	MINUS,
+	EQUALS,
+	LEFTBRACKET,
+	RIGHTBRACKET,
+	BACKSLASH,
+
+	// SCANCODE 51-99
+	SEMICOLON,
+	APOSTROPHE,
+	GRAVE,
+	COMMA,
+	PERIOD,
+	SLASH,
+	CAPSLOCK,
+	F1,
+	F2,
+	F3,
+	F4,
+	F5,
+	F6,
+	F7,
+	F8,
+	F9,
+	F10,
+	F11,
+	F12,
+	PRINTSCREEN,
+	SCROLLLOCK,
+	PAUSE,
+	INSERT,
+	HOME,
+	PAGEUP,
+	DELETE,
+	END,
+	PAGEDOWN,
+	RIGHT,
+	LEFT,
+	DOWN,
+	UP,
+	NUMLOCK,
+	KP_DIVIDE,
+	KP_MULTIPLY,
+	KP_MINUS,
+	KP_PLUS,
+	KP_ENTER,
+	KP_1,
+	KP_2,
+	KP_3,
+	KP_4,
+	KP_5,
+	KP_6,
+	KP_7,
+	KP_8,
+	KP_9,
+	KP_0,
+	KP_PERIOD,
+
+	// SCANCODE 224-226
+	LCTRL,
+	LSHIFT,
+	LALT,
+
+	// SCANCODE 228-229
+	RCTRL,
+	RSHIFT,
+	RALT,
+
+	count,
+
+	// ALIAS
+	//NUMLOCKCLEAR = NUMLOCK,
 };
 
-// DOOM keyboard definition. This is the stuff configured by Setup.Exe. Most key data are simple ascii (uppercased).
+constexpr uint8_t SCANCODE_OFFSET{4};
+//constexpr uint16_t SEMICOLON_OFFSET{KEY_A_OFFSET + 1};
+//constexpr uint16_t LMOD_OFFSET{224};
+//constexpr uint16_t RMOD_OFFSET{226};
 
+class Keybind
+{
+	::std::map<Keys, ::std::any> Keybinds;
+public:
+
+	auto bind(Keys i)
+	{
+		//return [](){ return do_action; };
+		//return actions[i];
+	}
+
+	Keybind()
+	{
+		// MAP Keys to Functions that perform Actions
+		// Start with compile time defaults, then support runtime user defined saved changes
+		//::std::array<Keys, 80> KYS;
+		//for(Keys i{0}; i < Keys::count;)
+		//{
+			//Keybinds.emplace(i, Keybind(i));
+		//}
+	}
+};
+
+struct KeyNames
+{
+	Keys key;
+	// array.size = 16 - sizeof(Keys)
+	::std::array<const char, 14> name;
+};
+
+constexpr ::std::array<KeyNames, ::std::size_t(Keys::count)> key_names{
+	// 4-49
+	KeyNames{ .key{Keys::KEY_A},		.name{"a"}				},		KeyNames{ .key{Keys::KEY_B},		.name{"b"}				},
+	KeyNames{ .key{Keys::KEY_C}, 		.name{"c"}				},		KeyNames{ .key{Keys::KEY_D},		.name{"d"}				},
+	KeyNames{ .key{Keys::KEY_E},		.name{"e"}				},		KeyNames{ .key{Keys::KEY_F},		.name{"f"}				},
+	KeyNames{ .key{Keys::KEY_G},		.name{"g"}				},		KeyNames{ .key{Keys::KEY_H},		.name{"h"}				},
+	KeyNames{ .key{Keys::KEY_I},		.name{"i"}				},		KeyNames{ .key{Keys::KEY_J},		.name{"j"}				},
+	KeyNames{ .key{Keys::KEY_K},		.name{"k"}				},		KeyNames{ .key{Keys::KEY_L},		.name{"l"}				},
+	KeyNames{ .key{Keys::KEY_M},		.name{"m"}				},		KeyNames{ .key{Keys::KEY_N},		.name{"n"}				},
+	KeyNames{ .key{Keys::KEY_O},		.name{"o"}				},		KeyNames{ .key{Keys::KEY_P},		.name{"p"}				},
+	KeyNames{ .key{Keys::KEY_Q},		.name{"q"}				},		KeyNames{ .key{Keys::KEY_R},		.name{"r"}				},
+	KeyNames{ .key{Keys::KEY_S},		.name{"s"}				},		KeyNames{ .key{Keys::KEY_T},		.name{"t"}				},
+	KeyNames{ .key{Keys::KEY_U},		.name{"u"}				},		KeyNames{ .key{Keys::KEY_V},		.name{"v"}				},
+	KeyNames{ .key{Keys::KEY_W},		.name{"w"}				},		KeyNames{ .key{Keys::KEY_X},		.name{"x"}				},
+	KeyNames{ .key{Keys::KEY_Y},		.name{"y"}				},		KeyNames{ .key{Keys::KEY_Z},		.name{"z"}				},
+	KeyNames{ .key{Keys::KEY_1},		.name{"1"}				},		KeyNames{ .key{Keys::KEY_2},		.name{"2"}				},
+	KeyNames{ .key{Keys::KEY_3},		.name{"3"}				},		KeyNames{ .key{Keys::KEY_4},		.name{"4"}				},
+	KeyNames{ .key{Keys::KEY_5},		.name{"5"}				},		KeyNames{ .key{Keys::KEY_6},		.name{"6"}				},
+	KeyNames{ .key{Keys::KEY_7},		.name{"7"}				},		KeyNames{ .key{Keys::KEY_8},		.name{"8"}				},
+	KeyNames{ .key{Keys::KEY_9},		.name{"9"}				},		KeyNames{ .key{Keys::KEY_0},		.name{"0"}				},
+	KeyNames{ .key{Keys::ENTER},		.name{"ENTER"}			},		KeyNames{ .key{Keys::ESCAPE},		.name{"ESCAPE"}			},
+	KeyNames{ .key{Keys::BACKSPACE},	.name{"BACKSPACE"}		},		KeyNames{ .key{Keys::TAB},			.name{"TAB"}			},
+	KeyNames{ .key{Keys::SPACE},		.name{"SPACE"}			},		KeyNames{ .key{Keys::MINUS},		.name{"-"}				},
+	KeyNames{ .key{Keys::EQUALS},		.name{"=" }				},		KeyNames{ .key{Keys::LEFTBRACKET},	.name{"["}				},
+	KeyNames{ .key{Keys::RIGHTBRACKET},	.name{"]"}				},		KeyNames{ .key{Keys::BACKSLASH},	.name{"\\"}				},
+	// 51-99
+	KeyNames{ .key{Keys::SEMICOLON},	.name{";"}				},		KeyNames{ .key{Keys::APOSTROPHE},	.name{"\'"}				},
+	KeyNames{ .key{Keys::GRAVE},		.name{"`"}				},		KeyNames{ .key{Keys::COMMA},		.name{","}				},
+	KeyNames{ .key{Keys::PERIOD},		.name{"."}				},		KeyNames{ .key{Keys::SLASH},		.name{"/"}				},
+	KeyNames{ .key{Keys::CAPSLOCK},		.name{"CAPSLOCK"}		},		KeyNames{ .key{Keys::F1},			.name{"F1"}				},
+	KeyNames{ .key{Keys::F2},			.name{"F2"}				},		KeyNames{ .key{Keys::F3},			.name{"F3"}				},
+	KeyNames{ .key{Keys::F4},			.name{"F4"}				},		KeyNames{ .key{Keys::F5},			.name{"F5"}				},
+	KeyNames{ .key{Keys::F6},			.name{"F6"}				},		KeyNames{ .key{Keys::F7},			.name{"F7"}				},
+	KeyNames{ .key{Keys::F8},			.name{"F8"}				},		KeyNames{ .key{Keys::F9},			.name{"F9"}				},
+	KeyNames{ .key{Keys::F10},			.name{"F10"}			},		KeyNames{ .key{Keys::F11},			.name{"F11"}			},
+	KeyNames{ .key{Keys::F12},			.name{"F12"}			},		KeyNames{ .key{Keys::PRINTSCREEN},	.name{"PRINTSCREEN"}	},
+	KeyNames{ .key{Keys::SCROLLLOCK},	.name{"SCROLLLOCK"}		},		KeyNames{ .key{Keys::PAUSE},		.name{"PAUSE"}			},
+	KeyNames{ .key{Keys::INSERT},		.name{"INSERT"}			},		KeyNames{ .key{Keys::HOME},			.name{"HOME"}			},
+	KeyNames{ .key{Keys::PAGEUP},		.name{"PAGEUP"}			},		KeyNames{ .key{Keys::DELETE},		.name{"DELETE"}			},
+	KeyNames{ .key{Keys::END},			.name{"END"}			},		KeyNames{ .key{Keys::PAGEDOWN},		.name{"PAGEDOWN"}		},
+	KeyNames{ .key{Keys::RIGHT},		.name{"RIGHT"}			},		KeyNames{ .key{Keys::LEFT},			.name{"LEFT"}			},
+	KeyNames{ .key{Keys::DOWN},			.name{"DOWN"}			},		KeyNames{ .key{Keys::UP},			.name{"UP"}				},
+	KeyNames{ .key{Keys::NUMLOCK},		.name{"NUMLOCK"}		},		KeyNames{ .key{Keys::KP_DIVIDE},	.name{"NUM /"}			},
+	KeyNames{ .key{Keys::KP_MULTIPLY},	.name{"NUM *"}			},		KeyNames{ .key{Keys::KP_MINUS},		.name{"NUM -"}			},
+	KeyNames{ .key{Keys::KP_PLUS},		.name{"NUM +"}			},		KeyNames{ .key{Keys::KP_ENTER},		.name{"NUM ENTER"}		},
+	KeyNames{ .key{Keys::KP_1},			.name{"NUM 1"}			},		KeyNames{ .key{Keys::KP_2},			.name{"NUM 2"}			},
+	KeyNames{ .key{Keys::KP_3},			.name{"NUM 3"}			},		KeyNames{ .key{Keys::KP_4},			.name{"NUM 4"}			},
+	KeyNames{ .key{Keys::KP_5},			.name{"NUM 5"}			},		KeyNames{ .key{Keys::KP_6},			.name{"NUM 6"}			},
+	KeyNames{ .key{Keys::KP_7},			.name{"NUM 7"}			},		KeyNames{ .key{Keys::KP_8},			.name{"NUM 8"}			},
+	KeyNames{ .key{Keys::KP_9},			.name{"NUM 9"}			},		KeyNames{ .key{Keys::KP_0},			.name{"NUM 0"}			},
+	KeyNames{ .key{Keys::KP_PERIOD},	.name{"NUM ."}			},
+	// SCANCODE 224-226
+	KeyNames{ .key{Keys::LCTRL},		.name{"LCTRL"}			},
+	KeyNames{ .key{Keys::LSHIFT},		.name{"LSHIFT"}			},
+	KeyNames{ .key{Keys::LALT},			.name{"LALT"}			},
+	// SCANCODE 228-229
+	KeyNames{ .key{Keys::RCTRL},		.name{"RCTRL"}			},
+	KeyNames{ .key{Keys::RSHIFT},		.name{"RSHIFT"}			},
+	KeyNames{ .key{Keys::RALT},			.name{"RALT"}			},
+};
+
+constexpr ::std::array<KeyNames, ::std::size_t(Keys::count)> s_key_names{
+	// 4-49
+	KeyNames{ .key{Keys::KEY_A},		.name{"A"}				},		KeyNames{ .key{Keys::KEY_B},		.name{"B"}				},
+	KeyNames{ .key{Keys::KEY_C}, 		.name{"C"}				},		KeyNames{ .key{Keys::KEY_D},		.name{"D"}				},
+	KeyNames{ .key{Keys::KEY_E},		.name{"E"}				},		KeyNames{ .key{Keys::KEY_F},		.name{"F"}				},
+	KeyNames{ .key{Keys::KEY_G},		.name{"G"}				},		KeyNames{ .key{Keys::KEY_H},		.name{"H"}				},
+	KeyNames{ .key{Keys::KEY_I},		.name{"I"}				},		KeyNames{ .key{Keys::KEY_J},		.name{"J"}				},
+	KeyNames{ .key{Keys::KEY_K},		.name{"K"}				},		KeyNames{ .key{Keys::KEY_L},		.name{"L"}				},
+	KeyNames{ .key{Keys::KEY_M},		.name{"M"}				},		KeyNames{ .key{Keys::KEY_N},		.name{"N"}				},
+	KeyNames{ .key{Keys::KEY_O},		.name{"O"}				},		KeyNames{ .key{Keys::KEY_P},		.name{"P"}				},
+	KeyNames{ .key{Keys::KEY_Q},		.name{"Q"}				},		KeyNames{ .key{Keys::KEY_R},		.name{"R"}				},
+	KeyNames{ .key{Keys::KEY_S},		.name{"S"}				},		KeyNames{ .key{Keys::KEY_T},		.name{"T"}				},
+	KeyNames{ .key{Keys::KEY_U},		.name{"U"}				},		KeyNames{ .key{Keys::KEY_V},		.name{"V"}				},
+	KeyNames{ .key{Keys::KEY_W},		.name{"W"}				},		KeyNames{ .key{Keys::KEY_X},		.name{"X"}				},
+	KeyNames{ .key{Keys::KEY_Y},		.name{"Y"}				},		KeyNames{ .key{Keys::KEY_Z},		.name{"Z"}				},
+	KeyNames{ .key{Keys::KEY_1},		.name{"!"}				},		KeyNames{ .key{Keys::KEY_2},		.name{"@"}				},
+	KeyNames{ .key{Keys::KEY_3},		.name{"#"}				},		KeyNames{ .key{Keys::KEY_4},		.name{"$"}				},
+	KeyNames{ .key{Keys::KEY_5},		.name{"%"}				},		KeyNames{ .key{Keys::KEY_6},		.name{"^"}				},
+	KeyNames{ .key{Keys::KEY_7},		.name{"&"}				},		KeyNames{ .key{Keys::KEY_8},		.name{"*"}				},
+	KeyNames{ .key{Keys::KEY_9},		.name{"("}				},		KeyNames{ .key{Keys::KEY_0},		.name{")"}				},
+	//KeyNames{ .key{Keys::ENTER},		.name{"ENTER"}			},		KeyNames{ .key{Keys::ESCAPE},		.name{"ESCAPE"}			},
+	//KeyNames{ .key{Keys::BACKSPACE},	.name{"BACKSPACE"}		},		KeyNames{ .key{Keys::TAB},			.name{"TAB"}			},
+	//KeyNames{ .key{Keys::SPACE},		.name{"SPACE"}			},
+	KeyNames{ .key{Keys::MINUS},		.name{"_"}				},
+	KeyNames{ .key{Keys::EQUALS},		.name{"+" }				},		KeyNames{ .key{Keys::LEFTBRACKET},	.name{"{"}				},
+	KeyNames{ .key{Keys::RIGHTBRACKET},	.name{"}"}				},		KeyNames{ .key{Keys::BACKSLASH},	.name{"|"}				},
+	// 51-99
+	KeyNames{ .key{Keys::SEMICOLON},	.name{":"}				},		KeyNames{ .key{Keys::APOSTROPHE},	.name{"\""}				},
+	KeyNames{ .key{Keys::GRAVE},		.name{"~"}				},		KeyNames{ .key{Keys::COMMA},		.name{"<"}				},
+	KeyNames{ .key{Keys::PERIOD},		.name{">"}				},		KeyNames{ .key{Keys::SLASH},		.name{"?"}				},
+	//KeyNames{ .key{Keys::CAPSLOCK},		.name{"CAPSLOCK"}		},		KeyNames{ .key{Keys::F1},			.name{"F1"}				},
+	//KeyNames{ .key{Keys::F2},			.name{"F2"}				},		KeyNames{ .key{Keys::F3},			.name{"F3"}				},
+	//KeyNames{ .key{Keys::F4},			.name{"F4"}				},		KeyNames{ .key{Keys::F5},			.name{"F5"}				},
+	//KeyNames{ .key{Keys::F6},			.name{"F6"}				},		KeyNames{ .key{Keys::F7},			.name{"F7"}				},
+	//KeyNames{ .key{Keys::F8},			.name{"F8"}				},		KeyNames{ .key{Keys::F9},			.name{"F9"}				},
+	//KeyNames{ .key{Keys::F10},			.name{"F10"}			},		KeyNames{ .key{Keys::F11},			.name{"F11"}			},
+	//KeyNames{ .key{Keys::F12},			.name{"F12"}			},
+	KeyNames{ .key{Keys::PRINTSCREEN},	.name{"SYSREQ"}			}, // SDL_SCANCODE_SYSREQ = 154,
+	//KeyNames{ .key{Keys::SCROLLLOCK},	.name{"SCROLLLOCK"}		},		KeyNames{ .key{Keys::PAUSE},		.name{"PAUSE"}			},
+	//KeyNames{ .key{Keys::INSERT},		.name{"INSERT"}			},		KeyNames{ .key{Keys::HOME},			.name{"HOME"}			},
+	//KeyNames{ .key{Keys::PAGEUP},		.name{"PAGEUP"}			},		KeyNames{ .key{Keys::DELETE},		.name{"DELETE"}			},
+	//KeyNames{ .key{Keys::END},			.name{"END"}			},		KeyNames{ .key{Keys::PAGEDOWN},		.name{"PAGEDOWN"}		},
+	//KeyNames{ .key{Keys::RIGHT},		.name{"RIGHT"}			},		KeyNames{ .key{Keys::LEFT},			.name{"LEFT"}			},
+	//KeyNames{ .key{Keys::DOWN},			.name{"DOWN"}			},		KeyNames{ .key{Keys::UP},			.name{"UP"}				},
+	//KeyNames{ .key{Keys::NUMLOCK},		.name{"NUMLOCK"}		},
+	//KeyNames{ .key{Keys::KP_DIVIDE},	.name{"NUM /"}			},
+	//KeyNames{ .key{Keys::KP_MULTIPLY},	.name{"NUM *"}			},		KeyNames{ .key{Keys::KP_MINUS},		.name{"NUM -"}			},
+	//KeyNames{ .key{Keys::KP_PLUS},		.name{"NUM +"}			},		KeyNames{ .key{Keys::KP_ENTER},		.name{"NUM ENTER"}		},
+	//KeyNames{ .key{Keys::KP_1},			.name{"NUM 1"}			},		KeyNames{ .key{Keys::KP_2},			.name{"NUM 2"}			},
+	//KeyNames{ .key{Keys::KP_3},			.name{"NUM 3"}			},		KeyNames{ .key{Keys::KP_4},			.name{"NUM 4"}			},
+	//KeyNames{ .key{Keys::KP_5},			.name{"NUM 5"}			},		KeyNames{ .key{Keys::KP_6},			.name{"NUM 6"}			},
+	//KeyNames{ .key{Keys::KP_7},			.name{"NUM 7"}			},		KeyNames{ .key{Keys::KP_8},			.name{"NUM 8"}			},
+	//KeyNames{ .key{Keys::KP_9},			.name{"NUM 9"}			},		KeyNames{ .key{Keys::KP_0},			.name{"NUM 0"}			},
+	//KeyNames{ .key{Keys::KP_PERIOD},	.name{"NUM ."}			},
+	// SCANCODE 224-226
+	//KeyNames{ .key{Keys::LCTRL},		.name{"LCTRL"}			},
+	//KeyNames{ .key{Keys::LSHIFT},		.name{"LSHIFT"}			},
+	//KeyNames{ .key{Keys::LALT},			.name{"LALT"}			},
+	// SCANCODE 228-229
+	//KeyNames{ .key{Keys::RCTRL},		.name{"RCTRL"}			},
+	//KeyNames{ .key{Keys::RSHIFT},		.name{"RSHIFT"}			},
+	//KeyNames{ .key{Keys::RALT},			.name{"RALT"}			},
+};
+
+// Scancode notes:
+// https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html https://www.win.tue.nl/~aeb/linux/kbd/scancodes.html
+// https://en.wikipedia.org/wiki/Scancode
+// https://wiki.libsdl.org/SDL_Scancode
+//
+//
+
+// old keys
+/*
+// DOOM keyboard definition. This is the stuff configured by Setup.Exe. Most key data are simple ascii (uppercased).
 static constexpr short KEY_RIGHTARROW{0xae};
 static constexpr short KEY_LEFTARROW{0xac};
 static constexpr short KEY_UPARROW{0xad};
@@ -496,8 +662,7 @@ static constexpr short KEYP_PERIOD{0};
 static constexpr short KEYP_EQUALS{KEY_EQUALS};
 static constexpr short KEYP_ENTER{KEY_ENTER};
 
-//#define SCANCODE_TO_KEYS_ARRAY
-constexpr std::array<int, 104> scancode_translate_table
+constexpr ::std::array<int, 104> scancode_translate_table
 {
 	int{0x0},			int{0x0},			int{0x0},			int{0x0},			int{'a'},				// 000-009
 	int{'b'},			int{'c'},			int{'d'},			int{'e'},			int{'f'},
@@ -521,60 +686,4 @@ constexpr std::array<int, 104> scancode_translate_table
 	int{KEYP_7},		int{KEYP_8},		int{KEYP_9},		int{KEYP_0},		int{KEYP_PERIOD},
 	int{0x0},			int{0x0},			int{0x0},			int{KEYP_EQUALS}							// 100-103
 };
-
-// Default names for keys, to use in English or as fallback.
-//#define KEY_NAMES_ARRAY
-struct KeyNames
-{
-	// 8 byte size total per key name pair
-	const unsigned char key;
-	std::array<const char, 7> name;
-};
-
-//constexpr int k = sizeof(KeyNames);
-constexpr std::array<KeyNames, 84> key_names{
-	KeyNames{ .key{KEY_BACKSPACE},	.name{"BACKSP"}	},	KeyNames{ .key{KEY_TAB},		.name{"TAB"}	},
-	KeyNames{ .key{KEY_INS},		.name{"INS"}	},	KeyNames{ .key{KEY_DEL},		.name{"DEL"}	},
-	KeyNames{ .key{KEY_PGUP},		.name{"PGUP"}	},	KeyNames{ .key{KEY_PGDN},		.name{"PGDN"}	},
-	KeyNames{ .key{KEY_ENTER},		.name{"ENTER"}	},	KeyNames{ .key{KEY_ESCAPE},		.name{"ESC"}	},
-	KeyNames{ .key{KEY_F1},			.name{"F1"}		},	KeyNames{ .key{KEY_F2},			.name{"F2"}		},
-	KeyNames{ .key{KEY_F3},			.name{"F3"}		},	KeyNames{ .key{KEY_F4},			.name{"F4"}		},
-	KeyNames{ .key{KEY_F5},			.name{"F5"}		},	KeyNames{ .key{KEY_F6},			.name{"F6"}		},
-	KeyNames{ .key{KEY_F7},			.name{"F7"}		},	KeyNames{ .key{KEY_F8},			.name{"F8"}		},
-	KeyNames{ .key{KEY_F9},			.name{"F9"}		},	KeyNames{ .key{KEY_F10},		.name{"F10"}	},
-	KeyNames{ .key{KEY_F11},		.name{"F11"}	},	KeyNames{ .key{KEY_F12},		.name{"F12"}	},
-	KeyNames{ .key{KEY_HOME},		.name{"HOME"}	},	KeyNames{ .key{KEY_END},		.name{"END"}	},
-	KeyNames{ .key{KEY_MINUS},		.name{"-"}		},	KeyNames{ .key{KEY_EQUALS},		.name{"=" }		},
-	KeyNames{ .key{KEY_NUMLOCK},	.name{"NUMLCK"}	},	KeyNames{ .key{KEY_SCRLCK},		.name{"SCRLCK"}	},
-	KeyNames{ .key{KEY_PAUSE},		.name{"PAUSE"}	},	KeyNames{ .key{KEY_PRTSCR},		.name{"PRTSC"}	},
-	KeyNames{ .key{KEY_UPARROW},	.name{"UP"}		},	KeyNames{ .key{KEY_DOWNARROW},	.name{"DOWN"}	},
-	KeyNames{ .key{KEY_LEFTARROW},	.name{"LEFT"}	},	KeyNames{ .key{KEY_RIGHTARROW},	.name{"RIGHT"}	},
-	KeyNames{ .key{KEY_RALT},		.name{"ALT"}	},	KeyNames{ .key{KEY_LALT},		.name{"ALT"}	},
-	KeyNames{ .key{KEY_RSHIFT},		.name{"SHIFT"}	},	KeyNames{ .key{KEY_CAPSLOCK},	.name{"CAPS"}	},
-	KeyNames{ .key{KEY_RCTRL},		.name{"CTRL"}	},	KeyNames{ .key{KEYP_5},			.name{"NUM5"}	},
-
-	KeyNames{ .key{' '},			.name{"SPACE"}	},
-	KeyNames{ .key{'a'},			.name{"A"}		},	KeyNames{ .key{'b'},			.name{"B"}		},
-	KeyNames{ .key{'c'}, 			.name{"C"}		},	KeyNames{ .key{'d'},			.name{"D"}		},
-	KeyNames{ .key{'e'},			.name{"E"}		},	KeyNames{ .key{'f'},			.name{"F"}		},
-	KeyNames{ .key{'g'},			.name{"G"}		},	KeyNames{ .key{'h'},			.name{"H"}		},
-	KeyNames{ .key{'i'},			.name{"I"}		},	KeyNames{ .key{'j'},			.name{"J"}		},
-	KeyNames{ .key{'k'},			.name{"K"}		},	KeyNames{ .key{'l'},			.name{"L"}		},
-	KeyNames{ .key{'m'},			.name{"M"}		},	KeyNames{ .key{'n'},			.name{"N"}		},
-	KeyNames{ .key{'o'},			.name{"O"}		},	KeyNames{ .key{'p'},			.name{"P"}		},
-	KeyNames{ .key{'q'},			.name{"Q"}		},	KeyNames{ .key{'r'},			.name{"R"}		},
-	KeyNames{ .key{'s'},			.name{"S"}		},	KeyNames{ .key{'t'},			.name{"T"}		},
-	KeyNames{ .key{'u'},			.name{"U"}		},	KeyNames{ .key{'v'},			.name{"V"}		},
-	KeyNames{ .key{'w'},			.name{"W"}		},	KeyNames{ .key{'x'},			.name{"X"}		},
-	KeyNames{ .key{'y'},			.name{"Y"}		},	KeyNames{ .key{'z'},			.name{"Z"}		},
-	KeyNames{ .key{'0'},			.name{"0"}		},	KeyNames{ .key{'1'},			.name{"1"}		},
-	KeyNames{ .key{'2'},			.name{"2"}		},	KeyNames{ .key{'3'},			.name{"3"}		},
-	KeyNames{ .key{'4'},			.name{"4"}		},	KeyNames{ .key{'5'},			.name{"5"}		},
-	KeyNames{ .key{'6'},			.name{"6"}		},	KeyNames{ .key{'7'},			.name{"7"}		},
-	KeyNames{ .key{'8'},			.name{"8"}		},	KeyNames{ .key{'9'},			.name{"9"}		},
-	KeyNames{ .key{'['},			.name{"["}		},	KeyNames{ .key{']'},			.name{"]"}		},
-	KeyNames{ .key{';'},			.name{";"}		},	KeyNames{ .key{'`'},			.name{"`"}		},
-	KeyNames{ .key{','},			.name{","}		},	KeyNames{ .key{'.'},			.name{"."}		},
-	KeyNames{ .key{'/'},			.name{"/"}		},	KeyNames{ .key{'\\'},			.name{"\\"}		},
-	KeyNames{ .key{'\''},			.name{"\'"}		}
-};
+/**/

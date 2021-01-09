@@ -217,7 +217,7 @@ void R_ClearClipSegs()
 	newend = solidsegs + 2;
 }
 
-// [AM] Interpolate the passed sector, if prudent.
+// Interpolate the passed sector, if prudent.
 void R_MaybeInterpolateSector(sector_t* sector)
 {
 	if (crispy->uncapped &&
@@ -258,7 +258,7 @@ void R_AddLine(seg_t* line)
 	curline = line;
 
 	// OPTIMIZE: quickly reject orthogonal back sides.
-	// [crispy] remove slime trails
+	// remove slime trails
 	angle1 = R_PointToAngleCrispy(line->v1->r_x, line->v1->r_y);
 	angle2 = R_PointToAngleCrispy(line->v2->r_x, line->v2->r_y);
 
@@ -305,35 +305,30 @@ void R_AddLine(seg_t* line)
 	x2 = viewangletox[angle2];
 
 	// Does not cross a pixel?
-	if (x1 == x2)
-		return;
+	if (x1 == x2){
+		return;}
 
 	backsector = line->backsector;
 
 	// Single sided line?
-	if (!backsector)
-		goto clipsolid;
+	if (!backsector){
+		goto clipsolid;}
 
-	// [AM] Interpolate sector movement before
-	//		running clipping tests. Frontsector
-	//		should already be interpolated.
+	// Interpolate sector movement before running clipping tests. Frontsector should already be interpolated.
 	R_MaybeInterpolateSector(backsector);
 
 	// Closed door.
 	if (backsector->interpceilingheight <= frontsector->interpfloorheight
-		|| backsector->interpfloorheight >= frontsector->interpceilingheight)
-		goto clipsolid;
+		|| backsector->interpfloorheight >= frontsector->interpceilingheight){
+		goto clipsolid;}
 
 	// Window.
 	if (backsector->interpceilingheight != frontsector->interpceilingheight
-		|| backsector->interpfloorheight != frontsector->interpfloorheight)
-		goto clippass;
+		|| backsector->interpfloorheight != frontsector->interpfloorheight){
+		goto clippass;}
 
-	// Reject empty lines used for triggers
-	// and special events.
-	// Identical floor and ceiling on both sides,
-	// identical light levels on both sides,
-	// and no middle texture.
+	// Reject empty lines used for triggers and special events.
+	// Identical floor and ceiling on both sides, identical light levels on both sides, and no middle texture.
 	if (backsector->ceilingpic == frontsector->ceilingpic
 		&& backsector->floorpic == frontsector->floorpic
 		&& backsector->lightlevel == frontsector->lightlevel
@@ -394,23 +389,23 @@ bool R_CheckBBox(fixed_t* bspcoord)
 
 	// Find the corners of the box
 	// that define the edges from current viewpoint.
-	if (viewx <= bspcoord[BOXLEFT])
-		boxx = 0;
-	else if (viewx < bspcoord[BOXRIGHT])
-		boxx = 1;
-	else
-		boxx = 2;
+	if (viewx <= bspcoord[BOXLEFT]){
+		boxx = 0;}
+	else if (viewx < bspcoord[BOXRIGHT]){
+		boxx = 1;}
+	else{
+		boxx = 2;}
 
-	if (viewy >= bspcoord[BOXTOP])
-		boxy = 0;
-	else if (viewy > bspcoord[BOXBOTTOM])
-		boxy = 1;
-	else
-		boxy = 2;
+	if (viewy >= bspcoord[BOXTOP]){
+		boxy = 0;}
+	else if (viewy > bspcoord[BOXBOTTOM]){
+		boxy = 1;}
+	else{
+		boxy = 2;}
 
 	boxpos = (boxy << 2) + boxx;
-	if (boxpos == 5)
-		return true;
+	if (boxpos == 5){
+		return true;}
 
 	x1 = bspcoord[checkcoord[boxpos][0]];
 	y1 = bspcoord[checkcoord[boxpos][1]];
@@ -424,8 +419,8 @@ bool R_CheckBBox(fixed_t* bspcoord)
 	span = angle1 - angle2;
 
 	// Sitting on a line?
-	if (span >= ANG180)
-		return true;
+	if (span >= ANG180){
+		return true;}
 
 	tspan = angle1 + clipangle;
 
@@ -434,8 +429,8 @@ bool R_CheckBBox(fixed_t* bspcoord)
 		tspan -= 2 * clipangle;
 
 		// Totally off the left edge?
-		if (tspan >= span)
-			return false;
+		if (tspan >= span){
+			return false;}
 
 		angle1 = clipangle;
 	}
@@ -445,8 +440,8 @@ bool R_CheckBBox(fixed_t* bspcoord)
 		tspan -= 2 * clipangle;
 
 		// Totally off the left edge?
-		if (tspan >= span)
-			return false;
+		if (tspan >= span){
+			return false;}
 
 		angle2 = -clipangle;
 	}
@@ -460,13 +455,13 @@ bool R_CheckBBox(fixed_t* bspcoord)
 	sx2 = viewangletox[angle2];
 
 	// Does not cross a pixel.
-	if (sx1 == sx2)
-		return false;
+	if (sx1 == sx2){
+		return false;}
 	--sx2;
 
 	start = solidsegs;
-	while (start->last < sx2)
-		++start;
+	while (start->last < sx2){
+		++start;}
 
 	if (sx1 >= start->first
 		&& sx2 <= start->last)
@@ -491,10 +486,10 @@ void R_Subsector(int num)
 	subsector_t* sub;
 
 #ifdef RANGECHECK
-	if (num >= numsubsectors)
+	if (num >= numsubsectors){
 		I_Error("R_Subsector: ss %i with numss = %i",
 			num,
-			numsubsectors);
+			numsubsectors);}
 #endif
 
 	++sscount;
@@ -503,34 +498,33 @@ void R_Subsector(int num)
 	count = sub->numlines;
 	line = &segs[sub->firstline];
 
-	// [AM] Interpolate sector movement. Usually only needed
-	//		when you're standing inside the sector.
+	// Interpolate sector movement. Usually only needed when you're standing inside the sector.
 	R_MaybeInterpolateSector(frontsector);
 
 	if (frontsector->interpfloorheight < viewz)
 	{
 		floorplane = R_FindPlane(frontsector->interpfloorheight,
-			// [crispy] add support for MBF sky tranfers
+			// add support for MBF sky tranfers
 			frontsector->floorpic == skyflatnum &&
 			frontsector->sky & PL_SKYFLAT ? frontsector->sky :
 			frontsector->floorpic,
 			frontsector->lightlevel);
 	}
-	else
-		floorplane = NULL;
+	else{
+		floorplane = NULL;}
 
 	if (frontsector->interpceilingheight > viewz
 		|| frontsector->ceilingpic == skyflatnum)
 	{
 		ceilingplane = R_FindPlane(frontsector->interpceilingheight,
-			// [crispy] add support for MBF sky tranfers
+			// add support for MBF sky tranfers
 			frontsector->ceilingpic == skyflatnum &&
 			frontsector->sky & PL_SKYFLAT ? frontsector->sky :
 			frontsector->ceilingpic,
 			frontsector->lightlevel);
 	}
-	else
-		ceilingplane = NULL;
+	else{
+		ceilingplane = NULL;}
 
 	R_AddSprites(frontsector);
 
@@ -541,8 +535,8 @@ void R_Subsector(int num)
 	}
 
 	// check for solidsegs overflow - extremely unsatisfactory!
-	if (newend > &solidsegs[32] && false)
-		I_Error("R_Subsector: solidsegs overflow (vanilla may crash here)\n");
+	if (newend > &solidsegs[32] && false){
+		I_Error("R_Subsector: solidsegs overflow (vanilla may crash here)\n");}
 }
 
 // RenderBSPNode
@@ -557,10 +551,10 @@ void R_RenderBSPNode(int bspnum)
 	// Found a subsector?
 	if (bspnum & NF_SUBSECTOR)
 	{
-		if (bspnum == -1)
-			R_Subsector(0);
-		else
-			R_Subsector(bspnum & (~NF_SUBSECTOR));
+		if (bspnum == -1){
+			R_Subsector(0);}
+		else{
+			R_Subsector(bspnum & (~NF_SUBSECTOR));}
 		return;
 	}
 
@@ -573,6 +567,6 @@ void R_RenderBSPNode(int bspnum)
 	R_RenderBSPNode(bsp->children[side]);
 
 	// Possibly divide back space.
-	if (R_CheckBBox(bsp->bbox[side ^ 1]))
-		R_RenderBSPNode(bsp->children[side ^ 1]);
+	if (R_CheckBBox(bsp->bbox[side ^ 1])){
+		R_RenderBSPNode(bsp->children[side ^ 1]);}
 }

@@ -23,25 +23,25 @@
 
 auto DEH_NewContext()
 {
-	auto context{std::make_unique<deh_context_t>()};
+	auto context{::std::make_unique<deh_context_t>()};
 	return context;
 }
 
 // Open a dehacked file for reading; Returns NULL if open failed
-auto DEH_OpenFile(std::string filename)
+auto DEH_OpenFile(::std::string filename)
 {
 	auto fstream{fopen(filename.c_str(), "r")};
 
 	if (!fstream)
 	{
-		return std::unique_ptr<deh_context_t>(nullptr);
+		return ::std::unique_ptr<deh_context_t>(nullptr);
 	}
 
 	auto context{DEH_NewContext()};
 
 	context->type = deh_input_type_t::DEH_INPUT_FILE;
 	context->stream = fstream;
-	context->filename = std::string(filename);
+	context->filename = ::std::string(filename);
 
 	return context;
 }
@@ -55,10 +55,10 @@ auto DEH_OpenLump(int lumpnum)
 
 	context->type = deh_input_type_t::DEH_INPUT_LUMP;
 	context->lumpnum = lumpnum;
-	context->input_buffer = std::string((char*)lump);
+	context->input_buffer = ::std::string((char*)lump);
 	context->input_buffer_pos = 0;
 
-	context->filename = std::string(lumpinfo[lumpnum]->name);
+	context->filename = ::std::string(lumpinfo[lumpnum]->name);
 
 	return context;
 }
@@ -173,7 +173,7 @@ void DEH_RestoreLineStart(deh_context_t* context)
 }
 
 // Read a whole line
-std::string DEH_ReadLine(deh_context_t* context, bool extended)
+::std::string DEH_ReadLine(deh_context_t* context, bool extended)
 {
 	bool escaped{false};
 
@@ -184,7 +184,7 @@ std::string DEH_ReadLine(deh_context_t* context, bool extended)
 		if (c < 0 && pos == 0)
 		{
 			// end of file
-			return std::string{};
+			return ::std::string{};
 		}
 
 		// cope with lines of any length: increase the buffer size
@@ -242,7 +242,7 @@ std::string DEH_ReadLine(deh_context_t* context, bool extended)
 	return context->readbuffer;
 }
 
-void DEH_Warning(deh_context_t* context, std::string msg, ...)
+void DEH_Warning(deh_context_t* context, ::std::string msg, ...)
 {
 	va_list args;
 
@@ -255,7 +255,7 @@ void DEH_Warning(deh_context_t* context, std::string msg, ...)
 	va_end(args);
 }
 
-void DEH_Error(deh_context_t* context, std::string msg, ...)
+void DEH_Error(deh_context_t* context, ::std::string msg, ...)
 {
 	va_list args;
 
@@ -276,12 +276,12 @@ bool DEH_HadError(deh_context_t* context)
 }
 
 // return the filename of the DEHACKED file or NULL if it is a DEHACKED lump loaded from a PWAD
-std::string DEH_FileName(deh_context_t* context)
+::std::string DEH_FileName(deh_context_t* context)
 {
 	if (context->type == deh_input_type_t::DEH_INPUT_FILE)
 	{
 		return context->filename;
 	}
 
-	return std::string{};
+	return ::std::string{};
 }

@@ -14,17 +14,17 @@
 \**********************************************************************************************************************************************/
 
 #include "doomdef.h"
-#include "doomstat.h" // [AM] leveltime, paused, menuactive
+#include "doomstat.h" // leveltime, paused, menuactive
 #include "d_loop.h"
 
 #include "m_bbox.h"
 #include "m_menu.h"
 
-#include "i_system.h" // [crispy] I_Realloc()
-#include "p_local.h" // [crispy] MLOOKUNIT
+#include "i_system.h" // I_Realloc()
+#include "p_local.h" // MLOOKUNIT
 #include "r_local.h"
 #include "r_sky.h"
-#include "st_stuff.h" // [crispy] ST_refreshBackground()
+#include "st_stuff.h" // ST_refreshBackground()
 
 // Fineangles in the SCREENWIDTH wide window.
 constexpr size_t FIELDOFVIEW{2048};
@@ -81,15 +81,15 @@ int viewangletox[FINEANGLES / 2];
 // from clipangle to -clipangle.
 angle_t xtoviewangle[MAXWIDTH + 1];
 
-// [crispy] parameterized for smooth diminishing lighting
+// parameterized for smooth diminishing lighting
 lighttable_t*** scalelight = nullptr;
-std::vector<lighttable_t> scalelightfixed;
+::std::vector<lighttable_t> scalelightfixed;
 lighttable_t*** zlight = nullptr;
 
 // bumped light from gun blasts
 int extralight;
 
-// [crispy] parameterized for smooth diminishing lighting
+// parameterized for smooth diminishing lighting
 int LIGHTLEVELS;
 int LIGHTSEGSHIFT;
 int LIGHTBRIGHT;
@@ -250,7 +250,7 @@ int R_PointOnSegSide(fixed_t x, fixed_t y, seg_t* line)
 // tangent (slope) value which is looked up in the
 // tantoangle[] table.
 
-// [crispy] turned into a general R_PointToAngle() flavor called with either
+// turned into a general R_PointToAngle() flavor called with either
 // slope_div = SlopeDivCrispy() from R_PointToAngleCrispy() or slope_div = SlopeDiv() else
 angle_t R_PointToAngleSlope(fixed_t x, fixed_t y, int (*slope_div) (unsigned num, unsigned den))
 {
@@ -339,18 +339,18 @@ angle_t R_PointToAngle(fixed_t x, fixed_t y)
 	return R_PointToAngleSlope(x, y, SlopeDiv);
 }
 
-// [crispy] overflow-safe R_PointToAngle() flavor
+// overflow-safe R_PointToAngle() flavor
 // called only from R_CheckBBox(), R_AddLine() and P_SegLengths()
 angle_t R_PointToAngleCrispy(fixed_t x, fixed_t y)
 {
-	// [crispy] fix overflows for very long distances
+	// fix overflows for very long distances
 	int64_t y_viewy = (int64_t)y - viewy;
 	int64_t x_viewx = (int64_t)x - viewx;
 
-	// [crispy] the worst that could happen is e.g. INT_MIN-INT_MAX = 2*INT_MIN
+	// the worst that could happen is e.g. INT_MIN-INT_MAX = 2*INT_MIN
 	if (x_viewx < INT_MIN || x_viewx > INT_MAX || y_viewy < INT_MIN || y_viewy > INT_MAX)
 	{
-		// [crispy] preserving the angle by halfing the distance in both directions
+		// preserving the angle by halfing the distance in both directions
 		x = x_viewx / 2 + viewx;
 		y = y_viewy / 2 + viewy;
 	}
@@ -363,7 +363,7 @@ angle_t R_PointToAngle2(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2)
 	viewx = x1;
 	viewy = y1;
 
-	// [crispy] R_PointToAngle2() is never called during rendering
+	// R_PointToAngle2() is never called during rendering
 	return R_PointToAngleSlope(x2, y2, SlopeDiv);
 }
 
@@ -422,7 +422,7 @@ void R_InitPointToAngle()
 #endif
 }
 
-// [crispy] WiggleFix: move R_ScaleFromGlobalAngle function to r_segs.c, above R_StoreWallRange
+// WiggleFix: move R_ScaleFromGlobalAngle function to r_segs.c, above R_StoreWallRange
 #if 0
 // Returns the texture mapping scale for the current line (horizontal span) at the given angle. rw_distance must be calculated first.
 fixed_t R_ScaleFromGlobalAngle(angle_t visangle)
@@ -527,7 +527,7 @@ void R_InitTables()
 #endif
 }
 
-// [crispy] in widescreen mode, make sure the same number of horizontal pixels shows the same part of the game scene as in regular rendering mode
+// in widescreen mode, make sure the same number of horizontal pixels shows the same part of the game scene as in regular rendering mode
 static int scaledviewwidth_nonwide;
 static int viewwidth_nonwide;
 static fixed_t centerxfrac_nonwide;
@@ -619,7 +619,7 @@ void R_InitLightTables()
 		free(zlight);
 	}
 
-	// [crispy] smooth diminishing lighting
+	// smooth diminishing lighting
 	if (crispy->smoothlight)
 	{
 		LIGHTLEVELS = 32;
@@ -679,7 +679,7 @@ bool setsizeneeded;
 int setblocks;
 int setdetail;
 
-// [crispy] lookup table for horizontal screen coordinates
+// lookup table for horizontal screen coordinates
 int flipscreenwidth[MAXWIDTH];
 int* flipviewwidth;
 
@@ -701,13 +701,13 @@ void R_ExecuteSetViewSize()
 
 	setsizeneeded = false;
 
-	if (setblocks >= 11) // [crispy] Crispy HUD
+	if (setblocks >= 11) // Crispy HUD
 	{
 		scaledviewwidth_nonwide = NONWIDEWIDTH;
 		scaledviewwidth = SCREENWIDTH;
 		viewheight = SCREENHEIGHT;
 	}
-	// [crispy] hard-code to SCREENWIDTH and SCREENHEIGHT minus status bar height
+	// hard-code to SCREENWIDTH and SCREENHEIGHT minus status bar height
 	else if (setblocks == 10)
 	{
 		scaledviewwidth_nonwide = NONWIDEWIDTH;
@@ -719,13 +719,13 @@ void R_ExecuteSetViewSize()
 		scaledviewwidth_nonwide = (setblocks * 32) << crispy->hires;
 		viewheight = ((setblocks * 168 / 10) & ~7) << crispy->hires;
 
-		// [crispy] regular viewwidth in non-widescreen mode
+		// regular viewwidth in non-widescreen mode
 		if (crispy->widescreen)
 		{
 			const int widescreen_edge_aligner = (8 << crispy->hires) - 1;
 
 			scaledviewwidth = viewheight * SCREENWIDTH / (SCREENHEIGHT - (ST_HEIGHT << crispy->hires));
-			// [crispy] make sure scaledviewwidth is an integer multiple of the bezel patch width
+			// make sure scaledviewwidth is an integer multiple of the bezel patch width
 			scaledviewwidth = (scaledviewwidth + widescreen_edge_aligner) & (int)~widescreen_edge_aligner;
 			scaledviewwidth = MIN(scaledviewwidth, SCREENWIDTH);
 		}
@@ -778,7 +778,7 @@ void R_ExecuteSetViewSize()
 	// planes
 	for (i = 0; i < viewheight; ++i)
 	{
-		// [crispy] re-generate lookup-table for yslope[] (free look)
+		// re-generate lookup-table for yslope[] (free look)
 		// whenever "detailshift" or "screenblocks" change
 		const fixed_t num = (viewwidth_nonwide << detailshift) / 2 * FRACUNIT;
 		for (j = 0; j < LOOKDIRS; ++j)
@@ -816,7 +816,7 @@ void R_ExecuteSetViewSize()
 		}
 	}
 
-	// [crispy] lookup table for horizontal screen coordinates
+	// lookup table for horizontal screen coordinates
 	for (i = 0, j = SCREENWIDTH - 1; i < SCREENWIDTH; ++i, --j)
 	{
 		flipscreenwidth[i] = crispy->fliplevels ? j : i;
@@ -824,7 +824,7 @@ void R_ExecuteSetViewSize()
 
 	flipviewwidth = flipscreenwidth + (crispy->fliplevels ? (SCREENWIDTH - scaledviewwidth) : 0);
 
-	// [crispy] forcefully initialize the status bar backing screen
+	// forcefully initialize the status bar backing screen
 	ST_refreshBackground(true);
 }
 
@@ -901,7 +901,7 @@ void R_SetupFrame(Player* player)
 		viewz = player->viewz;
 		viewangle = player->angle + viewangleoffset;
 
-		// [crispy] pitch is actual lookdir and weapon pitch
+		// pitch is actual lookdir and weapon pitch
 		pitch = player->lookdir / MLOOKUNIT + player->recoilpitch;
 	}
 
@@ -936,7 +936,7 @@ void R_SetupFrame(Player* player)
 
 		walllights = scalelightfixed;
 
-		std::fill_n(std::begin(scalelightfixed), MAXLIGHTSCALE, fixedcolormap);
+		::std::fill_n(::std::begin(scalelightfixed), MAXLIGHTSCALE, fixedcolormap);
 		//for (i = 0; i < MAXLIGHTSCALE; ++i)
 		//{
 		//	scalelightfixed[i] = fixedcolormap;
@@ -969,7 +969,7 @@ void R_RenderPlayerView(Player* player)
 		return;
 	}
 
-	// [crispy] flashing HOM indicator
+	// flashing HOM indicator
 	V_DrawFilledBox(viewwindowx, viewwindowy, scaledviewwidth, viewheight,
 #ifndef CRISPY_TRUECOLOR
 		crispy->flashinghom ? (176 + (gametic % 16)) : 0);
@@ -980,7 +980,7 @@ void R_RenderPlayerView(Player* player)
 	// check for new console commands.
 	NetUpdate();
 
-	// [crispy] smooth texture scrolling
+	// smooth texture scrolling
 	R_InterpolateTextureOffsets();
 	// The head node is the last node output.
 	R_RenderBSPNode(numnodes - 1);
@@ -993,7 +993,7 @@ void R_RenderPlayerView(Player* player)
 	// Check for new console commands.
 	NetUpdate();
 
-	// [crispy] draw fuzz effect independent of rendering frame rate
+	// draw fuzz effect independent of rendering frame rate
 	R_SetFuzzPosDraw();
 	R_DrawMasked();
 

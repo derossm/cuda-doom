@@ -8,20 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE FIXME
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include <string>
 
 #include "txt_common.h"
 #include "txt_widget.h"
-//#include "txt_button.h"
-
-//#include "txt_main.h"
-//#include "txt_utf8.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -277,7 +268,7 @@ static void DropdownListDrawer(UNCAST_ARG(list))
 {
 	CAST_ARG(txt_dropdown_list_t, list);
 	unsigned i;
-	std::string str;
+	::std::string str;
 
 	// Set bg/fg text colors.
 
@@ -354,4 +345,4 @@ txt_dropdown_list_t* NewDropdownList(int* variable, CHAR_PTR* values, int num_va
 	return list;
 }
 /**/
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

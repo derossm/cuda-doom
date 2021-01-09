@@ -45,7 +45,7 @@ musicinfo_t S_music[] =
 	MUSIC("e3m7"),
 	MUSIC("e3m8"),
 	MUSIC("e3m9"),
-	// [crispy] support dedicated music tracks for the 4th episode
+	// support dedicated music tracks for the 4th episode
 	MUSIC("e4m1"),
 	MUSIC("e4m2"),
 	MUSIC("e4m3"),
@@ -55,7 +55,7 @@ musicinfo_t S_music[] =
 	MUSIC("e4m7"),
 	MUSIC("e4m8"),
 	MUSIC("e4m9"),
-	// [crispy] Sigil
+	// Sigil
 	MUSIC("e5m1"),
 	MUSIC("e5m2"),
 	MUSIC("e5m3"),
@@ -203,7 +203,7 @@ sfxinfo_t S_sfx[] =
 	SOUND("punch", 64),
 	SOUND("hoof",	70),
 	SOUND("metal", 70),
-	SOUND_LINK("chgun", 64, std::size_t(sfxenum_t::sfx_pistol), 150, 0),
+	SOUND_LINK("chgun", 64, ::std::size_t(sfxenum_t::sfx_pistol), 150, 0),
 	SOUND("tink",	60),
 	SOUND("bdopn", 100),
 	SOUND("bdcls", 100),
@@ -226,12 +226,12 @@ sfxinfo_t S_sfx[] =
 	SOUND("skesit", 70),
 	SOUND("skeatk", 70),
 	SOUND("radio", 60),
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	SOUND("dgsit", 98),
 	SOUND("dgatk", 70),
 	SOUND("dgact", 120),
 	SOUND("dgdth", 70),
 	SOUND("dgpain", 96),
-	// [crispy] play DSSECRET if available
+	// play DSSECRET if available
 	SOUND("secret", 60),
 };

@@ -31,20 +31,20 @@ namespace cudadoom::txt
  */
 class Button : public Widget<Button>
 {
-	std::string label;
+	::std::string label;
 
 public:
 
-	Button(std::string& _label) //: label(_label),
+	Button(::std::string& _label) //: label(_label),
 		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 	}
 
-	Button(std::string& _label, UserData _user) //:
+	Button(::std::string& _label, UserData _user) //:
 		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 		//SetButtonLabel(_label);
-		//SignalConnect(std::string("pressed"), _handle, _user);
+		//SignalConnect(::std::string("pressed"), _handle, _user);
 	}
 
 	inline bool Selectable() const noexcept override final
@@ -103,10 +103,10 @@ public:
 	inline void Destroy() noexcept override final
 	{}
 
-	void SetButtonLabel(std::string& _label)
+	void SetButtonLabel(::std::string& _label)
 	{
-		label = std::string(_label);
+		label = ::std::string(_label);
 	}
 };
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

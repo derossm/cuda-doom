@@ -43,7 +43,7 @@ enum class CheatType
 	CF_GODMODE = 2,
 	// Not really a cheat, just a debug aid.
 	CF_NOMOMENTUM = 4,
-	// [crispy] monsters don't target
+	// monsters don't target
 	CF_NOTARGET = 8
 
 };
@@ -54,7 +54,7 @@ public:
 
 	// Who did damage (NULL for floors/ceilings).
 	MapObject* attacker;
-	//std::weak_ptr<MapObject> attacker;
+	//::std::weak_ptr<MapObject> attacker;
 
 	// weapon sound source
 	MapObject* so;
@@ -132,23 +132,23 @@ public:
 	TimeType jumpTics;
 
 	// Power ups. invinc and invis are tic counters.
-	std::array<int, std::size_t(PowerType_t::NUMPOWERS)> powers; // [crispy] showfps and mapcoords are now "powers"
-	std::array<int, std::size_t(WeaponType::NUMWEAPONS)> weaponowned;
-	std::array<int, std::size_t(AmmoType::NUMAMMO)> ammo;
-	std::array<int, std::size_t(AmmoType::NUMAMMO)> maxammo;
+	::std::array<int, ::std::size_t(PowerType_t::NUMPOWERS)> powers; // showfps and mapcoords are now "powers"
+	::std::array<int, ::std::size_t(WeaponType::NUMWEAPONS)> weaponowned;
+	::std::array<int, ::std::size_t(AmmoType::NUMAMMO)> ammo;
+	::std::array<int, ::std::size_t(AmmoType::NUMAMMO)> maxammo;
 	// Frags, kills of other players.
-	std::array<int, MAX_PLAYERS> frags;
+	::std::array<int, MAX_PLAYERS> frags;
 
 	// Overlay view sprites (gun, etc).
-	std::array<pspdef_t, std::size_t(psprnum_t::NUMPSPRITES)> psprites;
+	::std::array<pspdef_t, ::std::size_t(psprnum_t::NUMPSPRITES)> psprites;
 
-	std::array<bool, std::size_t(CardType::NUMCARDS)> cards;
+	::std::array<bool, ::std::size_t(CardType::NUMCARDS)> cards;
 
 	// Hint messages.
-	std::string message;
+	::std::string message;
 
 	// how centered "Secret Revealed!" message
-	std::string centermessage;
+	::std::string centermessage;
 
 	ticcmd_t cmd;
 
@@ -161,7 +161,7 @@ public:
 	bool backpack;
 
 	// blinking key or skull in the status bar
-	bool tryopen[std::size_t(CardType::NUMCARDS)];
+	bool tryopen[::std::size_t(CardType::NUMCARDS)];
 
 	WeaponType readyweapon;
 

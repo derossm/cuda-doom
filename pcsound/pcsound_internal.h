@@ -24,7 +24,7 @@ typedef int (*pcsound_init_func)(pcsound_callback_func callback);
 typedef void (*pcsound_shutdown_func)();
 struct pcsound_driver_t
 {
-	std::string name;
+	::std::string name;
 	pcsound_init_func init_func;
 	pcsound_shutdown_func shutdown_func;
 };

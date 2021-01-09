@@ -50,18 +50,18 @@ static bool sdl_was_initialized = false;
 static bool musicpaused = false;
 static int current_music_volume;
 
-std::string timidity_cfg_path = "";
+::std::string timidity_cfg_path = "";
 
-std::string temp_timidity_cfg = NULL;
+::std::string temp_timidity_cfg = NULL;
 
 // If the temp_timidity_cfg config variable is set, generate a "wrapper"
 // config file for Timidity to point to the actual config file. This
 // is needed to inject a "dir" command so that the patches are read
 // relative to the actual config file.
 
-static bool WriteWrapperTimidityConfig(std::string write_path)
+static bool WriteWrapperTimidityConfig(::std::string write_path)
 {
-	std::string path;
+	::std::string path;
 	FILE* fstream;
 
 	if (!strcmp(timidity_cfg_path, ""))
@@ -88,7 +88,7 @@ static bool WriteWrapperTimidityConfig(std::string write_path)
 
 void I_InitTimidityConfig()
 {
-	std::string env_string;
+	::std::string env_string;
 	bool success;
 
 	temp_timidity_cfg = M_TempFile("timidity.cfg");
@@ -106,7 +106,7 @@ void I_InitTimidityConfig()
 	// config file.
 	if (success)
 	{
-		env_string = std::string("TIMIDITY_CFG=" + temp_timidity_cfg);
+		env_string = ::std::string("TIMIDITY_CFG=" + temp_timidity_cfg);
 		putenv(env_string);
 		// env_string deliberately not freed; see putenv manpage
 
@@ -192,7 +192,7 @@ static bool I_SDL_InitMusic()
 	}
 
 	// Initialize SDL_Mixer for MIDI music playback
-	Mix_Init(MIX_INIT_MID | MIX_INIT_FLAC | MIX_INIT_OGG | MIX_INIT_MP3); // [crispy] initialize some more audio formats
+	Mix_Init(MIX_INIT_MID | MIX_INIT_FLAC | MIX_INIT_OGG | MIX_INIT_MP3); // initialize some more audio formats
 
 	// Once initialization is complete, the temporary Timidity config file can be removed.
 	RemoveTimidityConfig();
@@ -347,7 +347,7 @@ static void I_SDL_UnRegisterSong(void* handle)
 }
 
 // Determine whether memory block is a .mid file
-// [crispy] Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
+// Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
 /*
 static bool IsMid(byte* mem, int len)
 {
@@ -355,7 +355,7 @@ static bool IsMid(byte* mem, int len)
 }
 */
 
-static bool ConvertMus(byte* musdata, int len, std::string filename)
+static bool ConvertMus(byte* musdata, int len, ::std::string filename)
 {
 	MEMFILE* instream;
 	MEMFILE* outstream;
@@ -383,7 +383,7 @@ static bool ConvertMus(byte* musdata, int len, std::string filename)
 
 static void* I_SDL_RegisterSong(void* data, int len)
 {
-	std::string filename;
+	::std::string filename;
 	Mix_Music* music;
 
 	if (!music_initialized)
@@ -392,14 +392,14 @@ static void* I_SDL_RegisterSong(void* data, int len)
 	}
 
 	// MUS files begin with "MUS" Reject anything which doesnt have this signature
-	filename = M_TempFile("doom"); // [crispy] generic filename
+	filename = M_TempFile("doom"); // generic filename
 
-	// [crispy] Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
+	// Reverse Choco's logic from "if (MIDI)" to "if (not MUS)"
 	// MUS is the only format that requires conversion, let SDL_Mixer figure out the others
 /*
 	if (IsMid(data, len) && len < MAXMIDLENGTH)
 */
-	if (len < 4 || memcmp(data, "MUS\x1a", 4)) // [crispy] MUS_HEADER_MAGIC
+	if (len < 4 || memcmp(data, "MUS\x1a", 4)) // MUS_HEADER_MAGIC
 	{
 		M_WriteFile(filename, data, len);
 	}

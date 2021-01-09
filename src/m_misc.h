@@ -14,6 +14,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include "../derma/common.h"
 #include "../derma/d_native.h"
@@ -33,18 +34,18 @@ int M_StringCopy(...) { return 0; }
 int M_StringConcat(...) { return 0; }
 
 // Returns true if 's' begins with the specified prefix.
-auto M_StringStartsWith(std::string s, std::string prefix)
+auto M_StringStartsWith(::std::string s, ::std::string prefix)
 {
 	// OBSOLETE
 }
 
 // Returns true if 's' ends with the specified suffix.
-auto M_StringEndsWith(std::string s, std::string suffix)
+auto M_StringEndsWith(::std::string s, ::std::string suffix)
 {
 	// OBSOLETE
 }
 
-auto M_FileExists(std::string filename)
+auto M_FileExists(::std::string filename)
 {
 	auto fstream{fopen(filename.c_str(), "r")};
 
@@ -75,13 +76,13 @@ auto M_FileLength(FILE* handle)
 	// TODO: find out of ftell uses negative values for errors, and IGNORE THEM instead of returning a huge number... or maybe handle them
 	if (length < 0)
 	{
-		return std::size_t(0);
+		return ::std::size_t(0);
 	}
 
-	return std::size_t(length);
+	return ::std::size_t(length);
 }
 
-auto M_WriteFile(std::string name, std::string source)
+auto M_WriteFile(::std::string name, ::std::string source)
 {
 	auto handle{fopen(name.c_str(), "wb")};
 	if (handle == NULL)
@@ -100,7 +101,7 @@ auto M_WriteFile(std::string name, std::string source)
 	return true;
 }
 
-auto M_ReadFile(std::string name, byte** buffer)
+auto M_ReadFile(::std::string name, byte** buffer)
 {
 	auto handle{fopen(name.c_str(), "rb")};
 	if (handle == NULL)
@@ -112,7 +113,7 @@ auto M_ReadFile(std::string name, byte** buffer)
 	auto length{M_FileLength(handle)};
 
 	//byte* buf = Z_Malloc<decltype(//byte* buf)>(length + 1, pu_tags_t::PU_STATIC, NULL);
-	auto buf{std::make_unique<byte*>(length + 1)};
+	auto buf{::std::make_unique<byte*>(length + 1)};
 	auto count{fread(*buf, 1, length, handle)};
 	fclose(handle);
 
@@ -126,7 +127,7 @@ auto M_ReadFile(std::string name, byte** buffer)
 	return length;
 }
 
-auto M_StrToInt(std::string str, int* result)
+auto M_StrToInt(::std::string str, int* result)
 {
 	/* return sscanf(str.c_str(), " 0x%x", (unsigned*) result) == 1
 		|| sscanf(str.c_str(), " 0X%x", (unsigned*) result) == 1
@@ -170,7 +171,7 @@ int M_snprintf(...)
 
 // Returns the base filename described by the given path (without the directory name).
 // The result points inside path and nothing new is allocated.
-std::string M_BaseName(std::string path)
+::std::string M_BaseName(::std::string path)
 {
 	//auto p{strrchr(path.c_str(), DIR_SEPARATOR)};
 	//if (p == NULL)
@@ -181,12 +182,12 @@ std::string M_BaseName(std::string path)
 	//{
 		//return p + 1;
 	//}
-	return std::string{};
+	return ::std::string{};
 }
 
 // M_StrCaseStr
 // Case-insensitive version of strstr()
-std::string M_StrCaseStr(std::string haystack, std::string needle)
+::std::string M_StrCaseStr(::std::string haystack, ::std::string needle)
 {
 	/*	auto haystack_len{strlen(haystack)};
 		auto needle_len{strlen(needle)};
@@ -206,14 +207,14 @@ std::string M_StrCaseStr(std::string haystack, std::string needle)
 			}
 		} */
 
-	return std::string{};
+	return ::std::string{};
 }
 
 // Check if a file exists by probing for common case variation of its filename.
 // Returns a newly allocated string that the caller is responsible for freeing.
-std::string M_FileCaseExists(std::string path)
+::std::string M_FileCaseExists(::std::string path)
 {
-	/*	auto path_dup{std::string(path)};
+	/*	auto path_dup{::std::string(path)};
 
 		// 0: actual path
 		if (M_FileExists(path_dup))
@@ -271,15 +272,15 @@ std::string M_FileCaseExists(std::string path)
 		} */
 
 		// 5. no luck
-	return std::string{};
+	return ::std::string{};
 }
 
 // Returns the path to a temporary file of the given name, stored inside the system temporary directory.
 //
 // The returned value must be freed with Z_Free after use.
-std::string M_TempFile(std::string s)
+::std::string M_TempFile(::std::string s)
 {
-	/* std::string tempdir;
+	/* ::std::string tempdir;
 
 #ifdef _WIN32
 	// Check the TEMP environment variable to find the location.
@@ -295,28 +296,28 @@ std::string M_TempFile(std::string s)
 #endif	// _WIN32
 
 	// NOTE: what is getenv("TEMP") returning? heap or stack memory?
-	return std::string(tempdir + DIR_SEPARATOR_S + s); */
-	return std::string{};
+	return ::std::string(tempdir + DIR_SEPARATOR_S + s); */
+	return ::std::string{};
 }
 
 // Returns the directory portion of the given path, without the trailing slash separator character. If no directory is described in the path,
 // the string "." is returned. In either case, the result is newly allocated and must be freed by the caller after use.
-std::string M_DirName(std::string path)
+::std::string M_DirName(::std::string path)
 {
 	auto p{strrchr(path.c_str(), DIR_SEPARATOR)};
 	if (p == NULL)
 	{
-		return std::string(".");
+		return ::std::string(".");
 	}
 	else
 	{
-		auto result = std::string(path);
+		auto result = ::std::string(path);
 		//(result)[p - path] = '\0';
 		return result;
 	}
 }
 
-std::string M_StringReplace(std::string haystack, std::string needle, std::string replacement)
+::std::string M_StringReplace(::std::string haystack, ::std::string needle, ::std::string replacement)
 {
 	//auto needle_len{needle.length()};
 
@@ -327,7 +328,7 @@ std::string M_StringReplace(std::string haystack, std::string needle, std::strin
 	// FIXME
 /*	for (auto p{haystack}; ; )
 	{
-		p = std::string(strstr(p.c_str(), needle.c_str()));
+		p = ::std::string(strstr(p.c_str(), needle.c_str()));
 		if (p == NULL)
 		{
 			break;
@@ -338,7 +339,7 @@ std::string M_StringReplace(std::string haystack, std::string needle, std::strin
 	}
 
 	// Construct new string.
-	auto result{std::string(result_len)};
+	auto result{::std::string(result_len)};
 
 	auto dst{result};
 	auto dst_len{result_len};
@@ -347,7 +348,7 @@ std::string M_StringReplace(std::string haystack, std::string needle, std::strin
 	{
 		if (!strncmp(p.c_str(), needle.c_str(), needle_len))
 		{
-			//dst = std::string(replacement);
+			//dst = ::std::string(replacement);
 			//p += needle_len;
 			//dst += repacement_len;
 			//dst_len -= repacement_len;
@@ -364,12 +365,12 @@ std::string M_StringReplace(std::string haystack, std::string needle, std::strin
 	*dst = '\0';
 
 	return result; */
-	return std::string{};
+	return ::std::string{};
 }
 
 // Return a newly-malloced string with all the strings given as arguments concatenated together.
 [[deprecated]]
-std::string M_StringJoin(std::string s, ...)
+::std::string M_StringJoin(::std::string s, ...)
 {
 	/* va_list args;
 
@@ -378,7 +379,7 @@ std::string M_StringJoin(std::string s, ...)
 	va_start(args, s);
 	for (;;)
 	{
-		auto v{va_arg(args, std::string)};
+		auto v{va_arg(args, ::std::string)};
 		if (v == NULL)
 		{
 			break;
@@ -388,14 +389,14 @@ std::string M_StringJoin(std::string s, ...)
 	}
 	va_end(args);
 
-	auto result{std::make_unique<char*>(result_len)};
+	auto result{::std::make_unique<char*>(result_len)};
 
 	M_StringCopy(*result, s, result_len);
 
 	va_start(args, s);
 	for (;;)
 	{
-		auto v{va_arg(args, std::string)};
+		auto v{va_arg(args, ::std::string)};
 		if (v == NULL)
 		{
 			break;
@@ -406,14 +407,14 @@ std::string M_StringJoin(std::string s, ...)
 	va_end(args);
 
 	return result; */
-	return std::string{};
+	return ::std::string{};
 }
 
 #ifdef _WIN32
-std::string M_OEMToUTF8(std::string oem)
+::std::string M_OEMToUTF8(::std::string oem)
 {
 	/*	auto size{strlen(oem)};
-		if (size == std::numeric_limits<size_t>::max())
+		if (size == ::std::numeric_limits<size_t>::max())
 		{
 			// oem is too big to convert
 			return nullptr;
@@ -422,18 +423,18 @@ std::string M_OEMToUTF8(std::string oem)
 		auto len{size + 1};
 
 		//wchar_t* tmp = static_cast<decltype(tmp)>(malloc(len * sizeof(wchar_t)));
-		auto tmp{std::make_unique<wchar_t*>(len)};
+		auto tmp{::std::make_unique<wchar_t*>(len)};
 		MultiByteToWideChar(CP_OEMCP, 0, oem, len, *tmp, len);
 		//char* result = static_cast<decltype(result)>(malloc(len * 4));
-		auto result{std::make_unique<char*>(len)};
+		auto result{::std::make_unique<char*>(len)};
 		WideCharToMultiByte(CP_UTF8, 0, *tmp, len, *result, len * 4, NULL, NULL);
 
 		return result; */
-	return std::string{};
+	return ::std::string{};
 }
 #endif	// _WIN32
 
-void M_MakeDirectory(std::string path)
+void M_MakeDirectory(::std::string path)
 {
 #ifdef _WIN32
 	mkdir(path);
@@ -442,7 +443,7 @@ void M_MakeDirectory(std::string path)
 #endif
 }
 
-void M_ExtractFileBase(std::string path, std::string dest)
+void M_ExtractFileBase(::std::string path, ::std::string dest)
 {
 	/*	auto size{strlen(path)};
 		if (size == 0)
@@ -482,7 +483,7 @@ void M_ExtractFileBase(std::string path, std::string dest)
 		} */
 }
 
-void M_ForceUppercase(std::string text)
+void M_ForceUppercase(::std::string text)
 {
 	/*	for (auto p{text}; *p != '\0'; ++p)
 		{
@@ -490,7 +491,7 @@ void M_ForceUppercase(std::string text)
 		} */
 }
 
-void M_ForceLowercase(std::string text)
+void M_ForceLowercase(::std::string text)
 {
 	/*	for (auto p{text}; *p != '\0'; ++p)
 		{
@@ -508,7 +509,7 @@ void M_ForceLowercase(std::string text)
 // [STRIFE] - haleyjd 20110210: Borrowed from Eternity and adapted to respect
 // the DIR_SEPARATOR define used by Choco Doom. This routine originated in
 // BOOM.
-void M_NormalizeSlashes(std::string str)
+void M_NormalizeSlashes(::std::string str)
 {
 	/*	auto size{strlen(str)};
 		if (size == 0)

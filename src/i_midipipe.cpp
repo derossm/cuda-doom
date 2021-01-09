@@ -194,7 +194,7 @@ static bool BlockForAck()
 // Protocol Commands
 
 // Tells the MIDI subprocess to load a specific filename for playing. This function blocks until there is an acknowledgement from the server.
-bool I_MidiPipe_RegisterSong(std::string filename)
+bool I_MidiPipe_RegisterSong(::std::string filename)
 {
 	bool ok;
 	net_packet_t* packet;
@@ -399,7 +399,7 @@ bool I_MidiPipe_InitServer()
 
 	// Define the command line. Version, Sample Rate, and handles follow the executable name.
 	M_snprintf(params_buf, sizeof(params_buf), "%d %Iu %Iu", snd_samplerate, (size_t)midi_process_in_reader, (size_t)midi_process_out_writer);
-	cmdline = std::string(mod + " \"" + PACKAGE_STRING + "\" " + params_buf);
+	cmdline = ::std::string(mod + " \"" + PACKAGE_STRING + "\" " + params_buf);
 
 	// Launch the subprocess
 	memset(&proc_info, 0, sizeof(proc_info));

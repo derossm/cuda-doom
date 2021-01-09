@@ -44,8 +44,7 @@
 
 #define HUSTR_SECRETFOUND "A secret is revealed!"
 
-// Animating textures and planes
-// There is another anim_t used in wi_stuff, unrelated.
+// Animating textures and planes. There is another anim_t used in wi_stuff, unrelated.
 struct anim_t
 {
 	bool istexture;
@@ -56,13 +55,10 @@ struct anim_t
 
 };
 
-// source animation definition
-//
-// change istexture type from int to char and
-// add PACKEDATTR for reading ANIMATED lumps from memory
+// source animation definition; change istexture type from int to char and add PACKEDATTR for reading ANIMATED lumps from memory
 struct animdef_t
 {
-	char istexture;	// if false, it is a flat
+	char istexture; // if false, it is a flat
 	char endname[9];
 	char startname[9];
 	int speed;
@@ -78,16 +74,8 @@ extern anim_t* lastanim;
 // P_InitPicAnims
 //
 
-// Floor/ceiling animation sequences,
-// defined by first and last frame,
-// i.e. the flat (64x64 tile) name to
-// be used.
-// The full animation sequence is given
-// using all the flats between the start
-// and end entry, in the order found in
-// the WAD file.
-//
-// add support for ANIMATED lumps
+// Floor/ceiling animation sequences, defined by first and last frame, i.e. the flat (64x64 tile) name to be used. The full animation sequence
+// is given using all the flats between the start and end entry, in the order found in the WAD file. add support for ANIMATED lumps
 animdef_t animdefs_vanilla[] =
 {
 	{false,	"NUKAGE3",	"NUKAGE1",	8},
@@ -118,7 +106,7 @@ animdef_t animdefs_vanilla[] =
 	{true,	"WFALL4",	"WFALL1",	8},
 	{true,	"DBRAIN4",	"DBRAIN1",	8},
 
-	{-1,		"",				"",				0},
+	{-1,	"",			"",			0},
 };
 
 // remove MAXANIMS limit
@@ -139,7 +127,7 @@ void P_InitPicAnims()
 	int i;
 	bool init_swirl = false;
 
-	// [crispy] add support for ANIMATED lumps
+	// add support for ANIMATED lumps
 	animdef_t* animdefs;
 	const bool from_lump = (W_CheckNumForName("ANIMATED") != -1);
 
@@ -152,14 +140,14 @@ void P_InitPicAnims()
 		animdefs = animdefs_vanilla;
 	}
 
-	//	Init animation
+	// Init animation
 	lastanim = anims;
 	for (i = 0; animdefs[i].istexture != -1; ++i)
 	{
-		std::string startname;
-		std::string endname;
+		::std::string startname;
+		::std::string endname;
 
-		// [crispy] remove MAXANIMS limit
+		// remove MAXANIMS limit
 		if (lastanim >= anims + maxanims)
 		{
 			size_t newmax = maxanims ? 2 * maxanims : MAXANIMS;
@@ -174,16 +162,16 @@ void P_InitPicAnims()
 		if (animdefs[i].istexture)
 		{
 			// different episode ?
-			if (R_CheckTextureNumForName(startname) == -1)
-				continue;
+			if (R_CheckTextureNumForName(startname) == -1){
+				continue;}
 
 			lastanim->picnum = R_TextureNumForName(endname);
 			lastanim->basepic = R_TextureNumForName(startname);
 		}
 		else
 		{
-			if (W_CheckNumForName(startname) == -1)
-				continue;
+			if (W_CheckNumForName(startname) == -1){
+				continue;}
 
 			lastanim->picnum = R_FlatNumForName(endname);
 			lastanim->basepic = R_FlatNumForName(startname);
@@ -193,18 +181,17 @@ void P_InitPicAnims()
 		lastanim->numpics = lastanim->picnum - lastanim->basepic + 1;
 		lastanim->speed = from_lump ? LONG(animdefs[i].speed) : animdefs[i].speed;
 
-		// [crispy] add support for SMMU swirling flats
+		// add support for SMMU swirling flats
 		if (lastanim->speed > 65535 || lastanim->numpics == 1)
 		{
 			init_swirl = true;
 		}
-		else
-			if (lastanim->numpics < 2)
-			{
-				// [crispy] make non-fatal, skip invalid animation sequences
-				fprintf(stderr, "P_InitPicAnims: bad cycle from %s to %s\n", startname, endname);
-				continue;
-			}
+		else if (lastanim->numpics < 2)
+		{
+			// make non-fatal, skip invalid animation sequences
+			fprintf(stderr, "P_InitPicAnims: bad cycle from %s to %s\n", startname, endname);
+			continue;
+		}
 
 		++lastanim;
 	}
@@ -224,36 +211,32 @@ void P_InitPicAnims()
 // UTILITIES
 //
 
-// given the number of the current sector,
-// the line number, and the side (0/1) that you want.
+// given the number of the current sector, the line number, and the side (0/1) that you want.
 side_t* getSide(int currentSector, int line, int side)
 {
 	return &sides[(sectors[currentSector].lines[line])->sidenum[side]];
 }
 
-// given the number of the current sector,
-// the line number and the side (0/1) that you want.
+// given the number of the current sector, the line number and the side (0/1) that you want.
 sector_t* getSector(int currentSector, int line, int side)
 {
 	return sides[(sectors[currentSector].lines[line])->sidenum[side]].sector;
 }
 
-// Given the sector number and the line number,
-// it will tell you whether the line is two-sided or not.
+// Given the sector number and the line number, it will tell you whether the line is two-sided or not.
 int twoSided(int sector, int line)
 {
 	return (sectors[sector].lines[line])->flags & ML_TWOSIDED;
 }
 
-// Return sector_t* of sector next to current.
-// NULL if not two-sided line
+// Return sector_t* of sector next to current. NULL if not two-sided line
 sector_t* getNextSector(line_t* line, sector_t* sec)
 {
-	if (!(line->flags & ML_TWOSIDED))
-		return nullptr;
+	if (!(line->flags & ML_TWOSIDED)){
+		return nullptr;}
 
-	if (line->frontsector == sec)
-		return line->backsector;
+	if (line->frontsector == sec){
+		return line->backsector;}
 
 	return line->frontsector;
 }
@@ -271,11 +254,11 @@ fixed_t P_FindLowestFloorSurrounding(sector_t* sec)
 		check = sec->lines[i];
 		other = getNextSector(check, sec);
 
-		if (!other)
-			continue;
+		if (!other){
+			continue;}
 
-		if (other->floorheight < floor)
-			floor = other->floorheight;
+		if (other->floorheight < floor){
+			floor = other->floorheight;}
 	}
 	return floor;
 }
@@ -293,11 +276,11 @@ fixed_t P_FindHighestFloorSurrounding(sector_t* sec)
 		check = sec->lines[i];
 		other = getNextSector(check, sec);
 
-		if (!other)
-			continue;
+		if (!other){
+			continue;}
 
-		if (other->floorheight > floor)
-			floor = other->floorheight;
+		if (other->floorheight > floor){
+			floor = other->floorheight;}
 	}
 	return floor;
 }
@@ -378,8 +361,7 @@ fixed_t P_FindNextHighestFloor(sector_t* sec, int currentheight)
 //
 // FIND LOWEST CEILING IN THE SURROUNDING SECTORS
 //
-fixed_t
-P_FindLowestCeilingSurrounding(sector_t* sec)
+fixed_t P_FindLowestCeilingSurrounding(sector_t* sec)
 {
 	int i;
 	line_t* check;
@@ -391,11 +373,11 @@ P_FindLowestCeilingSurrounding(sector_t* sec)
 		check = sec->lines[i];
 		other = getNextSector(check, sec);
 
-		if (!other)
-			continue;
+		if (!other){
+			continue;}
 
-		if (other->ceilingheight < height)
-			height = other->ceilingheight;
+		if (other->ceilingheight < height){
+			height = other->ceilingheight;}
 	}
 	return height;
 }
@@ -415,11 +397,11 @@ fixed_t P_FindHighestCeilingSurrounding(sector_t* sec)
 		check = sec->lines[i];
 		other = getNextSector(check, sec);
 
-		if (!other)
-			continue;
+		if (!other){
+			continue;}
 
-		if (other->ceilingheight > height)
-			height = other->ceilingheight;
+		if (other->ceilingheight > height){
+			height = other->ceilingheight;}
 	}
 	return height;
 }
@@ -430,7 +412,7 @@ int P_FindSectorFromLineTag(line_t* line, int start)
 	int i;
 
 #if 0
-	// [crispy] linedefs without tags apply locally
+	// linedefs without tags apply locally
 	if (crispy->singleplayer && !line->tag)
 	{
 		for (i = start + 1;i < numsectors; ++i)
@@ -443,7 +425,7 @@ int P_FindSectorFromLineTag(line_t* line, int start)
 	}
 	else
 #else
-	// [crispy] emit a warning for linedefs without tags
+	// emit a warning for linedefs without tags
 	if (!line->tag)
 	{
 		const long linedef = line - lines;
@@ -451,9 +433,10 @@ int P_FindSectorFromLineTag(line_t* line, int start)
 	}
 #endif
 
-	for (i = start + 1;i < numsectors;++i)
-		if (sectors[i].tag == line->tag)
-			return i;
+	for (i = start + 1;i < numsectors;++i){
+		if (sectors[i].tag == line->tag){
+			return i;}
+}
 
 	return -1;
 }
@@ -474,32 +457,28 @@ int P_FindMinSurroundingLight(sector_t* sector, int max)
 		line = sector->lines[i];
 		check = getNextSector(line, sector);
 
-		if (!check)
-			continue;
+		if (!check){
+			continue;}
 
-		if (check->lightlevel < min)
-			min = check->lightlevel;
+		if (check->lightlevel < min){
+			min = check->lightlevel;}
 	}
 	return min;
 }
 
 //
 // EVENTS
-// Events are operations triggered by using, crossing,
-// or shooting special lines, or by timed thinkers.
+// Events are operations triggered by using, crossing, or shooting special lines, or by timed thinkers.
 //
 
-//
-// P_CrossSpecialLine - TRIGGER
-// Called every time a thing origin is about
-// to cross a line with a non 0 special.
-//
+// TRIGGER
+// Called every time a thing origin is about to cross a line with a non 0 special.
 void P_CrossSpecialLine(int linenum, int side, MapObject* thing)
 {
 	return P_CrossSpecialLinePtr(&lines[linenum], side, thing);
 }
 
-// [crispy] more MBF code pointers
+// more MBF code pointers
 void P_CrossSpecialLinePtr(line_t* line, int side, MapObject* thing)
 {
 	// line_t* line;
@@ -550,8 +529,8 @@ void P_CrossSpecialLinePtr(line_t* line, int side, MapObject* thing)
 			ok = 1;
 			break;
 		}
-		if (!ok)
-			return;
+		if (!ok){
+			return;}
 	}
 
 	// Note: could use some const's here.
@@ -952,8 +931,8 @@ void P_CrossSpecialLinePtr(line_t* line, int side, MapObject* thing)
 
 	case 126:
 		// TELEPORT MonsterONLY.
-		if (!thing->player)
-			EV_Teleport(line, side, thing);
+		if (!thing->player){
+			EV_Teleport(line, side, thing);}
 		break;
 
 	case 128:
@@ -987,8 +966,8 @@ void P_ShootSpecialLine(MapObject* thing, line_t* line)
 			ok = 1;
 			break;
 		}
-		if (!ok)
-			return;
+		if (!ok){
+			return;}
 	}
 
 	switch (line->special)
@@ -1027,45 +1006,48 @@ void P_PlayerInSpecialSector(Player* player)
 	sector = player->subsector->sector;
 
 	// Falling, not all the way down yet?
-	if (player->z != sector->floorheight)
-		return;
+	if (player->z != sector->floorheight){
+		return;}
 
 	// Has hitten ground.
 	switch (sector->special)
 	{
 	case 5:
 		// HELLSLIME DAMAGE
-		// [crispy] no nukage damage with NOCLIP cheat
-		if (!player->powers[std::size_t(PowerType_t::pw_ironfeet)] && !(player->flags & mobjflag_e::MF_NOCLIP))
-			if (!(leveltime & 0x1f))
-				P_DamageMobj(player, NULL, NULL, 10);
+		// no nukage damage with NOCLIP cheat
+		if (!player->powers[::std::size_t(PowerType_t::pw_ironfeet)] && !(player->flags & mobjflag_e::MF_NOCLIP))
+		{
+			if (!(leveltime & 0x1f)){
+				P_DamageMobj(player, NULL, NULL, 10);}
+		}
 		break;
 
 	case 7:
 		// NUKAGE DAMAGE
-		// [crispy] no nukage damage with NOCLIP cheat
-		if (!player->powers[std::size_t(PowerType_t::pw_ironfeet)] && !(player->flags & mobjflag_e::MF_NOCLIP))
-			if (!(leveltime & 0x1f))
-				P_DamageMobj(player, NULL, NULL, 5);
+		// no nukage damage with NOCLIP cheat
+		if (!player->powers[::std::size_t(PowerType_t::pw_ironfeet)] && !(player->flags & mobjflag_e::MF_NOCLIP))
+		{
+			if (!(leveltime & 0x1f)){
+				P_DamageMobj(player, NULL, NULL, 5);}
+		}
 		break;
 
 	case 16:
 		// SUPER HELLSLIME DAMAGE
 	case 4:
 		// STROBE HURT
-		// [crispy] no nukage damage with NOCLIP cheat
-		if ((!player->powers[std::size_t(PowerType_t::pw_ironfeet)]
-			|| (P_Random() < 5)) && !(player->flags & mobjflag_e::MF_NOCLIP))
+		// no nukage damage with NOCLIP cheat
+		if ((!player->powers[::std::size_t(PowerType_t::pw_ironfeet)] || (P_Random() < 5)) && !(player->flags & mobjflag_e::MF_NOCLIP))
 		{
-			if (!(leveltime & 0x1f))
-				P_DamageMobj(player, NULL, NULL, 20);
+			if (!(leveltime & 0x1f)){
+				P_DamageMobj(player, NULL, NULL, 20);}
 		}
 		break;
 
 	case 9:
 		// SECRET SECTOR
 		player->secretcount++;
-		// [crispy] show centered "Secret Revealed!" message
+		// show centered "Secret Revealed!" message
 		if (showMessages && crispy->secretmessage && player == &players[consoleplayer])
 		{
 			int sfx_id;
@@ -1073,15 +1055,15 @@ void P_PlayerInSpecialSector(Player* player)
 
 			M_snprintf(str_count, sizeof(str_count), "Secret %d of %d revealed!", player->secretcount, totalsecret);
 
-			// [crispy] play DSSECRET if available
-			sfx_id = I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_secret)]) != -1 ? sfxenum_t::sfx_secret :
-				I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_itmbk)]) != -1 ? sfxenum_t::sfx_itmbk : -1;
+			// play DSSECRET if available
+			sfx_id = I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_secret)]) != -1 ? sfxenum_t::sfx_secret :
+				I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_itmbk)]) != -1 ? sfxenum_t::sfx_itmbk : -1;
 
 			player->centermessage = (crispy->secretmessage == SECRETMESSAGE_COUNT) ? str_count : HUSTR_SECRETFOUND;
-			if (sfx_id != -1)
-				S_StartSound(NULL, sfx_id);
+			if (sfx_id != -1){
+				S_StartSound(NULL, sfx_id);}
 		}
-		// [crispy] remember revealed secrets
+		// remember revealed secrets
 		sector->oldspecial = sector->special;
 		sector->special = 0;
 		break;
@@ -1090,15 +1072,15 @@ void P_PlayerInSpecialSector(Player* player)
 		// EXIT SUPER DAMAGE! (for E1M8 finale)
 		player->cheats &= ~CheatType::CF_GODMODE;
 
-		if (!(leveltime & 0x1f))
-			P_DamageMobj(player, NULL, NULL, 20);
+		if (!(leveltime & 0x1f)){
+			P_DamageMobj(player, NULL, NULL, 20);}
 
-		if (player->health <= 10)
-			G_ExitLevel();
+		if (player->health <= 10){
+			G_ExitLevel();}
 		break;
 
 	default:
-		// [crispy] ignore unknown special sectors
+		// ignore unknown special sectors
 		if (error != sector)
 		{
 			error = sector;
@@ -1126,8 +1108,8 @@ void P_UpdateSpecials()
 	if (levelTimer == true)
 	{
 		--levelTimeCount;
-		if (!levelTimeCount)
-			G_ExitLevel();
+		if (!levelTimeCount){
+			G_ExitLevel();}
 	}
 
 	//	ANIMATE FLATS AND TEXTURES GLOBALLY
@@ -1136,46 +1118,43 @@ void P_UpdateSpecials()
 		for (i = anim->basepic; i < anim->basepic + anim->numpics; ++i)
 		{
 			pic = anim->basepic + ((leveltime / anim->speed + i) % anim->numpics);
-			if (anim->istexture)
-				texturetranslation[i] = pic;
+			if (anim->istexture){
+				texturetranslation[i] = pic;}
 			else
 			{
-				// [crispy] add support for SMMU swirling flats
+				// add support for SMMU swirling flats
 				if (anim->speed > 65535 || anim->numpics == 1)
 				{
 					flattranslation[i] = -1;
 				}
-				else
-					flattranslation[i] = pic;
+				else{
+					flattranslation[i] = pic;}
 			}
 		}
 	}
 
-	//	ANIMATE LINE SPECIALS
+	// ANIMATE LINE SPECIALS
 	for (i = 0; i < numlinespecials; ++i)
 	{
 		line = linespeciallist[i];
 		switch (line->special)
 		{
 		case 48:
-			// EFFECT FIRSTCOL SCROLL +
-			// [crispy] smooth texture scrolling
+			// EFFECT FIRSTCOL SCROLL + smooth texture scrolling
 			sides[line->sidenum[0]].basetextureoffset += FRACUNIT;
-			sides[line->sidenum[0]].textureoffset =
-				sides[line->sidenum[0]].basetextureoffset;
+			sides[line->sidenum[0]].textureoffset = sides[line->sidenum[0]].basetextureoffset;
 			break;
 		case 85:
-			// [JN] (Boom) Scroll Texture Right
-			// [crispy] smooth texture scrolling
+			// (Boom) Scroll Texture Right; smooth texture scrolling
 			sides[line->sidenum[0]].basetextureoffset -= FRACUNIT;
-			sides[line->sidenum[0]].textureoffset =
-				sides[line->sidenum[0]].basetextureoffset;
+			sides[line->sidenum[0]].textureoffset = sides[line->sidenum[0]].basetextureoffset;
 			break;
 		}
 	}
 
-	//	DO BUTTONS
+	// DO BUTTONS
 	for (i = 0; i < maxbuttons; ++i)
+	{
 		if (buttonlist[i].btimer)
 		{
 			buttonlist[i].btimer--;
@@ -1184,22 +1163,18 @@ void P_UpdateSpecials()
 				switch (buttonlist[i].where)
 				{
 				case bwhere_e::top:
-					sides[buttonlist[i].line->sidenum[0]].toptexture =
-						buttonlist[i].btexture;
+					sides[buttonlist[i].line->sidenum[0]].toptexture = buttonlist[i].btexture;
 					break;
 
 				case bwhere_e::middle:
-					sides[buttonlist[i].line->sidenum[0]].midtexture =
-						buttonlist[i].btexture;
+					sides[buttonlist[i].line->sidenum[0]].midtexture = buttonlist[i].btexture;
 					break;
 
 				case bwhere_e::bottom:
-					sides[buttonlist[i].line->sidenum[0]].bottomtexture =
-						buttonlist[i].btexture;
+					sides[buttonlist[i].line->sidenum[0]].bottomtexture = buttonlist[i].btexture;
 					break;
 				}
-				// [crispy] & [JN] Logically proper sound behavior.
-				// Do not play second "sfx_swtchn" on two-sided linedefs that attached to special sectors,
+				// Logically proper sound behavior. Do not play second "sfx_swtchn" on two-sided linedefs that attached to special sectors,
 				// and always play second sound on single-sided linedefs.
 				if (crispy->soundfix)
 				{
@@ -1215,12 +1190,13 @@ void P_UpdateSpecials()
 				memset(&buttonlist[i], 0, sizeof(button_t));
 			}
 		}
+	}
 
-	// [crispy] draw fuzz effect independent of rendering frame rate
+	// draw fuzz effect independent of rendering frame rate
 	R_SetFuzzPosTic();
 }
 
-// [crispy] smooth texture scrolling
+// smooth texture scrolling
 void R_InterpolateTextureOffsets()
 {
 	if (crispy->uncapped && leveltime > oldleveltime)
@@ -1236,21 +1212,15 @@ void R_InterpolateTextureOffsets()
 			{
 				side->textureoffset = side->basetextureoffset + fractionaltic;
 			}
-			else
-				if (line->special == 85)
-				{
-					side->textureoffset = side->basetextureoffset - fractionaltic;
-				}
+			else if (line->special == 85)
+			{
+				side->textureoffset = side->basetextureoffset - fractionaltic;
+			}
 		}
 	}
 }
 
-//
-// Donut overrun emulation
-//
-// Derived from the code from PrBoom+. Thanks go to Andrey Budko (entryway)
-// as usual :-)
-//
+// Donut overrun emulation Derived from the code from PrBoom+. Thanks go to Andrey Budko (entryway) as usual :-)
 constexpr size_t DONUT_FLOORHEIGHT_DEFAULT{0x00000000};
 constexpr size_t DONUT_FLOORPIC_DEFAULT{0x16};
 
@@ -1273,25 +1243,18 @@ static void DonutOverrun(fixed_t* s3_floorheight, short* s3_floorpic, line_t* li
 		tmp_s3_floorheight = DONUT_FLOORHEIGHT_DEFAULT;
 		tmp_s3_floorpic = DONUT_FLOORPIC_DEFAULT;
 
-		//!
-		// @category compat
-		// @arg <x> <y>
-		//
-		// Use the specified magic values when emulating behavior caused
-		// by memory overruns from improperly constructed donuts.
-		// In Vanilla Doom this can differ depending on the operating
-		// system. The default (if this option is not specified) is to
+		// Use the specified magic values when emulating behavior caused by memory overruns from improperly constructed donuts.
+		// In Vanilla Doom this can differ depending on the operating system. The default (if this option is not specified) is to
 		// emulate the behavior when running under Windows 98.
-
 		p = M_CheckParmWithArgs("-donut", 2);
 
 		if (p > 0)
 		{
 			// Dump of needed memory: (fixed_t)0000:0000 and (short)0000:0008
-			//
+
 			// C:\>debug
 			// -d 0:0
-			//
+
 			// DOS 6.22:
 			// 0000:0000	(57 92 19 00) F4 06 70 00-(16 00)
 			// DOS 7.1:
@@ -1306,31 +1269,22 @@ static void DonutOverrun(fixed_t* s3_floorheight, short* s3_floorpic, line_t* li
 
 			if (tmp_s3_floorpic >= numflats)
 			{
-				fprintf(stderr,
-					"DonutOverrun: The second parameter for \"-donut\" "
-					"switch should be greater than 0 and less than number "
-					"of flats (%d). Using default value (%d) instead. \n",
-					numflats, DONUT_FLOORPIC_DEFAULT);
+				fprintf(stderr, "DonutOverrun: The second parameter for \"-donut\" switch should be greater than 0 and less than number "
+					"of flats (%d). Using default value (%d) instead. \n", numflats, DONUT_FLOORPIC_DEFAULT);
 				tmp_s3_floorpic = DONUT_FLOORPIC_DEFAULT;
 			}
 		}
 	}
 
-	/*
-	fprintf(stderr,
-			"Linedef: %d; Sector: %d; "
-			"New floor height: %d; New floor pic: %d\n",
-			line->iLineID, pillar_sector->iSectorID,
-			tmp_s3_floorheight >> 16, tmp_s3_floorpic);
-		*/
+	
+	//fprintf(stderr, "Linedef: %d; Sector: %d; New floor height: %d; New floor pic: %d\n", line->iLineID, pillar_sector->iSectorID,
+	//			tmp_s3_floorheight >> 16, tmp_s3_floorpic);
 
 	*s3_floorheight = (fixed_t)tmp_s3_floorheight;
 	*s3_floorpic = (short)tmp_s3_floorpic;
 }
 
-//
 // Special Stuff that can not be categorized
-//
 int EV_DoDonut(line_t* line)
 {
 	sector_t* s1;
@@ -1350,26 +1304,19 @@ int EV_DoDonut(line_t* line)
 		s1 = &sectors[secnum];
 
 		// ALREADY MOVING? IF SO, KEEP GOING...
-		if (s1->specialdata)
-			continue;
+		if (s1->specialdata){
+			continue;}
 
 		rtn = 1;
 		s2 = getNextSector(s1->lines[0], s1);
 
-		// Vanilla Doom does not check if the linedef is one sided. The
-		// game does not crash, but reads invalid memory and causes the
-		// sector floor to move "down" to some unknown height.
-		// DOSbox prints a warning about an invalid memory access.
-		//
-		// I'm not sure exactly what invalid memory is being read. This
-		// isn't something that should be done, anyway.
-		// Just print a warning and return.
+		// Vanilla Doom does not check if the linedef is one sided. The game does not crash, but reads invalid memory and causes the sector
+		// floor to move "down" to some unknown height. DOSbox prints a warning about an invalid memory access.
 
+		// I'm not sure exactly what invalid memory is being read. This isn't something that should be done, anyway. Just print a warning and return.
 		if (s2 == NULL)
 		{
-			fprintf(stderr,
-				"EV_DoDonut: linedef had no second sidedef! "
-				"Unexpected behavior may occur in Vanilla Doom. \n");
+			fprintf(stderr, "EV_DoDonut: linedef had no second sidedef! Unexpected behavior may occur in Vanilla Doom. \n");
 			break;
 		}
 
@@ -1377,8 +1324,8 @@ int EV_DoDonut(line_t* line)
 		{
 			s3 = s2->lines[i]->backsector;
 
-			if (s3 == s1)
-				continue;
+			if (s3 == s1){
+				continue;}
 
 			if (s3 == NULL)
 			{
@@ -1387,11 +1334,7 @@ int EV_DoDonut(line_t* line)
 				// s3->floorheight is an int at 0000:0000
 				// s3->floorpic is a short at 0000:0008
 				// Trying to emulate
-
-				fprintf(stderr,
-					"EV_DoDonut: WARNING: emulating buffer overrun due to "
-					"NULL back sector. "
-					"Unexpected behavior may occur in Vanilla Doom.\n");
+				fprintf(stderr, "EV_DoDonut: WARNING: emulating buffer overrun due to NULL back sector. Unexpected behavior may occur in Vanilla Doom.\n");
 
 				DonutOverrun(&s3_floorheight, &s3_floorpic, line, s1);
 			}
@@ -1401,7 +1344,7 @@ int EV_DoDonut(line_t* line)
 				s3_floorpic = s3->floorpic;
 			}
 
-			//	Spawn rising slime
+			// Spawn rising slime
 			floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVSPEC, 0);
 			P_AddThinker(&floor->thinker);
 			s2->specialdata = floor;
@@ -1415,7 +1358,7 @@ int EV_DoDonut(line_t* line)
 			floor->newspecial = 0;
 			floor->floordestheight = s3_floorheight;
 
-			//	Spawn lowering donut-hole
+			// Spawn lowering donut-hole
 			floor = Z_Malloc<decltype(*floor)>(sizeof(*floor), pu_tags_t::PU_LEVSPEC, 0);
 			P_AddThinker(&floor->thinker);
 			s1->specialdata = floor;
@@ -1436,11 +1379,7 @@ int EV_DoDonut(line_t* line)
 // SPECIAL SPAWNING
 //
 
-//
-// P_SpawnSpecials
-// After the map has been loaded, scan for specials
-// that spawn thinkers
-//
+// After the map has been loaded, scan for specials that spawn thinkers
 short numlinespecials;
 line_t* linespeciallist[MAXLINEANIMS];
 
@@ -1465,7 +1404,6 @@ void P_SpawnSpecials()
 	int i;
 
 	// See if -TIMER was specified.
-
 	if (timelimit > 0 && deathmatch)
 	{
 		levelTimer = true;
@@ -1476,12 +1414,12 @@ void P_SpawnSpecials()
 		levelTimer = false;
 	}
 
-	//	Init special SECTORs.
+	// Init special SECTORs.
 	sector = sectors;
 	for (i = 0; i < numsectors; ++i, ++sector)
 	{
-		if (!sector->special)
-			continue;
+		if (!sector->special){
+			continue;}
 
 		switch (sector->special)
 		{
@@ -1541,14 +1479,15 @@ void P_SpawnSpecials()
 		}
 	}
 
-	//	Init line EFFECTs
+	// Init line EFFECTs
 	numlinespecials = 0;
 	for (i = 0;i < numlines; ++i)
 	{
 		switch (lines[i].special)
 		{
 		case 48:
-		case 85: // [crispy] [JN] (Boom) Scroll Texture Right
+		case 85:
+			// (Boom) Scroll Texture Right
 			if (numlinespecials >= MAXLINEANIMS)
 			{
 				I_Error("Too many scrolling wall linedefs (%d)! (Vanilla limit is 64)", NumScrollers());
@@ -1558,34 +1497,34 @@ void P_SpawnSpecials()
 			++numlinespecials;
 			break;
 
-			// [crispy] add support for MBF sky tranfers
+			// add support for MBF sky tranfers
 		case 271:
 		case 272:
-		{
-			int secnum;
-
-			for (secnum = 0; secnum < numsectors; ++secnum)
 			{
-				if (sectors[secnum].tag == lines[i].tag)
+				int secnum;
+
+				for (secnum = 0; secnum < numsectors; ++secnum)
 				{
-					sectors[secnum].sky = i | PL_SKYFLAT;
+					if (sectors[secnum].tag == lines[i].tag)
+					{
+						sectors[secnum].sky = i | PL_SKYFLAT;
+					}
 				}
 			}
-		}
-		break;
+			break;
 		}
 	}
 
-	//	Init other misc stuff
-	for (i = 0;i < MAXCEILINGS; ++i)
-		activeceilings[i] = NULL;
+	// Init other misc stuff
+	for (i = 0;i < MAXCEILINGS; ++i){
+		activeceilings[i] = NULL;}
 
-	for (i = 0;i < MAXPLATS; ++i)
-		activeplats[i] = NULL;
+	for (i = 0;i < MAXPLATS; ++i){
+		activeplats[i] = NULL;}
 
-	for (i = 0;i < maxbuttons; ++i)
-		memset(&buttonlist[i], 0, sizeof(button_t));
+	for (i = 0;i < maxbuttons; ++i){
+		memset(&buttonlist[i], 0, sizeof(button_t));}
 
 	// UNUSED: no horizonal sliders.
-	//	P_InitSlidingDoorFrames();
+	// P_InitSlidingDoorFrames();
 }

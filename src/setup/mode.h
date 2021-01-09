@@ -21,6 +21,6 @@ extern GameMission gamemission;
 
 void SetupMission(GameSelectCallback callback);
 void InitBindings();
-std::string GetExecutableName();
-std::string GetGameTitle();
+::std::string GetExecutableName();
+::std::string GetGameTitle();
 const iwad_t** GetIwads();

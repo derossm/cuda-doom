@@ -29,13 +29,13 @@
 #include "z_zone.h"
 
 // Location where all configuration data is stored - default.cfg, savegames, etc.
-std::string configdir;
+::std::string configdir;
 
-std::string autoload_path = "";
+::std::string autoload_path = "";
 
 // Default filenames for configuration files.
-static std::string default_main_config;
-static std::string default_extra_config;
+static ::std::string default_main_config;
+static ::std::string default_extra_config;
 
 enum class default_type_t
 {
@@ -49,13 +49,13 @@ enum class default_type_t
 struct default_t
 {
 	// Name of the variable
-	std::string name;
+	::std::string name;
 
 	// Pointer to the location in memory of the variable
 	union
 	{
 		int* i;
-		std::string* s;
+		::std::string* s;
 		float* f;
 	} location;
 
@@ -81,7 +81,7 @@ struct default_collection_t
 {
 	default_t* defaults;
 	int numdefaults;
-	std::string filename;
+	::std::string filename;
 };
 
 #define CONFIG_VARIABLE_GENERIC(name, type) { #name, {NULL}, type, 0, 0, false }
@@ -1176,7 +1176,7 @@ default_collection_t extra_defaults =
 };
 
 // Search a collection for a variable
-default_t* SearchCollection(default_collection_t* collection, std::string name)
+default_t* SearchCollection(default_collection_t* collection, ::std::string name)
 {
 	int i;
 
@@ -1317,7 +1317,7 @@ void SaveDefaultCollection(default_collection_t* collection)
 }
 
 // Parses integer values in the configuration file
-int ParseIntParameter(std::string strparm)
+int ParseIntParameter(::std::string strparm)
 {
 	int parm;
 
@@ -1335,7 +1335,7 @@ int ParseIntParameter(std::string strparm)
 	return parm;
 }
 
-void SetVariable(default_t* def, std::string value)
+void SetVariable(default_t* def, ::std::string value)
 {
 	int intparm;
 
@@ -1343,7 +1343,7 @@ void SetVariable(default_t* def, std::string value)
 	switch (def->type)
 	{
 	case default_type_t::STRING:
-		*def->location.s = std::string(value);
+		*def->location.s = ::std::string(value);
 		break;
 
 	case default_type_t::INT:
@@ -1427,7 +1427,7 @@ void LoadDefaultCollection(default_collection_t* collection)
 	fclose(f);
 }
 
-void M_SetConfigFilenames(std::string main_config, std::string extra_config)
+void M_SetConfigFilenames(::std::string main_config, ::std::string extra_config)
 {
 	default_main_config = main_config;
 	default_extra_config = extra_config;
@@ -1439,10 +1439,10 @@ void M_SaveDefaults()
 	SaveDefaultCollection(&extra_defaults);
 }
 
-void M_SaveDefaultsAlternate(std::string main, std::string extra)
+void M_SaveDefaultsAlternate(::std::string main, ::std::string extra)
 {
-	std::string orig_main;
-	std::string orig_extra;
+	::std::string orig_main;
+	::std::string orig_extra;
 
 	// Temporarily change the filenames
 	orig_main = doom_defaults.filename;
@@ -1477,7 +1477,7 @@ void M_LoadDefaults()
 	}
 	else
 	{
-		doom_defaults.filename = std::string(configdir + default_main_config);
+		doom_defaults.filename = ::std::string(configdir + default_main_config);
 	}
 
 	printf("saving config in %s\n", doom_defaults.filename);
@@ -1492,7 +1492,7 @@ void M_LoadDefaults()
 	}
 	else
 	{
-		extra_defaults.filename = std::string(configdir + default_extra_config);
+		extra_defaults.filename = ::std::string(configdir + default_extra_config);
 	}
 
 	LoadDefaultCollection(&doom_defaults);
@@ -1500,7 +1500,7 @@ void M_LoadDefaults()
 }
 
 // Get a configuration file variable by its name
-default_t* GetDefaultForName(std::string name)
+default_t* GetDefaultForName(::std::string name)
 {
 	default_t* result;
 
@@ -1523,8 +1523,8 @@ default_t* GetDefaultForName(std::string name)
 
 // Bind a variable to a given configuration file variable, by name.
 /* template<typename T>
-requires std::integral<typename std::remove_pointer<T>::type>
-void M_BindIntVariable(std::string name, T location)
+requires ::std::integral<typename ::std::remove_pointer<T>::type>
+void M_BindIntVariable(::std::string name, T location)
 {
 	default_t* variable;
 
@@ -1538,8 +1538,8 @@ void M_BindIntVariable(std::string name, T location)
 }
 
 template<typename T>
-requires std::floating_point<typename std::remove_pointer<T>::type>
-void M_BindFloatVariable(std::string name, T location)
+requires ::std::floating_point<typename ::std::remove_pointer<T>::type>
+void M_BindFloatVariable(::std::string name, T location)
 {
 	default_t* variable;
 
@@ -1550,7 +1550,7 @@ void M_BindFloatVariable(std::string name, T location)
 	variable->bound = true;
 } */
 
-void M_BindStringVariable(std::string& name, std::string& location)
+void M_BindStringVariable(::std::string& name, ::std::string& location)
 {
 	default_t* variable = GetDefaultForName(name);
 	assert(variable->type == default_type_t::STRING);
@@ -1560,7 +1560,7 @@ void M_BindStringVariable(std::string& name, std::string& location)
 }
 
 // Set the value of a particular variable; an API function for other parts of the program to assign values to config variables by name.
-bool M_SetVariable(std::string name, std::string value)
+bool M_SetVariable(::std::string name, ::std::string value)
 {
 	default_t* variable = GetDefaultForName(name);
 
@@ -1575,7 +1575,7 @@ bool M_SetVariable(std::string name, std::string value)
 }
 
 // Get the value of a variable.
-int M_GetIntVariable(std::string name)
+int M_GetIntVariable(::std::string name)
 {
 	default_t* variable = GetDefaultForName(name);
 
@@ -1588,7 +1588,7 @@ int M_GetIntVariable(std::string name)
 	return *variable->location.i;
 }
 
-std::string M_GetStringVariable(std::string name)
+::std::string M_GetStringVariable(::std::string name)
 {
 	default_t* variable = GetDefaultForName(name);
 
@@ -1600,7 +1600,7 @@ std::string M_GetStringVariable(std::string name)
 	return *variable->location.s;
 }
 
-float M_GetFloatVariable(std::string name)
+float M_GetFloatVariable(::std::string name)
 {
 	default_t* variable = GetDefaultForName(name);
 
@@ -1613,7 +1613,7 @@ float M_GetFloatVariable(std::string name)
 }
 
 // Get the path to the default configuration dir to use, if NULL is passed to M_SetConfigDir.
-std::string GetDefaultConfigDir()
+::std::string GetDefaultConfigDir()
 {
 #if !defined(_WIN32) || defined(_WIN32_WCE)
 
@@ -1621,22 +1621,22 @@ std::string GetDefaultConfigDir()
 	// determined by SDL. On typical Unix systems, this might be
 	// ~/.local/share/chocolate-doom. On Windows, we behave like
 	// Vanilla Doom and save in the current directory.
-	std::string result;
-	std::string copy;
+	::std::string result;
+	::std::string copy;
 
 	result = SDL_GetPrefPath("", PACKAGE_TARNAME);
 	if (result != NULL)
 	{
-		copy = std::string(result);
+		copy = ::std::string(result);
 		SDL_free(result);
 		return copy;
 	}
 #endif /* #ifndef _WIN32 */
-	return std::string("");
+	return ::std::string("");
 }
 
 // Sets the location of the configuration directory, where configuration files are stored - default.cfg, chocolate-doom.cfg, savegames, etc.
-void M_SetConfigDir(std::string dir)
+void M_SetConfigDir(::std::string dir)
 {
 	// Use the directory that was passed, or find the default.
 	if (!dir.empty())
@@ -1667,10 +1667,10 @@ void M_SetConfigDir(std::string dir)
 // Set the value of music_pack_path if it is currently empty, and create the directory if necessary.
 void M_SetMusicPackDir()
 {
-	std::string current_path;
-	std::string prefdir;
-	std::string music_pack_path;
-	std::string readme_path;
+	::std::string current_path;
+	::std::string prefdir;
+	::std::string music_pack_path;
+	::std::string readme_path;
 
 	current_path = M_GetStringVariable("music_pack_path");
 
@@ -1680,14 +1680,14 @@ void M_SetMusicPackDir()
 	}
 
 	prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
-	music_pack_path = std::string(prefdir + "music-packs");
+	music_pack_path = ::std::string(prefdir + "music-packs");
 
 	M_MakeDirectory(prefdir);
 	M_MakeDirectory(music_pack_path);
 	M_SetVariable("music_pack_path", music_pack_path);
 
 	// We write a README file with some basic instructions on how to use the directory.
-	readme_path = std::string(music_pack_path + DIR_SEPARATOR_S + "README.txt");
+	readme_path = ::std::string(music_pack_path + DIR_SEPARATOR_S + "README.txt");
 	M_WriteFile(readme_path, MUSIC_PACK_README, strlen(MUSIC_PACK_README));
 
 	//free(readme_path);
@@ -1697,10 +1697,10 @@ void M_SetMusicPackDir()
 }
 
 // Calculate the path to the directory to use to store save games. Creates the directory as necessary.
-char* M_GetSaveGameDir(std::string iwadname)
+char* M_GetSaveGameDir(::std::string iwadname)
 {
-	std::string savegamedir;
-	std::string topdir;
+	::std::string savegamedir;
+	::std::string topdir;
 	int p;
 
 	// Specify a path from which to load and save games. If the directory does not exist then it will automatically be created.
@@ -1714,7 +1714,7 @@ char* M_GetSaveGameDir(std::string iwadname)
 		}
 
 		// add separator at end just in case
-		savegamedir = std::string(savegamedir + DIR_SEPARATOR_S);
+		savegamedir = ::std::string(savegamedir + DIR_SEPARATOR_S);
 
 		printf("Save directory changed to %s.\n", savegamedir);
 	}
@@ -1722,22 +1722,22 @@ char* M_GetSaveGameDir(std::string iwadname)
 	// In -cdrom mode, we write savegames to a specific directory in addition to configs.
 	else if (M_ParmExists("-cdrom"))
 	{
-		savegamedir = std::string(configdir);
+		savegamedir = ::std::string(configdir);
 	}
 #endif
 	// If not "doing" a configuration directory (Windows), don't "do" a savegame directory, either.
 	else if (!configdir.compare(""))
 	{
-		savegamedir = std::string("");
+		savegamedir = ::std::string("");
 	}
 	else
 	{
 		// ~/.local/share/chocolate-doom/savegames
-		topdir = std::string(configdir + "savegames");
+		topdir = ::std::string(configdir + "savegames");
 		M_MakeDirectory(topdir);
 
 		// eg. ~/.local/share/chocolate-doom/savegames/doom2.wad/
-		savegamedir = std::string(topdir + DIR_SEPARATOR_S + iwadname + DIR_SEPARATOR_S);
+		savegamedir = ::std::string(topdir + DIR_SEPARATOR_S + iwadname + DIR_SEPARATOR_S);
 
 		M_MakeDirectory(savegamedir);
 
@@ -1748,22 +1748,22 @@ char* M_GetSaveGameDir(std::string iwadname)
 }
 
 // Calculate the path to the directory for autoloaded WADs/DEHs. Creates the directory as necessary.
-char* M_GetAutoloadDir(std::string iwadname)
+char* M_GetAutoloadDir(::std::string iwadname)
 {
-	std::string result;
+	::std::string result;
 
 	if (autoload_path.empty())
 	{
-		std::string prefdir;
+		::std::string prefdir;
 		prefdir = SDL_GetPrefPath("", PACKAGE_TARNAME);
-		autoload_path = std::string(prefdir + "autoload");
+		autoload_path = ::std::string(prefdir + "autoload");
 		// FIXME ???
 		//SDL_free(prefdir);
 	}
 
 	M_MakeDirectory(autoload_path);
 
-	result = std::string(autoload_path + DIR_SEPARATOR_S + iwadname);
+	result = ::std::string(autoload_path + DIR_SEPARATOR_S + iwadname);
 	M_MakeDirectory(result);
 
 	// TODO: Add README file

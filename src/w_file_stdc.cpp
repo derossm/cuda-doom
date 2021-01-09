@@ -26,7 +26,7 @@ struct stdc_wad_file_t
 
 extern wad_file_class_t stdc_wad_file;
 
-static wad_file_t* W_StdC_OpenFile(std::string path)
+static wad_file_t* W_StdC_OpenFile(::std::string path)
 {
 	stdc_wad_file_t* result;
 	FILE* fstream;
@@ -44,7 +44,7 @@ static wad_file_t* W_StdC_OpenFile(std::string path)
 	result->wad.file_class = &stdc_wad_file;
 	result->wad.mapped = NULL;
 	result->wad.length = M_FileLength(fstream);
-	result->wad.path = std::string(path);
+	result->wad.path = ::std::string(path);
 	result->fstream = fstream;
 
 	return &result->wad;

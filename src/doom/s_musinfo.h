@@ -22,7 +22,7 @@
 
 #include "p_mobj.h"
 
-constexpr size_t MAX_MUS_ENTRIES{65};// [crispy] 0 to 64 inclusive
+constexpr size_t MAX_MUS_ENTRIES{65};// 0 to 64 inclusive
 
 struct musinfo_t
 {
@@ -36,5 +36,5 @@ struct musinfo_t
 
 extern musinfo_t musinfo;
 
-extern void S_ParseMusInfo(std::string mapid);
+extern void S_ParseMusInfo(::std::string mapid);
 extern void T_MusInfo();

@@ -35,7 +35,7 @@
 
 #include "config.h"
 
-#include "SDL_version.h"	// [crispy]
+#include "SDL_version.h"
 
 #ifdef CRISPY_TRUECOLOR
 #include "v_trans.h"
@@ -60,7 +60,7 @@ bool dp_translucent = false;
 extern pixel_t* colormaps;
 #endif
 
-// villsa [STRIFE] Blending table used for Strife
+// Blending table used for Strife
 byte* xlatab = NULL;
 
 // The screen buffer that the v_video.c code draws to.
@@ -117,7 +117,7 @@ void V_CopyRect(int srcx, int srcy, pixel_t* source, int width, int height, int 
 	}
 #endif
 
-	// [crispy] prevent framebuffer overflow
+	// prevent framebuffer overflow
 	if (destx + width > SCREENWIDTH)
 		width = SCREENWIDTH - destx;
 	if (desty + height > SCREENHEIGHT)
@@ -156,7 +156,7 @@ void V_SetPatchClipCallback(vpatchclipfunc_t func)
 // Masks a column based masked pic to the screen.
 //
 
-// [crispy] four different rendering functions
+// four different rendering functions
 // for each possible combination of dp_translation and dp_translucent:
 // (1) normal, opaque patch
 static const inline pixel_t drawpatchpx00(const pixel_t dest, const pixel_t source)
@@ -194,7 +194,7 @@ static const inline pixel_t drawpatchpx11(const pixel_t dest, const pixel_t sour
 #else
 {return I_BlendOver(dest, colormaps[dp_translation[source]]);}
 #endif
-// [crispy] array of function pointers holding the different rendering functions
+// array of function pointers holding the different rendering functions
 typedef const pixel_t drawpatchpx_t(const pixel_t dest, const pixel_t source);
 static drawpatchpx_t* const drawpatchpx_a[2][2] = {{drawpatchpx11, drawpatchpx10}, {drawpatchpx01, drawpatchpx00}};
 
@@ -213,12 +213,12 @@ void V_DrawPatch(int x, int y, patch_t* patch)
 	byte* source;
 	int w;
 
-	// [crispy] four different rendering functions
+	// four different rendering functions
 	drawpatchpx_t* const drawpatchpx = drawpatchpx_a[!dp_translucent][!dp_translation];
 
 	y -= SHORT(patch->topoffset);
 	x -= SHORT(patch->leftoffset);
-	x += WIDESCREENDELTA; // [crispy] horizontal widescreen offset
+	x += WIDESCREENDELTA; // horizontal widescreen offset
 
 	// haleyjd 08/28/10: Strife needs silent error checking here.
 	if (patchclip_callback)
@@ -257,7 +257,7 @@ void V_DrawPatch(int x, int y, patch_t* patch)
 	{
 		int topdelta = -1;
 
-		// [crispy] too far right / width
+		// too far right / width
 		if (x >= SCREENWIDTH)
 		{
 			break;
@@ -270,7 +270,7 @@ void V_DrawPatch(int x, int y, patch_t* patch)
 		{
 			int top;
 			int srccol = 0;
-			// [crispy] support for DeePsea tall patches
+			// support for DeePsea tall patches
 			if (column->topdelta <= topdelta)
 			{
 				topdelta += column->topdelta;
@@ -284,13 +284,13 @@ void V_DrawPatch(int x, int y, patch_t* patch)
 			dest = desttop + ((topdelta * dy) >> FRACBITS) * SCREENWIDTH;
 			count = (column->length * dy) >> FRACBITS;
 
-			// [crispy] too low / height
+			// too low / height
 			if (top + count > SCREENHEIGHT)
 			{
 				count = SCREENHEIGHT - top;
 			}
 
-			// [crispy] nothing left to draw?
+			// nothing left to draw?
 			if (count < 1)
 			{
 				break;
@@ -298,7 +298,7 @@ void V_DrawPatch(int x, int y, patch_t* patch)
 
 			while (count--)
 			{
-				// [crispy] too high
+				// too high
 				if (top++ >= 0)
 				{
 					*dest = drawpatchpx(*dest, source[srccol >> FRACBITS]);
@@ -318,7 +318,7 @@ void V_DrawPatchFullScreen(patch_t* patch, bool flipped)
 	patch->leftoffset = 0;
 	patch->topoffset = 0;
 
-	// [crispy] fill pillarboxes in widescreen mode
+	// fill pillarboxes in widescreen mode
 	if (SCREENWIDTH != NONWIDEWIDTH)
 	{
 		V_DrawFilledBox(0, 0, SCREENWIDTH, SCREENHEIGHT, 0);
@@ -352,7 +352,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch)
 
 	y -= SHORT(patch->topoffset);
 	x -= SHORT(patch->leftoffset);
-	x += WIDESCREENDELTA; // [crispy] horizontal widescreen offset
+	x += WIDESCREENDELTA; // horizontal widescreen offset
 
 	// haleyjd 08/28/10: Strife needs silent error checking here.
 	if (patchclip_callback)
@@ -391,13 +391,13 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch)
 	{
 		int topdelta = -1;
 
-		// [crispy] too far left
+		// too far left
 		if (x < 0)
 		{
 			continue;
 		}
 
-		// [crispy] too far right / width
+		// too far right / width
 		if (x >= SCREENWIDTH)
 		{
 			break;
@@ -410,7 +410,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch)
 		{
 			int top;
 			int srccol = 0;
-			// [crispy] support for DeePsea tall patches
+			// support for DeePsea tall patches
 			if (column->topdelta <= topdelta)
 			{
 				topdelta += column->topdelta;
@@ -424,13 +424,13 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch)
 			dest = desttop + ((topdelta * dy) >> FRACBITS) * SCREENWIDTH;
 			count = (column->length * dy) >> FRACBITS;
 
-			// [crispy] too low / height
+			// too low / height
 			if (top + count > SCREENHEIGHT)
 			{
 				count = SCREENHEIGHT - top;
 			}
 
-			// [crispy] nothing left to draw?
+			// nothing left to draw?
 			if (count < 1)
 			{
 				break;
@@ -438,7 +438,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch)
 
 			while (count--)
 			{
-				// [crispy] too high
+				// too high
 				if (top++ >= 0)
 				{
 #ifndef CRISPY_TRUECOLOR
@@ -519,12 +519,8 @@ void V_DrawTLPatch(int x, int y, patch_t* patch)
 	}
 }
 
-//
-// V_DrawXlaPatch
-//
-// villsa [STRIFE] Masks a column based translucent masked pic to the screen.
-//
 
+// Masks a column based translucent masked pic to the screen.
 void V_DrawXlaPatch(int x, int y, patch_t* patch)
 {
 	int count;
@@ -692,7 +688,7 @@ void V_LoadTintTable()
 	tinttable = W_CacheLumpName<byte>("TINTTAB", pu_tags_t::PU_STATIC);
 }
 
-// villsa [STRIFE] Load xla table from XLATAB lump.
+// Load xla table from XLATAB lump.
 void V_LoadXlaTable()
 {
 	xlatab = W_CacheLumpName<byte>("XLATAB", pu_tags_t::PU_STATIC);
@@ -776,7 +772,7 @@ void V_DrawHorizLine(int x, int y, int w, int c)
 	pixel_t* buf;
 	int x1;
 
-	// [crispy] prevent framebuffer overflows
+	// prevent framebuffer overflows
 	if (x + w > (unsigned)SCREENWIDTH)
 		w = SCREENWIDTH - x;
 
@@ -850,7 +846,7 @@ void V_DrawRawScreen(pixel_t* raw)
 //
 void V_Init()
 {
-	// [crispy] initialize resolution-agnostic patch drawing
+	// initialize resolution-agnostic patch drawing
 	if (NONWIDEWIDTH && SCREENHEIGHT)
 	{
 		dx = (NONWIDEWIDTH << FRACBITS) / ORIGWIDTH;
@@ -907,7 +903,7 @@ struct pcx_t
 	unsigned char data;		// unbounded
 };
 
-void WritePCXfile(std::string filename, pixel_t* data, int width, int height, byte* palette)
+void WritePCXfile(::std::string filename, pixel_t* data, int width, int height, byte* palette)
 {
 	int i;
 	int length;
@@ -987,7 +983,7 @@ static void warning_fn(png_structp p, png_const_charp s)
 	printf("libpng warning: %s\n", s);
 }
 
-void WritePNGfile(std::string filename, pixel_t* data, int width, int height, byte* palette)
+void WritePNGfile(::std::string filename, pixel_t* data, int width, int height, byte* palette)
 {
 	png_structp ppng;
 	png_infop pinfo;
@@ -1039,7 +1035,7 @@ void WritePNGfile(std::string filename, pixel_t* data, int width, int height, by
 	png_init_io(ppng, handle);
 
 	I_RenderReadPixels(&palette, &width, &height, &j);
-	rowbuf = palette; // [crispy] pointer abuse!
+	rowbuf = palette; // pointer abuse!
 
 	png_set_IHDR(ppng, pinfo, width, height,
 #if SDL_VERSION_ATLEAST(2, 0, 5)
@@ -1110,11 +1106,11 @@ void WritePNGfile(std::string filename, pixel_t* data, int width, int height, by
 // V_ScreenShot
 //
 
-void V_ScreenShot(std::string format)
+void V_ScreenShot(::std::string format)
 {
 	int i;
 	char lbmname[16]; // haleyjd 20110213: BUG FIX - 12 is too small!
-	std::string ext;
+	::std::string ext;
 
 	// find a file name to save it to
 
@@ -1130,7 +1126,7 @@ void V_ScreenShot(std::string format)
 		ext = "pcx";
 	}
 
-	for (i = 0; i <= 9999; ++i) // [crispy] increase screenshot filename limit
+	for (i = 0; i <= 9999; ++i) // increase screenshot filename limit
 	{
 		M_snprintf(lbmname, sizeof(lbmname), format, i, ext);
 
@@ -1140,7 +1136,7 @@ void V_ScreenShot(std::string format)
 		}
 	}
 
-	if (i == 10000) // [crispy] increase screenshot filename limit
+	if (i == 10000) // increase screenshot filename limit
 	{
 #ifdef HAVE_LIBPNG
 		if (png_screenshots)

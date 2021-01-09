@@ -21,8 +21,8 @@
 bool W_ParseCommandLine();
 void W_CheckCorrectIWAD(GameMission mission);
 
-int W_MergeDump(std::string file);
-int W_LumpDump(std::string lumpname);
+int W_MergeDump(::std::string file);
+int W_LumpDump(::std::string lumpname);
 
 // Autoload all .wad files from the given directory:
-void W_AutoLoadWADs(std::string path);
+void W_AutoLoadWADs(::std::string path);

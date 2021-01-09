@@ -31,7 +31,7 @@ typedef void (*opl_adjust_callbacks_func)(float value);
 
 struct opl_driver_t
 {
-	std::string name;
+	::std::string name;
 
 	opl_init_func init_func;
 	opl_shutdown_func shutdown_func;

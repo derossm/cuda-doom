@@ -325,7 +325,7 @@ void SHA1_UpdateInt32(sha1_context_t* context, unsigned val)
 	SHA1_Update(context, buf, 4);
 }
 
-void SHA1_UpdateString(sha1_context_t* context, std::string str)
+void SHA1_UpdateString(sha1_context_t* context, ::std::string str)
 {
 	SHA1_Update(context, (byte*)str.c_str(), str.length() + 1);
 }

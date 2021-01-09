@@ -37,7 +37,7 @@ struct win32_wad_file_t
 
 extern wad_file_class_t win32_wad_file;
 
-static void MapFile(win32_wad_file_t* wad, std::string filename)
+static void MapFile(win32_wad_file_t* wad, ::std::string filename)
 {
 	wad->handle_map = CreateFileMapping(wad->handle,
 		NULL,
@@ -78,7 +78,7 @@ unsigned GetFileLength(HANDLE handle)
 	return result;
 }
 
-static wad_file_t* W_Win32_OpenFile(std::string path)
+static wad_file_t* W_Win32_OpenFile(::std::string path)
 {
 	win32_wad_file_t* result;
 	wchar_t wpath[MAX_PATH + 1];
@@ -108,7 +108,7 @@ static wad_file_t* W_Win32_OpenFile(std::string path)
 	result = Z_Malloc<win>(sizeof(win32_wad_file_t), pu_tags_t::PU_STATIC, 0);
 	result->wad.file_class = &win32_wad_file;
 	result->wad.length = GetFileLength(handle);
-	result->wad.path = std::string(path);
+	result->wad.path = ::std::string(path);
 	result->handle = handle;
 
 	// Try to map the file into memory with mmap:

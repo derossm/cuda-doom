@@ -30,13 +30,13 @@
 
 struct joystick_config_t
 {
-	std::string name; // Config file name
+	::std::string name; // Config file name
 	int value;
 };
 
 struct known_joystick_t
 {
-	std::string name;
+	::std::string name;
 	int axes;
 	int buttons;
 	int hats;
@@ -53,7 +53,7 @@ static int usejoystick = 0;
 
 // GUID and index of joystick to use.
 
-std::string joystick_guid = "";
+::std::string joystick_guid = "";
 int joystick_index = -1;
 
 // Calibration button. This is the button the user pressed at the
@@ -597,7 +597,7 @@ static const known_joystick_t known_joysticks[] =
 static const known_joystick_t* GetJoystickType(int index)
 {
 	SDL_Joystick* joystick;
-	std::string name;
+	::std::string name;
 	int axes;
 	int buttons;
 	int hats;
@@ -760,7 +760,7 @@ static void UpdateJoystickIndex()
 static void SetJoystickButtonLabel()
 {
 	SDL_JoystickGUID guid, dev_guid;
-	std::string name;
+	::std::string name;
 
 	if (!usejoystick || !strcmp(joystick_guid, ""))
 	{
@@ -972,7 +972,7 @@ static void CalibrateJoystick(cudadoom::txt::UNCAST_ARG(widget), cudadoom::txt::
 // GUI
 //
 
-static void AddJoystickControl(cudadoom::txt::UNCAST_ARG(table), std::string label, int* var)
+static void AddJoystickControl(cudadoom::txt::UNCAST_ARG(table), ::std::string label, int* var)
 {
 	cudadoom::txt::CAST_ARG(cudadoom::txt::txt_table_t, table);
 	cudadoom::txt::txt_joystick_input_t* joy_input;
@@ -1030,7 +1030,7 @@ void ConfigJoystick(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 		cudadoom::txt::TABLE_EMPTY,
 		NULL);
 
-	if (gamemission == doom || gamemission == heretic || gamemission == hexen || gamemission == strife) // [crispy]
+	if (gamemission == doom || gamemission == heretic || gamemission == hexen || gamemission == strife)
 	{
 		cudadoom::txt::AddWidgets(window,
 			cudadoom::txt::NewLabel("Look up/down"),
@@ -1066,7 +1066,7 @@ void ConfigJoystick(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 		AddJoystickControl(window, "Speed", &joybspeed);
 	}
 
-	if (gamemission == doom || gamemission == hexen || gamemission == strife) // [crispy]
+	if (gamemission == doom || gamemission == hexen || gamemission == strife)
 	{
 		AddJoystickControl(window, "Jump", &joybjump);
 	}

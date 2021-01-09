@@ -62,7 +62,7 @@ static TimeType recvtic;
 
 // The number of tics that have been run (using RunTic) so far.
 TimeType gametic;
-TimeType oldleveltime; // [crispy] check if leveltime keeps tickin'
+TimeType oldleveltime; // check if leveltime keeps tickin'
 
 // When set to true, a single tic is run each time TryRunTics() is called. This is used for -timedemo mode.
 bool singletics{false};
@@ -693,7 +693,7 @@ static bool StrictDemos()
 // If the provided conditional value is true, we're trying to record a demo file that will include a non-vanilla extension. The function
 // will return true if the conditional is true and it's allowed to use this extension (no extensions are allowed if -strictdemos is given
 // on the command line). A warning is shown on the console using the provided string describing the non-vanilla expansion.
-bool D_NonVanillaRecord(bool conditional, std::string feature)
+bool D_NonVanillaRecord(bool conditional, ::std::string feature)
 {
 	if (!conditional || StrictDemos())
 	{
@@ -708,7 +708,7 @@ bool D_NonVanillaRecord(bool conditional, std::string feature)
 // Returns true if the given lump number corresponds to data from a .lmp file, as opposed to a WAD.
 static bool IsDemoFile(int lumpnum)
 {
-	auto lower{std::string(lumpinfo[lumpnum]->wad_file->path)};
+	auto lower{::std::string(lumpinfo[lumpnum]->wad_file->path)};
 	// FIXME
 	//M_ForceLowercase(lower);
 
@@ -720,7 +720,7 @@ static bool IsDemoFile(int lumpnum)
 // - The -strictdemos command line argument is not provided.
 // - The given lumpnum identifying the demo to play back identifies a demo that comes from a .lmp file, not a .wad file.
 // - Before proceeding, a warning is shown to the user on the console.
-bool D_NonVanillaPlayback(bool conditional, int lumpnum, std::string feature)
+bool D_NonVanillaPlayback(bool conditional, int lumpnum, ::std::string feature)
 {
 	if (!conditional || StrictDemos())
 	{

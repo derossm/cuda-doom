@@ -28,12 +28,12 @@ constexpr size_t DEH_VANILLA_NUMSFX{107};
 void DEH_Init();
 
 void DEH_ParseCommandLine();
-int DEH_LoadFile(std::string filename);
-void DEH_AutoLoadPatches(std::string path);
+int DEH_LoadFile(::std::string filename);
+void DEH_AutoLoadPatches(::std::string path);
 int DEH_LoadLump(int lumpnum, bool allow_long, bool allow_error);
-int DEH_LoadLumpByName(std::string name, bool allow_long, bool allow_error);
+int DEH_LoadLumpByName(::std::string name, bool allow_long, bool allow_error);
 
-bool DEH_ParseAssignment(std::string line, char** variable_name, char** value);
+bool DEH_ParseAssignment(::std::string line, char** variable_name, char** value);
 
 void DEH_Checksum(sha1_digest_t digest);
 

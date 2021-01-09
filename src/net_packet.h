@@ -30,11 +30,11 @@ bool NET_ReadSInt8(net_packet_t* packet, int* data);
 bool NET_ReadSInt16(net_packet_t* packet, int* data);
 bool NET_ReadSInt32(net_packet_t* packet, int* data);
 
-std::string NET_ReadString(net_packet_t* packet);
-std::string NET_ReadSafeString(net_packet_t* packet);
+::std::string NET_ReadString(net_packet_t* packet);
+::std::string NET_ReadSafeString(net_packet_t* packet);
 
 void NET_WriteInt8(net_packet_t* packet, unsigned i);
 void NET_WriteInt16(net_packet_t* packet, unsigned i);
 void NET_WriteInt32(net_packet_t* packet, unsigned i);
 
-void NET_WriteString(net_packet_t* packet, std::string& string);
+void NET_WriteString(net_packet_t* packet, ::std::string& string);

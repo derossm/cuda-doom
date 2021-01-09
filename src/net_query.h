@@ -25,7 +25,7 @@ extern int NET_StartMasterQuery();
 
 extern void NET_LANQuery();
 extern void NET_MasterQuery();
-extern void NET_QueryAddress(std::string addr);
+extern void NET_QueryAddress(::std::string addr);
 extern net_addr_t* NET_FindLANServer();
 
 extern int NET_Query_Poll(net_query_callback_t callback, void* user_data);

@@ -13,6 +13,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/keybinds.h"
+/*
 #include "../derma/common.h"
 
 // DOOM keyboard definition. This is the stuff configured by Setup.Exe. Most key data are simple ascii (uppercased).
@@ -167,7 +169,7 @@ constexpr size_t KEYP_EQUALS{KEY_EQUALS};
 constexpr size_t KEYP_ENTER{KEY_ENTER};
 
 //#define SCANCODE_TO_KEYS_ARRAY
-constexpr std::array<int, 104> scancode_translate_table
+constexpr ::std::array<int, 104> scancode_translate_table
 {
 	int{0x0},			int{0x0},			int{0x0},			int{0x0},			int{'a'},				// 000-009
 	int{'b'},			int{'c'},			int{'d'},			int{'e'},			int{'f'},
@@ -198,11 +200,11 @@ struct KeyNames
 {
 	// 8 byte size total per key name pair
 	const unsigned char key;
-	std::array<const char, 7> name;
+	::std::array<const char, 7> name;
 };
 
 //constexpr int k = sizeof(KeyNames);
-constexpr std::array<KeyNames, 84> key_names{
+constexpr ::std::array<KeyNames, 84> key_names{
 	KeyNames{ .key{KEY_BACKSPACE},	.name{"BACKSP"}	},	KeyNames{ .key{KEY_TAB},		.name{"TAB"}	},
 	KeyNames{ .key{KEY_INS},		.name{"INS"}	},	KeyNames{ .key{KEY_DEL},		.name{"DEL"}	},
 	KeyNames{ .key{KEY_PGUP},		.name{"PGUP"}	},	KeyNames{ .key{KEY_PGDN},		.name{"PGDN"}	},
@@ -248,3 +250,4 @@ constexpr std::array<KeyNames, 84> key_names{
 	KeyNames{ .key{'/'},			.name{"/"}		},	KeyNames{ .key{'\\'},			.name{"\\"}		},
 	KeyNames{ .key{'\''},			.name{"\'"}		}
 };
+*/

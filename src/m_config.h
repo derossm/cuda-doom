@@ -21,13 +21,13 @@
 
 void M_LoadDefaults();
 void M_SaveDefaults();
-void M_SaveDefaultsAlternate(std::string main, std::string extra);
-void M_SetConfigDir(std::string dir);
+void M_SaveDefaultsAlternate(::std::string main, ::std::string extra);
+void M_SetConfigDir(::std::string dir);
 void M_SetMusicPackDir();
 
 template<typename T>
-requires std::integral<typename std::remove_pointer<T>::type>
-void M_BindIntVariable(std::string name, T location)
+requires ::std::integral<typename ::std::remove_pointer<T>::type>
+void M_BindIntVariable(::std::string name, T location)
 {
 	default_t* variable;
 
@@ -41,8 +41,8 @@ void M_BindIntVariable(std::string name, T location)
 }
 
 template<typename T>
-requires std::floating_point<typename std::remove_pointer<T>::type>
-void M_BindFloatVariable(std::string name, T location)
+requires ::std::floating_point<typename ::std::remove_pointer<T>::type>
+void M_BindFloatVariable(::std::string name, T location)
 {
 	default_t* variable;
 
@@ -53,12 +53,12 @@ void M_BindFloatVariable(std::string name, T location)
 	variable->bound = true;
 }
 
-bool M_SetVariable(std::string name, std::string value);
-int M_GetIntVariable(std::string name);
-std::string M_GetStringVariable(std::string name);
-float M_GetFloatVariable(std::string name);
-void M_SetConfigFilenames(std::string main_config, std::string extra_config);
-std::string M_GetSaveGameDir(std::string iwadname);
-std::string M_GetAutoloadDir(std::string iwadname);
+bool M_SetVariable(::std::string name, ::std::string value);
+int M_GetIntVariable(::std::string name);
+::std::string M_GetStringVariable(::std::string name);
+float M_GetFloatVariable(::std::string name);
+void M_SetConfigFilenames(::std::string main_config, ::std::string extra_config);
+::std::string M_GetSaveGameDir(::std::string iwadname);
+::std::string M_GetAutoloadDir(::std::string iwadname);
 
-extern std::string configdir;
+extern ::std::string configdir;

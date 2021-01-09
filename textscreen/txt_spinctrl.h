@@ -8,20 +8,12 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include <string>
 #include <variant>
 
 #include "txt_common.h"
 #include "txt_widget.h"
-
-//#include "txt_main.h"
-//#include "txt_utf8.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -39,12 +31,12 @@ class SpinControl : public Widget<SpinControl>
 public:
 	bool editing{false};
 
-	std::variant<float, int>* value;
-	std::variant<float, int> min;
-	std::variant<float, int> max;
-	std::variant<float, int> step;
+	::std::variant<float, int>* value;
+	::std::variant<float, int> min;
+	::std::variant<float, int> max;
+	::std::variant<float, int> step;
 
-	std::string buffer;
+	::std::string buffer;
 
 public:
 
@@ -106,7 +98,7 @@ public:
 	{}
 /*
 	// Generate the format string to be used for displaying floats
-	void FloatFormatString(float step, std::string buf, size_t buf_len)
+	void FloatFormatString(float step, ::std::string buf, size_t buf_len)
 	{
 		int precision;
 
@@ -154,15 +146,15 @@ public:
 		unsigned minw;
 		unsigned maxw;
 
-		if (std::holds_alternative<float>(min))
+		if (::std::holds_alternative<float>(min))
 		{
-			minw = FloatWidth(std::get<float>(min), std::get<float>(step));
-			maxw = FloatWidth(std::get<float>(max), std::get<float>(step));
+			minw = FloatWidth(::std::get<float>(min), ::std::get<float>(step));
+			maxw = FloatWidth(::std::get<float>(max), ::std::get<float>(step));
 		}
-		else if (std::holds_alternative<int>(min))
+		else if (::std::holds_alternative<int>(min))
 		{
-			minw = IntWidth(std::get<int>(min));
-			maxw = IntWidth(std::get<int>(max));
+			minw = IntWidth(::std::get<int>(min));
+			maxw = IntWidth(::std::get<int>(max));
 		}
 
 		// Choose the wider of the two values. Add one so that there is always space for the cursor when editing.
@@ -186,14 +178,14 @@ public:
 	{
 		char format[25];
 
-		if (std::holds_alternative<float>(min))
+		if (::std::holds_alternative<float>(min))
 		{
-			FloatFormatString(std::get<float>(step), format, sizeof(format));
-			snprintf(buffer.c_str(), buffer.length(), format, std::get<float>(value));
+			FloatFormatString(::std::get<float>(step), format, sizeof(format));
+			snprintf(buffer.c_str(), buffer.length(), format, ::std::get<float>(value));
 		}
-		else if (std::holds_alternative<int>(min))
+		else if (::std::holds_alternative<int>(min))
 		{
-			snprintf(buffer.c_str(), buffer.length(), "%i", std::get<int>(value));
+			snprintf(buffer.c_str(), buffer.length(), "%i", ::std::get<int>(value));
 		}
 
 	}
@@ -268,24 +260,24 @@ public:
 
 	void EnforceLimits()
 	{
-		if (std::holds_alternative<float>(min))
+		if (::std::holds_alternative<float>(min))
 		{
-			if (std::get<float>(*value) > std::get<float>(max))
+			if (::std::get<float>(*value) > ::std::get<float>(max))
 			{
 				*value = max;
 			}
-			else if (std::get<float>(*value) < std::get<float>(min))
+			else if (::std::get<float>(*value) < ::std::get<float>(min))
 			{
 				*value = min;
 			}
 		}
-		else if (std::holds_alternative<int>(min))
+		else if (::std::holds_alternative<int>(min))
 		{
-			if (std::get<int>(*value) > std::get<int>(max))
+			if (::std::get<int>(*value) > ::std::get<int>(max))
 			{
 				*value = max;
 			}
-			else if (std::get<int>(*value) < std::get<int>(min))
+			else if (::std::get<int>(*value) < ::std::get<int>(min))
 			{
 				*value = min;
 			}
@@ -294,11 +286,11 @@ public:
 
 	void FinishEditing()
 	{
-		if (std::holds_alternative<float>(min))
+		if (::std::holds_alternative<float>(min))
 		{
 			*value = (float)atof(buffer.c_str());
 		}
-		else if (std::holds_alternative<int>(min))
+		else if (::std::holds_alternative<int>(min))
 		{
 			*value = atoi(buffer.c_str());
 		}
@@ -387,25 +379,4 @@ public:
 /**/
 };
 
-} // END NAMESPACE cudadoom::txt
-
-/**
- * Create a new spin control widget tracking an integer value.
- *
- * @param value		Pointer to the variable containing the value
- *						displayed in the widget.
- * @param min			Minimum value that may be set.
- * @param max			Maximum value that may be set.
- * @return				Pointer to the new spin control widget.
- */
- //SpinControl* NewSpinControl(int* value, int min, int max);
- /**
-  * Create a new spin control widget tracking a float value.
-  *
-  * @param value		Pointer to the variable containing the value
-  *						displayed in the widget.
-  * @param min			Minimum value that may be set.
-  * @param max			Maximum value that may be set.
-  * @return				Pointer to the new spin control widget.
-  */
-  //SpinControl* NewFloatSpinControl(float* value, float min, float max);
+} // end namespace cudadoom::txt

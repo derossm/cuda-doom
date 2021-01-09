@@ -65,8 +65,8 @@ constexpr size_t OGG_COMMENT_HEADER{3};
 struct subst_music_t
 {
 	// note the struct size is 32 bytes if we limit to 10 character filenames, omitting the extension to be appended when accessing filesystem
-	std::array<const char, 21> hash_prefix;
-	std::array<const char, 11> filename;
+	::std::array<const char, 21> hash_prefix;
+	::std::array<const char, 11> filename;
 };
 
 // Structure containing parsed metadata read from a digital music track:
@@ -86,7 +86,7 @@ static bool music_initialized = false;
 // If this is true, this module initialized SDL sound and has the responsibility to shut it down
 static bool sdl_was_initialized = false;
 
-std::string music_pack_path = "";
+::std::string music_pack_path = "";
 
 // If true, we are playing a substitute digital track rather than in-WAD MIDI/MUS track, and file_metadata contains loop metadata.
 static file_metadata_t file_metadata;
@@ -315,7 +315,7 @@ constexpr subst_music_t known_filenames[]{
 };
 
 // Given a time string (for LOOP_START/LOOP_END), parse it and return the time (in # samples since start of track) it represents.
-static unsigned ParseVorbisTime(unsigned samplerate_hz, std::string value)
+static unsigned ParseVorbisTime(unsigned samplerate_hz, ::std::string value)
 {
 	CHAR_PTR num_start;
 	CHAR_PTR p;
@@ -351,7 +351,7 @@ static unsigned ParseVorbisTime(unsigned samplerate_hz, std::string value)
 }
 
 // Given a vorbis comment string (eg. "LOOP_START=12345"), set fields in the metadata structure as appropriate.
-static void ParseVorbisComment(file_metadata_t* metadata, std::string comment)
+static void ParseVorbisComment(file_metadata_t* metadata, ::std::string comment)
 {
 	CHAR_PTR eq;
 	CHAR_PTR key;
@@ -547,7 +547,7 @@ static void ParseOggFile(file_metadata_t* metadata, FILE* fs)
 	}
 }
 
-static void ReadLoopPoints(std::string filename, file_metadata_t* metadata)
+static void ReadLoopPoints(::std::string filename, file_metadata_t* metadata)
 {
 	FILE* fs;
 	char header[4];
@@ -593,11 +593,11 @@ static void ReadLoopPoints(std::string filename, file_metadata_t* metadata)
 }
 
 // Given a MUS lump, look up a substitute MUS file to play instead (or NULL to just use normal MIDI playback).
-static std::string GetSubstituteMusicFile(void* data, size_t data_len)
+static ::std::string GetSubstituteMusicFile(void* data, size_t data_len)
 {
 	sha1_context_t context;
 	sha1_digest_t hash;
-	std::string filename;
+	::std::string filename;
 	char hash_str[sizeof(sha1_digest_t) * 2 + 1];
 	unsigned i;
 
@@ -640,7 +640,7 @@ static std::string GetSubstituteMusicFile(void* data, size_t data_len)
 	return filename;
 }
 
-std::string GetFullPath(std::string musicdir, std::string path)
+::std::string GetFullPath(::std::string musicdir, ::std::string path)
 {
 	//CHAR_PTR result;
 	CHAR_PTR systemized_path;
@@ -648,14 +648,14 @@ std::string GetFullPath(std::string musicdir, std::string path)
 	// Starting with directory separator means we have an absolute path, so just return it.
 	if (path[0] == DIR_SEPARATOR)
 	{
-		return std::string(path);
+		return ::std::string(path);
 	}
 
 #ifdef _WIN32
 	// d:\path\...
 	if (isalpha(path[0]) && path[1] == ':' && path[2] == DIR_SEPARATOR)
 	{
-		return std::string(path);
+		return ::std::string(path);
 	}
 #endif
 
@@ -663,7 +663,7 @@ std::string GetFullPath(std::string musicdir, std::string path)
 	systemized_path = M_StringReplace(path, "/", DIR_SEPARATOR_S);
 
 	// Copy config filename and cut off the filename to just get the parent dir.
-	auto result = std::string(musicdir + systemized_path);
+	auto result = ::std::string(musicdir + systemized_path);
 	free(systemized_path);
 
 	return result;
@@ -671,9 +671,9 @@ std::string GetFullPath(std::string musicdir, std::string path)
 
 // If filename ends with .{ext}, check if a .ogg, .flac or .mp3 exists with that name, returning it if found. If none exist, NULL is returned.
 // If the filename doesn't end with .{ext} then it just acts as a wrapper around GetFullPath().
-std::string ExpandFileExtension(std::string musicdir, std::string filename)
+::std::string ExpandFileExtension(::std::string musicdir, ::std::string filename)
 {
-	static std::string extns[] = {".flac", ".ogg", ".mp3"};
+	static ::std::string extns[] = {".flac", ".ogg", ".mp3"};
 	CHAR_PTR replaced;
 	CHAR_PTR result;
 	int i;
@@ -699,7 +699,7 @@ std::string ExpandFileExtension(std::string musicdir, std::string filename)
 }
 
 // Add a substitute music file to the lookup list.
-static void AddSubstituteMusic(std::string musicdir, std::string hash_prefix, std::string filename)
+static void AddSubstituteMusic(::std::string musicdir, ::std::string hash_prefix, ::std::string filename)
 {
 	subst_music_t* s;
 	CHAR_PTR path;
@@ -717,7 +717,7 @@ static void AddSubstituteMusic(std::string musicdir, std::string hash_prefix, st
 	s->filename = path;
 }
 
-static std::string ReadHashPrefix(std::string line)
+static ::std::string ReadHashPrefix(::std::string line)
 {
 	CHAR_PTR result;
 	CHAR_PTR p;
@@ -754,9 +754,9 @@ static std::string ReadHashPrefix(std::string line)
 }
 
 // Parse a line from substitute music configuration file; returns error message or NULL for no error.
-static std::string ParseSubstituteLine(std::string musicdir, std::string line)
+static ::std::string ParseSubstituteLine(::std::string musicdir, ::std::string line)
 {
-	std::string hash_prefix;
+	::std::string hash_prefix;
 	CHAR_PTR filename;
 	CHAR_PTR p;
 
@@ -821,7 +821,7 @@ static std::string ParseSubstituteLine(std::string musicdir, std::string line)
 }
 
 // Read a substitute music configuration file.
-static bool ReadSubstituteConfig(std::string musicdir, std::string filename)
+static bool ReadSubstituteConfig(::std::string musicdir, ::std::string filename)
 {
 	CHAR_PTR buffer;
 	CHAR_PTR line;
@@ -839,7 +839,7 @@ static bool ReadSubstituteConfig(std::string musicdir, std::string filename)
 
 	while (line != NULL)
 	{
-		std::string error;
+		::std::string error;
 		CHAR_PTR next;
 
 		// find end of line
@@ -876,8 +876,8 @@ static bool ReadSubstituteConfig(std::string musicdir, std::string filename)
 static void LoadSubstituteConfigs()
 {
 	glob_t* glob;
-	std::string musicdir;
-	std::string path;
+	::std::string musicdir;
+	::std::string path;
 	unsigned old_music_len;
 	unsigned i;
 
@@ -885,15 +885,15 @@ static void LoadSubstituteConfigs()
 	// Otherwise we use the current directory, or $configdir/music to look for .cfg files.
 	if (strcmp(music_pack_path, "") != 0)
 	{
-		musicdir = std::string(music_pack_path + DIR_SEPARATOR_S);
+		musicdir = ::std::string(music_pack_path + DIR_SEPARATOR_S);
 	}
 	else if (!strcmp(configdir, ""))
 	{
-		musicdir = std::string("");
+		musicdir = ::std::string("");
 	}
 	else
 	{
-		musicdir = std::string(configdir + "music" + DIR_SEPARATOR_S);
+		musicdir = ::std::string(configdir + "music" + DIR_SEPARATOR_S);
 	}
 
 	// Load all music packs, by searching for .cfg files.
@@ -952,7 +952,7 @@ static bool IsMusicLump(int lumpnum)
 }
 
 // Dump an example config file containing checksums for all MIDI music found in the WAD directory.
-static void DumpSubstituteConfig(std::string filename)
+static void DumpSubstituteConfig(::std::string filename)
 {
 	sha1_context_t context;
 	sha1_digest_t digest;
@@ -1192,7 +1192,7 @@ static void I_MP_UnRegisterSong(void* handle)
 
 static void* I_MP_RegisterSong(void* data, int len)
 {
-	std::string filename;
+	::std::string filename;
 	Mix_Music* music;
 
 	if (!music_initialized)

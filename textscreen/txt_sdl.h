@@ -12,22 +12,15 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-// DECOUPLE
-//#include "../derma/d_native.h"
-#include "../derma/keybinds.h"
-
 #include <string>
-
 #include <array>
 #include <algorithm>
 #include <ranges>
 
-#include "SDL.h"
-
 #include "txt_common.h"
 
-//#include "txt_main.h"
-//#include "txt_utf8.h"
+#include "SDL.h"
+#include "SDL_scancode.h"
 
 #include "fonts/font.h"
 
@@ -44,9 +37,6 @@ typedef int (*TxtSDLEventCallbackFunc)(SDL_Event* event, void* user_data);
 // callback function. user_data is a void pointer to be passed to the callback function.
 void SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data);
 
-// Time between character blinks in ms
-constexpr int BLINK_PERIOD{250};
-constexpr int LARGE_FONT_THRESHOLD{144};
 
 SDL_Window* SDLWindow;
 static SDL_Surface* screenbuffer;
@@ -64,11 +54,11 @@ static TxtSDLEventCallbackFunc event_callback;
 static void* event_callback_data;
 
 // Font we are using:
-//static const FontType* font;
+static const FontBase* font;
 
 // Dummy "font" that means to try highdpi rendering, or fallback to normal_font otherwise.
 struct highdpi_t{};
-constexpr FontType<highdpi_t, (highdpi_t)nullptr> highdpi_font{"normal-highdpi", nullptr, 8, 16};
+FontType highdpi_font{highdpi_t{}, "normal-highdpi", 8, 16};
 
 // Mapping from SDL keyboard scancode to internal key code.
 //static const int scancode_translate_table[]{SCANCODE_TO_KEYS_ARRAY};
@@ -77,11 +67,11 @@ constexpr FontType<highdpi_t, (highdpi_t)nullptr> highdpi_font{"normal-highdpi",
 //static const struct
 //{
 	//int key;
-	//std::string name;
+	//::std::string name;
 //} key_names[]{KEY_NAMES_ARRAY};
 
 // Unicode key mapping; see codepage.h.
-static constexpr std::array<short, 256> code_page_to_unicode{
+static constexpr ::std::array<uint16_t, 256> code_page_to_unicode{
 		// CP437 control codes:
 	0x0000, 0x263a, 0x263b, 0x2665, // 00 - 0f
 	0x2666, 0x2663, 0x2660, 0x2022,
@@ -164,23 +154,23 @@ static constexpr std::array<short, 256> code_page_to_unicode{
 	0x207f, 0x00b2, 0x25a0, 0x00a0
 };
 
-static constexpr std::array<SDL_Color, 16> ega_colors{
-	SDL_Color{0x00, 0x00, 0x00, 0xff},			// 0: Black
-	SDL_Color{0x00, 0x00, 0xa8, 0xff},			// 1: Blue
-	SDL_Color{0x00, 0xa8, 0x00, 0xff},			// 2: Green
-	SDL_Color{0x00, 0xa8, 0xa8, 0xff},			// 3: Cyan
-	SDL_Color{0xa8, 0x00, 0x00, 0xff},			// 4: Red
-	SDL_Color{0xa8, 0x00, 0xa8, 0xff},			// 5: Magenta
-	SDL_Color{0xa8, 0x54, 0x00, 0xff},			// 6: Brown
-	SDL_Color{0xa8, 0xa8, 0xa8, 0xff},			// 7: Grey
-	SDL_Color{0x54, 0x54, 0x54, 0xff},			// 8: Dark grey
-	SDL_Color{0x54, 0x54, 0xfe, 0xff},			// 9: Bright blue
-	SDL_Color{0x54, 0xfe, 0x54, 0xff},			// 10: Bright green
-	SDL_Color{0x54, 0xfe, 0xfe, 0xff},			// 11: Bright cyan
-	SDL_Color{0xfe, 0x54, 0x54, 0xff},			// 12: Bright red
-	SDL_Color{0xfe, 0x54, 0xfe, 0xff},			// 13: Bright magenta
-	SDL_Color{0xfe, 0xfe, 0x54, 0xff},			// 14: Yellow
-	SDL_Color{0xfe, 0xfe, 0xfe, 0xff}			// 15: Bright white
+static constexpr ::std::array<SDL_Color, 16> ega_colors{
+	SDL_Color{ .r{0x00}, .g{0x00}, .b{0x00}, .a{0xff} },		// 0: Black
+	SDL_Color{ .r{0x00}, .g{0x00}, .b{0xa8}, .a{0xff} },		// 1: Blue
+	SDL_Color{ .r{0x00}, .g{0xa8}, .b{0x00}, .a{0xff} },		// 2: Green
+	SDL_Color{ .r{0x00}, .g{0xa8}, .b{0xa8}, .a{0xff} },		// 3: Cyan
+	SDL_Color{ .r{0xa8}, .g{0x00}, .b{0x00}, .a{0xff} },		// 4: Red
+	SDL_Color{ .r{0xa8}, .g{0x00}, .b{0xa8}, .a{0xff} },		// 5: Magenta
+	SDL_Color{ .r{0xa8}, .g{0x54}, .b{0x00}, .a{0xff} },		// 6: Brown
+	SDL_Color{ .r{0xa8}, .g{0xa8}, .b{0xa8}, .a{0xff} },		// 7: Grey
+	SDL_Color{ .r{0x54}, .g{0x54}, .b{0x54}, .a{0xff} },		// 8: Dark grey
+	SDL_Color{ .r{0x54}, .g{0x54}, .b{0xfe}, .a{0xff} },		// 9: Bright blue
+	SDL_Color{ .r{0x54}, .g{0xfe}, .b{0x54}, .a{0xff} },		// 10: Bright green
+	SDL_Color{ .r{0x54}, .g{0xfe}, .b{0xfe}, .a{0xff} },		// 11: Bright cyan
+	SDL_Color{ .r{0xfe}, .g{0x54}, .b{0x54}, .a{0xff} },		// 12: Bright red
+	SDL_Color{ .r{0xfe}, .g{0x54}, .b{0xfe}, .a{0xff} },		// 13: Bright magenta
+	SDL_Color{ .r{0xfe}, .g{0xfe}, .b{0x54}, .a{0xff} },		// 14: Yellow
+	SDL_Color{ .r{0xfe}, .g{0xfe}, .b{0xfe}, .a{0xff} }			// 15: Bright white
 };
 
 #ifdef _WIN32
@@ -202,11 +192,11 @@ static int Win32_UseLargeFont()
 }
 #endif // _WIN32
 
-static const FontType* FontForName(std::string name)
+static const FontBase& FontForName(::std::string name)
 {
-	constexpr std::array<const FontType*, 4> fonts{&small_font, &normal_font, &large_font, &highdpi_font};
+	constexpr ::std::array<const FontBase&, 4> fonts{small_font, normal_font, large_font, highdpi_font};
 
-	return *std::ranges::find_if(fonts, [&name](auto& iter){ return name.compare(iter->name.data()); });
+	return ::std::ranges::find_if(fonts, [&name](auto& iter){ return name.compare(iter->name.data()); });
 }
 
 // Select the font to use, based on screen resolution. If the highest screen resolution available is less than 640x480, use the small font.
@@ -633,7 +623,9 @@ int GetChar()
 				return TranslateKeysym(&ev.key.keysym);
 			case InputType::text:
 				// We ignore key inputs in this mode, except for a few special cases needed during text input:
-				if (ev.key.keysym.sym == SDL_KeyCode::SDLK_ESCAPE || ev.key.keysym.sym == SDL_KeyCode::SDLK_BACKSPACE || ev.key.keysym.sym == SDL_KeyCode::SDLK_RETURN)
+				if (ev.key.keysym.sym == SDL_KeyCode::SDLK_ESCAPE
+					|| ev.key.keysym.sym == SDL_KeyCode::SDLK_BACKSPACE
+					|| ev.key.keysym.sym == SDL_KeyCode::SDLK_RETURN)
 				{
 					return TranslateKeysym(&ev.key.keysym);
 				}
@@ -704,10 +696,10 @@ int UnicodeCharacter(unsigned c)
 }
 
 // Returns true if the given UTF8 key name is printable to the screen.
-static bool PrintableName(std::string s)
+static bool PrintableName(::std::string s)
 {
 /*
-	std::string p = s;
+	::std::string p = s;
 	while (*p != '\0')
 	{
 		unsigned c{DecodeUTF8(&p)};
@@ -720,7 +712,7 @@ static bool PrintableName(std::string s)
 	return true;
 }
 
-static constexpr std::string_view NameForKey(int key)
+static constexpr ::std::string_view NameForKey(int key)
 {
 	// Overrides purely for aesthetical reasons, so that default window accelerator keys match those of setup.exe.
 	switch (key)
@@ -740,7 +732,7 @@ static constexpr std::string_view NameForKey(int key)
 		if (scancode_translate_table[i] == key)
 		{
 			// we could, if were inclined, make this another find_if and pass ptrdiff_t i = (&iter - &scanccode_translate_table),
-			// which is perfectly safe for our constexpr std::array iterators, but locks in that design
+			// which is perfectly safe for our constexpr ::std::array iterators, but locks in that design
 			// hence we reserve that kind of optimization for when it matters
 
 			// we could also look up SDL key names and use them for our table names to be able to pass them directly
@@ -756,23 +748,23 @@ static constexpr std::string_view NameForKey(int key)
 	{
 		if (iter.key == key)
 		{
-			return std::string_view((const char*)&(iter.name.begin()), iter.name.size());
+			return ::std::string_view((const char*)&(iter.name.begin()), iter.name.size());
 		}
 	}*/
 
 	// NOTE : the lambda is being immediately evaluated to ensure the result of find_if is promptly handed to the original callee, while having error handling
-	// * ideally RVO this freshly constructed rvalue string_view of the constexpr std::array element holding the matching name
+	// * ideally RVO this freshly constructed rvalue string_view of the constexpr ::std::array element holding the matching name
 	// * or else this function returns a default constructed string_view
-	// * worst case performance is one std::move of string_view plus the potentially O(n) comparisons in key_names by find_if
+	// * worst case performance is one ::std::move of string_view plus the potentially O(n) comparisons in key_names by find_if
 	return [&key]()
 	{
-		if (auto&& rv{std::ranges::find_if(key_names, [&key](auto& iter){ return iter.key == key; })}; rv != key_names.end())
+		if (auto&& rv{::std::ranges::find_if(key_names, [&key](auto& iter){ return iter.key == key; })}; rv != key_names.end())
 		{
-			return std::string_view{rv->name.data()};
+			return ::std::string_view{rv->name.data()};
 		}
 		else
 		{
-			return std::string_view{};
+			return ::std::string_view{};
 		}
 	}();
 }
@@ -781,7 +773,7 @@ static constexpr std::string_view NameForKey(int key)
 auto GetKeyDescription(int key)
 {
 /*
-	std::string keyname{NameForKey(key)};
+	::std::string keyname{NameForKey(key)};
 
 	if (keyname)
 	{
@@ -799,10 +791,10 @@ auto GetKeyDescription(int key)
 		snprintf(buf, buf_len, "??%i", key);
 	}
 /**/
-	//std::for_each(NameForKey(key), std::ranges::copy) | std::ranges::transform();
-	//return std::ranges::copy(NameForKey(key), std::string{}, );
+	//::std::for_each(NameForKey(key), ::std::ranges::copy) | ::std::ranges::transform();
+	//return ::std::ranges::copy(NameForKey(key), ::std::string{}, );
 	// I wish input views were supported, so I guess I'll have to wait to learn how to make these until they exist
-	//return NameForKey(key) | std::views::transform_view([](auto iter){ return char(std::toupper(iter)); });
+	//return NameForKey(key) | ::std::views::transform_view([](auto iter){ return char(::std::toupper(iter)); });
 }
 
 // Searches the desktop screen buffer to determine whether there are any blinking characters.
@@ -880,7 +872,7 @@ void SetInputMode(InputType mode)
 	input_mode = mode;
 }
 
-void SetWindowTitle(std::string title)
+void SetWindowTitle(::std::string title)
 {
 	SDL_SetWindowTitle(SDLWindow, title.c_str());
 }
@@ -891,4 +883,4 @@ void SDL_SetEventCallback(TxtSDLEventCallbackFunc callback, void* user_data)
 	event_callback_data = user_data;
 }
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

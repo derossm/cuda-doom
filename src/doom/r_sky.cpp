@@ -23,7 +23,7 @@
 
 // sky mapping
 int skyflatnum;
-int skytexture = -1; // [crispy] initialize
+int skytexture = -1; // initialize
 int skytexturemid;
 
 // R_InitSkyMap
@@ -31,7 +31,7 @@ int skytexturemid;
 void R_InitSkyMap()
 {
 	// skyflatnum = R_FlatNumForName ( SKYFLATNAME );
-	// [crispy] stretch sky
+	// stretch sky
 	if (skytexture == -1)
 	{
 		return;

@@ -101,7 +101,7 @@ void P_RemoveMobj(MapObject* th);
 MapObject* P_SubstNullMobj(MapObject* th);
 bool P_SetMobjState(MapObject* mobj, statenum_t state);
 void P_MobjThinker(MapObject* mobj);
-MapObject* Crispy_PlayerSO(int p); // [crispy] weapon sound sources
+MapObject* Crispy_PlayerSO(int p); // weapon sound sources
 
 void P_SpawnPuff(fixed_t x, fixed_t y, fixed_t z);
 void P_SpawnBlood(fixed_t x, fixed_t y, fixed_t z, int damage, MapObject* target);
@@ -142,7 +142,7 @@ struct intercept_t
 constexpr size_t MAXINTERCEPTS_ORIGINAL{128};
 constexpr size_t MAXINTERCEPTS{(MAXINTERCEPTS_ORIGINAL + 61)};
 
-//extern intercept_t intercepts[MAXINTERCEPTS]; // [crispy] remove INTERCEPTS limit
+//extern intercept_t intercepts[MAXINTERCEPTS]; // remove INTERCEPTS limit
 extern intercept_t* intercept_p;
 
 typedef bool (*traverser_t) (intercept_t* in);
@@ -198,7 +198,7 @@ extern line_t* ceilingline;
 constexpr size_t MAXSPECIALCROSS{20};
 constexpr size_t MAXSPECIALCROSS_ORIGINAL{8};
 
-extern line_t** spechit; // [crispy] remove SPECHIT limit
+extern line_t** spechit; // remove SPECHIT limit
 extern int numspechit;
 
 bool P_CheckPosition(MapObject* thing, fixed_t x, fixed_t y);
@@ -222,18 +222,18 @@ void P_RadiusAttack(MapObject* spot, MapObject* source, int damage);
 // P_SETUP
 //
 extern byte* rejectmatrix;	// for fast sight rejection
-extern int32_t* blockmaplump;	// offsets in blockmap are from here // [crispy] BLOCKMAP limit
-extern int32_t* blockmap; // [crispy] BLOCKMAP limit
+extern int32_t* blockmaplump;	// offsets in blockmap are from here // BLOCKMAP limit
+extern int32_t* blockmap; // BLOCKMAP limit
 extern int bmapwidth;
 extern int bmapheight;	// in mapblocks
 extern fixed_t bmaporgx;
 extern fixed_t bmaporgy;	// origin of block map
 extern MapObject** blocklinks;	// for thing chains
 
-// [crispy] factor out map lump name and number finding into a separate function
+// factor out map lump name and number finding into a separate function
 extern int P_GetNumForMap(int episode, int map, bool critical);
 
-// [crispy] blinking key or skull in the status bar
+// blinking key or skull in the status bar
 constexpr size_t KEYBLINKMASK{0x8};
 constexpr size_t KEYBLINKTICS{(7 * KEYBLINKMASK)};
 extern int st_keyorskull[3];
@@ -241,8 +241,8 @@ extern int st_keyorskull[3];
 //
 // P_INTER
 //
-extern int maxammo[std::size_t(AmmoType::NUMAMMO)];
-extern int clipammo[std::size_t(AmmoType::NUMAMMO)];
+extern int maxammo[::std::size_t(AmmoType::NUMAMMO)];
+extern int clipammo[::std::size_t(AmmoType::NUMAMMO)];
 
 void P_TouchSpecialThing(MapObject* special, MapObject* toucher);
 

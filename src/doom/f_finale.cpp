@@ -57,8 +57,8 @@ struct textscreen_t
 	GameMission mission;
 	int episode;
 	int level;
-	std::string background;
-	std::string text;
+	::std::string background;
+	::std::string text;
 };
 
 static textscreen_t textscreens[]{
@@ -94,9 +94,9 @@ static textscreen_t textscreens[]{
 	{ GameMission::pack_master,	1, 21,	"SLIME16",	M2TEXT }
 };
 
-std::string finaletext;
-std::string finaleflat;
-std::string finaletext_rw;
+::std::string finaletext;
+::std::string finaleflat;
+::std::string finaletext_rw;
 
 void F_StartCast();
 void F_CastTicker();
@@ -145,7 +145,7 @@ void F_StartFinale()
 	finaletext = DEH_String(finaletext);
 	finaleflat = DEH_String(finaleflat);
 
-	finaletext_rw = std::string(finaletext);
+	finaletext_rw = ::std::string(finaletext);
 
 	finalestage = finalestage_t::F_STAGE_TEXT;
 	finalecount = 0;
@@ -224,7 +224,7 @@ void F_Ticker()
 }
 
 // add line breaks for lines exceeding screenwidth
-static inline bool F_AddLineBreak(std::string c)
+static inline bool F_AddLineBreak(::std::string c)
 {
 	/*
 		while (c-- > finaletext_rw)
@@ -254,7 +254,7 @@ void F_TextWrite()
 		int y;
 		int w;
 		int count;
-		std::string ch; // [crispy] un-const
+		::std::string ch; // un-const
 		int c;
 		int cx;
 		int cy;
@@ -324,7 +324,7 @@ void F_TextWrite()
 			w = SHORT (hu_font[c]->width);
 			if (cx+w > ORIGWIDTH)
 			{
-				// [crispy] add line breaks for lines exceeding screenwidth
+				// add line breaks for lines exceeding screenwidth
 				if (F_AddLineBreak(ch))
 				{
 					continue;
@@ -450,7 +450,7 @@ struct actionsound_t
 	const bool early;
 };
 
-static const std::array<const actionsound_t, 19> actionsounds{
+static const ::std::array<const actionsound_t, 19> actionsounds{
 	actionsound_t{ A_PosAttack,		sfxenum_t::sfx_pistol,	false },
 	actionsound_t{ A_SPosAttack,	sfxenum_t::sfx_shotgn,	false },
 	actionsound_t{ A_CPosAttack,	sfxenum_t::sfx_shotgn,	false },
@@ -476,7 +476,7 @@ static const std::array<const actionsound_t, 19> actionsounds{
 static sfxenum_t F_SoundForState(statenum_t st)
 {
 	void* const castaction = (void*)caststate->action.acv;
-	void* const nextaction = (void*)(&states[std::size_t(caststate->nextstate)])->action.acv;
+	void* const nextaction = (void*)(&states[::std::size_t(caststate->nextstate)])->action.acv;
 
 	// fix Doomguy in casting sequence
 	if (!castaction)
@@ -510,7 +510,7 @@ void F_StartCast()
 {
 	wipegamestate = (GameState_t)-1;		// force a screen wipe
 	castnum = 0;
-	caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)];
+	caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].seestate)];
 	casttics = caststate->tics;
 	castdeath = false;
 	finalestage = finalestage_t::F_STAGE_CAST;
@@ -530,7 +530,7 @@ void F_CastTicker()
 		return;			// not time to change state yet
 	}
 
-	if (caststate->tics == -1 || caststate->nextstate == statenum_t::S_NULL || castskip) // [crispy] skippable cast
+	if (caststate->tics == -1 || caststate->nextstate == statenum_t::S_NULL || castskip) // skippable cast
 	{
 		if (castskip)
 		{
@@ -550,12 +550,12 @@ void F_CastTicker()
 			castnum = 0;
 		}
 
-		if ((bool)mobjinfo[std::size_t(castorder[castnum].type)].seesound)
+		if ((bool)mobjinfo[::std::size_t(castorder[castnum].type)].seesound)
 		{
-			S_StartSound(nullptr, F_RandomizeSound(mobjinfo[std::size_t(castorder[castnum].type)].seesound));
+			S_StartSound(nullptr, F_RandomizeSound(mobjinfo[::std::size_t(castorder[castnum].type)].seesound));
 		}
 
-		caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)];
+		caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].seestate)];
 		castframes = 0;
 		castangle = 0; // turnable cast
 		castflip = false; // flippable death sequence
@@ -576,11 +576,11 @@ void F_CastTicker()
 		else
 		{
 			// fix Doomguy in casting sequence
-			if (!castdeath && caststate == &states[std::size_t(statenum_t::S_PLAY_ATK1)])
+			if (!castdeath && caststate == &states[::std::size_t(statenum_t::S_PLAY_ATK1)])
 			{
 				st = statenum_t::S_PLAY_ATK2;
 			}
-			else if (!castdeath && caststate == &states[std::size_t(statenum_t::S_PLAY_ATK2)])
+			else if (!castdeath && caststate == &states[::std::size_t(statenum_t::S_PLAY_ATK2)])
 			{
 				goto stopattack;	// Oh, gross hack!
 			}
@@ -589,7 +589,7 @@ void F_CastTicker()
 				st = caststate->nextstate;
 			}
 		}
-		caststate = &states[std::size_t(st)];
+		caststate = &states[::std::size_t(st)];
 		++castframes;
 
 		sfx = F_SoundForState(st);
@@ -597,7 +597,7 @@ void F_CastTicker()
 				// sound hacks....
 				switch (st)
 				{
-					case statenum_t::S_PLAY_ATK2: sfx = sfxenum_t::sfx_dshtgn; break; // [crispy] fix Doomguy in casting sequence
+					case statenum_t::S_PLAY_ATK2: sfx = sfxenum_t::sfx_dshtgn; break; // fix Doomguy in casting sequence
 					case statenum_t::S_POSS_ATK2: sfx = sfxenum_t::sfx_pistol; break;
 					case statenum_t::S_SPOS_ATK2: sfx = sfxenum_t::sfx_shotgn; break;
 					case statenum_t::S_VILE_ATK2: sfx = sfxenum_t::sfx_vilatk; break;
@@ -638,34 +638,34 @@ void F_CastTicker()
 		castattacking = true;
 		if (castonmelee)
 		{
-			caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].meleestate)];
+			caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].meleestate)];
 		}
 		else
 		{
-			caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].missilestate)];
+			caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].missilestate)];
 		}
 		castonmelee ^= 1;
-		if (caststate == &states[std::size_t(statenum_t::S_NULL)])
+		if (caststate == &states[::std::size_t(statenum_t::S_NULL)])
 		{
 			if (castonmelee)
 			{
-				caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].meleestate)];
+				caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].meleestate)];
 			}
 			else
 			{
-				caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].missilestate)];
+				caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].missilestate)];
 			}
 		}
 	}
 
 	if (castattacking)
 	{
-		if (castframes == 24 || caststate == &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)])
+		if (castframes == 24 || caststate == &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].seestate)])
 		{
 		stopattack:
 			castattacking = false;
 			castframes = 0;
-			caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].seestate)];
+			caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].seestate)];
 		}
 	}
 
@@ -677,11 +677,11 @@ void F_CastTicker()
 		{
 			if (Crispy_Random() < caststate->misc2)
 			{
-				caststate = &states[std::size_t(caststate->misc1)];
+				caststate = &states[::std::size_t(caststate->misc1)];
 			}
 			else
 			{
-				caststate = &states[std::size_t(caststate->nextstate)];
+				caststate = &states[::std::size_t(caststate->nextstate)];
 			}
 
 			casttics = caststate->tics;
@@ -744,13 +744,13 @@ bool F_CastResponder(EventType* ev)
 
 	// go into death frame
 	castdeath = true;
-	if (xdeath && (bool)mobjinfo[std::size_t(castorder[castnum].type)].xdeathstate)
+	if (xdeath && (bool)mobjinfo[::std::size_t(castorder[castnum].type)].xdeathstate)
 	{
-		caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].xdeathstate)];
+		caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].xdeathstate)];
 	}
 	else
 	{
-		caststate = &states[std::size_t(mobjinfo[std::size_t(castorder[castnum].type)].deathstate)];
+		caststate = &states[::std::size_t(mobjinfo[::std::size_t(castorder[castnum].type)].deathstate)];
 	}
 	casttics = caststate->tics;
 	// Allow A_RandomJump() in deaths in cast sequence
@@ -762,32 +762,32 @@ bool F_CastResponder(EventType* ev)
 		}
 		else
 		{
-			caststate = &states[std::size_t(caststate->nextstate)];
+			caststate = &states[::std::size_t(caststate->nextstate)];
 		}
 		casttics = caststate->tics;
 	}
 	castframes = 0;
 	castattacking = false;
-	if (xdeath && (bool)mobjinfo[std::size_t(castorder[castnum].type)].xdeathstate)
+	if (xdeath && (bool)mobjinfo[::std::size_t(castorder[castnum].type)].xdeathstate)
 	{
 		S_StartSound(nullptr, sfxenum_t::sfx_slop);
 	}
-	else if ((bool)mobjinfo[std::size_t(castorder[castnum].type)].deathsound)
+	else if ((bool)mobjinfo[::std::size_t(castorder[castnum].type)].deathsound)
 	{
-		S_StartSound(nullptr, F_RandomizeSound(mobjinfo[std::size_t(castorder[castnum].type)].deathsound));
+		S_StartSound(nullptr, F_RandomizeSound(mobjinfo[::std::size_t(castorder[castnum].type)].deathsound));
 	}
 
 	// flippable death sequence
 	castflip = crispy->flipcorpses && castdeath
-		&& ((int)mobjinfo[std::size_t(castorder[castnum].type)].flags & (int)mobjflag_e::MF_FLIPPABLE) && (Crispy_Random() & 1);
+		&& ((int)mobjinfo[::std::size_t(castorder[castnum].type)].flags & (int)mobjflag_e::MF_FLIPPABLE) && (Crispy_Random() & 1);
 
 	return true;
 }
 
-void F_CastPrint(std::string text)
+void F_CastPrint(::std::string text)
 {
 	/*
-		std::string ch;
+		::std::string ch;
 		int c;
 		int cx;
 		int w;
@@ -849,7 +849,7 @@ void F_CastDrawer()
 	F_CastPrint(DEH_String(castorder[castnum].name));
 
 	// draw the current frame in the middle of the screen
-	spritedef_t* sprdef = &sprites[std::size_t(caststate->sprite)];
+	spritedef_t* sprdef = &sprites[::std::size_t(caststate->sprite)];
 	// the TNT1 sprite is not supposed to be rendered anyway
 	if (!sprdef->numframes && caststate->sprite == spritenum_t::SPR_TNT1)
 	{
@@ -1010,7 +1010,7 @@ void F_BunnyScroll()
 
 static void F_ArtScreenDrawer()
 {
-	std::string lumpname;
+	::std::string lumpname;
 
 	if (gameepisode == 3)
 	{

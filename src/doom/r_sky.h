@@ -21,7 +21,7 @@
 // The sky map is 256*128*4 maps.
 constexpr size_t ANGLETOSKYSHIFT{22};
 
-// [crispy] stretch sky
+// stretch sky
 constexpr size_t SKYSTRETCH_HEIGHT{228};
 
 extern int skytexture;

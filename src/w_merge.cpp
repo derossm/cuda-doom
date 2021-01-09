@@ -15,7 +15,7 @@
 #include <string>
 
 #include "doomtype.h"
-#include "i_swap.h" // [crispy] LONG()
+#include "i_swap.h" // LONG()
 #include "i_system.h"
 #include "m_misc.h"
 #include "w_merge.h"
@@ -60,7 +60,7 @@ static int sprite_frames_alloced;
 //
 // Returns -1 if not found
 
-static int FindInList(searchlist_t* list, std::string name)
+static int FindInList(searchlist_t* list, ::std::string name)
 {
 	int i;
 
@@ -74,8 +74,8 @@ static int FindInList(searchlist_t* list, std::string name)
 }
 
 static bool SetupList(searchlist_t* list, searchlist_t* src_list,
-	std::string startname, std::string endname,
-	std::string startname2, std::string endname2)
+	::std::string startname, ::std::string endname,
+	::std::string startname2, ::std::string endname2)
 {
 	int startlump;
 	int endlump;
@@ -145,7 +145,7 @@ static void InitSpriteList()
 	num_sprite_frames = 0;
 }
 
-static bool ValidSpriteLumpName(std::string name)
+static bool ValidSpriteLumpName(::std::string name)
 {
 	if (name[0] == '\0' || name[1] == '\0'
 		|| name[2] == '\0' || name[3] == '\0')
@@ -172,7 +172,7 @@ static bool ValidSpriteLumpName(std::string name)
 
 // Find a sprite frame
 
-static sprite_frame_t* FindSpriteFrame(std::string name, int frame)
+static sprite_frame_t* FindSpriteFrame(::std::string name, int frame)
 {
 	sprite_frame_t* result;
 	int i;
@@ -561,7 +561,7 @@ void W_PrintDirectory()
 
 // Merge in a file by name
 
-void W_MergeFile(std::string filename)
+void W_MergeFile(::std::string filename)
 {
 	int old_numlumps;
 
@@ -618,7 +618,7 @@ static void W_NWTAddLumps(searchlist_t* list)
 // Merge sprites and flats in the way NWT does with its -af and -as
 // command-line options.
 
-void W_NWTMergeFile(std::string filename, int flags)
+void W_NWTMergeFile(::std::string filename, int flags)
 {
 	int old_numlumps;
 
@@ -664,7 +664,7 @@ void W_NWTMergeFile(std::string filename, int flags)
 // a PWAD, then search the IWAD sprites, removing any sprite lumps that also
 // exist in the PWAD.
 
-void W_NWTDashMerge(std::string filename)
+void W_NWTDashMerge(::std::string filename)
 {
 	wad_file_t* wad_file;
 	int old_numlumps;
@@ -714,15 +714,15 @@ void W_NWTDashMerge(std::string filename)
 	W_CloseFile(wad_file);
 }
 
-// [crispy] dump merged WAD data into a new IWAD file
-int W_MergeDump(std::string file)
+// dump merged WAD data into a new IWAD file
+int W_MergeDump(::std::string file)
 {
 	FILE* fp = NULL;
-	std::string lump_p = NULL;
+	::std::string lump_p = NULL;
 	uint32_t i;
 	uint32_t dir_p;
 
-	// [crispy] WAD directory structure
+	// WAD directory structure
 	struct directory_t
 	{
 		uint32_t pos;
@@ -731,43 +731,43 @@ int W_MergeDump(std::string file)
 	};
 	directory_t* dir = NULL;
 
-	// [crispy] open file for writing
+	// open file for writing
 	fp = fopen(file, "wb");
 	if (!fp)
 	{
 		I_Error("W_MergeDump: Failed writing to file '%s'!", file);
 	}
 
-	// [crispy] prepare directory
+	// prepare directory
 	dir = calloc(numlumps, sizeof(*dir));
 	if (!dir)
 	{
 		I_Error("W_MergeDump: Error allocating memory!");
 	}
 
-	// [crispy] write lumps to file, starting at offset 12
+	// write lumps to file, starting at offset 12
 	fseek(fp, 12, SEEK_SET);
 	for (i = 0; i < numlumps; ++i)
 	{
 		dir[i].pos = LONG(ftell(fp));
 		dir[i].size = LONG(lumpinfo[i]->size);
-		// [crispy] lump names are zero-byte padded
+		// lump names are zero-byte padded
 		memset(dir[i].name, 0, 8);
 		strncpy(dir[i].name, lumpinfo[i]->name, 8);
 
-		// [crispy] avoid flooding Doom's Zone Memory
+		// avoid flooding Doom's Zone Memory
 		lump_p = I_Realloc(lump_p, lumpinfo[i]->size);
 		W_ReadLump(i, lump_p);
 		fwrite(lump_p, 1, lumpinfo[i]->size, fp);
 	}
 	free(lump_p);
 
-	// [crispy] write directory
+	// write directory
 	dir_p = LONG(ftell(fp));
 	fwrite(dir, sizeof(*dir), i, fp);
 	free(dir);
 
-	// [crispy] write WAD header
+	// write WAD header
 	fseek(fp, 0, SEEK_SET);
 	fwrite("IWAD", 1, 4, fp);
 	i = LONG(i);

@@ -1292,10 +1292,10 @@ void OPL3_WriteRegBuffered(opl3_chip* chip, Bit16u reg, Bit8u v)
 void OPL3_GenerateStream(opl3_chip* chip, Bit16s* sndptr, Bit32u numsamples)
 {
 	// FIXME once params fixed to be container, remove this generate_n and mixer
-	std::vector<Bit16s> mixer(numsamples);
-	std::generate_n(std::begin(mixer), numsamples, [&sndptr](auto& iter) mutable {iter = *sndptr; sndptr += 2;});
+	::std::vector<Bit16s> mixer(numsamples);
+	::std::generate_n(::std::begin(mixer), numsamples, [&sndptr](auto& iter) mutable {iter = *sndptr; sndptr += 2;});
 
-	std::ranges::for_each(mixer, [&chip](auto& iter){OPL3_GenerateResampled(chip, &iter);});
+	::std::ranges::for_each(mixer, [&chip](auto& iter){OPL3_GenerateResampled(chip, &iter);});
 	/* for(size_t i{0}; i < numsamples; ++i)
 	{
 		OPL3_GenerateResampled(chip, sndptr);

@@ -313,7 +313,7 @@ static uint8_t last_perc[PERCUSSION_LOG_LEN];
 static unsigned last_perc_count;
 
 // Configuration file variable, containing the port number for the adlib chip.
-std::string snd_dmxoption{"-opl3"}; // [crispy] default to OPL3 emulation
+::std::string snd_dmxoption{"-opl3"}; // default to OPL3 emulation
 int opl_io_port{0x388};
 
 // If true, OPL sound channels are reversed to their correct arrangement
@@ -1314,7 +1314,7 @@ static bool IsMid(byte* mem, int len)
 	return len > 4 && !memcmp(mem, "MThd", 4);
 }
 
-static bool ConvertMus(byte* musdata, int len, std::string filename)
+static bool ConvertMus(byte* musdata, int len, ::std::string filename)
 {
 	auto instream{mem_fopen_read(musdata, len)};
 	auto outstream{mem_fopen_write()};
@@ -1347,7 +1347,7 @@ static midi_file_t* I_OPL_RegisterSong(byte* data, int len)
 	// MUS files begin with "MUS"; reject anything which doesnt have this signature
 	auto filename{M_TempFile("doom.mid")};
 
-	// [crispy] remove MID file size limit
+	// remove MID file size limit
 	if (IsMid(data, len) /* && len < MAXMIDLENGTH */)
 	{
 		M_WriteFile(*filename, data, len);
@@ -1410,7 +1410,7 @@ static bool I_OPL_InitMusic()
 	}
 
 	// The DMXOPTION variable must be set to enable OPL3 support. As an extension, we also allow it to be set from the config file.
-	std::string dmxoption = getenv("DMXOPTION");
+	::std::string dmxoption = getenv("DMXOPTION");
 	if (!dmxoption)
 	{
 		dmxoption = snd_dmxoption != nullptr ? snd_dmxoption : "";
@@ -1507,7 +1507,7 @@ static bool ChannelInUse(opl_channel_data_t* channel)
 	return false;
 }
 
-void I_OPL_DevMessages(std::string result, size_t result_len)
+void I_OPL_DevMessages(::std::string result, size_t result_len)
 {
 	if (num_tracks == 0)
 	{

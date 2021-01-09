@@ -43,9 +43,9 @@ int main(int argc, char** argv)
 		crispy->sdlversion = []() {
 			SDL_version version;
 			SDL_GetVersion(&version);
-			return std::string(version.major + "." + version.minor + "." + version.patch);
+			return ::std::string(version.major + "." + version.minor + "." + version.patch);
 		}();
-		crispy->platform = std::string(SDL_GetPlatform());
+		crispy->platform = ::std::string(SDL_GetPlatform());
 	}
 
 #if defined(_WIN32)

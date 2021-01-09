@@ -24,10 +24,10 @@ constexpr size_t IWAD_DOOM1{(1 << 4)};			// doom1.wad
 constexpr size_t IWAD_CHEX{(1 << 5)};			// chex.wad
 
 execute_context_t* NewExecuteContext();
-void AddCmdLineParameter(execute_context_t* context, std::string s, ...) PRINTF_ATTR(2, 3);
+void AddCmdLineParameter(execute_context_t* context, ::std::string s, ...) PRINTF_ATTR(2, 3);
 void PassThroughArguments(execute_context_t* context);
 int ExecuteDoom(execute_context_t* context);
 int FindInstalledIWADs();
-bool OpenFolder(std::string path);
+bool OpenFolder(::std::string path);
 
 cudadoom::txt::WindowAction* TestConfigAction();

@@ -128,7 +128,7 @@ constexpr size_t ST_MUCHPAIN{20};
 //		into a buffer,
 //		or into the frame buffer?
 
-// [crispy] in non-widescreen mode WIDESCREENDELTA is 0 anyway
+// in non-widescreen mode WIDESCREENDELTA is 0 anyway
 #define ST_WIDESCREENDELTA ((screenblocks >= CRISPY_HUD + 3 && (!automapactive || crispy->automapoverlay)) ? WIDESCREENDELTA : 0)
 
 // AMMO number pos.
@@ -258,7 +258,7 @@ constexpr size_t ST_OUTHEIGHT{1};
 constexpr size_t ST_MAPTITLEY{0};
 constexpr size_t ST_MAPHEIGHT{1};
 
-typedef void (*load_callback_t)(std::string lumpname, patch_t** variable);
+typedef void (*load_callback_t)(::std::string lumpname, patch_t** variable);
 
 // graphics are drawn to a backing screen and blitted to the real screen
 pixel_t* st_backing_screen;
@@ -287,7 +287,7 @@ static st_stateenum_t st_gamestate;
 // whether left-side main status bar is active
 static bool st_statusbaron;
 
-// [crispy] distinguish classic status bar with background and player face from Crispy HUD
+// distinguish classic status bar with background and player face from Crispy HUD
 static bool st_crispyhud;
 static bool st_classicstatusbar;
 static bool st_statusbarface;
@@ -326,7 +326,7 @@ static patch_t* tallpercent;
 static patch_t* shortnum[10];
 
 // 3 key-cards, 3 skulls
-static patch_t* keys[std::size_t(CardType::NUMCARDS) + 3]; // [crispy] support combined card and skull keys
+static patch_t* keys[::std::size_t(CardType::NUMCARDS) + 3]; // support combined card and skull keys
 
 // face status patches
 static patch_t* faces[ST_NUMFACES];
@@ -354,7 +354,7 @@ static st_binicon_t w_armsbg;
 
 // weapon ownership widgets
 static st_multicon_t w_arms[6];
-// [crispy] show SSG availability in the Shotgun slot of the arms widget
+// show SSG availability in the Shotgun slot of the arms widget
 static int st_shotguns;
 
 // face status widget
@@ -379,7 +379,7 @@ static int st_fragscount;
 static int st_oldhealth = -1;
 
 // used for evil grin
-static bool oldweaponsowned[std::size_t(WeaponType::NUMWEAPONS)];
+static bool oldweaponsowned[::std::size_t(WeaponType::NUMWEAPONS)];
 
 // count until face changes
 static int st_facecount = 0;
@@ -389,7 +389,7 @@ static int st_faceindex = 0;
 
 // holds key-type for each key box on bar
 static int keyboxes[3];
-// [crispy] blinking key or skull in the status bar
+// blinking key or skull in the status bar
 int st_keyorskull[3];
 
 // a random number per tick
@@ -402,7 +402,7 @@ cheatseq_t cheat_ammonokey = CHEAT("idfa", 0);
 cheatseq_t cheat_noclip = CHEAT("idspispopd", 0);
 cheatseq_t cheat_commercial_noclip = CHEAT("idclip", 0);
 
-cheatseq_t cheat_powerup[8] = // [crispy] idbehold0
+cheatseq_t cheat_powerup[8] = // idbehold0
 {
 	CHEAT("idbeholdv", 0),
 	CHEAT("idbeholds", 0),
@@ -411,35 +411,35 @@ cheatseq_t cheat_powerup[8] = // [crispy] idbehold0
 	CHEAT("idbeholda", 0),
 	CHEAT("idbeholdl", 0),
 	CHEAT("idbehold", 0),
-	CHEAT("idbehold0", 0), // [crispy] idbehold0
+	CHEAT("idbehold0", 0), // idbehold0
 };
 
 cheatseq_t cheat_choppers = CHEAT("idchoppers", 0);
 cheatseq_t cheat_clev = CHEAT("idclev", 2);
 cheatseq_t cheat_mypos = CHEAT("idmypos", 0);
 
-// [crispy] pseudo cheats to eat up the first digit typed after a cheat expecting two parameters
+// pseudo cheats to eat up the first digit typed after a cheat expecting two parameters
 cheatseq_t cheat_mus1 = CHEAT("idmus", 1);
 cheatseq_t cheat_clev1 = CHEAT("idclev", 1);
 
-// [crispy] new cheats
+// new cheats
 cheatseq_t cheat_weapon = CHEAT("tntweap", 1);
-cheatseq_t cheat_massacre = CHEAT("tntem", 0); // [crispy] PrBoom+
-cheatseq_t cheat_massacre2 = CHEAT("killem", 0); // [crispy] MBF
-cheatseq_t cheat_massacre3 = CHEAT("fhhall", 0); // [crispy] Doom95
+cheatseq_t cheat_massacre = CHEAT("tntem", 0); // PrBoom+
+cheatseq_t cheat_massacre2 = CHEAT("killem", 0); // MBF
+cheatseq_t cheat_massacre3 = CHEAT("fhhall", 0); // Doom95
 cheatseq_t cheat_hom = CHEAT("tnthom", 0);
-cheatseq_t cheat_notarget = CHEAT("notarget", 0); // [crispy] PrBoom+
-cheatseq_t cheat_notarget2 = CHEAT("fhshh", 0); // [crispy] Doom95
+cheatseq_t cheat_notarget = CHEAT("notarget", 0); // PrBoom+
+cheatseq_t cheat_notarget2 = CHEAT("fhshh", 0); // Doom95
 cheatseq_t cheat_spechits = CHEAT("spechits", 0);
 cheatseq_t cheat_nomomentum = CHEAT("nomomentum", 0);
 cheatseq_t cheat_showfps = CHEAT("showfps", 0);
-cheatseq_t cheat_showfps2 = CHEAT("idrate", 0); // [crispy] PrBoom+
+cheatseq_t cheat_showfps2 = CHEAT("idrate", 0); // PrBoom+
 cheatseq_t cheat_goobers = CHEAT("goobers", 0);
-cheatseq_t cheat_version = CHEAT("version", 0); // [crispy] Russian Doom
+cheatseq_t cheat_version = CHEAT("version", 0); // Russian Doom
 cheatseq_t cheat_skill = CHEAT("skill", 0);
 static char msg[ST_MSGWIDTH];
 
-// [crispy] restrict cheat usage
+// restrict cheat usage
 static inline int cht_CheckCheatSP(cheatseq_t* cht, char key)
 {
 	if (!cht_CheckCheat(cht, key))
@@ -466,7 +466,7 @@ void ST_refreshBackground(bool force)
 	{
 		V_UseBuffer(st_backing_screen);
 
-		// [crispy] this is our own local copy of R_FillBackScreen() to
+		// this is our own local copy of R_FillBackScreen() to
 		// fill the entire background of st_backing_screen with the bezel pattern,
 		// so it appears to the left and right of the status bar in widescreen mode
 		if ((SCREENWIDTH >> crispy->hires) != ST_WIDTH)
@@ -475,7 +475,7 @@ void ST_refreshBackground(bool force)
 			int y;
 			byte* src;
 			pixel_t* dest;
-			std::string name = (gamemode == GameMode::commercial) ? DEH_String("GRNROCK") : DEH_String("FLOOR7_2");
+			::std::string name = (gamemode == GameMode::commercial) ? DEH_String("GRNROCK") : DEH_String("FLOOR7_2");
 
 			src = W_CacheLumpName<patch_t>(name, pu_tags_t::PU_CACHE);
 			dest = st_backing_screen;
@@ -494,7 +494,7 @@ void ST_refreshBackground(bool force)
 				}
 			}
 
-			// [crispy] preserve bezel bottom edge
+			// preserve bezel bottom edge
 			if (scaledviewwidth == SCREENWIDTH)
 			{
 				patch_t* const patch = W_CacheLumpName<patch_t>(DEH_String("brdr_b"), pu_tags_t::PU_CACHE);
@@ -507,7 +507,7 @@ void ST_refreshBackground(bool force)
 			}
 		}
 
-		// [crispy] center unity rerelease wide status bar
+		// center unity rerelease wide status bar
 		if (sbar->width > ORIGWIDTH && sbar->leftoffset == 0)
 		{
 			V_DrawPatch(ST_X + (ORIGWIDTH - sbar->width) / 2, 0, sbar);
@@ -523,7 +523,7 @@ void ST_refreshBackground(bool force)
 			V_DrawPatch(ST_ARMSBGX, 0, sbarr);
 		}
 
-		// [crispy] back up arms widget background
+		// back up arms widget background
 		if (!deathmatch)
 		{
 			V_DrawPatch(ST_ARMSBGX, 0, armsbg);
@@ -580,21 +580,21 @@ static int ST_cheat_massacre()
 		}
 	}
 
-	// [crispy] disable brain spitters
+	// disable brain spitters
 	numbraintargets = -1;
 
 	return killcount;
 }
 
-// [crispy] trigger all special lines available on the map
+// trigger all special lines available on the map
 static int ST_cheat_spechits()
 {
 	int speciallines = 0;
-	bool origcards[std::size_t(CardType::NUMCARDS)];
+	bool origcards[::std::size_t(CardType::NUMCARDS)];
 	line_t dummy;
 
-	// [crispy] temporarily give all keys
-	for (size_t i{0}; i < std::size_t(CardType::NUMCARDS); ++i)
+	// temporarily give all keys
+	for (size_t i{0}; i < ::std::size_t(CardType::NUMCARDS); ++i)
 	{
 		origcards[i] = plyr->cards[i];
 		plyr->cards[i] = true;
@@ -604,7 +604,7 @@ static int ST_cheat_spechits()
 	{
 		if (lines[i].special)
 		{
-			// [crispy] do not trigger level exit switches/lines or teleporters
+			// do not trigger level exit switches/lines or teleporters
 			if (lines[i].special == 11 || lines[i].special == 51 ||
 				lines[i].special == 52 || lines[i].special == 124 ||
 				lines[i].special == 39 || lines[i].special == 97)
@@ -612,7 +612,7 @@ static int ST_cheat_spechits()
 				continue;
 			}
 
-			// [crispy] special without tag --> DR linedef type
+			// special without tag --> DR linedef type
 			// do not change door direction if it is already moving
 			if (lines[i].tag == 0 &&
 				lines[i].sidenum[1] != NO_INDEX &&
@@ -629,16 +629,16 @@ static int ST_cheat_spechits()
 		}
 	}
 
-	for (size_t i{0}; i < std::size_t(CardType::NUMCARDS); ++i)
+	for (size_t i{0}; i < ::std::size_t(CardType::NUMCARDS); ++i)
 	{
 		plyr->cards[i] = origcards[i];
 	}
 
-	// [crispy] trigger tag 666/667 events
+	// trigger tag 666/667 events
 	dummy.tag = 666;
 	if (gamemode == GameMode::commercial)
 	{
-		// [crispy] Master Levels in PC slot 7
+		// Master Levels in PC slot 7
 		if (gamemap == 7 || (gamemission == GameMission::pack_master && (gamemap == 14 || gamemap == 15 || gamemap == 16)))
 		{
 			// Mancubi
@@ -679,7 +679,7 @@ static int ST_cheat_spechits()
 	return (speciallines);
 }
 
-// [crispy] only give available weapons
+// only give available weapons
 static bool WeaponAvailable(int w)
 {
 	if (w < 0 || w >= (int)WeaponType::NUMWEAPONS)
@@ -700,12 +700,12 @@ static bool WeaponAvailable(int w)
 	return true;
 }
 
-// [crispy] give or take backpack
+// give or take backpack
 static void GiveBackpack(bool give)
 {
 	if (give && !plyr->backpack)
 	{
-		for (size_t i{0}; i < std::size_t(AmmoType::NUMAMMO); ++i)
+		for (size_t i{0}; i < ::std::size_t(AmmoType::NUMAMMO); ++i)
 		{
 			plyr->maxammo[i] *= 2;
 		}
@@ -713,7 +713,7 @@ static void GiveBackpack(bool give)
 	}
 	else if (!give && plyr->backpack)
 	{
-		for (size_t i{0}; i < std::size_t(AmmoType::NUMAMMO); ++i)
+		for (size_t i{0}; i < ::std::size_t(AmmoType::NUMAMMO); ++i)
 		{
 			plyr->maxammo[i] /= 2;
 		}
@@ -749,7 +749,7 @@ bool ST_Responder(EventType* ev)
 			// 'dqd' cheat for toggleable god mode
 			if (cht_CheckCheatSP(&cheat_god, ev->data2))
 			{
-				// [crispy] dead players are first respawned at the current position
+				// dead players are first respawned at the current position
 				mapthing_t mt{0};
 				if (plyr->playerstate == PlayerState::dead)
 				{
@@ -762,7 +762,7 @@ bool ST_Responder(EventType* ev)
 					mt.type = consoleplayer + 1;
 					P_SpawnPlayer(&mt);
 
-					// [crispy] spawn a teleport fog
+					// spawn a teleport fog
 					an = plyr->angle >> ANGLETOFINESHIFT;
 					P_SpawnMobj(plyr->x + 20 * finecosine[an], plyr->y + 20 * finesine[an], plyr->z, mobjtype_t::MT_TFOG);
 					S_StartSound(plyr, (int)sfxenum_t::sfx_slop);
@@ -784,7 +784,7 @@ bool ST_Responder(EventType* ev)
 					plyr->message = DEH_String(STSTR_DQDOFF);
 				}
 
-				// [crispy] eat key press when respawning
+				// eat key press when respawning
 				if (mt.type)
 				{
 					return true;
@@ -796,12 +796,12 @@ bool ST_Responder(EventType* ev)
 				plyr->armorpoints = deh_idfa_armor;
 				plyr->armortype = deh_idfa_armor_class;
 
-				// [crispy] give backpack
+				// give backpack
 				GiveBackpack(true);
 
 				for (size_t i{0}; i < (int)WeaponType::NUMWEAPONS; ++i)
 				{
-					if (WeaponAvailable(i)) // [crispy] only give available weapons
+					if (WeaponAvailable(i)) // only give available weapons
 					{
 						plyr->weaponowned[i] = true;
 					}
@@ -923,7 +923,7 @@ bool ST_Responder(EventType* ev)
 
 				return isdigit(buf[0]);
 			}
-			// [crispy] allow both idspispopd and idclip cheats in all gamemissions
+			// allow both idspispopd and idclip cheats in all gamemissions
 			else if (cht_CheckCheatSP(&cheat_noclip, ev->data2) || cht_CheckCheatSP(&cheat_commercial_noclip, ev->data2))
 			{
 				// Noclip cheat.
@@ -980,8 +980,8 @@ bool ST_Responder(EventType* ev)
 			// 'choppers' invulnerability & chainsaw
 			else if (cht_CheckCheatSP(&cheat_choppers, ev->data2))
 			{
-				plyr->weaponowned[std::size_t(WeaponType::wp_chainsaw)] = true;
-				plyr->powers[std::size_t(PowerType_t::pw_invulnerability)] = true;
+				plyr->weaponowned[::std::size_t(WeaponType::wp_chainsaw)] = true;
+				plyr->powers[::std::size_t(PowerType_t::pw_invulnerability)] = true;
 				plyr->message = DEH_String(STSTR_CHOPPERS);
 			}
 			// 'mypos' for player position
@@ -996,7 +996,7 @@ bool ST_Responder(EventType* ev)
 				plyr->message = buf;
 				*/
 				// extra high precision IDMYPOS variant, updates for 10 seconds
-				plyr->powers[std::size_t(PowerType_t::pw_mapcoords)] = 10 * TICRATE;
+				plyr->powers[::std::size_t(PowerType_t::pw_mapcoords)] = 10 * TICRATE;
 			}
 
 			// now follow "critical" Crispy Doom specific cheats
@@ -1006,14 +1006,14 @@ bool ST_Responder(EventType* ev)
 				|| cht_CheckCheatSP(&cheat_massacre3, ev->data2))
 			{
 				int killcount = ST_cheat_massacre();
-				std::string const monster = (gameversion == GameVersion::exe_chex) ? "Flemoid" : "Monster";
-				std::string const killed = (gameversion == GameVersion::exe_chex) ? "returned" : "killed";
+				::std::string const monster = (gameversion == GameVersion::exe_chex) ? "Flemoid" : "Monster";
+				::std::string const killed = (gameversion == GameVersion::exe_chex) ? "returned" : "killed";
 
 				//M_snprintf(msg, sizeof(msg), "%s%d %s%s%s %s", crstr[CR_GOLD],
 				//			killcount, crstr[CR_NONE], monster, (killcount == 1) ? "" : "s", killed);
 				//plyr->message = msg;
 			}
-			// [crispy] implement Crispy Doom's "spechits" cheat
+			// implement Crispy Doom's "spechits" cheat
 			else if (cht_CheckCheatSP(&cheat_spechits, ev->data2))
 			{
 				int triggeredlines = ST_cheat_spechits();
@@ -1022,7 +1022,7 @@ bool ST_Responder(EventType* ev)
 				//		triggeredlines, crstr[CR_NONE], (triggeredlines == 1) ? "" : "s");
 				//plyr->message = msg;
 			}
-			// [crispy] implement PrBoom+'s "notarget" cheat
+			// implement PrBoom+'s "notarget" cheat
 			else if (cht_CheckCheatSP(&cheat_notarget, ev->data2) || cht_CheckCheatSP(&cheat_notarget2, ev->data2))
 			{
 				plyr->cheats ^= (int)CheatType::CF_NOTARGET;
@@ -1031,7 +1031,7 @@ bool ST_Responder(EventType* ev)
 				{
 					thinker_t* th;
 
-					// [crispy] let mobjs forget their target and tracer
+					// let mobjs forget their target and tracer
 					//for (th = thinkercap.next; th != &thinkercap; th = th->next)
 					//{
 						//if (th->function.acp1 == (actionf_p1)P_MobjThinker)
@@ -1063,7 +1063,7 @@ bool ST_Responder(EventType* ev)
 							(plyr->cheats & (int)CheatType::CF_NOTARGET) ? "ON" : "OFF"); */
 				plyr->message = msg;
 			}
-			// [crispy] implement "nomomentum" cheat, ne debug aid -- pretty useless, though
+			// implement "nomomentum" cheat, ne debug aid -- pretty useless, though
 			else if (cht_CheckCheatSP(&cheat_nomomentum, ev->data2))
 			{
 				plyr->cheats ^= (int)CheatType::CF_NOMOMENTUM;
@@ -1072,7 +1072,7 @@ bool ST_Responder(EventType* ev)
 						(plyr->cheats & (int)CheatType::CF_NOMOMENTUM) ? "ON" : "OFF"); */
 				plyr->message = msg;
 			}
-			// [crispy] implement Crispy Doom's "goobers" cheat, ne easter egg
+			// implement Crispy Doom's "goobers" cheat, ne easter egg
 			else if (cht_CheckCheatSP(&cheat_goobers, ev->data2))
 			{
 				extern void EV_DoGoobers();
@@ -1082,7 +1082,7 @@ bool ST_Responder(EventType* ev)
 				/* M_snprintf(msg, sizeof(msg), "Get Psyched!"); */
 				plyr->message = msg;
 			}
-			// [crispy] implement Boom's "tntweap?" weapon cheats
+			// implement Boom's "tntweap?" weapon cheats
 			else if (cht_CheckCheatSP(&cheat_weapon, ev->data2))
 			{
 				char buf[2];
@@ -1091,24 +1091,24 @@ bool ST_Responder(EventType* ev)
 				cht_GetParam(&cheat_weapon, buf);
 				w = *buf - '1';
 
-				// [crispy] TNTWEAP0 takes away all weapons and ammo except for the pistol and 50 bullets
+				// TNTWEAP0 takes away all weapons and ammo except for the pistol and 50 bullets
 				if (w == -1)
 				{
 					GiveBackpack(false);
-					plyr->powers[std::size_t(PowerType_t::pw_strength)] = 0;
+					plyr->powers[::std::size_t(PowerType_t::pw_strength)] = 0;
 
-					for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
+					for (size_t i{0}; i < ::std::size_t(WeaponType::NUMWEAPONS); ++i)
 					{
 						oldweaponsowned[i] = plyr->weaponowned[i] = false;
 					}
-					oldweaponsowned[std::size_t(WeaponType::wp_fist)] = plyr->weaponowned[std::size_t(WeaponType::wp_fist)] = true;
-					oldweaponsowned[std::size_t(WeaponType::wp_pistol)] = plyr->weaponowned[std::size_t(WeaponType::wp_pistol)] = true;
+					oldweaponsowned[::std::size_t(WeaponType::wp_fist)] = plyr->weaponowned[::std::size_t(WeaponType::wp_fist)] = true;
+					oldweaponsowned[::std::size_t(WeaponType::wp_pistol)] = plyr->weaponowned[::std::size_t(WeaponType::wp_pistol)] = true;
 
-					for (size_t i{0}; i < std::size_t(AmmoType::NUMAMMO); ++i)
+					for (size_t i{0}; i < ::std::size_t(AmmoType::NUMAMMO); ++i)
 					{
 						plyr->ammo[i] = 0;
 					}
-					plyr->ammo[std::size_t(AmmoType::am_clip)] = deh_initial_bullets;
+					plyr->ammo[::std::size_t(AmmoType::am_clip)] = deh_initial_bullets;
 
 					if (plyr->readyweapon > WeaponType::wp_pistol)
 					{
@@ -1120,7 +1120,7 @@ bool ST_Responder(EventType* ev)
 					return true;
 				}
 
-				// [crispy] only give available weapons
+				// only give available weapons
 				if (!WeaponAvailable(w))
 				{
 					return false;
@@ -1129,7 +1129,7 @@ bool ST_Responder(EventType* ev)
 				// make '1' apply beserker strength toggle
 				if (w == (int)WeaponType::wp_fist)
 				{
-					if (!plyr->powers[std::size_t(PowerType_t::pw_strength)])
+					if (!plyr->powers[::std::size_t(PowerType_t::pw_strength)])
 					{
 						P_GivePower(plyr, (int)PowerType_t::pw_strength);
 						S_StartSound(NULL, sfxenum_t::sfx_getpow);
@@ -1137,7 +1137,7 @@ bool ST_Responder(EventType* ev)
 					}
 					else
 					{
-						plyr->powers[std::size_t(PowerType_t::pw_strength)] = 0;
+						plyr->powers[::std::size_t(PowerType_t::pw_strength)] = 0;
 						plyr->message = DEH_String(STSTR_BEHOLDX);
 					}
 				}
@@ -1146,7 +1146,7 @@ bool ST_Responder(EventType* ev)
 					if (!plyr->weaponowned[w])
 					{
 						extern bool P_GiveWeapon(Player * player, WeaponType weapon, bool dropped);
-						extern std::string const WeaponPickupMessages[std::size_t(WeaponType::NUMWEAPONS)];
+						extern ::std::string const WeaponPickupMessages[::std::size_t(WeaponType::NUMWEAPONS)];
 
 						P_GiveWeapon(plyr, (WeaponType)w, false);
 						S_StartSound(NULL, sfxenum_t::sfx_wpnup);
@@ -1156,15 +1156,15 @@ bool ST_Responder(EventType* ev)
 							plyr->message = DEH_String(WeaponPickupMessages[w]);
 						}
 
-						// [crispy] trigger evil grin now
+						// trigger evil grin now
 						plyr->bonuscount += 2;
 					}
 					else
 					{
-						// [crispy] no reason for evil grin
+						// no reason for evil grin
 						oldweaponsowned[w] = plyr->weaponowned[w] = false;
 
-						// [crispy] removed current weapon, select another one
+						// removed current weapon, select another one
 						if (w == (int)plyr->readyweapon)
 						{
 							extern bool P_CheckAmmo(Player * player);
@@ -1187,7 +1187,7 @@ bool ST_Responder(EventType* ev)
 		// implement Crispy Doom's "showfps" cheat, ne debug aid
 		if (cht_CheckCheat(&cheat_showfps, ev->data2) || cht_CheckCheat(&cheat_showfps2, ev->data2))
 		{
-			plyr->powers[std::size_t(PowerType_t::pw_showfps)] ^= 1;
+			plyr->powers[::std::size_t(PowerType_t::pw_showfps)] ^= 1;
 		}
 		// implement Boom's "tnthom" cheat
 		else if (cht_CheckCheat(&cheat_hom, ev->data2))
@@ -1215,14 +1215,14 @@ bool ST_Responder(EventType* ev)
 		// Show skill level
 		else if (cht_CheckCheat(&cheat_skill, ev->data2))
 		{
-			extern std::string skilltable[];
+			extern ::std::string skilltable[];
 
 			/* M_snprintf(msg, sizeof(msg), "Skill: %s", skilltable[BETWEEN(0,5,(int) gameskill+1)]); */
 			plyr->message = msg;
 		}
 
 		// 'clev' change-level cheat
-		if (!netgame && cht_CheckCheat(&cheat_clev, ev->data2) && !menuactive) // [crispy] prevent only half the screen being updated
+		if (!netgame && cht_CheckCheat(&cheat_clev, ev->data2) && !menuactive) // prevent only half the screen being updated
 		{
 			char buf[3];
 			int epsd;
@@ -1410,10 +1410,10 @@ void ST_updateFaceWidget()
 	static int priority = 0;
 	bool doevilgrin;
 
-	// [crispy] fix status bar face hysteresis
+	// fix status bar face hysteresis
 	int painoffset;
-	// [crispy] no evil grin or rampage face in god mode
-	const bool invul = (plyr->cheats & (int)CheatType::CF_GODMODE) || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)];
+	// no evil grin or rampage face in god mode
+	const bool invul = (plyr->cheats & (int)CheatType::CF_GODMODE) || plyr->powers[::std::size_t(PowerType_t::pw_invulnerability)];
 
 	painoffset = ST_calcPainOffset();
 
@@ -1436,7 +1436,7 @@ void ST_updateFaceWidget()
 			// picking up bonus
 			doevilgrin = false;
 
-			for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
+			for (size_t i{0}; i < ::std::size_t(WeaponType::NUMWEAPONS); ++i)
 			{
 				if (oldweaponsowned[i] != plyr->weaponowned[i])
 				{
@@ -1444,7 +1444,7 @@ void ST_updateFaceWidget()
 					oldweaponsowned[i] = plyr->weaponowned[i];
 				}
 			}
-			// [crispy] no evil grin in god mode
+			// no evil grin in god mode
 			if (doevilgrin && !invul)
 			{
 				// evil grin if just picked up weapon
@@ -1462,10 +1462,10 @@ void ST_updateFaceWidget()
 			// being attacked
 			priority = 7;
 
-			// [crispy] show "Ouch Face" as intended
+			// show "Ouch Face" as intended
 			if (st_oldhealth - plyr->health > ST_MUCHPAIN)
 			{
-				// [crispy] raise "Ouch Face" priority
+				// raise "Ouch Face" priority
 				priority = 8;
 				st_facecount = ST_TURNCOUNT;
 				faceindex = ST_OUCHOFFSET;
@@ -1539,7 +1539,7 @@ void ST_updateFaceWidget()
 			{
 				lastattackdown = ST_RAMPAGEDELAY;
 			}
-			// [crispy] no rampage face in god mode
+			// no rampage face in god mode
 			else if (!--lastattackdown && !invul)
 			{
 				priority = 5;
@@ -1588,13 +1588,13 @@ void ST_updateWidgets()
 	// must redirect the pointer if the ready weapon has changed.
 	// if (w_ready.data != plyr->readyweapon)
 	// {
-	if (weaponinfo[std::size_t(plyr->readyweapon)].ammo == AmmoType::am_noammo)
+	if (weaponinfo[::std::size_t(plyr->readyweapon)].ammo == AmmoType::am_noammo)
 	{
 		w_ready.num = &largeammo;
 	}
 	else
 	{
-		w_ready.num = &plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
+		w_ready.num = &plyr->ammo[::std::size_t(weaponinfo[::std::size_t(plyr->readyweapon)].ammo)];
 	}
 	//{
 	// static TimeType tic=0;
@@ -1619,7 +1619,7 @@ void ST_updateWidgets()
 
 		if (plyr->cards[i + 3])
 		{
-			keyboxes[i] = (keyboxes[i] == -1) ? i + 3 : i + 6; // [crispy] support combined card and skull keys
+			keyboxes[i] = (keyboxes[i] == -1) ? i + 3 : i + 6; // support combined card and skull keys
 		}
 
 		// blinking key or skull in the status bar
@@ -1707,10 +1707,10 @@ void ST_doPaletteStuff()
 
 	int cnt = plyr->damagecount;
 
-	if (plyr->powers[std::size_t(PowerType_t::pw_strength)])
+	if (plyr->powers[::std::size_t(PowerType_t::pw_strength)])
 	{
 		// slowly fade the berzerk out
-		bzc = 12 - (plyr->powers[std::size_t(PowerType_t::pw_strength)] >> 6);
+		bzc = 12 - (plyr->powers[::std::size_t(PowerType_t::pw_strength)] >> 6);
 
 		if (bzc > cnt)
 		{
@@ -1746,7 +1746,7 @@ void ST_doPaletteStuff()
 
 		palette += STARTBONUSPALS;
 	}
-	else if (plyr->powers[std::size_t(PowerType_t::pw_ironfeet)] > 4 * 32 || plyr->powers[std::size_t(PowerType_t::pw_ironfeet)] & 8)
+	else if (plyr->powers[::std::size_t(PowerType_t::pw_ironfeet)] > 4 * 32 || plyr->powers[::std::size_t(PowerType_t::pw_ironfeet)] & 8)
 	{
 		palette = RADIATIONPAL;
 	}
@@ -1794,14 +1794,14 @@ static byte* ST_WidgetColor(int i)
 	{
 	case hudcolor_t::hudcolor_ammo:
 	{
-		if (weaponinfo[std::size_t(plyr->readyweapon)].ammo == AmmoType::am_noammo)
+		if (weaponinfo[::std::size_t(plyr->readyweapon)].ammo == AmmoType::am_noammo)
 		{
 			return nullptr;
 		}
 		else
 		{
-			int ammo = plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
-			int fullammo = maxammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)];
+			int ammo = plyr->ammo[::std::size_t(weaponinfo[::std::size_t(plyr->readyweapon)].ammo)];
+			int fullammo = maxammo[::std::size_t(weaponinfo[::std::size_t(plyr->readyweapon)].ammo)];
 
 			if (ammo < fullammo / 4)
 			{
@@ -1826,8 +1826,8 @@ static byte* ST_WidgetColor(int i)
 	{
 		int health = plyr->health;
 
-		// [crispy] Invulnerability powerup and God Mode cheat turn Health values gray
-		if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)])
+		// Invulnerability powerup and God Mode cheat turn Health values gray
+		if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[::std::size_t(PowerType_t::pw_invulnerability)])
 		{
 			return cr[CR_GRAY];
 		}
@@ -1872,7 +1872,7 @@ static byte* ST_WidgetColor(int i)
 	case hudcolor_t::hudcolor_armor:
 	{
 		// Invulnerability powerup and God Mode cheat turn Armor values gray
-		if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[std::size_t(PowerType_t::pw_invulnerability)])
+		if (plyr->cheats & (int)CheatType::CF_GODMODE || plyr->powers[::std::size_t(PowerType_t::pw_invulnerability)])
 		{
 			return cr[CR_GRAY];
 		}
@@ -1925,7 +1925,7 @@ static inline void ST_DrawGibbedPlayerSprites()
 	spriteframe_t* sprframe;
 	patch_t* patch;
 
-	sprdef = &sprites[std::size_t(state->sprite)];
+	sprdef = &sprites[::std::size_t(state->sprite)];
 
 	// the TNT1 sprite is not supposed to be rendered anyway
 	if (!sprdef->numframes && plyr->sprite == spritenum_t::SPR_TNT1)
@@ -1960,11 +1960,11 @@ void ST_drawWidgets(bool refresh)
 	STlib_updateNum(&w_ready, refresh);
 	dp_translation = NULL;
 
-	// [crispy] draw "special widgets" in the Crispy HUD
+	// draw "special widgets" in the Crispy HUD
 	if (st_crispyhud)
 	{
-		// [crispy] draw berserk pack instead of no ammo if appropriate
-		if (plyr->readyweapon == WeaponType::wp_fist && plyr->powers[std::size_t(PowerType_t::pw_strength)])
+		// draw berserk pack instead of no ammo if appropriate
+		if (plyr->readyweapon == WeaponType::wp_fist && plyr->powers[::std::size_t(PowerType_t::pw_strength)])
 		{
 			static int lump = -1;
 			patch_t* patch;
@@ -1988,7 +1988,7 @@ void ST_drawWidgets(bool refresh)
 		}
 
 		// draw the gibbed death state frames in the Health widget in sync with the actual player sprite
-		if (plyr->health <= 0 && plyr->state - states >= (int)mobjinfo[std::size_t(plyr->type)].xdeathstate)
+		if (plyr->health <= 0 && plyr->state - states >= (int)mobjinfo[::std::size_t(plyr->type)].xdeathstate)
 		{
 			ST_DrawGibbedPlayerSprites();
 			gibbed = true;
@@ -2004,7 +2004,7 @@ void ST_drawWidgets(bool refresh)
 	if (!gibbed)
 	{
 		dp_translation = ST_WidgetColor((int)hudcolor_t::hudcolor_health);
-		// [crispy] negative player health
+		// negative player health
 		w_health.n.num = crispy->neghealth ? &plyr->neghealth : &plyr->health;
 		STlib_updatePercent(&w_health, refresh);
 	}
@@ -2014,15 +2014,15 @@ void ST_drawWidgets(bool refresh)
 
 	STlib_updateBinIcon(&w_armsbg, refresh);
 
-	// [crispy] show SSG availability in the Shotgun slot of the arms widget
-	st_shotguns = plyr->weaponowned[std::size_t(WeaponType::wp_shotgun)] | plyr->weaponowned[std::size_t(WeaponType::wp_supershotgun)];
+	// show SSG availability in the Shotgun slot of the arms widget
+	st_shotguns = plyr->weaponowned[::std::size_t(WeaponType::wp_shotgun)] | plyr->weaponowned[::std::size_t(WeaponType::wp_supershotgun)];
 
 	for (i = 0;i < 6; ++i)
 	{
 		STlib_updateMultIcon(&w_arms[i], refresh);
 	}
 
-	// [crispy] draw the actual face widget background
+	// draw the actual face widget background
 	if (st_crispyhud && (screenblocks % 3 == 0))
 	{
 		V_CopyRect(ST_FX + WIDESCREENDELTA, 1, st_backing_screen, SHORT(faceback->width), ST_HEIGHT - 1, ST_FX + WIDESCREENDELTA, ST_Y + 1);
@@ -2061,15 +2061,15 @@ void ST_diffDraw()
 void ST_Drawer(bool fullscreen, bool refresh)
 {
 	st_statusbaron = (!fullscreen) || (automapactive && !crispy->automapoverlay);
-	// [crispy] immediately redraw status bar after help screens have been shown
+	// immediately redraw status bar after help screens have been shown
 	st_firsttime = st_firsttime || refresh || inhelpscreens;
 
-	// [crispy] distinguish classic status bar with background and player face from Crispy HUD
+	// distinguish classic status bar with background and player face from Crispy HUD
 	st_crispyhud = screenblocks >= CRISPY_HUD && (!automapactive || crispy->automapoverlay);
 	st_classicstatusbar = st_statusbaron && !st_crispyhud;
 	st_statusbarface = st_classicstatusbar || (st_crispyhud && (screenblocks % 3 == 0));
 
-	// [crispy] re-calculate widget coordinates on demand
+	// re-calculate widget coordinates on demand
 	if (st_widescreendelta != ST_WIDESCREENDELTA)
 	{
 		void ST_createWidgets();
@@ -2084,7 +2084,7 @@ void ST_Drawer(bool fullscreen, bool refresh)
 	// Do red-/gold-shifts from damage/items
 	ST_doPaletteStuff();
 
-	// [crispy] translucent HUD
+	// translucent HUD
 	if (st_crispyhud && (screenblocks % 3 == 2))
 	{
 		dp_translucent = true;
@@ -2128,7 +2128,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 	callback(DEH_String("STTPRCNT"), &tallpercent);
 
 	// key cards
-	for (size_t i{0}; i < std::size_t(CardType::NUMCARDS); ++i)
+	for (size_t i{0}; i < ::std::size_t(CardType::NUMCARDS); ++i)
 	{
 		DEH_snprintf(namebuf, 9, "STKEYS%d", i);
 		callback(namebuf, &keys[i]);
@@ -2198,7 +2198,7 @@ static void ST_loadUnloadGraphics(load_callback_t callback)
 	++facenum;
 }
 
-static void ST_loadCallback(std::string lumpname, patch_t** variable)
+static void ST_loadCallback(::std::string lumpname, patch_t** variable)
 {
 	*variable = W_CacheLumpName<patch_t>(lumpname, pu_tags_t::PU_STATIC);
 }
@@ -2214,7 +2214,7 @@ void ST_loadData()
 	ST_loadGraphics();
 
 	// support combined card and skull keys (if provided by PWAD) i.e. only for display in the status bar
-	for (size_t i{std::size_t(CardType::NUMCARDS)}; i < std::size_t(CardType::NUMCARDS) + 3; ++i)
+	for (size_t i{::std::size_t(CardType::NUMCARDS)}; i < ::std::size_t(CardType::NUMCARDS) + 3; ++i)
 	{
 		char lumpname[9];
 		int lumpnum;
@@ -2226,7 +2226,7 @@ void ST_loadData()
 	}
 }
 
-static void ST_unloadCallback(std::string lumpname, patch_t** variable)
+static void ST_unloadCallback(::std::string lumpname, patch_t** variable)
 {
 	W_ReleaseLumpName(lumpname);
 	*variable = NULL;
@@ -2255,13 +2255,13 @@ void ST_initData()
 	st_oldchat = st_chat = false;
 	st_cursoron = false;
 
-	faceindex = 0; // [crispy] fix status bar face hysteresis across level changes
+	faceindex = 0; // fix status bar face hysteresis across level changes
 	st_faceindex = 0;
 	st_palette = -1;
 
 	st_oldhealth = -1;
 
-	for (size_t i{0}; i < std::size_t(WeaponType::NUMWEAPONS); ++i)
+	for (size_t i{0}; i < ::std::size_t(WeaponType::NUMWEAPONS); ++i)
 	{
 		oldweaponsowned[i] = plyr->weaponowned[i];
 	}
@@ -2278,7 +2278,7 @@ void ST_createWidgets()
 {
 	int i;
 
-	// [crispy] re-calculate WIDESCREENDELTA
+	// re-calculate WIDESCREENDELTA
 	I_GetScreenDimensions();
 	st_widescreendelta = ST_WIDESCREENDELTA;
 
@@ -2287,7 +2287,7 @@ void ST_createWidgets()
 		ST_AMMOX,
 		ST_AMMOY,
 		tallnum,
-		&plyr->ammo[std::size_t(weaponinfo[std::size_t(plyr->readyweapon)].ammo)],
+		&plyr->ammo[::std::size_t(weaponinfo[::std::size_t(plyr->readyweapon)].ammo)],
 		&st_statusbaron,
 		ST_AMMOWIDTH);
 
@@ -2321,7 +2321,7 @@ void ST_createWidgets()
 			&plyr->weaponowned[i + 1],
 			&st_armson);
 	}
-	// [crispy] show SSG availability in the Shotgun slot of the arms widget
+	// show SSG availability in the Shotgun slot of the arms widget
 	w_arms[1].inum = &st_shotguns;
 
 	// frags sum
@@ -2450,7 +2450,7 @@ void ST_Start()
 	ST_createWidgets();
 	st_stopped = false;
 
-	// [crispy] correctly color the status bar face background in multiplayer
+	// correctly color the status bar face background in multiplayer
 	// demos recorded by another player than player 1
 	if (netgame && consoleplayer)
 	{
@@ -2513,7 +2513,7 @@ void ST_DrawDemoTime(const TimeType time)
 
 	x = (viewwindowx >> crispy->hires) + (scaledviewwidth >> crispy->hires) - WIDESCREENDELTA;
 
-	// [crispy] draw the Demo Timer widget with gray numbers
+	// draw the Demo Timer widget with gray numbers
 	dp_translation = cr[CR_GRAY];
 	dp_translucent = (gamestate == GameState_t::GS_LEVEL);
 

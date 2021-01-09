@@ -21,7 +21,7 @@
 struct multiitem_t
 {
 	int value;
-	std::string name;
+	::std::string name;
 };
 
 extern multiitem_t multiitem_bobfactor[NUM_BOBFACTORS];

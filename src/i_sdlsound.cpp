@@ -64,7 +64,7 @@ static allocated_sound_t* allocated_sounds_head = NULL;
 static allocated_sound_t* allocated_sounds_tail = NULL;
 static int allocated_sounds_size = 0;
 
-// [crispy] values 3 and higher might reproduce DOOM.EXE more accurately,
+// values 3 and higher might reproduce DOOM.EXE more accurately,
 // but 1 is closer to "use_libsamplerate = 0" which is the default in Choco and causes only a short delay at startup
 int use_libsamplerate = 1;
 
@@ -373,7 +373,7 @@ static bool ExpandSoundData_SRC(sfxinfo_t* sfxinfo, byte* data, int samplerate, 
 	assert(src_data.data_in != NULL && src_data.data_out != NULL);
 
 	// Convert input data to floats
-	// [crispy] Handle 16 bit audio data
+	// Handle 16 bit audio data
 	if (bits == 16)
 	{
 		for (i=0; i < samplecount; ++i)
@@ -488,7 +488,7 @@ static bool ConvertibleRatio(int freq1, int freq2)
 #ifdef DEBUG_DUMP_WAVS
 
 // Debug code to dump resampled sound effects to WAV files for analysis.
-static void WriteWAV(std::string filename, byte* data, uint32_t length, int samplerate)
+static void WriteWAV(::std::string filename, byte* data, uint32_t length, int samplerate)
 {
 	FILE* wav;
 	unsigned i;
@@ -592,7 +592,7 @@ static bool ExpandSoundData_SDL(sfxinfo_t* sfxinfo, byte* data, int samplerate, 
 
 			src = (i * expand_ratio) >> 8;
 
-			// [crispy] Handle 16 bit audio data
+			// Handle 16 bit audio data
 			if (bits == 16)
 			{
 				sample = data[src * 2] | (data[src * 2 + 1] << 8);
@@ -652,7 +652,7 @@ static bool CacheSFX(sfxinfo_t* sfxinfo)
 	data = W_CacheLumpNum<byte>(lumpnum, pu_tags_t::PU_STATIC);
 	lumplen = W_LumpLength(lumpnum);
 
-	// [crispy] Check if this is a valid RIFF wav file
+	// Check if this is a valid RIFF wav file
 	if (lumplen > 44 && memcmp(data, "RIFF", 4) == 0 && memcmp(data + 8, "WAVEfmt ", 8) == 0)
 	{
 		// Valid RIFF wav file
@@ -742,7 +742,7 @@ static bool CacheSFX(sfxinfo_t* sfxinfo)
 	return true;
 }
 
-static void GetSfxLumpName(sfxinfo_t* sfx, std::string buf, size_t buf_len)
+static void GetSfxLumpName(sfxinfo_t* sfx, ::std::string buf, size_t buf_len)
 {
 	// Linked sfx lumps? Get the lump number for the sound linked to.
 	if (sfx->link != NULL)
@@ -831,7 +831,7 @@ static int I_SDL_GetSfxLumpNum(sfxinfo_t* sfx)
 
 	GetSfxLumpName(sfx, namebuf, sizeof(namebuf));
 
-	// [crispy] make missing sounds non-fatal
+	// make missing sounds non-fatal
 	return W_CheckNumForName(namebuf);
 }
 

@@ -18,9 +18,9 @@
 #include "deh_main.h"
 #include "doomdef.h"
 #include "p_local.h"
-#include "i_swap.h" // [crispy] SHORT()
-#include "w_wad.h" // [crispy] W_CheckNumForName()
-#include "z_zone.h" // [crispy] pu_tags_t::PU_STATIC
+#include "i_swap.h" // SHORT()
+#include "w_wad.h" // W_CheckNumForName()
+#include "z_zone.h" // pu_tags_t::PU_STATIC
 
 #include "g_game.h"
 
@@ -83,16 +83,16 @@ switchlist_t alphSwitchList_vanilla[] =
 	{"SW1MARB",		"SW2MARB",	3},
 	{"SW1SKULL",	"SW2SKULL",	3},
 
-	// [crispy] SWITCHES lumps are supposed to end like this
+	// SWITCHES lumps are supposed to end like this
 	{"\0",		"\0",		0}
 };
 
-// [crispy] remove MAXSWITCHES limit
+// remove MAXSWITCHES limit
 int* switchlist;
 int numswitches;
 static size_t maxswitches;
-button_t* buttonlist; // [crispy] remove MAXBUTTONS limit
-int maxbuttons; // [crispy] remove MAXBUTTONS limit
+button_t* buttonlist; // remove MAXBUTTONS limit
+int maxbuttons; // remove MAXBUTTONS limit
 
 // Only called at game initialization.
 void P_InitSwitchList()
@@ -101,7 +101,7 @@ void P_InitSwitchList()
 	int slindex;
 	int episode;
 
-	// [crispy] add support for SWITCHES lumps
+	// add support for SWITCHES lumps
 	switchlist_t* alphSwitchList;
 	bool from_lump;
 
@@ -137,7 +137,7 @@ void P_InitSwitchList()
 	{
 		const short alphSwitchList_episode = from_lump ? SHORT(alphSwitchList[i].episode) : alphSwitchList[i].episode;
 
-		// [crispy] remove MAXSWITCHES limit
+		// remove MAXSWITCHES limit
 		if (slindex + 1 >= maxswitches)
 		{
 			size_t newmax = maxswitches ? 2 * maxswitches : MAXSWITCHES;
@@ -145,14 +145,14 @@ void P_InitSwitchList()
 			maxswitches = newmax;
 		}
 
-		// [crispy] ignore switches referencing unknown texture names,
+		// ignore switches referencing unknown texture names,
 		// warn if either one is missing, but only add if both are valid
 		if (alphSwitchList_episode <= episode)
 		{
 			int texture1;
 			int texture2;
-			std::string name1 = DEH_String(alphSwitchList[i].name1);
-			std::string name2 = DEH_String(alphSwitchList[i].name2);
+			::std::string name1 = DEH_String(alphSwitchList[i].name1);
+			::std::string name2 = DEH_String(alphSwitchList[i].name2);
 
 			texture1 = R_CheckTextureNumForName(name1);
 			texture2 = R_CheckTextureNumForName(name2);
@@ -172,13 +172,13 @@ void P_InitSwitchList()
 	numswitches = slindex / 2;
 	switchlist[slindex] = -1;
 
-	// [crispy] add support for SWITCHES lumps
+	// add support for SWITCHES lumps
 	if (from_lump)
 	{
 		W_ReleaseLumpName("SWITCHES");
 	}
 
-	// [crispy] pre-allocate some memory for the buttonlist[] array
+	// pre-allocate some memory for the buttonlist[] array
 	buttonlist = I_Realloc(NULL, sizeof(*buttonlist) * (maxbuttons = MAXBUTTONS));
 	memset(buttonlist, 0, sizeof(*buttonlist) * maxbuttons);
 }
@@ -194,7 +194,7 @@ void P_StartButton(line_t* line, bwhere_e w, int texture, TimeType time)
 		if (buttonlist[i].btimer && buttonlist[i].line == line)
 		{
 
-			// [crispy] register up to three buttons at once for lines with more than one switch texture
+			// register up to three buttons at once for lines with more than one switch texture
 			if (buttonlist[i].where == w)
 			{
 				return;
@@ -210,7 +210,7 @@ void P_StartButton(line_t* line, bwhere_e w, int texture, TimeType time)
 			buttonlist[i].where = w;
 			buttonlist[i].btexture = texture;
 			buttonlist[i].btimer = time;
-			buttonlist[i].soundorg = crispy->soundfix ? &line->soundorg : &line->frontsector->soundorg; // [crispy] corrected sound source
+			buttonlist[i].soundorg = crispy->soundfix ? &line->soundorg : &line->frontsector->soundorg; // corrected sound source
 			return;
 		}
 	}

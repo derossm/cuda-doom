@@ -225,7 +225,7 @@ static void CheckMasterStatus()
 	}
 }
 
-static void PrintSHA1Digest(std::string s, const byte* digest)
+static void PrintSHA1Digest(::std::string s, const byte* digest)
 {
 	unsigned i;
 
@@ -384,7 +384,7 @@ void NET_WaitForLaunch()
 
 	cudadoom::txt::SetColor(cudadoom::txt::ColorType::blue, 0x04, 0x14, 0x40); // Romero's "funky blue" color
 
-	// [crispy] Crispy colors for Crispy Network GUI
+	// Crispy colors for Crispy Network GUI
 	cudadoom::txt::SetColor(cudadoom::txt::ColorType::bright_green, 249, 227, 0); // 0xF9, 0xE3, 0x00
 	cudadoom::txt::SetColor(cudadoom::txt::ColorType::cyan, 220, 153, 0);			// 0xDC, 0x99, 0x00
 	cudadoom::txt::SetColor(cudadoom::txt::ColorType::bright_cyan, 76, 160, 223); // 0x4C, 0xA0, 0xDF

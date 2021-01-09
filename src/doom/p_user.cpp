@@ -151,7 +151,7 @@ void P_MovePlayer(Player* player)
 		P_Thrust(player, player->angle, FRACUNIT >> 8);
 	}
 
-	if ((cmd->forwardmove || cmd->sidemove) && player->state == &states[std::size_t(statenum_t::S_PLAY)])
+	if ((cmd->forwardmove || cmd->sidemove) && player->state == &states[::std::size_t(statenum_t::S_PLAY)])
 	{
 		P_SetMobjState(player, statenum_t::S_PLAY_RUN1);
 	}
@@ -379,19 +379,19 @@ void P_PlayerThink(Player* player)
 		// The actual changing of the weapon is done when the weapon psprite can do it (read: not in the middle of an attack).
 		newweapon = (cmd->buttons & buttoncode::BT_WEAPONMASK) >> buttoncode::BT_WEAPONSHIFT;
 
-		if (newweapon == WeaponType::wp_fist && player->weaponowned[std::size_t(WeaponType::wp_chainsaw)]
-			&& !(player->readyweapon == WeaponType::wp_chainsaw && player->powers[std::size_t(PowerType_t::pw_strength)]))
+		if (newweapon == WeaponType::wp_fist && player->weaponowned[::std::size_t(WeaponType::wp_chainsaw)]
+			&& !(player->readyweapon == WeaponType::wp_chainsaw && player->powers[::std::size_t(PowerType_t::pw_strength)]))
 		{
 			newweapon = WeaponType::wp_chainsaw;
 		}
 
 		if ((crispy->havessg) && newweapon == WeaponType::wp_shotgun
-			&& player->weaponowned[std::size_t(WeaponType::wp_supershotgun)] && player->readyweapon != WeaponType::wp_supershotgun)
+			&& player->weaponowned[::std::size_t(WeaponType::wp_supershotgun)] && player->readyweapon != WeaponType::wp_supershotgun)
 		{
 			newweapon = WeaponType::wp_supershotgun;
 		}
 
-		if (player->weaponowned[std::size_t(newweapon)] && newweapon != player->readyweapon)
+		if (player->weaponowned[::std::size_t(newweapon)] && newweapon != player->readyweapon)
 		{
 			// Do not go to plasma or BFG in shareware, even if cheated.
 			if ((newweapon != WeaponType::wp_plasma && newweapon != WeaponType::wp_bfg) || (gamemode != GameMode::shareware))
@@ -427,33 +427,33 @@ void P_PlayerThink(Player* player)
 	// Counters, time dependend power ups.
 
 	// Strength counts up to diminish fade.
-	if (player->powers[std::size_t(PowerType_t::pw_strength)])
+	if (player->powers[::std::size_t(PowerType_t::pw_strength)])
 	{
-		player->powers[std::size_t(PowerType_t::pw_strength)]++;
+		player->powers[::std::size_t(PowerType_t::pw_strength)]++;
 	}
 
-	if (player->powers[std::size_t(PowerType_t::pw_invulnerability)])
+	if (player->powers[::std::size_t(PowerType_t::pw_invulnerability)])
 	{
-		player->powers[std::size_t(PowerType_t::pw_invulnerability)]--;
+		player->powers[::std::size_t(PowerType_t::pw_invulnerability)]--;
 	}
 
-	if (player->powers[std::size_t(PowerType_t::pw_invisibility)])
+	if (player->powers[::std::size_t(PowerType_t::pw_invisibility)])
 	{
-		if (!--player->powers[std::size_t(PowerType_t::pw_invisibility)])
+		if (!--player->powers[::std::size_t(PowerType_t::pw_invisibility)])
 		{
 			//player->flags &= ~mobjflag_e::MF_SHADOW;
 			player->flags.set(mobjflag_e::MF_SHADOW, false)
 		}
 	}
 
-	if (player->powers[std::size_t(PowerType_t::pw_infrared)])
+	if (player->powers[::std::size_t(PowerType_t::pw_infrared)])
 	{
-		player->powers[std::size_t(PowerType_t::pw_infrared)]--;
+		player->powers[::std::size_t(PowerType_t::pw_infrared)]--;
 	}
 
-	if (player->powers[std::size_t(PowerType_t::pw_ironfeet)])
+	if (player->powers[::std::size_t(PowerType_t::pw_ironfeet)])
 	{
-		player->powers[std::size_t(PowerType_t::pw_ironfeet)]--;
+		player->powers[::std::size_t(PowerType_t::pw_ironfeet)]--;
 	}
 
 	if (player->damagecount)
@@ -467,21 +467,21 @@ void P_PlayerThink(Player* player)
 	}
 
 	// Handling colormaps.
-	if (player->powers[std::size_t(PowerType_t::pw_invulnerability)])
+	if (player->powers[::std::size_t(PowerType_t::pw_invulnerability)])
 	{
-		if (player->powers[std::size_t(PowerType_t::pw_invulnerability)] > 4 * 32 || (player->powers[std::size_t(PowerType_t::pw_invulnerability)] & 8))
+		if (player->powers[::std::size_t(PowerType_t::pw_invulnerability)] > 4 * 32 || (player->powers[::std::size_t(PowerType_t::pw_invulnerability)] & 8))
 		{
 			player->fixedcolormap = INVERSECOLORMAP;
 		}
 		else
 		{
-			// [crispy] Visor effect when Invulnerability is fading out
-			player->fixedcolormap = player->powers[std::size_t(PowerType_t::pw_infrared)] ? 1 : 0;
+			// Visor effect when Invulnerability is fading out
+			player->fixedcolormap = player->powers[::std::size_t(PowerType_t::pw_infrared)] ? 1 : 0;
 		}
 	}
-	else if (player->powers[std::size_t(PowerType_t::pw_infrared)])
+	else if (player->powers[::std::size_t(PowerType_t::pw_infrared)])
 	{
-		if (player->powers[std::size_t(PowerType_t::pw_infrared)] > 4 * 32 || (player->powers[std::size_t(PowerType_t::pw_infrared)] & 8))
+		if (player->powers[::std::size_t(PowerType_t::pw_infrared)] > 4 * 32 || (player->powers[::std::size_t(PowerType_t::pw_infrared)] & 8))
 		{
 			// almost full bright
 			player->fixedcolormap = 1;

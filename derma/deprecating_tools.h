@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************\
-	Copyright(C) 2020 Mason DeRoss
+	Copyright© 2020-2021 Mason DeRoss
 
 	Released under the GNU All-permissive License
 
@@ -30,5 +30,5 @@ constexpr auto _integral_value(U v) noexcept
 template<typename T>
 constexpr auto _underlying_value(T v) noexcept
 {
-	return static_cast<std::underlying_type_t<T>>(v);
+	return static_cast<::std::underlying_type_t<T>>(v);
 }

@@ -57,7 +57,7 @@ enum class musicenum_t
 	mus_e3m7,
 	mus_e3m8,
 	mus_e3m9,
-	// [crispy] support dedicated music tracks for the 4th episode
+	// support dedicated music tracks for the 4th episode
 	mus_e4m1,
 	mus_e4m2,
 	mus_e4m3,
@@ -67,7 +67,7 @@ enum class musicenum_t
 	mus_e4m7,
 	mus_e4m8,
 	mus_e4m9,
-	// [crispy] Sigil
+	// Sigil
 	mus_e5m1,
 	mus_e5m2,
 	mus_e5m3,
@@ -237,13 +237,13 @@ enum class sfxenum_t
 	sfx_skesit,
 	sfx_skeatk,
 	sfx_radio,
-	// [crispy] additional BOOM and MBF states, sprites and code pointers
+	// additional BOOM and MBF states, sprites and code pointers
 	sfx_dgsit,
 	sfx_dgatk,
 	sfx_dgact,
 	sfx_dgdth,
 	sfx_dgpain,
-	// [crispy] play DSSECRET if available
+	// play DSSECRET if available
 	sfx_secret,
 	NUMSFX
 };

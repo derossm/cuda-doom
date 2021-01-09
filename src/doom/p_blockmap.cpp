@@ -60,7 +60,7 @@ void P_CreateBlockMap()
 		}
 	}
 
-	// [crispy] doombsp/DRAWING.M:175-178
+	// doombsp/DRAWING.M:175-178
 	minx -= 8; miny -= 8;
 	maxx += 8; maxy += 8;
 
@@ -209,7 +209,7 @@ void P_CreateBlockMap()
 		}
 	}
 
-	// [crispy] copied over from P_LoadBlockMap()
+	// copied over from P_LoadBlockMap()
 	{
 		int count = sizeof(*blocklinks) * bmapwidth * bmapheight;
 		blocklinks = Z_Malloc<decltype(blocklinks)>(count, pu_tags_t::PU_LEVEL, 0);

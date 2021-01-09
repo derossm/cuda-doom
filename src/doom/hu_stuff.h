@@ -46,4 +46,4 @@ void HU_Drawer();
 char HU_dequeueChatChar();
 void HU_Erase();
 
-extern std::array<std::string, 10> chat_macros;
+extern ::std::array<::std::string, 10> chat_macros;

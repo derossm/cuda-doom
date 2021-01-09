@@ -40,7 +40,7 @@ bool NET_RecvPacket(net_context* context, net_addr_t** addr, net_packet_t** pack
 
 // Return a string representation of the given address. The result points to a
 // static buffer and will become invalid with the next call.
-std::string NET_AddrToString(net_addr_t* addr);
+::std::string NET_AddrToString(net_addr_t* addr);
 
 // Add a reference to the given address.
 void NET_ReferenceAddress(net_addr_t* addr);
@@ -52,4 +52,4 @@ void NET_ReleaseAddress(net_addr_t* addr);
 // Resolve a string representation of an address. If successful, a net_addr_t
 // pointer is received with an implicit reference that must be freed by the
 // caller when it is no longer needed.
-net_addr_t* NET_ResolveAddress(net_context* context, std::string address);
+net_addr_t* NET_ResolveAddress(net_context* context, ::std::string address);

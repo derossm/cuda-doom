@@ -26,16 +26,16 @@ constexpr size_t SAVESTRINGSIZE{24};
 
 // temporary filename to use while saving.
 
-std::string P_TempSaveGameFile();
+::std::string P_TempSaveGameFile();
 
 // filename to use for a savegame slot
 
-std::string P_SaveGameFile(int slot);
+::std::string P_SaveGameFile(int slot);
 
 // Savegame file header read/write functions
 
 bool P_ReadSaveGameHeader();
-void P_WriteSaveGameHeader(std::string description);
+void P_WriteSaveGameHeader(::std::string description);
 
 // Savegame end-of-file read/write functions
 

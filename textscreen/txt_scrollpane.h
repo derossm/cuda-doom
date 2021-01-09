@@ -8,17 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include "txt_common.h"
 #include "txt_widget.h"
 #include "txt_table.h"
-
-//#include "txt_main.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -103,8 +96,6 @@ public:
 //txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target));
 
 /*
-constexpr size_t SCROLLBAR_VERTICAL{(1 << 0)};
-constexpr size_t SCROLLBAR_HORIZONTAL{(1 << 1)};
 
 static int FullWidth(txt_scrollpane_t* scrollpane)
 {
@@ -657,5 +648,4 @@ txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target))
 }
 /**/
 
-} // END NAMESPACE cudadoom::txt
-
+} // end namespace cudadoom::txt

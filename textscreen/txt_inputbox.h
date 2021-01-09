@@ -8,18 +8,11 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
 
 #include <string>
 
 #include "txt_common.h"
 #include "txt_widget.h"
-
-//#include "txt_main.h"
-//#include "txt_utf8.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
@@ -33,47 +26,52 @@ namespace cudadoom::txt
  * Input box widgets can be of an integer or string type.
  */
 
+class InputBox : public InputBase<InputBox>
+{
+
+};
+
 template<typename T>
-class InputBox : public Widget<InputBox>
+class InputBase : public Widget<T>
 {
 	//T _val;
-	std::string buffer;
+	::std::string buffer;
 	bool isEditing{false};
 
 public:
 
-	using type = T;
+	//using type = T;
 
-	InputBox(T _val = nullptr, int _width = 0) noexcept : buffer{std::string(_val)},
+	//InputBox(T _val = nullptr, int _width = 0) noexcept : buffer{::std::string(_val)},
 		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
 		//callback_table{NewCallbackTable()},
 		//focused{false},
 		//visible{true},
 		//align{AlignHorizontal::left},
 		//width{_width}
-	{
+	//{
 		/*	if (_val)
 			{
-				buffer = std::string(valueIn);
+				buffer = ::std::string(valueIn);
 			}
 			else
 			{
-				buffer = std::string("");
+				buffer = ::std::string("");
 			} */
-	}
+	//}
 
-	inline bool Selectable() const noexcept override final
+	inline bool Selectable() const noexcept override
 	{
 		return true;
 	}
 
-	inline void CalculateSize() noexcept override final
+	inline void CalculateSize() noexcept override
 	{	}
 
-	inline void Draw() noexcept override final
+	inline void Draw() noexcept override
 	{	}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(KeyEvent key) noexcept override
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -85,35 +83,35 @@ public:
 		return false;
 	}
 
-	inline bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent evt) noexcept override
 	{
-		if (evt.button == MOUSE_LEFT)
-		{
+		//if (evt.button == MOUSE_LEFT)
+		//{
 			// Equivalent to pressing enter
-			return KeyPress(KEY_ENTER);
-		}
+			//return KeyPress(KEY_ENTER);
+		//}
 
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
+	inline void SetLayout() noexcept override
 	{	}
 
-	inline void SetFocus(bool _focus) noexcept override final
+	inline void SetFocus(bool _focus) noexcept override
 	{	}
 
-	inline void Destroy() noexcept override final
+	inline void Destroy() noexcept override
 	{	}
 
-	void set(T _val) noexcept
-	{
+	//void set(T _val) noexcept
+	//{
 		//if (_val)
 		//{
-			//buffer = std::string(_val);
+			//buffer = ::std::string(_val);
 		//}
-	}
+	//}
 
-	std::string get() const noexcept
+	::std::string get() const noexcept
 	{
 		return buffer;
 	}
@@ -168,8 +166,8 @@ public:
 		//}
 
 		// If string size exceeds the widget's width, show only the end.
-		auto chars{[&]()
-		{
+		//chars{[&]()
+		//{
 				//if (UTF8_Strlen(buffer) > w - 1)
 				//{
 					//auto len{UTF8_Strlen(buffer)};
@@ -184,7 +182,7 @@ public:
 					//DrawString(buffer);
 					//return UTF8_Strlen(buffer);
 				//}
-			}()};
+		//}()};
 
 		//if (chars < w && editing && focused)
 		//{
@@ -202,7 +200,7 @@ public:
 	void backspace() noexcept
 	{
 		//unsigned len;
-		//std::string p;
+		//::std::string p;
 
 		//len = UTF8_Strlen(buffer);
 
@@ -215,8 +213,8 @@ public:
 
 	void addCharacter(int key) noexcept
 	{
-		//std::string end;
-		//std::string p;
+		//::std::string end;
+		//::std::string p;
 
 		//if (UTF8_Strlen(buffer) < size)
 		//{
@@ -283,7 +281,7 @@ public:
 			if (!isEditing)
 			{
 				// Send a simulated keypress to start editing
-				KeyPress(KEY_ENTER);
+				//KeyPress(KEY_ENTER);
 			}
 		}
 	}
@@ -302,9 +300,9 @@ public:
  * @param width		Width of the input box, in characters.
  * @return			Pointer to the new input box widget.
  */
-auto NewInputBox(std::string& value, int width)
+auto NewInputBox(::std::string& value, int width)
 {
-	return InputBox(value, width);
+	//return InputBox(value, width);
 }
 
 /**
@@ -316,7 +314,7 @@ auto NewInputBox(std::string& value, int width)
  */
 auto NewIntInputBox(int value, int width)
 {
-	return InputBox(value, width);
+	//return InputBox(value, width);
 }
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

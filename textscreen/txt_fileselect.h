@@ -8,51 +8,35 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
-		Routines for selecting files, and the txt_fileselect_t widget.
+		File selection widget.
+		A file selection widget resembles an input box (@ref txt_inputbox_t), but opens a file selector dialog box when clicked.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE FIXME
-//#include "../derma/common.h"
-//#include "../derma/d_native.h"
-#include "../derma/keybinds.h"
 
+#include <vector>
 #include <string>
+#include <string_view>
 
 #include "txt_common.h"
 #include "txt_widget.h"
-//#include "txt_inputbox.h"
-
-//#include "txt_main.h"
-//#include "txt_io.h"
-//#include "txt_gui.h"
 
 namespace cudadoom::txt
 {
 
-/**
- * File selection widget.
- *
- * A file selection widget resembles an input box (@ref txt_inputbox_t) but opens a file selector dialog box when clicked.
- */
-
- //class FileSelect : public Widget<FileSelect>
+//class FileSelect : public Widget<FileSelect>
 class FileSelect : public InputBox<FileSelect>
 {
-	//Widget widget;
-	//txt_inputbox_t* inputbox;
 	int size;
-	std::string prompt;
-	CHAR_PTR* extensions;
-
-	// Dummy value to select a directory.
-	std::string DIRECTORY{"__directory__"};
+	::std::string prompt;
+	::std::string directory{"__directory__"}; // Dummy value to select a directory.
+	::std::vector<::std::string_view> extensions;
 
 public:
 /*
 	FileSelect() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{}
 
-	FileSelect(char** _variable, int _size, std::string _prompt, CHAR_PTR* _extensions) :
+	FileSelect(char** _variable, int _size, ::std::string _prompt, CHAR_PTR* _extensions) :
 		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
 	{
 		//fileselect = static_cast<decltype(fileselect)>(malloc(sizeof(txt_fileselect_t)));
@@ -154,7 +138,7 @@ public:
 /*
 	bool DoSelectFile()
 	{
-		std::string path;
+		::std::string path;
 		char** var;
 
 		if (CanSelectFiles())
@@ -202,9 +186,9 @@ public:
 		return false;
 	}
 
-	std::string SelectFile(std::string window_title, CHAR_PTR* extensions)
+	::std::string SelectFile(::std::string window_title, CHAR_PTR* extensions)
 	{
-		return std::string{};
+		return ::std::string{};
 	}
 
 #elif defined(xxxdisabled_WIN32)
@@ -257,7 +241,7 @@ public:
 	}
 
 	// Generate the "filter" string from the list of extensions.
-	std::string GenerateFilterString(CHAR_PTR* extensions)
+	::std::string GenerateFilterString(CHAR_PTR* extensions)
 	{
 		unsigned result_len = 1;
 		unsigned i;
@@ -300,12 +284,12 @@ public:
 		return InitLibraries();
 	}
 
-	std::string SelectDirectory(std::string window_title)
+	::std::string SelectDirectory(::std::string window_title)
 	{
 		LPITEMIDLIST pidl;
 		BROWSEINFO bi;
 		char selected[MAX_PATH] = "";
-		std::string result;
+		::std::string result;
 
 		ZeroMemory(&bi, sizeof(bi));
 		bi.hwndOwner = NULL;
@@ -330,7 +314,7 @@ public:
 		return result;
 	}
 
-	std::string SelectFile(std::string window_title, CHAR_PTR* extensions)
+	::std::string SelectFile(::std::string window_title, CHAR_PTR* extensions)
 	{
 		OPENFILENAME fm;
 		char selected[MAX_PATH] = "";
@@ -380,11 +364,11 @@ public:
 	// Printf format string for the "wrapper" portion of the AppleScript:
 #define APPLESCRIPT_WRAPPER "copy POSIX path of (%s) to stdout"
 
-	std::string CreateEscapedString(std::string original)
+	::std::string CreateEscapedString(::std::string original)
 	{
-		std::string result;
-		std::string in;
-		std::string out;
+		::std::string result;
+		::std::string in;
+		::std::string out;
 
 		// We need to take care not to overflow the buffer, so count exactly.
 #define ESCAPED_CHARS "\"\\"
@@ -424,7 +408,7 @@ public:
 	}
 
 	// Build list of extensions, like: {"wad","lmp","txt"}
-	std::string CreateExtensionsList(CHAR_PTR* extensions)
+	::std::string CreateExtensionsList(CHAR_PTR* extensions)
 	{
 		char* result, * escaped;
 		unsigned result_len;
@@ -470,12 +454,12 @@ public:
 		return result;
 	}
 
-	std::string GenerateSelector(std::string const window_title, CHAR_PTR* extensions)
+	::std::string GenerateSelector(::std::string const window_title, CHAR_PTR* extensions)
 	{
-		std::string chooser;
-		std::string ext_list = NULL;
-		std::string window_title_escaped = NULL;
-		std::string result = NULL;
+		::std::string chooser;
+		::std::string ext_list = NULL;
+		::std::string window_title_escaped = NULL;
+		::std::string result = NULL;
 		unsigned result_len = 64;
 
 		if (extensions == DIRECTORY)
@@ -535,10 +519,10 @@ public:
 		return result;
 	}
 
-	std::string GenerateAppleScript(std::string window_title, CHAR_PTR* extensions)
+	::std::string GenerateAppleScript(::std::string window_title, CHAR_PTR* extensions)
 	{
-		std::string selector;
-		std::string result;
+		::std::string selector;
+		::std::string result;
 		size_t result_len;
 
 		selector = GenerateSelector(window_title, extensions);
@@ -566,11 +550,11 @@ public:
 		return 1;
 	}
 
-	std::string SelectFile(std::string window_title, CHAR_PTR* extensions)
+	::std::string SelectFile(::std::string window_title, CHAR_PTR* extensions)
 	{
 		char* argv[4];
-		std::string result;
-		std::string applescript;
+		::std::string result;
+		::std::string applescript;
 
 		applescript = GenerateAppleScript(window_title, extensions);
 		if (!applescript)
@@ -620,7 +604,7 @@ public:
 	// given an extension (like wad)
 	// return a pointer to a string that is a case-insensitive
 	// pattern representation (like [Ww][Aa][Dd])
-	std::string ExpandExtension(std::string orig)
+	::std::string ExpandExtension(::std::string orig)
 	{
 		int oldlen;
 		int newlen;
@@ -661,11 +645,11 @@ public:
 		return newext;
 	}
 
-	std::string SelectFile(std::string window_title, CHAR_PTR* extensions)
+	::std::string SelectFile(::std::string window_title, CHAR_PTR* extensions)
 	{
 		unsigned i;
 		size_t len;
-		std::string result;
+		::std::string result;
 		char** argv;
 		int argc;
 
@@ -696,7 +680,7 @@ public:
 		{
 			for (i = 0; extensions[i] != NULL; ++i)
 			{
-				std::string newext = ExpandExtension(extensions[i]);
+				::std::string newext = ExpandExtension(extensions[i]);
 				if (newext)
 				{
 					len = 30 + strlen(extensions[i]) + strlen(newext);
@@ -728,9 +712,9 @@ public:
 #endif
 
 #ifndef _WIN32
-	std::string ExecReadOutput(char** argv)
+	::std::string ExecReadOutput(char** argv)
 	{
-		std::string result;
+		::std::string result;
 		int completed;
 		int pid;
 		int status;
@@ -782,7 +766,7 @@ public:
 			}
 			else
 			{
-				std::string new_result = realloc(result, result_len + bytes + 1);
+				::std::string new_result = realloc(result, result_len + bytes + 1);
 				if (new_result == NULL)
 				{
 					break;
@@ -834,7 +818,7 @@ public:
   *					files that can be selected, or @ref DIRECTORY
   *					to select directories.
   */
-  //std::string SelectFile(std::string prompt, CHAR_PTR* extensions);
+  //::std::string SelectFile(::std::string prompt, CHAR_PTR* extensions);
 
   /**
    * Create a new txt_fileselect_t widget.
@@ -848,11 +832,11 @@ public:
    *					can be used for this widget, or @ref DIRECTORY
    *					to select directories.
    */
-   //txt_fileselect_t* NewFileSelector(char** variable, int size, std::string prompt, CHAR_PTR* extensions);
+   //txt_fileselect_t* NewFileSelector(char** variable, int size, ::std::string prompt, CHAR_PTR* extensions);
 
    /**
 	* Special value to use for 'extensions' that selects a directory instead of a file.
 	*/
-	//extern std::string DIRECTORY[];
+	//extern ::std::string DIRECTORY[];
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

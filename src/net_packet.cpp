@@ -159,9 +159,9 @@ bool NET_ReadSInt32(net_packet_t* packet, int* data)
 }
 
 // Read a string from the packet. Returns NULL if a terminating NUL character was not found before the end of the packet.
-std::string NET_ReadString(net_packet_t* packet)
+::std::string NET_ReadString(net_packet_t* packet)
 {
-	std::string start{static_cast<char*>((char*)packet->data + packet->pos)};
+	::std::string start{static_cast<char*>((char*)packet->data + packet->pos)};
 
 	// Search forward for a NUL character
 	while (packet->pos < packet->len && packet->data[packet->pos] != '\0')
@@ -172,7 +172,7 @@ std::string NET_ReadString(net_packet_t* packet)
 	if (packet->pos >= packet->len)
 	{
 		// Reached the end of the packet
-		return std::string{};
+		return ::std::string{};
 	}
 
 	// packet->data[packet->pos] == '\0': We have reached a terminating NULL. Skip past this NULL and continue reading immediately after it.
@@ -184,10 +184,10 @@ std::string NET_ReadString(net_packet_t* packet)
 // Read a string from the packet, but (potentially) modify it to strip
 // out any unprintable characters which could be malicious control codes.
 // Note that this may modify the original packet contents.
-std::string NET_ReadSafeString(net_packet_t* packet)
+::std::string NET_ReadSafeString(net_packet_t* packet)
 {
-	std::string result{NET_ReadString(packet)};
-	std::erase_if(result, !isprint);
+	::std::string result{NET_ReadString(packet)};
+	::std::erase_if(result, !isprint);
 
 	return result;
 }
@@ -257,7 +257,7 @@ void NET_WriteInt32(net_packet_t* packet, unsigned i)
 	packet->len += 4;
 }
 
-void NET_WriteString(net_packet_t* packet, std::string& str)
+void NET_WriteString(net_packet_t* packet, ::std::string& str)
 {
 	byte* p;
 	size_t string_size{str.length() + 1};

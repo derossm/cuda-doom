@@ -24,7 +24,7 @@ static int hash_table_entries;
 static int hash_table_length = -1;
 
 // This is the algorithm used by glib
-unsigned strhash(std::string s)
+unsigned strhash(::std::string s)
 {
 	auto p = s.c_str();
 	unsigned h = *p;
@@ -40,7 +40,7 @@ unsigned strhash(std::string s)
 	return h;
 }
 
-deh_substitution_t* SubstitutionForString(std::string s)
+deh_substitution_t* SubstitutionForString(::std::string s)
 {
 	// Fallback if we have not initialized the hash table yet
 	if (hash_table_length < 0)
@@ -66,7 +66,7 @@ deh_substitution_t* SubstitutionForString(std::string s)
 }
 
 // Look up a string to see if it has been replaced with something else, this will be used throughout the program to substitute text
-std::string DEH_String(std::string s)
+::std::string DEH_String(::std::string s)
 {
 	deh_substitution_t* subst = SubstitutionForString(s);
 
@@ -80,8 +80,8 @@ std::string DEH_String(std::string s)
 	}
 }
 
-// [crispy] returns true if a string has been substituted
-bool DEH_HasStringReplacement(std::string s)
+// returns true if a string has been substituted
+bool DEH_HasStringReplacement(::std::string s)
 {
 	return DEH_String(s) != s;
 }
@@ -141,7 +141,7 @@ void DEH_AddToHashtable(deh_substitution_t* sub)
 	++hash_table_entries;
 }
 
-void DEH_AddStringReplacement(std::string from_text, std::string to_text)
+void DEH_AddStringReplacement(::std::string from_text, ::std::string to_text)
 {
 	deh_substitution_t* sub;
 	size_t len;
@@ -213,7 +213,7 @@ format_arg_t FormatArgumentType(char c)
 }
 
 // Given the specified string, get the type of the first format string encountered.
-format_arg_t NextFormatArgument(std::string str)
+format_arg_t NextFormatArgument(::std::string str)
 {
 	format_arg_t argtype;
 	// FIXME
@@ -282,7 +282,7 @@ bool ValidArgumentReplacement(format_arg_t original, format_arg_t replacement)
 }
 
 // Return true if the specified string contains no format arguments.
-bool ValidFormatReplacement(std::string original, std::string replacement)
+bool ValidFormatReplacement(::std::string original, ::std::string replacement)
 {
 	// Check each argument in turn and compare types.
 	//auto rover1 = original;
@@ -314,7 +314,7 @@ bool ValidFormatReplacement(std::string original, std::string replacement)
 }
 
 // Get replacement format string, checking arguments.
-std::string FormatStringReplacement(std::string s)
+::std::string FormatStringReplacement(::std::string s)
 {
 	auto repl = DEH_String(s);
 
@@ -329,10 +329,10 @@ std::string FormatStringReplacement(std::string s)
 }
 
 // printf(), performing a replacement on the format string.
-void DEH_printf(std::string fmt, ...)
+void DEH_printf(::std::string fmt, ...)
 {
 	va_list args;
-	std::string repl;
+	::std::string repl;
 
 	repl = FormatStringReplacement(fmt);
 
@@ -344,10 +344,10 @@ void DEH_printf(std::string fmt, ...)
 }
 
 // fprintf(), performing a replacement on the format string.
-void DEH_fprintf(FILE* fstream, std::string fmt, ...)
+void DEH_fprintf(FILE* fstream, ::std::string fmt, ...)
 {
 	va_list args;
-	std::string repl;
+	::std::string repl;
 
 	repl = FormatStringReplacement(fmt);
 
@@ -359,10 +359,10 @@ void DEH_fprintf(FILE* fstream, std::string fmt, ...)
 }
 
 // snprintf(), performing a replacement on the format string.
-void DEH_snprintf(std::string buffer, size_t len, std::string fmt, ...)
+void DEH_snprintf(::std::string buffer, size_t len, ::std::string fmt, ...)
 {
 	va_list args;
-	std::string repl;
+	::std::string repl;
 
 	repl = FormatStringReplacement(fmt);
 

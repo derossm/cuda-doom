@@ -79,7 +79,7 @@ static bool query_loop_running = false;
 static bool printed_header = false;
 static TimeType last_query_time = 0;
 
-std::string securedemo_start_message = NULL;
+::std::string securedemo_start_message = NULL;
 
 // Resolve the master server address.
 
@@ -189,7 +189,7 @@ void NET_RequestHolePunch(net_context* context, net_addr_t* addr)
 
 	packet = NET_NewPacket(32);
 	NET_WriteInt16(packet, (unsigned)net_master_packet_type::NAT_HOLE_PUNCH);
-	NET_WriteString(packet, std::forward(NET_AddrToString(addr)));
+	NET_WriteString(packet, ::std::forward(NET_AddrToString(addr)));
 	NET_SendPacket(master_addr, packet);
 
 	NET_FreePacket(packet);
@@ -325,7 +325,7 @@ static void NET_Query_ParseMasterResponse(net_addr_t* master_addr, net_packet_t*
 {
 	unsigned packet_type;
 	query_target_t* target;
-	std::string addr_str;
+	::std::string addr_str;
 	net_addr_t* addr;
 
 	// Read the header. We are only interested in query responses.
@@ -627,8 +627,8 @@ int NET_StartMasterQuery()
 	return 1;
 }
 
-static void formatted_printf(int wide, std::string s, ...) PRINTF_ATTR(2, 3);
-static void formatted_printf(int wide, std::string s, ...)
+static void formatted_printf(int wide, ::std::string s, ...) PRINTF_ATTR(2, 3);
+static void formatted_printf(int wide, ::std::string s, ...)
 {
 	va_list args;
 	int i;
@@ -644,7 +644,7 @@ static void formatted_printf(int wide, std::string s, ...)
 	}
 }
 
-static std::string GameDescription(GameMode mode, GameMission mission)
+static ::std::string GameDescription(GameMode mode, GameMission mission)
 {
 	switch (mission)
 	{
@@ -767,7 +767,7 @@ void NET_MasterQuery()
 	}
 }
 
-void NET_QueryAddress(std::string addr_str)
+void NET_QueryAddress(::std::string addr_str)
 {
 	net_addr_t* addr;
 	query_target_t* target;
@@ -882,7 +882,7 @@ bool NET_StartSecureDemo(prng_seed_t seed)
 {
 	net_packet_t* request, * response;
 	net_addr_t* master_addr;
-	std::string signature;
+	::std::string signature;
 	bool result;
 
 	NET_Query_Init();
@@ -912,7 +912,7 @@ bool NET_StartSecureDemo(prng_seed_t seed)
 
 			if (!signature.empty())
 			{
-				securedemo_start_message = std::string(signature);
+				securedemo_start_message = ::std::string(signature);
 				result = true;
 			}
 		}
@@ -925,11 +925,11 @@ bool NET_StartSecureDemo(prng_seed_t seed)
 
 // Query master server for secure demo end signature.
 
-std::string NET_EndSecureDemo(sha1_digest_t demo_hash)
+::std::string NET_EndSecureDemo(sha1_digest_t demo_hash)
 {
 	net_packet_t* request, * response;
 	net_addr_t* master_addr;
-	std::string signature;
+	::std::string signature;
 
 	master_addr = NET_Query_ResolveMaster(query_context);
 

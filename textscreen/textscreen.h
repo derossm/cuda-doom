@@ -8,15 +8,10 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
-#include "../derma/keybinds.h"
 
 #include "txt_common.h"
 
 #include "txt_sdl.h"
-#include "txt_main.h"
-#include "txt_utf8.h"
 #include "txt_io.h"
 #include "txt_gui.h"
 #include "txt_desktop.h"

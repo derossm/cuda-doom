@@ -32,7 +32,7 @@ struct memblock_t
 };
 
 // Linked list of allocated blocks for each tag type
-static memblock_t* allocated_blocks[std::size_t(pu_tags_t::PU_NUM_TAGS)];
+static memblock_t* allocated_blocks[::std::size_t(pu_tags_t::PU_NUM_TAGS)];
 
 #ifdef TESTING
 
@@ -76,8 +76,8 @@ void test_free(void* data)
 static void Z_InsertBlock(memblock_t* block)
 {
 	block->prev = NULL;
-	block->next = allocated_blocks[std::size_t(block->tag)];
-	allocated_blocks[std::size_t(block->tag)] = block;
+	block->next = allocated_blocks[::std::size_t(block->tag)];
+	allocated_blocks[::std::size_t(block->tag)] = block;
 
 	if (block->next != NULL)
 	{
@@ -92,7 +92,7 @@ static void Z_RemoveBlock(memblock_t* block)
 	if (block->prev == NULL)
 	{
 		// Start of list
-		allocated_blocks[std::size_t(block->tag)] = block->next;
+		allocated_blocks[::std::size_t(block->tag)] = block->next;
 	}
 	else
 	{
@@ -141,7 +141,7 @@ static bool ClearCache(int size)
 	memblock_t* next_block;
 	int remaining;
 
-	block = allocated_blocks[std::size_t(pu_tags_t::PU_CACHE)];
+	block = allocated_blocks[::std::size_t(pu_tags_t::PU_CACHE)];
 
 	if (block == NULL)
 	{
@@ -341,7 +341,7 @@ void Z_CheckHeap()
 	memblock_t* prev;
 
 	// Check all chains
-	for (size_t i{0}; i < std::size_t(pu_tags_t::PU_NUM_TAGS); ++i)
+	for (size_t i{0}; i < ::std::size_t(pu_tags_t::PU_NUM_TAGS); ++i)
 	{
 		prev = NULL;
 
@@ -362,7 +362,7 @@ void Z_CheckHeap()
 	}
 }
 
-void Z_ChangeTag2(void* ptr, pu_tags_t tag, std::string file, int line)
+void Z_ChangeTag2(void* ptr, pu_tags_t tag, ::std::string file, int line)
 {
 	memblock_t* block;
 

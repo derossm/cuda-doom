@@ -25,7 +25,7 @@ constexpr size_t NORM_PITCH{127};
 struct sfxinfo_t
 {
 	// tag name, used for hexen.
-	std::string tagname;
+	::std::string tagname;
 
 	// lump name. If we are running with use_sfx_prefix=true, a
 	// 'DS' (or 'DP' for PC speaker sounds) is prepended to this.
@@ -64,7 +64,7 @@ struct sfxinfo_t
 struct musicinfo_t
 {
 	// up to 6-character name
-	std::string name;
+	::std::string name;
 
 	// lump number of music
 	int lumpnum;
@@ -195,7 +195,7 @@ extern int snd_musicdevice;
 extern int snd_samplerate;
 extern int snd_cachesize;
 extern int snd_maxslicetime_ms;
-extern std::string snd_musiccmd;
+extern ::std::string snd_musiccmd;
 extern int snd_pitchshift;
 
 void I_BindSoundVariables();

@@ -31,13 +31,13 @@ enum class oplmode_t
 	NUM_OPLMODES,
 };
 
-static std::string opltype_strings[] =
+static ::std::string opltype_strings[] =
 {
 	"OPL2",
 	"OPL3"
 };
 
-static std::string cfg_extension[] = {"cfg", NULL};
+static ::std::string cfg_extension[] = {"cfg", NULL};
 
 // Config file variables:
 int snd_sfxdevice = snddevice_t::SB;
@@ -46,24 +46,24 @@ int snd_samplerate = 44100;
 int opl_io_port = 0x388;
 int snd_cachesize = 64 * 1024 * 1024;
 int snd_maxslicetime_ms = 28;
-std::string snd_musiccmd = "";
+::std::string snd_musiccmd = "";
 int snd_pitchshift = 0;
-std::string snd_dmxoption = "-opl3"; // [crispy] default to OPL3 emulation
+::std::string snd_dmxoption = "-opl3"; // default to OPL3 emulation
 
 static int numChannels = 8;
 static int sfxVolume = 8;
 static int musicVolume = 8;
 static int voiceVolume = 15;
 static int show_talk = 0;
-// [crispy] values 3 and higher might reproduce DOOM.EXE more accurately,
+// values 3 and higher might reproduce DOOM.EXE more accurately,
 // but 1 is closer to "use_libsamplerate = 0" which is the default in Choco
 // and causes only a short delay at startup
 static int use_libsamplerate = 1;
 static float libsamplerate_scale = 0.65;
 
-std::string music_pack_path = NULL;
-std::string timidity_cfg_path = NULL;
-std::string gus_patch_path = NULL;
+::std::string music_pack_path = NULL;
+::std::string timidity_cfg_path = NULL;
+::std::string gus_patch_path = NULL;
 static int gus_ram_kb = 1024;
 
 // DOS specific variables: these are unused but should be maintained
@@ -182,7 +182,7 @@ void ConfigSound(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 					cudadoom::txt::DIRECTORY),
 				NULL)),
 
-		cudadoom::txt::NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice, snddevice_t::GENMIDI), // [crispy] improve ambigious music backend name
+		cudadoom::txt::NewRadioButton("MIDI/MP3/OGG/FLAC", &snd_musicdevice, snddevice_t::GENMIDI), // improve ambigious music backend name
 		cudadoom::txt::NewConditional(&snd_musicdevice, snddevice_t::GENMIDI,
 			cudadoom::txt::MakeTable(2,
 				cudadoom::txt::NewStrut(4, 0),
@@ -231,9 +231,9 @@ void BindSoundVariables()
 		M_BindIntVariable("show_talk", &show_talk);
 	}
 
-	music_pack_path = std::string("");
-	timidity_cfg_path = std::string("");
-	gus_patch_path = std::string("");
+	music_pack_path = ::std::string("");
+	timidity_cfg_path = ::std::string("");
+	gus_patch_path = ::std::string("");
 
 	// All versions of Heretic and Hexen did pitch-shifting.
 	// Most versions of Doom did not and Strife never did.

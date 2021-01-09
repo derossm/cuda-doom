@@ -237,7 +237,7 @@ void* Z_Malloc(int size, pu_tags_t tag, void* user)
 			// scanned all the way around the list
 			//I_Error("Z_Malloc: failed on allocation of %i bytes", size);
 
-			// [crispy] allocate another zone twice as big
+			// allocate another zone twice as big
 			Z_Init();
 
 			base = mainzone->rover;
@@ -409,7 +409,7 @@ void Z_CheckHeap()
 	}
 }
 
-void Z_ChangeTag2(void* ptr, pu_tags_t tag, std::string file, int line)
+void Z_ChangeTag2(void* ptr, pu_tags_t tag, ::std::string file, int line)
 {
 	memblock_t* block;
 

@@ -162,7 +162,7 @@ bool D_IsEpisodeMap(GameMission mission)
 	}
 }
 
-std::string D_GameMissionString(GameMission mission)
+::std::string D_GameMissionString(GameMission mission)
 {
 	switch (mission)
 	{
@@ -190,7 +190,7 @@ std::string D_GameMissionString(GameMission mission)
 	}
 }
 
-std::string D_GameModeString(GameMode mode)
+::std::string D_GameModeString(GameMode mode)
 {
 	switch (mode)
 	{

@@ -22,8 +22,8 @@
 
 struct bex_string_t
 {
-	std::string macro;
-	std::string string;
+	::std::string macro;
+	::std::string string;
 };
 
 // mnemonic keys table
@@ -329,7 +329,7 @@ static const bex_string_t bex_stringtable[] = {
 	{"BGCASTCALL", "BOSSBACK"},
 };
 
-static void* DEH_BEXStrStart(deh_context_t* context, std::string line)
+static void* DEH_BEXStrStart(deh_context_t* context, ::std::string line)
 {
 	char s[10];
 
@@ -341,10 +341,10 @@ static void* DEH_BEXStrStart(deh_context_t* context, std::string line)
 	return nullptr;
 }
 
-static void DEH_BEXStrParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_BEXStrParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
-	std::string variable_name;
-	std::string value;
+	::std::string variable_name;
+	::std::string value;
 	int i;
 
 	if (!DEH_ParseAssignment(line, &variable_name, &value))

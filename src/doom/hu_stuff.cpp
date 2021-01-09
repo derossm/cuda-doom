@@ -67,9 +67,9 @@ constexpr size_t HU_INPUTHEIGHT{1};
 
 #define HU_COORDX ((ORIGWIDTH - 8 * hu_font['A'-HU_FONTSTART]->width) + WIDESCREENDELTA)
 
-std::array<std::string, 10> chat_macros;
+::std::array<::std::string, 10> chat_macros;
 
-std::string player_names[] =
+::std::string player_names[] =
 {
 	HUSTR_PLRGREEN,
 	HUSTR_PLRINDIGO,
@@ -116,7 +116,7 @@ extern int screenblocks;
 // Builtin map names.
 // The actual names can be found in DStrings.h.
 //
-std::string mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
+::std::string mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
 {
 
 	HUSTR_E1M1,
@@ -180,7 +180,7 @@ std::string mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
 	"NEWLEVEL"
 };
 
-std::string mapnames_chex[] =	// Chex Quest names.
+::std::string mapnames_chex[] =	// Chex Quest names.
 {
 	HUSTR_E1M1,
 	HUSTR_E1M2,
@@ -239,7 +239,7 @@ std::string mapnames_chex[] =	// Chex Quest names.
 // the layout in the Vanilla executable, where it is possible to
 // overflow the end of one array into the next.
 
-std::string mapnames_commercial[] =
+::std::string mapnames_commercial[] =
 {
 	// DOOM 2 map names.
 	HUSTR_1,
@@ -387,9 +387,9 @@ std::string mapnames_commercial[] =
 	MHUSTR_21
 };
 
-static void CrispyReplaceColor(std::string str, const int cr, std::string col)
+static void CrispyReplaceColor(::std::string str, const int cr, ::std::string col)
 {
-	std::string str_replace;
+	::std::string str_replace;
 	char col_replace[16];
 
 	if (DEH_HasStringReplacement(str))
@@ -404,7 +404,7 @@ static void CrispyReplaceColor(std::string str, const int cr, std::string col)
 	//free(str_replace);
 }
 
-static std::string cr_stat, cr_stat2, kills;
+static ::std::string cr_stat, cr_stat2, kills;
 
 void HU_Init()
 {
@@ -511,8 +511,8 @@ struct speciallevel_t
 	GameMission mission;
 	int episode;
 	int map;
-	std::string wad;
-	std::string name;
+	::std::string wad;
+	::std::string name;
 };
 
 static const speciallevel_t speciallevels[] = {
@@ -550,7 +550,7 @@ static const speciallevel_t speciallevels[] = {
 	{GameMission::doom2, 0, 32, "teeth.wad", MHUSTR_21},
 };
 
-static void HU_SetSpecialLevelName(std::string wad, CHAR_PTR* name)
+static void HU_SetSpecialLevelName(::std::string wad, CHAR_PTR* name)
 {
 	int i;
 
@@ -574,7 +574,7 @@ static int hu_widescreendelta;
 void HU_Start()
 {
 	int i;
-	std::string s;
+	::std::string s;
 	// string buffers for map title and WAD file name
 	char buf[8];
 	char* ptr;
@@ -670,7 +670,7 @@ void HU_Start()
 		&& !(!crispy->havenerve.empty() && gamemission == GameMission::pack_nerve)
 		&& !(!crispy->havemaster.empty() && gamemission == GameMission::pack_master)))
 	{
-		std::string m = std::string(crstr[CR_GOLD] + W_WadNameForLump(maplumpinfo) + ": " + crstr[CR_GRAY] + maplumpinfo->name);
+		::std::string m = ::std::string(crstr[CR_GOLD] + W_WadNameForLump(maplumpinfo) + ": " + crstr[CR_GRAY] + maplumpinfo->name);
 
 		// FIXME
 		//while (m)
@@ -710,25 +710,25 @@ void HU_Start()
 	headsupactive = true;
 }
 
-// [crispy] print a bar indicating demo progress at the bottom of the screen
+// print a bar indicating demo progress at the bottom of the screen
 void HU_DemoProgressBar()
 {
 	const int i = SCREENWIDTH * defdemotics / deftotaldemotics;
 
 #ifndef CRISPY_TRUECOLOR
-	// V_DrawHorizLine(0, SCREENHEIGHT - 3, i, 4); // [crispy] white
-	V_DrawHorizLine(0, SCREENHEIGHT - 2, i, 0); // [crispy] black
-	V_DrawHorizLine(0, SCREENHEIGHT - 1, i, 4); // [crispy] white
+	// V_DrawHorizLine(0, SCREENHEIGHT - 3, i, 4); // white
+	V_DrawHorizLine(0, SCREENHEIGHT - 2, i, 0); // black
+	V_DrawHorizLine(0, SCREENHEIGHT - 1, i, 4); // white
 
-// V_DrawHorizLine(0, SCREENHEIGHT - 2, 1, 4); // [crispy] white start
-// V_DrawHorizLine(i - 1, SCREENHEIGHT - 2, 1, 4); // [crispy] white end
+// V_DrawHorizLine(0, SCREENHEIGHT - 2, 1, 4); // white start
+// V_DrawHorizLine(i - 1, SCREENHEIGHT - 2, 1, 4); // white end
 #else
-	// V_DrawHorizLine(0, SCREENHEIGHT - 3, i, colormaps[4]); // [crispy] white
-	V_DrawHorizLine(0, SCREENHEIGHT - 2, i, colormaps[0]); // [crispy] black
-	V_DrawHorizLine(0, SCREENHEIGHT - 1, i, colormaps[4]); // [crispy] white
+	// V_DrawHorizLine(0, SCREENHEIGHT - 3, i, colormaps[4]); // white
+	V_DrawHorizLine(0, SCREENHEIGHT - 2, i, colormaps[0]); // black
+	V_DrawHorizLine(0, SCREENHEIGHT - 1, i, colormaps[4]); // white
 
-// V_DrawHorizLine(0, SCREENHEIGHT - 2, 1, colormaps[4]); // [crispy] white start
-// V_DrawHorizLine(i - 1, SCREENHEIGHT - 2, 1, colormaps[4]); // [crispy] white end
+// V_DrawHorizLine(0, SCREENHEIGHT - 2, 1, colormaps[4]); // white start
+// V_DrawHorizLine(i - 1, SCREENHEIGHT - 2, 1, colormaps[4]); // white end
 #endif
 }
 
@@ -739,7 +739,7 @@ static void HU_DrawCrosshair()
 	static patch_t* patch;
 	extern byte* R_LaserspotColor();
 
-	if (weaponinfo[std::size_t(plr->readyweapon)].ammo == AmmoType::am_noammo
+	if (weaponinfo[::std::size_t(plr->readyweapon)].ammo == AmmoType::am_noammo
 		|| plr->playerstate != PlayerState::live
 		|| automapactive || menuactive || paused || secret_on)
 	{
@@ -769,13 +769,13 @@ void HU_Drawer()
 		return;
 	}
 
-	// [crispy] re-calculate widget coordinates on demand
+	// re-calculate widget coordinates on demand
 	if (hu_widescreendelta != WIDESCREENDELTA)
 	{
 		HU_Start();
 	}
 
-	// [crispy] translucent messages for translucent HUD
+	// translucent messages for translucent HUD
 	if (screenblocks >= CRISPY_HUD && (screenblocks % 3 == 2) && (!automapactive || crispy->automapoverlay))
 	{
 		dp_translucent = true;
@@ -833,7 +833,7 @@ void HU_Drawer()
 		HUlib_drawTextLine(&w_coorda, false);
 	}
 
-	if (plr->powers[std::size_t(PowerType_t::pw_showfps)])
+	if (plr->powers[::std::size_t(PowerType_t::pw_showfps)])
 	{
 		HUlib_drawTextLine(&w_fps, false);
 	}
@@ -907,7 +907,7 @@ void HU_Ticker()
 		if (!plr->centermessage.empty())
 		{
 			// FIXME what is this?
-			extern int M_StringWidth(std::string string);
+			extern int M_StringWidth(::std::string string);
 			w_secret.l[0].x = ORIGWIDTH / 2 - M_StringWidth(plr->centermessage) / 2;
 
 			HUlib_addMessageToSText(&w_secret, 0, plr->centermessage);
@@ -1045,7 +1045,7 @@ void HU_Ticker()
 		}
 	}
 
-	// [crispy] "use" button timer overrides the level time widget
+	// "use" button timer overrides the level time widget
 	if (crispy->btusetimer && plr->btuse_tics)
 	{
 		const int mins = plr->btuse / (60 * TICRATE);
@@ -1089,7 +1089,7 @@ void HU_Ticker()
 		}
 	}
 
-	if (plr->powers[std::size_t(PowerType_t::pw_showfps)])
+	if (plr->powers[::std::size_t(PowerType_t::pw_showfps)])
 	{
 		M_snprintf(str, sizeof(str), "%s%-4d %sFPS", crstr[CR_GRAY], crispy->fps, cr_stat2);
 		HUlib_clearTextLine(&w_fps);

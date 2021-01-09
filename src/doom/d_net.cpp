@@ -46,7 +46,7 @@ static void PlayerQuitGame(Player* player)
 
 	playeringame[player_num] = false;
 	players[consoleplayer].message = exitmsg;
-	// [crispy] don't interpolate players who left the game
+	// don't interpolate players who left the game
 	player->interp = false;
 
 	// TODO: check if it is sensible to do this:

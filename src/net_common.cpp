@@ -394,7 +394,7 @@ void NET_OpenLog()
 	}
 }
 
-void NET_Log(std::string fmt, ...)
+void NET_Log(::std::string fmt, ...)
 {
 	va_list args;
 

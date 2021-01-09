@@ -64,7 +64,7 @@ static void TXT_MouseInputSizeCalc(TXT_UNCAST_ARG(mouse_input))
 	mouse_input->widget.h = 1;
 }
 
-static void GetMouseButtonDescription(int button, std::string buf, size_t buf_len)
+static void GetMouseButtonDescription(int button, ::std::string buf, size_t buf_len)
 {
 	switch (button)
 	{

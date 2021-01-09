@@ -20,14 +20,14 @@
 typedef void (*actionf_v)();
 typedef void (*actionf_p1)(void*);
 typedef void (*actionf_p2)(void*, void*);
-typedef void (*actionf_p3)(void*, void*, void*); // [crispy] let pspr action pointers get called from mobj states
+typedef void (*actionf_p3)(void*, void*, void*); // let pspr action pointers get called from mobj states
 
 union actionf_t
 {
 	actionf_v acv;
 	actionf_p1 acp1;
 	actionf_p2 acp2;
-	actionf_p3 acp3; // [crispy] let pspr action pointers get called from mobj states
+	actionf_p3 acp3; // let pspr action pointers get called from mobj states
 };
 
 // Historically, "think_t" is yet another function pointer to a routine to handle an actor.

@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************\
-	Copyright(C) 2020 Mason DeRoss
+	Copyright© 2020-2021 Mason DeRoss
 
 	Released under the GNU All-permissive License
 
@@ -22,8 +22,8 @@ namespace cudadoom
 {
 
 template<typename E, E N>
-	requires std::is_enum_v<std::remove_reference_t<E>>
-class BitSet : public std::bitset<static_cast<size_t>(N)>
+	requires ::std::is_enum_v<::std::remove_reference_t<E>>
+class BitSet : public ::std::bitset<static_cast<size_t>(N)>
 {
 public:
 	inline BitSet<E, N>& set() noexcept
@@ -45,11 +45,11 @@ public:
 	}
 
 	template<typename... Es>
-		requires (std::is_enum_v<std::remove_reference_t<Es>> && ...) || (std::is_integral<std::remove_reference_t<Es>> && ...)
+		requires (::std::is_enum_v<::std::remove_reference_t<Es>> && ...) || (::std::is_integral<::std::remove_reference_t<Es>> && ...)
 	inline BitSet<E, N>& set(bool value, Es... es) noexcept
 	{
 		auto ev = {es...};
-		std::for_each(ev.begin(), ev.end(), [&](auto& iter){ bitset::set(static_cast<size_t>(iter), value); });
+		::std::for_each(ev.begin(), ev.end(), [&](auto& iter){ bitset::set(static_cast<size_t>(iter), value); });
 	}
 
 

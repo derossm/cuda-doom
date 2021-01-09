@@ -16,7 +16,7 @@
 #include "deh_defs.h"
 #include "deh_main.h"
 
-std::string deh_signatures[] =
+::std::string deh_signatures[] =
 {
 	"Patch File for DeHackEd v2.3",
 	"Patch File for DeHackEd v3.0",

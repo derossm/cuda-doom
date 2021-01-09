@@ -8,8 +8,6 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
 
 #include "txt_common.h"
 #include "txt_widget.h"
@@ -190,4 +188,4 @@ public:
 /**/
 };
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

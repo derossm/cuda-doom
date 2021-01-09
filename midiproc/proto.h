@@ -28,4 +28,4 @@ enum class PacketType
 	ACK
 };
 
-}
+} // end namespace cudadoom::midi

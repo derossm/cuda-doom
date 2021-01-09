@@ -41,7 +41,7 @@ struct weaponinfo_t
 // readystate
 // atkstate, i.e. attack/fire/hit frame
 // flashstate, muzzle flash
-weaponinfo_t weaponinfo[std::size_t(WeaponType::NUMWEAPONS)]{
+weaponinfo_t weaponinfo[::std::size_t(WeaponType::NUMWEAPONS)]{
 	{
 	// fist
 	AmmoType::am_noammo,

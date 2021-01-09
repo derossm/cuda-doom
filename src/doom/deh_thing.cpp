@@ -24,7 +24,7 @@
 
 struct bex_thingbits_t
 {
-	std::string flag;
+	::std::string flag;
 	mobjflag_e bits;
 };
 
@@ -91,22 +91,22 @@ DEH_MAPPING("Missile damage", damage)
 DEH_MAPPING("Action sound", activesound)
 DEH_MAPPING("Bits", flags)
 DEH_MAPPING("Respawn frame", raisestate)
-// [crispy] Thing id to drop after death
+// Thing id to drop after death
 DEH_MAPPING("Dropped item", droppeditem)
-// [crispy] Distance to switch from missile to melee attack
+// Distance to switch from missile to melee attack
 DEH_MAPPING("Melee threshold", meleethreshold)
-// [crispy] Maximum distance range to start shooting (zero for unlimited)
+// Maximum distance range to start shooting (zero for unlimited)
 DEH_MAPPING("Max target range", maxattackrange)
-// [crispy] Minimum chance for firing a missile
+// Minimum chance for firing a missile
 DEH_MAPPING("Min missile chance", minmissilechance)
-// [crispy] Multiplies the chance of firing a missile (65536 = normal chance)
+// Multiplies the chance of firing a missile (65536 = normal chance)
 DEH_MAPPING("Missile chance multiplier", missilechancemult)
 DEH_END_MAPPING
 
 // initialize Thing extra properties (keeping vanilla props in info.c)
 static void DEH_InitThingProperties()
 {
-	for (size_t i{0}; i < std::size_t(mobjtype_t::NUMMOBJTYPES); ++i)
+	for (size_t i{0}; i < ::std::size_t(mobjtype_t::NUMMOBJTYPES); ++i)
 	{
 		mobjtype_t k{(mobjtype_t)i};
 		// mobj id for item dropped on death
@@ -174,7 +174,7 @@ static void DEH_InitThingProperties()
 	}
 }
 
-static void* DEH_ThingStart(deh_context_t* context, std::string line)
+static void* DEH_ThingStart(deh_context_t* context, ::std::string line)
 {
 	int thing_number = 0;
 	mobjinfo_t* mobj;
@@ -199,11 +199,11 @@ static void* DEH_ThingStart(deh_context_t* context, std::string line)
 	return mobj;
 }
 
-static void DEH_ThingParseLine(deh_context_t* context, std::string line, void* tag)
+static void DEH_ThingParseLine(deh_context_t* context, ::std::string line, void* tag)
 {
 	mobjinfo_t* mobj;
-	std::string variable_name;
-	std::string value;
+	::std::string variable_name;
+	::std::string value;
 	int ivalue;
 
 	if (!tag)
@@ -231,7 +231,7 @@ static void DEH_ThingParseLine(deh_context_t* context, std::string line, void* t
 	if (!ivalue && !variable_name.compare("bits"))
 	{
 		// FIXME what does strtok do
-		for (; !(value = std::string(strtok(value.c_str(), ",+| \t\f\r"))).compare("0"); value = NULL)
+		for (; !(value = ::std::string(strtok(value.c_str(), ",+| \t\f\r"))).compare("0"); value = NULL)
 		{
 			for (size_t i{0}; i < arrlen(bex_thingbitstable); ++i)
 			{
@@ -257,7 +257,7 @@ static void DEH_ThingParseLine(deh_context_t* context, std::string line, void* t
 
 static void DEH_ThingSHA1Sum(sha1_context_t* context)
 {
-	for (size_t i{0}; i < std::size_t(mobjtype_t::NUMMOBJTYPES); ++i)
+	for (size_t i{0}; i < ::std::size_t(mobjtype_t::NUMMOBJTYPES); ++i)
 	{
 		DEH_StructSHA1Sum(context, &thing_mapping, &mobjinfo[i]);
 	}
@@ -266,7 +266,7 @@ static void DEH_ThingSHA1Sum(sha1_context_t* context)
 deh_section_t deh_section_thing =
 {
 	"Thing",
-	DEH_InitThingProperties, // [crispy] initialize Thing extra properties
+	DEH_InitThingProperties, // initialize Thing extra properties
 	DEH_ThingStart,
 	DEH_ThingParseLine,
 	NULL,

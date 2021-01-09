@@ -20,7 +20,7 @@
 #include "m_random.h"
 
 #include "deh_main.h"
-#include "deh_bexpars.h" // [crispy] bex_pars[]
+#include "deh_bexpars.h" // bex_pars[]
 #include "i_swap.h"
 #include "i_system.h"
 
@@ -39,7 +39,7 @@
 // Needs access to LFB.
 #include "v_video.h"
 
-#include "st_stuff.h" // [crispy] ST_DrawDemoTimer()
+#include "st_stuff.h" // ST_DrawDemoTimer()
 #include "wi_stuff.h"
 
 //
@@ -371,7 +371,7 @@ static patch_t* bp[MAX_PLAYERS];
 
 // Name graphics of each level (centered)
 static patch_t** lnames;
-// [crispy] prevent crashes with maps without map title graphics lump
+// prevent crashes with maps without map title graphics lump
 static unsigned num_lnames;
 
 // Buffer storing the backdrop
@@ -399,7 +399,7 @@ void WI_drawLF()
 {
 	int y = WI_TITLEY;
 
-	// [crispy] prevent crashes with maps without map title graphics lump
+	// prevent crashes with maps without map title graphics lump
 	if (wbs->last >= num_lnames || lnames[wbs->last] == NULL)
 	{
 		V_DrawPatch((ORIGWIDTH - SHORT(finished->width)) / 2, y, finished);
@@ -441,7 +441,7 @@ void WI_drawEL()
 {
 	int y = WI_TITLEY;
 
-	// [crispy] prevent crashes with maps without map title graphics lump
+	// prevent crashes with maps without map title graphics lump
 	if (wbs->next >= num_lnames || lnames[wbs->next] == NULL)
 	{
 		return;
@@ -603,7 +603,7 @@ void WI_drawAnimatedBack()
 			V_DrawPatch(a->loc.x, a->loc.y, a->p[a->ctr]);
 	}
 
-	// [crispy] show Fortress of Mystery if it has been completed
+	// show Fortress of Mystery if it has been completed
 	if (wbs->epsd == 1 && wbs->didsecret)
 	{
 		a = &anims[wbs->epsd][7];
@@ -709,7 +709,7 @@ void WI_drawTime(int x, int y, int t, bool suck)
 
 		} while (t / div && div < 3600);
 
-		// [crispy] print at most in hhhh:mm:ss format
+		// print at most in hhhh:mm:ss format
 		if ((n = (t / div)))
 		{
 			x = WI_drawNum(x, y, n, -1);
@@ -756,7 +756,7 @@ static bool snl_pointeron = false;
 
 void WI_initShowNextLoc()
 {
-	// [crispy] display tally screen after ExM8
+	// display tally screen after ExM8
 	if ((gamemode != GameMode::commercial && gamemap == 8) || (gameversion == GameVersion::exe_chex && gamemap == 5))
 	{
 		G_WorldDone();
@@ -785,7 +785,7 @@ void WI_drawShowNextLoc()
 
 	int i;
 	int last;
-	extern bool secretexit; // [crispy] Master Level support
+	extern bool secretexit; // Master Level support
 
 	WI_slamBackground();
 
@@ -800,7 +800,7 @@ void WI_drawShowNextLoc()
 			return;
 		}
 
-		last = (wbs->last == 8 || wbs->last == 9) ? wbs->next - 1 : wbs->last; // [crispy] support E1M10 "Sewers"
+		last = (wbs->last == 8 || wbs->last == 9) ? wbs->next - 1 : wbs->last; // support E1M10 "Sewers"
 
 		// draw a splat on taken cities.
 		for (i = 0; i <= last; ++i)
@@ -810,7 +810,7 @@ void WI_drawShowNextLoc()
 		if (wbs->didsecret)
 			WI_drawOnLnode(8, splat);
 
-		// [crispy] the splat for E1M10 "Sewers" is drawn only once,
+		// the splat for E1M10 "Sewers" is drawn only once,
 		// i.e. now, when returning from the level
 		// (and this is not going to change)
 		if (crispy->havee1m10 && wbs->epsd == 0 && wbs->last == 9)
@@ -1433,14 +1433,14 @@ void WI_updateStats()
 
 }
 
-// [crispy] conditionally draw par times on intermission screen
+// conditionally draw par times on intermission screen
 static bool WI_drawParTime()
 {
 	extern lumpinfo_t* maplumpinfo;
 
 	bool result = true;
 
-	// [crispy] PWADs have no par times (including The Master Levels)
+	// PWADs have no par times (including The Master Levels)
 	if (!W_IsIWADLump(maplumpinfo))
 	{
 		result = false;
@@ -1448,19 +1448,19 @@ static bool WI_drawParTime()
 
 	if (gamemode == GameMode::commercial)
 	{
-		// [crispy] IWAD: Final Doom has no par times
+		// IWAD: Final Doom has no par times
 		if (gamemission == GameMission::pack_tnt || gamemission == GameMission::pack_plut)
 		{
 			result = false;
 		}
 
-		// [crispy] PWAD: NRFTL has par times
+		// PWAD: NRFTL has par times
 		if (gamemission == GameMission::pack_nerve)
 		{
 			result = true;
 		}
 
-		// [crispy] IWAD/PWAD: BEX patch provided par times
+		// IWAD/PWAD: BEX patch provided par times
 		if (bex_cpars[wbs->last])
 		{
 			result = true;
@@ -1468,27 +1468,27 @@ static bool WI_drawParTime()
 	}
 	else
 	{
-		// [crispy] IWAD: Episode 4 has no par times
+		// IWAD: Episode 4 has no par times
 		// (but we have for singleplayer games)
 		if (wbs->epsd == 3 && !crispy->singleplayer)
 		{
 			result = false;
 		}
 
-		// [crispy] IWAD/PWAD: BEX patch provided par times for Episode 4
+		// IWAD/PWAD: BEX patch provided par times for Episode 4
 		// (disguised as par times for Doom II MAP02 to MAP10)
 		if (wbs->epsd == 3 && bex_cpars[wbs->last + 1])
 		{
 			result = true;
 		}
 
-		// [crispy] IWAD/PWAD: BEX patch provided par times for Episodes 1-4
+		// IWAD/PWAD: BEX patch provided par times for Episodes 1-4
 		if (wbs->epsd <= 3 && bex_pars[wbs->epsd + 1][wbs->last + 1])
 		{
 			result = true;
 		}
 
-		// [crispy] PWAD: par times for Sigil
+		// PWAD: par times for Sigil
 		if (wbs->epsd == 4)
 		{
 			result = true;
@@ -1524,38 +1524,38 @@ void WI_drawStats()
 	V_DrawPatch(SP_TIMEX, SP_TIMEY, timepatch);
 	WI_drawTime(ORIGWIDTH / 2 - SP_TIMEX, SP_TIMEY, cnt_time, true);
 
-	// [crispy] conditionally draw par times on intermission screen
+	// conditionally draw par times on intermission screen
 	if (WI_drawParTime())
 	{
 		V_DrawPatch(ORIGWIDTH / 2 + SP_TIMEX, SP_TIMEY, par);
 		WI_drawTime(ORIGWIDTH - SP_TIMEX, SP_TIMEY, cnt_par, true);
 	}
 
-	// [crispy] draw total time after level time and par time
+	// draw total time after level time and par time
 	if (sp_state > 8)
 	{
 		const TimeType ttime = wbs->totaltimes / TICRATE;
 		const bool wide = (ttime > 61 * 59) || (SP_TIMEX + SHORT(total->width) >= ORIGWIDTH / 4);
 
 		V_DrawPatch(SP_TIMEX, SP_TIMEY + 16, total);
-		// [crispy] choose x-position depending on width of time string
+		// choose x-position depending on width of time string
 		WI_drawTime((wide ? ORIGWIDTH : ORIGWIDTH / 2) - SP_TIMEX, SP_TIMEY + 16, ttime, false);
 	}
 
-	// [crispy] exit early from the tally screen after ExM8
+	// exit early from the tally screen after ExM8
 	if (sp_state == 10 && ((gamemode != GameMode::commercial && gamemap == 8) || (gameversion == GameVersion::exe_chex && gamemap == 5)))
 	{
 		acceleratestage = 1;
 	}
 
-	// [crispy] demo timer widget
+	// demo timer widget
 	if ((demoplayback && (crispy->demotimer & DEMOTIMER_PLAYBACK)) ||
 		(demorecording && (crispy->demotimer & DEMOTIMER_RECORD)))
 	{
 		ST_DrawDemoTimer(leveltime);
 	}
 
-	// [crispy] demo progress bar
+	// demo progress bar
 	if (demoplayback && crispy->demobar)
 	{
 		extern void HU_DemoProgressBar();
@@ -1605,7 +1605,7 @@ void WI_Ticker()
 		// intermission music
 		if (gamemode == GameMode::commercial)
 			S_ChangeMusic(musicenum_t::mus_dm2int, true);
-		// [crispy] Sigil
+		// Sigil
 		else if (crispy->haved1e5 && wbs->epsd == 4 && W_CheckNumForName(DEH_String("D_SIGINT")) != -1)
 			S_ChangeMusic(musicenum_t::mus_sigint, true);
 		else
@@ -1633,7 +1633,7 @@ void WI_Ticker()
 
 }
 
-typedef void (*load_callback_t)(std::string lumpname, patch_t** variable);
+typedef void (*load_callback_t)(::std::string lumpname, patch_t** variable);
 
 // Common load/unload function. Iterates over all the graphics
 // lumps to be loaded/unloaded into memory.
@@ -1650,12 +1650,12 @@ static void WI_loadUnloadData(load_callback_t callback)
 		for (i = 0; i < NUMCMAPS; ++i)
 		{
 			DEH_snprintf(name, 9, "CWILV%2.2d", i);
-			// [crispy] NRFTL / The Master Levels
-			if (crispy->havenerve && wbs->epsd == 1 && i < 9) // [crispy] gamemission == pack_nerve
+			// NRFTL / The Master Levels
+			if (crispy->havenerve && wbs->epsd == 1 && i < 9) // gamemission == pack_nerve
 			{
 				name[0] = 'N';
 			}
-			if (crispy->havemaster && crispy->havemaster != (char*)-1 && wbs->epsd == 2 && i < 21) // [crispy] gamemission == pack_master
+			if (crispy->havemaster && crispy->havemaster != (char*)-1 && wbs->epsd == 2 && i < 21) // gamemission == pack_master
 			{
 				name[0] = 'M';
 			}
@@ -1669,7 +1669,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 			DEH_snprintf(name, 9, "WILV%d%d", wbs->epsd, i);
 			callback(name, &lnames[i]);
 		}
-		// [crispy] special-casing for E1M10 "Sewers" support
+		// special-casing for E1M10 "Sewers" support
 		if (crispy->havee1m10)
 		{
 			DEH_snprintf(name, 9, "SEWERS");
@@ -1793,7 +1793,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 
 	if (gamemode == GameMode::commercial)
 	{
-		if (crispy->havenerve && wbs->epsd == 1 && W_CheckNumForName(DEH_String("NERVEINT")) != -1) // [crispy] gamemission == pack_nerve
+		if (crispy->havenerve && wbs->epsd == 1 && W_CheckNumForName(DEH_String("NERVEINT")) != -1) // gamemission == pack_nerve
 		{
 			M_StringCopy(name, DEH_String("NERVEINT"), sizeof(name));
 		}
@@ -1806,7 +1806,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 	{
 		M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
 	}
-	else if (crispy->haved1e5 && wbs->epsd == 4 && W_CheckNumForName(DEH_String("SIGILINT")) != -1) // [crispy] Sigil
+	else if (crispy->haved1e5 && wbs->epsd == 4 && W_CheckNumForName(DEH_String("SIGILINT")) != -1) // Sigil
 	{
 		M_StringCopy(name, DEH_String("SIGILINT"), sizeof(name));
 	}
@@ -1815,7 +1815,7 @@ static void WI_loadUnloadData(load_callback_t callback)
 		DEH_snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
 	}
 
-	// [crispy] if still in doubt, use INTERPIC
+	// if still in doubt, use INTERPIC
 	if (W_CheckNumForName(name) == -1)
 	{
 		M_StringCopy(name, DEH_String("INTERPIC"), sizeof(name));
@@ -1826,9 +1826,9 @@ static void WI_loadUnloadData(load_callback_t callback)
 	callback(name, &background);
 }
 
-static void WI_loadCallback(std::string name, patch_t** variable)
+static void WI_loadCallback(::std::string name, patch_t** variable)
 {
-	// [crispy] prevent crashes with maps without map title graphics lump
+	// prevent crashes with maps without map title graphics lump
 	if (W_CheckNumForName(name) != -1)
 		*variable = W_CacheLumpName<patch_t>(name, pu_tags_t::PU_STATIC);
 	else
@@ -1863,7 +1863,7 @@ void WI_loadData()
 	bstar = W_CacheLumpName<patch_t>(DEH_String("STFDEAD0"), pu_tags_t::PU_STATIC);
 }
 
-static void WI_unloadCallback(std::string name, patch_t** variable)
+static void WI_unloadCallback(::std::string name, patch_t** variable)
 {
 	W_ReleaseLumpName(name);
 	*variable = NULL;

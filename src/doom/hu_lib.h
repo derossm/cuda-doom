@@ -89,7 +89,7 @@ void HUlib_initSText(hu_stext_t* s, int x, int y, int h, patch_t** font, int sta
 void HUlib_addLineToSText(hu_stext_t* s);
 
 // ?
-void HUlib_addMessageToSText(hu_stext_t* s, std::string prefix, std::string msg);
+void HUlib_addMessageToSText(hu_stext_t* s, ::std::string prefix, ::std::string msg);
 
 void HUlib_drawSText(hu_stext_t* s);
 
@@ -109,7 +109,7 @@ void HUlib_eraseLineFromIText(hu_itext_t* it);
 void HUlib_resetIText(hu_itext_t* it);
 
 // left of left-margin
-void HUlib_addPrefixToIText(hu_itext_t* it, std::string str);
+void HUlib_addPrefixToIText(hu_itext_t* it, ::std::string str);
 
 // whether eaten
 bool HUlib_keyInIText(hu_itext_t* it, unsigned char ch);

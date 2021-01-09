@@ -206,7 +206,7 @@ visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel)
 	if (check < lastvisplane)
 		return check;
 
-	R_RaiseVisplanes(&check); // [crispy] remove VISPLANES limit
+	R_RaiseVisplanes(&check); // remove VISPLANES limit
 	if (lastvisplane - visplanes == MAXVISPLANES && false)
 	{
 		I_Error("R_FindPlane: no more visplanes");
@@ -282,7 +282,7 @@ visplane_t* R_CheckPlane(visplane_t* pl, int start, int stop)
 	lastvisplane->picnum = pl->picnum;
 	lastvisplane->lightlevel = pl->lightlevel;
 
-	if (lastvisplane - visplanes == MAXVISPLANES && false) // [crispy] remove VISPLANES limit
+	if (lastvisplane - visplanes == MAXVISPLANES && false) // remove VISPLANES limit
 	{
 		I_Error("R_CheckPlane: no more visplanes");
 	}
@@ -356,7 +356,7 @@ void R_DrawPlanes()
 			continue;
 
 		// sky flat
-		// [crispy] add support for MBF sky tranfers
+		// add support for MBF sky tranfers
 		if (pl->picnum == skyflatnum || pl->picnum & PL_SKYFLAT)
 		{
 			int texture;
@@ -387,11 +387,11 @@ void R_DrawPlanes()
 			// i.e. colormaps[0] is used.
 			// Because of this hack, sky is not affected
 			// by INVUL inverse mapping.
-			// [crispy] no brightmaps for sky
+			// no brightmaps for sky
 			dc_colormap[0] = dc_colormap[1] = colormaps;
 			//dc_texturemid = skytexturemid;
-			dc_texheight = textureheight[texture] >> FRACBITS; // [crispy] Tutti-Frutti fix
-			// [crispy] stretch sky
+			dc_texheight = textureheight[texture] >> FRACBITS; // Tutti-Frutti fix
+			// stretch sky
 			if (crispy->stretchsky)
 			{
 				dc_iscale = dc_iscale * dc_texheight / SKYSTRETCH_HEIGHT;
@@ -401,7 +401,7 @@ void R_DrawPlanes()
 				dc_yl = pl->top[x];
 				dc_yh = pl->bottom[x];
 
-				if ((unsigned)dc_yl <= dc_yh) // [crispy] 32-bit integer math
+				if ((unsigned)dc_yl <= dc_yh) // 32-bit integer math
 				{
 					angle = ((an + xtoviewangle[x]) ^ flip) >> ANGLETOSKYSHIFT;
 					dc_x = x;
@@ -415,7 +415,7 @@ void R_DrawPlanes()
 		swirling = (flattranslation[pl->picnum] == -1);
 		// regular flat
 		lumpnum = firstflat + (swirling ? pl->picnum : flattranslation[pl->picnum]);
-		// [crispy] add support for SMMU swirling flats
+		// add support for SMMU swirling flats
 		ds_source = swirling ? R_DistortedFlat(lumpnum) : W_CacheLumpNum(lumpnum, pu_tags_t::PU_STATIC);
 		ds_brightmap = R_BrightmapForFlatNum(lumpnum - firstflat);
 
@@ -434,8 +434,8 @@ void R_DrawPlanes()
 
 		planezlight = zlight[light];
 
-		pl->top[pl->maxx + 1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
-		pl->top[pl->minx - 1] = 0xffffffffu; // [crispy] hires / 32-bit integer math
+		pl->top[pl->maxx + 1] = 0xffffffffu; // hires / 32-bit integer math
+		pl->top[pl->minx - 1] = 0xffffffffu; // hires / 32-bit integer math
 
 		stop = pl->maxx + 1;
 

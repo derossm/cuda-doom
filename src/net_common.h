@@ -109,5 +109,5 @@ unsigned NET_ExpandTicNum(unsigned relative, unsigned b);
 bool NET_ValidGameSettings(GameMode mode, GameMission mission, net_gamesettings* settings);
 
 void NET_OpenLog();
-void NET_Log(std::string fmt, ...);
+void NET_Log(::std::string fmt, ...);
 void NET_LogPacket(net_packet_t* packet);

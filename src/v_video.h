@@ -49,7 +49,7 @@ void V_DrawPatchFlipped(int x, int y, patch_t* patch);
 void V_DrawTLPatch(int x, int y, patch_t* patch);
 void V_DrawAltTLPatch(int x, int y, patch_t* patch);
 void V_DrawShadowedPatch(int x, int y, patch_t* patch);
-void V_DrawXlaPatch(int x, int y, patch_t* patch);		// villsa [STRIFE]
+void V_DrawXlaPatch(int x, int y, patch_t* patch);
 void V_DrawPatchDirect(int x, int y, patch_t* patch);
 void V_DrawPatchFullScreen(patch_t* patch, bool flipped);
 
@@ -77,12 +77,11 @@ void V_RestoreBuffer();
 // Save a screenshot of the current screen to a file, named in the
 // format described in the string passed to the function, eg.
 // "DOOM%02i.pcx"
-void V_ScreenShot(std::string format);
+void V_ScreenShot(::std::string format);
 
 // Load the lookup table for translucency calculations from the TINTTAB lump.
 void V_LoadTintTable();
 
-// villsa [STRIFE]
 // Load the lookup table for translucency calculations from the XLATAB lump.
 void V_LoadXlaTable();
 

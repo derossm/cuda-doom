@@ -117,7 +117,7 @@ enum class PowerType_t
 	pw_ironfeet,
 	pw_allmap,
 	pw_infrared,
-	// [crispy] showfps and mapcoords are now "powers"
+	// showfps and mapcoords are now "powers"
 	pw_showfps,
 	pw_mapcoords,
 	NUMPOWERS,

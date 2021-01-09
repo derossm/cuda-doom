@@ -72,13 +72,13 @@
 // Manages timing and IO, calls all ?_Responder, ?_Ticker, and ?_Drawer, calls I_GetTime, I_StartFrame, and I_StartTic
 void D_DoomLoop();
 
-std::string gamedescription;
+::std::string gamedescription;
 
 // Location where savegames are stored
-std::string savegamedir;
+::std::string savegamedir;
 
 // location of IWAD and WAD files
-std::string iwadfile;
+::std::string iwadfile;
 
 bool devparm;		// started game with -devparm
 bool nomonsters;	// checkparm of -nomonsters
@@ -108,7 +108,7 @@ bool main_loop_started = false;
 char wadfile[1024];			// primary wad file
 char mapdir[1024];			// directory of development maps
 
-int show_endoom = 0;		// [crispy] disable
+int show_endoom = 0;		// disable
 int show_diskicon = 1;
 
 void D_ConnectNetGame();
@@ -190,7 +190,7 @@ bool D_Display()
 		}
 		if (automapactive && !crispy->automapoverlay)
 		{
-			// [crispy] update automap while playing
+			// update automap while playing
 			R_RenderPlayerView(&players[displayplayer]);
 			AM_Drawer();
 		}
@@ -283,18 +283,18 @@ bool D_Display()
 	inhelpscreensstate = inhelpscreens;
 	oldgamestate = wipegamestate = gamestate;
 
-	// [crispy] in automap overlay mode, draw the automap and HUD on top of everything else
+	// in automap overlay mode, draw the automap and HUD on top of everything else
 	if (automapactive && crispy->automapoverlay)
 	{
 		AM_Drawer();
 		HU_Drawer();
 
-		// [crispy] force redraw of status bar and border
+		// force redraw of status bar and border
 		viewactivestate = false;
 		inhelpscreensstate = true;
 	}
 
-	// [crispy] draw neither pause pic nor menu when taking a clean screenshot
+	// draw neither pause pic nor menu when taking a clean screenshot
 	if (crispy->cleanscreenshot)
 	{
 		return false;
@@ -322,9 +322,9 @@ bool D_Display()
 	return wipe;
 }
 
-void EnableLoadingDisk() // [crispy] un-static
+void EnableLoadingDisk() // un-static
 {
-	std::string disk_lump_name;
+	::std::string disk_lump_name;
 
 	if (show_diskicon)
 	{
@@ -342,7 +342,7 @@ void EnableLoadingDisk() // [crispy] un-static
 }
 
 // Add configuration file variable bindings.
-static std::string const chat_macro_defaults[10] =
+static ::std::string const chat_macro_defaults[10] =
 {
 	HUSTR_CHATMACRO0,
 	HUSTR_CHATMACRO1,
@@ -387,7 +387,7 @@ void D_BindVariables()
 	M_BindIntVariable("screenblocks", &screenblocks);
 	M_BindIntVariable("detaillevel", &detailLevel);
 	M_BindIntVariable("snd_channels", &snd_channels);
-	// [crispy] unconditionally disable savegame and demo limits
+	// unconditionally disable savegame and demo limits
 	//M_BindIntVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
 	//M_BindIntVariable("vanilla_demo_limit", &vanilla_demo_limit);
 	M_BindIntVariable("show_endoom", &show_endoom);
@@ -398,12 +398,12 @@ void D_BindVariables()
 	{
 		char buf[12];
 
-		chat_macros[i] = std::string(chat_macro_defaults[i]);
+		chat_macros[i] = ::std::string(chat_macro_defaults[i]);
 		M_snprintf(buf, sizeof(buf), "chatmacro%i", i);
 		M_BindStringVariable(buf, &chat_macros[i]);
 	}
 
-	// [crispy] bind "crispness" config variables
+	// bind "crispness" config variables
 	M_BindIntVariable("crispy_automapoverlay", &crispy->automapoverlay);
 	M_BindIntVariable("crispy_automaprotate", &crispy->automaprotate);
 	M_BindIntVariable("crispy_automapstats", &crispy->automapstats);
@@ -518,7 +518,7 @@ void D_RunFrame()
 		}
 	}
 
-	// [crispy] post-rendering function pointer to apply config changes that affect rendering and that are better
+	// post-rendering function pointer to apply config changes that affect rendering and that are better
 	// applied after the current frame has finished rendering
 	if (crispy->post_rendering_hook && !wipe)
 	{
@@ -535,7 +535,7 @@ void D_DoomLoop()
 			" known to be incompatible with the regular IWAD files and\n may cause demos and network games to get out of sync.\n");
 	}
 
-	// [crispy] no need to write a demo header in demo continue mode
+	// no need to write a demo header in demo continue mode
 	if (demorecording && gameaction != GameAction_t::ga_playdemo)
 	{
 		G_BeginRecording();
@@ -570,7 +570,7 @@ void D_DoomLoop()
 // DEMO LOOP
 int demosequence;
 TimeType pagetic;
-std::string pagename;
+::std::string pagename;
 
 // Handles timing for warped projection
 void D_PageTicker()
@@ -599,7 +599,7 @@ void D_DoAdvanceDemo()
 	usergame = false;				// no save / end game here
 	paused = false;
 	gameaction = GameAction_t::ga_nothing;
-	// [crispy] update the "singleplayer" variable
+	// update the "singleplayer" variable
 	CheckCrispySingleplayer(!demorecording && !demoplayback && !netgame);
 
 	// The Ultimate Doom executable changed the demo sequence to add a DEMO4 demo. Final Doom was based on Ultimate, so also includes this change;
@@ -607,7 +607,7 @@ void D_DoAdvanceDemo()
 
 	// However! There is an alternate version of Final Doom that includes a fixed executable.
 
-	// [crispy] get rid of this demo sequence breaking bug
+	// get rid of this demo sequence breaking bug
 	//if (gameversion == GameVersion::exe_ultimate || gameversion == GameVersion::exe_final)
 	if (W_CheckNumForName(DEH_String("demo4")) >= 0)
 	{
@@ -699,7 +699,7 @@ void D_StartTitle()
 
 // Strings for dehacked replacements of the startup banner.
 // These are from the original source: some of them are perhaps not used in any dehacked patches
-static std::string banners[] =
+static ::std::string banners[] =
 {
 	// doom2.wad
 	"							"
@@ -740,13 +740,13 @@ static std::string banners[] =
 };
 
 // Get game name: if the startup banner has been replaced, use that. Otherwise, use the name given
-std::string GetGameName(std::string gamename)
+::std::string GetGameName(::std::string gamename)
 {
 	size_t i;
 
 	for (i = 0; i < arrlen(banners); ++i)
 	{
-		std::string deh_sub;
+		::std::string deh_sub;
 
 		// Has the banner been replaced?
 		deh_sub = DEH_String(banners[i]);
@@ -755,7 +755,7 @@ std::string GetGameName(std::string gamename)
 		{
 			size_t gamename_size;
 			int version;
-			std::string deh_gamename;
+			::std::string deh_gamename;
 
 			// Has been replaced. We need to expand via printf to include the Doom version number.
 			// We also need to cut off spaces to get the basic name
@@ -782,15 +782,15 @@ std::string GetGameName(std::string gamename)
 		}
 	}
 
-	return std::string(gamename);
+	return ::std::string(gamename);
 }
 
-static void SetMissionForPackName(std::string pack_name)
+static void SetMissionForPackName(::std::string pack_name)
 {
 	int i;
 	static const struct
 	{
-		std::string name;
+		::std::string name;
 		int mission;
 	} packs[] = {
 		{ "doom2",		GameMission::doom2 },
@@ -944,14 +944,14 @@ static void D_SetGameDescription()
 
 	if (gamedescription == NULL)
 	{
-		gamedescription = std::string("Unknown");
+		gamedescription = ::std::string("Unknown");
 	}
 }
 
 // print title for every printed line
 char title[128];
 
-static bool D_AddFile(std::string filename)
+static bool D_AddFile(::std::string filename)
 {
 	wad_file_t* handle;
 
@@ -962,7 +962,7 @@ static bool D_AddFile(std::string filename)
 }
 
 // Copyright message banners. Some dehacked mods replace these. These are only displayed if they are replaced by dehacked.
-static std::string copyright_banners[] =
+static ::std::string copyright_banners[] =
 {
 	"===========================================================================\n"
 	"ATTENTION: This version of DOOM has been modified. If you would like to\n"
@@ -988,7 +988,7 @@ void PrintDehackedBanners()
 
 	for (i = 0; i < arrlen(copyright_banners); ++i)
 	{
-		std::string deh_s;
+		::std::string deh_s;
 
 		deh_s = DEH_String(copyright_banners[i]);
 
@@ -1007,8 +1007,8 @@ void PrintDehackedBanners()
 
 static struct
 {
-	std::string description;
-	std::string cmdline;
+	::std::string description;
+	::std::string cmdline;
 	GameVersion version;
 } gameversions[] = {
 	{"Doom 1.2",			"1.2",			GameVersion::exe_doom_1_2},
@@ -1021,7 +1021,7 @@ static struct
 	{"Final Doom",			"final",		GameVersion::exe_final},
 	{"Final Doom (alt)",	"final2",		GameVersion::exe_final2},
 	{"Chex Quest",			"chex",			GameVersion::exe_chex},
-	{ std::string{},		std::string{},	GameVersion::invalid}
+	{ ::std::string{},		::std::string{},	GameVersion::invalid}
 };
 
 // Initialize the game version
@@ -1211,12 +1211,12 @@ static void LoadIwadDeh()
 	// Chex Quest needs a separate Dehacked patch which must be downloaded and installed next to the IWAD.
 	if (gameversion == GameVersion::exe_chex)
 	{
-		std::string chex_deh = NULL;
-		std::string dirname;
+		::std::string chex_deh = NULL;
+		::std::string dirname;
 
 		// Look for chex.deh in the same directory as the IWAD file.
 		dirname = M_DirName(iwadfile);
-		chex_deh = std::string(dirname + DIR_SEPARATOR_S + "chex.deh");
+		chex_deh = ::std::string(dirname + DIR_SEPARATOR_S + "chex.deh");
 
 		// If the dehacked patch isn't found, try searching the WAD search path instead. We might find it...
 		if (!M_FileExists(chex_deh))
@@ -1250,7 +1250,7 @@ void D_DoomMain()
 	char demolumpname[9];
 	int numiwadlumps;
 
-	// [crispy] unconditionally initialize DEH tables
+	// unconditionally initialize DEH tables
 	DEH_Init();
 
 	I_AtExit(D_Endoom, false);
@@ -1369,7 +1369,7 @@ void D_DoomMain()
 	M_LoadDefaults();
 
 	// Save configuration at exit.
-	I_AtExit(M_SaveDefaults, true); // [crispy] always save configuration at exit
+	I_AtExit(M_SaveDefaults, true); // always save configuration at exit
 
 	// Find main IWAD file and load it.
 	iwadfile = D_FindIWAD(cudadoom::IWAD_MASK_DOOM, &gamemission);
@@ -1464,7 +1464,7 @@ void D_DoomMain()
 	// Disable auto-loading of .wad and .deh files.
 	if (!M_ParmExists("-noautoload") && gamemode != GameMode::shareware)
 	{
-		std::string autoload_dir;
+		::std::string autoload_dir;
 
 		// common auto-loaded files for all Doom flavors
 		if (gamemission < GameMission::pack_chex)
@@ -1492,7 +1492,7 @@ void D_DoomMain()
 	// Load PWAD files.
 	modifiedgame = W_ParseCommandLine();
 
-	// [crispy] experimental feature: in conjunction with -merge <files> merges PWADs into the main IWAD and writes the merged data into <file>
+	// experimental feature: in conjunction with -merge <files> merges PWADs into the main IWAD and writes the merged data into <file>
 	p = M_CheckParm("-mergedump");
 
 	if (p)
@@ -1521,7 +1521,7 @@ void D_DoomMain()
 		}
 	}
 
-	// [crispy] experimental feature: dump lump data into a new LMP file <file>
+	// experimental feature: dump lump data into a new LMP file <file>
 	p = M_CheckParm("-lumpdump");
 
 	if (p)
@@ -1566,7 +1566,7 @@ void D_DoomMain()
 
 	if (p)
 	{
-		std::string uc_filename = strdup(myargv[p + 1]);
+		::std::string uc_filename = strdup(myargv[p + 1]);
 		M_ForceUppercase(uc_filename);
 
 		// With Vanilla you have to specify the file without extension, but make that optional.
@@ -1584,11 +1584,11 @@ void D_DoomMain()
 		if (D_AddFile(file))
 		{
 			int i;
-			// [crispy] check if the demo file name gets truncated to a lump name that is already present
+			// check if the demo file name gets truncated to a lump name that is already present
 			if ((i = W_CheckNumForNameFromTo(lumpinfo[numlumps - 1]->name, numlumps - 2, 0)) != -1)
 			{
 				printf("Demo lump name collision detected with lump \'%.8s\' from %s.\n", lumpinfo[i]->name, W_WadNameForLump(lumpinfo[i]));
-				// [FG] the DEMO1 lump is almost certainly always a demo lump
+				// the DEMO1 lump is almost certainly always a demo lump
 				M_StringCopy(lumpinfo[numlumps - 1]->name, "DEMO1", 6);
 			}
 
@@ -1609,7 +1609,7 @@ void D_DoomMain()
 	// Generate the WAD hash table. Speed things up a bit.
 	W_GenerateHashTable();
 
-	// [crispy] allow overriding of special-casing
+	// allow overriding of special-casing
 	if (!M_ParmExists("-noautoload") && gamemode != GameMode::shareware)
 	{
 		if (gamemode == GameMode::retail && gameversion == GameVersion::exe_ultimate && gamevariant != GameVariant::freedoom)
@@ -1628,7 +1628,7 @@ void D_DoomMain()
 
 	// Load Dehacked patches from DEHACKED lumps contained in one of the loaded PWAD files.
 
-	// [crispy] load DEHACKED lumps by default, but allow overriding
+	// load DEHACKED lumps by default, but allow overriding
 	if (!M_ParmExists("-nodehlump") && !M_ParmExists("-nodeh"))
 	{
 		int i;
@@ -1638,7 +1638,7 @@ void D_DoomMain()
 		{
 			if (!strncmp(lumpinfo[i]->name, "DEHACKED", 8))
 			{
-				DEH_LoadLump(i, true, true); // [crispy] allow long, allow error
+				DEH_LoadLump(i, true, true); // allow long, allow error
 				++loaded;
 			}
 		}
@@ -1673,7 +1673,7 @@ void D_DoomMain()
 					I_Error(DEH_String("\nThis is not the registered version."));
 	}
 
-	// [crispy] disable meaningless warning, we always use "-merge" anyway
+	// disable meaningless warning, we always use "-merge" anyway
 #if 0
 	if (W_CheckNumForName("SS_START") >= 0 || W_CheckNumForName("FF_END") >= 0)
 	{
@@ -1693,32 +1693,32 @@ void D_DoomMain()
 	I_InitSound(true);
 	I_InitMusic();
 
-	// [crispy] check for SSG resources
-	// [crispy] wielding/firing sprite sequence
-	// [crispy] firing sound
-	// [crispy] opening sound
-	// [crispy] reloading sound
-	// [crispy] closing sound
+	// check for SSG resources
+	// wielding/firing sprite sequence
+	// firing sound
+	// opening sound
+	// reloading sound
+	// closing sound
 	crispy->havessg = (
 					gamemode == GameMode::commercial || (
 					W_CheckNumForName("sht2a0") != -1
-					&& I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dshtgn)]) != -1
-					&& I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbopn)]) != -1
-					&& I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbload)]) != -1
-					&& I_GetSfxLumpNum(&S_sfx[std::size_t(sfxenum_t::sfx_dbcls)]) != -1)
+					&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dshtgn)]) != -1
+					&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dbopn)]) != -1
+					&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dbload)]) != -1
+					&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dbcls)]) != -1)
 			);
 
-	// [crispy] check for presence of a 5th episode
+	// check for presence of a 5th episode
 	crispy->haved1e5 = (gameversion == GameVersion::exe_ultimate)
 		&& (W_CheckNumForName("m_epi5") != -1) && (W_CheckNumForName("e5m1") != -1) && (W_CheckNumForName("wilv40") != -1);
 
-	// [crispy] check for presence of E1M10
+	// check for presence of E1M10
 	crispy->havee1m10 = (gamemode == GameMode::retail) && (W_CheckNumForName("e1m10") != -1) && (W_CheckNumForName("sewers") != -1);
 
-	// [crispy] check for presence of MAP33
+	// check for presence of MAP33
 	crispy->havemap33 = (gamemode == GameMode::commercial) && (W_CheckNumForName("map33") != -1) && (W_CheckNumForName("cwilv32") != -1);
 
-	// [crispy] change level name for MAP33 if not already changed
+	// change level name for MAP33 if not already changed
 	if (crispy->havemap33 && !DEH_HasStringReplacement(PHUSTR_1))
 	{
 		DEH_AddStringReplacement(PHUSTR_1, "level 33: betray");
@@ -1784,19 +1784,19 @@ void D_DoomMain()
 		{
 			startepisode = myargv[p + 1][0] - '0';
 
-			// [crispy] only if second argument is not another option
+			// only if second argument is not another option
 			if (p + 2 < myargc && myargv[p + 2][0] != '-')
 			{
 				startmap = myargv[p + 2][0] - '0';
 			}
 			else
 			{
-				// [crispy] allow second digit without space in between for Doom 1
+				// allow second digit without space in between for Doom 1
 				startmap = myargv[p + 1][1] - '0';
 			}
 		}
 		autostart = true;
-		// [crispy] if used with -playdemo, fast-forward demo up to the desired map
+		// if used with -playdemo, fast-forward demo up to the desired map
 		crispy->demowarp = startmap;
 	}
 
@@ -1811,7 +1811,7 @@ void D_DoomMain()
 		testcontrols = true;
 	}
 
-	// [crispy] port level flipping feature over from Strawberry Doom
+	// port level flipping feature over from Strawberry Doom
 #ifdef ENABLE_APRIL_1ST_JOKE
 	{
 		time_t curtime = time(NULL);
@@ -1902,7 +1902,7 @@ void D_DoomMain()
 		G_DeferedPlayDemo(demolumpname);
 		D_DoomLoop(); // never returns
 	}
-	crispy->demowarp = 0; // [crispy] we don't play a demo, so don't skip maps
+	crispy->demowarp = 0; // we don't play a demo, so don't skip maps
 
 	p = M_CheckParmWithArgs("-timedemo", 1);
 	if (p)

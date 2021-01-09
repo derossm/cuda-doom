@@ -83,7 +83,7 @@ bool EV_Teleport(line_t* line, int side, MapObject* thing)
 				if (thing->player)
 				{
 					thing->player->viewz = thing->z + thing->player->viewheight;
-					// [crispy] center view after teleporting
+					// center view after teleporting
 					thing->player->centering = true;
 				}
 

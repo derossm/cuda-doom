@@ -14,7 +14,7 @@
 		BLOCKMAP Iterator functions, and some PIT_* functions to use for iteration.
 \**********************************************************************************************************************************************/
 
-#include "i_system.h" // [crispy] I_Realloc()
+#include "i_system.h" // I_Realloc()
 #include "m_bbox.h"
 
 #include "doomdef.h"
@@ -256,7 +256,7 @@ void P_LineOpening(line_t* linedef)
 	sector_t* front;
 	sector_t* back;
 
-	if (linedef->sidenum[1] == NO_INDEX) // [crispy] extended nodes
+	if (linedef->sidenum[1] == NO_INDEX) // extended nodes
 	{
 		// single sided line
 		openrange = 0;
@@ -418,7 +418,7 @@ P_SetThingPosition(MapObject* thing)
 bool P_BlockLinesIterator(int x, int y, bool(*func)(line_t*))
 {
 	int offset;
-	int32_t* list; // [crispy] BLOCKMAP limit
+	int32_t* list; // BLOCKMAP limit
 	line_t* ld;
 
 	if (x < 0 || y < 0 || x >= bmapwidth || y >= bmapheight)
@@ -473,10 +473,10 @@ bool P_BlockThingsIterator(int x, int y, bool(*func)(MapObject*))
 //
 // INTERCEPT ROUTINES
 //
-static intercept_t* intercepts; // [crispy] remove INTERCEPTS limit
+static intercept_t* intercepts; // remove INTERCEPTS limit
 intercept_t* intercept_p;
 
-// [crispy] remove INTERCEPTS limit
+// remove INTERCEPTS limit
 // taken from PrBoom+/src/p_maputl.c:422-433
 static void check_intercept()
 {
@@ -497,7 +497,7 @@ int ptflags;
 
 static void InterceptsOverrun(int num_intercepts, intercept_t* intercept);
 
-// [crispy] show mapthing number in INTERCEPTS overflow warnings
+// show mapthing number in INTERCEPTS overflow warnings
 extern MapObject* shootthing;
 
 //
@@ -551,18 +551,18 @@ PIT_AddLineIntercepts(line_t* ld)
 		return false;	// stop checking
 	}
 
-	check_intercept(); // [crispy] remove INTERCEPTS limit
+	check_intercept(); // remove INTERCEPTS limit
 	intercept_p->frac = frac;
 	intercept_p->isaline = true;
 	intercept_p->d.line = ld;
 	InterceptsOverrun(intercept_p - intercepts, intercept_p);
-	// [crispy] intercepts overflow guard
+	// intercepts overflow guard
 	if (intercept_p - intercepts == MAXINTERCEPTS_ORIGINAL + 1)
 	{
 		if (crispy->crosshair & CROSSHAIR_INTERCEPT)
 			return false;
 		else
-			// [crispy] print a warning
+			// print a warning
 			fprintf(stderr, "PIT_AddLineIntercepts: Triggered INTERCEPTS overflow!\n");
 	}
 	++intercept_p;
@@ -625,18 +625,18 @@ bool PIT_AddThingIntercepts(MapObject* thing)
 	if (frac < 0)
 		return true;		// behind source
 
-	check_intercept(); // [crispy] remove INTERCEPTS limit
+	check_intercept(); // remove INTERCEPTS limit
 	intercept_p->frac = frac;
 	intercept_p->isaline = false;
 	intercept_p->d.thing = thing;
 	InterceptsOverrun(intercept_p - intercepts, intercept_p);
-	// [crispy] intercepts overflow guard
+	// intercepts overflow guard
 	if (intercept_p - intercepts == MAXINTERCEPTS_ORIGINAL + 1)
 	{
 		if (crispy->crosshair & CROSSHAIR_INTERCEPT)
 			return false;
 		else
-			// [crispy] print a warning
+			// print a warning
 			fprintf(stderr, "PIT_AddThingIntercepts: Triggered INTERCEPTS overflow!\n");
 	}
 	++intercept_p;

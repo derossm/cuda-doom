@@ -59,13 +59,13 @@ static pixel_t* background_buffer{nullptr};
 
 // R_DrawColumn
 // Source is the top of the column to scale.
-lighttable_t* dc_colormap[2]; // [crispy] brightmaps
+lighttable_t* dc_colormap[2]; // brightmaps
 int dc_x;
 int dc_yl;
 int dc_yh;
 fixed_t dc_iscale;
 fixed_t dc_texturemid;
-int dc_texheight; // [crispy] Tutti-Frutti fix
+int dc_texheight; // Tutti-Frutti fix
 
 // first pixel in a column (possibly virtual)
 byte* dc_source;
@@ -79,7 +79,7 @@ int dccount;
 // Thus a special case loop for very fast rendering can
 // be used. It has also been used with Wolfenstein 3D.
 //
-// [crispy] replace R_DrawColumn() with Lee Killough's implementation
+// replace R_DrawColumn() with Lee Killough's implementation
 // found in MBF to fix Tutti-Frutti, taken from mbfsrc/R_DRAW.C:99-1979
 
 void R_DrawColumn()
@@ -142,7 +142,7 @@ void R_DrawColumn()
 
 		do
 		{
-			// [crispy] brightmaps
+			// brightmaps
 			const byte source = dc_source[frac >> FRACBITS];
 			*dest = dc_colormap[dc_brightmap[source]][source];
 
@@ -159,7 +159,7 @@ void R_DrawColumn()
 		{
 			// Re-map color indices from wall texture column
 			// using a lighting/special effects LUT.
-			// [crispy] brightmaps
+			// brightmaps
 			const byte source = dc_source[(frac >> FRACBITS) & heightmask];
 			*dest = dc_colormap[dc_brightmap[source]][source];
 
@@ -284,7 +284,7 @@ void R_DrawColumnLow()
 
 		do
 		{
-			// [crispy] brightmaps
+			// brightmaps
 			const byte source = dc_source[frac >> FRACBITS];
 			*dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
 
@@ -302,7 +302,7 @@ void R_DrawColumnLow()
 		do
 		{
 			// Hack. Does not work corretly.
-			// [crispy] brightmaps
+			// brightmaps
 			const byte source = dc_source[(frac >> FRACBITS) & heightmask];
 			*dest2 = *dest = dc_colormap[dc_brightmap[source]][source];
 			dest += SCREENWIDTH;
@@ -330,12 +330,12 @@ int fuzzoffset[FUZZTABLE] =
 
 int fuzzpos = 0;
 
-// [crispy] draw fuzz effect independent of rendering frame rate
+// draw fuzz effect independent of rendering frame rate
 static TimeType fuzzpos_tic;
 
 void R_SetFuzzPosTic()
 {
-	// [crispy] prevent the animation from remaining static
+	// prevent the animation from remaining static
 	if (fuzzpos == fuzzpos_tic)
 	{
 		fuzzpos = (fuzzpos + 1) % FUZZTABLE;
@@ -422,7 +422,7 @@ void R_DrawFuzzColumn()
 		frac += fracstep;
 	} while (--count);
 
-	// [crispy] if the line at the bottom had to be cut off,
+	// if the line at the bottom had to be cut off,
 	// draw one extra line using only pixels of that line and the one above
 	if (cutoff)
 	{
@@ -513,7 +513,7 @@ void R_DrawFuzzColumnLow()
 		frac += fracstep;
 	} while (--count);
 
-	// [crispy] if the line at the bottom had to be cut off,
+	// if the line at the bottom had to be cut off,
 	// draw one extra line using only pixels of that line and the one above
 	if (cutoff)
 	{
@@ -666,7 +666,7 @@ void R_DrawTLColumn()
 	} while (--count);
 }
 
-// [crispy] draw translucent column, low-resolution version
+// draw translucent column, low-resolution version
 void R_DrawTLColumnLow()
 {
 	int count;
@@ -809,7 +809,7 @@ void R_DrawSpan()
 	{
 		byte source;
 		// Calculate current texture index in u,v.
-		// [crispy] fix flats getting more distorted the closer they are to the right
+		// fix flats getting more distorted the closer they are to the right
 		ytemp = (ds_yfrac >> 10) & 0x0fc0;
 		xtemp = (ds_xfrac >> 16) & 0x3f;
 		spot = xtemp | ytemp;
@@ -927,7 +927,7 @@ void R_DrawSpanLow()
 	do
 	{
 		// Calculate current texture index in u,v.
-		// [crispy] fix flats getting more distorted the closer they are to the right
+		// fix flats getting more distorted the closer they are to the right
 		unsigned ytemp{(ds_yfrac >> 10) & 0x0fc0};
 		unsigned xtemp{(ds_xfrac >> 16) & 0x3f};
 		int spot{xtemp | ytemp};
@@ -989,10 +989,10 @@ void R_InitBuffer(int width, int height)
 void R_FillBackScreen()
 {
 	// DOOM border patch.
-	std::string name1 = DEH_String("FLOOR7_2");
+	::std::string name1 = DEH_String("FLOOR7_2");
 
 	// DOOM II border patch.
-	std::string name2 = DEH_String("GRNROCK");
+	::std::string name2 = DEH_String("GRNROCK");
 
 	// If we are running full screen, there is no need to do any of this,
 	// and the background buffer can be freed if it was previously in use.
@@ -1016,7 +1016,7 @@ void R_FillBackScreen()
 			nullptr);
 	}
 
-	std::string name;
+	::std::string name;
 	if (gamemode == GameMode::commercial)
 	{
 		name = name2;

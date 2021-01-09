@@ -25,8 +25,8 @@ struct glob_t
 	int num_globs;
 	int flags;
 	DIR* dir;
-	std::string directory;
-	std::string last_filename;
+	::std::string directory;
+	::std::string last_filename;
 	// These fields are only used when the GLOB_FLAG_SORTED flag is set:
 	char** filenames;
 	int filenames_len;
@@ -35,15 +35,15 @@ struct glob_t
 
 // Start reading a list of file paths from the given directory which match
 // the given glob pattern. I_EndGlob() must be called on completion.
-glob_t* I_StartGlob(std::string directory, std::string glob, int flags);
+glob_t* I_StartGlob(::std::string directory, ::std::string glob, int flags);
 
 // Same as I_StartGlob but multiple glob patterns can be provided. The list
 // of patterns must be terminated with NULL.
-glob_t* I_StartMultiGlob(std::string directory, int flags, std::string glob, ...);
+glob_t* I_StartMultiGlob(::std::string directory, int flags, ::std::string glob, ...);
 
 // Finish reading file list.
 void I_EndGlob(glob_t* glob);
 
 // Read the name of the next globbed filename. NULL is returned if there
 // are no more found.
-std::string I_NextGlob(glob_t* glob);
+::std::string I_NextGlob(glob_t* glob);

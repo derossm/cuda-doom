@@ -8,16 +8,12 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
 
+#include <memory>
 #include <string>
+#include <functional>
 
 #include "txt_common.h"
-
-//#include "txt_io.h"
-//#include "txt_gui.h"
-//#include "txt_desktop.h"
 
 namespace cudadoom::txt
 {
@@ -31,11 +27,11 @@ namespace cudadoom::txt
  * It is possible to be notified when a signal occurs using the @ref SignalConnect function.
  */
 
-template<typename T>
+template<typename T, typename U = T>
 class Widget
 {
 private:
-	//Widget* parent{nullptr};
+	::std::weak_ptr<Widget<U>> parent{nullptr};
 	//WidgetClass<T> widget_class;
 
 	// These are set automatically when the window is drawn and should not be set manually.
@@ -78,10 +74,10 @@ public:
 
 	virtual inline void Draw() noexcept
 	{
-		//SavedColors colors;
+		SavedColors colors;
 
 		// The drawing function might change the fg/bg colors, so make sure we restore them after it's done.
-		//SaveColors(&colors);
+		SaveColors(&colors);
 
 		// For convenience...
 		//GotoXY(x, y);
@@ -191,13 +187,13 @@ public:
 		unsetFocus();
 	}
 
-	//inline void SignalConnect(std::string&& signal, std::function<void(void*)>&& handle, UserData&& user) noexcept
-	//{
-		//callback_table.connect(std::move(signal), std::move(handle), std::move(user));
-	//}
+	inline void SignalConnect(::std::string&& signal, ::std::function<void(void*)>&& handle, UserData&& user) noexcept
+	{
+		//callback_table.connect(::std::move(signal), ::std::move(handle), ::std::move(user));
+	}
 
-	//inline void EmitSignal(std::string& signal_name) noexcept
-	//{
+	inline void EmitSignal(::std::string signal_name) noexcept
+	{
 		//auto table{callback_table};
 
 		// Don't destroy the table while we're searching through it (one of the callbacks may destroy this window)
@@ -205,28 +201,16 @@ public:
 
 		// Search the table for all callbacks with this name and invoke the functions.
 		//for (size_t i{0}; i < table.size(); ++i)
-		//{
+		{
 			//if (!strcmp(table->callbacks[i].signal_name, signal_name))
-			//{
+			{
 				//table->callbacks[i].func(widget, table->callbacks[i].user_data);
-			//}
-		//}
+			}
+		}
 
 		// Finished using the table
 		//UnrefCallbackTable(table);
-	//}
-
-	//void SetWidgetFocus(bool _focused)
-	//{
-	//	if (!focused() && _focused)
-	//	{
-	//		setFocus();
-	//	}
-	//	else if(focused() && !_focused)
-	//	{
-	//		unsetFocus();
-	//	}
-	//}
+	}
 
 	inline void SetAlign(AlignHorizontal _align) noexcept
 	{
@@ -243,108 +227,21 @@ public:
 		return false;
 	}
 
-//	inline bool ContainsWidget(Widget* needle) noexcept
-//	{
-//		while (needle)
-//		{
-//			if (needle == this)
-//			{
-//				return true;
-//			}
-//
-//			needle = needle->parent;
-//		}
-//
-//		return false;
-//	}
+	inline bool ContainsWidget() noexcept
+	{
+		return false;
+	}
 
 	inline bool HoveringOverWidget() noexcept
 	{
-		//int _x;
-		//int _y;
 
-		// We can only be hovering over widgets in the active window.
-		//auto active_window = (Widget*)GetActiveWindow();
-
-		//if (!active_window || !ContainsWidget(active_window))
-		//{
-			return false;
-		//}
-
-		// Is the mouse cursor within the bounds of the widget?
-		//GetMousePosition(&_x, &_y);
-
-		//return (_x >= x && _x < x + width && _y >= y && _y < y + height);
 	}
 
 	inline void SetWidgetBG() noexcept
 	{
-		//if (focused())
-		//{
-			//BGColor(ColorType::grey, false);
-		//}
-		//else if (HoveringOverWidget())
-		//{
-			//BGColor(HOVER_BACKGROUND, false);
-		//}
-		//else
-		//{
-			// Use normal window background.
-		//}
+
 	}
 
 };
 
-/**
- * Set a callback function to be invoked when a signal occurs.
- *
- * @param widget		The widget to watch.
- * @param signal_name	The signal to watch.
- * @param func			The callback function to invoke.
- * @param user_data	User-specified pointer to pass to the callback function.
- */
- //void SignalConnect(std::string signal_name, WidgetSignalFunc func, void* user_data);
-
- /**
-  * Set the policy for how a widget should be aligned within a table.
-  * By default, widgets are aligned to the left of the column.
-  *
-  * @param widget		The widget.
-  * @param horiz_align	The alignment to use.
-  */
-  //void SetWidgetAlign(AlignHorizontal horiz_align);
-
-  /**
-   * Query whether a widget is selectable with the cursor.
-   *
-   * @param widget		The widget.
-   * @return				Non-zero if the widget is selectable.
-   */
-   //bool SelectableWidget();
-
-   /**
-	* Query whether the mouse is hovering over the specified widget.
-	*
-	* @param widget		The widget.
-	* @return				Non-zero if the mouse cursor is over the widget.
-	*/
-	//bool HoveringOverWidget();
-
-	/**
-	 * Set the background to draw the specified widget, depending on
-	 * whether it is selected and the mouse is hovering over it.
-	 *
-	 * @param widget		The widget.
-	 */
-	 //void SetWidgetBG();
-
-	 /**
-	  * Query whether the specified widget is contained within another
-	  * widget.
-	  *
-	  * @param haystack		The widget that might contain needle.
-	  * @param needle		The widget being queried.
-	  */
-	  //bool ContainsWidget(Widget&& needle);
-
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

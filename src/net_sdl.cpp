@@ -271,7 +271,7 @@ static bool NET_SDL_RecvPacket(net_addr_t** addr, net_packet_t** packet)
 	return true;
 }
 
-void NET_SDL_AddrToString(net_addr_t* addr, std::string buffer, int buffer_len)
+void NET_SDL_AddrToString(net_addr_t* addr, ::std::string buffer, int buffer_len)
 {
 	IPaddress* ip;
 	uint32_t host;
@@ -295,17 +295,17 @@ void NET_SDL_AddrToString(net_addr_t* addr, std::string buffer, int buffer_len)
 	}
 }
 
-net_addr_t* NET_SDL_ResolveAddress(std::string address)
+net_addr_t* NET_SDL_ResolveAddress(::std::string address)
 {
 	IPaddress ip;
-	std::string addr_hostname;
+	::std::string addr_hostname;
 	int addr_port;
 	int result;
-	std::string colon;
+	::std::string colon;
 
 	colon = strchr(address, ':');
 
-	addr_hostname = std::string(address);
+	addr_hostname = ::std::string(address);
 	if (colon != NULL)
 	{
 		addr_hostname[colon - address] = '\0';

@@ -62,8 +62,8 @@ static window_size_t window_sizes_scaled[] =
 	{ 0, 0},
 };
 
-std::string video_driver = "";
-std::string window_position = "";
+::std::string video_driver = "";
+::std::string window_position = "";
 static int aspect_ratio_correct = 1;
 static int integer_scaling = 0;
 static int vga_porch_flash = 0;
@@ -75,10 +75,10 @@ static int startup_delay = 1000;
 static int max_scaling_buffer_pixels = 16000000;
 static int usegamma = 0;
 
-int graphical_startup = 0; // [crispy]
-int show_endoom = 0; // [crispy]
+int graphical_startup = 0;
+int show_endoom = 0;
 int show_diskicon = 1;
-int png_screenshots = 1; // [crispy]
+int png_screenshots = 1;
 
 static int system_video_env_set;
 
@@ -104,7 +104,7 @@ void SetDisplayDriver()
 	// Use the value from the configuration file, if it has been set.
 	if (video_driver.compare(""))
 	{
-		std::string env_string("SDL_VIDEODRIVER=" + video_driver);
+		::std::string env_string("SDL_VIDEODRIVER=" + video_driver);
 		putenv(env_string.c_str());
 	}
 }

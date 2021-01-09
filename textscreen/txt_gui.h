@@ -11,22 +11,84 @@
 		Text mode emulation in SDL
 \**********************************************************************************************************************************************/
 #pragma once
-// DECOUPLE
-//#include "../derma/common.h"
 
 #include <string>
 
 #include "txt_common.h"
-
-//#include "txt_main.h"
-//#include "txt_utf8.h"
-//#include "txt_io.h"
 
 #define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)
 #define VALID_Y(y) ((y) >= cliparea->y1 && (y) < cliparea->y2)
 
 namespace cudadoom::txt
 {
+
+// Initialize the screen. Returns 1 if successful, 0 if failed.
+int Init();
+
+// Shut down text mode emulation.
+void Shutdown();
+
+// Get a pointer to the buffer containing the raw screen data.
+unsigned char* GetScreenData();
+
+// Update an area of the screen.
+void UpdateScreenArea(int x, int y, int w, int h);
+
+// Update the whole screen.
+void UpdateScreen();
+
+// Set the RGB value for a particular entry in the color palette:
+void SetColor(ColorType color, int r, int g, int b);
+
+// Sleep until an event is received or the screen needs updating. Optional timeout in ms (timeout == 0 : sleep forever).
+void Sleep(TimeType timeout);
+
+// Set the window title of the window containing the text mode screen.
+void SetWindowTitle(::std::string title);
+
+void FGColor(ColorType color)
+{
+	fgcolor = color;
+}
+
+void BGColor(ColorType color, bool blinking)
+{
+	bgcolor = color;
+	if (blinking)
+	{
+// FIXME
+//		bgcolor |= COLOR_BLINKING;
+	}
+}
+
+void SaveColors(SavedColors* save)
+{
+// FIXME
+//	save->bgcolor = bgcolor;
+//	save->fgcolor = fgcolor;
+}
+
+void RestoreColors(SavedColors* save)
+{
+// FIXME
+//	bgcolor = save->bgcolor;
+//	fgcolor = save->fgcolor;
+}
+
+void ClearScreen()
+{
+	auto screen{GetScreenData()};
+
+	for (size_t i{0}; i < SCREEN_W * SCREEN_H; ++i)
+	{
+		// TODO fix
+		screen[i * 2] = ' ';
+		//screen[i * 2 + 1] = (bgcolor << 4) | fgcolor;
+	}
+
+	cur_x = 0;
+	cur_y = 0;
+}
 
 struct txt_cliparea_t
 {
@@ -37,11 +99,11 @@ struct txt_cliparea_t
 	txt_cliparea_t* next;
 };
 
-void DrawDesktopBackground(std::string title);
-void DrawWindowFrame(std::string title, int x, int y, int w, int h);
+void DrawDesktopBackground(::std::string title);
+void DrawWindowFrame(::std::string title, int x, int y, int w, int h);
 void DrawSeparator(int x, int y, int w);
-void DrawCodePageString(std::string s);
-void DrawString(std::string s);
+void DrawCodePageString(::std::string s);
+void DrawString(::std::string s);
 int CanDrawCharacter(unsigned c);
 
 void DrawHorizScrollbar(int x, int y, int w, int cursor, int range);
@@ -52,23 +114,9 @@ void PushClipArea(int x1, int x2, int y1, int y2);
 void PopClipArea();
 
 
-// Array of border characters for drawing windows. The array looks like this:
-
-// +-++
-// | ||
-// +-++
-// +-++
-constexpr int borders[4][4] =
-{
-	{0xda, 0xc4, 0xc2, 0xbf},
-	{0xb3, ' ', 0xb3, 0xb3},
-	{0xc3, 0xc4, 0xc5, 0xb4},
-	{0xc0, 0xc4, 0xc1, 0xd9},
-};
-
 static txt_cliparea_t* cliparea = NULL;
 
-void DrawDesktopBackground(std::string title)
+void DrawDesktopBackground(::std::string title)
 {
 	int i;
 	unsigned char* screendata;
@@ -137,7 +185,7 @@ void DrawShadow(int x, int y, int w, int h)
 		{
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
-				p[1] = std::size_t(ColorType::dark_grey);
+				p[1] = ::std::size_t(ColorType::dark_grey);
 			}
 
 			p += 2;
@@ -145,7 +193,7 @@ void DrawShadow(int x, int y, int w, int h)
 	}
 }
 
-void DrawWindowFrame(std::string title, int x, int y, int w, int h)
+void DrawWindowFrame(::std::string title, int x, int y, int w, int h)
 {
 	SavedColors colors;
 	int x1;
@@ -239,7 +287,7 @@ void DrawSeparator(int x, int y, int w)
 }
 
 // Alternative to DrawString() where the argument is a "code page string" - characters are in native code page format and not UTF-8.
-void DrawCodePageString(std::string s)
+void DrawCodePageString(::std::string s)
 {
 	int x;
 	int y;
@@ -293,7 +341,7 @@ static void PutUnicodeChar(unsigned c)
 	}
 }
 
-void DrawString(std::string s)
+void DrawString(::std::string s)
 {
 	int x;
 	int y;
@@ -490,4 +538,4 @@ void PopClipArea()
 	cliparea = next_cliparea;
 }
 
-} // END NAMESPACE cudadoom::txt
+} // end namespace cudadoom::txt

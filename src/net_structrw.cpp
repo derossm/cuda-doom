@@ -23,7 +23,7 @@
 static struct
 {
 	net_protocol_t protocol;
-	std::string name;
+	::std::string name;
 } protocol_names[] = {
 	{net_protocol_t::CHOCOLATE_DOOM_0, "CHOCOLATE_DOOM_0"},
 };
@@ -474,7 +474,7 @@ void NET_WriteWaitData(net_packet_t* packet, net_waitdata_t* data)
 bool NET_ReadWaitData(net_packet_t* packet, net_waitdata_t* data)
 {
 	int i;
-	std::string s;
+	::std::string s;
 
 	if (!NET_ReadInt8(packet, (unsigned*)&data->num_players)
 		|| !NET_ReadInt8(packet, (unsigned*)&data->num_drones)
@@ -560,7 +560,7 @@ void NET_WritePRNGSeed(net_packet_t* packet, prng_seed_t seed)
 	NET_WriteBlob(packet, seed, sizeof(prng_seed_t));
 }
 
-static net_protocol_t ParseProtocolName(std::string name)
+static net_protocol_t ParseProtocolName(::std::string name)
 {
 	int i;
 
@@ -580,7 +580,7 @@ static net_protocol_t ParseProtocolName(std::string name)
 // protocol.
 net_protocol_t NET_ReadProtocol(net_packet_t* packet)
 {
-	std::string name;
+	::std::string name;
 
 	name = NET_ReadString(packet);
 	if (name == NULL)
@@ -631,7 +631,7 @@ net_protocol_t NET_ReadProtocolList(net_packet_t* packet)
 	for (i = 0; i < num_protocols; ++i)
 	{
 		net_protocol_t p;
-		std::string name;
+		::std::string name;
 
 		name = NET_ReadString(packet);
 		if (name.empty())
@@ -660,7 +660,7 @@ void NET_WriteProtocolList(net_packet_t* packet)
 
 	NET_WriteInt8(packet, (unsigned)net_protocol_t::NET_NUM_PROTOCOLS);
 
-	for (i = 0; i < std::size_t(net_protocol_t::NET_NUM_PROTOCOLS); ++i)
+	for (i = 0; i < ::std::size_t(net_protocol_t::NET_NUM_PROTOCOLS); ++i)
 	{
 		NET_WriteProtocol(packet, i);
 	}

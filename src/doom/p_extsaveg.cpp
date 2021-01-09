@@ -30,10 +30,10 @@
 constexpr size_t MAX_LINE_LEN{260};
 constexpr size_t MAX_STRING_LEN{80};
 
-std::string line;
-std::string string;
+::std::string line;
+::std::string string;
 
-static void P_WritePackageTarname(std::string key)
+static void P_WritePackageTarname(::std::string key)
 {
 	M_snprintf(line, MAX_LINE_LEN, "%s %s\n", key, PACKAGE_VERSION);
 	fputs(line, save_stream);
@@ -41,18 +41,18 @@ static void P_WritePackageTarname(std::string key)
 
 // maplumpinfo->wad_file->basename
 
-std::string savewadfilename = NULL;
+::std::string savewadfilename = NULL;
 
-static void P_WriteWadFileName(std::string key)
+static void P_WriteWadFileName(::std::string key)
 {
 	M_snprintf(line, MAX_LINE_LEN, "%s %s\n", key, W_WadNameForLump(maplumpinfo));
 	fputs(line, save_stream);
 }
 
-static void P_ReadWadFileName(std::string key)
+static void P_ReadWadFileName(::std::string key)
 {
 	if (!savewadfilename &&
-		// [crispy] only check if loaded from the menu,
+		// only check if loaded from the menu,
 		// we have no chance to show a dialog otherwise
 		startloadgame == -1)
 	{
@@ -69,7 +69,7 @@ static void P_ReadWadFileName(std::string key)
 
 // extrakills
 
-static void P_WriteExtraKills(std::string key)
+static void P_WriteExtraKills(::std::string key)
 {
 	if (extrakills)
 	{
@@ -78,7 +78,7 @@ static void P_WriteExtraKills(std::string key)
 	}
 }
 
-static void P_ReadExtraKills(std::string key)
+static void P_ReadExtraKills(::std::string key)
 {
 	int value;
 
@@ -91,7 +91,7 @@ static void P_ReadExtraKills(std::string key)
 
 // totalleveltimes
 
-static void P_WriteTotalLevelTimes(std::string key)
+static void P_WriteTotalLevelTimes(::std::string key)
 {
 	if (totalleveltimes)
 	{
@@ -100,7 +100,7 @@ static void P_WriteTotalLevelTimes(std::string key)
 	}
 }
 
-static void P_ReadTotalLevelTimes(std::string key)
+static void P_ReadTotalLevelTimes(::std::string key)
 {
 	int value;
 
@@ -115,7 +115,7 @@ static void P_ReadTotalLevelTimes(std::string key)
 
 extern void T_FireFlicker(fireflicker_t* flick);
 
-static void P_WriteFireFlicker(std::string key)
+static void P_WriteFireFlicker(::std::string key)
 {
 	thinker_t* th;
 
@@ -136,7 +136,7 @@ static void P_WriteFireFlicker(std::string key)
 	}
 }
 
-static void P_ReadFireFlicker(std::string key)
+static void P_ReadFireFlicker(::std::string key)
 {
 	int sector;
 	int count;
@@ -168,7 +168,7 @@ static void P_ReadFireFlicker(std::string key)
 
 // sector->soundtarget
 
-static void P_WriteSoundTarget(std::string key)
+static void P_WriteSoundTarget(::std::string key)
 {
 	int i;
 	sector_t* sector;
@@ -186,7 +186,7 @@ static void P_WriteSoundTarget(std::string key)
 	}
 }
 
-static void P_ReadSoundTarget(std::string key)
+static void P_ReadSoundTarget(::std::string key)
 {
 	int sector;
 	int target;
@@ -203,7 +203,7 @@ static void P_ReadSoundTarget(std::string key)
 
 // sector->oldspecial
 
-static void P_WriteOldSpecial(std::string key)
+static void P_WriteOldSpecial(::std::string key)
 {
 	int i;
 	sector_t* sector;
@@ -221,7 +221,7 @@ static void P_WriteOldSpecial(std::string key)
 	}
 }
 
-static void P_ReadOldSpecial(std::string key)
+static void P_ReadOldSpecial(::std::string key)
 {
 	int sector;
 	int oldspecial;
@@ -240,7 +240,7 @@ static void P_ReadOldSpecial(std::string key)
 
 extern void P_StartButton(line_t* line, bwhere_e w, int texture, TimeType time);
 
-static void P_WriteButton(std::string key)
+static void P_WriteButton(::std::string key)
 {
 	int i;
 
@@ -257,7 +257,7 @@ static void P_WriteButton(std::string key)
 	}
 }
 
-static void P_ReadButton(std::string key)
+static void P_ReadButton(::std::string key)
 {
 	int linedef;
 	int where;
@@ -274,7 +274,7 @@ static void P_ReadButton(std::string key)
 extern int numbraintargets;
 extern int braintargeton;
 
-static void P_WriteBrainTarget(std::string key)
+static void P_WriteBrainTarget(::std::string key)
 {
 	thinker_t* th;
 
@@ -284,7 +284,7 @@ static void P_WriteBrainTarget(std::string key)
 		{
 			MapObject* mo = (MapObject*)th;
 
-			if (mo->state == &states[std::size_t(statenum_t::S_BRAINEYE1)])
+			if (mo->state == &states[::std::size_t(statenum_t::S_BRAINEYE1)])
 			{
 				M_snprintf(line, MAX_LINE_LEN, "%s %d %d\n",
 					key,
@@ -292,21 +292,21 @@ static void P_WriteBrainTarget(std::string key)
 					braintargeton);
 				fputs(line, save_stream);
 
-				// [crispy] return after the first brain spitter is found
+				// return after the first brain spitter is found
 				return;
 			}
 		}
 	}
 }
 
-static void P_ReadBrainTarget(std::string key)
+static void P_ReadBrainTarget(::std::string key)
 {
 	int numtargets;
 	int targeton;
 
 	if (sscanf(line, "%s %d %d", string, &numtargets, &targeton) == 3 && !strncmp(string, key, MAX_STRING_LEN))
 	{
-		numbraintargets = 0; // [crispy] force A_BrainAwake()
+		numbraintargets = 0; // force A_BrainAwake()
 		braintargeton = targeton;
 	}
 }
@@ -316,7 +316,7 @@ static void P_ReadBrainTarget(std::string key)
 extern void AM_GetMarkPoints(int* n, long* p);
 extern void AM_SetMarkPoints(int n, long* p);
 
-static void P_WriteMarkPoints(std::string key)
+static void P_WriteMarkPoints(::std::string key)
 {
 	int n;
 	long p[20];
@@ -335,7 +335,7 @@ static void P_WriteMarkPoints(std::string key)
 	}
 }
 
-static void P_ReadMarkPoints(std::string key)
+static void P_ReadMarkPoints(::std::string key)
 {
 	int n;
 	long p[20];
@@ -354,7 +354,7 @@ static void P_ReadMarkPoints(std::string key)
 
 // players[]->lookdir
 
-static void P_WritePlayersLookdir(std::string key)
+static void P_WritePlayersLookdir(::std::string key)
 {
 	int i;
 
@@ -368,7 +368,7 @@ static void P_WritePlayersLookdir(std::string key)
 	}
 }
 
-static void P_ReadPlayersLookdir(std::string key)
+static void P_ReadPlayersLookdir(::std::string key)
 {
 	int i;
 	int value;
@@ -384,7 +384,7 @@ static void P_ReadPlayersLookdir(std::string key)
 
 // musinfo.current_item
 
-static void P_WriteMusInfo(std::string key)
+static void P_WriteMusInfo(::std::string key)
 {
 	if (musinfo.current_item > 0 && musinfo.items[0] > 0)
 	{
@@ -398,7 +398,7 @@ static void P_WriteMusInfo(std::string key)
 	}
 }
 
-static void P_ReadMusInfo(std::string key)
+static void P_ReadMusInfo(::std::string key)
 {
 	int items;
 	char lump[9] = {0}, orig[9] = {0};
@@ -428,15 +428,15 @@ static void P_ReadMusInfo(std::string key)
 
 struct extsavegdata_t
 {
-	std::string key;
-	void (*extsavegwritefn) (std::string key);
-	void (*extsavegreadfn) (std::string key);
+	::std::string key;
+	void (*extsavegwritefn) (::std::string key);
+	void (*extsavegreadfn) (::std::string key);
 	const int pass;
 };
 
 static const extsavegdata_t extsavegdata[] =
 {
-	// [crispy] @FORKS: please change this if you are going to introduce incompatible changes!
+	// @FORKS: please change this if you are going to introduce incompatible changes!
 	{"crispy-doom", P_WritePackageTarname, NULL, 0},
 	{"wadfilename", P_WriteWadFileName, P_ReadWadFileName, 0},
 	{"extrakills", P_WriteExtraKills, P_ReadExtraKills, 1},
@@ -486,7 +486,7 @@ static void P_ReadKeyValuePairs(int pass)
 	}
 }
 
-// [crispy] pointer to the info struct for the map lump about to load
+// pointer to the info struct for the map lump about to load
 lumpinfo_t* savemaplumpinfo = NULL;
 
 void P_ReadExtendedSaveGameData(int pass)
@@ -498,7 +498,7 @@ void P_ReadExtendedSaveGameData(int pass)
 	line = static_cast<decltype(line)>(malloc(MAX_LINE_LEN));
 	string = static_cast<decltype(string)>(malloc(MAX_STRING_LEN));
 
-	// [crispy] two-pass reading of extended savegame data
+	// two-pass reading of extended savegame data
 	if (pass == 1)
 	{
 		P_ReadKeyValuePairs(1);
@@ -511,8 +511,8 @@ void P_ReadExtendedSaveGameData(int pass)
 
 	curpos = ftell(save_stream);
 
-	// [crispy] check which map we would want to load
-	fseek(save_stream, SAVESTRINGSIZE + VERSIONSIZE + 1, SEEK_SET); // [crispy] + 1 for "gameskill"
+	// check which map we would want to load
+	fseek(save_stream, SAVESTRINGSIZE + VERSIONSIZE + 1, SEEK_SET); // + 1 for "gameskill"
 	if (fread(&episode, 1, 1, save_stream) == 1 &&
 		fread(&map, 1, 1, save_stream) == 1)
 	{
@@ -525,11 +525,11 @@ void P_ReadExtendedSaveGameData(int pass)
 	}
 	else
 	{
-		// [crispy] unavailable map!
+		// unavailable map!
 		savemaplumpinfo = NULL;
 	}
 
-	// [crispy] read key/value pairs past the end of the regular savegame data
+	// read key/value pairs past the end of the regular savegame data
 	fseek(save_stream, 0, SEEK_END);
 	endpos = ftell(save_stream);
 
@@ -563,6 +563,6 @@ void P_ReadExtendedSaveGameData(int pass)
 	free(line);
 	free(string);
 
-	// [crispy] back to where we started
+	// back to where we started
 	fseek(save_stream, curpos, SEEK_SET);
 }

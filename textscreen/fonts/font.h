@@ -1,5 +1,5 @@
 /**********************************************************************************************************************************************\
-	Copyright(C) 2020 Mason DeRoss
+	Copyright© 2020-2021 Mason DeRoss
 
 	Released under the GNU All-permissive License
 
@@ -21,25 +21,86 @@
 
 enum class FontData
 {
-	none,
-	large,
-	normal,
-	small,
-	other
+	//none,
+	//large,
+	//normal,
+	//small,
+	//other
 };
 
-template<typename T, T v>
-	requires std::is_array_v<T>
-struct FontType
+class FontBase
 {
+public:
 	using pixel = int;
 
-	std::array<const char, 16> name;
+	const ::std::array<const char, 16> name;
 	const pixel width;
 	const pixel height;
-	const T& data{std::reference_wrapper(v)};
+
+	virtual ~FontBase() = default;
 };
 
-static constexpr FontType<decltype(large_font_data), large_font_data> large_font{		.name{"large"},		.width{16},	.height{32} };
-static constexpr FontType<decltype(normal_font_data), normal_font_data> normal_font{	.name{"normal"},	.width{8},	.height{16} };
-static constexpr FontType<decltype(small_font_data), small_font_data> small_font{		.name{"small"},		.width{4},	.height{8} };
+/*template<typename T>
+	requires (!::std::is_same_v<T, decltype(large_font_data)>
+			&& !::std::is_same_v<T, decltype(normal_font_data)>
+			&& !::std::is_same_v<T, decltype(small_font_data)>)
+class FontType : public FontBase
+{
+public:
+	const T& data{nullptr};
+
+	FontType(::std::string name, pixel width, pixel height) : name{name.c_str()}, width{width}, height{height}
+	{
+	}
+};
+
+template<typename T>
+	requires ::std::same_as<T, decltype(large_font_data)>
+class FontType : public FontBase
+{
+public:
+	const T& data{::std::reference_wrapper(large_font_data)};
+
+	FontType() : name{"large"}, width{16}, height{32}
+	{
+	}
+};
+
+template<typename T>
+	requires ::std::same_as<T, decltype(normal_font_data)>
+class FontType : public FontBase
+{
+public:
+	const T& data{::std::reference_wrapper(normal_font_data)};
+
+	FontType() : name{"normal"}, width{8}, height{16}
+	{
+	}
+};
+
+template<typename T>
+	requires ::std::same_as<T, decltype(small_font_data)>
+class FontType : public FontBase
+{
+public:
+	const T& data{::std::reference_wrapper(small_font_data)};
+
+	FontType() : name{"small"}, width{4}, height{8}
+	{
+	}
+};*/
+
+template<typename T>
+class FontType : public FontBase
+{
+public:
+	//const T& data{::std::remove_reference_t<v>};
+	const T& data{v};
+	FontType(T v, const char* name, pixel width, pixel height) : data{v}, name{name}, width{width}, height{height}
+	{}
+
+};
+
+static constexpr FontType large_font{large_font_data, "large", 16, 32};
+static constexpr FontType normal_font{normal_font_data, "normal", 8, 16};
+static constexpr FontType small_font{small_font_data, "small", 4, 8};

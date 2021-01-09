@@ -41,7 +41,7 @@
 #include "m_controls.h"
 #include "p_saveg.h"
 #include "p_setup.h"
-#include "p_extsaveg.h"		// [crispy] savewadfilename
+#include "p_extsaveg.h"		// savewadfilename
 
 #include "s_sound.h"
 
@@ -51,9 +51,9 @@
 #include "sounds.h"
 
 #include "m_menu.h"
-#include "m_crispy.h"			// [crispy] Crispness menu
+#include "m_crispy.h"			// Crispness menu
 
-#include "v_trans.h"			// [crispy] colored "invert mouse" message
+#include "v_trans.h"			// colored "invert mouse" message
 
 extern patch_t* hu_font[HU_FONTSIZE];
 extern bool message_dontfuckwithme;
@@ -61,15 +61,15 @@ extern bool message_dontfuckwithme;
 extern bool chat_on;			// in heads-up code
 
 int mouseSensitivity = 5;
-int mouseSensitivity_x2 = 5;	// [crispy] mouse sensitivity menu
-int mouseSensitivity_y = 5;		// [crispy] mouse sensitivity menu
+int mouseSensitivity_x2 = 5;	// mouse sensitivity menu
+int mouseSensitivity_y = 5;		// mouse sensitivity menu
 
 // Show messages has default, 0 = off, 1 = on
 int showMessages = 1;
 
 // Blocky mode, has default, 0 = high, 1 = normal
 int detailLevel = 0;
-int screenblocks = 10;			// [crispy] increased
+int screenblocks = 10;			// increased
 
 // temp for screenblocks (0-9)
 int screenSize;
@@ -80,7 +80,7 @@ int quickSaveSlot;
 // 1 = message to be printed
 int messageToPrint;
 // ...and here is the message string!
-std::string messageString;
+::std::string messageString;
 
 // message x & y
 int messx;
@@ -92,7 +92,7 @@ bool messageNeedsInput;
 
 void (*messageRoutine)(int response);
 
-// [crispy] intermediate gamma levels
+// intermediate gamma levels
 char gammamsg[5 + 4][26 + 2] =
 {
 	GAMMALVL0,
@@ -144,7 +144,7 @@ struct menuitem_t
 
 	// hotkey in menu
 	char alphaKey;
-	std::string alttext;		// [crispy] alternative text for menu items
+	::std::string alttext;		// alternative text for menu items
 };
 
 struct menu_t
@@ -165,7 +165,7 @@ short whichSkull;				// which skull to draw
 
 // graphic name of skulls
 // warning: initializer-string for array of chars is too long
-std::string skullName[2] = {"M_SKULL1", "M_SKULL2"};
+::std::string skullName[2] = {"M_SKULL1", "M_SKULL2"};
 
 // current menudef
 menu_t* currentMenu;
@@ -214,13 +214,13 @@ static void M_DrawSave();
 static void M_DrawSaveLoadBorder(int x, int y);
 static void M_SetupNextMenu(menu_t* menudef);
 static void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
-static void M_WriteText(int x, int y, std::string string);
-int M_StringWidth(std::string string);
-static int M_StringHeight(std::string string);
-static void M_StartMessage(std::string string, void* routine, bool input);
+static void M_WriteText(int x, int y, ::std::string string);
+int M_StringWidth(::std::string string);
+static int M_StringHeight(::std::string string);
+static void M_StartMessage(::std::string string, void* routine, bool input);
 static void M_ClearMenus();
 
-// [crispy] Crispness menu
+// Crispness menu
 static void M_CrispnessCur(int choice);
 static void M_CrispnessNext(int choice);
 static void M_CrispnessPrev(int choice);
@@ -268,7 +268,7 @@ enum class episodes_e
 	ep2,
 	ep3,
 	ep4,
-	ep5, // [crispy] Sigil
+	ep5, // Sigil
 	ep_end
 };
 
@@ -278,7 +278,7 @@ menuitem_t EpisodeMenu[] =
 	{1,"M_EPI2", M_Episode,'t'},
 	{1,"M_EPI3", M_Episode,'i'},
 	{1,"M_EPI4", M_Episode,'t'},
-	{1,"M_EPI5", M_Episode,'s'}		// [crispy] Sigil
+	{1,"M_EPI5", M_Episode,'s'}		// Sigil
 };
 
 menu_t EpiDef =
@@ -331,7 +331,7 @@ enum class options_e
 	option_empty1,
 	mousesens,
 	soundvol,
-	crispness,												// [crispy] Crispness menu
+	crispness,												// Crispness menu
 	opt_end
 };
 
@@ -342,9 +342,9 @@ menuitem_t OptionsMenu[] =
 	{1,"M_DETAIL",	M_ChangeDetail,'g', "Graphic Detail: "},
 	{2,"M_SCRNSZ",	M_SizeDisplay,'s', "Screen Size"},
 	{-1,"",0,'\0'},
-	{1,"M_MSENS",	M_Mouse,'m', "Mouse Sensitivity"},		// [crispy] mouse sensitivity menu
+	{1,"M_MSENS",	M_Mouse,'m', "Mouse Sensitivity"},		// mouse sensitivity menu
 	{1,"M_SVOL",	M_Sound,'s', "Sound Volume"},
-	{1,"M_CRISPY",	M_CrispnessCur,'c', "Crispness"}		// [crispy] Crispness menu
+	{1,"M_CRISPY",	M_CrispnessCur,'c', "Crispness"}		// Crispness menu
 };
 
 menu_t OptionsDef =
@@ -358,7 +358,7 @@ menu_t OptionsDef =
 	0
 };
 
-// [crispy] mouse sensitivity menu
+// mouse sensitivity menu
 enum class mouse_e
 {
 	mouse_horiz,
@@ -393,7 +393,7 @@ static menu_t MouseDef =
 	0
 };
 
-// [crispy] Crispness menu
+// Crispness menu
 enum class crispness1_e
 {
 	crispness_sep_rendering,
@@ -701,8 +701,8 @@ enum class load_e
 	load4,
 	load5,
 	load6,
-	load7,						// [crispy] up to 8 savegames
-	load8,						// [crispy] up to 8 savegames
+	load7,						// up to 8 savegames
+	load8,						// up to 8 savegames
 	load_end
 };
 
@@ -714,8 +714,8 @@ menuitem_t LoadMenu[] =
 	{1,"", M_LoadSelect,'4'},
 	{1,"", M_LoadSelect,'5'},
 	{1,"", M_LoadSelect,'6'},
-	{1,"", M_LoadSelect,'7'},	// [crispy] up to 8 savegames
-	{1,"", M_LoadSelect,'8'}	// [crispy] up to 8 savegames
+	{1,"", M_LoadSelect,'7'},	// up to 8 savegames
+	{1,"", M_LoadSelect,'8'}	// up to 8 savegames
 };
 
 menu_t LoadDef =
@@ -737,8 +737,8 @@ menuitem_t SaveMenu[] =
 	{1,"", M_SaveSelect,'4'},
 	{1,"", M_SaveSelect,'5'},
 	{1,"", M_SaveSelect,'6'},
-	{1,"", M_SaveSelect,'7'},	// [crispy] up to 8 savegames
-	{1,"", M_SaveSelect,'8'}	// [crispy] up to 8 savegames
+	{1,"", M_SaveSelect,'7'},	// up to 8 savegames
+	{1,"", M_SaveSelect,'8'}	// up to 8 savegames
 };
 
 menu_t SaveDef =
@@ -786,7 +786,7 @@ void M_DrawLoad()
 	{
 		M_DrawSaveLoadBorder(LoadDef.x, LoadDef.y + LINEHEIGHT * i);
 
-		// [crispy] shade empty savegame slots
+		// shade empty savegame slots
 		if (!LoadMenu[i].status)
 		{
 			dp_translation = cr[CR_DARK];
@@ -817,12 +817,12 @@ void M_LoadSelect(int choice)
 
 	M_StringCopy(name, P_SaveGameFile(choice), sizeof(name));
 
-	// [crispy] save the last game you loaded
+	// save the last game you loaded
 	SaveDef.lastOn = choice;
 	G_LoadGame(name);
 	M_ClearMenus();
 
-	// [crispy] allow quickload before quicksave
+	// allow quickload before quicksave
 	if (quickSaveSlot == -2)
 	{
 		quickSaveSlot = choice;
@@ -831,7 +831,7 @@ void M_LoadSelect(int choice)
 
 void M_LoadGame(int choice)
 {
-	// [crispy] allow loading game while multiplayer demo playback
+	// allow loading game while multiplayer demo playback
 	if (netgame && !demoplayback)
 	{
 		M_StartMessage(DEH_String(LOADNET), nullptr, false);
@@ -886,7 +886,7 @@ static void SetDefaultSaveName(int slot)
 	}
 	else
 	{
-		auto wadname{std::string(W_WadNameForLump(maplumpinfo))};
+		auto wadname{::std::string(W_WadNameForLump(maplumpinfo))};
 		auto ext = strrchr(*wadname, '.');
 
 		if (ext)
@@ -901,8 +901,8 @@ static void SetDefaultSaveName(int slot)
 	joypadSave = false;
 }
 
-// [crispy] override savegame name if it already starts with a map identifier
-static bool StartsWithMapIdentifier(std::string str)
+// override savegame name if it already starts with a map identifier
+static bool StartsWithMapIdentifier(::std::string str)
 {
 	M_ForceUppercase(str);
 
@@ -925,7 +925,7 @@ void M_SaveSelect(int choice)
 	// we are going to be intercepting all chars
 	saveStringEnter = 1;
 
-	// [crispy] load the last game you saved
+	// load the last game you saved
 	LoadDef.lastOn = choice;
 
 	// We need to turn on text input:
@@ -938,12 +938,12 @@ void M_SaveSelect(int choice)
 
 	saveSlot = choice;
 	M_StringCopy(saveOldString, savegamestrings[choice], SAVESTRINGSIZE);
-	// [crispy] override savegame name if it already starts with a map identifier
+	// override savegame name if it already starts with a map identifier
 	if (!strcmp(savegamestrings[choice], EMPTYSTRING) || StartsWithMapIdentifier(savegamestrings[choice]))
 	{
 		savegamestrings[choice][0] = 0;
 
-		if (joypadSave || true) // [crispy] always prefill empty savegame slot names
+		if (joypadSave || true) // always prefill empty savegame slot names
 		{
 			SetDefaultSaveName(choice);
 		}
@@ -1001,8 +1001,8 @@ void M_QuickSave()
 		quickSaveSlot = -2;	// means to pick a slot now
 		return;
 	}
-	// [crispy] print savegame name in golden letters
-	auto savegamestring{std::string(std::string(crstr[CR_GOLD]) + savegamestrings[quickSaveSlot] + std::string(crstr[CR_NONE]))};
+	// print savegame name in golden letters
+	auto savegamestring{::std::string(::std::string(crstr[CR_GOLD]) + savegamestrings[quickSaveSlot] + ::std::string(crstr[CR_NONE]))};
 	DEH_snprintf(tempstring, sizeof(tempstring), QSPROMPT, *savegamestring);
 	M_StartMessage(tempstring, M_QuickSaveResponse, true);
 }
@@ -1018,7 +1018,7 @@ void M_QuickLoadResponse(int key)
 
 void M_QuickLoad()
 {
-	// [crispy] allow quickloading game while multiplayer demo playback
+	// allow quickloading game while multiplayer demo playback
 	if (netgame && !demoplayback)
 	{
 		M_StartMessage(DEH_String(QLOADNET), NULL, false);
@@ -1027,15 +1027,15 @@ void M_QuickLoad()
 
 	if (quickSaveSlot < 0)
 	{
-		// [crispy] allow quickload before quicksave
+		// allow quickload before quicksave
 		M_StartControlPanel();
 		M_ReadSaveStrings();
 		M_SetupNextMenu(&LoadDef);
 		quickSaveSlot = -2;
 		return;
 	}
-	// [crispy] print savegame name in golden letters
-	auto savegamestring{std::string(std::string(crstr[CR_GOLD]) + savegamestrings[quickSaveSlot] + std::string(crstr[CR_NONE]))};
+	// print savegame name in golden letters
+	auto savegamestring{::std::string(::std::string(crstr[CR_GOLD]) + savegamestrings[quickSaveSlot] + ::std::string(crstr[CR_NONE]))};
 	DEH_snprintf(tempstring, sizeof(tempstring), QLPROMPT, *savegamestring);
 	M_StartMessage(tempstring, M_QuickLoadResponse, true);
 }
@@ -1136,7 +1136,7 @@ void M_DrawNewGame()
 
 void M_NewGame(int choice)
 {
-	// [crispy] forbid New Game while recording a demo
+	// forbid New Game while recording a demo
 	if (demorecording)
 	{
 		return;
@@ -1152,7 +1152,7 @@ void M_NewGame(int choice)
 
 	if ((gamemode == GameMode::commercial && crispy->havenerve.empty() && crispy->havemaster.empty()) || gameversion == GameVersion::exe_chex)
 	{
-		// [crispy] NRFTL / The Master Levels
+		// NRFTL / The Master Levels
 		M_SetupNextMenu(&NewDef);
 	}
 	else
@@ -1204,8 +1204,8 @@ void M_Episode(int choice)
 	M_SetupNextMenu(&NewDef);
 }
 
-static std::string detailNames[2] = {"M_GDHIGH", "M_GDLOW"};
-static std::string msgNames[2] = {"M_MSGOFF", "M_MSGON"};
+static ::std::string detailNames[2] = {"M_GDHIGH", "M_GDLOW"};
+static ::std::string msgNames[2] = {"M_MSGOFF", "M_MSGON"};
 
 void M_DrawOptions()
 {
@@ -1235,14 +1235,14 @@ void M_DrawOptions()
 				OptionsDef.y + LINEHEIGHT * options_e::messages + 8 - (M_StringHeight("OnOff") / 2), showMessages ? "On" : "Off");
 		}
 
-	// [crispy] mouse sensitivity menu
+	// mouse sensitivity menu
 	/*
 		M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (mousesens + 1), 10, mouseSensitivity);
 	*/
-	M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (options_e::scrnsize + 1), 9 + (crispy->widescreen ? 6 : 3), screenSize); // [crispy] Crispy HUD
+	M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (options_e::scrnsize + 1), 9 + (crispy->widescreen ? 6 : 3), screenSize); // Crispy HUD
 }
 
-// [crispy] mouse sensitivity menu
+// mouse sensitivity menu
 static void M_DrawMouse()
 {
 	char mouse_menu_text[48];
@@ -1268,7 +1268,7 @@ static void M_DrawMouse()
 	dp_translation = nullptr;
 }
 
-// [crispy] Crispness menu
+// Crispness menu
 #include "m_background.h"
 static void M_DrawCrispnessBackground()
 {
@@ -1296,19 +1296,19 @@ static void M_DrawCrispnessBackground()
 
 static char crispy_menu_text[48];
 
-static void M_DrawCrispnessHeader(std::string item)
+static void M_DrawCrispnessHeader(::std::string item)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[CR_GOLD], item);
 	M_WriteText(ORIGWIDTH / 2 - M_StringWidth(item) / 2, 12, crispy_menu_text);
 }
 
-static void M_DrawCrispnessSeparator(int y, std::string item)
+static void M_DrawCrispnessSeparator(int y, ::std::string item)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[CR_GOLD], item);
 	M_WriteText(currentMenu->x - 8, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessItem(int y, std::string item, int feat, bool cond)
+static void M_DrawCrispnessItem(int y, ::std::string item, int feat, bool cond)
 {
 	// FIXME WE HEARD YOU LIKED TERNERIES SO WE GOT YOU TERNERIES FOR YOUR TERNERIES
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
@@ -1318,7 +1318,7 @@ static void M_DrawCrispnessItem(int y, std::string item, int feat, bool cond)
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessMultiItem(int y, std::string item, multiitem_t* multiitem, int feat, bool cond)
+static void M_DrawCrispnessMultiItem(int y, ::std::string item, multiitem_t* multiitem, int feat, bool cond)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text),
 		"%s%s: %s%s", cond ? crstr[CR_NONE] : crstr[CR_DARK], item,
@@ -1327,7 +1327,7 @@ static void M_DrawCrispnessMultiItem(int y, std::string item, multiitem_t* multi
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
 }
 
-static void M_DrawCrispnessGoto(int y, std::string item)
+static void M_DrawCrispnessGoto(int y, ::std::string item)
 {
 	M_snprintf(crispy_menu_text, sizeof(crispy_menu_text), "%s%s", crstr[CR_GOLD], item);
 	M_WriteText(currentMenu->x, currentMenu->y + CRISPY_LINEHEIGHT * y, crispy_menu_text);
@@ -1447,7 +1447,7 @@ void M_Options(int choice)
 	M_SetupNextMenu(&OptionsDef);
 }
 
-// [crispy] correctly handle inverted y-axis
+// correctly handle inverted y-axis
 static void M_Mouse(int choice)
 {
 	if (mouseSensitivity_y < 0)
@@ -1515,13 +1515,13 @@ void M_EndGameResponse(int key)
 		return;
 	}
 
-	// [crispy] killough 5/26/98: make endgame quit if recording or playing back demo
+	// killough 5/26/98: make endgame quit if recording or playing back demo
 	if (demorecording || singledemo)
 	{
 		G_CheckDemoStatus();
 	}
 
-	// [crispy] clear quicksave slot
+	// clear quicksave slot
 	quickSaveSlot = -1;
 	currentMenu->lastOn = itemOn;
 	M_ClearMenus();
@@ -1597,7 +1597,7 @@ void M_QuitResponse(int key)
 		return;
 	}
 
-	// [crispy] play quit sound only if the ENDOOM screen is also shown
+	// play quit sound only if the ENDOOM screen is also shown
 	if (!netgame && show_endoom)
 	{
 		if (gamemode == GameMode::commercial)
@@ -1615,7 +1615,7 @@ void M_QuitResponse(int key)
 	I_Quit();
 }
 
-static std::string M_SelectEndMessage()
+static ::std::string M_SelectEndMessage()
 {
 	CHAR_PTR* endmsg;
 
@@ -1635,7 +1635,7 @@ static std::string M_SelectEndMessage()
 
 void M_QuitDOOM(int choice)
 {
-	// [crispy] fast exit if "run" key is held down
+	// fast exit if "run" key is held down
 	if (speedkeydown())
 	{
 		I_Quit();
@@ -1657,7 +1657,7 @@ void M_ChangeSensitivity(int choice)
 		}
 		break;
 	case 1:
-		if (mouseSensitivity < 255) // [crispy] extended range
+		if (mouseSensitivity < 255) // extended range
 		{
 			++mouseSensitivity;
 		}
@@ -1676,7 +1676,7 @@ void M_ChangeSensitivity_x2(int choice)
 		}
 		break;
 	case 1:
-		if (mouseSensitivity_x2 < 255) // [crispy] extended range
+		if (mouseSensitivity_x2 < 255) // extended range
 		{
 			++mouseSensitivity_x2;
 		}
@@ -1695,7 +1695,7 @@ static void M_ChangeSensitivity_y(int choice)
 		}
 		break;
 	case 1:
-		if (mouseSensitivity_y < 255) // [crispy] extended range
+		if (mouseSensitivity_y < 255) // extended range
 		{
 			++mouseSensitivity_y;
 		}
@@ -1738,12 +1738,12 @@ void M_SizeDisplay(int choice)
 		}
 		break;
 	case 1:
-		if (screenSize < 8 + (crispy->widescreen ? 6 : 3)) // [crispy] Crispy HUD
+		if (screenSize < 8 + (crispy->widescreen ? 6 : 3)) // Crispy HUD
 		{
 			++screenblocks;
 			++screenSize;
 		}
-		// [crispy] reset to fullscreen HUD
+		// reset to fullscreen HUD
 		else
 		{
 			screenblocks = 11;
@@ -1791,7 +1791,7 @@ void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
 	dp_translation = nullptr;
 }
 
-void M_StartMessage(std::string string, void* routine, bool input)
+void M_StartMessage(::std::string string, void* routine, bool input)
 {
 	messageLastMenuActive = menuactive;
 	messageToPrint = 1;
@@ -1810,7 +1810,7 @@ void M_StartMessage(std::string string, void* routine, bool input)
 }
 
 // Find string width from hu_font chars
-int M_StringWidth(std::string string)
+int M_StringWidth(::std::string string)
 {
 	int width{0};
 
@@ -1841,7 +1841,7 @@ int M_StringWidth(std::string string)
 }
 
 // Find string height from hu_font chars
-int M_StringHeight(std::string string)
+int M_StringHeight(::std::string string)
 {
 	int height{SHORT(hu_font[0]->height)};
 
@@ -1858,12 +1858,12 @@ int M_StringHeight(std::string string)
 }
 
 // Write a string using the hu_font
-void M_WriteText(int x, int y, std::string string)
+void M_WriteText(int x, int y, ::std::string string)
 {
 	int w;
 	int c;
 
-	std::string ch = string;
+	::std::string ch = string;
 	auto cx = x;
 	auto cy = y;
 
@@ -2031,7 +2031,7 @@ static int G_GotoNextLevel()
 			map = doom_next[gameepisode - 1][gamemap - 1] % 10;
 		}
 
-		// [crispy] special-casing for E1M10 "Sewers" support
+		// special-casing for E1M10 "Sewers" support
 		if (crispy->havee1m10 && gameepisode == 1)
 		{
 			if (gamemap == 1)
@@ -2610,7 +2610,7 @@ bool M_Responder(EventType* ev)
 		}
 		return true;
 	}
-	// [crispy] delete a savegame
+	// delete a savegame
 	else if (key == key_menu_del)
 	{
 		if (currentMenu == &LoadDef || currentMenu == &SaveDef)
@@ -2627,7 +2627,7 @@ bool M_Responder(EventType* ev)
 			}
 		}
 	}
-	// [crispy] next/prev Crispness menu
+	// next/prev Crispness menu
 	else if (key == KEY_PGUP)
 	{
 		currentMenu->lastOn = itemOn;
@@ -2690,7 +2690,7 @@ void M_StartControlPanel()
 		return;
 	}
 
-	// [crispy] entering menus while recording demos pauses the game
+	// entering menus while recording demos pauses the game
 	if (demorecording && !paused)
 	{
 		sendpause = true;
@@ -2704,9 +2704,9 @@ void M_StartControlPanel()
 // Display OPL debug messages - hack for GENMIDI development.
 static void M_DrawOPLDev()
 {
-	extern void I_OPL_DevMessages(std::string, size_t);
+	extern void I_OPL_DevMessages(::std::string, size_t);
 	char debug[1024];
-	std::string curr, p;
+	::std::string curr, p;
 	int line;
 
 	I_OPL_DevMessages(debug, sizeof(debug));
@@ -2741,7 +2741,7 @@ void M_Drawer()
 	static short y;
 	unsigned max;
 	char string[80];
-	std::string name;
+	::std::string name;
 	int start;
 
 	inhelpscreens = false;
@@ -2749,7 +2749,7 @@ void M_Drawer()
 	// Horiz. & Vertically center string and print it.
 	if (messageToPrint)
 	{
-		// [crispy] draw a background for important questions
+		// draw a background for important questions
 		if (messageToPrint == 2)
 		{
 			M_DrawCrispnessBackground();
@@ -2784,7 +2784,7 @@ void M_Drawer()
 			}
 
 			x = ORIGWIDTH / 2 - M_StringWidth(string) / 2;
-			M_WriteText(x > 0 ? x : 0, y, string); // [crispy] prevent negative x-coords
+			M_WriteText(x > 0 ? x : 0, y, string); // prevent negative x-coords
 			y += SHORT(hu_font[0]->height);
 		}
 
@@ -2811,7 +2811,7 @@ void M_Drawer()
 	y = currentMenu->y;
 	max = currentMenu->numitems;
 
-	// [crispy] check current menu for missing menu graphics lumps - only once
+	// check current menu for missing menu graphics lumps - only once
 	if (currentMenu->lumps_missing == 0)
 	{
 		for (size_t i{0}; i < max; ++i)
@@ -2825,7 +2825,7 @@ void M_Drawer()
 			}
 		}
 
-		// [crispy] no lump missing, no need to check again
+		// no lump missing, no need to check again
 		if (currentMenu->lumps_missing == 0)
 		{
 			currentMenu->lumps_missing = -1;
@@ -2834,12 +2834,12 @@ void M_Drawer()
 
 	for (size_t i{0}; i < max; ++i)
 	{
-		std::string alttext = currentMenu->menuitems[i].alttext;
+		::std::string alttext = currentMenu->menuitems[i].alttext;
 		name = DEH_String(currentMenu->menuitems[i].name);
 
 		if (name[0] && (W_CheckNumForName(name) > 0 || alttext))
 		{
-			// [crispy] shade unavailable menu items
+			// shade unavailable menu items
 			if ((currentMenu == &MainDef && i == (int)main_e::savegame && (!usergame || gamestate != GameState_t::GS_LEVEL)) ||
 				(currentMenu == &OptionsDef && i == (int)options_e::endgame && (!usergame || netgame)) ||
 				(currentMenu == &MainDef && i == (int)main_e::loadgame && (netgame && !demoplayback)) ||
@@ -2924,7 +2924,7 @@ void M_Init()
 	// The same hacks were used in the original Doom EXEs.
 	if (gameversion >= GameVersion::exe_ultimate)
 	{
-		MainMenu[std::size_t(main_e::readthis)].routine = M_ReadThis2;
+		MainMenu[::std::size_t(main_e::readthis)].routine = M_ReadThis2;
 		ReadDef2.prevMenu = nullptr;
 	}
 
@@ -2937,14 +2937,14 @@ void M_Init()
 
 	if (gamemode == GameMode::commercial)
 	{
-		MainMenu[std::size_t(main_e::readthis)] = MainMenu[std::size_t(main_e::quitdoom)];
+		MainMenu[::std::size_t(main_e::readthis)] = MainMenu[::std::size_t(main_e::quitdoom)];
 		--MainDef.numitems;
 		MainDef.y += 8;
 		NewDef.prevMenu = &MainDef;
 		ReadDef1.routine = M_DrawReadThisCommercial;
 		ReadDef1.x = 330;
 		ReadDef1.y = 165;
-		ReadMenu1[std::size_t(read_e::rdthsempty1)].routine = M_FinishReadThis;
+		ReadMenu1[::std::size_t(read_e::rdthsempty1)].routine = M_FinishReadThis;
 	}
 
 	// Sigil
@@ -3035,8 +3035,8 @@ void M_Init()
 	// remove DOS reference from the game quit confirmation dialogs
 	if (!M_ParmExists("-nodeh"))
 	{
-		std::string string;
-		std::string replace;
+		::std::string string;
+		::std::string replace;
 
 		// "i wouldn't leave if i were you.\ndos is much worse."
 		string = doom1_endmsg[3];
@@ -3067,7 +3067,7 @@ void M_Init()
 }
 
 // extended savegames
-std::string savegwarning;
+::std::string savegwarning;
 static void M_ForceLoadGameResponse(int key)
 {
 	if (key != key_menu_confirm || !savemaplumpinfo)
@@ -3090,13 +3090,13 @@ void M_ForceLoadGame()
 {
 	savegwarning =
 		savemaplumpinfo ?
-		std::string("This savegame requires the file\n"
+		::std::string("This savegame requires the file\n"
 			+ crstr[CR_GOLD] + savewadfilename + crstr[CR_NONE] + "\n"
 			+ "to restore " + crstr[CR_GOLD] + savemaplumpinfo->name + crstr[CR_NONE] + " .\n\n"
 			+ "Continue to restore from\n"
 			+ crstr[CR_GOLD] + W_WadNameForLump(savemaplumpinfo) + crstr[CR_NONE] + " ?\n\n"
 			+ PRESSYN) :
-		std::string("This savegame requires the file\n"
+		::std::string("This savegame requires the file\n"
 			+ crstr[CR_GOLD] + savewadfilename + crstr[CR_NONE] + "\n"
 			+ "to restore a map that is\n"
 			+ "currently not available!\n\n"
@@ -3122,7 +3122,7 @@ static void M_ConfirmDeleteGameResponse(int key)
 
 void M_ConfirmDeleteGame()
 {
-	savegwarning = std::string("delete savegame\n\n" + std::string(crstr[CR_GOLD]) + savegamestrings[itemOn] + std::string(crstr[CR_NONE]) + " ?\n\n" + PRESSYN);
+	savegwarning = ::std::string("delete savegame\n\n" + ::std::string(crstr[CR_GOLD]) + savegamestrings[itemOn] + ::std::string(crstr[CR_NONE]) + " ?\n\n" + PRESSYN);
 
 	M_StartMessage(savegwarning, M_ConfirmDeleteGameResponse, true);
 	messageToPrint = 2;

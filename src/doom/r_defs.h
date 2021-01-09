@@ -44,7 +44,7 @@ struct vertex_t
 	fixed_t x;
 	fixed_t y;
 
-	// [crispy] remove slime trails
+	// remove slime trails
 	// vertex coordinates *only* used in rendering that have been
 	// moved towards the linedef associated with their seg by projecting them
 	// using the law of cosines in p_setup.c:P_RemoveSlimeTrails();
@@ -107,11 +107,11 @@ struct sector_t
 	int linecount;
 	line_t** lines;	// [linecount] size
 
-	// [crispy] WiggleFix: [kb] for R_FixWiggle()
+	// WiggleFix: [kb] for R_FixWiggle()
 	int cachedheight;
 	int scaleindex;
 
-	// [crispy] add support for MBF sky tranfers
+	// add support for MBF sky tranfers
 	int sky;
 
 	// [AM] Previous position of floor and ceiling before
@@ -132,7 +132,7 @@ struct sector_t
 	fixed_t interpfloorheight;
 	fixed_t interpceilingheight;
 
-	// [crispy] revealed secrets
+	// revealed secrets
 	short oldspecial;
 };
 
@@ -154,7 +154,7 @@ struct side_t
 	// Sector the SideDef is facing.
 	sector_t* sector;
 
-	// [crispy] smooth texture scrolling
+	// smooth texture scrolling
 	fixed_t basetextureoffset;
 };
 
@@ -178,13 +178,13 @@ struct line_t
 	fixed_t dy;
 
 	// Animation related.
-	unsigned short flags; // [crispy] extended nodes
+	unsigned short flags; // extended nodes
 	short special;
 	short tag;
 
 	// Visual appearance: SideDefs.
 	// sidenum[1] will be -1 (NO_INDEX) if one sided
-	unsigned short sidenum[2]; // [crispy] extended nodes
+	unsigned short sidenum[2]; // extended nodes
 
 	// Neat. Another bounding box, for the extent
 	// of the LineDef.
@@ -204,7 +204,7 @@ struct line_t
 	// thinker_t for reversable actions
 	void* specialdata;
 
-	// [crispy] calculate sound origin of line to be its midpoint
+	// calculate sound origin of line to be its midpoint
 	degenmobj_t soundorg;
 };
 
@@ -216,8 +216,8 @@ struct line_t
 struct subsector_t
 {
 	sector_t* sector;
-	int numlines; // [crispy] extended nodes
-	int firstline; // [crispy] extended nodes
+	int numlines; // extended nodes
+	int firstline; // extended nodes
 };
 
 //
@@ -241,8 +241,8 @@ struct seg_t
 	sector_t* frontsector;
 	sector_t* backsector;
 
-	uint32_t length; // [crispy] fix long wall wobble
-	angle_t r_angle; // [crispy] re-calculated angle used for rendering
+	uint32_t length; // fix long wall wobble
+	angle_t r_angle; // re-calculated angle used for rendering
 	int fakecontrast;
 };
 
@@ -261,7 +261,7 @@ struct node_t
 	fixed_t bbox[2][4];
 
 	// If NF_SUBSECTOR its a subsector.
-	int children[2]; // [crispy] extended nodes
+	int children[2]; // extended nodes
 };
 
 // PC direct to screen pointers
@@ -303,9 +303,9 @@ struct drawseg_t
 
 	// Pointers to lists for sprite clipping,
 	// all three adjusted so [x1] is first value.
-	int* sprtopclip; // [crispy] 32-bit integer math
-	int* sprbottomclip; // [crispy] 32-bit integer math
-	int* maskedtexturecol; // [crispy] 32-bit integer math
+	int* sprtopclip; // 32-bit integer math
+	int* sprbottomclip; // 32-bit integer math
+	int* maskedtexturecol; // 32-bit integer math
 };
 
 // A vissprite_t is a thing
@@ -341,12 +341,12 @@ struct vissprite_t
 
 	// for color translation and shadow draw,
 	// maxbright frames as well
-	// [crispy] brightmaps for select sprites
+	// brightmaps for select sprites
 	lighttable_t* colormap[2];
 	byte* brightmap;
 
 	int mobjflags;
-	// [crispy] color translation table for blood colored by monster class
+	// color translation table for blood colored by monster class
 	byte* translation;
 #ifdef CRISPY_TRUECOLOR
 	const pixel_t(*blendfunc)(const pixel_t fg, const pixel_t bg);
@@ -371,13 +371,13 @@ struct spriteframe_t
 	// If false use 0 for any position.
 	// Note: as eight entries are available,
 	// we might as well insert the same name eight times.
-	int rotate; // [crispy] we use a value of 2 for 16 sprite rotations
+	int rotate; // we use a value of 2 for 16 sprite rotations
 
 	// Lump to use for view angles 0-7.
-	short lump[16]; // [crispy] support 16 sprite rotations
+	short lump[16]; // support 16 sprite rotations
 
 	// Flip bit (1 = flip) to use for view angles 0-7.
-	byte flip[16]; // [crispy] support 16 sprite rotations
+	byte flip[16]; // support 16 sprite rotations
 };
 
 // A sprite definition:
@@ -398,17 +398,17 @@ struct visplane_t
 	int maxx;
 
 	// leave pads for [minx-1]/[maxx+1]
-	unsigned pad1; // [crispy] hires / 32-bit integer math
+	unsigned pad1; // hires / 32-bit integer math
 
 	// Here lies the rub for all
 	// dynamic resize/change of resolution.
-	unsigned top[MAXWIDTH]; // [crispy] hires / 32-bit integer math
-	unsigned pad2; // [crispy] hires / 32-bit integer math
-	unsigned pad3; // [crispy] hires / 32-bit integer math
+	unsigned top[MAXWIDTH]; // hires / 32-bit integer math
+	unsigned pad2; // hires / 32-bit integer math
+	unsigned pad3; // hires / 32-bit integer math
 
 	// See above.
-	unsigned bottom[MAXWIDTH]; // [crispy] hires / 32-bit integer math
-	unsigned pad4; // [crispy] hires / 32-bit integer math
+	unsigned bottom[MAXWIDTH]; // hires / 32-bit integer math
+	unsigned pad4; // hires / 32-bit integer math
 };
 
 struct laserpatch_t
