@@ -82,7 +82,6 @@
 //#endif
 //constexpr size_t HELP_KEY{KEY_F1};
 //typedef void (*TxtIdleCallback)(void* user_data);
-
 */
 
 namespace cudadoom::txt
@@ -94,7 +93,8 @@ template<class T>
 class WidgetClass;
 
 template<class T, class U>
-class Widget;
+class WidgetBase;
+	class Widget;
 
 	// is-a Widget
 	template<class T>
@@ -165,10 +165,6 @@ constexpr short LARGE_FONT_THRESHOLD{144};
 constexpr short COLOR_BLINKING{8};
 
 constexpr size_t MAXWINDOWS{128};
-
-constexpr ColorType INACTIVE_WINDOW_BACKGROUND{ColorType::black};
-constexpr ColorType ACTIVE_WINDOW_BACKGROUND{ColorType::blue};
-constexpr ColorType HOVER_BACKGROUND{ColorType::cyan};
 //----------------------------------------
 
 //========================================
@@ -192,6 +188,10 @@ enum class ColorType
 	yellow,
 	bright_white
 };
+
+constexpr ColorType INACTIVE_WINDOW_BACKGROUND{ColorType::black};
+constexpr ColorType ACTIVE_WINDOW_BACKGROUND{ColorType::blue};
+constexpr ColorType HOVER_BACKGROUND{ColorType::cyan};
 
 // Modifier keys.
 enum class ModifierType

@@ -19,12 +19,13 @@
 
 #include "txt_common.h"
 #include "txt_widget.h"
+#include "txt_inputbox.h"
 
 namespace cudadoom::txt
 {
 
-//class FileSelect : public Widget<FileSelect>
-class FileSelect : public InputBox<FileSelect>
+//class FileSelect : public WidgetBase<FileSelect>
+class FileSelect : public InputBase<FileSelect>
 {
 	int size;
 	::std::string prompt;
@@ -33,8 +34,7 @@ class FileSelect : public InputBox<FileSelect>
 
 public:
 /*
-	FileSelect() : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{}
+	FileSelect() {} : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
 	FileSelect(char** _variable, int _size, ::std::string _prompt, CHAR_PTR* _extensions) :
 		widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
@@ -81,7 +81,7 @@ public:
 		//DrawWidget(inputbox);
 	}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -127,14 +127,11 @@ public:
 			//return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 /*
 	bool DoSelectFile()
 	{

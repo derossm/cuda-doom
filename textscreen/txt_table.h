@@ -30,13 +30,8 @@ namespace cudadoom::txt
 // txt_table_eol;
 // txt_table_empty;
 
-class Table : public TableBase<Table>
-{
-
-};
-
 template<typename T>
-class TableBase : public Widget<T>
+class TableBase : public WidgetBase<T>
 {
 public:
 	// Widgets in this table
@@ -51,19 +46,18 @@ public:
 
 public:
 
-	Table(int _columns = 1) //: widget_class<Table>{}, columns{_columns},
+	TableBase(int _columns = 1) //: widget_class<Table>{}, columns{_columns},
 		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 	{
 		// Add a strut for each column at the start of the table. These are used by the SetColumnWidths function below:
 		// the struts are created with widths of 0 each, but this function changes them.
-		for (size_t i{0}; i < columns; ++i)
+		//for (size_t i{0}; i < columns; ++i)
 		{
 			//AddWidget(NewStrut(0, 0));
 		}
 	}
 
-	virtual ~Table()
-	{	}
+	virtual ~TableBase() {}
 
 	// Determine whether the table is selectable.
 	inline bool Selectable() const noexcept override
@@ -142,7 +136,7 @@ public:
 /**/
 	}
 
-	inline bool KeyPress(KeyEvent key) noexcept override
+	inline bool KeyPress(Keys key) noexcept override
 	{
 /*
 		auto rows{Rows(table)};
@@ -874,7 +868,7 @@ public:
 	{
 		va_list args;
 		// FIXME take out this table param, but I have no idea how va_list/va_start works
-		va_start(args, UNCAST_ARG_NAME(table));
+		va_start(args, _NAME(table));
 
 		for (size_t i{0}; i < columns; ++i)
 		{
@@ -954,6 +948,12 @@ public:
 	}
 /**/
 };
+
+class Table : public TableBase<Table>
+{
+
+};
+
 /*
 // Alternative to NewTable() that allows a list of widgets to be provided in its arguments.
 ::std::unique_ptr<Table> MakeTable(int columns, ...)
@@ -985,7 +985,7 @@ public:
 {
 	va_list args;
 	// First, find the number of arguments to determine the width of the box.
-	va_start(args, UNCAST_ARG_NAME(first_widget));
+	va_start(args, _NAME(first_widget));
 
 	auto num_args{1};
 	for (;;)
@@ -1010,7 +1010,7 @@ public:
 	result->AddWidget(first_widget);
 
 	// Go through the list again and add each widget.
-	va_start(args, UNCAST_ARG_NAME(first_widget));
+	va_start(args, _NAME(first_widget));
 
 	for (;;)
 	{
@@ -1036,141 +1036,91 @@ public:
 //void InitTable(txt_table_t* table, int columns);
 
 /**
- * Create a new table.
- *
- * @param columns		The number of columns in the new table.
- * @return				Pointer to the new table structure.
- */
- //txt_table_t* NewTable(int columns);
+* Create a new table.
+* @param columns		The number of columns in the new table.
+* @return				Pointer to the new table structure.
+*/
+//txt_table_t* NewTable(int columns);
 
- /**
-  * Create a new table and populate it with provided widgets.
-  *
-  * The arguments to this function are variable. Each argument must be a
-  * pointer to a widget, and the list is terminated with a NULL.
-  *
-  * @param columns		The number of columns in the new table.
-  * @return				Pointer to the new table structure.
-  */
-  //txt_table_t* MakeTable(int columns, ...);
+/**
+* Create a new table and populate it with provided widgets.
+* The arguments to this function are variable. Each argument must be a pointer to a widget, and the list is terminated with a NULL.
+* @param columns		The number of columns in the new table.
+* @return				Pointer to the new table structure.
+*/
+//txt_table_t* MakeTable(int columns, ...);
 
-  /**
-   * Create a table containing the specified widgets packed horizontally,
-   * from left to right.
-   *
-   * The arguments to this function are variable. Each argument must
-   * be a pointer to a widget, and the list is terminated with a
-   * NULL.
-   *
-   * @return				Pointer to the new table structure.
-   */
-   //txt_table_t* MakeHorizontalTable(UNCAST_ARG(first_widget), ...);
+/**
+* Create a table containing the specified widgets packed horizontally, from left to right.
+* The arguments to this function are variable. Each argument must be a pointer to a widget, and the list is terminated with a NULL.
+* @return				Pointer to the new table structure.
+*/
+//txt_table_t* MakeHorizontalTable((first_widget), ...);
 
-   /**
-	* Get the currently selected widget within a table.
-	*
-	* This function will recurse through subtables if necessary.
-	*
-	* @param table		The table.
-	* @return				Pointer to the widget that is currently selected.
-	*/
-	//Widget* GetSelectedWidget(UNCAST_ARG(table));
+/**
+* Get the currently selected widget within a table. This function will recurse through subtables if necessary.
+* @param table			The table.
+* @return				Pointer to the widget that is currently selected.
+*/
+//Widget* GetSelectedWidget((table));
 
-	/**
-	 * Add a widget to a table.
-	 *
-	 * Widgets are added to tables horizontally, from left to right.
-	 * For example, for a table with three columns, the first call
-	 * to this function will add a widget to the first column, the second
-	 * call to the second column, the third call to the third column,
-	 * and the fourth will return to the first column, starting a new
-	 * row.
-	 *
-	 * For adding many widgets, it may be easier to use
-	 * @ref AddWidgets.
-	 *
-	 * @param table		The table.
-	 * @param widget		The widget to add.
-	 */
-	 //void AddWidget(UNCAST_ARG(table), UNCAST_ARG(widget));
+/**
+* Add a widget to a table.
+* Widgets are added to tables horizontally, from left to right. For example, for a table with three columns, the first call
+* to this function will add a widget to the first column, the second call to the second column, the third call to the third
+* column, and the fourth will return to the first column, starting a new row.
+* For adding many widgets, it may be easier to use @ref AddWidgets.
+* @param table			The table.
+* @param widget			The widget to add.
+*/
+//void AddWidget((table), (widget));
 
-	 /**
-	  * Add multiple widgets to a table.
-	  *
-	  * Widgets are added as described in the documentation for the
-	  * @ref AddWidget function. This function adds multiple
-	  * widgets. The number of arguments is variable, and the argument
-	  * list must be terminated by a NULL pointer.
-	  *
-	  * @param table		The table.
-	  */
-	  //void AddWidgets(UNCAST_ARG(table), ...);
+/**
+* Add multiple widgets to a table. Widgets are added as described in the documentation for the @ref AddWidget function. This function adds
+* multiple widgets. The number of arguments is variable, and the argument list must be terminated by a NULL pointer.
+* @param table			The table.
+*/
+//void AddWidgets((table), ...);
 
-	  /**
-	   * Select the given widget that is contained within the specified
-	   * table.
-	   *
-	   * This function will recursively search through subtables if
-	   * necessary.
-	   *
-	   * @param table		The table.
-	   * @param widget		The widget to select.
-	   * @return			Non-zero (true) if it has been selected,
-	   *					or zero (false) if it was not found within
-	   *					this table.
-	   */
-	   //int SelectWidget(UNCAST_ARG(table), UNCAST_ARG(widget));
+/**
+ * Select the given widget that is contained within the specified table. This function will recursively search through subtables if necessary.
+ * @param table			The table.
+ * @param widget		The widget to select.
+ * @return				Non-zero (true) if it has been selected, or zero (false) if it was not found within this table.
+*/
+//int SelectWidget((table), (widget));
 
-	   /**
-		* Change the number of columns in the table.
-		*
-		* Existing widgets in the table will be preserved, unless the change
-		* reduces the number of columns, in which case the widgets from the
-		* 'deleted' columns will be freed.
-		*
-		* This function can be useful for changing the number of columns in
-		* a window, which by default are tables containing a single column.
-		*
-		* @param table			The table.
-		* @param new_columns	The new number of columns.
-		*/
-		//void SetTableColumns(UNCAST_ARG(table), int new_columns);
+/**
+* Change the number of columns in the table. Existing widgets in the table will be preserved, unless the change reduces the number of columns,
+* in which case the widgets from the 'deleted' columns will be freed. This function can be useful for changing the number of columns in a window,
+* which by default are tables containing a single column.
+* @param table			The table.
+* @param new_columns	The new number of columns.
+*/
+//void SetTableColumns((table), int new_columns);
 
-		/**
-		 * Set the widths of the columns of the table.
-		 *
-		 * The arguments to this function are variable, and correspond
-		 * to the number of columns in the table. For example, if a table
-		 * has five columns, the width of each of the five columns must be
-		 * specified.
-		 *
-		 * The width values are in number of characters.
-		 *
-		 * Note that this function only sets the minimum widths for columns;
-		 * if the columns contain widgets that are wider than the widths
-		 * specified, they will be larger.
-		 *
-		 * @param table		The table.
-		 */
-		 //void SetColumnWidths(UNCAST_ARG(table), ...);
+/**
+* Set the widths of the columns of the table. The arguments to this function are variable, and correspond to the number of columns in the table.
+* For example, if a table has five columns, the width of each of the five columns must be specified. The width values are in number of characters.
+* Note that this function only sets the minimum widths for columns; if the columns contain widgets that are wider than the widths specified, they will be larger.
+* @param table			The table.
+*/
+//void SetColumnWidths((table), ...);
 
-		 /**
-		  * Remove all widgets from a table.
-		  *
-		  * @param table	The table.
-		  */
-		  //void ClearTable(UNCAST_ARG(table));
+/**
+* Remove all widgets from a table.
+* @param table			The table.
+*/
+//void ClearTable((table));
 
-		  /**
-		   * Hack to move the selection in a table by a 'page', triggered by the
-		   * scrollpane. This acts as per the keyboard events for the arrows, but moves
-		   * the selection by at least the specified number of characters.
-		   *
-		   * @param table	The table.
-		   * @param pagex	Minimum distance to move the selection horizontally.
-		   * @param pagey	Minimum distance to move the selection vertically.
-		   * @return			Non-zero if the selection has been changed.
-		   */
-		   //int PageTable(UNCAST_ARG(table), int pagex, int pagey);
+/**
+* Hack to move the selection in a table by a 'page', triggered by the scrollpane. This acts as per the keyboard events for the arrows, but moves
+* the selection by at least the specified number of characters.
+* @param table			The table.
+* @param pagex			Minimum distance to move the selection horizontally.
+* @param pagey			Minimum distance to move the selection vertically.
+* @return				Non-zero if the selection has been changed.
+*/
+//int PageTable((table), int pagex, int pagey);
 
 } // end namespace cudadoom::txt

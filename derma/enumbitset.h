@@ -49,7 +49,7 @@ public:
 	inline BitSet<E, N>& set(bool value, Es... es) noexcept
 	{
 		auto ev = {es...};
-		::std::for_each(ev.begin(), ev.end(), [&](auto& iter){ bitset::set(static_cast<size_t>(iter), value); });
+		::std::for_each(ev.begin(), ev.end(), [&](auto& iter){ this->bitset::set(static_cast<size_t>(iter), value); });
 	}
 
 

@@ -109,8 +109,7 @@ static void TXT_MouseInputDrawer(TXT_UNCAST_ARG(mouse_input))
 	}
 }
 
-static void TXT_MouseInputDestructor(TXT_UNCAST_ARG(mouse_input))
-{}
+static void TXT_MouseInputDestructor(TXT_UNCAST_ARG(mouse_input)) {}
 
 static int TXT_MouseInputKeyPress(TXT_UNCAST_ARG(mouse_input), int key)
 {

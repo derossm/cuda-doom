@@ -23,30 +23,27 @@ namespace cudadoom::txt
  * A dropdown list allows the user to select from a list of values, which appears when the list is selected.
  * When the value of a dropdown list is changed, the "changed" signal is emitted.
  */
-class DropDownList : public Widget<DropDownList>
+class DropDownList : public WidgetBase<DropDownList>
 {
 	//Widget widget;
-	int* variable;
-	CHAR_PTR* values;
+	uintptr_t variable;
+	uintptr_t* values;
 	int num_values;
 
 public:
 
-	DropDownList() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{	}
+	DropDownList() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
 	bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	void CalculateSize() noexcept override final
-	{	}
+	void CalculateSize() noexcept override final {}
 
-	void Draw() noexcept override final
-	{	}
+	void Draw() noexcept override final {}
 
-	bool KeyPress(KeyEvent key) noexcept override final
+	bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -70,14 +67,11 @@ public:
 		return false;
 	}
 
-	void SetLayout() noexcept override final
-	{	}
+	void SetLayout() noexcept override final {}
 
-	void SetFocus(bool _focus) noexcept override final
-	{	}
+	void SetFocus(bool _focus) noexcept override final {}
 
-	void Destroy() noexcept override final
-	{	}
+	void Destroy() noexcept override final {}
 };
 /*
 struct callback_data_t
@@ -256,17 +250,17 @@ static int DropdownListWidth(txt_dropdown_list_t* list)
 	return result;
 }
 
-static void DropdownListSizeCalc(UNCAST_ARG(list))
+static void DropdownListSizeCalc((list))
 {
-	CAST_ARG(txt_dropdown_list_t, list);
+	(txt_dropdown_list_t, list);
 
 	list->widget.w = DropdownListWidth(list);
 	list->widget.h = 1;
 }
 
-static void DropdownListDrawer(UNCAST_ARG(list))
+static void DropdownListDrawer((list))
 {
-	CAST_ARG(txt_dropdown_list_t, list);
+	(txt_dropdown_list_t, list);
 	unsigned i;
 	::std::string str;
 
@@ -293,12 +287,11 @@ static void DropdownListDrawer(UNCAST_ARG(list))
 	}
 }
 
-static void DropdownListDestructor(UNCAST_ARG(list))
-{}
+static void DropdownListDestructor((list)) {}
 
-static int DropdownListKeyPress(UNCAST_ARG(list), int key)
+static int DropdownListKeyPress((list), int key)
 {
-	CAST_ARG(txt_dropdown_list_t, list);
+	(txt_dropdown_list_t, list);
 
 	if (key == KEY_ENTER)
 	{
@@ -309,9 +302,9 @@ static int DropdownListKeyPress(UNCAST_ARG(list), int key)
 	return 0;
 }
 
-static void DropdownListMousePress(UNCAST_ARG(list), int x, int y, int b)
+static void DropdownListMousePress((list), int x, int y, int b)
 {
-	CAST_ARG(txt_dropdown_list_t, list);
+	(txt_dropdown_list_t, list);
 
 	// Left mouse click does the same as selecting and pressing enter
 	if (b == MOUSE_LEFT)

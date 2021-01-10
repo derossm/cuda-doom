@@ -11,6 +11,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include <memory>
 #include <array>
 #include <type_traits>
 #include <concepts>
@@ -19,26 +20,14 @@
 #include "normal.h"
 #include "small.h"
 
-enum class FontData
-{
+//enum class FontData
+//{
 	//none,
 	//large,
 	//normal,
 	//small,
 	//other
-};
-
-class FontBase
-{
-public:
-	using pixel = int;
-
-	const ::std::array<const char, 16> name;
-	const pixel width;
-	const pixel height;
-
-	virtual ~FontBase() = default;
-};
+//};
 
 /*template<typename T>
 	requires (!::std::is_same_v<T, decltype(large_font_data)>
@@ -89,18 +78,32 @@ public:
 	{
 	}
 };*/
+using pixel = int;
 
-template<typename T>
+class FontBase
+{
+public:
+	//std::remove_reference_t<U> name;
+	const int width;
+	const int height;
+	constexpr FontBase(pixel _width, pixel _height) : width(_width), height(_height) {}
+
+	virtual ~FontBase() = default;
+};
+
+template<typename T, typename U>
 class FontType : public FontBase
 {
 public:
+	using type = T;
 	//const T& data{::std::remove_reference_t<v>};
+	const U name;
 	const T& data{v};
-	FontType(T v, const char* name, pixel width, pixel height) : data{v}, name{name}, width{width}, height{height}
-	{}
-
+	constexpr FontType(T& v, U&& name, pixel width, pixel height) : FontBase(width, height), name(std::move(name)), data(v)
+	{
+	}
 };
 
-static constexpr FontType large_font{large_font_data, "large", 16, 32};
-static constexpr FontType normal_font{normal_font_data, "normal", 8, 16};
-static constexpr FontType small_font{small_font_data, "small", 4, 8};
+static constexpr FontType large_font{large_font_data, std::array<const char, 6>{"large"}, 16, 32};
+static constexpr FontType normal_font{normal_font_data, std::array<const char, 7>{"normal"}, 8, 16};
+static constexpr FontType small_font{small_font_data, std::array<const char, 6>{"small"}, 4, 8};

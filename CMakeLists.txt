@@ -15,7 +15,7 @@ set(PACKAGE_STRING "${PROJECT_NAME} ${PROJECT_VERSION}")
 set(PACKAGE_BUGREPORT "https://github.com/derossm/cuda-doom")
 
 string(REGEX REPLACE " Doom$" "" PACKAGE_SHORTNAME "${PACKAGE_NAME}")
-set(PACKAGE_COPYRIGHT "Copyright (C) 1993-2021")
+set(PACKAGE_COPYRIGHT "Copyright© 1993-2021")
 set(PACKAGE_LICENSE "Crsipy Doom released under the GNU General Public License, version 2. Any original work added by CUDA Doom released under the GNU All-permissive License, where allowed by law.")
 
 set(CMAKE_CXX_STANDARD 20)
@@ -29,10 +29,13 @@ if(MSVC)
 		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MD"
 		"/permissive-" "/Zc:preprocessor"
 		"/W4" "/Od" "/arch:AVX2"
+		#"/wC4005"
 		#"/experimental:module"
 		#"/Zc:externConstexpr"
 		)
-	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX")
+	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX"
+							"SDL_MAIN_HANDLED"
+							"MICROSOFT_WINDOWS_WINBASE_H_DEFINE_INTERLOCKED_CPLUSPLUS_OVERLOADS")
 else()
 	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 endif()

@@ -1,15 +1,10 @@
 add_library(textscreen STATIC
 		textscreen.cpp				textscreen.h
-
 									txt_common.h
-
 									txt_sdl.h
-									txt_main.h
-									txt_utf8.h
 									txt_io.h
 									txt_gui.h
 									txt_desktop.h
-
 									txt_widget.h
 									txt_table.h
 									txt_window.h

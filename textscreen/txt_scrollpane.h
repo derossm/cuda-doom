@@ -23,7 +23,7 @@ namespace cudadoom::txt
  * that is larger than it. Scroll bars appear on the side to allow
  * different areas of the contained widget to be seen.
  */
-class ScrollPane : public Widget<ScrollPane>
+class ScrollPane : public WidgetBase<ScrollPane>
 {
 //	Widget widget;
 	int w;
@@ -36,21 +36,18 @@ class ScrollPane : public Widget<ScrollPane>
 
 public:
 
-	ScrollPane()// : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{}
+	ScrollPane() {} // : widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
 	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	inline void CalculateSize() noexcept override final
-	{}
+	inline void CalculateSize() noexcept override final {}
 
-	inline void Draw() noexcept override final
-	{}
+	inline void Draw() noexcept override final {}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -74,14 +71,11 @@ public:
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 };
 
 /**
@@ -93,7 +87,7 @@ public:
  *						contain.
  * @return				Pointer to the new scroll pane widget.
  */
-//txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target));
+//txt_scrollpane_t* NewScrollPane(int w, int h, (target));
 
 /*
 
@@ -182,9 +176,9 @@ static void SanityCheckScrollbars(txt_scrollpane_t* scrollpane)
 	}
 }
 
-static void ScrollPaneSizeCalc(UNCAST_ARG(scrollpane))
+static void ScrollPaneSizeCalc((scrollpane))
 {
-	CAST_ARG(txt_scrollpane_t, scrollpane);
+	(txt_scrollpane_t, scrollpane);
 	int scrollbars;
 
 	if (scrollpane->child != NULL)
@@ -234,9 +228,9 @@ static void ScrollPaneSizeCalc(UNCAST_ARG(scrollpane))
 	}
 }
 
-static void ScrollPaneDrawer(UNCAST_ARG(scrollpane))
+static void ScrollPaneDrawer((scrollpane))
 {
-	CAST_ARG(txt_scrollpane_t, scrollpane);
+	(txt_scrollpane_t, scrollpane);
 	int x1;
 	int y1;
 	int x2;
@@ -284,9 +278,9 @@ static void ScrollPaneDrawer(UNCAST_ARG(scrollpane))
 	PopClipArea();
 }
 
-static void ScrollPaneDestructor(UNCAST_ARG(scrollpane))
+static void ScrollPaneDestructor((scrollpane))
 {
-	CAST_ARG(txt_scrollpane_t, scrollpane);
+	(txt_scrollpane_t, scrollpane);
 
 	if (scrollpane->child != NULL)
 	{
@@ -294,9 +288,9 @@ static void ScrollPaneDestructor(UNCAST_ARG(scrollpane))
 	}
 }
 
-static void ScrollPaneFocused(UNCAST_ARG(scrollpane), int focused)
+static void ScrollPaneFocused((scrollpane), int focused)
 {
-	CAST_ARG(txt_scrollpane_t, scrollpane);
+	(txt_scrollpane_t, scrollpane);
 
 	// Whether the child is focused depends only on whether the scroll pane
 	// itself is focused. Pass through focus to the child.
@@ -453,9 +447,9 @@ static int InterpretScrollKey(txt_scrollpane_t* scrollpane, int key)
 	return 0;
 }
 
-static int ScrollPaneKeyPress(UNCAST_ARG(scrollpane), int key)
+static int ScrollPaneKeyPress((scrollpane), int key)
 {
-	CAST_ARG(txt_scrollpane_t, scrollpane);
+	(txt_scrollpane_t, scrollpane);
 	int result;
 
 	result = 0;
@@ -489,9 +483,9 @@ static int ScrollPaneKeyPress(UNCAST_ARG(scrollpane), int key)
 	return result;
 }
 
-static void ScrollPaneMousePress(UNCAST_ARG(scrollpane), int x, int y, int b)
+static void ScrollPaneMousePress((scrollpane), int x, int y, int b)
 {
-	CAST_ARG(txt_scrollpane_t, scrollpane);
+	(txt_scrollpane_t, scrollpane);
 	int scrollbars;
 	int rel_x;
 	int rel_y;
@@ -578,9 +572,9 @@ static void ScrollPaneMousePress(UNCAST_ARG(scrollpane), int x, int y, int b)
 	}
 }
 
-static void ScrollPaneLayout(UNCAST_ARG(scrollpane))
+static void ScrollPaneLayout((scrollpane))
 {
-	CAST_ARG(txt_scrollpane_t, scrollpane);
+	(txt_scrollpane_t, scrollpane);
 
 	SanityCheckScrollbars(scrollpane);
 
@@ -596,9 +590,9 @@ static void ScrollPaneLayout(UNCAST_ARG(scrollpane))
 	}
 }
 
-static int ScrollPaneSelectable(UNCAST_ARG(scrollpane))
+static int ScrollPaneSelectable((scrollpane))
 {
-	CAST_ARG(txt_scrollpane_t, scrollpane);
+	(txt_scrollpane_t, scrollpane);
 
 	// If scroll bars are displayed, the scroll pane must be selectable
 	// so that we can use the arrow keys to scroll around.
@@ -625,9 +619,9 @@ WidgetClass txt_scrollpane_class =
 	ScrollPaneFocused,
 };
 
-txt_scrollpane_t* NewScrollPane(int w, int h, UNCAST_ARG(target))
+txt_scrollpane_t* NewScrollPane(int w, int h, (target))
 {
-	CAST_ARG(Widget, target);
+	(Widget, target);
 	txt_scrollpane_t* scrollpane;
 
 	scrollpane = static_cast<decltype(scrollpane)>(malloc(sizeof(txt_scrollpane_t)));

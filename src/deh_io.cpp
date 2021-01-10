@@ -134,8 +134,7 @@ int DEH_GetChar(deh_context_t* context)
 }
 
 // Increase the read buffer size
-static void IncreaseReadBuffer(deh_context_t* context)
-{}
+static void IncreaseReadBuffer(deh_context_t* context) {}
 
 // Save pointer to start of current line ...
 void DEH_SaveLineStart(deh_context_t* context)

@@ -35,7 +35,7 @@ namespace cudadoom::txt
 typedef int (*WindowKeyPress)(int key, void* user_data);
 typedef int (*WindowMousePress)(int x, int y, int b, void* user_data);
 
-class Window : public Table<Window>
+class Window : public TableBase<Window>
 {
 public:
 	// Base class: all windows are tables with one column.
@@ -86,8 +86,7 @@ public:
 		return true;
 	}
 
-	inline void CalculateSize() noexcept override final
-	{}
+	inline void CalculateSize() noexcept override final {}
 
 	inline void Draw() noexcept override final
 	{
@@ -125,7 +124,7 @@ public:
 /**/
 	}
 
-	inline bool KeyPress(KeyEvent c) noexcept override final
+	inline bool KeyPress(Keys c) noexcept override final
 	{
 /*
 		// Is this a mouse button ?
@@ -564,7 +563,7 @@ public:
  * @param action	The window action widget. If this is NULL, any
  *					current window action in the given slot is removed.
  */
-//void SetWindowAction(Window* window, AlignHorizontal position, UNCAST_ARG(action));
+//void SetWindowAction(Window* window, AlignHorizontal position, (action));
 
 /**
  * Set a callback function to be invoked whenever a key is pressed within

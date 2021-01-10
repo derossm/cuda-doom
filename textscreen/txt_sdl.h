@@ -16,6 +16,9 @@
 #include <array>
 #include <algorithm>
 #include <ranges>
+#include <any>
+
+#include <type_traits>
 
 #include "txt_common.h"
 
@@ -54,11 +57,11 @@ static TxtSDLEventCallbackFunc event_callback;
 static void* event_callback_data;
 
 // Font we are using:
-static const FontBase* font;
+static std::any font;
 
 // Dummy "font" that means to try highdpi rendering, or fallback to normal_font otherwise.
-struct highdpi_t{};
-FontType highdpi_font{highdpi_t{}, "normal-highdpi", 8, 16};
+struct highdpi{} highdpi_t;
+FontType highdpi_font{highdpi_t, std::move(std::array<const char*, 15>{"normal-highdpi"}), 8, 16};
 
 // Mapping from SDL keyboard scancode to internal key code.
 //static const int scancode_translate_table[]{SCANCODE_TO_KEYS_ARRAY};
@@ -177,26 +180,26 @@ static constexpr ::std::array<SDL_Color, 16> ega_colors{
 // Examine system DPI settings to determine whether to use the large font.
 static int Win32_UseLargeFont()
 {
-	auto hdc{GetDC(nullptr)};
+	//auto hdc{GetDC(nullptr)};
 
-	if (!hdc)
-	{
+	//if (!hdc)
+	//{
 		return 0;
-	}
+	//}
 
-	auto dpix{GetDeviceCaps(hdc, LOGPIXELSX)};
-	ReleaseDC(nullptr, hdc);
+	//auto dpix{GetDeviceCaps(hdc, LOGPIXELSX)};
+	//ReleaseDC(nullptr, hdc);
 
 	// 144 is the DPI when using "150%" scaling. If the user has this set then consider this an appropriate threshold for using the large font.
-	return dpix >= LARGE_FONT_THRESHOLD;
+	//return dpix >= LARGE_FONT_THRESHOLD;
 }
 #endif // _WIN32
 
-static const FontBase& FontForName(::std::string name)
+auto FontForName(::std::string name)
 {
-	constexpr ::std::array<const FontBase&, 4> fonts{small_font, normal_font, large_font, highdpi_font};
+	//constexpr ::std::array<const FontBase&, 4> fonts{small_font, normal_font, large_font, highdpi_font};
 
-	return ::std::ranges::find_if(fonts, [&name](auto& iter){ return name.compare(iter->name.data()); });
+	//return ::std::ranges::find_if(fonts, [&name](auto& iter){ return name.compare(iter->name.data()); });
 }
 
 // Select the font to use, based on screen resolution. If the highest screen resolution available is less than 640x480, use the small font.
@@ -205,9 +208,9 @@ static void ChooseFont()
 	// Allow normal selection to be overridden from an environment variable:
 	if (auto env{getenv("TEXTSCREEN_FONT")}; env)
 	{
-		font = FontForName(env);
+		//font = FontForName(env);
 
-		if (font)
+		//if (font)
 		{
 			return;
 		}
@@ -257,15 +260,15 @@ int Init()
 
 	ChooseFont();
 
-	screen_image_w = SCREEN_W * font->w;
-	screen_image_h = SCREEN_H * font->h;
+	//screen_image_w = SCREEN_W * font->w;
+	//screen_image_h = SCREEN_H * font->h;
 
 	int flags{0};
 	// If highdpi_font is selected, try to initialize high dpi rendering.
-	if (font == &highdpi_font)
-	{
-		flags |= SDL_WINDOW_ALLOW_HIGHDPI;
-	}
+	//if (font == highdpi_font.type)
+	//{
+		//flags |= SDL_WINDOW_ALLOW_HIGHDPI;
+	//}
 
 	SDLWindow = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_image_w, screen_image_h, flags);
 
@@ -283,22 +286,23 @@ int Init()
 		int render_w;
 		int render_h;
 
-		if (SDL_GetRendererOutputSize(renderer, &render_w, &render_h) == 0 && render_w >= SCREEN_W * large_font.w && render_h >= SCREEN_H * large_font.h)
+		if (SDL_GetRendererOutputSize(renderer, &render_w, &render_h) == 0
+			&& render_w >= SCREEN_W * large_font.width && render_h >= SCREEN_H * large_font.height)
 		{
-			font = &large_font;
+			font = std::make_any<decltype(large_font)>(large_font);
 			// Note that we deliberately do not update screen_image_{w,h} since these are the dimensions of textscreen image in screen coordinates, not pixels.
 		}
 	}
 
 	// Failed to initialize for high dpi (retina display) rendering? If so then use the normal resolution font instead.
-	if (font == &highdpi_font)
+	if (std::is_same_v<decltype(font.type()), decltype(&highdpi_font)>)
 	{
 		font = &normal_font;
 	}
 
 	// Instead, we draw everything into an intermediate 8-bit surface the same dimensions as the screen.
 	// SDL then takes care of all the 8->32 bit (or whatever depth) color conversions for us.
-	screenbuffer = SDL_CreateRGBSurface(0, SCREEN_W * font->w, SCREEN_H * font->h, 8, 0, 0, 0, 0);
+	//screenbuffer = SDL_CreateRGBSurface(0, SCREEN_W * font->w, SCREEN_H * font->h, 8, 0, 0, 0, 0);
 
 	SDL_LockSurface(screenbuffer);
 	SDL_SetPaletteColors(screenbuffer->format->palette, ega_colors.data(), 0, 16);
@@ -357,34 +361,34 @@ static inline void UpdateCharacter(int x, int y)
 	//p = &font->data[(character * font->w * font->h) / 8];
 	unsigned bit{0};
 
-	unsigned char* s = ((unsigned char*)screenbuffer->pixels) + (y * font->h * screenbuffer->pitch) + (x * font->w);
+	//unsigned char* s = ((unsigned char*)screenbuffer->pixels) + (y * font->h * screenbuffer->pitch) + (x * font->w);
 
-	for (size_t y1{0}; y1 < font->h; ++y1)
+	//for (size_t y1{0}; y1 < font->h; ++y1)
 	{
-		unsigned char* s1 = s;
+		//unsigned char* s1 = s;
 
-		for (size_t x1{0}; x1 < font->w; ++x1)
+		//for (size_t x1{0}; x1 < font->w; ++x1)
 		{
 			if (*p & (1 << bit))
 			{
-				*s1 = fg;
-				++s1;
+				//*s1 = fg;
+				//++s1;
 			}
 			else
 			{
-				*s1 = bg;
-				++s1;
+				//*s1 = bg;
+				//++s1;
 			}
 
-			++bit;
+			//++bit;
 			if (bit == 8)
 			{
-				++p;
-				bit = 0;
+				//++p;
+				//bit = 0;
 			}
 		}
 
-		s += screenbuffer->pitch;
+		//s += screenbuffer->pitch;
 	}
 }
 
@@ -489,31 +493,30 @@ void GetMousePosition(int* x, int* y)
 }
 
 // Translates the SDL key
-
 static int TranslateScancode(SDL_Scancode scancode)
 {
 	switch (scancode)
 	{
 	case SDL_SCANCODE_LCTRL:
 	case SDL_SCANCODE_RCTRL:
-		return KEY_RCTRL;
+		//return KEY_RCTRL;
 
 	case SDL_SCANCODE_LSHIFT:
 	case SDL_SCANCODE_RSHIFT:
-		return KEY_RSHIFT;
+		//return KEY_RSHIFT;
 
 	case SDL_SCANCODE_LALT:
-		return KEY_LALT;
+		//return KEY_LALT;
 
 	case SDL_SCANCODE_RALT:
-		return KEY_RALT;
+		//return KEY_RALT;
 
 	default:
-		if (scancode < scancode_translate_table.size())
+		//if (scancode < scancode_translate_table.size())
 		{
-			return scancode_translate_table[scancode];
+			//return scancode_translate_table[scancode];
 		}
-		else
+		//else
 		{
 			return 0;
 		}
@@ -536,8 +539,7 @@ static int TranslateKeysym(const SDL_Keysym* sym)
 	}
 }
 
-// Convert an SDL button index to textscreen button index.
-// Note special cases because 2 == mid in SDL, 3 == mid in textscreen/setup
+// Convert an SDL button index to textscreen button index. Note special cases because 2 == mid in SDL, 3 == mid in textscreen/setup
 static int SDLButtonToTXTButton(int button)
 {
 	switch (button)
@@ -717,19 +719,19 @@ static constexpr ::std::string_view NameForKey(int key)
 	// Overrides purely for aesthetical reasons, so that default window accelerator keys match those of setup.exe.
 	switch (key)
 	{
-	case KEY_ESCAPE:
-		return "ESC";
-	case KEY_ENTER:
-		return "ENTER";
+	//case KEY_ESCAPE:
+		//return "ESC";
+	//case KEY_ENTER:
+		//return "ENTER";
 	default:
 		break;
 	}
 
 	// This key presumably maps to a scan code that is listed in the translation table.
 	// Find which mapping and once we have a scancode, we can convert it into a virtual key, then a string via SDL.
-	for (size_t i{0}; i < scancode_translate_table.size(); ++i)
+	//for (size_t i{0}; i < scancode_translate_table.size(); ++i)
 	{
-		if (scancode_translate_table[i] == key)
+		//if (scancode_translate_table[i] == key)
 		{
 			// we could, if were inclined, make this another find_if and pass ptrdiff_t i = (&iter - &scanccode_translate_table),
 			// which is perfectly safe for our constexpr ::std::array iterators, but locks in that design
@@ -737,7 +739,7 @@ static constexpr ::std::string_view NameForKey(int key)
 
 			// we could also look up SDL key names and use them for our table names to be able to pass them directly
 			// to get key names without the scancode call -- thoughts for later
-			return SDL_GetKeyName(SDL_GetKeyFromScancode(SDL_Scancode(i)));
+			//return SDL_GetKeyName(SDL_GetKeyFromScancode(SDL_Scancode(i)));
 		}
 	}
 
@@ -758,11 +760,11 @@ static constexpr ::std::string_view NameForKey(int key)
 	// * worst case performance is one ::std::move of string_view plus the potentially O(n) comparisons in key_names by find_if
 	return [&key]()
 	{
-		if (auto&& rv{::std::ranges::find_if(key_names, [&key](auto& iter){ return iter.key == key; })}; rv != key_names.end())
+		//if (auto&& rv{::std::ranges::find_if(key_names, [&key](auto& iter){ return iter.key == key; })}; rv != key_names.end())
 		{
-			return ::std::string_view{rv->name.data()};
+			//return ::std::string_view{rv->name.data()};
 		}
-		else
+		//else
 		{
 			return ::std::string_view{};
 		}

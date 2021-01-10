@@ -14,11 +14,25 @@
 #include <string>
 #include <cctype>
 
-using byte = ::std::byte;
-
+using CHAR_PTR = const char*;
 using TimeType = uint64_t;
 
-using CHAR_PTR = const char*;
+namespace cudadoom
+{
+
+using byte = ::std::byte;
+
+// Times
+//enum class Seconds : TimeType
+//{
+	//ATTO	= 1,			// attoseconds
+	//FEMTO	= ATTO*1'000,	// femtoseconds
+	//PICO	= FEMTO*1'000,	// picoseconds
+	//NANO	= PICO*1'000,	// nanoseconds
+	//MICRO	= NANO*1'000,	// microseconds
+	//MILLI	= MICRO*1'000,	// milliseconds
+	//SECOND	= MILLI*1'000,	// seconds
+//};
 
 bool iequals(const ::std::string& lhs, const ::std::string& rhs)
 {
@@ -28,3 +42,5 @@ bool iequals(const ::std::string& lhs, const ::std::string& rhs)
 			return tolower(l) == tolower(r);
 		});
 }
+
+} // end namespace cudadoom

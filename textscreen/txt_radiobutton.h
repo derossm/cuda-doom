@@ -34,7 +34,7 @@ namespace cudadoom::txt
  *
  * When a radio button is selected, the "selected" signal is emitted.
  */
-class RadioButton : public Widget<RadioButton>
+class RadioButton : public WidgetBase<RadioButton>
 {
 	::std::string label;
 	int* variable;
@@ -42,21 +42,18 @@ class RadioButton : public Widget<RadioButton>
 
 public:
 
-	RadioButton() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{}
+	RadioButton() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
 	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	inline void CalculateSize() noexcept override final
-	{}
+	inline void CalculateSize() noexcept override final {}
 
-	inline void Draw() noexcept override final
-	{}
+	inline void Draw() noexcept override final {}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -80,18 +77,15 @@ public:
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 /*
-	static void RadioButtonSizeCalc(UNCAST_ARG(radiobutton))
+	static void RadioButtonSizeCalc((radiobutton))
 	{
-		CAST_ARG(RadioButton, radiobutton);
+		(RadioButton, radiobutton);
 
 		// Minimum width is the string length + right-side spaces for padding
 
@@ -99,10 +93,10 @@ public:
 		radiobutton->widget.h = 1;
 	}
 
-	static void RadioButtonDrawer(UNCAST_ARG(radiobutton))
+	static void RadioButtonDrawer((radiobutton))
 	{
 
-		CAST_ARG(RadioButton, radiobutton);
+		(RadioButton, radiobutton);
 		SavedColors colors;
 		int i;
 		int w;
@@ -140,16 +134,16 @@ public:
 
 	}
 
-	static void RadioButtonDestructor(UNCAST_ARG(radiobutton))
+	static void RadioButtonDestructor((radiobutton))
 	{
-		CAST_ARG(RadioButton, radiobutton);
+		(RadioButton, radiobutton);
 
 		free(radiobutton->label);
 	}
 
-	static int RadioButtonKeyPress(UNCAST_ARG(radiobutton), int key)
+	static int RadioButtonKeyPress((radiobutton), int key)
 	{
-		CAST_ARG(RadioButton, radiobutton);
+		(RadioButton, radiobutton);
 
 		if (key == KEY_ENTER || key == ' ')
 		{
@@ -164,9 +158,9 @@ public:
 		return 0;
 	}
 
-	static void RadioButtonMousePress(UNCAST_ARG(radiobutton), int x, int y, int b)
+	static void RadioButtonMousePress((radiobutton), int x, int y, int b)
 	{
-		CAST_ARG(RadioButton, radiobutton);
+		(RadioButton, radiobutton);
 
 		if (b == MOUSE_LEFT)
 		{

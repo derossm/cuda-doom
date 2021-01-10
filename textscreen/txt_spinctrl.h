@@ -26,7 +26,7 @@ namespace cudadoom::txt
  * to be increased or decreased.
  */
 
-class SpinControl : public Widget<SpinControl>
+class SpinControl : public WidgetBase<SpinControl>
 {
 public:
 	bool editing{false};
@@ -40,31 +40,24 @@ public:
 
 public:
 
-	SpinControl() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{}
+	SpinControl() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
-	SpinControl(int* _value, int _min, int _max) //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
+	SpinControl(int* _value, int _min, int _max) {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
 		//value{_value}, min{_min}, max{_max}, step{1}
-	{
-	}
 
-	SpinControl(float* _value, float _min, float _max) //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
+	SpinControl(float* _value, float _min, float _max) {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy},
 		//value{_value}, min{_min}, max{_max}, step{0.1f}
-	{
-	}
 
 	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	inline void CalculateSize() noexcept override final
-	{}
+	inline void CalculateSize() noexcept override final {}
 
-	inline void Draw() noexcept override final
-	{}
+	inline void Draw() noexcept override final {}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -88,14 +81,11 @@ public:
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 /*
 	// Generate the format string to be used for displaying floats
 	void FloatFormatString(float step, ::std::string buf, size_t buf_len)

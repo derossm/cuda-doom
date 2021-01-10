@@ -25,8 +25,10 @@
 
 // If the above succeeded, proceed with the rest.
 #include "opl.h"
-#include "opl_internal.h"
 #include "opl_timer.h"
+
+namespace cudadoom::opl
+{
 
 #ifndef NO_OBSD_DRIVER
 
@@ -88,3 +90,5 @@ opl_driver_t opl_openbsd_driver =
 };
 
 #endif // #ifndef NO_OBSD_DRIVER
+
+} // end namespace cudadoom::opl

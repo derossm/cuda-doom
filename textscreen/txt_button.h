@@ -29,7 +29,7 @@ namespace cudadoom::txt
  * Button widget.
  * A button is a widget that can be selected to perform some action. When a button is pressed, it emits the "pressed" signal.
  */
-class Button : public Widget<Button>
+class Button : public WidgetBase<Button>
 {
 	::std::string label;
 
@@ -47,8 +47,7 @@ public:
 		//SignalConnect(::std::string("pressed"), _handle, _user);
 	}
 
-	inline bool Selectable() const noexcept override final
-	{}
+	inline bool Selectable() const noexcept override final {}
 
 	inline void CalculateSize() noexcept override final
 	{
@@ -70,7 +69,7 @@ public:
 /**/
 	}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER)
@@ -94,14 +93,11 @@ public:
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 
 	void SetButtonLabel(::std::string& _label)
 	{

@@ -13,11 +13,13 @@
 
 #include "config.h"
 
-#if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
-
 #include "opl.h"
-#include "opl_internal.h"
 #include "opl_timer.h"
+
+namespace cudadoom::opl
+{
+
+#if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
 
 static unsigned opl_port_base;
 
@@ -83,3 +85,5 @@ opl_driver_t opl_linux_driver =
 };
 
 #endif /* #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM) */
+
+} // end namespace cudadoom::opl

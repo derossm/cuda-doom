@@ -27,7 +27,7 @@ namespace cudadoom::txt
 {
 
 
-class CheckBox : public Widget<CheckBox>
+class CheckBox : public WidgetBase<CheckBox>
 {
 	::std::string label;
 	int variable;
@@ -35,8 +35,7 @@ class CheckBox : public Widget<CheckBox>
 
 public:
 
-	CheckBox() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{}
+	CheckBox() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
 	inline bool Selectable() const noexcept override final
 	{
@@ -86,7 +85,7 @@ public:
 /**/
 	}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -110,14 +109,11 @@ public:
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 /*
 	WidgetClass txt_checkbox_class =
 	{

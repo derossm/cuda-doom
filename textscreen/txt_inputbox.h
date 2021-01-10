@@ -6,39 +6,35 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+		InputBox is-a InputBase is-a Widget
+		A widget specialized to both display values and to allow user input of new values. I/O
 \**********************************************************************************************************************************************/
 #pragma once
+
+#include "../derma/keybinds.h"
 
 #include <string>
 
 #include "txt_common.h"
 #include "txt_widget.h"
 
+#include "txt_gui.h"
+#include "txt_io.h"
+
 namespace cudadoom::txt
 {
 
-/**
- * Input box widget.
- *
- * An input box is a widget that displays a value, which can be
- * selected to enter a new value.
- *
- * Input box widgets can be of an integer or string type.
- */
-
-class InputBox : public InputBase<InputBox>
-{
-
-};
-
 template<typename T>
-class InputBase : public Widget<T>
+class InputBase : public WidgetBase<T>
 {
 	//T _val;
 	::std::string buffer;
 	bool isEditing{false};
 
 public:
+	virtual ~InputBase() = default;
 
 	//using type = T;
 
@@ -65,43 +61,83 @@ public:
 		return true;
 	}
 
-	inline void CalculateSize() noexcept override
-	{	}
+	inline void CalculateSize() noexcept override {}
 
-	inline void Draw() noexcept override
-	{	}
+	inline void Draw() noexcept override {}
 
-	inline bool KeyPress(KeyEvent key) noexcept override
+	inline bool KeyPress(Keys key) noexcept override
 	{
-/*
-		if (key == KEY_ENTER || key == ' ')
+		if (key == Keys::ENTER || key == Keys::SPACE)
 		{
-			EmitSignal("changed");
+			//EmitSignal("changed");
 			return true;
 		}
-/**/
+
 		return false;
+/*
+		unsigned c;
+
+		if (!editing)
+		{
+			if (key == Keys::ENTER)
+			{
+				StartEditing();
+				return true;
+			}
+
+			// Backspace or delete erases the contents of the box.
+			if (key == Keys::DELETE || key == Keys::BACKSPACE)
+			{
+				//free(*((T)inputbox->value));
+				//*((T)inputbox->value) = strdup("");
+			}
+
+			return false;
+		}
+
+		if (key == Keys::ENTER)
+		{
+			FinishEditing();
+		}
+
+		if (key == Keys::ESCAPE)
+		{
+			StopEditing();
+		}
+
+		if (key == Keys::BACKSPACE)
+		{
+			Backspace();
+		}
+
+		c = KEY_TO_UNICODE(key);
+
+		// Add character to the buffer, but only if it's a printable character that we can represent on the screen.
+		if (isprint(c) || (c >= 128 && UnicodeCharacter(c) >= 0))
+		{
+			AddCharacter(c);
+		}
+/**/
 	}
 
 	inline bool MousePress(MouseEvent evt) noexcept override
 	{
-		//if (evt.button == MOUSE_LEFT)
-		//{
-			// Equivalent to pressing enter
-			//return KeyPress(KEY_ENTER);
-		//}
+		if (evt.button == MOUSE_LEFT)
+		{
+			if (!isEditing)
+			{
+				return KeyPress(Keys::ENTER);
+			}
+		}
 
 		return false;
 	}
 
-	inline void SetLayout() noexcept override
-	{	}
+	inline void SetLayout() noexcept override {}
 
-	inline void SetFocus(bool _focus) noexcept override
-	{	}
+	inline void SetFocus(bool _focus) noexcept override {}
 
-	inline void Destroy() noexcept override
-	{	}
+	inline void Destroy() noexcept override {}
 
 	//void set(T _val) noexcept
 	//{
@@ -224,97 +260,28 @@ public:
 			//*p = '\0';
 		//}
 	}
+};
 
-	bool keyPress(int key) noexcept
-	{
-		unsigned c;
+class InputBox : public InputBase<InputBox>
+{
 
-		if (!editing)
-		{
-			if (key == KEY_ENTER)
-			{
-				StartEditing();
-				return true;
-			}
-
-			// Backspace or delete erases the contents of the box.
-			if (key == KEY_DEL || key == KEY_BACKSPACE)
-			{
-				//free(*((T)inputbox->value));
-				//*((T)inputbox->value) = strdup("");
-			}
-
-			return false;
-		}
-
-		if (key == KEY_ENTER)
-		{
-			FinishEditing();
-		}
-
-		if (key == KEY_ESCAPE)
-		{
-			StopEditing();
-		}
-
-		if (key == KEY_BACKSPACE)
-		{
-			Backspace();
-		}
-
-		c = KEY_TO_UNICODE(key);
-
-		// Add character to the buffer, but only if it's a printable character that we can represent on the screen.
-		if (isprint(c) || (c >= 128 && UnicodeCharacter(c) >= 0))
-		{
-			AddCharacter(c);
-		}
-
-		return true;
-	}
-
-	void mousePress(MouseEvent evt) noexcept
-	{
-		if (evt.button == MOUSE_LEFT)
-		{
-			// Make mouse clicks start editing the box
-			if (!isEditing)
-			{
-				// Send a simulated keypress to start editing
-				//KeyPress(KEY_ENTER);
-			}
-		}
-	}
 };
 
 /**
- * Create a new input box widget for controlling a string value.
- *
- * @param value		Pointer to a string variable that contains
- *					a pointer to the current value of the
- *					input box. The value should be allocated
- *					dynamically; when the string is changed it
- *					will be freed and the variable set to point
- *					to the new string value. String will be in
- *					UTF-8 format.
- * @param width		Width of the input box, in characters.
- * @return			Pointer to the new input box widget.
- */
-auto NewInputBox(::std::string& value, int width)
-{
-	//return InputBox(value, width);
-}
+* Create a new input box widget for controlling a string value.
+* @param value	Pointer to a string variable that contains a pointer to the current value of the input box. The value should be allocated dynamically;
+*				when the string is changed it will be freed and the variable set to point to the new string value. String will be in UTF-8 format.
+* @param width	Width of the input box, in characters.
+* @return		Pointer to the new input box widget.
+*/
+//auto NewInputBox(::std::string& value, int width);
 
 /**
- * Create a new input box widget for controlling an integer value.
- *
- * @param value		Pointer to an integer variable containing the value of the input box.
- * @param width		Width of the input box, in characters.
- * @return			Pointer to the new input box widget.
- */
-auto NewIntInputBox(int value, int width)
-{
-	//return InputBox(value, width);
-}
+* Create a new input box widget for controlling an integer value.
+* @param value	Pointer to an integer variable containing the value of the input box.
+* @param width	Width of the input box, in characters.
+* @return		Pointer to the new input box widget.
+*/
+//auto NewIntInputBox(int value, int width);
 
 } // end namespace cudadoom::txt

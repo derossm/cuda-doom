@@ -14,15 +14,17 @@
 #include "config.h"
 #include "../derma/d_native.h"
 
-#ifdef _WIN32
-
 #include "opl.h"
-#include "opl_internal.h"
 #include "opl_timer.h"
 
 #include "ioperm_sys.h"
 
-static unsigned opl_port_base;
+namespace cudadoom::opl
+{
+
+#ifdef _WIN32
+
+static uint64_t opl_port_base;
 
 // MingW?
 
@@ -91,17 +93,16 @@ static void OPL_Win32_PortWrite(opl_port_t port, unsigned value)
 // Not x86, or don't know how to do port R/W on this compiler.
 #define NO_PORT_RW
 
-static unsigned OPL_Win32_PortRead(opl_port_t port)
+static auto OPL_Win32_PortRead(opl_port_t port)
 {
-	return 0;
+	return std::byte(0);
 }
 
-static void OPL_Win32_PortWrite(opl_port_t port, unsigned value)
-{}
+static void OPL_Win32_PortWrite(opl_port_t port, std::byte value) {}
 
 #endif
 
-static int OPL_Win32_Init(unsigned port_base)
+static bool OPL_Win32_Init(uint64_t port_base)
 {
 #ifndef NO_PORT_RW
 
@@ -121,14 +122,14 @@ static int OPL_Win32_Init(unsigned port_base)
 		// Install driver.
 		if (!IOperm_InstallDriver())
 		{
-			return 0;
+			return false;
 		}
 
 		// Open port range.
 		if (!IOperm_EnablePortRange(opl_port_base, 2, 1))
 		{
 			IOperm_UninstallDriver();
-			return 0;
+			return false;
 		}
 	}
 
@@ -136,14 +137,14 @@ static int OPL_Win32_Init(unsigned port_base)
 	if (!OPL_Timer_StartThread())
 	{
 		IOperm_UninstallDriver();
-		return 0;
+		return false;
 	}
 
-	return 1;
+	return true;
 
 #endif
 
-	return 0;
+	return false;
 }
 
 static void OPL_Win32_Shutdown()
@@ -171,3 +172,5 @@ opl_driver_t opl_win32_driver =
 };
 
 #endif /* #ifdef _WIN32 */
+
+} // end namespace cudadoom::opl

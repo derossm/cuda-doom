@@ -37,8 +37,7 @@ int I_CDMusInit()
 }
 
 // We cannot print status messages inline during startup, they must be deferred until after I_CDMusInit has returned.
-void I_CDMusPrintStartup()
-{}
+void I_CDMusPrintStartup() {}
 
 int I_CDMusPlay(int track)
 {

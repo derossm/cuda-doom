@@ -12,6 +12,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/keybinds.h"
+
 #include <string>
 
 #include "txt_common.h"
@@ -217,7 +219,7 @@ void DrawWindowFrame(::std::string title, int x, int y, int w, int h)
 			if (VALID_X(x1) && VALID_Y(y1))
 			{
 				GotoXY(x1, y1);
-				PutChar(borders[by][bx]);
+				//PutChar(borders[by][bx]);
 			}
 		}
 	}
@@ -234,7 +236,7 @@ void DrawWindowFrame(::std::string title, int x, int y, int w, int h)
 			DrawString(" ");
 		}
 
-		GotoXY(x + (w - UTF8_Strlen(title)) / 2, y + 1);
+		//GotoXY(x + (w - UTF8_Strlen(title)) / 2, y + 1);
 		DrawString(title);
 	}
 
@@ -276,7 +278,7 @@ void DrawSeparator(int x, int y, int w)
 			// Check that it matches what the window should look like if there is no separator, then apply the separator
 			if (*data == borders[1][b])
 			{
-				PutChar(borders[2][b]);
+				//PutChar(borders[2][b]);
 			}
 		}
 
@@ -292,7 +294,7 @@ void DrawCodePageString(::std::string s)
 	int x;
 	int y;
 	int x1;
-	CHAR_PTR p;
+	const char* p;
 
 	GetXY(&x, &y);
 
@@ -306,7 +308,7 @@ void DrawCodePageString(::std::string s)
 			{
 				GotoXY(x1, y);
 				// FIXME
-				PutChar(*p);
+				//PutChar(*p);
 			}
 
 			x1 += 1;
@@ -323,7 +325,7 @@ static void PutUnicodeChar(unsigned c)
 	// Treat control characters specially.
 	if (c == '\n' || c == '\b')
 	{
-		PutChar(c);
+		//PutChar(c);
 		return;
 	}
 
@@ -333,11 +335,11 @@ static void PutUnicodeChar(unsigned c)
 
 	if (d >= 0)
 	{
-		PutSymbol(d);
+		//PutSymbol(d);
 	}
 	else
 	{
-		PutSymbol('\xa8');
+		//PutSymbol('\xa8');
 	}
 }
 
@@ -346,7 +348,7 @@ void DrawString(::std::string s)
 	int x;
 	int y;
 	int x1;
-	CHAR_PTR p;
+	const char* p;
 	unsigned c;
 
 	GetXY(&x, &y);
@@ -358,7 +360,7 @@ void DrawString(::std::string s)
 		// FIXME
 		for (p = s.c_str(); *p != '\0'; )
 		{
-			c = DecodeUTF8(p);
+			//c = DecodeUTF8(p);
 
 			if (c == 0)
 			{
@@ -375,7 +377,7 @@ void DrawString(::std::string s)
 		}
 	}
 
-	GotoXY(x + UTF8_Strlen(s), y);
+	//GotoXY(x + UTF8_Strlen(s), y);
 }
 
 void DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
@@ -394,7 +396,7 @@ void DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 	BGColor(ColorType::grey, false);
 
 	GotoXY(x, y);
-	PutChar('\x1b');
+	//PutChar('\x1b');
 
 	cursor_x = x + 1;
 
@@ -414,16 +416,16 @@ void DrawHorizScrollbar(int x, int y, int w, int cursor, int range)
 		{
 			if (x1 == cursor_x)
 			{
-				PutChar('\xdb');
+				//PutChar('\xdb');
 			}
 			else
 			{
-				PutChar('\xb1');
+				//PutChar('\xb1');
 			}
 		}
 	}
 
-	PutChar('\x1a');
+	//PutChar('\x1a');
 	RestoreColors(&colors);
 }
 
@@ -443,7 +445,7 @@ void DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 	BGColor(ColorType::grey, false);
 
 	GotoXY(x, y);
-	PutChar('\x18');
+	//PutChar('\x18');
 
 	cursor_y = y + 1;
 
@@ -465,17 +467,17 @@ void DrawVertScrollbar(int x, int y, int h, int cursor, int range)
 
 			if (y1 == cursor_y)
 			{
-				PutChar('\xdb');
+				//PutChar('\xdb');
 			}
 			else
 			{
-				PutChar('\xb1');
+				//PutChar('\xb1');
 			}
 		}
 	}
 
 	GotoXY(x, y + h - 1);
-	PutChar('\x19');
+	//PutChar('\x19');
 	RestoreColors(&colors);
 }
 
@@ -498,22 +500,28 @@ void PushClipArea(int x1, int x2, int y1, int y2)
 
 	newarea = static_cast<decltype(newarea)>(malloc(sizeof(txt_cliparea_t)));
 
-	// Set the new clip area to the intersection of the old
-	// area and the new one.
-
+	// Set the new clip area to the intersection of the old area and the new one.
 	newarea->x1 = cliparea->x1;
 	newarea->x2 = cliparea->x2;
 	newarea->y1 = cliparea->y1;
 	newarea->y2 = cliparea->y2;
 
-	if (x1 > newarea->x1){
-		newarea->x1 = x1;}
-	if (x2 < newarea->x2){
-		newarea->x2 = x2;}
-	if (y1 > newarea->y1){
-		newarea->y1 = y1;}
-	if (y2 < newarea->y2){
-		newarea->y2 = y2;}
+	if (x1 > newarea->x1)
+	{
+		newarea->x1 = x1;
+	}
+	if (x2 < newarea->x2)
+	{
+		newarea->x2 = x2;
+	}
+	if (y1 > newarea->y1)
+	{
+		newarea->y1 = y1;
+	}
+	if (y2 < newarea->y2)
+	{
+		newarea->y2 = y2;
+	}
 
 #if 0
 	printf("New scrollable area: %i,%i-%i,%i\n", x1, y1, x2, y2);
@@ -529,8 +537,10 @@ void PopClipArea()
 	txt_cliparea_t* next_cliparea;
 
 	// Never pop the last entry
-	if (cliparea->next == NULL){
-		return;}
+	if (cliparea->next == NULL)
+	{
+		return;
+	}
 
 	// Unlink the last entry and delete
 	next_cliparea = cliparea->next;

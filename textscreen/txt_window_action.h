@@ -23,17 +23,15 @@ namespace cudadoom::txt
  * A window action is attached to a window and corresponds to a keyboard shortcut that is active within that window.
  * When the key is pressed, the action is triggered. When a window action is triggered, the "pressed" signal is emitted.
  */
-class WindowAction : public Widget<WindowAction>
+class WindowAction : public WidgetBase<WindowAction>
 {
 	int key;
 	::std::string label;
 
 public:
 
-	WindowAction(int _key, ::std::string _label) //: widget_class<WindowAction>{}, key{_key}, label{::std::string(_label)},
+	WindowAction(int _key, ::std::string _label) {} //: widget_class<WindowAction>{}, key{_key}, label{::std::string(_label)},
 		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{
-	}
 /*
 // An action with the name "close" the closes the window
 WindowAction* NewWindowEscapeAction(Window* window)
@@ -100,7 +98,7 @@ WindowAction* NewWindowSelectAction(Window* window)
 /**/
 	}
 
-	inline bool KeyPress(KeyEvent _key) noexcept override final
+	inline bool KeyPress(Keys _key) noexcept override final
 	{
 /*
 		if (tolower(_key) == tolower(key))
@@ -124,14 +122,11 @@ WindowAction* NewWindowSelectAction(Window* window)
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 
 	// FIXME
 	inline void WindowCloseCallback(Window* window) noexcept

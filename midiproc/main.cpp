@@ -15,18 +15,26 @@
 \**********************************************************************************************************************************************/
 
 #include <string>
+#include <charconv>
+#include <sstream>
 
-#ifdef _WIN32
 #include "../derma/d_native.h"
 
+#ifndef SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
+#endif
+
 #include "SDL.h"
+
 #include "SDL_mixer.h"
 
 #include "buffer.h"
-#include "proto.h"
 
 #include "config.h"
 #include "doomtype.h"
+
+namespace cudadoom::midi
+{
 
 static HANDLE midi_process_in;		// Standard In.
 static HANDLE midi_process_out;		// Standard Out.
@@ -46,8 +54,8 @@ static bool WriteInt16(CHAR* out, size_t osize, cudadoom::midi::PacketType in)
 	}
 
 	// FIXME replace shift math
-	//out[0] = (in >> 8) & 0xff;
-	//out[1] = in & 0xff;
+	out[0] = ((int)in >> 8) & 0xff;
+	out[1] = (int)in & 0xff;
 
 	return true;
 }
@@ -55,28 +63,28 @@ static bool WriteInt16(CHAR* out, size_t osize, cudadoom::midi::PacketType in)
 // Cleanly close our in-use pipes.
 static void FreePipes()
 {
-	if (midi_process_in != NULL)
+	if (midi_process_in)
 	{
 		CloseHandle(midi_process_in);
-		midi_process_in = NULL;
+		midi_process_in = nullptr;
 	}
-	if (midi_process_out != NULL)
+	if (midi_process_out)
 	{
 		CloseHandle(midi_process_out);
-		midi_process_out = NULL;
+		midi_process_out = nullptr;
 	}
 }
 
 // Unregisters the currently playing song. This is never called from the protocol, we simply do this before playing a new song.
 static void UnregisterSong()
 {
-	if (music == NULL)
+	if (!music)
 	{
 		return;
 	}
 
 	Mix_FreeMusic(music);
-	music = NULL;
+	music = nullptr;
 }
 
 static void ShutdownSDL()
@@ -88,14 +96,14 @@ static void ShutdownSDL()
 
 //=============================================================================
 // SDL_mixer Interface
-static bool RegisterSong(::std::string& filename)
+static bool RegisterSong(::std::string filename)
 {
 	music = Mix_LoadMUS(filename.c_str());
 
 	// Remove the temporary MIDI file
 	remove(filename.c_str());
 
-	if (music == NULL)
+	if (!music)
 	{
 		return false;
 	}
@@ -125,9 +133,9 @@ static void StopSong()
 
 //=============================================================================
 // Pipe Server Interface
-bool MidiPipe_RegisterSong(buffer_reader_t* reader)
+bool MidiPipe_RegisterSong(BufferReader* reader)
 {
-	auto filename{Reader_ReadString(reader)};
+	auto filename{reader->ReadString()};
 	if (!filename.empty())
 	{
 		return false;
@@ -142,9 +150,9 @@ bool MidiPipe_UnregisterSong()
 	return true;
 }
 
-bool MidiPipe_SetVolume(buffer_reader_t* reader)
+bool MidiPipe_SetVolume(BufferReader* reader)
 {
-	if (auto volume = Reader_ReadInt32(reader); volume)
+	if (auto volume{reader->ReadInt32()}; volume)
 	{
 		SetVolume(volume);
 		return true;
@@ -156,9 +164,10 @@ bool MidiPipe_SetVolume(buffer_reader_t* reader)
 	}
 }
 
-bool MidiPipe_PlaySong(buffer_reader_t* reader)
+// FIXME - I NEED MY OWN BUFFER SO I CAN BE A SEPARATE THREAD - MAYBE?
+bool MidiPipe_PlaySong(BufferReader* reader)
 {
-	if (auto loops = Reader_ReadInt32(reader); loops)
+	if (auto loops{reader->ReadInt32()}; loops)
 	{
 		PlaySong(loops);
 		return true;
@@ -183,9 +192,8 @@ bool MidiPipe_Shutdown()
 
 //=============================================================================
 // Server Implementation
-
 // Parses a command and directs to the proper read function.
-bool ParseCommand(buffer_reader_t* reader, cudadoom::midi::PacketType command)
+bool ParseCommand(BufferReader* reader, PacketType command)
 {
 	switch (command)
 	{
@@ -207,26 +215,26 @@ bool ParseCommand(buffer_reader_t* reader, cudadoom::midi::PacketType command)
 }
 
 // Server packet parser
-bool ParseMessage(buffer_t* buf)
+bool ParseMessage(Buffer* buf)
 {
 	uint16_t command;
-	auto reader = NewReader(buf);
+	auto reader{std::make_unique<BufferReader>(buf)};
 
 	// Attempt to read a command out of the buffer.
-	if (Reader_ReadInt16(reader.get(), &command))
+	// FIXME consider what is error now
+	if (command = reader->ReadInt16(); true)
 	{
 		// Attempt to parse a complete message.
 		if (ParseCommand(reader.get(), static_cast<cudadoom::midi::PacketType>(command)))
 		{
 			// We parsed a complete message! We can now safely shift the prior message off the front of the buffer.
-			Buffer_Shift(buf, Reader_BytesRead(reader.get()));
+			buf->Shift(reader->BytesRead());
 
 			CHAR buffer[2];
 			DWORD bytes_written;
 			// Send acknowledgement back that the command has completed.
 			if (WriteInt16(buffer, sizeof(buffer), cudadoom::midi::PacketType::ACK))
 			{
-				DeleteReader(reader.get());
 				WriteFile(midi_process_out, buffer, sizeof(buffer), &bytes_written, NULL);
 				return true;
 			}
@@ -234,22 +242,22 @@ bool ParseMessage(buffer_t* buf)
 	}
 
 	// We did not read a complete packet. Delete our reader and try again with more data.
-	DeleteReader(reader.get());
 	return false;
 }
 
 // The main pipe "listening" loop
 bool ListenForever()
 {
-	auto buffer{NewBuffer()};
+	//auto buffer{NewBuffer()};
+	auto buffer{std::make_unique<Buffer>()};
 	DWORD pipe_buffer_read{0};
-	CHAR pipe_buffer[8192];
+	std::array<uint8_t, BUFFER_SIZE> pipe_buffer;
 
 	for (;;)
 	{
 		// Wait until we see some data on the pipe.
-		bool wok{(bool)PeekNamedPipe(midi_process_in, NULL, 0, NULL, &pipe_buffer_read, NULL)};
-		if (!wok)
+		if (auto ok{bool(PeekNamedPipe(midi_process_in, NULL, 0, NULL, &pipe_buffer_read, NULL))};
+			!ok)
 		{
 			break;
 		}
@@ -260,23 +268,24 @@ bool ListenForever()
 		}
 
 		// Read data off the pipe and add it to the buffer.
-		wok = ReadFile(midi_process_in, pipe_buffer, sizeof(pipe_buffer), &pipe_buffer_read, NULL);
-		if (!wok)
+		if (auto ok{bool(ReadFile(midi_process_in, LPVOID(pipe_buffer.data()), sizeof(pipe_buffer), &pipe_buffer_read, NULL))};
+			!ok)
 		{
 			break;
 		}
 
-		bool ok{Buffer_Push(buffer.get(), pipe_buffer, pipe_buffer_read)};
-		if (!ok)
+		if (auto ok{buffer->Push(pipe_buffer, pipe_buffer_read)};
+			ok == PacketType::error)
 		{
 			break;
 		}
 
-		do
+		for (bool ok{true};
+			ok; )
 		{
 			// Read messages off the buffer until we can't anymore.
 			ok = ParseMessage(buffer.get());
-		} while (ok);
+		}
 	}
 
 	return false;
@@ -288,7 +297,7 @@ bool ListenForever()
 // Start up SDL and SDL_mixer.
 bool InitSDL()
 {
-	if (SDL_Init(SDL_INIT_AUDIO) == -1)
+	if (SDL_Init(SDL_INIT_AUDIO) < 0)
 	{
 		return false;
 	}
@@ -326,32 +335,33 @@ int main(int argc, char* argv[])
 	// Make sure our Choccolate Doom and midiproc version are lined up.
 	if (strcmp(PACKAGE_STRING, argv[1]) != 0)
 	{
-		char message[1024];
-		_snprintf(message, sizeof(message),
-			"It appears that the version of %s and %smidiproc are out of sync. Please reinstall %s.\n\nServer Version: %s\nClient Version: %s",
-			PACKAGE_NAME, PROGRAM_PREFIX, PACKAGE_NAME, PACKAGE_STRING, argv[1]);
-		message[sizeof(message) - 1] = '\0';
+		std::stringstream message;
+		message << "It appears that the version of " << PACKAGE_NAME << " and " << PROGRAM_PREFIX << "midiproc are out of sync. Please reinstall " << PACKAGE_NAME << ".\n\nServer Version: " << PACKAGE_STRING << "\nClient Version: " << argv[1];
 
-		MessageBox(NULL, TEXT(message), TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
+		MessageBox(NULL, TEXT(message.str().c_str()), TEXT(PACKAGE_STRING), MB_OK | MB_ICONASTERISK);
 
 		return EXIT_FAILURE;
 	}
 
-	// Parse out the sample rate - if we can't, default to 44100.
-	snd_samplerate = strtol(argv[2], NULL, 10);
+	// Parse out the sample rate - if we can't, default to `DEFAULT_SAMPLE_RATE` defined in buffer.h
+	::std::from_chars(argv[2], nullptr, snd_samplerate);
 	if (snd_samplerate == LONG_MAX || snd_samplerate == LONG_MIN || snd_samplerate == 0)
 	{
-		snd_samplerate = 44100;
+		snd_samplerate = DEFAULT_SAMPLE_RATE;
 	}
 
 	// Parse out our handle ids.
-	HANDLE in{(HANDLE)strtol(argv[3], NULL, 10)};
+	uintptr_t tmp;
+
+	::std::from_chars(argv[3], nullptr, tmp);
+	HANDLE in{(void*)tmp};
 	if (in == 0)
 	{
 		return EXIT_FAILURE;
 	}
 
-	HANDLE out{(HANDLE)strtol(argv[4], NULL, 10)};
+	::std::from_chars(argv[4], nullptr, tmp);
+	HANDLE out{(void*)tmp};
 	if (out == 0)
 	{
 		return EXIT_FAILURE;
@@ -372,4 +382,4 @@ int main(int argc, char* argv[])
 	return EXIT_SUCCESS;
 }
 
-#endif // #ifdef _WIN32
+}

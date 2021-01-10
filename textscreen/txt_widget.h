@@ -28,10 +28,10 @@ namespace cudadoom::txt
  */
 
 template<typename T, typename U = T>
-class Widget
+class WidgetBase
 {
 private:
-	::std::weak_ptr<Widget<U>> parent{nullptr};
+	::std::shared_ptr<WidgetBase<T, U>> parent{nullptr};
 	//WidgetClass<T> widget_class;
 
 	// These are set automatically when the window is drawn and should not be set manually.
@@ -52,13 +52,9 @@ public:
 
 	//================================================================================================================================
 	// ctors, dtors, etc
-	Widget() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{
+	WidgetBase() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
-	}
-
-	virtual ~Widget()
-	{}
+	virtual ~WidgetBase() {}
 
 	//================================================================================================================================
 
@@ -88,7 +84,7 @@ public:
 		//RestoreColors(&colors);
 	}
 
-	virtual inline bool KeyPress(KeyEvent evt) noexcept
+	virtual inline bool KeyPress(Keys evt) noexcept
 	{
 		return false;//key_press(widget, key);
 	}
@@ -109,8 +105,7 @@ public:
 		//layout();
 	}
 
-	virtual inline void Destroy() noexcept
-	{}
+	virtual inline void Destroy() noexcept {}
 
 	inline bool visible() const noexcept
 	{
@@ -241,6 +236,14 @@ public:
 	{
 
 	}
+
+};
+
+//template<typename T>
+//class WidgetBase<T, T> {};
+
+class Widget : public WidgetBase<Widget>
+{
 
 };
 

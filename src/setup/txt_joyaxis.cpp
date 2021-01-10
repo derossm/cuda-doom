@@ -457,8 +457,7 @@ static void TXT_JoystickAxisDrawer(TXT_UNCAST_ARG(joystick_axis))
 	}
 }
 
-static void TXT_JoystickAxisDestructor(TXT_UNCAST_ARG(joystick_axis))
-{}
+static void TXT_JoystickAxisDestructor(TXT_UNCAST_ARG(joystick_axis)) {}
 
 static int TXT_JoystickAxisKeyPress(TXT_UNCAST_ARG(joystick_axis), int key)
 {

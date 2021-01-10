@@ -77,7 +77,8 @@
 		"bitset": "cpp",
 		"optional": "cpp",
 		"ranges": "cpp",
-		"span": "cpp"
+		"span": "cpp",
+		"string_view": "cpp"
 	},
 	"git.allowForcePush": true,
 	"editor.rulers": [

@@ -22,7 +22,7 @@ namespace cudadoom::txt
  *
  * A label widget does nothing except show a text label.
  */
-class Label : public Widget<Label>
+class Label : public WidgetBase<Label>
 {
 	//Widget widget;
 	::std::string label;
@@ -34,21 +34,18 @@ class Label : public Widget<Label>
 
 public:
 
-	Label() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{	}
+	Label() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
 	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	inline void CalculateSize() noexcept override final
-	{	}
+	inline void CalculateSize() noexcept override final {}
 
-	inline void Draw() noexcept override final
-	{	}
+	inline void Draw() noexcept override final {}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -72,14 +69,11 @@ public:
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{	}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{	}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{	}
+	inline void Destroy() noexcept override final {}
 };
 
 /**
@@ -115,17 +109,17 @@ public:
  */
 //void SetFGColor(txt_label_t* label, ColorType color);
 /*
-static void LabelSizeCalc(UNCAST_ARG(label))
+static void LabelSizeCalc((label))
 {
-	CAST_ARG(txt_label_t, label);
+	(txt_label_t, label);
 
 	label->widget.w = label->w;
 	label->widget.h = label->h;
 }
 
-static void LabelDrawer(UNCAST_ARG(label))
+static void LabelDrawer((label))
 {
-	CAST_ARG(txt_label_t, label);
+	(txt_label_t, label);
 	unsigned x;
 	unsigned y;
 	int origin_x;
@@ -190,9 +184,9 @@ static void LabelDrawer(UNCAST_ARG(label))
 	}
 }
 
-static void LabelDestructor(UNCAST_ARG(label))
+static void LabelDestructor((label))
 {
-	CAST_ARG(txt_label_t, label);
+	(txt_label_t, label);
 
 	free(label->label);
 	free(label->lines);

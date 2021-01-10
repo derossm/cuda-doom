@@ -120,8 +120,7 @@ static void NET_CL_AddrToString(net_addr_t* addr, ::std::string buffer, int buff
 	M_snprintf(buffer, buffer_len, "local server");
 }
 
-static void NET_CL_FreeAddress(net_addr_t* addr)
-{}
+static void NET_CL_FreeAddress(net_addr_t* addr) {}
 
 static net_addr_t* NET_CL_ResolveAddress(::std::string address)
 {
@@ -195,8 +194,7 @@ static void NET_SV_AddrToString(net_addr_t* addr, ::std::string buffer, int buff
 	M_snprintf(buffer, buffer_len, "local client");
 }
 
-static void NET_SV_FreeAddress(net_addr_t* addr)
-{}
+static void NET_SV_FreeAddress(net_addr_t* addr) {}
 
 static net_addr_t* NET_SV_ResolveAddress(::std::string address)
 {

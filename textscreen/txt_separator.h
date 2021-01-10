@@ -18,31 +18,26 @@ namespace cudadoom::txt
 {
 
 /**
- * @file txt_separator.h
- *
- * Horizontal separator widget.
- */
+* @file txt_separator.h
+* Horizontal separator widget.
+*/
 
- /**
-  * Horizontal separator.
-  *
-  * A horizontal separator appears as a horizontal line divider across
-  * the length of the window in which it is added. An optional label
-  * allows the separator to be used as a section divider for grouping
-  * related controls.
-  */
-class Separator : public Widget<Separator>
+/**
+* Horizontal separator.
+* A horizontal separator appears as a horizontal line divider across the length of the window in which it is added. An optional label
+* allows the separator to be used as a section divider for grouping related controls.
+*/
+class Separator : public WidgetBase<Separator>
 {
 	::std::string label;
 
-	//bool KeyPress(KeyEvent key) override final = delete;
+	//bool KeyPress(Keys key) override final = delete;
 	//bool MousePress(MouseEvent evt) override final = delete;
 	//void SetLayout() override final = delete;
 	//void SetFocus(bool _focus) override final = delete;
 
 public:
-	Separator() //: widget_class{Selectable, CalculateSize, Draw, nullptr, nullptr, nullptr, nullptr, Destroy}
-	{}
+	Separator() {} //: widget_class{Selectable, CalculateSize, Draw, nullptr, nullptr, nullptr, nullptr, Destroy}
 
 	inline bool Selectable() const noexcept override final
 	{
@@ -91,8 +86,7 @@ public:
 /**/
 	}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 
 	void SetLabel(Separator* separator, ::std::string& _label)
 	{
@@ -108,8 +102,7 @@ public:
 /**/
 	}
 
-	//Separator(::std::string& _label) : label(_label)
-	//{}
+	//Separator(::std::string& _label) : label(_label) {}
 };
 
 } // end namespace cudadoom::txt

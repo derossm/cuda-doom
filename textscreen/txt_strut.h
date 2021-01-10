@@ -34,15 +34,15 @@ namespace cudadoom::txt
  * spacing between widgets.
  */
 
-class Strut : public Widget<Strut>
+class Strut : public WidgetBase<Strut>
 {
 	//void Draw() override final = delete;
-	//bool KeyPress(KeyEvent key) override final = delete;
+	//bool KeyPress(Keys key) override final = delete;
 	//bool MousePress(MouseEvent evt) override final = delete;
 	//void SetLayout() override final = delete;
 	//void SetFocus(bool _focus) override final = delete;
 public:
-	Strut(int _width, int _height, Widget& _parent) //: width{_width}, height{_height}, parent{&_parent},
+	Strut(int _width, int _height, WidgetBase<Strut>& _parent) //: width{_width}, height{_height}, parent{&_parent},
 		//widget_class{Selectable, CalculateSize, nullptr, nullptr, nullptr, nullptr, nullptr, Destroy}
 	{
 	}
@@ -57,8 +57,7 @@ public:
 		// Minimum width is the string length + two spaces for padding
 	}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 
 };
 

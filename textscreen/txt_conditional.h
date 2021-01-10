@@ -17,11 +17,9 @@ namespace cudadoom::txt
 
 /**
  * Conditional widget.
- *
- * A conditional widget contains another widget, and conditionally
- * shows or hides it based on the value of a variable.
+ * A conditional widget contains another widget, and conditionally shows or hides it based on the value of a variable.
  */
-class Conditional : public Widget<Conditional>
+class Conditional : public WidgetBase<Conditional>
 {
 	//Widget widget;
 	int* var;
@@ -30,21 +28,18 @@ class Conditional : public Widget<Conditional>
 
 public:
 
-	Conditional() //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
-	{}
+	Conditional() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
 
 	inline bool Selectable() const noexcept override final
 	{
 		return true;
 	}
 
-	inline void CalculateSize() noexcept override final
-	{}
+	inline void CalculateSize() noexcept override final {}
 
-	inline void Draw() noexcept override final
-	{}
+	inline void Draw() noexcept override final {}
 
-	inline bool KeyPress(KeyEvent key) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		if (key == KEY_ENTER || key == ' ')
@@ -68,14 +63,11 @@ public:
 		return false;
 	}
 
-	inline void SetLayout() noexcept override final
-	{}
+	inline void SetLayout() noexcept override final {}
 
-	inline void SetFocus(bool _focus) noexcept override final
-	{}
+	inline void SetFocus(bool _focus) noexcept override final {}
 
-	inline void Destroy() noexcept override final
-	{}
+	inline void Destroy() noexcept override final {}
 /*
 	int ConditionTrue()
 	{

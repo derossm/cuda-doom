@@ -270,8 +270,7 @@ static void TXT_JoystickInputDrawer(TXT_UNCAST_ARG(joystick_input))
 	}
 }
 
-static void TXT_JoystickInputDestructor(TXT_UNCAST_ARG(joystick_input))
-{}
+static void TXT_JoystickInputDestructor(TXT_UNCAST_ARG(joystick_input)) {}
 
 static int TXT_JoystickInputKeyPress(TXT_UNCAST_ARG(joystick_input), int key)
 {
