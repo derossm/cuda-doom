@@ -1,8 +1,8 @@
 add_library(opl STATIC
 							opl.h
+							opl3.h
 							opl_queue.h
 							opl_timer.h
-							opl3.h
 							opl_sdl.h
 							ioperm_sys.h
 			opl_win32.cpp

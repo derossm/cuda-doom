@@ -11,18 +11,24 @@
 		OPL Win32 native interface.
 \**********************************************************************************************************************************************/
 
+#ifdef _WIN32
+
 #include "config.h"
+
+#include "../derma/common.h"
+#include "../derma/enumbitset.h"
 #include "../derma/d_native.h"
 
 #include "opl.h"
+#include "opl3.h"
+#include "opl_queue.h"
 #include "opl_timer.h"
+#include "opl_sdl.h"
 
 #include "ioperm_sys.h"
 
 namespace cudadoom::opl
 {
-
-#ifdef _WIN32
 
 static uint64_t opl_port_base;
 
@@ -171,6 +177,6 @@ opl_driver_t opl_win32_driver =
 	OPL_Timer_AdjustCallbacks,
 };
 
-#endif /* #ifdef _WIN32 */
-
 } // end namespace cudadoom::opl
+
+#endif /* #ifdef _WIN32 */

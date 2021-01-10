@@ -11,6 +11,8 @@
 		OPL Linux interface.
 \**********************************************************************************************************************************************/
 
+#if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
+
 #include "config.h"
 
 #include "opl.h"
@@ -18,8 +20,6 @@
 
 namespace cudadoom::opl
 {
-
-#if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
 
 static unsigned opl_port_base;
 
@@ -84,6 +84,6 @@ opl_driver_t opl_linux_driver =
 	OPL_Timer_AdjustCallbacks
 };
 
-#endif /* #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM) */
-
 } // end namespace cudadoom::opl
+
+#endif /* #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM) */

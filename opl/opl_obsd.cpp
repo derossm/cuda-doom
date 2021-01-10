@@ -11,8 +11,6 @@
 		OPL OpenBSD interface (also NetBSD)
 \**********************************************************************************************************************************************/
 
-#include "config.h"
-
 // OpenBSD has a i386_iopl on i386 and amd64_iopl on x86_64, even though they do the same thing.
 // Take care of this here, and map set_iopl to point to the appropriate name.
 #if defined(HAVE_LIBI386)
@@ -23,14 +21,18 @@
 	#define NO_OBSD_DRIVER
 #endif
 
+#ifndef NO_OBSD_DRIVER
+
 // If the above succeeded, proceed with the rest.
+
+#include "config.h"
+
 #include "opl.h"
 #include "opl_timer.h"
 
 namespace cudadoom::opl
 {
 
-#ifndef NO_OBSD_DRIVER
 
 static unsigned opl_port_base;
 
@@ -89,6 +91,6 @@ opl_driver_t opl_openbsd_driver =
 	OPL_Timer_AdjustCallbacks
 };
 
-#endif // #ifndef NO_OBSD_DRIVER
-
 } // end namespace cudadoom::opl
+
+#endif // #ifndef NO_OBSD_DRIVER
