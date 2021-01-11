@@ -1,4 +1,5 @@
-add_library(derma STATIC
+#add_library(derma STATIC
+set(DERMA_FILES
 									cpp_headers.h
 									c_headers.h
 									namespace_forwards.h
@@ -7,10 +8,14 @@ add_library(derma STATIC
 									d_unix.h
 									deprecating_tools.h
 									bitmanipulator.h
-									enumbitset.h)
+									enumbitset.h
+									bytetype.h
+		test_bytetype.cpp			catch.h)
 
-set_target_properties(derma PROPERTIES LINKER_LANGUAGE CXX)
+
+add_executable("${PROGRAM_PREFIX}catch2_byte" ${DERMA_FILES})
+set_target_properties("${PROGRAM_PREFIX}catch2_byte" PROPERTIES LINKER_LANGUAGE CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-target_include_directories(derma INTERFACE "." PRIVATE "../src/")
+target_include_directories("${PROGRAM_PREFIX}catch2_byte" INTERFACE "." PRIVATE "../src/" "../derma")

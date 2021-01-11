@@ -78,7 +78,17 @@
 		"optional": "cpp",
 		"ranges": "cpp",
 		"span": "cpp",
-		"string_view": "cpp"
+		"string_view": "cpp",
+		"condition_variable": "cpp",
+		"deque": "cpp",
+		"future": "cpp",
+		"mutex": "cpp",
+		"random": "cpp",
+		"regex": "cpp",
+		"set": "cpp",
+		"stack": "cpp",
+		"stop_token": "cpp",
+		"thread": "cpp"
 	},
 	"git.allowForcePush": true,
 	"editor.rulers": [
