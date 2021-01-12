@@ -56,6 +56,9 @@ TEST_CASE("Byte: wrapper for std::byte", "[ByteType]")
 	auto k6 = b_u8type % i;
 	auto k7 = ~b_u8type;
 
+	int t[5];
+	t[b_u8type] = 0;
+
 	REQUIRE(k == (0 & 0xFF));
 	REQUIRE(k0 == (0 | 0xFF));
 	REQUIRE(k1 == (0 ^ 0xFF));

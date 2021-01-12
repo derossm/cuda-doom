@@ -20,6 +20,8 @@
 
 #include <type_traits>
 
+#include "../derma/common.h"
+
 #include "txt_common.h"
 
 #include "SDL.h"

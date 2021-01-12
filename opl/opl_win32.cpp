@@ -21,12 +21,11 @@
 
 #include "opl.h"
 #include "opl3.h"
-#include "opl_queue.h"
 #include "opl_timer.h"
 #include "opl_sdl.h"
 
 #include "ioperm_sys.h"
-
+#if 1
 namespace cudadoom::opl
 {
 
@@ -152,7 +151,7 @@ static bool OPL_Win32_Init(uint64_t port_base)
 
 	return false;
 }
-
+/*
 static void OPL_Win32_Shutdown()
 {
 	// Stop callback thread
@@ -176,7 +175,8 @@ opl_driver_t opl_win32_driver =
 	OPL_Timer_SetPaused,
 	OPL_Timer_AdjustCallbacks,
 };
-
+*/
 } // end namespace cudadoom::opl
 
-#endif /* #ifdef _WIN32 */
+#endif // #ifdef _WIN32
+#endif

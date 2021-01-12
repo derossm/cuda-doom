@@ -25,7 +25,6 @@
 #endif
 
 #include "SDL.h"
-
 #include "SDL_mixer.h"
 
 #include "buffer.h"
@@ -321,6 +320,8 @@ void InitPipes(HANDLE in, HANDLE out)
 	atexit(FreePipes);
 }
 
+extern "C"
+{
 int main(int argc, char* argv[])
 {
 	// Make sure we're not launching this process by itself.
@@ -380,6 +381,7 @@ int main(int argc, char* argv[])
 	}
 
 	return EXIT_SUCCESS;
+}
 }
 
 }
