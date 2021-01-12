@@ -268,7 +268,7 @@ inline char *sdkFindFilePath(const char *filename,
   // input data, or JIT source files) The origin for the relative search may be
   // the .exe file, a .bat file launching an .exe, a browser .exe launching the
   // .exe or .bat, etc
-  const char *searchPath[] = {
+  constexpr const char *searchPath[] = {
       "./",  // same dir
       "./<executable_name>_data_files/",
       "./common/",                      // "/common/" subdir

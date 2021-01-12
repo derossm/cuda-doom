@@ -64,6 +64,7 @@ std::wstring DX12CudaSample::string2wstring(const std::string& s)
 	delete[] buf;
 	return r;
 }
+
 // Helper function for resolving the full path of assets.
 std::wstring DX12CudaSample::GetAssetFullPath(const char* assetName)
 {

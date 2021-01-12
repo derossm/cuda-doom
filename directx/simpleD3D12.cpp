@@ -1,5 +1,5 @@
 /*
-* Copyright 1993-2018 NVIDIA Corporation.  All rights reserved.
+* Copyright 1993-2018 NVIDIA Corporation. All rights reserved.
 *
 * Please refer to the NVIDIA end user license agreement (EULA) associated
 * with this source code for terms and conditions that govern your use of
@@ -27,7 +27,8 @@
 // WindowsSecurityAttributes implementation //
 //////////////////////////////////////////////
 
-class WindowsSecurityAttributes {
+class WindowsSecurityAttributes
+{
 protected:
 	SECURITY_ATTRIBUTES m_winSecurityAttributes;
 	PSECURITY_DESCRIPTOR m_winPSecurityDescriptor;
@@ -35,7 +36,7 @@ protected:
 public:
 	WindowsSecurityAttributes();
 	~WindowsSecurityAttributes();
-	SECURITY_ATTRIBUTES * operator&();
+	SECURITY_ATTRIBUTES* operator&();
 };
 
 WindowsSecurityAttributes::WindowsSecurityAttributes()
@@ -43,8 +44,8 @@ WindowsSecurityAttributes::WindowsSecurityAttributes()
 	m_winPSecurityDescriptor = (PSECURITY_DESCRIPTOR)calloc(1, SECURITY_DESCRIPTOR_MIN_LENGTH + 2 * sizeof(void**));
 	assert(m_winPSecurityDescriptor != (PSECURITY_DESCRIPTOR)NULL);
 
-	PSID *ppSID = (PSID *)((PBYTE)m_winPSecurityDescriptor + SECURITY_DESCRIPTOR_MIN_LENGTH);
-	PACL *ppACL = (PACL *)((PBYTE)ppSID + sizeof(PSID *));
+	PSID* ppSID{(PSID*)((PBYTE)m_winPSecurityDescriptor + SECURITY_DESCRIPTOR_MIN_LENGTH)};
+	PACL* ppACL{(PACL*)((PBYTE)ppSID + sizeof(PSID*))};
 
 	InitializeSecurityDescriptor(m_winPSecurityDescriptor, SECURITY_DESCRIPTOR_REVISION);
 
@@ -71,30 +72,27 @@ WindowsSecurityAttributes::WindowsSecurityAttributes()
 
 WindowsSecurityAttributes::~WindowsSecurityAttributes()
 {
-	PSID* ppSID = (PSID*)((PBYTE)m_winPSecurityDescriptor + SECURITY_DESCRIPTOR_MIN_LENGTH);
-	PACL* ppACL = (PACL*)((PBYTE)ppSID + sizeof(PSID*));
+	PSID* ppSID{(PSID*)((PBYTE)m_winPSecurityDescriptor + SECURITY_DESCRIPTOR_MIN_LENGTH)};
+	PACL* ppACL{(PACL*)((PBYTE)ppSID + sizeof(PSID*))};
 
-	if (*ppSID) {
+	if (*ppSID)
+	{
 		FreeSid(*ppSID);
 	}
-	if (*ppACL) {
+	if (*ppACL)
+	{
 		LocalFree(*ppACL);
 	}
 	free(m_winPSecurityDescriptor);
 }
 
-SECURITY_ATTRIBUTES *
-WindowsSecurityAttributes::operator&()
+SECURITY_ATTRIBUTES* WindowsSecurityAttributes::operator&()
 {
 	return &m_winSecurityAttributes;
 }
 
-DX12CudaInterop::DX12CudaInterop(UINT width, UINT height, std::string name) :
-	DX12CudaSample(width, height, name),
-	m_frameIndex(0),
-	m_scissorRect(0, 0, static_cast<LONG>(width), static_cast<LONG>(height)),
-	m_fenceValues{},
-	m_rtvDescriptorSize(0)
+DX12CudaInterop::DX12CudaInterop(UINT width, UINT height, std::string name) : DX12CudaSample(width, height, name),
+	m_frameIndex(0), m_scissorRect(0, 0, static_cast<LONG>(width), static_cast<LONG>(height)), m_fenceValues{}, m_rtvDescriptorSize(0)
 {
 	m_viewport = { 0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height) };
 	m_AnimTime = 1.0f;
@@ -110,7 +108,7 @@ void DX12CudaInterop::OnInit()
 // Load the rendering pipeline dependencies.
 void DX12CudaInterop::LoadPipeline()
 {
-	UINT dxgiFactoryFlags = 0;
+	UINT dxgiFactoryFlags{0u};
 
 #if defined(_DEBUG)
 	// Enable the debug layer (requires the Graphics Tools "optional feature").
@@ -135,36 +133,28 @@ void DX12CudaInterop::LoadPipeline()
 		ComPtr<IDXGIAdapter> warpAdapter;
 		ThrowIfFailed(factory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter)));
 
-		ThrowIfFailed(D3D12CreateDevice(
-			warpAdapter.Get(),
-			D3D_FEATURE_LEVEL_11_0,
-			IID_PPV_ARGS(&m_device)
-			));
+		ThrowIfFailed(D3D12CreateDevice(warpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_device)));
 	}
 	else
 	{
 		ComPtr<IDXGIAdapter1> hardwareAdapter;
 		GetHardwareAdapter(factory.Get(), &hardwareAdapter);
 
-		ThrowIfFailed(D3D12CreateDevice(
-			hardwareAdapter.Get(),
-			D3D_FEATURE_LEVEL_11_0,
-			IID_PPV_ARGS(&m_device)
-			));
+		ThrowIfFailed(D3D12CreateDevice(hardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_device)));
 		DXGI_ADAPTER_DESC1 desc;
 		hardwareAdapter->GetDesc1(&desc);
 		m_dx12deviceluid = desc.AdapterLuid;
 	}
 
 	// Describe and create the command queue.
-	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
+	D3D12_COMMAND_QUEUE_DESC queueDesc{};
 	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
 	ThrowIfFailed(m_device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_commandQueue)));
 
 	// Describe and create the swap chain.
-	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 	swapChainDesc.BufferCount = FrameCount;
 	swapChainDesc.Width = m_width;
 	swapChainDesc.Height = m_height;
@@ -174,14 +164,8 @@ void DX12CudaInterop::LoadPipeline()
 	swapChainDesc.SampleDesc.Count = 1;
 
 	ComPtr<IDXGISwapChain1> swapChain;
-	ThrowIfFailed(factory->CreateSwapChainForHwnd(
-		m_commandQueue.Get(),		// Swap chain needs the queue so that it can force a flush on it.
-		Win32Application::GetHwnd(),
-		&swapChainDesc,
-		nullptr,
-		nullptr,
-		&swapChain
-		));
+	// `m_commandQueue.Get()` Swap chain needs the queue so that it can force a flush on it.
+	ThrowIfFailed(factory->CreateSwapChainForHwnd(m_commandQueue.Get(), Win32Application::GetHwnd(), &swapChainDesc, nullptr, nullptr, &swapChain));
 
 	// This sample does not support fullscreen transitions.
 	ThrowIfFailed(factory->MakeWindowAssociation(Win32Application::GetHwnd(), DXGI_MWA_NO_ALT_ENTER));
@@ -192,7 +176,7 @@ void DX12CudaInterop::LoadPipeline()
 	// Create descriptor heaps.
 	{
 		// Describe and create a render target view (RTV) descriptor heap.
-		D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
+		D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 		rtvHeapDesc.NumDescriptors = FrameCount;
 		rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 		rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
@@ -206,7 +190,7 @@ void DX12CudaInterop::LoadPipeline()
 		CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart());
 
 		// Create a RTV and a command allocator for each frame.
-		for (UINT n = 0; n < FrameCount; n++)
+		for (UINT n{0u}; n < FrameCount; ++n)
 		{
 			ThrowIfFailed(m_swapChain->GetBuffer(n, IID_PPV_ARGS(&m_renderTargets[n])));
 			m_device->CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvHandle);
@@ -219,20 +203,21 @@ void DX12CudaInterop::LoadPipeline()
 
 void DX12CudaInterop::InitCuda()
 {
-	int num_cuda_devices = 0;
+	int num_cuda_devices{0};
 	checkCudaErrors(cudaGetDeviceCount(&num_cuda_devices));
 
 	if (!num_cuda_devices)
 	{
 		throw std::exception("No CUDA Devices found");
 	}
-	for (UINT devId = 0; devId < num_cuda_devices; devId++)
+	for (UINT devId{0u}; devId < num_cuda_devices; ++devId)
 	{
 		cudaDeviceProp devProp;
 		checkCudaErrors(cudaGetDeviceProperties(&devProp, devId));
 
-		if ((memcmp(&m_dx12deviceluid.LowPart, devProp.luid, sizeof(m_dx12deviceluid.LowPart)) == 0) && (memcmp(&m_dx12deviceluid.HighPart, devProp.luid + sizeof(m_dx12deviceluid.LowPart), sizeof(m_dx12deviceluid.HighPart)) == 0))
-        {
+		if ((memcmp(&m_dx12deviceluid.LowPart, devProp.luid, sizeof(m_dx12deviceluid.LowPart)) == 0)
+			&& (memcmp(&m_dx12deviceluid.HighPart, devProp.luid + sizeof(m_dx12deviceluid.LowPart), sizeof(m_dx12deviceluid.HighPart)) == 0))
+		{
 			checkCudaErrors(cudaSetDevice(devId));
 			m_cudaDeviceID = devId;
 			m_nodeMask = devProp.luidDeviceNodeMask;
@@ -253,12 +238,14 @@ void DX12CudaInterop::LoadAssets()
 		range.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
 		parameter.InitAsDescriptorTable(1, &range, D3D12_SHADER_VISIBILITY_VERTEX);
 
-		D3D12_ROOT_SIGNATURE_FLAGS rootSignatureFlags =
-			D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT | // Only the input assembler stage needs access to the constant buffer.
-			D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
-			D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS |
-			D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
-			D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS;
+		// Only the input assembler stage needs access to the constant buffer.
+		D3D12_ROOT_SIGNATURE_FLAGS rootSignatureFlags{
+			D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
+			| D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS
+			| D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS
+			| D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS
+			| D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS
+		};
 
 		CD3DX12_ROOT_SIGNATURE_DESC descRootSignature;
 		descRootSignature.Init(1, &parameter, 0, nullptr, rootSignatureFlags);
@@ -276,22 +263,21 @@ void DX12CudaInterop::LoadAssets()
 		// Enable better shader debugging with the graphics debugging tools.
 		UINT compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #else
-		UINT compileFlags = 0;
+		UINT compileFlags{0u};
 #endif
-		std::wstring filePath = GetAssetFullPath("shaders.hlsl");
-		LPCWSTR result = filePath.c_str();
+		std::wstring filePath{GetAssetFullPath("shaders.hlsl")};
+		LPCWSTR result{filePath.c_str()};
 		ThrowIfFailed(D3DCompileFromFile(result, nullptr, nullptr, "VSMain", "vs_5_0", compileFlags, 0, &vertexShader, nullptr));
 		ThrowIfFailed(D3DCompileFromFile(result, nullptr, nullptr, "PSMain", "ps_5_0", compileFlags, 0, &pixelShader, nullptr));
 
 		// Define the vertex input layout.
-		D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
-		{
+		D3D12_INPUT_ELEMENT_DESC inputElementDescs[]{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 		};
 
 		// Describe and create the graphics pipeline state object (PSO).
-		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 		psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
 		psoDesc.pRootSignature = m_rootSignature.Get();
 		psoDesc.VS = CD3DX12_SHADER_BYTECODE(vertexShader.Get());
@@ -308,10 +294,10 @@ void DX12CudaInterop::LoadAssets()
 	}
 
 	// Create the command list.
-	ThrowIfFailed(m_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocators[m_frameIndex].Get(), m_pipelineState.Get(), IID_PPV_ARGS(&m_commandList)));
+	ThrowIfFailed(m_device->CreateCommandList(0,
+			D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocators[m_frameIndex].Get(), m_pipelineState.Get(), IID_PPV_ARGS(&m_commandList)));
 
-	// Command lists are created in the recording state, but there is nothing
-	// to record yet. The main loop expects it to be closed, so close it now.
+	// Command lists are created in the recording state, but there is nothing to record yet. The main loop expects it to be closed, so close it now.
 	ThrowIfFailed(m_commandList->Close());
 
 	// Create the vertex buffer.
@@ -321,13 +307,10 @@ void DX12CudaInterop::LoadAssets()
 		vertBufHeight = m_height/2;
 		const UINT vertexBufferSize = sizeof(Vertex)*vertBufWidth*vertBufHeight;
 
-		/*ThrowIfFailed(m_device->CreateCommittedResource(
-			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-			D3D12_HEAP_FLAG_SHARED,
-			&CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize),
-			D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER,
-			nullptr,
-			IID_PPV_ARGS(&m_vertexBuffer)));*/
+		auto heapProperties{CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT)};
+		auto buffer1{CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize)};
+		ThrowIfFailed(m_device->CreateCommittedResource(&heapProperties,
+				D3D12_HEAP_FLAG_SHARED, &buffer1, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, nullptr, IID_PPV_ARGS(&m_vertexBuffer)));
 
 		// Initialize the vertex buffer view.
 		m_vertexBufferView.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
@@ -336,16 +319,17 @@ void DX12CudaInterop::LoadAssets()
 
 		HANDLE sharedHandle;
 		WindowsSecurityAttributes windowsSecurityAttributes;
-		LPCWSTR name = NULL;
+		LPCWSTR name{nullptr};
 		ThrowIfFailed(m_device->CreateSharedHandle(m_vertexBuffer.Get(), &windowsSecurityAttributes, GENERIC_ALL, name, &sharedHandle));
 
 		D3D12_RESOURCE_ALLOCATION_INFO d3d12ResourceAllocationInfo;
-		//d3d12ResourceAllocationInfo = m_device->GetResourceAllocationInfo(m_nodeMask, 1, &CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize));
+		auto buffer2{CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize)};
+		d3d12ResourceAllocationInfo = m_device->GetResourceAllocationInfo(m_nodeMask, 1, &buffer2);
 		size_t actualSize = d3d12ResourceAllocationInfo.SizeInBytes;
-		size_t alignment  = d3d12ResourceAllocationInfo.Alignment;
+		size_t alignment = d3d12ResourceAllocationInfo.Alignment;
 
 		cudaExternalMemoryHandleDesc externalMemoryHandleDesc;
-        memset(&externalMemoryHandleDesc, 0, sizeof(externalMemoryHandleDesc));
+		memset(&externalMemoryHandleDesc, 0, sizeof(externalMemoryHandleDesc));
 
 		externalMemoryHandleDesc.type = cudaExternalMemoryHandleTypeD3D12Resource;
 		externalMemoryHandleDesc.handle.win32.handle = sharedHandle;
@@ -357,13 +341,12 @@ void DX12CudaInterop::LoadAssets()
 		cudaExternalMemoryBufferDesc externalMemoryBufferDesc;
 		memset(&externalMemoryBufferDesc, 0, sizeof(externalMemoryBufferDesc));
 		externalMemoryBufferDesc.offset = 0;
-		externalMemoryBufferDesc.size   = vertexBufferSize;
-		externalMemoryBufferDesc.flags  = 0;
+		externalMemoryBufferDesc.size = vertexBufferSize;
+		externalMemoryBufferDesc.flags = 0;
 
 		checkCudaErrors(cudaExternalMemoryGetMappedBuffer(&m_cudaDevVertptr, m_externalMemory, &externalMemoryBufferDesc));
-		RunSineWaveKernel(vertBufWidth, vertBufHeight, (Vertex *)m_cudaDevVertptr, m_streamToRun, 1.0f);
+		RunSineWaveKernel(vertBufWidth, vertBufHeight, (Vertex*)m_cudaDevVertptr, m_streamToRun, 1.0f);
 		checkCudaErrors(cudaStreamSynchronize(m_streamToRun));
-
 	}
 
 	// Create synchronization objects and wait until assets have been uploaded to the GPU.
@@ -374,11 +357,11 @@ void DX12CudaInterop::LoadAssets()
 
 		memset(&externalSemaphoreHandleDesc, 0, sizeof(externalSemaphoreHandleDesc));
 		WindowsSecurityAttributes windowsSecurityAttributes;
-		LPCWSTR name = NULL;
+		LPCWSTR name{nullptr};
 		HANDLE sharedHandle;
 		externalSemaphoreHandleDesc.type = cudaExternalSemaphoreHandleTypeD3D12Fence;
 		m_device->CreateSharedHandle(m_fence.Get(), &windowsSecurityAttributes, GENERIC_ALL, name, &sharedHandle);
-		externalSemaphoreHandleDesc.handle.win32.handle = (void *)sharedHandle;
+		externalSemaphoreHandleDesc.handle.win32.handle = (void*)sharedHandle;
 		externalSemaphoreHandleDesc.flags = 0;
 
 		checkCudaErrors(cudaImportExternalSemaphore(&m_externalSemaphore, &externalSemaphoreHandleDesc));
@@ -392,9 +375,8 @@ void DX12CudaInterop::LoadAssets()
 			ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()));
 		}
 
-		// Wait for the command list to execute; we are reusing the same command 
-		// list in our main loop but for now, we just want to wait for setup to 
-		// complete before continuing.
+		// Wait for the command list to execute; we are reusing the same command list in our main loop but for now,
+		// we just want to wait for setup to complete before continuing.
 		WaitForGpu();
 	}
 }
@@ -406,14 +388,14 @@ void DX12CudaInterop::OnRender()
 	PopulateCommandList();
 
 	// Execute the command list.
-	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
+	ID3D12CommandList* ppCommandLists[]{ m_commandList.Get() };
 	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	// Present the frame.
 	ThrowIfFailed(m_swapChain->Present(1, 0));
 
 	// Schedule a Signal command in the queue.
-	const UINT64 currentFenceValue = m_fenceValues[m_frameIndex];
+	const UINT64 currentFenceValue{m_fenceValues[m_frameIndex]};
 	ThrowIfFailed(m_commandQueue->Signal(m_fence.Get(), currentFenceValue));
 
 	MoveToNextFrame();
@@ -421,8 +403,7 @@ void DX12CudaInterop::OnRender()
 
 void DX12CudaInterop::OnDestroy()
 {
-	// Ensure that the GPU is no longer referencing resources that are about to be
-	// cleaned up by the destructor.
+	// Ensure that the GPU is no longer referencing resources that are about to be cleaned up by the destructor.
 	WaitForGpu();
 	checkCudaErrors(cudaDestroyExternalSemaphore(m_externalSemaphore));
 	checkCudaErrors(cudaDestroyExternalMemory(m_externalMemory));
@@ -431,14 +412,12 @@ void DX12CudaInterop::OnDestroy()
 
 void DX12CudaInterop::PopulateCommandList()
 {
-	// Command list allocators can only be reset when the associated 
-	// command lists have finished execution on the GPU; apps should use 
-	// fences to determine GPU execution progress.
+	// Command list allocators can only be reset when the associated command lists have finished execution on the GPU;
+	// apps should use fences to determine GPU execution progress.
 	ThrowIfFailed(m_commandAllocators[m_frameIndex]->Reset());
 
-	// However, when ExecuteCommandList() is called on a particular command 
-	// list, that command list can then be reset at any time and must be before 
-	// re-recording.
+	// However, when ExecuteCommandList() is called on a particular command list,
+	// that command list can then be reset at any time and must be before re-recording.
 	ThrowIfFailed(m_commandList->Reset(m_commandAllocators[m_frameIndex].Get(), m_pipelineState.Get()));
 
 	m_commandList->SetGraphicsRootSignature(m_rootSignature.Get());
@@ -448,20 +427,22 @@ void DX12CudaInterop::PopulateCommandList()
 	m_commandList->RSSetScissorRects(1, &m_scissorRect);
 
 	// Indicate that the back buffer will be used as a render target.
-	//m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET));
+	auto trans1{CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET)};
+	m_commandList->ResourceBarrier(1, &trans1);
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_rtvHeap->GetCPUDescriptorHandleForHeapStart(), m_frameIndex, m_rtvDescriptorSize);
 	m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
 
 	// Record commands.
-	const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
+	const float clearColor[]{ 0.0f, 0.2f, 0.4f, 1.0f };
 	m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 	m_commandList->IASetVertexBuffers(0, 1, &m_vertexBufferView);
 	m_commandList->DrawInstanced(vertBufHeight*vertBufWidth, 1, 0, 0);
 
 	// Indicate that the back buffer will now be used to present.
-	//m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
+	auto trans2{CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT)};
+	m_commandList->ResourceBarrier(1, &trans2);
 
 	ThrowIfFailed(m_commandList->Close());
 }
@@ -483,7 +464,7 @@ void DX12CudaInterop::WaitForGpu()
 // Prepare to render the next frame.
 void DX12CudaInterop::MoveToNextFrame()
 {
-	const UINT64 currentFenceValue = m_fenceValues[m_frameIndex];
+	const UINT64 currentFenceValue{m_fenceValues[m_frameIndex]};
 	cudaExternalSemaphoreWaitParams externalSemaphoreWaitParams;
 	memset(&externalSemaphoreWaitParams, 0, sizeof(externalSemaphoreWaitParams));
 
@@ -493,7 +474,7 @@ void DX12CudaInterop::MoveToNextFrame()
 	checkCudaErrors(cudaWaitExternalSemaphoresAsync(&m_externalSemaphore, &externalSemaphoreWaitParams, 1, m_streamToRun));
 
 	m_AnimTime += 0.01f;
-	RunSineWaveKernel(vertBufWidth, vertBufHeight, (Vertex *)m_cudaDevVertptr, m_streamToRun, m_AnimTime);
+	RunSineWaveKernel(vertBufWidth, vertBufHeight, (Vertex*)m_cudaDevVertptr, m_streamToRun, m_AnimTime);
 
 	cudaExternalSemaphoreSignalParams externalSemaphoreSignalParams;
 	memset(&externalSemaphoreSignalParams, 0, sizeof(externalSemaphoreSignalParams));
