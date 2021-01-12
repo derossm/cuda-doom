@@ -35,25 +35,14 @@ namespace cudadoom::opl
 
 class Channel : public ChannelBase
 {
-	/*std::array<Byte<int16_t>*, 4> out;
-
-	std::array<Slot*, 2> slots;
-	ChipBase* chip;
-
-	Channel* pair;
-
-	Byte<uint8_t> chtype;
-	Byte<uint16_t> f_num;
-	Byte<uint8_t> block;
-	Byte<uint8_t> fb;
-	Byte<uint8_t> con;
-	Byte<uint8_t> alg;
-	Byte<uint8_t> ksv;
-	Byte<uint16_t> cha;
-	Byte<uint16_t> chb;
-	Byte<uint8_t> ch_num;*/
+private:
 
 public:
+	std::array<Slot*, 2> slots;
+	std::array<Byte<int16_t>*, 4> channel_out;
+
+	Channel* pair{nullptr};
+	ChipBase* chip{nullptr};
 
 	void ChannelSetupAlg()
 	{
@@ -61,19 +50,19 @@ public:
 		{
 			if (ch_num == 7 || ch_num == 8)
 			{
-				slots[0]->mod = &chip->zeromod;
-				slots[1]->mod = &chip->zeromod;
+				slots[0]->slot_mod = &chip->zeromod;
+				slots[1]->slot_mod = &chip->zeromod;
 				return;
 			}
 			switch (alg & 0x01)
 			{
 			case 0x00:
-				slots[0]->mod = &slots[0]->fbmod;
-				slots[1]->mod = &slots[0]->out;
+				slots[0]->slot_mod = &slots[0]->fbmod;
+				slots[1]->slot_mod = &slots[0]->slot_out;
 				break;
 			case 0x01:
-				slots[0]->mod = &slots[0]->fbmod;
-				slots[1]->mod = &chip->zeromod;
+				slots[0]->slot_mod = &slots[0]->fbmod;
+				slots[1]->slot_mod = &chip->zeromod;
 				break;
 			}
 			return;
@@ -84,51 +73,47 @@ public:
 		}
 		if (alg & 0x04)
 		{
-			pair->out[0] = &chip->zeromod;
-			pair->out[1] = &chip->zeromod;
-			pair->out[2] = &chip->zeromod;
-			pair->out[3] = &chip->zeromod;
+			// if alg & 0x04, then one of the 4 must be true
+			pair->channel_out[0] = &chip->zeromod;
+			pair->channel_out[1] = &chip->zeromod;
+			pair->channel_out[2] = &chip->zeromod;
+			pair->channel_out[3] = &chip->zeromod;
+
+			pair->slots[0]->slot_mod = &pair->slots[0]->fbmod;
+			channel_out[3] = &chip->zeromod;
 			switch (alg & 0x03)
 			{
 			case 0x00:
-				pair->slots[0]->mod = &pair->slots[0]->fbmod;
-				pair->slots[1]->mod = &pair->slots[0]->out;
-				slots[0]->mod = &pair->slots[1]->out;
-				slots[1]->mod = &slots[0]->out;
-				out[0] = &slots[1]->out;
-				out[1] = &chip->zeromod;
-				out[2] = &chip->zeromod;
-				out[3] = &chip->zeromod;
+				pair->slots[1]->slot_mod = &pair->slots[0]->slot_out;
+				slots[0]->slot_mod = &pair->slots[1]->slot_out;
+				slots[1]->slot_mod = &slots[0]->slot_out;
+				channel_out[0] = &slots[1]->slot_out;
+				channel_out[1] = &chip->zeromod;
+				channel_out[2] = &chip->zeromod;
 				break;
 			case 0x01:
-				pair->slots[0]->mod = &pair->slots[0]->fbmod;
-				pair->slots[1]->mod = &pair->slots[0]->out;
-				slots[0]->mod = &chip->zeromod;
-				slots[1]->mod = &slots[0]->out;
-				out[0] = &pair->slots[1]->out;
-				out[1] = &slots[1]->out;
-				out[2] = &chip->zeromod;
-				out[3] = &chip->zeromod;
+				pair->slots[1]->slot_mod = &pair->slots[0]->slot_out;
+				slots[0]->slot_mod = &chip->zeromod;
+				slots[1]->slot_mod = &slots[0]->slot_out;
+				channel_out[0] = &pair->slots[1]->slot_out;
+				channel_out[1] = &slots[1]->slot_out;
+				channel_out[2] = &chip->zeromod;
 				break;
 			case 0x02:
-				pair->slots[0]->mod = &pair->slots[0]->fbmod;
-				pair->slots[1]->mod = &chip->zeromod;
-				slots[0]->mod = &pair->slots[1]->out;
-				slots[1]->mod = &slots[0]->out;
-				out[0] = &pair->slots[0]->out;
-				out[1] = &slots[1]->out;
-				out[2] = &chip->zeromod;
-				out[3] = &chip->zeromod;
+				pair->slots[1]->slot_mod = &chip->zeromod;
+				slots[0]->slot_mod = &pair->slots[1]->slot_out;
+				slots[1]->slot_mod = &slots[0]->slot_out;
+				channel_out[0] = &pair->slots[0]->slot_out;
+				channel_out[1] = &slots[1]->slot_out;
+				channel_out[2] = &chip->zeromod;
 				break;
 			case 0x03:
-				pair->slots[0]->mod = &pair->slots[0]->fbmod;
-				pair->slots[1]->mod = &chip->zeromod;
-				slots[0]->mod = &pair->slots[1]->out;
-				slots[1]->mod = &chip->zeromod;
-				out[0] = &pair->slots[0]->out;
-				out[1] = &slots[0]->out;
-				out[2] = &slots[1]->out;
-				out[3] = &chip->zeromod;
+				pair->slots[1]->slot_mod = &chip->zeromod;
+				slots[0]->slot_mod = &pair->slots[1]->slot_out;
+				slots[1]->slot_mod = &chip->zeromod;
+				channel_out[0] = &pair->slots[0]->slot_out;
+				channel_out[1] = &slots[0]->slot_out;
+				channel_out[2] = &slots[1]->slot_out;
 				break;
 			}
 		}
@@ -137,20 +122,20 @@ public:
 			switch (alg & 0x01)
 			{
 			case 0x00:
-				slots[0]->mod = &slots[0]->fbmod;
-				slots[1]->mod = &slots[0]->out;
-				out[0] = &slots[1]->out;
-				out[1] = &chip->zeromod;
-				out[2] = &chip->zeromod;
-				out[3] = &chip->zeromod;
+				slots[0]->slot_mod = &slots[0]->fbmod;
+				slots[1]->slot_mod = &slots[0]->slot_out;
+				channel_out[0] = &slots[1]->slot_out;
+				channel_out[1] = &chip->zeromod;
+				channel_out[2] = &chip->zeromod;
+				channel_out[3] = &chip->zeromod;
 				break;
 			case 0x01:
-				slots[0]->mod = &slots[0]->fbmod;
-				slots[1]->mod = &chip->zeromod;
-				out[0] = &slots[0]->out;
-				out[1] = &slots[1]->out;
-				out[2] = &chip->zeromod;
-				out[3] = &chip->zeromod;
+				slots[0]->slot_mod = &slots[0]->fbmod;
+				slots[1]->slot_mod = &chip->zeromod;
+				channel_out[0] = &slots[0]->slot_out;
+				channel_out[1] = &slots[1]->slot_out;
+				channel_out[2] = &chip->zeromod;
+				channel_out[3] = &chip->zeromod;
 				break;
 			}
 		}
@@ -231,7 +216,8 @@ public:
 		}
 		else
 		{
-			cha = chb = static_cast<Byte<uint16_t>>(~0);
+			chb = static_cast<Byte<uint16_t>>(~0);
+			cha = chb;
 		}
 	}
 

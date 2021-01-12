@@ -201,7 +201,7 @@ auto ReadPort(opl_port_t port)
 	}
 	else
 	{
-		return std::byte(0x00);
+		return ::std::byte(0x00);
 	}
 }
 

@@ -24,20 +24,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Any settings that should apply to all targets in this directory and all subdirectories should go here. Use judiciously.
 if(MSVC)
 	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
-	add_compile_options(
-		"/Zc:__cplusplus"
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MD"
-		"/permissive-" "/Zc:preprocessor"
-		"/W4" "/Od" "/arch:AVX2"
-		#"/wC4005"
-		#"/experimental:module"
-		#"/Zc:externConstexpr"
-		)
-	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX"
-							"SDL_MAIN_HANDLED"
-							"MICROSOFT_WINDOWS_WINBASE_H_DEFINE_INTERLOCKED_CPLUSPLUS_OVERLOADS")
+#	add_compile_options(
+#		"/Zc:__cplusplus"
+#		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MD"
+#		"/permissive-" "/Zc:preprocessor"
+#		"/W4" "/Od" "/arch:AVX2"
+#		#"/wC4005"
+#		#"/experimental:module"
+#		#"/Zc:externConstexpr"
+#		)
+#	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX"
+#							"SDL_MAIN_HANDLED"
+#							"MICROSOFT_WINDOWS_WINBASE_H_DEFINE_INTERLOCKED_CPLUSPLUS_OVERLOADS")
 else()
-	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
+#	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 endif()
 
 set(VCPKG_DIR "G:/dev/vcpkg/packages")
@@ -72,6 +72,11 @@ find_package(SDL2 2.0.0 REQUIRED)
 find_package(SDL2_mixer 2.0.0 REQUIRED)
 find_package(SDL2_net 2.0.0 REQUIRED)
 
+find_package(FREEGLUT REQUIRED)
+#find_package(CUDA REQUIRED)
+
+enable_language(CUDA)
+
 string(CONCAT WINDOWS_RC_VERSION "${PROJECT_VERSION_MAJOR}, " "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")
 
 # Without a hyphen. This is used for the bash-completion scripts.
@@ -85,6 +90,6 @@ configure_file(src/resource.rc.in src/resource.rc)
 configure_file(src/setup-res.rc.in src/setup-res.rc)
 configure_file(src/setup/setup-manifest.xml.in src/setup/setup-manifest.xml)
 
-foreach(SUBDIR derma textscreen midiproc opl pcsound src)
+foreach(SUBDIR derma directx textscreen midiproc opl pcsound src)
 	add_subdirectory("${SUBDIR}")
 endforeach()

@@ -155,7 +155,7 @@ static void QuitConfirm(void* unused1, void* unused2)
 
 static void LaunchDoom(void* unused1, void* unused2)
 {
-	execute_context_t* exec;
+	ExecuteContext* exec;
 
 	// Save configuration first
 

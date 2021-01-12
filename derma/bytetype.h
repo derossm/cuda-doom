@@ -40,411 +40,85 @@ public:
 
 	// BOILER PLATE FROM HERE TO END
 	/* #region BoilerPlate */
+
+	//==========================================================================
+	// user-defined conversion functions
+	constexpr explicit operator bool() const noexcept
+	{
+		return static_cast<bool>(bits) != 0;
+	}
+
+	/*constexpr explicit operator uint64_t() const noexcept
+	{
+		return static_cast<uint64_t>(bits);
+	}*/
+
+	/*constexpr explicit operator int64_t() const noexcept
+	{
+		return static_cast<int64_t>(bits);
+	}*/
+
+	constexpr explicit operator uint32_t() const noexcept
+	{
+		return static_cast<uint32_t>(bits);
+	}
+
+	constexpr explicit operator int32_t() const noexcept
+	{
+		return static_cast<int32_t>(bits);
+	}
+
+	constexpr explicit operator uint16_t() const noexcept
+	{
+		return static_cast<uint16_t>(bits);
+	}
+
+	constexpr explicit operator int16_t() const noexcept
+	{
+		return static_cast<int16_t>(bits);
+	}
+
+	constexpr explicit operator uint8_t() const noexcept
+	{
+		return static_cast<uint8_t>(bits);
+	}
+
+	constexpr explicit operator int8_t() const noexcept
+	{
+		return static_cast<int8_t>(bits);
+	}
+
+	constexpr explicit operator wchar_t() const noexcept
+	{
+		return static_cast<wchar_t>(bits);
+	}
+
+	constexpr explicit operator char32_t() const noexcept
+	{
+		return static_cast<char32_t>(bits);
+	}
+
+	constexpr explicit operator char16_t() const noexcept
+	{
+		return static_cast<char16_t>(bits);
+	}
+
+	constexpr explicit operator char8_t() const noexcept
+	{
+		return static_cast<char8_t>(bits);
+	}
+
+	constexpr explicit operator ptrdiff_t() const noexcept
+	{
+		return static_cast<ptrdiff_t>(bits);
+	}
+
 	constexpr operator size_t() const noexcept
 	{
 		return static_cast<size_t>(bits);
 	}
 
-	//=====
-	// unary
-	constexpr inline bool operator!() const noexcept
-	{
-		return static_cast<bool>(bits) != 0;
-	}
-
-	constexpr inline Byte<T, N>& operator~() noexcept
-	{
-		bits = ~static_cast<T>(bits);
-		//bits = ~bits;
-		return *this;
-	}
-
-	constexpr inline Byte<T, N>& operator++() noexcept
-	{
-		bits = static_cast<T>(bits) + 1;
-		//++bits;
-		return *this;
-	}
-
-	constexpr inline Byte<T, N>& operator--() noexcept
-	{
-		bits = static_cast<T>(bits) - 1;
-		//--bits;
-		return *this;
-	}
-
-	//=====
-	// special by constant-ref
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator->() const noexcept {}
-
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator->*() const noexcept {}
-
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator()() const noexcept {}
-
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator[]() const noexcept {}
-
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator, () const noexcept = delete;
-
-	// special by forwarding-ref
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator->() const noexcept {}
-
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator->*() const noexcept {}
-
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator()() const noexcept {}
-
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator[]() const noexcept {}
-
-	//template<typename U>
-		//requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	//constexpr inline bool operator, () const noexcept = delete;
-
-	//=====
-	// shift (assignment) by const-ref
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline Byte<T, N>& operator>>=(const U& other) noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			bits = static_cast<T>(static_cast<T>(bits) >> static_cast<T>(other.bits));
-			return *this;
-		}
-
-		bits = static_cast<T>(static_cast<U>(bits) >> other);
-		return *this;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline Byte<T, N>& operator<<=(const U& other) noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			bits = static_cast<T>(static_cast<T>(bits) << static_cast<T>(other.bits));
-			return *this;
-		}
-
-		bits = static_cast<T>(static_cast<U>(bits) << other);
-		return *this;
-	}
-
-	// shift (assignment) by forwarding-ref
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline Byte<T, N>& operator<<=(U&& other) noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			bits = static_cast<T>(static_cast<T>(bits) << static_cast<T>(other.bits));
-			return *this;
-		}
-
-		bits = static_cast<T>(static_cast<U>(bits) << other);
-		return *this;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline Byte<T, N>& operator>>=(U&& other) noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			bits = static_cast<T>(static_cast<T>(bits) >> static_cast<T>(other.bits));
-			return *this;
-		}
-
-		bits = static_cast<T>(static_cast<U>(bits) >> other);
-		return *this;
-	}
-
-	// shift (non-assignment) by const-ref
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator<<(const U& other) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return static_cast<T>(bits) << static_cast<T>(other.bits);
-		}
-
-		return static_cast<U>(bits) << other;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator>>(const U& other) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return static_cast<T>(bits) >> static_cast<T>(other.bits);
-		}
-
-		return static_cast<U>(bits) >> other;
-	}
-
-	// shift (non-assignment) by forwarding-ref
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator<<(U&& other) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return static_cast<T>(bits) << static_cast<T>(other.bits);
-		}
-
-		return static_cast<U>(bits) << other;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator>>(U&& other) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return static_cast<T>(bits) >> static_cast<T>(other.bits);
-		}
-
-		return static_cast<U>(bits) >> other;
-	}
-
-	//=====
-	// comparison by const-ref
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator==(const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) == static_cast<T>(rhs.bits)) == 0;
-		}
-
-		return (static_cast<U>(bits) == rhs) == 0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator!=(const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) != static_cast<T>(rhs.bits)) != 0;
-		}
-
-		return (static_cast<U>(bits) != rhs) != 0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator< (const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) < static_cast<T>(rhs.bits)) < 0;
-		}
-
-		return (static_cast<U>(bits) <  rhs) <  0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator<=(const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) <= static_cast<T>(rhs.bits)) <= 0;
-		}
-
-		return (static_cast<U>(bits) <= rhs) <= 0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator> (const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) > static_cast<T>(rhs.bits)) > 0;
-		}
-
-		return (static_cast<U>(bits) >  rhs) >  0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator>=(const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) >= static_cast<T>(rhs.bits)) >= 0;
-		}
-
-		return (static_cast<U>(bits) >= rhs) >= 0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline auto operator<=>(const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return static_cast<T>(bits) <=> static_cast<T>(rhs.bits);
-		}
-
-		return static_cast<U>(bits) <=> rhs;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator||(const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) || static_cast<T>(rhs.bits));
-		}
-
-		return (static_cast<U>(bits) || rhs);
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator&&(const U& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) && static_cast<T>(rhs.bits));
-		}
-
-		return (static_cast<U>(bits) && rhs);
-	}
-
-	// comparison by forwarding-ref
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator==(U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) == static_cast<T>(rhs.bits)) == 0;
-		}
-
-		return (static_cast<U>(bits) == rhs) == 0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator!=(U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) != static_cast<T>(rhs.bits)) != 0;
-		}
-
-		return (static_cast<U>(bits) != rhs) != 0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator< (U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) < static_cast<T>(rhs.bits)) < 0;
-		}
-
-		return (static_cast<U>(bits) <  rhs) <  0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator<=(U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) <= static_cast<T>(rhs.bits)) <= 0;
-		}
-
-		return (static_cast<U>(bits) <= rhs) <= 0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator> (U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) > static_cast<T>(rhs.bits)) > 0;
-		}
-
-		return (static_cast<U>(bits) >  rhs) >  0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator>=(U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) >= static_cast<T>(rhs.bits)) >= 0;
-		}
-
-		return (static_cast<U>(bits) >= rhs) >= 0;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline auto operator<=>(U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return static_cast<T>(bits) <=> static_cast<T>(rhs.bits);
-		}
-
-		return static_cast<U>(bits) <=> rhs;
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator||(U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) || static_cast<T>(rhs.bits));
-		}
-
-		return (static_cast<U>(bits) || rhs);
-	}
-
-	template<typename U>
-		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline bool operator&&(U&& rhs) const noexcept
-	{
-		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-		{
-			return (static_cast<T>(bits) && static_cast<T>(rhs.bits));
-		}
-
-		return (static_cast<U>(bits) && rhs);
-	}
-
-	//=====
+	//==========================================================================
 	// assignment by const-ref
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
@@ -463,7 +137,7 @@ public:
 		else if constexpr (::std::is_class_v<U>)
 		{
 
-			bits = static_cast<T>(other.bits);
+			bits = other.bits;
 			return *this;
 		}
 
@@ -489,7 +163,7 @@ public:
 		else if constexpr (::std::is_class_v<U>)
 		{
 
-			bits = static_cast<T>(other.bits);
+			bits = other.bits;
 			return *this;
 		}
 
@@ -497,205 +171,613 @@ public:
 		return *this;
 	}
 
-	//=====
+	//==========================================================================
+	// unary
+	constexpr inline bool operator!() const noexcept
+	{
+		return static_cast<bool>(bits) != 0;
+	}
+
+	constexpr inline T operator-() const noexcept
+	{
+		return static_cast<T>(0ll - static_cast<int64_t>(bits));
+	}
+
+	constexpr inline Byte<T, N>& operator~() noexcept
+	{
+		bits = static_cast<T>(~bits);
+		//bits = ~bits;
+		return *this;
+	}
+
+	constexpr inline Byte<T, N>& operator++() noexcept
+	{
+		bits = static_cast<T>(bits + 1);
+		//++bits;
+		return *this;
+	}
+
+	constexpr inline Byte<T, N>& operator--() noexcept
+	{
+		bits = static_cast<T>(bits - 1);
+		//--bits;
+		return *this;
+	}
+
+	//==========================================================================
+	// logical comparison by const-ref
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator||(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits || other.bits) || 0;
+		}
+
+		return (static_cast<U>(bits) || other) || 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator&&(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits && other.bits) && 1;
+		}
+
+		return (static_cast<U>(bits) && other) && 1;
+	}
+
+	// logical comparison by forwarding-ref
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator||(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits || other.bits) || 0;
+		}
+
+		return (static_cast<U>(bits) || other) || 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator&&(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits && other.bits) && 1;
+		}
+
+		return (static_cast<U>(bits) && other) && 1;
+	}
+
+	//==========================================================================
+	// special by constant-ref
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator->() const noexcept {}
+
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator->*() const noexcept {}
+
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator()() const noexcept {}
+
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator[]() const noexcept {}
+
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator, () const noexcept {}
+
+	// special by forwarding-ref
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator->() const noexcept {}
+
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator->*() const noexcept {}
+
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator()() const noexcept {}
+
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator[]() const noexcept {}
+
+	//template<typename U>
+	//	requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	//constexpr inline auto operator, () const noexcept {}
+
+	//==========================================================================
+	// shift (assignment) by const-ref
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline Byte<T, N>& operator>>=(const U& other) noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			bits = static_cast<T>(bits >> other.bits);
+			return *this;
+		}
+
+		bits = static_cast<T>(bits >> other);
+		return *this;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline Byte<T, N>& operator<<=(const U& other) noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			bits = static_cast<T>(bits << other.bits);
+			return *this;
+		}
+
+		bits = static_cast<T>(bits << other);
+		return *this;
+	}
+
+	// shift (assignment) by forwarding-ref
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline Byte<T, N>& operator<<=(U&& other) noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			bits = static_cast<T>(bits << other.bits);
+			return *this;
+		}
+
+		bits = static_cast<T>(bits << other);
+		return *this;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline Byte<T, N>& operator>>=(U&& other) noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			bits = static_cast<T>(bits >> other.bits);
+			return *this;
+		}
+
+		bits = static_cast<T>(bits >> other);
+		return *this;
+	}
+
+	//==========================================================================
+	// shift (non-assignment) by const-ref
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline T operator<<(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return static_cast<T>(bits << other.bits);
+		}
+
+		return static_cast<T>(bits << other);
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline T operator>>(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return static_cast<T>(bits >> other.bits);
+		}
+
+		return static_cast<T>(bits >> other);
+	}
+
+	// shift (non-assignment) by forwarding-ref
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline T operator<<(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return static_cast<T>(bits << other.bits);
+		}
+
+		return static_cast<T>(bits << other);
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline T operator>>(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return static_cast<T>(bits >> other.bits);
+		}
+
+		return static_cast<T>(bits >> other);
+	}
+
+	//==========================================================================
+	// comparison by const-ref
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator==(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits == other.bits) == 0;
+		}
+
+		return (static_cast<U>(bits) == other) == 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator!=(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits != other.bits) != 0;
+		}
+
+		return (static_cast<U>(bits) != other) != 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator< (const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits < other.bits) < 0;
+		}
+
+		return (static_cast<U>(bits) <  other) <  0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator<=(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits <= other.bits) <= 0;
+		}
+
+		return (static_cast<U>(bits) <= other) <= 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator> (const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits > other.bits) > 0;
+		}
+
+		return (static_cast<U>(bits) >  other) >  0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator>=(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits >= other.bits) >= 0;
+		}
+
+		return (static_cast<U>(bits) >= other) >= 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline auto operator<=>(const U& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return bits <=> other.bits;
+		}
+
+		return static_cast<U>(bits) <=> other;
+	}
+
+	// comparison by forwarding-ref
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator==(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits == other.bits) == 0;
+		}
+
+		return (static_cast<U>(bits) == other) == 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator!=(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits != other.bits) != 0;
+		}
+
+		return (static_cast<U>(bits) != other) != 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator< (U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits < other.bits) < 0;
+		}
+
+		return (static_cast<U>(bits) <  other) <  0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator<=(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits <= other.bits) <= 0;
+		}
+
+		return (static_cast<U>(bits) <= other) <= 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator> (U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits > other.bits) > 0;
+		}
+
+		return (static_cast<U>(bits) >  other) >  0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline bool operator>=(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return (bits >= other.bits) >= 0;
+		}
+
+		return (static_cast<U>(bits) >= other) >= 0;
+	}
+
+	template<typename U>
+		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+	constexpr inline auto operator<=>(U&& other) const noexcept
+	{
+		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
+		{
+			return bits <=> other.bits;
+		}
+
+		return static_cast<U>(bits) <=> other;
+	}
+
+	//==========================================================================
 	// bitwise (assignment) by const-ref
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator|(const U& other) const noexcept
+	constexpr inline T operator|(const U& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) | static_cast<T>(other.bits);
+			return bits | other.bits;
 		}
 
-		return static_cast<U>(bits) | other;
+		return static_cast<T>(static_cast<U>(bits) | other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator&(const U& other) const noexcept
+	constexpr inline T operator&(const U& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) & static_cast<T>(other.bits);
+			return bits & other.bits;
 		}
 
-		return static_cast<U>(bits) & other;
+		return static_cast<T>(static_cast<U>(bits) & other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator^(const U& other) const noexcept
+	constexpr inline T operator^(const U& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) ^ static_cast<T>(other.bits);
+			return bits ^ other.bits;
 		}
 
-		return static_cast<U>(bits) ^ other;
+		return static_cast<T>(static_cast<U>(bits) ^ other);
 	}
 
 	// bitwise (non-assignment) by forwarding-ref
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator|(U&& other) const noexcept
+	constexpr inline T operator|(U&& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) | static_cast<T>(other.bits);
+			return bits | other.bits;
 		}
 
-		return static_cast<U>(bits) | other;
+		return static_cast<T>(static_cast<U>(bits) | other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator&(U&& other) const noexcept
+	constexpr inline T operator&(U&& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) & static_cast<T>(other.bits);
+			return bits & other.bits;
 		}
 
-		return static_cast<U>(bits) & other;
+		return static_cast<T>(static_cast<U>(bits) & other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator^(U&& other) const noexcept
+	constexpr inline T operator^(U&& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) ^ static_cast<T>(other.bits);
+			return bits ^ other.bits;
 		}
 
-		return static_cast<U>(bits) ^ other;
+		return static_cast<T>(static_cast<U>(bits) ^ other);
 	}
 
-	//=====
+	//==========================================================================
 	// arithmetic (non-assignment) by const-ref
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator+(const U& other) const noexcept
+	constexpr inline T operator+(const U& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) + static_cast<T>(other.bits);
+			return bits + other.bits;
 		}
 
-		return static_cast<U>(bits) + other;
+		return static_cast<T>(static_cast<U>(bits) + other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator-(const U& other) const noexcept
+	constexpr inline T operator-(const U& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) - static_cast<T>(other.bits);
+			return bits - other.bits;
 		}
 
-		return static_cast<U>(bits) - other;
+		return static_cast<T>(static_cast<U>(bits) - other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator*(const U& other) const noexcept
+	constexpr inline T operator*(const U& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) * static_cast<T>(other.bits);
+			return bits * other.bits;
 		}
 
-		return static_cast<U>(bits) * other;
+		return static_cast<T>(static_cast<U>(bits) * other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator/(const U& other) const noexcept
+	constexpr inline T operator/(const U& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) / static_cast<T>(other.bits);
+			return bits / other.bits;
 		}
 
-		return static_cast<U>(bits) / other;
+		return static_cast<T>(static_cast<U>(bits) / other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator%(const U& other) const noexcept
+	constexpr inline T operator%(const U& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) / static_cast<T>(other.bits);
+			return bits / other.bits;
 		}
 
-		return static_cast<U>(bits) % other;
+		return static_cast<T>(static_cast<U>(bits) % other);
 	}
 
 	// arithmetic (non-assignment) by forwarding-ref
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator+(U&& other) const noexcept
+	constexpr inline T operator+(U&& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) + static_cast<T>(other.bits);
+			return bits + other.bits;
 		}
 
-		return static_cast<U>(bits) + other;
+		return static_cast<T>(static_cast<U>(bits) + other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator-(U&& other) const noexcept
+	constexpr inline T operator-(U&& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) - static_cast<T>(other.bits);
+			return bits - other.bits;
 		}
 
-		return static_cast<U>(bits) - other;
+		return static_cast<T>(static_cast<U>(bits) - other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator*(U&& other) const noexcept
+	constexpr inline T operator*(U&& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) * static_cast<T>(other.bits);
+			return bits * other.bits;
 		}
 
-		return static_cast<U>(bits) * other;
+		return static_cast<T>(static_cast<U>(bits) * other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator/(U&& other) const noexcept
+	constexpr inline T operator/(U&& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) / static_cast<T>(other.bits);
+			return bits / other.bits;
 		}
 
-		return static_cast<U>(bits) / other;
+		return static_cast<T>(static_cast<U>(bits) / other);
 	}
 
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
-	constexpr inline U operator%(U&& other) const noexcept
+	constexpr inline T operator%(U&& other) const noexcept
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			return static_cast<T>(bits) / static_cast<T>(other.bits);
+			return bits / other.bits;
 		}
 
-		return static_cast<U>(bits) % other;
+		return static_cast<T>(static_cast<U>(bits) % other);
 	}
 
-	//=====
+	//==========================================================================
 	// bitwise (assignment) by const-ref
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
@@ -782,6 +864,7 @@ public:
 		return *this;
 	}
 
+	//==========================================================================
 	// arithmetic (assignment) by const-ref
 	template<typename U>
 		requires (std::is_integral_v<U> || ::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
@@ -789,7 +872,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) + static_cast<T>(other.bits));
+			bits = static_cast<T>(bits + other.bits);
 			return *this;
 		}
 
@@ -803,7 +886,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) - static_cast<T>(other.bits));
+			bits = static_cast<T>(bits - other.bits);
 			return *this;
 		}
 
@@ -817,7 +900,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) * static_cast<T>(other.bits));
+			bits = static_cast<T>(bits * other.bits);
 			return *this;
 		}
 
@@ -831,7 +914,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) / static_cast<T>(other.bits));
+			bits = static_cast<T>(bits / other.bits);
 			return *this;
 		}
 
@@ -845,7 +928,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) % static_cast<T>(other.bits));
+			bits = static_cast<T>(bits % other.bits);
 			return *this;
 		}
 
@@ -860,7 +943,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) + static_cast<T>(other.bits));
+			bits = static_cast<T>(bits + other.bits);
 			return *this;
 		}
 
@@ -874,7 +957,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) - static_cast<T>(other.bits));
+			bits = static_cast<T>(bits - other.bits);
 			return *this;
 		}
 
@@ -888,7 +971,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) * static_cast<T>(other.bits));
+			bits = static_cast<T>(bits * other.bits);
 			return *this;
 		}
 
@@ -902,7 +985,7 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) / static_cast<T>(other.bits));
+			bits = static_cast<T>(bits / other.bits);
 			return *this;
 		}
 
@@ -916,17 +999,35 @@ public:
 	{
 		if constexpr (::std::is_same_v<U, Byte<T, N>> || ::std::is_class_v<U>)
 		{
-			bits = static_cast<T>(static_cast<T>(bits) % static_cast<T>(other.bits));
+			bits = static_cast<T>(bits % other.bits);
 			return *this;
 		}
 
 		bits = static_cast<T>(static_cast<U>(bits) % other);
 		return *this;
 	}
+
 //==============================================================================
 // friends
 
-	//=====
+	//==========================================================================
+	// logical comparison by const-ref
+	template<typename T, size_t N, typename U>
+		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
+	friend constexpr inline bool operator||(const U& lhs, const Byte<T, N>& rhs) noexcept;
+	template<typename T, size_t N, typename U>
+		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
+	friend constexpr inline bool operator&&(const U& lhs, const Byte<T, N>& rhs) noexcept;
+
+	// logical comparison by forwarding-ref
+	template<typename T, size_t N, typename U>
+		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
+	friend constexpr inline bool operator||(U&& lhs, Byte<T, N>&& rhs) noexcept;
+	template<typename T, size_t N, typename U>
+		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
+	friend constexpr inline bool operator&&(U&& lhs, Byte<T, N>&& rhs) noexcept;
+
+	//==========================================================================
 	// comparison by const-ref
 	template<typename T, size_t N, typename U>
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -949,12 +1050,6 @@ public:
 	template<typename T, size_t N, typename U>
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
 	friend constexpr inline auto operator<=>(const U& lhs, const Byte<T, N>& rhs) noexcept;
-	template<typename T, size_t N, typename U>
-		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
-	friend constexpr inline bool operator||(const U& lhs, const Byte<T, N>& rhs) noexcept;
-	template<typename T, size_t N, typename U>
-		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
-	friend constexpr inline bool operator&&(const U& lhs, const Byte<T, N>& rhs) noexcept;
 
 	// comparison by forwarding-ref
 	template<typename T, size_t N, typename U>
@@ -978,14 +1073,8 @@ public:
 	template<typename T, size_t N, typename U>
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
 	friend constexpr inline auto operator<=>(U&& lhs, Byte<T, N>&& rhs) noexcept;
-	template<typename T, size_t N, typename U>
-		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
-	friend constexpr inline bool operator||(U&& lhs, Byte<T, N>&& rhs) noexcept;
-	template<typename T, size_t N, typename U>
-		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
-	friend constexpr inline bool operator&&(U&& lhs, Byte<T, N>&& rhs) noexcept;
 
-	//=====
+	//==========================================================================
 	// bitwise (non-assignment) by const-ref
 	template<typename T, size_t N, typename U>
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1008,7 +1097,7 @@ public:
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
 	friend constexpr inline U operator^(U&& lhs, Byte<T, N>&& rhs) noexcept;
 
-	//=====
+	//==========================================================================
 	// arithmetic (non-assignment) by const-ref
 	template<typename T, size_t N, typename U>
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1043,7 +1132,7 @@ public:
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
 	friend constexpr inline U operator%(U&& lhs, Byte<T, N>&& rhs) noexcept;
 
-	//=====
+	//==========================================================================
 	// bitwise (assignment) by const-ref
 	template<typename T, size_t N, typename U>
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1066,7 +1155,7 @@ public:
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
 	friend constexpr inline U& operator^=(U&& lhs, Byte<T, N>&& rhs) noexcept;
 
-	//=====
+	//==========================================================================
 	// arithmetic (assignment) by const-ref
 	template<typename T, size_t N, typename U>
 		requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1102,7 +1191,38 @@ public:
 	friend constexpr inline U& operator%=(U&& lhs, Byte<T, N>&& rhs) noexcept;
 };
 
-//=====
+//==============================================================================
+// comparison by forwarding-ref
+template<typename T, size_t N, typename U>
+	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
+constexpr inline bool operator||(const U& lhs, const Byte<T, N>& rhs) noexcept
+{
+	return (lhs || static_cast<U>(rhs.bits));
+}
+
+template<typename T, size_t N, typename U>
+	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
+constexpr inline bool operator&&(const U& lhs, const Byte<T, N>& rhs) noexcept
+{
+	return (lhs && static_cast<U>(rhs.bits));
+}
+
+// comparison by const-ref
+template<typename T, size_t N, typename U>
+	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
+constexpr inline bool operator||(U&& lhs, Byte<T, N>&& rhs) noexcept
+{
+	return (lhs || static_cast<U>(rhs.bits));
+}
+
+template<typename T, size_t N, typename U>
+	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
+constexpr inline bool operator&&(U&& lhs, Byte<T, N>&& rhs) noexcept
+{
+	return (lhs && static_cast<U>(rhs.bits));
+}
+
+//==============================================================================
 // comparison by const-ref
 template<typename T, size_t N, typename U>
 	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1151,20 +1271,6 @@ template<typename T, size_t N, typename U>
 constexpr inline auto operator<=>(const U& lhs, const Byte<T, N>& rhs) noexcept
 {
 	return lhs <=> static_cast<U>(rhs.bits);
-}
-
-template<typename T, size_t N, typename U>
-	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
-constexpr inline bool operator||(const U& lhs, const Byte<T, N>& rhs) noexcept
-{
-	return (lhs || static_cast<U>(rhs.bits));
-}
-
-template<typename T, size_t N, typename U>
-	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
-constexpr inline bool operator&&(const U& lhs, const Byte<T, N>& rhs) noexcept
-{
-	return (lhs && static_cast<U>(rhs.bits));
 }
 
 // comparison by forwarding-ref
@@ -1217,21 +1323,7 @@ constexpr inline auto operator<=>(U&& lhs, Byte<T, N>&& rhs) noexcept
 	return lhs <=> static_cast<U>(rhs.bits);
 }
 
-template<typename T, size_t N, typename U>
-	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
-constexpr inline bool operator||(U&& lhs, Byte<T, N>&& rhs) noexcept
-{
-	return (lhs || static_cast<U>(rhs.bits));
-}
-
-template<typename T, size_t N, typename U>
-	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
-constexpr inline bool operator&&(U&& lhs, Byte<T, N>&& rhs) noexcept
-{
-	return (lhs && static_cast<U>(rhs.bits));
-}
-
-//=====
+//==============================================================================
 // bitwise (non-assignment) by const-ref
 template<typename T, size_t N, typename U>
 	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1276,7 +1368,7 @@ constexpr inline U operator^(U&& lhs, Byte<T, N>&& rhs) noexcept
 	return lhs ^ static_cast<U>(rhs.bits);
 }
 
-//=====
+//==============================================================================
 // arithmetic (non-assignment) by const-ref
 template<typename T, size_t N, typename U>
 	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1349,7 +1441,7 @@ constexpr inline U operator%(U&& lhs, Byte<T, N>&& rhs) noexcept
 	return lhs % static_cast<U>(rhs.bits);
 }
 
-//=====
+//==============================================================================
 // bitwise (assignment) by const-ref
 template<typename T, size_t N, typename U>
 	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1394,7 +1486,7 @@ constexpr inline U& operator^=(U&& lhs, Byte<T, N>&& rhs) noexcept
 	return lhs ^= static_cast<U>(rhs.bits);
 }
 
-//=====
+//==============================================================================
 // arithmetic (assignment) by const-ref
 template<typename T, size_t N, typename U>
 	requires (std::is_integral_v<U> && !::std::is_same_v<U, Byte<T, N>>)
@@ -1466,4 +1558,5 @@ constexpr inline U& operator%=(U& lhs, Byte<T, N>&& rhs) noexcept
 {
 	return lhs %= static_cast<U>(rhs.bits);
 }
+//==============================================================================
 	/* #endregion BoilerPlate */

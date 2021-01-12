@@ -157,7 +157,7 @@ static bool IsChexQuest(const iwad_t* iwad)
 	return !strcmp(iwad->name, "chex.wad");
 }
 
-static void AddWADs(execute_context_t* exec)
+static void AddWADs(ExecuteContext* exec)
 {
 	int have_wads = 0;
 	int i;
@@ -176,7 +176,7 @@ static void AddWADs(execute_context_t* exec)
 	}
 }
 
-static void AddExtraParameters(execute_context_t* exec)
+static void AddExtraParameters(ExecuteContext* exec)
 {
 	int i;
 
@@ -189,7 +189,7 @@ static void AddExtraParameters(execute_context_t* exec)
 	}
 }
 
-static void AddIWADParameter(execute_context_t* exec)
+static void AddIWADParameter(ExecuteContext* exec)
 {
 	if (iwadfile != NULL)
 	{
@@ -203,7 +203,7 @@ static void AddIWADParameter(execute_context_t* exec)
 
 static void StartGame(int multiplayer)
 {
-	execute_context_t* exec;
+	ExecuteContext* exec;
 
 	exec = NewExecuteContext();
 
@@ -789,7 +789,7 @@ void WarpMenu(cudadoom::txt::UNCAST_ARG(widget), void* user_data)
 
 static void DoJoinGame(void* unused1, void* unused2)
 {
-	execute_context_t* exec;
+	ExecuteContext* exec;
 
 	if (connect_address == NULL || strlen(connect_address) <= 0)
 	{

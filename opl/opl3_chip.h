@@ -33,149 +33,34 @@
 
 namespace cudadoom::opl
 {
-	/*std::array<ChannelBase, 18> channel;
-	std::array<Slot, 36> slot;
-
-	uint64_t writebuf_samplecnt;
-	size_t writebuf_cur;
-	size_t writebuf_last;
-	TimeType writebuf_lasttime;
-	Byte<TimeType> eg_timer;
-
-	std::array<Byte<int32_t>, 2> mixbuff;
-	std::array<Byte<int16_t>, 2> samples;
-	std::array<Byte<int16_t>, 2> oldsamples;
-
-	Byte<uint32_t> noise;
-	Byte<int32_t> rateratio;
-	Byte<int32_t> samplecnt;
-
-	Byte<uint16_t> timer;
-
-	Byte<int16_t> zeromod;
-
-	Byte<uint8_t> eg_timerrem;
-	Byte<uint8_t> eg_state;
-	Byte<uint8_t> eg_add;
-
-	Byte<uint8_t> newm;
-	Byte<uint8_t> nts;
-	Byte<uint8_t> rhy;
-
-	Byte<uint8_t> vibpos;
-	Byte<uint8_t> vibshift;
-
-	Byte<uint8_t> tremolo;
-	Byte<uint8_t> tremolopos;
-	Byte<uint8_t> tremoloshift;
-
-	Byte<uint8_t> rm_hh_bit2;
-	Byte<uint8_t> rm_hh_bit3;
-	Byte<uint8_t> rm_hh_bit7;
-	Byte<uint8_t> rm_hh_bit8;
-	Byte<uint8_t> rm_tc_bit3;
-	Byte<uint8_t> rm_tc_bit5;
-
-	//OPL3L
-	std::array<opl3_writebuf, OPL_WRITEBUF_SIZE> writebuf;*/
-
-	std::array<Channel, 18> channel;
-	std::array<Slot, 36> slot;
 
 class Chip : public ChipBase
 {
+private:
+	std::array<Channel, 18> channel;
+	std::array<Slot, 36> slot;
+
+	uint64_t writebuf_samplecnt; // chip
+	size_t writebuf_cur; // chip
+	size_t writebuf_last; // chip
+	TimeType writebuf_lasttime; // chip
+	Byte<TimeType> eg_timer; // chip
+
+	std::array<Byte<int32_t>, 2> mixbuff; // chip
+	std::array<Byte<int16_t>, 2> samples; // chip
+	std::array<Byte<int16_t>, 2> oldsamples; // chip
+
+	Byte<int32_t> rateratio; // chip
+	Byte<int32_t> samplecnt; // chip
+	Byte<uint8_t> eg_timerrem; // chip
+
+	Byte<uint8_t> tremolopos; // chip
+	Byte<uint8_t> tremoloshift; // chip
+
+	//OPL3L
+	std::array<opl3_writebuf, OPL_WRITEBUF_SIZE> writebuf; // chip
+
 public:
-
-	// Phase Generator
-	void PhaseGenerate(Slot *slot)
-	{
-		ChipBase* chip;
-		Byte<uint16_t> f_num;
-		Byte<uint32_t> basefreq;
-		Byte<uint8_t> rm_xor;
-		Byte<uint8_t> n_bit;
-		Byte<uint32_t> noise;
-		Byte<uint16_t> phase;
-
-		chip = slot->chip;
-		f_num = slot->channel->f_num;
-		if (slot->reg_vib)
-		{
-			Byte<int8_t> range;
-			Byte<uint8_t> vibpos;
-
-			range = (f_num >> 7) & 7;
-			vibpos = slot->chip->vibpos;
-
-			if (!(vibpos & 3))
-			{
-				range = 0;
-			}
-			else if (vibpos & 1)
-			{
-				range >>= 1;
-			}
-			range >>= slot->chip->vibshift;
-
-			if (vibpos & 4)
-			{
-				range = -range;
-			}
-			f_num += range;
-		}
-		basefreq = (f_num << slot->channel->block) >> 1;
-		phase = (Byte<uint16_t>)(slot->pg_phase >> 9);
-		if (slot->pg_reset)
-		{
-			slot->pg_phase = 0;
-		}
-		slot->pg_phase += (basefreq * mt[slot->reg_mult]) >> 1;
-		// Rhythm mode
-		noise = chip->noise;
-		slot->pg_phase_out = phase;
-		if (slot->slot_num == 13) // hh
-		{
-			chip->rm_hh_bit2 = (phase >> 2) & 1;
-			chip->rm_hh_bit3 = (phase >> 3) & 1;
-			chip->rm_hh_bit7 = (phase >> 7) & 1;
-			chip->rm_hh_bit8 = (phase >> 8) & 1;
-		}
-		if (slot->slot_num == 17 && (chip->rhy & 0x20)) // tc
-		{
-			chip->rm_tc_bit3 = (phase >> 3) & 1;
-			chip->rm_tc_bit5 = (phase >> 5) & 1;
-		}
-		if (chip->rhy & 0x20)
-		{
-			rm_xor = (chip->rm_hh_bit2 ^ chip->rm_hh_bit7)
-					| (chip->rm_hh_bit3 ^ chip->rm_tc_bit5)
-					| (chip->rm_tc_bit3 ^ chip->rm_tc_bit5);
-			switch (slot->slot_num)
-			{
-			case 13: // hh
-				slot->pg_phase_out = rm_xor << 9;
-				if (rm_xor ^ (noise & 1))
-				{
-					slot->pg_phase_out |= 0xd0;
-				}
-				else
-				{
-					slot->pg_phase_out |= 0x34;
-				}
-				break;
-			case 16: // sd
-				slot->pg_phase_out = (chip->rm_hh_bit8 << 9) | ((chip->rm_hh_bit8 ^ (noise & 1)) << 8);
-				break;
-			case 17: // tc
-				slot->pg_phase_out = (rm_xor << 9) | 0x80;
-				break;
-			default:
-				break;
-			}
-		}
-		n_bit = ((noise >> 14) ^ noise) & 0x01;
-		chip->noise = (noise >> 1) | (n_bit << 22);
-	}
 
 	Byte<int16_t> ClipSample(Byte<int32_t> sample)
 	{
@@ -300,7 +185,7 @@ public:
 		{
 			slot[i].SlotCalcFB();
 			slot[i].EnvelopeCalc();
-			PhaseGenerate(&slot[i]);
+			slot[i].PhaseGenerate(this);
 			slot[i].SlotGenerate();
 		}
 
@@ -310,7 +195,7 @@ public:
 			Byte<int16_t> accm = 0;
 			for (size_t j{0}; j < 4; ++j)
 			{
-				accm += *channel[i].out[j];
+				accm += *channel[i].channel_out[j];
 			}
 			mixbuff[0] += Byte<int16_t>((accm & channel[i].cha));
 		}
@@ -319,7 +204,7 @@ public:
 		{
 			slot[i].SlotCalcFB();
 			slot[i].EnvelopeCalc();
-			PhaseGenerate(&slot[i]);
+			slot[i].PhaseGenerate(this);
 			slot[i].SlotGenerate();
 		}
 
@@ -329,7 +214,7 @@ public:
 		{
 			slot[i].SlotCalcFB();
 			slot[i].EnvelopeCalc();
-			PhaseGenerate(&slot[i]);
+			slot[i].PhaseGenerate(this);
 			slot[i].SlotGenerate();
 		}
 
@@ -339,7 +224,7 @@ public:
 			Byte<int16_t> accm = 0;
 			for (size_t j{0}; j < 4; ++j)
 			{
-				accm += *channel[i].out[j];
+				accm += *channel[i].channel_out[j];
 			}
 			mixbuff[1] += Byte<int16_t>(accm & channel[i].chb);
 		}
@@ -348,7 +233,7 @@ public:
 		{
 			slot[i].SlotCalcFB();
 			slot[i].EnvelopeCalc();
-			PhaseGenerate(&slot[i]);
+			slot[i].PhaseGenerate(this);
 			slot[i].SlotGenerate();
 		}
 
@@ -444,7 +329,7 @@ public:
 		for (size_t slotnum{0}; slotnum < 36; ++slotnum)
 		{
 			//slot[slotnum].chip = chip;
-			slot[slotnum].mod = &zeromod;
+			slot[slotnum].slot_mod = &zeromod;
 			slot[slotnum].eg_rout = 0x1ff;
 			slot[slotnum].eg_out = 0x1ff;
 			slot[slotnum].eg_gen = envelope_gen_num::release;
@@ -467,10 +352,10 @@ public:
 				channel[channum].pair = &channel[channum - 3];
 			}
 			//channel[channum].chip = chip;
-			channel[channum].out[0] = &zeromod;
-			channel[channum].out[1] = &zeromod;
-			channel[channum].out[2] = &zeromod;
-			channel[channum].out[3] = &zeromod;
+			channel[channum].channel_out[0] = &zeromod;
+			channel[channum].channel_out[1] = &zeromod;
+			channel[channum].channel_out[2] = &zeromod;
+			channel[channum].channel_out[3] = &zeromod;
 			channel[channum].chtype = ch_2op;
 			channel[channum].cha = 0xffff;
 			channel[channum].chb = 0xffff;
@@ -527,21 +412,21 @@ public:
 		rhy = data & 0x3f;
 		if (rhy & 0x20)
 		{
-			ChannelBase* channel6 = &channel[6];
-			ChannelBase* channel7 = &channel[7];
-			ChannelBase* channel8 = &channel[8];
-			channel6->out[0] = &channel6->slots[1]->out;
-			channel6->out[1] = &channel6->slots[1]->out;
-			channel6->out[2] = &zeromod;
-			channel6->out[3] = &zeromod;
-			channel7->out[0] = &channel7->slots[0]->out;
-			channel7->out[1] = &channel7->slots[0]->out;
-			channel7->out[2] = &channel7->slots[1]->out;
-			channel7->out[3] = &channel7->slots[1]->out;
-			channel8->out[0] = &channel8->slots[0]->out;
-			channel8->out[1] = &channel8->slots[0]->out;
-			channel8->out[2] = &channel8->slots[1]->out;
-			channel8->out[3] = &channel8->slots[1]->out;
+			Channel* channel6 = &channel[6];
+			Channel* channel7 = &channel[7];
+			Channel* channel8 = &channel[8];
+			channel6->channel_out[0] = &channel6->slots[1]->slot_out;
+			channel6->channel_out[1] = &channel6->slots[1]->slot_out;
+			channel6->channel_out[2] = &zeromod;
+			channel6->channel_out[3] = &zeromod;
+			channel7->channel_out[0] = &channel7->slots[0]->slot_out;
+			channel7->channel_out[1] = &channel7->slots[0]->slot_out;
+			channel7->channel_out[2] = &channel7->slots[1]->slot_out;
+			channel7->channel_out[3] = &channel7->slots[1]->slot_out;
+			channel8->channel_out[0] = &channel8->slots[0]->slot_out;
+			channel8->channel_out[1] = &channel8->slots[0]->slot_out;
+			channel8->channel_out[2] = &channel8->slots[1]->slot_out;
+			channel8->channel_out[3] = &channel8->slots[1]->slot_out;
 			for (size_t chnum{6}; chnum < 9; ++chnum)
 			{
 				channel[chnum].chtype = ch_drum;

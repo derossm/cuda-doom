@@ -34,45 +34,134 @@ namespace cudadoom::opl
 
 class Slot// : public SlotBase
 {
+private:
+
+	Byte<int16_t> prout; // local
+	Byte<uint8_t> eg_ksl; // local
+	Byte<uint8_t> reg_type; // local
+	Byte<uint8_t> reg_ksr; // local
+	Byte<uint8_t> reg_ksl; // local
+	Byte<uint8_t> reg_tl; // local
+	Byte<uint8_t> reg_ar; // local
+	Byte<uint8_t> reg_dr; // local
+	Byte<uint8_t> reg_sl; // local
+	Byte<uint8_t> reg_rr; // local
+	Byte<uint8_t> reg_wf; // local
+
+	bool slot_key; // local
+
 public:
-	ChannelBase* channel{};
-	ChipBase* chip{};
+	ChannelBase* channel{nullptr};
+	ChipBase* chip{nullptr};
 
-	Byte<int16_t>* mod{};
-	Byte<uint8_t>* trem{};
+	Byte<uint8_t>* trem{nullptr}; // chip
+	Byte<int16_t>* slot_mod{nullptr}; // chip, channel
 
-	Byte<uint32_t> pg_reset;
-	Byte<uint32_t> pg_phase;
-	Byte<uint16_t> pg_phase_out;
+	Byte<uint32_t> pg_phase; // chip
 
-	Byte<int16_t> out;
-	Byte<int16_t> fbmod;
-	Byte<int16_t> prout;
+	Byte<int16_t> slot_out; // chip, channel
+	Byte<uint16_t> pg_phase_out; // chip
 
-	Byte<int16_t> eg_rout;
-	Byte<int16_t> eg_out;
-	Byte<uint8_t> eg_inc;
-	Byte<uint8_t> eg_rate;
-	Byte<uint8_t> eg_ksl;
+	Byte<int16_t> fbmod; // channel
+	Byte<int16_t> eg_rout; // chip
+	Byte<int16_t> eg_out; // chip
+	Byte<uint8_t> slot_num; // chip
+	Byte<uint8_t> reg_vib; // chip
+	Byte<uint8_t> reg_mult; // chip
 
-	Byte<uint8_t> reg_vib;
-	Byte<uint8_t> reg_type;
-	Byte<uint8_t> reg_ksr;
-	Byte<uint8_t> reg_mult;
-	Byte<uint8_t> reg_ksl;
-	Byte<uint8_t> reg_tl;
-	Byte<uint8_t> reg_ar;
-	Byte<uint8_t> reg_dr;
-	Byte<uint8_t> reg_sl;
-	Byte<uint8_t> reg_rr;
-	Byte<uint8_t> reg_wf;
+	envelope_gen_num eg_gen; // chip
+	bool pg_reset; // chip
 
-	Byte<uint8_t> key;
-	Byte<uint8_t> slot_num;
-
-	envelope_gen_num eg_gen;
 public:
-	//opl3_slot()
+	// Phase Generator
+	void PhaseGenerate(ChipBase* _chip)
+	{
+		Byte<uint16_t> f_num;
+		Byte<uint32_t> basefreq;
+		Byte<uint8_t> rm_xor;
+		Byte<uint8_t> n_bit;
+		Byte<uint32_t> noise;
+		Byte<uint16_t> phase;
+
+		chip = _chip;
+		f_num = channel->f_num;
+		if (reg_vib)
+		{
+			Byte<int8_t> range;
+			Byte<uint8_t> vibpos;
+
+			range = (f_num >> 7) & 7;
+			vibpos = chip->vibpos;
+
+			if (!(vibpos & 3))
+			{
+				range = 0;
+			}
+			else if (vibpos & 1)
+			{
+				range >>= 1;
+			}
+			range >>= chip->vibshift;
+
+			if (vibpos & 4)
+			{
+				range = -range;
+			}
+			f_num += range;
+		}
+		basefreq = (f_num << channel->block) >> 1;
+		phase = (Byte<uint16_t>)(pg_phase >> 9);
+		if (pg_reset)
+		{
+			pg_phase = 0;
+		}
+		pg_phase += (basefreq * mt[reg_mult]) >> 1;
+		// Rhythm mode
+		noise = chip->noise;
+		pg_phase_out = phase;
+		if (slot_num == 13) // hh
+		{
+			chip->rm_hh_bit2 = (phase >> 2) & 1;
+			chip->rm_hh_bit3 = (phase >> 3) & 1;
+			chip->rm_hh_bit7 = (phase >> 7) & 1;
+			chip->rm_hh_bit8 = (phase >> 8) & 1;
+		}
+		if (slot_num == 17 && (chip->rhy & 0x20)) // tc
+		{
+			chip->rm_tc_bit3 = (phase >> 3) & 1;
+			chip->rm_tc_bit5 = (phase >> 5) & 1;
+		}
+		if (chip->rhy & 0x20)
+		{
+			rm_xor = (chip->rm_hh_bit2 ^ chip->rm_hh_bit7)
+					| (chip->rm_hh_bit3 ^ chip->rm_tc_bit5)
+					| (chip->rm_tc_bit3 ^ chip->rm_tc_bit5);
+			switch (slot_num)
+			{
+			case 13: // hh
+				pg_phase_out = rm_xor << 9;
+				if (rm_xor ^ (noise & 1))
+				{
+					pg_phase_out |= 0xd0;
+				}
+				else
+				{
+					pg_phase_out |= 0x34;
+				}
+				break;
+			case 16: // sd
+				pg_phase_out = (chip->rm_hh_bit8 << 9) | ((chip->rm_hh_bit8 ^ (noise & 1)) << 8);
+				break;
+			case 17: // tc
+				pg_phase_out = (rm_xor << 9) | 0x80;
+				break;
+			default:
+				break;
+			}
+		}
+		n_bit = ((noise >> 14) ^ noise) & 0x01;
+		chip->noise = (noise >> 1) | (n_bit << 22);
+	}
 
 	void EnvelopeUpdateKSL()
 	{
@@ -86,22 +175,13 @@ public:
 
 	void EnvelopeCalc()
 	{
-		Byte<uint8_t> nonzero;
-		Byte<uint8_t> rate;
-		Byte<uint8_t> rate_hi;
-		Byte<uint8_t> rate_lo;
-		Byte<uint8_t> reg_rate{0};
-		Byte<uint8_t> ks;
-		uint8_t eg_shift;
-		Byte<uint8_t> shift;
-		Byte<uint16_t> eg_rout;
-		Byte<int16_t> eg_inc;
-		Byte<uint8_t> eg_off;
-		Byte<uint8_t> reset{0};
 		eg_out = eg_rout + (reg_tl << 2) + (eg_ksl >> kslshift[reg_ksl]) + *trem;
-		if (key && eg_gen == envelope_gen_num::release)
+
+		bool reset{false};
+		Byte<uint8_t> reg_rate{0};
+		if (slot_key && eg_gen == envelope_gen_num::release)
 		{
-			reset = 1;
+			reset = true;
 			reg_rate = reg_ar;
 		}
 		else
@@ -125,19 +205,24 @@ public:
 				break;
 			}
 		}
+
 		pg_reset = reset;
-		ks = channel->ksv >> ((reg_ksr ^ 1) << 1);
-		nonzero = (reg_rate != 0);
-		rate = ks + (reg_rate << 2);
-		rate_hi = rate >> 2;
-		rate_lo = rate & 0x03;
+
+		// temp convenience aliases for initializing `rate_hi` and `rate_lo`
+		Byte<uint8_t> ks{channel->ksv >> ((reg_ksr ^ 1) << 1)};
+		Byte<uint8_t> rate{ks + (reg_rate << 2)};
+
+		Byte<uint8_t> rate_hi{rate >> 2};
+		Byte<uint8_t> rate_lo{rate & 0x03};
+	
 		if (rate_hi & 0x10)
 		{
 			rate_hi = 0x0f;
 		}
-		eg_shift = rate_hi + chip->eg_add;
-		shift = 0;
-		if (nonzero)
+
+		Byte<uint8_t> eg_shift{rate_hi + chip->eg_add};
+		Byte<uint8_t> shift{0};
+		if (reg_rate != 0)
 		{
 			if (rate_hi < 12)
 			{
@@ -172,9 +257,9 @@ public:
 				}
 			}
 		}
-		eg_rout = eg_rout;
-		eg_inc = 0;
-		eg_off = 0;
+		//eg_rout = eg_rout;
+		Byte<int16_t> eg_inc = 0;
+		Byte<uint8_t> eg_off = 0;
 		// Instant attack
 		if (reset && rate_hi == Byte<uint8_t>(0x0f))
 		{
@@ -196,7 +281,7 @@ public:
 			{
 				eg_gen = envelope_gen_num::decay;
 			}
-			else if (key && shift > 0 && rate_hi != Byte<uint8_t>(0x0f))
+			else if (slot_key && shift > 0 && rate_hi != Byte<uint8_t>(0x0f))
 			{
 				eg_inc = ((~eg_rout) << shift) >> 4;
 			}
@@ -225,7 +310,7 @@ public:
 		{
 			eg_gen = envelope_gen_num::attack;
 		}
-		if (!key)
+		if (!slot_key)
 		{
 			eg_gen = envelope_gen_num::release;
 		}
@@ -233,12 +318,12 @@ public:
 
 	void EnvelopeKeyOn(Byte<uint8_t> type)
 	{
-		key |= type;
+		slot_key |= type;
 	}
 
 	void EnvelopeKeyOff(Byte<uint8_t> type)
 	{
-		key &= ~type;
+		slot_key &= ~type;
 	}
 
 	// Slot
@@ -294,20 +379,20 @@ public:
 
 	void SlotGenerate()
 	{
-		out = envelope_sin[reg_wf](Byte<uint16_t>(pg_phase_out + *mod), Byte<uint16_t>(eg_out));
+		slot_out = envelope_sin[reg_wf](Byte<uint16_t>(pg_phase_out + *slot_mod), Byte<uint16_t>(eg_out));
 	}
 
 	void SlotCalcFB()
 	{
 		if (channel->fb != Byte<uint8_t>(0x00))
 		{
-			fbmod = (prout + out) >> (Byte<uint8_t>(0x09) - channel->fb);
+			fbmod = (prout + slot_out) >> (Byte<uint8_t>(0x09) - channel->fb);
 		}
 		else
 		{
 			fbmod = 0;
 		}
-		prout = out;
+		prout = slot_out;
 	}
 };
 

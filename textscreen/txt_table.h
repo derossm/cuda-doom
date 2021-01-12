@@ -9,6 +9,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/common.h
+#include "../derma/keybinds.h
 #include "txt_common.h"
 #include "txt_widget.h"
 

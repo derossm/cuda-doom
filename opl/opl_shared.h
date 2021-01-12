@@ -55,23 +55,16 @@ struct opl3_writebuf
 class ChannelBase
 {
 public:
-	std::array<Byte<int16_t>*, 4> out;
-
-	std::array<Slot*, 2> slots;
-	ChipBase* chip;
-
-	ChannelBase* pair;
-
-	Byte<uint8_t> chtype;
-	Byte<uint16_t> f_num;
-	Byte<uint8_t> block;
-	Byte<uint8_t> fb;
-	Byte<uint8_t> con;
-	Byte<uint8_t> alg;
-	Byte<uint8_t> ksv;
-	Byte<uint16_t> cha;
-	Byte<uint16_t> chb;
-	Byte<uint8_t> ch_num;
+	Byte<uint16_t> f_num; // chip, channel, slot
+	Byte<uint16_t> cha; // chip, channel
+	Byte<uint16_t> chb; // chip, channel
+	Byte<uint8_t> block; // chip, channel, slot
+	Byte<uint8_t> fb; // chip, channel, slot
+	Byte<uint8_t> ch_num; // chip, channel
+	Byte<uint8_t> chtype; // chip, channel
+	Byte<uint8_t> ksv; // channel, slot
+	Byte<uint8_t> con; // channel
+	Byte<uint8_t> alg; // channel
 
 public:
 	virtual void ChannelSetupAlg() = 0;
@@ -87,106 +80,27 @@ public:
 class ChipBase
 {
 public:
-	uint64_t writebuf_samplecnt;
-	size_t writebuf_cur;
-	size_t writebuf_last;
-	TimeType writebuf_lasttime;
-	Byte<TimeType> eg_timer;
-
-	std::array<Byte<int32_t>, 2> mixbuff;
-	std::array<Byte<int16_t>, 2> samples;
-	std::array<Byte<int16_t>, 2> oldsamples;
-
-	Byte<uint32_t> noise;
-	Byte<int32_t> rateratio;
-	Byte<int32_t> samplecnt;
-
-	Byte<uint16_t> timer;
-
-	Byte<int16_t> zeromod;
-
-	Byte<uint8_t> eg_timerrem;
-	Byte<uint8_t> eg_state;
-	Byte<uint8_t> eg_add;
-
-	Byte<uint8_t> newm;
-	Byte<uint8_t> nts;
-	Byte<uint8_t> rhy;
-
-	Byte<uint8_t> vibpos;
-	Byte<uint8_t> vibshift;
-
-	Byte<uint8_t> tremolo;
-	Byte<uint8_t> tremolopos;
-	Byte<uint8_t> tremoloshift;
-
-	Byte<uint8_t> rm_hh_bit2;
-	Byte<uint8_t> rm_hh_bit3;
-	Byte<uint8_t> rm_hh_bit7;
-	Byte<uint8_t> rm_hh_bit8;
-	Byte<uint8_t> rm_tc_bit3;
-	Byte<uint8_t> rm_tc_bit5;
-
-	//OPL3L
-	std::array<opl3_writebuf, OPL_WRITEBUF_SIZE> writebuf;
+	Byte<uint32_t> noise; // chip
+	Byte<int16_t> zeromod; // chip, channel, slot
+	Byte<uint16_t> timer; // chip, slot
+	Byte<uint8_t> rhy; // chip
+	Byte<uint8_t> vibpos; // chip
+	Byte<uint8_t> vibshift; // chip
+	Byte<uint8_t> rm_hh_bit2; // chip
+	Byte<uint8_t> rm_hh_bit3; // chip
+	Byte<uint8_t> rm_hh_bit7; // chip
+	Byte<uint8_t> rm_hh_bit8; // chip
+	Byte<uint8_t> rm_tc_bit3; // chip
+	Byte<uint8_t> rm_tc_bit5; // chip
+	Byte<uint8_t> newm; // chip, channel, slot
+	Byte<uint8_t> nts; // chip, channel
+	Byte<uint8_t> eg_state; // chip, slot
+	Byte<uint8_t> eg_add; // chip, slot
+	Byte<uint8_t> tremolo; // chip, slot
 
 public:
 	virtual ~ChipBase() = default;
 };
-
-/*class SlotBase
-{
-public:
-	ChannelBase* channel{};
-	ChipBase* chip{};
-
-	Byte<int16_t>* mod{};
-	Byte<uint8_t>* trem{};
-
-	Byte<uint32_t> pg_reset;
-	Byte<uint32_t> pg_phase;
-	Byte<uint16_t> pg_phase_out;
-
-	Byte<int16_t> out;
-	Byte<int16_t> fbmod;
-	Byte<int16_t> prout;
-
-	Byte<int16_t> eg_rout;
-	Byte<int16_t> eg_out;
-	Byte<uint8_t> eg_inc;
-	Byte<uint8_t> eg_rate;
-	Byte<uint8_t> eg_ksl;
-
-	Byte<uint8_t> reg_vib;
-	Byte<uint8_t> reg_type;
-	Byte<uint8_t> reg_ksr;
-	Byte<uint8_t> reg_mult;
-	Byte<uint8_t> reg_ksl;
-	Byte<uint8_t> reg_tl;
-	Byte<uint8_t> reg_ar;
-	Byte<uint8_t> reg_dr;
-	Byte<uint8_t> reg_sl;
-	Byte<uint8_t> reg_rr;
-	Byte<uint8_t> reg_wf;
-
-	Byte<uint8_t> key;
-	Byte<uint8_t> slot_num;
-
-	envelope_gen_num eg_gen;
-
-public:
-	virtual void EnvelopeUpdateKSL() = 0;
-	virtual void EnvelopeCalc() = 0;
-	virtual void EnvelopeKeyOn(Byte<uint8_t> type) = 0;
-	virtual void EnvelopeKeyOff(Byte<uint8_t> type) = 0;
-	virtual void SlotWrite20(Byte<uint8_t> data) = 0;
-	virtual void SlotWrite40(Byte<uint8_t> data) = 0;
-	virtual void SlotWrite60(Byte<uint8_t> data) = 0;
-	virtual void SlotWrite80(Byte<uint8_t> data) = 0;
-	virtual void SlotWriteE0(Byte<uint8_t> data) = 0;
-	virtual void SlotCalcFB() = 0;
-	virtual ~SlotBase() = default;
-};*/
 
 // logsin table
 static const std::array<Byte<uint16_t>, 256> logsinrom{

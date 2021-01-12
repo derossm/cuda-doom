@@ -13,20 +13,15 @@
 #include <string>
 #include <functional>
 
+#include "../derma/common.h
+#include "../derma/keybinds.h
 #include "txt_common.h"
 
 namespace cudadoom::txt
 {
 
-/**
- * A GUI widget.
- *
- * A widget is an individual component of a GUI. Various different widget types exist.
- *
- * Widgets may emit signals. The types of signal emitted by a widget depend on the type of the widget.
- * It is possible to be notified when a signal occurs using the @ref SignalConnect function.
- */
-
+// A widget is an individual component of a GUI. Various different widget types exist. Widgets may emit signals. The types of signal emitted by
+// a widget depends on the type of the widget. It is possible to be notified when a signal occurs using the @ref SignalConnect function.
 template<typename T, typename U = T>
 class WidgetBase
 {
@@ -238,9 +233,6 @@ public:
 	}
 
 };
-
-//template<typename T>
-//class WidgetBase<T, T> {};
 
 class Widget : public WidgetBase<Widget>
 {

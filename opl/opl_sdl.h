@@ -42,34 +42,36 @@ constexpr uint64_t MAX_SOUND_SLICE_TIME = 100; /* ms */
 
 struct opl_timer_t
 {
+	TimeType expire_time{0ull};	// Calculated time that timer will expire.
 	unsigned rate;			// Number of times the timer is advanced per sec.
-	unsigned enabled;		// Non-zero if timer is enabled.
-	unsigned value;			// Last value that was set.
-	uint64_t expire_time;	// Calculated time that timer will expire.
+	unsigned value{0u};			// Last value that was set.
+	bool enabled{false};			// Non-zero if timer is enabled.
 };
 
 class OPLManager
 {
+	uint8_t* mix_buffer{nullptr};					// Temporary mixing buffer used by the mixing callback.
+
+	TimeType current_time{0ull};					// Current time, in us since startup:
+	TimeType pause_offset{0ull};					// Time offset (in us) due to the fact that callbacks were previously paused.
+
 	::std::vector<QueueEntry> callback_queue;		// Queue of callbacks waiting to be invoked.
 	::std::mutex callback_mutex;					// When the callback mutex is locked using OPL_Lock, callback functions are not invoked.
 	::std::mutex callback_queue_mutex;				// Mutex used to control access to the callback queue.
-	uint8_t* mix_buffer{nullptr};					// Temporary mixing buffer used by the mixing callback.
 
-	uint64_t current_time{0ull};					// Current time, in us since startup:
-	uint64_t pause_offset{0ull};					// Time offset (in us) due to the fact that callbacks were previously paused.
 	int opl_sdl_paused{0};							// If non-zero, playback is currently paused.
 	int opl_opl3mode{0};
 	int register_num{0};							// Register number that was written.
 
 	// SDL parameters.
-	bool sdl_was_initialized{false};
 	int mixing_freq{0};
 	int mixing_channels{0};
-	uint16_t mixing_format{0};
+	uint16_t mixing_format{0u};
+	bool sdl_was_initialized{false};
 
 	// Timers; DBOPL does not do timer stuff itself.
-	opl_timer_t timer1{12500, 0, 0, 0};
-	opl_timer_t timer2{3125, 0, 0, 0};
+	opl_timer_t timer1{ .rate=12500u };
+	opl_timer_t timer2{ .rate=3125u };
 
 	Chip opl_chip; // OPL software emulator structure.
 
@@ -128,10 +130,11 @@ class OPLManager
 		assert(nsamples < mixing_freq);
 
 		// OPL output is generated into temporary buffer and then mixed (to avoid overflows etc.)
-		auto mix_buffer = opl_chip.GenerateStream(nsamples);
+		mix_buffer = opl_chip.GenerateStream(nsamples);
 		SDL_MixAudioFormat(buffer, mix_buffer, AUDIO_S16SYS, nsamples * 4, SDL_MIX_MAXVOLUME);
 	}
 
+	// SDL API NOTE SIGNATURE DO NOT CHANGE
 	// Callback function to fill a new sound buffer:
 	void Mix_Callback(void* udata, Uint8* buffer, int len)
 	{
@@ -208,9 +211,9 @@ class OPLManager
 		{
 			// 2^n <= limit < 2^n+1 ?
 
-			if ((1 << (n + 1)) > limit)
+			if ((1u << (n + 1)) > limit)
 			{
-				return (1 << n);
+				return (1u << n);
 			}
 		}
 
@@ -218,15 +221,16 @@ class OPLManager
 		return 1024;
 	}
 
-	bool SDL_Init(unsigned port_base)
+	bool SDL_Init()
 	{
 		// Check if SDL_mixer has been opened already; If not, we must initialize it now
 		if (!SDLIsInitialized())
 		{
-			if (SDL_Init(SDL_INIT_AUDIO) < 0)
+			// FIXME this is a weird recursion, pointlessly convoluted way to do this
+			if (!SDL_Init())
 			{
 				fprintf(stderr, "Unable to set up sound.\n");
-				return 0;
+				return false;
 			}
 
 			if (Mix_OpenAudioDevice(opl_sample_rate, AUDIO_S16SYS, 2, GetSliceSize(), NULL, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE) < 0)
@@ -234,7 +238,7 @@ class OPLManager
 				fprintf(stderr, "Error initialising SDL_mixer: %s\n", Mix_GetError());
 
 				SDL_QuitSubSystem(SDL_INIT_AUDIO);
-				return 0;
+				return false;
 			}
 
 			SDL_PauseAudio(0);
@@ -264,7 +268,7 @@ class OPLManager
 			fprintf(stderr, "OPL_SDL only supports native signed 16-bit LSB, stereo format!\n");
 
 			SDL_Shutdown();
-			return 0;
+			return false;
 		}
 
 		// Mix buffer: four bytes per sample (16 bits * 2 channels):
@@ -282,7 +286,7 @@ class OPLManager
 		// normal SDL_mixer music mixing.
 		//Mix_SetPostMix(Mix_Callback, nullptr); //FIXME
 
-		return 1;
+		return true;
 	}
 
 	unsigned SDL_PortRead(opl_port_t port)
