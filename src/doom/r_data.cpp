@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Preparation of data for rendering, generation of lookups, caching, retrieval by name.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "deh_main.h"
 #include "i_swap.h"

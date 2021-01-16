@@ -3,32 +3,33 @@
 # Find libpng, so we can link against it for png functions.
 # If libpng doesn't exist, linking against the png target will have no effect.
 
-#find_library(PNG_LIBRARY png)
+find_package(libpng CONFIG REQUIRED)
+#target_link_libraries(main PRIVATE libpng)
 
 # set in <project_root_dir>/CMakeLists.txt
 # Windows: VCPKG_DIR = "<install_location>/vcpkg/packages"
 # x64: ARCHITECTURE = "_x64-windows"
-set(PNG_DIR "${VCPKG_DIR}/libpng${ARCHITECTURE}")
+set(libpng_DIR "${VCPKG_DIR}/libpng${ARCHITECTURE}")
 
-find_path(PNG_INCLUDE_DIR "png.h" HINTS "${PNG_DIR}/include" ${PC_PNG_INCLUDE_DIRS})
+find_path(libpng_INCLUDE_DIR "png.h" HINTS "${libpng_DIR}/include" ${PC_libpng_INCLUDE_DIRS})
 
-if(PC_PNG_VERSION)
-	set(PNG_VERSION "${PC_PNG_VERSION}")
+if(PC_libpng_VERSION)
+	set(libpng_VERSION "${PC_libpng_VERSION}")
 endif()
 
 # PRE_FIX: lib
 # LIBRARY: png
 # POS_FIX: 16
-find_library(PNG_LIBRARY "libpng16" HINTS "${PNG_DIR}/lib" ${PC_PNG_LIBRARY_DIRS})
+find_library(libpng_LIBRARY "libpng16" HINTS "${libpng_DIR}/lib" ${PC_libpng_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(PNG FOUND_VAR PNG_FOUND REQUIRED_VARS PNG_LIBRARY VERSION_VAR PNG_VERSION)
+find_package_handle_standard_args(libpng FOUND_VAR libpng_FOUND REQUIRED_VARS libpng_LIBRARY VERSION_VAR libpng_VERSION)
 
-if(PNG_FOUND)
-	add_library(PNG::PNG UNKNOWN IMPORTED)
+if(libpng_FOUND)
+	add_library(libpng::libpng UNKNOWN IMPORTED)
 
-	set_target_properties(PNG::PNG PROPERTIES
-							INTERFACE_COMPILE_OPTIONS "${PNG_CFLAGS_OTHER}"
-							INTERFACE_INCLUDE_DIRECTORIES "${PNG_INCLUDE_DIR}"
-							IMPORTED_LOCATION "${PNG_LIBRARY}")
+	set_target_properties(libpng::libpng PROPERTIES
+							INTERFACE_COMPILE_OPTIONS "${libpng_CFLAGS_OTHER}"
+							INTERFACE_INCLUDE_DIRECTORIES "${libpng_INCLUDE_DIR}"
+							IMPORTED_LOCATION "${libpng_LIBRARY}")
 endif()

@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		DOOM selection menu, options, episode etc. Sliders and icons. Kinda widget stuff.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomdef.h"
 #include "doomkeys.h"

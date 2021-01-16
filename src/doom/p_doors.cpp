@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Door animation code (opening/closing)
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "z_zone.h"
 #include "doomdef.h"

@@ -13,6 +13,7 @@
 	DESCRIPTION:
 		additional BOOM and MBF code pointers
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "p_local.h"
 #include "m_random.h"

@@ -11,10 +11,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <memory>
-#include <array>
-#include <type_traits>
-#include <concepts>
+#include "../../derma/stdafx.h"
+
+//#include <memory>
+//#include <array>
+//#include <type_traits>
+//#include <concepts>
+
+#include "../../derma/common.h
 
 #include "large.h"
 #include "normal.h"

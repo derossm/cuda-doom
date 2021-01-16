@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		The status bar widget code.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "deh_main.h"
 #include "doomdef.h"

@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Parses "Frame" sections in dehacked files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "d_items.h"

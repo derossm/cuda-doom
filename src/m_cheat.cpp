@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Cheat sequence checking.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "m_cheat.h"

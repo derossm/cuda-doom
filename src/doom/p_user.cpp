@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Player related stuff. Bobbing POV/weapon, movement. Pending weapon.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "d_event.h"

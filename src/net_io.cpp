@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Network packet I/O. Base layer for sending/receiving packets, through the network module system
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "i_system.h"
 #include "net_defs.h"

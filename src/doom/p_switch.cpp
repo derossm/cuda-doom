@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Switches, buttons. Two-state animation. Exits.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "i_system.h"
 #include "deh_main.h"

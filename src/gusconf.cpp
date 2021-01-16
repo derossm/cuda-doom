@@ -13,8 +13,9 @@
 		Actually emulating a GUS is far too much work; fortunately GUS "emulation" already exists in the form of Timidity, which
 		supports GUS patch files. This code therefore converts Doom's DMXGUS lump into an equivalent Timidity configuration file.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "m_misc.h"
 #include "w_wad.h"

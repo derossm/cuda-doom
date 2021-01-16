@@ -8,12 +8,13 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
-
-#include "SDL.h"
+//#include <string>
 
 #include "config.h"
+
+#include <SDL.h>
 
 #include "deh_str.h"
 #include "doomtype.h"

@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Zone Memory Allocation. Neat.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 /*
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "i_system.h"

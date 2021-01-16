@@ -1,27 +1,14 @@
-/*
-* Copyright 1993-2018 NVIDIA Corporation. All rights reserved.
-*
-* Please refer to the NVIDIA end user license agreement (EULA) associated
-* with this source code for terms and conditions that govern your use of
-* this software. Any use, reproduction, disclosure, or distribution of
-* this software and related documentation outside the terms of the EULA
-* is strictly prohibited.
-*
-*/
+/**********************************************************************************************************************************************\
+	Copyright 1993-2018 NVIDIA Corporation. All rights reserved.
 
-#include <windows.h>
+		Please refer to the NVIDIA end user license agreement (EULA) associated with this source code for terms
+		and conditions that govern your use of this software. Any use, reproduction, disclosure, or distribution
+		of this software and related documentation outside the terms of the EULA is strictly prohibited.
+\**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include "d3d12.h"
-#include "d3dx12.h"
-
-#include <string>
-#include <wrl.h>
-#include <shellapi.h>
-
-#include <cuda_runtime.h>
 #include "ShaderStructs.h"
 #include "simpleD3D12.h"
-#include <aclapi.h>
 
 //////////////////////////////////////////////
 // WindowsSecurityAttributes implementation //
@@ -92,9 +79,9 @@ SECURITY_ATTRIBUTES* WindowsSecurityAttributes::operator&()
 }
 
 DX12CudaInterop::DX12CudaInterop(UINT width, UINT height, std::string name) : DX12CudaSample(width, height, name),
-	m_frameIndex(0), m_scissorRect(0, 0, static_cast<LONG>(width), static_cast<LONG>(height)), m_fenceValues{}, m_rtvDescriptorSize(0)
+m_frameIndex(0), m_scissorRect(0, 0, static_cast<LONG>(width), static_cast<LONG>(height)), m_fenceValues{}, m_rtvDescriptorSize(0)
 {
-	m_viewport = { 0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height) };
+	m_viewport = {0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height)};
 	m_AnimTime = 1.0f;
 }
 
@@ -203,14 +190,14 @@ void DX12CudaInterop::LoadPipeline()
 
 void DX12CudaInterop::InitCuda()
 {
-	int num_cuda_devices{0};
-	checkCudaErrors(cudaGetDeviceCount(&num_cuda_devices));
+	unsigned num_cuda_devices{0u};
+	checkCudaErrors(cudaGetDeviceCount(reinterpret_cast<int*>(&num_cuda_devices)));
 
 	if (!num_cuda_devices)
 	{
 		throw std::exception("No CUDA Devices found");
 	}
-	for (UINT devId{0u}; devId < num_cuda_devices; ++devId)
+	for (unsigned devId{0u}; devId < num_cuda_devices; ++devId)
 	{
 		cudaDeviceProp devProp;
 		checkCudaErrors(cudaGetDeviceProperties(&devProp, devId));
@@ -227,6 +214,7 @@ void DX12CudaInterop::InitCuda()
 		}
 	}
 }
+
 // Load the sample assets.
 void DX12CudaInterop::LoadAssets()
 {
@@ -278,7 +266,7 @@ void DX12CudaInterop::LoadAssets()
 
 		// Describe and create the graphics pipeline state object (PSO).
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
-		psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
+		psoDesc.InputLayout = {inputElementDescs, _countof(inputElementDescs)};
 		psoDesc.pRootSignature = m_rootSignature.Get();
 		psoDesc.VS = CD3DX12_SHADER_BYTECODE(vertexShader.Get());
 		psoDesc.PS = CD3DX12_SHADER_BYTECODE(pixelShader.Get());
@@ -295,7 +283,7 @@ void DX12CudaInterop::LoadAssets()
 
 	// Create the command list.
 	ThrowIfFailed(m_device->CreateCommandList(0,
-			D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocators[m_frameIndex].Get(), m_pipelineState.Get(), IID_PPV_ARGS(&m_commandList)));
+		D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocators[m_frameIndex].Get(), m_pipelineState.Get(), IID_PPV_ARGS(&m_commandList)));
 
 	// Command lists are created in the recording state, but there is nothing to record yet. The main loop expects it to be closed, so close it now.
 	ThrowIfFailed(m_commandList->Close());
@@ -303,19 +291,19 @@ void DX12CudaInterop::LoadAssets()
 	// Create the vertex buffer.
 	{
 		// Define the geometry for a triangle.
-		vertBufWidth = m_width/2;
-		vertBufHeight = m_height/2;
-		const UINT vertexBufferSize = sizeof(Vertex)*vertBufWidth*vertBufHeight;
+		vertBufWidth = m_width / 2;
+		vertBufHeight = m_height / 2;
+		const auto vertexBufferSize{sizeof(Vertex) * vertBufWidth * vertBufHeight};
 
 		auto heapProperties{CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT)};
 		auto buffer1{CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize)};
 		ThrowIfFailed(m_device->CreateCommittedResource(&heapProperties,
-				D3D12_HEAP_FLAG_SHARED, &buffer1, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, nullptr, IID_PPV_ARGS(&m_vertexBuffer)));
+			D3D12_HEAP_FLAG_SHARED, &buffer1, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, nullptr, IID_PPV_ARGS(&m_vertexBuffer)));
 
 		// Initialize the vertex buffer view.
 		m_vertexBufferView.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
 		m_vertexBufferView.StrideInBytes = sizeof(Vertex);
-		m_vertexBufferView.SizeInBytes = vertexBufferSize;
+		m_vertexBufferView.SizeInBytes = static_cast<UINT>(vertexBufferSize); // FIXME is _VERTEX_BUFFER_VIEW easily changed or purposefully using UINT
 
 		HANDLE sharedHandle;
 		WindowsSecurityAttributes windowsSecurityAttributes;
@@ -326,7 +314,7 @@ void DX12CudaInterop::LoadAssets()
 		auto buffer2{CD3DX12_RESOURCE_DESC::Buffer(vertexBufferSize)};
 		d3d12ResourceAllocationInfo = m_device->GetResourceAllocationInfo(m_nodeMask, 1, &buffer2);
 		size_t actualSize = d3d12ResourceAllocationInfo.SizeInBytes;
-		size_t alignment = d3d12ResourceAllocationInfo.Alignment;
+		//size_t alignment = d3d12ResourceAllocationInfo.Alignment; unreferenced
 
 		cudaExternalMemoryHandleDesc externalMemoryHandleDesc;
 		memset(&externalMemoryHandleDesc, 0, sizeof(externalMemoryHandleDesc));
@@ -388,7 +376,7 @@ void DX12CudaInterop::OnRender()
 	PopulateCommandList();
 
 	// Execute the command list.
-	ID3D12CommandList* ppCommandLists[]{ m_commandList.Get() };
+	ID3D12CommandList* ppCommandLists[]{m_commandList.Get()};
 	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
 	// Present the frame.
@@ -434,11 +422,11 @@ void DX12CudaInterop::PopulateCommandList()
 	m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
 
 	// Record commands.
-	const float clearColor[]{ 0.0f, 0.2f, 0.4f, 1.0f };
+	const float clearColor[]{0.0f, 0.2f, 0.4f, 1.0f};
 	m_commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 	m_commandList->IASetVertexBuffers(0, 1, &m_vertexBufferView);
-	m_commandList->DrawInstanced(vertBufHeight*vertBufWidth, 1, 0, 0);
+	m_commandList->DrawInstanced(static_cast<UINT>(vertBufHeight * vertBufWidth), 1, 0, 0); // FIXME does this narrowing make sense?
 
 	// Indicate that the back buffer will now be used to present.
 	auto trans2{CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_frameIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT)};

@@ -3,7 +3,7 @@
 # Find libm, so we can link against it for math functions.
 # If libm doesn't exist, linking against the m target will have no effect.
 
-find_library(M_LIBRARY m)
+#find_package(m REQUIRED)
 
 # set in <project_root_dir>/CMakeLists.txt
 # Windows: VCPKG_DIR = "<install_location>/vcpkg/packages"

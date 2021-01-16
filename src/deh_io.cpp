@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Dehacked I/O code (does all reads from dehacked files)
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "deh_io.h"
 

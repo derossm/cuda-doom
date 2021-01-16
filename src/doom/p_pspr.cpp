@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Weapon sprite animation, weapon objects. Action functions for weapons.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "d_event.h"

@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Parses "Misc" sections in dehacked files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "deh_defs.h"

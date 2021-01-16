@@ -12,6 +12,7 @@
 		Handle Sector base lighting effects.
 		Muzzle flash?
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "z_zone.h"
 #include "m_random.h"

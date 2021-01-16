@@ -12,6 +12,7 @@
 		Sky rendering. The DOOM sky is a texture map like any wall, wrapping around. A 1024 columns equal 360 degrees. The default sky
 		map is 256 columns and repeats 4 times on a 320 screen?
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 // Needed for FRACUNIT.
 #include "m_fixed.h"

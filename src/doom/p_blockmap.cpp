@@ -13,6 +13,7 @@
 	DESCRIPTION:
 		Create Blockmap taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "i_system.h"
 #include "p_local.h"

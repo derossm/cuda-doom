@@ -13,9 +13,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/common.h"
+#include "../derma/stdafx.h"
 
-#include "SDL_endian.h"
+#include <SDL_endian.h>
+
+#include "../derma/common.h"
 
 // Endianess handling.
 // WAD files are stored little endian.

@@ -10,13 +10,14 @@
 	DESCRIPTION:
 		PC speaker driver for Linux.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "config.h"
 
 #ifdef HAVE_LINUX_KD_H
 
-#include "SDL.h"
-#include "SDL_thread.h"
+#include <SDL.h>
+#include <SDL_thread.h>
 
 #include "pcsound.h"
 #include "pcsound_internal.h"

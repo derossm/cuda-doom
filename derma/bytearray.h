@@ -11,14 +11,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <concepts>
-#include <type_traits>
+#include "stdafx.h"
 
-#include <cstddef>
-#include <cstdint>
-
-#include <array>
-#include <bit>
+//#include <concepts>
+//#include <type_traits>
+//#include <cstddef>
+//#include <cstdint>
+//#include <array>
+//#include <bit>
 
 namespace derma::experimental
 {

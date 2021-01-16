@@ -10,8 +10,11 @@
 	DESCRIPTION:
 		Networking module which uses SDL_net
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
+
+#include <SDL_net.h>
 
 #include "doomtype.h"
 #include "i_system.h"
@@ -26,8 +29,6 @@
 // ======================================== //
 // NETWORKING
 // ======================================== //
-
-#include <SDL_net.h>
 
 constexpr size_t DEFAULT_PORT{2342};
 

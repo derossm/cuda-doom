@@ -10,9 +10,10 @@
 	DESCRIPTION:
 		PC speaker interface.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 #include "pcsound.h"
 #include "pcsound_internal.h"

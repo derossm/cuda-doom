@@ -11,21 +11,21 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <array>
-#include <map>
+#include "stdafx.h"
 
-#include <algorithm>
-#include <functional>
-
-#include <any>
+//#include <array>
+//#include <map>
+//#include <algorithm>
+//#include <functional>
+//#include <any>
 
 // WINDOWS DEFINES FROM FILES WE DON'T EVEN INCLUDE
-#ifdef DELETE // WinNT.h
-#undef DELETE
-#endif
-#ifdef HELP_KEY // WinUser.h
-#undef HELP_KEY
-#endif
+//#ifdef DELETE // WinNT.h
+//#undef DELETE
+//#endif
+//#ifdef HELP_KEY // WinUser.h
+//#undef HELP_KEY
+//#endif
 
 enum class SCANCODES : uint16_t
 {
@@ -323,6 +323,7 @@ enum class SCANCODES : uint16_t
 
 enum class Keys : uint16_t
 {
+	null,
 	// SCANCODE 4-49
 	KEY_A,
 	KEY_B,
@@ -397,7 +398,7 @@ enum class Keys : uint16_t
 	INSERT,
 	HOME,
 	PAGEUP,
-	DELETE,
+	DEL,
 	END,
 	PAGEDOWN,
 	RIGHT,
@@ -438,7 +439,7 @@ enum class Keys : uint16_t
 	//NUMLOCKCLEAR = NUMLOCK,
 };
 
-constexpr uint8_t SCANCODE_OFFSET{4};
+constexpr uint8_t SCANCODE_OFFSET{3};
 //constexpr uint16_t SEMICOLON_OFFSET{KEY_A_OFFSET + 1};
 //constexpr uint16_t LMOD_OFFSET{224};
 //constexpr uint16_t RMOD_OFFSET{226};
@@ -511,7 +512,7 @@ constexpr ::std::array<KeyNames, ::std::size_t(Keys::count)> key_names{
 	KeyNames{ .key{Keys::F12},			.name{"F12"}			},		KeyNames{ .key{Keys::PRINTSCREEN},	.name{"PRINTSCREEN"}	},
 	KeyNames{ .key{Keys::SCROLLLOCK},	.name{"SCROLLLOCK"}		},		KeyNames{ .key{Keys::PAUSE},		.name{"PAUSE"}			},
 	KeyNames{ .key{Keys::INSERT},		.name{"INSERT"}			},		KeyNames{ .key{Keys::HOME},			.name{"HOME"}			},
-	KeyNames{ .key{Keys::PAGEUP},		.name{"PAGEUP"}			},		KeyNames{ .key{Keys::DELETE},		.name{"DELETE"}			},
+	KeyNames{ .key{Keys::PAGEUP},		.name{"PAGEUP"}			},		KeyNames{ .key{Keys::DEL},			.name{"DELETE"}			},
 	KeyNames{ .key{Keys::END},			.name{"END"}			},		KeyNames{ .key{Keys::PAGEDOWN},		.name{"PAGEDOWN"}		},
 	KeyNames{ .key{Keys::RIGHT},		.name{"RIGHT"}			},		KeyNames{ .key{Keys::LEFT},			.name{"LEFT"}			},
 	KeyNames{ .key{Keys::DOWN},			.name{"DOWN"}			},		KeyNames{ .key{Keys::UP},			.name{"UP"}				},
@@ -554,9 +555,6 @@ constexpr ::std::array<KeyNames, ::std::size_t(Keys::count)> s_key_names{
 	KeyNames{ .key{Keys::KEY_5},		.name{"%"}				},		KeyNames{ .key{Keys::KEY_6},		.name{"^"}				},
 	KeyNames{ .key{Keys::KEY_7},		.name{"&"}				},		KeyNames{ .key{Keys::KEY_8},		.name{"*"}				},
 	KeyNames{ .key{Keys::KEY_9},		.name{"("}				},		KeyNames{ .key{Keys::KEY_0},		.name{")"}				},
-	//KeyNames{ .key{Keys::ENTER},		.name{"ENTER"}			},		KeyNames{ .key{Keys::ESCAPE},		.name{"ESCAPE"}			},
-	//KeyNames{ .key{Keys::BACKSPACE},	.name{"BACKSPACE"}		},		KeyNames{ .key{Keys::TAB},			.name{"TAB"}			},
-	//KeyNames{ .key{Keys::SPACE},		.name{"SPACE"}			},
 	KeyNames{ .key{Keys::MINUS},		.name{"_"}				},
 	KeyNames{ .key{Keys::EQUALS},		.name{"+" }				},		KeyNames{ .key{Keys::LEFTBRACKET},	.name{"{"}				},
 	KeyNames{ .key{Keys::RIGHTBRACKET},	.name{"}"}				},		KeyNames{ .key{Keys::BACKSLASH},	.name{"|"}				},
@@ -564,24 +562,8 @@ constexpr ::std::array<KeyNames, ::std::size_t(Keys::count)> s_key_names{
 	KeyNames{ .key{Keys::SEMICOLON},	.name{":"}				},		KeyNames{ .key{Keys::APOSTROPHE},	.name{"\""}				},
 	KeyNames{ .key{Keys::GRAVE},		.name{"~"}				},		KeyNames{ .key{Keys::COMMA},		.name{"<"}				},
 	KeyNames{ .key{Keys::PERIOD},		.name{">"}				},		KeyNames{ .key{Keys::SLASH},		.name{"?"}				},
-	//KeyNames{ .key{Keys::CAPSLOCK},		.name{"CAPSLOCK"}		},		KeyNames{ .key{Keys::F1},			.name{"F1"}				},
-	//KeyNames{ .key{Keys::F2},			.name{"F2"}				},		KeyNames{ .key{Keys::F3},			.name{"F3"}				},
-	//KeyNames{ .key{Keys::F4},			.name{"F4"}				},		KeyNames{ .key{Keys::F5},			.name{"F5"}				},
-	//KeyNames{ .key{Keys::F6},			.name{"F6"}				},		KeyNames{ .key{Keys::F7},			.name{"F7"}				},
-	//KeyNames{ .key{Keys::F8},			.name{"F8"}				},		KeyNames{ .key{Keys::F9},			.name{"F9"}				},
-	//KeyNames{ .key{Keys::F10},			.name{"F10"}			},		KeyNames{ .key{Keys::F11},			.name{"F11"}			},
-	//KeyNames{ .key{Keys::F12},			.name{"F12"}			},
 	KeyNames{ .key{Keys::PRINTSCREEN},	.name{"SYSREQ"}			}, // SDL_SCANCODE_SYSREQ = 154,
 	//KeyNames{ .key{Keys::SCROLLLOCK},	.name{"SCROLLLOCK"}		},		KeyNames{ .key{Keys::PAUSE},		.name{"PAUSE"}			},
-	//KeyNames{ .key{Keys::INSERT},		.name{"INSERT"}			},		KeyNames{ .key{Keys::HOME},			.name{"HOME"}			},
-	//KeyNames{ .key{Keys::PAGEUP},		.name{"PAGEUP"}			},		KeyNames{ .key{Keys::DELETE},		.name{"DELETE"}			},
-	//KeyNames{ .key{Keys::END},			.name{"END"}			},		KeyNames{ .key{Keys::PAGEDOWN},		.name{"PAGEDOWN"}		},
-	//KeyNames{ .key{Keys::RIGHT},		.name{"RIGHT"}			},		KeyNames{ .key{Keys::LEFT},			.name{"LEFT"}			},
-	//KeyNames{ .key{Keys::DOWN},			.name{"DOWN"}			},		KeyNames{ .key{Keys::UP},			.name{"UP"}				},
-	//KeyNames{ .key{Keys::NUMLOCK},		.name{"NUMLOCK"}		},
-	//KeyNames{ .key{Keys::KP_DIVIDE},	.name{"NUM /"}			},
-	//KeyNames{ .key{Keys::KP_MULTIPLY},	.name{"NUM *"}			},		KeyNames{ .key{Keys::KP_MINUS},		.name{"NUM -"}			},
-	//KeyNames{ .key{Keys::KP_PLUS},		.name{"NUM +"}			},		KeyNames{ .key{Keys::KP_ENTER},		.name{"NUM ENTER"}		},
 	//KeyNames{ .key{Keys::KP_1},			.name{"NUM 1"}			},		KeyNames{ .key{Keys::KP_2},			.name{"NUM 2"}			},
 	//KeyNames{ .key{Keys::KP_3},			.name{"NUM 3"}			},		KeyNames{ .key{Keys::KP_4},			.name{"NUM 4"}			},
 	//KeyNames{ .key{Keys::KP_5},			.name{"NUM 5"}			},		KeyNames{ .key{Keys::KP_6},			.name{"NUM 6"}			},

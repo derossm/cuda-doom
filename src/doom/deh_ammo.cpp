@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Parses "Ammo" sections in dehacked files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomdef.h"
 #include "doomtype.h"

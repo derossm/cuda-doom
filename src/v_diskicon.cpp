@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Disk load indicator.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "deh_str.h"

@@ -11,6 +11,7 @@
 	DESCRIPTION:
 	Mission begin melt/wipe screen special effect.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "f_wipe.h"
 

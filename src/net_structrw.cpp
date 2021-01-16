@@ -9,8 +9,9 @@
 
 	Reading and writing various structures into packets
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "i_system.h"

@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		WAD I/O functions.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "m_misc.h"
 #include "w_file.h"

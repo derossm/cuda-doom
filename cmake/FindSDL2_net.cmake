@@ -17,9 +17,13 @@
 # IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+find_package(sdl2-net CONFIG REQUIRED)
+#target_link_libraries(main PRIVATE SDL2::SDL2_net)
+
 # set in <project_root_dir>/CMakeLists.txt
 # Windows: VCPKG_DIR = "<install_location>/vcpkg/packages"
 # x64: ARCHITECTURE = "_x64-windows"
+
 set(SDL2_NET_DIR "${VCPKG_DIR}/sdl2-net${ARCHITECTURE}")
 
 find_path(SDL2_NET_INCLUDE_DIR "SDL_net.h" HINTS "${SDL2_NET_DIR}/include/SDL2" ${PC_SDL2_NET_INCLUDE_DIRS})
@@ -50,8 +54,8 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(SDL2_net FOUND_VAR SDL2_NET_FOUND REQUIRED_VARS SDL2_NET_INCLUDE_DIR SDL2_NET_LIBRARY VERSION_VAR SDL2_NET_VERSION)
 
 if(SDL2_NET_FOUND)
-	add_library(SDL2::net UNKNOWN IMPORTED)
-	set_target_properties(SDL2::net PROPERTIES
+	#add_library(SDL2::net UNKNOWN IMPORTED)
+	set_target_properties(SDL2::SDL2_net PROPERTIES
 							INTERFACE_COMPILE_OPTIONS "${PC_SDL2_NET_CFLAGS_OTHER}"
 							INTERFACE_INCLUDE_DIRECTORIES "${SDL2_NET_INCLUDE_DIR}"
 							INTERFACE_LINK_LIBRARIES SDL2::SDL2

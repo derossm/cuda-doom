@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Querying servers to find their current status.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "i_system.h"
 #include "i_timer.h"

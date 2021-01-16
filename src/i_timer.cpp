@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Timer functions.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "i_timer.h"
 #include "doomtype.h"

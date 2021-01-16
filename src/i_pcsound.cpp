@@ -10,10 +10,11 @@
 	DESCRIPTION:
 		System interface for PC speaker sound.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "doomtype.h"
 

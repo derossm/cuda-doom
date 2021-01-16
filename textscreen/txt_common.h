@@ -25,8 +25,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <string>
+#include "../derma/stdafx.h"
 
+//#include <string>
+
+#include "../derma/common.h
 #include "../derma/strongtype.h"
 #include "txt_callback.h"
 /*

@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Emulates the IO functions in C stdio.h reading and writing to memory.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "memio.h"
 

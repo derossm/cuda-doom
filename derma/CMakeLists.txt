@@ -1,8 +1,5 @@
-#add_library(derma STATIC
 set(DERMA_FILES
-									cpp_headers.h
-									c_headers.h
-									namespace_forwards.h
+									stdafx.h
 									common.h
 									d_windows.h
 									d_unix.h
@@ -12,10 +9,20 @@ set(DERMA_FILES
 									bytetype.h
 		test_bytetype.cpp			catch.h)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 add_executable("${PROGRAM_PREFIX}catch2_byte" ${DERMA_FILES})
-set_target_properties("${PROGRAM_PREFIX}catch2_byte" PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties("${PROGRAM_PREFIX}catch2_byte" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+target_include_directories("${PROGRAM_PREFIX}catch2_byte" INTERFACE "." PRIVATE "../derma")
+target_precompile_headers("${PROGRAM_PREFIX}catch2_byte" PUBLIC stdafx.h)
 
-target_include_directories("${PROGRAM_PREFIX}catch2_byte" INTERFACE "." PRIVATE "../src/" "../derma")
+if(MSVC)
+	target_compile_options("${PROGRAM_PREFIX}catch2_byte" PUBLIC
+		"/Zc:__cplusplus"
+		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise"
+		"/permissive-" "/Zc:preprocessor"
+		"/W4" "/Od" "/arch:AVX2"
+		"/EHsc"
+		"/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MDd"
+		#"/experimental:module"
+		)
+	target_compile_definitions("${PROGRAM_PREFIX}catch2_byte" PUBLIC "WIN32_LEAN_AND_MEAN" "NOMINMAX")
+endif()

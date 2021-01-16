@@ -10,10 +10,11 @@
 	DESCRIPTION:
 		Demonstration program for OPL library to play back DRO format files.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "opl.h"
 

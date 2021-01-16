@@ -9,8 +9,9 @@
 
 	Functions for presenting the information captured from the statistics buffer to a file.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "d_player.h"
 #include "d_mode.h"

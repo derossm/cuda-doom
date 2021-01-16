@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Refresh of things, i.e. objects represented by sprites.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "deh_main.h"
 #include "doomdef.h"

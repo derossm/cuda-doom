@@ -11,17 +11,19 @@
 	DESCRIPTION:
 	System interface for music.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
+
+#include "config.h"
+
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 #include "../derma/d_native.h"
 
-#include "SDL.h"
-#include "SDL_mixer.h"
-
 #include "i_midipipe.h"
 
-#include "config.h"
 #include "doomtype.h"
 #include "memio.h"
 #include "mus2mid.h"

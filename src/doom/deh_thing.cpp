@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Parses "Thing" sections in dehacked files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 

@@ -11,18 +11,20 @@
 	DESCRIPTION:
 		DOOM graphics stuff for SDL.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
-#include "SDL.h"
-#include "SDL_opengl.h"
+#include "config.h"
+
+#include <SDL.h>
+#include <SDL_opengl.h>
 
 // TODO fix including cpp
 #include "icon.cpp"
 
 #include "crispy.h"
 
-#include "config.h"
 #include "d_loop.h"
 #include "deh_str.h"
 #include "doomtype.h"

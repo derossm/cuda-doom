@@ -14,12 +14,19 @@
 		Functions to draw patches (by post) directly to screen.
 		Functions to blit a block to the screen.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+#include "config.h"
 
-#include "i_system.h"
+#include <SDL_version.h>
+
+#ifdef HAVE_LIBPNG
+#include <png.h>
+#endif
 
 #include "doomtype.h"
+
+#include "i_system.h"
 
 #include "deh_str.h"
 #include "i_input.h"
@@ -31,18 +38,11 @@
 #include "v_video.h"
 #include "w_wad.h"
 #include "z_zone.h"
+
 #include "crispy.h"
-
-#include "config.h"
-
-#include "SDL_version.h"
 
 #ifdef CRISPY_TRUECOLOR
 #include "v_trans.h"
-#endif
-
-#ifdef HAVE_LIBPNG
-#include <png.h>
 #endif
 
 // TODO: There are separate RANGECHECK defines for different games, but this
@@ -73,14 +73,10 @@ int dirtybox[4];
 // This is needed for Chocolate Strife, which clips patches to the screen.
 static vpatchclipfunc_t patchclip_callback = NULL;
 
-//
-// V_MarkRect
-//
 void V_MarkRect(int x, int y, int width, int height)
 {
 	// If we are temporarily using an alternate screen, do not
 	// affect the update box.
-
 	if (dest_screen == I_VideoBuffer)
 	{
 		M_AddToBox(dirtybox, x, y);
@@ -88,9 +84,6 @@ void V_MarkRect(int x, int y, int width, int height)
 	}
 }
 
-//
-// V_CopyRect
-//
 void V_CopyRect(int srcx, int srcy, pixel_t* source, int width, int height, int destx, int desty)
 {
 	pixel_t* src;

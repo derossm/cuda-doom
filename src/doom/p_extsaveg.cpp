@@ -12,10 +12,12 @@
 	DESCRIPTION:
 		Archiving: Extended SaveGame I/O.
 \**********************************************************************************************************************************************/
+#include "../../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "config.h"
+
 #include "doomstat.h"
 #include "doomtype.h"
 #include "m_misc.h"

@@ -10,10 +10,11 @@
 	DESCRIPTION:
 		SDL emulation of VGA 640x480x4 planar video mode, for Hexen startup loading screen.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "string.h"
 

@@ -12,6 +12,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../../derma/stdafx.h"
+
 #include "../../derma/common.h"
 
 constexpr size_t DEH_DEFAULT_INITIAL_HEALTH{100};

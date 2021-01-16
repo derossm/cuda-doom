@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Top-level dehacked definitions for Doom dehacked.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "deh_defs.h"
 #include "deh_main.h"

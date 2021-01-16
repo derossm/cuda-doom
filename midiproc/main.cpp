@@ -13,24 +13,26 @@
 		Uses pipes to communicate with Doom. This allows this separate process to have its own independent volume control even under
 		Windows Vista and later where the mixer model doesn't support separate volumes to different devices for the same process.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
-#include <charconv>
-#include <sstream>
-
-#include "../derma/d_native.h"
+//#include <string>
+//#include <charconv>
+//#include <sstream>
 
 #ifndef SDL_MAIN_HANDLED
 #define SDL_MAIN_HANDLED
 #endif
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include "config.h"
+
+#include <SDL.h>
+#include <SDL_mixer.h>
+
+#include "../derma/d_native.h"
+
+#include "doomtype.h"
 
 #include "buffer.h"
-
-#include "config.h"
-#include "doomtype.h"
 
 namespace cudadoom::midi
 {

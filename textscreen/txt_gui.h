@@ -12,10 +12,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/stdafx.h"
+
+//#include <string>
+
 #include "../derma/common.h"
 #include "../derma/keybinds.h"
-
-#include <string>
 
 #include "txt_common.h"
 

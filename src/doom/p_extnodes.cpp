@@ -12,6 +12,9 @@
 	DESCRIPTION:
 		support maps with NODES in compressed or uncompressed ZDBSP format or DeePBSP format and/or LINEDEFS and THINGS lumps in Hexen format
 \**********************************************************************************************************************************************/
+#include "../../derma/stdafx.h"
+
+#include "config.h"
 
 #include "m_bbox.h"
 #include "p_local.h"
@@ -23,8 +26,6 @@
 #include "p_extnodes.h"
 
 // support maps with compressed ZDBSP nodes
-#include "config.h"
-
 #ifdef HAVE_LIBZ
 #include <zlib.h>
 #endif

@@ -18,10 +18,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <array>
-#include <vector>
-#include <algorithm>
-#include <ranges>
+#include "../derma/stdafx.h"
+
+//#include <array>
+//#include <vector>
+//#include <algorithm>
+//#include <ranges>
 
 #include "../derma/common.h"
 #include "../derma/enumbitset.h"
@@ -148,7 +150,7 @@ public:
 			}
 			break;
 		case 0xb0:
-			if (regm == Byte<uint8_t>(0xbd) && !high)
+			if (regm == (0xbd) && !high)
 			{
 				tremoloshift = (((v >> 7) ^ 1) << 1) + 2;
 				vibshift = ((v >> 6) & 0x01) ^ 1;
@@ -190,14 +192,15 @@ public:
 		}
 
 		mixbuff[0] = 0;
+		Byte<int16_t> accm;
 		for (size_t i{0}; i < 18; ++i)
 		{
-			Byte<int16_t> accm = 0;
+			accm = 0;
 			for (size_t j{0}; j < 4; ++j)
 			{
 				accm += *channel[i].channel_out[j];
 			}
-			mixbuff[0] += Byte<int16_t>((accm & channel[i].cha));
+			mixbuff[0] += ((accm & channel[i].cha));
 		}
 
 		for (size_t i{15}; i < 18; ++i)
@@ -221,12 +224,12 @@ public:
 		mixbuff[1] = 0;
 		for (size_t i{0}; i < 18; ++i)
 		{
-			Byte<int16_t> accm = 0;
+			accm = 0;
 			for (size_t j{0}; j < 4; ++j)
 			{
 				accm += *channel[i].channel_out[j];
 			}
-			mixbuff[1] += Byte<int16_t>(accm & channel[i].chb);
+			mixbuff[1] += (accm & channel[i].chb);
 		}
 
 		for (size_t i{33}; i < 36; ++i)

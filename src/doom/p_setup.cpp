@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Do all the WAD I/O, get map description, set up initial state and misc. LUTs.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "z_zone.h"
 

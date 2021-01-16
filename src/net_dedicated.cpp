@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Dedicated server code.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 

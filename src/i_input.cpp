@@ -11,9 +11,10 @@
 	DESCRIPTION:
 		SDL implementation of system-specific input interface.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include "SDL.h"
-#include "SDL_keycode.h"
+#include <SDL.h>
+#include <SDL_keycode.h>
 
 #include "doomkeys.h"
 #include "doomtype.h"

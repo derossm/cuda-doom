@@ -13,9 +13,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/common.h"
+#include "../derma/stdafx.h"
 
 #include "config.h"
+
+#include "../derma/common.h"
+
 #include "doomtype.h"
 #include "i_video.h"
 
@@ -32,37 +35,37 @@ void I_Endoom(byte* endoom_data)
 	int indent;
 
 	// Set up text mode screen
-	cudadoom::txt::Init();
+	txt::Init();
 
-	cudadoom::txt::SetWindowTitle(PACKAGE_STRING);
+	txt::SetWindowTitle(PACKAGE_STRING);
 	// SDL2-TODO I_InitWindowTitle();
 	// SDL2-TODO I_InitWindowIcon();
 
 	// Write the data to the screen memory
-	screendata = cudadoom::txt::GetScreenData();
+	screendata = txt::GetScreenData();
 
-	indent = (ENDOOM_W - cudadoom::txt::SCREEN_W) / 2;
+	indent = (ENDOOM_W - txt::SCREEN_W) / 2;
 
-	for (y = 0; y < cudadoom::txt::SCREEN_H; ++y)
+	for (y = 0; y < txt::SCREEN_H; ++y)
 	{
-		memcpy(screendata + (y * cudadoom::txt::SCREEN_W * 2),
+		memcpy(screendata + (y * txt::SCREEN_W * 2),
 			endoom_data + (y * ENDOOM_W + indent) * 2,
-			cudadoom::txt::SCREEN_W * 2);
+			txt::SCREEN_W * 2);
 	}
 
 	// Wait for a keypress
 	while (true)
 	{
-		cudadoom::txt::UpdateScreen();
+		txt::UpdateScreen();
 
-		if (cudadoom::txt::GetChar() > 0)
+		if (txt::GetChar() > 0)
 		{
 			break;
 		}
 
-		cudadoom::txt::Sleep(0);
+		txt::Sleep(0);
 	}
 
 	// Shut down text mode screen
-	cudadoom::txt::Shutdown();
+	txt::Shutdown();
 }

@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Parses INCLUDE directives in BEX files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "m_misc.h"
 

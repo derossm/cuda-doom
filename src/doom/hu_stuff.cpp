@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Heads-up displays
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomdef.h"
 #include "doomkeys.h"

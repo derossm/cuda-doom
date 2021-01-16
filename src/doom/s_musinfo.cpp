@@ -14,10 +14,11 @@
 	DESCRIPTION:
  support MUSINFO lump (dynamic music changing)
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 // adapted from chocolate-doom/src/hexen/sc_man.c:18-470
 
-#include <string>
+//#include <string>
 
 // HEADER FILES ------------------------------------------------------------
 

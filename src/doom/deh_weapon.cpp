@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Parses "Weapon" sections in dehacked files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 

@@ -13,6 +13,7 @@
 		Movement/collision utility functions, as used by function in p_map.cpp.
 		BLOCKMAP Iterator functions, and some PIT_* functions to use for iteration.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "i_system.h" // I_Realloc()
 #include "m_bbox.h"

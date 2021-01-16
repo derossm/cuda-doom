@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Moving object handling. Spawn functions.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "i_system.h"
 #include "z_zone.h"

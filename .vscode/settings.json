@@ -4,6 +4,8 @@
 	"editor.wordWrap": "bounded",
 	"files.associations": {
 		"*.ixx": "cpp",
+		"*.mpp": "cpp",
+		"*.cu": "cpp",
 		"memory": "cpp",
 		"any": "cpp",
 		"atomic": "cpp",
@@ -88,11 +90,22 @@
 		"set": "cpp",
 		"stack": "cpp",
 		"stop_token": "cpp",
-		"thread": "cpp"
+		"thread": "cpp",
+		"gsl_byte": "cpp",
+		"cwctype": "cpp",
+		"shared_mutex": "cpp",
+		"unordered_set": "cpp",
+		"__nullptr": "cpp",
+		"__config": "cpp",
+		"__locale": "cpp",
+		"scoped_allocator": "cpp"
 	},
 	"git.allowForcePush": true,
 	"editor.rulers": [
 	160,
 	144
-	]
+	],
+	"cmake.configureSettings": {
+		"CMAKE_TOOLCHAIN_FILE": "G:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake"
+	}
 }

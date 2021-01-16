@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Put all global tate variables here.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "doomstat.h"
 

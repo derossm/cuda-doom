@@ -14,8 +14,9 @@
 		Brightmaps for wall textures
 		Adapted from doomretro/src/r_data.c:97-209
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "doomstat.h"

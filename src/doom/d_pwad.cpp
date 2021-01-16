@@ -12,8 +12,10 @@
 	DESCRIPTION:
 		Auto-loading of (semi-)official PWAD expansions, i.e. Sigil, No Rest for the Living and The Master Levels
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
+//#include <filesystem>
 
 #include "doomstat.h"
 #include "deh_str.h"
@@ -353,7 +355,6 @@ static bool CheckLoadMasterlevels()
 }
 
 // check if the 20 individual separate Mater Levels PWADs are available
-#include <filesystem>
 struct WadEntry
 {
 	int pc_slot;

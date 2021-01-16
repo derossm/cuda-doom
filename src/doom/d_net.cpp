@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		DOOM Network game communication and protocol, all OS independend parts.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "d_main.h"
 #include "m_argv.h"

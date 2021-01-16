@@ -10,11 +10,12 @@
 	DESCRIPTION:
 		SDL Joystick code.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
-#include "SDL.h"
-#include "SDL_joystick.h"
+#include <SDL.h>
+#include <SDL_joystick.h>
 
 #include "doomtype.h"
 #include "d_event.h"

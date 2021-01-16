@@ -10,6 +10,7 @@
 	DESCRIPTION:
 		PC speaker driver for OpenBSD (Should be NetBSD as well, but untested).
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "config.h"
 
@@ -26,8 +27,8 @@
 //#endif
 
 #ifdef HAVE_BSD_SPEAKER
-#include "SDL.h"
-#include "SDL_thread.h"
+#include <SDL.h>
+#include <SDL_thread.h>
 
 #include "pcsound.h"
 #include "pcsound_internal.h"

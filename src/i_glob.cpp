@@ -10,19 +10,18 @@
 	DESCRIPTION:
 		File globbing API. This allows the contents of the filesystem to be interrogated.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+#include "config.h"
+
+//#include <string>
+//#include <filesystem>
 
 #include "i_glob.h"
 #include "m_misc.h"
-#include "config.h"
 
-#include <filesystem>
-
-// Only the fields d_name and (as an XSI extension) d_ino are specified
-// in POSIX.1. Other than Linux, the d_type field is available mainly
-// only on BSD systems. The remaining fields are available on many, but
-// not all systems.
+// Only the fields d_name and (as an XSI extension) d_ino are specified in POSIX.1.
+// Other than Linux, the d_type field is available mainly only on BSD systems. The remaining fields are available on many, but not all systems.
 bool IsDirectory(::std::string dir)
 {
 	return ::std::filesystem::directory_iterator{::std::filesystem::path{dir}}->is_directory();

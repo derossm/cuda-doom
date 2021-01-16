@@ -13,9 +13,13 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <vector>
-#include <string>
-#include <string_view>
+#include "../derma/stdafx.h"
+
+//#include <vector>
+//#include <string>
+//#include <string_view>
+
+#include "../derma/common.h"
 
 #include "txt_common.h"
 #include "txt_widget.h"
@@ -802,38 +806,38 @@ public:
 };
 
 /**
- * Returns non-zero if a native file selector is available on this platform.
- */
- //int CanSelectFiles();
+* Returns non-zero if a native file selector is available on this platform.
+*/
+//int CanSelectFiles();
 
- /**
-  * Open a native file selector to select a file.
-  *
-  * @param prompt		Pointer to a string containing a prompt to display
-  *					in the window.
-  * @param extensions NULL-terminated list of filename extensions for
-  *					files that can be selected, or @ref DIRECTORY
-  *					to select directories.
-  */
-  //::std::string SelectFile(::std::string prompt, CHAR_PTR* extensions);
+/**
+* Open a native file selector to select a file.
+*
+* @param prompt		Pointer to a string containing a prompt to display
+*					in the window.
+* @param extensions NULL-terminated list of filename extensions for
+*					files that can be selected, or @ref DIRECTORY
+*					to select directories.
+*/
+//::std::string SelectFile(::std::string prompt, CHAR_PTR* extensions);
 
-  /**
-   * Create a new txt_fileselect_t widget.
-   *
-   * @param variable	Pointer to a char* variable in which the selected
-   *					file should be stored (UTF-8 format).
-   * @param size		Width of the file selector widget in characters.
-   * @param prompt		Pointer to a string containing a prompt to display
-   *					in the file selection window.
-   * @param extensions NULL-terminated list of filename extensions that
-   *					can be used for this widget, or @ref DIRECTORY
-   *					to select directories.
-   */
-   //txt_fileselect_t* NewFileSelector(char** variable, int size, ::std::string prompt, CHAR_PTR* extensions);
+/**
+* Create a new txt_fileselect_t widget.
+*
+* @param variable	Pointer to a char* variable in which the selected
+*					file should be stored (UTF-8 format).
+* @param size		Width of the file selector widget in characters.
+* @param prompt		Pointer to a string containing a prompt to display
+*					in the file selection window.
+* @param extensions NULL-terminated list of filename extensions that
+*					can be used for this widget, or @ref DIRECTORY
+*					to select directories.
+*/
+//txt_fileselect_t* NewFileSelector(char** variable, int size, ::std::string prompt, CHAR_PTR* extensions);
 
-   /**
-	* Special value to use for 'extensions' that selects a directory instead of a file.
-	*/
-	//extern ::std::string DIRECTORY[];
+/**
+* Special value to use for 'extensions' that selects a directory instead of a file.
+*/
+//extern ::std::string DIRECTORY[];
 
 } // end namespace cudadoom::txt

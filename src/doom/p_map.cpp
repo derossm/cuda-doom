@@ -12,6 +12,7 @@
 		Movement, collision handling.
 		Shooting and aiming.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "deh_misc.h"
 

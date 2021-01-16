@@ -13,9 +13,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/common.h"
+#include "../derma/stdafx.h"
 
 #include "config.h"
+
+#include "../derma/common.h"
 
 #ifndef CRISPY_TRUECOLOR
 using pixel_t = uint8_t;

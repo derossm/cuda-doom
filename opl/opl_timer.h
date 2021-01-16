@@ -12,17 +12,18 @@
 		Once started using OPL_Timer_StartThread, the thread sleeps, waking up to invoke callbacks set using OPL_Timer_SetCallback.
 \**********************************************************************************************************************************************/
 #pragma once
-#include <vector>
 
-#include <mutex>
-#include <thread>
+#include "../derma/stdafx.h"
 
-#include <ranges>
-#include <algorithm>
+//#include <vector>
+//#include <mutex>
+//#include <thread>
+//#include <ranges>
+//#include <algorithm>
+
+#include <SDL.h>
 
 #include "../derma/common.h"
-
-#include "SDL.h"
 
 #include "opl.h"
 

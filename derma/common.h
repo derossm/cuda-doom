@@ -11,8 +11,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <string>
-#include <cctype>
+#include "stdafx.h"
 
 using CHAR_PTR = const char*;
 using TimeType = uint64_t;

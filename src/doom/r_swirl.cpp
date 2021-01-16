@@ -13,13 +13,14 @@
  add support for SMMU swirling flats
  adapted from smmu/r_ripple.c, by Simon Howard
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
-#include <tables.h>
-#include <i_system.h>
-#include <w_wad.h>
-#include <z_zone.h>
+#include "tables.h"
+#include "i_system.h"
+#include "w_wad.h"
+#include "z_zone.h"
 
 #include "doomstat.h"
 

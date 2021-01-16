@@ -12,17 +12,19 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../derma/stdafx.h"
+
+//#include <string>
+//#include <cstdlib>
+//#include <mutex>
+
 #include "config.h"
 
-#include <string>
-#include <cstdlib>
-#include <mutex>
+#include <SDL.h>
+//#include <SDL_mutex.h>
 
 #include "../derma/common.h"
 #include "../derma/d_native.h"
-
-#include "SDL.h"
-//#include "SDL_mutex.h"
 
 //#define DEBUG_TRACE
 

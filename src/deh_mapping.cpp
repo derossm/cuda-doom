@@ -11,8 +11,9 @@
 		Dehacked "mapping" code
 		Allows the fields in structures to be mapped out and accessed by name
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "i_system.h"

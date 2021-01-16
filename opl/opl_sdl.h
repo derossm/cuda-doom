@@ -12,24 +12,26 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "config.h"
-
-#include "../derma/common.h"
+#include "../derma/stdafx.h"
 
 //#include <stdio.h>
 //#include <stdlib.h>
 //#include <string.h>
 //#include <errno.h>
-#include <cassert>
+//#include <cassert>
 //#include <inttypes.h>
 
-#include <mutex>
-#include <vector>
-#include <ranges>
-#include <algorithm>
+//#include <mutex>
+//#include <vector>
+//#include <ranges>
+//#include <algorithm>
+
+#include "config.h"
 
 #include <SDL.h>
 #include <SDL_mixer.h>
+
+#include "../derma/common.h"
 
 #include "opl3.h"
 

@@ -11,8 +11,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <concepts>
-#include <type_traits>
+#include "stdafx.h"
+
+//#include <concepts>
+//#include <type_traits>
 
 template<typename T, typename U>
 class StrongType

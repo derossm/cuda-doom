@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Archiving: SaveGame I/O.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "dstrings.h"
 #include "deh_main.h"

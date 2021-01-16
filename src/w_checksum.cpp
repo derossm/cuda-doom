@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Generate a checksum of the WAD directory.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "i_system.h"
 #include "m_misc.h"

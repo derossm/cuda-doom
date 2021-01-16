@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Intermission screens.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "z_zone.h"
 

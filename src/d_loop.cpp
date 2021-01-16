@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Main loop code.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "d_event.h"
 #include "d_loop.h"

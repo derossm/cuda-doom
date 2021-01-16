@@ -11,6 +11,7 @@
 	DESCRIPTION:
 	LineOfSight/Visibility checks, uses REJECT Lookup Table.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "doomstat.h"

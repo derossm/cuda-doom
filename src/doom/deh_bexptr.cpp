@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Parses [CODEPTR] sections in BEX files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "info.h"
 

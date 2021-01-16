@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		All the clipping: columns, horizontal spans, sky columns.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "i_system.h"
 

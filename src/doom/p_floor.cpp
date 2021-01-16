@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Floor animation: raising stairs.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "z_zone.h"
 #include "doomdef.h"

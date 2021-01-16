@@ -13,14 +13,16 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <string>
-
+#include "../derma/stdafx.h"
 #include "../derma/common.h"
+
+//#include <string>
+
+#include "doomtype.h"
 
 #if _WIN32
 
-#include "SDL_mixer.h"
-#include "doomtype.h"
+#include <SDL_mixer.h>
 
 extern bool midi_server_initialized;
 extern bool midi_server_registered;
@@ -35,8 +37,6 @@ void I_MidiPipe_ShutdownServer();
 bool I_MidiPipe_InitServer();
 
 #else
-
-#include "doomtype.h"
 
 constexpr bool midi_server_registered = false;
 

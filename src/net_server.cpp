@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Network server code
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "config.h"
 

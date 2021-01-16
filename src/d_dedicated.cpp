@@ -10,6 +10,7 @@
 	DESCRIPTION:
 		Code specific to the standalone dedicated server.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "config.h"
 

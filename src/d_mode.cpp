@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Functions and definitions relating to the game type and operational mode.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "d_mode.h"

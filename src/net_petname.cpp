@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Generate a randomized, private, memorable name for a Player
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "m_misc.h"

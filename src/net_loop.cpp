@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Loopback network module for server compiled into the client
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "i_system.h"

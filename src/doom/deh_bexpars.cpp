@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Parses [PARS] sections in BEX files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "deh_bexpars.h"
 #include "deh_io.h"

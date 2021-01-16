@@ -12,6 +12,7 @@
 	DESCRIPTION:
 		Crispness menu
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "doomstat.h"
 #include "p_local.h" // thinkercap

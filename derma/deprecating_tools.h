@@ -11,6 +11,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "stdafx.h"
+
 /*
 	A lot of Doom code used raw enum elements as raw array indices, so we need to be able to treat them as integral values in this context until
 	we can refactor those arrays away (since enums are now explicit types and static casting in place is ugly and right biased)

@@ -11,14 +11,15 @@
 	DESCRIPTION:
 		Main program, simply calls D_DoomMain high level loop.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "config.h"
+
+#include <SDL.h>
+
 #include "crispy.h"
-
-#include "SDL.h"
-
 #include "doomtype.h"
 #include "i_system.h"
 #include "m_argv.h"

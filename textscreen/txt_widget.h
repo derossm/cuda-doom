@@ -9,12 +9,15 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <memory>
-#include <string>
-#include <functional>
+#include "../derma/stdafx.h"
+
+//#include <memory>
+//#include <string>
+//#include <functional>
 
 #include "../derma/common.h
 #include "../derma/keybinds.h
+
 #include "txt_common.h"
 
 namespace cudadoom::txt

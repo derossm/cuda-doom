@@ -9,7 +9,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <string>
+#include "../derma/stdafx.h"
+
+//#include <string>
+
+#include "../derma/common.h
 
 #include "txt_common.h"
 #include "txt_widget.h"
@@ -58,10 +62,10 @@ public:
 	void* mouse_listener_data{nullptr};
 
 	// These are set automatically when the window is drawn
-	int window_x;
-	int window_y;
-	unsigned window_w;
-	unsigned window_h;
+	//int window_x;
+	//int window_y;
+	//unsigned window_w;
+	//unsigned window_h;
 
 	// URL of a webpage with help about this window. If set, a help key indicator is shown while this window is active.
 	::std::string help_url;

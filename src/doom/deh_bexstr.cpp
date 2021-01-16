@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Parses [STRINGS] sections in BEX files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "deh_defs.h"
 #include "deh_io.h"

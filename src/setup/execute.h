@@ -9,18 +9,18 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <string>
-
-#include "../../derma/common.h"
-#include "../../textscreen/textscreen.h"
+#include "../../derma/stdafx.h"
 
 #include "config.h"
-#include "mode.h"
-#include "m_argv.h"
-#include "m_config.h"
-#include "m_misc.h"
 
-#include "doomtype.h"
+#include "../../derma/common.h"
+
+#include "../doomtype.h"
+#include "../m_argv.h"
+#include "../m_config.h"
+#include "../m_misc.h"
+
+#include "mode.h"
 
 namespace cudadoom
 {

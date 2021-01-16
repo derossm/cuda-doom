@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Reading of MIDI files.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "midifile.h"
 

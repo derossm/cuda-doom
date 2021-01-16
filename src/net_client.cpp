@@ -10,10 +10,12 @@
 	DESCRIPTION:
 		Network client code
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "config.h"
+
 #include "doomtype.h"
 #include "deh_main.h"
 #include "deh_str.h"

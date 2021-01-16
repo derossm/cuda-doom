@@ -11,10 +11,12 @@
 	DESCRIPTION:
 		WAD I/O functions.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "config.h"
+
 #include "../derma/d_native.h"
 
 #include "i_system.h"

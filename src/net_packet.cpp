@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Network packet manipulation (net_packet_t)
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "m_misc.h"
 #include "net_packet.h"

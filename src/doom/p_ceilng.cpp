@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Ceiling aninmation (lowering, crushing, raising)
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "z_zone.h"
 #include "doomdef.h"

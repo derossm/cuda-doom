@@ -9,8 +9,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <string>
-#include <variant>
+#include "../derma/stdafx.h"
+
+//#include <string>
+//#include <variant>
+
+#include "../derma/common.h
 
 #include "txt_common.h"
 #include "txt_widget.h"

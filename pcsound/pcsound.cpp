@@ -10,8 +10,10 @@
 	DESCRIPTION:
 		PC speaker interface.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "config.h"
+
 #include "../derma/d_native.h"
 
 #include "pcsound.h"

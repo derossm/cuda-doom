@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		BSP traversal, handling of LineSegs for rendering.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "doomdef.h"
 

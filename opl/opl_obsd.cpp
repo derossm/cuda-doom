@@ -10,6 +10,7 @@
 	DESCRIPTION:
 		OPL OpenBSD interface (also NetBSD)
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 // OpenBSD has a i386_iopl on i386 and amd64_iopl on x86_64, even though they do the same thing.
 // Take care of this here, and map set_iopl to point to the appropriate name.

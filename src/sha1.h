@@ -26,9 +26,11 @@
 
 #pragma once
 
-#include <string>
-#include <array>
-#include <cstddef> // std::byte
+#include "../derma/stdafx.h"
+
+//#include <string>
+//#include <array>
+//#include <cstddef> // std::byte
 
 #include "../derma/common.h"
 

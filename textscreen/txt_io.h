@@ -12,9 +12,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/common.h"
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
+
+#include "../derma/common.h"
 
 #include "txt_common.h"
 

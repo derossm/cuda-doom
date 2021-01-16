@@ -13,8 +13,9 @@
 		Texture animation, height or lighting changes according to adjacent sectors, respective utility functions, etc.
 		Line Tag handling. Line and Sector triggers.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomdef.h"
 #include "doomstat.h"

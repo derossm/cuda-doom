@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		heads-up text and input code
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomdef.h"
 #include "doomkeys.h"

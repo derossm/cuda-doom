@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Handling interactions (i.e., collisions).
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomdef.h"
 #include "dstrings.h"

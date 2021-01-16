@@ -11,11 +11,13 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <string>
+#include "stdafx.h"
 
-//#include "../derma/common.h"
-#include <filesystem>
-#include <fstream>
+//#include <string>
+//#include <filesystem>
+//#include <fstream>
+
+#include "../derma/common.h"
 
 //#include "w_wad.h"
 

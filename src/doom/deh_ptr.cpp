@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Parses Action Pointer entries in dehacked files
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomtype.h"
 #include "info.h"

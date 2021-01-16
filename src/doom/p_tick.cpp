@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		Archiving: SaveGame I/O. Thinker, Ticker.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "z_zone.h"
 #include "p_local.h"

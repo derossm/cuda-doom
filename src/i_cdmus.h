@@ -13,9 +13,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/common.h"
+#include "../derma/stdafx.h"
 
-#include "SDL.h"
+#include <SDL.h>
+
+#include "../derma/common.h"
 
 #include "doomtype.h"
 

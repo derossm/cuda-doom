@@ -11,6 +11,7 @@
 	DESCRIPTION:
 		DoomDef - basic defines for DOOM, e.g. Version, game mode and skill level, and display parameters.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "doomdef.h"
 

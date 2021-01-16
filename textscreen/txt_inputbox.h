@@ -13,9 +13,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/keybinds.h"
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
+
+#include "../derma/common.h
+#include "../derma/keybinds.h"
 
 #include "txt_common.h"
 #include "txt_widget.h"
@@ -86,7 +89,7 @@ public:
 			}
 
 			// Backspace or delete erases the contents of the box.
-			if (key == Keys::DELETE || key == Keys::BACKSPACE)
+			if (key == Keys::DEL || key == Keys::BACKSPACE)
 			{
 				//free(*((T)inputbox->value));
 				//*((T)inputbox->value) = strdup("");

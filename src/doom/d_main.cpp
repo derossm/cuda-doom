@@ -12,11 +12,13 @@
 		DOOM main program (D_DoomMain) and game loop (D_DoomLoop),plus functions to determine game mode (shareware, registered),
 		parse command line parameters, configure game parameters (turbo), and call the startup functions.
 \**********************************************************************************************************************************************/
+#include "../../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "config.h"
-#include "../derma/d_native.h"
+
+#include "../../derma/d_native.h"
 
 #include "deh_main.h"
 #include "doomdef.h"

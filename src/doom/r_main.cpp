@@ -12,6 +12,7 @@
 		Rendering main loop and setup functions, utility functions (BSP, geometry, trigonometry).
 		See tables.cpp, too.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "doomstat.h" // leveltime, paused, menuactive

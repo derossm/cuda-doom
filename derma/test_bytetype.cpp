@@ -9,11 +9,12 @@
 	DESCRIPTION:
 
 \**********************************************************************************************************************************************/
+#include "stdafx.h"
 
 #include "bytetype.h"
 #include "common.h"
 
-#include <cstdlib>
+//#include <cstdlib>
 
 #define CATCH_CONFIG_MAIN
 #pragma warning(push, 0)

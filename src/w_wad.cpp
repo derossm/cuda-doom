@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Handles WAD file header, directory, lump I/O.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "i_swap.h"
 #include "i_system.h"

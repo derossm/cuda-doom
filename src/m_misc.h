@@ -13,8 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <string>
-#include <memory>
+#include "../derma/stdafx.h"
+
+//#include <string>
+//#include <memory>
 
 #include "../derma/common.h"
 #include "../derma/d_native.h"
@@ -369,8 +371,7 @@ int M_snprintf(...)
 }
 
 // Return a newly-malloced string with all the strings given as arguments concatenated together.
-[[deprecated]]
-::std::string M_StringJoin(::std::string s, ...)
+::std::string [[deprecated]] M_StringJoin(::std::string s, ...)
 {
 	/* va_list args;
 

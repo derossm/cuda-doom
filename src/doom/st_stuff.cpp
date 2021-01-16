@@ -13,8 +13,9 @@
 		Does the face/direction indicator animatin.
 		Does palette indicators as well (red pain/berserk, bright pickup)
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "i_swap.h" // SHORT()
 #include "i_system.h"

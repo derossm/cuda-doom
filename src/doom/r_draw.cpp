@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		The actual span/column drawing functions. Here find the main potential for optimization, e.g. inline assembly, different algorithms.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "doomdef.h"
 #include "deh_main.h"

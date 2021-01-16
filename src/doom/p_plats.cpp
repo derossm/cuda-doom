@@ -11,6 +11,7 @@
 	DESCRIPTION:
 	Plats (i.e. elevator platforms) code, raising/lowering.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
 #include "i_system.h"
 #include "z_zone.h"

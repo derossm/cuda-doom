@@ -12,13 +12,14 @@
 	DESCRIPTION:
 		System interface for sound.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "config.h"
 
-#include "SDL.h"
-#include "SDL_mixer.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 #ifdef HAVE_LIBSAMPLERATE
 	#include <samplerate.h>

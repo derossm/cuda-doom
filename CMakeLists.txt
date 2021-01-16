@@ -21,9 +21,11 @@ set(PACKAGE_LICENSE "Crsipy Doom released under the GNU General Public License, 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+enable_language(CUDA)
+
 # Any settings that should apply to all targets in this directory and all subdirectories should go here. Use judiciously.
-if(MSVC)
-	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
+#if(MSVC)
+#	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
 #	add_compile_options(
 #		"/Zc:__cplusplus"
 #		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MD"
@@ -36,33 +38,33 @@ if(MSVC)
 #	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX"
 #							"SDL_MAIN_HANDLED"
 #							"MICROSOFT_WINDOWS_WINBASE_H_DEFINE_INTERLOCKED_CPLUSPLUS_OVERLOADS")
-else()
+#else()
 #	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
-endif()
+#endif()
 
 set(VCPKG_DIR "G:/dev/vcpkg/packages")
 set(ARCHITECTURE "_x64-windows")
 
 # libm or fdlibm (Freely Distributable libm) : C math library IEEE 754 floating-point arithmetic
-find_package(m 5.3 REQUIRED)
+find_package(m REQUIRED)
 if(M_FOUND)
 	set(HAVE_LIBM TRUE)
 endif()
 
-# zlib : compression library
-find_package(zlib 1.2.0 REQUIRED)
-if(ZLIB_FOUND)
-	set(HAVE_ZLIB TRUE)
-endif()
-
 # libpng : interface for reading/writing PNG format files
-find_package(PNG 1.6.0 REQUIRED)
-if(PNG_FOUND)
+find_package(libpng REQUIRED)
+if(libpng_FOUND)
 	set(HAVE_LIBPNG TRUE)
 endif()
 
+# freeglut : 
+find_package(GLUT REQUIRED)
+if(GLUT_FOUND)
+	set(HAVE_GLUT TRUE)
+endif()
+
 # samplerate : samplerate converter for audio
-find_package(samplerate 0.1.0 REQUIRED)
+find_package(samplerate REQUIRED)
 if(SAMPLERATE_FOUND)
 	set(HAVE_LIBSAMPLERATE TRUE)
 endif()
@@ -72,10 +74,55 @@ find_package(SDL2 2.0.0 REQUIRED)
 find_package(SDL2_mixer 2.0.0 REQUIRED)
 find_package(SDL2_net 2.0.0 REQUIRED)
 
-find_package(FREEGLUT REQUIRED)
-#find_package(CUDA REQUIRED)
+# directxmath : DirectXMath SIMD C++ math library
+find_package(directxmath CONFIG REQUIRED)
+if(directxmath_FOUND)
+	set(HAVE_directxmath TRUE)
+endif()
 
-enable_language(CUDA)
+# directxtk12 : A collection of helper classes for writing DirectX12
+find_package(directxtk12 CONFIG REQUIRED)
+if(directxtk12_FOUND)
+	set(HAVE_directxtk12 TRUE)
+endif()
+
+# zlib : compression library
+if(!ZLIB_FOUND)
+	find_package(ZLIB REQUIRED)
+endif()
+if(ZLIB_FOUND)
+	set(HAVE_ZLIB TRUE)
+endif()
+
+# zstr :
+if(ZLIB_FOUND)
+	find_package(ZSTR REQUIRED)
+endif()
+
+# zstr :
+if(libpng_FOUND)
+	find_package(PNGPP REQUIRED)
+endif()
+
+#rapidjson
+
+#libflac
+#libvorbis
+
+#ms-gsl
+#abseil
+
+#fmt
+#libiconv
+#gettext
+#libmodplug
+
+#opus
+#opusfile
+
+#eabase
+#eastl
+#eathread
 
 string(CONCAT WINDOWS_RC_VERSION "${PROJECT_VERSION_MAJOR}, " "${PROJECT_VERSION_MINOR}, ${PROJECT_VERSION_PATCH}, 0")
 

@@ -10,8 +10,9 @@
 	DESCRIPTION:
 		Common code shared between the client and server
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 #include "net_common.h"
 

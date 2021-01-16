@@ -18,11 +18,13 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <array>
-#include <vector>
-#include <algorithm>
-#include <ranges>
-#include <cstddef>
+#include "../derma/stdafx.h"
+
+//#include <array>
+//#include <vector>
+//#include <algorithm>
+//#include <ranges>
+//#include <cstddef>
 
 #include "../derma/common.h"
 #include "../derma/enumbitset.h"

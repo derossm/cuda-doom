@@ -3,7 +3,8 @@
 # Find libzlib, so we can link against it for zlib functions.
 # If libzlib doesn't exist, linking against the zlib target will have no effect.
 
-#find_library(ZLIB_LIBRARY zlib)
+#find_package(ZLIB REQUIRED)
+#target_link_libraries(main PRIVATE ZLIB::ZLIB)
 
 # set in <project_root_dir>/CMakeLists.txt
 # Windows: VCPKG_DIR = "<install_location>/vcpkg/packages"
@@ -19,12 +20,12 @@ endif()
 find_library(ZLIB_LIBRARY "zlib" HINTS "${ZLIB_DIR}/lib" ${PC_ZLIB_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(zlib FOUND_VAR ZLIB_FOUND REQUIRED_VARS ZLIB_LIBRARY VERSION_VAR ZLIB_VERSION)
+find_package_handle_standard_args(ZLIB FOUND_VAR ZLIB_FOUND REQUIRED_VARS ZLIB_LIBRARY VERSION_VAR ZLIB_VERSION)
 
 if(ZLIB_FOUND)
-	add_library(zlib::zlib UNKNOWN IMPORTED)
+	add_library(ZLIB::ZLIB UNKNOWN IMPORTED)
 
-	set_target_properties(zlib::zlib PROPERTIES
+	set_target_properties(ZLIB::ZLIB PROPERTIES
 							INTERFACE_COMPILE_OPTIONS "${PC_ZLIB_CFLAGS_OTHER}"
 							INTERFACE_INCLUDE_DIRECTORIES "${ZLIB_INCLUDE_DIR}"
 							IMPORTED_LOCATION "${ZLIB_LIBRARY}")

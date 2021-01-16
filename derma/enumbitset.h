@@ -11,12 +11,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <bitset>
+#include "stdafx.h"
 
-#include <algorithm>
-
-#include <concepts>
-#include <type_traits>
+//#include <bitset>
+//#include <algorithm>
+//#include <concepts>
+//#include <type_traits>
 
 namespace cudadoom
 {

@@ -3,7 +3,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <array>
+#include "../../derma/stdafx.h"
+
+//#include <array>
+
+#include "../../derma/common.h
 
 static constexpr ::std::array<const uint8_t, 16384> large_font_data{
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

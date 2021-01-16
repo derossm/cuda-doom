@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		Game completion, final screen animation.
 \**********************************************************************************************************************************************/
+#include "../derma/stdafx.h"
 
-#include <string>
+//#include <string>
 
 // Functions.
 #include "deh_main.h"
