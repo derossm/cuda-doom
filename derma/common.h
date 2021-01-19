@@ -13,11 +13,37 @@
 
 #include "stdafx.h"
 
+#include "strongtype.h"
+#include "bytetype.h"
+#include "pmrvector.h"
+
+#include "enumbitset.h"
+
+#include "keybinds.h"
+
 using CHAR_PTR = const char*;
 using TimeType = uint64_t;
 
 namespace cudadoom
 {
+
+template<typename T, typename U>
+	requires ((std::is_enum_v<T> || std::integral<T>)
+			&& (std::is_enum_v<std::remove_const_t<U>> || std::integral<std::remove_const_t<U>>))
+T& operator|=(T& lhs, const U& rhs)
+{
+	lhs = static_cast<T>(static_cast<size_t>(lhs) | static_cast<size_t>(rhs));
+	return lhs;
+}
+
+template<typename T, typename U>
+	requires ((std::is_enum_v<std::remove_const_t<std::remove_reference_t<T>>> || std::integral<std::remove_const_t<std::remove_reference_t<T>>>)
+			&& (std::is_enum_v<std::remove_const_t<std::remove_reference_t<U>>> || std::integral<std::remove_const_t<std::remove_reference_t<U>>>))
+T& operator|=(T&& lhs, U&& rhs)
+{
+	lhs = static_cast<T>(static_cast<size_t>(lhs) | static_cast<size_t>(rhs));
+	return lhs;
+}
 
 using byte = ::std::byte;
 

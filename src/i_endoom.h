@@ -13,16 +13,17 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-#include "config.h"
+#include "../build/config.h"
 
 #include "../derma/common.h"
+
+#include "../textscreen/txt_gui.h"
 
 #include "doomtype.h"
 #include "i_video.h"
 
-#include "../textscreen/txt_main.h"
+namespace cudadoom
+{
 
 constexpr int ENDOOM_W{80};
 constexpr int ENDOOM_H{25};
@@ -68,4 +69,6 @@ void I_Endoom(byte* endoom_data)
 
 	// Shut down text mode screen
 	txt::Shutdown();
+}
+
 }

@@ -13,12 +13,6 @@
 
 #include "stdafx.h"
 
-//#include <array>
-//#include <map>
-//#include <algorithm>
-//#include <functional>
-//#include <any>
-
 // WINDOWS DEFINES FROM FILES WE DON'T EVEN INCLUDE
 //#ifdef DELETE // WinNT.h
 //#undef DELETE
@@ -446,14 +440,14 @@ constexpr uint8_t SCANCODE_OFFSET{3};
 
 class Keybind
 {
-	::std::map<Keys, ::std::any> Keybinds;
+	//::std::map<Keys, ::std::any> Keybinds;
 public:
 
-	auto bind(Keys i)
-	{
+	//auto bind(Keys i)
+	//{
 		//return [](){ return do_action; };
 		//return actions[i];
-	}
+	//}
 
 	Keybind()
 	{

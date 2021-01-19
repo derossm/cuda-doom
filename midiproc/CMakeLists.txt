@@ -3,7 +3,7 @@ if(WIN32)
 	set_target_properties("${PROGRAM_PREFIX}midiproc" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 	target_include_directories("${PROGRAM_PREFIX}midiproc" PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../" "../src")
 	target_link_libraries("${PROGRAM_PREFIX}midiproc" SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer)
-	target_precompile_headers("${PROGRAM_PREFIX}midiproc" PUBLIC "../derma/stdafx.h")
+	#target_precompile_headers("${PROGRAM_PREFIX}midiproc" PUBLIC "../derma/stdafx.h")
 
 	target_compile_options("${PROGRAM_PREFIX}midiproc" PUBLIC
 		"/Zc:__cplusplus"

@@ -56,7 +56,7 @@
 // Error handling
 //#include <exception>
 //#include <stdexcept>
-//#include <cassert>
+#include <cassert>
 //#include <system_error>
 //#include <cerrno>
 
@@ -104,7 +104,7 @@
 //#include <ratio>
 //#include <cfenv>
 #include <bit>
-//#include <numbers>
+#include <numbers>
 
 // Localization library
 //#include <locale>
@@ -143,28 +143,6 @@
 //#include <latch>
 //#include <barrier>
 
-// stdafx.h : include file for standard system include files, or project specific include files that are used frequently, but are changed infrequently.
-
-//#include <limits>
-//#include <memory>
-//#include <string>
-//#include <array>
-//#include <vector>
-//#include <ranges>
-//#include <algorithm>
-//#include <numeric>
-//#include <charconv>
-//#include <any>
-//#include <variant>
-//#include <utility>
-//#include <functional>
-//#include <bitset>
-//#include <bit>
-//#include <concepts>
-//#include <type_traits>
-//#include <mutex>
-//#include <thread>
-
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers.
 #endif
@@ -175,7 +153,7 @@
 #include <shellapi.h>
 #include <aclapi.h>
 
-#include <cuda_runtime.h>
+//#include <cuda_runtime.h>
 
 #include <d3d12.h>
 #include <dxgi1_4.h>

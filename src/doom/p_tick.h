@@ -10,8 +10,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h".h".h".h".h".h".h"
-
 #include "../../derma/common.h"
 
 // Called by C_Ticker, can call G_PlayerExited. Carries out all thinking of monsters and players.

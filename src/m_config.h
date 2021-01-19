@@ -13,9 +13,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-#include "config.h"
+#include "../build/config.h"
 
 #include <SDL_filesystem.h>
 
@@ -77,7 +75,7 @@ struct default_collection_t
 
 template<typename T>
 //requires ::std::integral<typename ::std::remove_pointer<T>::type>
-void M_BindVariable(::std::string name, T location)
+void M_BindVariable(::std::string name, T* location)
 {
 	default_t* variable;
 
@@ -461,7 +459,7 @@ default_t* GetDefaultForName(::std::string name)
 // Bind a variable to a given configuration file variable, by name.
 /* template<typename T>
 requires ::std::integral<typename ::std::remove_pointer<T>::type>
-void M_BindIntVariable(::std::string name, T location)
+void M_BindVariable<int>(::std::string name, T location)
 {
 	default_t* variable;
 

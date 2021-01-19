@@ -13,14 +13,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <vector>
-//#include <mutex>
-//#include <thread>
-//#include <ranges>
-//#include <algorithm>
-
 #include <SDL.h>
 
 #include "../derma/common.h"

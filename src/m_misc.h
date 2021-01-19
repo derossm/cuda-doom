@@ -13,11 +13,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-//#include <memory>
-
 #include "../derma/common.h"
 #include "../derma/d_native.h"
 
@@ -161,14 +156,18 @@ int M_vsnprintf(...)
 }
 
 // Safe, portable snprintf().
-int M_snprintf(...)
+template<typename... Ts>
+::std::string M_snprintf(Ts ...ts)
 {
-	//va_list args;
-	//va_start(args, s);
-	//auto result{M_vsnprintf(buf.c_str(), buf.length(), s.c_str(), args)};
-	//va_end(args);
-	//return result;
-	return 0;
+	auto is = {ts...};
+
+	::std::string buf;
+	for (auto& iter : is)
+	{
+		buf += ::std::string(iter);
+	}
+
+	return buf;
 }
 
 // Returns the base filename described by the given path (without the directory name).

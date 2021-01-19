@@ -9,12 +9,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-#include "../derma/common.h
-#include "../derma/keybinds.h
-
 #include "txt_common.h"
+
 #include "txt_widget.h"
 
 namespace cudadoom::txt
@@ -41,7 +37,7 @@ class TableBase : public WidgetBase<T>
 public:
 	// Widgets in this table
 	// The widget at (x,y) in the table is widgets[columns * y + x]
-	::std::vector<::std::unique_ptr<Widget>> widgets;
+	::std::vector<::std::unique_ptr<WidgetBase<T>>> widgets;
 
 	int columns;
 

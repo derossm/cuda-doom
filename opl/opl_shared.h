@@ -9,12 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <array>
-
 #include "../derma/common.h"
-#include "../derma/bytetype.h"
 
 namespace cudadoom::opl
 {

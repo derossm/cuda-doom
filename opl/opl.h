@@ -12,13 +12,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-//#include <cstdlib>
-//#include <mutex>
-
-#include "config.h"
+#include "../build/config.h"
 
 #include <SDL.h>
 //#include <SDL_mutex.h>

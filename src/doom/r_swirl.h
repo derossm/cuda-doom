@@ -14,10 +14,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h".h"
-
-//#include <string>
-
 #include "../../derma/common.h"
 
 void R_InitDistortedFlats();

@@ -14,19 +14,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <memory>
-//#include <string_view>
-//#include <array>
-//#include <ranges>
-//#include <algorithm>
-//#include <numeric>
-
 #include "../derma/common.h"
-#include "../derma/enumbitset.h"
-
-//#include "doomtype.h"
 
 namespace cudadoom::midi
 {

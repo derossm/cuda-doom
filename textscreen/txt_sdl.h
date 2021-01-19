@@ -12,19 +12,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
 #include <SDL.h>
 #include <SDL_scancode.h>
-
-//#include <string>
-//#include <array>
-//#include <algorithm>
-//#include <ranges>
-//#include <any>
-//#include <type_traits>
-
-#include "../derma/common.h"
 
 #include "txt_common.h"
 

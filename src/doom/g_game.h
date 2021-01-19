@@ -10,16 +10,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h".h".h".h".h".h".h"
-
-//#include <string>
-
 #include "../../derma/common.h"
 
-#include "doomdef.h"
+#include "../d_event.h"
+#include "../d_ticcmd.h"
 
-#include "d_event.h"
-#include "d_ticcmd.h"
+#include "doomdef.h"
 
 void G_DeathMatchSpawnPlayer(int playernum);
 

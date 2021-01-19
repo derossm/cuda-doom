@@ -8,32 +8,35 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-//#include <string>
+#include "../../derma/common.h"
 
-#include "../../derma/enumbitset.h"
+#include "../deh_main.h"
+#include "../z_zone.h"
+#include "../m_argv.h"
+#include "../m_controls.h"
+#include "../m_misc.h"
+#include "../i_system.h"
+#include "../i_timer.h"
+#include "../i_input.h"
+#include "../i_swap.h"
+#include "../i_video.h"
+#include "../v_video.h" // Needs access to LFB.
+#include "../v_trans.h" // colored "always run" message
+#include "../w_wad.h"
+
 
 #include "doomdef.h"
 #include "doomkeys.h"
 #include "doomstat.h"
 
-#include "deh_main.h"
 #include "deh_misc.h"
 #include "deh_bexpars.h" // bex_pars[]
 
-#include "z_zone.h"
 #include "f_finale.h"
-#include "m_argv.h"
-#include "m_controls.h"
-#include "m_misc.h"
 #include "m_menu.h"
 #include "m_random.h"
-#include "i_system.h"
-#include "i_timer.h"
-#include "i_input.h"
-#include "i_swap.h"
-#include "i_video.h"
 
 #include "p_setup.h"
 #include "p_saveg.h"
@@ -48,13 +51,7 @@
 #include "am_map.h"
 #include "statdump.h"
 
-// Needs access to LFB.
-#include "v_video.h"
-
-#include "w_wad.h"
-
 #include "p_local.h"
-
 #include "s_sound.h"
 
 // Data.
@@ -66,7 +63,6 @@
 #include "r_sky.h"
 
 #include "g_game.h"
-#include "v_trans.h" // colored "always run" message
 
 constexpr size_t SAVEGAMESIZE{0x2c000};
 
@@ -178,13 +174,13 @@ static const struct
 } weapon_order_table[] = {
 	{ WeaponType::wp_fist,			WeaponType::wp_fist },
 	{ WeaponType::wp_chainsaw,		WeaponType::wp_fist },
-	{ WeaponType::wp_pistol,			WeaponType::wp_pistol },
-	{ WeaponType::wp_shotgun,			WeaponType::wp_shotgun },
+	{ WeaponType::wp_pistol,		WeaponType::wp_pistol },
+	{ WeaponType::wp_shotgun,		WeaponType::wp_shotgun },
 	{ WeaponType::wp_supershotgun,	WeaponType::wp_shotgun },
 	{ WeaponType::wp_chaingun,		WeaponType::wp_chaingun },
-	{ WeaponType::wp_missile,			WeaponType::wp_missile },
-	{ WeaponType::wp_plasma,			WeaponType::wp_plasma },
-	{ WeaponType::wp_bfg,				WeaponType::wp_bfg }
+	{ WeaponType::wp_missile,		WeaponType::wp_missile },
+	{ WeaponType::wp_plasma,		WeaponType::wp_plasma },
+	{ WeaponType::wp_bfg,			WeaponType::wp_bfg }
 };
 
 constexpr size_t SLOWTURNTICS{6};
@@ -2945,7 +2941,7 @@ void G_DoPlayDemo()
 		}
 	}
 
-	skill = *demo_p;
+	skill = static_cast<SkillType>(*demo_p);
 	++demo_p;
 	episode = *demo_p;
 	++demo_p;

@@ -9,9 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-#include "../derma/common.h
+#include "../derma/common.h"
 
 #include "txt_common.h"
 

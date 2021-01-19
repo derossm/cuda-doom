@@ -6,34 +6,27 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	Description:	
+		A Window contains any number of Widget objects, and may also be treated as a Table containing a single column.
+	
+		When a Window is closed, it emits the "closed" signal; all children are destroyed with it, unless explicitly reparented before closing.
+	
+		In addition to containing Widgets, Windows also have a "tray" area at their bottom containing WindowAction objects.
+		These WindowAction objects allow keyboard shortcuts to trigger common actions. Each window has three slots for keyboard shortcuts.
+		By default: left slot contains Action to close window on KeyPress(Keys::ESCAPE),
+					right slot contains Action to activate currently-selected Widget. 
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-
-#include "../derma/common.h
-
 #include "txt_common.h"
+
 #include "txt_widget.h"
 #include "txt_table.h"
+#include "txt_label.h"
 
 namespace cudadoom::txt
 {
-
-/**
- * A window.
- *
- * A window contains widgets, and may also be treated as a table (@ref txt_table_t) containing a single column.
- *
- * Windows can be created using @ref NewWindow and closed using @ref CloseWindow. When a window is closed, it emits the "closed" signal.
- *
- * In addition to the widgets within a window, windows also have a "tray" area at their bottom containing window action widgets.
- * These widgets allow keyboard shortcuts to trigger common actions. Each window has three slots for keyboard shortcuts. By default,
- * the left slot contains an action to close the window when the escape button is pressed, while the right slot contains an
- * action to activate the currently-selected widget.
- */
 
  // Callback function for window key presses
 typedef int (*WindowKeyPress)(int key, void* user_data);
@@ -128,7 +121,7 @@ public:
 /**/
 	}
 
-	inline bool KeyPress(Keys c) noexcept override final
+	inline bool KeyPress(Keys key) noexcept override final
 	{
 /*
 		// Is this a mouse button ?
@@ -284,7 +277,107 @@ public:
 	inline void Destroy() noexcept override final
 	{
 	}
-/*
+
+	inline void AddWidget(WidgetBase* widget) noexcept
+	{
+		widgets.emplace_back(widget);
+	}
+
+	template<typename... Ts>
+	inline void AddWidgets(Ts... ts) noexcept
+	{
+		auto is = {ts...};
+
+		for (auto& item : is)
+		{
+			widgets.emplace_back(item);
+		}
+	}
+
+	/*inline void AddWidgets(Widget* w, ...) noexcept
+	{
+		va_list args;
+
+		va_start(args, w)
+		for (auto& item{w}; item != nullptr; item = va_arg(args, Widget*))
+		{
+			widgets.emplace_back(item);
+		}
+		va_end(args);
+	}*/
+
+	void SetWindowHelpURL(::std::string help_url)
+	{
+
+	}
+
+	void OpenWindowHelpURL() noexcept
+	{
+		if (!help_url.empty())
+		{
+			OpenURL(help_url);
+		}
+	}
+
+	void SetWindowPosition(AlignHorizontal horiz_align, AlignVertical vert_align, int x, int y) noexcept
+	{
+		verticalAlign = vert_align;
+		horizontalAlign = horiz_align;
+		coordinates.x = x;
+		coordinates.y = y;
+	}
+
+	void SetKeyListener(WindowKeyPress _key_listener, void* _user_data) noexcept
+	{
+		key_listener = _key_listener;
+		key_listener_data = _user_data;
+	}
+
+	void SetMouseListener(WindowMousePress _mouse_listener, void* _user_data) noexcept
+	{
+		mouse_listener = _mouse_listener;
+		mouse_listener_data = _user_data;
+	}
+
+	void SetWindowHelpURL(::std::string&& _help_url) noexcept
+	{
+		help_url(::std::forward<::std::string>(_help_url));
+	}
+
+#ifdef _WIN32
+	void OpenURL(::std::string& url) noexcept
+	{
+		ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+	}
+#else
+	void OpenURL(::std::string url) noexcept
+	{
+		size_t cmd_len = strlen(url) + 30;
+		::std::string cmd = static_cast<decltype(cmd)>(malloc(cmd_len));
+
+#if defined(__MACOSX__)
+		snprintf(cmd, cmd_len, "open \"%s\"", url);
+#else
+		// The Unix situation sucks as usual, but the closest thing to a standard that exists is the xdg-utils package.
+		if (system("xdg-open --version 2>/dev/null") != 0)
+		{
+			fprintf(stderr, "xdg-utils is not installed. Can't open this URL:\n%s\n", url);
+			free(cmd);
+			return;
+		}
+
+		snprintf(cmd, cmd_len, "xdg-open \"%s\"", url);
+#endif
+
+		auto retval = system(cmd);
+		free(cmd);
+		if (retval != 0)
+		{
+			fprintf(stderr, "OpenURL: error executing '%s'; return code %d\n", cmd, retval);
+		}
+	}
+#endif // #ifdef _WIN32
+
 	void SetWindowAction(AlignHorizontal position, Widget& action) noexcept
 	{
 		if (actions[size_t(position)])
@@ -425,91 +518,6 @@ public:
 		}
 	}
 
-	void SetWindowPosition(AlignHorizontal horiz_align, AlignVertical vert_align, int x, int y) noexcept
-	{
-		verticalAlign = vert_align;
-		horizontalAlign = horiz_align;
-		coordinates.x = x;
-		coordinates.y = y;
-	}
-
-	void SetKeyListener(WindowKeyPress _key_listener, void* _user_data) noexcept
-	{
-		key_listener = _key_listener;
-		key_listener_data = _user_data;
-	}
-
-	void SetMouseListener(WindowMousePress _mouse_listener, void* _user_data) noexcept
-	{
-		mouse_listener = _mouse_listener;
-		mouse_listener_data = _user_data;
-	}
-
-	void SetWindowHelpURL(::std::string&& _help_url) noexcept
-	{
-		help_url(::std::forward<::std::string>(_help_url));
-	}
-
-#ifdef _WIN32
-	void OpenURL(::std::string& url) noexcept
-	{
-		ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
-	}
-#else
-	void OpenURL(::std::string url) noexcept
-	{
-		size_t cmd_len = strlen(url) + 30;
-		::std::string cmd = static_cast<decltype(cmd)>(malloc(cmd_len));
-
-#if defined(__MACOSX__)
-		snprintf(cmd, cmd_len, "open \"%s\"", url);
-#else
-		// The Unix situation sucks as usual, but the closest thing to a standard that exists is the xdg-utils package.
-		if (system("xdg-open --version 2>/dev/null") != 0)
-		{
-			fprintf(stderr, "xdg-utils is not installed. Can't open this URL:\n%s\n", url);
-			free(cmd);
-			return;
-		}
-
-		snprintf(cmd, cmd_len, "xdg-open \"%s\"", url);
-#endif
-
-		auto retval = system(cmd);
-		free(cmd);
-		if (retval != 0)
-		{
-			fprintf(stderr, "OpenURL: error executing '%s'; return code %d\n", cmd, retval);
-		}
-	}
-#endif // #ifdef _WIN32
-
-	void OpenWindowHelpURL() noexcept
-	{
-		if (help_url)
-		{
-			OpenURL(help_url);
-		}
-	}
-
-	void MessageBox(::std::string& title, ::std::string& message, ...) noexcept
-	{
-		Window* window;
-		char buf[256];
-		va_list args;
-
-		va_start(args, message);
-		vsnprintf(buf, sizeof(buf), message, args);
-		va_end(args);
-
-		window = NewWindow(title);
-		AddWidget(window, NewLabel(buf));
-
-		SetWindowAction(AlignHorizontal::left, nullptr);
-		SetWindowAction(AlignHorizontal::center, NewWindowEscapeAction(window));
-		SetWindowAction(AlignHorizontal::right, nullptr);
-	}
-/**/
 };
 
 /**
@@ -613,5 +621,18 @@ public:
  * @param window			The window.
  */
 //void OpenWindowHelpURL(Window* window);
+
+//class Label;
+void ShowMessageBox(::std::string& title, ::std::string& message) noexcept
+{
+	Window* window;
+
+	window = new Window(title);
+	window->AddWidget(static_cast<WidgetBase*>(new Label(message)));
+
+	SetWindowAction(AlignHorizontal::left, nullptr);
+	SetWindowAction(AlignHorizontal::center, NewWindowEscapeAction(window));
+	SetWindowAction(AlignHorizontal::right, nullptr);
+}
 
 } // end namespace cudadoom::txt

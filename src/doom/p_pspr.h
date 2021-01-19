@@ -13,12 +13,10 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
 
-#include "m_fixed.h"
-#include "tables.h"
+#include "../m_fixed.h"
+#include "../tables.h"
 
 // Needs to include the precompiled
 // sprite animation tables.

@@ -12,10 +12,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-
 #include "../derma/common.h"
 
 ::std::string NET_GetRandomPetName();

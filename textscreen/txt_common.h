@@ -25,13 +25,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
+#include "../derma/common.h"
 
-//#include <string>
-
-#include "../derma/common.h
-#include "../derma/strongtype.h"
-#include "txt_callback.h"
 /*
 //---------------------------------------------------------------------------
 // txt_main.h
@@ -214,6 +209,18 @@ enum class InputType
 	// Used for full text input. Events are fully shifted and localized. However, not all keyboard keys will generate input.
 	// Setting this mode may activate the on-screen keyboard, depending on device and OS.
 	text
+};
+
+
+enum class Alignment
+{
+	top,
+	middle,
+	bottom,
+	left,
+	center,
+	right,
+	count
 };
 
 enum class AlignVertical

@@ -9,8 +9,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
 
 #include "../doomtype.h"
@@ -448,5 +446,5 @@ void ConfigKeyboard(Widget* widget, void* user_data)
 
 void BindKeyboardVariables()
 {
-	M_BindIntVariable("vanilla_keyboard_mapping", &vanilla_keyboard_mapping);
+	M_BindVariable<int>("vanilla_keyboard_mapping", &vanilla_keyboard_mapping);
 }

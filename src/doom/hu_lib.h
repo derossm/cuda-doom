@@ -10,10 +10,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
-//#include <string>
-
 #include "../../derma/common.h"
 
 // We are referring to patches.

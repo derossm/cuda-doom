@@ -13,8 +13,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h".h".h".h"
-
 #include "../../derma/common.h"
 
 void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2);

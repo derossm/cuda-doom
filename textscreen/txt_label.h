@@ -9,26 +9,15 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-
-#include "../derma/common.h
-
 #include "txt_common.h"
+
 #include "txt_widget.h"
 
 namespace cudadoom::txt
 {
 
-/**
- * Label widget.
- *
- * A label widget does nothing except show a text label.
- */
 class Label : public WidgetBase<Label>
 {
-	//Widget widget;
 	::std::string label;
 	char** lines;
 	unsigned w;
@@ -38,7 +27,9 @@ class Label : public WidgetBase<Label>
 
 public:
 
-	Label() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	Label() {}
+
+	Label(::std::string in) : label(in) {}
 
 	inline bool Selectable() const noexcept override final
 	{

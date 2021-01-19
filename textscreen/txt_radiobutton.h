@@ -9,13 +9,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-
-#include "../derma/common.h
-
 #include "txt_common.h"
+
 #include "txt_widget.h"
 
 namespace cudadoom::txt
@@ -24,20 +19,16 @@ namespace cudadoom::txt
 /**
  * A radio button widget.
  *
- * Radio buttons are typically used in groups, to allow a value to be
- * selected from a range of options. Each radio button corresponds
- * to a particular option that may be selected. A radio button
- * has an indicator to indicate whether it is the currently-selected
- * value, and a text label.
+ * Radio buttons are typically used in groups, to allow a value to be selected from a range of options. Each radio button corresponds to a
+ * particular option that may be selected. A radio button has an indicator to indicate whether it is the currently-selected value, and a text label.
  *
- * Internally, a radio button tracks an integer variable that may take
- * a range of different values. Each radio button has a particular
- * value associated with it; if the variable is equal to that value,
- * the radio button appears selected. If a radio button is pressed
- * by the user through the GUI, the variable is set to its value.
+ * Internally, a radio button tracks an integer variable that may take a range of different values. Each radio button has a particular value
+ * associated with it; if the variable is equal to that value, the radio button appears selected. If a radio button is pressed by the user
+ * through the GUI, the variable is set to its value.
  *
  * When a radio button is selected, the "selected" signal is emitted.
  */
+
 class RadioButton : public WidgetBase<RadioButton>
 {
 	::std::string label;

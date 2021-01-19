@@ -13,9 +13,6 @@
 
 #include "stdafx.h"
 
-//#include <concepts>
-//#include <type_traits>
-
 namespace cudadoom
 {
 

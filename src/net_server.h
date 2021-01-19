@@ -12,8 +12,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
 #include "../derma/common.h"
 
 // initialize server and wait for connections

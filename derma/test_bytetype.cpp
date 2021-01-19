@@ -11,10 +11,8 @@
 \**********************************************************************************************************************************************/
 #include "stdafx.h"
 
-#include "bytetype.h"
 #include "common.h"
-
-//#include <cstdlib>
+#include "bytetype.h"
 
 #define CATCH_CONFIG_MAIN
 #pragma warning(push, 0)
@@ -26,49 +24,78 @@
 //	return Catch::Session().run();
 //}
 
-TEST_CASE("Byte: wrapper for std::byte", "[ByteType]")
+TEMPLATE_TEST_CASE("Byte: wrapper for std::byte; non-assignment operators", "[Byte][template]", uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t )
 {
-	Byte<uint8_t> b_u8type;
-	Byte<uint16_t> b_u16type;
-	Byte<uint32_t> b_u32type;
-	Byte<uint64_t> b_u64type;
+	Byte<TestType> b_u8type;
 
-	Byte<int8_t> b_s8type;
-	Byte<int16_t> b_s16type;
-	Byte<int32_t> b_s32type;
-	Byte<int64_t> b_s64type;
+	constexpr size_t i{0xFFFFFFFFFFFFFFFF};
 
-	int i{0xFF};
-	unsigned u{0xFF};
-	short s{0xFF};
-	unsigned short us{0xFF};
-	long l{0xFF};
-	unsigned long ul{0xFF};
+	//int t[5];
+	//t[b_u8type] = 0;
 
-	::std::byte _byte{0xFF};
+	Byte<TestType> k0 = b_u8type & i;
+	Byte<TestType> k1 = b_u8type | i;
+	Byte<TestType> k2 = b_u8type ^ i;
+	Byte<TestType> k3 = b_u8type + i;
+	Byte<TestType> k4 = b_u8type - i;
+	Byte<TestType> k5 = b_u8type * i;
+	Byte<TestType> k6 = b_u8type / i;
+	Byte<TestType> k7 = b_u8type % i;
+	Byte<TestType> k8 = ~b_u8type;
 
-	auto k = b_u8type & i;
-	auto k0 = b_u8type | i;
-	auto k1 = b_u8type ^ i;
-	auto k2 = b_u8type + i;
-	auto k3 = b_u8type - i;
-	auto k4 = b_u8type * i;
-	auto k5 = b_u8type / i;
-	auto k6 = b_u8type % i;
-	auto k7 = ~b_u8type;
+	REQUIRE(k0 == static_cast<TestType>(0 & 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k1 == static_cast<TestType>(0 | 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k2 == static_cast<TestType>(0 ^ 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k3 == static_cast<TestType>(0 + 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k4 == static_cast<TestType>(0 - 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k5 == static_cast<TestType>(0 * 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k6 == static_cast<TestType>(0 / 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k7 == static_cast<TestType>(0 % 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k8 == static_cast<TestType>(~0));
+}
 
-	int t[5];
-	t[b_u8type] = 0;
+TEMPLATE_TEST_CASE("Byte: wrapper for std::byte; assignment operators", "[Byte][template]", uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t )
+{
+	Byte<TestType> b_u8type;
 
-	REQUIRE(k == (0 & 0xFF));
-	REQUIRE(k0 == (0 | 0xFF));
-	REQUIRE(k1 == (0 ^ 0xFF));
-	REQUIRE(k2 == (0 + 0xFF));
-	REQUIRE(k3 == (0 - 0xFF));
-	REQUIRE(k4 == (0 * 0xFF));
-	REQUIRE(k5 == (0 / 0xFF));
-	REQUIRE(k6 == (0 % 0xFF));
-	REQUIRE(k7 == ~0x00);
-	//REQUIRE(k8 == (0 | 0xFF));
-	//REQUIRE(k9 == (0 | 0xFF));
+	constexpr size_t i{0xFFFFFFFFFFFFFFFF};
+
+	//int t[5];
+	//t[b_u8type] = 0;
+
+	Byte<TestType> k0 = b_u8type;
+	Byte<TestType> k1 = b_u8type;
+	Byte<TestType> k2 = b_u8type;
+	Byte<TestType> k3 = b_u8type;
+	Byte<TestType> k4 = b_u8type;
+	Byte<TestType> k5 = b_u8type;
+	Byte<TestType> k6 = b_u8type;
+	Byte<TestType> k7 = b_u8type;
+	Byte<TestType> k8 = b_u8type;
+	Byte<TestType> k9 = 17;
+	Byte<TestType> k10 = true;
+
+	k0 &= i;
+	k1 |= i;
+	k2 ^= i;
+	k3 += i;
+	k4 -= i;
+	k5 *= i;
+	k6 /= i;
+	k7 %= i;
+ 	k8 = ~b_u8type;
+	k9 = -k9;
+	k10 = !k10;
+
+	REQUIRE(k0 == static_cast<TestType>(0 & 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k1 == static_cast<TestType>(0 | 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k2 == static_cast<TestType>(0 ^ 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k3 == static_cast<TestType>(0 + 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k4 == static_cast<TestType>(0 - 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k5 == static_cast<TestType>(0 * 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k6 == static_cast<TestType>(0 / 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k7 == static_cast<TestType>(0 % 0xFFFFFFFFFFFFFFFF));
+	REQUIRE(k8 == static_cast<TestType>(~0));
+	REQUIRE(-k9 == static_cast<TestType>(0 - k9));
+	REQUIRE(!k10 == true);
 }

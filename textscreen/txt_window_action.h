@@ -9,13 +9,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-
-#include "../derma/common.h
-
 #include "txt_common.h"
+
 #include "txt_widget.h"
 
 namespace cudadoom::txt
@@ -27,41 +22,41 @@ namespace cudadoom::txt
  * A window action is attached to a window and corresponds to a keyboard shortcut that is active within that window.
  * When the key is pressed, the action is triggered. When a window action is triggered, the "pressed" signal is emitted.
  */
+
 class WindowAction : public WidgetBase<WindowAction>
 {
-	int key;
+	Keys key;
 	::std::string label;
 
 public:
 
-	WindowAction(int _key, ::std::string _label) {} //: widget_class<WindowAction>{}, key{_key}, label{::std::string(_label)},
-		//widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	WindowAction(Keys key, ::std::string label) {} : key{key}, label{::std::string(label)},
 /*
-// An action with the name "close" the closes the window
-WindowAction* NewWindowEscapeAction(Window* window)
-{
-	auto action{WindowAction(KEY_ESCAPE, "Close")};
-	SignalConnect(action, "pressed", WindowCloseCallback, window);
+	// An action with the name "close" the closes the window
+	WindowAction* NewWindowEscapeAction(Window* window)
+	{
+		auto action{WindowAction(Keys::ESCAPE, "Close")};
+		SignalConnect(action, "pressed", WindowCloseCallback, window);
 
-	return action;
-}
+		return action;
+	}
 
-// Exactly the same as the above, but the button is named "abort"
-WindowAction* NewWindowAbortAction(Window* window)
-{
-	auto action{WindowAction(KEY_ESCAPE, "Abort")};
-	SignalConnect(action, "pressed", WindowCloseCallback, window);
+	// Exactly the same as the above, but the button is named "abort"
+	WindowAction* NewWindowAbortAction(Window* window)
+	{
+		auto action{WindowAction(Keys::ESCAPE, "Abort")};
+		SignalConnect(action, "pressed", WindowCloseCallback, window);
 
-	return action;
-}
+		return action;
+	}
 
-WindowAction* NewWindowSelectAction(Window* window)
-{
-	auto action{WindowAction(KEY_ENTER, "Select")};
-	SignalConnect(action, "pressed", WindowSelectCallback, window);
+	WindowAction* NewWindowSelectAction(Window* window)
+	{
+		auto action{WindowAction(Keys::ENTER, "Select")};
+		SignalConnect(action, "pressed", WindowSelectCallback, window);
 
-	return action;
-}
+		return action;
+	}
 /**/
 
 	inline bool Selectable() const noexcept override final
@@ -114,13 +109,13 @@ WindowAction* NewWindowSelectAction(Window* window)
 		return false;
 	}
 
-	inline bool MousePress(MouseEvent evt) noexcept override final
+	inline bool MousePress(MouseEvent _evt) noexcept override final
 	{
 /*
 		// Simulate a press of the key
-		if (evt.button == MOUSE_LEFT)
+		if (_evt.button == MOUSE_LEFT)
 		{
-			return KeyPress(KEY_ENTER);
+			return KeyPress(Keys::ENTER);
 		}
 /**/
 		return false;
@@ -140,7 +135,7 @@ WindowAction* NewWindowSelectAction(Window* window)
 
 	inline void WindowSelectCallback(Window* window) noexcept
 	{
-		//window->WidgetKeyPress(KEY_ENTER);
+		//window->WidgetKeyPress(Keys::ENTER);
 	}
 };
 

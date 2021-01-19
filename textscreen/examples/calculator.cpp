@@ -9,9 +9,6 @@
 
 	Example program: desktop calculator
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
 
 #include "../textscreen.h"
 

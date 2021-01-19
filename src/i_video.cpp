@@ -1669,24 +1669,24 @@ void I_RenderReadPixels(byte** data, int* w, int* h, int* p)
 // file system.
 void I_BindVideoVariables()
 {
-	M_BindIntVariable("use_mouse",					&usemouse);
-	M_BindIntVariable("fullscreen",					&fullscreen);
-	M_BindIntVariable("video_display",				&video_display);
-	M_BindIntVariable("aspect_ratio_correct",		&aspect_ratio_correct);
-	M_BindIntVariable("integer_scaling",			&integer_scaling);
-	M_BindIntVariable("vga_porch_flash",			&vga_porch_flash);
-	M_BindIntVariable("startup_delay",				&startup_delay);
-	M_BindIntVariable("fullscreen_width",			&fullscreen_width);
-	M_BindIntVariable("fullscreen_height",			&fullscreen_height);
-	M_BindIntVariable("force_software_renderer",	&force_software_renderer);
-	M_BindIntVariable("max_scaling_buffer_pixels",	&max_scaling_buffer_pixels);
-	M_BindIntVariable("window_width",				&window_width);
-	M_BindIntVariable("window_height",				&window_height);
-	M_BindIntVariable("grabmouse",					&grabmouse);
+	M_BindVariable<int>("use_mouse",					&usemouse);
+	M_BindVariable<int>("fullscreen",					&fullscreen);
+	M_BindVariable<int>("video_display",				&video_display);
+	M_BindVariable<int>("aspect_ratio_correct",		&aspect_ratio_correct);
+	M_BindVariable<int>("integer_scaling",			&integer_scaling);
+	M_BindVariable<int>("vga_porch_flash",			&vga_porch_flash);
+	M_BindVariable<int>("startup_delay",				&startup_delay);
+	M_BindVariable<int>("fullscreen_width",			&fullscreen_width);
+	M_BindVariable<int>("fullscreen_height",			&fullscreen_height);
+	M_BindVariable<int>("force_software_renderer",	&force_software_renderer);
+	M_BindVariable<int>("max_scaling_buffer_pixels",	&max_scaling_buffer_pixels);
+	M_BindVariable<int>("window_width",				&window_width);
+	M_BindVariable<int>("window_height",				&window_height);
+	M_BindVariable<int>("grabmouse",					&grabmouse);
 	M_BindStringVariable("video_driver",			&video_driver);
 	M_BindStringVariable("window_position",			&window_position);
-	M_BindIntVariable("usegamma",					&usegamma);
-	M_BindIntVariable("png_screenshots",			&png_screenshots);
+	M_BindVariable<int>("usegamma",					&usegamma);
+	M_BindVariable<int>("png_screenshots",			&png_screenshots);
 }
 
 #ifdef CRISPY_TRUECOLOR

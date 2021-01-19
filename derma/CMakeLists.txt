@@ -12,7 +12,7 @@ set(DERMA_FILES
 add_executable("${PROGRAM_PREFIX}catch2_byte" ${DERMA_FILES})
 set_target_properties("${PROGRAM_PREFIX}catch2_byte" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 target_include_directories("${PROGRAM_PREFIX}catch2_byte" INTERFACE "." PRIVATE "../derma")
-target_precompile_headers("${PROGRAM_PREFIX}catch2_byte" PUBLIC stdafx.h)
+#target_precompile_headers("${PROGRAM_PREFIX}catch2_byte" PUBLIC stdafx.h)
 
 if(MSVC)
 	target_compile_options("${PROGRAM_PREFIX}catch2_byte" PUBLIC

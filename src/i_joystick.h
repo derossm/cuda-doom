@@ -12,8 +12,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
 #include "../derma/common.h"
 
 // Number of "virtual" joystick buttons defined in configuration files.

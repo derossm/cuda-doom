@@ -448,10 +448,10 @@ void I_ReadMouse()
 void I_BindInputVariables()
 {
 	M_BindFloatVariable("mouse_acceleration", &mouse_acceleration);
-	M_BindIntVariable("mouse_threshold", &mouse_threshold);
-	M_BindIntVariable("vanilla_keyboard_mapping", &vanilla_keyboard_mapping);
-	M_BindIntVariable("novert", &novert);
+	M_BindVariable<int>("mouse_threshold", &mouse_threshold);
+	M_BindVariable<int>("vanilla_keyboard_mapping", &vanilla_keyboard_mapping);
+	M_BindVariable<int>("novert", &novert);
 	M_BindFloatVariable("mouse_acceleration_y", &mouse_acceleration_y);
-	M_BindIntVariable("mouse_threshold_y", &mouse_threshold_y);
-	M_BindIntVariable("mouse_y_invert", &mouse_y_invert);
+	M_BindVariable<int>("mouse_threshold_y", &mouse_threshold_y);
+	M_BindVariable<int>("mouse_y_invert", &mouse_y_invert);
 }

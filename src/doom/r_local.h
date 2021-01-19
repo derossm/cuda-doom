@@ -13,13 +13,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h".h"
-
 #include "../../derma/common.h"
 
 #include "doomdef.h"
 
-#include "tables.h"
+#include "../tables.h"
 
 #include "r_data.h"
 #include "r_main.h"

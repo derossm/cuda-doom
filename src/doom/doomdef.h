@@ -13,14 +13,12 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
 
-#include "doomtype.h"
+#include "../doomtype.h"
 
-#include "i_timer.h"
-#include "d_mode.h"
+#include "../i_timer.h"
+#include "../d_mode.h"
 
 // Difficulty/skill settings/filters.
 

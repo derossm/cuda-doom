@@ -15,7 +15,10 @@ add_library(doom STATIC
 			deh_weapon.cpp
 							d_englsh.h
 							d_items.h
-			d_main.cpp		d_main.h
+							d_main.h
+			doom.cpp		doom.h
+							doom_engine.h
+							doom_includes.h
 			d_net.cpp
 			d_pwad.cpp		d_pwad.h
 							doomdata.h
@@ -23,7 +26,6 @@ add_library(doom STATIC
 			doomstat.cpp	doomstat.h
 							d_player.h
 			dstrings.cpp	dstrings.h
-							d_textur.h
 							d_think.h
 			f_finale.cpp	f_finale.h
 			f_wipe.cpp		f_wipe.h
@@ -83,7 +85,7 @@ add_library(doom STATIC
 set_target_properties(doom PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 target_include_directories(doom PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
 target_link_libraries(doom SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net)
-target_precompile_headers(doom PUBLIC "../../derma/stdafx.h")
+#target_precompile_headers(doom PUBLIC "../../derma/stdafx.h")
 
 if(MSVC)
 	target_compile_options(doom PUBLIC

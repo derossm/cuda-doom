@@ -38,7 +38,7 @@ else()
 endif()
 target_include_directories("${PROGRAM_PREFIX}server" PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2main SDL2::SDL2_net)
-target_precompile_headers("${PROGRAM_PREFIX}server" PUBLIC "../derma/stdafx.h")
+#target_precompile_headers("${PROGRAM_PREFIX}server" PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
 	target_compile_options("${PROGRAM_PREFIX}server" PUBLIC
@@ -154,7 +154,7 @@ else()
 endif()
 target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ${GAME_INCLUDE_DIRS})
 target_link_libraries("${PROGRAM_PREFIX}doom" doom ${EXTRA_LIBS})
-target_precompile_headers("${PROGRAM_PREFIX}doom" PUBLIC "../derma/stdafx.h")
+#target_precompile_headers("${PROGRAM_PREFIX}doom" PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
 	target_compile_options("${PROGRAM_PREFIX}doom" PUBLIC
@@ -195,7 +195,7 @@ else()
 endif()
 target_include_directories("${PROGRAM_PREFIX}setup" PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries("${PROGRAM_PREFIX}setup" SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net setup textscreen)
-target_precompile_headers("${PROGRAM_PREFIX}setup" PUBLIC "../derma/stdafx.h")
+#target_precompile_headers("${PROGRAM_PREFIX}setup" PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
 	target_compile_options("${PROGRAM_PREFIX}setup" PUBLIC
@@ -220,7 +220,7 @@ endif()
 target_compile_definitions(midiread PRIVATE "-DTEST")
 target_include_directories(midiread PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(midiread SDL2::SDL2main SDL2::SDL2)
-target_precompile_headers(midiread PUBLIC "../derma/stdafx.h")
+#target_precompile_headers(midiread PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
 	target_compile_options(midiread PUBLIC
@@ -245,7 +245,7 @@ endif()
 target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE")
 target_include_directories(mus2mid PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
 target_link_libraries(mus2mid SDL2::SDL2main SDL2::SDL2)
-target_precompile_headers(mus2mid PUBLIC "../derma/stdafx.h")
+#target_precompile_headers(mus2mid PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
 	target_compile_options(mus2mid PUBLIC

@@ -58,10 +58,10 @@ if(libpng_FOUND)
 endif()
 
 # freeglut : 
-find_package(GLUT REQUIRED)
-if(GLUT_FOUND)
-	set(HAVE_GLUT TRUE)
-endif()
+#find_package(GLUT REQUIRED)
+#if(GLUT_FOUND)
+#	set(HAVE_GLUT TRUE)
+#endif()
 
 # samplerate : samplerate converter for audio
 find_package(samplerate REQUIRED)
@@ -87,23 +87,24 @@ if(directxtk12_FOUND)
 endif()
 
 # zlib : compression library
-if(!ZLIB_FOUND)
-	find_package(ZLIB REQUIRED)
-endif()
-if(ZLIB_FOUND)
-	set(HAVE_ZLIB TRUE)
-endif()
+#if(!ZLIB_FOUND)
+#	find_package(ZLIB REQUIRED)
+#endif()
+#if(ZLIB_FOUND)
+#	set(HAVE_ZLIB TRUE)
+#endif()
 
 # zstr :
-if(ZLIB_FOUND)
-	find_package(ZSTR REQUIRED)
-endif()
+#if(ZLIB_FOUND)
+#	find_package(ZSTR REQUIRED)
+#endif()
 
-# zstr :
-if(libpng_FOUND)
-	find_package(PNGPP REQUIRED)
-endif()
+# png++ :
+#if(libpng_FOUND)
+#	find_package(PNGPP REQUIRED)
+#endif()
 
+#find_package(folly CONFIG REQUIRED)
 #rapidjson
 
 #libflac

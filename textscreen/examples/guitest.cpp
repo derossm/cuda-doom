@@ -10,9 +10,6 @@
 	Example program: GUI test program
 		Demonstrates all the main textscreen widgets in use and shows how a simple textscreen program can be written.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
 
 #include "../textscreen.h"
 

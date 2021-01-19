@@ -15,19 +15,16 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
-//#include <string>
-
 #include "../../derma/common.h"
 
 #include "doomdata.h"
 
-#include "d_loop.h"
+#include "../d_loop.h"
+#include "../d_mode.h"
+#include "../net_defs.h"
+#include "../crispy.h"
+
 #include "d_player.h"
-#include "d_mode.h"
-#include "net_defs.h"
-#include "crispy.h"
 
 // Convenience macro.
 // 'gamemission' can be equal to pack_chex or pack_hacx, but these are

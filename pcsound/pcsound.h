@@ -12,8 +12,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
 #include "../derma/common.h"
 
 typedef void (*pcsound_callback_func)(int* duration, int* frequency);

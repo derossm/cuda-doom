@@ -14,9 +14,9 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
+#include "../../derma/common.h"
 
-#include "doomtype.h"
+#include "../doomtype.h"
 #include "doomdef.h"
 
 //

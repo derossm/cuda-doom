@@ -21,7 +21,7 @@ set_target_properties(setup PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGU
 
 target_include_directories(setup PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
 target_link_libraries(setup textscreen SDL2::SDL2 SDL2::SDL2_mixer)
-target_precompile_headers(textscreen PUBLIC "../../derma/stdafx.h")
+#target_precompile_headers(textscreen PUBLIC "../../derma/stdafx.h")
 
 if(MSVC)
 	target_compile_options(setup PUBLIC

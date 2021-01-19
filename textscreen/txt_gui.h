@@ -12,13 +12,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-
-#include "../derma/common.h"
-#include "../derma/keybinds.h"
-
 #include "txt_common.h"
 
 #define VALID_X(x) ((x) >= cliparea->x1 && (x) < cliparea->x2)

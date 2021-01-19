@@ -13,13 +13,11 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
 
-#include "doomtype.h"
-#include "d_event.h"
-//#include "m_cheat.h"
+#include "../doomtype.h"
+#include "../d_event.h"
+//#include "../m_cheat.h"
 
 #include "../i_video.h"
 

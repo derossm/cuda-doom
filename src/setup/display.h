@@ -9,9 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
-#include "config.h"
+#include "../../build/config.h"
 
 #include "../../derma/common.h"
 
@@ -226,34 +224,34 @@ void ConfigDisplay(txt::UNCAST_ARG(widget), void* user_data)
 
 void BindDisplayVariables()
 {
-	M_BindIntVariable("aspect_ratio_correct",		&aspect_ratio_correct);
-	M_BindIntVariable("integer_scaling",			&integer_scaling);
-	M_BindIntVariable("fullscreen",					&fullscreen);
-	M_BindIntVariable("fullscreen_width",			&fullscreen_width);
-	M_BindIntVariable("fullscreen_height",			&fullscreen_height);
-	M_BindIntVariable("window_width",				&window_width);
-	M_BindIntVariable("window_height",				&window_height);
-	M_BindIntVariable("startup_delay",				&startup_delay);
+	M_BindVariable<int>("aspect_ratio_correct",		&aspect_ratio_correct);
+	M_BindVariable<int>("integer_scaling",			&integer_scaling);
+	M_BindVariable<int>("fullscreen",					&fullscreen);
+	M_BindVariable<int>("fullscreen_width",			&fullscreen_width);
+	M_BindVariable<int>("fullscreen_height",			&fullscreen_height);
+	M_BindVariable<int>("window_width",				&window_width);
+	M_BindVariable<int>("window_height",				&window_height);
+	M_BindVariable<int>("startup_delay",				&startup_delay);
 	M_BindStringVariable("video_driver",			&video_driver);
 	M_BindStringVariable("window_position",			&window_position);
-	M_BindIntVariable("usegamma",					&usegamma);
-	M_BindIntVariable("png_screenshots",			&png_screenshots);
-	M_BindIntVariable("vga_porch_flash",			&vga_porch_flash);
-	M_BindIntVariable("force_software_renderer",	&force_software_renderer);
-	M_BindIntVariable("max_scaling_buffer_pixels",	&max_scaling_buffer_pixels);
+	M_BindVariable<int>("usegamma",					&usegamma);
+	M_BindVariable<int>("png_screenshots",			&png_screenshots);
+	M_BindVariable<int>("vga_porch_flash",			&vga_porch_flash);
+	M_BindVariable<int>("force_software_renderer",	&force_software_renderer);
+	M_BindVariable<int>("max_scaling_buffer_pixels",	&max_scaling_buffer_pixels);
 
 	if (gamemission == doom || gamemission == heretic || gamemission == strife)
 	{
-		M_BindIntVariable("show_endoom", &show_endoom);
+		M_BindVariable<int>("show_endoom", &show_endoom);
 	}
 
 	if (gamemission == doom || gamemission == strife)
 	{
-		M_BindIntVariable("show_diskicon", &show_diskicon);
+		M_BindVariable<int>("show_diskicon", &show_diskicon);
 	}
 
 	if (gamemission == heretic || gamemission == hexen || gamemission == strife)
 	{
-		M_BindIntVariable("graphical_startup", &graphical_startup);
+		M_BindVariable<int>("graphical_startup", &graphical_startup);
 	}
 }

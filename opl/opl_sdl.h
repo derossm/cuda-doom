@@ -12,21 +12,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-//#include <errno.h>
-//#include <cassert>
-//#include <inttypes.h>
-
-//#include <mutex>
-//#include <vector>
-//#include <ranges>
-//#include <algorithm>
-
-#include "config.h"
+#include "../build/config.h"
 
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -154,7 +140,7 @@ class OPLManager
 
 			// Work out the time until the next callback waiting in the callback queue must be invoked.
 			// We can then fill the buffer with this many samples.
-			if (::std::scoped_lock lock; opl_sdl_paused || !callback_queue.size())
+			if (::std::scoped_lock lock{callback_queue_mutex}; opl_sdl_paused || !callback_queue.size())
 			{
 				nsamples = buffer_samples - filled;
 			}

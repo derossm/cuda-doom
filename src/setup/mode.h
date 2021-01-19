@@ -9,9 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
-#include "config.h"
+#include "../../build/config.h"
 
 #include "../../derma/common.h"
 
@@ -126,14 +124,14 @@ static void BindMiscVariables()
 {
 	if (gamemission == GameMission::doom)
 	{
-		M_BindIntVariable("detaillevel",	&detailLevel);
-		M_BindIntVariable("show_messages", &showMessages);
+		M_BindVariable<int>("detaillevel",	&detailLevel);
+		M_BindVariable<int>("show_messages", &showMessages);
 	}
 
 	if (gamemission == GameMission::hexen)
 	{
 		M_BindStringVariable("savedir", &savedir);
-		M_BindIntVariable("messageson", &showMessages);
+		M_BindVariable<int>("messageson", &showMessages);
 
 		// Hexen has a variable to control the savegame directory
 		// that is used.
@@ -156,12 +154,12 @@ static void BindMiscVariables()
 		M_BindStringVariable("back_flat",	&back_flat);
 		M_BindStringVariable("nickname",	&nickname);
 
-		M_BindIntVariable("screensize",		&screenblocks);
-		M_BindIntVariable("comport",		&comport);
+		M_BindVariable<int>("screensize",		&screenblocks);
+		M_BindVariable<int>("comport",		&comport);
 	}
 	else
 	{
-		M_BindIntVariable("screenblocks",	&screenblocks);
+		M_BindVariable<int>("screenblocks",	&screenblocks);
 	}
 
 }

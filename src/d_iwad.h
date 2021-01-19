@@ -12,11 +12,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-//#include <vector>
-
 #include "../derma/common.h"
 #include "../derma/d_native.h"
 

@@ -13,13 +13,6 @@
 
 #include "stdafx.h"
 
-//#include <concepts>
-//#include <type_traits>
-//#include <cstddef>
-//#include <cstdint>
-//#include <array>
-//#include <bit>
-
 namespace derma::experimental
 {
 

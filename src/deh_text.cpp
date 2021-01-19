@@ -7,11 +7,10 @@
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-// Parses Text substitution sections in dehacked files
+	Description:
+		Parses Text substitution sections in dehacked files
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
-
-//#include <string>
 
 #include "doomtype.h"
 

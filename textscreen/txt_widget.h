@@ -6,51 +6,90 @@
 
 	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	Description:
+		Widget is a generic GUI component; it derives from WidgetBase, and all other GUI derive from WidgetBase.
+		->	WidgetBase is templated, so it derives from Wedge to allow simple base class pointers.
+
+		Widgets may emit signals. The types of signal emitted by a widget depends on the type of the Widget.
+
+		It is possible to be notified when a signal occurs using the SignalConnect function.
+
+		By default, InputEvent objects are sent to the GUI where default listeners are registered, and handled as (callback) method calls.
 \**********************************************************************************************************************************************/
 #pragma once
-
-#include "../derma/stdafx.h"
-
-//#include <memory>
-//#include <string>
-//#include <functional>
-
-#include "../derma/common.h
-#include "../derma/keybinds.h
 
 #include "txt_common.h"
 
 namespace cudadoom::txt
 {
 
-// A widget is an individual component of a GUI. Various different widget types exist. Widgets may emit signals. The types of signal emitted by
-// a widget depends on the type of the widget. It is possible to be notified when a signal occurs using the @ref SignalConnect function.
-template<typename T, typename U = T>
-class WidgetBase
+class Wedge
 {
 private:
-	::std::shared_ptr<WidgetBase<T, U>> parent{nullptr};
-	//WidgetClass<T> widget_class;
-
-	// These are set automatically when the window is drawn and should not be set manually.
-	int64_t x{0};
-	int64_t y{0};
+	int64_t pos_x{0};
+	int64_t pos_y{0};
 	int width{0};
 	int height{0};
 
-	//CallbackTable callbackTable;
-
+	BitSet<Alignment> e_align;
 	AlignHorizontal align{};
 
 	bool b_visible{false};
 	bool b_focused{false};
 
 public:
-	using Type = T;
+	virtual ~Wedge() {}
+
+	//================================================================================================================================
+
+	virtual inline bool Selectable() const noexcept
+	{
+		return true;
+	}
+
+	virtual inline void CalculateSize() noexcept
+	{
+	}
+
+	virtual inline void Draw() noexcept
+	{
+	}
+
+	virtual inline bool KeyPress(Keys key) noexcept
+	{
+		return false;
+	}
+
+	virtual inline bool MousePress(MouseEvent evt) noexcept
+	{
+		return false;
+	}
+
+	virtual inline void SetLayout() noexcept
+	{
+	}
+
+	virtual inline void SetFocus(bool _focus) noexcept
+	{
+	}
+
+	virtual inline void Destroy() noexcept {}
+};
+
+// T = Parent Type, U = Child Type
+template<typename T, typename U = T>
+class WidgetBase : public Wedge
+{
+private:
+	::std::shared_ptr<WidgetBase<T, U>> parent{nullptr};
+
+public:
+	using type = T;
 
 	//================================================================================================================================
 	// ctors, dtors, etc
-	WidgetBase() {} //: widget_class{Selectable, CalculateSize, Draw, KeyPress, MousePress, SetLayout, SetFocus, Destroy}
+	WidgetBase() {}
 
 	virtual ~WidgetBase() {}
 
@@ -68,10 +107,10 @@ public:
 
 	virtual inline void Draw() noexcept
 	{
-		SavedColors colors;
+		//SavedColors colors;
 
 		// The drawing function might change the fg/bg colors, so make sure we restore them after it's done.
-		SaveColors(&colors);
+		//SaveColors(&colors);
 
 		// For convenience...
 		//GotoXY(x, y);
@@ -84,7 +123,8 @@ public:
 
 	virtual inline bool KeyPress(Keys evt) noexcept
 	{
-		return false;//key_press(widget, key);
+		//key_press(widget, key);
+		return false;
 	}
 
 	virtual inline bool MousePress(MouseEvent evt) noexcept
@@ -95,12 +135,10 @@ public:
 
 	virtual inline void SetLayout() noexcept
 	{
-		//layout();
 	}
 
 	virtual inline void SetFocus(bool _focus) noexcept
 	{
-		//layout();
 	}
 
 	virtual inline void Destroy() noexcept {}

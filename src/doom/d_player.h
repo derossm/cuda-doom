@@ -10,16 +10,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
+
+#include "../d_ticcmd.h"
+#include "../net_defs.h"
 
 #include "d_items.h"
 #include "p_pspr.h"
 #include "p_mobj.h"
-#include "d_ticcmd.h"
-
-#include "net_defs.h"
 
 enum class PlayerState
 {

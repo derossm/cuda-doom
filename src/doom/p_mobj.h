@@ -13,17 +13,14 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
-#include "../../derma/enumbitset.h"
+
+// Basics.
+#include "../tables.h"
+#include "../m_fixed.h"
 
 // We need the WAD data structure for Map things, from the THINGS lump.
 #include "doomdata.h"
-
-// Basics.
-#include "tables.h"
-#include "m_fixed.h"
 
 // We need the thinker_t stuff.
 #include "d_think.h"

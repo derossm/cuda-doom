@@ -13,14 +13,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-
-#include "../derma/common.h
-#include "../derma/keybinds.h"
-
 #include "txt_common.h"
+
 #include "txt_widget.h"
 
 #include "txt_gui.h"

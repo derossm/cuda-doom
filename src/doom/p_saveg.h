@@ -13,10 +13,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
-//#include <string>
-
 #include "../../derma/common.h"
 
 constexpr size_t SAVEGAME_EOF{0x1d};

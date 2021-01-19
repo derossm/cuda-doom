@@ -13,17 +13,15 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
 
-#include "doomdef.h"
+#include "../m_fixed.h"
+#include "../i_video.h"
+#include "../v_patch.h"
 
-#include "m_fixed.h"
+#include "doomdef.h"
 #include "d_think.h"
 #include "p_mobj.h"
-#include "i_video.h"
-#include "v_patch.h"
 
 // Silhouette, needed for clipping Segs (mainly) and sprites representing things.
 constexpr size_t SIL_NONE{0};

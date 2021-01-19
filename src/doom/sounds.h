@@ -13,11 +13,9 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
 
-#include "i_sound.h"
+#include "../i_sound.h"
 
 // the complete set of sound effects
 extern sfxinfo_t S_sfx[];

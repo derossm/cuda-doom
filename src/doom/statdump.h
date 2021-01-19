@@ -9,7 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
+#include "../../derma/common.h"
 
 void StatCopy(const wbstartstruct_t* stats);
 void StatDump();

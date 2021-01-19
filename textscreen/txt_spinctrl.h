@@ -9,14 +9,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../derma/stdafx.h"
-
-//#include <string>
-//#include <variant>
-
-#include "../derma/common.h
-
 #include "txt_common.h"
+
 #include "txt_widget.h"
 
 namespace cudadoom::txt
@@ -293,7 +287,7 @@ public:
 		EnforceLimits();
 	}
 
-	bool KeyPress(int key)
+	bool KeyPress(Keys key)
 	{
 		// Enter to enter edit mode
 		if (editing)

@@ -11,12 +11,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "stdafx.h"
-
-//#include <string>
-//#include <filesystem>
-//#include <fstream>
-
 #include "../derma/common.h"
 
 //#include "w_wad.h"

@@ -9,8 +9,6 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../../derma/stdafx.h"
-
 #include "../../derma/common.h"
 
 #include "../doomtype.h"
@@ -214,18 +212,18 @@ void ConfigMouse(txt::UNCAST_ARG(widget), void* user_data)
 
 void BindMouseVariables()
 {
-	M_BindIntVariable("use_mouse", &usemouse);
-	M_BindIntVariable("novert", &novert);
-	M_BindIntVariable("grabmouse", &grabmouse);
-	M_BindIntVariable("mouse_sensitivity", &mouseSensitivity);
-	M_BindIntVariable("mouse_threshold", &mouse_threshold);
+	M_BindVariable<int>("use_mouse", &usemouse);
+	M_BindVariable<int>("novert", &novert);
+	M_BindVariable<int>("grabmouse", &grabmouse);
+	M_BindVariable<int>("mouse_sensitivity", &mouseSensitivity);
+	M_BindVariable<int>("mouse_threshold", &mouse_threshold);
 	M_BindFloatVariable("mouse_acceleration", &mouse_acceleration);
 	if (gamemission == doom)
 	{
-		M_BindIntVariable("mouse_sensitivity_x2", &mouseSensitivity_x2);
-		M_BindIntVariable("mouse_sensitivity_y", &mouseSensitivity_y);
-		M_BindIntVariable("mouse_threshold_y", &mouse_threshold_y);
+		M_BindVariable<int>("mouse_sensitivity_x2", &mouseSensitivity_x2);
+		M_BindVariable<int>("mouse_sensitivity_y", &mouseSensitivity_y);
+		M_BindVariable<int>("mouse_threshold_y", &mouse_threshold_y);
 		M_BindFloatVariable("mouse_acceleration_y", &mouse_acceleration_y);
-		M_BindIntVariable("crispy_mouselook", &crispy->mouselook);
+		M_BindVariable<int>("crispy_mouselook", &crispy->mouselook);
 	}
 }
