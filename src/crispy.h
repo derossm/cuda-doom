@@ -16,20 +16,18 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 // TODO ENFORCE DO NOT USE THESE "HANDY" MACROS, TEMP MEASURE CALL LAMBDA TO STD ALGORITHMS
 #ifndef MIN
 	//#define MIN(a,b) (((a)<(b))?(a):(b))
-#	define MIN(a,b) [](auto x, auto y){return ::std::min(x, y);}(a, b)
+#	define MIN(a,b) ([](auto x, auto y){return ::std::min(x, y);}(a, b))
 #endif
 #ifndef MAX
 	//#define MAX(a,b) (((a)>(b))?(a):(b))
-#define MAX(a,b) [](auto x, auto y){return ::std::max(x, y);}(a, b)
+#define MAX(a,b) ([](auto x, auto y){return ::std::max(x, y);}(a, b))
 #endif
 #ifndef BETWEEN
 	//#define BETWEEN(l,u,x) (((l)>(x))?(l):((x)>(u))?(u):(x))
-#define BETWEEN(l,u,x) [](auto v, auto lo, auto hi){return ::std::clamp(v, lo, hi);}(x, l, u)
+#define BETWEEN(l,u,x) ([](auto v, auto lo, auto hi){return ::std::clamp(v, lo, hi);}(x, l, u))
 #endif
 
 struct crispy_t
@@ -37,7 +35,7 @@ struct crispy_t
 	::std::string havenerve;
 	::std::string havemaster;
 
-	void (*post_rendering_hook) ();
+	void (*post_rendering_hook)();
 
 	TimeType btusetimer{0};
 	TimeType demotimer{0};

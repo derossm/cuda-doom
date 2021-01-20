@@ -174,7 +174,7 @@ struct net_gamesettings
 	int fast_monsters;
 	int respawn_monsters;
 	int map;
-	int skill;
+	SkillType skill;
 	GameVersion gameversion;
 	int lowres_turn;
 	int new_sync;

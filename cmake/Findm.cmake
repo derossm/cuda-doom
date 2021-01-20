@@ -3,28 +3,30 @@
 # Find libm, so we can link against it for math functions.
 # If libm doesn't exist, linking against the m target will have no effect.
 
-#find_package(m REQUIRED)
-
 # set in <project_root_dir>/CMakeLists.txt
-# Windows: VCPKG_DIR = "<install_location>/vcpkg/packages"
-# x64: ARCHITECTURE = "_x64-windows"
-set(M_DIR "${VCPKG_DIR}/fdlibm${ARCHITECTURE}")
+# VCPKG_DIR = "<install_location>/vcpkg/installed"
+# ARCHITECTURE = "x64"
+# PLATFORM = "windows"
+# VCPKG_INCLUDE_DIR = "${VCPKG_DIR}/${ARCHITECTURE}-${PLATFORM}/include")
+# VCPKG_LIBRARY_DIR = "${VCPKG_DIR}/${ARCHITECTURE}-${PLATFORM}/lib")
 
-find_path(M_INCLUDE_DIR "fdlibm.h" HINTS "${M_DIR}/include" ${PC_M_INCLUDE_DIRS})
+# PRE_FIX: fdlib
+# LIBRARY: m
+# POS_FIX:
+# SUB_FOLDER: lib/manual-link
+
+find_path(M_INCLUDE_DIR "fdlibm.h" HINTS "${VCPKG_INCLUDE_DIR}" ${PC_M_INCLUDE_DIRS})
 
 if(PC_M_VERSION)
 	set(M_VERSION "${PC_M_VERSION}")
 endif()
 
-# PRE_FIX: fdlib
-# LIBRARY: m
-# POS_FIX:
-find_library(M_LIBRARY "fdlibm" HINTS "${M_DIR}/lib/manual-link" ${PC_M_LIBRARY_DIRS})
+find_library(M_LIBRARY "fdlibm" HINTS "${VCPKG_LIBRARY_DIR}/manual-link" ${PC_M_LIBRARY_DIRS})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(m FOUND_VAR M_FOUND REQUIRED_VARS M_LIBRARY VERSION_VAR M_VERSION)
+find_package_handle_standard_args(m FOUND_VAR m_FOUND REQUIRED_VARS M_LIBRARY VERSION_VAR M_VERSION)
 
-if(M_FOUND)
+if(m_FOUND)
 	add_library(m::m UNKNOWN IMPORTED)
 
 	set_target_properties(m::m PROPERTIES

@@ -10,14 +10,7 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "config.h"
-
-#include <SDL.h>
-
 #include "deh_str.h"
-#include "doomtype.h"
 #include "m_argv.h"
 #include "m_config.h"
 #include "m_misc.h"

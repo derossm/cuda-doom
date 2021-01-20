@@ -23,12 +23,9 @@
 	"abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"
 	8498 3E44 1C3B D26E BAAE 4AA1 F951 29E5 E546 70F1
 \**********************************************************************************************************************************************/
-
 #pragma once
 
 #include "../derma/common.h"
-
-#include "doomtype.h"
 
 #include "i_swap.h"
 
@@ -46,7 +43,6 @@ struct sha1_context_t
 	// room for another int
 	std::array<::std::byte, 64> buf;
 };
-constexpr size_t sizel = sizeof(sha1_context_t);
 
 void SHA1_Init(sha1_context_t* hd)
 {

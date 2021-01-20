@@ -14,7 +14,6 @@
 #pragma once
 
 #include "../derma/common.h"
-#include "../derma/d_native.h"
 
 namespace cudadoom::opl
 {

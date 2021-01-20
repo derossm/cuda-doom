@@ -14,8 +14,6 @@
 
 #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
 
-#include "config.h"
-
 #include "opl.h"
 #include "opl_timer.h"
 

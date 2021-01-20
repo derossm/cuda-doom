@@ -29,6 +29,9 @@
 #include "doomdef.h"
 #include "doomstat.h"
 
+namespace cudadoom
+{
+
 ticcmd_t* netcmds;
 
 // Called when a player leaves the game
@@ -230,3 +233,5 @@ void D_CheckNetGame()
 		}
 	}
 }
+
+} // end namespace cudadoom

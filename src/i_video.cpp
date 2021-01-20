@@ -13,13 +13,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "config.h"
-
-#include <SDL.h>
-#include <SDL_opengl.h>
-
 // TODO fix including cpp
 #include "icon.cpp"
 
@@ -27,7 +20,6 @@
 
 #include "d_loop.h"
 #include "deh_str.h"
-#include "doomtype.h"
 #include "i_input.h"
 #include "i_joystick.h"
 #include "i_system.h"

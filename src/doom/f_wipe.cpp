@@ -20,8 +20,6 @@
 #include "v_video.h"
 #include "m_random.h"
 
-#include "doomtype.h"
-
 //
 //						SCREEN WIPE PACKAGE
 //
@@ -160,7 +158,7 @@ int wipe_doMelt(int width, int height, TimeType ticks)
 				dpixel_t* s = &((dpixel_t*)wipe_scr_end)[i * height + y[i]];
 				dpixel_t* d = &((dpixel_t*)wipe_scr)[y[i] * width + i];
 
-				for (size_t j{dy}, idx{0}; j; --j)
+				for (size_t j{static_cast<size_t>(dy)}, idx{0}; j; --j)
 				{
 					d[idx] = *((s++));
 					idx += width;
@@ -170,7 +168,7 @@ int wipe_doMelt(int width, int height, TimeType ticks)
 				s = &((dpixel_t*)wipe_scr_start)[i * height];
 				d = &((dpixel_t*)wipe_scr)[y[i] * width + i];
 
-				for (size_t j{height - y[i]}, idx{0}; j; --j)
+				for (size_t j{static_cast<size_t>(height - y[i])}, idx{0}; j; --j)
 				{
 					d[idx] = *((s++));
 					idx += width;

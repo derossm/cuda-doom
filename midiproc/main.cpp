@@ -15,23 +15,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-//#include <charconv>
-//#include <sstream>
-
-#ifndef SDL_MAIN_HANDLED
-#define SDL_MAIN_HANDLED
-#endif
-
-#include "config.h"
-
-#include <SDL.h>
-#include <SDL_mixer.h>
-
-#include "../derma/d_native.h"
-
-#include "doomtype.h"
-
 #include "buffer.h"
 
 namespace cudadoom::midi

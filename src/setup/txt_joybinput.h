@@ -9,10 +9,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include <SDL_joystick.h>
-
 #include "../../derma/common.h"
-#include "../../derma/keybinds.h"
 
 #include "../../textscreen/txt_widget.h"
 #include "../../textscreen/txt_window.h"

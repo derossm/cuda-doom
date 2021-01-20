@@ -19,8 +19,6 @@
 
 #if _WIN32
 
-#include <SDL_mixer.h>
-
 extern bool midi_server_initialized;
 extern bool midi_server_registered;
 

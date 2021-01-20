@@ -12,10 +12,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "doomtype.h"
-
 #include "deh_defs.h"
 #include "deh_io.h"
 #include "deh_main.h"

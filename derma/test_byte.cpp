@@ -24,7 +24,10 @@
 //	return Catch::Session().run();
 //}
 
-TEMPLATE_TEST_CASE("Byte: wrapper for std::byte; non-assignment operators", "[Byte][template]", uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t )
+namespace cudadoom
+{
+
+TEMPLATE_TEST_CASE("Byte: wrapper for std::byte; non-assignment operators", "[Byte][template]", uint8_t, int8_t, uint16_t, int16_t, uint32_t, int32_t, uint64_t, int64_t )
 {
 	Byte<TestType> b_u8type;
 
@@ -54,7 +57,7 @@ TEMPLATE_TEST_CASE("Byte: wrapper for std::byte; non-assignment operators", "[By
 	REQUIRE(k8 == static_cast<TestType>(~0));
 }
 
-TEMPLATE_TEST_CASE("Byte: wrapper for std::byte; assignment operators", "[Byte][template]", uint8_t, uint16_t, uint32_t, uint64_t, int8_t, int16_t, int32_t, int64_t )
+TEMPLATE_TEST_CASE("Byte: wrapper for std::byte; assignment operators", "[Byte][template]", uint8_t, int8_t, uint16_t, int16_t, uint32_t, int32_t, uint64_t, int64_t )
 {
 	Byte<TestType> b_u8type;
 
@@ -99,3 +102,5 @@ TEMPLATE_TEST_CASE("Byte: wrapper for std::byte; assignment operators", "[Byte][
 	REQUIRE(-k9 == static_cast<TestType>(0 - k9));
 	REQUIRE(!k10 == true);
 }
+
+} // end namespace cudadoom

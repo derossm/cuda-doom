@@ -1,0 +1,106 @@
+//class Keybind
+//{
+//	::std::map<Keys, ::std::any> Keybinds;
+//public:
+//
+//	auto bind(Keys i)
+//	{
+//		return [](){ return do_action; };
+//		return actions[i];
+//	}
+//
+//	Keybind()
+//	{
+//		// MAP Keys to Functions that perform Actions
+//		// Start with compile time defaults, then support runtime user defined saved changes
+//		::std::array<Keys, 80> KYS;
+//		for(Keys i{0}; i < Keys::count;)
+//		{
+//			Keybinds.emplace(i, Keybind(i));
+//		}
+//	}
+//};
+
+// old keys
+/*
+// DOOM keyboard definition. This is the stuff configured by Setup.Exe. Most key data are simple ascii (uppercased).
+static constexpr short KEY_RIGHTARROW{0xae};
+static constexpr short KEY_LEFTARROW{0xac};
+static constexpr short KEY_UPARROW{0xad};
+static constexpr short KEY_DOWNARROW{0xaf};
+static constexpr short KEY_ESCAPE{27};
+static constexpr short KEY_ENTER{13};
+static constexpr short KEY_TAB{9};
+static constexpr short KEY_F1{(0x80 + 0x3b)};
+static constexpr short KEY_F2{(0x80 + 0x3c)};
+static constexpr short KEY_F3{(0x80 + 0x3d)};
+static constexpr short KEY_F4{(0x80 + 0x3e)};
+static constexpr short KEY_F5{(0x80 + 0x3f)};
+static constexpr short KEY_F6{(0x80 + 0x40)};
+static constexpr short KEY_F7{(0x80 + 0x41)};
+static constexpr short KEY_F8{(0x80 + 0x42)};
+static constexpr short KEY_F9{(0x80 + 0x43)};
+static constexpr short KEY_F10{(0x80 + 0x44)};
+static constexpr short KEY_F11{(0x80 + 0x57)};
+static constexpr short KEY_F12{(0x80 + 0x58)};
+static constexpr short KEY_BACKSPACE{0x7f};
+static constexpr short KEY_PAUSE{0xff};
+static constexpr short KEY_EQUALS{0x3d};
+static constexpr short KEY_MINUS{0x2d};
+static constexpr short KEY_RSHIFT{(0x80 + 0x36)};
+static constexpr short KEY_RCTRL{(0x80 + 0x1d)};
+static constexpr short KEY_RALT{(0x80 + 0x38)};
+static constexpr short KEY_LALT{KEY_RALT};
+static constexpr short KEY_CAPSLOCK{(0x80 + 0x3a)};
+static constexpr short KEY_NUMLOCK{(0x80 + 0x45)};
+static constexpr short KEY_SCRLCK{(0x80 + 0x46)};
+static constexpr short KEY_PRTSCR{(0x80 + 0x59)};
+static constexpr short KEY_HOME{(0x80 + 0x47)};
+static constexpr short KEY_END{(0x80 + 0x4f)};
+static constexpr short KEY_PGUP{(0x80 + 0x49)};
+static constexpr short KEY_PGDN{(0x80 + 0x51)};
+static constexpr short KEY_INS{(0x80 + 0x52)};
+static constexpr short KEY_DEL{(0x80 + 0x53)};
+static constexpr short KEYP_0{KEY_INS};
+static constexpr short KEYP_1{KEY_END};
+static constexpr short KEYP_2{KEY_DOWNARROW};
+static constexpr short KEYP_3{KEY_PGDN};
+static constexpr short KEYP_4{KEY_LEFTARROW};
+static constexpr short KEYP_5{(0x80 + 0x4c)};
+static constexpr short KEYP_6{KEY_RIGHTARROW};
+static constexpr short KEYP_7{KEY_HOME};
+static constexpr short KEYP_8{KEY_UPARROW};
+static constexpr short KEYP_9{KEY_PGUP};
+static constexpr short KEYP_DIVIDE{'/'};
+static constexpr short KEYP_PLUS{'+'};
+static constexpr short KEYP_MINUS{'-'};
+static constexpr short KEYP_MULTIPLY{'*'};
+static constexpr short KEYP_PERIOD{0};
+static constexpr short KEYP_EQUALS{KEY_EQUALS};
+static constexpr short KEYP_ENTER{KEY_ENTER};
+
+constexpr ::std::array<int, 104> scancode_translate_table
+{
+	int{0x0},			int{0x0},			int{0x0},			int{0x0},			int{'a'},				// 000-009
+	int{'b'},			int{'c'},			int{'d'},			int{'e'},			int{'f'},
+	int{'g'},			int{'h'},			int{'i'},			int{'j'},			int{'k'},				// 010-019
+	int{'l'},			int{'m'},			int{'n'},			int{'o'},			int{'p'},
+	int{'q'},			int{'r'},			int{'s'},			int{'t'},			int{'u'},				// 020-029
+	int{'v'},			int{'w'},			int{'x'},			int{'y'},			int{'z'},
+	int{'1'},			int{'2'},			int{'3'},			int{'4'},			int{'5'},				// 030-039
+	int{'6'},			int{'7'},			int{'8'},			int{'9'},			int{'0'},
+	int{KEY_ENTER},		int{KEY_ESCAPE},	int{KEY_BACKSPACE},	int{KEY_TAB},		int{' '},				// 040-049
+	int{KEY_MINUS},		int{KEY_EQUALS},	int{'['},			int{']'},			int{'\\'},
+	int{0x0},			int{';'},			int{'\''},			int{'`'},			int{','},				// 050-059
+	int{'.'},			int{'/'},			int{KEY_CAPSLOCK},	int{KEY_F1},		int{KEY_F2},
+	int{KEY_F3},		int{KEY_F4},		int{KEY_F5},		int{KEY_F6},		int{KEY_F7},			// 060-069
+	int{KEY_F8},		int{KEY_F9},		int{KEY_F10},		int{KEY_F11},		int{KEY_F12},
+	int{KEY_PRTSCR},	int{KEY_SCRLCK},	int{KEY_PAUSE},		int{KEY_INS},		int{KEY_HOME},			// 070-079
+	int{KEY_PGUP},		int{KEY_DEL},		int{KEY_END},		int{KEY_PGDN},		int{KEY_RIGHTARROW},
+	int{KEY_LEFTARROW},	int{KEY_DOWNARROW},	int{KEY_UPARROW},	int{KEY_NUMLOCK},	int{KEYP_DIVIDE},		// 080-089
+	int{KEYP_MULTIPLY},	int{KEYP_MINUS},	int{KEYP_PLUS},		int{KEYP_ENTER},	int{KEYP_1},
+	int{KEYP_2},		int{KEYP_3},		int{KEYP_4},		int{KEYP_5},		int{KEYP_6},			// 090-099
+	int{KEYP_7},		int{KEYP_8},		int{KEYP_9},		int{KEYP_0},		int{KEYP_PERIOD},
+	int{0x0},			int{0x0},			int{0x0},			int{KEYP_EQUALS}							// 100-103
+};
+*/

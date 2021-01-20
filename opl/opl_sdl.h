@@ -12,15 +12,9 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../build/config.h"
-
-#include <SDL.h>
-#include <SDL_mixer.h>
-
 #include "../derma/common.h"
 
 #include "opl3.h"
-
 #include "opl.h"
 
 namespace cudadoom::opl

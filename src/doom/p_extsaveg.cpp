@@ -14,10 +14,6 @@
 \**********************************************************************************************************************************************/
 #include "../../derma/stdafx.h"
 
-//#include <string>
-
-#include "config.h"
-
 #include "doomstat.h"
 #include "doomtype.h"
 #include "m_misc.h"

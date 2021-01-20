@@ -12,3 +12,13 @@
 #pragma once
 
 #include "stdafx.h"
+
+namespace cudadoom
+{
+
+	class String
+	{
+
+	};
+
+}

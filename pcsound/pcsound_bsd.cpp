@@ -12,8 +12,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "config.h"
-
 // OpenBSD/NetBSD:
 //#ifdef HAVE_DEV_ISA_SPKRIO_H
 //	#define HAVE_BSD_SPEAKER
@@ -27,8 +25,6 @@
 //#endif
 
 #ifdef HAVE_BSD_SPEAKER
-#include <SDL.h>
-#include <SDL_thread.h>
 
 #include "pcsound.h"
 #include "pcsound_internal.h"

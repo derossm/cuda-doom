@@ -5,10 +5,13 @@
 #cmakedefine PROGRAM_PREFIX "@PROGRAM_PREFIX@"
 
 #cmakedefine HAVE_LIBM
-#cmakedefine HAVE_LIBPNG
 #cmakedefine HAVE_ZLIB
-#cmakedefine HAVE_LIBSAMPLERATE
+#cmakedefine HAVE_ZSTR
+#cmakedefine HAVE_LIBPNG
+#cmakedefine HAVE_PNGPP
 #cmakedefine HAVE_GLUT
+#cmakedefine HAVE_LIBSAMPLERATE
 
-#cmakedefine HAVE_directxmath
-#cmakedefine HAVE_directxtk12
+#cmakedefine HAVE_DIRECTXMATH
+#cmakedefine HAVE_DIRECTXTK12
+

@@ -17,6 +17,8 @@
 #include "../../derma/common.h"
 #include "doom_includes.h"
 
+#include "m_menu.h"
+
 namespace cudadoom
 {
 
@@ -62,7 +64,7 @@ int show_diskicon = 1;
 // draw current display, possibly wiping it from the previous wipegamestate can be set to -1 to force a wipe on the next draw
 GameState_t wipegamestate = GameState_t::GS_DEMOSCREEN;
 extern bool setsizeneeded;
-extern int showMessages;
+//extern int showMessages; // m_menu.h
 
 // Add configuration file variable bindings.
 static ::std::string const chat_macro_defaults[10] =

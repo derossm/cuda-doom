@@ -12,12 +12,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include <SDL.h>
-
-#include "string.h"
-
 #include "doomtype.h"
 #include "i_timer.h"
 #include "i_video.h"

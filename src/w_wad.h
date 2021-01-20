@@ -15,8 +15,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 #include "w_file.h"
 #include "z_zone.h"
 
@@ -47,13 +45,9 @@ lumpindex_t W_CheckNumForNameFromTo(::std::string name, int from, int to);
 int W_LumpLength(lumpindex_t lump);
 void W_ReadLump(lumpindex_t lump, void* dest);
 
-// Load a lump into memory and return a pointer to a buffer containing
-// the lump data.
-//
-// 'tag' is the type of zone memory buffer to allocate for the lump
-// (usually pu_tags_t::PU_STATIC or pu_tags_t::PU_CACHE). If the lump is loaded as
-// pu_tags_t::PU_STATIC, it should be released back using W_ReleaseLumpNum
-// when no longer needed (do not use Z_ChangeTag).
+// Load a lump into memory and return a pointer to a buffer containing the lump data.
+// 'tag' is the type of zone memory buffer to allocate for the lump (usually pu_tags_t::PU_STATIC or pu_tags_t::PU_CACHE).
+// If the lump is loaded as pu_tags_t::PU_STATIC, it should be released back using W_ReleaseLumpNum when no longer needed (do not use Z_ChangeTag).
 template<typename T>
 T* W_CacheLumpNum(lumpindex_t lumpnum, pu_tags_t tag)
 {
@@ -65,10 +59,8 @@ T* W_CacheLumpNum(lumpindex_t lumpnum, pu_tags_t tag)
 	auto lump = lumpinfo[lumpnum];
 
 	T result;
-	// Get the pointer to return. If the lump is in a memory-mapped
-	// file, we can just return a pointer to within the memory-mapped
-	// region. If the lump is in an ordinary file, we may already
-	// have it cached; otherwise, load it into memory.
+	// Get the pointer to return. If the lump is in a memory-mapped file, we can just return a pointer to within the memory-mapped region.
+	// If the lump is in an ordinary file, we may already have it cached; otherwise, load it into memory.
 	if (lump->wad_file->mapped != nullptr)
 	{
 		// Memory mapped file, return from the mmapped region.

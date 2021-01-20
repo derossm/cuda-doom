@@ -26,8 +26,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 enum
 {
 	CR_NONE,

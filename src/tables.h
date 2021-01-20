@@ -29,8 +29,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 #include "m_fixed.h"
 
 constexpr size_t FINEANGLES{8192};

@@ -12,12 +12,10 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "doomtype.h"
 #include "deh_defs.h"
 #include "deh_main.h"
 #include "deh_mapping.h"
+
 #include "sounds.h"
 
 DEH_BEGIN_MAPPING(sound_mapping, sfxinfo_t)

@@ -41,13 +41,13 @@ set(DX12_FILES
 
 add_library(cuda17 STATIC sinewave_cuda.cu ShaderStructs.h helper_string.h helper_cuda.h)
 set_target_properties(cuda17 PROPERTIES CUDA_ARCHITECTURES 61 CXX_STANDARD 17)
-target_include_directories(cuda17 INTERFACE "." PRIVATE "inc" "src" "data" "../derma" "R:/api/cuda/v11.1/tools/include")
+target_include_directories(cuda17 INTERFACE "." PRIVATE ".;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries(cuda17 d3d12 d3dcompiler dxgi odbc32 odbccp32)
 #target_precompile_headers(cuda17 PUBLIC "../derma/stdafx.h")
 
 add_executable("${PROGRAM_PREFIX}dx12" WIN32 ${DX12_FILES})
 set_target_properties("${PROGRAM_PREFIX}dx12" PROPERTIES WIN32_EXECUTABLE TRUE CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
-target_include_directories("${PROGRAM_PREFIX}dx12" INTERFACE "." PRIVATE "inc" "src" "data" "../derma" "R:/api/cuda/v11.1/tools/include")
+target_include_directories("${PROGRAM_PREFIX}dx12" INTERFACE "." PRIVATE ".;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries("${PROGRAM_PREFIX}dx12" cuda17 d3d12 d3dcompiler dxgi odbc32 odbccp32)
 #target_precompile_headers("${PROGRAM_PREFIX}dx12" PUBLIC "../derma/stdafx.h")
 

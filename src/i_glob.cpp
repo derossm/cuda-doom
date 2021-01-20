@@ -12,11 +12,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "config.h"
-
-//#include <string>
-//#include <filesystem>
-
 #include "i_glob.h"
 #include "m_misc.h"
 

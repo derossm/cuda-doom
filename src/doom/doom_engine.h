@@ -625,14 +625,11 @@ static class DoomEngine
 		// opening sound
 		// reloading sound
 		// closing sound
-		crispy->havessg = (
-						gamemode == GameMode::commercial || (
-						W_CheckNumForName("sht2a0") != -1
+		crispy->havessg = (gamemode == GameMode::commercial || (W_CheckNumForName("sht2a0") != -1
 						&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dshtgn)]) != -1
 						&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dbopn)]) != -1
 						&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dbload)]) != -1
-						&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dbcls)]) != -1)
-				);
+						&& I_GetSfxLumpNum(&S_sfx[::std::size_t(sfxenum_t::sfx_dbcls)]) != -1));
 
 		// check for presence of a 5th episode
 		crispy->haved1e5 = (gameversion == GameVersion::exe_ultimate)

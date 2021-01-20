@@ -15,35 +15,26 @@
 
 #include "derma_strongtype.h"
 #include "derma_byte.h"
+#include "derma_enum_free.h"
 #include "derma_enum.h"
 #include "derma_string.h"
 #include "derma_vector.h"
 
 #include "keybinds.h"
 
+#ifndef CRISPY_TRUECOLOR
+using pixel_t = uint8_t;
+using dpixel_t = int16_t;
+#else
+using pixel_t = uint32_t;
+using dpixel_t = int64_t;
+#endif
+
 using CHAR_PTR = const char*;
 using TimeType = uint64_t;
 
 namespace cudadoom
 {
-
-template<typename T, typename U>
-	requires ((std::is_enum_v<T> || std::integral<T>)
-			&& (std::is_enum_v<std::remove_const_t<U>> || std::integral<std::remove_const_t<U>>))
-T& operator|=(T& lhs, const U& rhs)
-{
-	lhs = static_cast<T>(static_cast<size_t>(lhs) | static_cast<size_t>(rhs));
-	return lhs;
-}
-
-template<typename T, typename U>
-	requires ((std::is_enum_v<std::remove_const_t<std::remove_reference_t<T>>> || std::integral<std::remove_const_t<std::remove_reference_t<T>>>)
-			&& (std::is_enum_v<std::remove_const_t<std::remove_reference_t<U>>> || std::integral<std::remove_const_t<std::remove_reference_t<U>>>))
-T& operator|=(T&& lhs, U&& rhs)
-{
-	lhs = static_cast<T>(static_cast<size_t>(lhs) | static_cast<size_t>(rhs));
-	return lhs;
-}
 
 using byte = ::std::byte;
 

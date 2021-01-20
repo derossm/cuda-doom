@@ -20,7 +20,8 @@
 
 #include "d_event.h"
 
-struct ArtiType_t {};
+//struct ArtiType_t {};
+using ArtiType_t = uint8_t;
 
 // The data sampled per tick (single player) and transmitted to other peers (multiplayer).
 // Mainly movements/button commands per game tick, plus a checksum for internal state consistency.

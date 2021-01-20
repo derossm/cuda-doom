@@ -13,7 +13,7 @@ set(DERMA_FILES
 
 add_executable(catch2tests ${DERMA_FILES})
 set_target_properties(catch2tests PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
-target_include_directories(catch2tests INTERFACE "." PRIVATE "../derma")
+target_include_directories(catch2tests INTERFACE ".;" PRIVATE ".;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_precompile_headers(catch2tests PUBLIC stdafx.h)
 
 if(MSVC)

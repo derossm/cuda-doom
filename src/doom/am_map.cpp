@@ -24,7 +24,6 @@
 #include "../i_video.h"
 #include "../v_video.h"
 
-#include "doomkeys.h"
 #include "doomdef.h"
 #include "doomstat.h"
 #include "dstrings.h"
@@ -32,6 +31,9 @@
 #include "p_local.h"
 #include "r_state.h"
 #include "am_map.h"
+
+namespace cudadoom
+{
 
 extern bool inhelpscreens;
 
@@ -243,7 +245,7 @@ static bool stopped = true;
 // Antialiased lines from Heretic with more colors
 constexpr size_t NUMSHADES{8};
 constexpr size_t NUMSHADES_BITS{3}; // log2(NUMSHADES)
-static byte color_shades[NUMSHADES * 256];
+static lighttable_t color_shades[NUMSHADES * 256];
 
 // Forward declare for AM_LevelInit
 static void AM_drawFline_Vanilla(fline_t* fl, int color);
@@ -1258,7 +1260,7 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
 		X1 = Temp;
 	}
 
-	byte* BaseColor = &color_shades[color * NUMSHADES];
+	auto BaseColor = &color_shades[color * NUMSHADES];
 
 	/* Draw the initial pixel, which is always exactly intersected by
 		the line and so needs no weighting */
@@ -1857,15 +1859,15 @@ void AM_drawThings(int colors, int colorrange)
 						// triangle size represents actual thing size
 						t->radius, t->angle,
 						// show countable kills in red ...
-						(((int)t->flags & ((int)mobjflag_e::MF_COUNTKILL | (int)mobjflag_e::MF_CORPSE)) == (int)mobjflag_e::MF_COUNTKILL) ? REDS :
+						((t->flags & (mobjflag_e::MF_COUNTKILL | mobjflag_e::MF_CORPSE)) == mobjflag_e::MF_COUNTKILL) ? REDS :
 						// ... show Lost Souls and missiles in orange ...
-						((int)t->flags & ((int)mobjflag_e::MF_FLOAT | (int)mobjflag_e::MF_MISSILE)) ? 216 :
+						(t->flags & (mobjflag_e::MF_FLOAT | mobjflag_e::MF_MISSILE)) ? 216 :
 						// ... show other shootable items in dark gold ...
-						((int)t->flags & (int)mobjflag_e::MF_SHOOTABLE) ? 164 :
+						(t->flags & mobjflag_e::MF_SHOOTABLE) ? 164 :
 						// ... corpses in gray ...
-						((int)t->flags & (int)mobjflag_e::MF_CORPSE) ? GRAYS :
+						(t->flags & mobjflag_e::MF_CORPSE) ? GRAYS :
 						// ... and countable items in yellow
-						((int)t->flags & (int)mobjflag_e::MF_COUNTITEM) ? YELLOWS :
+						(t->flags & mobjflag_e::MF_COUNTITEM) ? YELLOWS :
 						colors + lightlev, pt.x, pt.y);
 				}
 			}
@@ -2008,3 +2010,5 @@ void AM_SetMarkPoints(int n, long* p)
 		++p;
 	}
 }
+
+} // end namespace cudadoom

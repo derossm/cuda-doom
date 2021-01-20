@@ -24,6 +24,10 @@ void W_MergeFile(::std::string filename);
 // NWT-style merging
 void W_NWTMergeFile(::std::string filename, int flags);
 
+inline constexpr void W_NWTMergeFileSprites(::std::string filename) noexcept { W_NWTMergeFile(filename, W_NWT_MERGE_SPRITES); }
+inline constexpr void W_NWTMergeFileFlats(::std::string filename) noexcept { W_NWTMergeFile(filename, W_NWT_MERGE_FLATS); }
+inline constexpr void W_NWTMergeFileBoth(::std::string filename) noexcept { W_NWTMergeFile(filename, W_NWT_MERGE_SPRITES | W_NWT_MERGE_FLATS); }
+
 // Acts the same as NWT's "-merge" option.
 void W_NWTDashMerge(::std::string filename);
 

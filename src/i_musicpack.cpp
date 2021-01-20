@@ -13,11 +13,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "config.h"
-
-#include <SDL.h>
-#include <SDL_mixer.h>
-
 #include "i_glob.h"
 #include "i_midipipe.h"
 

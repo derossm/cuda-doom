@@ -26,8 +26,6 @@
 
 // If the above succeeded, proceed with the rest.
 
-#include "config.h"
-
 #include "opl.h"
 #include "opl_timer.h"
 

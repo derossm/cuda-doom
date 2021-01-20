@@ -23,7 +23,7 @@ add_library(textscreen STATIC
 									txt_window_action.h)
 
 set_target_properties(textscreen PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
-target_include_directories(textscreen INTERFACE "." PRIVATE "../src/" "${CMAKE_CURRENT_BINARY_DIR}/../")
+target_include_directories(textscreen INTERFACE "." PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries(textscreen SDL2::SDL2main SDL2::SDL2)
 #target_precompile_headers(textscreen PUBLIC "../derma/stdafx.h")
 

@@ -13,8 +13,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
 #include "i_swap.h"
 #include "i_system.h"
 #include "i_video.h"
@@ -71,7 +69,7 @@ unsigned W_LumpNameHash(::std::string s)
 // All files are optional, but at least one file must be found (PWAD, if all required lumps are present).
 // Files with a .wad extension are wadlink files with multiple lumps.
 // Other files are single lumps with the base filename for the lump name.
-wad_file_t* W_AddFile(::std::string filename)
+wad_file_t* W_AddFile(::std::filesystem::path filename)
 {
 	wadinfo_t header;
 	lumpindex_t i;
@@ -83,9 +81,9 @@ wad_file_t* W_AddFile(::std::string filename)
 	int numfilelumps;
 
 	// If the filename begins with a ~, it indicates that we should use the reload hack.
-	if (filename[0] == '~')
+	if (filename.string().starts_with() == '~')
 	{
-		if (reloadname != NULL)
+		if (!reloadname.empty())
 		{
 			I_Error("Prefixing a WAD filename with '~' indicates that the WAD should be reloaded\n"
 				"on each level restart, for use by level authors for rapid development. You\n"
@@ -227,7 +225,6 @@ lumpindex_t W_CheckNumForName(::std::string name)
 	else
 	{
 		// We don't have a hash table generate yet. Linear search :-(
-		//
 		// scan backwards so patch lump files take precedence
 		for (lumpindex_t i = numlumps - 1; i >= 0; --i)
 		{

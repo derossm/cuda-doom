@@ -13,10 +13,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "config.h"
-
 #include "d_iwad.h"
 #include "i_glob.h"
 #include "i_system.h"
@@ -27,129 +23,70 @@
 #include "z_zone.h"
 
 // Parse the command line, merging WAD files that are sppecified. Returns true if at least one file was added.
+
+const ::std::array<const ::std::string, 6> parameterList
+{
+	"-merge", "-nwtmerge", "-af", "-as", "-aa", "-file"
+};
+
 bool W_ParseCommandLine()
 {
-	bool modifiedgame = false;
-	int p;
+	bool modifiedgame{false};
+
+	std::array<::std::byte, 4096> buffer;
+	::std::pmr::monotonic_buffer_resource rsrc(buffer, sizeof buffer);
 
 	// Merged PWADs are loaded first, because they are supposed to be modified IWADs.
-
 	// Simulates the behavior of deutex's -merge option, merging a PWAD into the main IWAD. Multiple files may be specified.
-	p = M_CheckParmWithArgs("-merge", 1);
-
-	if (p > 0)
+	std::ranges::for_each(parameterList, [&modifiedgame](auto& iter) mutable
 	{
-		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
+		if (auto p{M_CheckParmWithArgs(iter, 1)}; p > 0)
 		{
-			::std::string filename;
+			::std::pmr::string outmsg(&rsrc);
+			auto merge{[&outmsg]() mutable {
+				if (!iter.compare("-merge"))
+				{
+					outmsg = " merging ";
+					return W_MergeFile;
+				}
+				else if (!iter.compare("-nwt"))
+				{
+					outmsg = " performing NWT-style merge of ";
+					return W_NWTDashMerge;
+				}
+				else if (!iter.compare("-af"))
+				{
+					outmsg = " merging flats from ";
+					return W_NWTMergeFileFlats;//(filename, W_NWT_MERGE_FLATS);
+				}
+				else if (!iter.compare("-as"))
+				{
+					outmsg = " merging sprites from ";
+					return W_NWTMergeFileSprites;//(filename, W_NWT_MERGE_SPRITES);
+				}
+				else if (!iter.compare("-aa"))
+				{
+					outmsg = " merging sprites and flats from ";
+					return W_NWTMergeFileBoth;//(filename, W_NWT_MERGE_SPRITES | W_NWT_MERGE_FLATS);
+				}
+				else if (!iter.compare("-file"))
+				{
+					outmsg = " merging ";
+					return W_MergeFile;
+				}
+			}()};
 
-			modifiedgame = true;
+			::std::pmr::string filename(&rsrc);
+			for (++p; p < myargc && myargv[p][0] != '-'; ++p)
+			{
+				modifiedgame = true;
+				filename = D_TryFindWADByName(myargv[p]);
 
-			filename = D_TryFindWADByName(myargv[p]);
-
-			printf(" merging %s\n", filename);
-			W_MergeFile(filename);
-			free(filename);
+				std::cout << outmsg << filename << "\n";
+				merge(filename);
+			}
 		}
-	}
-
-	// NWT-style merging:
-
-	// NWT's -merge option:
-
-	// Simulates the behavior of NWT's -merge option. Multiple files may be specified.
-	p = M_CheckParmWithArgs("-nwtmerge", 1);
-
-	if (p > 0)
-	{
-		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
-		{
-			::std::string filename;
-
-			modifiedgame = true;
-
-			filename = D_TryFindWADByName(myargv[p]);
-
-			printf(" performing NWT-style merge of %s\n", filename);
-			W_NWTDashMerge(filename);
-			free(filename);
-		}
-	}
-
-	// Simulates the behavior of NWT's -af option, merging flats into the main IWAD directory. Multiple files may be specified.
-	p = M_CheckParmWithArgs("-af", 1);
-
-	if (p > 0)
-	{
-		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
-		{
-			::std::string filename;
-
-			modifiedgame = true;
-
-			filename = D_TryFindWADByName(myargv[p]);
-
-			printf(" merging flats from %s\n", filename);
-			W_NWTMergeFile(filename, W_NWT_MERGE_FLATS);
-			free(filename);
-		}
-	}
-	// Simulates the behavior of NWT's -as option, merging sprites into the main IWAD directory. Multiple files may be specified.
-	p = M_CheckParmWithArgs("-as", 1);
-
-	if (p > 0)
-	{
-		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
-		{
-			::std::string filename;
-
-			modifiedgame = true;
-			filename = D_TryFindWADByName(myargv[p]);
-
-			printf(" merging sprites from %s\n", filename);
-			W_NWTMergeFile(filename, W_NWT_MERGE_SPRITES);
-			free(filename);
-		}
-	}
-
-	// Equivalent to "-af <files> -as <files>".
-	p = M_CheckParmWithArgs("-aa", 1);
-
-	if (p > 0)
-	{
-		for (p = p + 1; p < myargc && myargv[p][0] != '-'; ++p)
-		{
-			::std::string filename;
-
-			modifiedgame = true;
-
-			filename = D_TryFindWADByName(myargv[p]);
-
-			printf(" merging sprites and flats from %s\n", filename);
-			W_NWTMergeFile(filename, W_NWT_MERGE_SPRITES | W_NWT_MERGE_FLATS);
-			free(filename);
-		}
-	}
-
-	// Load the specified PWAD files.
-	p = M_CheckParmWithArgs("-file", 1);
-	if (p)
-	{
-		// the parms after p are wadfile/lump names,
-		// until end of parms or another - preceded parm
-		modifiedgame = true;			// homebrew levels
-		while (++p != myargc && myargv[p][0] != '-')
-		{
-			::std::string filename;
-
-			filename = D_TryFindWADByName(myargv[p]);
-
-			// always merge arguments of "-file" parameter
-			printf(" merging %s !\n", filename);
-			W_MergeFile(filename);
-			free(filename);
-		}
-	}
+	});
 
 	//W_PrintDirectory();
 	return modifiedgame;

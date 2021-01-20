@@ -13,9 +13,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "doomtype.h"
 #include "i_swap.h" // LONG()
 #include "i_system.h"
 #include "m_misc.h"
@@ -68,7 +65,9 @@ static int FindInList(searchlist_t* list, ::std::string name)
 	for (i = 0; i < list->numlumps; ++i)
 	{
 		if (!strncasecmp(list->lumps[i]->name, name, 8))
+		{
 			return i;
+		}
 	}
 
 	return -1;
@@ -139,8 +138,7 @@ static void InitSpriteList()
 	if (sprite_frames == NULL)
 	{
 		sprite_frames_alloced = 128;
-		sprite_frames = Z_Malloc<decltype(*sprite_frames)>(sizeof(*sprite_frames) * sprite_frames_alloced,
-			pu_tags_t::PU_STATIC, NULL);
+		sprite_frames = Z_Malloc<decltype(*sprite_frames)>(sizeof(*sprite_frames) * sprite_frames_alloced, pu_tags_t::PU_STATIC, NULL);
 	}
 
 	num_sprite_frames = 0;
@@ -148,8 +146,7 @@ static void InitSpriteList()
 
 static bool ValidSpriteLumpName(::std::string name)
 {
-	if (name[0] == '\0' || name[1] == '\0'
-		|| name[2] == '\0' || name[3] == '\0')
+	if (name[0] == '\0' || name[1] == '\0' || name[2] == '\0' || name[3] == '\0')
 	{
 		return false;
 	}
@@ -191,30 +188,25 @@ static sprite_frame_t* FindSpriteFrame(::std::string name, int frame)
 	}
 
 	// Not found in list; Need to add to the list
-
 	// Grow list?
-
 	if (num_sprite_frames >= sprite_frames_alloced)
 	{
 		sprite_frame_t* newframes;
 
-		newframes = Z_Malloc<decltype(newframes)>(sprite_frames_alloced * 2 * sizeof(*sprite_frames),
-			pu_tags_t::PU_STATIC, NULL);
-		memcpy(newframes, sprite_frames,
-			sprite_frames_alloced * sizeof(*sprite_frames));
+		newframes = Z_Malloc<decltype(newframes)>(sprite_frames_alloced * 2 * sizeof(*sprite_frames), pu_tags_t::PU_STATIC, NULL);
+		memcpy(newframes, sprite_frames, sprite_frames_alloced * sizeof(*sprite_frames));
 		Z_Free(sprite_frames);
 		sprite_frames_alloced *= 2;
 		sprite_frames = newframes;
 	}
 
 	// Add to end of list
-
 	result = &sprite_frames[num_sprite_frames];
 	memcpy(result->sprname, name, 4);
 	result->frame = frame;
 
-	for (i = 0; i < 8; ++i)
-		result->angle_lumps[i] = NULL;
+	for (i = 0; i < 8; ++i){
+		result->angle_lumps[i] = NULL;}
 
 	++num_sprite_frames;
 
@@ -245,23 +237,23 @@ static bool SpriteLumpNeeded(lumpinfo_t* lump)
 
 		for (i = 0; i < 8; ++i)
 		{
-			if (sprite->angle_lumps[i] == lump)
-				return true;
+			if (sprite->angle_lumps[i] == lump){
+				return true;}
 		}
 	}
 	else
 	{
 		// check if this lump is being used for this frame
 
-		if (sprite->angle_lumps[angle_num - 1] == lump)
-			return true;
+		if (sprite->angle_lumps[angle_num - 1] == lump){
+			return true;}
 	}
 
 	// second frame if any
 
 	// no second frame?
-	if (lump->name[6] == '\0')
-		return false;
+	if (lump->name[6] == '\0'){
+		return false;}
 
 	sprite = FindSpriteFrame(lump->name, lump->name[6]);
 	angle_num = lump->name[7] - '0';
@@ -272,16 +264,16 @@ static bool SpriteLumpNeeded(lumpinfo_t* lump)
 
 		for (i = 0; i < 8; ++i)
 		{
-			if (sprite->angle_lumps[i] == lump)
-				return true;
+			if (sprite->angle_lumps[i] == lump){
+				return true;}
 		}
 	}
 	else
 	{
 		// check if this lump is being used for this frame
 
-		if (sprite->angle_lumps[angle_num - 1] == lump)
-			return true;
+		if (sprite->angle_lumps[angle_num - 1] == lump){
+			return true;}
 	}
 
 	return false;
@@ -305,8 +297,8 @@ static void AddSpriteLump(lumpinfo_t* lump)
 
 	if (angle_num == 0)
 	{
-		for (i = 0; i < 8; ++i)
-			sprite->angle_lumps[i] = lump;
+		for (i = 0; i < 8; ++i){
+			sprite->angle_lumps[i] = lump;}
 	}
 	else
 	{
@@ -317,16 +309,16 @@ static void AddSpriteLump(lumpinfo_t* lump)
 
 	// no second angle?
 
-	if (lump->name[6] == '\0')
-		return;
+	if (lump->name[6] == '\0'){
+		return;}
 
 	sprite = FindSpriteFrame(lump->name, lump->name[6]);
 	angle_num = lump->name[7] - '0';
 
 	if (angle_num == 0)
 	{
-		for (i = 0; i < 8; ++i)
-			sprite->angle_lumps[i] = lump;
+		for (i = 0; i < 8; ++i){
+			sprite->angle_lumps[i] = lump;}
 	}
 	else
 	{
@@ -610,15 +602,12 @@ static void W_NWTAddLumps(searchlist_t* list)
 
 		if (index > 0)
 		{
-			memcpy(list->lumps[i], pwad.lumps[index],
-				sizeof(lumpinfo_t));
+			memcpy(list->lumps[i], pwad.lumps[index], sizeof(lumpinfo_t));
 		}
 	}
 }
 
-// Merge sprites and flats in the way NWT does with its -af and -as
-// command-line options.
-
+// Merge sprites and flats in the way NWT does with its -af and -as command-line options.
 void W_NWTMergeFile(::std::string filename, int flags)
 {
 	int old_numlumps;
@@ -626,12 +615,12 @@ void W_NWTMergeFile(::std::string filename, int flags)
 	old_numlumps = numlumps;
 
 	// Load PWAD
-
 	if (W_AddFile(filename) == NULL)
+	{
 		return;
+	}
 
 	// IWAD is at the start, PWAD was appended to the end
-
 	iwad.lumps = lumpinfo;
 	iwad.numlumps = old_numlumps;
 
@@ -639,25 +628,21 @@ void W_NWTMergeFile(::std::string filename, int flags)
 	pwad.numlumps = numlumps - old_numlumps;
 
 	// Setup sprite/flat lists
-
 	SetupLists();
 
 	// Merge in flats?
-
 	if (flags & W_NWT_MERGE_FLATS)
 	{
 		W_NWTAddLumps(&iwad_flats);
 	}
 
 	// Sprites?
-
 	if (flags & W_NWT_MERGE_SPRITES)
 	{
 		W_NWTAddLumps(&iwad_sprites);
 	}
 
 	// Discard the PWAD
-
 	numlumps = old_numlumps;
 }
 

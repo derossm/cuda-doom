@@ -20,13 +20,23 @@
 	#endif
 
 	#include <windows.h>
-	#include <tchar.h>
+	#include <wrl.h>
 	#include <shellapi.h>
-	#include <shlobj.h>
-	#include <process.h>
-	#include <io.h>
-	#include <winioctl.h>
-	#include <sys/stat.h>
+	#include <aclapi.h>
+
+	#include <d3d12.h>
+	#include <dxgi1_4.h>
+	#include <D3Dcompiler.h>
+	#include <DirectXMath.h>
+
+	#include "../directx/d3dx12.h"
+
+	//#include <tchar.h>
+	//#include <shlobj.h>
+	//#include <process.h>
+	//#include <io.h>
+	//#include <winioctl.h>
+	//#include <sys/stat.h>
 
 	#ifndef NO_OBSD_DRIVER
 		#define NO_OBSD_DRIVER

@@ -11,6 +11,8 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
+#include "../build/config.h"
+
 // Concepts library
 #include <concepts>
 
@@ -143,27 +145,42 @@
 //#include <latch>
 //#include <barrier>
 
-#if _WIN32
+#include "os_native.h"
 
-	#ifndef WIN32_LEAN_AND_MEAN
-		#define WIN32_LEAN_AND_MEAN
-	#endif
-	#ifndef NOMINMAX
-		#define NOMINMAX
-	#endif
+#include <cuda_runtime.h>
 
-#include <windows.h>
-#include <wrl.h>
-#include <shellapi.h>
-#include <aclapi.h>
-
-//#include <cuda_runtime.h>
-
-#include <d3d12.h>
-#include <dxgi1_4.h>
-#include <D3Dcompiler.h>
-#include <DirectXMath.h>
-
-#include "../directx/d3dx12.h"
-
+// support maps with compressed ZDBSP nodes
+#ifdef HAVE_ZLIB
+	#include <zlib.h>
 #endif
+
+#ifdef HAVE_LIBPNG
+	#include <png.h>
+#endif
+
+#ifdef HAVE_LIBSAMPLERATE
+	#include <samplerate.h>
+#endif
+
+#ifndef SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
+#endif
+
+#include <SDL2/SDL_version.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_net.h>
+#include <SDL2/SDL_mixer.h>
+
+#include <SDL2/SDL_filesystem.h>
+
+#include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_endian.h>
+
+#include <SDL2/SDL_mutex.h>
+#include <SDL2/SDL_thread.h>
+
+#include <SDL2/SDL_scancode.h>
+#include <SDL2/SDL_keycode.h>
+#include <SDL2/SDL_joystick.h>
+
+#include <SDL2/SDL_opengl.h>

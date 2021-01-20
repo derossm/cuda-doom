@@ -13,9 +13,6 @@
 #pragma once
 
 #include "../derma/common.h"
-#include "../derma/d_native.h"
-
-#include "doomkeys.h"
 
 #include "d_mode.h"
 

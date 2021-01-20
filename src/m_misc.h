@@ -14,9 +14,6 @@
 #pragma once
 
 #include "../derma/common.h"
-#include "../derma/d_native.h"
-
-#include "doomtype.h"
 
 #include "i_swap.h"
 #include "i_system.h"

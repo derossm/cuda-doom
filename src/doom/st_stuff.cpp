@@ -15,8 +15,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
 #include "i_swap.h" // SHORT()
 #include "i_system.h"
 #include "i_video.h"
@@ -29,7 +27,6 @@
 #include "deh_main.h"
 #include "deh_misc.h"
 #include "doomdef.h"
-#include "doomkeys.h"
 
 #include "g_game.h"
 

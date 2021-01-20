@@ -15,8 +15,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 struct wad_file_t;
 
 struct wad_file_class_t
@@ -27,8 +25,7 @@ struct wad_file_class_t
 	// Close the specified file.
 	void (*CloseFile)(wad_file_t* file);
 
-	// Read data from the specified position in the file into the
-	// provided buffer. Returns the number of bytes read.
+	// Read data from the specified position in the file into the provided buffer. Returns the number of bytes read.
 	size_t(*Read)(wad_file_t* file, unsigned offset, void* buffer, size_t buffer_len);
 };
 
@@ -37,8 +34,7 @@ struct wad_file_t
 	// Class of this file.
 	wad_file_class_t* file_class;
 
-	// If this is NULL, the file cannot be mapped into memory. If this
-	// is non-NULL, it is a pointer to the mapped file.
+	// If this is NULL, the file cannot be mapped into memory. If this is non-NULL, it is a pointer to the mapped file.
 	byte* mapped;
 
 	// Length of the file, in bytes.

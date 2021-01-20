@@ -16,8 +16,6 @@
 
 #include "../../derma/common.h"
 
-#include "doomtype.h"
-
 extern void R_InitBrightmaps();
 
 extern byte* (*R_BrightmapForTexName) (::std::string texname);

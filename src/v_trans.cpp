@@ -15,8 +15,6 @@
 
 #include "v_trans.h"
 
-#include "doomtype.h"
-
 // here used to be static color translation tables based on
 // the ones found in Boom and MBF. Nowadays these are recalculated
 // by means of actual color space conversions in r_data:R_InitColormaps().

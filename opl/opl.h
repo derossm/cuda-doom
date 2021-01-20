@@ -12,13 +12,7 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "../build/config.h"
-
-#include <SDL.h>
-//#include <SDL_mutex.h>
-
 #include "../derma/common.h"
-#include "../derma/d_native.h"
 
 //#define DEBUG_TRACE
 

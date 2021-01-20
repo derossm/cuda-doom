@@ -16,7 +16,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
 #include "i_system.h"
 #include "m_argv.h"
 

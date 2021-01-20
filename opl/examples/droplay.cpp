@@ -12,13 +12,10 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include <SDL.h>
-
-#include "opl.h"
+#include "../opl.h"
 
 #define HEADER_STRING "DBRAWOPL"
+
 constexpr size_t ADLIB_PORT{0x388};
 
 void WriteReg(unsigned reg, unsigned val)

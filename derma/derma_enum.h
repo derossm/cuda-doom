@@ -21,6 +21,7 @@ template<typename E, E N = E::count>
 class BitSet : public ::std::bitset<static_cast<size_t>(N)>
 {
 public:
+	// only overloading methods with parameterized variations, so any/all/none_of etc don't need overloaded
 	inline BitSet<E, N>& set() noexcept
 	{
 		this->bitset::set();
@@ -44,9 +45,10 @@ public:
 	inline BitSet<E, N>& set(bool value, Es... es) noexcept
 	{
 		auto ev = {es...};
+		// there should be a better way to mass set contiguous ranges, but this can allow any number of non-contiguous bits to be specified
 		::std::for_each(ev.begin(), ev.end(), [&](auto& iter){ this->bitset::set(static_cast<size_t>(iter), value); });
+		return *this;
 	}
-
 
 	inline BitSet<E, N>& flip() noexcept
 	{
@@ -84,19 +86,15 @@ public:
 		return *this;
 	}
 
-	inline bool test(E pos) noexcept
+	inline bool test(E pos) const noexcept
 	{
-		this->bitset::test(static_cast<size_t>(pos));
-		return *this;
+		return this->bitset::test(static_cast<size_t>(pos));
 	}
 
-	inline bool test(size_t pos) noexcept
+	inline bool test(size_t pos) const noexcept
 	{
-		this->bitset::test(pos);
-		return *this;
+		return this->bitset::test(pos);
 	}
-
-	//inline bool operator<=>(const BitSet<E, N> &b) = default;
 };
 
 } // end namespace cudadoom

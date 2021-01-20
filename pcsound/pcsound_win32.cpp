@@ -13,10 +13,6 @@
 #include "../derma/stdafx.h"
 
 #ifdef _WIN32
-#include "../derma/d_native.h"
-
-#include <SDL.h>
-#include <SDL_thread.h>
 
 #include "pcsound.h"
 #include "pcsound_internal.h"

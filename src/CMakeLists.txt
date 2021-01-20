@@ -30,13 +30,13 @@ set(DEDSERV_FILES
 						z_zone.h)
 
 if(MSVC)
-	add_executable("${PROGRAM_PREFIX}server" WIN32 ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
+	add_executable("${PROGRAM_PREFIX}server" WIN32 "${COMMON_SOURCE_FILES}" "${DEDSERV_FILES}")
 	set_target_properties("${PROGRAM_PREFIX}server" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 else()
-	add_executable("${PROGRAM_PREFIX}server" ${COMMON_SOURCE_FILES} ${DEDSERV_FILES})
+	add_executable("${PROGRAM_PREFIX}server" "${COMMON_SOURCE_FILES}" "${DEDSERV_FILES}")
 	set_target_properties("${PROGRAM_PREFIX}server" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 endif()
-target_include_directories("${PROGRAM_PREFIX}server" PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
+target_include_directories("${PROGRAM_PREFIX}server" PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2main SDL2::SDL2_net)
 #target_precompile_headers("${PROGRAM_PREFIX}server" PUBLIC "../derma/stdafx.h")
 
@@ -122,7 +122,7 @@ set(GAME_SOURCE_FILES
 set(GAME_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../")
 
 #if(MSVC)
-	#list(APPEND GAME_SOURCE_FILES "../win32/win_opendir.cpp" "../derma/d_native.h" "../derma/d_windows.h" "../win32/win_opendir.h")
+	#list(APPEND GAME_SOURCE_FILES "../win32/win_opendir.cpp" "../derma/os_native.h" "../derma/d_windows.h" "../win32/win_opendir.h")
 	#list(APPEND GAME_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/win32/")
 #endif()
 
@@ -133,7 +133,7 @@ set(DEHACKED_SOURCE_FILES
 	deh_mapping.cpp		deh_mapping.h
 	deh_text.cpp)
 
-set(SOURCE_FILES_WITH_DEH ${SOURCE_FILES} ${DEHACKED_SOURCE_FILES})
+set(SOURCE_FILES_WITH_DEH "${SOURCE_FILES}" "${DEHACKED_SOURCE_FILES}")
 
 set(EXTRA_LIBS SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net textscreen pcsound opl)
 
@@ -146,14 +146,14 @@ if(PNG_FOUND)
 endif()
 
 if(WIN32)
-	add_executable("${PROGRAM_PREFIX}doom" WIN32 ${SOURCE_FILES_WITH_DEH} "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
+	add_executable("${PROGRAM_PREFIX}doom" WIN32 "${SOURCE_FILES_WITH_DEH}" "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
 	set_target_properties("${PROGRAM_PREFIX}doom" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 else()
-	add_executable("${PROGRAM_PREFIX}doom" ${SOURCE_FILES_WITH_DEH})
+	add_executable("${PROGRAM_PREFIX}doom" "${SOURCE_FILES_WITH_DEH}")
 	set_target_properties("${PROGRAM_PREFIX}doom" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 endif()
-target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ${GAME_INCLUDE_DIRS})
-target_link_libraries("${PROGRAM_PREFIX}doom" doom ${EXTRA_LIBS})
+target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ".;${GAME_INCLUDE_DIRS};${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
+target_link_libraries("${PROGRAM_PREFIX}doom" doom "${EXTRA_LIBS}")
 #target_precompile_headers("${PROGRAM_PREFIX}doom" PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
@@ -187,13 +187,13 @@ set(SETUP_FILES
 						z_zone.h)
 
 if(WIN32)
-	add_executable("${PROGRAM_PREFIX}setup" WIN32 ${SETUP_FILES} ${COMMON_SOURCE_FILES} "${CMAKE_CURRENT_BINARY_DIR}/setup-res.rc")
+	add_executable("${PROGRAM_PREFIX}setup" WIN32 "${SETUP_FILES}" "${COMMON_SOURCE_FILES}" "${CMAKE_CURRENT_BINARY_DIR}/setup-res.rc")
 	set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 else()
-	add_executable("${PROGRAM_PREFIX}setup" ${SETUP_FILES} ${COMMON_SOURCE_FILES})
+	add_executable("${PROGRAM_PREFIX}setup" "${SETUP_FILES}" "${COMMON_SOURCE_FILES}")
 	set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 endif()
-target_include_directories("${PROGRAM_PREFIX}setup" PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
+target_include_directories("${PROGRAM_PREFIX}setup" PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries("${PROGRAM_PREFIX}setup" SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net setup textscreen)
 #target_precompile_headers("${PROGRAM_PREFIX}setup" PUBLIC "../derma/stdafx.h")
 
@@ -218,7 +218,7 @@ else()
 	set_target_properties(midiread PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 endif()
 target_compile_definitions(midiread PRIVATE "-DTEST")
-target_include_directories(midiread PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
+target_include_directories(midiread PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries(midiread SDL2::SDL2main SDL2::SDL2)
 #target_precompile_headers(midiread PUBLIC "../derma/stdafx.h")
 
@@ -243,7 +243,7 @@ else()
 	set_target_properties(mus2mid PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 endif()
 target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE")
-target_include_directories(mus2mid PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
+target_include_directories(mus2mid PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries(mus2mid SDL2::SDL2main SDL2::SDL2)
 #target_precompile_headers(mus2mid PUBLIC "../derma/stdafx.h")
 

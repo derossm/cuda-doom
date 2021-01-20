@@ -17,8 +17,8 @@
 
 #include "../d_event.h"
 
-// Called by main loop, saves config file and calls I_Quit when user exits. Even when the menu is not displayed, this can resize
-// the view and change game parameters. Does all the real work of the menu interaction.
+// Called by main loop, saves config file and calls I_Quit when user exits. Even when the menu is not displayed,
+// this can resize the view and change game parameters. Does all the real work of the menu interaction.
 bool M_Responder(EventType* ev);
 
 // Called by main loop, only used for menu (skull cursor) animation.
@@ -33,5 +33,9 @@ void M_Init();
 // Called by intro code to force menu up upon a keypress, does nothing if menu is already up.
 void M_StartControlPanel();
 
-extern int detailLevel;
-extern int screenblocks;
+// Blocky mode, has default, 0 = high, 1 = normal
+int detailLevel = 0;
+int screenblocks = 10; // increased
+
+// Show messages has default, 0 = off, 1 = on
+int showMessages = 1;

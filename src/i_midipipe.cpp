@@ -13,10 +13,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "config.h"
-
 #if _WIN32
 
 #include "i_midipipe.h"
@@ -26,7 +22,7 @@
 #include "m_misc.h"
 #include "net_packet.h"
 
-#include "../midiproc/proto.h"
+#include "../midiproc/buffer.h"
 
 #if defined(_DEBUG)
 #define DEBUGOUT(s) puts(s)

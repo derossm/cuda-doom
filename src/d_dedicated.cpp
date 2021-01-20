@@ -12,8 +12,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "config.h"
-
 #include "m_argv.h"
 #include "net_defs.h"
 #include "net_dedicated.h"

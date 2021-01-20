@@ -13,11 +13,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include <SDL.h>
-#include <SDL_keycode.h>
-
-#include "doomkeys.h"
-#include "doomtype.h"
 #include "d_event.h"
 #include "i_input.h"
 #include "m_argv.h"

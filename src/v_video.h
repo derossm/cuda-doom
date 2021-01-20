@@ -17,8 +17,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 // Needed because we are refering to patches.
 #include "v_patch.h"
 

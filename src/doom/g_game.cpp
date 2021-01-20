@@ -26,9 +26,7 @@
 #include "../v_trans.h" // colored "always run" message
 #include "../w_wad.h"
 
-
 #include "doomdef.h"
-#include "doomkeys.h"
 #include "doomstat.h"
 
 #include "deh_misc.h"
@@ -63,6 +61,9 @@
 #include "r_sky.h"
 
 #include "g_game.h"
+
+namespace cudadoom
+{
 
 constexpr size_t SAVEGAMESIZE{0x2c000};
 
@@ -116,7 +117,9 @@ bool turbodetected[MAX_PLAYERS];
 int consoleplayer;			// player taking events and displaying
 int displayplayer;			// view being displayed
 TimeType levelstarttic;			// gametic at level start
-int totalkills, totalitems, totalsecret;	// for intermission
+int totalkills; // for intermission
+int totalitems;
+int totalsecret;
 int extrakills;				// count spawned monsters
 TimeType totalleveltimes;		// CPhipps - total time for all completed levels
 TimeType demostarttic;			// fix revenant internal demo bug
@@ -162,11 +165,9 @@ static int* weapon_keys[] = {
 };
 
 // Set to -1 or +1 to switch to the previous or next weapon.
-
 static int next_weapon = 0;
 
 // Used for prev/next weapon keys.
-
 static const struct
 {
 	WeaponType weapon;
@@ -232,11 +233,12 @@ static ticcmd_t* last_cmd = NULL;
 
 int G_CmdChecksum(ticcmd_t* cmd)
 {
-	size_t i;
 	int sum = 0;
 
-	for (i = 0; i < sizeof(*cmd) / 4 - 1; ++i)
+	for (size_t i{0}; i < sizeof(*cmd) / 4 - 1; ++i)
+	{
 		sum += ((int*)cmd)[i];
+	}
 
 	return sum;
 }
@@ -278,14 +280,11 @@ static bool WeaponSelectable(WeaponType weapon)
 	return true;
 }
 
-static int G_NextWeapon(int direction)
+static WeaponType G_NextWeapon(int direction)
 {
-	WeaponType weapon;
-	int start_i;
-	int i;
 
 	// Find index in the table.
-
+	WeaponType weapon;
 	if (players[consoleplayer].pendingweapon == WeaponType::wp_nochange)
 	{
 		weapon = players[consoleplayer].readyweapon;
@@ -295,6 +294,7 @@ static int G_NextWeapon(int direction)
 		weapon = players[consoleplayer].pendingweapon;
 	}
 
+	int i;
 	for (i = 0; i < arrlen(weapon_order_table); ++i)
 	{
 		if (weapon_order_table[i].weapon == weapon)
@@ -304,7 +304,7 @@ static int G_NextWeapon(int direction)
 	}
 
 	// Switch weapon. Don't loop forever.
-	start_i = i;
+	int start_i = i;
 	do
 	{
 		i += direction;
@@ -327,17 +327,15 @@ bool speedkeydown()
 // or reads it from the demo buffer.
 // If recording a demo, write it out
 //
+
+// BREAK THIS APART TODO FIXME URGENT
 void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 {
-	int i;
 	bool strafe;
 	bool bstrafe;
-	int speed;
 	int tspeed;
 	int lspeed;
-	int forward;
-	int side;
-	int look;
+
 	Player* const player = &players[consoleplayer];
 	static char playermessage[48];
 
@@ -352,22 +350,28 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 
 	// when "always run" is active,
 	// pressing the "run" key will result in walking
-	speed = key_speed >= NUMKEYS || joybspeed >= MAX_JOY_BUTTONS;
+	int speed = key_speed >= NUMKEYS || joybspeed >= MAX_JOY_BUTTONS;
 	speed ^= speedkeydown();
-
-	forward = side = look = 0;
 
 	// use two stage accelerative turning
 	// on the keyboard and joystick
 	if (joyxmove < 0 || joyxmove > 0 || gamekeydown[key_right] || gamekeydown[key_left])
+	{
 		turnheld += ticdup;
+	}
 	else
+	{
 		turnheld = 0;
+	}
 
 	if (turnheld < SLOWTURNTICS)
-		tspeed = 2;				// slow turn
+	{
+		tspeed = 2;		// slow turn
+	}
 	else
+	{
 		tspeed = speed;
+	}
 
 	// use two stage accelerative looking
 	if (gamekeydown[key_lookdown] || gamekeydown[key_lookup])
@@ -378,6 +382,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 	{
 		lookheld = 0;
 	}
+
 	if (lookheld < SLOWTURNTICS)
 	{
 		lspeed = 1;
@@ -453,6 +458,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 		}
 	}
 
+	int side{0};
 	// let movement keys cancel each other out
 	if (strafe)
 	{
@@ -484,6 +490,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 			cmd->angleturn += angleturn[tspeed];
 	}
 
+	int forward{0};
 	if (gamekeydown[key_up] || gamekeydown[key_alt_up]) // add key_alt_*
 	{
 		// fprintf(stderr, "up\n");
@@ -496,27 +503,25 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 	}
 
 	if (joyymove < 0)
+	{
 		forward += forwardmove[speed];
-	if (joyymove > 0)
+	}
+	else if (joyymove > 0)
+	{
 		forward -= forwardmove[speed];
+	}
 
-	if (gamekeydown[key_strafeleft] || gamekeydown[key_alt_strafeleft] // add key_alt_*
-		|| joybuttons[joybstrafeleft]
-		|| mousebuttons[mousebstrafeleft]
-		|| joystrafemove < 0)
+	if (gamekeydown[key_strafeleft] || gamekeydown[key_alt_strafeleft] || joybuttons[joybstrafeleft] || mousebuttons[mousebstrafeleft] || joystrafemove < 0)
 	{
 		side -= sidemove[speed];
 	}
 
-	if (gamekeydown[key_straferight] || gamekeydown[key_alt_straferight] // add key_alt_*
-		|| joybuttons[joybstraferight]
-		|| mousebuttons[mousebstraferight]
-		|| joystrafemove > 0)
+	if (gamekeydown[key_straferight] || gamekeydown[key_alt_straferight] || joybuttons[joybstraferight] || mousebuttons[mousebstraferight] || joystrafemove > 0)
 	{
 		side += sidemove[speed];
 	}
 
-	// look up/down/center keys
+	int look{0};
 	if (crispy->freelook)
 	{
 		static unsigned kbdlookctrl = 0;
@@ -526,26 +531,21 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 			look = lspeed;
 			kbdlookctrl += ticdup;
 		}
-		else
-			if (gamekeydown[key_lookdown] || joylook > 0)
-			{
-				look = -lspeed;
-				kbdlookctrl += ticdup;
-			}
-			else
-				// keyboard lookspring
-				if (gamekeydown[key_lookcenter] || (crispy->freelook == FREELOOK_SPRING && kbdlookctrl))
-				{
-					look = TOCENTER;
-					kbdlookctrl = 0;
-				}
+		else if (gamekeydown[key_lookdown] || joylook > 0)
+		{
+			look = -lspeed;
+			kbdlookctrl += ticdup;
+		}
+		else if (gamekeydown[key_lookcenter] || (crispy->freelook == FREELOOK_SPRING && kbdlookctrl))
+		{
+			look = TOCENTER;
+			kbdlookctrl = 0;
+		}
 	}
 
-	// jump keys
 	if (critical->jump)
 	{
-		if (gamekeydown[key_jump] || mousebuttons[mousebjump]
-			|| joybuttons[joybjump])
+		if (gamekeydown[key_jump] || mousebuttons[mousebjump] || joybuttons[joybjump])
 		{
 			cmd->arti |= AFLAG_JUMP;
 		}
@@ -554,41 +554,36 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 	// buttons
 	cmd->chatchar = HU_dequeueChatChar();
 
-	if (gamekeydown[key_fire] || mousebuttons[mousebfire]
-		|| joybuttons[joybfire])
+	if (gamekeydown[key_fire] || mousebuttons[mousebfire] || joybuttons[joybfire])
+	{
 		cmd->buttons |= buttoncode::BT_ATTACK;
+	}
 
-	if (gamekeydown[key_use]
-		|| joybuttons[joybuse]
-		|| mousebuttons[mousebuse])
+	if (gamekeydown[key_use] || joybuttons[joybuse] || mousebuttons[mousebuse])
 	{
 		cmd->buttons |= buttoncode::BT_USE;
 		// clear double clicks if hit use button
 		dclicks = 0;
 	}
 
-	// If the previous or next weapon button is pressed, the
-	// next_weapon variable is set to change weapons when
-	// we generate a ticcmd. Choose a new weapon.
-
+	// If the previous or next weapon button is pressed, the next_weapon variable is set to change weapons when we generate a ticcmd. Choose a new weapon.
 	if (gamestate == GameState_t::GS_LEVEL && next_weapon != 0)
 	{
-		i = G_NextWeapon(next_weapon);
-		cmd->buttons |= (int)buttoncode::BT_CHANGE;
-		cmd->buttons |= i << (int)buttoncode::BT_WEAPONSHIFT;
+		auto i = G_NextWeapon(next_weapon);
+		cmd->buttons |= buttoncode::BT_CHANGE;
+		cmd->buttons |= i << buttoncode::BT_WEAPONSHIFT;
 	}
 	else
 	{
 		// Check weapon keys.
-
-		for (i = 0; i < arrlen(weapon_keys); ++i)
+		for (size_t i{0}; i < arrlen(weapon_keys); ++i)
 		{
-			int key = *weapon_keys[i];
+			auto key = *weapon_keys[i];
 
 			if (gamekeydown[key])
 			{
-				cmd->buttons |= (int)buttoncode::BT_CHANGE;
-				cmd->buttons |= (int)i << buttoncode::BT_WEAPONSHIFT;
+				cmd->buttons |= buttoncode::BT_CHANGE;
+				cmd->buttons |= i << buttoncode::BT_WEAPONSHIFT;
 				break;
 			}
 		}
@@ -613,14 +608,18 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 		{
 			dclickstate = mousebuttons[mousebforward];
 			if (dclickstate)
+			{
 				++dclicks;
+			}
 			if (dclicks == 2)
 			{
-				cmd->buttons |= (int)buttoncode::BT_USE;
+				cmd->buttons |= buttoncode::BT_USE;
 				dclicks = 0;
 			}
 			else
+			{
 				dclicktime = 0;
+			}
 		}
 		else
 		{
@@ -633,21 +632,23 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 		}
 
 		// strafe double click
-		bstrafe =
-			mousebuttons[mousebstrafe]
-			|| joybuttons[joybstrafe];
+		bstrafe = mousebuttons[mousebstrafe] || joybuttons[joybstrafe];
 		if (bstrafe != dclickstate2 && dclicktime2 > 1)
 		{
 			dclickstate2 = bstrafe;
 			if (dclickstate2)
+			{
 				++dclicks2;
+			}
 			if (dclicks2 == 2)
 			{
-				cmd->buttons |= (int)buttoncode::BT_USE;
+				cmd->buttons |= buttoncode::BT_USE;
 				dclicks2 = 0;
 			}
 			else
+			{
 				dclicktime2 = 0;
+			}
 		}
 		else
 		{
@@ -661,16 +662,14 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 	}
 
 	// mouse look
-	if ((crispy->freelook && mousebuttons[mousebmouselook]) ||
-		crispy->mouselook)
+	if ((crispy->freelook && mousebuttons[mousebmouselook]) || crispy->mouselook)
 	{
 		cmd->lookdir = mouse_y_invert ? -mousey : mousey;
 	}
-	else
-		if (!novert)
-		{
-			forward += mousey;
-		}
+	else if (!novert)
+	{
+		forward += mousey;
+	}
 
 	// single click on mouse look button centers view
 	if (crispy->freelook)
@@ -682,40 +681,50 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 		{
 			mbmlookctrl += ticdup;
 		}
-		else
-			// released
-			if (mbmlookctrl)
+		// released
+		else if (mbmlookctrl)
+		{
+			if (crispy->freelook == FREELOOK_SPRING || mbmlookctrl < SLOWTURNTICS) // short click
 			{
-				if (crispy->freelook == FREELOOK_SPRING || mbmlookctrl < SLOWTURNTICS) // short click
-				{
-					look = TOCENTER;
-				}
-				mbmlookctrl = 0;
+				look = TOCENTER;
 			}
+			mbmlookctrl = 0;
+		}
 	}
 
 	if (strafe)
+	{
 		side += mousex2 * 2;
+	}
 	else
+	{
 		cmd->angleturn -= mousex * 0x8;
+	}
 
 	if (mousex == 0)
 	{
 		// No movement in the previous frame
-
 		testcontrols_mousespeed = 0;
 	}
 
 	mousex = mousex2 = mousey = 0;
 
 	if (forward > MAXPLMOVE)
+	{
 		forward = MAXPLMOVE;
+	}
 	else if (forward < -MAXPLMOVE)
+	{
 		forward = -MAXPLMOVE;
+	}
 	if (side > MAXPLMOVE)
+	{
 		side = MAXPLMOVE;
+	}
 	else if (side < -MAXPLMOVE)
+	{
 		side = -MAXPLMOVE;
+	}
 
 	cmd->forwardmove += forward;
 	cmd->sidemove += side;
@@ -737,14 +746,14 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 		// ignore un-pausing in menus during demo recording
 		if (!(menuactive && demorecording && paused) && gameaction != GameAction_t::ga_loadgame)
 		{
-			cmd->buttons = (int)buttoncode::BT_SPECIAL | (int)buttoncode::BTS_PAUSE;
+			cmd->buttons = buttoncode::BT_SPECIAL | buttoncode::BTS_PAUSE;
 		}
 	}
 
 	if (sendsave)
 	{
 		sendsave = false;
-		cmd->buttons = (int)buttoncode::BT_SPECIAL | (int)buttoncode::BTS_SAVEGAME | (savegameslot << (int)buttoncode::BTS_SAVESHIFT);
+		cmd->buttons = buttoncode::BT_SPECIAL | buttoncode::BTS_SAVEGAME | (savegameslot << buttoncode::BTS_SAVESHIFT);
 	}
 
 	if (crispy->fliplevels)
@@ -757,9 +766,7 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 	if (lowres_turn)
 	{
 		static short carry = 0;
-		short desired_angleturn;
-
-		desired_angleturn = cmd->angleturn + carry;
+		short desired_angleturn = cmd->angleturn + carry;
 
 		// round angleturn to the nearest 256 unit boundary
 		// for recording demos with single byte values for turn
@@ -771,13 +778,8 @@ void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic)
 	}
 }
 
-//
-// G_DoLoadLevel
-//
 void G_DoLoadLevel()
 {
-	int i;
-
 	// Set the sky map.
 	// First thing, we have a dummy sky texture name,
 	// a flat. The data is in the WAD only because
@@ -795,22 +797,27 @@ void G_DoLoadLevel()
 
 		if (gamemap < 12)
 		{
-			if ((gameepisode == 2 || gamemission == GameMission::pack_nerve) && gamemap >= 4 && gamemap <= 8)
-				skytexturename = "SKY3";
-			else
-				skytexturename = "SKY1";
+			if ((gameepisode == 2 || gamemission == GameMission::pack_nerve) && gamemap >= 4 && gamemap <= 8){
+				skytexturename = "SKY3";}
+			else{
+				skytexturename = "SKY1";}
 		}
 		else if (gamemap < 21)
 		{
 			// BLACKTWR (MAP25) and TEETH (MAP31 and MAP32)
 			if ((gameepisode == 3 || gamemission == GameMission::pack_master) && gamemap >= 19)
+			{
 				skytexturename = "SKY3";
+			}
+			// BLOODSEA and MEPHISTO (both MAP07)
+			else if ((gameepisode == 3 || gamemission == GameMission::pack_master) && (gamemap == 14 || gamemap == 15))
+			{
+				skytexturename = "SKY1";
+			}
 			else
-				// BLOODSEA and MEPHISTO (both MAP07)
-				if ((gameepisode == 3 || gamemission == GameMission::pack_master) && (gamemap == 14 || gamemap == 15))
-					skytexturename = "SKY1";
-				else
-					skytexturename = "SKY2";
+			{
+				skytexturename = "SKY2";
+			}
 		}
 		else
 		{
@@ -824,18 +831,21 @@ void G_DoLoadLevel()
 	// sky texture scales
 	R_InitSkyMap();
 
-	levelstarttic = gametic;		// for time calculation
+	levelstarttic = gametic; // for time calculation
 
 	if (wipegamestate == GameState_t::GS_LEVEL)
-		wipegamestate = -1;				// force a wipe
-
+	{
+		wipegamestate = -1; // force a wipe
+	}
 	gamestate = GameState_t::GS_LEVEL;
 
-	for (i = 0; i < MAX_PLAYERS; ++i)
+	for (size_t i = 0; i < MAX_PLAYERS; ++i)
 	{
 		turbodetected[i] = false;
 		if (playeringame[i] && players[i].playerstate == PlayerState::dead)
+		{
 			players[i].playerstate = PlayerState::reborn;
+		}
 		memset(players[i].frags, 0, sizeof(players[i].frags));
 	}
 
@@ -856,21 +866,21 @@ void G_DoLoadLevel()
 		}
 		else
 		{
-			const char message[] = "The -pistolstart option is not supported"
-				" for demos and\n"
-				" network play.";
-			if (!demo_p) demorecording = false;
+			const char message[] = "The -pistolstart option is not supported for demos and\n network play.";
+			if (!demo_p)
+			{
+				demorecording = false;
+			}
 			I_Error(message);
 		}
 	}
 
 	P_SetupLevel(gameepisode, gamemap, 0, gameskill);
-	displayplayer = consoleplayer;		// view the guy you are playing
+	displayplayer = consoleplayer; // view the guy you are playing
 	gameaction = GameAction_t::ga_nothing;
 	Z_CheckHeap();
 
 	// clear cmd building stuff
-
 	memset(gamekeydown, 0, sizeof(gamekeydown));
 	joyxmove = joyymove = joystrafemove = joylook = 0;
 	mousex = mousex2 = mousey = 0;
@@ -886,11 +896,9 @@ void G_DoLoadLevel()
 
 static void SetJoyButtons(unsigned buttons_mask)
 {
-	int i;
-
-	for (i = 0; i < MAX_JOY_BUTTONS; ++i)
+	for (size_t i{0}; i < MAX_JOY_BUTTONS; ++i)
 	{
-		int button_on = (buttons_mask & (1 << i)) != 0;
+		bool button_on = (buttons_mask & (1 << i)) != 0;
 
 		// Detect button press:
 
@@ -914,9 +922,7 @@ static void SetJoyButtons(unsigned buttons_mask)
 
 static void SetMouseButtons(unsigned buttons_mask)
 {
-	int i;
-
-	for (i = 0; i < MAX_MOUSE_BUTTONS; ++i)
+	for (size_t i = 0; i < MAX_MOUSE_BUTTONS; ++i)
 	{
 		unsigned button_on = (buttons_mask & (1 << i)) != 0;
 
@@ -950,8 +956,8 @@ bool G_Responder(EventType* ev)
 		do
 		{
 			++displayplayer;
-			if (displayplayer == MAX_PLAYERS)
-				displayplayer = 0;
+			if (displayplayer == MAX_PLAYERS){
+				displayplayer = 0;}
 		} while (!playeringame[displayplayer] && displayplayer != consoleplayer);
 		return true;
 	}
@@ -967,8 +973,8 @@ bool G_Responder(EventType* ev)
 		{
 			M_StartControlPanel();
 			// play a sound if the menu is activated with a different key than ESC
-			if (crispy->soundfix)
-				S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
+			if (crispy->soundfix){
+				S_StartSound(nullptr, sfxenum_t::sfx_swtchn);}
 			return true;
 		}
 		return false;
@@ -983,12 +989,15 @@ bool G_Responder(EventType* ev)
 			return true;
 		}
 #endif
-		if (HU_Responder(ev))
+		if (HU_Responder(ev)){
 			return true;	// chat ate the event
-		if (ST_Responder(ev))
+}
+		if (ST_Responder(ev)){
 			return true;	// status window ate it
-		if (AM_Responder(ev))
+}
+		if (AM_Responder(ev)){
 			return true;	// automap ate it
+}
 	}
 
 	if (gamestate == GameState_t::GS_FINALE)
@@ -1009,7 +1018,6 @@ bool G_Responder(EventType* ev)
 
 	// If the next/previous weapon keys are pressed, set the next_weapon
 	// variable to change weapons when the next ticcmd is generated.
-
 	if (ev->type == evtype_t::ev_keydown && ev->data1 == key_prevweapon)
 	{
 		next_weapon = -1;
@@ -1092,8 +1100,12 @@ void G_Ticker()
 {
 	// do player reborns if needed
 	for (size_t i{0}; i < MAX_PLAYERS; ++i)
+	{
 		if (playeringame[i] && players[i].playerstate == PlayerState::reborn)
+		{
 			G_DoReborn(i);
+		}
+	}
 
 	// do things to change the game state
 	while (gameaction != GameAction_t::ga_nothing)
@@ -1209,11 +1221,11 @@ void G_Ticker()
 	{
 		if (playeringame[i])
 		{
-			if ((int)players[i].cmd.buttons & (int)buttoncode::BT_SPECIAL)
+			if (players[i].cmd.buttons & buttoncode::BT_SPECIAL)
 			{
-				switch ((int)players[i].cmd.buttons & (int)buttoncode::BT_SPECIALMASK)
+				switch (players[i].cmd.buttons & buttoncode::BT_SPECIALMASK)
 				{
-				case (int)buttoncode::BTS_PAUSE:
+				case buttoncode::BTS_PAUSE:
 					paused ^= 1;
 					if (paused)
 					{
@@ -1227,7 +1239,7 @@ void G_Ticker()
 
 					break;
 
-				case (int)buttoncode::BTS_SAVEGAME:
+				case buttoncode::BTS_SAVEGAME:
 					// never override savegames by demo playback
 					if (demoplayback)
 					{
@@ -1239,7 +1251,7 @@ void G_Ticker()
 						M_StringCopy(savedescription, "NET GAME", sizeof(savedescription));
 					}
 
-					savegameslot = ((int)players[i].cmd.buttons & (int)buttoncode::BTS_SAVEMASK) >> (int)buttoncode::BTS_SAVESHIFT;
+					savegameslot = (players[i].cmd.buttons & buttoncode::BTS_SAVEMASK) >> buttoncode::BTS_SAVESHIFT;
 					gameaction = GameAction_t::ga_savegame;
 					// un-pause immediately after saving
 					// (impossible to send save and pause specials within the same tic)
@@ -1445,7 +1457,7 @@ bool G_CheckSpot(int playernum, mapthing_t* mthing)
 		// This calculation overflows in Vanilla Doom, but here we deliberately
 		// avoid integer overflow as it is undefined behavior, so the value of
 		// 'an' will always be positive.
-		an = (ANG45 >> ANGLETOFINESHIFT) * ((int)mthing->angle / 45);
+		an = (ANG45 >> ANGLETOFINESHIFT) * (mthing->angle / 45);
 
 		switch (an)
 		{
@@ -1934,7 +1946,7 @@ void G_DoCompleted()
 		{
 			int cpars32;
 
-			memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof(int));
+			memcpy(&cpars32, DEH_String(GAMMALVL0), sizeof);
 			cpars32 = LONG(cpars32);
 
 			wminfo.partime = TICRATE * cpars32;
@@ -2229,7 +2241,7 @@ void G_DoSaveGame()
 		extern ::std::string skilltable[];
 
 		fprintf(stderr, "G_DoSaveGame: Episode %d, Map %d, %s, Time %d:%02d:%02d, Total %d:%02d:%02d.\n",
-			gameepisode, gamemap, skilltable[BETWEEN(0, 5, (int)gameskill + 1)],
+			gameepisode, gamemap, skilltable[BETWEEN(0, 5, gameskill + 1)],
 			ltime / 3600, (ltime % 3600) / 60, ltime % 60, ttime / 3600, (ttime % 3600) / 60, ttime % 60);
 	}
 
@@ -2868,15 +2880,6 @@ static ::std::string DemoVersionDescription(int version)
 
 void G_DoPlayDemo()
 {
-	SkillType skill;
-	int i;
-	int lumpnum;
-	int episode;
-	int map;
-	int demoversion;
-	bool olddemo = false;
-	int lumplength;
-
 	// in demo continue mode free the obsolete demo buffer
 	// of size 'maxsize' previously allocated in G_RecordDemo()
 	if (demorecording)
@@ -2884,13 +2887,13 @@ void G_DoPlayDemo()
 		Z_Free(demobuffer);
 	}
 
-	lumpnum = W_GetNumForName(defdemoname);
+	auto lumpnum = W_GetNumForName(defdemoname);
 	gameaction = GameAction_t::ga_nothing;
 	demobuffer = W_CacheLumpNum<byte>(lumpnum, pu_tags_t::PU_STATIC);
 	demo_p = demobuffer;
 
 	// ignore empty demo lumps
-	lumplength = W_LumpLength(lumpnum);
+	auto lumplength = W_LumpLength(lumpnum);
 	if (lumplength < 0xd)
 	{
 		demoplayback = true;
@@ -2898,9 +2901,10 @@ void G_DoPlayDemo()
 		return;
 	}
 
-	demoversion = *demo_p;
+	auto demoversion = static_cast<int>(*demo_p);
 	++demo_p;
 
+	bool olddemo = false;
 	if (demoversion >= 0 && demoversion <= 4)
 	{
 		olddemo = true;
@@ -2941,11 +2945,11 @@ void G_DoPlayDemo()
 		}
 	}
 
-	skill = static_cast<SkillType>(*demo_p);
+	auto skill = static_cast<SkillType>(*demo_p);
 	++demo_p;
-	episode = *demo_p;
+	auto episode = static_cast<int>(*demo_p);
 	++demo_p;
-	map = *demo_p;
+	auto map = static_cast<int>(*demo_p);
 	++demo_p;
 	if (!olddemo)
 	{
@@ -2969,7 +2973,7 @@ void G_DoPlayDemo()
 		consoleplayer = 0;
 	}
 
-	for (i = 0; i < MAX_PLAYERS; ++i)
+	for (size_t i{0}; i < MAX_PLAYERS; ++i)
 	{
 		playeringame[i] = *demo_p;
 		++demo_p;
@@ -3006,11 +3010,9 @@ void G_DoPlayDemo()
 
 	// demo progress bar
 	{
-		int i;
 		int numplayersingame = 0;
-		byte* demo_ptr = demo_p;
 
-		for (i = 0; i < MAX_PLAYERS; ++i)
+		for (size_t i{0}; i < MAX_PLAYERS; ++i)
 		{
 			if (playeringame[i])
 			{
@@ -3018,12 +3020,12 @@ void G_DoPlayDemo()
 			}
 		}
 
-		deftotaldemotics = defdemotics = 0;
+		deftotaldemotics = 0;
+		defdemotics = 0;
 
-		while (*demo_ptr != DEMOMARKER && (demo_ptr - demobuffer) < lumplength)
+		for (byte* demo_ptr = demo_p; *demo_ptr != DEMOMARKER && (demo_ptr - demobuffer) < lumplength; ++deftotaldemotics)
 		{
-			demo_ptr += numplayersingame * (longtics ? 5 : 4);
-			++deftotaldemotics;
+			demo_ptr += numplayersingame * (longtics ? 5 : 4);	
 		}
 	}
 }
@@ -3140,3 +3142,5 @@ bool G_CheckDemoStatus()
 
 	return false;
 }
+
+} // end namespace cudadoom

@@ -13,12 +13,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "config.h"
-
-#include "../derma/d_native.h"
-
 #include "i_system.h"
 #include "m_misc.h"
 #include "w_file.h"

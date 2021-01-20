@@ -14,8 +14,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 using prng_seed_t = byte[16];
 
 // Initialize Pseudo-RNG using the specified 128-bit key.

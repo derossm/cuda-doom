@@ -16,9 +16,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "doomtype.h"
 #include "doomstat.h"
 #include "r_data.h"
 #include "w_wad.h"

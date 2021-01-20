@@ -12,7 +12,6 @@
 
 #include "../../derma/common.h"
 
-#include "doomtype.h"
 #include "d_event.h"
 
 // Called by main loop.

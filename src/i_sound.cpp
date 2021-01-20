@@ -10,12 +10,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "config.h"
-
-#include <SDL_mixer.h>
-
 #include "doom/sounds.h"
 
 #include "doomtype.h"

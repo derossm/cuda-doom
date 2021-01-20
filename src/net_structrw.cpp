@@ -11,23 +11,17 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "doomtype.h"
 #include "i_system.h"
 #include "m_misc.h"
 #include "net_packet.h"
 #include "net_structrw.h"
 
-// String names for the enum values in net_protocol_t, which are what is
-// sent over the wire. Every enum value must have an entry in this list.
+// String names for the enum values in net_protocol_t, which are what is sent over the wire. Every enum value must have an entry in this list.
 static struct
 {
 	net_protocol_t protocol;
 	::std::string name;
-} protocol_names[] = {
-	{net_protocol_t::CHOCOLATE_DOOM_0, "CHOCOLATE_DOOM_0"},
-};
+} protocol_names{net_protocol_t::CHOCOLATE_DOOM_0, "CHOCOLATE_DOOM_0"};
 
 void NET_WriteConnectData(net_packet_t* packet, net_connect_data* data)
 {
@@ -174,10 +168,10 @@ void NET_WriteTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff, bool lowres_
 
 	// Write the fields which are enabled:
 
-	if (diff->diff & NET_TICDIFF_FORWARD)
-		NET_WriteInt8(packet, diff->cmd.forwardmove);
-	if (diff->diff & NET_TICDIFF_SIDE)
-		NET_WriteInt8(packet, diff->cmd.sidemove);
+	if (diff->diff & NET_TICDIFF_FORWARD){
+		NET_WriteInt8(packet, diff->cmd.forwardmove);}
+	if (diff->diff & NET_TICDIFF_SIDE){
+		NET_WriteInt8(packet, diff->cmd.sidemove);}
 	if (diff->diff & NET_TICDIFF_TURN)
 	{
 		if (lowres_turn)
@@ -189,12 +183,12 @@ void NET_WriteTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff, bool lowres_
 			NET_WriteInt16(packet, diff->cmd.angleturn);
 		}
 	}
-	if (diff->diff & NET_TICDIFF_BUTTONS)
-		NET_WriteInt8(packet, diff->cmd.buttons);
-	if (diff->diff & NET_TICDIFF_CONSISTANCY)
-		NET_WriteInt8(packet, diff->cmd.consistancy);
-	if (diff->diff & NET_TICDIFF_CHATCHAR)
-		NET_WriteInt8(packet, diff->cmd.chatchar);
+	if (diff->diff & NET_TICDIFF_BUTTONS){
+		NET_WriteInt8(packet, diff->cmd.buttons);}
+	if (diff->diff & NET_TICDIFF_CONSISTANCY){
+		NET_WriteInt8(packet, diff->cmd.consistancy);}
+	if (diff->diff & NET_TICDIFF_CHATCHAR){
+		NET_WriteInt8(packet, diff->cmd.chatchar);}
 	if (diff->diff & NET_TICDIFF_RAVEN)
 	{
 		NET_WriteInt8(packet, diff->cmd.lookfly);
@@ -214,22 +208,22 @@ bool NET_ReadTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff, bool lowres_t
 
 	// Read header
 
-	if (!NET_ReadInt8(packet, &diff->diff))
-		return false;
+	if (!NET_ReadInt8(packet, &diff->diff)){
+		return false;}
 
 	// Read fields
 
 	if (diff->diff & NET_TICDIFF_FORWARD)
 	{
-		if (!NET_ReadSInt8(packet, &sval))
-			return false;
+		if (!NET_ReadSInt8(packet, &sval)){
+			return false;}
 		diff->cmd.forwardmove = sval;
 	}
 
 	if (diff->diff & NET_TICDIFF_SIDE)
 	{
-		if (!NET_ReadSInt8(packet, &sval))
-			return false;
+		if (!NET_ReadSInt8(packet, &sval)){
+			return false;}
 		diff->cmd.sidemove = sval;
 	}
 
@@ -237,58 +231,58 @@ bool NET_ReadTiccmdDiff(net_packet_t* packet, net_ticdiff_t* diff, bool lowres_t
 	{
 		if (lowres_turn)
 		{
-			if (!NET_ReadSInt8(packet, &sval))
-				return false;
+			if (!NET_ReadSInt8(packet, &sval)){
+				return false;}
 			diff->cmd.angleturn = sval * 256;
 		}
 		else
 		{
-			if (!NET_ReadSInt16(packet, &sval))
-				return false;
+			if (!NET_ReadSInt16(packet, &sval)){
+				return false;}
 			diff->cmd.angleturn = sval;
 		}
 	}
 
 	if (diff->diff & NET_TICDIFF_BUTTONS)
 	{
-		if (!NET_ReadInt8(packet, &val))
-			return false;
+		if (!NET_ReadInt8(packet, &val)){
+			return false;}
 		diff->cmd.buttons = val;
 	}
 
 	if (diff->diff & NET_TICDIFF_CONSISTANCY)
 	{
-		if (!NET_ReadInt8(packet, &val))
-			return false;
+		if (!NET_ReadInt8(packet, &val)){
+			return false;}
 		diff->cmd.consistancy = val;
 	}
 
 	if (diff->diff & NET_TICDIFF_CHATCHAR)
 	{
-		if (!NET_ReadInt8(packet, &val))
-			return false;
+		if (!NET_ReadInt8(packet, &val)){
+			return false;}
 		diff->cmd.chatchar = val;
 	}
 
 	if (diff->diff & NET_TICDIFF_RAVEN)
 	{
-		if (!NET_ReadInt8(packet, &val))
-			return false;
+		if (!NET_ReadInt8(packet, &val)){
+			return false;}
 		diff->cmd.lookfly = val;
 
-		if (!NET_ReadInt8(packet, &val))
-			return false;
+		if (!NET_ReadInt8(packet, &val)){
+			return false;}
 		diff->cmd.arti = val;
 	}
 
 	if (diff->diff & NET_TICDIFF_STRIFE)
 	{
-		if (!NET_ReadInt8(packet, &val))
-			return false;
+		if (!NET_ReadInt8(packet, &val)){
+			return false;}
 		diff->cmd.buttons2 = val;
 
-		if (!NET_ReadInt16(packet, &val))
-			return false;
+		if (!NET_ReadInt16(packet, &val)){
+			return false;}
 		diff->cmd.inventory = val;
 	}
 
@@ -300,28 +294,28 @@ void NET_TiccmdDiff(ticcmd_t* tic1, ticcmd_t* tic2, net_ticdiff_t* diff)
 	diff->diff = 0;
 	diff->cmd = *tic2;
 
-	if (tic1->forwardmove != tic2->forwardmove)
-		diff->diff |= NET_TICDIFF_FORWARD;
-	if (tic1->sidemove != tic2->sidemove)
-		diff->diff |= NET_TICDIFF_SIDE;
-	if (tic1->angleturn != tic2->angleturn)
-		diff->diff |= NET_TICDIFF_TURN;
-	if (tic1->buttons != tic2->buttons)
-		diff->diff |= NET_TICDIFF_BUTTONS;
-	if (tic1->consistancy != tic2->consistancy)
-		diff->diff |= NET_TICDIFF_CONSISTANCY;
-	if (tic2->chatchar != 0)
-		diff->diff |= NET_TICDIFF_CHATCHAR;
+	if (tic1->forwardmove != tic2->forwardmove){
+		diff->diff |= NET_TICDIFF_FORWARD;}
+	if (tic1->sidemove != tic2->sidemove){
+		diff->diff |= NET_TICDIFF_SIDE;}
+	if (tic1->angleturn != tic2->angleturn){
+		diff->diff |= NET_TICDIFF_TURN;}
+	if (tic1->buttons != tic2->buttons){
+		diff->diff |= NET_TICDIFF_BUTTONS;}
+	if (tic1->consistancy != tic2->consistancy){
+		diff->diff |= NET_TICDIFF_CONSISTANCY;}
+	if (tic2->chatchar != 0){
+		diff->diff |= NET_TICDIFF_CHATCHAR;}
 
 	// Heretic/Hexen-specific
 
-	if (tic1->lookfly != tic2->lookfly || tic2->arti != 0)
-		diff->diff |= NET_TICDIFF_RAVEN;
+	if (tic1->lookfly != tic2->lookfly || tic2->arti != 0){
+		diff->diff |= NET_TICDIFF_RAVEN;}
 
 	// Strife-specific
 
-	if (tic1->buttons2 != tic2->buttons2 || tic2->inventory != 0)
-		diff->diff |= NET_TICDIFF_STRIFE;
+	if (tic1->buttons2 != tic2->buttons2 || tic2->inventory != 0){
+		diff->diff |= NET_TICDIFF_STRIFE;}
 }
 
 void NET_TiccmdPatch(ticcmd_t* src, net_ticdiff_t* diff, ticcmd_t* dest)
@@ -330,21 +324,21 @@ void NET_TiccmdPatch(ticcmd_t* src, net_ticdiff_t* diff, ticcmd_t* dest)
 
 	// Apply the diff
 
-	if (diff->diff & NET_TICDIFF_FORWARD)
-		dest->forwardmove = diff->cmd.forwardmove;
-	if (diff->diff & NET_TICDIFF_SIDE)
-		dest->sidemove = diff->cmd.sidemove;
-	if (diff->diff & NET_TICDIFF_TURN)
-		dest->angleturn = diff->cmd.angleturn;
-	if (diff->diff & NET_TICDIFF_BUTTONS)
-		dest->buttons = diff->cmd.buttons;
-	if (diff->diff & NET_TICDIFF_CONSISTANCY)
-		dest->consistancy = diff->cmd.consistancy;
+	if (diff->diff & NET_TICDIFF_FORWARD){
+		dest->forwardmove = diff->cmd.forwardmove;}
+	if (diff->diff & NET_TICDIFF_SIDE){
+		dest->sidemove = diff->cmd.sidemove;}
+	if (diff->diff & NET_TICDIFF_TURN){
+		dest->angleturn = diff->cmd.angleturn;}
+	if (diff->diff & NET_TICDIFF_BUTTONS){
+		dest->buttons = diff->cmd.buttons;}
+	if (diff->diff & NET_TICDIFF_CONSISTANCY){
+		dest->consistancy = diff->cmd.consistancy;}
 
-	if (diff->diff & NET_TICDIFF_CHATCHAR)
-		dest->chatchar = diff->cmd.chatchar;
-	else
-		dest->chatchar = 0;
+	if (diff->diff & NET_TICDIFF_CHATCHAR){
+		dest->chatchar = diff->cmd.chatchar;}
+	else{
+		dest->chatchar = 0;}
 
 	// Heretic/Hexen specific:
 

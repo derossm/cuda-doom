@@ -7,7 +7,7 @@ add_library(pcsound STATIC
 								pcsound_internal.h)
 
 set_target_properties(pcsound PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
-target_include_directories(pcsound INTERFACE "." PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/../")
+target_include_directories(pcsound INTERFACE "." PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries(pcsound SDL2::SDL2_mixer)
 #target_precompile_headers(cuda17 PUBLIC "../derma/stdafx.h")
 

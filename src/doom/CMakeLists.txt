@@ -83,7 +83,7 @@ add_library(doom STATIC
 			wi_stuff.cpp	wi_stuff.h)
 
 set_target_properties(doom PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
-target_include_directories(doom PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
+target_include_directories(doom PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries(doom SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net)
 #target_precompile_headers(doom PUBLIC "../../derma/stdafx.h")
 

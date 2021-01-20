@@ -13,89 +13,54 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
+#include "../m_argv.h"
+#include "../m_controls.h"
+
+#include "../i_input.h"
+#include "../i_swap.h"
+#include "../i_system.h"
+#include "../i_timer.h"
+#include "../i_video.h"
+#include "../m_misc.h"
+#include "../v_video.h"
+#include "../w_wad.h"
+#include "../z_zone.h"
 
 #include "doomdef.h"
-#include "doomkeys.h"
 #include "dstrings.h"
-
 #include "d_main.h"
 #include "deh_main.h"
-
-#include "i_input.h"
-#include "i_swap.h"
-#include "i_system.h"
-#include "i_timer.h"
-#include "i_video.h"
-#include "m_misc.h"
-#include "v_video.h"
-#include "w_wad.h"
-#include "z_zone.h"
-
 #include "r_local.h"
-
 #include "hu_stuff.h"
-
 #include "g_game.h"
-
-#include "m_argv.h"
-#include "m_controls.h"
 #include "p_saveg.h"
 #include "p_setup.h"
-#include "p_extsaveg.h"		// savewadfilename
-
+#include "p_extsaveg.h" // savewadfilename
 #include "s_sound.h"
-
 #include "doomstat.h"
 
 // Data.
 #include "sounds.h"
 
-#include "m_menu.h"
-#include "m_crispy.h"			// Crispness menu
+#include "m_crispy.h" // Crispness menu
+#include "m_background.h" // Crispness menu
+#include "v_trans.h" // colored "invert mouse" message
 
-#include "v_trans.h"			// colored "invert mouse" message
+#include "m_menu.h"
+
+namespace cudadoom
+{
 
 extern patch_t* hu_font[HU_FONTSIZE];
 extern bool message_dontfuckwithme;
-
-extern bool chat_on;			// in heads-up code
-
-int mouseSensitivity = 5;
-int mouseSensitivity_x2 = 5;	// mouse sensitivity menu
-int mouseSensitivity_y = 5;		// mouse sensitivity menu
-
-// Show messages has default, 0 = off, 1 = on
-int showMessages = 1;
-
-// Blocky mode, has default, 0 = high, 1 = normal
-int detailLevel = 0;
-int screenblocks = 10;			// increased
-
-// temp for screenblocks (0-9)
-int screenSize;
-
-// -1 = no quicksave slot picked!
-int quickSaveSlot;
-
-// 1 = message to be printed
-int messageToPrint;
-// ...and here is the message string!
-::std::string messageString;
-
-// message x & y
-int messx;
-int messy;
-int messageLastMenuActive;
-
-// timed message = no input from user
-bool messageNeedsInput;
+extern bool chat_on; // in heads-up code
+extern bool sendpause;
+extern bool speedkeydown();
 
 void (*messageRoutine)(int response);
 
 // intermediate gamma levels
-char gammamsg[5 + 4][26 + 2] =
-{
+constexpr const char gammamsg[5 + 4][26 + 2]{
 	GAMMALVL0,
 	GAMMALVL05,
 	GAMMALVL1,
@@ -107,132 +72,54 @@ char gammamsg[5 + 4][26 + 2] =
 	GAMMALVL4
 };
 
+constexpr int SKULLXOFF{-32};
+constexpr int LINEHEIGHT{16};
+constexpr int CRISPY_LINEHEIGHT{10};
+
+static int crispness_cur;
+static bool opldev;
+
+static bool joypadSave = false;			// was the save action initiated by joypad?
+
 int saveStringEnter;					// we are going to be entering a savegame string
 int saveSlot;							// which slot to save in
 int saveCharIndex;						// which char we're editing
-static bool joypadSave = false;			// was the save action initiated by joypad?
 char saveOldString[SAVESTRINGSIZE];		// old save description before edit
+
+char savegamestrings[10][SAVESTRINGSIZE];
+char endstring[160];
+
+short itemOn;				// menu item skull is on
+short skullAnimCounter;		// skull animation counter
+short whichSkull;			// which skull to draw
 
 bool inhelpscreens;
 bool menuactive;
 
-constexpr int SKULLXOFF{-32};
-constexpr size_t LINEHEIGHT{16};
-constexpr size_t CRISPY_LINEHEIGHT{10};
+int mouseSensitivity = 5;
+int mouseSensitivity_x2 = 5;
+int mouseSensitivity_y = 5;
 
-extern bool sendpause;
-char savegamestrings[10][SAVESTRINGSIZE];
+// temp for screenblocks (0-9)
+int screenSize;
 
-char endstring[160];
-
-static bool opldev;
-
-extern bool speedkeydown();
-
-//
-// MENU TYPEDEFS
-//
-struct menuitem_t
-{
-	// 0 = no cursor here, 1 = ok, 2 = arrows ok
-	short status;
-
-	char name[10];
-
-	// choice = menu item #
-	// if status = 2, choice = 0:leftarrow, 1:rightarrow
-	void (*routine)(int choice);
-
-	// hotkey in menu
-	char alphaKey;
-	::std::string alttext;		// alternative text for menu items
-};
-
-struct menu_t
-{
-	short numitems;				// # of menu items
-	menu_t* prevMenu;			// previous menu
-	menuitem_t* menuitems;		// menu items
-	void (*routine)();			// draw routine
-	short x;					// x,y of menu
-	short y;
-	short lastOn;				// last item user was on in menu
-	short lumps_missing;		// indicate missing menu graphics lumps
-};
-
-short itemOn;					// menu item skull is on
-short skullAnimCounter;			// skull animation counter
-short whichSkull;				// which skull to draw
+// -1 = no quicksave slot picked!
+int quickSaveSlot;
+// 1 = message to be printed
+int messageToPrint;
+int messageLastMenuActive;
+// timed message = no input from user
+bool messageNeedsInput;
+// ...and here is the message string!
+::std::string messageString;
 
 // graphic name of skulls
 // warning: initializer-string for array of chars is too long
-::std::string skullName[2] = {"M_SKULL1", "M_SKULL2"};
-
-// current menudef
-menu_t* currentMenu;
-
-static void M_NewGame(int choice);
-static void M_Episode(int choice);
-static void M_ChooseSkill(int choice);
-static void M_LoadGame(int choice);
-static void M_SaveGame(int choice);
-static void M_Options(int choice);
-static void M_EndGame(int choice);
-static void M_ReadThis(int choice);
-static void M_ReadThis2(int choice);
-static void M_QuitDOOM(int choice);
-
-static void M_ChangeMessages(int choice);
-static void M_ChangeSensitivity(int choice);
-static void M_ChangeSensitivity_x2(int choice);
-static void M_ChangeSensitivity_y(int choice);
-static void M_MouseInvert(int choice);
-static void M_SfxVol(int choice);
-static void M_MusicVol(int choice);
-static void M_ChangeDetail(int choice);
-static void M_SizeDisplay(int choice);
-static void M_Mouse(int choice);
-static void M_Sound(int choice);
-
-static void M_FinishReadThis(int choice);
-static void M_LoadSelect(int choice);
-static void M_SaveSelect(int choice);
-static void M_ReadSaveStrings();
-static void M_QuickSave();
-static void M_QuickLoad();
-
-static void M_DrawMainMenu();
-static void M_DrawReadThis1();
-static void M_DrawReadThis2();
-static void M_DrawNewGame();
-static void M_DrawEpisode();
-static void M_DrawOptions();
-static void M_DrawMouse();
-static void M_DrawSound();
-static void M_DrawLoad();
-static void M_DrawSave();
-
-static void M_DrawSaveLoadBorder(int x, int y);
-static void M_SetupNextMenu(menu_t* menudef);
-static void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
-static void M_WriteText(int x, int y, ::std::string string);
-int M_StringWidth(::std::string string);
-static int M_StringHeight(::std::string string);
-static void M_StartMessage(::std::string string, void* routine, bool input);
-static void M_ClearMenus();
-
-// Crispness menu
-static void M_CrispnessCur(int choice);
-static void M_CrispnessNext(int choice);
-static void M_CrispnessPrev(int choice);
-static void M_DrawCrispness1();
-static void M_DrawCrispness2();
-static void M_DrawCrispness3();
-static void M_DrawCrispness4();
+::std::array<::std::string, 2> skullName{"M_SKULL1", "M_SKULL2"};
 
 enum class main_e
 {
-	newgame = 0,
+	newgame,
 	options,
 	loadgame,
 	savegame,
@@ -241,56 +128,14 @@ enum class main_e
 	main_end
 };
 
-menuitem_t MainMenu[] =
-{
-	{1,"M_NGAME",M_NewGame,'n'},
-	{1,"M_OPTION",M_Options,'o'},
-	{1,"M_LOADG",M_LoadGame,'l'},
-	{1,"M_SAVEG",M_SaveGame,'s'},
-	// Another hickup with Special edition.
-	{1,"M_RDTHIS",M_ReadThis,'r'},
-	{1,"M_QUITG",M_QuitDOOM,'q'}
-};
-
-menu_t MainDef =
-{
-	main_e::main_end,
-	nullptr,
-	MainMenu,
-	M_DrawMainMenu,
-	97,
-	64,
-	0
-};
-
 enum class episodes_e
 {
 	ep1,
 	ep2,
 	ep3,
 	ep4,
-	ep5, // Sigil
+	ep5,
 	ep_end
-};
-
-menuitem_t EpisodeMenu[] =
-{
-	{1,"M_EPI1", M_Episode,'k'},
-	{1,"M_EPI2", M_Episode,'t'},
-	{1,"M_EPI3", M_Episode,'i'},
-	{1,"M_EPI4", M_Episode,'t'},
-	{1,"M_EPI5", M_Episode,'s'}		// Sigil
-};
-
-menu_t EpiDef =
-{
-	episodes_e::ep_end,			// # of menu items
-	&MainDef,					// previous menu
-	EpisodeMenu,				// menuitem_t ->
-	M_DrawEpisode,				// drawing routine ->
-	48,							// x,y
-	63,
-	episodes_e::ep1				// lastOn
 };
 
 enum class newgame_e
@@ -303,24 +148,17 @@ enum class newgame_e
 	newg_end
 };
 
-menuitem_t NewGameMenu[] =
+enum class load_e
 {
-	{1,"M_JKILL",	M_ChooseSkill, 'i', "I'm too young to die."},
-	{1,"M_ROUGH",	M_ChooseSkill, 'h', "Hey, not too rough!."},
-	{1,"M_HURT",	M_ChooseSkill, 'h', "Hurt me plenty."},
-	{1,"M_ULTRA",	M_ChooseSkill, 'u', "Ultra-Violence."},
-	{1,"M_NMARE",	M_ChooseSkill, 'n', "Nightmare!"}
-};
-
-menu_t NewDef =
-{
-	newgame_e::newg_end,		// # of menu items
-	&EpiDef,					// previous menu
-	NewGameMenu,				// menuitem_t ->
-	M_DrawNewGame,				// drawing routine ->
-	48,							// x,y
-	63,
-	newgame_e::hurtme			// lastOn
+	load1,
+	load2,
+	load3,
+	load4,
+	load5,
+	load6,
+	load7,
+	load8,
+	load_end
 };
 
 enum class options_e
@@ -332,31 +170,17 @@ enum class options_e
 	option_empty1,
 	mousesens,
 	soundvol,
-	crispness,												// Crispness menu
+	crispness,
 	opt_end
 };
 
-menuitem_t OptionsMenu[] =
+enum class sound_e
 {
-	{1,"M_ENDGAM",	M_EndGame,'e', "End Game"},
-	{1,"M_MESSG",	M_ChangeMessages,'m', "Messages: "},
-	{1,"M_DETAIL",	M_ChangeDetail,'g', "Graphic Detail: "},
-	{2,"M_SCRNSZ",	M_SizeDisplay,'s', "Screen Size"},
-	{-1,"",0,'\0'},
-	{1,"M_MSENS",	M_Mouse,'m', "Mouse Sensitivity"},		// mouse sensitivity menu
-	{1,"M_SVOL",	M_Sound,'s', "Sound Volume"},
-	{1,"M_CRISPY",	M_CrispnessCur,'c', "Crispness"}		// Crispness menu
-};
-
-menu_t OptionsDef =
-{
-	options_e::opt_end,
-	&MainDef,
-	OptionsMenu,
-	M_DrawOptions,
-	60,
-	37,
-	0
+	sfx_vol,
+	sfx_empty1,
+	music_vol,
+	sfx_empty2,
+	sound_end
 };
 
 // mouse sensitivity menu
@@ -372,29 +196,19 @@ enum class mouse_e
 	mouse_end
 };
 
-static menuitem_t MouseMenu[] =
+// Read This! MENU 1 & 2
+enum class read_e
 {
-	{2,"",	M_ChangeSensitivity,'h'},
-	{-1,"",0,'\0'},
-	{2,"",	M_ChangeSensitivity_x2,'s'},
-	{-1,"",0,'\0'},
-	{2,"",	M_ChangeSensitivity_y,'v'},
-	{-1,"",0,'\0'},
-	{1,"",	M_MouseInvert,'i'},
+	rdthsempty1,
+	read1_end
 };
 
-static menu_t MouseDef =
+enum class read_e2
 {
-	mouse_e::mouse_end,
-	&OptionsDef,
-	MouseMenu,
-	M_DrawMouse,
-	80,
-	64,
-	0
+	rdthsempty2,
+	read2_end
 };
 
-// Crispness menu
 enum class crispness1_e
 {
 	crispness_sep_rendering,
@@ -419,38 +233,6 @@ enum class crispness1_e
 	crispness1_end
 };
 
-static menuitem_t Crispness1Menu[] =
-{
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispyToggleHires,'h'},
-	{1,"",	M_CrispyToggleWidescreen,'w'},
-	{1,"",	M_CrispyToggleUncapped,'u'},
-	{1,"",	M_CrispyToggleVsync,'v'},
-	{1,"",	M_CrispyToggleSmoothScaling,'s'},
-	{-1,"",0,'\0'},
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispyToggleColoredhud,'c'},
-	{1,"",	M_CrispyToggleTranslucency,'e'},
-	{1,"",	M_CrispyToggleSmoothLighting,'s'},
-	{1,"",	M_CrispyToggleBrightmaps,'b'},
-	{1,"",	M_CrispyToggleColoredblood,'c'},
-	{1,"",	M_CrispyToggleFlipcorpses,'r'},
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispnessNext,'n'},
-	{1,"",	M_CrispnessPrev,'p'},
-};
-
-static menu_t Crispness1Def =
-{
-	crispness1_e::crispness1_end,
-	&OptionsDef,
-	Crispness1Menu,
-	M_DrawCrispness1,
-	48,
-	28,
-	1
-};
-
 enum class crispness2_e
 {
 	crispness_sep_audible,
@@ -472,37 +254,6 @@ enum class crispness2_e
 	crispness2_next,
 	crispness2_prev,
 	crispness2_end
-};
-
-static menuitem_t Crispness2Menu[] =
-{
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispyToggleFullsounds,'p'},
-	{1,"",	M_CrispyToggleSoundfixes,'m'},
-	{1,"",	M_CrispyToggleSndChannels,'s'},
-	{1,"",	M_CrispyToggleSoundMono,'m'},
-	{-1,"",0,'\0'},
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispyToggleExtAutomap,'e'},
-	{1,"",	M_CrispyToggleSmoothMap,'m'},
-	{1,"",	M_CrispyToggleAutomapstats,'s'},
-	{1,"",	M_CrispyToggleLeveltime,'l'},
-	{1,"",	M_CrispyTogglePlayerCoords,'p'},
-	{1,"",	M_CrispyToggleSecretmessage,'s'},
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispnessNext,'n'},
-	{1,"",	M_CrispnessPrev,'p'},
-};
-
-static menu_t Crispness2Def =
-{
-	crispness2_e::crispness2_end,
-	&OptionsDef,
-	Crispness2Menu,
-	M_DrawCrispness2,
-	48,
-	28,
-	1
 };
 
 enum class crispness3_e
@@ -529,38 +280,6 @@ enum class crispness3_e
 	crispness3_end
 };
 
-static menuitem_t Crispness3Menu[] =
-{
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispyToggleFreelook,'a'},
-	{1,"",	M_CrispyToggleMouseLook,'p'},
-	{1,"",	M_CrispyToggleBobfactor,'p'},
-	{1,"",	M_CrispyToggleCenterweapon,'c'},
-	{1,"",	M_CrispyToggleWeaponSquat,'w'},
-	{1,"",	M_CrispyTogglePitch,'w'},
-	{1,"",	M_CrispyToggleNeghealth,'n'},
-	{-1,"",0,'\0'},
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispyToggleCrosshair,'d'},
-	{1,"",	M_CrispyToggleCrosshairtype,'c'},
-	{1,"",	M_CrispyToggleCrosshairHealth,'c'},
-	{1,"",	M_CrispyToggleCrosshairTarget,'h'},
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispnessNext,'n'},
-	{1,"",	M_CrispnessPrev,'p'},
-};
-
-static menu_t Crispness3Def =
-{
-	crispness3_e::crispness3_end,
-	&OptionsDef,
-	Crispness3Menu,
-	M_DrawCrispness3,
-	48,
-	28,
-	1
-};
-
 enum class crispness4_e
 {
 	crispness_sep_physical,
@@ -582,178 +301,381 @@ enum class crispness4_e
 	crispness4_end
 };
 
-static menuitem_t Crispness4Menu[] =
+struct menuitem_t
 {
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispyToggleFreeaim,'v'},
-	{1,"",	M_CrispyToggleJumping,'a'},
-	{1,"",	M_CrispyToggleOverunder,'w'},
-	{1,"",	M_CrispyToggleRecoil,'w'},
-	{-1,"",0,'\0'},
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispyToggleDemoTimer,'v'},
-	{1,"",	M_CrispyToggleDemoTimerDir,'a'},
-	{1,"",	M_CrispyToggleDemoBar,'w'},
-	{1,"",	M_CrispyToggleDemoUseTimer,'u'},
-	{-1,"",0,'\0'},
-	{1,"",	M_CrispnessNext,'n'},
-	{1,"",	M_CrispnessPrev,'p'},
+	// choice = menu item #
+	// if status = 2, choice = 0:leftarrow, 1:rightarrow
+	void (*routine)(int choice);
+
+	// 0 = no cursor here, 1 = ok, 2 = arrows ok
+	short status;
+	// hotkey in menu
+	char alphaKey;
+
+	char name[10];
+
+	::std::string alttext;		// alternative text for menu items
 };
 
-static menu_t Crispness4Def =
+struct menu_t
 {
-	crispness4_e::crispness4_end,
+	menu_t* prevMenu;			// previous menu
+	menuitem_t* menuitems;		// menu items
+	short numitems;				// # of menu items
+	short lastOn;				// last item user was on in menu
+	short x;					// x,y of menu
+	short y;
+	short lumps_missing;		// indicate missing menu graphics lumps
+	void (*routine)();			// draw routine
+};
+
+// current menudef
+menu_t* currentMenu;
+
+static void M_NewGame(int choice);
+static void M_Options(int choice);
+static void M_LoadGame(int choice);
+static void M_SaveGame(int choice);
+static void M_ReadThis(int choice);
+static void M_QuitDOOM(int choice);
+std::array<menuitem_t, 6> MainMenu{
+	menuitem_t{ M_NewGame, 1, 'n', "M_NGAME" },
+	menuitem_t{ M_Options, 1, 'o', "M_OPTION" },
+	menuitem_t{ M_LoadGame, 1, 'l', "M_LOADG" },
+	menuitem_t{ M_SaveGame, 1, 's', "M_SAVEG" },
+	menuitem_t{ M_ReadThis, 1, 'r', "M_RDTHIS" },
+	menuitem_t{ M_QuitDOOM, 1, 'q', "M_QUITG" }
+};
+
+static void M_DrawMainMenu();
+menu_t MainDef{
+	nullptr,
+	MainMenu,
+	main_e::main_end,
+	0,
+	97,
+	64,
+	M_DrawMainMenu
+};
+
+static void M_Episode(int choice);
+::std::array<menuitem_t, 5> EpisodeMenu{
+	menuitem_t{ M_Episode, 1, 'k', "M_EPI1" },
+	menuitem_t{ M_Episode, 1, 't', "M_EPI2" },
+	menuitem_t{ M_Episode, 1, 'i', "M_EPI3" },
+	menuitem_t{ M_Episode, 1, 't', "M_EPI4" },
+	menuitem_t{ M_Episode, 1, 's', "M_EPI5" }
+};
+
+static void M_DrawEpisode();
+menu_t EpiDef{
+	&MainDef,					// previous menu
+	EpisodeMenu,				// menuitem_t ->
+	episodes_e::ep_end,			// # of menu items
+	episodes_e::ep1,			// lastOn
+	48,							// x,y
+	63,
+	M_DrawEpisode				// drawing routine ->
+};
+
+static void M_ChooseSkill(int choice);
+::std::array<menuitem_t, 5> NewGameMenu{
+	menuitem_t{ M_ChooseSkill, 1, 'i', "M_JKILL", "I'm too young to die." },
+	menuitem_t{ M_ChooseSkill, 1, 'h', "M_ROUGH", "Hey, not too rough!." },
+	menuitem_t{ M_ChooseSkill, 1, 'h', "M_HURT", "Hurt me plenty." },
+	menuitem_t{ M_ChooseSkill, 1, 'u', "M_ULTRA", "Ultra-Violence." },
+	menuitem_t{ M_ChooseSkill, 1, 'n', "M_NMARE", "Nightmare!" }
+};
+
+static void M_DrawNewGame();
+menu_t NewDef{
+	&EpiDef,					// previous menu
+	NewGameMenu,				// menuitem_t ->
+	newgame_e::newg_end,		// # of menu items
+	newgame_e::hurtme,			// lastOn
+	48,							// x,y
+	63,
+	M_DrawNewGame				// drawing routine ->
+};
+
+static void M_EndGame(int choice);
+static void M_ChangeMessages(int choice);
+static void M_ChangeDetail(int choice);
+static void M_SizeDisplay(int choice);
+static void M_Mouse(int choice);
+static void M_Sound(int choice);
+static void M_CrispnessCur(int choice);
+::std::array<menuitem_t, 8> OptionsMenu{
+	menuitem_t{ M_EndGame, 1, 'e', "M_ENDGAM", "End Game" },
+	menuitem_t{ M_ChangeMessages, 1, 'm', "M_MESSG", "Messages: " },
+	menuitem_t{ M_ChangeDetail, 1, 'g', "M_DETAIL", "Graphic Detail: " },
+	menuitem_t{ M_SizeDisplay, 2, 's', "M_SCRNSZ", "Screen Size" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_Mouse, 1, 'm', "M_MSENS", "Mouse Sensitivity" },
+	menuitem_t{ M_Sound, 1, 's', "M_SVOL","Sound Volume" },
+	menuitem_t{ M_CrispnessCur, 1, 'c', "M_CRISPY", "Crispness" }
+};
+
+static void M_DrawOptions();
+menu_t OptionsDef{
+	&MainDef,
+	OptionsMenu,
+	options_e::opt_end,
+	0,
+	60,
+	37,
+	M_DrawOptions
+};
+
+static void M_ChangeSensitivity(int choice);
+static void M_ChangeSensitivity_x2(int choice);
+static void M_ChangeSensitivity_y(int choice);
+static void M_MouseInvert(int choice);
+static ::std::array<menuitem_t, 7> MouseMenu{
+	menuitem_t{ M_ChangeSensitivity, 2, 'h', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_ChangeSensitivity_x2, 2, 's', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_ChangeSensitivity_y, 2, 'v', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_MouseInvert, 1, 'i', "" }
+};
+
+static void M_DrawMouse();
+static menu_t MouseDef{
 	&OptionsDef,
-	Crispness4Menu,
-	M_DrawCrispness4,
+	MouseMenu,
+	mouse_e::mouse_end,
+	0,
+	80,
+	64,
+	M_DrawMouse
+};
+
+static void M_CrispnessNext(int choice);
+static void M_CrispnessPrev(int choice);
+static ::std::array<menuitem_t, 17> Crispness1Menu{
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispyToggleHires, 1, 'h', "" },
+	menuitem_t{ M_CrispyToggleWidescreen, 1, 'w', "" },
+	menuitem_t{ M_CrispyToggleUncapped, 1, 'u', "" },
+	menuitem_t{ M_CrispyToggleVsync, 1, 'v', "" },
+	menuitem_t{ M_CrispyToggleSmoothScaling, 1, 's', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispyToggleColoredhud, 1, 'c', "" },
+	menuitem_t{ M_CrispyToggleTranslucency, 1, 'e', "" },
+	menuitem_t{ M_CrispyToggleSmoothLighting, 1, 's', "" },
+	menuitem_t{ M_CrispyToggleBrightmaps, 1, 'b', "" },
+	menuitem_t{ M_CrispyToggleColoredblood, 1, 'c', "" },
+	menuitem_t{ M_CrispyToggleFlipcorpses, 1, 'r', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispnessNext, 1, 'n', "" },
+	menuitem_t{ M_CrispnessPrev, 1, 'p', "" }
+};
+
+static void M_DrawCrispness1();
+static menu_t Crispness1Def{
+	&OptionsDef,
+	Crispness1Menu,
+	crispness1_e::crispness1_end,
+	1,
 	48,
 	28,
-	1
+	M_DrawCrispness1
 };
 
-static menu_t* CrispnessMenus[] =
-{
+static ::std::array<menuitem_t, 16> Crispness2Menu{
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispyToggleFullsounds, 1, 'p', "" },
+	menuitem_t{ M_CrispyToggleSoundfixes, 1, 'm', "" },
+	menuitem_t{ M_CrispyToggleSndChannels, 1, 's', "" },
+	menuitem_t{ M_CrispyToggleSoundMono, 1, 'm', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispyToggleExtAutomap, 1, 'e', "" },
+	menuitem_t{ M_CrispyToggleSmoothMap, 1, 'm', "" },
+	menuitem_t{ M_CrispyToggleAutomapstats, 1, 's', "" },
+	menuitem_t{ M_CrispyToggleLeveltime, 1, 'l', "" },
+	menuitem_t{ M_CrispyTogglePlayerCoords, 1, 'p', "" },
+	menuitem_t{ M_CrispyToggleSecretmessage, 1, 's', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispnessNext, 1, 'n', "" },
+	menuitem_t{ M_CrispnessPrev, 1, 'p', "" }
+};
+
+static void M_DrawCrispness2();
+static menu_t Crispness2Def{
+	&OptionsDef,
+	Crispness2Menu,
+	crispness2_e::crispness2_end,
+	1,
+	48,
+	28,
+	M_DrawCrispness2
+};
+
+static ::std::array<menuitem_t, 17> Crispness3Menu{
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispyToggleFreelook, 1, 'a', "" },
+	menuitem_t{ M_CrispyToggleMouseLook, 1, 'p', "" },
+	menuitem_t{ M_CrispyToggleBobfactor, 1, 'p', "" },
+	menuitem_t{ M_CrispyToggleCenterweapon, 1, 'c', "" },
+	menuitem_t{ M_CrispyToggleWeaponSquat, 1, 'w', "" },
+	menuitem_t{ M_CrispyTogglePitch, 1, 'w', "" },
+	menuitem_t{ M_CrispyToggleNeghealth, 1, 'n', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispyToggleCrosshair, 1, 'd', "" },
+	menuitem_t{ M_CrispyToggleCrosshairtype, 1, 'c', "" },
+	menuitem_t{ M_CrispyToggleCrosshairHealth, 1, 'c', "" },
+	menuitem_t{ M_CrispyToggleCrosshairTarget, 1, 'h', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispnessNext, 1, 'n', "" },
+	menuitem_t{ M_CrispnessPrev, 1, 'p', "" }
+};
+
+static void M_DrawCrispness3();
+static menu_t Crispness3Def{
+	&OptionsDef,
+	Crispness3Menu,
+	crispness3_e::crispness3_end,
+	1,
+	48,
+	28,
+	M_DrawCrispness3
+};
+
+static ::std::array<menuitem_t, 14> Crispness4Menu{
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispyToggleFreeaim, 1, 'v', "" },
+	menuitem_t{ M_CrispyToggleJumping, 1, 'a', "" },
+	menuitem_t{ M_CrispyToggleOverunder, 1, 'w', "" },
+	menuitem_t{ M_CrispyToggleRecoil, 1, 'w', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispyToggleDemoTimer, 1,'v', "" },
+	menuitem_t{ M_CrispyToggleDemoTimerDir, 1,'a', "" },
+	menuitem_t{ M_CrispyToggleDemoBar, 1,'w', "" },
+	menuitem_t{ M_CrispyToggleDemoUseTimer, 1,'u', "" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_CrispnessNext, 1, 'n', "" },
+	menuitem_t{ M_CrispnessPrev, 1, 'p', "" }
+};
+
+static void M_DrawCrispness4();
+static menu_t Crispness4Def{
+	&OptionsDef,
+	Crispness4Menu,
+	crispness4_e::crispness4_end,
+	1,
+	48,
+	28,
+	M_DrawCrispness4
+};
+
+static ::std::array<menu_t*, 4> CrispnessMenus{
 	&Crispness1Def,
 	&Crispness2Def,
 	&Crispness3Def,
-	&Crispness4Def,
+	&Crispness4Def
 };
 
-static int crispness_cur;
+static void M_ReadThis2(int choice);
+menuitem_t ReadMenu1{ M_ReadThis2, 1, '\0', "" };
 
-// Read This! MENU 1 & 2
-enum class read_e
-{
-	rdthsempty1,
-	read1_end
-};
-
-menuitem_t ReadMenu1[] =
-{
-	{1,"",M_ReadThis2,0}
-};
-
-menu_t ReadDef1 =
-{
-	read_e::read1_end,
+static void M_DrawReadThis1();
+menu_t ReadDef1{
 	&MainDef,
 	ReadMenu1,
-	M_DrawReadThis1,
+	read_e::read1_end,
+	0,
 	280,
 	185,
-	0
+	M_DrawReadThis1
 };
 
-enum class read_e2
-{
-	rdthsempty2,
-	read2_end
-};
+static void M_FinishReadThis(int choice);
+menuitem_t ReadMenu2{ M_FinishReadThis, 1, '\0', "" };
 
-menuitem_t ReadMenu2[] =
-{
-	{1,"",M_FinishReadThis,0}
-};
-
-menu_t ReadDef2 =
-{
-	read_e2::read2_end,
+static void M_DrawReadThis2();
+menu_t ReadDef2{
 	&ReadDef1,
 	ReadMenu2,
-	M_DrawReadThis2,
+	read_e2::read2_end,
+	0,
 	330,
 	175,
-	0
+	M_DrawReadThis2
 };
 
-enum class sound_e
-{
-	sfx_vol,
-	sfx_empty1,
-	music_vol,
-	sfx_empty2,
-	sound_end
+static void M_SfxVol(int choice);
+static void M_MusicVol(int choice);
+::std::array<menuitem_t, 4> SoundMenu{
+	menuitem_t{ M_SfxVol, 2, 's', "M_SFXVOL" },
+	menuitem_t{ nullptr, -1, '\0', "" },
+	menuitem_t{ M_MusicVol, 2, 'm', "M_MUSVOL" },
+	menuitem_t{ nullptr, -1, '\0', "" }
 };
 
-menuitem_t SoundMenu[] =
-{
-	{2,"M_SFXVOL",M_SfxVol,'s'},
-	{-1,"",0,'\0'},
-	{2,"M_MUSVOL",M_MusicVol,'m'},
-	{-1,"",0,'\0'}
-};
-
-menu_t SoundDef =
-{
-	sound_e::sound_end,
+static void M_DrawSound();
+menu_t SoundDef{
 	&OptionsDef,
 	SoundMenu,
-	M_DrawSound,
+	sound_e::sound_end,
+	0,
 	80,
 	64,
-	0
+	M_DrawSound
 };
 
-enum class load_e
-{
-	load1,
-	load2,
-	load3,
-	load4,
-	load5,
-	load6,
-	load7,						// up to 8 savegames
-	load8,						// up to 8 savegames
-	load_end
+
+static void M_LoadSelect(int choice);
+::std::array<menuitem_t, 8> _LoadMenu{
+	menuitem_t{ M_LoadSelect, 1, '1', "" },
+	menuitem_t{ M_LoadSelect, 1, '2', "" },
+	menuitem_t{ M_LoadSelect, 1, '3', "" },
+	menuitem_t{ M_LoadSelect, 1, '4', "" },
+	menuitem_t{ M_LoadSelect, 1, '5', "" },
+	menuitem_t{ M_LoadSelect, 1, '6', "" },
+	menuitem_t{ M_LoadSelect, 1, '7', "" },
+	menuitem_t{ M_LoadSelect, 1, '8', "" }
 };
 
-menuitem_t LoadMenu[] =
-{
-	{1,"", M_LoadSelect,'1'},
-	{1,"", M_LoadSelect,'2'},
-	{1,"", M_LoadSelect,'3'},
-	{1,"", M_LoadSelect,'4'},
-	{1,"", M_LoadSelect,'5'},
-	{1,"", M_LoadSelect,'6'},
-	{1,"", M_LoadSelect,'7'},	// up to 8 savegames
-	{1,"", M_LoadSelect,'8'}	// up to 8 savegames
-};
-
-menu_t LoadDef =
-{
-	load_e::load_end,
+static void M_DrawLoad();
+menu_t LoadDef{
 	&MainDef,
-	LoadMenu,
-	M_DrawLoad,
+	_LoadMenu,
+	load_e::load_end,
+	0,
 	80,
 	54,
-	0
+	M_DrawLoad
 };
 
-menuitem_t SaveMenu[] =
-{
-	{1,"", M_SaveSelect,'1'},
-	{1,"", M_SaveSelect,'2'},
-	{1,"", M_SaveSelect,'3'},
-	{1,"", M_SaveSelect,'4'},
-	{1,"", M_SaveSelect,'5'},
-	{1,"", M_SaveSelect,'6'},
-	{1,"", M_SaveSelect,'7'},	// up to 8 savegames
-	{1,"", M_SaveSelect,'8'}	// up to 8 savegames
+static void M_SaveSelect(int choice);
+::std::array<menuitem_t, 8> SaveMenu{
+	menuitem_t{ M_SaveSelect, 1, '1', "" },
+	menuitem_t{ M_SaveSelect, 1, '2', "" },
+	menuitem_t{ M_SaveSelect, 1, '3', "" },
+	menuitem_t{ M_SaveSelect, 1, '4', "" },
+	menuitem_t{ M_SaveSelect, 1, '5', "" },
+	menuitem_t{ M_SaveSelect, 1, '6', "" },
+	menuitem_t{ M_SaveSelect, 1, '7', "" },
+	menuitem_t{ M_SaveSelect, 1, '8', "" }
 };
 
-menu_t SaveDef =
-{
-	load_e::load_end,
+static void M_DrawSave();
+menu_t SaveDef{
 	&MainDef,
 	SaveMenu,
-	M_DrawSave,
+	load_e::load_end,
+	0,
 	80,
 	54,
-	0
+	M_DrawSave
 };
 
-// M_ReadSaveStrings
 // read the strings from the savegame files
 void M_ReadSaveStrings()
 {
@@ -763,7 +685,7 @@ void M_ReadSaveStrings()
 		M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
 		auto handle{fopen(name, "rb")};
-		if (handle == NULL)
+		if (handle == nullptr)
 		{
 			M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
 			LoadMenu[i].status = 0;
@@ -776,9 +698,80 @@ void M_ReadSaveStrings()
 	}
 }
 
+// Write a string using the hu_font
+void M_WriteText(int x, int y, ::std::string string)
+{
+	int w;
+	int c;
+
+	::std::string ch = string;
+	auto cx = x;
+	auto cy = y;
+
+	while (1)
+	{
+		c = *ch;
+		++ch;
+		if (!c)
+		{
+			break;
+		}
+
+		if (c == '\n')
+		{
+			cx = x;
+			cy += 12;
+			continue;
+		}
+
+		// support multi-colored text
+		if (c == cr_esc)
+		{
+			if (*ch >= '0' && *ch <= '0' + CRMAX - 1)
+			{
+				c = *ch;
+				++ch;
+				dp_translation = cr[(int)(c - '0')];
+				continue;
+			}
+		}
+
+		c = toupper(c) - HU_FONTSTART;
+		if (c < 0 || c >= HU_FONTSIZE)
+		{
+			cx += 4;
+			continue;
+		}
+
+		w = SHORT(hu_font[c]->width);
+
+		if (cx + w > ORIGWIDTH)
+		{
+			break;
+		}
+
+		V_DrawPatchDirect(cx, cy, hu_font[c]);
+		cx += w;
+	}
+}
+
+void M_DrawSaveLoadBorder(int x, int y)
+{
+	V_DrawPatchDirect(x - 8, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE));
+
+	for (size_t i{0}; i < 24; ++i)
+	{
+		V_DrawPatchDirect(x, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSCNTR"), pu_tags_t::PU_CACHE));
+		x += 8;
+	}
+
+	V_DrawPatchDirect(x, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSRGHT"), pu_tags_t::PU_CACHE));
+}
+
 // M_LoadGame & Cie.
 static int LoadDef_x = 72;
 static int LoadDef_y = 28;
+
 void M_DrawLoad()
 {
 	V_DrawPatchDirect(LoadDef_x, LoadDef_y, W_CacheLumpName<patch_t>(DEH_String("M_LOADG"), pu_tags_t::PU_CACHE));
@@ -799,17 +792,20 @@ void M_DrawLoad()
 	}
 }
 
-void M_DrawSaveLoadBorder(int x, int y)
+void M_ClearMenus()
 {
-	V_DrawPatchDirect(x - 8, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSLEFT"), pu_tags_t::PU_CACHE));
+	menuactive = 0;
 
-	for (size_t i{0}; i < 24; ++i)
+	// entering menus while recording demos pauses the game
+	if (demorecording && paused)
 	{
-		V_DrawPatchDirect(x, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSCNTR"), pu_tags_t::PU_CACHE));
-		x += 8;
+		sendpause = true;
 	}
 
-	V_DrawPatchDirect(x, y + 7, W_CacheLumpName<patch_t>(DEH_String("M_LSRGHT"), pu_tags_t::PU_CACHE));
+	// if (!netgame && usergame && paused)
+	//{
+		//sendpause = true;
+	//}
 }
 
 void M_LoadSelect(int choice)
@@ -830,6 +826,30 @@ void M_LoadSelect(int choice)
 	}
 }
 
+void M_StartMessage(::std::string string, void* routine, bool input)
+{
+	messageLastMenuActive = menuactive;
+	messageToPrint = 1;
+	messageString = string;
+	messageRoutine = routine;
+	messageNeedsInput = input;
+	menuactive = true;
+
+	// entering menus while recording demos pauses the game
+	if (demorecording && !paused)
+	{
+		sendpause = true;
+	}
+
+	return;
+}
+
+void M_SetupNextMenu(menu_t* menudef)
+{
+	currentMenu = menudef;
+	itemOn = currentMenu->lastOn;
+}
+
 void M_LoadGame(int choice)
 {
 	// allow loading game while multiplayer demo playback
@@ -843,9 +863,41 @@ void M_LoadGame(int choice)
 	M_ReadSaveStrings();
 }
 
+// Find string width from hu_font chars
+int M_StringWidth(::std::string string)
+{
+	int width{0};
+
+	for (size_t i{0}; i < strlen(string); ++i)
+	{
+		// correctly center colorized strings
+		if (string[i] == cr_esc)
+		{
+			if (string[i + 1] >= '0' && string[i + 1] <= '0' + CRMAX - 1)
+			{
+				++i;
+				continue;
+			}
+		}
+
+		int c = toupper(string[i]) - HU_FONTSTART;
+		if (c < 0 || c >= HU_FONTSIZE)
+		{
+			width += 4;
+		}
+		else
+		{
+			width += SHORT(hu_font[c]->width);
+		}
+	}
+
+	return width;
+}
+
 // M_SaveGame & Cie.
 static int SaveDef_x = 72;
 static int SaveDef_y = 28;
+
 void M_DrawSave()
 {
 	V_DrawPatchDirect(SaveDef_x, SaveDef_y, W_CacheLumpName<patch_t>(DEH_String("M_SAVEG"), pu_tags_t::PU_CACHE));
@@ -876,8 +928,7 @@ void M_DoSave(int slot)
 	}
 }
 
-// Generate a default save slot name when the user saves to
-// an empty slot via the joypad.
+// Generate a default save slot name when the user saves to an empty slot via the joypad.
 static void SetDefaultSaveName(int slot)
 {
 	// map from IWAD or PWAD?
@@ -970,8 +1021,6 @@ void M_SaveGame(int choice)
 	M_ReadSaveStrings();
 }
 
-static char tempstring[90];
-
 void M_QuickSaveResponse(int key)
 {
 	if (key == key_menu_confirm)
@@ -980,6 +1029,8 @@ void M_QuickSaveResponse(int key)
 		S_StartSound(nullptr, sfxenum_t::sfx_swtchx);
 	}
 }
+
+static char tempstring[90];
 
 void M_QuickSave()
 {
@@ -1065,6 +1116,42 @@ void M_DrawReadThisCommercial()
 	inhelpscreens = true;
 
 	V_DrawPatchFullScreen(W_CacheLumpName<patch_t>(DEH_String("HELP"), pu_tags_t::PU_CACHE), false);
+}
+
+void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
+{
+	char num[4];
+
+	if (!thermDot)
+	{
+		dp_translation = cr[CR_DARK];
+	}
+
+	auto xx = x;
+
+	V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERML"), pu_tags_t::PU_CACHE));
+	xx += 8;
+
+	for (size_t i{0}; i < thermWidth; ++i)
+	{
+		V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMM"), pu_tags_t::PU_CACHE));
+		xx += 8;
+	}
+
+	V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMR"), pu_tags_t::PU_CACHE));
+
+	M_snprintf(num, 4, "%3d", thermDot);
+	M_WriteText(xx + 8, y + 3, num);
+
+	if (thermDot >= thermWidth)
+	{
+		thermDot = thermWidth - 1;
+		dp_translation = cr[CR_DARK];
+	}
+
+	V_DrawPatchDirect((x + 8) + thermDot * 8, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMO"), pu_tags_t::PU_CACHE));
+
+	dp_translation = nullptr;
 }
 
 // Change Sfx & Music volumes
@@ -1162,14 +1249,14 @@ void M_NewGame(int choice)
 	}
 }
 
-int epi;
-
 void M_DrawEpisode()
 {
 	V_DrawPatchDirect(54, 38, W_CacheLumpName<patch_t>(DEH_String("M_EPISOD"), pu_tags_t::PU_CACHE));
 }
 
-void M_VerifyNightmare(int key)
+int epi;
+
+void M_VerifyNightmare(Keys key)
 {
 	if (key != key_menu_confirm)
 	{
@@ -1205,8 +1292,25 @@ void M_Episode(int choice)
 	M_SetupNextMenu(&NewDef);
 }
 
-static ::std::string detailNames[2] = {"M_GDHIGH", "M_GDLOW"};
-static ::std::string msgNames[2] = {"M_MSGOFF", "M_MSGON"};
+// Find string height from hu_font chars
+int M_StringHeight(::std::string string)
+{
+	int height{SHORT(hu_font[0]->height)};
+
+	auto h{height};
+	for (size_t i{0}; i < strlen(string); ++i)
+	{
+		if (string[i] == '\n')
+		{
+			h += height;
+		}
+	}
+
+	return h;
+}
+
+static ::std::array<::std::string, 2> detailNames{"M_GDHIGH", "M_GDLOW"};
+static ::std::array<::std::string, 2> msgNames{"M_MSGOFF", "M_MSGON"};
 
 void M_DrawOptions()
 {
@@ -1269,14 +1373,10 @@ static void M_DrawMouse()
 	dp_translation = nullptr;
 }
 
-// Crispness menu
-#include "m_background.h"
 static void M_DrawCrispnessBackground()
 {
 	const byte* const src{crispness_background};
-	pixel_t* dest;
-
-	dest = I_VideoBuffer;
+	pixel_t* dest = I_VideoBuffer;
 
 	for (size_t y{0}; y < SCREENHEIGHT; ++y)
 	{
@@ -1565,8 +1665,7 @@ void M_FinishReadThis(int choice)
 	M_SetupNextMenu(&MainDef);
 }
 
-int quitsounds[8] =
-{
+::std::array<sfxenum_t, 8> quitsounds{
 	sfxenum_t::sfx_pldeth,
 	sfxenum_t::sfx_dmpain,
 	sfxenum_t::sfx_popain,
@@ -1577,8 +1676,7 @@ int quitsounds[8] =
 	sfxenum_t::sfx_sgtatk
 };
 
-int quitsounds2[8] =
-{
+::std::array<sfxenum_t, 8> quitsounds2{
 	sfxenum_t::sfx_vilact,
 	sfxenum_t::sfx_getpow,
 	sfxenum_t::sfx_boscub,
@@ -1756,169 +1854,10 @@ void M_SizeDisplay(int choice)
 	R_SetViewSize(screenblocks, detailLevel);
 }
 
-void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
-{
-	char num[4];
-
-	if (!thermDot)
-	{
-		dp_translation = cr[CR_DARK];
-	}
-
-	auto xx = x;
-
-	V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERML"), pu_tags_t::PU_CACHE));
-	xx += 8;
-
-	for (size_t i{0}; i < thermWidth; ++i)
-	{
-		V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMM"), pu_tags_t::PU_CACHE));
-		xx += 8;
-	}
-
-	V_DrawPatchDirect(xx, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMR"), pu_tags_t::PU_CACHE));
-
-	M_snprintf(num, 4, "%3d", thermDot);
-	M_WriteText(xx + 8, y + 3, num);
-
-	if (thermDot >= thermWidth)
-	{
-		thermDot = thermWidth - 1;
-		dp_translation = cr[CR_DARK];
-	}
-
-	V_DrawPatchDirect((x + 8) + thermDot * 8, y, W_CacheLumpName<patch_t>(DEH_String("M_THERMO"), pu_tags_t::PU_CACHE));
-
-	dp_translation = nullptr;
-}
-
-void M_StartMessage(::std::string string, void* routine, bool input)
-{
-	messageLastMenuActive = menuactive;
-	messageToPrint = 1;
-	messageString = string;
-	messageRoutine = routine;
-	messageNeedsInput = input;
-	menuactive = true;
-
-	// entering menus while recording demos pauses the game
-	if (demorecording && !paused)
-	{
-		sendpause = true;
-	}
-
-	return;
-}
-
-// Find string width from hu_font chars
-int M_StringWidth(::std::string string)
-{
-	int width{0};
-
-	for (size_t i{0}; i < strlen(string); ++i)
-	{
-		// correctly center colorized strings
-		if (string[i] == cr_esc)
-		{
-			if (string[i + 1] >= '0' && string[i + 1] <= '0' + CRMAX - 1)
-			{
-				++i;
-				continue;
-			}
-		}
-
-		int c = toupper(string[i]) - HU_FONTSTART;
-		if (c < 0 || c >= HU_FONTSIZE)
-		{
-			width += 4;
-		}
-		else
-		{
-			width += SHORT(hu_font[c]->width);
-		}
-	}
-
-	return width;
-}
-
-// Find string height from hu_font chars
-int M_StringHeight(::std::string string)
-{
-	int height{SHORT(hu_font[0]->height)};
-
-	auto h{height};
-	for (size_t i{0}; i < strlen(string); ++i)
-	{
-		if (string[i] == '\n')
-		{
-			h += height;
-		}
-	}
-
-	return h;
-}
-
-// Write a string using the hu_font
-void M_WriteText(int x, int y, ::std::string string)
-{
-	int w;
-	int c;
-
-	::std::string ch = string;
-	auto cx = x;
-	auto cy = y;
-
-	while (1)
-	{
-		c = *ch;
-		++ch;
-		if (!c)
-		{
-			break;
-		}
-
-		if (c == '\n')
-		{
-			cx = x;
-			cy += 12;
-			continue;
-		}
-
-		// support multi-colored text
-		if (c == cr_esc)
-		{
-			if (*ch >= '0' && *ch <= '0' + CRMAX - 1)
-			{
-				c = *ch;
-				++ch;
-				dp_translation = cr[(int)(c - '0')];
-				continue;
-			}
-		}
-
-		c = toupper(c) - HU_FONTSTART;
-		if (c < 0 || c >= HU_FONTSIZE)
-		{
-			cx += 4;
-			continue;
-		}
-
-		w = SHORT(hu_font[c]->width);
-
-		if (cx + w > ORIGWIDTH)
-		{
-			break;
-		}
-
-		V_DrawPatchDirect(cx, cy, hu_font[c]);
-		cx += w;
-	}
-}
-
 // These keys evaluate to a "null" key in Vanilla Doom that allows weird jumping in the menus. Preserve this behavior for accuracy.
 static bool IsNullKey(int key)
 {
-	return key == KEY_PAUSE || key == KEY_CAPSLOCK || key == KEY_SCRLCK || key == KEY_NUMLOCK;
+	return key == Keys::PAUSE || key == Keys::CAPSLOCK || key == Keys::SCROLLLOCK || key == Keys::NUMLOCK;
 }
 
 // reload current level / go to next level adapted from prboom-plus/src/e6y.c:369-449
@@ -2140,7 +2079,7 @@ bool M_Responder(EventType* ev)
 				// Simulate pressing "Enter" when we are supplying a save slot name
 				else if (saveStringEnter)
 				{
-					key = KEY_ENTER;
+					key = Keys::ENTER;
 				}
 				else
 				{
@@ -2163,7 +2102,7 @@ bool M_Responder(EventType* ev)
 				// If user was entering a save name, back out
 				else if (saveStringEnter)
 				{
-					key = KEY_ESCAPE;
+					key = Keys::ESCAPE;
 				}
 				else
 				{
@@ -2258,7 +2197,7 @@ bool M_Responder(EventType* ev)
 	{
 		switch (key)
 		{
-		case KEY_BACKSPACE:
+		case Keys::BACKSPACE:
 			if (saveCharIndex > 0)
 			{
 				--saveCharIndex;
@@ -2266,13 +2205,13 @@ bool M_Responder(EventType* ev)
 			}
 			break;
 
-		case KEY_ESCAPE:
+		case Keys::ESCAPE:
 			saveStringEnter = 0;
 			I_StopTextInput();
 			M_StringCopy(savegamestrings[saveSlot], saveOldString, SAVESTRINGSIZE);
 			break;
 
-		case KEY_ENTER:
+		case Keys::ENTER:
 			saveStringEnter = 0;
 			I_StopTextInput();
 			if (savegamestrings[saveSlot][0])
@@ -2326,7 +2265,7 @@ bool M_Responder(EventType* ev)
 	{
 		if (messageNeedsInput)
 		{
-			if (key != ' ' && key != KEY_ESCAPE && key != key_menu_confirm && key != key_menu_abort)
+			if (key != ' ' && key != Keys::ESCAPE && key != key_menu_confirm && key != key_menu_abort)
 			{
 				return false;
 			}
@@ -2629,7 +2568,7 @@ bool M_Responder(EventType* ev)
 		}
 	}
 	// next/prev Crispness menu
-	else if (key == KEY_PGUP)
+	else if (key == Keys::PAGEUP)
 	{
 		currentMenu->lastOn = itemOn;
 		if (currentMenu == CrispnessMenus[crispness_cur])
@@ -2639,7 +2578,7 @@ bool M_Responder(EventType* ev)
 			return true;
 		}
 	}
-	else if (key == KEY_PGDN)
+	else if (key == Keys::PAGEDOWN)
 	{
 		currentMenu->lastOn = itemOn;
 		if (currentMenu == CrispnessMenus[crispness_cur])
@@ -2841,10 +2780,10 @@ void M_Drawer()
 		if (name[0] && (W_CheckNumForName(name) > 0 || alttext))
 		{
 			// shade unavailable menu items
-			if ((currentMenu == &MainDef && i == (int)main_e::savegame && (!usergame || gamestate != GameState_t::GS_LEVEL)) ||
-				(currentMenu == &OptionsDef && i == (int)options_e::endgame && (!usergame || netgame)) ||
-				(currentMenu == &MainDef && i == (int)main_e::loadgame && (netgame && !demoplayback)) ||
-				(currentMenu == &MainDef && i == (int)main_e::newgame && (demorecording || (netgame && !demoplayback))))
+			if ((currentMenu == &MainDef && i == (int)main_e::savegame && (!usergame || gamestate != GameState_t::GS_LEVEL))
+				|| (currentMenu == &OptionsDef && i == (int)options_e::endgame && (!usergame || netgame))
+				|| (currentMenu == &MainDef && i == (int)main_e::loadgame && (netgame && !demoplayback))
+				|| (currentMenu == &MainDef && i == (int)main_e::newgame && (demorecording || (netgame && !demoplayback))))
 			{
 				dp_translation = cr[CR_DARK];
 			}
@@ -2875,28 +2814,6 @@ void M_Drawer()
 	{
 		V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, W_CacheLumpName<patch_t>(DEH_String(skullName[whichSkull]), pu_tags_t::PU_CACHE));
 	}
-}
-
-void M_ClearMenus()
-{
-	menuactive = 0;
-
-	// entering menus while recording demos pauses the game
-	if (demorecording && paused)
-	{
-		sendpause = true;
-	}
-
-	// if (!netgame && usergame && paused)
-	//{
-		//sendpause = true;
-	//}
-}
-
-void M_SetupNextMenu(menu_t* menudef)
-{
-	currentMenu = menudef;
-	itemOn = currentMenu->lastOn;
 }
 
 void M_Ticker()
@@ -3067,8 +2984,6 @@ void M_Init()
 	opldev = M_CheckParm("-opldev") > 0;
 }
 
-// extended savegames
-::std::string savegwarning;
 static void M_ForceLoadGameResponse(int key)
 {
 	if (key != key_menu_confirm || !savemaplumpinfo)
@@ -3087,6 +3002,8 @@ static void M_ForceLoadGameResponse(int key)
 	gameaction = GameAction_t::ga_loadgame;
 }
 
+// extended savegames
+::std::string savegwarning;
 void M_ForceLoadGame()
 {
 	savegwarning =
@@ -3137,3 +3054,5 @@ void M_LoadGameVerMismatch()
 	messageToPrint = 2;
 	S_StartSound(nullptr, sfxenum_t::sfx_swtchn);
 }
+
+} // end namespace cudadoom

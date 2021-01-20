@@ -19,7 +19,7 @@ add_library(setup STATIC
 
 set_target_properties(setup PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 
-target_include_directories(setup PRIVATE "../" "${CMAKE_CURRENT_BINARY_DIR}/../../")
+target_include_directories(setup PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
 target_link_libraries(setup textscreen SDL2::SDL2 SDL2::SDL2_mixer)
 #target_precompile_headers(textscreen PUBLIC "../../derma/stdafx.h")
 

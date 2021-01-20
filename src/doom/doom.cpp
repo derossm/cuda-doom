@@ -875,7 +875,7 @@ static void LoadIwadDeh()
 	// Chex Quest needs a separate Dehacked patch which must be downloaded and installed next to the IWAD.
 	if (gameversion == GameVersion::exe_chex)
 	{
-		::std::string chex_deh = NULL;
+		::std::string chex_deh;
 		::std::string dirname;
 
 		// Look for chex.deh in the same directory as the IWAD file.

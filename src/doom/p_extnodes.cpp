@@ -14,8 +14,6 @@
 \**********************************************************************************************************************************************/
 #include "../../derma/stdafx.h"
 
-#include "config.h"
-
 #include "m_bbox.h"
 #include "p_local.h"
 #include "i_swap.h"
@@ -24,11 +22,6 @@
 #include "z_zone.h"
 
 #include "p_extnodes.h"
-
-// support maps with compressed ZDBSP nodes
-#ifdef HAVE_LIBZ
-#include <zlib.h>
-#endif
 
 void P_SpawnMapThing(mapthing_t* mthing);
 fixed_t GetOffset(vertex_t* v1, vertex_t* v2);
@@ -236,7 +229,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 {
 	byte* data;
 	unsigned i;
-#ifdef HAVE_LIBZ
+#ifdef HAVE_ZLIB
 	byte* output;
 #endif
 
@@ -254,7 +247,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 
 	if (compressed)
 	{
-#ifdef HAVE_LIBZ
+#ifdef HAVE_ZLIB
 		const int len = W_LumpLength(lump);
 		int outlen;
 		int err;
@@ -474,7 +467,7 @@ void P_LoadNodes_ZDBSP(int lump, bool compressed)
 		}
 	}
 
-#ifdef HAVE_LIBZ
+#ifdef HAVE_ZLIB
 	if (compressed)
 		Z_Free(output);
 	else

@@ -16,16 +16,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "config.h"
-
-#include <SDL_version.h>
-
-#ifdef HAVE_LIBPNG
-#include <png.h>
-#endif
-
-#include "doomtype.h"
-
 #include "i_system.h"
 
 #include "deh_str.h"

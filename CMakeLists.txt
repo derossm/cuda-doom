@@ -42,26 +42,50 @@ enable_language(CUDA)
 #	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 #endif()
 
-set(VCPKG_DIR "G:/dev/vcpkg/packages")
-set(ARCHITECTURE "_x64-windows")
+set(ARCHITECTURE "x64")
+set(PLATFORM "windows")
+
+set(VCPKG_DIR "G:/dev/vcpkg/installed")
+set(VCPKG_INCLUDE_DIR "${VCPKG_DIR}/${ARCHITECTURE}-${PLATFORM}/include")
+set(VCPKG_LIBRARY_DIR "${VCPKG_DIR}/${ARCHITECTURE}-${PLATFORM}/lib")
+
+set(CUDA_DIR "R:/api/cuda/v11.1/tools")
+set(CUDA_INCLUDE_DIR "${CUDA_DIR}/include")
+set(CUDA_LIBRARY_DIR "${CUDA_DIR}/lib")
 
 # libm or fdlibm (Freely Distributable libm) : C math library IEEE 754 floating-point arithmetic
-find_package(m REQUIRED)
-if(M_FOUND)
+#find_package(m REQUIRED)
+if(m_FOUND)
 	set(HAVE_LIBM TRUE)
 endif()
 
+# zlib : compression library
+#find_package(ZLIB REQUIRED)
+if(ZLIB_FOUND)
+	set(HAVE_ZLIB TRUE)
+	# zstr :
+	find_package(zstr REQUIRED)
+	if (ZSTR_FOUND)
+		set(HAVE_ZSTR TRUE)
+	endif()
+endif()
+
 # libpng : interface for reading/writing PNG format files
-find_package(libpng REQUIRED)
+#find_package(libpng REQUIRED)
 if(libpng_FOUND)
 	set(HAVE_LIBPNG TRUE)
+	# png++ :
+	find_package(pngpp REQUIRED)
+	if (PNGPP_FOUND)
+		set(HAVE_PNGPP TRUE)
+	endif()
 endif()
 
 # freeglut : 
 #find_package(GLUT REQUIRED)
-#if(GLUT_FOUND)
-#	set(HAVE_GLUT TRUE)
-#endif()
+if(GLUT_FOUND)
+	set(HAVE_GLUT TRUE)
+endif()
 
 # samplerate : samplerate converter for audio
 find_package(samplerate REQUIRED)
@@ -70,39 +94,21 @@ if(SAMPLERATE_FOUND)
 endif()
 
 # sdl2 : Simple DirectMedia Layer
-find_package(SDL2 2.0.0 REQUIRED)
-find_package(SDL2_mixer 2.0.0 REQUIRED)
-find_package(SDL2_net 2.0.0 REQUIRED)
+find_package(sdl2 CONFIG REQUIRED)
+find_package(sdl2-mixer CONFIG REQUIRED)
+find_package(sdl2-net CONFIG REQUIRED)
 
 # directxmath : DirectXMath SIMD C++ math library
 find_package(directxmath CONFIG REQUIRED)
 if(directxmath_FOUND)
-	set(HAVE_directxmath TRUE)
+	set(HAVE_DIRECTXMATH TRUE)
 endif()
 
 # directxtk12 : A collection of helper classes for writing DirectX12
 find_package(directxtk12 CONFIG REQUIRED)
 if(directxtk12_FOUND)
-	set(HAVE_directxtk12 TRUE)
+	set(HAVE_DIRECTXTK12 TRUE)
 endif()
-
-# zlib : compression library
-#if(!ZLIB_FOUND)
-#	find_package(ZLIB REQUIRED)
-#endif()
-#if(ZLIB_FOUND)
-#	set(HAVE_ZLIB TRUE)
-#endif()
-
-# zstr :
-#if(ZLIB_FOUND)
-#	find_package(ZSTR REQUIRED)
-#endif()
-
-# png++ :
-#if(libpng_FOUND)
-#	find_package(PNGPP REQUIRED)
-#endif()
 
 #find_package(folly CONFIG REQUIRED)
 #rapidjson

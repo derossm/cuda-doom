@@ -14,19 +14,13 @@
 
 #ifdef _WIN32
 
-#include "config.h"
-
-#include "../derma/common.h"
-#include "../derma/enumbitset.h"
-#include "../derma/d_native.h"
-
 #include "opl.h"
 #include "opl3.h"
 #include "opl_timer.h"
 #include "opl_sdl.h"
 
 #include "ioperm_sys.h"
-#if 1
+
 namespace cudadoom::opl
 {
 
@@ -180,4 +174,3 @@ opl_driver_t opl_win32_driver =
 } // end namespace cudadoom::opl
 
 #endif // #ifdef _WIN32
-#endif

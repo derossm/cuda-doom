@@ -14,17 +14,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "config.h"
-
-#include <SDL.h>
-#include <SDL_mixer.h>
-
-#ifdef HAVE_LIBSAMPLERATE
-	#include <samplerate.h>
-#endif
-
 #include "deh_str.h"
 #include "i_sound.h"
 #include "i_system.h"

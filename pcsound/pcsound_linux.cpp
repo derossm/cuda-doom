@@ -12,12 +12,7 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "config.h"
-
 #ifdef HAVE_LINUX_KD_H
-
-#include <SDL.h>
-#include <SDL_thread.h>
 
 #include "pcsound.h"
 #include "pcsound_internal.h"
@@ -141,4 +136,4 @@ pcsound_driver_t pcsound_linux_driver =
 	PCSound_Linux_Shutdown,
 };
 
-#endif /* #ifdef HAVE_LINUX_KD_H */
+#endif // #ifdef HAVE_LINUX_KD_H

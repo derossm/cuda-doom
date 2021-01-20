@@ -13,10 +13,8 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "doomtype.h"
 #include "deh_str.h"
+
 #include "i_swap.h"
 #include "i_video.h"
 #include "m_argv.h"

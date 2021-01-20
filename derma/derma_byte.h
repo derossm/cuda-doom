@@ -13,6 +13,9 @@
 
 #include "stdafx.h"
 
+namespace cudadoom
+{
+
 template<typename T, size_t N = 1>
 	requires std::is_integral_v<T>
 class Byte
@@ -1569,3 +1572,5 @@ constexpr inline U operator%(U&& lhs, Byte<T, N>&& rhs) noexcept
 }
 //==============================================================================
 	/* #endregion BoilerPlate */
+
+} // end namespace cudadoom

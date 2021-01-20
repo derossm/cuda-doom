@@ -118,7 +118,15 @@
 		"valarray": "cpp",
 		"*.cuh": "cpp",
 		"__node_handle": "cpp",
-		"*.def": "cpp"
+		"*.def": "cpp",
+		"__functional_03": "cpp",
+		"*.ipp": "cpp",
+		"*.inc": "cpp",
+		"__hash_table": "cpp",
+		"__tree": "cpp",
+		"version": "cpp",
+		"__string": "cpp",
+		"*.rh": "cpp"
 	},
 	"git.allowForcePush": true,
 	"editor.rulers": [
