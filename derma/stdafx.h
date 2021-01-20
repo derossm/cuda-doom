@@ -143,11 +143,15 @@
 //#include <latch>
 //#include <barrier>
 
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers.
-#endif
-
 #if _WIN32
+
+	#ifndef WIN32_LEAN_AND_MEAN
+		#define WIN32_LEAN_AND_MEAN
+	#endif
+	#ifndef NOMINMAX
+		#define NOMINMAX
+	#endif
+
 #include <windows.h>
 #include <wrl.h>
 #include <shellapi.h>

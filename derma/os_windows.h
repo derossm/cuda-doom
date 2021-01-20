@@ -26,10 +26,9 @@
 	#include <process.h>
 	#include <io.h>
 	#include <winioctl.h>
-#endif
-
-#ifdef _MSC_VER
-	//#include <direct.h>
-	//#include <win_opendir.h>
 	#include <sys/stat.h>
+
+	#ifndef NO_OBSD_DRIVER
+		#define NO_OBSD_DRIVER
+	#endif
 #endif

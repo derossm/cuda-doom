@@ -13,11 +13,11 @@
 
 #include "stdafx.h"
 
-#include "strongtype.h"
-#include "bytetype.h"
-#include "pmrvector.h"
-
-#include "enumbitset.h"
+#include "derma_strongtype.h"
+#include "derma_byte.h"
+#include "derma_enum.h"
+#include "derma_string.h"
+#include "derma_vector.h"
 
 #include "keybinds.h"
 

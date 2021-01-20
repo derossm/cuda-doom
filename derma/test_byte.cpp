@@ -12,11 +12,11 @@
 #include "stdafx.h"
 
 #include "common.h"
-#include "bytetype.h"
+#include "derma_byte.h"
 
 #define CATCH_CONFIG_MAIN
 #pragma warning(push, 0)
-#include "catch.h"
+#include "catch.hpp"
 #pragma warning(pop)
 
 //int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)

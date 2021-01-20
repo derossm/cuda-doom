@@ -13,11 +13,6 @@
 
 #include "stdafx.h"
 
-//#include <bitset>
-//#include <algorithm>
-//#include <concepts>
-//#include <type_traits>
-
 namespace cudadoom
 {
 

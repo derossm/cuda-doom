@@ -11,14 +11,15 @@
 \**********************************************************************************************************************************************/
 #pragma once
 
-#include "common.h"
+#include "stdafx.h"
 
 namespace cudadoom
 {
 
 	class PMRVector
 	{
-		::std::array<::std::byte, 8192> stackBuf;
+		static constexpr size_t _PMR_BUFFER_SIZE{8192};
+		::std::array<::std::byte, _PMR_BUFFER_SIZE> stackBuf;
 		::std::pmr::monotonic_buffer_resource rsrc;
 
 		PMRVector() : rsrc(stackBuf.data(), sizeof stackBuf)
