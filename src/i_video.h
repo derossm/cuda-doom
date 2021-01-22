@@ -15,8 +15,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 #include "crispy.h"
 
 // Screen width and height.

@@ -12,9 +12,10 @@
 	DESCRIPTION:
 		Crispness menu
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 #include "doomstat.h"
+
 #include "p_local.h" // thinkercap
 #include "s_sound.h"
 #include "r_defs.h" // laserpatch

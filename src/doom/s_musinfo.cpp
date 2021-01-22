@@ -12,23 +12,20 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
- support MUSINFO lump (dynamic music changing)
+		Support MUSINFO lump (dynamic music changing)
+		adapted from chocolate-doom/src/hexen/sc_man.c:18-470
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-// adapted from chocolate-doom/src/hexen/sc_man.c:18-470
-
-//#include <string>
+#include "../../derma/stdafx.h"
 
 // HEADER FILES ------------------------------------------------------------
 
 #include "doomstat.h"
-#include "i_system.h"
-#include "m_misc.h"
+#include "../i_system.h"
+#include "../m_misc.h"
 #include "r_defs.h"
 #include "s_sound.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "../disk_io/w_wad.h"
+#include "../z_zone.h"
 
 #include "s_musinfo.h"
 

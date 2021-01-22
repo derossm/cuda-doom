@@ -15,8 +15,6 @@
 
 #include "../../derma/common.h"
 
-#include "../doomtype.h"
-
 #include "../i_timer.h"
 #include "../d_mode.h"
 

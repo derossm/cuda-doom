@@ -11,16 +11,15 @@
 
 #include "../../derma/common.h"
 
-#include "../doom/d_englsh.h"
-#include "../doomtype.h"
-#include "../d_iwad.h"
+#include "../doom/d_english.h"
+#include "../disk_io/d_iwad.h"
 #include "../m_config.h"
 #include "../m_misc.h"
 #include "../m_controls.h"
 
-#include "../net_io.h"
-#include "../net_query.h"
-#include "../net_petname.h"
+#include "../network/net_io.h"
+#include "../network/net_query.h"
+#include "../network/net_petname.h"
 
 #include "mode.h"
 #include "execute.h"
@@ -127,36 +126,38 @@ static void AddWADs(ExecuteContext* exec)
 {
 	bool have_wads{false};
 
-	for (size_t i{0}; i < NUM_WADS; ++i)
-	{
-		if (!wads[i].empty())
+	//for (size_t i{0}; i < NUM_WADS; ++i)
+	::std::ranges::for_each(wads,
+		[](auto& iter)
 		{
-			if (!have_wads)
+			if (!iter.empty())
 			{
-				AddCmdLineParameter(exec, "-file");
-			}
+				if (!have_wads)
+				{
+					AddCmdLineParameter(exec, "-file");
+				}
 
-			AddCmdLineParameter(exec, "\"%s\"", wads[i]);
-		}
-	}
+				AddCmdLineParameter(exec, ::std::string_view("\"" + iter + "\""));
+			}
+		});
 }
 
 static void AddExtraParameters(ExecuteContext* exec)
 {
-	int i;
-
-	for (i = 0; i < NUM_EXTRA_PARAMS; ++i)
-	{
-		if (extra_params[i] != NULL && strlen(extra_params[i]) > 0)
+	//for (size_t i{0}; i < NUM_EXTRA_PARAMS; ++i)
+	::std::ranges::for_each(extra_params,
+		[](auto& iter)
 		{
-			AddCmdLineParameter(exec, "%s", extra_params[i]);
-		}
-	}
+			if (!iter.empty())
+			{
+				AddCmdLineParameter(exec, iter);
+			}
+		});
 }
 
 static void AddIWADParameter(ExecuteContext* exec)
 {
-	if (iwadfile != NULL)
+	if (!iwadfile.empty())
 	{
 		AddCmdLineParameter(exec, "-iwad %s", iwadfile);
 	}
@@ -165,9 +166,7 @@ static void AddIWADParameter(ExecuteContext* exec)
 // Callback function invoked to launch the game. This is used when starting a server and also when starting a single player game via the "warp" menu.
 static void StartGame(int multiplayer)
 {
-	ExecuteContext* exec;
-
-	exec = NewExecuteContext();
+	ExecuteContext* exec{NewExecuteContext()};
 
 	// Extra parameters come first, before all others; this way, they can override any of the options set in the dialog.
 	AddExtraParameters(exec);

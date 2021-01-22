@@ -11,12 +11,12 @@
 	DESCRIPTION:
 	LineOfSight/Visibility checks, uses REJECT Lookup Table.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "doomstat.h"
 
-#include "i_system.h"
+#include "../i_system.h"
 #include "p_local.h"
 
 // State.

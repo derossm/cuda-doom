@@ -18,9 +18,9 @@
 #include "../i_system.h"
 #include "../i_timer.h"
 #include "../i_video.h"
-#include "../w_checksum.h"
-#include "../w_wad.h"
-#include "../deh_main.h"
+#include "../disk_io/w_checksum.h"
+#include "../disk_io/w_wad.h"
+#include "../disk_io/deh_main.h"
 #include "../d_loop.h"
 
 #include "g_game.h"
@@ -59,7 +59,7 @@ static void PlayerQuitGame(Player* player)
 	}
 }
 
-static void RunTic(ticcmd_t* cmds, bool* ingame)
+static void RunTic(ticcmd_t* cmds, ::std::span<bool> ingame)
 {
 	extern bool advancedemo;
 	unsigned i;

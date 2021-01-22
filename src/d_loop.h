@@ -15,7 +15,7 @@
 
 #include "../derma/common.h"
 
-#include "net_defs.h"
+#include "network/net_defs.h"
 
 // Callback function invoked while waiting for the netgame to start.
 // The callback is invoked when new players are ready. The callback should return true, or return false to abort startup.
@@ -30,7 +30,7 @@ struct loop_interface_t
 	void (*BuildTiccmd)(ticcmd_t* cmd, TimeType maketic);
 
 	// Advance the game forward one tic, using the specified player input.
-	void (*RunTic)(ticcmd_t* cmds, bool ingame);
+	void (*RunTic)(ticcmd_t* cmds, ::std::span<bool> ingame);
 
 	// Run the menu (runs independently of the game).
 	void (*RunMenu)();

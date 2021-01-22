@@ -11,14 +11,14 @@
 	DESCRIPTION:
 	Mission begin melt/wipe screen special effect.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
+
+#include "../z_zone.h"
+#include "../i_video.h"
+#include "../v_video.h"
+#include "../m_random.h"
 
 #include "f_wipe.h"
-
-#include "z_zone.h"
-#include "i_video.h"
-#include "v_video.h"
-#include "m_random.h"
 
 //
 //						SCREEN WIPE PACKAGE

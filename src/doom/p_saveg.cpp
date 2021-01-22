@@ -11,21 +11,19 @@
 	DESCRIPTION:
 		Archiving: SaveGame I/O.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
+#include "../../derma/stdafx.h"
 
 #include "dstrings.h"
-#include "deh_main.h"
-#include "i_system.h"
-#include "z_zone.h"
+#include "../disk_io/deh_main.h"
+#include "../i_system.h"
+#include "../z_zone.h"
 #include "p_local.h"
 #include "p_saveg.h"
 
 // State.
 #include "doomstat.h"
 #include "g_game.h"
-#include "m_misc.h"
+#include "../m_misc.h"
 #include "r_state.h"
 
 FILE* save_stream;

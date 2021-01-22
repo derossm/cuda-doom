@@ -12,8 +12,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 // Input event types.
 enum class evtype_t
 {

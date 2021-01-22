@@ -15,8 +15,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 #if _WIN32
 
 extern bool midi_server_initialized;

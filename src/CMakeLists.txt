@@ -1,125 +1,98 @@
-foreach(SUBDIR doom setup)
+foreach(SUBDIR doom setup algorithms disk_io input network)
 	add_subdirectory("${SUBDIR}")
 endforeach()
 
-# Common source files used by absolutely everything:
-set(COMMON_SOURCE_FILES
-						crispy.h
-	i_main.cpp
-	i_system.cpp		i_system.h
-	m_argv.cpp			m_argv.h
-						m_misc.h)
+set(NETWORK_SOURCE
+network/net_client.cpp		network/net_client.h
+network/net_common.cpp		network/net_common.h
+network/net_dedicated.cpp	network/net_dedicated.h
+							network/net_defs.h
+network/net_gui.cpp			network/net_gui.h
+network/net_io.cpp			network/net_io.h
+network/net_loop.cpp		network/net_loop.h
+network/net_packet.cpp		network/net_packet.h
+network/net_petname.cpp		network/net_petname.h
+network/net_query.cpp		network/net_query.h
+network/net_sdl.cpp			network/net_sdl.h
+network/net_server.cpp		network/net_server.h
+network/net_structrw.cpp	network/net_structrw.h
+)
 
-# Dedicated server (chocolate-server):
-set(DEDSERV_FILES
-	d_dedicated.cpp
-	d_iwad.cpp			d_iwad.h
-	d_mode.cpp			d_mode.h
-	deh_str.cpp			deh_str.h
-	i_timer.cpp			i_timer.h
+set(ALGORITHMS_SOURCE
+	algorithms/aes_prng.cpp		algorithms/aes_prng.h
+								algorithms/aes_prng_tables.cc
+								algorithms/sha1.h
+)
+
+set(INPUT_SOURCE
+input/i_input.cpp			input/i_input.h
+input/i_joystick.cpp		input/i_joystick.h
+input/m_controls.cpp		input/m_controls.h
+							input/d_ticcmd.h
+)
+
+set(DISK_IO_SOURCE
+	disk_io/v_diskicon.cpp		disk_io/v_diskicon.h
+								disk_io/d_iwad.h
+	disk_io/w_checksum.cpp		disk_io/w_checksum.h
+	disk_io/w_main.cpp			disk_io/w_main.h
+	disk_io/w_wad.cpp			disk_io/w_wad.h
+	disk_io/w_file.cpp			disk_io/w_file.h
+	disk_io/w_file_stdc.cpp
+	disk_io/w_file_posix.cpp
+	disk_io/w_file_win32.cpp
+	disk_io/w_merge.cpp			disk_io/w_merge.h
+	disk_io/i_glob.cpp			disk_io/i_glob.h
+)
+
+set(GAME_SOURCE
+								m_bbox.h
+	m_cheat.cpp					m_cheat.h
+	m_fixed.cpp					m_fixed.h
+	m_config.cpp				m_config.h
 	m_config.cc
-	m_config.cpp		m_config.h
-	net_common.cpp		net_common.h
-	net_dedicated.cpp	net_dedicated.h
-	net_io.cpp			net_io.h
-	net_packet.cpp		net_packet.h
-	net_sdl.cpp			net_sdl.h
-	net_query.cpp		net_query.h
-	net_server.cpp		net_server.h
-	net_structrw.cpp	net_structrw.h
-						z_zone.h)
 
-if(MSVC)
-	add_executable("${PROGRAM_PREFIX}server" WIN32 "${COMMON_SOURCE_FILES}" "${DEDSERV_FILES}")
-	set_target_properties("${PROGRAM_PREFIX}server" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
-else()
-	add_executable("${PROGRAM_PREFIX}server" "${COMMON_SOURCE_FILES}" "${DEDSERV_FILES}")
-	set_target_properties("${PROGRAM_PREFIX}server" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
-endif()
-target_include_directories("${PROGRAM_PREFIX}server" PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
-target_link_libraries("${PROGRAM_PREFIX}server" SDL2::SDL2main SDL2::SDL2_net)
-#target_precompile_headers("${PROGRAM_PREFIX}server" PUBLIC "../derma/stdafx.h")
+	d_event.cpp					d_event.h
+	d_loop.cpp					d_loop.h
+	d_mode.cpp					d_mode.h
 
-if(MSVC)
-	target_compile_options("${PROGRAM_PREFIX}server" PUBLIC
-		"/Zc:__cplusplus"
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise"
-		"/permissive-" "/Zc:preprocessor"
-		"/W4" "/Od" "/arch:AVX2"
-		"/EHsc"
-		"/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MDd"
-		#"/experimental:module"
-		)
-	target_compile_definitions("${PROGRAM_PREFIX}server" PUBLIC "WIN32_LEAN_AND_MEAN" "NOMINMAX")
-endif()
+	v_video.cpp					v_video.h
+	v_trans.cpp					v_trans.h
+								v_patch.h
 
-set(GAME_SOURCE_FILES
-	aes_prng.cpp		aes_prng.h
-						aes_prng_tables.h
-	d_event.cpp			d_event.h
-						doomkeys.h
-						doomtype.h
-	d_iwad.cpp			d_iwad.h
-	d_loop.cpp			d_loop.h
-	d_mode.cpp			d_mode.h
-						d_ticcmd.h
-	deh_str.cpp			deh_str.h
-	gusconf.cpp			gusconf.h
-						i_cdmus.h
-						i_endoom.h
-	i_glob.cpp			i_glob.h
-	i_input.cpp			i_input.h
-	i_joystick.cpp		i_joystick.h
-						i_swap.h
-	i_midipipe.cpp		i_midipipe.h
+								i_cdmus.h
+								i_endoom.h
+								i_swap.h
+	i_sound.cpp					i_sound.h
+	i_timer.cpp					i_timer.h
+	i_video.cpp					i_video.h
+	i_videohr.cpp				i_videohr.h
+
 	i_musicpack.cpp
-	i_oplmusic.cpp
+
+	gusconf.cpp					gusconf.h
+								z_zone.h
+
+	i_midipipe.cpp				i_midipipe.h
 	i_pcsound.cpp
 	i_sdlmusic.cpp
 	i_sdlsound.cpp
-	i_sound.cpp			i_sound.h
-	i_timer.cpp			i_timer.h
-	i_video.cpp			i_video.h
-	i_videohr.cpp		i_videohr.h
-	midifile.cpp		midifile.h
-	mus2mid.cpp			mus2mid.h
-						m_bbox.h
-	m_cheat.cpp			m_cheat.h
-	m_config.cc
-	m_config.cpp		m_config.h
-	m_controls.cpp		m_controls.h
-	m_fixed.cpp			m_fixed.h
-	net_client.cpp		net_client.h
-	net_common.cpp		net_common.h
-	net_dedicated.cpp	net_dedicated.h
-						net_defs.h
-	net_gui.cpp			net_gui.h
-	net_io.cpp			net_io.h
-	net_loop.cpp		net_loop.h
-	net_packet.cpp		net_packet.h
-	net_petname.cpp		net_petname.h
-	net_query.cpp		net_query.h
-	net_sdl.cpp			net_sdl.h
-	net_server.cpp		net_server.h
-	net_structrw.cpp	net_structrw.h
-	sha1.cpp			sha1.h
-	memio.cpp			memio.h
-	tables.cpp			tables.h
-	v_diskicon.cpp		v_diskicon.h
-	v_video.cpp			v_video.h
-						v_patch.h
-	v_trans.cpp			v_trans.h
-	w_checksum.cpp		w_checksum.h
-	w_main.cpp			w_main.h
-	w_wad.cpp			w_wad.h
-	w_file.cpp			w_file.h
-	w_file_stdc.cpp
-	w_file_posix.cpp
-	w_file_win32.cpp
-	w_merge.cpp			w_merge.h
-						z_zone.h)
+	i_oplmusic.cpp
+	i_oplmusic.cc
 
-set(GAME_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../")
+	midifile.cpp				midifile.h
+	mus2mid.cpp					mus2mid.h
+
+	tables.cc					tables.h
+
+	memio.cpp					memio.h
+)
+
+set(GAME_INCLUDE_DIRS	"${CMAKE_CURRENT_BINARY_DIR}/.."
+						"${CMAKE_CURRENT_SOURCE_DIR}/algorithms"
+						"${CMAKE_CURRENT_SOURCE_DIR}/disk_io"
+						"${CMAKE_CURRENT_SOURCE_DIR}/input"
+						"${CMAKE_CURRENT_SOURCE_DIR}/network")
 
 #if(MSVC)
 	#list(APPEND GAME_SOURCE_FILES "../win32/win_opendir.cpp" "../derma/os_native.h" "../derma/d_windows.h" "../win32/win_opendir.h")
@@ -127,13 +100,40 @@ set(GAME_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../")
 #endif()
 
 set(DEHACKED_SOURCE_FILES
-						deh_defs.h
-	deh_io.cpp			deh_io.h
-	deh_main.cpp		deh_main.h
-	deh_mapping.cpp		deh_mapping.h
-	deh_text.cpp)
+								disk_io/deh_defs.h
+	disk_io/deh_io.cpp			disk_io/deh_io.h
+	disk_io/deh_main.cpp		disk_io/deh_main.h
+	disk_io/deh_mapping.cpp		disk_io/deh_mapping.h
+	disk_io/deh_text.cpp
 
-set(SOURCE_FILES_WITH_DEH "${SOURCE_FILES}" "${DEHACKED_SOURCE_FILES}")
+	disk_io/deh_str.cpp			disk_io/deh_str.h
+	disk_io/deh_ammo.cpp
+	disk_io/deh_bexincl.cpp
+	disk_io/deh_bexpars.cpp		disk_io/deh_bexpars.h
+	disk_io/deh_bexptr.cpp
+	disk_io/deh_bexstr.cpp
+	disk_io/deh_cheat.cpp
+	disk_io/deh_doom.cpp
+	disk_io/deh_frame.cpp
+	disk_io/deh_misc.cpp		disk_io/deh_misc.h
+	disk_io/deh_ptr.cpp
+	disk_io/deh_sound.cpp
+	disk_io/deh_thing.cpp
+	disk_io/deh_weapon.cpp
+
+)
+
+# Common source files used by absolutely everything:
+set(COMMON_SOURCE_FILES
+	i_main.cpp
+	i_system.cpp		i_system.h
+	m_argv.cpp			m_argv.h
+						m_misc.h
+						crispy.h)
+
+set(GAME_SOURCE_FILES "${ALGORITHMS_SOURCE}" "${DISK_IO_SOURCE}" "${INPUT_SOURCE}" "${NETWORK_SOURCE}" "${GAME_SOURCE}")
+
+set(SOURCE_FILES_WITH_DEH "${COMMON_SOURCE_FILES}" "${GAME_SOURCE_FILES}" "${DEHACKED_SOURCE_FILES}")
 
 set(EXTRA_LIBS SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net textscreen pcsound opl)
 
@@ -147,115 +147,89 @@ endif()
 
 if(WIN32)
 	add_executable("${PROGRAM_PREFIX}doom" WIN32 "${SOURCE_FILES_WITH_DEH}" "${CMAKE_CURRENT_BINARY_DIR}/resource.rc")
-	set_target_properties("${PROGRAM_PREFIX}doom" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 else()
 	add_executable("${PROGRAM_PREFIX}doom" "${SOURCE_FILES_WITH_DEH}")
-	set_target_properties("${PROGRAM_PREFIX}doom" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 endif()
-target_include_directories("${PROGRAM_PREFIX}doom" PRIVATE ".;${GAME_INCLUDE_DIRS};${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
+
+set_target_properties("${PROGRAM_PREFIX}doom" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+target_include_directories("${PROGRAM_PREFIX}doom" PUBLIC "${GAME_INCLUDE_DIRS}" "${COMMON_INCLUDE_DIRS}")
 target_link_libraries("${PROGRAM_PREFIX}doom" doom "${EXTRA_LIBS}")
-#target_precompile_headers("${PROGRAM_PREFIX}doom" PUBLIC "../derma/stdafx.h")
+target_precompile_headers("${PROGRAM_PREFIX}doom" PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
-	target_compile_options("${PROGRAM_PREFIX}doom" PUBLIC
-		"/Zc:__cplusplus"
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise"
-		"/permissive-" "/Zc:preprocessor"
-		"/W4" "/Od" "/arch:AVX2"
-		"/EHsc"
-		"/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MDd"
-		#"/experimental:module"
-		)
-	target_compile_definitions("${PROGRAM_PREFIX}doom" PUBLIC "WIN32_LEAN_AND_MEAN" "NOMINMAX")
+	target_compile_options("${PROGRAM_PREFIX}doom" PUBLIC "${WIN64_COMPILE_OPTIONS}")
+	target_compile_definitions("${PROGRAM_PREFIX}doom" PUBLIC "${COMMON_DEFINITIONS}")
+else()
+	target_compile_definitions("${PROGRAM_PREFIX}doom" PUBLIC "SDL_MAIN_HANDLED")
 endif()
 
 # Source files needed for chocolate-setup:
 set(SETUP_FILES
-	deh_str.cpp			deh_str.h
-	d_mode.cpp			d_mode.h
-	d_iwad.cpp			d_iwad.h
-	i_timer.cpp			i_timer.h
+	disk_io/deh_str.cpp			disk_io/deh_str.h
+								disk_io/d_iwad.h
+	network/net_io.cpp			network/net_io.h
+	network/net_packet.cpp		network/net_packet.h
+	network/net_petname.cpp		network/net_petname.h
+	network/net_sdl.cpp			network/net_sdl.h
+	network/net_query.cpp		network/net_query.h
+	network/net_structrw.cpp	network/net_structrw.h
+	d_mode.cpp					d_mode.h
+	i_timer.cpp					i_timer.h
+	m_config.cpp				m_config.h
 	m_config.cc
-	m_config.cpp		m_config.h
-	m_controls.cpp		m_controls.h
-	net_io.cpp			net_io.h
-	net_packet.cpp		net_packet.h
-	net_petname.cpp		net_petname.h
-	net_sdl.cpp			net_sdl.h
-	net_query.cpp		net_query.h
-	net_structrw.cpp	net_structrw.h
-						z_zone.h)
+	m_controls.cpp				m_controls.h
+								z_zone.h)
 
 if(WIN32)
 	add_executable("${PROGRAM_PREFIX}setup" WIN32 "${SETUP_FILES}" "${COMMON_SOURCE_FILES}" "${CMAKE_CURRENT_BINARY_DIR}/setup-res.rc")
-	set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 else()
 	add_executable("${PROGRAM_PREFIX}setup" "${SETUP_FILES}" "${COMMON_SOURCE_FILES}")
-	set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
 endif()
-target_include_directories("${PROGRAM_PREFIX}setup" PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
+
+set_target_properties("${PROGRAM_PREFIX}setup" PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+target_include_directories("${PROGRAM_PREFIX}setup" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.." "${COMMON_INCLUDE_DIRS}")
 target_link_libraries("${PROGRAM_PREFIX}setup" SDL2::SDL2main SDL2::SDL2 SDL2::SDL2_mixer SDL2::SDL2_net setup textscreen)
-#target_precompile_headers("${PROGRAM_PREFIX}setup" PUBLIC "../derma/stdafx.h")
+target_precompile_headers("${PROGRAM_PREFIX}setup" PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
-	target_compile_options("${PROGRAM_PREFIX}setup" PUBLIC
-		"/Zc:__cplusplus"
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise"
-		"/permissive-" "/Zc:preprocessor"
-		"/W4" "/Od" "/arch:AVX2"
-		"/EHsc"
-		"/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MDd"
-		#"/experimental:module"
-		)
-	target_compile_definitions("${PROGRAM_PREFIX}setup" PUBLIC "WIN32_LEAN_AND_MEAN" "NOMINMAX")
+	target_compile_options("${PROGRAM_PREFIX}setup" PUBLIC "${WIN64_COMPILE_OPTIONS}")
+	target_compile_definitions("${PROGRAM_PREFIX}setup" PUBLIC "${COMMON_DEFINITIONS}")
+else()
+	target_compile_definitions("${PROGRAM_PREFIX}setup" PUBLIC "SDL_MAIN_HANDLED")
 endif()
 
 if(WIN32)
-	add_executable(midiread WIN32 midifile.cpp z_native.cpp i_system.cpp m_argv.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
-	set_target_properties(midiread PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+	add_executable(midiread WIN32 midifile.cpp z_native.cpp i_system.cpp m_argv.cpp disk_io/deh_str.cpp m_config.cpp)
 else()
-	add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
-	set_target_properties(midiread PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+	add_executable(midiread midifile.cpp z_native.cpp i_system.cpp m_argv.cpp disk_io/deh_str.cpp m_config.cpp)
 endif()
-target_compile_definitions(midiread PRIVATE "-DTEST")
-target_include_directories(midiread PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
+
+set_target_properties(midiread PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+target_include_directories(midiread PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.." "${COMMON_INCLUDE_DIRS}")
 target_link_libraries(midiread SDL2::SDL2main SDL2::SDL2)
-#target_precompile_headers(midiread PUBLIC "../derma/stdafx.h")
+target_precompile_headers(midiread PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
-	target_compile_options(midiread PUBLIC
-		"/Zc:__cplusplus"
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise"
-		"/permissive-" "/Zc:preprocessor"
-		"/W4" "/Od" "/arch:AVX2"
-		"/EHsc"
-		"/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MDd"
-		#"/experimental:module"
-		)
-	target_compile_definitions(midiread PUBLIC "WIN32_LEAN_AND_MEAN" "NOMINMAX")
+	target_compile_options(midiread PUBLIC "${WIN64_COMPILE_OPTIONS}")
+	target_compile_definitions(midiread PUBLIC "-DTEST" "${COMMON_DEFINITIONS}")
+else()
+	target_compile_definitions(midiread PUBLIC "-DTEST" "SDL_MAIN_HANDLED")
 endif()
 
 if(WIN32)
-	add_executable(mus2mid WIN32 mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
-	set_target_properties(mus2mid PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+	add_executable(mus2mid WIN32 mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp disk_io/deh_str.cpp m_config.cpp)
 else()
-	add_executable(mus2mid mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp d_iwad.cpp deh_str.cpp m_config.cpp)
-	set_target_properties(mus2mid PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+	add_executable(mus2mid mus2mid.cpp memio.cpp z_native.cpp i_system.cpp m_argv.cpp disk_io/deh_str.cpp m_config.cpp)
 endif()
-target_compile_definitions(mus2mid PRIVATE "-DSTANDALONE")
-target_include_directories(mus2mid PRIVATE ".;${CMAKE_CURRENT_BINARY_DIR}/../;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
+
+set_target_properties(mus2mid PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
+target_include_directories(mus2mid PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.." "${COMMON_INCLUDE_DIRS}")
 target_link_libraries(mus2mid SDL2::SDL2main SDL2::SDL2)
-#target_precompile_headers(mus2mid PUBLIC "../derma/stdafx.h")
+target_precompile_headers(mus2mid PUBLIC "../derma/stdafx.h")
 
 if(MSVC)
-	target_compile_options(mus2mid PUBLIC
-		"/Zc:__cplusplus"
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise"
-		"/permissive-" "/Zc:preprocessor"
-		"/W4" "/Od" "/arch:AVX2"
-		"/EHsc"
-		"/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MDd"
-		#"/experimental:module"
-		)
-	target_compile_definitions(mus2mid PUBLIC "WIN32_LEAN_AND_MEAN" "NOMINMAX")
+	target_compile_options(mus2mid PUBLIC "${WIN64_COMPILE_OPTIONS}")
+	target_compile_definitions(mus2mid PUBLIC "-DSTANDALONE" "${COMMON_DEFINITIONS}")
+else()
+	target_compile_definitions(mus2mid PUBLIC "-DSTANDALONE" "SDL_MAIN_HANDLED")
 endif()

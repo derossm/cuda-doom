@@ -12,9 +12,6 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
-#include "doomtype.h"
 #include "d_mode.h"
 
 // Valid game mode/mission combinations, with the number of episodes/maps for each.
@@ -33,13 +30,13 @@ static struct
 	{ GameMission::pack_tnt,		GameMode::commercial,	1, 32 },
 	{ GameMission::pack_plut,		GameMode::commercial,	1, 32 },
 	{ GameMission::pack_hacx,		GameMode::commercial,	1, 32 },
-	{ GameMission::pack_nerve,	GameMode::commercial,	1, 9 },
-	{ GameMission::pack_master,	GameMode::commercial,	1, 21 },
-	{ GameMission::heretic,		GameMode::shareware,	1, 9 },
-	{ GameMission::heretic,		GameMode::registered,	3, 9 },
-	{ GameMission::heretic,		GameMode::retail,		5, 9 },
+	{ GameMission::pack_nerve,		GameMode::commercial,	1, 9 },
+	{ GameMission::pack_master,		GameMode::commercial,	1, 21 },
+	{ GameMission::heretic,			GameMode::shareware,	1, 9 },
+	{ GameMission::heretic,			GameMode::registered,	3, 9 },
+	{ GameMission::heretic,			GameMode::retail,		5, 9 },
 	{ GameMission::hexen,			GameMode::commercial,	1, 60 },
-	{ GameMission::strife,		GameMode::commercial,	1, 34 },
+	{ GameMission::strife,			GameMode::commercial,	1, 34 },
 };
 
 // Check that a gamemode+gamemission received over the network is valid.
@@ -112,10 +109,10 @@ static struct {
 	{ GameMission::doom,		GameVersion::exe_final },
 	{ GameMission::doom,		GameVersion::exe_final2 },
 	{ GameMission::doom,		GameVersion::exe_chex },
-	{ GameMission::heretic,	GameVersion::exe_heretic_1_3 },
+	{ GameMission::heretic,		GameVersion::exe_heretic_1_3 },
 	{ GameMission::hexen,		GameVersion::exe_hexen_1_1 },
-	{ GameMission::strife,	GameVersion::exe_strife_1_2 },
-	{ GameMission::strife,	GameVersion::exe_strife_1_31 },
+	{ GameMission::strife,		GameVersion::exe_strife_1_2 },
+	{ GameMission::strife,		GameVersion::exe_strife_1_31 }
 };
 
 bool D_ValidGameVersion(GameMission mission, GameVersion version)

@@ -15,9 +15,9 @@
 
 #include "../../derma/common.h"
 
-#include "d_event.h"
-#include "m_cheat.h"
-#include "m_fixed.h"
+#include "../d_event.h"
+#include "../m_cheat.h"
+#include "../m_fixed.h"
 
 // Used by ST StatusBar stuff.
 constexpr size_t AM_MSGHEADER{(('a' << 24) + ('m' << 16))};

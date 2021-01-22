@@ -11,21 +11,19 @@
 	DESCRIPTION:
 		Intermission screens.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-//#include <string>
+#include "../z_zone.h"
 
-#include "z_zone.h"
-
-#include "m_misc.h"
+#include "../m_misc.h"
 #include "m_random.h"
 
-#include "deh_main.h"
-#include "deh_bexpars.h" // bex_pars[]
-#include "i_swap.h"
-#include "i_system.h"
+#include "../disk_io/deh_main.h"
+#include "../disk_io/deh_bexpars.h" // bex_pars[]
+#include "../i_swap.h"
+#include "../i_system.h"
 
-#include "w_wad.h"
+#include "../disk_io/w_wad.h"
 
 #include "g_game.h"
 
@@ -38,7 +36,7 @@
 #include "sounds.h"
 
 // Needs access to LFB.
-#include "v_video.h"
+#include "../v_video.h"
 
 #include "st_stuff.h" // ST_DrawDemoTimer()
 #include "wi_stuff.h"

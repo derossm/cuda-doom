@@ -11,10 +11,10 @@
 	DESCRIPTION:
 		Enemy thinking, AI. Action Pointer Functions that are associated with states/frames.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 #include "m_random.h"
-#include "i_system.h"
+#include "../i_system.h"
 
 #include "doomdef.h"
 #include "p_local.h"

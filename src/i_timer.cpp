@@ -14,7 +14,6 @@
 #include "../derma/stdafx.h"
 
 #include "i_timer.h"
-#include "doomtype.h"
 
 //
 // I_GetTime

@@ -19,10 +19,10 @@
 #include "i_system.h"
 #include "i_video.h"
 #include "v_video.h"
-#include "w_wad.h"
+#include "disk_io/w_wad.h"
 #include "z_zone.h"
 
-#include "deh_str.h"
+#include "disk_io/deh_str.h"
 
 int M_StringCopy(...) { return 0; }
 int M_StringConcat(...) { return 0; }

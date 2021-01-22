@@ -12,8 +12,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 // MISC
 extern int myargc;
 extern CHAR_PTR* myargv;

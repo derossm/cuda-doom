@@ -11,7 +11,7 @@
 	DESCRIPTION:
 		Random number LUT.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 // M_Random
 // Returns a 0-255 number

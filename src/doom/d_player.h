@@ -12,8 +12,8 @@
 
 #include "../../derma/common.h"
 
-#include "../d_ticcmd.h"
-#include "../net_defs.h"
+#include "../input/d_ticcmd.h"
+#include "../network/net_defs.h"
 
 #include "d_items.h"
 #include "p_pspr.h"

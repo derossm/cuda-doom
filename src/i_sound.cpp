@@ -12,8 +12,6 @@
 
 #include "doom/sounds.h"
 
-#include "doomtype.h"
-
 #include "gusconf.h"
 #include "i_sound.h"
 #include "i_video.h"

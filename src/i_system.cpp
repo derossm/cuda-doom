@@ -10,7 +10,7 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "deh_str.h"
+#include "disk_io/deh_str.h"
 #include "m_argv.h"
 #include "m_config.h"
 #include "m_misc.h"
@@ -21,7 +21,7 @@
 
 #include "i_system.h"
 
-#include "w_wad.h"
+#include "disk_io/w_wad.h"
 #include "z_zone.h"
 
 constexpr size_t DEFAULT_RAM{16 * 2}; // MiB

@@ -12,7 +12,7 @@
 
 #include "../../derma/common.h"
 
-#include "d_event.h"
+#include "../d_event.h"
 
 // Called by main loop.
 bool F_Responder(EventType* ev);

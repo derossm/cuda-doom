@@ -16,7 +16,7 @@
 #include "../../derma/common.h"
 
 #include "sounds.h"
-#include "m_fixed.h"
+#include "../m_fixed.h"
 //#include "p_mobj.h"
 
 // Needed for action function pointer handling.

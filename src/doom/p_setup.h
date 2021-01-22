@@ -15,7 +15,7 @@
 
 #include "../../derma/common.h"
 
-#include "w_wad.h"
+#include "../disk_io/w_wad.h"
 
 extern lumpinfo_t* maplumpinfo;
 // pointer to the map lump about to load

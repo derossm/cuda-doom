@@ -15,7 +15,7 @@
 
 #include "../../derma/common.h"
 
-#include "d_event.h"
+#include "../d_event.h"
 
 // Globally visible constants.
 #define HU_FONTSTART '!'	// the first font characters

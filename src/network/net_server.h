@@ -1,0 +1,31 @@
+/**********************************************************************************************************************************************\
+	Copyright(C) 2005-2014 Simon Howard
+
+	This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+	This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+	DESCRIPTION:
+		Network server code
+\**********************************************************************************************************************************************/
+#pragma once
+
+#include "../../derma/common.h"
+
+// initialize server and wait for connections
+void NET_SV_Init();
+
+// run server: check for new packets received etc.
+void NET_SV_Run();
+
+// Shut down the server
+// Blocks until all clients disconnect, or until a 5 second timeout
+void NET_SV_Shutdown();
+
+// Add a network module to the context used by the server
+void NET_SV_AddModule(net_module_t* mod);	// TODO URGENT REFACTOR THIS NAME
+
+// Register server with master server.
+void NET_SV_RegisterWithMaster();

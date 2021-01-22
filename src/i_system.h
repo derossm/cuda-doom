@@ -15,7 +15,7 @@
 
 #include "../derma/common.h"
 
-#include "d_ticcmd.h"
+#include "input/d_ticcmd.h"
 #include "d_event.h"
 
 typedef void (*atexit_func_t)();

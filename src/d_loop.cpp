@@ -24,25 +24,25 @@
 #include "m_argv.h"
 #include "m_fixed.h"
 
-#include "net_client.h"
-#include "net_gui.h"
-#include "net_io.h"
-#include "net_query.h"
-#include "net_server.h"
-#include "net_sdl.h"
-#include "net_loop.h"
+#include "network/net_client.h"
+#include "network/net_gui.h"
+#include "network/net_io.h"
+#include "network/net_query.h"
+#include "network/net_server.h"
+#include "network/net_sdl.h"
+#include "network/net_loop.h"
 
 #include "crispy.h"
 
 // TODO: Move nonvanilla demo functions into a dedicated file.
 #include "m_misc.h"
-#include "w_wad.h"
+#include "disk_io/w_wad.h"
 
 // The complete set of data for a particular tic.
 struct ticcmd_set_t
 {
 	ticcmd_t cmds[NET_MAXPLAYERS];
-	bool ingame[NET_MAXPLAYERS];
+	::std::array<bool, NET_MAXPLAYERS> ingame;
 };
 
 // Maximum time that we wait in TryRunTics() for netgame data to be received before we bail out and render a frame anyway.

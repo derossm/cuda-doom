@@ -30,7 +30,7 @@ class WindowAction : public WidgetBase<WindowAction>
 
 public:
 
-	WindowAction(Keys key, ::std::string label) {} : key{key}, label{::std::string(label)},
+	WindowAction(Keys key, ::std::string label) : key{key}, label{::std::string(label)} {}
 /*
 	// An action with the name "close" the closes the window
 	WindowAction* NewWindowEscapeAction(Window* window)

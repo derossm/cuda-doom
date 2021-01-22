@@ -12,17 +12,17 @@
 		Movement, collision handling.
 		Shooting and aiming.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "deh_misc.h"
+#include "../disk_io/deh_misc.h"
 
-#include "m_bbox.h"
+#include "../m_bbox.h"
 #include "m_random.h"
-#include "i_system.h"
+#include "../i_system.h"
 
 #include "doomdef.h"
-#include "m_argv.h"
-#include "m_misc.h"
+#include "../m_argv.h"
+#include "../m_misc.h"
 #include "p_local.h"
 
 #include "s_sound.h"

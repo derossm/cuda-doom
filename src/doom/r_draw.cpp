@@ -11,18 +11,16 @@
 	DESCRIPTION:
 		The actual span/column drawing functions. Here find the main potential for optimization, e.g. inline assembly, different algorithms.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
+#include "../../derma/stdafx.h"
 
 #include "doomdef.h"
-#include "deh_main.h"
-#include "i_system.h"
-#include "z_zone.h"
-#include "w_wad.h"
+#include "../disk_io/deh_main.h"
+#include "../i_system.h"
+#include "../z_zone.h"
+#include "../disk_io/w_wad.h"
 #include "r_local.h"
-#include "v_video.h"
-#include "v_trans.h"
+#include "../v_video.h"
+#include "../v_trans.h"
 #include "doomstat.h"
 
 //constexpr size_t MAXWIDTH{1120};

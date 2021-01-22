@@ -11,19 +11,17 @@
 	DESCRIPTION:
 		Preparation of data for rendering, generation of lookups, caching, retrieval by name.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-//#include <string>
+#include "../disk_io/deh_main.h"
+#include "../i_swap.h"
+#include "../i_system.h"
+#include "../z_zone.h"
 
-#include "deh_main.h"
-#include "i_swap.h"
-#include "i_system.h"
-#include "z_zone.h"
-
-#include "w_wad.h"
+#include "../disk_io/w_wad.h"
 
 #include "doomdef.h"
-#include "m_misc.h"
+#include "../m_misc.h"
 #include "r_local.h"
 #include "p_local.h"
 
@@ -31,7 +29,7 @@
 #include "r_sky.h"
 
 #include "r_data.h"
-#include "v_trans.h" // tranmap, CRMAX
+#include "../v_trans.h" // tranmap, CRMAX
 #include "r_bmaps.h" // R_BrightmapForTexName()
 
 //

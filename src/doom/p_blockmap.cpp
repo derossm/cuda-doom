@@ -13,11 +13,12 @@
 	DESCRIPTION:
 		Create Blockmap taken from mbfsrc/P_SETUP.C:547-707, slightly adapted
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "i_system.h"
+#include "../i_system.h"
+#include "../z_zone.h"
+
 #include "p_local.h"
-#include "z_zone.h"
 
 // blocklist structure
 struct Blocklist

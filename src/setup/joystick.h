@@ -11,7 +11,6 @@
 
 #include "../../derma/common.h"
 
-#include "../doomtype.h"
 #include "../i_joystick.h"
 #include "../m_config.h"
 #include "../m_controls.h"

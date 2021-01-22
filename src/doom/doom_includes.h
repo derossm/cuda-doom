@@ -16,14 +16,14 @@
 
 #include "../../derma/common.h"
 
-#include "../deh_main.h"
+#include "../disk_io/deh_main.h"
 
-#include "../d_iwad.h"
+#include "../disk_io/d_iwad.h"
 
 #include "../z_zone.h"
-#include "../w_main.h"
-#include "../w_wad.h"
-#include "../v_diskicon.h"
+#include "../disk_io/w_main.h"
+#include "../disk_io/w_wad.h"
+#include "../disk_io/v_diskicon.h"
 #include "../v_video.h"
 
 #include "../m_argv.h"
@@ -38,16 +38,16 @@
 #include "../i_timer.h"
 #include "../i_video.h"
 
-#include "../net_client.h"
-#include "../net_dedicated.h"
-#include "../net_query.h"
+#include "../network/net_client.h"
+#include "../network/net_dedicated.h"
+#include "../network/net_query.h"
 
 #include "doomdef.h"
 #include "doomstat.h"
 
 #include "dstrings.h"
 #include "sounds.h"
-#include "d_pwad.h"
+#include "../disk_io/d_pwad.h"
 #include "f_finale.h"
 #include "f_wipe.h"
 

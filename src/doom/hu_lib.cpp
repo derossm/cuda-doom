@@ -11,17 +11,17 @@
 	DESCRIPTION:
 		heads-up text and input code
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
+
+#include "../i_swap.h"
+#include "../v_video.h"
+#include "../v_trans.h" // colored HUlib_drawTextLine()
 
 #include "doomdef.h"
-
-#include "v_video.h"
-#include "i_swap.h"
 
 #include "hu_lib.h"
 #include "r_local.h"
 #include "r_draw.h"
-#include "v_trans.h" // colored HUlib_drawTextLine()
 
 // bool : whether the screen is always erased
 #define noterased viewwindowx

@@ -11,9 +11,7 @@
 	DESCRIPTION:
 		Globally defined strings.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
+#include "../../derma/stdafx.h"
 
 #include "dstrings.h"
 

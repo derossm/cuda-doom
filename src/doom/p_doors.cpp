@@ -11,23 +11,22 @@
 	DESCRIPTION:
 		Door animation code (opening/closing)
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "z_zone.h"
+#include "../disk_io/deh_main.h"
+#include "../i_system.h"
+#include "../z_zone.h"
+
 #include "doomdef.h"
-#include "deh_main.h"
+#include "doomstat.h"
+#include "dstrings.h"
 #include "p_local.h"
-#include "i_system.h"
 
 #include "s_sound.h"
+#include "sounds.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
-
-// Data.
-#include "dstrings.h"
-#include "sounds.h"
 
 #if 0
 //

@@ -15,10 +15,8 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-//#include <string>
-
 #include "m_misc.h"
-#include "w_wad.h"
+#include "disk_io/w_wad.h"
 #include "z_zone.h"
 
 constexpr size_t MAX_INSTRUMENTS{256};

@@ -11,20 +11,19 @@
 	DESCRIPTION:
 		Ceiling aninmation (lowering, crushing, raising)
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "z_zone.h"
+#include "../z_zone.h"
+
 #include "doomdef.h"
+#include "doomstat.h"
+
 #include "p_local.h"
 
 #include "s_sound.h"
-
-// State.
-#include "doomstat.h"
-#include "r_state.h"
-
-// Data.
 #include "sounds.h"
+
+#include "r_state.h"
 
 ceiling_t* activeceilings[MAXCEILINGS];
 

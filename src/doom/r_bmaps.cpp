@@ -14,11 +14,11 @@
 		Brightmaps for wall textures
 		Adapted from doomretro/src/r_data.c:97-209
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 #include "doomstat.h"
 #include "r_data.h"
-#include "w_wad.h"
+#include "../disk_io/w_wad.h"
 
 // brightmap data
 

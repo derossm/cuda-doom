@@ -14,16 +14,14 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "deh_str.h"
+#include "disk_io/deh_str.h"
 #include "i_sound.h"
 #include "i_system.h"
 #include "i_swap.h"
 #include "m_argv.h"
 #include "m_misc.h"
-#include "w_wad.h"
+#include "disk_io/w_wad.h"
 #include "z_zone.h"
-
-#include "doomtype.h"
 
 #define LOW_PASS_FILTER
 //#define DEBUG_DUMP_WAVS

@@ -14,12 +14,12 @@
 #include "../derma/stdafx.h"
 
 // TODO fix including cpp
-#include "icon.cpp"
+#include "icon.cc"
 
 #include "crispy.h"
 
 #include "d_loop.h"
-#include "deh_str.h"
+#include "disk_io/deh_str.h"
 #include "i_input.h"
 #include "i_joystick.h"
 #include "i_system.h"
@@ -29,9 +29,9 @@
 #include "m_config.h"
 #include "m_misc.h"
 #include "tables.h"
-#include "v_diskicon.h"
+#include "disk_io/v_diskicon.h"
 #include "v_video.h"
-#include "w_wad.h"
+#include "disk_io/w_wad.h"
 #include "z_zone.h"
 
 int SCREENWIDTH, SCREENHEIGHT, SCREENHEIGHT_4_3;

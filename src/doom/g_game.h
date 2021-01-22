@@ -13,7 +13,7 @@
 #include "../../derma/common.h"
 
 #include "../d_event.h"
-#include "../d_ticcmd.h"
+#include "../input/d_ticcmd.h"
 
 #include "doomdef.h"
 
@@ -50,7 +50,7 @@ void G_SecretExitLevel();
 void G_WorldDone();
 
 // Read current data from inputs and build a player movement command.
-void G_BuildTiccmd(ticcmd_t* cmd, int maketic);
+void G_BuildTiccmd(ticcmd_t* cmd, TimeType maketic);
 
 void G_Ticker();
 bool G_Responder(EventType* ev);

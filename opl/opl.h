@@ -20,14 +20,14 @@ namespace cudadoom::opl
 {
 
 // Result from Init(), indicating what type of OPL chip was detected, if any.
-enum class opl_init_result_t
+enum class init_result_t
 {
 	NONE,
 	OPL2,
 	OPL3
 };
 
-enum class opl_port_t
+enum class port_t
 {
 	REGISTER_PORT = 0,
 	DATA_PORT = 1,
@@ -42,29 +42,29 @@ struct delay_data_t
 	SDL_cond* cond;
 };
 
-typedef void (*opl_callback_t)(delay_data_t* data);
+typedef void (*callback_t)(delay_data_t* data);
 
-typedef bool (*opl_init_func)(uint64_t port_base);
-typedef void (*opl_shutdown_func)();
-typedef byte (*opl_read_port_func)(opl_port_t port);
-typedef void (*opl_write_port_func)(opl_port_t port, byte value);
-typedef void (*opl_set_callback_func)(TimeType us, opl_callback_t callback, delay_data_t* data);
-typedef void (*opl_clear_callbacks_func)();
-typedef void (*opl_set_paused_func)(bool paused);
-typedef void (*opl_adjust_callbacks_func)(double value);
+typedef bool (*init_func)(uint64_t port_base);
+typedef void (*shutdown_func)();
+typedef byte (*read_port_func)(port_t port);
+typedef void (*write_port_func)(port_t port, byte value);
+typedef void (*set_callback_func)(TimeType us, callback_t callback, delay_data_t* data);
+typedef void (*clear_callbacks_func)();
+typedef void (*set_paused_func)(bool paused);
+typedef void (*adjust_callbacks_func)(double value);
 
-struct opl_driver_t
+struct driver_t
 {
 	::std::string name;
 
-	opl_init_func init_func;
-	opl_shutdown_func shutdown_func;
-	opl_read_port_func read_port_func;
-	opl_write_port_func write_port_func;
-	opl_set_callback_func set_callback_func;
-	opl_clear_callbacks_func clear_callbacks_func;
-	opl_set_paused_func set_paused_func;
-	opl_adjust_callbacks_func adjust_callbacks_func;
+	init_func init_func;
+	shutdown_func shutdown_func;
+	read_port_func read_port_func;
+	write_port_func write_port_func;
+	set_callback_func set_callback_func;
+	clear_callbacks_func clear_callbacks_func;
+	set_paused_func set_paused_func;
+	adjust_callbacks_func adjust_callbacks_func;
 };
 
 constexpr size_t MAX_OPL_QUEUE{64};
@@ -79,7 +79,7 @@ enum class thread_state_t
 struct QueueEntry
 {
 	delay_data_t* data{nullptr};
-	opl_callback_t callback;
+	callback_t callback;
 	TimeType time;
 };
 
@@ -111,35 +111,35 @@ static constexpr TimeType		MS{US*1'000}; // milliseconds
 static constexpr TimeType	SECOND{MS*1'000}; // seconds
 
 #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
-extern opl_driver_t opl_linux_driver;
+extern driver_t linux_driver;
 #endif
 #if defined(HAVE_LIBI386) || defined(HAVE_LIBAMD64)
-extern opl_driver_t opl_openbsd_driver;
+extern driver_t openbsd_driver;
 #endif
 #ifdef _WIN32
-extern opl_driver_t opl_win32_driver;
+extern driver_t win32_driver;
 #endif
 
-extern opl_driver_t opl_sdl_driver;
+extern driver_t sdl_driver;
 
-static opl_driver_t* drivers[]{
+static driver_t* drivers[]{
 #if (defined(__i386__) || defined(__x86_64__)) && defined(HAVE_IOPERM)
-	&opl_linux_driver,
+	&linux_driver,
 #endif
 #if defined(HAVE_LIBI386) || defined(HAVE_LIBAMD64)
-	&opl_openbsd_driver,
+	&openbsd_driver,
 #endif
 #ifdef _WIN32
-	& opl_win32_driver,
+	&win32_driver,
 #endif
-	& opl_sdl_driver,
+	&sdl_driver,
 	nullptr
 };
 
 // Sample rate to use when doing software emulation.
-uint64_t opl_sample_rate = 22050;
+uint64_t sample_rate = 22050;
 
-static opl_driver_t* driver{nullptr};
+static driver_t* driver{nullptr};
 
 static bool init_stage_reg_writes = true;
 
@@ -156,10 +156,10 @@ void Shutdown()
 // Set the sample rate used for software OPL emulation.
 void SetSampleRate(uint64_t rate)
 {
-	opl_sample_rate = rate;
+	sample_rate = rate;
 }
 
-void WritePort(opl_port_t port, byte value)
+void WritePort(port_t port, byte value)
 {
 	if (driver)
 	{
@@ -171,7 +171,7 @@ void WritePort(opl_port_t port, byte value)
 	}
 }
 
-auto ReadPort(opl_port_t port)
+auto ReadPort(port_t port)
 {
 	if (driver)
 	{
@@ -198,7 +198,7 @@ auto ReadPort(opl_port_t port)
 // Higher-level functions, based on the lower-level functions above (register write, etc).
 auto ReadStatus()
 {
-	return ReadPort(opl_port_t::REGISTER_PORT);
+	return ReadPort(port_t::REGISTER_PORT);
 }
 
 // Write an OPL register value
@@ -207,11 +207,11 @@ void WriteRegister(uint64_t reg, byte value)
 	// TODO INVESTIGATE FIXME
 	if (reg & 0x100)
 	{
-		WritePort(opl_port_t::REGISTER_PORT_OPL3, std::byte(reg));
+		WritePort(port_t::REGISTER_PORT_OPL3, std::byte(reg));
 	}
 	else
 	{
-		WritePort(opl_port_t::REGISTER_PORT, std::byte(reg));
+		WritePort(port_t::REGISTER_PORT, std::byte(reg));
 	}
 
 	// For timing, read the register port six times after writing the register number to cause the appropriate delay
@@ -221,15 +221,15 @@ void WriteRegister(uint64_t reg, byte value)
 		// reading from the register port; after initialization, the data port is read, instead.
 		if (init_stage_reg_writes)
 		{
-			ReadPort(opl_port_t::REGISTER_PORT);
+			ReadPort(port_t::REGISTER_PORT);
 		}
 		else
 		{
-			ReadPort(opl_port_t::DATA_PORT);
+			ReadPort(port_t::DATA_PORT);
 		}
 	}
 
-	WritePort(opl_port_t::DATA_PORT, value);
+	WritePort(port_t::DATA_PORT, value);
 
 	// Read the register port 24 times after writing the value to cause the appropriate delay
 	for (size_t i{0}; i < 24; ++i)
@@ -305,7 +305,7 @@ void InitRegisters(bool opl3)
 
 // Timer functions.
 // FIXME FIND A COMMON TYPE FOR THIS VOID
-void SetCallback(TimeType us, opl_callback_t callback, delay_data_t* data)
+void SetCallback(TimeType us, callback_t callback, delay_data_t* data)
 {
 	if (driver)
 	{
@@ -410,30 +410,30 @@ auto Detect()
 
 	if ((result1 & std::byte(0xe0)) == std::byte(0x00) && (result2 & std::byte(0xe0)) == std::byte(0xc0))
 	{
-		result1 = ReadPort(opl_port_t::REGISTER_PORT);
-		result2 = ReadPort(opl_port_t::REGISTER_PORT_OPL3);
+		result1 = ReadPort(port_t::REGISTER_PORT);
+		result2 = ReadPort(port_t::REGISTER_PORT_OPL3);
 		if (result1 == std::byte(0x00))
 		{
-			return opl_init_result_t::OPL3;
+			return init_result_t::OPL3;
 		}
 		else
 		{
-			return opl_init_result_t::OPL2;
+			return init_result_t::OPL2;
 		}
 	}
 	else
 	{
-		return opl_init_result_t::NONE;
+		return init_result_t::NONE;
 	}
 }
 
 // Initialize the specified driver and detect an OPL chip. Returns true if an OPL is detected.
-static auto InitDriver(opl_driver_t* _driver, uint64_t port_base)
+static auto InitDriver(driver_t* _driver, uint64_t port_base)
 {
 	// Initialize the driver.
 	if (!_driver->init_func(port_base))
 	{
-		return opl_init_result_t::NONE;
+		return init_result_t::NONE;
 	}
 
 	// The driver was initialized okay, so we now have somewhere to write to. It doesn't mean there's an OPL chip there,
@@ -444,12 +444,12 @@ static auto InitDriver(opl_driver_t* _driver, uint64_t port_base)
 	auto result1{Detect()};
 	auto result2{Detect()};
 
-	if (result1 == opl_init_result_t::NONE || result2 == opl_init_result_t::NONE)
+	if (result1 == init_result_t::NONE || result2 == init_result_t::NONE)
 	{
 		printf("Init: No OPL detected using '%s' driver.\n", _driver->name.c_str());
 		_driver->shutdown_func();
 		driver = nullptr;
-		return opl_init_result_t::NONE;
+		return init_result_t::NONE;
 	}
 
 	init_stage_reg_writes = false;
@@ -465,7 +465,7 @@ static auto AutoSelectDriver(uint64_t port_base)
 	for (size_t i{0}; drivers[i]; ++i)
 	{
 		auto result = InitDriver(drivers[i], port_base);
-		if (result != opl_init_result_t::NONE)
+		if (result != init_result_t::NONE)
 		{
 			return result;
 		}
@@ -473,7 +473,7 @@ static auto AutoSelectDriver(uint64_t port_base)
 
 	printf("Init: Failed to find a working driver.\n");
 
-	return opl_init_result_t::NONE;
+	return init_result_t::NONE;
 }
 
 // Initialize the OPL library. Return value indicates type of OPL chip detected, if any.
@@ -488,7 +488,7 @@ auto Init(uint64_t port_base)
 			error)
 	{
 		// _dupenv_s: error if return is non-zero, could handle error code here if you want
-		return opl_init_result_t::NONE;
+		return init_result_t::NONE;
 	}
 
 	::std::string driver_name((const char*)*buffer, *numberOfElements);
@@ -500,7 +500,7 @@ auto Init(uint64_t port_base)
 			if (!driver_name.compare(drivers[i]->name))
 			{
 				auto result{InitDriver(drivers[i], port_base)};
-				if (result == opl_init_result_t::NONE)
+				if (result == init_result_t::NONE)
 				{
 					printf("Init: Failed to initialize driver: '%s'.\n", driver_name.c_str());
 				}
@@ -511,7 +511,7 @@ auto Init(uint64_t port_base)
 
 		printf("Init: unknown driver: '%s'.\n", driver_name.c_str());
 
-		return opl_init_result_t::NONE;
+		return init_result_t::NONE;
 	}
 	else
 	{

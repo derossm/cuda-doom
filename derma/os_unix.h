@@ -12,6 +12,8 @@
 #pragma once
 
 #ifndef _WIN32
+
+#pragma warning(push, 0)
 	#include <fcntl.h>
 	#include <unistd.h>
 	#include <signal.h>
@@ -58,5 +60,6 @@
 	#elif !defined(NO_OBSD_DRIVER)
 		#define NO_OBSD_DRIVER
 	#endif
+#pragma warning(pop)
 
 #endif // _WIN32

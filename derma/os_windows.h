@@ -19,10 +19,19 @@
 		#define NOMINMAX
 	#endif
 
+#pragma warning(push, 0)
 	#include <windows.h>
 	#include <wrl.h>
 	#include <shellapi.h>
 	#include <aclapi.h>
+
+	//#include <tchar.h>
+	//#include <shlobj.h>
+	//#include <process.h>
+	//#include <io.h>
+	//#include <winioctl.h> // confirmed used in ioperm_sys.h
+	//#include <sys/stat.h>
+#pragma warning(pop)
 
 	#include <d3d12.h>
 	#include <dxgi1_4.h>
@@ -30,13 +39,6 @@
 	#include <DirectXMath.h>
 
 	#include "../directx/d3dx12.h"
-
-	//#include <tchar.h>
-	//#include <shlobj.h>
-	//#include <process.h>
-	//#include <io.h>
-	//#include <winioctl.h>
-	//#include <sys/stat.h>
 
 	#ifndef NO_OBSD_DRIVER
 		#define NO_OBSD_DRIVER

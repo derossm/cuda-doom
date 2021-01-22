@@ -9,13 +9,11 @@
 
 	Functions for presenting the information captured from the statistics buffer to a file.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
+#include "../../derma/stdafx.h"
 
 #include "d_player.h"
-#include "d_mode.h"
-#include "m_argv.h"
+#include "../d_mode.h"
+#include "../m_argv.h"
 
 #include "statdump.h"
 

@@ -14,8 +14,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 extern ::std::string gus_patch_path;
 extern int gus_ram_kb;
 

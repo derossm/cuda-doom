@@ -15,8 +15,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 // The "mission" controls what game we are playing.
 enum class GameMission
 {

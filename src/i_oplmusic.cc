@@ -12,16 +12,20 @@
 		System interface for music.
 \**********************************************************************************************************************************************/
 
-#include "opl.h"
+#include <array>
+#include "../opl/opl.h"
+
+namespace cudadoom
+{
 
 // Operators used by the different voices.
-constexpr int voice_operators[2][OPL_NUM_VOICES]{
+constexpr ::std::array<::std::array<const ::int8_t, opl::NUM_VOICES>, 2> voice_operators{{
 	{ 0x00, 0x01, 0x02, 0x08, 0x09, 0x0a, 0x10, 0x11, 0x12 },
 	{ 0x03, 0x04, 0x05, 0x0b, 0x0c, 0x0d, 0x13, 0x14, 0x15 }
-};
+}};
 
 // Frequency values to use for each note.
-constexpr unsigned short frequency_curve[]{
+constexpr ::std::array<const unsigned short, 668> frequency_curve{
 	0x133, 0x133, 0x134, 0x134, 0x135, 0x136, 0x136, 0x137,	// -1
 	0x137, 0x138, 0x138, 0x139, 0x139, 0x13a, 0x13b, 0x13b,
 	0x13c, 0x13c, 0x13d, 0x13d, 0x13e, 0x13f, 0x13f, 0x140,
@@ -133,7 +137,7 @@ constexpr unsigned short frequency_curve[]{
 };
 
 // Mapping from MIDI volume level to OPL level value.
-constexpr unsigned volume_mapping_table[]{
+constexpr ::std::array<const ::uint8_t, 128> volume_mapping_table{
 	0, 1, 3, 5, 6, 8, 10, 11,
 	13, 14, 16, 17, 19, 20, 22, 23,
 	25, 26, 27, 29, 30, 32, 33, 34,
@@ -151,3 +155,5 @@ constexpr unsigned volume_mapping_table[]{
 	120, 121, 121, 122, 122, 123, 123, 123,
 	124, 124, 125, 125, 126, 126, 127, 127
 };
+
+}

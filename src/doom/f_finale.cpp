@@ -11,28 +11,26 @@
 	DESCRIPTION:
 		Game completion, final screen animation.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
+#include "../../derma/stdafx.h"
 
 // Functions.
-#include "deh_main.h"
-#include "i_system.h"
-#include "i_swap.h"
-#include "z_zone.h"
-#include "v_video.h"
-#include "w_wad.h"
-#include "s_sound.h"
+#include "../disk_io/deh_main.h"
+#include "../i_system.h"
+#include "../i_swap.h"
+#include "../z_zone.h"
+#include "../v_video.h"
+#include "../disk_io/w_wad.h"
+#include "../m_controls.h"		// key_*
 
 // Data.
 #include "d_main.h"
 #include "dstrings.h"
-#include "sounds.h"
-
 #include "doomstat.h"
+
 #include "r_state.h"
-#include "m_controls.h"		// key_*
 #include "m_random.h"		// Crispy_Random()
+#include "s_sound.h"
+#include "sounds.h"
 
 #include "hu_stuff.h"
 

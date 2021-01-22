@@ -16,10 +16,10 @@
 
 #include "m_bbox.h"
 #include "p_local.h"
-#include "i_swap.h"
-#include "i_system.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "../i_swap.h"
+#include "../i_system.h"
+#include "../disk_io/w_wad.h"
+#include "../z_zone.h"
 
 #include "p_extnodes.h"
 

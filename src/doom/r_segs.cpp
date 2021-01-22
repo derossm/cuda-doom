@@ -11,9 +11,9 @@
 	DESCRIPTION:
 		All the clipping: columns, horizontal spans, sky columns.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "i_system.h"
+#include "../i_system.h"
 
 #include "doomdef.h"
 #include "doomstat.h"

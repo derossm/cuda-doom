@@ -16,7 +16,6 @@
 
 #include "../../derma/common.h"
 
-#include "../doomtype.h"
 #include "doomdef.h"
 
 //

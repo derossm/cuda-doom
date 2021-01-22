@@ -10,12 +10,10 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "doomtype.h"
-
-#include "d_iwad.h"
+#include "disk_io/d_iwad.h"
 #include "i_system.h"
 #include "m_misc.h"
-#include "m_argv.h" // haleyjd 20110212: warning fix
+#include "m_argv.h"
 
 int myargc;
 char** myargv;

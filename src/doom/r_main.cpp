@@ -12,16 +12,16 @@
 		Rendering main loop and setup functions, utility functions (BSP, geometry, trigonometry).
 		See tables.cpp, too.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "doomstat.h" // leveltime, paused, menuactive
-#include "d_loop.h"
+#include "doom_engine.h"
 
-#include "m_bbox.h"
+#include "../m_bbox.h"
 #include "m_menu.h"
 
-#include "i_system.h" // I_Realloc()
+#include "../i_system.h" // I_Realloc()
 #include "p_local.h" // MLOOKUNIT
 #include "r_local.h"
 #include "r_sky.h"

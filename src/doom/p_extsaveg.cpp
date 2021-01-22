@@ -15,15 +15,14 @@
 #include "../../derma/stdafx.h"
 
 #include "doomstat.h"
-#include "doomtype.h"
-#include "m_misc.h"
+#include "../m_misc.h"
 #include "p_extsaveg.h"
 #include "p_local.h"
 #include "p_saveg.h"
 #include "p_setup.h"
 #include "s_sound.h"
 #include "s_musinfo.h"
-#include "z_zone.h"
+#include "../z_zone.h"
 
 constexpr size_t MAX_LINE_LEN{260};
 constexpr size_t MAX_STRING_LEN{80};

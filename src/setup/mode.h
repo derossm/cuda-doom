@@ -15,9 +15,8 @@
 #include "../../textscreen/txt_window.h"
 
 #include "../d_mode.h"
-#include "../d_iwad.h"
+#include "../disk_io/d_iwad.h"
 
-#include "../doomtype.h"
 #include "../i_system.h"
 #include "../m_argv.h"
 #include "../m_config.h"

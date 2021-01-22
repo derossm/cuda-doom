@@ -15,8 +15,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 // so that the individual game logic and sound driver code agree
 constexpr size_t NORM_PITCH{127};
 
@@ -199,11 +197,11 @@ extern int snd_pitchshift;
 void I_BindSoundVariables();
 
 // DMX version to emulate for OPL emulation:
-enum class opl_driver_ver_t
+enum class driver_ver_t
 {
-	opl_doom1_1_666,	// Doom 1 v1.666
-	opl_doom2_1_666,	// Doom 2 v1.666, Hexen, Heretic
-	opl_doom_1_9		// Doom v1.9, Strife
+	doom1_1_666,	// Doom 1 v1.666
+	doom2_1_666,	// Doom 2 v1.666, Hexen, Heretic
+	doom_1_9		// Doom v1.9, Strife
 };
 
-void I_SetOPLDriverVer(opl_driver_ver_t ver);
+void I_SetOPLDriverVer(driver_ver_t ver);

@@ -149,6 +149,7 @@
 
 #include <cuda_runtime.h>
 
+#pragma warning(push, 0)
 // support maps with compressed ZDBSP nodes
 #ifdef HAVE_ZLIB
 	#include <zlib.h>
@@ -184,3 +185,4 @@
 #include <SDL2/SDL_joystick.h>
 
 #include <SDL2/SDL_opengl.h>
+#pragma warning(pop)

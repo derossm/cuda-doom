@@ -11,8 +11,9 @@
 	DESCRIPTION:
 		DOOM selection menu, options, episode etc. Sliders and icons. Kinda widget stuff.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
+#include "../disk_io/deh_main.h"
 #include "../m_argv.h"
 #include "../m_controls.h"
 
@@ -23,13 +24,15 @@
 #include "../i_video.h"
 #include "../m_misc.h"
 #include "../v_video.h"
-#include "../w_wad.h"
+#include "../disk_io/w_wad.h"
 #include "../z_zone.h"
+#include "../v_trans.h" // colored "invert mouse" message
 
 #include "doomdef.h"
+#include "doomstat.h"
 #include "dstrings.h"
 #include "d_main.h"
-#include "deh_main.h"
+
 #include "r_local.h"
 #include "hu_stuff.h"
 #include "g_game.h"
@@ -37,14 +40,10 @@
 #include "p_setup.h"
 #include "p_extsaveg.h" // savewadfilename
 #include "s_sound.h"
-#include "doomstat.h"
-
-// Data.
 #include "sounds.h"
 
 #include "m_crispy.h" // Crispness menu
 #include "m_background.h" // Crispness menu
-#include "v_trans.h" // colored "invert mouse" message
 
 #include "m_menu.h"
 

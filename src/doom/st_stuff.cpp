@@ -13,19 +13,19 @@
 		Does the face/direction indicator animatin.
 		Does palette indicators as well (red pain/berserk, bright pickup)
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "i_swap.h" // SHORT()
-#include "i_system.h"
-#include "i_video.h"
-#include "z_zone.h"
-#include "m_argv.h" // M_ParmExists()
-#include "m_misc.h"
+#include "../i_swap.h" // SHORT()
+#include "../i_system.h"
+#include "../i_video.h"
+#include "../z_zone.h"
+#include "../m_argv.h" // M_ParmExists()
+#include "../m_misc.h"
 #include "m_random.h"
-#include "w_wad.h"
+#include "../disk_io/w_wad.h"
 
-#include "deh_main.h"
-#include "deh_misc.h"
+#include "../disk_io/deh_main.h"
+#include "../disk_io/deh_misc.h"
 #include "doomdef.h"
 
 #include "g_game.h"
@@ -38,12 +38,12 @@
 #include "p_inter.h"
 
 #include "am_map.h"
-#include "m_cheat.h"
+#include "../m_cheat.h"
 
 #include "s_sound.h"
 
 // Needs access to LFB.
-#include "v_video.h"
+#include "../v_video.h"
 
 // State.
 #include "doomstat.h"
@@ -52,7 +52,7 @@
 #include "dstrings.h"
 #include "sounds.h"
 
-#include "v_trans.h" // colored cheat messages
+#include "../v_trans.h" // colored cheat messages
 
 extern int screenblocks; // for the Crispy HUD
 extern bool inhelpscreens; // prevent palette changes

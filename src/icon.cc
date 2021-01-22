@@ -1,7 +1,9 @@
+#include<array>
+
 static int icon_w = 128;
 static int icon_h = 128;
 
-static const unsigned icon_data[]{
+static constexpr ::std::array<const unsigned, 16384> icon_data{
 	0xce9b35ff, 0xca982eff, 0xcb972bff, 0xd4a648ff, 0xd7ab5bff, 0xd7ac5cff,
 	0xd7ac5eff, 0xd5a448ff, 0xc18a20ff, 0xb37a0cff, 0xb37a0cff, 0xb37606ff,
 	0xb97609ff, 0xdca946ff, 0xe9c16dff, 0xedc97bff, 0xf3d78fff, 0xf7db92ff,

@@ -11,12 +11,12 @@
 	DESCRIPTION:
 		Weapon sprite animation, weapon objects. Action functions for weapons.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 #include "doomdef.h"
-#include "d_event.h"
+#include "../d_event.h"
 
-#include "deh_misc.h"
+#include "../disk_io/deh_misc.h"
 
 #include "m_random.h"
 #include "p_local.h"

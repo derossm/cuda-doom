@@ -11,13 +11,13 @@
 	DESCRIPTION:
 		BSP traversal, handling of LineSegs for rendering.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 #include "doomdef.h"
 
-#include "m_bbox.h"
+#include "../m_bbox.h"
 
-#include "i_system.h"
+#include "../i_system.h"
 
 #include "r_main.h"
 #include "r_plane.h"

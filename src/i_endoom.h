@@ -17,7 +17,6 @@
 
 #include "../textscreen/txt_gui.h"
 
-#include "doomtype.h"
 #include "i_video.h"
 
 namespace cudadoom

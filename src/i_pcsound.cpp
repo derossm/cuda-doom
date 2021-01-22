@@ -12,15 +12,13 @@
 \**********************************************************************************************************************************************/
 #include "../derma/stdafx.h"
 
-#include "doomtype.h"
+#include "../pcsound/pcsound.h"
+#include "disk_io/deh_str.h"
+#include "disk_io/w_wad.h"
 
-#include "deh_str.h"
 #include "i_sound.h"
 #include "m_misc.h"
-#include "w_wad.h"
 #include "z_zone.h"
-
-#include "pcsound.h"
 
 constexpr size_t TIMER_FREQ{1193181}; // hz
 

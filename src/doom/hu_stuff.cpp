@@ -11,37 +11,36 @@
 	DESCRIPTION:
 		Heads-up displays
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
+
+#include "../z_zone.h"
+
+#include "../disk_io/deh_main.h"
+#include "../i_input.h"
+#include "../i_swap.h"
+#include "../i_video.h"
+
+#include "../m_controls.h"
+#include "../m_misc.h"
+#include "../disk_io/w_wad.h"
+#include "../m_argv.h" // M_ParmExists()
+
+#include "../v_video.h" // V_DrawPatch() et al.
+#include "../v_trans.h" // colored kills/items/secret/etc. messages
 
 #include "doomdef.h"
-
-#include "z_zone.h"
-
-#include "deh_main.h"
-#include "i_input.h"
-#include "i_swap.h"
-#include "i_video.h"
+#include "doomstat.h"
+#include "dstrings.h"
 
 #include "hu_stuff.h"
 #include "hu_lib.h"
-#include "m_controls.h"
-#include "m_misc.h"
-#include "w_wad.h"
-#include "m_argv.h" // M_ParmExists()
 #include "st_stuff.h" // ST_HEIGHT
 #include "p_setup.h" // maplumpinfo
 
 #include "s_sound.h"
-
-#include "doomstat.h"
-
-// Data.
-#include "dstrings.h"
 #include "sounds.h"
 
 #include "r_state.h" // colormaps
-#include "v_video.h" // V_DrawPatch() et al.
-#include "v_trans.h" // colored kills/items/secret/etc. messages
 
 //
 // Locally used constants, shortcuts.

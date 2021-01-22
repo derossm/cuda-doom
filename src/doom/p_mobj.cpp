@@ -11,10 +11,10 @@
 	DESCRIPTION:
 		Moving object handling. Spawn functions.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "i_system.h"
-#include "z_zone.h"
+#include "../i_system.h"
+#include "../z_zone.h"
 #include "m_random.h"
 
 #include "doomdef.h"
@@ -26,8 +26,8 @@
 
 #include "s_sound.h"
 #include "s_musinfo.h" // statenum_t::S_ParseMusInfo()
-#include "i_swap.h" // SHORT()
-#include "w_wad.h" // W_CacheLumpNum()
+#include "../i_swap.h" // SHORT()
+#include "../disk_io/w_wad.h" // W_CacheLumpNum()
 
 #include "doomstat.h"
 

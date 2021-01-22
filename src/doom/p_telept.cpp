@@ -11,7 +11,7 @@
 	DESCRIPTION:
 		Teleportation.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "doomstat.h"

@@ -20,7 +20,7 @@
 #include "i_sound.h"
 #include "i_timer.h"
 #include "m_misc.h"
-#include "net_packet.h"
+#include "network/net_packet.h"
 
 #include "../midiproc/buffer.h"
 

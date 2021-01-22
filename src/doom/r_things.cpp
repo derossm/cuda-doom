@@ -11,21 +11,21 @@
 	DESCRIPTION:
 		Refresh of things, i.e. objects represented by sprites.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "deh_main.h"
+#include "../disk_io/deh_main.h"
 #include "doomdef.h"
 
-#include "i_swap.h"
-#include "i_system.h"
-#include "z_zone.h"
-#include "w_wad.h"
+#include "../i_swap.h"
+#include "../i_system.h"
+#include "../z_zone.h"
+#include "../disk_io/w_wad.h"
 
 #include "r_local.h"
 
 #include "doomstat.h"
 
-#include "v_trans.h" // colored blood sprites
+#include "../v_trans.h" // colored blood sprites
 #include "p_local.h" // MLOOKUNIT
 #include "r_bmaps.h" // R_BrightmapForTexName()
 

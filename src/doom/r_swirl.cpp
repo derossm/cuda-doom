@@ -10,17 +10,15 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 	DESCRIPTION:
- add support for SMMU swirling flats
- adapted from smmu/r_ripple.c, by Simon Howard
+		add support for SMMU swirling flats
+		adapted from smmu/r_ripple.c, by Simon Howard
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-//#include <string>
-
-#include "tables.h"
-#include "i_system.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "../tables.h"
+#include "../i_system.h"
+#include "../disk_io/w_wad.h"
+#include "../z_zone.h"
 
 #include "doomstat.h"
 

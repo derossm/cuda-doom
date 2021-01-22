@@ -15,11 +15,10 @@
 
 #include "i_midipipe.h"
 
-#include "doomtype.h"
 #include "memio.h"
 #include "mus2mid.h"
 
-#include "deh_str.h"
+#include "disk_io/deh_str.h"
 #include "gusconf.h"
 #include "i_sound.h"
 #include "i_system.h"
@@ -27,17 +26,15 @@
 #include "m_argv.h"
 #include "m_config.h"
 #include "m_misc.h"
-#include "sha1.h"
-#include "w_wad.h"
+#include "algorithms/sha1.h"
+#include "disk_io/w_wad.h"
 #include "z_zone.h"
 
 constexpr size_t MAXMIDLENGTH{(96 * 1024)};
 
 static bool music_initialized = false;
 
-// If this is true, this module initialized SDL sound and has the
-// responsibility to shut it down
-
+// If this is true, this module initialized SDL sound and has the responsibility to shut it down
 static bool sdl_was_initialized = false;
 
 static bool musicpaused = false;

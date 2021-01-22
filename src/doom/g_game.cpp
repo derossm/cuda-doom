@@ -12,7 +12,9 @@
 
 #include "../../derma/common.h"
 
-#include "../deh_main.h"
+#include "../disk_io/deh_main.h"
+#include "../disk_io/deh_misc.h"
+#include "../disk_io/deh_bexpars.h" // bex_pars[]
 #include "../z_zone.h"
 #include "../m_argv.h"
 #include "../m_controls.h"
@@ -24,13 +26,11 @@
 #include "../i_video.h"
 #include "../v_video.h" // Needs access to LFB.
 #include "../v_trans.h" // colored "always run" message
-#include "../w_wad.h"
+#include "../disk_io/w_wad.h"
 
 #include "doomdef.h"
 #include "doomstat.h"
-
-#include "deh_misc.h"
-#include "deh_bexpars.h" // bex_pars[]
+#include "dstrings.h"
 
 #include "f_finale.h"
 #include "m_menu.h"
@@ -51,9 +51,6 @@
 
 #include "p_local.h"
 #include "s_sound.h"
-
-// Data.
-#include "dstrings.h"
 #include "sounds.h"
 
 // SKY handling - still the wrong place.
@@ -318,7 +315,7 @@ static WeaponType G_NextWeapon(int direction)
 // e.g. quick exit, clean screenshots, resurrection from savegames
 bool speedkeydown()
 {
-	return (key_speed < NUMKEYS&& gamekeydown[key_speed]) || (joybspeed < MAX_JOY_BUTTONS&& joybuttons[joybspeed]);
+	return (key_speed < NUMKEYS && gamekeydown[key_speed]) || (joybspeed < MAX_JOY_BUTTONS && joybuttons[joybspeed]);
 }
 
 //

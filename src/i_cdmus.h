@@ -15,8 +15,6 @@
 
 #include "../derma/common.h"
 
-#include "doomtype.h"
-
 constexpr int CDERR_NOTINSTALLED{10};		// MSCDEX not installed
 constexpr int CDERR_NOAUDIOSUPPORT{11};		// CD-ROM Doesn't support audio
 constexpr int CDERR_NOAUDIOTRACKS{12};		// Current CD has no audio tracks

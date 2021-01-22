@@ -13,21 +13,19 @@
 		Texture animation, height or lighting changes according to adjacent sectors, respective utility functions, etc.
 		Line Tag handling. Line and Sector triggers.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
+#include "../../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "doomstat.h"
 
-#include "deh_main.h"
-#include "i_system.h"
-#include "i_swap.h" // LONG()
-#include "z_zone.h"
-#include "m_argv.h"
-#include "m_misc.h"
+#include "../disk_io/deh_main.h"
+#include "../i_system.h"
+#include "../i_swap.h" // LONG()
+#include "../z_zone.h"
+#include "../m_argv.h"
+#include "../m_misc.h"
 #include "m_random.h"
-#include "w_wad.h"
+#include "../disk_io/w_wad.h"
 #include "r_swirl.h" // R_InitDistortedFlats()
 
 #include "r_local.h"

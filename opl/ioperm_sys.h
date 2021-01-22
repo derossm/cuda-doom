@@ -19,6 +19,7 @@ namespace cudadoom::opl
 {
 
 #ifdef _WIN32
+#include <winioctl.h>
 
 #define IOPERM_FILE L"\\\\.\\ioperm"
 

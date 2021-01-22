@@ -11,17 +11,15 @@
 	DESCRIPTION:
 		Switches, buttons. Two-state animation. Exits.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-//#include <string>
-
-#include "i_system.h"
-#include "deh_main.h"
+#include "../i_system.h"
+#include "../disk_io/deh_main.h"
 #include "doomdef.h"
 #include "p_local.h"
-#include "i_swap.h" // SHORT()
-#include "w_wad.h" // W_CheckNumForName()
-#include "z_zone.h" // pu_tags_t::PU_STATIC
+#include "../i_swap.h" // SHORT()
+#include "../disk_io/w_wad.h" // W_CheckNumForName()
+#include "../z_zone.h" // pu_tags_t::PU_STATIC
 
 #include "g_game.h"
 

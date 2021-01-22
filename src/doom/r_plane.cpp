@@ -12,11 +12,11 @@
 		Here is a core component: drawing the floors and ceilings, while maintaining a per column clipping list only.
 		Moreover, the sky areas have to be determined.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "i_system.h"
-#include "z_zone.h"
-#include "w_wad.h"
+#include "../i_system.h"
+#include "../z_zone.h"
+#include "../disk_io/w_wad.h"
 
 #include "doomdef.h"
 #include "doomstat.h"

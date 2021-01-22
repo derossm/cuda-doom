@@ -11,19 +11,19 @@
 	DESCRIPTION:
 		The status bar widget code.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "deh_main.h"
+#include "../disk_io/deh_main.h"
 #include "doomdef.h"
-#include "z_zone.h"
-#include "v_video.h"
-#include "i_swap.h"
-#include "i_system.h"
-#include "w_wad.h"
+#include "../z_zone.h"
+#include "../v_video.h"
+#include "../i_swap.h"
+#include "../i_system.h"
+#include "../disk_io/w_wad.h"
 #include "st_stuff.h"
 #include "st_lib.h"
 #include "r_local.h"
-#include "v_trans.h" // colored status bar widgets
+#include "../v_trans.h" // colored status bar widgets
 
 // in AM_map.cpp
 extern bool automapactive;

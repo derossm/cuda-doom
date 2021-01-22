@@ -11,21 +11,19 @@
 	DESCRIPTION:
 		Do all the WAD I/O, get map description, set up initial state and misc. LUTs.
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-//#include <string>
+#include "../z_zone.h"
 
-#include "z_zone.h"
-
-#include "deh_main.h"
-#include "i_swap.h"
-#include "m_argv.h"
-#include "m_bbox.h"
+#include "../disk_io/deh_main.h"
+#include "../i_swap.h"
+#include "../m_argv.h"
+#include "../m_bbox.h"
 
 #include "g_game.h"
 
-#include "i_system.h"
-#include "w_wad.h"
+#include "../i_system.h"
+#include "../disk_io/w_wad.h"
 
 #include "doomdef.h"
 #include "p_local.h"

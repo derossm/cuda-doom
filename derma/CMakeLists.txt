@@ -7,24 +7,19 @@ set(DERMA_FILES
 								derma_strongtype.h
 								derma_byte.h
 								derma_enum.h
+								derma_enum_free.h
 								derma_string.h
 								derma_vector.h
 		test_byte.cpp			catch.hpp)
 
-add_executable(catch2tests ${DERMA_FILES})
+add_executable(catch2tests "${DERMA_FILES}")
 set_target_properties(catch2tests PROPERTIES CXX_STANDARD 20 LANGUAGE CXX LINKER_LANGUAGE CXX)
-target_include_directories(catch2tests INTERFACE ".;" PRIVATE ".;${VCPKG_INCLUDE_DIR};${CUDA_INCLUDE_DIR}")
+target_include_directories(catch2tests PUBLIC "${COMMON_INCLUDE_DIRS}")
 target_precompile_headers(catch2tests PUBLIC stdafx.h)
 
 if(MSVC)
-	target_compile_options(catch2tests PUBLIC
-		"/Zc:__cplusplus"
-		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise"
-		"/permissive-" "/Zc:preprocessor"
-		"/W4" "/Od" "/arch:AVX2"
-		"/EHsc"
-		"/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MDd"
-		#"/experimental:module"
-		)
-	target_compile_definitions(catch2tests PUBLIC "WIN32_LEAN_AND_MEAN" "NOMINMAX")
+	target_compile_options(catch2tests PUBLIC "${WIN64_COMPILE_OPTIONS}")
+	target_compile_definitions(catch2tests PUBLIC "${COMMON_DEFINITIONS}")
+else()
+	target_compile_definitions(catch2tests PUBLIC "SDL_MAIN_HANDLED")
 endif()

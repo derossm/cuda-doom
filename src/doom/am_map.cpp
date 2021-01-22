@@ -11,11 +11,11 @@
 	DESCRIPTION:
 		the automap code
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
+#include "../../derma/stdafx.h"
 
-#include "../deh_main.h"
+#include "../disk_io/deh_main.h"
 #include "../z_zone.h"
-#include "../w_wad.h"
+#include "../disk_io/w_wad.h"
 #include "../m_cheat.h"
 #include "../m_controls.h"
 #include "../m_misc.h"

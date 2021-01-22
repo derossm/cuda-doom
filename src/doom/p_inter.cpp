@@ -11,20 +11,18 @@
 	DESCRIPTION:
 		Handling interactions (i.e., collisions).
 \**********************************************************************************************************************************************/
-#include "../derma/stdafx.h"
-
-//#include <string>
+#include "../../derma/stdafx.h"
 
 #include "doomdef.h"
 #include "dstrings.h"
 #include "sounds.h"
 
-#include "deh_main.h"
-#include "deh_misc.h"
+#include "../disk_io/deh_main.h"
+#include "../disk_io/deh_misc.h"
 #include "doomstat.h"
 
 #include "m_random.h"
-#include "i_system.h"
+#include "../i_system.h"
 
 #include "am_map.h"
 

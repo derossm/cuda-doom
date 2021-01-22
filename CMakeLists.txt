@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.7.2)
 project("CUDA Doom" VERSION 0.0.1 LANGUAGES CXX)
 
 # Autotools variables
-set(top_srcdir ${CMAKE_CURRENT_SOURCE_DIR})
-set(top_builddir ${CMAKE_CURRENT_BINARY_DIR})
+set(top_srcdir "${CMAKE_CURRENT_SOURCE_DIR}")
+set(top_builddir "${CMAKE_CURRENT_BINARY_DIR}")
 
 # AC_INIT variables
 set(PACKAGE_NAME "${PROJECT_NAME}")
@@ -26,18 +26,6 @@ enable_language(CUDA)
 # Any settings that should apply to all targets in this directory and all subdirectories should go here. Use judiciously.
 #if(MSVC)
 #	#add_definitions("/D_CRT_SECURE_NO_WARNINGS" "/D_CRT_SECURE_NO_DEPRECATE" "/D_CRT_NONSTDC_NO_DEPRECATE")
-#	add_compile_options(
-#		"/Zc:__cplusplus"
-#		"/Zc:wchar_t" "/Zc:inline" "/Zc:forScope" "/fp:precise" "/EHsc" "/GS" "/Gd" "/Gm-" "/FC" "/nologo" "/WX-" "/MD"
-#		"/permissive-" "/Zc:preprocessor"
-#		"/W4" "/Od" "/arch:AVX2"
-#		#"/wC4005"
-#		#"/experimental:module"
-#		#"/Zc:externConstexpr"
-#		)
-#	add_compile_definitions("WIN32_LEAN_AND_MEAN" "NOMINMAX"
-#							"SDL_MAIN_HANDLED"
-#							"MICROSOFT_WINDOWS_WINBASE_H_DEFINE_INTERLOCKED_CPLUSPLUS_OVERLOADS")
 #else()
 #	add_compile_options("-Wall" "-Wdeclaration-after-statement" "-Wredundant-decls")
 #endif()
@@ -52,6 +40,17 @@ set(VCPKG_LIBRARY_DIR "${VCPKG_DIR}/${ARCHITECTURE}-${PLATFORM}/lib")
 set(CUDA_DIR "R:/api/cuda/v11.1/tools")
 set(CUDA_INCLUDE_DIR "${CUDA_DIR}/include")
 set(CUDA_LIBRARY_DIR "${CUDA_DIR}/lib")
+
+set(COMMON_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}" "${VCPKG_INCLUDE_DIR}" "${CUDA_INCLUDE_DIR}")
+#;${CMAKE_CURRENT_SOURCE_DIR}/disk_io;${CMAKE_CURRENT_SOURCE_DIR}/input;${CMAKE_CURRENT_SOURCE_DIR}/network;${CMAKE_CURRENT_SOURCE_DIR}/algorithms")
+
+set(COMMON_DEFINITIONS "WIN32_LEAN_AND_MEAN" "NOMINMAX" "SDL_MAIN_HANDLED")
+#"MICROSOFT_WINDOWS_WINBASE_H_DEFINE_INTERLOCKED_CPLUSPLUS_OVERLOADS"
+
+set(WIN64_COMPILE_OPTIONS
+	"/Zc:__cplusplus" "/Zc:inline" "/Zc:preprocessor"
+	"/fp:precise" "/GS" "/Gd" "/Gm-" "/FC" "/EHsc" "/nologo" "/WX-" "/MDd"
+	"/permissive-" "/W4" "/Od" "/arch:AVX2")
 
 # libm or fdlibm (Freely Distributable libm) : C math library IEEE 754 floating-point arithmetic
 #find_package(m REQUIRED)
